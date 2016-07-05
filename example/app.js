@@ -11,8 +11,10 @@ import farfetched from 'farfetched';
 
 
 farfetched.attach(window);
-farfetched('/comments', { response: JSON.stringify([{ id: 1, name: 'foo' }, { id: 2, name: 'bar'}]) });
-farfetched('/comments?sort=name', { response: JSON.stringify([{ id: 2, name: 'bar'}, { id: 1, name: 'foo' }]) });
+farfetched('/comments?_sortField=id&_sortDir=DESC', { response: JSON.stringify([{ id: 3, name: 'zip' }, { id: 2, name: 'bar' }, { id: 1, name: 'foo' }]) });
+farfetched('/comments?_sortField=id&_sortDir=ASC', { response: JSON.stringify([{ id: 1, name: 'foo' }, { id: 2, name: 'bar' }, { id: 3, name: 'zip' }]) });
+farfetched('/comments?_sortField=name&_sortDir=ASC', { response: JSON.stringify([{ id: 2, name: 'bar' }, { id: 1, name: 'foo' }, { id: 3, name: 'zip' }]) });
+farfetched('/comments?_sortField=name&_sortDir=DESC', { response: JSON.stringify([{ id: 3, name: 'zip' }, { id: 1, name: 'foo' }, { id: 2, name: 'bar' } ]) });
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducer, undefined, compose(

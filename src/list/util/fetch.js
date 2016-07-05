@@ -17,7 +17,7 @@ function json(response) {
     return response.json();
 }
 
-const fetchJson = (url, options = {}) => {
+export const fetchJson = (url, options = {}) => {
     const headers = {
         Accept: 'application/json',
     };
@@ -45,3 +45,7 @@ export const fetchSagaFactory = (actionName) => {
         }
     };
 };
+
+export const queryParameters = (data) => Object.keys(data)
+    .map(key => [key, data[key]].map(encodeURIComponent).join('='))
+    .join('&');
