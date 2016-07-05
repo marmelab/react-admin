@@ -1,0 +1,16 @@
+{
+    "env": {
+        "browser": true,
+        "mocha": true,
+        "node": true,
+        "phantomjs": true,
+        "protractor": true,
+    },
+    "extends": "airbnb",
+    "parser": "babel-eslint",
+    "rules": {
+        "indent": ["error", 4],
+        "max-len": ["off"],
+        "react/jsx-indent-props": ["error", 4]
+    },
+}

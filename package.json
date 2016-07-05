@@ -1,0 +1,30 @@
+{
+  "name": "redux-crud",
+  "version": "0.0.5",
+  "description": "Actions and reducers for interacting with REST services",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "author": "François Zaninotto",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.10.4",
+    "babel-eslint": "^6.1.0",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-register": "^6.9.0",
+    "eslint": "^3.0.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.10.1",
+    "eslint-plugin-jsx-a11y": "^1.5.3",
+    "eslint-plugin-react": "^5.2.2",
+    "farfetched": "^1.2.0",
+    "mocha": "^2.5.3",
+    "redux": "^3.5.2",
+    "redux-saga": "^0.10.5",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
