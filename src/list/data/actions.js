@@ -1,5 +1,3 @@
-import fetch from '../util/fetch';
-
 export const CRUD_FETCH_LIST = 'CRUD_FETCH_LIST';
 export const CRUD_FETCH_LIST_LOADING = 'CRUD_FETCH_LIST_LOADING';
 export const CRUD_FETCH_LIST_SUCCESS = 'CRUD_FETCH_LIST_SUCCESS';

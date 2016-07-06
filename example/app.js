@@ -9,7 +9,8 @@ import saga from './sagas';
 import App from './components/App';
 import FakeRest from './FakeRest';
 import fetchMock from 'fetch-mock';
-import data from './data'
+import data from './data';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 var restServer = new FakeRest.FetchServer('http://localhost:3000');
 restServer.init(data);
@@ -25,7 +26,9 @@ sagaMiddleware.run(saga);
 
 render(
   <Provider store={store}>
-    <App />
+    <MuiThemeProvider>
+        <App />
+    </MuiThemeProvider>
   </Provider>,
   document.getElementById('root')
 );

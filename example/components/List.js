@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { queryParameters } from '../../src/list/util/fetch';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import FlatButton from 'material-ui/FlatButton';
+import ContentSort from 'material-ui/svg-icons/content/sort';
+import { queryParameters } from '../../src/util/fetch';
 import { fetchList } from '../../src/list/data/actions';
 import { setSort } from '../../src/list/sort/actions';
 
@@ -44,32 +47,34 @@ class App extends Component {
     }
 
     render() {
-        const { data, children } = this.props;
+        const { data, children, params } = this.props;
         return (
             <div>
                 <ul>
                     <li><a href="#" onClick={this.refresh}>Refresh</a></li>
                 </ul>
-                <table>
-                    <thead>
-                        <tr>
+                <Table multiSelectable>
+                    <TableHeader>
+                        <TableRow>
                             {React.Children.map(children, child => (
-                                <th key={child.props.label}>
-                                    <a href="#" onClick={this.updateSort} data-sort={child.props.source}>{child.props.label}</a>
-                                </th>
+                                <TableHeaderColumn key={child.props.label}>
+                                    <FlatButton labelPosition="before" onClick={this.updateSort} data-sort={child.props.source} label={child.props.label} icon={child.props.source == params.sort.field ? <ContentSort style={{ height:'78px', color: 'red', transform: 'rotate(180deg)' }}/> : false} />
+                                </TableHeaderColumn>
                             ))}
-                        </tr>
-                    </thead>
-                    <tbody>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody showRowHover stripedRows>
                         {data.allIds.map(id => (
-                            <tr key={id}>
+                            <TableRow key={id}>
                                 {React.Children.map(children, child => (
-                                    <td key={`${id}-${child.props.source}`}>{data.byId[id][child.props.source]}</td>
+                                    <TableRowColumn key={`${id}-${child.props.source}`}>
+                                        {data.byId[id][child.props.source]}
+                                    </TableRowColumn>
                                 ))}
-                            </tr>
+                            </TableRow>
                         ))}
-                    </tbody>
-                </table>
+                    </TableBody>
+                </Table>
             </div>
         );
     }

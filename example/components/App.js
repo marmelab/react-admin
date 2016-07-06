@@ -1,21 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Resource from './Resource';
 import List from './List';
 import Column from './Column';
+import AppBar from 'material-ui/AppBar';
+import CircularProgress from 'material-ui/CircularProgress';
 
-const App = () => (
+const App = ({ isLoading }) => (
     <div>
-        <div style={{ width: '45%', float: 'left' }}>
-            <Resource name="posts" path="http://localhost:3000/posts">
-                <List>
-                    <Column label="id" source="id"/>
-                    <Column label="title" source="title"/>
-                    <Column label="published_at" source="published_at"/>
-                    <Column label="average_note" source="average_note"/>
-                    <Column label="views" source="views"/>
-                </List>
-            </Resource>
-        </div>
+        <AppBar title="React Admin" iconElementRight={isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span/>}/>
+
+        <Resource name="posts" path="http://localhost:3000/posts">
+            <List>
+                <Column label="id" source="id"/>
+                <Column label="title" source="title"/>
+                <Column label="published_at" source="published_at"/>
+                <Column label="average_note" source="average_note"/>
+                <Column label="views" source="views"/>
+            </List>
+        </Resource>
         {/*
         <div style={{ width: '45%', float: 'left' }}>
             <Resource name="comments" path="http://localhost:3000/comments">
@@ -29,4 +32,10 @@ const App = () => (
     </div>
 );
 
-export default App;
+function mapStateToProps({ loading }) {
+    return { isLoading: loading > 0 };
+}
+
+export default connect(
+  mapStateToProps,
+)(App);
