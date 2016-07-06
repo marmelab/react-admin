@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Card, CardTitle, CardActions } from 'material-ui/Card';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
 import { queryParameters } from '../../src/util/fetch';
 import { fetchList } from '../../src/list/data/actions';
 import { setSort } from '../../src/list/sort/actions';
@@ -49,16 +49,13 @@ class App extends Component {
     }
 
     render() {
-        const { data, children, params } = this.props;
+        const { title, data, children, params } = this.props;
         return (
-            <div>
-                <Toolbar style={{ backgroundColor: '#fff' }}>
-                    <ToolbarGroup firstChild="true">
-                    </ToolbarGroup>
-                    <ToolbarGroup lastChild="true">
-                        <FlatButton label="Refresh" onClick={this.refresh} icon={<NavigationRefresh/>} />
-                    </ToolbarGroup>
-                </Toolbar>
+            <Card style={{margin: '2em'}}>
+                <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
+                    <FlatButton label="Refresh" onClick={this.refresh} icon={<NavigationRefresh/>} />
+                </CardActions>
+                <CardTitle title={title} />
                 <Table multiSelectable>
                     <TableHeader>
                         <TableRow>
@@ -81,13 +78,14 @@ class App extends Component {
                         ))}
                     </TableBody>
                 </Table>
-            </div>
+            </Card>
         );
     }
 }
 
 App.propTypes = {
     resource: PropTypes.string.isRequired,
+    title: PropTypes.string,
     path: PropTypes.string,
     params: PropTypes.object.isRequired,
     fetchListAction: PropTypes.func.isRequired,

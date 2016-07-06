@@ -11,7 +11,7 @@ const App = ({ isLoading }) => (
         <AppBar title="React Admin" iconElementRight={isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span/>}/>
 
         <Resource name="posts" path="http://localhost:3000/posts">
-            <List>
+            <List title="All posts">
                 <Column label="id" source="id"/>
                 <Column label="title" source="title"/>
                 <Column label="published_at" source="published_at"/>
