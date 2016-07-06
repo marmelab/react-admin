@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
+import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
 import { queryParameters } from '../../src/util/fetch';
 import { fetchList } from '../../src/list/data/actions';
 import { setSort } from '../../src/list/sort/actions';
@@ -50,9 +52,13 @@ class App extends Component {
         const { data, children, params } = this.props;
         return (
             <div>
-                <ul>
-                    <li><a href="#" onClick={this.refresh}>Refresh</a></li>
-                </ul>
+                <Toolbar style={{ backgroundColor: '#fff' }}>
+                    <ToolbarGroup firstChild="true">
+                    </ToolbarGroup>
+                    <ToolbarGroup lastChild="true">
+                        <FlatButton label="Refresh" onClick={this.refresh} icon={<NavigationRefresh/>} />
+                    </ToolbarGroup>
+                </Toolbar>
                 <Table multiSelectable>
                     <TableHeader>
                         <TableRow>
@@ -66,9 +72,9 @@ class App extends Component {
                     <TableBody showRowHover stripedRows>
                         {data.allIds.map(id => (
                             <TableRow key={id}>
-                                {React.Children.map(children, child => (
-                                    <TableRowColumn key={`${id}-${child.props.source}`}>
-                                        {data.byId[id][child.props.source]}
+                                {React.Children.map(children, column => (
+                                    <TableRowColumn key={`${id}-${column.props.source}`}>
+                                        <column.type { ...column.props } record={data.byId[id]} />
                                     </TableRowColumn>
                                 ))}
                             </TableRow>
