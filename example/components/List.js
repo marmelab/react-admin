@@ -25,8 +25,7 @@ class App extends Component {
 
     getPath(params) {
         const query = {
-            _sortField: params.sort.field,
-            _sortDir: params.sort.order,
+            sort: JSON.stringify([params.sort.field, params.sort.order]),
         };
         if (params.filter) {
             query._filter = params.filter;
@@ -45,15 +44,32 @@ class App extends Component {
     }
 
     render() {
-        const { params } = this.props;
+        const { data, children } = this.props;
         return (
             <div>
                 <ul>
-                    <li><a href="#" onClick={this.updateSort} data-sort="id">sortById</a></li>
-                    <li><a href="#" onClick={this.updateSort} data-sort="name">sortByName</a></li>
                     <li><a href="#" onClick={this.refresh}>Refresh</a></li>
                 </ul>
-                <pre>{JSON.stringify(params, null, 2)}</pre>
+                <table>
+                    <thead>
+                        <tr>
+                            {React.Children.map(children, child => (
+                                <th key={child.props.label}>
+                                    <a href="#" onClick={this.updateSort} data-sort={child.props.source}>{child.props.label}</a>
+                                </th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.allIds.map(id => (
+                            <tr key={id}>
+                                {React.Children.map(children, child => (
+                                    <td key={`${id}-${child.props.source}`}>{data.byId[id][child.props.source]}</td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         );
     }
@@ -67,7 +83,7 @@ App.propTypes = {
 };
 
 function mapStateToProps(state, props) {
-    return { params: state[props.resource].list };
+    return { params: state[props.resource].list, data: state[props.resource].data };
 }
 
 export default connect(

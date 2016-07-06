@@ -1,4 +1,5 @@
-import { put } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
+import { put, call } from 'redux-saga/effects';
 
 function status(response) {
     if (!response.status || response.status >= 200 && response.status < 300) {
@@ -37,6 +38,8 @@ export const fetchSagaFactory = (actionName) => {
     return function *handleFetch(action) {
         try {
             yield put({ ...action, type: `${actionName}_LOADING` });
+            // FIXME simulate response delay, to be removed
+            yield call(delay, 1000);
             const { url, options } = action.payload;
             const response = yield fetchJson(url, options);
             yield put({ ...action, type: `${actionName}_SUCCESS`, payload: { response } });
