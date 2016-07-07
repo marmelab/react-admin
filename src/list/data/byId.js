@@ -1,6 +1,7 @@
 import { CRUD_FETCH_LIST_SUCCESS } from './actions';
+import { CRUD_FETCH_RECORD_SUCCESS } from '../../detail/actions';
 
-export default (resource, mapper = x => x) => (previousState = {}, { type, payload, meta }) => {
+export default (resource, mapper = x => x, idAccessor = x => x.id) => (previousState = {}, { type, payload, meta }) => {
     if (!meta || meta.resource !== resource) {
         return previousState;
     }
@@ -8,10 +9,12 @@ export default (resource, mapper = x => x) => (previousState = {}, { type, paylo
     case CRUD_FETCH_LIST_SUCCESS: {
         const byId = {};
         payload.json.forEach(r => {
-            byId[r.id] = mapper(r);
+            byId[idAccessor(r)] = mapper(r);
         });
         return byId;
     }
+    case CRUD_FETCH_RECORD_SUCCESS:
+        return { ...previousState, [idAccessor(payload.json)]: payload.json };
     default:
         return previousState;
     }

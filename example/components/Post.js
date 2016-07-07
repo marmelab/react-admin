@@ -1,24 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Resource from '../../src/crud/Resource';
-import Datagrid from '../../src/list/data/Datagrid';
 import Column from '../../src/list/column/Column';
+import Show from '../../src/detail/Show';
 
-import { Link } from 'react-router'
-const ActionColumn = ({record}) => (
-    <Link to={`/posts/${record.id}`}>{record.id}</Link>
-)
-
-const PostList = () => (
+const Post = ({ id }) => (
     <Resource name="posts" path="http://localhost:3000/posts">
-        <Datagrid title="All posts">
+        <Show title="Post detail" id={id}>
             <Column label="id" source="id"/>
             <Column label="title" source="title"/>
             <Column label="published_at" source="published_at"/>
             <Column label="average_note" source="average_note"/>
             <Column label="views" source="views"/>
-            <ActionColumn />
-        </Datagrid>
+        </Show>
     </Resource>
 );
 
-export default PostList;
+function mapStateToProps(state, ownProps) {
+    return { id: ownProps.params.id };
+}
+
+export default connect(
+    mapStateToProps
+)(Post);

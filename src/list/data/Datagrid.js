@@ -94,6 +94,7 @@ Datagrid.propTypes = {
     path: PropTypes.string,
     params: PropTypes.object.isRequired,
     fetchListAction: PropTypes.func.isRequired,
+    data: PropTypes.object,
 };
 
 function mapStateToProps(state, props) {
