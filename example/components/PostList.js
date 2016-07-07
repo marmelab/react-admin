@@ -1,7 +1,7 @@
 import React from 'react';
-import Resource from './Resource';
-import Datagrid from './Datagrid';
-import Column from './Column';
+import Resource from '../../src/crud/Resource';
+import Datagrid from '../../src/list/data/Datagrid';
+import Column from '../../src/list/column/Column';
 
 const PostList = () => (
     <Resource name="posts" path="http://localhost:3000/posts">

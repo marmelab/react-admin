@@ -8,7 +8,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import reducer from './reducers';
 import saga from './sagas';
-import App from './components/App';
+import App from '../src/App';
 import PostList from './components/PostList';
 import FakeRest from './FakeRest';
 import fetchMock from 'fetch-mock';
