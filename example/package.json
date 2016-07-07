@@ -12,12 +12,6 @@
     "babel-plugin-transform-react-jsx": "^6.8.0",
     "babel-polyfill": "^6.9.1",
     "babel-preset-react": "^6.11.1",
-    "fetch-mock": "^4.6.0",
-    "material-ui": "^0.15.1",
-    "react": "^15.2.0",
-    "react-dom": "^15.2.0",
-    "react-redux": "^4.4.5",
-    "react-tap-event-plugin": "^1.0.0",
-    "redux": "^3.5.2"
+    "fetch-mock": "^4.6.0"
   }
 }

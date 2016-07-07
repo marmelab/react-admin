@@ -6,7 +6,7 @@ export default (resource, idAccessor = x => x.id) => (previousState = [], { type
     }
     switch (type) {
     case CRUD_FETCH_LIST_SUCCESS:
-        return payload.response.map(idAccessor);
+        return payload.json.map(idAccessor);
     default:
         return previousState;
     }

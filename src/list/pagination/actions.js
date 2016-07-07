@@ -12,20 +12,6 @@ export const prevPage = (resource) => ({
     meta: { resource },
 });
 
-export const CRUD_FIRST_PAGE = 'CRUD_FIRST_PAGE';
-
-export const firstPage = (resource) => ({
-    type: CRUD_FIRST_PAGE,
-    meta: { resource },
-});
-
-export const CRUD_LAST_PAGE = 'CRUD_LAST_PAGE';
-
-export const lastPage = (resource) => ({
-    type: CRUD_LAST_PAGE,
-    meta: { resource },
-});
-
 export const CRUD_GOTO_PAGE = 'CRUD_GOTO_PAGE';
 
 export const gotoPage = (resource, page) => ({

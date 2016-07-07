@@ -6,41 +6,46 @@ export const FETCH_END = 'FETCH_END';
 export const FETCH_ERROR = 'FETCH_ERROR';
 export const FETCH_CANCEL = 'FETCH_CANCEL';
 
-function status(response) {
-    if (!response.status || response.status >= 200 && response.status < 300) {
-        return Promise.resolve(response);
-    }
-
-    return response.json()
-        .then(json => Promise.reject(new Error((json && json.message) || response.statusText)))
-}
-
-function json(response) {
-    if (response.status === 204) {
-        return Promise.resolve(null);
-    }
-
-    return response.json();
-}
-
 export const fetchJson = (url, options = {}) => {
-    const headers = {
+    const requestHeaders = {
         Accept: 'application/json',
     };
     if (!(options && options.body && options.body instanceof FormData)) {
-        headers['Content-Type'] = 'application/json';
+        requestHeaders['Content-Type'] = 'application/json';
     }
     if (options.user && options.user.authenticated && options.user.authenticated) {
-        headers.Authorization = options.user.token;
+        requestHeaders.Authorization = options.user.token;
     }
 
-    return fetch(url, { ...options, headers, credentials: 'include' })
-        .then(status)
-        .then(json);
+    let status, statusText, headers = {}, body, json;
+
+    return fetch(url, { ...options, headers: requestHeaders, credentials: 'include' })
+        .then(response => {
+            for (var pair of response.headers.entries()) {
+                headers[pair[0]] = pair[1];
+            }
+            status = response.status;
+            statusText = response.statusText;
+            return response;
+        })
+        .then(response => response.text())
+        .then(text => {
+            body = text;
+            try {
+                json = JSON.parse(text);
+            } catch (e) {
+                // not json, no big deal
+            }
+            if (status < 200 || status >= 300) {
+                return Promise.reject(new Error((json && json.message) || statusText));
+            }
+            return { status, headers, body, json };
+        });
 };
 
 export const fetchSagaFactory = (actionName) => {
     return function *handleFetch(action) {
+        let ret;
         try {
             yield [
                 put({ ...action, type: `${actionName}_LOADING` }),
@@ -49,21 +54,24 @@ export const fetchSagaFactory = (actionName) => {
             // FIXME simulate response delay, to be removed
             yield call(delay, 1000);
             const { url, options } = action.payload;
-            const response = yield fetchJson(url, options);
-            yield [
-                put({ ...action, type: `${actionName}_SUCCESS`, payload: { response } }),
-                put({ type: FETCH_END }),
-            ];
+            ret = yield fetchJson(url, options);
         } catch (error) {
             yield [
                 put({ ...action, type: `${actionName}_FAILURE`, error }),
                 put({ type: FETCH_ERROR }),
             ];
+            return;
         } finally {
             if (yield cancelled()) {
                 yield put({ type: FETCH_CANCEL });
+                return;
             }
         }
+        const { status, headers, body, json } = ret;
+        yield [
+            put({ ...action, type: `${actionName}_SUCCESS`, payload: { status, headers, body, json } }),
+            put({ type: FETCH_END }),
+        ];
     };
 };
 

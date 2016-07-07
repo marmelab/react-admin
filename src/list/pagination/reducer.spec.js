@@ -67,30 +67,6 @@ describe('pagination', () => {
         });
     });
 
-    describe('CRUD_FIRST_PAGE', () => {
-        it('should set page to 1', () => {
-            assert.deepEqual(pagination('bar')({ page: 2, total: 5 }, {
-                type: CRUD_FIRST_PAGE,
-                meta: { resource: 'bar' },
-            }), {
-                page: 1,
-                total: 5,
-            });
-        });
-    });
-
-    describe('CRUD_LAST_PAGE', () => {
-        it('should set page to total', () => {
-            assert.deepEqual(pagination('bar')({ page: 2, total: 5 }, {
-                type: CRUD_LAST_PAGE,
-                meta: { resource: 'bar' },
-            }), {
-                page: 5,
-                total: 5,
-            });
-        });
-    });
-
     describe('CRUD_GOTO_PAGE', () => {
         it('should set the page', () => {
             assert.deepEqual(pagination('bar')({ page: 2, total: 5 }, {

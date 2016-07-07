@@ -5,6 +5,7 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+import Pagination from '../../src/list/pagination/Pagination';
 import { queryParameters } from '../../src/util/fetch';
 import { fetchList } from '../../src/list/data/actions';
 import { setSort } from '../../src/list/sort/actions';
@@ -23,14 +24,17 @@ class App extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.params.sort.field !== this.props.params.sort.field
          || nextProps.params.sort.order !== this.props.params.sort.order
-         || nextProps.params.sort.filter !== this.props.params.sort.filter) {
+         || nextProps.params.sort.filter !== this.props.params.sort.filter
+         || nextProps.params.pagination.page !== this.props.params.pagination.page) {
             this.props.fetchListAction(this.props.resource, this.getPath(nextProps.params));
         }
     }
 
     getPath(params) {
+        const { page, perPage } = params.pagination;
         const query = {
             sort: JSON.stringify([params.sort.field, params.sort.order]),
+            range: `[${(page - 1) * perPage},${page * perPage - 1}]`,
         };
         if (params.filter) {
             query._filter = params.filter;
@@ -49,7 +53,7 @@ class App extends Component {
     }
 
     render() {
-        const { title, data, children, params } = this.props;
+        const { resource, title, data, children, params } = this.props;
         return (
             <Card style={{margin: '2em'}}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
@@ -78,6 +82,7 @@ class App extends Component {
                         ))}
                     </TableBody>
                 </Table>
+                <Pagination resource={resource} page={params.pagination.page} perPage={params.pagination.perPage} total={params.pagination.total} />
             </Card>
         );
     }

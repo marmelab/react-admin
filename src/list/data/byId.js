@@ -7,7 +7,7 @@ export default (resource, mapper = x => x) => (previousState = {}, { type, paylo
     switch (type) {
     case CRUD_FETCH_LIST_SUCCESS: {
         const byId = {};
-        payload.response.forEach(r => {
+        payload.json.forEach(r => {
             byId[r.id] = mapper(r);
         });
         return byId;
