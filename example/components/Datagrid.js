@@ -10,7 +10,7 @@ import { queryParameters } from '../../src/util/fetch';
 import { fetchList } from '../../src/list/data/actions';
 import { setSort } from '../../src/list/sort/actions';
 
-class App extends Component {
+class Datagrid extends Component {
     constructor(props) {
         super(props);
         this.refresh = this.refresh.bind(this);
@@ -88,7 +88,7 @@ class App extends Component {
     }
 }
 
-App.propTypes = {
+Datagrid.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.string,
     path: PropTypes.string,
@@ -103,4 +103,4 @@ function mapStateToProps(state, props) {
 export default connect(
   mapStateToProps,
   { fetchListAction: fetchList, setSortAction: setSort },
-)(App);
+)(Datagrid);

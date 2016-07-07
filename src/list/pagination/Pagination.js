@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import * as actions from './actions';
 
 export class Pagination extends Component {
@@ -64,6 +64,14 @@ export class Pagination extends Component {
         this.props.gotoPage(this.props.resource, event.currentTarget.dataset.page);
     }
 
+    renderPageNums() {
+        return this.range().map(pageNum =>
+            (pageNum === '.') ?
+                <span style={{ padding: '1.2em' }}>&hellip;</span> :
+                <FlatButton key={pageNum} label={pageNum} data-page={pageNum} onClick={this.gotoPage} primary={pageNum === this.props.page} />
+        );
+    }
+
     render() {
         const { page, perPage, total } = this.props;
         if (total === 0) return null;
@@ -72,15 +80,13 @@ export class Pagination extends Component {
         const nbPages = Math.ceil(total / perPage) || 1;
 
         return (
-            <Toolbar>
-                <ToolbarGroup firstChild={true}>
+          <Toolbar>
+                <ToolbarGroup firstChild>
                     <span style={{ padding: '1.2em' }} >{offsetBegin}-{offsetEnd} of {total}</span>
                 </ToolbarGroup>
                 <ToolbarGroup>
                 { page > 1 ? <FlatButton key="prev" label="Prev" icon={<ChevronLeft />} onClick={this.prevPage}/> : '' }
-                { this.range().map(pageNum =>
-                    pageNum == '.' ? <span style={{ padding: '1.2em' }}>&hellip;</span> : <FlatButton key={pageNum} label={pageNum} data-page={pageNum} onClick={this.gotoPage} primary={pageNum == page}/>
-                )}
+                { this.renderPageNums() }
                 { page != nbPages ? <FlatButton key="next" label="Next" icon={<ChevronRight/>} labelPosition="before" onClick={this.nextPage}/> : '' }
                 </ToolbarGroup>
             </Toolbar>
