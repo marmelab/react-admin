@@ -7,8 +7,8 @@ const ActionColumn = ({ record }) => (
     <Link to={`/posts/${record.id}`}>{record.id}</Link>
 )
 
-const PostList = () => (
-    <Datagrid title="All posts" view="list" resource="posts" path="http://localhost:3000/posts">
+const PostList = (props) => (
+    <Datagrid title="All posts" view="list" { ...props }>
         <Column label="id" source="id"/>
         <Column label="title" source="title"/>
         <Column label="published_at" source="published_at"/>

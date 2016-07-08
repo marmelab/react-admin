@@ -38,7 +38,6 @@ class Detail extends Component {
                 </List>
             </Card>
         );
-
     }
 }
 
@@ -53,8 +52,8 @@ Detail.PropTypes = {
 
 function mapStateToProps(state, props) {
     return {
-        id: props.id,
-        data: state[props.resource].data.byId[props.id],
+        id: props.params.id,
+        data: state[props.resource].data.byId[props.params.id],
     };
 }
 

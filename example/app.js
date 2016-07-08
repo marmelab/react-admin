@@ -34,11 +34,7 @@ render(
   <Provider store={store}>
     <Router history={history}>
         <Route path="/" component={App}>
-            {CrudRoute({
-                path: 'posts',
-                list: PostList,
-                show: PostShow,
-            })}
+            <CrudRoute path="posts" endpoint="http://localhost:3000/posts" list={PostList} show={PostShow} />
         </Route>
     </Router>
   </Provider>,

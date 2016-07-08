@@ -2,8 +2,8 @@ import React from 'react';
 import Column from '../../../src/list/column/Column';
 import Show from '../../../src/detail/Show';
 
-const PostShow = ({params}) => (
-    <Show title="Post detail" view="show" resource="posts" path="http://localhost:3000/posts" id={params.id}>
+const PostShow = (props) => (
+    <Show title="Post detail" view="show" {...props}>
         <Column label="id" source="id"/>
         <Column label="title" source="title"/>
         <Column label="published_at" source="published_at"/>
