@@ -5,7 +5,7 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import Pagination from '..//pagination/Pagination';
+import Pagination from '../pagination/Pagination';
 import { queryParameters } from '../../util/fetch';
 import { fetchList } from './actions';
 import { setSort } from '../sort/actions';

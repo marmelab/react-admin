@@ -9,11 +9,12 @@ import createSagaMiddleware from 'redux-saga';
 import reducer from './reducers';
 import saga from './sagas';
 import App from '../src/App';
-import PostList from './components/PostList';
-import Post from './components/Post';
 import FakeRest from './FakeRest';
 import fetchMock from 'fetch-mock';
 import data from './data';
+import CrudRoute from '../src/crud/CrudRoute';
+import PostList from './components/posts/PostList';
+import PostShow from './components/posts/PostShow';
 
 var restServer = new FakeRest.FetchServer('http://localhost:3000');
 restServer.init(data);
@@ -33,9 +34,11 @@ render(
   <Provider store={store}>
     <Router history={history}>
         <Route path="/" component={App}>
-            <IndexRoute component={PostList}/>
-            <Route path="posts" component={PostList} />
-            <Route path="posts/:id" component={Post} />
+            {CrudRoute({
+                path: 'posts',
+                list: PostList,
+                show: PostShow,
+            })}
         </Route>
     </Router>
   </Provider>,
