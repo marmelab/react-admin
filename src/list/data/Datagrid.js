@@ -57,7 +57,7 @@ class Datagrid extends Component {
                             ))}
                         </TableRow>
                     </TableHeader>
-                    <TableBody showRowHover stripedRows>
+                    <TableBody showRowHover>
                         {ids.map(id => (
                             <TableRow key={id}>
                                 {React.Children.map(children, column => (

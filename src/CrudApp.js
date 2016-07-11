@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
+import Drawer from 'material-ui/Drawer';
 import CircularProgress from 'material-ui/CircularProgress';
 
-const App = ({ isLoading, children }) => (
+const CrudApp = ({ isLoading, children }) => (
     <MuiThemeProvider>
         <div>
             <AppBar title="React Admin" iconElementRight={isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span/>}/>
@@ -21,4 +22,4 @@ function mapStateToProps({ loading }) {
 
 export default connect(
   mapStateToProps,
-)(App);
+)(CrudApp);

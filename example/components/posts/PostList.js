@@ -4,7 +4,7 @@ import Column from '../../../src/list/column/Column';
 
 import { Link } from 'react-router'
 const ActionColumn = ({ record }) => (
-    <Link to={`/posts/${record.id}`}>{record.id}</Link>
+    <Link to={`/posts/${record.id}`}>View detail</Link>
 )
 
 const PostList = (props) => (
