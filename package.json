@@ -33,7 +33,6 @@
     "react-router-redux": "^4.0.5",
     "react-tap-event-plugin": "^1.0.0",
     "redux": "^3.5.2",
-    "redux-saga": "^0.10.5",
     "webpack-dev-server": "^1.14.1"
   }
 }
