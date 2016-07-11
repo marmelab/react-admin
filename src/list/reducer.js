@@ -3,7 +3,10 @@ import data from './data/reducer';
 import sort from './sort/reducer';
 import pagination from './pagination/reducer';
 
-export default (resource, mapper, idAccessor) => combineReducers({
-    sort: sort(resource),
-    pagination: pagination(resource),
+export default (resource) => combineReducers({
+    ids: data(resource),
+    params: combineReducers({
+        sort: sort(resource),
+        pagination: pagination(resource),
+    }),
 });

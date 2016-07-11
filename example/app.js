@@ -3,7 +3,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, compose, applyMiddleware } from 'redux';
-import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import { Router, Route, Redirect, hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import reducer from './reducers';
@@ -33,6 +33,7 @@ const history = syncHistoryWithStore(hashHistory, store)
 render(
   <Provider store={store}>
     <Router history={history}>
+        <Redirect from="/" to="/posts" />
         <Route path="/" component={App}>
             <CrudRoute path="posts" endpoint="http://localhost:3000/posts" list={PostList} show={PostShow} />
         </Route>

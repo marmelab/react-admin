@@ -1,6 +1,6 @@
 import React from 'react';
-import Column from '../../../src/list/column/Column';
 import Show from '../../../src/detail/Show';
+import Column from '../../../src/list/column/Column';
 
 const PostShow = (props) => (
     <Show title="Post detail" {...props}>
@@ -11,6 +11,5 @@ const PostShow = (props) => (
         <Column label="views" source="views"/>
     </Show>
 );
-
 
 export default PostShow;

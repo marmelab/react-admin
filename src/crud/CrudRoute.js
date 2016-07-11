@@ -9,8 +9,8 @@ CrudRoute.createRouteFromReactElement = (element, parentRoute) => {
     // dynamically add crud routes
     const crudRoute = createRoutesFromReactChildren(
         <Route path={path}>
-            {element.props.list ? <IndexRoute component={list} /> : null}
-            {element.props.show ? <Route path=":id" component={show} /> : null}
+            {list ? <IndexRoute component={list} /> : null}
+            {show ? <Route path=":id" component={show} /> : null}
         </Route>,
         parentRoute
     )[0];

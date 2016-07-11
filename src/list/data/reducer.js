@@ -1,8 +1,15 @@
-import { combineReducers } from 'redux';
-import byId from './byId';
-import allIds from './allIds';
+import { CRUD_FETCH_LIST_SUCCESS } from './actions';
 
-export default (resource, mapper, idAccessor) => combineReducers({
-    byId: byId(resource, mapper, idAccessor),
-    allIds: allIds(resource, idAccessor),
-});
+export default (resource) => (previousState = [], { type, payload, meta }) => {
+    if (!meta || meta.resource !== resource) {
+        return previousState;
+    }
+    switch (type) {
+    case CRUD_FETCH_LIST_SUCCESS:
+        return payload.json.map(r => r.id);
+    default:
+        return previousState;
+    }
+};
+
+export const getIds = (state) => state;

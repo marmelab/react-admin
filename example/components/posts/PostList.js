@@ -1,6 +1,6 @@
 import React from 'react';
-import Column from '../../../src/list/column/Column';
 import Datagrid from '../../../src/list/data/Datagrid';
+import Column from '../../../src/list/column/Column';
 
 import { Link } from 'react-router'
 const ActionColumn = ({ record }) => (
@@ -17,6 +17,5 @@ const PostList = (props) => (
         <ActionColumn />
     </Datagrid>
 );
-
 
 export default PostList;

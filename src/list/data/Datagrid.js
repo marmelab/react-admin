@@ -53,7 +53,7 @@ class Datagrid extends Component {
     }
 
     render() {
-        const { resource, title, data, children, params } = this.props;
+        const { resource, title, data, ids, children, params } = this.props;
         return (
             <Card style={{margin: '2em'}}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
@@ -71,11 +71,11 @@ class Datagrid extends Component {
                         </TableRow>
                     </TableHeader>
                     <TableBody showRowHover stripedRows>
-                        {data.allIds.map(id => (
+                        {ids.map(id => (
                             <TableRow key={id}>
                                 {React.Children.map(children, column => (
                                     <TableRowColumn key={`${id}-${column.props.source}`}>
-                                        <column.type { ...column.props } record={data.byId[id]} />
+                                        <column.type { ...column.props } record={data[id]} />
                                     </TableRowColumn>
                                 ))}
                             </TableRow>
@@ -93,12 +93,18 @@ Datagrid.propTypes = {
     title: PropTypes.string,
     path: PropTypes.string,
     params: PropTypes.object.isRequired,
-    fetchListAction: PropTypes.func.isRequired,
+    ids: PropTypes.array,
     data: PropTypes.object,
+    fetchListAction: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, props) {
-    return { params: state[props.resource].list, data: state[props.resource].data };
+    const resourceState = state[props.resource];
+    return {
+        params: resourceState.list.params,
+        ids: resourceState.list.ids,
+        data: resourceState.data,
+    };
 }
 
 export default connect(
