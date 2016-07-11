@@ -1,6 +1,3 @@
-import { delay } from 'redux-saga';
-import { put, call, cancelled } from 'redux-saga/effects';
-
 export const FETCH_START = 'FETCH_START';
 export const FETCH_END = 'FETCH_END';
 export const FETCH_ERROR = 'FETCH_ERROR';
@@ -41,38 +38,6 @@ export const fetchJson = (url, options = {}) => {
             }
             return { status, headers, body, json };
         });
-};
-
-export const fetchSagaFactory = (actionName) => {
-    return function *handleFetch(action) {
-        let ret;
-        try {
-            yield [
-                put({ ...action, type: `${actionName}_LOADING` }),
-                put({ type: FETCH_START }),
-            ];
-            // FIXME simulate response delay, to be removed
-            yield call(delay, 1000);
-            const { url, options } = action.payload;
-            ret = yield fetchJson(url, options);
-        } catch (error) {
-            yield [
-                put({ ...action, type: `${actionName}_FAILURE`, error }),
-                put({ type: FETCH_ERROR }),
-            ];
-            return;
-        } finally {
-            if (yield cancelled()) {
-                yield put({ type: FETCH_CANCEL });
-                return;
-            }
-        }
-        const { status, headers, body, json } = ret;
-        yield [
-            put({ ...action, type: `${actionName}_SUCCESS`, payload: { status, headers, body, json } }),
-            put({ type: FETCH_END }),
-        ];
-    };
 };
 
 export const queryParameters = (data) => Object.keys(data)

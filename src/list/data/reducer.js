@@ -1,12 +1,12 @@
-import { CRUD_FETCH_LIST_SUCCESS } from './actions';
+import { CRUD_FETCH_SUCCESS, GET_MANY } from '../../data/actions';
 
 export default (resource) => (previousState = [], { type, payload, meta }) => {
-    if (!meta || meta.resource !== resource) {
+    if (!meta || meta.resource !== resource || type !== CRUD_FETCH_SUCCESS) {
         return previousState;
     }
-    switch (type) {
-    case CRUD_FETCH_LIST_SUCCESS:
-        return payload.json.map(r => r.id);
+    switch (payload.method) {
+    case GET_MANY:
+        return payload.data.map(record => record.id);
     default:
         return previousState;
     }

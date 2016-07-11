@@ -1,20 +1,19 @@
-import { CRUD_FETCH_LIST_SUCCESS } from '../list/data/actions';
-import { CRUD_FETCH_RECORD_SUCCESS } from '../detail/actions';
+import { CRUD_FETCH_SUCCESS, GET_MANY, GET_ONE } from './actions';
 
 export default (resource) => (previousState = {}, { type, payload, meta }) => {
-    if (!meta || meta.resource !== resource) {
+    if (!meta || meta.resource !== resource || type !== CRUD_FETCH_SUCCESS) {
         return previousState;
     }
-    switch (type) {
-    case CRUD_FETCH_LIST_SUCCESS: {
+    switch (payload.method) {
+    case GET_MANY: {
         const byId = {};
-        payload.json.forEach(r => {
-            byId[r.id] = r;
+        payload.data.forEach(record => {
+            byId[record.id] = record;
         });
         return byId;
     }
-    case CRUD_FETCH_RECORD_SUCCESS:
-        return { ...previousState, [payload.json.id]: payload.json };
+    case GET_ONE:
+        return { ...previousState, [payload.id]: payload };
     default:
         return previousState;
     }

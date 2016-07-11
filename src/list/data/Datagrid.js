@@ -6,9 +6,8 @@ import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import Pagination from '../pagination/Pagination';
-import { queryParameters } from '../../util/fetch';
-import { fetchList } from './actions';
-import { setSort } from '../sort/actions';
+import { crudFetch as crudFetchAction, GET_MANY } from '../../data/actions';
+import { setSort as setSortAction } from '../sort/actions';
 
 class Datagrid extends Component {
     constructor(props) {
@@ -18,7 +17,7 @@ class Datagrid extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchListAction(this.props.resource, this.getPath(this.props.params));
+        this.props.crudFetch(this.props.resource, GET_MANY, this.props.params);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -26,30 +25,18 @@ class Datagrid extends Component {
          || nextProps.params.sort.order !== this.props.params.sort.order
          || nextProps.params.sort.filter !== this.props.params.sort.filter
          || nextProps.params.pagination.page !== this.props.params.pagination.page) {
-            this.props.fetchListAction(this.props.resource, this.getPath(nextProps.params));
+            this.props.crudFetch(this.props.resource, GET_MANY, nextProps.params);
         }
-    }
-
-    getPath(params) {
-        const { page, perPage } = params.pagination;
-        const query = {
-            sort: JSON.stringify([params.sort.field, params.sort.order]),
-            range: `[${(page - 1) * perPage},${page * perPage - 1}]`,
-        };
-        if (params.filter) {
-            query._filter = params.filter;
-        }
-        return `${this.props.path}?${queryParameters(query)}`;
     }
 
     refresh(event) {
         event.stopPropagation();
-        this.props.fetchListAction(this.props.resource, this.getPath(this.props.params));
+        this.props.crudFetch(this.props.resource, GET_MANY, this.props.params);
     }
 
     updateSort(event) {
         event.stopPropagation();
-        this.props.setSortAction(this.props.resource, event.currentTarget.dataset.sort);
+        this.props.setSort(this.props.resource, event.currentTarget.dataset.sort);
     }
 
     render() {
@@ -95,7 +82,8 @@ Datagrid.propTypes = {
     params: PropTypes.object.isRequired,
     ids: PropTypes.array,
     data: PropTypes.object,
-    fetchListAction: PropTypes.func.isRequired,
+    crudFetch: PropTypes.func.isRequired,
+    setSort: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, props) {
@@ -109,5 +97,5 @@ function mapStateToProps(state, props) {
 
 export default connect(
   mapStateToProps,
-  { fetchListAction: fetchList, setSortAction: setSort },
+  { crudFetch: crudFetchAction, setSort: setSortAction },
 )(Datagrid);

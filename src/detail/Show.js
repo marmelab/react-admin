@@ -5,21 +5,17 @@ import { Card, CardTitle, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import { List, ListItem } from 'material-ui/List';
 import ActionList from 'material-ui/svg-icons/action/list';
-import { fetchRecord } from './actions';
+import { crudFetch as crudFetchAction, GET_ONE } from '../data/actions';
 
 class Detail extends Component {
     componentDidMount() {
-        this.props.fetchRecordAction(this.props.resource, this.getPath(this.props.id));
+        this.props.crudFetch(this.props.resource, GET_ONE, { id: this.props.id });
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.id !== nextProps.id) {
-            this.props.fetchRecordAction(nextProps.resource, this.getPath(nextProps.id));
+            this.props.crudFetch(nextProps.resource, GET_ONE, { id: nextProps.id });
         }
-    }
-
-    getPath(id) {
-        return `${this.props.path}/${id}`;
     }
 
     getListLink() {
@@ -53,8 +49,8 @@ Detail.PropTypes = {
     resource: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
     params: PropTypes.object.isRequired,
-    path: PropTypes.string.isRequired,
     data: PropTypes.object,
+    crudFetch: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, props) {
@@ -66,5 +62,5 @@ function mapStateToProps(state, props) {
 
 export default connect(
     mapStateToProps,
-    { fetchRecordAction: fetchRecord },
+    { crudFetch: crudFetchAction },
 )(Detail);
