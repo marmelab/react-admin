@@ -8,7 +8,7 @@ const ActionColumn = ({ record }) => (
 )
 
 const PostList = (props) => (
-    <Datagrid title="All posts" view="list" { ...props }>
+    <Datagrid title="All posts" { ...props }>
         <Column label="id" source="id"/>
         <Column label="title" source="title"/>
         <Column label="published_at" source="published_at"/>

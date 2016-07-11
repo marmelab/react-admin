@@ -3,7 +3,7 @@ import Column from '../../../src/list/column/Column';
 import Show from '../../../src/detail/Show';
 
 const PostShow = (props) => (
-    <Show title="Post detail" view="show" {...props}>
+    <Show title="Post detail" {...props}>
         <Column label="id" source="id"/>
         <Column label="title" source="title"/>
         <Column label="published_at" source="published_at"/>
