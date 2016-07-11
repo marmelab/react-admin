@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import { Card, CardTitle, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import { List, ListItem } from 'material-ui/List';
+import ActionList from 'material-ui/svg-icons/action/list';
 import { fetchRecord } from './actions';
 
 class Detail extends Component {
@@ -21,12 +22,17 @@ class Detail extends Component {
         return `${this.props.path}/${id}`;
     }
 
+    getListLink() {
+        const { location } = this.props;
+        return location.pathname.split('/').slice(0, -1).join('/');
+    }
+
     render() {
         const { title, children, data } = this.props;
         return (
             <Card style={{margin: '2em'}}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    <FlatButton label="List" containerElement={<Link to="/" />}  />
+                    <FlatButton label="List" icon={<ActionList />} containerElement={<Link to={this.getListLink()} />}  />
                 </CardActions>
                 <CardTitle title={title} />
                 <List>
@@ -45,6 +51,7 @@ Detail.PropTypes = {
     title: PropTypes.string,
     id: PropTypes.string.isRequired,
     resource: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
     params: PropTypes.object.isRequired,
     path: PropTypes.string.isRequired,
     data: PropTypes.object,
