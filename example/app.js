@@ -20,8 +20,6 @@ import CommentEdit from './components/comments/CommentEdit';
 import CommentCreate from './components/comments/CommentCreate';
 import Layout from './components/Layout';
 
-window.React = React;
-
 const restServer = new FakeRest.FetchServer('http://localhost:3000');
 restServer.init(data);
 restServer.toggleLogging(); // logging is off by default, enable it
