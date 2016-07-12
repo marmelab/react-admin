@@ -62,12 +62,13 @@ const convertResponse = (resource, type, response) => {
 };
 
 function *handleFetch(action) {
-    const { type, payload, meta: { resource } } = action;
+    const { type, payload, meta } = action;
+    delete meta.fetch;
     yield [
-        put({ ...action, type: `${type}_LOADING`, meta: { resource } }),
+        put({ type: `${type}_LOADING`, payload, meta }),
         put({ type: FETCH_START }),
     ];
-    const { url, options } = buildHttpRequest(resource, type, payload);
+    const { url, options } = buildHttpRequest(meta.resource, type, payload);
     let response;
     try {
         // simulate response delay
@@ -75,7 +76,7 @@ function *handleFetch(action) {
         response = yield fetchJson(url, options);
     } catch (error) {
         yield [
-            put({ ...action, type: `${type}_FAILURE`, error, meta: { resource } }),
+            put({ type: `${type}_FAILURE`, error, meta }),
             put({ type: FETCH_ERROR }),
         ];
         return;
@@ -86,10 +87,10 @@ function *handleFetch(action) {
         }
     }
     yield [
-        put({ ...action, type: `${type}_SUCCESS`, payload: convertResponse(resource, type, response), meta: { resource } }),
+        put({ type: `${type}_SUCCESS`, payload: convertResponse(meta.resource, type, response), meta }),
         put({ type: FETCH_END }),
     ];
-};
+}
 
 function *watchCrudFetch() {
     yield* takeLatest(action => action.meta && action.meta.fetch, handleFetch);

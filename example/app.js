@@ -14,9 +14,9 @@ import fetchMock from 'fetch-mock';
 import data from './data';
 import CrudRoute from '../src/crud/CrudRoute';
 import PostList from './components/posts/PostList';
-import PostShow from './components/posts/PostShow';
+import PostEdit from './components/posts/PostEdit';
 import CommentList from './components/comments/CommentList';
-import CommentShow from './components/comments/CommentShow';
+import CommentEdit from './components/comments/CommentEdit';
 import Layout from './components/Layout';
 
 var restServer = new FakeRest.FetchServer('http://localhost:3000');
@@ -38,8 +38,8 @@ render(
     <Router history={history}>
         <Redirect from="/" to="/posts" />
         <Route path="/" component={Layout}>
-            <CrudRoute path="posts" list={PostList} show={PostShow} />
-            <CrudRoute path="comments" list={CommentList} show={CommentShow} />
+            <CrudRoute path="posts" list={PostList} edit={PostEdit} />
+            <CrudRoute path="comments" list={CommentList} edit={CommentEdit} />
         </Route>
     </Router>
   </Provider>,

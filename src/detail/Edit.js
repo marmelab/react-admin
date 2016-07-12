@@ -8,7 +8,7 @@ import ActionList from 'material-ui/svg-icons/action/list';
 import ContentSave from 'material-ui/svg-icons/content/save';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../data/actions';
 
-class Detail extends Component {
+class Edit extends Component {
     constructor(props) {
         super(props);
         this.setState({ record: props.data });
@@ -72,7 +72,7 @@ class Detail extends Component {
     }
 }
 
-Detail.propTypes = {
+Edit.propTypes = {
     title: PropTypes.string,
     id: PropTypes.string.isRequired,
     resource: PropTypes.string.isRequired,
@@ -93,4 +93,4 @@ function mapStateToProps(state, props) {
 export default connect(
     mapStateToProps,
     { crudGetOne: crudGetOneAction, crudUpdate: crudUpdateAction },
-)(Detail);
+)(Edit);
