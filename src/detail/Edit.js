@@ -1,17 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import { Card, CardTitle, CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import ActionList from 'material-ui/svg-icons/action/list';
-import ContentSave from 'material-ui/svg-icons/content/save';
+import ListButton from '../button/ListButton';
+import SaveButton from '../button/SaveButton';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../data/actions';
 
 class Edit extends Component {
     constructor(props) {
         super(props);
-        this.setState({ record: props.data });
+        this.state = { record: props.data };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -27,7 +25,7 @@ class Edit extends Component {
         }
     }
 
-    getListLink() {
+    getBasePath() {
         const { location } = this.props;
         return location.pathname.split('/').slice(0, -1).join('/');
     }
@@ -44,9 +42,9 @@ class Edit extends Component {
     render() {
         const { title, children, data } = this.props;
         return (
-            <Card style={{margin: '2em'}}>
+            <Card style={{ margin: '2em' }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    <FlatButton label="List" icon={<ActionList />} containerElement={<Link to={this.getListLink()} />}  />
+                    <ListButton basePath={this.getBasePath()} />
                 </CardActions>
                 <CardTitle title={title} />
                 <form onSubmit={this.handleSubmit}>
@@ -54,7 +52,7 @@ class Edit extends Component {
                     {this.state ?
                         React.Children.map(children, input => (
                             <div key={input.props.source}>
-                            <input.type { ...input.props } record={this.state.record} onChange={this.handleChange} />
+                            <input.type {...input.props} record={this.state.record} onChange={this.handleChange} />
                             </div>
                         ))
                         :
@@ -63,7 +61,7 @@ class Edit extends Component {
                     </div>
                     <Toolbar>
                         <ToolbarGroup>
-                            <FlatButton type="submit" label="Save" icon={<ContentSave />} />
+                            <SaveButton />
                         </ToolbarGroup>
                     </Toolbar>
                 </form>
@@ -76,7 +74,7 @@ Edit.propTypes = {
     title: PropTypes.string,
     id: PropTypes.string.isRequired,
     resource: PropTypes.string.isRequired,
-    location: PropTypes.string.isRequired,
+    location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
     data: PropTypes.object,
     crudGetOne: PropTypes.func.isRequired,

@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import { Card, CardTitle, CardActions } from 'material-ui/Card';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
-import ContentAdd from 'material-ui/svg-icons/content/add';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import Pagination from '../pagination/Pagination';
+import CreateButton from '../../button/CreateButton';
 import { crudGetList as crudGetListAction } from '../../data/actions';
 import { setSort as setSortAction } from '../sort/actions';
 
@@ -31,8 +30,8 @@ class Datagrid extends Component {
         }
     }
 
-    getCreateLink() {
-        return `${this.props.location.pathname}/create`;
+    getBasePath() {
+        return this.props.location.pathname;
     }
 
     refresh(event) {
@@ -51,7 +50,7 @@ class Datagrid extends Component {
             <Card style={{ margin: '2em' }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     <FlatButton label="Refresh" onClick={this.refresh} icon={<NavigationRefresh />} />
-                    <FlatButton label="Create" containerElement={<Link to={this.getCreateLink()} />} icon={<ContentAdd />} />
+                    <CreateButton basePath={this.getBasePath()} />
                 </CardActions>
                 <CardTitle title={title} />
                 <Table multiSelectable>
@@ -83,8 +82,9 @@ class Datagrid extends Component {
 }
 
 Datagrid.propTypes = {
-    resource: PropTypes.string.isRequired,
     title: PropTypes.string,
+    resource: PropTypes.string.isRequired,
+    location: PropTypes.object.isRequired,
     path: PropTypes.string,
     params: PropTypes.object.isRequired,
     ids: PropTypes.array,

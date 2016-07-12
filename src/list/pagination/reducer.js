@@ -1,5 +1,5 @@
 import { CRUD_NEXT_PAGE, CRUD_PREV_PAGE, CRUD_GOTO_PAGE } from './actions';
-import { CRUD_FETCH_SUCCESS, GET_MANY } from '../../data/actions';
+import { CRUD_GET_LIST_SUCCESS } from '../../data/actions';
 import { CRUD_SET_SORT } from '../sort/actions';
 
 const initialState = {
@@ -14,8 +14,8 @@ export default (resource) => (previousState = initialState, { type, payload, met
     }
     const nbPages = Math.ceil(previousState.total / previousState.perPage) || 1;
     switch (type) {
-    case CRUD_FETCH_SUCCESS:
-        return payload.method === GET_MANY ? { ...previousState, total: payload.total } : previousState;
+    case CRUD_GET_LIST_SUCCESS:
+        return { ...previousState, total: payload.total };
     case CRUD_SET_SORT:
         return { ...previousState, page: 1 };
     case CRUD_NEXT_PAGE:

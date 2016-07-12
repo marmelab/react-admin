@@ -1,11 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import { Card, CardTitle, CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import ActionList from 'material-ui/svg-icons/action/list';
-import ContentSave from 'material-ui/svg-icons/content/save';
+import ListButton from '../button/ListButton';
+import SaveButton from '../button/SaveButton';
 import { crudCreate as crudCreateAction } from '../data/actions';
 
 class Create extends Component {
@@ -20,7 +18,7 @@ class Create extends Component {
         this.setState({ record: nextProps.data }); // FIXME: erases user entry when fetch response arrives late
     }
 
-    getListLink() {
+    getBasePath() {
         const { location } = this.props;
         return location.pathname.split('/').slice(0, -1).join('/');
     }
@@ -37,9 +35,9 @@ class Create extends Component {
     render() {
         const { title, children, data } = this.props;
         return (
-            <Card style={{margin: '2em'}}>
+            <Card style={{ margin: '2em' }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    <FlatButton label="List" icon={<ActionList />} containerElement={<Link to={this.getListLink()} />}  />
+                    <ListButton basePath={this.getBasePath()} />
                 </CardActions>
                 <CardTitle title={title} />
                 <form onSubmit={this.handleSubmit}>
@@ -47,7 +45,7 @@ class Create extends Component {
                     {this.state ?
                         React.Children.map(children, input => (
                             <div key={input.props.source}>
-                            <input.type { ...input.props } record={this.state.record} onChange={this.handleChange} />
+                            <input.type {...input.props} record={this.state.record} onChange={this.handleChange} />
                             </div>
                         ))
                         :
@@ -56,7 +54,7 @@ class Create extends Component {
                     </div>
                     <Toolbar>
                         <ToolbarGroup>
-                            <FlatButton type="submit" label="Save" icon={<ContentSave />} />
+                            <SaveButton />
                         </ToolbarGroup>
                     </Toolbar>
                 </form>
@@ -68,7 +66,7 @@ class Create extends Component {
 Create.propTypes = {
     title: PropTypes.string,
     resource: PropTypes.string.isRequired,
-    location: PropTypes.string.isRequired,
+    location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
     crudCreate: PropTypes.func.isRequired,
 };

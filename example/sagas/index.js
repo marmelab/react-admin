@@ -40,19 +40,29 @@ const buildHttpRequest = (resource, type, payload) => {
         options.method = 'PUT';
         options.body = JSON.stringify(payload.data);
         break;
+    case CRUD_CREATE:
+        url = `${root}/${resource}`;
+        options.method = 'POST';
+        options.body = JSON.stringify(payload.data);
+        break;
     default:
         throw new Error(`Unsupported fetch action type ${type}`);
     }
     return { url, options };
 };
 
-const convertResponse = (resource, type, response) => {
+const convertResponse = (resource, type, response, payload) => {
     const { headers, json } = response;
     switch (type) {
     case CRUD_GET_LIST:
         return {
             data: json.map(x => x),
             total: parseInt(headers['content-range'].split('/').pop(), 10),
+        };
+    case CRUD_CREATE:
+        return {
+            id: json.id,
+            data: payload.data,
         };
     default:
         return {
@@ -87,7 +97,7 @@ function *handleFetch(action) {
         }
     }
     yield [
-        put({ type: `${type}_SUCCESS`, payload: convertResponse(meta.resource, type, response), meta }),
+        put({ type: `${type}_SUCCESS`, payload: convertResponse(meta.resource, type, response, payload), meta }),
         put({ type: FETCH_END }),
     ];
 }
