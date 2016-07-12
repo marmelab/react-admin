@@ -3,14 +3,17 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router'
 import { Card, CardTitle, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import ActionList from 'material-ui/svg-icons/action/list';
-import { crudFetch as crudFetchAction, GET_ONE } from '../data/actions';
+import ContentSave from 'material-ui/svg-icons/content/save';
+import { crudFetch as crudFetchAction, GET_ONE, UPDATE } from '../data/actions';
 
 class Detail extends Component {
     constructor(props) {
         super(props);
-        this.state = props.data;
+        this.setState({ record: props.data });
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -18,7 +21,7 @@ class Detail extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.state = nextProps.data; // FIXME: erases user entry when fetch response arrives late
+        this.setState({ record: nextProps.data }); // FIXME: erases user entry when fetch response arrives late
         if (this.props.id !== nextProps.id) {
             this.props.crudFetch(nextProps.resource, GET_ONE, { id: nextProps.id });
         }
@@ -30,7 +33,12 @@ class Detail extends Component {
     }
 
     handleChange(event) {
-        this.setState({ [event.currentTarget.dataset.key]: event.target.value })
+        this.setState({ record: { ...this.state.record, [event.currentTarget.dataset.key]: event.target.value } });
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        this.props.crudFetch(this.props.resource, UPDATE, { id: this.props.id, data: this.state.record });
     }
 
     render() {
@@ -41,17 +49,24 @@ class Detail extends Component {
                     <FlatButton label="List" icon={<ActionList />} containerElement={<Link to={this.getListLink()} />}  />
                 </CardActions>
                 <CardTitle title={title} />
-                <div style={{ padding: '0 1em' }}>
+                <form onSubmit={this.handleSubmit}>
+                    <div style={{ padding: '0 1em 1em 1em' }}>
                     {this.state ?
                         React.Children.map(children, input => (
                             <div key={input.props.source}>
-                            <input.type { ...input.props } record={this.state} onChange={this.handleChange} />
+                            <input.type { ...input.props } record={this.state.record} onChange={this.handleChange} />
                             </div>
                         ))
                         :
                         ''
                     }
-                </div>
+                    </div>
+                    <Toolbar>
+                        <ToolbarGroup>
+                            <FlatButton type="submit" label="Save" icon={<ContentSave />} />
+                        </ToolbarGroup>
+                    </Toolbar>
+                </form>
             </Card>
         );
     }

@@ -22,7 +22,9 @@ import {
 
 const root = 'http://localhost:3000';
 
-const buildUrl = (resource, method, params) => {
+const buildHttpRequest = (resource, method, params) => {
+    let url = '';
+    const options = {};
     switch (method) {
     case GET_MANY: {
         const { page, perPage } = params.pagination;
@@ -31,13 +33,21 @@ const buildUrl = (resource, method, params) => {
             sort: JSON.stringify([field, order]),
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
         };
-        return `${root}/${resource}?${queryParameters(query)}`;
+        url = `${root}/${resource}?${queryParameters(query)}`;
+        break;
     }
     case GET_ONE:
-        return `${root}/${resource}/${params.id}`;
+        url = `${root}/${resource}/${params.id}`;
+        break;
+    case UPDATE:
+        url = `${root}/${resource}/${params.id}`;
+        options.method = 'PUT';
+        options.body = JSON.stringify(params.data);
+        break;
     default:
         throw new Error(`Unsupported fetch method ${method}`);
     }
+    return { url, options };
 };
 
 const convertResponse = (resource, method, response) => {
@@ -49,9 +59,15 @@ const convertResponse = (resource, method, response) => {
             total: parseInt(headers['content-range'].split('/').pop(), 10),
         };
     case GET_ONE:
-        return json;
+        return {
+            data: json,
+        };
+    case UPDATE:
+        return {
+            data: json,
+        };
     default:
-        throw new Error(`Unsupported action type ${type}`);
+        throw new Error(`Unsupported action method ${method}`);
     }
 };
 
@@ -62,12 +78,12 @@ function *handleFetch(action) {
         put({ ...action, type: CRUD_FETCH_LOADING }),
         put({ type: FETCH_START }),
     ];
-    const url = buildUrl(resource, method, params);
+    const { url, options } = buildHttpRequest(resource, method, params);
     let response;
     try {
         // simulate response delay
         yield call(delay, 1000);
-        response = yield fetchJson(url);
+        response = yield fetchJson(url, options);
     } catch (error) {
         yield [
             put({ ...action, type: CRUD_FETCH_FAILURE, error }),
