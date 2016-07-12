@@ -14,8 +14,8 @@ const Layout = ({ isLoading, children }) => (
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <Paper style={{ flexBasis: '15em' }}>
                     <List>
-                        <ListItem href="#/posts/" primaryText="Posts"/>
-                        <ListItem href="#/comments/" primaryText="Comments"/>
+                        <ListItem containerElement={<Link to="/posts" />} primaryText="Posts"/>
+                        <ListItem containerElement={<Link to="/comments" />} primaryText="Comments"/>
                     </List>
                 </Paper>
                 <div style={{ flex: 1 }}>{children}</div>

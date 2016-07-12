@@ -15,8 +15,10 @@ import data from './data';
 import CrudRoute from '../src/crud/CrudRoute';
 import PostList from './components/posts/PostList';
 import PostEdit from './components/posts/PostEdit';
+import PostCreate from './components/posts/PostCreate';
 import CommentList from './components/comments/CommentList';
 import CommentEdit from './components/comments/CommentEdit';
+import CommentCreate from './components/comments/CommentCreate';
 import Layout from './components/Layout';
 
 var restServer = new FakeRest.FetchServer('http://localhost:3000');
@@ -38,8 +40,8 @@ render(
     <Router history={history}>
         <Redirect from="/" to="/posts" />
         <Route path="/" component={Layout}>
-            <CrudRoute path="posts" list={PostList} edit={PostEdit} />
-            <CrudRoute path="comments" list={CommentList} edit={CommentEdit} />
+            <CrudRoute path="posts" list={PostList} edit={PostEdit} create={PostCreate} />
+            <CrudRoute path="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} />
         </Route>
     </Router>
   </Provider>,
