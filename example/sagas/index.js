@@ -9,26 +9,22 @@ import {
     FETCH_CANCEL,
 } from '../../src/util/fetch';
 import {
-    CRUD_FETCH,
-    CRUD_FETCH_LOADING,
-    CRUD_FETCH_SUCCESS,
-    CRUD_FETCH_FAILURE,
-    GET_MANY,
-    GET_ONE,
-    CREATE,
-    UPDATE,
-    DELETE,
+    CRUD_GET_LIST,
+    CRUD_GET_ONE,
+    CRUD_CREATE,
+    CRUD_UPDATE,
+    CRUD_DELETE,
 } from '../../src/data/actions';
 
 const root = 'http://localhost:3000';
 
-const buildHttpRequest = (resource, method, params) => {
+const buildHttpRequest = (resource, type, payload) => {
     let url = '';
     const options = {};
-    switch (method) {
-    case GET_MANY: {
-        const { page, perPage } = params.pagination;
-        const { field, order } = params.sort;
+    switch (type) {
+    case CRUD_GET_LIST: {
+        const { page, perPage } = payload.pagination;
+        const { field, order } = payload.sort;
         const query = {
             sort: JSON.stringify([field, order]),
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
@@ -36,49 +32,42 @@ const buildHttpRequest = (resource, method, params) => {
         url = `${root}/${resource}?${queryParameters(query)}`;
         break;
     }
-    case GET_ONE:
-        url = `${root}/${resource}/${params.id}`;
+    case CRUD_GET_ONE:
+        url = `${root}/${resource}/${payload.id}`;
         break;
-    case UPDATE:
-        url = `${root}/${resource}/${params.id}`;
+    case CRUD_UPDATE:
+        url = `${root}/${resource}/${payload.id}`;
         options.method = 'PUT';
-        options.body = JSON.stringify(params.data);
+        options.body = JSON.stringify(payload.data);
         break;
     default:
-        throw new Error(`Unsupported fetch method ${method}`);
+        throw new Error(`Unsupported fetch action type ${type}`);
     }
     return { url, options };
 };
 
-const convertResponse = (resource, method, response) => {
-    const { status, headers, body, json } = response;
-    switch (method) {
-    case GET_MANY:
+const convertResponse = (resource, type, response) => {
+    const { headers, json } = response;
+    switch (type) {
+    case CRUD_GET_LIST:
         return {
             data: json.map(x => x),
             total: parseInt(headers['content-range'].split('/').pop(), 10),
         };
-    case GET_ONE:
-        return {
-            data: json,
-        };
-    case UPDATE:
-        return {
-            data: json,
-        };
     default:
-        throw new Error(`Unsupported action method ${method}`);
+        return {
+            data: json,
+        };
     }
 };
 
 function *handleFetch(action) {
-    const { method, params } = action.payload;
-    const { resource } = action.meta;
+    const { type, payload, meta: { resource } } = action;
     yield [
-        put({ ...action, type: CRUD_FETCH_LOADING }),
+        put({ ...action, type: `${type}_LOADING`, meta: { resource } }),
         put({ type: FETCH_START }),
     ];
-    const { url, options } = buildHttpRequest(resource, method, params);
+    const { url, options } = buildHttpRequest(resource, type, payload);
     let response;
     try {
         // simulate response delay
@@ -86,7 +75,7 @@ function *handleFetch(action) {
         response = yield fetchJson(url, options);
     } catch (error) {
         yield [
-            put({ ...action, type: CRUD_FETCH_FAILURE, error }),
+            put({ ...action, type: `${type}_FAILURE`, error, meta: { resource } }),
             put({ type: FETCH_ERROR }),
         ];
         return;
@@ -97,13 +86,13 @@ function *handleFetch(action) {
         }
     }
     yield [
-        put({ ...action, type: CRUD_FETCH_SUCCESS, payload: { method, ...convertResponse(resource, method, response) } }),
+        put({ ...action, type: `${type}_SUCCESS`, payload: convertResponse(resource, type, response), meta: { resource } }),
         put({ type: FETCH_END }),
     ];
 };
 
 function *watchCrudFetch() {
-    yield* takeLatest(CRUD_FETCH, handleFetch);
+    yield* takeLatest(action => action.meta && action.meta.fetch, handleFetch);
 }
 
 export default watchCrudFetch;

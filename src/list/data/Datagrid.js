@@ -6,7 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import Pagination from '../pagination/Pagination';
-import { crudFetch as crudFetchAction, GET_MANY } from '../../data/actions';
+import { crudGetList as crudGetListAction } from '../../data/actions';
 import { setSort as setSortAction } from '../sort/actions';
 
 class Datagrid extends Component {
@@ -17,21 +17,21 @@ class Datagrid extends Component {
     }
 
     componentDidMount() {
-        this.props.crudFetch(this.props.resource, GET_MANY, this.props.params);
+        this.props.crudGetList(this.props.resource, this.props.params.pagination, this.props.params.sort);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.params.sort.field !== this.props.params.sort.field
+        if (nextProps.resource !== this.props.resource
+         || nextProps.params.sort.field !== this.props.params.sort.field
          || nextProps.params.sort.order !== this.props.params.sort.order
-         || nextProps.params.sort.filter !== this.props.params.sort.filter
          || nextProps.params.pagination.page !== this.props.params.pagination.page) {
-            this.props.crudFetch(this.props.resource, GET_MANY, nextProps.params);
+            this.props.crudGetList(nextProps.resource, nextProps.params.pagination, nextProps.params.sort);
         }
     }
 
     refresh(event) {
         event.stopPropagation();
-        this.props.crudFetch(this.props.resource, GET_MANY, this.props.params);
+        this.props.crudGetList(this.props.resource, this.props.params.pagination, this.props.params.sort);
     }
 
     updateSort(event) {
@@ -42,9 +42,9 @@ class Datagrid extends Component {
     render() {
         const { resource, title, data, ids, children, params } = this.props;
         return (
-            <Card style={{margin: '2em'}}>
+            <Card style={{ margin: '2em' }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    <FlatButton label="Refresh" onClick={this.refresh} icon={<NavigationRefresh/>} />
+                    <FlatButton label="Refresh" onClick={this.refresh} icon={<NavigationRefresh />} />
                 </CardActions>
                 <CardTitle title={title} />
                 <Table multiSelectable>
@@ -52,7 +52,7 @@ class Datagrid extends Component {
                         <TableRow>
                             {React.Children.map(children, child => (
                                 <TableHeaderColumn key={child.props.label}>
-                                    <FlatButton labelPosition="before" onClick={this.updateSort} data-sort={child.props.source} label={child.props.label} icon={child.props.source == params.sort.field ? <ContentSort style={{ height:'78px', color: 'red', transform: 'rotate(180deg)' }}/> : false} />
+                                    <FlatButton labelPosition="before" onClick={this.updateSort} data-sort={child.props.source} label={child.props.label} icon={child.props.source == params.sort.field ? <ContentSort style={{ height: '78px', color: 'red', transform: 'rotate(180deg)' }} /> : false} />
                                 </TableHeaderColumn>
                             ))}
                         </TableRow>
@@ -62,7 +62,7 @@ class Datagrid extends Component {
                             <TableRow key={id}>
                                 {React.Children.map(children, column => (
                                     <TableRowColumn key={`${id}-${column.props.source}`}>
-                                        <column.type { ...column.props } record={data[id]} />
+                                        <column.type {...column.props} record={data[id]} />
                                     </TableRowColumn>
                                 ))}
                             </TableRow>
@@ -82,7 +82,7 @@ Datagrid.propTypes = {
     params: PropTypes.object.isRequired,
     ids: PropTypes.array,
     data: PropTypes.object,
-    crudFetch: PropTypes.func.isRequired,
+    crudGetList: PropTypes.func.isRequired,
     setSort: PropTypes.func.isRequired,
 };
 
@@ -97,5 +97,5 @@ function mapStateToProps(state, props) {
 
 export default connect(
   mapStateToProps,
-  { crudFetch: crudFetchAction, setSort: setSortAction },
+  { crudGetList: crudGetListAction, setSort: setSortAction },
 )(Datagrid);

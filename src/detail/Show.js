@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router'
+import { Link } from 'react-router';
 import { Card, CardTitle, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import ActionList from 'material-ui/svg-icons/action/list';
 import ContentSave from 'material-ui/svg-icons/content/save';
-import { crudFetch as crudFetchAction, GET_ONE, UPDATE } from '../data/actions';
+import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../data/actions';
 
 class Detail extends Component {
     constructor(props) {
@@ -17,13 +17,13 @@ class Detail extends Component {
     }
 
     componentDidMount() {
-        this.props.crudFetch(this.props.resource, GET_ONE, { id: this.props.id });
+        this.props.crudGetOne(this.props.resource, this.props.id);
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({ record: nextProps.data }); // FIXME: erases user entry when fetch response arrives late
         if (this.props.id !== nextProps.id) {
-            this.props.crudFetch(nextProps.resource, GET_ONE, { id: nextProps.id });
+            this.props.crudGetOne(nextProps.resource, nextProps.id);
         }
     }
 
@@ -38,7 +38,7 @@ class Detail extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.crudFetch(this.props.resource, UPDATE, { id: this.props.id, data: this.state.record });
+        this.props.crudUpdate(this.props.resource, this.props.id, this.state.record);
     }
 
     render() {
@@ -72,14 +72,15 @@ class Detail extends Component {
     }
 }
 
-Detail.PropTypes = {
+Detail.propTypes = {
     title: PropTypes.string,
     id: PropTypes.string.isRequired,
     resource: PropTypes.string.isRequired,
     location: PropTypes.string.isRequired,
     params: PropTypes.object.isRequired,
     data: PropTypes.object,
-    crudFetch: PropTypes.func.isRequired,
+    crudGetOne: PropTypes.func.isRequired,
+    crudUpdate: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, props) {
@@ -91,5 +92,5 @@ function mapStateToProps(state, props) {
 
 export default connect(
     mapStateToProps,
-    { crudFetch: crudFetchAction },
+    { crudGetOne: crudGetOneAction, crudUpdate: crudUpdateAction },
 )(Detail);
