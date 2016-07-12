@@ -1,13 +1,15 @@
 import React from 'react';
 import Show from '../../../src/detail/Show';
-import TextField from '../../../src/field/TextField';
+import DisabledInput from '../../../src/input/DisabledInput';
+import TextInput from '../../../src/input/TextInput';
+import LongTextInput from '../../../src/input/LongTextInput';
 
 const CommentShow = (props) => (
     <Show title="Comment detail" {...props}>
-        <TextField label="id" source="id"/>
-        <TextField label="post_id" source="post_id"/>
-        <TextField label="date" source="created_at"/>
-        <TextField label="body" source="body"/>
+        <DisabledInput label="id" source="id"/>
+        <TextInput label="post_id" source="post_id"/>
+        <TextInput label="date" source="created_at"/>
+        <LongTextInput label="body" source="body"/>
     </Show>
 );
 

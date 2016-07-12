@@ -1,8 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const TextField = ({ source, record = {} }) => (
-    <span>{record[source]}</span>
-);
+const TextField = ({ source, record = {} }) => <span>{record[source]}</span>;
 
 TextField.propTypes = {
     source: PropTypes.string.isRequired,
