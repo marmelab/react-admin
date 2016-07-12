@@ -8,7 +8,7 @@ const LongTextInput = ({ source, label, record = {}, options = {}, onChange }) =
     onChange={onChange}
     multiLine
     fullWidth
-    { ...options }
+    {...options}
 />;
 
 LongTextInput.propTypes = {

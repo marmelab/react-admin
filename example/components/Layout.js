@@ -10,12 +10,12 @@ import { Link } from 'react-router';
 const Layout = ({ isLoading, children }) => (
     <MuiThemeProvider>
         <div>
-            <AppBar title="React Admin" iconElementRight={isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span/>}/>
+            <AppBar title="React Admin" iconElementRight={isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span />} />
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <Paper style={{ flexBasis: '15em' }}>
                     <List>
-                        <ListItem containerElement={<Link to="/posts" />} primaryText="Posts"/>
-                        <ListItem containerElement={<Link to="/comments" />} primaryText="Comments"/>
+                        <ListItem containerElement={<Link to="/posts" />} primaryText="Posts" />
+                        <ListItem containerElement={<Link to="/comments" />} primaryText="Comments" />
                     </List>
                 </Paper>
                 <div style={{ flex: 1 }}>{children}</div>

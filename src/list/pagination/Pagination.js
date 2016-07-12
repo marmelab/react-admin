@@ -80,7 +80,7 @@ export class Pagination extends Component {
         const nbPages = Math.ceil(total / perPage) || 1;
 
         return (
-          <Toolbar>
+            <Toolbar>
                 <ToolbarGroup firstChild>
                     <span style={{ padding: '1.2em' }} >{offsetBegin}-{offsetEnd} of {total}</span>
                 </ToolbarGroup>

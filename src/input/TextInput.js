@@ -6,7 +6,7 @@ const TextInput = ({ source, label, record = {}, options = {}, onChange }) => (<
     data-key={source}
     value={record[source]}
     onChange={onChange}
-    { ...options }
+    {...options}
 />);
 
 TextInput.propTypes = {

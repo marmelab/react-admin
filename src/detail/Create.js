@@ -45,7 +45,7 @@ class Create extends Component {
                     {this.state ?
                         React.Children.map(children, input => (
                             <div key={input.props.source}>
-                            <input.type {...input.props} record={this.state.record} onChange={this.handleChange} />
+                                <input.type {...input.props} record={this.state.record} onChange={this.handleChange} />
                             </div>
                         ))
                         :

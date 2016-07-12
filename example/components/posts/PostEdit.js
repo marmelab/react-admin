@@ -6,13 +6,13 @@ import LongTextInput from '../../../src/input/LongTextInput';
 
 const PostEdit = (props) => (
     <Edit title="Post detail" {...props}>
-        <DisabledInput label="Id" source="id"/>
-        <TextInput label="Title" source="title"/>
-        <TextInput label="Teaser" source="teaser" options={{multiLine: true}}/>
-        <LongTextInput label="Body" source="body"/>
-        <TextInput label="Publication date" source="published_at"/>
-        <TextInput label="Average note" source="average_note"/>
-        <DisabledInput label="Nb views" source="views"/>
+        <DisabledInput label="Id" source="id" />
+        <TextInput label="Title" source="title" />
+        <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
+        <LongTextInput label="Body" source="body" />
+        <TextInput label="Publication date" source="published_at" />
+        <TextInput label="Average note" source="average_note" />
+        <DisabledInput label="Nb views" source="views" />
     </Edit>
 );
 
