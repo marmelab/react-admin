@@ -1,13 +1,13 @@
 import React from 'react';
 import Show from '../../../src/detail/Show';
-import Column from '../../../src/list/column/Column';
+import TextField from '../../../src/field/TextField';
 
 const CommentShow = (props) => (
     <Show title="Comment detail" {...props}>
-    <Column label="id" source="id"/>
-    <Column label="post_id" source="post_id"/>
-    <Column label="date" source="created_at"/>
-    <Column label="body" source="body"/>
+        <TextField label="id" source="id"/>
+        <TextField label="post_id" source="post_id"/>
+        <TextField label="date" source="created_at"/>
+        <TextField label="body" source="body"/>
     </Show>
 );
 

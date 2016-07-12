@@ -1,20 +1,20 @@
 import React from 'react';
 import Datagrid from '../../../src/list/data/Datagrid';
-import Column from '../../../src/list/column/Column';
+import TextField from '../../../src/field/TextField';
 
 import { Link } from 'react-router'
-const ActionColumn = ({ record }) => (
+const ActionField = ({ record }) => (
     <Link to={`/posts/${record.id}`}>View detail</Link>
 )
 
 const PostList = (props) => (
     <Datagrid title="All posts" { ...props }>
-        <Column label="id" source="id"/>
-        <Column label="title" source="title"/>
-        <Column label="published_at" source="published_at"/>
-        <Column label="average_note" source="average_note"/>
-        <Column label="views" source="views"/>
-        <ActionColumn />
+        <TextField label="id" source="id"/>
+        <TextField label="title" source="title"/>
+        <TextField label="published_at" source="published_at"/>
+        <TextField label="average_note" source="average_note"/>
+        <TextField label="views" source="views"/>
+        <ActionField />
     </Datagrid>
 );
 

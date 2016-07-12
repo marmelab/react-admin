@@ -12,7 +12,7 @@ const Layout = ({ isLoading, children }) => (
         <div>
             <AppBar title="React Admin" iconElementRight={isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span/>}/>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <Paper style={{ height: '100%', flexBasis: '15em' }}>
+                <Paper style={{ flexBasis: '15em' }}>
                     <List>
                         <ListItem href="#/posts/" primaryText="Posts"/>
                         <ListItem href="#/comments/" primaryText="Comments"/>

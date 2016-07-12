@@ -1,14 +1,14 @@
 import React from 'react';
 import Show from '../../../src/detail/Show';
-import Column from '../../../src/list/column/Column';
+import TextField from '../../../src/field/TextField';
 
 const PostShow = (props) => (
     <Show title="Post detail" {...props}>
-        <Column label="id" source="id"/>
-        <Column label="title" source="title"/>
-        <Column label="published_at" source="published_at"/>
-        <Column label="average_note" source="average_note"/>
-        <Column label="views" source="views"/>
+        <TextField label="id" source="id"/>
+        <TextField label="title" source="title"/>
+        <TextField label="published_at" source="published_at"/>
+        <TextField label="average_note" source="average_note"/>
+        <TextField label="views" source="views"/>
     </Show>
 );
 
