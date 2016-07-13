@@ -1,4 +1,4 @@
-import { FETCH_START, FETCH_END, FETCH_ERROR, FETCH_CANCEL } from './util/fetch';
+import { FETCH_START, FETCH_END, FETCH_ERROR, FETCH_CANCEL } from '../util/fetch';
 
 export default (previousState = 0, { type }) => {
     switch (type) {

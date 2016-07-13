@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import CircularProgress from 'material-ui/CircularProgress';
+import Notification from './Notification';
 
 const CrudApp = ({ isLoading, children }) => (
     <MuiThemeProvider>
@@ -11,6 +12,7 @@ const CrudApp = ({ isLoading, children }) => (
             <div className="body">
                 {children}
             </div>
+            <Notification />
         </div>
     </MuiThemeProvider>
 );

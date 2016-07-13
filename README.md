@@ -154,7 +154,6 @@ Check `sideEffect/saga.js` for a detail of the inputs and outputs
 
 ## Todo
 
-* Notifications
 * Relationships
 * Filters
 * Complex Field & Input types

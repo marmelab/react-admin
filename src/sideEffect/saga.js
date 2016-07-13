@@ -16,6 +16,7 @@ import {
     CRUD_UPDATE,
     CRUD_DELETE,
 } from '../actions/dataActions';
+import { showNotification } from '../actions/notificationActions';
 
 const crudSaga = (apiUrl) => {
     const buildHttpRequest = (resource, type, payload) => {
@@ -71,14 +72,20 @@ const crudSaga = (apiUrl) => {
         }
     };
 
-    const getRedirectAction = (resource, type, response, payload) => {
+    const getAdditionalActions = (resource, type, response, payload) => {
         switch (type) {
         case CRUD_UPDATE:
-            return push(payload.basePath);
+            return [
+                push(payload.basePath),
+                showNotification('Element updated'),
+            ];
         case CRUD_CREATE:
-            return push(`${payload.basePath}/${response.json.id}`);
+            return [
+                push(`${payload.basePath}/${response.json.id}`),
+                showNotification('Element created'),
+            ];
         default:
-            return null;
+            return [];
         }
     };
 
@@ -107,11 +114,11 @@ const crudSaga = (apiUrl) => {
                 return;
             }
         }
-        const redirectAction = getRedirectAction(meta.resource, type, response, payload);
+        const additionalActions = getAdditionalActions(meta.resource, type, response, payload);
         yield [
+            ...additionalActions.map(action => put(action)),
             put({ type: `${type}_SUCCESS`, payload: convertResponse(meta.resource, type, response, payload), meta }),
             put({ type: FETCH_END }),
-            redirectAction ? put(redirectAction) : null,
         ];
     }
 

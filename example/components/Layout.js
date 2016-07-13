@@ -7,6 +7,8 @@ import { List, ListItem } from 'material-ui/List';
 import CircularProgress from 'material-ui/CircularProgress';
 import { Link } from 'react-router';
 
+import Notification from '../../src/components/material-ui/layout/Notification';
+
 const Layout = ({ isLoading, children }) => (
     <MuiThemeProvider>
         <div>
@@ -19,6 +21,7 @@ const Layout = ({ isLoading, children }) => (
                     </List>
                 </Paper>
                 <div style={{ flex: 1 }}>{children}</div>
+                <Notification />
             </div>
         </div>
     </MuiThemeProvider>
