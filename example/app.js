@@ -11,7 +11,7 @@ import FakeRest from './FakeRest';
 import fetchMock from 'fetch-mock';
 import data from './data';
 import crudSaga from '../src/sideEffect/saga';
-import CrudRoute from '../src/crud/CrudRoute';
+import CrudRoute from '../src/CrudRoute';
 import PostList from './components/posts/PostList';
 import PostEdit from './components/posts/PostEdit';
 import PostCreate from './components/posts/PostCreate';
