@@ -1,11 +1,12 @@
 import React from 'react';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import ContentSave from 'material-ui/svg-icons/content/save';
 
-const SaveButton = () => <FlatButton
+const SaveButton = () => <RaisedButton
     type="submit"
     label="Save"
     icon={<ContentSave />}
+    primary
     style={{
         margin: '10px 24px',
         position: 'relative',
