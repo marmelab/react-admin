@@ -5,6 +5,8 @@ import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import CircularProgress from 'material-ui/CircularProgress';
+import PostIcon from 'material-ui/svg-icons/action/book';
+import CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
 import { Link } from 'react-router';
 
 import Notification from '../../src/components/material-ui/layout/Notification';
@@ -16,8 +18,8 @@ const Layout = ({ isLoading, children }) => (
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <Paper style={{ flexBasis: '15em' }}>
                     <List>
-                        <ListItem containerElement={<Link to="/posts" />} primaryText="Posts" />
-                        <ListItem containerElement={<Link to="/comments" />} primaryText="Comments" />
+                        <ListItem containerElement={<Link to="/posts" />} primaryText="Posts" leftIcon={<PostIcon />} />
+                        <ListItem containerElement={<Link to="/comments" />} primaryText="Comments" leftIcon={<CommentIcon />} />
                     </List>
                     <Notification />
                 </Paper>

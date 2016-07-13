@@ -6,12 +6,15 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import { Router, Route, Redirect, hashHistory } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
-import reducer from './reducers';
+
 import FakeRest from './FakeRest';
 import fetchMock from 'fetch-mock';
 import data from './data';
+
 import crudSaga from '../src/sideEffect/saga';
 import CrudRoute from '../src/CrudRoute';
+
+import reducer from './reducers';
 import PostList from './components/posts/PostList';
 import PostEdit from './components/posts/PostEdit';
 import PostCreate from './components/posts/PostCreate';
