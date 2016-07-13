@@ -1,7 +1,7 @@
 import React from 'react';
-import Create from '../../../src/detail/Create';
-import TextInput from '../../../src/input/TextInput';
-import LongTextInput from '../../../src/input/LongTextInput';
+import Create from '../../../src/components/material-ui/detail/Create';
+import TextInput from '../../../src/components/material-ui/input/TextInput';
+import LongTextInput from '../../../src/components/material-ui/input/LongTextInput';
 
 const CommentCreate = (props) => (
     <Create title="Create a Comment" {...props}>

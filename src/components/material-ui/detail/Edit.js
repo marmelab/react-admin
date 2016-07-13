@@ -4,7 +4,7 @@ import { Card, CardTitle, CardActions } from 'material-ui/Card';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import ListButton from '../button/ListButton';
 import SaveButton from '../button/SaveButton';
-import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../actions/dataActions';
+import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../../actions/dataActions';
 
 class Edit extends Component {
     constructor(props) {

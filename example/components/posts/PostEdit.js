@@ -1,8 +1,8 @@
 import React from 'react';
-import Edit from '../../../src/detail/Edit';
-import DisabledInput from '../../../src/input/DisabledInput';
-import TextInput from '../../../src/input/TextInput';
-import LongTextInput from '../../../src/input/LongTextInput';
+import Edit from '../../../src/components/material-ui/detail/Edit';
+import DisabledInput from '../../../src/components/material-ui/input/DisabledInput';
+import TextInput from '../../../src/components/material-ui/input/TextInput';
+import LongTextInput from '../../../src/components/material-ui/input/LongTextInput';
 
 const PostEdit = (props) => (
     <Edit title="Post detail" {...props}>

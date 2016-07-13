@@ -4,7 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import * as actions from '../actions/paginationActions';
+import * as actions from '../../../actions/paginationActions';
 
 export class Pagination extends Component {
     constructor(props) {
