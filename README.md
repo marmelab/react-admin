@@ -20,7 +20,6 @@ In order to start building an admin with react-admin, you must be familiar with 
 
 ```js
 // in app.js
-import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -28,10 +27,12 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import { Router, Route, Redirect, hashHistory } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
-import reducer from './reducers';
+
 import crudSaga from '../src/sideEffect/saga';
-import CrudRoute from '../src/crud/CrudRoute';
-import CrudApp from '../src/CrudApp';
+import CrudRoute from '../src/CrudRoute';
+import CrudApp from '../src/components/material-ui/CrudApp';
+
+import reducer from './reducers';
 import PostList from './components/posts/PostList';
 import PostEdit from './components/posts/PostEdit';
 import PostCreate from './components/posts/PostCreate';
@@ -76,9 +77,9 @@ export default combineReducers({
 ```js
 // in PostList.js
 import React from 'react';
-import Datagrid from '../../../src/list/data/Datagrid';
-import TextField from '../../../src/field/TextField';
-import EditButton from '../../../src/button/EditButton';
+import Datagrid from '../../../src/components/material-ui/list/Datagrid';
+import TextField from '../../../src/components/material-ui/field/TextField';
+import EditButton from '../../../src/components/material-ui/button/EditButton';
 
 const PostList = (props) => (
     <Datagrid title="All posts" {...props}>
@@ -97,10 +98,10 @@ export default PostList;
 ```js
 // in PostEdit.js
 import React from 'react';
-import Edit from '../../../src/detail/Edit';
-import DisabledInput from '../../../src/input/DisabledInput';
-import TextInput from '../../../src/input/TextInput';
-import LongTextInput from '../../../src/input/LongTextInput';
+import Edit from '../../../src/components/material-ui/detail/Edit';
+import DisabledInput from '../../../src/components/material-ui/input/DisabledInput';
+import TextInput from '../../../src/components/material-ui/input/TextInput';
+import LongTextInput from '../../../src/components/material-ui/input/LongTextInput';
 
 const PostEdit = (props) => (
     <Edit title="Post detail" {...props}>
@@ -120,9 +121,9 @@ export default PostEdit;
 ```js
 // in PostCreate.js
 import React from 'react';
-import Create from '../../../src/detail/Create';
-import TextInput from '../../../src/input/TextInput';
-import LongTextInput from '../../../src/input/LongTextInput';
+import Create from '../../../src/components/material-ui/detail/Create';
+import TextInput from '../../../src/components/material-ui/input/TextInput';
+import LongTextInput from '../../../src/components/material-ui/input/LongTextInput';
 
 const PostCreate = (props) => (
     <Create title="Create a Post" {...props}>
@@ -150,3 +151,10 @@ The side effects expected by rest-admin are AJAX calls to the REST backend(s), a
 * CRUD_DELETE => CRUD_DELETE_SUCCESS
 
 Check `sideEffect/saga.js` for a detail of the inputs and outputs
+
+## Todo
+
+* Notifications
+* Relationships
+* Filters
+* Complex Field & Input types
