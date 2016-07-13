@@ -1,5 +1,5 @@
 import React from 'react';
-import Datagrid from '../../../src/list/data/Datagrid';
+import Datagrid from '../../../src/list/Datagrid';
 import TextField from '../../../src/field/TextField';
 import EditButton from '../../../src/button/EditButton';
 

@@ -5,10 +5,10 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import Pagination from '../pagination/Pagination';
-import CreateButton from '../../button/CreateButton';
-import { crudGetList as crudGetListAction } from '../../data/actions';
-import { setSort as setSortAction } from '../sort/actions';
+import Pagination from './Pagination';
+import CreateButton from '../button/CreateButton';
+import { crudGetList as crudGetListAction } from '../data/actions';
+import { setSort as setSortAction } from './sortActions';
 
 class Datagrid extends Component {
     constructor(props) {

@@ -1,5 +1,5 @@
-import sort from './reducer';
-import { CRUD_SET_SORT } from './actions';
+import sort from './sort';
+import { CRUD_SET_SORT } from '../list/sortActions';
 
 import assert from 'assert';
 

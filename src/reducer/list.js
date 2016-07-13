@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import data from './data/reducer';
-import sort from './sort/reducer';
-import pagination from './pagination/reducer';
+import listData from './listData';
+import sort from './sort';
+import pagination from './pagination';
 
 export default (resource) => combineReducers({
-    ids: data(resource),
+    ids: listData(resource),
     params: combineReducers({
         sort: sort(resource),
         pagination: pagination(resource),

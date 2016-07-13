@@ -1,12 +1,12 @@
-import pagination from './reducer';
+import assert from 'assert';
+import pagination from './pagination';
 import {
     CRUD_NEXT_PAGE,
     CRUD_PREV_PAGE,
     CRUD_FIRST_PAGE,
     CRUD_LAST_PAGE,
     CRUD_GOTO_PAGE,
-} from './actions';
-import assert from 'assert';
+} from '../list/paginationActions';
 
 describe('pagination', () => {
     it('should not modify the state when the action resource does not match the reducer resource', () => {
