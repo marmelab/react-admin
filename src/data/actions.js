@@ -36,15 +36,15 @@ export const crudGetOne = (resource, id) => ({
     meta: { resource, fetch: true },
 });
 
-export const crudCreate = (resource, data) => ({
+export const crudCreate = (resource, data, basePath) => ({
     type: CRUD_CREATE,
-    payload: { data },
+    payload: { data, basePath },
     meta: { resource, fetch: true },
 });
 
-export const crudUpdate = (resource, id, data) => ({
+export const crudUpdate = (resource, id, data, basePath) => ({
     type: CRUD_UPDATE,
-    payload: { id, data },
+    payload: { id, data, basePath },
     meta: { resource, fetch: true },
 });
 

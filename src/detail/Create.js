@@ -14,10 +14,6 @@ class Create extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({ record: nextProps.data }); // FIXME: erases user entry when fetch response arrives late
-    }
-
     getBasePath() {
         const { location } = this.props;
         return location.pathname.split('/').slice(0, -1).join('/');
@@ -29,7 +25,7 @@ class Create extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.crudCreate(this.props.resource, this.state.record);
+        this.props.crudCreate(this.props.resource, this.state.record, this.getBasePath());
     }
 
     render() {

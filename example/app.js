@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, compose, applyMiddleware } from 'redux';
 import { Router, Route, Redirect, hashHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
+import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import reducer from './reducers';
 import saga from './sagas';
@@ -27,7 +27,7 @@ fetchMock.mock('^http://localhost:3000', restServer.getHandler());
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducer, undefined, compose(
-    applyMiddleware(sagaMiddleware),
+    applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
     window.devToolsExtension ? window.devToolsExtension() : f => f,
 ));
 sagaMiddleware.run(saga);

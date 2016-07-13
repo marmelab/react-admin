@@ -1,5 +1,6 @@
 import { takeLatest, delay } from 'redux-saga';
 import { put, call, cancelled } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 import {
     queryParameters,
     fetchJson,
@@ -71,6 +72,17 @@ const convertResponse = (resource, type, response, payload) => {
     }
 };
 
+const getRedirectAction = (resource, type, response, payload) => {
+    switch (type) {
+    case CRUD_UPDATE:
+        return push(payload.basePath);
+    case CRUD_CREATE:
+        return push(`${payload.basePath}/${response.json.id}`);
+    default:
+        return null;
+    }
+};
+
 function *handleFetch(action) {
     const { type, payload, meta } = action;
     delete meta.fetch;
@@ -96,9 +108,11 @@ function *handleFetch(action) {
             return;
         }
     }
+    const redirectAction = getRedirectAction(meta.resource, type, response, payload)
     yield [
         put({ type: `${type}_SUCCESS`, payload: convertResponse(meta.resource, type, response, payload), meta }),
         put({ type: FETCH_END }),
+        redirectAction ? put(redirectAction) : null,
     ];
 }
 

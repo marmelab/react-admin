@@ -36,7 +36,7 @@ class Edit extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.crudUpdate(this.props.resource, this.props.id, this.state.record);
+        this.props.crudUpdate(this.props.resource, this.props.id, this.state.record, this.getBasePath());
     }
 
     render() {

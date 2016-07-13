@@ -49,8 +49,8 @@ class Datagrid extends Component {
         return (
             <Card style={{ margin: '2em' }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    <FlatButton label="Refresh" onClick={this.refresh} icon={<NavigationRefresh />} />
                     <CreateButton basePath={this.getBasePath()} />
+                    <FlatButton label="Refresh" onClick={this.refresh} icon={<NavigationRefresh />} />
                 </CardActions>
                 <CardTitle title={title} />
                 <Table multiSelectable>
