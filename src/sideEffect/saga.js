@@ -72,17 +72,29 @@ const crudSaga = (apiUrl) => {
         }
     };
 
-    const getAdditionalActions = (resource, type, response, payload) => {
+    const getFailureSideEffects = (resource, type, error, payload) => {
+        switch (type) {
+        case CRUD_GET_ONE:
+            return [
+                showNotification('Element does not exist', 'warning'),
+                push(payload.basePath),
+            ];
+        default:
+            return [];
+        }
+    };
+
+    const getSuccessSideEffects = (resource, type, response, payload) => {
         switch (type) {
         case CRUD_UPDATE:
             return [
-                push(payload.basePath),
                 showNotification('Element updated'),
+                push(payload.basePath),
             ];
         case CRUD_CREATE:
             return [
-                push(`${payload.basePath}/${response.json.id}`),
                 showNotification('Element created'),
+                push(`${payload.basePath}/${response.json.id}`),
             ];
         default:
             return [];
@@ -103,7 +115,9 @@ const crudSaga = (apiUrl) => {
             yield call(delay, 1000);
             response = yield fetchJson(url, options);
         } catch (error) {
+            const sideEffects = getFailureSideEffects(meta.resource, type, error, payload);
             yield [
+                ...sideEffects.map(a => put(a)),
                 put({ type: `${type}_FAILURE`, error, meta }),
                 put({ type: FETCH_ERROR }),
             ];
@@ -114,9 +128,9 @@ const crudSaga = (apiUrl) => {
                 return;
             }
         }
-        const additionalActions = getAdditionalActions(meta.resource, type, response, payload);
+        const sideEffects = getSuccessSideEffects(meta.resource, type, response, payload);
         yield [
-            ...additionalActions.map(action => put(action)),
+            ...sideEffects.map(a => put(a)),
             put({ type: `${type}_SUCCESS`, payload: convertResponse(meta.resource, type, response, payload), meta }),
             put({ type: FETCH_END }),
         ];

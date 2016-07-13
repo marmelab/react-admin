@@ -15,13 +15,13 @@ class Edit extends Component {
     }
 
     componentDidMount() {
-        this.props.crudGetOne(this.props.resource, this.props.id);
+        this.props.crudGetOne(this.props.resource, this.props.id, this.getBasePath());
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({ record: nextProps.data }); // FIXME: erases user entry when fetch response arrives late
         if (this.props.id !== nextProps.id) {
-            this.props.crudGetOne(nextProps.resource, nextProps.id);
+            this.props.crudGetOne(nextProps.resource, nextProps.id, this.getBasePath());
         }
     }
 

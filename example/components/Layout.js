@@ -19,9 +19,9 @@ const Layout = ({ isLoading, children }) => (
                         <ListItem containerElement={<Link to="/posts" />} primaryText="Posts" />
                         <ListItem containerElement={<Link to="/comments" />} primaryText="Comments" />
                     </List>
+                    <Notification />
                 </Paper>
                 <div style={{ flex: 1 }}>{children}</div>
-                <Notification />
             </div>
         </div>
     </MuiThemeProvider>

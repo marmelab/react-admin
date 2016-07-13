@@ -30,9 +30,9 @@ export const crudGetList = (resource, pagination, sort) => ({
     meta: { resource, fetch: true },
 });
 
-export const crudGetOne = (resource, id) => ({
+export const crudGetOne = (resource, id, basePath) => ({
     type: CRUD_GET_ONE,
-    payload: { id },
+    payload: { id, basePath },
     meta: { resource, fetch: true },
 });
 
