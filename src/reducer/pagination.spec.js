@@ -26,22 +26,24 @@ describe('pagination', () => {
     it('should return the default pagination (page: 1, total: 1)', () => {
         assert.deepEqual(pagination('bar')(undefined, { meta: { resource: 'bar' } }), {
             page: 1,
-            total: 1,
+            perPage: 10,
+            total: 0,
         });
     });
 
     describe('CRUD_NEXT_PAGE', () => {
         it('should increase the page', () => {
-            assert.deepEqual(pagination('bar')({ page: 2, total: 5 }, {
+            assert.deepEqual(pagination('bar')({ page: 2, total: 15, perPage: 5 }, {
                 type: CRUD_NEXT_PAGE,
                 meta: { resource: 'bar' },
             }), {
                 page: 3,
-                total: 5,
+                total: 15,
+                perPage: 5,
             });
         });
         it('should throw an error if called while already at total', () => {
-            assert.throws(() => pagination('bar')({ page: 5, total: 5 }, {
+            assert.throws(() => pagination('bar')({ page: 3, total: 15, perPage: 5 }, {
                 type: CRUD_NEXT_PAGE,
                 meta: { resource: 'bar' },
             }), Error);
@@ -51,12 +53,13 @@ describe('pagination', () => {
 
     describe('CRUD_PREV_PAGE', () => {
         it('should decrease the page', () => {
-            assert.deepEqual(pagination('bar')({ page: 2, total: 5 }, {
+            assert.deepEqual(pagination('bar')({ page: 2, total: 15, perPage: 5 }, {
                 type: CRUD_PREV_PAGE,
                 meta: { resource: 'bar' },
             }), {
                 page: 1,
-                total: 5,
+                total: 15,
+                perPage: 5,
             });
         });
         it('should throw an error if called while already at first page', () => {
@@ -69,13 +72,14 @@ describe('pagination', () => {
 
     describe('CRUD_GOTO_PAGE', () => {
         it('should set the page', () => {
-            assert.deepEqual(pagination('bar')({ page: 2, total: 5 }, {
+            assert.deepEqual(pagination('bar')({ page: 2, total: 15, perPage: 5 }, {
                 type: CRUD_GOTO_PAGE,
-                payload: { page: 4 },
+                payload: { page: 3 },
                 meta: { resource: 'bar' },
             }), {
-                page: 4,
-                total: 5,
+                page: 3,
+                total: 15,
+                perPage: 5,
             });
         });
         it('should throw an error if called with an invalid page', () => {
