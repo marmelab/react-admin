@@ -7,10 +7,10 @@ import { Router, Route, Redirect, hashHistory } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import reducer from './reducers';
-import saga from './sagas';
 import FakeRest from './FakeRest';
 import fetchMock from 'fetch-mock';
 import data from './data';
+import crudSaga from '../src/sideEffect/saga';
 import CrudRoute from '../src/crud/CrudRoute';
 import PostList from './components/posts/PostList';
 import PostEdit from './components/posts/PostEdit';
@@ -30,7 +30,7 @@ const store = createStore(reducer, undefined, compose(
     applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
     window.devToolsExtension ? window.devToolsExtension() : f => f,
 ));
-sagaMiddleware.run(saga);
+sagaMiddleware.run(crudSaga('http://localhost:3000'));
 
 const history = syncHistoryWithStore(hashHistory, store);
 
