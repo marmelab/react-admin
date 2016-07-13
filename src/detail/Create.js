@@ -4,7 +4,7 @@ import { Card, CardTitle, CardActions } from 'material-ui/Card';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import ListButton from '../button/ListButton';
 import SaveButton from '../button/SaveButton';
-import { crudCreate as crudCreateAction } from '../data/actions';
+import { crudCreate as crudCreateAction } from '../actions/dataActions';
 
 class Create extends Component {
     constructor(props) {

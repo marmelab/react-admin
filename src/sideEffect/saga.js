@@ -15,7 +15,7 @@ import {
     CRUD_CREATE,
     CRUD_UPDATE,
     CRUD_DELETE,
-} from '../data/actions';
+} from '../actions/dataActions';
 
 const crudSaga = (apiUrl) => {
     const buildHttpRequest = (resource, type, payload) => {
