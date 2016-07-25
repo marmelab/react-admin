@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
-import crud from '../../src/reducer';
+import resource from '../../src/reducer/resource';
 import loading from '../../src/reducer/loading';
 import notification from '../../src/reducer/notification';
 import { routerReducer } from 'react-router-redux';
 
 export default combineReducers({
-    comments: crud('comments'),
-    posts: crud('posts'),
+    comments: resource('comments'),
+    posts: resource('posts'),
     loading,
     notification,
     routing: routerReducer,

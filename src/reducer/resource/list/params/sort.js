@@ -1,4 +1,4 @@
-import { CRUD_SET_SORT, SORT_ASC, SORT_DESC } from '../actions/sortActions';
+import { CRUD_SET_SORT, SORT_ASC, SORT_DESC } from '../../../../actions/sortActions';
 
 const initialState = {
     field: 'id',

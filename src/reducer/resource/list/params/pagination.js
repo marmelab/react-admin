@@ -1,6 +1,6 @@
-import { CRUD_NEXT_PAGE, CRUD_PREV_PAGE, CRUD_GOTO_PAGE } from '../actions/paginationActions';
-import { CRUD_GET_LIST_SUCCESS } from '../actions/dataActions';
-import { CRUD_SET_SORT } from '../actions/sortActions';
+import { CRUD_NEXT_PAGE, CRUD_PREV_PAGE, CRUD_GOTO_PAGE } from '../../../../actions/paginationActions';
+import { CRUD_GET_LIST_SUCCESS } from '../../../../actions/dataActions';
+import { CRUD_SET_SORT } from '../../../../actions/sortActions';
 
 const initialState = {
     page: 1,

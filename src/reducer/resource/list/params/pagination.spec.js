@@ -6,7 +6,7 @@ import {
     CRUD_FIRST_PAGE,
     CRUD_LAST_PAGE,
     CRUD_GOTO_PAGE,
-} from '../actions/paginationActions';
+} from '../../../../actions/paginationActions';
 
 describe('pagination', () => {
     it('should not modify the state when the action resource does not match the reducer resource', () => {

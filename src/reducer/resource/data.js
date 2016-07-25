@@ -4,7 +4,7 @@ import {
     CRUD_UPDATE,
     CRUD_UPDATE_SUCCESS,
     CRUD_CREATE_SUCCESS,
-} from '../actions/dataActions';
+} from '../../actions/dataActions';
 
 export default (resource) => (previousState = {}, { type, payload, meta }) => {
     if (!meta || meta.resource !== resource) {
