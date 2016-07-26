@@ -1,8 +1,6 @@
 import React from 'react';
 import Edit from '../../../src/components/material-ui/detail/Edit';
-import DisabledInput from '../../../src/components/material-ui/input/DisabledInput';
-import TextInput from '../../../src/components/material-ui/input/TextInput';
-import LongTextInput from '../../../src/components/material-ui/input/LongTextInput';
+import { DisabledInput, LongTextInput, TextInput } from '../../../src/components/material-ui/input';
 
 const CommentEdit = (props) => (
     <Edit title="Comment detail" {...props}>

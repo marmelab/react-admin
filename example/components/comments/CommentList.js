@@ -1,8 +1,7 @@
 import React from 'react';
 import Datagrid from '../../../src/components/material-ui/list/Datagrid';
-import ReferenceField from '../../../src/components/material-ui/field/ReferenceField';
-import TextField from '../../../src/components/material-ui/field/TextField';
-import EditButton from '../../../src/components/material-ui/button/EditButton';
+import { ReferenceField, TextField } from '../../../src/components/material-ui/field';
+import { EditButton } from '../../../src/components/material-ui/button';
 
 const CommentList = (props) => (
     <Datagrid title="All comments" {...props} >
