@@ -46,10 +46,11 @@ class Datagrid extends Component {
 
     render() {
         const { resource, title, data, ids, children, params } = this.props;
+        const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em' }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    <CreateButton basePath={this.getBasePath()} />
+                    <CreateButton basePath={basePath} />
                     <FlatButton label="Refresh" onClick={this.refresh} icon={<NavigationRefresh />} />
                 </CardActions>
                 <CardTitle title={title} />
@@ -68,7 +69,7 @@ class Datagrid extends Component {
                             <TableRow key={id}>
                                 {React.Children.map(children, column => (
                                     <TableRowColumn key={`${id}-${column.props.source}`}>
-                                        <column.type {...column.props} record={data[id]} />
+                                        <column.type {...column.props} record={data[id]} basePath={basePath} />
                                     </TableRowColumn>
                                 ))}
                             </TableRow>
