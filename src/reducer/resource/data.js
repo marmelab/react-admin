@@ -1,6 +1,7 @@
 import {
     CRUD_GET_LIST_SUCCESS,
     CRUD_GET_ONE_SUCCESS,
+    CRUD_GET_MANY_SUCCESS,
     CRUD_UPDATE,
     CRUD_UPDATE_SUCCESS,
     CRUD_CREATE_SUCCESS,
@@ -11,7 +12,8 @@ export default (resource) => (previousState = {}, { type, payload, meta }) => {
         return previousState;
     }
     switch (type) {
-    case CRUD_GET_LIST_SUCCESS: {
+    case CRUD_GET_LIST_SUCCESS:
+    case CRUD_GET_MANY_SUCCESS: {
         const newRecords = {};
         payload.data.forEach(record => {
             newRecords[record.id] = record;

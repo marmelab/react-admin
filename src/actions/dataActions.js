@@ -20,6 +20,17 @@ export const crudGetOne = (resource, id, basePath) => ({
     meta: { resource, fetch: true },
 });
 
+export const CRUD_GET_MANY = 'CRUD_GET_MANY';
+export const CRUD_GET_MANY_LOADING = 'CRUD_GET_MANY_LOADING';
+export const CRUD_GET_MANY_FAILURE = 'CRUD_GET_MANY_FAILURE';
+export const CRUD_GET_MANY_SUCCESS = 'CRUD_GET_MANY_SUCCESS';
+
+export const crudGetMany = (resource, ids) => ({
+    type: CRUD_GET_MANY,
+    payload: { ids },
+    meta: { resource, fetch: true },
+});
+
 export const CRUD_CREATE = 'CRUD_CREATE';
 export const CRUD_CREATE_LOADING = 'CRUD_CREATE_LOADING';
 export const CRUD_CREATE_FAILURE = 'CRUD_CREATE_FAILURE';

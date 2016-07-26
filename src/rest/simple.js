@@ -2,6 +2,7 @@ import { queryParameters } from '../util/fetch';
 import {
     CRUD_GET_LIST,
     CRUD_GET_ONE,
+    CRUD_GET_MANY,
     CRUD_CREATE,
     CRUD_UPDATE,
     CRUD_DELETE,
@@ -25,6 +26,13 @@ export default (apiUrl) => {
         case CRUD_GET_ONE:
             url = `${apiUrl}/${resource}/${payload.id}`;
             break;
+        case CRUD_GET_MANY: {
+            const query = {
+                filter: JSON.stringify({ id: payload.ids }),
+            };
+            url = `${apiUrl}/${resource}?${queryParameters(query)}`;
+            break;
+        }
         case CRUD_UPDATE:
             url = `${apiUrl}/${resource}/${payload.id}`;
             options.method = 'PUT';
