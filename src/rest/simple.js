@@ -51,7 +51,6 @@ export default (apiUrl) => {
             };
         case CRUD_CREATE:
             return {
-                id: json.id,
                 data: { ...payload.data, id: json.id },
             };
         default:
