@@ -10,8 +10,6 @@ class Create extends Component {
     constructor(props) {
         super(props);
         this.state = { record: {} };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     getBasePath() {
@@ -36,12 +34,12 @@ class Create extends Component {
                     <ListButton basePath={this.getBasePath()} />
                 </CardActions>
                 <CardTitle title={title} />
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={::this.handleSubmit}>
                     <div style={{ padding: '0 1em 1em 1em' }}>
                     {this.state ?
                         React.Children.map(children, input => (
                             <div key={input.props.source}>
-                                <input.type {...input.props} record={this.state.record} onChange={this.handleChange} />
+                                <input.type {...input.props} record={this.state.record} onChange={::this.handleChange} />
                             </div>
                         ))
                         :

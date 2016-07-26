@@ -13,8 +13,6 @@ import { setSort as setSortAction } from '../../../actions/sortActions';
 class Datagrid extends Component {
     constructor(props) {
         super(props);
-        this.refresh = this.refresh.bind(this);
-        this.updateSort = this.updateSort.bind(this);
     }
 
     componentDidMount() {
@@ -51,7 +49,7 @@ class Datagrid extends Component {
             <Card style={{ margin: '2em' }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     <CreateButton basePath={basePath} />
-                    <FlatButton label="Refresh" onClick={this.refresh} icon={<NavigationRefresh />} />
+                    <FlatButton label="Refresh" onClick={::this.refresh} icon={<NavigationRefresh />} />
                 </CardActions>
                 <CardTitle title={title} />
                 <Table multiSelectable>
@@ -59,7 +57,7 @@ class Datagrid extends Component {
                         <TableRow>
                             {React.Children.map(children, child => (
                                 <TableHeaderColumn key={child.props.label}>
-                                    <FlatButton labelPosition="before" onClick={this.updateSort} data-sort={child.props.source} label={child.props.label} icon={child.props.source == params.sort.field ? <ContentSort style={{ height: '78px', color: 'red', transform: 'rotate(180deg)' }} /> : false} />
+                                    <FlatButton labelPosition="before" onClick={::this.updateSort} data-sort={child.props.source} label={child.props.label} icon={child.props.source == params.sort.field ? <ContentSort style={{ height: '78px', color: 'red', transform: 'rotate(180deg)' }} /> : false} />
                                 </TableHeaderColumn>
                             ))}
                         </TableRow>

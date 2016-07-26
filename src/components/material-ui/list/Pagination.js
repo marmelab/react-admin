@@ -7,13 +7,6 @@ import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import * as actions from '../../../actions/paginationActions';
 
 export class Pagination extends Component {
-    constructor(props) {
-        super(props);
-        this.prevPage = this.prevPage.bind(this);
-        this.nextPage = this.nextPage.bind(this);
-        this.gotoPage = this.gotoPage.bind(this);
-    }
-
     range() {
         const input = [];
         const { page, perPage, total } = this.props;
@@ -68,7 +61,7 @@ export class Pagination extends Component {
         return this.range().map(pageNum =>
             (pageNum === '.') ?
                 <span style={{ padding: '1.2em' }}>&hellip;</span> :
-                <FlatButton key={pageNum} label={pageNum} data-page={pageNum} onClick={this.gotoPage} primary={pageNum === this.props.page} />
+                <FlatButton key={pageNum} label={pageNum} data-page={pageNum} onClick={::this.gotoPage} primary={pageNum === this.props.page} />
         );
     }
 
@@ -85,9 +78,9 @@ export class Pagination extends Component {
                     <span style={{ padding: '1.2em' }} >{offsetBegin}-{offsetEnd} of {total}</span>
                 </ToolbarGroup>
                 <ToolbarGroup>
-                { page > 1 ? <FlatButton key="prev" label="Prev" icon={<ChevronLeft />} onClick={this.prevPage}/> : '' }
+                { page > 1 ? <FlatButton key="prev" label="Prev" icon={<ChevronLeft />} onClick={::this.prevPage}/> : '' }
                 { this.renderPageNums() }
-                { page != nbPages ? <FlatButton key="next" label="Next" icon={<ChevronRight/>} labelPosition="before" onClick={this.nextPage}/> : '' }
+                { page != nbPages ? <FlatButton key="next" label="Next" icon={<ChevronRight/>} labelPosition="before" onClick={::this.nextPage}/> : '' }
                 </ToolbarGroup>
             </Toolbar>
         )

@@ -4,11 +4,6 @@ import Snackbar from 'material-ui/Snackbar';
 import { hideNotification as hideNotificationAction } from '../../../actions/notificationActions' ;
 
 class Notification extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleRequestClose = this.handleRequestClose.bind(this);
-    }
-
     handleRequestClose = () => {
         this.props.hideNotification();
     };
@@ -25,7 +20,7 @@ class Notification extends React.Component {
             open={!!this.props.message}
             message={this.props.message}
             autoHideDuration={4000}
-            onRequestClose={this.handleRequestClose}
+            onRequestClose={::this.handleRequestClose}
             bodyStyle={style}
         />);
     }
