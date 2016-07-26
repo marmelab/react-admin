@@ -12,11 +12,14 @@ export default (resource) => (previousState = {}, { type, payload, meta }) => {
     }
     switch (type) {
     case CRUD_GET_LIST_SUCCESS: {
-        const byId = {};
+        const newRecords = {};
         payload.data.forEach(record => {
-            byId[record.id] = record;
+            newRecords[record.id] = record;
         });
-        return byId;
+        return {
+            ...previousState,
+            ...newRecords
+        };
     }
     case CRUD_GET_ONE_SUCCESS:
     case CRUD_UPDATE: // replace record in edit form with edited one to avoid displaying previous record version
