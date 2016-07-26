@@ -8,6 +8,9 @@ import CircularProgress from 'material-ui/CircularProgress';
 import PostIcon from 'material-ui/svg-icons/action/book';
 import CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
 import { Link } from 'react-router';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+injectTapEventPlugin();
 
 import Notification from '../../src/components/material-ui/layout/Notification';
 

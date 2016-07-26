@@ -1,6 +1,6 @@
 import React from 'react';
 import Edit from '../../../src/components/material-ui/detail/Edit';
-import { DisabledInput, LongTextInput, TextInput } from '../../../src/components/material-ui/input';
+import { DateInput, DisabledInput, LongTextInput, TextInput } from '../../../src/components/material-ui/input';
 
 const PostEdit = (props) => (
     <Edit title="Post detail" {...props}>
@@ -8,7 +8,7 @@ const PostEdit = (props) => (
         <TextInput label="Title" source="title" />
         <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
         <LongTextInput label="Body" source="body" />
-        <TextInput label="Publication date" source="published_at" />
+        <DateInput label="Publication date" source="published_at" />
         <TextInput label="Average note" source="average_note" />
         <DisabledInput label="Nb views" source="views" />
     </Edit>

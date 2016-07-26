@@ -19,8 +19,8 @@ class Create extends Component {
         return location.pathname.split('/').slice(0, -1).join('/');
     }
 
-    handleChange(event) {
-        this.setState({ record: { ...this.state.record, [event.currentTarget.dataset.key]: event.target.value } });
+    handleChange(key, value) {
+        this.setState({ record: { ...this.state.record, [key]: value } });
     }
 
     handleSubmit(event) {

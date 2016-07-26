@@ -11,7 +11,7 @@ DisabledInput.propTypes = {
     source: PropTypes.string.isRequired,
     label: PropTypes.string,
     record: PropTypes.object,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
 };
 
 export default DisabledInput;
