@@ -1,4 +1,4 @@
-import { queryParameters } from '../util/fetch';
+import { queryParameters, fetchJson } from '../util/fetch';
 import {
     CRUD_GET_LIST,
     CRUD_GET_ONE,
@@ -9,7 +9,10 @@ import {
 } from '../actions/dataActions';
 
 export default (apiUrl) => {
-    const httpRequestFromAction = (type, resource, payload) => {
+    /**
+     * @returns {Promise} The request response
+     */
+    const fetch = (type, resource, payload) => {
         let url = '';
         const options = {};
         switch (type) {
@@ -46,10 +49,13 @@ export default (apiUrl) => {
         default:
             throw new Error(`Unsupported fetch action type ${type}`);
         }
-        return { url, options };
+        return fetchJson(url, options);
     };
 
-    const successPayloadFromHttpResponse = (type, resource, payload, response) => {
+    /**
+     * @returns {Object} success action payload
+     */
+    const convertResponse = (type, resource, payload, response) => {
         const { headers, json } = response;
         switch (type) {
         case CRUD_GET_LIST:
@@ -68,5 +74,5 @@ export default (apiUrl) => {
         }
     };
 
-    return { httpRequestFromAction, successPayloadFromHttpResponse };
+    return { fetch, convertResponse };
 };
