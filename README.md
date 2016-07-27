@@ -22,16 +22,10 @@ In order to start building an admin with admin-on-rest, you must be familiar wit
 // in app.js
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, compose, applyMiddleware } from 'redux';
-import { Router, Route, Redirect, hashHistory } from 'react-router';
-import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
-import createSagaMiddleware from 'redux-saga';
+import { simpleRest } from 'admin-on-rest';
+import { Admin } from 'admin-on-rest/mui';
 
-import { crudSaga, CrudRoute, simpleRest } from 'admin-on-rest';
-import { CrudApp } from 'admin-on-rest/mui';
-
-import reducer from './reducers';
+import Layout from './components/Layout';
 import PostList from './components/posts/PostList';
 import PostEdit from './components/posts/PostEdit';
 import PostCreate from './components/posts/PostCreate';
@@ -39,36 +33,15 @@ import CommentList from './components/comments/CommentList';
 import CommentEdit from './components/comments/CommentEdit';
 import CommentCreate from './components/comments/CommentCreate';
 
-const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, undefined, applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware));
-sagaMiddleware.run(crudSaga(simpleRest('http://localhost:3000')));
-
-const history = syncHistoryWithStore(hashHistory, store);
+const resources = {
+    posts: { list: PostList, edit: PostEdit, create: PostCreate },
+    comments: { list: CommentList, edit: CommentEdit, create: CommentCreate },
+};
 
 render(
-    <Provider store={store}>
-        <Router history={history}>
-            <Redirect from="/" to="/posts" />
-            <Route path="/" component={CrudApp}>
-                <CrudRoute path="posts" list={PostList} edit={PostEdit} create={PostCreate} />
-                <CrudRoute path="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} />
-            </Route>
-        </Router>
-    </Provider>,
+    <Admin resources={resources} restFlavor={simpleRest('http://localhost:3000')} appLayout={Layout} />,
     document.getElementById('root')
 );
-```
-
-```js
-// in reducers.js
-import { combineReducers } from 'redux';
-import { adminReducer } from 'admin-on-rest';
-import { routerReducer } from 'react-router-redux';
-
-export default combineReducers({
-    admin: adminReducer(['comments', 'posts']),
-    routing: routerReducer,
-});
 ```
 
 ```js

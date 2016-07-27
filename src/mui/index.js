@@ -5,5 +5,6 @@ export * from './list';
 
 export Create from './detail/Create';
 export Edit from './detail/Edit';
-export CrudApp from './layout/CrudApp';
+export Layout from './layout/Layout';
 export Notification from './layout/Notification';
+export Admin from './Admin';
