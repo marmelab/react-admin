@@ -7,8 +7,8 @@ import ContentSort from 'material-ui/svg-icons/content/sort';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import Pagination from './Pagination';
 import CreateButton from '../button/CreateButton';
-import { crudGetList as crudGetListAction } from '../../../actions/dataActions';
-import { setSort as setSortAction } from '../../../actions/sortActions';
+import { crudGetList as crudGetListAction } from '../../actions/dataActions';
+import { setSort as setSortAction } from '../../actions/sortActions';
 
 class Datagrid extends Component {
     constructor(props) {

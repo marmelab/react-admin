@@ -1,7 +1,5 @@
 import React from 'react';
-import Datagrid from 'admin-on-rest/components/material-ui/list/Datagrid';
-import { ReferenceField, TextField } from 'admin-on-rest/components/material-ui/field';
-import { EditButton } from 'admin-on-rest/components/material-ui/button';
+import { Datagrid, ReferenceField, TextField, EditButton } from 'admin-on-rest/mui';
 
 const CommentList = (props) => (
     <Datagrid title="All comments" {...props} >

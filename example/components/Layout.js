@@ -8,11 +8,8 @@ import CircularProgress from 'material-ui/CircularProgress';
 import PostIcon from 'material-ui/svg-icons/action/book';
 import CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
 import { Link } from 'react-router';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 
-injectTapEventPlugin();
-
-import Notification from 'admin-on-rest/components/material-ui/layout/Notification';
+import { Notification } from 'admin-on-rest/mui';
 
 const Layout = ({ isLoading, children }) => (
     <MuiThemeProvider>

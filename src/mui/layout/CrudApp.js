@@ -21,7 +21,7 @@ const CrudApp = ({ isLoading, children }) => (
 );
 
 CrudApp.propTypes = {
-    isLoading: PropTypes.boolean.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     children: PropTypes.node,
 };
 

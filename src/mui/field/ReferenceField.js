@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { crudGetOneReference as crudGetOneReferenceAction } from '../../../actions/referenceActions';
+import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/referenceActions';
 
 export class ReferenceField extends Component {
     componentDidMount() {

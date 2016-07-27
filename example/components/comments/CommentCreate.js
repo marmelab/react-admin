@@ -1,6 +1,5 @@
 import React from 'react';
-import Create from 'admin-on-rest/components/material-ui/detail/Create';
-import { LongTextInput, TextInput } from 'admin-on-rest/components/material-ui/input';
+import { Create, LongTextInput, TextInput } from 'admin-on-rest/mui';
 
 const CommentCreate = (props) => (
     <Create title="Create a Comment" {...props}>

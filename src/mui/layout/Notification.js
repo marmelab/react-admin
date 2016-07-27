@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
-import { hideNotification as hideNotificationAction } from '../../../actions/notificationActions' ;
+import { hideNotification as hideNotificationAction } from '../../actions/notificationActions' ;
 
 class Notification extends React.Component {
     handleRequestClose = () => {

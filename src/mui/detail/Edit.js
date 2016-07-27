@@ -4,12 +4,23 @@ import { Card, CardTitle, CardActions } from 'material-ui/Card';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import ListButton from '../button/ListButton';
 import SaveButton from '../button/SaveButton';
-import { crudCreate as crudCreateAction } from '../../../actions/dataActions';
+import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
 
-class Create extends Component {
+class Edit extends Component {
     constructor(props) {
         super(props);
-        this.state = { record: {} };
+        this.state = { record: props.data };
+    }
+
+    componentDidMount() {
+        this.props.crudGetOne(this.props.resource, this.props.id, this.getBasePath());
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ record: nextProps.data }); // FIXME: erases user entry when fetch response arrives late
+        if (this.props.id !== nextProps.id) {
+            this.props.crudGetOne(nextProps.resource, nextProps.id, this.getBasePath());
+        }
     }
 
     getBasePath() {
@@ -23,7 +34,7 @@ class Create extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.crudCreate(this.props.resource, this.state.record, this.getBasePath());
+        this.props.crudUpdate(this.props.resource, this.props.id, this.state.record, this.getBasePath());
     }
 
     render() {
@@ -43,7 +54,7 @@ class Create extends Component {
                             </div>
                         ))
                         :
-                        'not good'
+                        ''
                     }
                     </div>
                     <Toolbar>
@@ -57,19 +68,25 @@ class Create extends Component {
     }
 }
 
-Create.propTypes = {
+Edit.propTypes = {
     title: PropTypes.string,
+    id: PropTypes.string.isRequired,
     resource: PropTypes.string.isRequired,
     location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
-    crudCreate: PropTypes.func.isRequired,
+    data: PropTypes.object,
+    crudGetOne: PropTypes.func.isRequired,
+    crudUpdate: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, props) {
-    return { };
+    return {
+        id: props.params.id,
+        data: state[props.resource].data[props.params.id],
+    };
 }
 
 export default connect(
     mapStateToProps,
-    { crudCreate: crudCreateAction },
-)(Create);
+    { crudGetOne: crudGetOneAction, crudUpdate: crudUpdateAction },
+)(Edit);
