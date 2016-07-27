@@ -13,7 +13,7 @@ import data from './data';
 
 import { crudSaga, CrudRoute, simpleRest } from 'admin-on-rest';
 
-import reducer from './reducers';
+import reducer from './reducer';
 import PostList from './components/posts/PostList';
 import PostEdit from './components/posts/PostEdit';
 import PostCreate from './components/posts/PostCreate';
