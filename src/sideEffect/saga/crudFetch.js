@@ -6,10 +6,8 @@ import {
     FETCH_ERROR,
     FETCH_CANCEL,
 } from '../../actions/fetchActions';
-import defaultSuccessSideEffect from './success';
-import defaultFailureSideEffect from './failure';
 
-const crudFetch = (restFlavor, successSideEffects = defaultSuccessSideEffect, failureSideEffects = defaultFailureSideEffect) => {
+const crudFetch = (restFlavor, successSideEffects = () => [], failureSideEffects = () => []) => {
     function *handleFetch(action) {
         const { type, payload, meta } = action;
         delete meta.fetch;
