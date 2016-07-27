@@ -40,10 +40,7 @@ import CommentEdit from './components/comments/CommentEdit';
 import CommentCreate from './components/comments/CommentCreate';
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, undefined, compose(
-    applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
-    window.devToolsExtension ? window.devToolsExtension() : f => f,
-));
+const store = createStore(reducer, undefined, applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware));
 sagaMiddleware.run(crudSaga(simpleRest('http://localhost:3000')));
 
 const history = syncHistoryWithStore(hashHistory, store);
