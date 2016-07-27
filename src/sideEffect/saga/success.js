@@ -2,8 +2,8 @@ import { push } from 'react-router-redux';
 import {
     CRUD_CREATE,
     CRUD_UPDATE,
-} from '../actions/dataActions';
-import { showNotification } from '../actions/notificationActions';
+} from '../../actions/dataActions';
+import { showNotification } from '../../actions/notificationActions';
 
 export default (type, resource, payload, response) => {
     switch (type) {
