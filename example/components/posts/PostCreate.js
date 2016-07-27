@@ -1,6 +1,6 @@
 import React from 'react';
-import Create from '../../../src/components/material-ui/detail/Create';
-import { LongTextInput, TextInput } from '../../../src/components/material-ui/input';
+import Create from 'admin-on-rest/components/material-ui/detail/Create';
+import { LongTextInput, TextInput } from 'admin-on-rest/components/material-ui/input';
 
 const PostCreate = (props) => (
     <Create title="Create a Post" {...props}>

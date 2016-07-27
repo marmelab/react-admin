@@ -12,7 +12,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 injectTapEventPlugin();
 
-import Notification from '../../src/components/material-ui/layout/Notification';
+import Notification from 'admin-on-rest/components/material-ui/layout/Notification';
 
 const Layout = ({ isLoading, children }) => (
     <MuiThemeProvider>

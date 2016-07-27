@@ -11,9 +11,7 @@ import FakeRest from './FakeRest';
 import fetchMock from 'fetch-mock';
 import data from './data';
 
-import crudSaga from '../src/sideEffect/saga';
-import CrudRoute from '../src/CrudRoute';
-import simpleRestFlavor from '../src/rest/simple';
+import { crudSaga, CrudRoute, simpleRest } from 'admin-on-rest';
 
 import reducer from './reducers';
 import PostList from './components/posts/PostList';
@@ -34,7 +32,7 @@ const store = createStore(reducer, undefined, compose(
     applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
     window.devToolsExtension ? window.devToolsExtension() : f => f,
 ));
-sagaMiddleware.run(crudSaga(simpleRestFlavor('http://localhost:3000')));
+sagaMiddleware.run(crudSaga(simpleRest('http://localhost:3000')));
 
 const history = syncHistoryWithStore(hashHistory, store);
 

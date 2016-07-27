@@ -13,4 +13,9 @@ module.exports = {
             { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
         ],
     },
+    resolve: {
+        alias: {
+            'admin-on-rest': path.join(__dirname, '..', 'src'),
+        },
+    },
 };

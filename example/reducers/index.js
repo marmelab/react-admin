@@ -1,13 +1,11 @@
 import { combineReducers } from 'redux';
-import resource from '../../src/reducer/resource';
-import loading from '../../src/reducer/loading';
-import notification from '../../src/reducer/notification';
+import { resourceReducer, loadingReducer, notificationReducer } from 'admin-on-rest';
 import { routerReducer } from 'react-router-redux';
 
 export default combineReducers({
-    comments: resource('comments'),
-    posts: resource('posts'),
-    loading,
-    notification,
+    comments: resourceReducer('comments'),
+    posts: resourceReducer('posts'),
+    loading: loadingReducer,
+    notification: notificationReducer,
     routing: routerReducer,
 });

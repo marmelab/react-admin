@@ -1,7 +1,7 @@
 import React from 'react';
-import Datagrid from '../../../src/components/material-ui/list/Datagrid';
-import { DateField, TextField } from '../../../src/components/material-ui/field';
-import { EditButton } from '../../../src/components/material-ui/button';
+import Datagrid from 'admin-on-rest/components/material-ui/list/Datagrid';
+import { DateField, TextField } from 'admin-on-rest/components/material-ui/field';
+import { EditButton } from 'admin-on-rest/components/material-ui/button';
 
 const PostList = (props) => (
     <Datagrid title="All posts" {...props}>

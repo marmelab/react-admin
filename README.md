@@ -28,10 +28,8 @@ import { Router, Route, Redirect, hashHistory } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 
-import crudSaga from '../src/sideEffect/saga';
-import CrudRoute from '../src/CrudRoute';
-import simpleRestFlavor from '../src/rest/simple';
-import CrudApp from '../src/components/material-ui/layout/CrudApp';
+import { crudSaga, CrudRoute, simpleRest } from 'admin-on-rest';
+import CrudApp from 'admin-on-rest/components/material-ui/layout/CrudApp';
 
 import reducer from './reducers';
 import PostList from './components/posts/PostList';
@@ -46,7 +44,7 @@ const store = createStore(reducer, undefined, compose(
     applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
     window.devToolsExtension ? window.devToolsExtension() : f => f,
 ));
-sagaMiddleware.run(crudSaga(simpleRestFlavor('http://localhost:3000')));
+sagaMiddleware.run(crudSaga(simpleRest('http://localhost:3000')));
 
 const history = syncHistoryWithStore(hashHistory, store);
 
@@ -67,16 +65,14 @@ render(
 ```js
 // in reducers.js
 import { combineReducers } from 'redux';
-import resource from '../../src/reducer/resource';
-import loading from '../../src/reducer/loading';
-import notification from '../../src/reducer/notification';
+import { resourceReducer, loadingReducer, notificationReducer } from 'admin-on-rest';
 import { routerReducer } from 'react-router-redux';
 
 export default combineReducers({
-    comments: resource('comments'),
-    posts: resource('posts'),
-    loading,
-    notification,
+    comments: resourceReducer('comments'),
+    posts: resourceReducer('posts'),
+    loading: loadingReducer,
+    notification: notificationReducer,
     routing: routerReducer,
 });
 ```
@@ -84,9 +80,9 @@ export default combineReducers({
 ```js
 // in PostList.js
 import React from 'react';
-import Datagrid from '../../../src/components/material-ui/list/Datagrid';
-import { DateField, TextField } from '../../../src/components/material-ui/field';
-import { EditButton } from '../../../src/components/material-ui/button';
+import Datagrid from 'admin-on-rest/components/material-ui/list/Datagrid';
+import { DateField, TextField } from 'admin-on-rest/components/material-ui/field';
+import { EditButton } from 'admin-on-rest/components/material-ui/button';
 
 const PostList = (props) => (
     <Datagrid title="All posts" {...props}>
@@ -105,8 +101,8 @@ export default PostList;
 ```js
 // in PostEdit.js
 import React from 'react';
-import Edit from '../../../src/components/material-ui/detail/Edit';
-import { DateInput, DisabledInput, LongTextInput, TextInput } from '../../../src/components/material-ui/input';
+import Edit from 'admin-on-rest/components/material-ui/detail/Edit';
+import { DateInput, DisabledInput, LongTextInput, TextInput } from 'admin-on-rest/components/material-ui/input';
 
 const PostEdit = (props) => (
     <Edit title="Post detail" {...props}>
@@ -126,8 +122,8 @@ export default PostEdit;
 ```js
 // in PostCreate.js
 import React from 'react';
-import Create from '../../../src/components/material-ui/detail/Create';
-import { LongTextInput, TextInput } from '../../../src/components/material-ui/input';
+import Create from 'admin-on-rest/components/material-ui/detail/Create';
+import { LongTextInput, TextInput } from 'admin-on-rest/components/material-ui/input';
 
 const PostCreate = (props) => (
     <Create title="Create a Post" {...props}>
