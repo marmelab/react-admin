@@ -43,10 +43,10 @@ class Datagrid extends Component {
     }
 
     render() {
-        const { resource, title, data, ids, children, params } = this.props;
+        const { resource, title, data, ids, children, params, isLoading } = this.props;
         const basePath = this.getBasePath();
         return (
-            <Card style={{ margin: '2em' }}>
+            <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     <CreateButton basePath={basePath} />
                     <FlatButton label="Refresh" onClick={::this.refresh} icon={<NavigationRefresh />} />
@@ -88,6 +88,7 @@ Datagrid.propTypes = {
     params: PropTypes.object.isRequired,
     ids: PropTypes.array,
     data: PropTypes.object,
+    isLoading: PropTypes.bool.isRequired,
     crudGetList: PropTypes.func.isRequired,
     setSort: PropTypes.func.isRequired,
 };
@@ -98,6 +99,7 @@ function mapStateToProps(state, props) {
         params: resourceState.list.params,
         ids: resourceState.list.ids,
         data: resourceState.data,
+        isLoading: state.admin.loading > 0,
     };
 }
 

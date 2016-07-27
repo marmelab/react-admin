@@ -27,9 +27,9 @@ class Create extends Component {
     }
 
     render() {
-        const { title, children, data } = this.props;
+        const { title, children, data, isLoading } = this.props;
         return (
-            <Card style={{ margin: '2em' }}>
+            <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     <ListButton basePath={this.getBasePath()} />
                 </CardActions>
@@ -62,11 +62,14 @@ Create.propTypes = {
     resource: PropTypes.string.isRequired,
     location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     crudCreate: PropTypes.func.isRequired,
 };
 
-function mapStateToProps(state, props) {
-    return { };
+function mapStateToProps(state) {
+    return {
+        isLoading: state.admin.loading > 0,
+    };
 }
 
 export default connect(
