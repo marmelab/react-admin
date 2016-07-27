@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import LinearProgress from 'material-ui/LinearProgress';
 import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/referenceActions';
 
 export class ReferenceField extends Component {
@@ -15,8 +16,11 @@ export class ReferenceField extends Component {
     }
 
     render() {
-        const { record, source, reference, referenceRecord, referenceSource, basePath } = this.props;
+        const { record, source, reference, referenceRecord, referenceSource, basePath, allowEmpty } = this.props;
         const rootPath = basePath.split('/').slice(0, -1).join('/');
+        if (!referenceRecord && !allowEmpty) {
+            return <LinearProgress />;
+        }
         return <Link to={`${rootPath}/${reference}/${record[source]}`}>{referenceRecord[referenceSource]}</Link>;
     }
 }
@@ -25,6 +29,7 @@ ReferenceField.propTypes = {
     source: PropTypes.string.isRequired,
     label: PropTypes.string,
     record: PropTypes.object,
+    allowEmpty: PropTypes.bool.isRequired,
     reference: PropTypes.string.isRequired,
     referenceSource: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
@@ -33,8 +38,9 @@ ReferenceField.propTypes = {
 };
 
 ReferenceField.defaultProps = {
-    referenceRecord: {},
+    referenceRecord: null,
     record: {},
+    allowEmpty: false,
 };
 
 function mapStateToProps(state, props) {
