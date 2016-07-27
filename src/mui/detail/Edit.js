@@ -82,7 +82,7 @@ Edit.propTypes = {
 function mapStateToProps(state, props) {
     return {
         id: props.params.id,
-        data: state[props.resource].data[props.params.id],
+        data: state.admin[props.resource].data[props.params.id],
     };
 }
 

@@ -93,7 +93,7 @@ Datagrid.propTypes = {
 };
 
 function mapStateToProps(state, props) {
-    const resourceState = state[props.resource];
+    const resourceState = state.admin[props.resource];
     return {
         params: resourceState.list.params,
         ids: resourceState.list.ids,

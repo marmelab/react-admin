@@ -7,9 +7,7 @@ export referenceActions from './actions/referenceActions';
 export sortActions from './actions/sortActions';
 
 /* reducers */
-export resourceReducer from './reducer/resource';
-export loadingReducer from './reducer/loading';
-export notificationReducer from './reducer/notification';
+export adminReducer from './reducer';
 
 /* rest */
 export simpleRest from './rest/simple';

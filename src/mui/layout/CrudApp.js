@@ -25,8 +25,8 @@ CrudApp.propTypes = {
     children: PropTypes.node,
 };
 
-function mapStateToProps({ loading }) {
-    return { isLoading: loading > 0 };
+function mapStateToProps(state) {
+    return { isLoading: state.admin.loading > 0 };
 }
 
 export default connect(

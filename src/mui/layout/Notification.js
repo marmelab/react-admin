@@ -37,8 +37,8 @@ Notification.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-    message: state.notification.text,
-    type: state.notification.type,
+    message: state.admin.notification.text,
+    type: state.admin.notification.type,
 });
 
 export default connect(

@@ -65,14 +65,11 @@ render(
 ```js
 // in reducers.js
 import { combineReducers } from 'redux';
-import { resourceReducer, loadingReducer, notificationReducer } from 'admin-on-rest';
+import { adminReducer } from 'admin-on-rest';
 import { routerReducer } from 'react-router-redux';
 
 export default combineReducers({
-    comments: resourceReducer('comments'),
-    posts: resourceReducer('posts'),
-    loading: loadingReducer,
-    notification: notificationReducer,
+    admin: adminReducer(['comments', 'posts']),
     routing: routerReducer,
 });
 ```
