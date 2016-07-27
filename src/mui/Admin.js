@@ -9,7 +9,6 @@ import { adminReducer, crudSaga, CrudRoute } from 'admin-on-rest';
 import { Layout } from 'admin-on-rest/mui';
 
 const Admin = ({ resources, restFlavor, appLayout = Layout }) => {
-
     const sagaMiddleware = createSagaMiddleware();
     const reducer = combineReducers({
         admin: adminReducer(Object.keys(resources)),
@@ -38,7 +37,7 @@ const Admin = ({ resources, restFlavor, appLayout = Layout }) => {
     );
 };
 
-Admin.PropTypes = {
+Admin.propTypes = {
     resources: PropTypes.object.isRequired,
     restFlavor: PropTypes.func.isRequired,
     appLayout: PropTypes.element,
