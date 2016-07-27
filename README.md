@@ -1,6 +1,6 @@
-# rest-admin
+# admin-on-rest
 
-An frontend Framework for building admin SPAs using REST.
+An frontend Framework for building admin applications on top of REST services, using React, Redux and Material UI.
 
 ## Philosophy
 
@@ -8,7 +8,7 @@ This library is like a box of Legos: it contains the components and the instruct
 
 ## Requirements
 
-In order to start building an admin with react-admin, you must be familiar with the following:
+In order to start building an admin with admin-on-rest, you must be familiar with the following:
 
 * ES6
 * React
@@ -30,19 +30,23 @@ import createSagaMiddleware from 'redux-saga';
 
 import crudSaga from '../src/sideEffect/saga';
 import CrudRoute from '../src/CrudRoute';
-import CrudApp from '../src/components/material-ui/CrudApp';
+import simpleRestFlavor from '../src/rest/simple';
+import CrudApp from '../src/components/material-ui/layout/CrudApp';
 
 import reducer from './reducers';
 import PostList from './components/posts/PostList';
 import PostEdit from './components/posts/PostEdit';
 import PostCreate from './components/posts/PostCreate';
+import CommentList from './components/comments/CommentList';
+import CommentEdit from './components/comments/CommentEdit';
+import CommentCreate from './components/comments/CommentCreate';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducer, undefined, compose(
     applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
     window.devToolsExtension ? window.devToolsExtension() : f => f,
 ));
-sagaMiddleware.run(crudSaga('http://localhost:3000'));
+sagaMiddleware.run(crudSaga(simpleRestFlavor('http://localhost:3000')));
 
 const history = syncHistoryWithStore(hashHistory, store);
 
@@ -52,6 +56,7 @@ render(
             <Redirect from="/" to="/posts" />
             <Route path="/" component={CrudApp}>
                 <CrudRoute path="posts" list={PostList} edit={PostEdit} create={PostCreate} />
+                <CrudRoute path="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} />
             </Route>
         </Router>
     </Provider>,
@@ -62,14 +67,16 @@ render(
 ```js
 // in reducers.js
 import { combineReducers } from 'redux';
-import crud from '../../src/reducer';
-import loading from '../../src/loading';
+import resource from '../../src/reducer/resource';
+import loading from '../../src/reducer/loading';
+import notification from '../../src/reducer/notification';
 import { routerReducer } from 'react-router-redux';
 
 export default combineReducers({
-    comments: crud('comments'),
-    posts: crud('posts'),
+    comments: resource('comments'),
+    posts: resource('posts'),
     loading,
+    notification,
     routing: routerReducer,
 });
 ```
@@ -78,14 +85,14 @@ export default combineReducers({
 // in PostList.js
 import React from 'react';
 import Datagrid from '../../../src/components/material-ui/list/Datagrid';
-import TextField from '../../../src/components/material-ui/field/TextField';
-import EditButton from '../../../src/components/material-ui/button/EditButton';
+import { DateField, TextField } from '../../../src/components/material-ui/field';
+import { EditButton } from '../../../src/components/material-ui/button';
 
 const PostList = (props) => (
     <Datagrid title="All posts" {...props}>
         <TextField label="id" source="id" />
         <TextField label="title" source="title" />
-        <TextField label="published_at" source="published_at" />
+        <DateField label="published_at" source="published_at" />
         <TextField label="average_note" source="average_note" />
         <TextField label="views" source="views" />
         <EditButton basePath="/posts" />
@@ -99,9 +106,7 @@ export default PostList;
 // in PostEdit.js
 import React from 'react';
 import Edit from '../../../src/components/material-ui/detail/Edit';
-import DisabledInput from '../../../src/components/material-ui/input/DisabledInput';
-import TextInput from '../../../src/components/material-ui/input/TextInput';
-import LongTextInput from '../../../src/components/material-ui/input/LongTextInput';
+import { DateInput, DisabledInput, LongTextInput, TextInput } from '../../../src/components/material-ui/input';
 
 const PostEdit = (props) => (
     <Edit title="Post detail" {...props}>
@@ -109,7 +114,7 @@ const PostEdit = (props) => (
         <TextInput label="Title" source="title" />
         <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
         <LongTextInput label="Body" source="body" />
-        <TextInput label="Publication date" source="published_at" />
+        <DateInput label="Publication date" source="published_at" />
         <TextInput label="Average note" source="average_note" />
         <DisabledInput label="Nb views" source="views" />
     </Edit>
@@ -122,8 +127,7 @@ export default PostEdit;
 // in PostCreate.js
 import React from 'react';
 import Create from '../../../src/components/material-ui/detail/Create';
-import TextInput from '../../../src/components/material-ui/input/TextInput';
-import LongTextInput from '../../../src/components/material-ui/input/LongTextInput';
+import { LongTextInput, TextInput } from '../../../src/components/material-ui/input';
 
 const PostCreate = (props) => (
     <Create title="Create a Post" {...props}>
@@ -138,11 +142,15 @@ const PostCreate = (props) => (
 export default PostCreate;
 ```
 
+## Configuring your REST flavor
+
+REST isn't a standard, so it's impossible to make a REST client library that will work for all REST backends. Admin-on-rest deals with this problem by letting you specify how the data structure used for the admin translates to the data from your REST backend.
+
 ## Side Effects
 
 The library makes no assumption on the side effect library you want to use; but provides examples for redux-saga.
 
-The side effects expected by rest-admin are AJAX calls to the REST backend(s), and redirects. They must respond to the following actions:
+The side effects expected by admin-on-rest are AJAX calls to the REST backend(s), and redirects. They must respond to the following actions:
 
 * CRUD_GET_LIST => CRUD_GET_LIST_SUCCESS
 * CRUD_GET_ONE => CRUD_GET_ONE_SUCCESS
