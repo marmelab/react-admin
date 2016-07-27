@@ -2,7 +2,8 @@
   "name": "redux-crud",
   "version": "0.0.5",
   "description": "Actions and reducers for interacting with REST services",
-  "main": "index.js",
+  "main": "lib/index",
+  "jsnext:main": "es6/index",
   "scripts": {
     "test": "make test"
   },
