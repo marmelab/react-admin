@@ -8,10 +8,14 @@ import createSagaMiddleware from 'redux-saga';
 import { adminReducer, crudSaga, CrudRoute } from 'admin-on-rest';
 import { Layout } from 'admin-on-rest/mui';
 
-const Admin = ({ resources, restFlavor, appLayout = Layout }) => {
+const Admin = ({ restFlavor, appLayout = Layout, children }) => {
+    const resources = children.map(({ props }) => (
+        { name: props.name, list: props.list, edit: props.edit, create: props.create }
+    ));
+    const resourceNames = children.map(({ props }) => props.name);
     const sagaMiddleware = createSagaMiddleware();
     const reducer = combineReducers({
-        admin: adminReducer(Object.keys(resources)),
+        admin: adminReducer(resourceNames),
         routing: routerReducer,
     });
     const store = createStore(reducer, undefined, compose(
@@ -28,8 +32,8 @@ const Admin = ({ resources, restFlavor, appLayout = Layout }) => {
             <Router history={history}>
                 <Redirect from="/" to={`/${firstResource}`} />
                 <Route path="/" component={appLayout}>
-                    {Object.keys(resources).map(name =>
-                        <CrudRoute path={name} list={resources[name].list} edit={resources[name].edit} create={resources[name].create} />
+                    {resources.map(resource =>
+                        <CrudRoute path={resource.name} list={resource.list} edit={resource.edit} create={resource.create} />
                     )}
                 </Route>
             </Router>
@@ -38,9 +42,9 @@ const Admin = ({ resources, restFlavor, appLayout = Layout }) => {
 };
 
 Admin.propTypes = {
-    resources: PropTypes.object.isRequired,
     restFlavor: PropTypes.func.isRequired,
     appLayout: PropTypes.element,
+    children: PropTypes.node,
 };
 
 export default Admin;

@@ -8,11 +8,11 @@ import {
     CRUD_DELETE,
 } from '../actions/dataActions';
 
-export default (apiUrl) => {
+export default (apiUrl) => ({
     /**
      * @returns {Promise} The request response
      */
-    const fetch = (type, resource, payload) => {
+    fetch(type, resource, payload) {
         let url = '';
         const options = {};
         switch (type) {
@@ -50,12 +50,12 @@ export default (apiUrl) => {
             throw new Error(`Unsupported fetch action type ${type}`);
         }
         return fetchJson(url, options);
-    };
+    },
 
     /**
      * @returns {Object} success action payload
      */
-    const convertResponse = (type, resource, payload, response) => {
+    convertResponse(type, resource, payload, response) {
         const { headers, json } = response;
         switch (type) {
         case CRUD_GET_LIST:
@@ -72,7 +72,5 @@ export default (apiUrl) => {
                 data: json,
             };
         }
-    };
-
-    return { fetch, convertResponse };
-};
+    }
+});

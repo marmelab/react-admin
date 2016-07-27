@@ -1,20 +1,6 @@
 # admin-on-rest
 
-An frontend Framework for building admin applications on top of REST services, using React, Redux and Material UI.
-
-## Philosophy
-
-This library is like a box of Legos: it contains the components and the instructions, but you'll have to assemble them in order to have a working admin. Don't worry, it's fast. The benefits of this approach are that you can change whatever part you're not satisfied with, and that you can adapt to any RESTful backend dialect without pain.
-
-## Requirements
-
-In order to start building an admin with admin-on-rest, you must be familiar with the following:
-
-* ES6
-* React
-* React Router
-* Redux
-* A Redux side effect library (redux-thunk, redux-saga, redux-promise)
+An frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI.
 
 ## Example
 
@@ -23,7 +9,7 @@ In order to start building an admin with admin-on-rest, you must be familiar wit
 import React from 'react';
 import { render } from 'react-dom';
 import { simpleRest } from 'admin-on-rest';
-import { Admin } from 'admin-on-rest/mui';
+import { Admin, Resource } from 'admin-on-rest/mui';
 
 import Layout from './components/Layout';
 import PostList from './components/posts/PostList';
@@ -33,16 +19,16 @@ import CommentList from './components/comments/CommentList';
 import CommentEdit from './components/comments/CommentEdit';
 import CommentCreate from './components/comments/CommentCreate';
 
-const resources = {
-    posts: { list: PostList, edit: PostEdit, create: PostCreate },
-    comments: { list: CommentList, edit: CommentEdit, create: CommentCreate },
-};
-
 render(
-    <Admin resources={resources} restFlavor={simpleRest('http://localhost:3000')} appLayout={Layout} />,
+    <Admin restFlavor={simpleRest('http://localhost:3000')} appLayout={Layout}>
+        <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} />
+        <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} />
+    </Admin>,
     document.getElementById('root')
 );
 ```
+
+The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`.
 
 ```js
 // in PostList.js
@@ -105,9 +91,55 @@ export default PostCreate;
 
 REST isn't a standard, so it's impossible to make a REST client library that will work for all REST backends. Admin-on-rest deals with this problem by letting you specify how the data structure used for the admin translates to the data from your REST backend.
 
-## Side Effects
+The `<Admin>` component expects a `restFlavor` parameter, which is an object with two methods:
 
-The library makes no assumption on the side effect library you want to use; but provides examples for redux-saga.
+```js
+{
+    /**
+     * Execute the HTTP request for the action type
+     *
+     * @param {string} type Action type, e.g CRUD_GET_LIST
+     * @param {string} resource Resource name, e.g. "posts"
+     * @param {Object} payload Action parameters. Depends on the action type, see src/actions/dataActions.js for details
+     * @returns {Promise} the Promise for a response
+     */
+    fetch(type, resource, payload) {
+        // your logic here
+    },
+
+    /**
+     * Convert the HTTP response to a payload for the SUCCESS action
+     *
+     * @param {string} type Action type, e.g CRUD_GET_LIST
+     * @param {string} resource Resource name, e.g. "posts"
+     * @param {Object} payload Action parameters. Depends on the action type, see src/actions/dataActions.js for details
+     * @param {Object} response The response returned by the rest fetch() promise
+     * @returns {Promise} the Promise for a response
+     */
+    convertResponse(type, resource, payload, response) {
+        // your logic here
+    },
+}
+```
+
+Possible action types are those from `src/actions/dataActions.js`:
+
+* `CRUD_GET_LIST`
+* `CRUD_GET_ONE`
+* `CRUD_GET_MANY`
+* `CRUD_CREATE`
+* `CRUD_UPDATE`
+* `CRUD_DELETE`
+
+Check `src/rest/simple.js` for an example.
+
+The restFlavor is also the ideal place to add custom HTTP headers, authentication, etc.
+
+## Batteries Included But Removable
+
+Although it's fast and easy to build an admin using the `<Admin>` and `<Resource>` components, it is also possible to include the admin logic into an *existing* React application. You are strongly encouraged to use the lower-level elements or admin-to-rest, provided you're familiar with Redux, react-router and redux-saga.
+
+The library makes no assumption on the side effect library you want to use, but provides examples for redux-saga.
 
 The side effects expected by admin-on-rest are AJAX calls to the REST backend(s), and redirects. They must respond to the following actions:
 

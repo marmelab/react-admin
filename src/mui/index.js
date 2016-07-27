@@ -8,3 +8,4 @@ export Edit from './detail/Edit';
 export Layout from './layout/Layout';
 export Notification from './layout/Notification';
 export Admin from './Admin';
+export Resource from './Resource';
