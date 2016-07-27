@@ -11,7 +11,7 @@ injectTapEventPlugin();
 const CrudApp = ({ isLoading, children }) => (
     <MuiThemeProvider>
         <div>
-            <AppBar title="React Admin" iconElementRight={isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span/>} />
+            <AppBar title="Admin on REST" iconElementRight={isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span/>} />
             <div className="body">
                 {children}
             </div>
