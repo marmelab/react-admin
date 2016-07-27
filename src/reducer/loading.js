@@ -7,7 +7,7 @@ export default (previousState = 0, { type }) => {
     case FETCH_END:
     case FETCH_ERROR:
     case FETCH_CANCEL:
-        return previousState - 1;
+        return Math.max(previousState - 1, 0);
     default:
         return previousState;
     }
