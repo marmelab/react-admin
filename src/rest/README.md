@@ -34,12 +34,13 @@ Possible types are:
 
 Type | Params format
 ---- | ----------------
-`GET_LIST` | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} } }`
-`GET_ONE`  | `{ id: {mixed} }`
-`GET_MANY` | `{ ids: {mixed[]} }`
-`CREATE`   | `{ data: {Object} }`
-`UPDATE`   | `{ id: {mixed}, data: {Object} }`
-`DELETE`   | `{ id: {mixed} }`
+`GET_LIST`     | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} } }`
+`GET_ONE`      | `{ id: {mixed} }`
+`CREATE`       | `{ data: {Object} }`
+`UPDATE`       | `{ id: {mixed}, data: {Object} }`
+`DELETE`       | `{ id: {mixed} }`
+`GET_MANY`     | `{ ids: {mixed[]} }`
+`GET_MATCHING` | `{ filter: {Object} }`
 
 Examples:
 
@@ -49,10 +50,11 @@ restClient(GET_LIST, 'posts', {
     sort: { field: 'title', order: 'ASC' },
 });
 restClient(GET_ONE, 'posts', { id: 123 });
-restClient(GET_MANY, 'posts', { ids: [123, 124, 125] });
 restClient(CREATE, 'posts', { title: "hello, world" });
 restClient(UPDATE, 'posts', { id: 123, { title: "hello, world!" } });
 restClient(DELETE, 'posts', { id: 123 });
+restClient(GET_MANY, 'posts', { ids: [123, 124, 125] });
+restClient(GET_MATCHING, 'posts', { filter: { title: 'hello' } });
 ```
 
 ## Response Format
@@ -61,25 +63,19 @@ REST responses are objects. The format depends on the type.
 
 Type | Response format
 ---- | ----------------
-`GET_LIST` | `{ data: {Record[]}, total: {int} }`
-`GET_ONE`  | `{Record}`
-`GET_MANY` | `{Record[]}`
-`CREATE`   | `{Record}`
-`UPDATE`   | `{Record}`
-`DELETE`   | `{Record}`
+`GET_LIST`     | `{ data: {Record[]}, total: {int} }`
+`GET_ONE`      | `{Record}`
+`CREATE`       | `{Record}`
+`UPDATE`       | `{Record}`
+`DELETE`       | `{Record}`
+`GET_MANY`     | `{Record[]}`
+`GET_MATCHING` | `{Record[]}`
 
 A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 123, title: "hello, world" }`.
 
 Examples:
 
 ```js
-restClient(GET_ONE, 'posts', { id: 123 })
-.then(record => console.log(record));
-// {
-//     id: 123,
-//     title: "hello, world"
-// }
-
 restClient(GET_LIST, 'posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },
@@ -95,13 +91,12 @@ restClient(GET_LIST, 'posts', {
 //     total: 27
 // }
 
-restClient(GET_MANY, 'posts', { ids: [123, 124, 125] })
-.then(records => console.log(records));
-// [
-//     { id: 123, title: "hello, world" },
-//     { id: 124, title: "good day sunshise" },
-//     { id: 125, title: "howdy partner" },
-// ]
+restClient(GET_ONE, 'posts', { id: 123 })
+.then(record => console.log(record));
+// {
+//     id: 123,
+//     title: "hello, world"
+// }
 
 restClient(CREATE, 'posts', { title: "hello, world" });
 // {
@@ -120,6 +115,20 @@ restClient(DELETE, 'posts', { id: 123 });
 //     id: 123,
 //     title: "hello, world"
 // }
+
+restClient(GET_MANY, 'posts', { ids: [123, 124, 125] })
+.then(records => console.log(records));
+// [
+//     { id: 123, title: "hello, world" },
+//     { id: 124, title: "good day sunshise" },
+//     { id: 125, title: "howdy partner" },
+// ]
+
+restClient(GET_MATCHING, 'posts', { filter: { title: 'hello' } })
+.then(record => console.log(record));
+// [
+//     { id: 123, title: "hello, world" },
+// ]
 ```
 
 ## Error Format

@@ -1,19 +1,18 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
-import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/referenceActions';
+import { crudGetOneReferenceAndOptions as crudGetOneReferenceAndOptionsAction } from '../../actions/referenceActions';
 
 export class ReferenceInput extends Component {
     componentDidMount() {
-        this.props.crudGetOneReference(this.props.reference, this.props.record[this.props.source]);
+        this.props.crudGetOneReferenceAndOptions(this.props.reference, this.props.record[this.props.source]);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.record.id !== nextProps.record.id) {
-            this.props.crudGetOneReference(nextProps.reference, nextProps.record[nextProps.source]);
+            this.props.crudGetOneReferenceAndOptions(nextProps.reference, nextProps.record[nextProps.source]);
         }
     }
 
@@ -39,7 +38,7 @@ ReferenceInput.propTypes = {
     referenceSource: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
     options: PropTypes.object,
-    crudGetOneReference: PropTypes.func.isRequired,
+    crudGetOneReferenceAndOptions: PropTypes.func.isRequired,
 };
 
 ReferenceInput.defaultProps = {
@@ -55,5 +54,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-    crudGetOneReference: crudGetOneReferenceAction,
+    crudGetOneReferenceAndOptions: crudGetOneReferenceAndOptionsAction,
 })(ReferenceInput);

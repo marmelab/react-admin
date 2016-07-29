@@ -1,6 +1,7 @@
 import { queryParameters, fetchJson } from '../util/fetch';
 import {
     GET_LIST,
+    GET_MATCHING,
     GET_ONE,
     GET_MANY,
     CREATE,
@@ -25,6 +26,13 @@ export default (apiUrl) => {
             const query = {
                 sort: JSON.stringify([field, order]),
                 range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            };
+            url = `${apiUrl}/${resource}?${queryParameters(query)}`;
+            break;
+        }
+        case GET_MATCHING: {
+            const query = {
+                filter: JSON.stringify(params.filter),
             };
             url = `${apiUrl}/${resource}?${queryParameters(query)}`;
             break;

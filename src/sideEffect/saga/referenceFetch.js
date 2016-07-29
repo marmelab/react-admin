@@ -1,7 +1,10 @@
-import { delay } from 'redux-saga';
+import { takeEvery, delay } from 'redux-saga';
 import { call, cancel, fork, put, take } from 'redux-saga/effects';
-import { CRUD_GET_ONE_REFERENCE_GROUPED } from '../../actions/referenceActions';
-import { crudGetMany } from '../../actions/dataActions';
+import {
+    CRUD_GET_ONE_REFERENCE,
+    CRUD_GET_ONE_REFERENCE_AND_OPTIONS,
+} from '../../actions/referenceActions';
+import { crudGetMany, crudGetOne } from '../../actions/dataActions';
 
 /**
  * Example
@@ -14,7 +17,7 @@ import { crudGetMany } from '../../actions/dataActions';
 let ids = {};
 
 // see http://yelouafi.github.io/redux-saga/docs/recipes/index.html#debouncing
-function *referenceFetch(resource) {
+function *fetchReference(resource) {
     // combined with cancel(), this debounces the calls
     yield call(delay, 50);
     yield Object.keys(ids).map(reference =>
@@ -24,10 +27,10 @@ function *referenceFetch(resource) {
     ids = {};
 }
 
-export default function *watchReferenceFetch() {
+function *watchFetchReference() {
     let task;
     while (true) {
-        const { payload } = yield take(CRUD_GET_ONE_REFERENCE_GROUPED);
+        const { payload } = yield take(CRUD_GET_ONE_REFERENCE);
         const { id, resource } = payload;
         if (!ids[resource]) {
             ids[resource] = {};
@@ -36,6 +39,22 @@ export default function *watchReferenceFetch() {
         if (task) {
             yield cancel(task);
         }
-        task = yield fork(referenceFetch, resource);
+        task = yield fork(fetchReference, resource);
     }
+}
+
+function *fetchReferenceAndOptions({ payload }) {
+    const { id, resource } = payload;
+    yield put(crudGetOne(resource, id, null, false));
+}
+
+function *watchReferenceAndOptionsFetch() {
+    yield takeEvery(CRUD_GET_ONE_REFERENCE_AND_OPTIONS, fetchReferenceAndOptions);
+}
+
+export default function*() {
+    yield [
+        watchFetchReference(),
+        watchReferenceAndOptionsFetch(),
+    ];
 }

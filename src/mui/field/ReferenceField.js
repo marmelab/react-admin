@@ -2,16 +2,16 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import LinearProgress from 'material-ui/LinearProgress';
-import { crudGetOneReferenceGrouped as crudGetOneReferenceGroupedAction } from '../../actions/referenceActions';
+import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/referenceActions';
 
 export class ReferenceField extends Component {
     componentDidMount() {
-        this.props.crudGetOneReferenceGrouped(this.props.reference, this.props.record[this.props.source]);
+        this.props.crudGetOneReference(this.props.reference, this.props.record[this.props.source]);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.record.id !== nextProps.record.id) {
-            this.props.crudGetOneReferenceGrouped(nextProps.reference, nextProps.record[nextProps.source]);
+            this.props.crudGetOneReference(nextProps.reference, nextProps.record[nextProps.source]);
         }
     }
 
@@ -34,7 +34,7 @@ ReferenceField.propTypes = {
     referenceSource: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
     basePath: PropTypes.string.isRequired,
-    crudGetOneReferenceGrouped: PropTypes.func.isRequired,
+    crudGetOneReference: PropTypes.func.isRequired,
 };
 
 ReferenceField.defaultProps = {
@@ -50,5 +50,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-    crudGetOneReferenceGrouped: crudGetOneReferenceGroupedAction,
+    crudGetOneReference: crudGetOneReferenceAction,
 })(ReferenceField);
