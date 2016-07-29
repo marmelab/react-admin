@@ -1,16 +1,16 @@
 import { queryParameters, fetchJson } from '../util/fetch';
 import {
-    CRUD_GET_LIST,
-    CRUD_GET_ONE,
-    CRUD_GET_MANY,
-    CRUD_CREATE,
-    CRUD_UPDATE,
-    CRUD_DELETE,
-} from '../actions/dataActions';
+    GET_LIST,
+    GET_ONE,
+    GET_MANY,
+    CREATE,
+    UPDATE,
+    DELETE,
+} from './types';
 
 export default (apiUrl) => {
     /**
-     * @param {String} type One of the constants appearing at the top if this file, e.g. 'CRUD_UPDATE'
+     * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
      * @param {String} resource Name of the resource to fetch, e.g. 'posts'
      * @param {Object} params The REST request params, depending on the type
      * @returns {Object} { url, options } The HTTP request parameters
@@ -19,7 +19,7 @@ export default (apiUrl) => {
         let url = '';
         const options = {};
         switch (type) {
-        case CRUD_GET_LIST: {
+        case GET_LIST: {
             const { page, perPage } = params.pagination;
             const { field, order } = params.sort;
             const query = {
@@ -29,22 +29,22 @@ export default (apiUrl) => {
             url = `${apiUrl}/${resource}?${queryParameters(query)}`;
             break;
         }
-        case CRUD_GET_ONE:
+        case GET_ONE:
             url = `${apiUrl}/${resource}/${params.id}`;
             break;
-        case CRUD_GET_MANY: {
+        case GET_MANY: {
             const query = {
                 filter: JSON.stringify({ id: params.ids }),
             };
             url = `${apiUrl}/${resource}?${queryParameters(query)}`;
             break;
         }
-        case CRUD_UPDATE:
+        case UPDATE:
             url = `${apiUrl}/${resource}/${params.id}`;
             options.method = 'PUT';
             options.body = JSON.stringify(params.data);
             break;
-        case CRUD_CREATE:
+        case CREATE:
             url = `${apiUrl}/${resource}`;
             options.method = 'POST';
             options.body = JSON.stringify(params.data);
@@ -57,7 +57,7 @@ export default (apiUrl) => {
 
     /**
      * @param {Object} response HTTP response from fetch()
-     * @param {String} type One of the constants appearing at the top if this file, e.g. 'CRUD_UPDATE'
+     * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
      * @param {String} resource Name of the resource to fetch, e.g. 'posts'
      * @param {Object} params The REST request params, depending on the type
      * @returns {Object} REST response
@@ -65,24 +65,20 @@ export default (apiUrl) => {
     const convertHTTPResponseToREST = (response, type, resource, params) => {
         const { headers, json } = response;
         switch (type) {
-        case CRUD_GET_LIST:
+        case GET_LIST:
             return {
                 data: json.map(x => x),
                 total: parseInt(headers['content-range'].split('/').pop(), 10),
             };
-        case CRUD_CREATE:
-            return {
-                data: { ...params.data, id: json.id },
-            };
+        case CREATE:
+            return { ...params.data, id: json.id };
         default:
-            return {
-                data: json,
-            };
+            return json;
         }
     };
 
     /**
-     * @param {string} type Request type, e.g CRUD_GET_LIST
+     * @param {string} type Request type, e.g GET_LIST
      * @param {string} resource Resource name, e.g. "posts"
      * @param {Object} payload Request parameters. Depends on the request type
      * @returns {Promise} the Promise for a REST response

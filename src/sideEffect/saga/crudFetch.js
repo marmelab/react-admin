@@ -10,6 +10,7 @@ import {
 const crudFetch = (restClient, successSideEffects = () => [], failureSideEffects = () => []) => {
     function *handleFetch(action) {
         const { type, payload, meta } = action;
+        const restType = meta.fetch;
         delete meta.fetch;
         yield [
             put({ type: `${type}_LOADING`, payload, meta }),
@@ -18,7 +19,7 @@ const crudFetch = (restClient, successSideEffects = () => [], failureSideEffects
         let response;
         try {
             yield call(delay, 1000); // FIXME simulate response delay
-            response = yield call(restClient, type, meta.resource, payload);
+            response = yield call(restClient, restType, meta.resource, payload);
         } catch (error) {
             const sideEffects = failureSideEffects(type, meta.resource, payload, error);
             yield [

@@ -15,7 +15,7 @@ export default (type, resource, payload, response) => {
     case CRUD_CREATE:
         return [
             showNotification('Element created'),
-            push(`${payload.basePath}/${response.data.id}`),
+            push(`${payload.basePath}/${response.id}`),
         ];
     default:
         return [];

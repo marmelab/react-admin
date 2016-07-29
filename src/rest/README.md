@@ -9,10 +9,10 @@ The `restClient` parameter of the `<Admin>` component, must be a function with t
  * Execute the REST request and return a promise for a REST response
  *
  * @example
- * restClient(CRUD_GET_ONE, 'posts', { id: 123 })
- *  => new Promise(resolve => resolve({ data: { id: 123, title: "hello, world" } }))
+ * restClient(GET_ONE, 'posts', { id: 123 })
+ *  => new Promise(resolve => resolve({ id: 123, title: "hello, world" }))
  *
- * @param {string} type Request type, e.g CRUD_GET_LIST
+ * @param {string} type Request type, e.g GET_LIST
  * @param {string} resource Resource name, e.g. "posts"
  * @param {Object} payload Request parameters. Depends on the action type
  * @returns {Promise} the Promise for a REST response
@@ -26,52 +26,101 @@ The `restClient` is also the ideal place to add custom HTTP headers, authenticat
 
 ## Request Format
 
-REST requests require a *type* (e.g. `CRUD_GET_ONE`), a *resource* (e.g. 'posts') and a set of *parameters*:
-
-```js
-const response = restClient(CRUD_GET_ONE, 'posts', { id: 123 });
-```
+REST requests require a *type* (e.g. `GET_ONE`), a *resource* (e.g. 'posts') and a set of *parameters*.
 
 *Tip*: In comparison, HTTP requests require a *verb* (e.g. 'GET'), an *url* (e.g. 'http://myapi.com/posts'), a list of *headers* (like `Content-Type`) and a *body*.
 
 Possible types are:
 
-Type | `params` format
+Type | Params format
 ---- | ----------------
-`CRUD_GET_LIST` | `{ pagination: { page, perPage }, sort: { field, order } }`
-`CRUD_GET_ONE`  | `{ id }`
-`CRUD_GET_MANY` | `{ ids }`
-`CRUD_CREATE`   | `{ data }`
-`CRUD_UPDATE`   | `{ data }`
-`CRUD_DELETE`   | `{ id }`
+`GET_LIST` | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} } }`
+`GET_ONE`  | `{ id: {mixed} }`
+`GET_MANY` | `{ ids: {mixed[]} }`
+`CREATE`   | `{ data: {Record} }`
+`UPDATE`   | `{ id: {mixed}, data: {Record} }`
+`DELETE`   | `{ id: {mixed} }`
+
+Examples:
+
+```js
+restClient(GET_LIST, 'posts', {
+    pagination: { page: 1, perPage: 5 },
+    sort: { field: 'title', order: 'ASC' },
+});
+restClient(GET_ONE, 'posts', { id: 123 });
+restClient(GET_MANY, 'posts', { ids: [123, 124, 125] });
+restClient(CREATE, 'posts', { title: "hello, world" });
+restClient(UPDATE, 'posts', { id: 123, { title: "hello, world!" } });
+restClient(DELETE, 'posts', { id: 123 });
+```
 
 ## Response Format
 
 REST responses are objects. The format depends on the type.
 
-```js
-restClient(CRUD_GET_ONE, 'posts', { id: 123 })
-    .then(response => {
-        console.log(response);
-        /*
-         * {
-         *     data: {
-         *         id: 123,
-         *         title: "hello, world"
-         *     }
-         * }
-         */
-    });
-```
-
-Type | response format
+Type | Response format
 ---- | ----------------
-`CRUD_GET_LIST` | `{ data: [], total }`
-`CRUD_GET_ONE`  | `{ data }`
-`CRUD_GET_MANY` | `{ data: [] }`
-`CRUD_CREATE`   | `{ id }`
-`CRUD_UPDATE`   | `{ data }`
-`CRUD_DELETE`   | `{ data }`
+`GET_LIST` | `{ data: {Record[]}, total: {int} }`
+`GET_ONE`  | `{Record}`
+`GET_MANY` | `{Record[]}`
+`CREATE`   | `{Record}`
+`UPDATE`   | `{Record}`
+`DELETE`   | `{Record}`
+
+A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 123, title: "hello, world" }`.
+
+Examples:
+
+```js
+restClient(GET_ONE, 'posts', { id: 123 })
+.then(record => console.log(record));
+// {
+//     id: 123,
+//     title: "hello, world"
+// }
+
+restClient(GET_LIST, 'posts', {
+    pagination: { page: 1, perPage: 5 },
+    sort: { field: 'title', order: 'ASC' },
+}).then(response => console.log(response));
+// {
+//     data: [
+//         { id: 126, title: "allo?" },
+//         { id: 127, title: "bien le bonjour" },
+//         { id: 124, title: "good day sunshise" },
+//         { id: 123, title: "hello, world" },
+//         { id: 125, title: "howdy partner" },
+//     ],
+//     total: 27
+// }
+
+restClient(GET_MANY, 'posts', { ids: [123, 124, 125] })
+.then(records => console.log(records));
+// [
+//     { id: 123, title: "hello, world" },
+//     { id: 124, title: "good day sunshise" },
+//     { id: 125, title: "howdy partner" },
+// ]
+
+restClient(CREATE, 'posts', { title: "hello, world" });
+// {
+//     id: 450,
+//     title: "hello, world"
+// }
+
+restClient(UPDATE, 'posts', { id: 123, { title: "hello, world!" } });
+// {
+//     id: 123,
+//     title: "hello, world!"
+// }
+
+restClient(DELETE, 'posts', { id: 123 });
+// {
+//     id: 123,
+//     title: "hello, world"
+// }
+```
 
 ## Error Format
 
