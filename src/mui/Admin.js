@@ -41,9 +41,11 @@ const Admin = ({ restClient, appLayout = Layout, children }) => {
     );
 };
 
+const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
+
 Admin.propTypes = {
     restClient: PropTypes.func.isRequired,
-    appLayout: PropTypes.element,
+    appLayout: componentPropType,
     children: PropTypes.node,
 };
 

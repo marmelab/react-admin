@@ -18,13 +18,17 @@ export class ReferenceInput extends Component {
         }
     }
 
+    handleChange(event, key, payload) {
+        this.props.onChange(this.props.source, payload);
+    }
+
     render() {
         const { record, label, source, referenceRecord, referenceSource, allowEmpty, matchingReferences, options } = this.props;
         if (!referenceRecord && !allowEmpty) {
             return <TextField floatingLabelText={label} fullWidth />;
         }
         return (
-            <SelectField floatingLabelText={label} value={record[source]} onChange={() => {}} fullWidth {...options} >
+            <SelectField floatingLabelText={label} value={record[source]} onChange={::this.handleChange} fullWidth {...options} >
                 {matchingReferences.map(reference =>
                     <MenuItem key={reference.id} value={reference.id} primaryText={reference[referenceSource]} />
                 )}
@@ -44,6 +48,7 @@ ReferenceInput.propTypes = {
     referenceSource: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
     options: PropTypes.object,
+    onChange: PropTypes.func,
     crudGetOneReferenceAndOptions: PropTypes.func.isRequired,
 };
 

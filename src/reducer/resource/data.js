@@ -34,8 +34,9 @@ export default (resource) => (previousState = {}, { type, payload, meta }) => {
             ...newRecords,
         };
     }
-    case CRUD_GET_ONE_SUCCESS:
     case CRUD_UPDATE: // replace record in edit form with edited one to avoid displaying previous record version
+        return { ...previousState, [payload.id]: payload.data };
+    case CRUD_GET_ONE_SUCCESS:
     case CRUD_UPDATE_SUCCESS:
     case CRUD_CREATE_SUCCESS:
         return { ...previousState, [payload.id]: payload };
