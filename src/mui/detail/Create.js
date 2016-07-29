@@ -27,11 +27,12 @@ class Create extends Component {
     }
 
     render() {
-        const { title, children, data, isLoading } = this.props;
+        const { title, children, data, isLoading, resource } = this.props;
+        const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    <ListButton basePath={this.getBasePath()} />
+                    <ListButton basePath={basePath} />
                 </CardActions>
                 <CardTitle title={title} />
                 <form onSubmit={::this.handleSubmit}>
@@ -39,7 +40,13 @@ class Create extends Component {
                     {this.state ?
                         React.Children.map(children, input => (
                             <div key={input.props.source}>
-                                <input.type {...input.props} record={this.state.record} onChange={::this.handleChange} />
+                                <input.type
+                                    {...input.props}
+                                    resource={resource}
+                                    record={this.state.record}
+                                    onChange={::this.handleChange}
+                                    basePath={basePath}
+                                />
                             </div>
                         ))
                         :

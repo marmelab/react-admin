@@ -21,7 +21,6 @@ function *fetchReference(resource) {
     // combined with cancel(), this debounces the calls
     yield call(delay, 50);
     yield Object.keys(ids).map(reference =>
-        // FIXME fails when there is more than one relationship to fetch, because the fetch saga uses takeLatest()
         put(crudGetMany(resource, Object.keys(ids[reference])))
     );
     ids = {};
@@ -45,10 +44,13 @@ function *watchFetchReference() {
 
 function *fetchReferenceAndOptions({ payload }) {
     const { id, reference, relatedTo } = payload;
-    yield [
-        put(crudGetOne(reference, id, null, false)),
+    const actions = [
         put(crudGetMatching(reference, relatedTo, {})),
     ];
+    if (id) {
+        actions.push(put(crudGetOne(reference, id, null, false)));
+    }
+    yield actions;
 }
 
 function *watchReferenceAndOptionsFetch() {

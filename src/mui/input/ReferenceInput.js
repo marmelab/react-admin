@@ -27,6 +27,7 @@ export class ReferenceInput extends Component {
         if (!referenceRecord && !allowEmpty) {
             return <TextField floatingLabelText={label} fullWidth />;
         }
+        // FIXME use autocomplete as soon as material-ui knows how to handle it
         return (
             <SelectField floatingLabelText={label} value={record[source]} onChange={::this.handleChange} fullWidth {...options} >
                 {matchingReferences.map(reference =>
@@ -62,7 +63,7 @@ ReferenceInput.defaultProps = {
 function mapStateToProps(state, props) {
     const referenceId = props.record[props.source];
     const matchingIds = state.admin[props.resource].detail[props.reference] || [];
-    if (!matchingIds.includes(referenceId)) {
+    if (referenceId && !matchingIds.includes(referenceId)) {
         matchingIds.unshift(referenceId);
     }
     return {
