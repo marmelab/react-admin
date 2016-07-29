@@ -1,6 +1,6 @@
 import { delay } from 'redux-saga';
 import { call, cancel, fork, put, take } from 'redux-saga/effects';
-import { CRUD_GET_ONE_REFERENCE } from '../../actions/referenceActions';
+import { CRUD_GET_ONE_REFERENCE_GROUPED } from '../../actions/referenceActions';
 import { crudGetMany } from '../../actions/dataActions';
 
 /**
@@ -27,7 +27,7 @@ function *referenceFetch(resource) {
 export default function *watchReferenceFetch() {
     let task;
     while (true) {
-        const { payload } = yield take(CRUD_GET_ONE_REFERENCE);
+        const { payload } = yield take(CRUD_GET_ONE_REFERENCE_GROUPED);
         const { id, resource } = payload;
         if (!ids[resource]) {
             ids[resource] = {};

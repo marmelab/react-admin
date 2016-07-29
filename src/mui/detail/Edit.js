@@ -39,18 +39,19 @@ class Edit extends Component {
 
     render() {
         const { title, children, data, isLoading } = this.props;
+        const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    <ListButton basePath={this.getBasePath()} />
+                    <ListButton basePath={basePath} />
                 </CardActions>
                 <CardTitle title={title} />
                 <form onSubmit={::this.handleSubmit}>
                     <div style={{ padding: '0 1em 1em 1em' }}>
-                    {this.state ?
+                    {this.state && this.state.record ?
                         React.Children.map(children, input => (
                             <div key={input.props.source}>
-                                <input.type {...input.props} record={this.state.record} onChange={::this.handleChange} />
+                                <input.type {...input.props} record={this.state.record} onChange={::this.handleChange} basePath={basePath} />
                             </div>
                         ))
                         :

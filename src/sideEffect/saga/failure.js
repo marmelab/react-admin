@@ -7,10 +7,10 @@ import { showNotification } from '../../actions/notificationActions';
 export default (type, resource, payload, error) => {
     switch (type) {
     case CRUD_GET_ONE:
-        return [
+        return payload.basePath ? [
             showNotification('Element does not exist', 'warning'),
             push(payload.basePath),
-        ];
+        ] : [];
     default:
         return [];
     }

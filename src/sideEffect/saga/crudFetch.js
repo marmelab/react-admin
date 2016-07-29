@@ -1,4 +1,4 @@
-import { takeLatest, delay } from 'redux-saga';
+import { takeEvery, takeLatest, delay } from 'redux-saga';
 import { put, call, cancelled } from 'redux-saga/effects';
 import {
     FETCH_START,
@@ -43,7 +43,10 @@ const crudFetch = (restClient, successSideEffects = () => [], failureSideEffects
     }
 
     return function *watchCrudFetch() {
-        yield* takeLatest(action => action.meta && action.meta.fetch, handleFetch);
+        yield [
+            takeLatest(action => action.meta && action.meta.fetch && action.meta.cancelPrevious, handleFetch),
+            takeEvery(action => action.meta && action.meta.fetch && !action.meta.cancelPrevious, handleFetch),
+        ];
     };
 };
 
