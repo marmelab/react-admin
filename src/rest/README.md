@@ -37,8 +37,8 @@ Type | Params format
 `GET_LIST` | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} } }`
 `GET_ONE`  | `{ id: {mixed} }`
 `GET_MANY` | `{ ids: {mixed[]} }`
-`CREATE`   | `{ data: {Record} }`
-`UPDATE`   | `{ id: {mixed}, data: {Record} }`
+`CREATE`   | `{ data: {Object} }`
+`UPDATE`   | `{ id: {mixed}, data: {Object} }`
 `DELETE`   | `{ id: {mixed} }`
 
 Examples:

@@ -89,7 +89,7 @@ export default PostCreate;
 
 ## Configuring The REST Client
 
-REST isn't a standard, so it's impossible to make a REST client library that will work for all REST backends. Admin-on-rest deals with this problem by letting you provide a REST client function. This is the place to translate REST requests to HTTP requests, and HTTP response to REST responses.
+REST isn't a standard, so it's impossible to make a REST client library that will work for all REST backends. Admin-on-rest deals with this problem by letting you provide a REST client function. This is the place to translate REST requests to HTTP requests, and HTTP responses to REST responses.
 
 The `<Admin>` component expects a `restClient` parameter, which is a function with the following signature:
 
@@ -98,10 +98,10 @@ The `<Admin>` component expects a `restClient` parameter, which is a function wi
  * Execute the REST request and return a promise for a REST response
  *
  * @example
- * restClient(CRUD_GET_ONE, 'posts', { id: 123 })
+ * restClient(GET_ONE, 'posts', { id: 123 })
  *  => new Promise(resolve => resolve({ data: { id: 123, title: "hello, world" } }))
  *
- * @param {string} type Request type, e.g CRUD_GET_LIST
+ * @param {string} type Request type, e.g GET_LIST
  * @param {string} resource Resource name, e.g. "posts"
  * @param {Object} payload Request parameters. Depends on the action type
  * @returns {Promise} the Promise for a REST response
