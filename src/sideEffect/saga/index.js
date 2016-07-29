@@ -5,11 +5,11 @@ import defaultSuccessSideEffect from './success';
 import defaultFailureSideEffect from './failure';
 
 /**
- * @param {Object} restFlavor A REST object with two methods: fetch() and convertResponse()
+ * @param {Object} restClient A REST object with two methods: fetch() and convertResponse()
  * @param {function} successSideEffects A function returning an array of side effects to yield by saga
  * @param {function} failureSideEffects A function returning an array of side effects to yield by saga
  */
-export default (restFlavor, successSideEffects = defaultSuccessSideEffect, failureSideEffects = defaultFailureSideEffect) => function *rootSaga() {
-    yield fork(crudFetch(restFlavor, successSideEffects, failureSideEffects));
+export default (restClient, successSideEffects = defaultSuccessSideEffect, failureSideEffects = defaultFailureSideEffect) => function *rootSaga() {
+    yield fork(crudFetch(restClient, successSideEffects, failureSideEffects));
     yield fork(referenceFetch);
 };

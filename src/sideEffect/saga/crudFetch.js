@@ -7,7 +7,7 @@ import {
     FETCH_CANCEL,
 } from '../../actions/fetchActions';
 
-const crudFetch = (restFlavor, successSideEffects = () => [], failureSideEffects = () => []) => {
+const crudFetch = (restClient, successSideEffects = () => [], failureSideEffects = () => []) => {
     function *handleFetch(action) {
         const { type, payload, meta } = action;
         delete meta.fetch;
@@ -18,7 +18,7 @@ const crudFetch = (restFlavor, successSideEffects = () => [], failureSideEffects
         let response;
         try {
             yield call(delay, 1000); // FIXME simulate response delay
-            response = yield call(restFlavor.fetch, type, meta.resource, payload);
+            response = yield call(restClient, type, meta.resource, payload);
         } catch (error) {
             const sideEffects = failureSideEffects(type, meta.resource, payload, error);
             yield [
@@ -36,7 +36,7 @@ const crudFetch = (restFlavor, successSideEffects = () => [], failureSideEffects
         const sideEffects = successSideEffects(type, meta.resource, payload, response);
         yield [
             ...sideEffects.map(a => put(a)),
-            put({ type: `${type}_SUCCESS`, payload: restFlavor.convertResponse(type, meta.resource, payload, response), meta }),
+            put({ type: `${type}_SUCCESS`, payload: response, meta }),
             put({ type: FETCH_END }),
         ];
     }

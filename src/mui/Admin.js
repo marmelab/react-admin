@@ -8,7 +8,7 @@ import createSagaMiddleware from 'redux-saga';
 import { adminReducer, crudSaga, CrudRoute } from 'admin-on-rest';
 import { Layout } from 'admin-on-rest/mui';
 
-const Admin = ({ restFlavor, appLayout = Layout, children }) => {
+const Admin = ({ restClient, appLayout = Layout, children }) => {
     const resources = React.Children.map(children, ({ props }) => (
         { name: props.name, list: props.list, edit: props.edit, create: props.create }
     ));
@@ -22,7 +22,7 @@ const Admin = ({ restFlavor, appLayout = Layout, children }) => {
         applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
         window.devToolsExtension ? window.devToolsExtension() : f => f,
     ));
-    sagaMiddleware.run(crudSaga(restFlavor));
+    sagaMiddleware.run(crudSaga(restClient));
 
     const history = syncHistoryWithStore(hashHistory, store);
     const firstResource = resourceNames[0];
@@ -42,7 +42,7 @@ const Admin = ({ restFlavor, appLayout = Layout, children }) => {
 };
 
 Admin.propTypes = {
-    restFlavor: PropTypes.func.isRequired,
+    restClient: PropTypes.func.isRequired,
     appLayout: PropTypes.element,
     children: PropTypes.node,
 };

@@ -6,7 +6,7 @@ import FakeRest from './FakeRest';
 import fetchMock from 'fetch-mock';
 import data from './data';
 
-import { simpleRest } from 'admin-on-rest';
+import { simpleRestClient } from 'admin-on-rest';
 import { Admin, Resource } from 'admin-on-rest/mui';
 
 import Layout from './components/Layout';
@@ -23,7 +23,7 @@ restServer.toggleLogging(); // logging is off by default, enable it
 fetchMock.mock('^http://localhost:3000', restServer.getHandler());
 
 render(
-    <Admin restFlavor={simpleRest('http://localhost:3000')} appLayout={Layout}>
+    <Admin restClient={simpleRestClient('http://localhost:3000')} appLayout={Layout}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} />
         <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} />
     </Admin>,

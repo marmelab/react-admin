@@ -8,7 +8,7 @@ An frontend Framework for building admin applications on top of REST services, u
 // in app.js
 import React from 'react';
 import { render } from 'react-dom';
-import { simpleRest } from 'admin-on-rest';
+import { simpleRestClient } from 'admin-on-rest';
 import { Admin, Resource } from 'admin-on-rest/mui';
 
 import Layout from './components/Layout';
@@ -20,7 +20,7 @@ import CommentEdit from './components/comments/CommentEdit';
 import CommentCreate from './components/comments/CommentCreate';
 
 render(
-    <Admin restFlavor={simpleRest('http://localhost:3000')} appLayout={Layout}>
+    <Admin restClient={simpleRestClient('http://localhost:3000')} appLayout={Layout}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} />
         <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} />
     </Admin>,
@@ -87,53 +87,31 @@ const PostCreate = (props) => (
 export default PostCreate;
 ```
 
-## Configuring your REST flavor
+## Configuring The REST Client
 
-REST isn't a standard, so it's impossible to make a REST client library that will work for all REST backends. Admin-on-rest deals with this problem by letting you specify how the data structure used for the admin translates to the data from your REST backend.
+REST isn't a standard, so it's impossible to make a REST client library that will work for all REST backends. Admin-on-rest deals with this problem by letting you provide a REST client function. This is the place to translate REST requests to HTTP requests, and HTTP response to REST responses.
 
-The `<Admin>` component expects a `restFlavor` parameter, which is an object with two methods:
+The `<Admin>` component expects a `restClient` parameter, which is a function with the following signature:
 
 ```js
-{
-    /**
-     * Execute the HTTP request for the action type
-     *
-     * @param {string} type Action type, e.g CRUD_GET_LIST
-     * @param {string} resource Resource name, e.g. "posts"
-     * @param {Object} payload Action parameters. Depends on the action type, see src/actions/dataActions.js for details
-     * @returns {Promise} the Promise for a response
-     */
-    fetch(type, resource, payload) {
-        // your logic here
-    },
-
-    /**
-     * Convert the HTTP response to a payload for the SUCCESS action
-     *
-     * @param {string} type Action type, e.g CRUD_GET_LIST
-     * @param {string} resource Resource name, e.g. "posts"
-     * @param {Object} payload Action parameters. Depends on the action type, see src/actions/dataActions.js for details
-     * @param {Object} response The response returned by the rest fetch() promise
-     * @returns {Promise} the Promise for a response
-     */
-    convertResponse(type, resource, payload, response) {
-        // your logic here
-    },
-}
+/**
+ * Execute the REST request and return a promise for a REST response
+ *
+ * @example
+ * restClient(CRUD_GET_ONE, 'posts', { id: 123 })
+ *  => new Promise(resolve => resolve({ data: { id: 123, title: "hello, world" } }))
+ *
+ * @param {string} type Request type, e.g CRUD_GET_LIST
+ * @param {string} resource Resource name, e.g. "posts"
+ * @param {Object} payload Request parameters. Depends on the action type
+ * @returns {Promise} the Promise for a REST response
+ */
+const restClient = (type, resource, params) => new Promise();
 ```
 
-Possible action types are those from `src/actions/dataActions.js`:
+The expected format for REST requests and responses is documented in `src/rest/README.md`; you can find an example in `src/rest/simple.js`;
 
-* `CRUD_GET_LIST`
-* `CRUD_GET_ONE`
-* `CRUD_GET_MANY`
-* `CRUD_CREATE`
-* `CRUD_UPDATE`
-* `CRUD_DELETE`
-
-Check `src/rest/simple.js` for an example.
-
-The restFlavor is also the ideal place to add custom HTTP headers, authentication, etc.
+The `restClient` is also the ideal place to add custom HTTP headers, authentication, etc.
 
 ## Batteries Included But Removable
 

@@ -8,17 +8,20 @@ import {
     CRUD_DELETE,
 } from '../actions/dataActions';
 
-export default (apiUrl) => ({
+export default (apiUrl) => {
     /**
-     * @returns {Promise} The request response
+     * @param {String} type One of the constants appearing at the top if this file, e.g. 'CRUD_UPDATE'
+     * @param {String} resource Name of the resource to fetch, e.g. 'posts'
+     * @param {Object} params The REST request params, depending on the type
+     * @returns {Object} { url, options } The HTTP request parameters
      */
-    fetch(type, resource, payload) {
+    const convertRESTRequestToHTTP = (type, resource, params) => {
         let url = '';
         const options = {};
         switch (type) {
         case CRUD_GET_LIST: {
-            const { page, perPage } = payload.pagination;
-            const { field, order } = payload.sort;
+            const { page, perPage } = params.pagination;
+            const { field, order } = params.sort;
             const query = {
                 sort: JSON.stringify([field, order]),
                 range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
@@ -27,35 +30,39 @@ export default (apiUrl) => ({
             break;
         }
         case CRUD_GET_ONE:
-            url = `${apiUrl}/${resource}/${payload.id}`;
+            url = `${apiUrl}/${resource}/${params.id}`;
             break;
         case CRUD_GET_MANY: {
             const query = {
-                filter: JSON.stringify({ id: payload.ids }),
+                filter: JSON.stringify({ id: params.ids }),
             };
             url = `${apiUrl}/${resource}?${queryParameters(query)}`;
             break;
         }
         case CRUD_UPDATE:
-            url = `${apiUrl}/${resource}/${payload.id}`;
+            url = `${apiUrl}/${resource}/${params.id}`;
             options.method = 'PUT';
-            options.body = JSON.stringify(payload.data);
+            options.body = JSON.stringify(params.data);
             break;
         case CRUD_CREATE:
             url = `${apiUrl}/${resource}`;
             options.method = 'POST';
-            options.body = JSON.stringify(payload.data);
+            options.body = JSON.stringify(params.data);
             break;
         default:
             throw new Error(`Unsupported fetch action type ${type}`);
         }
-        return fetchJson(url, options);
-    },
+        return { url, options };
+    };
 
     /**
-     * @returns {Object} success action payload
+     * @param {Object} response HTTP response from fetch()
+     * @param {String} type One of the constants appearing at the top if this file, e.g. 'CRUD_UPDATE'
+     * @param {String} resource Name of the resource to fetch, e.g. 'posts'
+     * @param {Object} params The REST request params, depending on the type
+     * @returns {Object} REST response
      */
-    convertResponse(type, resource, payload, response) {
+    const convertHTTPResponseToREST = (response, type, resource, params) => {
         const { headers, json } = response;
         switch (type) {
         case CRUD_GET_LIST:
@@ -65,12 +72,24 @@ export default (apiUrl) => ({
             };
         case CRUD_CREATE:
             return {
-                data: { ...payload.data, id: json.id },
+                data: { ...params.data, id: json.id },
             };
         default:
             return {
                 data: json,
             };
         }
-    }
-});
+    };
+
+    /**
+     * @param {string} type Request type, e.g CRUD_GET_LIST
+     * @param {string} resource Resource name, e.g. "posts"
+     * @param {Object} payload Request parameters. Depends on the request type
+     * @returns {Promise} the Promise for a REST response
+     */
+    return (type, resource, params) => {
+        const { url, options } = convertRESTRequestToHTTP(type, resource, params);
+        return fetchJson(url, options)
+            .then(response => convertHTTPResponseToREST(response, type, resource, params));
+    };
+};
