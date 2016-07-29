@@ -1,10 +1,11 @@
 import {
     GET_LIST,
     GET_ONE,
-    GET_MANY,
     CREATE,
     UPDATE,
     DELETE,
+    GET_MANY,
+    GET_MATCHING,
 } from '../rest/types';
 
 export const CRUD_GET_LIST = 'CRUD_GET_LIST';
@@ -27,17 +28,6 @@ export const crudGetOne = (resource, id, basePath, cancelPrevious = true) => ({
     type: CRUD_GET_ONE,
     payload: { id, basePath },
     meta: { resource, fetch: GET_ONE, cancelPrevious },
-});
-
-export const CRUD_GET_MANY = 'CRUD_GET_MANY';
-export const CRUD_GET_MANY_LOADING = 'CRUD_GET_MANY_LOADING';
-export const CRUD_GET_MANY_FAILURE = 'CRUD_GET_MANY_FAILURE';
-export const CRUD_GET_MANY_SUCCESS = 'CRUD_GET_MANY_SUCCESS';
-
-export const crudGetMany = (resource, ids) => ({
-    type: CRUD_GET_MANY,
-    payload: { ids },
-    meta: { resource, fetch: GET_MANY, cancelPrevious: false },
 });
 
 export const CRUD_CREATE = 'CRUD_CREATE';
@@ -71,4 +61,28 @@ export const crudDelete = (resource, id) => ({
     type: CRUD_DELETE,
     payload: { id },
     meta: { resource, fetch: DELETE, cancelPrevious: true },
+});
+
+export const CRUD_GET_MANY = 'CRUD_GET_MANY';
+export const CRUD_GET_MANY_LOADING = 'CRUD_GET_MANY_LOADING';
+export const CRUD_GET_MANY_FAILURE = 'CRUD_GET_MANY_FAILURE';
+export const CRUD_GET_MANY_SUCCESS = 'CRUD_GET_MANY_SUCCESS';
+
+// Reference related actions
+
+export const crudGetMany = (resource, ids) => ({
+    type: CRUD_GET_MANY,
+    payload: { ids },
+    meta: { resource, fetch: GET_MANY, cancelPrevious: false },
+});
+
+export const CRUD_GET_MATCHING = 'CRUD_GET_MATCHING';
+export const CRUD_GET_MATCHING_LOADING = 'CRUD_GET_MATCHING_LOADING';
+export const CRUD_GET_MATCHING_FAILURE = 'CRUD_GET_MATCHING_FAILURE';
+export const CRUD_GET_MATCHING_SUCCESS = 'CRUD_GET_MATCHING_SUCCESS';
+
+export const crudGetMatching = (reference, relatedTo, filter) => ({
+    type: CRUD_GET_MATCHING,
+    payload: { filter },
+    meta: { resource: reference, relatedTo, fetch: GET_MATCHING, cancelPrevious: false },
 });

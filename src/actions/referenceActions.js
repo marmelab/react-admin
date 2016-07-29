@@ -7,7 +7,7 @@ export const crudGetOneReference = (resource, id) => ({
 
 export const CRUD_GET_ONE_REFERENCE_AND_OPTIONS = 'CRUD_GET_ONE_REFERENCE_AND_OPTIONS';
 
-export const crudGetOneReferenceAndOptions = (resource, id) => ({
+export const crudGetOneReferenceAndOptions = (reference, id, relatedTo) => ({
     type: CRUD_GET_ONE_REFERENCE_AND_OPTIONS,
-    payload: { resource, id },
+    payload: { reference, id, relatedTo },
 });

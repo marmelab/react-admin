@@ -4,7 +4,7 @@ import {
     CRUD_GET_ONE_REFERENCE,
     CRUD_GET_ONE_REFERENCE_AND_OPTIONS,
 } from '../../actions/referenceActions';
-import { crudGetMany, crudGetOne } from '../../actions/dataActions';
+import { crudGetOne, crudGetMany, crudGetMatching } from '../../actions/dataActions';
 
 /**
  * Example
@@ -44,8 +44,11 @@ function *watchFetchReference() {
 }
 
 function *fetchReferenceAndOptions({ payload }) {
-    const { id, resource } = payload;
-    yield put(crudGetOne(resource, id, null, false));
+    const { id, reference, relatedTo } = payload;
+    yield [
+        put(crudGetOne(reference, id, null, false)),
+        put(crudGetMatching(reference, relatedTo, {})),
+    ];
 }
 
 function *watchReferenceAndOptionsFetch() {

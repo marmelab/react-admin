@@ -38,7 +38,7 @@ class Edit extends Component {
     }
 
     render() {
-        const { title, children, data, isLoading } = this.props;
+        const { title, children, data, isLoading, resource } = this.props;
         const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
@@ -51,7 +51,13 @@ class Edit extends Component {
                     {this.state && this.state.record ?
                         React.Children.map(children, input => (
                             <div key={input.props.source}>
-                                <input.type {...input.props} record={this.state.record} onChange={::this.handleChange} basePath={basePath} />
+                                <input.type
+                                    {...input.props}
+                                    resource={resource}
+                                    record={this.state.record}
+                                    onChange={::this.handleChange}
+                                    basePath={basePath}
+                                />
                             </div>
                         ))
                         :

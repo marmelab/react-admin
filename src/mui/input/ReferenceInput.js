@@ -7,32 +7,38 @@ import { crudGetOneReferenceAndOptions as crudGetOneReferenceAndOptionsAction } 
 
 export class ReferenceInput extends Component {
     componentDidMount() {
-        this.props.crudGetOneReferenceAndOptions(this.props.reference, this.props.record[this.props.source]);
+        const { reference, record, source, resource } = this.props;
+        this.props.crudGetOneReferenceAndOptions(reference, record[source], resource);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.record.id !== nextProps.record.id) {
-            this.props.crudGetOneReferenceAndOptions(nextProps.reference, nextProps.record[nextProps.source]);
+            const { reference, record, source, resource } = nextProps;
+            this.props.crudGetOneReferenceAndOptions(reference, record[source], resource);
         }
     }
 
     render() {
-        const { record, label, source, referenceRecord, referenceSource, allowEmpty, options } = this.props;
+        const { record, label, source, referenceRecord, referenceSource, allowEmpty, matchingReferences, options } = this.props;
         if (!referenceRecord && !allowEmpty) {
             return <TextField floatingLabelText={label} fullWidth />;
         }
         return (
             <SelectField floatingLabelText={label} value={record[source]} onChange={() => {}} fullWidth {...options} >
-                <MenuItem value={record[source]} primaryText={referenceRecord[referenceSource]} />
+                {matchingReferences.map(reference =>
+                    <MenuItem key={reference.id} value={reference.id} primaryText={reference[referenceSource]} />
+                )}
             </SelectField>
         );
     }
 }
 
 ReferenceInput.propTypes = {
+    resource: PropTypes.string.isRequired,
     source: PropTypes.string.isRequired,
     label: PropTypes.string,
     record: PropTypes.object,
+    matchingReferences: PropTypes.array,
     allowEmpty: PropTypes.bool.isRequired,
     reference: PropTypes.string.isRequired,
     referenceSource: PropTypes.string.isRequired,
@@ -45,11 +51,18 @@ ReferenceInput.defaultProps = {
     referenceRecord: null,
     record: {},
     allowEmpty: false,
+    matchingReferences: [],
 };
 
 function mapStateToProps(state, props) {
+    const referenceId = props.record[props.source];
+    const matchingIds = state.admin[props.resource].detail[props.reference] || [];
+    if (!matchingIds.includes(referenceId)) {
+        matchingIds.unshift(referenceId);
+    }
     return {
-        referenceRecord: state.admin[props.reference].data[props.record[props.source]],
+        referenceRecord: state.admin[props.reference].data[referenceId],
+        matchingReferences: matchingIds.map(id => state.admin[props.reference].data[id]),
     };
 }
 

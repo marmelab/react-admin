@@ -5,6 +5,7 @@ import {
     CRUD_UPDATE,
     CRUD_UPDATE_SUCCESS,
     CRUD_CREATE_SUCCESS,
+    CRUD_GET_MATCHING_SUCCESS,
 } from '../../actions/dataActions';
 
 export default (resource) => (previousState = {}, { type, payload, meta }) => {
@@ -22,7 +23,8 @@ export default (resource) => (previousState = {}, { type, payload, meta }) => {
             ...newRecords,
         };
     }
-    case CRUD_GET_MANY_SUCCESS: {
+    case CRUD_GET_MANY_SUCCESS:
+    case CRUD_GET_MATCHING_SUCCESS: {
         const newRecords = {};
         payload.forEach(record => {
             newRecords[record.id] = record;
