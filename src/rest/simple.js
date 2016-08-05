@@ -9,6 +9,18 @@ import {
     DELETE,
 } from './types';
 
+/**
+ * Maps admin-on-rest queries to a simple REST API
+ *
+ * @example
+ * GET_LIST     => GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]
+ * GET_MATCHING => GET http://my.api.url/posts?filter={title:'bar'}
+ * GET_ONE      => GET http://my.api.url/posts/123
+ * GET_MANY     => GET http://my.api.url/posts?filter={ids:[123,456,789]}
+ * UPDATE       => PUT http://my.api.url/posts/123
+ * CREATE       => POST http://my.api.url/posts/123
+ * DELETE       => DELETE http://my.api.url/posts/123
+ */
 export default (apiUrl) => {
     /**
      * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
