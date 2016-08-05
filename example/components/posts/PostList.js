@@ -8,7 +8,7 @@ const PostList = (props) => (
         <DateField label="published_at" source="published_at" />
         <TextField label="average_note" source="average_note" />
         <TextField label="views" source="views" />
-        <EditButton basePath="/posts" />
+        <EditButton />
     </Datagrid>
 );
 

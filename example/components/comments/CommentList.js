@@ -6,7 +6,7 @@ const CommentList = (props) => (
         <TextField label="id" source="id" />
         <ReferenceField label="Post" source="post_id" reference="posts" referenceSource="title" />
         <TextField label="date" source="created_at" />
-        <EditButton basePath="/comments" />
+        <EditButton />
     </Datagrid>
 );
 
