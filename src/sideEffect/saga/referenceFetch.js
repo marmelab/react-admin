@@ -1,10 +1,7 @@
-import { takeEvery, delay } from 'redux-saga';
+import { delay } from 'redux-saga';
 import { call, cancel, fork, put, take } from 'redux-saga/effects';
-import {
-    CRUD_GET_ONE_REFERENCE,
-    CRUD_GET_ONE_REFERENCE_AND_OPTIONS,
-} from '../../actions/referenceActions';
-import { crudGetOne, crudGetMany, crudGetMatching } from '../../actions/dataActions';
+import { CRUD_GET_ONE_REFERENCE } from '../../actions/referenceActions';
+import { crudGetMany } from '../../actions/dataActions';
 
 /**
  * Example
@@ -28,7 +25,7 @@ function *fetchReference(resource) {
 
 function *watchFetchReference() {
     let task;
-    while (true) {
+    while (true) { // eslint-disable-line no-constant-condition
         const { payload } = yield take(CRUD_GET_ONE_REFERENCE);
         const { id, resource } = payload;
         if (!ids[resource]) {
@@ -42,24 +39,6 @@ function *watchFetchReference() {
     }
 }
 
-function *fetchReferenceAndOptions({ payload }) {
-    const { id, reference, relatedTo } = payload;
-    const actions = [
-        put(crudGetMatching(reference, relatedTo, {})),
-    ];
-    if (id) {
-        actions.push(put(crudGetOne(reference, id, null, false)));
-    }
-    yield actions;
-}
-
-function *watchReferenceAndOptionsFetch() {
-    yield takeEvery(CRUD_GET_ONE_REFERENCE_AND_OPTIONS, fetchReferenceAndOptions);
-}
-
 export default function*() {
-    yield [
-        watchFetchReference(),
-        watchReferenceAndOptionsFetch(),
-    ];
+    yield watchFetchReference();
 }

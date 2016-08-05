@@ -3,19 +3,26 @@ import { connect } from 'react-redux';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
-import { crudGetOneReferenceAndOptions as crudGetOneReferenceAndOptionsAction } from '../../actions/referenceActions';
+import { crudGetOne as crudGetOneAction, crudGetMatching as crudGetMatchingAction } from '../../actions/dataActions';
 
 export class ReferenceInput extends Component {
     componentDidMount() {
         const { reference, record, source, resource } = this.props;
-        this.props.crudGetOneReferenceAndOptions(reference, record[source], resource);
+        this.fetchReferenceAndOptions(reference, record[source], resource);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.record.id !== nextProps.record.id) {
             const { reference, record, source, resource } = nextProps;
-            this.props.crudGetOneReferenceAndOptions(reference, record[source], resource);
+            this.fetchReferenceAndOptions(reference, record[source], resource);
         }
+    }
+
+    fetchReferenceAndOptions(reference, id, relatedTo) {
+        if (id) {
+            this.props.crudGetOne(reference, id, null, false);
+        }
+        this.props.crudGetMatching(reference, relatedTo, {});
     }
 
     handleChange(event, key, payload) {
@@ -50,7 +57,8 @@ ReferenceInput.propTypes = {
     referenceRecord: PropTypes.object,
     options: PropTypes.object,
     onChange: PropTypes.func,
-    crudGetOneReferenceAndOptions: PropTypes.func.isRequired,
+    crudGetOne: PropTypes.func.isRequired,
+    crudGetMatching: PropTypes.func.isRequired,
 };
 
 ReferenceInput.defaultProps = {
@@ -73,5 +81,6 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-    crudGetOneReferenceAndOptions: crudGetOneReferenceAndOptionsAction,
+    crudGetOne: crudGetOneAction,
+    crudGetMatching: crudGetMatchingAction,
 })(ReferenceInput);
