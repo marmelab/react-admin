@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
 
-const Resource = ({ name, list, edit, create }) => <span>Resource elements are used for configuration only and should never be rendered</span>;
+const Resource = () => <span>&lt;Resource&gt; elements are for configuration only and should not be rendered</span>;
 
 Resource.propTypes = {
     name: PropTypes.string.isRequired,
