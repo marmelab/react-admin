@@ -18,7 +18,12 @@ CrudRoute.createRouteFromReactElement = (element, parentRoute) => {
     // higher-order component to pass path as resource to components
     crudRoute.component = ({ children }) => (
         <div>
-            {React.Children.map(children, child => React.cloneElement(child, { resource: path }))}
+            {React.Children.map(children, child => React.cloneElement(child, {
+                resource: path,
+                hasList: !!list,
+                hasEdit: !!edit,
+                hasCreate: !!create,
+            }))}
         </div>
     );
     return crudRoute;

@@ -43,12 +43,12 @@ class Datagrid extends Component {
     }
 
     render() {
-        const { resource, title, data, ids, children, params, isLoading } = this.props;
+        const { resource, hasCreate, title, data, ids, children, params, isLoading } = this.props;
         const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    <CreateButton basePath={basePath} />
+                    {hasCreate ? <CreateButton basePath={basePath} /> : undefined}
                     <FlatButton label="Refresh" onClick={::this.refresh} icon={<NavigationRefresh />} />
                 </CardActions>
                 <CardTitle title={title} />
@@ -83,6 +83,8 @@ class Datagrid extends Component {
 Datagrid.propTypes = {
     title: PropTypes.string,
     resource: PropTypes.string.isRequired,
+    hasCreate: PropTypes.bool.isRequired,
+    hasEdit: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     path: PropTypes.string,
     params: PropTypes.object.isRequired,
