@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Card, CardTitle, CardActions } from 'material-ui/Card';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import inflection from 'inflection';
+import InputList from './InputList';
 import Title from '../layout/Title';
 import ListButton from '../button/ListButton';
 import SaveButton from '../button/SaveButton';
@@ -12,6 +13,8 @@ class Create extends Component {
     constructor(props) {
         super(props);
         this.state = { record: {} };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     getBasePath() {
@@ -37,23 +40,9 @@ class Create extends Component {
                     <ListButton basePath={basePath} />
                 </CardActions>
                 <CardTitle title={<Title title={title} record={data} defaultTitle={`Create ${inflection.humanize(inflection.singularize(resource))}`} />} />
-                <form onSubmit={::this.handleSubmit}>
+                <form onSubmit={this.handleSubmit}>
                     <div style={{ padding: '0 1em 1em 1em' }}>
-                    {this.state ?
-                        React.Children.map(children, input => (
-                            <div key={input.props.source}>
-                                <input.type
-                                    {...input.props}
-                                    resource={resource}
-                                    record={this.state.record}
-                                    onChange={::this.handleChange}
-                                    basePath={basePath}
-                                />
-                            </div>
-                        ))
-                        :
-                        'not good'
-                    }
+                        <InputList record={this.state.record} inputs={children} resource={resource} handleChange={this.handleChange} basePath={basePath} />
                     </div>
                     <Toolbar>
                         <ToolbarGroup>
