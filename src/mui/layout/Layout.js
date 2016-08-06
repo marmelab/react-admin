@@ -11,11 +11,11 @@ injectTapEventPlugin();
 
 const Layout = ({ isLoading, children, route }) => (
     <MuiThemeProvider>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <AppBar title="Admin on REST" iconElementRight={isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span/>} />
-            <div className="body" style={{ display: 'flex', flexDirection: 'row' }}>
-                <Menu resources={route.resources} />
+            <div className="body" style={{ display: 'flex', flex: '1' }}>
                 <div style={{ flex: 1 }}>{children}</div>
+                <Menu resources={route.resources} />
             </div>
             <Notification />
         </div>
