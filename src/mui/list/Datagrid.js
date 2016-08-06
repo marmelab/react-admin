@@ -5,16 +5,14 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+import inflection from 'inflection';
+import Title from '../layout/Title';
 import Pagination from './Pagination';
 import CreateButton from '../button/CreateButton';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { setSort as setSortAction } from '../../actions/sortActions';
 
 class Datagrid extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         this.props.crudGetList(this.props.resource, this.props.params.pagination, this.props.params.sort);
     }
@@ -51,7 +49,7 @@ class Datagrid extends Component {
                     {hasCreate ? <CreateButton basePath={basePath} /> : undefined}
                     <FlatButton label="Refresh" onClick={::this.refresh} icon={<NavigationRefresh />} />
                 </CardActions>
-                <CardTitle title={title} />
+                <CardTitle title={<Title title={title} defaultTitle={`${inflection.humanize(inflection.pluralize(resource))} List`} />} />
                 <Table multiSelectable>
                     <TableHeader>
                         <TableRow>
@@ -81,7 +79,7 @@ class Datagrid extends Component {
 }
 
 Datagrid.propTypes = {
-    title: PropTypes.string,
+    title: PropTypes.any,
     resource: PropTypes.string.isRequired,
     hasCreate: PropTypes.bool.isRequired,
     hasEdit: PropTypes.bool.isRequired,

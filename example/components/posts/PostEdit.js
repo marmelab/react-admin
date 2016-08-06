@@ -1,8 +1,12 @@
 import React from 'react';
 import { Edit, DateInput, DisabledInput, LongTextInput, TextInput } from 'admin-on-rest/mui';
 
+const PostTitle = ({ record }) => {
+    return <span>Post {record ? `"${record.title}"` : ''}</span>;
+};
+
 const PostEdit = (props) => (
-    <Edit title="Post detail" {...props}>
+    <Edit title={PostTitle} {...props}>
         <DisabledInput label="Id" source="id" />
         <TextInput label="Title" source="title" />
         <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />

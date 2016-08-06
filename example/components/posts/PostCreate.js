@@ -2,7 +2,7 @@ import React from 'react';
 import { Create, DateInput, LongTextInput, TextInput } from 'admin-on-rest/mui';
 
 const PostCreate = (props) => (
-    <Create title="Create a Post" {...props}>
+    <Create {...props}>
         <TextInput label="Title" source="title" />
         <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
         <LongTextInput label="Body" source="body" />

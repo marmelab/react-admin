@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardTitle, CardActions } from 'material-ui/Card';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
+import inflection from 'inflection';
+import Title from '../layout/Title';
 import ListButton from '../button/ListButton';
 import SaveButton from '../button/SaveButton';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
@@ -34,7 +36,7 @@ class Create extends Component {
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     <ListButton basePath={basePath} />
                 </CardActions>
-                <CardTitle title={title} />
+                <CardTitle title={<Title title={title} record={data} defaultTitle={`Create ${inflection.humanize(inflection.singularize(resource))}`} />} />
                 <form onSubmit={::this.handleSubmit}>
                     <div style={{ padding: '0 1em 1em 1em' }}>
                     {this.state ?
@@ -65,7 +67,7 @@ class Create extends Component {
 }
 
 Create.propTypes = {
-    title: PropTypes.string,
+    title: PropTypes.any,
     resource: PropTypes.string.isRequired,
     location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
