@@ -9,13 +9,11 @@ import { adminReducer, crudSaga, CrudRoute } from 'admin-on-rest';
 import { Layout } from 'admin-on-rest/mui';
 
 const Admin = ({ restClient, appLayout = Layout, children }) => {
-    const resources = React.Children.map(children, ({ props }) => (
-        { name: props.name, list: props.list, edit: props.edit, create: props.create }
-    ));
-    const resourceNames = React.Children.map(children, ({ props }) => props.name);
+    const resources = React.Children.map(children, ({ props }) => props);
+    const firstResource = resources[0].name;
     const sagaMiddleware = createSagaMiddleware();
     const reducer = combineReducers({
-        admin: adminReducer(resourceNames),
+        admin: adminReducer(resources),
         routing: routerReducer,
     });
     const store = createStore(reducer, undefined, compose(
@@ -25,15 +23,14 @@ const Admin = ({ restClient, appLayout = Layout, children }) => {
     sagaMiddleware.run(crudSaga(restClient));
 
     const history = syncHistoryWithStore(hashHistory, store);
-    const firstResource = resourceNames[0];
 
     return (
         <Provider store={store}>
             <Router history={history}>
                 <Redirect from="/" to={`/${firstResource}`} />
-                <Route path="/" component={appLayout}>
+                <Route path="/" component={appLayout} resources={resources}>
                     {resources.map(resource =>
-                        <CrudRoute key={resource.name} path={resource.name} list={resource.list} edit={resource.edit} create={resource.create} />
+                        <CrudRoute key={resource.name} path={resource.name} list={resource.list} edit={resource.edit} create={resource.create} options={resource.options} />
                     )}
                 </Route>
             </Router>

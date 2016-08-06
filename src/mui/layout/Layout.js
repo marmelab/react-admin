@@ -5,24 +5,27 @@ import AppBar from 'material-ui/AppBar';
 import CircularProgress from 'material-ui/CircularProgress';
 import Notification from './Notification';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import Menu from './Menu';
 
 injectTapEventPlugin();
 
-const CrudApp = ({ isLoading, children }) => (
+const Layout = ({ isLoading, children, route }) => (
     <MuiThemeProvider>
         <div>
             <AppBar title="Admin on REST" iconElementRight={isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span/>} />
-            <div className="body">
-                {children}
+            <div className="body" style={{ display: 'flex', flexDirection: 'row' }}>
+                <Menu resources={route.resources} />
+                <div style={{ flex: 1 }}>{children}</div>
             </div>
             <Notification />
         </div>
     </MuiThemeProvider>
 );
 
-CrudApp.propTypes = {
+Layout.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     children: PropTypes.node,
+    route: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -31,4 +34,4 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-)(CrudApp);
+)(Layout);

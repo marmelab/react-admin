@@ -28,6 +28,7 @@
     "eslint-plugin-jsx-a11y": "^1.5.3",
     "eslint-plugin-react": "^5.2.2",
     "farfetched": "^1.2.0",
+    "inflection": "^1.10.0",
     "material-ui": "^0.15.2",
     "mocha": "^2.5.3",
     "react": "^15.2.1",
