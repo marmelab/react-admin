@@ -30,7 +30,7 @@ const Admin = ({ restClient, appLayout = Layout, children }) => {
                 <Redirect from="/" to={`/${firstResource}`} />
                 <Route path="/" component={appLayout} resources={resources}>
                     {resources.map(resource =>
-                        <CrudRoute key={resource.name} path={resource.name} list={resource.list} edit={resource.edit} create={resource.create} options={resource.options} />
+                        <CrudRoute key={resource.name} path={resource.name} list={resource.list} edit={resource.edit} create={resource.create} remove={resource.remove} options={resource.options} />
                     )}
                 </Route>
             </Router>

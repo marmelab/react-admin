@@ -57,9 +57,9 @@ export const CRUD_DELETE_LOADING = 'CRUD_DELETE_LOADING';
 export const CRUD_DELETE_FAILURE = 'CRUD_DELETE_FAILURE';
 export const CRUD_DELETE_SUCCESS = 'CRUD_DELETE_SUCCESS';
 
-export const crudDelete = (resource, id) => ({
+export const crudDelete = (resource, id, basePath) => ({
     type: CRUD_DELETE,
-    payload: { id },
+    payload: { id, basePath },
     meta: { resource, fetch: DELETE, cancelPrevious: true },
 });
 

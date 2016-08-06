@@ -3,6 +3,7 @@ export * from './field';
 export * from './input';
 export * from './list';
 
+export Delete from './delete/Delete';
 export Create from './detail/Create';
 export Edit from './detail/Edit';
 export Layout from './layout/Layout';

@@ -51,7 +51,7 @@ class Datagrid extends Component {
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    {hasCreate ? <CreateButton basePath={basePath} /> : undefined}
+                    {hasCreate && <CreateButton basePath={basePath} />}
                     <FlatButton label="Refresh" onClick={::this.refresh} icon={<NavigationRefresh />} />
                 </CardActions>
                 <CardTitle title={<Title title={title} defaultTitle={`${inflection.humanize(inflection.pluralize(resource))} List`} />} />

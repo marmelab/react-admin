@@ -5,8 +5,7 @@ import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import inflection from 'inflection';
 import InputList from './InputList';
 import Title from '../layout/Title';
-import ListButton from '../button/ListButton';
-import SaveButton from '../button/SaveButton';
+import { ListButton, DeleteButton, SaveButton } from '../button';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
 
 class Edit extends Component {
@@ -50,12 +49,13 @@ class Edit extends Component {
     }
 
     render() {
-        const { title, children, id, data, isLoading, resource } = this.props;
+        const { title, children, id, data, isLoading, resource, hasDelete } = this.props;
         const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     <ListButton basePath={basePath} />
+                    {hasDelete && <DeleteButton basePath={basePath} record={data} />}
                 </CardActions>
                 <CardTitle title={<Title title={title} record={data} defaultTitle={`${inflection.humanize(inflection.singularize(resource))} #${id}`} />} />
                 <form onSubmit={this.handleSubmit}>
@@ -78,6 +78,7 @@ Edit.propTypes = {
     id: PropTypes.string.isRequired,
     resource: PropTypes.string.isRequired,
     location: PropTypes.object.isRequired,
+    hasDelete: PropTypes.bool.isRequired,
     params: PropTypes.object.isRequired,
     data: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,

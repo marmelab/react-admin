@@ -7,7 +7,7 @@ import fetchMock from 'fetch-mock';
 import data from './data';
 
 import { simpleRestClient } from 'admin-on-rest';
-import { Admin, Resource } from 'admin-on-rest/mui';
+import { Admin, Resource, Delete } from 'admin-on-rest/mui';
 
 import PostList from './components/posts/PostList';
 import PostEdit from './components/posts/PostEdit';
@@ -26,8 +26,8 @@ fetchMock.mock('^http://localhost:3000', restServer.getHandler());
 
 render(
     <Admin restClient={simpleRestClient('http://localhost:3000')}>
-        <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} />
-        <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} icon={CommentIcon} />
+        <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} icon={PostIcon} />
+        <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} remove={Delete} icon={CommentIcon} />
     </Admin>,
     document.getElementById('root')
 );

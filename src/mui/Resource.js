@@ -10,6 +10,7 @@ Resource.propTypes = {
     list: componentPropType,
     edit: componentPropType,
     create: componentPropType,
+    remove: componentPropType,
     icon: componentPropType,
     options: PropTypes.object,
 };

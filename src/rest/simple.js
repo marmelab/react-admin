@@ -69,6 +69,10 @@ export default (apiUrl) => {
             options.method = 'POST';
             options.body = JSON.stringify(params.data);
             break;
+        case DELETE:
+            url = `${apiUrl}/${resource}/${params.id}`;
+            options.method = 'DELETE';
+            break;
         default:
             throw new Error(`Unsupported fetch action type ${type}`);
         }
