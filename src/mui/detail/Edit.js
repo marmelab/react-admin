@@ -31,7 +31,8 @@ class Edit extends Component {
 
     // FIXME Seems that the cloneElement in CrudRoute slices the children array, which makes this necessary to avoid rerenders
     shouldComponentUpdate(nextProps) {
-        return nextProps.children.every((child, index) => child === this.props.children[index]);
+        return nextProps.isLoading !== this.props.isLoading
+            || nextProps.children.every((child, index) => child === this.props.children[index]);
     }
 
     getBasePath() {

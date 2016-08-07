@@ -14,21 +14,23 @@ import { setSort as setSortAction } from '../../actions/sortActions';
 
 class Datagrid extends Component {
     componentDidMount() {
-        this.props.crudGetList(this.props.resource, this.props.params.pagination, this.props.params.sort);
+        this.props.crudGetList(this.props.resource, this.props.params.pagination, this.props.params.sort, this.props.params.filter.values);
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.resource !== this.props.resource
          || nextProps.params.sort.field !== this.props.params.sort.field
          || nextProps.params.sort.order !== this.props.params.sort.order
-         || nextProps.params.pagination.page !== this.props.params.pagination.page) {
-            this.props.crudGetList(nextProps.resource, nextProps.params.pagination, nextProps.params.sort);
+         || nextProps.params.pagination.page !== this.props.params.pagination.page
+         || nextProps.params.filter.values !== this.props.params.filter.values) {
+            this.props.crudGetList(nextProps.resource, nextProps.params.pagination, nextProps.params.sort, nextProps.params.filter.values);
         }
     }
 
     // FIXME Seems that the cloneElement in CrudRoute slices the children array, which makes this necessary to avoid rerenders
     shouldComponentUpdate(nextProps) {
-        return nextProps.children.every((child, index) => child === this.props.children[index]);
+        return nextProps.isLoading !== this.props.isLoading
+            || nextProps.children.every((child, index) => child === this.props.children[index]);
     }
 
     getBasePath() {
@@ -46,7 +48,7 @@ class Datagrid extends Component {
     }
 
     render() {
-        const { resource, hasCreate, title, data, ids, children, params, isLoading } = this.props;
+        const { filter, resource, hasCreate, title, data, ids, children, params, isLoading } = this.props;
         const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
@@ -55,6 +57,7 @@ class Datagrid extends Component {
                     <FlatButton label="Refresh" onClick={::this.refresh} icon={<NavigationRefresh />} />
                 </CardActions>
                 <CardTitle title={<Title title={title} defaultTitle={`${inflection.humanize(inflection.pluralize(resource))} List`} />} />
+                {filter && React.createElement(filter, { resource, basePath })}
                 <Table multiSelectable>
                     <TableHeader>
                         <TableRow>
@@ -85,6 +88,10 @@ class Datagrid extends Component {
 
 Datagrid.propTypes = {
     title: PropTypes.any,
+    filter: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.string,
+    ]),
     resource: PropTypes.string.isRequired,
     hasCreate: PropTypes.bool.isRequired,
     hasEdit: PropTypes.bool.isRequired,
