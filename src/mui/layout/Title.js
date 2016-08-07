@@ -7,8 +7,7 @@ const Title = ({ defaultTitle, record, title }) => {
     if (typeof title === 'string') {
         return <span>{title}</span>;
     }
-    const TitleComponent = title; // because <title> is HTML, not JSX
-    return <TitleComponent record={record} />;
+    return React.createElement(title, { record });
 };
 
 Title.propTypes = {

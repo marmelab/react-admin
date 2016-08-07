@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 
+const EMPTY_STRING = '';
+
 class TextInput extends Component {
     handleChange(event) {
         this.props.onChange(event.currentTarget.dataset.key, event.target.value);
@@ -11,7 +13,7 @@ class TextInput extends Component {
         return (<TextField
             floatingLabelText={label}
             data-key={source}
-            value={record[source]}
+            value={record[source] || EMPTY_STRING}
             onChange={::this.handleChange}
             {...options}
         />);

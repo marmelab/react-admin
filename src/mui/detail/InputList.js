@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Form = ({ record, inputs, resource, handleChange, basePath }) => (
-    <div style={{ padding: '0 1em 1em 1em' }}>
+const InputList = ({ record, inputs, resource, handleChange, basePath }) => (
+    <div>
     {record ?
         React.Children.map(inputs, input => (
             <div key={input.props.source}>
@@ -20,4 +20,4 @@ const Form = ({ record, inputs, resource, handleChange, basePath }) => (
     </div>
 );
 
-export default Form;
+export default InputList;
