@@ -32,12 +32,11 @@ export class ReferenceInput extends Component {
     render() {
         const { record, label, source, referenceRecord, referenceSource, allowEmpty, matchingReferences, options } = this.props;
         if (!referenceRecord && !allowEmpty) {
-            return <TextField floatingLabelText={label} fullWidth />;
+            return <TextField floatingLabelText={label} />;
         }
         // FIXME use autocomplete as soon as material-ui knows how to handle it
         return (
-            <SelectField menuStyle={{ maxHeight: '41px', overflowY: 'hidden' }} floatingLabelText={label} value={record[source]} onChange={::this.handleChange}
-             {...options} >
+            <SelectField menuStyle={{ maxHeight: '41px', overflowY: 'hidden' }} floatingLabelText={label} value={record[source]} onChange={::this.handleChange} autoWidth {...options} >
                 {matchingReferences.map(reference =>
                     <MenuItem key={reference.id} value={reference.id} primaryText={reference[referenceSource]} />
                 )}
