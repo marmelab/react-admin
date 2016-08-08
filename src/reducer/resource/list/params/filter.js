@@ -18,7 +18,7 @@ export default (resource) => (previousState = initialState, { type, payload, met
     case CRUD_HIDE_FILTER:
         return {
             display: { ...previousState.display, [payload.field]: false },
-            values: previousState.values,
+            values: { ...previousState.values, [payload.field]: undefined },
         };
     case CRUD_SET_FILTER:
         return {

@@ -7,6 +7,7 @@ import ContentSort from 'material-ui/svg-icons/content/sort';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import inflection from 'inflection';
 import Title from '../layout/Title';
+import FilterButton from './FilterButton';
 import Pagination from './Pagination';
 import CreateButton from '../button/CreateButton';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
@@ -27,10 +28,8 @@ class Datagrid extends Component {
         }
     }
 
-    // FIXME Seems that the cloneElement in CrudRoute slices the children array, which makes this necessary to avoid rerenders
     shouldComponentUpdate(nextProps) {
-        return nextProps.isLoading !== this.props.isLoading
-            || nextProps.children.every((child, index) => child === this.props.children[index]);
+        return nextProps.isLoading !== this.props.isLoading;
     }
 
     getBasePath() {
@@ -53,17 +52,18 @@ class Datagrid extends Component {
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
+                    {filter && React.createElement(filter, { resource, context: 'button' })}
                     {hasCreate && <CreateButton basePath={basePath} />}
                     <FlatButton label="Refresh" onClick={::this.refresh} icon={<NavigationRefresh />} />
                 </CardActions>
                 <CardTitle title={<Title title={title} defaultTitle={`${inflection.humanize(inflection.pluralize(resource))} List`} />} />
-                {filter && React.createElement(filter, { resource, basePath })}
+                {filter && React.createElement(filter, { resource, context: 'form' })}
                 <Table multiSelectable>
                     <TableHeader>
                         <TableRow>
-                            {React.Children.map(children, child => (
-                                <TableHeaderColumn key={child.props.label}>
-                                    <FlatButton labelPosition="before" onClick={::this.updateSort} data-sort={child.props.source} label={child.props.label} icon={child.props.source == params.sort.field ? <ContentSort style={{ height: '78px', color: 'red', transform: 'rotate(180deg)' }} /> : false} />
+                            {React.Children.map(children, field => (
+                                <TableHeaderColumn key={field.props.label}>
+                                    <FlatButton labelPosition="before" onClick={::this.updateSort} data-sort={field.props.source} label={field.props.label} icon={field.props.source == params.sort.field ? <ContentSort style={{ height: '78px', color: 'red', transform: 'rotate(180deg)' }} /> : false} />
                                 </TableHeaderColumn>
                             ))}
                         </TableRow>
@@ -71,9 +71,9 @@ class Datagrid extends Component {
                     <TableBody showRowHover>
                         {ids.map(id => (
                             <TableRow key={id}>
-                                {React.Children.map(children, column => (
-                                    <TableRowColumn key={`${id}-${column.props.source}`}>
-                                        <column.type {...column.props} record={data[id]} basePath={basePath} />
+                                {React.Children.map(children, field => (
+                                    <TableRowColumn key={`${id}-${field.props.source}`}>
+                                        <field.type {...field.props} record={data[id]} basePath={basePath} />
                                     </TableRowColumn>
                                 ))}
                             </TableRow>
