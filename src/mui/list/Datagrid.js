@@ -54,7 +54,7 @@ class Datagrid extends Component {
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     {filter && React.createElement(filter, { resource, context: 'button' })}
                     {hasCreate && <CreateButton basePath={basePath} />}
-                    <FlatButton label="Refresh" onClick={::this.refresh} icon={<NavigationRefresh />} />
+                    <FlatButton primary label="Refresh" onClick={::this.refresh} icon={<NavigationRefresh />} />
                 </CardActions>
                 <CardTitle title={<Title title={title} defaultTitle={`${inflection.humanize(inflection.pluralize(resource))} List`} />} />
                 {filter && React.createElement(filter, { resource, context: 'form' })}

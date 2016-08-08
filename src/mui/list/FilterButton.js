@@ -55,7 +55,7 @@ export class FilterButton extends Component {
     render() {
         const items = this.getMenuItems();
         return (items.length ? <span>
-            <FlatButton label="Add Filter" icon={<ContentFilter />} onTouchTap={this.handleTouchTap} />
+            <FlatButton primary label="Add Filter" icon={<ContentFilter />} onTouchTap={this.handleTouchTap} />
             <Popover
                 open={this.state.open}
                 anchorEl={this.state.anchorEl}
