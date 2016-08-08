@@ -5,8 +5,10 @@ import { Router, Route, Redirect, hashHistory } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware, routerReducer } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 
-import { adminReducer, crudSaga, CrudRoute } from 'admin-on-rest';
-import { Layout } from 'admin-on-rest/mui';
+import adminReducer from './reducer';
+import crudSaga from './sideEffect/saga';
+import CrudRoute from './CrudRoute';
+import Layout from './mui/layout/Layout';
 
 const Admin = ({ restClient, appLayout = Layout, children }) => {
     const resources = React.Children.map(children, ({ props }) => props);
