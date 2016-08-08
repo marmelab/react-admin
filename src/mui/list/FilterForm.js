@@ -35,15 +35,19 @@ export class FilterForm extends Component {
 
     render() {
         const { resource, filters, filter } = this.props;
-        return (<CardText style={{ textAlign: 'right', marginTop: '-14px', paddingTop: 0 }}>
+        return (<div>
+            <CardText style={{ float: 'right', marginTop: '-14px', paddingTop: 0 }}>
             {filters.map(filterElement => (filterElement.props.alwaysOn || filter.display[filterElement.props.source]) && (
                 <div key={filterElement.props.source}>
-                    {!filterElement.props.alwaysOn && <FlatButton
-                        primary
-                        icon={<ActionHide />}
-                        onClick={this.handleHide}
-                        data-key={filterElement.props.source}
-                    />}
+                    {filterElement.props.alwaysOn ?
+                        <div style={{ width: 88, display: 'inline-block' }}>&nbsp;</div> :
+                        <FlatButton
+                            primary
+                            icon={<ActionHide />}
+                            onClick={this.handleHide}
+                            data-key={filterElement.props.source}
+                        />
+                    }
                     <filterElement.type
                         {...filterElement.props}
                         resource={resource}
@@ -52,7 +56,9 @@ export class FilterForm extends Component {
                     />
                 </div>
             ))}
-        </CardText>);
+            </CardText>
+            <div style={{ clear: 'right' }} />
+        </div>);
     }
 }
 

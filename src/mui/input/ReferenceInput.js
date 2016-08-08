@@ -36,7 +36,8 @@ export class ReferenceInput extends Component {
         }
         // FIXME use autocomplete as soon as material-ui knows how to handle it
         return (
-            <SelectField floatingLabelText={label} value={record[source]} onChange={::this.handleChange} fullWidth {...options} >
+            <SelectField menuStyle={{ maxHeight: '41px', overflowY: 'hidden' }} floatingLabelText={label} value={record[source]} onChange={::this.handleChange}
+             {...options} >
                 {matchingReferences.map(reference =>
                     <MenuItem key={reference.id} value={reference.id} primaryText={reference[referenceSource]} />
                 )}
