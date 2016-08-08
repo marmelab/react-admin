@@ -9,14 +9,14 @@ import data from './data';
 import { simpleRestClient, Admin, Resource } from 'admin-on-rest';
 import { Delete } from 'admin-on-rest/mui';
 
-import PostList from './components/posts/PostList';
-import PostEdit from './components/posts/PostEdit';
-import PostCreate from './components/posts/PostCreate';
+import PostList from './posts/PostList';
+import PostEdit from './posts/PostEdit';
+import PostCreate from './posts/PostCreate';
 import PostIcon from 'material-ui/svg-icons/action/book';
 
-import CommentList from './components/comments/CommentList';
-import CommentEdit from './components/comments/CommentEdit';
-import CommentCreate from './components/comments/CommentCreate';
+import CommentList from './comments/CommentList';
+import CommentEdit from './comments/CommentEdit';
+import CommentCreate from './comments/CommentCreate';
 import CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
 
 const restServer = new FakeRest.FetchServer('http://localhost:3000');
