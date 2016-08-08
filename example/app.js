@@ -6,8 +6,8 @@ import FakeRest from './FakeRest';
 import fetchMock from 'fetch-mock';
 import data from './data';
 
-import { simpleRestClient } from 'admin-on-rest';
-import { Admin, Resource, Delete } from 'admin-on-rest/mui';
+import { simpleRestClient, Admin, Resource } from 'admin-on-rest';
+import { Delete } from 'admin-on-rest/mui';
 
 import PostList from './components/posts/PostList';
 import PostEdit from './components/posts/PostEdit';

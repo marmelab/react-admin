@@ -8,8 +8,9 @@ An frontend Framework for building admin applications on top of REST services, u
 // in app.js
 import React from 'react';
 import { render } from 'react-dom';
-import { simpleRestClient } from 'admin-on-rest';
-import { Admin, Resource, Delete } from 'admin-on-rest/mui';
+
+import { simpleRestClient, Admin, Resource } from 'admin-on-rest';
+import { Delete } from 'admin-on-rest/mui';
 
 import PostList from './components/posts/PostList';
 import PostEdit from './components/posts/PostEdit';
@@ -137,6 +138,9 @@ Check `sideEffect/saga.js` for a detail of the inputs and outputs
 
 ## Todo
 
-* Filters
-* Complex Field & Input types
+* Documentation
 * Error handling
+* Form Validation
+* Packaging
+* Unit Tests
+* Complex Field & Input types
