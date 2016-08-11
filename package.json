@@ -1,13 +1,22 @@
 {
-  "name": "redux-crud",
-  "version": "0.0.5",
-  "description": "Actions and reducers for interacting with REST services",
+  "name": "admin-on-rest",
+  "version": "0.0.1",
+  "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
+  "files": [
+    "*.md",
+    "docs",
+    "es6",
+    "lib",
+  ],
   "main": "lib/index",
   "jsnext:main": "es6/index",
   "scripts": {
     "test": "make test"
   },
   "author": "François Zaninotto",
+  "repository": "marmelab/admin-on-rest",
+  "homepage": "https://github.com/marmelab/admin-on-rest#readme",
+  "bugs": "https://github.com/marmelab/admin-on-rest/issues",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.10.1",
@@ -27,10 +36,13 @@
     "eslint-plugin-import": "^1.10.1",
     "eslint-plugin-jsx-a11y": "^1.5.3",
     "eslint-plugin-react": "^5.2.2",
+    "mocha": "^2.5.3",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "dependencies": {
     "farfetched": "^1.2.0",
     "inflection": "^1.10.0",
     "material-ui": "^0.15.2",
-    "mocha": "^2.5.3",
     "react": "^15.2.1",
     "react-dom": "^15.2.0",
     "react-redux": "^4.4.5",
@@ -39,6 +51,5 @@
     "react-tap-event-plugin": "^1.0.0",
     "redux": "^3.5.2",
     "redux-saga": "^0.11.0",
-    "webpack-dev-server": "^1.14.1"
   }
 }

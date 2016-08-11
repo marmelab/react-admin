@@ -1,6 +1,6 @@
 # admin-on-rest
 
-An frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI.
+A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI.
 
 ## Example
 
