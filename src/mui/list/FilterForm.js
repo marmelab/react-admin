@@ -37,22 +37,22 @@ export class FilterForm extends Component {
         const { resource, filters, filter } = this.props;
         return (<div>
             <CardText style={{ float: 'right', marginTop: '-14px', paddingTop: 0 }}>
-            {filters.map(filterElement => (filterElement.props.alwaysOn || filter.display[filterElement.props.source]) && (
-                <div key={filterElement.props.source}>
-                    {filterElement.props.alwaysOn ?
-                        <div style={{ width: 48, display: 'inline-block' }}>&nbsp;</div> :
-                        <IconButton iconStyle={{ color: '#00bcd4' }} onClick={this.handleHide} data-key={filterElement.props.source} tooltip="Remove this filter">
-                            <ActionHide />
-                        </IconButton>
-                    }
-                    <filterElement.type
-                        {...filterElement.props}
-                        resource={resource}
-                        record={this.state}
-                        onChange={this.handleChange}
-                    />
-                </div>
-            ))}
+                {filters.map(filterElement => (filterElement.props.alwaysOn || filter.display[filterElement.props.source]) && (
+                    <div key={filterElement.props.source}>
+                        {filterElement.props.alwaysOn ?
+                            <div style={{ width: 48, display: 'inline-block' }}>&nbsp;</div> :
+                            <IconButton iconStyle={{ color: '#00bcd4' }} onTouchTap={this.handleHide} data-key={filterElement.props.source} tooltip="Remove this filter">
+                                <ActionHide />
+                            </IconButton>
+                        }
+                        <filterElement.type
+                            {...filterElement.props}
+                            resource={resource}
+                            record={this.state}
+                            onChange={this.handleChange}
+                        />
+                    </div>
+                ))}
             </CardText>
             <div style={{ clear: 'right' }} />
         </div>);

@@ -18,13 +18,12 @@ const crudFetch = (restClient, successSideEffects = () => [], failureSideEffects
         ];
         let response;
         try {
-            yield call(delay, 1000); // FIXME simulate response delay
             response = yield call(restClient, restType, meta.resource, payload);
         } catch (error) {
             const sideEffects = failureSideEffects(type, meta.resource, payload, error);
             yield [
                 ...sideEffects.map(a => put(a)),
-                put({ type: `${type}_FAILURE`, error, meta }),
+                put({ type: `${type}_FAILURE`, error: error.message ? error.message : error, meta }),
                 put({ type: FETCH_ERROR }),
             ];
             return;

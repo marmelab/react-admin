@@ -15,16 +15,26 @@ export default (resource) => (previousState = initialState, { type, payload, met
             display: { ...previousState.display, [payload.field]: true },
             values: previousState.values,
         };
-    case CRUD_HIDE_FILTER:
+    case CRUD_HIDE_FILTER: {
+        const values = { ...previousState.values };
+        delete values[payload.field];
         return {
             display: { ...previousState.display, [payload.field]: false },
-            values: { ...previousState.values, [payload.field]: undefined },
+            values,
         };
-    case CRUD_SET_FILTER:
+    }
+    case CRUD_SET_FILTER: {
+        const values = { ...previousState.values };
+        if (payload.value) {
+            values[payload.field] = payload.value;
+        } else {
+            delete values[payload.field];
+        }
         return {
             display: previousState.display,
-            values: { ...previousState.values, [payload.field]: payload.value || undefined },
+            values,
         };
+    }
     default:
         return previousState;
     }

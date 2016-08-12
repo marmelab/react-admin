@@ -12,6 +12,9 @@ export default (type, resource, payload, error) => {
             push(payload.basePath),
         ] : [];
     default:
-        return [];
+        console.error(error);
+        return [
+            showNotification(error.message, 'warning'),
+        ];
     }
 };

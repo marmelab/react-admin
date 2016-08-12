@@ -10,15 +10,14 @@ import {
 } from './types';
 
 /**
- * Maps admin-on-rest queries to a simple REST API
+ * Maps admin-on-rest queries to a json-server powered REST API
  *
- * The REST dialect is similar to the one of FakeRest
- * @see https://github.com/marmelab/FakeRest
+ * @see https://github.com/typicode/json-server
  * @example
- * GET_LIST     => GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]
- * GET_MATCHING => GET http://my.api.url/posts?filter={title:'bar'}
+ * GET_LIST     => GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24
+ * GET_MATCHING => GET http://my.api.url/posts?title=bar
  * GET_ONE      => GET http://my.api.url/posts/123
- * GET_MANY     => GET http://my.api.url/posts?filter={ids:[123,456,789]}
+ * GET_MANY     => GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789
  * UPDATE       => PUT http://my.api.url/posts/123
  * CREATE       => POST http://my.api.url/posts/123
  * DELETE       => DELETE http://my.api.url/posts/123
@@ -38,30 +37,22 @@ export default (apiUrl) => {
             const { page, perPage } = params.pagination;
             const { field, order } = params.sort;
             const query = {
-                sort: JSON.stringify([field, order]),
-                range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
-                filter: JSON.stringify(params.filter),
+                ...params.filter,
+                _sort: field,
+                _order: order,
+                _start: (page - 1) * perPage,
+                _end: page * perPage - 1,
             };
             url = `${apiUrl}/${resource}?${queryParameters(query)}`;
             break;
         }
         case GET_MATCHING: {
-            const query = {
-                filter: JSON.stringify(params.filter),
-            };
-            url = `${apiUrl}/${resource}?${queryParameters(query)}`;
+            url = `${apiUrl}/${resource}?${queryParameters(params.filter)}`;
             break;
         }
         case GET_ONE:
             url = `${apiUrl}/${resource}/${params.id}`;
             break;
-        case GET_MANY: {
-            const query = {
-                filter: JSON.stringify({ id: params.ids }),
-            };
-            url = `${apiUrl}/${resource}?${queryParameters(query)}`;
-            break;
-        }
         case UPDATE:
             url = `${apiUrl}/${resource}/${params.id}`;
             options.method = 'PUT';
@@ -95,7 +86,7 @@ export default (apiUrl) => {
         case GET_LIST:
             return {
                 data: json.map(x => x),
-                total: parseInt(headers['content-range'].split('/').pop(), 10),
+                total: parseInt(headers['x-total-count'].split('/').pop(), 10),
             };
         case CREATE:
             return { ...params.data, id: json.id };
@@ -111,6 +102,11 @@ export default (apiUrl) => {
      * @returns {Promise} the Promise for a REST response
      */
     return (type, resource, params) => {
+        // json-server doesn't handle WHERE IN requests, so we fallback to calling GET_ONE n times instead
+        if (type === GET_MANY) {
+            return Promise.all(params.ids.map(id => fetchJson(`${apiUrl}/${resource}/${id}`)))
+                .then(responses => responses.map(response => response.json));
+        }
         const { url, options } = convertRESTRequestToHTTP(type, resource, params);
         return fetchJson(url, options)
             .then(response => convertHTTPResponseToREST(response, type, resource, params));

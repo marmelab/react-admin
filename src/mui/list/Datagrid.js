@@ -63,7 +63,7 @@ class Datagrid extends Component {
                         <TableRow>
                             {React.Children.map(children, field => (
                                 <TableHeaderColumn key={field.props.label}>
-                                    <FlatButton labelPosition="before" onClick={::this.updateSort} data-sort={field.props.source} label={field.props.label} icon={field.props.source == params.sort.field ? <ContentSort style={{ height: '78px', color: 'red', transform: 'rotate(180deg)' }} /> : false} />
+                                    <FlatButton labelPosition="before" onClick={::this.updateSort} data-sort={field.props.source} label={field.props.label} icon={field.props.source == params.sort.field ? <ContentSort style={params.sort.order === 'ASC' ? { transform: 'rotate(180deg)' } : {}} /> : false} />
                                 </TableHeaderColumn>
                             ))}
                         </TableRow>

@@ -1,6 +1,7 @@
 export * from './actions';
 export adminReducer from './reducer';
 export simpleRestClient from './rest/simple';
+export jsonServerRestClient from './rest/jsonServer';
 export crudSaga from './sideEffect/saga';
 export fetchUtils from './util/fetch';
 export Admin from './Admin';
