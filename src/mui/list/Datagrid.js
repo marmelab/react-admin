@@ -15,11 +15,18 @@ import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
 
 class Datagrid extends Component {
-    componentDidMount() {
-        this.updateData();
+    constructor(props) {
+        super(props);
+        this.state = {};
         this.updateSort = this.updateSort.bind(this);
         this.setPage = this.setPage.bind(this);
         this.setFilter = this.setFilter.bind(this);
+        this.showFilter = this.showFilter.bind(this);
+        this.hideFilter = this.hideFilter.bind(this);
+    }
+
+    componentDidMount() {
+        this.updateData();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -32,8 +39,8 @@ class Datagrid extends Component {
         }
     }
 
-    shouldComponentUpdate(nextProps) {
-        return nextProps.isLoading !== this.props.isLoading;
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextProps.isLoading !== this.props.isLoading || nextState !== this.state;
     }
 
     getBasePath() {
@@ -46,19 +53,12 @@ class Datagrid extends Component {
     }
 
     getQuery() {
-        if (Object.keys(this.props.query).length > 0) {
-            return this.props.query;
-        }
-        const query = this.props.params;
-        if (typeof query.filter !== 'string') {
-            query.filter = JSON.stringify(query.filter);
-        }
-        return query;
+        return (Object.keys(this.props.query).length > 0) ? this.props.query : { ...this.props.params };
     }
 
     updateData(query) {
         const { sort, order, page, perPage, filter } = query || this.getQuery();
-        this.props.crudGetList(this.props.resource, { page, perPage }, { field: sort, order }, JSON.parse(filter));
+        this.props.crudGetList(this.props.resource, { page, perPage }, { field: sort, order }, filter);
     }
 
     updateSort(event) {
@@ -74,26 +74,48 @@ class Datagrid extends Component {
         this.changeParams({ type: SET_FILTER, payload: { field, value } });
     }
 
+    showFilter(filterName) {
+        this.setState({ [filterName]: true });
+    }
+
+    hideFilter(filterName) {
+        this.setState({ [filterName]: false });
+        this.setFilter(filterName);
+    }
+
     changeParams(action) {
         const newParams = queryReducer(this.getQuery(), action);
-        this.props.push({ ...this.props.location, query: newParams });
-        newParams.filter = JSON.parse(newParams.filter);
+        this.props.push({ ...this.props.location, query: { ...newParams, filter: JSON.stringify(newParams.filter) } });
         this.props.changeListParams(this.props.resource, newParams);
     }
 
     render() {
         const { filter, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
         const query = this.getQuery();
+        const filterValues = query.filter;
         const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    {/*filter && React.createElement(filter, { resource, context: 'button' })*/}
+                    {filter && React.createElement(filter, {
+                        resource,
+                        showFilter: this.showFilter,
+                        displayedFilters: this.state,
+                        filterValues,
+                        context: 'button',
+                    })}
                     {hasCreate && <CreateButton basePath={basePath} />}
                     <FlatButton primary label="Refresh" onClick={::this.refresh} icon={<NavigationRefresh />} />
                 </CardActions>
                 <CardTitle title={<Title title={title} defaultTitle={`${inflection.humanize(inflection.pluralize(resource))} List`} />} />
-                {/*filter && React.createElement(filter, { resource, context: 'form' })*/}
+                {filter && React.createElement(filter, {
+                    resource,
+                    hideFilter: this.hideFilter,
+                    setFilter: this.setFilter,
+                    filterValues,
+                    displayedFilters: this.state,
+                    context: 'form',
+                })}
                 <Table multiSelectable>
                     <TableHeader>
                         <TableRow>
@@ -154,8 +176,12 @@ Datagrid.propTypes = {
 
 function mapStateToProps(state, props) {
     const resourceState = state.admin[props.resource];
+    const query = props.location.query;
+    if (query.filter && typeof query.filter === 'string') {
+        query.filter = JSON.parse(query.filter);
+    }
     return {
-        query: props.location.query,
+        query,
         params: resourceState.list.params,
         ids: resourceState.list.ids,
         total: resourceState.list.total,

@@ -76,7 +76,7 @@ function mapStateToProps(state, props) {
     }
     return {
         referenceRecord: state.admin[props.reference].data[referenceId],
-        matchingReferences: matchingIds.map(id => state.admin[props.reference].data[id]),
+        matchingReferences: matchingIds.map(id => state.admin[props.reference].data[id]).filter(r => typeof r !== 'undefined'),
     };
 }
 

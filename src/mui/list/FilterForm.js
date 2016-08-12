@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 import { CardText } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import ActionHide from 'material-ui/svg-icons/action/highlight-off';
-import * as actions from '../../actions/filterActions';
 
 export class FilterForm extends Component {
     constructor(props) {
@@ -11,33 +9,45 @@ export class FilterForm extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleHide = this.handleHide.bind(this);
         this.timer = null;
-        this.state = props.filter.values;
+        this.state = {
+            filterValues: props.filterValues,
+        };
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.filter.values !== nextProps.filter.values) {
-            this.setState(nextProps.filter.values); // FIXME: erases user entry when fetch response arrives late
+        if (this.props.filterValues !== nextProps.filterValues) {
+            this.setState({ filterValues: nextProps.filterValues }); // FIXME: erases user entry when fetch response arrives late
         }
     }
 
+    getShownFilters() {
+        const { filters, displayedFilters, filterValues } = this.props;
+        return filters
+            .filter(filterElement =>
+                filterElement.props.alwaysOn ||
+                displayedFilters[filterElement.props.source] ||
+                filterValues[filterElement.props.source]
+            );
+    }
+
     handleChange(key, value) {
-        this.setState({ [key]: value });
+        this.setState({ filterValues: { ...this.state.filterValues, [key]: value } });
         // poor man's debounce
         if (this.timer) {
             clearTimeout(this.timer);
         }
-        this.timer = setTimeout(() => this.props.setFilter(this.props.resource, key, value), 500);
+        this.timer = setTimeout(() => this.props.setFilter(key, value), 500);
     }
 
     handleHide(event) {
-        this.props.hideFilter(this.props.resource, event.currentTarget.dataset.key);
+        this.props.hideFilter(event.currentTarget.dataset.key);
     }
 
     render() {
-        const { resource, filters, filter } = this.props;
+        const { resource } = this.props;
         return (<div>
             <CardText style={{ float: 'right', marginTop: '-14px', paddingTop: 0 }}>
-                {filters.map(filterElement => (filterElement.props.alwaysOn || filter.display[filterElement.props.source]) && (
+                {this.getShownFilters().map(filterElement =>
                     <div key={filterElement.props.source}>
                         {filterElement.props.alwaysOn ?
                             <div style={{ width: 48, display: 'inline-block' }}>&nbsp;</div> :
@@ -48,11 +58,11 @@ export class FilterForm extends Component {
                         <filterElement.type
                             {...filterElement.props}
                             resource={resource}
-                            record={this.state}
+                            record={this.state.filterValues}
                             onChange={this.handleChange}
                         />
                     </div>
-                ))}
+                )}
             </CardText>
             <div style={{ clear: 'right' }} />
         </div>);
@@ -61,14 +71,11 @@ export class FilterForm extends Component {
 
 FilterForm.propTypes = {
     resource: PropTypes.string.isRequired,
-    filter: PropTypes.object.isRequired,
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
+    displayedFilters: PropTypes.object.isRequired,
+    filterValues: PropTypes.object.isRequired,
     hideFilter: PropTypes.func.isRequired,
     setFilter: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, props) => ({
-    filter: state.admin[props.resource].list.params.filter,
-});
-
-export default connect(mapStateToProps, actions)(FilterForm);
+export default FilterForm;
