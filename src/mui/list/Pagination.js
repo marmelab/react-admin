@@ -60,7 +60,7 @@ export class Pagination extends Component {
     renderPageNums() {
         return this.range().map(pageNum =>
             (pageNum === '.') ?
-                <span style={{ padding: '1.2em' }}>&hellip;</span> :
+                <span key={pageNum} style={{ padding: '1.2em' }}>&hellip;</span> :
                 <FlatButton key={pageNum} label={pageNum} data-page={pageNum} onClick={::this.gotoPage} primary={pageNum !== this.props.page} />
         );
     }

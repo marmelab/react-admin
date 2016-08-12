@@ -2,7 +2,7 @@ module.exports = {
     entry: './src/index.js',
     output: {
         path: './build',
-        filename: 'redux-crud.js',
+        filename: 'index.js',
     },
     module: {
         loaders: [

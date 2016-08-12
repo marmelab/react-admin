@@ -7,7 +7,6 @@ import ContentSort from 'material-ui/svg-icons/content/sort';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import inflection from 'inflection';
 import Title from '../layout/Title';
-import FilterButton from './FilterButton';
 import Pagination from './Pagination';
 import CreateButton from '../button/CreateButton';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
@@ -16,6 +15,7 @@ import { setSort as setSortAction } from '../../actions/sortActions';
 class Datagrid extends Component {
     componentDidMount() {
         this.props.crudGetList(this.props.resource, this.props.params.pagination, this.props.params.sort, this.props.params.filter.values);
+        this.updateSort = this.updateSort.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -63,7 +63,15 @@ class Datagrid extends Component {
                         <TableRow>
                             {React.Children.map(children, field => (
                                 <TableHeaderColumn key={field.props.label}>
-                                    <FlatButton labelPosition="before" onClick={::this.updateSort} data-sort={field.props.source} label={field.props.label} icon={field.props.source == params.sort.field ? <ContentSort style={params.sort.order === 'ASC' ? { transform: 'rotate(180deg)' } : {}} /> : false} />
+                                    {field.props.label &&
+                                        <FlatButton
+                                            labelPosition="before"
+                                            onClick={this.updateSort}
+                                            data-sort={field.props.source}
+                                            label={field.props.label}
+                                            icon={field.props.source === params.sort.field ? <ContentSort style={params.sort.order === 'ASC' ? { transform: 'rotate(180deg)' } : {}} /> : false}
+                                        />
+                                    }
                                 </TableHeaderColumn>
                             ))}
                         </TableRow>

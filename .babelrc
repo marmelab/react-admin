@@ -1,15 +1,11 @@
 {
-    "presets": ["es2015", "react", "stage-0"],
+    "presets": ["es2015", "stage-0", "react"],
     "plugins": [
         "transform-react-jsx",
-    ],
-    "env": {
-        "cjs": {
-            "presets": ["es2015-loose", "stage-1"],
-            "plugins": ["add-module-exports", "transform-runtime"]
-        },
-        "es": {
-            "presets": ["es2015-loose-native-modules", "stage-1"]
-        }
-    }
+        "add-module-exports",
+        ["transform-runtime", {
+            "polyfill": false,
+            "regenerator": true
+        }]
+    ]
 }
