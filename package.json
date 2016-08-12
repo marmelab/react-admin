@@ -5,10 +5,9 @@
   "files": [
     "*.md",
     "docs",
-    "lib",
+    "lib"
   ],
   "main": "lib/index",
-  "jsnext:main": "es6/index",
   "scripts": {
     "test": "make test"
   },
