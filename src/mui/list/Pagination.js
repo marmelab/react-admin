@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import * as actions from '../../actions/paginationActions';
+
+const buttonStyle = { margin: '10px 0' };
 
 export class Pagination extends Component {
     range() {
@@ -42,26 +42,40 @@ export class Pagination extends Component {
         return input;
     }
 
+    getNbPages() {
+        return Math.ceil(this.props.total / this.props.perPage) || 1;
+    }
+
     prevPage(event) {
         event.stopPropagation();
-        this.props.prevPage(this.props.resource);
+        if (this.props.page === 1) {
+            throw new Error('Cannot go before page 1');
+        }
+        this.props.setPage(this.props.page - 1);
     }
 
     nextPage(event) {
         event.stopPropagation();
-        this.props.nextPage(this.props.resource);
+        if (this.props.page > this.getNbPages()) {
+            throw new Error('Cannot after last page');
+        }
+        this.props.setPage(this.props.page + 1);
     }
 
     gotoPage(event) {
         event.stopPropagation();
-        this.props.gotoPage(this.props.resource, event.currentTarget.dataset.page);
+        const page = event.currentTarget.dataset.page;
+        if (page < 1 || page > this.getNbPages()) {
+            throw new Error(`Page number ${page} out of boundaries`);
+        }
+        this.props.setPage(page);
     }
 
     renderPageNums() {
         return this.range().map(pageNum =>
             (pageNum === '.') ?
                 <span key={pageNum} style={{ padding: '1.2em' }}>&hellip;</span> :
-                <FlatButton key={pageNum} label={pageNum} data-page={pageNum} onClick={::this.gotoPage} primary={pageNum !== this.props.page} />
+                <FlatButton key={pageNum} label={pageNum} data-page={pageNum} onClick={::this.gotoPage} primary={pageNum !== this.props.page} style={buttonStyle} />
         );
     }
 
@@ -70,20 +84,26 @@ export class Pagination extends Component {
         if (total === 0) return null;
         const offsetEnd = Math.min(page * perPage, total);
         const offsetBegin = Math.min((page - 1) * perPage + 1, offsetEnd);
-        const nbPages = Math.ceil(total / perPage) || 1;
+        const nbPages = this.getNbPages();
 
         return (
             <Toolbar>
                 <ToolbarGroup firstChild>
                     <span style={{ padding: '1.2em' }} >{offsetBegin}-{offsetEnd} of {total}</span>
                 </ToolbarGroup>
-                <ToolbarGroup>
-                { page > 1 ? <FlatButton primary key="prev" label="Prev" icon={<ChevronLeft />} onClick={::this.prevPage}/> : '' }
-                { this.renderPageNums() }
-                { page != nbPages ? <FlatButton primary key="next" label="Next" icon={<ChevronRight/>} labelPosition="before" onClick={::this.nextPage}/> : '' }
-                </ToolbarGroup>
+                {nbPages > 1 &&
+                    <ToolbarGroup>
+                    {page > 1 &&
+                        <FlatButton primary key="prev" label="Prev" icon={<ChevronLeft />} onClick={::this.prevPage} style={buttonStyle} />
+                    }
+                    {this.renderPageNums()}
+                    {page !== nbPages &&
+                        <FlatButton primary key="next" label="Next" icon={<ChevronRight />} labelPosition="before" onClick={::this.nextPage} style={buttonStyle} />
+                    }
+                    </ToolbarGroup>
+                }
             </Toolbar>
-        )
+        );
     }
 }
 
@@ -92,12 +112,7 @@ Pagination.propTypes = {
     page: PropTypes.number,
     perPage: PropTypes.number,
     total: PropTypes.number,
-    prevPage: PropTypes.func.isRequired,
-    nextPage: PropTypes.func.isRequired,
-    gotoPage: PropTypes.func.isRequired,
+    setPage: PropTypes.func.isRequired,
 };
 
-export default connect(
-  (state, props) => props,
-  actions,
-)(Pagination);
+export default Pagination;

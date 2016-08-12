@@ -1,0 +1,47 @@
+export const SET_SORT = 'SET_SORT';
+export const SORT_ASC = 'ASC';
+export const SORT_DESC = 'DESC';
+
+export const SET_PAGE = 'SET_PAGE';
+
+export const SET_FILTER = 'SET_FILTER';
+
+const oppositeOrder = direction => (direction === SORT_DESC ? SORT_ASC : SORT_DESC);
+
+/**
+ * This reducer is for the react-router query string, NOT for redux.
+ */
+export default (previousState, { type, payload }) => {
+    switch (type) {
+    case SET_SORT:
+        if (payload === previousState.sort) {
+            return {
+                ...previousState,
+                order: oppositeOrder(previousState.order),
+                page: 1,
+            };
+        }
+        return {
+            ...previousState,
+            sort: payload,
+            order: SORT_ASC,
+            page: 1,
+        };
+    case SET_PAGE:
+        return { ...previousState, page: payload };
+    case SET_FILTER: {
+        const filter = { ...previousState.filter };
+        if (payload.value) {
+            filter[payload.field] = payload.value;
+        } else {
+            delete filter[payload.field];
+        }
+        return {
+            ...previousState,
+            filter,
+        };
+    }
+    default:
+        return previousState;
+    }
+};
