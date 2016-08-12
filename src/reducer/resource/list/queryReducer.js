@@ -38,6 +38,7 @@ export default (previousState, { type, payload }) => {
         }
         return {
             ...previousState,
+            page: 1,
             filter,
         };
     }
