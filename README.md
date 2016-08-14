@@ -2,7 +2,7 @@
 
 A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI.
 
-![admin-on-rest demo](http://static.marmelab.com/admin-on-rest)
+![admin-on-rest demo](http://static.marmelab.com/admin-on-rest.gif)
 
 ## Installation
 
