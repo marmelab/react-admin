@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -12,7 +13,7 @@ injectTapEventPlugin();
 const Layout = ({ isLoading, children, route }) => (
     <MuiThemeProvider>
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-            <AppBar title="Admin on REST" iconElementRight={isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span/>} />
+            <AppBar title={<Link to="/" style={{ color: '#fff' }}>Admin on REST</Link>} iconElementRight={isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span/>} />
             <div className="body" style={{ display: 'flex', flex: '1', backgroundColor: '#edecec' }}>
                 <div style={{ flex: 1 }}>{children}</div>
                 <Menu resources={route.resources} />
