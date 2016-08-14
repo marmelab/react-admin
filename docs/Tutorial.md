@@ -18,7 +18,7 @@ You should be up and running with an empty React application on port 3000.
 
 ## Making Contact With The API
 
-We'll be using [JSONPlaceholder](http://jsonplaceholder.typicode.com/), which is a Fake Online REST API for Testing and Prototyping, as the datasource for the admin.
+We'll be using [JSONPlaceholder](http://jsonplaceholder.typicode.com/), which is a fake online REST API for testing and prototyping, as the datasource for the admin.
 
 JSONPlaceholder provides endpoints for fake posts, fake comments, and fake users. The admin we'll build will allow to Create, Retrieve, Update, and Delete (CRUD) these resources.
 
@@ -52,18 +52,18 @@ The `<Admin>` component contains `<Resource>` components, each resource being ma
 ```js
 // in src/posts.js
 import React from 'react';
-import { Datagrid, TextField } from 'admin-on-rest/lib/mui';
+import { List, TextField } from 'admin-on-rest/lib/mui';
 
 export const PostList = (props) => (
-    <Datagrid {...props}>
+    <List {...props}>
         <TextField label="id" source="id" />
         <TextField label="title" source="title" />
         <TextField label="body" source="body" />
-    </Datagrid>
+    </List>
 );
 ```
 
-Notice that the components we use here are from `admin-on-rest/lib/mui` - these are Material UI components. The lists consists of a `<Datagrid>` with a bunch of `<TextField>` components, each mapping a different source field in the API response.
+Notice that the components we use here are from `admin-on-rest/lib/mui` - these are Material UI components. The lists consists of a `<List>` with a bunch of `<TextField>` components, each mapping a different source field in the API response.
 
 That should be enough to display the post list:
 
@@ -78,15 +78,15 @@ So far, you've only seen `<TextField>`, but if the API sends resources with othe
 ```js
 // in src/users.js
 import React from 'react';
-import { Datagrid, EmailField, TextField } from 'admin-on-rest/lib/mui';
+import { List, EmailField, TextField } from 'admin-on-rest/lib/mui';
 
 export const UserList = (props) => (
-    <Datagrid title="All users" {...props}>
+    <List title="All users" {...props}>
         <TextField label="id" source="id" />
         <TextField label="name" source="name" />
         <TextField label="username" source="username" />
         <EmailField label="email" source="email" />
-    </Datagrid>
+    </List>
 );
 ```
 
@@ -149,15 +149,15 @@ Admin-on-REST knows how to take advantage of these foreign keys to fetch referen
 ```js
 // in src/posts.js
 import React from 'react';
-import { Datagrid, TextField, EmailField, ReferenceField } from 'admin-on-rest/lib/mui';
+import { List, TextField, EmailField, ReferenceField } from 'admin-on-rest/lib/mui';
 
 export const PostList = (props) => (
-    <Datagrid {...props}>
+    <List {...props}>
         <TextField label="id" source="id" />
         <ReferenceField label="User" source="userId" reference="users" referenceSource="name" />
         <TextField label="title" source="title" />
         <TextField label="body" source="body" />
-    </Datagrid>
+    </List>
 );
 ```
 
@@ -172,16 +172,16 @@ An admin interface is usually for more than seeing remote data - it's for editin
 ```js
 // in src/posts.js
 import React from 'react';
-import { Datagrid, Edit, Create, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, TextInput } from 'admin-on-rest/lib/mui';
+import { List, Edit, Create, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, TextInput } from 'admin-on-rest/lib/mui';
 
 export const PostList = (props) => (
-    <Datagrid {...props}>
+    <List {...props}>
         <TextField label="id" source="id" />
         <ReferenceField label="User" source="userId" reference="users" referenceSource="name" />
         <TextField label="title" source="title" />
         <TextField label="body" source="body" />
         <EditButton />
-    </Datagrid>
+    </List>
 );
 
 const PostTitle = ({ record }) => {
@@ -208,7 +208,7 @@ export const PostCreate = (props) => (
 
 Notice the additional `<EditButton>` field in the `<PostList>` component children: that's what gives access to the post edition view.
 
-Just like the `<Datagrid>` component expects field components as children, the `<Edit>` and `<Create>` components expect input components as children. `<DisabledInput>`, `<TextInput>`, `<LongTextInput>`, and `<ReferenceInput>` are such inputs.
+Just like the `<List>` component expects field components as children, the `<Edit>` and `<Create>` components expect input components as children. `<DisabledInput>`, `<TextInput>`, `<LongTextInput>`, and `<ReferenceInput>` are such inputs.
 
 
 ## Filters
