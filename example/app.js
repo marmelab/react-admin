@@ -9,15 +9,8 @@ import data from './data';
 import { simpleRestClient, Admin, Resource } from 'admin-on-rest';
 import { Delete } from 'admin-on-rest/mui';
 
-import PostList from './posts/PostList';
-import PostEdit from './posts/PostEdit';
-import PostCreate from './posts/PostCreate';
-import PostIcon from 'material-ui/svg-icons/action/book';
-
-import CommentList from './comments/CommentList';
-import CommentEdit from './comments/CommentEdit';
-import CommentCreate from './comments/CommentCreate';
-import CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
+import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
+import { CommentList, CommentEdit, CommentCreate, CommentIcon } from './comments';
 
 const restServer = new FakeRest.FetchServer('http://localhost:3000');
 restServer.init(data);
