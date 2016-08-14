@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 
-import FakeRest from './FakeRest';
+import FakeRest from 'fakerest';
 import fetchMock from 'fetch-mock';
 import data from './data';
 
