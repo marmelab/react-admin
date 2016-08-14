@@ -14,7 +14,7 @@ npm install --save-dev admin-on-rest
 
 ## Usage
 
-Read the [docs/Tutorial.md](tutorial) for a presentation of admin-on-rest usage.
+Read the [docs/Tutorial.md](docs/Tutorial.md) for a presentation of admin-on-rest usage.
 
 ## Example
 
