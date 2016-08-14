@@ -214,7 +214,7 @@ import { UserList } from './users';
 const App = () => (
     <Admin restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} />
-        <Resource name="users" list={UserList} />
+        // ...
     </Admin>
 );
 ```
@@ -240,7 +240,7 @@ import { Delete } from 'admin-on-rest/lib/mui';
 const App = () => (
     <Admin restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} />
-        <Resource name="users" list={UserList} />
+        // ...
     </Admin>
 );
 ```
@@ -268,11 +268,7 @@ const PostFilter = (props) => (
 
 export const PostList = (props) => (
     <List {...props} filter={PostFilter}>
-        <TextField label="id" source="id" />
-        <ReferenceField label="User" source="userId" reference="users" referenceSource="name" />
-        <TextField label="title" source="title" />
-        <TextField label="body" source="body" />
-        <EditButton />
+        // ...
     </List>
 );
 ```
@@ -312,7 +308,7 @@ import React from 'react';
 import { Card, CardHeader, CardText } from 'material-ui/Card';
 
 export default () => (
-    <Card  style={{ margin: '2em' }}>
+    <Card style={{ margin: '2em' }}>
         <CardHeader title="Welcome to the administration" />
         <CardText>Lorem ipsum sic dolor amet...</CardText>
     </Card>
@@ -324,7 +320,7 @@ export default () => (
 import Dashboard from './Dashboard';
 
 const App = () => (
-    <Admin restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')} dashboard={Dashboard}>
+    <Admin dashboard={Dashboard} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         // ...
     </Admin>
 );
