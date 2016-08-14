@@ -63,7 +63,7 @@ Notice that the components we use here are from `admin-on-rest/lib/mui` - these 
 
 That should be enough to display the post list:
 
-![Simple posts datagrid]()
+![Simple posts list](http://static.marmelab.com/admin-on-rest/simple_post_list.png)
 
 The list is already functional: you can change the ordering by clicking on column headers, or change page by using the bottom pagination controls.
 
@@ -101,7 +101,7 @@ const App = () => (
 );
 ```
 
-![Simple user datagrid]()
+![Simple user datagrid](http://static.marmelab.com/admin-on-rest/simple_user_list.png)
 
 The sidebar now gives access to the second resource, Users. The users list shows the email as a `<a href="mailto:">` tag.
 
@@ -155,7 +155,7 @@ export const PostList = (props) => (
 
 When displaying the posts list, the browser now fetches related user records, and displays their name.
 
-![reference posts in comment list]()
+![reference posts in comment list](http://static.marmelab.com/admin-on-rest/reference_posts.png)
 
 ## Creation and Edition
 
@@ -221,11 +221,11 @@ const App = () => (
 
 Admin-on-rest automatically adds a "create" button on top of the posts list to give access to the `<PostCreate>` component. And the `<EditButton>` renders in each line of the list to give access to the `<PostEdit>` component.
 
-![post list with access to edit and create]()
+![post list with access to edit and create](http://static.marmelab.com/admin-on-rest/editable_post.png)
 
 The create and edit views render as a form. It's already functional, and automatically issues `POST` and `PUT` requests to the REST API.
 
-![post edition form]()
+![post edition form](http://static.marmelab.com/admin-on-rest/post_edition.png)
 
 **Note**: JSONPlaceholder is a read-only API: although it seems to accept `POST` and `PUT` requests, it doesn't take into account the creations and editions - that's why, in this particular case, you will see errors after creation, and you won't see your editions after you save them.
 
@@ -247,7 +247,7 @@ const App = () => (
 
 In the edition view, a new "delete" button appears. And you can also use the `<DeleteButton>` as a field in the list.
 
-![post deletion view]()
+![post deletion view](http://static.marmelab.com/admin-on-rest/post_deletion.png)
 
 ## Filters
 
@@ -277,7 +277,7 @@ The first filter, 'q', takes advantage of a full-text functionality offered by J
 
 Filters are "search-as-you-type", meaning that when the user enters new values in the filter form, the list refreshes (via an API request) immediately.
 
-![posts search engine]()
+![posts search engine](http://static.marmelab.com/admin-on-rest/filters.gif)
 
 ## Customizing the Menu Icons
 
@@ -296,7 +296,7 @@ const App = () => (
 );
 ```
 
-![custom menu icons]()
+![custom menu icons](http://static.marmelab.com/admin-on-rest/custom_menu.png)
 
 ## Using a Custom Home Page
 
@@ -325,6 +325,8 @@ const App = () => (
     </Admin>
 );
 ```
+
+![Custom home page](http://static.marmelab.com/admin-on-rest/dashboard.png)
 
 ## Using Another REST Dialect
 
