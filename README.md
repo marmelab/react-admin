@@ -124,9 +124,9 @@ Check `sideEffect/saga.js` for a detail of the inputs and outputs
 
 ## Todo
 
-* Documentation
-* Error handling
-* Form Validation
-* Packaging
-* Unit Tests
-* Complex Field & Input types
+* Add more documentation
+* Improve error handling
+* Form validation
+* Add unit tests
+* Add `<ReferenceMany>` field
+* Add complex field & input types

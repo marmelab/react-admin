@@ -39,7 +39,6 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
-    "farfetched": "^1.2.0",
     "inflection": "^1.10.0",
     "material-ui": "^0.15.4",
     "react": "^15.2.1",
