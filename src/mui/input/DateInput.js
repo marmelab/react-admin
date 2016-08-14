@@ -3,11 +3,11 @@ import DatePicker from 'material-ui/DatePicker';
 
 class DateInput extends Component {
     handleChange(event, date) {
-        this.props.onChange(this.props.source, date);
+        this.props.onChange(this.props.source, date.toISOString());
     }
 
     render() {
-        const { source, label, record, options } = this.props;
+        const { source, label, record, locale, options } = this.props;
         let date = null;
         if (record[source] instanceof Date) {
             date = record[source];
@@ -16,6 +16,8 @@ class DateInput extends Component {
         }
         return (<DatePicker
             floatingLabelText={label}
+            locale={locale}
+            DateTimeFormat={Intl.DateTimeFormat}
             value={date}
             onChange={::this.handleChange}
             container="inline"
@@ -29,6 +31,7 @@ DateInput.propTypes = {
     source: PropTypes.string.isRequired,
     label: PropTypes.string,
     record: PropTypes.object,
+    locale: PropTypes.string.isRequired,
     options: PropTypes.object,
     onChange: PropTypes.func,
 };
@@ -36,6 +39,7 @@ DateInput.propTypes = {
 DateInput.defaultProps = {
     record: {},
     options: {},
+    locale: 'en-US',
 };
 
 export default DateInput;
