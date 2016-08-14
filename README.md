@@ -2,43 +2,47 @@
 
 A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI.
 
+![admin-on-rest demo]()
+
+## Installation
+
+Admin-on-rest is available from npm.
+
+```sh
+npm install --save-dev admin-on-rest
+```
+
+## Usage
+
+Read the [docs/Tutorial.md](tutorial) for a presentation of admin-on-rest usage.
+
 ## Example
 
 ```js
 // in app.js
 import React from 'react';
 import { render } from 'react-dom';
-
 import { simpleRestClient, Admin, Resource } from 'admin-on-rest';
-import { Delete } from 'admin-on-rest/mui';
 
-import PostList from './components/posts/PostList';
-import PostEdit from './components/posts/PostEdit';
-import PostCreate from './components/posts/PostCreate';
-import PostIcon from 'material-ui/svg-icons/action/book';
-
-import CommentList from './components/comments/CommentList';
-import CommentEdit from './components/comments/CommentEdit';
-import CommentCreate from './components/comments/CommentCreate';
-import CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
+import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
 
 render(
     <Admin restClient={simpleRestClient('http://localhost:3000')}>
-        <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} icon={PostIcon}/>
-        <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} remove={Delete} icon={CommentIcon}/>
+        <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon}/>
     </Admin>,
     document.getElementById('root')
 );
 ```
 
-The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`.
+The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use Material UI and custom components from admin-on-rest:
 
 ```js
-// in PostList.js
+// in posts.js
 import React from 'react';
-import { List, DateField, TextField, EditButton } from 'admin-on-rest/mui';
+import { List, Edit, Create, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'admin-on-rest/lib/mui';
+export PostIcon from 'material-ui/svg-icons/action/book';
 
-const PostList = (props) => (
+export const PostList = (props) => (
     <List {...props}>
         <TextField label="id" source="id" />
         <TextField label="title" source="title" />
@@ -49,19 +53,11 @@ const PostList = (props) => (
     </List>
 );
 
-export default PostList;
-```
-
-```js
-// in PostEdit.js
-import React from 'react';
-import { Edit, DateInput, DisabledInput, LongTextInput, TextInput } from 'admin-on-rest/mui';
-
 const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 
-const PostEdit = (props) => (
+export const PostEdit = (props) => (
     <Edit title={PostTitle} {...props}>
         <DisabledInput label="Id" source="id" />
         <TextInput label="Title" source="title" />
@@ -73,15 +69,7 @@ const PostEdit = (props) => (
     </Edit>
 );
 
-export default PostEdit;
-```
-
-```js
-// in PostCreate.js
-import React from 'react';
-import { Create, LongTextInput, TextInput } from 'admin-on-rest/mui';
-
-const PostCreate = (props) => (
+export const PostCreate = (props) => (
     <Create title="Create a Post" {...props}>
         <TextInput label="Title" source="title" />
         <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
@@ -90,8 +78,6 @@ const PostCreate = (props) => (
         <TextInput label="Average note" source="average_note" />
     </Create>
 );
-
-export default PostCreate;
 ```
 
 ## Configuring The REST Client
