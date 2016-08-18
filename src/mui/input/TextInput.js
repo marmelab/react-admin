@@ -5,14 +5,14 @@ const EMPTY_STRING = '';
 
 class TextInput extends Component {
     handleChange(event) {
-        this.props.onChange(event.currentTarget.dataset.key, event.target.value);
+        this.props.onChange(this.props.source, event.target.value);
     }
 
     render() {
         const { source, label, record, options } = this.props;
         return (<TextField
+            name={source}
             floatingLabelText={label}
-            data-key={source}
             value={record[source] || EMPTY_STRING}
             onChange={::this.handleChange}
             {...options}
