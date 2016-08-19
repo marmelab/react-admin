@@ -1,4 +1,4 @@
-# admin-on-rest
+# admin-on-rest [![Build Status](https://travis-ci.com/marmelab/admin-on-rest.svg?token=okGkiaMspTNu1ifpoyuL&branch=master)](https://travis-ci.com/marmelab/admin-on-rest)
 
 A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI.
 
