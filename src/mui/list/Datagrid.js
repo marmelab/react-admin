@@ -3,18 +3,18 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
 
-const Datagrid = ({ resource, fields, ids, data, currentSort, basePath, updateSort }) => (
-    <Table multiSelectable>
-        <TableHeader>
+const Datagrid = ({ resource, fields, ids, data, currentSort, basePath, selectable, updateSort }) => (
+    <Table multiSelectable={selectable}>
+        <TableHeader adjustForCheckbox={selectable} displaySelectAll={selectable}>
             <TableRow>
                 {fields.map(field => (
                     <TableHeaderColumn key={field.props.label || 'no-key'}>
-                        {field.props.label &&
+                        {(field.props.label || field.props.source) &&
                             <FlatButton
                                 labelPosition="before"
                                 onClick={updateSort}
                                 data-sort={field.props.source}
-                                label={field.props.label}
+                                label={field.props.label || field.props.source}
                                 icon={field.props.source === currentSort.sort ? <ContentSort style={currentSort.order === 'ASC' ? { transform: 'rotate(180deg)' } : {}} /> : false}
                             />
                         }
@@ -22,7 +22,7 @@ const Datagrid = ({ resource, fields, ids, data, currentSort, basePath, updateSo
                 ))}
             </TableRow>
         </TableHeader>
-        <TableBody showRowHover>
+        <TableBody showRowHover displayRowCheckbox={selectable}>
             {ids.map(id => (
                 <TableRow key={id}>
                     {fields.map(field => (
@@ -40,6 +40,7 @@ Datagrid.propTypes = {
     fields: PropTypes.array.isRequired,
     ids: PropTypes.arrayOf(PropTypes.number).isRequired,
     resource: PropTypes.string,
+    selectable: PropTypes.bool,
     data: PropTypes.object.isRequired,
     currentSort: PropTypes.shape({
         sort: PropTypes.string,
@@ -47,6 +48,10 @@ Datagrid.propTypes = {
     }),
     basePath: PropTypes.string,
     updateSort: PropTypes.func,
+};
+
+Datagrid.defaultProps = {
+    selectable: true,
 };
 
 export default Datagrid;

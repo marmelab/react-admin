@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
+import TextField from 'material-ui/TextField';
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions/dataActions';
 import { getReferences } from '../../reducer/references/oneToMany';
 import Datagrid from '../list/Datagrid';
@@ -28,12 +29,18 @@ export class ReferenceManyField extends Component {
     }
 
     render() {
-        const { resource, reference, referenceRecords, children, basePath } = this.props;
-        if (typeof referenceRecords === 'undefined') {
-            return <LinearProgress />;
-        }
+        const { resource, reference, referenceRecords, children, label, basePath } = this.props;
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
-        return <Datagrid fields={React.Children.toArray(children)} resource={reference} ids={Object.keys(referenceRecords)} data={referenceRecords} basePath={referenceBasePath} />;
+        return (
+            <TextField floatingLabelText={label} floatingLabelFixed disabled fullWidth underlineShow={false}>
+                <div style={{ marginTop: '2em' }}>
+                    {typeof referenceRecords === 'undefined' ?
+                        <LinearProgress /> :
+                        <Datagrid selectable={false} fields={React.Children.toArray(children)} resource={reference} ids={Object.keys(referenceRecords)} data={referenceRecords} basePath={referenceBasePath} currentSort={{}} />
+                    }
+                </div>
+            </TextField>
+        );
     }
 }
 
