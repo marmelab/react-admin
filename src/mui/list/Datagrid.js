@@ -3,7 +3,7 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
 
-const Datagrid = ({ fields, ids, data, currentSort, basePath, updateSort }) => (
+const Datagrid = ({ resource, fields, ids, data, currentSort, basePath, updateSort }) => (
     <Table multiSelectable>
         <TableHeader>
             <TableRow>
@@ -27,7 +27,7 @@ const Datagrid = ({ fields, ids, data, currentSort, basePath, updateSort }) => (
                 <TableRow key={id}>
                     {fields.map(field => (
                         <TableRowColumn key={`${id}-${field.props.source}`}>
-                            <field.type {...field.props} record={data[id]} basePath={basePath} />
+                            <field.type {...field.props} record={data[id]} basePath={basePath} resource={resource} />
                         </TableRowColumn>
                     ))}
                 </TableRow>
@@ -39,6 +39,7 @@ const Datagrid = ({ fields, ids, data, currentSort, basePath, updateSort }) => (
 Datagrid.propTypes = {
     fields: PropTypes.array.isRequired,
     ids: PropTypes.arrayOf(PropTypes.number).isRequired,
+    resource: PropTypes.string,
     data: PropTypes.object.isRequired,
     currentSort: PropTypes.shape({
         sort: PropTypes.string,

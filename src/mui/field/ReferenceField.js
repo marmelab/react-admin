@@ -4,6 +4,9 @@ import { Link } from 'react-router';
 import LinearProgress from 'material-ui/LinearProgress';
 import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/referenceActions';
 
+/**
+ * @example <ReferenceField label="Post" source="post_id" reference="posts" referenceSource="title" />
+ */
 export class ReferenceField extends Component {
     componentDidMount() {
         this.props.crudGetOneReference(this.props.reference, this.props.record[this.props.source]);

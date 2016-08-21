@@ -4,6 +4,7 @@ import {
     GET_MATCHING,
     GET_ONE,
     GET_MANY,
+    GET_MANY_REFERENCE,
     CREATE,
     UPDATE,
     DELETE,
@@ -52,6 +53,9 @@ export default (apiUrl) => {
         }
         case GET_ONE:
             url = `${apiUrl}/${resource}/${params.id}`;
+            break;
+        case GET_MANY_REFERENCE:
+            url = `${apiUrl}/${resource}?${queryParameters({ [params.target]: params.id })}`;
             break;
         case UPDATE:
             url = `${apiUrl}/${resource}/${params.id}`;
