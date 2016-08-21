@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import resourceReducer from './resource';
 import loading from './loading';
 import notification from './notification';
+import references from './references';
 
 export default (resources) => {
     const resourceReducers = {};
@@ -12,5 +13,6 @@ export default (resources) => {
         ...resourceReducers,
         loading,
         notification,
+        references,
     });
 };

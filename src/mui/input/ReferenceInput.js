@@ -4,17 +4,20 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import { crudGetOne as crudGetOneAction, crudGetMatching as crudGetMatchingAction } from '../../actions/dataActions';
+import { getPossibleReferences } from '../../reducer/references/possibleValues';
+
+const referenceSource = (resource, source) => `${resource}@${source}`;
 
 export class ReferenceInput extends Component {
     componentDidMount() {
         const { reference, record, source, resource } = this.props;
-        this.fetchReferenceAndOptions(reference, record[source], resource);
+        this.fetchReferenceAndOptions(reference, record[source], referenceSource(resource, source));
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.record.id !== nextProps.record.id) {
             const { reference, record, source, resource } = nextProps;
-            this.fetchReferenceAndOptions(reference, record[source], resource);
+            this.fetchReferenceAndOptions(reference, record[source], referenceSource(resource, source));
         }
     }
 
@@ -70,13 +73,9 @@ ReferenceInput.defaultProps = {
 
 function mapStateToProps(state, props) {
     const referenceId = props.record[props.source];
-    const matchingIds = state.admin[props.resource].detail[props.reference] || [];
-    if (referenceId && !matchingIds.includes(referenceId)) {
-        matchingIds.unshift(referenceId);
-    }
     return {
         referenceRecord: state.admin[props.reference].data[referenceId],
-        matchingReferences: matchingIds.map(id => state.admin[props.reference].data[id]).filter(r => typeof r !== 'undefined'),
+        matchingReferences: getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference, referenceId),
     };
 }
 
