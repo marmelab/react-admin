@@ -2,10 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions/dataActions';
-import { getReferences } from '../../reducer/references/oneToMany';
+import { getReferences, relatedTo } from '../../reducer/references/oneToMany';
 import Datagrid from '../list/Datagrid';
-
-const relatedTo = (reference, id, resource, target) => `${resource}_${reference}@${target}_${id}`;
 
 /**
  * Render related records to the current one in a datagrid.

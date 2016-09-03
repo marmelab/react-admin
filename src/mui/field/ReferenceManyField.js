@@ -2,9 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions/dataActions';
-import { getReferences } from '../../reducer/references/oneToMany';
-
-const relatedTo = (reference, id, resource, target) => `${resource}_${reference}@${target}_${id}`;
+import { getReferences, relatedTo } from '../../reducer/references/oneToMany';
 
 /**
  * Render related records to the current one in a list of a single field.

@@ -24,3 +24,5 @@ export const getReferences = (state, reference, relatedTo) => {
             return prev;
         }, {});
 };
+
+export const relatedTo = (reference, id, resource, target) => `${resource}_${reference}@${target}_${id}`;
