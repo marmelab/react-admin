@@ -30,10 +30,7 @@ export const PostEdit = (props) => (
         <DisabledInput label="Id" source="id" />
         <Labeled label="Comments">
             <ReferenceManyField reference="comments" target="post_id">
-                <TextField source="id" />
                 <TextField source="body" />
-                <DateField source="created_at" />
-                <EditButton />
             </ReferenceManyField>
         </Labeled>
         <TextInput label="Title" source="title" />
