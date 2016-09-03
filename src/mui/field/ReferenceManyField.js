@@ -35,7 +35,7 @@ export class ReferenceManyField extends Component {
             <LinearProgress style={{ marginTop: '1em' }} /> :
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 {Object.keys(referenceRecords).map(index => {
-                    const props = { ...children.props, record: referenceRecords[index], resource, basePath: referenceBasePath };
+                    const props = { ...children.props, key: index, record: referenceRecords[index], resource, basePath: referenceBasePath };
                     return <children.type {...props} />;
                 })}
             </div>;
