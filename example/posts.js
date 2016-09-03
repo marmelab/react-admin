@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Filter, Edit, Create, DateField, TextField, EditButton, Labeled, DisabledInput, TextInput, LongTextInput, DateInput, ReferenceManyField } from 'admin-on-rest/mui';
+import { List, Filter, Edit, Create, ChipField, DateField, TextField, EditButton, Labeled, DisabledInput, TextInput, LongTextInput, DateInput, ReferenceManyField } from 'admin-on-rest/mui';
 
 export PostIcon from 'material-ui/svg-icons/action/book';
 
@@ -30,7 +30,7 @@ export const PostEdit = (props) => (
         <DisabledInput label="Id" source="id" />
         <Labeled label="Comments">
             <ReferenceManyField reference="comments" target="post_id">
-                <TextField source="body" />
+                <ChipField source="created_at" />
             </ReferenceManyField>
         </Labeled>
         <TextInput label="Title" source="title" />

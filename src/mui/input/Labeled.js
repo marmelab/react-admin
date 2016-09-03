@@ -14,7 +14,7 @@ import TextField from 'material-ui/TextField';
 const Labeled = ({ label, resource, record, onChange, basePath, children }) => {
     const props = { ...children.props, record, resource, onChange, basePath };
     return (
-        <TextField floatingLabelText={label} floatingLabelFixed disabled fullWidth underlineShow={false}>
+        <TextField floatingLabelText={label} floatingLabelFixed disabled fullWidth underlineShow={false} style={{ paddingTop: '2em' }}>
             <children.type {...props} />
         </TextField>
     );

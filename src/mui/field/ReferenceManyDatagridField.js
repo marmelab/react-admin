@@ -8,6 +8,10 @@ import Datagrid from '../list/Datagrid';
 const relatedTo = (reference, id, resource, target) => `${resource}_${reference}@${target}_${id}`;
 
 /**
+ * Render related records to the current one in a datagrid.
+ *
+ * You must define the fields to be passed to the datagrid as children.
+ *
  * @example
  * <ReferenceManyDatagridField reference="comments" target="post_id">
  *     <TextField source="id" />
@@ -30,22 +34,17 @@ export class ReferenceManyDatagridField extends Component {
     render() {
         const { resource, reference, referenceRecords, children, basePath } = this.props;
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
-        return (
-            <div style={{ marginTop: '2em' }}>
-                {typeof referenceRecords === 'undefined' ?
-                    <LinearProgress /> :
-                    <Datagrid
-                        selectable={false}
-                        fields={React.Children.toArray(children)}
-                        resource={reference}
-                        ids={Object.keys(referenceRecords).map(id => parseInt(id, 10))}
-                        data={referenceRecords}
-                        basePath={referenceBasePath}
-                        currentSort={{}}
-                    />
-                }
-            </div>
-        );
+        return typeof referenceRecords === 'undefined' ?
+            <LinearProgress style={{ marginTop: '1em' }} /> :
+            <Datagrid
+                selectable={false}
+                fields={React.Children.toArray(children)}
+                resource={reference}
+                ids={Object.keys(referenceRecords).map(id => parseInt(id, 10))}
+                data={referenceRecords}
+                basePath={referenceBasePath}
+                currentSort={{}}
+            />;
     }
 }
 

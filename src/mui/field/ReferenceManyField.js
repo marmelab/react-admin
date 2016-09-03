@@ -3,14 +3,17 @@ import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions/dataActions';
 import { getReferences } from '../../reducer/references/oneToMany';
-import Datagrid from '../list/Datagrid';
 
 const relatedTo = (reference, id, resource, target) => `${resource}_${reference}@${target}_${id}`;
 
 /**
+ * Render related records to the current one in a list of a single field.
+ *
+ * You must define the field to be repeated for each record as child.
+ *
  * @example
  * <ReferenceManyField reference="comments" target="post_id">
- *     <TextField source="id" />
+ *     <ChipField source="id" />
  * </ReferenceManyField>
  */
 export class ReferenceManyField extends Component {
@@ -30,15 +33,14 @@ export class ReferenceManyField extends Component {
             throw new Error('<ReferenceManyField> only accepts a single child');
         }
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
-        return (<div style={{ marginTop: '2em' }}>
-            {typeof referenceRecords === 'undefined' ?
-                <LinearProgress /> :
-                Object.keys(referenceRecords).map(index => {
+        return typeof referenceRecords === 'undefined' ?
+            <LinearProgress style={{ marginTop: '1em' }} /> :
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                {Object.keys(referenceRecords).map(index => {
                     const props = { ...children.props, record: referenceRecords[index], resource, basePath: referenceBasePath };
                     return <children.type {...props} />;
-                })
-            }
-        </div>);
+                })}
+            </div>;
     }
 }
 
