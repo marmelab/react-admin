@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
-import TextField from 'material-ui/TextField';
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions/dataActions';
 import { getReferences } from '../../reducer/references/oneToMany';
 import Datagrid from '../list/Datagrid';
@@ -10,7 +9,7 @@ const relatedTo = (reference, id, resource, target) => `${resource}_${reference}
 
 /**
  * @example
- * <ReferenceManyField label="Comments" reference="comments" target="post_id">
+ * <ReferenceManyField reference="comments" target="post_id">
  *     <TextField source="id" />
  *     <TextField source="body" />
  *     <DateField source="created_at" />
@@ -29,17 +28,23 @@ export class ReferenceManyField extends Component {
     }
 
     render() {
-        const { resource, reference, referenceRecords, children, label, basePath } = this.props;
+        const { resource, reference, referenceRecords, children, basePath } = this.props;
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
         return (
-            <TextField floatingLabelText={label} floatingLabelFixed disabled fullWidth underlineShow={false}>
-                <div style={{ marginTop: '2em' }}>
-                    {typeof referenceRecords === 'undefined' ?
-                        <LinearProgress /> :
-                        <Datagrid selectable={false} fields={React.Children.toArray(children)} resource={reference} ids={Object.keys(referenceRecords)} data={referenceRecords} basePath={referenceBasePath} currentSort={{}} />
-                    }
-                </div>
-            </TextField>
+            <div style={{ marginTop: '2em' }}>
+                {typeof referenceRecords === 'undefined' ?
+                    <LinearProgress /> :
+                    <Datagrid
+                        selectable={false}
+                        fields={React.Children.toArray(children)}
+                        resource={reference}
+                        ids={Object.keys(referenceRecords).map(id => parseInt(id, 10))}
+                        data={referenceRecords}
+                        basePath={referenceBasePath}
+                        currentSort={{}}
+                    />
+                }
+            </div>
         );
     }
 }
@@ -49,7 +54,6 @@ ReferenceManyField.propTypes = {
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
-    label: PropTypes.string,
     referenceRecords: PropTypes.object,
     basePath: PropTypes.string.isRequired,
     crudGetManyReference: PropTypes.func.isRequired,
