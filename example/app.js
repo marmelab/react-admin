@@ -21,7 +21,7 @@ const restClient = simpleRestClient('http://localhost:3000');
 const delayedRestClient = (type, resource, params) => new Promise((resolve, reject) => setTimeout(() => resolve(restClient(type, resource, params)), 1000));
 
 render(
-    <Admin restClient={delayedRestClient}>
+    <Admin restClient={delayedRestClient} title="Example Admin">
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} icon={PostIcon} />
         <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} remove={Delete} icon={CommentIcon} />
     </Admin>,
