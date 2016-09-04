@@ -12,7 +12,9 @@ const CommentFilter = (props) => (
 export const CommentList = (props) => (
     <List title="All comments" {...props} filter={CommentFilter}>
         <TextField label="id" source="id" />
-        <ReferenceField label="Post" source="post_id" reference="posts" referenceSource="title" />
+        <ReferenceField label="Post" source="post_id" reference="posts">
+            <TextField source="title" />
+        </ReferenceField>
         <DateField label="date" source="created_at" />
         <EditButton />
     </List>

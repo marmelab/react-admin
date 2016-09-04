@@ -146,14 +146,16 @@ import { List, TextField, EmailField, ReferenceField } from 'admin-on-rest/lib/m
 export const PostList = (props) => (
     <List {...props}>
         <TextField label="id" source="id" />
-        <ReferenceField label="User" source="userId" reference="users" referenceSource="name" />
+        <ReferenceField label="User" source="userId" reference="users">
+            <TextField source="name" />
+        </ReferenceField>
         <TextField label="title" source="title" />
         <TextField label="body" source="body" />
     </List>
 );
 ```
 
-When displaying the posts list, the browser now fetches related user records, and displays their name.
+When displaying the posts list, the browser now fetches related user records, and displays their name as a `<TextField>`.
 
 ![reference posts in comment list](http://static.marmelab.com/admin-on-rest/reference_posts.png)
 
@@ -169,7 +171,9 @@ import { List, Edit, Create, ReferenceField, TextField, EditButton, DisabledInpu
 export const PostList = (props) => (
     <List {...props}>
         <TextField label="id" source="id" />
-        <ReferenceField label="User" source="userId" reference="users" referenceSource="name" />
+        <ReferenceField label="User" source="userId" reference="users">
+            <TextField source="name" />
+        </ReferenceField>
         <TextField label="title" source="title" />
         <TextField label="body" source="body" />
         <EditButton />

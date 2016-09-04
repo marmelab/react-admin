@@ -5,7 +5,10 @@ import LinearProgress from 'material-ui/LinearProgress';
 import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/referenceActions';
 
 /**
- * @example <ReferenceField label="Post" source="post_id" reference="posts" referenceSource="title" />
+ * @example
+ * <ReferenceField label="Post" source="post_id" reference="posts">
+ *     <TextField source="title" />
+ * </ReferenceField>
  */
 export class ReferenceField extends Component {
     componentDidMount() {
@@ -19,12 +22,18 @@ export class ReferenceField extends Component {
     }
 
     render() {
-        const { record, source, reference, referenceRecord, referenceSource, basePath, allowEmpty } = this.props;
+        const { record, source, reference, referenceRecord, basePath, allowEmpty, children } = this.props;
+        if (React.Children.count(children) != 1) {
+            throw new Error('<ReferenceField> only accepts a single child');
+        }
         const rootPath = basePath.split('/').slice(0, -1).join('/');
         if (!referenceRecord && !allowEmpty) {
             return <LinearProgress />;
         }
-        return <Link to={`${rootPath}/${reference}/${record[source]}`}>{referenceRecord[referenceSource]}</Link>;
+        const props = { ...children.props, record: referenceRecord, resource: reference, allowEmpty, basePath };
+        return (<Link to={`${rootPath}/${reference}/${record[source]}`}>
+            <children.type {...props} />
+        </Link>);
     }
 }
 
@@ -34,7 +43,6 @@ ReferenceField.propTypes = {
     record: PropTypes.object,
     allowEmpty: PropTypes.bool.isRequired,
     reference: PropTypes.string.isRequired,
-    referenceSource: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
     basePath: PropTypes.string.isRequired,
     crudGetOneReference: PropTypes.func.isRequired,
