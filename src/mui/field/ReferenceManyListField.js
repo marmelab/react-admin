@@ -11,14 +11,16 @@ import Datagrid from '../list/Datagrid';
  * You must define the fields to be passed to the datagrid as children.
  *
  * @example
- * <ReferenceManyDatagridField reference="comments" target="post_id">
- *     <TextField source="id" />
- *     <TextField source="body" />
- *     <DateField source="created_at" />
- *     <EditButton />
- * </ReferenceManyDatagridField>
+ * <ReferenceManyListField reference="comments" target="post_id">
+ *     <Datagrid>
+ *         <TextField source="id" />
+ *         <TextField source="body" />
+ *         <DateField source="created_at" />
+ *         <EditButton />
+ *     </Datagrid>
+ * </ReferenceManyListField>
  */
-export class ReferenceManyDatagridField extends Component {
+export class ReferenceManyListField extends Component {
     componentDidMount() {
         this.props.crudGetManyReference(this.props.reference, this.props.target, this.props.record.id, relatedTo(this.props.reference, this.props.record.id, this.props.resource, this.props.target));
     }
@@ -32,21 +34,22 @@ export class ReferenceManyDatagridField extends Component {
     render() {
         const { resource, reference, referenceRecords, children, basePath } = this.props;
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
-        return typeof referenceRecords === 'undefined' ?
-            <LinearProgress style={{ marginTop: '1em' }} /> :
-            <Datagrid
-                selectable={false}
-                fields={React.Children.toArray(children)}
-                resource={reference}
-                ids={Object.keys(referenceRecords).map(id => parseInt(id, 10))}
-                data={referenceRecords}
-                basePath={referenceBasePath}
-                currentSort={{}}
-            />;
+        if (typeof referenceRecords === 'undefined') {
+            return <LinearProgress style={{ marginTop: '1em' }} />;
+        }
+        const props = {
+            ...children.props,
+            resource: reference,
+            ids: Object.keys(referenceRecords).map(id => parseInt(id, 10)),
+            data: referenceRecords,
+            basePath: referenceBasePath,
+            currentSort: {},
+        };
+        return <children.type {...props} />;
     }
 }
 
-ReferenceManyDatagridField.propTypes = {
+ReferenceManyListField.propTypes = {
     resource: PropTypes.string.isRequired,
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
@@ -64,4 +67,4 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, {
     crudGetManyReference: crudGetManyReferenceAction,
-})(ReferenceManyDatagridField);
+})(ReferenceManyListField);
