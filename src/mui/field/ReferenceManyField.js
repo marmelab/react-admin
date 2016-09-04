@@ -30,15 +30,22 @@ export class ReferenceManyField extends Component {
         if (React.Children.count(children) !== 1) {
             throw new Error('<ReferenceManyField> only accepts a single child');
         }
+        if (typeof referenceRecords === 'undefined') {
+            return <LinearProgress style={{ marginTop: '1em' }} />;
+        }
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
-        return typeof referenceRecords === 'undefined' ?
-            <LinearProgress style={{ marginTop: '1em' }} /> :
+        return (
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {Object.keys(referenceRecords).map(index => {
-                    const props = { ...children.props, key: index, record: referenceRecords[index], resource: reference, basePath: referenceBasePath };
-                    return <children.type {...props} />;
-                })}
-            </div>;
+                {Object.keys(referenceRecords).map(index =>
+                    React.cloneElement(children, {
+                        key: index,
+                        record: referenceRecords[index],
+                        resource: reference,
+                        basePath: referenceBasePath,
+                    })
+                )}
+            </div>
+        );
     }
 }
 

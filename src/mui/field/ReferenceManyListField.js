@@ -33,19 +33,20 @@ export class ReferenceManyListField extends Component {
 
     render() {
         const { resource, reference, referenceRecords, children, basePath } = this.props;
-        const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
+        if (React.Children.count(children) !== 1) {
+            throw new Error('<ReferenceManyListField> only accepts a single child (like <Datagrid>)');
+        }
         if (typeof referenceRecords === 'undefined') {
             return <LinearProgress style={{ marginTop: '1em' }} />;
         }
-        const props = {
-            ...children.props,
+        const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
+        return React.cloneElement(children, {
             resource: reference,
             ids: Object.keys(referenceRecords).map(id => parseInt(id, 10)),
             data: referenceRecords,
             basePath: referenceBasePath,
             currentSort: {},
-        };
-        return <children.type {...props} />;
+        });
     }
 }
 
@@ -56,6 +57,7 @@ ReferenceManyListField.propTypes = {
     target: PropTypes.string.isRequired,
     referenceRecords: PropTypes.object,
     basePath: PropTypes.string.isRequired,
+    children: PropTypes.element.isRequired,
     crudGetManyReference: PropTypes.func.isRequired,
 };
 

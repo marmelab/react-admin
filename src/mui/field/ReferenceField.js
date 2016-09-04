@@ -26,14 +26,20 @@ export class ReferenceField extends Component {
         if (React.Children.count(children) !== 1) {
             throw new Error('<ReferenceField> only accepts a single child');
         }
-        const rootPath = basePath.split('/').slice(0, -1).join('/');
         if (!referenceRecord && !allowEmpty) {
             return <LinearProgress />;
         }
-        const props = { ...children.props, record: referenceRecord, resource: reference, allowEmpty, basePath };
-        return (<Link to={`${rootPath}/${reference}/${record[source]}`}>
-            <children.type {...props} />
-        </Link>);
+        const rootPath = basePath.split('/').slice(0, -1).join('/');
+        return (
+            <Link to={`${rootPath}/${reference}/${record[source]}`}>
+                {React.cloneElement(children, {
+                    record: referenceRecord,
+                    resource: reference,
+                    allowEmpty,
+                    basePath,
+                })}
+            </Link>
+        );
     }
 }
 
