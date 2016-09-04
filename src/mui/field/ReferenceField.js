@@ -23,7 +23,7 @@ export class ReferenceField extends Component {
 
     render() {
         const { record, source, reference, referenceRecord, basePath, allowEmpty, children } = this.props;
-        if (React.Children.count(children) != 1) {
+        if (React.Children.count(children) !== 1) {
             throw new Error('<ReferenceField> only accepts a single child');
         }
         const rootPath = basePath.split('/').slice(0, -1).join('/');
@@ -45,6 +45,7 @@ ReferenceField.propTypes = {
     reference: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
     basePath: PropTypes.string.isRequired,
+    children: PropTypes.element.isRequired,
     crudGetOneReference: PropTypes.func.isRequired,
 };
 

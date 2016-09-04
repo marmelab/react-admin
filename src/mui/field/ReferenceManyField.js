@@ -5,13 +5,13 @@ import { crudGetManyReference as crudGetManyReferenceAction } from '../../action
 import { getReferences, relatedTo } from '../../reducer/references/oneToMany';
 
 /**
- * Render related records to the current one in a list of a single field.
+ * Render related records in a list of a single field.
  *
- * You must define the field to be repeated for each record as child.
+ * The child field will be repeated as many times as there are related records.
  *
- * @example
- * <ReferenceManyField reference="comments" target="post_id">
- *     <ChipField source="id" />
+ * @example Display all the books by the current author
+ * <ReferenceManyField reference="books" target="author_id">
+ *     <ChipField source="title" />
  * </ReferenceManyField>
  */
 export class ReferenceManyField extends Component {
@@ -27,7 +27,7 @@ export class ReferenceManyField extends Component {
 
     render() {
         const { resource, reference, referenceRecords, children, basePath } = this.props;
-        if (React.Children.count(children) != 1) {
+        if (React.Children.count(children) !== 1) {
             throw new Error('<ReferenceManyField> only accepts a single child');
         }
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
@@ -49,7 +49,7 @@ ReferenceManyField.propTypes = {
     target: PropTypes.string.isRequired,
     referenceRecords: PropTypes.object,
     basePath: PropTypes.string.isRequired,
-    children: PropTypes.element,
+    children: PropTypes.element.isRequired,
     crudGetManyReference: PropTypes.func.isRequired,
 };
 
