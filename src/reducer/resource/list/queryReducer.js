@@ -31,7 +31,7 @@ export default (previousState, { type, payload }) => {
         return { ...previousState, page: payload };
     case SET_FILTER: {
         const filter = { ...previousState.filter };
-        if (typeof payload.value === 'undefined') {
+        if (typeof payload.value === 'undefined' || payload.value.length === 0) {
             delete filter[payload.field];
         } else {
             filter[payload.field] = payload.value;
