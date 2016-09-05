@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'React';
+import React, { PropTypes } from 'react';
 
 /**
  * Iterator component to be used to display a list of entities, using a single field
