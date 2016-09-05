@@ -3,6 +3,7 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import { ReferenceManyField } from './ReferenceManyField';
 import TextField from './TextField';
+import SingleFieldList from './SingleFieldList';
 
 describe('<ReferenceManyField />', () => {
     it('should render a loading indicator when related records are not yet fetched', () => {
@@ -14,13 +15,15 @@ describe('<ReferenceManyField />', () => {
                 basePath=""
                 crudGetManyReference={() => {}}
             >
-                <TextField source="title" />
+                <SingleFieldList>
+                    <TextField source="title" />
+                </SingleFieldList>
             </ReferenceManyField>
         );
         const ProgressElements = wrapper.find('LinearProgress');
         assert.equal(ProgressElements.length, 1);
-        const TextFieldElements = wrapper.find('TextField');
-        assert.equal(TextFieldElements.length, 0);
+        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        assert.equal(SingleFieldListElement.length, 0);
     });
 
     it('should render a list of the child component', () => {
@@ -37,17 +40,18 @@ describe('<ReferenceManyField />', () => {
                 referenceRecords={referenceRecords}
                 crudGetManyReference={() => {}}
             >
-                <TextField source="title" />
+                <SingleFieldList>
+                    <TextField source="title" />
+                </SingleFieldList>
             </ReferenceManyField>
         );
         const ProgressElements = wrapper.find('LinearProgress');
         assert.equal(ProgressElements.length, 0);
-        const TextFieldElements = wrapper.find('TextField');
-        assert.equal(TextFieldElements.length, 2);
-        assert.equal(TextFieldElements.at(0).prop('resource'), 'bar');
-        assert.deepEqual(TextFieldElements.at(0).prop('record'), { id: 1, title: 'hello' });
-        assert.equal(TextFieldElements.at(1).prop('resource'), 'bar');
-        assert.deepEqual(TextFieldElements.at(1).prop('record'), { id: 2, title: 'world' });
+        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        assert.equal(SingleFieldListElement.length, 1);
+        assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
+        assert.deepEqual(SingleFieldListElement.at(0).prop('data'), referenceRecords);
+        assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), [1, 2]);
     });
 
     it('should render nothing when there are no related records', () => {
@@ -60,12 +64,17 @@ describe('<ReferenceManyField />', () => {
                 referenceRecords={{}}
                 crudGetManyReference={() => {}}
             >
-                <TextField source="title" />
+                <SingleFieldList>
+                    <TextField source="title" />
+                </SingleFieldList>
             </ReferenceManyField>
         );
         const ProgressElements = wrapper.find('LinearProgress');
         assert.equal(ProgressElements.length, 0);
-        const TextFieldElements = wrapper.find('TextField');
-        assert.equal(TextFieldElements.length, 0);
+        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        assert.equal(SingleFieldListElement.length, 1);
+        assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
+        assert.deepEqual(SingleFieldListElement.at(0).prop('data'), {});
+        assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), []);
     });
 });

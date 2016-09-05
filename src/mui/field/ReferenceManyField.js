@@ -5,13 +5,25 @@ import { crudGetManyReference as crudGetManyReferenceAction } from '../../action
 import { getReferences, nameRelatedTo } from '../../reducer/references/oneToMany';
 
 /**
- * Render related records in a list of a single field.
+ * Render related records to the current one.
  *
- * The child field will be repeated as many times as there are related records.
+ * You must define the fields to be passed to the iterator component as children.
  *
- * @example Display all the books by the current author
+ * @example Display all the comments of the current post as a datagrid
+ * <ReferenceManyField reference="comments" target="post_id">
+ *     <Datagrid>
+ *         <TextField source="id" />
+ *         <TextField source="body" />
+ *         <DateField source="created_at" />
+ *         <EditButton />
+ *     </Datagrid>
+ * </ReferenceManyField>
+ *
+ * @example Display all the books by the current author, only the title
  * <ReferenceManyField reference="books" target="author_id">
- *     <ChipField source="title" />
+ *     <SingleFieldList>
+ *         <ChipField source="title" />
+ *     </SingleFieldList>
  * </ReferenceManyField>
  */
 export class ReferenceManyField extends Component {
@@ -30,31 +42,26 @@ export class ReferenceManyField extends Component {
     render() {
         const { resource, reference, referenceRecords, children, basePath } = this.props;
         if (React.Children.count(children) !== 1) {
-            throw new Error('<ReferenceManyField> only accepts a single child');
+            throw new Error('<ReferenceManyField> only accepts a single child (like <Datagrid>)');
         }
         if (typeof referenceRecords === 'undefined') {
             return <LinearProgress style={{ marginTop: '1em' }} />;
         }
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
-        return (
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {Object.keys(referenceRecords).map(index =>
-                    React.cloneElement(children, {
-                        key: index,
-                        record: referenceRecords[index],
-                        resource: reference,
-                        basePath: referenceBasePath,
-                    })
-                )}
-            </div>
-        );
+        return React.cloneElement(children, {
+            resource: reference,
+            ids: Object.keys(referenceRecords).map(id => parseInt(id, 10)),
+            data: referenceRecords,
+            basePath: referenceBasePath,
+            currentSort: {},
+        });
     }
 }
 
 ReferenceManyField.propTypes = {
     resource: PropTypes.string.isRequired,
-    record: PropTypes.object,
     label: PropTypes.string,
+    record: PropTypes.object,
     reference: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
     referenceRecords: PropTypes.object,
