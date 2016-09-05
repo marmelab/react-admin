@@ -19,10 +19,15 @@ const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', appLa
         admin: adminReducer(resources),
         routing: routerReducer,
     });
-    const store = createStore(reducer, undefined, compose(
-        applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
-        window.devToolsExtension ? window.devToolsExtension() : f => f,
-    ));
+    
+    if (typeof window !== "undefined")
+        const store = createStore(reducer, undefined, compose(
+            applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
+            window.devToolsExtension ? window.devToolsExtension() : f => f,
+        ));
+        
+    else 
+        const store = createStore(reduccer)
     sagaMiddleware.run(crudSaga(restClient));
 
     const history = syncHistoryWithStore(hashHistory, store);
