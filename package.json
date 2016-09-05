@@ -33,7 +33,7 @@
     "enzyme": "2.4.1",
     "eslint": "3.0.0",
     "eslint-config-airbnb": "9.0.1",
-    "eslint-plugin-import": "1.10.1",
+    "eslint-plugin-import": "1.10.3",
     "eslint-plugin-jsx-a11y": "1.5.3",
     "eslint-plugin-react": "5.2.2",
     "fakerest": "1.2.0",
