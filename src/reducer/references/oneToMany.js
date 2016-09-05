@@ -25,4 +25,4 @@ export const getReferences = (state, reference, relatedTo) => {
         }, {});
 };
 
-export const relatedTo = (reference, id, resource, target) => `${resource}_${reference}@${target}_${id}`;
+export const nameRelatedTo = (reference, id, resource, target) => `${resource}_${reference}@${target}_${id}`;

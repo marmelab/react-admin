@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions/dataActions';
-import { getReferences, relatedTo } from '../../reducer/references/oneToMany';
+import { getReferences, nameRelatedTo } from '../../reducer/references/oneToMany';
 
 /**
  * Render related records in a list of a single field.
@@ -16,12 +16,14 @@ import { getReferences, relatedTo } from '../../reducer/references/oneToMany';
  */
 export class ReferenceManyField extends Component {
     componentDidMount() {
-        this.props.crudGetManyReference(this.props.reference, this.props.target, this.props.record.id, relatedTo(this.props.reference, this.props.record.id, this.props.resource, this.props.target));
+        const relatedTo = nameRelatedTo(this.props.reference, this.props.record.id, this.props.resource, this.props.target);
+        this.props.crudGetManyReference(this.props.reference, this.props.target, this.props.record.id, relatedTo);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.record.id !== nextProps.record.id) {
-            this.props.crudGetManyReference(nextProps.reference, nextProps.target, nextProps.record.id, relatedTo(nextProps.reference, nextProps.record.id, nextProps.resource, nextProps.target));
+            const relatedTo = nameRelatedTo(nextProps.reference, nextProps.record.id, nextProps.resource, nextProps.target);
+            this.props.crudGetManyReference(nextProps.reference, nextProps.target, nextProps.record.id, relatedTo);
         }
     }
 
@@ -62,8 +64,9 @@ ReferenceManyField.propTypes = {
 };
 
 function mapStateToProps(state, props) {
+    const relatedTo = nameRelatedTo(props.reference, props.record.id, props.resource, props.target);
     return {
-        referenceRecords: getReferences(state, props.reference, relatedTo(props.reference, props.record.id, props.resource, props.target)),
+        referenceRecords: getReferences(state, props.reference, relatedTo),
     };
 }
 
