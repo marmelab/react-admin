@@ -34,12 +34,14 @@ DateInput.propTypes = {
     locale: PropTypes.string.isRequired,
     options: PropTypes.object,
     onChange: PropTypes.func,
+    includesLabel: PropTypes.bool.isRequired,
 };
 
 DateInput.defaultProps = {
     record: {},
     options: {},
     locale: 'en-US',
+    includesLabel: true,
 };
 
 export default DateInput;

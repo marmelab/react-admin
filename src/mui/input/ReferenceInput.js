@@ -62,6 +62,7 @@ ReferenceInput.propTypes = {
     onChange: PropTypes.func,
     crudGetOne: PropTypes.func.isRequired,
     crudGetMatching: PropTypes.func.isRequired,
+    includesLabel: PropTypes.bool.isRequired,
 };
 
 ReferenceInput.defaultProps = {
@@ -69,6 +70,7 @@ ReferenceInput.defaultProps = {
     record: {},
     allowEmpty: false,
     matchingReferences: [],
+    includesLabel: true,
 };
 
 function mapStateToProps(state, props) {

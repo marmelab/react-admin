@@ -11,6 +11,11 @@ DisabledInput.propTypes = {
     source: PropTypes.string.isRequired,
     label: PropTypes.string,
     record: PropTypes.object,
+    includesLabel: PropTypes.bool.isRequired,
+};
+
+DisabledInput.defaultProps = {
+    includesLabel: true,
 };
 
 export default DisabledInput;

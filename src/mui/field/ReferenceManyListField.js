@@ -52,6 +52,7 @@ export class ReferenceManyListField extends Component {
 
 ReferenceManyListField.propTypes = {
     resource: PropTypes.string.isRequired,
+    label: PropTypes.string,
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,

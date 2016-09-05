@@ -52,6 +52,7 @@ export class ReferenceManyField extends Component {
 ReferenceManyField.propTypes = {
     resource: PropTypes.string.isRequired,
     record: PropTypes.object,
+    label: PropTypes.string,
     reference: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
     referenceRecords: PropTypes.object,
