@@ -11,6 +11,7 @@ import Menu from './Menu';
 injectTapEventPlugin();
 
 const Layout = ({ isLoading, children, route, title }) => {
+  console.log({ isLoading, route, title })
     const Title = <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>{title}</Link>;
     const RightElement = isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span />;
 
@@ -35,8 +36,12 @@ Layout.propTypes = {
     title: PropTypes.string.isRequired,
 };
 
+Layout.defaultProps = {
+    title: 'Admin on REST',
+};
+
 function mapStateToProps(state) {
-    return { isLoading: state.admin.loading > 0, title: state.ui.title };
+    return { isLoading: state.admin.loading > 0 };
 }
 
 export default connect(
