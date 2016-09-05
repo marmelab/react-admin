@@ -35,10 +35,6 @@ Layout.propTypes = {
     title: PropTypes.string.isRequired,
 };
 
-Layout.defaultProps = {
-    title: 'Admin on REST',
-};
-
 function mapStateToProps(state) {
     return { isLoading: state.admin.loading > 0 };
 }
