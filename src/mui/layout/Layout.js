@@ -11,7 +11,6 @@ import Menu from './Menu';
 injectTapEventPlugin();
 
 const Layout = ({ isLoading, children, route, title }) => {
-  console.log({ isLoading, route, title })
     const Title = <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>{title}</Link>;
     const RightElement = isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span />;
 
