@@ -3,7 +3,7 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import { ReferenceManyField } from './ReferenceManyField';
 import TextField from './TextField';
-import SingleFieldList from './SingleFieldList';
+import SingleFieldList from '../list/SingleFieldList';
 
 describe('<ReferenceManyField />', () => {
     it('should render a loading indicator when related records are not yet fetched', () => {
