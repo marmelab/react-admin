@@ -23,7 +23,6 @@ const restClient = simpleRestClient('http://localhost:3000');
 const delayedRestClient = (type, resource, params) => new Promise(resolve => setTimeout(() => resolve(restClient(type, resource, params)), 1000));
 
 const CustomLayout = withAppTitle('Example Admin')(Layout);
-console.log({ CustomLayout })
 
 render(
     <Admin restClient={delayedRestClient} appLayout={CustomLayout}>
