@@ -4,6 +4,12 @@ import { Link } from 'react-router';
 import LinearProgress from 'material-ui/LinearProgress';
 import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/referenceActions';
 
+/**
+ * @example
+ * <ReferenceField label="Post" source="post_id" reference="posts">
+ *     <TextField source="title" />
+ * </ReferenceField>
+ */
 export class ReferenceField extends Component {
     componentDidMount() {
         this.props.crudGetOneReference(this.props.reference, this.props.record[this.props.source]);
@@ -16,12 +22,24 @@ export class ReferenceField extends Component {
     }
 
     render() {
-        const { record, source, reference, referenceRecord, referenceSource, basePath, allowEmpty } = this.props;
-        const rootPath = basePath.split('/').slice(0, -1).join('/');
+        const { record, source, reference, referenceRecord, basePath, allowEmpty, children } = this.props;
+        if (React.Children.count(children) !== 1) {
+            throw new Error('<ReferenceField> only accepts a single child');
+        }
         if (!referenceRecord && !allowEmpty) {
             return <LinearProgress />;
         }
-        return <Link to={`${rootPath}/${reference}/${record[source]}`}>{referenceRecord[referenceSource]}</Link>;
+        const rootPath = basePath.split('/').slice(0, -1).join('/');
+        return (
+            <Link to={`${rootPath}/${reference}/${record[source]}`}>
+                {React.cloneElement(children, {
+                    record: referenceRecord,
+                    resource: reference,
+                    allowEmpty,
+                    basePath,
+                })}
+            </Link>
+        );
     }
 }
 
@@ -31,9 +49,9 @@ ReferenceField.propTypes = {
     record: PropTypes.object,
     allowEmpty: PropTypes.bool.isRequired,
     reference: PropTypes.string.isRequired,
-    referenceSource: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
     basePath: PropTypes.string.isRequired,
+    children: PropTypes.element.isRequired,
     crudGetOneReference: PropTypes.func.isRequired,
 };
 

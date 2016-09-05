@@ -26,11 +26,13 @@ LongTextInput.propTypes = {
     record: PropTypes.object,
     options: PropTypes.object,
     onChange: PropTypes.func,
+    includesLabel: PropTypes.bool.isRequired,
 };
 
 LongTextInput.defaultProps = {
     record: {},
     options: {},
+    includesLabel: true,
 };
 
 export default LongTextInput;

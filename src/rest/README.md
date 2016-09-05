@@ -1,6 +1,6 @@
 # REST Clients
 
-Admin-on-rest can communicate with any REST server, regardless of the REST dialect it uses. Whether it's [JSON API](http://jsonapi.org/), [HAL](http://stateless.co/hal_specification.html), [ODatya](http://www.odata.org/) or a custom dialect, the only thing admin-on-rest needs is a REST client function. This is the place to translate REST requests to HTTP requests, and HTTP responses to REST responses.
+Admin-on-rest can communicate with any REST server, regardless of the REST dialect it uses. Whether it's [JSON API](http://jsonapi.org/), [HAL](http://stateless.co/hal_specification.html), [OData](http://www.odata.org/) or a custom dialect, the only thing admin-on-rest needs is a REST client function. This is the place to translate REST requests to HTTP requests, and HTTP responses to REST responses.
 
 The `restClient` parameter of the `<Admin>` component, must be a function with the following signature:
 
@@ -34,13 +34,14 @@ Possible types are:
 
 Type | Params format
 ---- | ----------------
-`GET_LIST`     | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} } }`
-`GET_ONE`      | `{ id: {mixed} }`
-`CREATE`       | `{ data: {Object} }`
-`UPDATE`       | `{ id: {mixed}, data: {Object} }`
-`DELETE`       | `{ id: {mixed} }`
-`GET_MANY`     | `{ ids: {mixed[]} }`
-`GET_MATCHING` | `{ filter: {Object} }`
+`GET_LIST`           | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} } }`
+`GET_ONE`            | `{ id: {mixed} }`
+`CREATE`             | `{ data: {Object} }`
+`UPDATE`             | `{ id: {mixed}, data: {Object} }`
+`DELETE`             | `{ id: {mixed} }`
+`GET_MANY`           | `{ ids: {mixed[]} }`
+`GET_MANY_REFERENCE` | `{ target: {string}, id: {mixed} }`
+`GET_MATCHING`       | `{ filter: {Object} }`
 
 Examples:
 
@@ -54,6 +55,7 @@ restClient(CREATE, 'posts', { title: "hello, world" });
 restClient(UPDATE, 'posts', { id: 123, { title: "hello, world!" } });
 restClient(DELETE, 'posts', { id: 123 });
 restClient(GET_MANY, 'posts', { ids: [123, 124, 125] });
+restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123 });
 restClient(GET_MATCHING, 'posts', { filter: { title: 'hello' } });
 ```
 
@@ -63,13 +65,14 @@ REST responses are objects. The format depends on the type.
 
 Type | Response format
 ---- | ----------------
-`GET_LIST`     | `{ data: {Record[]}, total: {int} }`
-`GET_ONE`      | `{Record}`
-`CREATE`       | `{Record}`
-`UPDATE`       | `{Record}`
-`DELETE`       | `{Record}`
-`GET_MANY`     | `{Record[]}`
-`GET_MATCHING` | `{Record[]}`
+`GET_LIST`           | `{ data: {Record[]}, total: {int} }`
+`GET_ONE`            | `{Record}`
+`CREATE`             | `{Record}`
+`UPDATE`             | `{Record}`
+`DELETE`             | `{Record}`
+`GET_MANY`           | `{Record[]}`
+`GET_MANY_REFERENCE` | `{Record[]}`
+`GET_MATCHING`       | `{Record[]}`
 
 A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 123, title: "hello, world" }`.
 
@@ -122,6 +125,13 @@ restClient(GET_MANY, 'posts', { ids: [123, 124, 125] })
 //     { id: 123, title: "hello, world" },
 //     { id: 124, title: "good day sunshise" },
 //     { id: 125, title: "howdy partner" },
+// ]
+
+restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123 });
+.then(records => console.log(records));
+// [
+//     { id: 667, title: "I agree", post_id: 123 },
+//     { id: 895, title: "I don't agree", post_id: 123 },
 // ]
 
 restClient(GET_MATCHING, 'posts', { filter: { title: 'hello' } })

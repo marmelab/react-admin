@@ -2,6 +2,7 @@ import {
     CRUD_GET_LIST_SUCCESS,
     CRUD_GET_ONE_SUCCESS,
     CRUD_GET_MANY_SUCCESS,
+    CRUD_GET_MANY_REFERENCE_SUCCESS,
     CRUD_UPDATE,
     CRUD_UPDATE_SUCCESS,
     CRUD_CREATE_SUCCESS,
@@ -79,6 +80,7 @@ export default (resource) => (previousState = initialState, { type, payload, met
         return addRecords(payload.data, previousState);
     case CRUD_GET_MANY_SUCCESS:
     case CRUD_GET_MATCHING_SUCCESS:
+    case CRUD_GET_MANY_REFERENCE_SUCCESS:
         return addRecords(payload, previousState);
     case CRUD_UPDATE: // replace record in edit form with edited one to avoid displaying previous record version
         return addRecords([payload.data], previousState);

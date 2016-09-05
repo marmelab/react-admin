@@ -4,6 +4,7 @@ import {
     GET_MATCHING,
     GET_ONE,
     GET_MANY,
+    GET_MANY_REFERENCE,
     CREATE,
     UPDATE,
     DELETE,
@@ -58,6 +59,13 @@ export default (apiUrl) => {
         case GET_MANY: {
             const query = {
                 filter: JSON.stringify({ id: params.ids }),
+            };
+            url = `${apiUrl}/${resource}?${queryParameters(query)}`;
+            break;
+        }
+        case GET_MANY_REFERENCE: {
+            const query = {
+                filter: JSON.stringify({ [params.target]: params.id }),
             };
             url = `${apiUrl}/${resource}?${queryParameters(query)}`;
             break;

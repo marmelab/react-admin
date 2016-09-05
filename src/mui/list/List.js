@@ -111,7 +111,9 @@ class List extends Component {
                     displayedFilters: this.state,
                     context: 'form',
                 })}
-                <Datagrid fields={React.Children.toArray(children)} ids={ids} data={data} currentSort={query} basePath={basePath} updateSort={this.updateSort} />
+                <Datagrid resource={resource} ids={ids} data={data} currentSort={query} basePath={basePath} updateSort={this.updateSort}>
+                    {children}
+                </Datagrid>
                 <Pagination resource={resource} page={parseInt(query.page, 10)} perPage={parseInt(query.perPage, 10)} total={total} setPage={this.setPage} />
             </Card>
         );

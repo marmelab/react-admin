@@ -26,11 +26,13 @@ TextInput.propTypes = {
     record: PropTypes.object,
     options: PropTypes.object,
     onChange: PropTypes.func,
+    includesLabel: PropTypes.bool.isRequired,
 };
 
 TextInput.defaultProps = {
     record: {},
     options: {},
+    includesLabel: true,
 };
 
 export default TextInput;
