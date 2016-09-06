@@ -14,21 +14,23 @@ import withAppTitle from './mui/layout/withAppTitle';
 const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', appLayout = withAppTitle(title)(Layout) }) => {
     const resources = React.Children.map(children, ({ props }) => props);
     const firstResource = resources[0].name;
-    const sagaMiddleware = createSagaMiddleware();
     const reducer = combineReducers({
         admin: adminReducer(resources),
         routing: routerReducer,
     });
-    if (typeof window !== "undefined")
+    
+    if (typeof window != "undefined") {
+        const sagaMiddleware = createSagaMiddleware();
         const store = createStore(reducer, undefined, compose(
             applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
             window.devToolsExtension ? window.devToolsExtension() : f => f,
         ));
-        
-    else 
-        const store = createStore(reducer)
-        
-    sagaMiddleware.run(crudSaga(restClient));
+        sagaMiddleware.run(crudSaga(restClient));
+    }
+    else {
+        const store = createStore(reducer);
+    }
+    
 
     const history = syncHistoryWithStore(hashHistory, store);
 
