@@ -3,14 +3,27 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
 /**
- * An Input component using a select box.
+ * An Input component for a select box, using an array of objects for the options
  *
- * Pass possible choices as an array of { label, value } in the choices attribute.
+ * Pass possible options as an array of objects in the 'choices' attribute.
+ *
+ * By default, the options are built from:
+ *  - the 'id' property as the option value,
+ *  - the 'name' property an the option text
  *
  * @example
- * <SelectInput label="Gender" source="gender" choices={[
- *    { label: 'Male', value: 'M' },
- *    { label: 'Female', value: 'F' },
+ * <SelectInput source="gender" choices={[
+ *    { id: 'M', name: 'Male' },
+ *    { id: 'F', label: 'Female' },
+ * ]} />
+ *
+ * You can also customize the properties to use for the option name and value,
+ * thanks to the 'optionText' and 'optionValue' attributes.
+ *
+ * @example
+ * <SelectInput label="Author" source="author_id" optionText="full_name" optionValue="_id" choices={[
+ *    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+ *    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
  * ]} />
  */
 class SelectInput extends Component {
@@ -19,7 +32,7 @@ class SelectInput extends Component {
     }
 
     render() {
-        const { source, label, record, choices, options } = this.props;
+        const { label, source, record, choices, optionText, optionValue, options } = this.props;
         return (
             <SelectField
                 menuStyle={{ maxHeight: '41px', overflowY: 'hidden' }}
@@ -29,8 +42,8 @@ class SelectInput extends Component {
                 autoWidth
                 {...options}
             >
-                {choices.map(item =>
-                    <MenuItem key={item.label} primaryText={item.label} value={item.value} />
+                {choices.map(choice =>
+                    <MenuItem key={choice[optionText]} primaryText={choice[optionText]} value={choice[optionValue]} />
                 )}
             </SelectField>
         );
@@ -39,12 +52,11 @@ class SelectInput extends Component {
 
 SelectInput.propTypes = {
     label: PropTypes.string,
-    source: PropTypes.string.isRequired,
+    source: PropTypes.string,
     record: PropTypes.object,
-    choices: PropTypes.arrayOf(PropTypes.shape({
-        label: PropTypes.string,
-        value: PropTypes.any,
-    })).isRequired,
+    choices: PropTypes.arrayOf(PropTypes.object),
+    optionText: PropTypes.string.isRequired,
+    optionValue: PropTypes.string.isRequired,
     options: PropTypes.object,
     onChange: PropTypes.func,
     includesLabel: PropTypes.bool.isRequired,
@@ -53,6 +65,8 @@ SelectInput.propTypes = {
 SelectInput.defaultProps = {
     record: {},
     options: {},
+    optionText: 'name',
+    optionValue: 'id',
     includesLabel: true,
 };
 

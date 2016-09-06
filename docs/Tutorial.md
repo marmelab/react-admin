@@ -168,7 +168,7 @@ An admin interface is usually for more than seeing remote data - it's for editin
 ```js
 // in src/posts.js
 import React from 'react';
-import { List, Edit, Create, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput SelectObjectInput, TextInput } from 'admin-on-rest/lib/mui';
+import { List, Edit, Create, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput SelectInput, TextInput } from 'admin-on-rest/lib/mui';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -190,7 +190,7 @@ export const PostEdit = (props) => (
     <Edit title={PostTitle} {...props}>
         <DisabledInput label="Id" source="id" />
         <ReferenceInput label="User" source="userId" reference="users">
-            <SelectObjectInput property="name" />
+            <SelectInput optionText="name" />
         </ReferenceInput>
         <TextInput label="Title" source="title" />
         <LongTextInput label="Body" source="body" />
@@ -200,7 +200,7 @@ export const PostEdit = (props) => (
 export const PostCreate = (props) => (
     <Create {...props}>
         <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
-            <SelectObjectInput property="name" />
+            <SelectInput optionText="name" />
         </ReferenceInput>
         <TextInput label="Title" source="title" />
         <LongTextInput label="Body" source="body" />
@@ -212,7 +212,7 @@ Notice the additional `<EditButton>` field in the `<PostList>` component childre
 
 Just like the `<List>` component expects *field components* as children, the `<Edit>` and `<Create>` components expect *input components* as children. `<DisabledInput>`, `<TextInput>`, `<LongTextInput>`, and `<ReferenceInput>` are such inputs.
 
-As for the `<ReferenceInput>`, it takes the same attributes as the `<ReferenceField>` (used earlier in the list view). `<ReferenceInput>` uses these attributes to fetch the API for possible references for the current record (in this case, possible `users` for the current `post`). Once it gets these possible records, it passes them to the child component (`<SelectObjectInput>`), which is responsible for displaying them (via their `name` in that case) and letting the user select one. `<SelectObjectInput>` renders as a `<select>` tag in HTML.
+As for the `<ReferenceInput>`, it takes the same attributes as the `<ReferenceField>` (used earlier in the list view). `<ReferenceInput>` uses these attributes to fetch the API for possible references for the current record (in this case, possible `users` for the current `post`). Once it gets these possible records, it passes them to the child component (`<SelectInput>`), which is responsible for displaying them (via their `name` in that case) and letting the user select one. `<SelectInput>` renders as a `<select>` tag in HTML.
 
 **Tip**: The `<Edit>` and the `<Create>` components use the same `<ReferenceInput>` configuration, except for the `allowEmpty` attribute, which is required in `<Create>`.
 
@@ -269,13 +269,13 @@ Admin-on-rest can use input components to create a multi-criteria search engine 
 
 ```js
 // in src/posts.js
-import { Filter, ReferenceInput, SelectObjectInput, TextInput } from 'admin-on-rest/lib/mui';
+import { Filter, ReferenceInput, SelectInput, TextInput } from 'admin-on-rest/lib/mui';
 
 const PostFilter = (props) => (
     <Filter {...props}>
         <TextInput label="Search" source="q" alwaysOn />
         <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
-            <SelectObjectInput property="name" />
+            <SelectInput optionText="name" />
         </ReferenceInput>
     </Filter>
 );

@@ -39,7 +39,7 @@ export class ReferenceInput extends Component {
             resource,
             source,
             record,
-            objects: matchingReferences,
+            choices: matchingReferences,
             basePath,
             onChange,
         });
