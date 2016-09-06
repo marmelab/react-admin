@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import { crudGetOne as crudGetOneAction, crudGetMatching as crudGetMatchingAction } from '../../actions/dataActions';
 import { getPossibleReferences } from '../../reducer/references/possibleValues';
@@ -33,22 +31,23 @@ export class ReferenceInput extends Component {
     }
 
     render() {
-        const { record, label, source, referenceRecord, referenceSource, allowEmpty, matchingReferences, options } = this.props;
+        const { resource, label, source, record, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children } = this.props;
         if (!referenceRecord && !allowEmpty) {
             return <TextField floatingLabelText={label} />;
         }
-        // FIXME use autocomplete as soon as material-ui knows how to handle it
-        return (
-            <SelectField menuStyle={{ maxHeight: '41px', overflowY: 'hidden' }} floatingLabelText={label} value={record[source]} onChange={::this.handleChange} autoWidth {...options} >
-                {matchingReferences.map(reference =>
-                    <MenuItem key={reference.id} value={reference.id} primaryText={reference[referenceSource]} />
-                )}
-            </SelectField>
-        );
+        return React.cloneElement(children, {
+            resource,
+            source,
+            record,
+            objects: matchingReferences,
+            basePath,
+            onChange,
+        });
     }
 }
 
 ReferenceInput.propTypes = {
+    children: PropTypes.element.isRequired,
     resource: PropTypes.string.isRequired,
     source: PropTypes.string.isRequired,
     label: PropTypes.string,
@@ -56,9 +55,8 @@ ReferenceInput.propTypes = {
     matchingReferences: PropTypes.array,
     allowEmpty: PropTypes.bool.isRequired,
     reference: PropTypes.string.isRequired,
-    referenceSource: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
-    options: PropTypes.object,
+    basePath: PropTypes.string,
     onChange: PropTypes.func,
     crudGetOne: PropTypes.func.isRequired,
     crudGetMatching: PropTypes.func.isRequired,
