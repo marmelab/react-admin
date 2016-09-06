@@ -456,7 +456,7 @@ const convertHTTPResponseToREST = (response, type, resource, params) => {
  * @returns {Promise} the Promise for a REST response
  */
 export default (type, resource, params) => {
-    const { fetchJSON } = fetchUtils;
+    const { fetchJson } = fetchUtils;
     const { url, options } = convertRESTRequestToHTTP(type, resource, params);
     return fetchJson(url, options)
         .then(response => convertHTTPResponseToREST(response, type, resource, params));
