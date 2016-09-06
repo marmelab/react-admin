@@ -45,6 +45,7 @@
     "webpack-dev-server": "1.14.1"
   },
   "dependencies": {
+    "babel-runtime": "^6.11.6",
     "inflection": "1.10.0",
     "material-ui": "0.15.4",
     "react": "15.2.1",
