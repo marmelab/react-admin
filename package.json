@@ -5,7 +5,8 @@
   "files": [
     "*.md",
     "docs",
-    "lib"
+    "lib",
+    "src",
   ],
   "main": "lib/index",
   "scripts": {
