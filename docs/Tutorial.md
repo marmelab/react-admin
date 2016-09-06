@@ -65,7 +65,7 @@ That should be enough to display the post list:
 
 ![Simple posts list](http://static.marmelab.com/admin-on-rest/simple_post_list.png)
 
-The list is already functional: you can change the ordering by clicking on column headers, or change page by using the bottom pagination controls.
+The list is already functional: you can change the ordering by clicking on column headers, or change pages by using the bottom pagination controls.
 
 ## Field Types
 
@@ -336,7 +336,7 @@ const App = () => (
 
 Here is the elephant in the room of this tutorial. In real world projects, the REST dialect of your API won't match the JSONPLaceholder dialect. Writing a REST client is probably the first thing you'll have to do to make admin-on-rest work. Depending on your API, this can require a few hours of additional work.
 
-Admin-on-rest delegates every REST calls to a REST client function. This function must simply return a promise for the result. This gives extreme freedom to map any API dialect, add authentication, use endpoints from several domaines, etc.
+Admin-on-rest delegates every REST calls to a REST client function. This function must simply return a promise for the result. This gives extreme freedom to map any API dialect, add authentication, use endpoints from several domains, etc.
 
 For instance, let's imagine you have to use the my.api.url API, which expects the following parameters:
 
@@ -349,7 +349,7 @@ For instance, let's imagine you have to use the my.api.url API, which expects th
 | Create a record     | `POST http://my.api.url/posts/123` |
 | Delete a record     | `DELETE http://my.api.url/posts/123` |
 
-Admin-on-rest defines custom verbs for each of the actions of this list. Just like HTTP verbs (`GET`, `POST`, etc.), REST verbs qualify a request to a REST server. Admin-on-rest verbs are called `GET_LIST`, `GET_MATCHING`, `GET_ONE`, `GET_MANY`, `CREATE`, `UPDATE`, and `DELETE`. The REST client will have to map each of these verbs into one (or many) HTTP request(s).
+Admin-on-rest defines custom verbs for each of the actions of this list. Just like HTTP verbs (`GET`, `POST`, etc.), REST verbs qualify a request to a REST server. Admin-on-rest verbs are called `GET_LIST`, `GET_MATCHING`, `GET_ONE`, `GET_MANY`, `CREATE`, `UPDATE`, and `DELETE`. The REST client will have to map each of these verbs to one (or many) HTTP request(s).
 
 The code for an API client for my.api.url is as follows:
 
