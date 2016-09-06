@@ -168,7 +168,7 @@ An admin interface is usually for more than seeing remote data - it's for editin
 ```js
 // in src/posts.js
 import React from 'react';
-import { List, Edit, Create, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput SelectInput, TextInput } from 'admin-on-rest/lib/mui';
+import { List, Edit, Create, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, SelectInput, TextInput } from 'admin-on-rest/lib/mui';
 
 export const PostList = (props) => (
     <List {...props}>
