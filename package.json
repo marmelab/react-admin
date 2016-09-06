@@ -6,7 +6,7 @@
     "*.md",
     "docs",
     "lib",
-    "src",
+    "src"
   ],
   "main": "lib/index",
   "scripts": {
