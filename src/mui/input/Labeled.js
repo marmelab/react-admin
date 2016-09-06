@@ -19,7 +19,7 @@ const Labeled = ({ label, resource, record, onChange, basePath, children }) => (
         disabled
         fullWidth
         underlineShow={false}
-        style={{ paddingTop: '2em' }}
+        style={{ paddingTop: '2em', height: 'auto' }}
     >
         {React.cloneElement(children, { record, resource, onChange, basePath })}
     </TextField>

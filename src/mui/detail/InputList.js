@@ -12,7 +12,6 @@ const InputList = ({ record, inputs, resource, handleChange, basePath }) => (
                         record,
                         onChange: handleChange,
                         basePath,
-
                     })
                 :
                     <Labeled

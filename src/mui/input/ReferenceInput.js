@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import TextField from 'material-ui/TextField';
+import Labeled from './Labeled';
 import { crudGetOne as crudGetOneAction, crudGetMatching as crudGetMatchingAction } from '../../actions/dataActions';
 import { getPossibleReferences } from '../../reducer/references/possibleValues';
 
@@ -33,9 +33,10 @@ export class ReferenceInput extends Component {
     render() {
         const { resource, label, source, record, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children } = this.props;
         if (!referenceRecord && !allowEmpty) {
-            return <TextField floatingLabelText={label} />;
+            return <Labeled label={label}><div>&nbsp;</div></Labeled>;
         }
         return React.cloneElement(children, {
+            label,
             resource,
             source,
             record,
@@ -68,7 +69,6 @@ ReferenceInput.defaultProps = {
     record: {},
     allowEmpty: false,
     matchingReferences: [],
-    includesLabel: true,
 };
 
 function mapStateToProps(state, props) {
@@ -79,7 +79,13 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default connect(mapStateToProps, {
+const ConnectedReferenceInput = connect(mapStateToProps, {
     crudGetOne: crudGetOneAction,
     crudGetMatching: crudGetMatchingAction,
 })(ReferenceInput);
+
+ConnectedReferenceInput.defaultProps = {
+    includesLabel: true,
+};
+
+export default ConnectedReferenceInput;
