@@ -16,6 +16,9 @@ npm start
 
 You should be up and running with an empty React application on port 3000.
 
+The API is not stable yet, so make sure you read the correct version of this tutorial,
+which you should be able to find locally as `node_modules/admin-on-rest/docs/Tutorial.md`.
+
 ## Making Contact With The API
 
 We'll be using [JSONPlaceholder](http://jsonplaceholder.typicode.com/), which is a fake online REST API for testing and prototyping, as the datasource for the admin.
