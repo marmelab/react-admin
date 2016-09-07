@@ -140,6 +140,7 @@ In order to test your changes on a real world project, you can embed a work-in-p
 ``` sh
 cd admin-on-rest
 git checkout my-current-development-branch
+make build
 npm link # allow this repo to be linked from another project
 
 cd ../real-world-project
