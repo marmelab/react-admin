@@ -39,17 +39,19 @@ The `<Resource>` component is a configuration component that allows to define su
 ```js
 // in posts.js
 import React from 'react';
-import { List, Edit, Create, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'admin-on-rest/lib/mui';
+import { List, Edit, Create, Datagrid, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'admin-on-rest/lib/mui';
 export PostIcon from 'material-ui/svg-icons/action/book';
 
 export const PostList = (props) => (
     <List {...props}>
-        <TextField label="id" source="id" />
-        <TextField label="title" source="title" />
-        <DateField label="published_at" source="published_at" />
-        <TextField label="average_note" source="average_note" />
-        <TextField label="views" source="views" />
-        <EditButton basePath="/posts" />
+        <Datagrid>
+            <TextField label="id" source="id" />
+            <TextField label="title" source="title" />
+            <DateField label="published_at" source="published_at" />
+            <TextField label="average_note" source="average_note" />
+            <TextField label="views" source="views" />
+            <EditButton basePath="/posts" />
+        </Datagrid>
     </List>
 );
 

@@ -51,18 +51,22 @@ The `<Admin>` component contains `<Resource>` components, each resource being ma
 ```js
 // in src/posts.js
 import React from 'react';
-import { List, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
 
 export const PostList = (props) => (
     <List {...props}>
-        <TextField label="id" source="id" />
-        <TextField label="title" source="title" />
-        <TextField label="body" source="body" />
+        <Datagrid>
+            <TextField label="id" source="id" />
+            <TextField label="title" source="title" />
+            <TextField label="body" source="body" />
+        </Datagrid>
     </List>
 );
 ```
 
-Notice that the components we use here are from `admin-on-rest/lib/mui` - these are Material UI components. The lists consists of a `<List>` with a bunch of `<TextField>` components, each mapping a different source field in the API response.
+Notice that the components we use here are from `admin-on-rest/lib/mui` - these are Material UI components.
+
+The main component of the post list is a `<List>` component, responsible for grabbing the information from the url, displaying the page title, and handling pagination. This list then delegates the display of the actual list of posts to a `<Datagrid>`, responsible for displaying a table with one row for each post. As for which columns should be displayed in this table, that's what the bunch of `<TextField>` components are for, each mapping a different source field in the API response.
 
 That should be enough to display the post list:
 
@@ -77,14 +81,16 @@ So far, you've only seen `<TextField>`, but if the API sends resources with othe
 ```js
 // in src/users.js
 import React from 'react';
-import { List, EmailField, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, EmailField, TextField } from 'admin-on-rest/lib/mui';
 
 export const UserList = (props) => (
     <List title="All users" {...props}>
-        <TextField label="id" source="id" />
-        <TextField label="name" source="name" />
-        <TextField label="username" source="username" />
-        <EmailField label="email" source="email" />
+        <Datagrid>
+            <TextField label="id" source="id" />
+            <TextField label="name" source="name" />
+            <TextField label="username" source="username" />
+            <EmailField label="email" source="email" />
+        </Datagrid>
     </List>
 );
 ```
@@ -144,16 +150,18 @@ Admin-on-REST knows how to take advantage of these foreign keys to fetch referen
 ```js
 // in src/posts.js
 import React from 'react';
-import { List, TextField, EmailField, ReferenceField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, TextField, EmailField, ReferenceField } from 'admin-on-rest/lib/mui';
 
 export const PostList = (props) => (
     <List {...props}>
-        <TextField label="id" source="id" />
-        <ReferenceField label="User" source="userId" reference="users">
-            <TextField source="name" />
-        </ReferenceField>
-        <TextField label="title" source="title" />
-        <TextField label="body" source="body" />
+        <Datagrid>
+            <TextField label="id" source="id" />
+            <ReferenceField label="User" source="userId" reference="users">
+                <TextField source="name" />
+            </ReferenceField>
+            <TextField label="title" source="title" />
+            <TextField label="body" source="body" />
+        </Datagrid>
     </List>
 );
 ```
@@ -171,17 +179,19 @@ An admin interface is usually for more than seeing remote data - it's for editin
 ```js
 // in src/posts.js
 import React from 'react';
-import { List, Edit, Create, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, SelectInput, TextInput } from 'admin-on-rest/lib/mui';
+import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, SelectInput, TextInput } from 'admin-on-rest/lib/mui';
 
 export const PostList = (props) => (
     <List {...props}>
-        <TextField label="id" source="id" />
-        <ReferenceField label="User" source="userId" reference="users">
-            <TextField source="name" />
-        </ReferenceField>
-        <TextField label="title" source="title" />
-        <TextField label="body" source="body" />
-        <EditButton />
+        <Datagrid>
+            <TextField label="id" source="id" />
+            <ReferenceField label="User" source="userId" reference="users">
+                <TextField source="name" />
+            </ReferenceField>
+            <TextField label="title" source="title" />
+            <TextField label="body" source="body" />
+            <EditButton />
+        </Datagrid>
     </List>
 );
 
