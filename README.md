@@ -130,3 +130,25 @@ Check `sideEffect/saga.js` for a detail of the inputs and outputs
 * Add unit tests
 * Add `<ReferenceMany>` field
 * Add complex field & input types
+
+## Contributing
+
+### Testing Your Changes on a Real Project
+
+In order to test your changes on a real world project, you can embed a work-in-progress version of the lib in another repository, using `npm-link`:
+
+``` sh
+cd admin-on-rest
+git checkout my-current-development-branch
+npm link # allow this repo to be linked from another project
+
+cd ../real-world-project
+npm link admin-on-rest # replace admin-on-rest module by a symbolic link to dev version
+```
+
+To use the real version again, just remove your symbolic link and reinstall dependencies:
+
+``` sh
+rm -Rf node_modules/admin-on-rest
+npm install
+```
