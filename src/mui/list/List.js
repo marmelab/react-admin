@@ -7,7 +7,6 @@ import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import inflection from 'inflection';
 import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER } from '../../reducer/resource/list/queryReducer';
 import Title from '../layout/Title';
-import Datagrid from './Datagrid';
 import Pagination from './Pagination';
 import CreateButton from '../button/CreateButton';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
@@ -111,9 +110,14 @@ class List extends Component {
                     displayedFilters: this.state,
                     context: 'form',
                 })}
-                <Datagrid resource={resource} ids={ids} data={data} currentSort={query} basePath={basePath} updateSort={this.updateSort}>
-                    {children}
-                </Datagrid>
+                {React.cloneElement(children, {
+                    resource,
+                    ids,
+                    data,
+                    currentSort: query,
+                    basePath,
+                    updateSort: this.updateSort,
+                })}
                 <Pagination resource={resource} page={parseInt(query.page, 10)} perPage={parseInt(query.perPage, 10)} total={total} setPage={this.setPage} />
             </Card>
         );
@@ -139,6 +143,7 @@ List.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     crudGetList: PropTypes.func.isRequired,
     changeListParams: PropTypes.func.isRequired,
+    children: PropTypes.element.isRequired,
     push: PropTypes.func.isRequired,
 };
 
