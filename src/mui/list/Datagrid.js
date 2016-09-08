@@ -50,6 +50,8 @@ Datagrid.propTypes = {
 };
 
 Datagrid.defaultProps = {
+    data: {},
+    ids: [],
     selectable: true,
 };
 

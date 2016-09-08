@@ -32,7 +32,7 @@ import { Delete } from 'admin-on-rest/lib/mui';
 
 // create a Redux app
 const reducer = combineReducers({
-    admin: adminReducer(['posts, comments, users']),
+    admin: adminReducer([{ name: 'posts' }, { name: 'comments' }, { name: 'users' }]),
     routing: routerReducer,
 });
 const sagaMiddleware = createSagaMiddleware();
