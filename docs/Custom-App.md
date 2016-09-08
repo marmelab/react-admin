@@ -52,9 +52,9 @@ const App = () => (
         <Router history={history}>
             <Route path="/" component={Layout}>
                 <IndexRoute component={Dashboard} restClient={restClient} />
-                <CrudRoute key="posts" path="posts" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} />
-                <CrudRoute key="comments" path="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} remove={Delete} />
-                <CrudRoute key="users" path="users" list={UserList} edit={UserEdit} create={UserCreate} remove={Delete} />
+                <CrudRoute path="posts" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} />
+                <CrudRoute path="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} remove={Delete} />
+                <CrudRoute path="users" list={UserList} edit={UserEdit} create={UserCreate} remove={Delete} />
             </Route>
         </Router>
     </Provider>
@@ -109,9 +109,9 @@ The `<Layout>` component has the responsibility for displaying the menu. So you 
 const MyMenu = () => (
     <Paper style={{ flex: '0 0 15em', order: -1 }}>
         <List>
-            <ListItem key="posts" containerElement={<Link to={`/posts`} />} primaryText="Posts" leftIcon={<MyPostIcon />} />
-            <ListItem key="comments" containerElement={<Link to={`/comments`} />} primaryText="Comments" leftIcon={<MyPostIcon />} />
-            <ListItem key="users" containerElement={<Link to={`/users`} />} primaryText="Users" leftIcon={<MyPostIcon />} />
+            <ListItem containerElement={<Link to={`/posts`} />} primaryText="Posts" leftIcon={<MyPostIcon />} />
+            <ListItem containerElement={<Link to={`/comments`} />} primaryText="Comments" leftIcon={<MyPostIcon />} />
+            <ListItem containerElement={<Link to={`/users`} />} primaryText="Users" leftIcon={<MyPostIcon />} />
             )}
         </List>
     </Paper>
