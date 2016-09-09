@@ -135,6 +135,16 @@ Check `sideEffect/saga.js` for a detail of the inputs and outputs
 
 ## Contributing
 
+### Live Testing your Changes
+
+If you are developing on this repository, use the following command:
+
+``` sh
+make watch
+```
+
+It would prevent from doing manually a `make build` after each change.
+
 ### Testing Your Changes on a Real Project
 
 In order to test your changes on a real world project, you can embed a work-in-progress version of the lib in another repository, using `npm-link`:
@@ -152,6 +162,6 @@ npm link admin-on-rest # replace admin-on-rest module by a symbolic link to dev 
 To use the real version again, just remove your symbolic link and reinstall dependencies:
 
 ``` sh
-rm -Rf node_modules/admin-on-rest
+rm -f node_modules/admin-on-rest
 npm install
 ```
