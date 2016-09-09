@@ -1,6 +1,6 @@
 {
   "name": "admin-on-rest",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
   "files": [
     "*.md",
