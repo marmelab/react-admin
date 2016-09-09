@@ -29,7 +29,7 @@ Replace the `src/App.js` by the following code:
 
 ```js
 // in src/App.js
-import React, { Component } from 'react';
+import React from 'react';
 
 import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
 
