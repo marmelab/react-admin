@@ -5,7 +5,7 @@ import { createRoutesFromReactChildren } from 'react-router/lib//RouteUtils';
 const CrudRoute = () => <div>&lt;CrudRoute&gt; elements are for configuration only and should not be rendered</div>;
 
 CrudRoute.createRouteFromReactElement = (element, parentRoute) => {
-    const { path, list, edit, create, remove, options } = element.props;
+    const { name, path, list, edit, create, remove, options } = element.props;
     // dynamically add crud routes
     const crudRoute = createRoutesFromReactChildren(
         <Route path={path}>
@@ -20,7 +20,7 @@ CrudRoute.createRouteFromReactElement = (element, parentRoute) => {
     crudRoute.component = ({ children }) => (
         <div>
             {React.Children.map(children, child => React.cloneElement(child, {
-                resource: path,
+                resource: name,
                 options,
                 hasList: !!list,
                 hasEdit: !!edit,
