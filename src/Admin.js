@@ -9,9 +9,9 @@ import adminReducer from './reducer';
 import crudSaga from './sideEffect/saga';
 import CrudRoute from './CrudRoute';
 import Layout from './mui/layout/Layout';
-import withAppTitle from './mui/layout/withAppTitle';
+import withAppTitleAndTheme from './mui/layout/withAppTitleAndTheme';
 
-const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', appLayout = withAppTitle(title)(Layout) }) => {
+const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', theme = {}, appLayout = withAppTitleAndTheme(title, theme)(Layout) }) => {
     const resources = React.Children.map(children, ({ props }) => props);
     const firstResource = resources[0].name;
     const sagaMiddleware = createSagaMiddleware();
@@ -50,6 +50,7 @@ Admin.propTypes = {
     dashboard: componentPropType,
     children: PropTypes.node,
     title: PropTypes.string,
+    theme: PropTypes.object,
 };
 
 export default Admin;
