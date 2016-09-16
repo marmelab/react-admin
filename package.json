@@ -41,7 +41,6 @@
     "fetch-mock": "~5.1.1",
     "mocha": "~3.0.2",
     "react-addons-test-utils": "~15.3.1",
-    "react-dom": "~15.3.1",
     "webpack": "~1.13.2",
     "webpack-dev-server": "~1.15.1"
   },
@@ -50,7 +49,7 @@
     "inflection": "~1.10.0",
     "material-ui": "~0.15.4",
     "react": "~15.3.1",
-    "react-dom": "~15.2.0",
+    "react-dom": "~15.3.1",
     "react-redux": "~4.4.5",
     "react-router": "~2.7.0",
     "react-router-redux": "~4.0.5",
