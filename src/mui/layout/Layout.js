@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -10,23 +10,67 @@ import Menu from './Menu';
 
 injectTapEventPlugin();
 
-const Layout = ({ isLoading, children, route, title }) => {
-    const Title = <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>{title}</Link>;
-    const RightElement = isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span />;
+class Layout extends Component {
 
-    return (
-        <MuiThemeProvider>
-            <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                <AppBar title={Title} iconElementRight={RightElement} />
-                <div className="body" style={{ display: 'flex', flex: '1', backgroundColor: '#edecec' }}>
-                    <div style={{ flex: 1 }}>{children}</div>
-                    <Menu resources={route.resources} />
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            menu: {
+                open: false,
+                selectedItem: 0,
+            },
+        };
+    }
+
+    toggleMenu = () => {
+        const open = this.state.menu.open;
+        this.setState({
+            menu: {
+                ...this.state.menu,
+                open: !open,
+            },
+        });
+    };
+
+    handleMenuRequestChange = (open) => {
+        this.setState({
+            menu: {
+                ...this.state.menu,
+                open,
+            },
+        });
+    };
+
+    handleMenuSelectionChange = (e, index) => {
+        this.setState({
+            menu: {
+                open: false,
+                selectedItem: index,
+            },
+        });
+    };
+
+    render() {
+        const { isLoading, children, route, title } = this.props;
+        const { menu: { open, selectedItem } } = this.state;
+        const Title = <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>{title}</Link>;
+        const RightElement = isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span />;
+
+        return (
+            <MuiThemeProvider>
+                <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                    <AppBar title={Title} iconElementRight={RightElement} onLeftIconButtonTouchTap={this.toggleMenu} />
+                    <div className="body" style={{ flex: '1', backgroundColor: '#edecec' }}>
+                        <div>{children}</div>
+                        <Menu resources={route.resources} open={open} selectedItem={selectedItem} handleSelectionChange={this.handleMenuSelectionChange} handleRequestChange={this.handleMenuRequestChange} />
+                    </div>
+                    <Notification />
                 </div>
-                <Notification />
-            </div>
-        </MuiThemeProvider>
-    );
-};
+            </MuiThemeProvider>
+        );
+    }
+}
 
 Layout.propTypes = {
     isLoading: PropTypes.bool.isRequired,
