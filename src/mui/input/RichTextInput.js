@@ -1,3 +1,4 @@
+import debounce from 'lodash.debounce';
 import React, { Component, PropTypes } from 'react';
 import Quill from 'quill';
 
@@ -16,7 +17,7 @@ class RichTextInput extends Component {
         this.quill.pasteHTML(record[source]);
 
         this.editor = this.divRef.querySelector('.ql-editor');
-        this.quill.on('text-change', this.onTextChange);
+        this.quill.on('text-change', debounce(this.onTextChange, 500));
     }
 
     componentWillUnmount() {

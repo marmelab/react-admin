@@ -53,6 +53,7 @@
     "babel-runtime": "~6.11.6",
     "compass-mixins": "^0.12.10",
     "inflection": "~1.10.0",
+    "lodash.debounce": "^4.0.8",
     "material-ui": "~0.15.4",
     "quill": "^1.0.4",
     "react": "~15.3.1",
