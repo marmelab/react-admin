@@ -1,13 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Quill from 'quill';
 
-const labelStyle = {
-    color: 'rgba(0, 0, 0, 0.498039)',
-    fontSize: '12px',
-    fontFamily: 'Roboto, sans-serif',
-    fontWeight: 'normal',
-};
-
 require('./WysiwygInput.css');
 
 class WysiwygInput extends Component {
@@ -29,10 +22,7 @@ class WysiwygInput extends Component {
     }
 
     render() {
-        const { label } = this.props;
-
         return (<div>
-            <p style={labelStyle}>{label}</p>
             <div ref={::this.init} />
         </div>);
     }
@@ -50,7 +40,7 @@ WysiwygInput.propTypes = {
 WysiwygInput.defaultProps = {
     record: {},
     options: {},
-    includesLabel: true,
+    includesLabel: false,
 };
 
 export default WysiwygInput;

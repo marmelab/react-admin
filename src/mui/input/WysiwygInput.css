@@ -33,10 +33,6 @@
     font-weight: 500;
 }
 
-body .ql-editor :first-child {
-    margin-top: 0;
-}
-
 .ql-editor h1, .ql-editor h2, .ql-editor h3 {
     margin: 1rem 0 .5rem 0;
     font-weight: 500;
