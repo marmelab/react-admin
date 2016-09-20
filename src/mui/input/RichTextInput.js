@@ -6,10 +6,9 @@ require('./RichTextInput.css');
 
 class RichTextInput extends Component {
     componentDidMount() {
+        const { toolbar } = this.props;
         this.quill = new Quill(this.divRef, {
-            modules: {
-                toolbar: true,
-            },
+            modules: { toolbar },
             theme: 'snow',
         });
 
@@ -45,12 +44,17 @@ RichTextInput.propTypes = {
     options: PropTypes.object,
     onChange: PropTypes.func,
     includesLabel: PropTypes.bool.isRequired,
+    toolbar: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.bool,
+    ]),
 };
 
 RichTextInput.defaultProps = {
     record: {},
     options: {},
     includesLabel: false,
+    toolbar: true,
 };
 
 export default RichTextInput;
