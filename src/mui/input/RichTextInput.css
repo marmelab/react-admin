@@ -38,6 +38,21 @@
     font-weight: 500;
 }
 
+.ql-editor a {
+    color: #00bcd4;
+}
+
+.ql-editor ul {
+    margin-bottom: 1rem;
+}
+
+.ql-editor li:not(.ql-direction-rtl)::before {
+    font-size: .5rem;
+    position: relative;
+    top: -.2rem;
+    margin-right: .5rem;
+}
+
 .ql-editor:focus::after {
     -moz-transform: scaleX(1);
     -webkit-transform: scaleX(1);
