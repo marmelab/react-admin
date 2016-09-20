@@ -1,13 +1,7 @@
 import React from 'react';
 import assert from 'assert';
-import { shallow, render } from 'enzyme';
-import RichTextField, { stripTags, truncate } from './RichTextField';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
-const muiTheme = getMuiTheme({
-    userAgent: false,
-});
+import { render } from 'enzyme';
+import RichTextField, { stripTags } from './RichTextField';
 
 describe('stripTags', () => {
     it('should strip HTML tags from input', () => {

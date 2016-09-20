@@ -41,6 +41,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "fakerest": "~1.2.0",
     "fetch-mock": "~5.1.1",
+    "ignore-styles": "^5.0.1",
     "mocha": "~3.0.2",
     "node-sass": "^3.10.0",
     "react-addons-test-utils": "~15.3.1",

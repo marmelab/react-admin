@@ -4,27 +4,36 @@ import Quill from 'quill';
 require('./RichTextInput.css');
 
 class RichTextInput extends Component {
-    init(container) {
-        if (!container || this.quill) {
-            return;
-        }
-
-        this.quill = new Quill(container, {
+    componentDidMount() {
+        this.quill = new Quill(this.divRef, {
             modules: {
                 toolbar: true,
             },
             theme: 'snow',
         });
+
+        const { record, source } = this.props;
+        this.quill.pasteHTML(record[source]);
+
+        this.editor = this.divRef.querySelector('.ql-editor');
+        this.quill.on('text-change', this.onTextChange);
     }
 
-    handleChange(newContent) {
-        this.props.onChange(this.props.source, newContent);
+    componentWillUnmount() {
+        this.quill.off('text-change', this.onTextChange);
+        this.quill = null;
+    }
+
+    onTextChange = () => {
+        if (!this.editor) {
+            return;
+        }
+
+        this.props.onChange(this.props.source, this.editor.innerHTML);
     }
 
     render() {
-        return (<div>
-            <div ref={::this.init} />
-        </div>);
+        return <div ref={(ref) => { this.divRef = ref; }} />;
     }
 }
 
