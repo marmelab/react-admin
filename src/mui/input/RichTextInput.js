@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import Quill from 'quill';
 
-require('./WysiwygInput.css');
+require('./RichTextInput.css');
 
-class WysiwygInput extends Component {
+class RichTextInput extends Component {
     init(container) {
         if (!container || this.quill) {
             return;
@@ -28,7 +28,7 @@ class WysiwygInput extends Component {
     }
 }
 
-WysiwygInput.propTypes = {
+RichTextInput.propTypes = {
     source: PropTypes.string.isRequired,
     label: PropTypes.string,
     record: PropTypes.object,
@@ -37,10 +37,10 @@ WysiwygInput.propTypes = {
     includesLabel: PropTypes.bool.isRequired,
 };
 
-WysiwygInput.defaultProps = {
+RichTextInput.defaultProps = {
     record: {},
     options: {},
     includesLabel: false,
 };
 
-export default WysiwygInput;
+export default RichTextInput;

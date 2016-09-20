@@ -6,4 +6,4 @@ export RadioButtonGroupInput from './RadioButtonGroupInput';
 export ReferenceInput from './ReferenceInput';
 export SelectInput from './SelectInput';
 export TextInput from './TextInput';
-export WysiwygInput from './WysiwygInput';
+export RichTextInput from './RichTextInput';
