@@ -1,4 +1,5 @@
 var path = require('path');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     devtool: 'eval',
@@ -11,7 +12,8 @@ module.exports = {
     module: {
         loaders: [
             { test: /\.js$/, exclude: /node_modules/, loader: 'babel' },
-            { test: /\.css$/, loader: 'style!css' },
+            { test: /\.css$/, loader: ExtractTextPlugin.extract('css') },
+            { test: /\.scss$/, loader: ExtractTextPlugin.extract('css!sass') },
         ],
     },
     resolve: {
@@ -19,4 +21,7 @@ module.exports = {
             'admin-on-rest': path.join(__dirname, '..', 'src'),
         },
     },
+    plugins: [
+        new ExtractTextPlugin('style.css'),
+    ],
 };

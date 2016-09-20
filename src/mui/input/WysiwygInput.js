@@ -8,7 +8,7 @@ const labelStyle = {
     fontWeight: 'normal',
 };
 
-require('quill/dist/quill.snow.css');
+require('./WysiwygInput.scss');
 
 class WysiwygInput extends Component {
     init(container) {
