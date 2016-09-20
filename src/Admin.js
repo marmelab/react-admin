@@ -9,9 +9,9 @@ import adminReducer from './reducer';
 import crudSaga from './sideEffect/saga';
 import CrudRoute from './CrudRoute';
 import Layout from './mui/layout/Layout';
-import withAppTitleAndTheme from './mui/layout/withAppTitleAndTheme';
+import withProps from './withProps';
 
-const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', theme = {}, appLayout = withAppTitleAndTheme(title, theme)(Layout) }) => {
+const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', theme = {}, appLayout = withProps({ title, theme })(Layout) }) => {
     const resources = React.Children.map(children, ({ props }) => props);
     const firstResource = resources[0].name;
     const sagaMiddleware = createSagaMiddleware();
