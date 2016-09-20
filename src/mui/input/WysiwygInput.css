@@ -1,0 +1,90 @@
+@import "~quill/dist/quill.snow.css";
+
+.ql-editor {
+    font-size: 1rem;
+    font-family: Roboto, 'sans-serif';
+    padding: 0;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.ql-editor::after {
+    content: '';
+    display: block;
+    border-bottom: 1px solid #00bcd4;
+
+    -webkit-transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
+    -moz-transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
+    -ms-transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
+    -o-transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
+
+    -moz-transform: scaleX(0);
+    -webkit-transform: scaleX(0);
+    -o-transform: scaleX(0);
+    -ms-transform: scaleX(0);
+    transform: scaleX(0);
+}
+
+.ql-editor p:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
+.ql-editor strong {
+    font-weight: 500;
+}
+
+body .ql-editor :first-child {
+    margin-top: 0;
+}
+
+.ql-editor h1, .ql-editor h2, .ql-editor h3 {
+    margin: 1rem 0 .5rem 0;
+    font-weight: 500;
+}
+
+.ql-editor:focus::after {
+    -moz-transform: scaleX(1);
+    -webkit-transform: scaleX(1);
+    -o-transform: scaleX(1);
+    -ms-transform: scaleX(1);
+    transform: scaleX(1);
+}
+
+.ql-toolbar.ql-snow {
+    margin: .5rem 0;
+    border: 0;
+    padding: 0;
+}
+
+.ql-snow.ql-toolbar .ql-picker-item.ql-active,
+.ql-snow.ql-toolbar .ql-picker-item:hover,
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker-label.ql-selected,
+.ql-snow.ql-toolbar .ql-picker-label:hover {
+    color: #00bcd4;
+}
+
+.ql-snow.ql-toolbar button:hover .ql-fill,
+.ql-snow.ql-toolbar button.ql-active .ql-fill {
+    fill: #00bcd4;
+}
+
+.ql-snow.ql-toolbar button:hover .ql-stroke,
+.ql-snow.ql-toolbar button.ql-active .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke {
+    stroke: #00bcd4;
+}
+
+.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+    background: #fff;
+    z-index: 10;
+}
+
+.ql-snow.ql-toolbar .ql-picker-label {
+    padding-left: 0;
+}
+
+.ql-snow.ql-toolbar + .ql-container.ql-snow {
+    border: 0;
+}

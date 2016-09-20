@@ -8,7 +8,7 @@ const labelStyle = {
     fontWeight: 'normal',
 };
 
-require('./WysiwygInput.scss');
+require('./WysiwygInput.css');
 
 class WysiwygInput extends Component {
     init(container) {
