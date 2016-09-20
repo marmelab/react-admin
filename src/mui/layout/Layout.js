@@ -10,8 +10,8 @@ import Menu from './Menu';
 
 injectTapEventPlugin();
 
-const Layout = ({ isLoading, children, route, title }) => {
-    const Title = <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>{title}</Link>;
+const Layout = ({ isLoading, children, route, title, basePath }) => {
+    const Title = <Link to={`/${basePath}`} style={{ color: '#fff', textDecoration: 'none' }}>{title}</Link>;
     const RightElement = isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span />;
 
     return (
@@ -20,7 +20,7 @@ const Layout = ({ isLoading, children, route, title }) => {
                 <AppBar title={Title} iconElementRight={RightElement} />
                 <div className="body" style={{ display: 'flex', flex: '1', backgroundColor: '#edecec' }}>
                     <div style={{ flex: 1 }}>{children}</div>
-                    <Menu resources={route.resources} />
+                    <Menu resources={route.resources} basePath={basePath} />
                 </div>
                 <Notification />
             </div>
@@ -33,6 +33,7 @@ Layout.propTypes = {
     children: PropTypes.node,
     route: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
+    basePath: PropTypes.string
 };
 
 function mapStateToProps(state) {

@@ -9,9 +9,10 @@ import adminReducer from './reducer';
 import crudSaga from './sideEffect/saga';
 import CrudRoute from './CrudRoute';
 import Layout from './mui/layout/Layout';
-import withAppTitle from './mui/layout/withAppTitle';
+import withProps from './mui/layout/withProps';
+import formatBasePath from './util/formatBasePath';
 
-const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', appLayout = withAppTitle(title)(Layout) }) => {
+const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', history, basePath, appLayout = withProps({title, basePath: formatBasePath(basePath)})(Layout) }) => {
     const resources = React.Children.map(children, ({ props }) => props);
     const firstResource = resources[0].name;
     const sagaMiddleware = createSagaMiddleware();
@@ -19,22 +20,24 @@ const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', appLa
         admin: adminReducer(resources),
         routing: routerReducer,
     });
+    const initialHistory = history || hashHistory;
+    const finalBasePath = formatBasePath(basePath);
     const store = createStore(reducer, undefined, compose(
-        applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
+        applyMiddleware(routerMiddleware(initialHistory), sagaMiddleware),
         window.devToolsExtension ? window.devToolsExtension() : f => f,
     ));
     sagaMiddleware.run(crudSaga(restClient));
 
-    const history = syncHistoryWithStore(hashHistory, store);
+    const finalHistory = syncHistoryWithStore(initialHistory, store);
 
     return (
         <Provider store={store}>
-            <Router history={history}>
-                {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
-                <Route path="/" component={appLayout} resources={resources}>
+            <Router history={finalHistory}>
+                {dashboard ? undefined : <Redirect from={`/${finalBasePath}`} to={finalBasePath?`/${finalBasePath}/${firstResource}`:`/${firstResource}`} />}
+                <Route path={`/${finalBasePath}`} component={appLayout} resources={resources}>
                     {dashboard && <IndexRoute component={dashboard} restClient={restClient} />}
                     {resources.map(resource =>
-                        <CrudRoute key={resource.name} path={resource.name} list={resource.list} edit={resource.edit} create={resource.create} remove={resource.remove} options={resource.options} />
+                        <CrudRoute key={resource.name} name={resource.name} path={finalBasePath?`/${finalBasePath}/${resource.name}`:resource.name} list={resource.list} edit={resource.edit} create={resource.create} remove={resource.remove} options={resource.options} />
                     )}
                 </Route>
             </Router>
@@ -50,6 +53,8 @@ Admin.propTypes = {
     dashboard: componentPropType,
     children: PropTypes.node,
     title: PropTypes.string,
+    history: PropTypes.object,
+    basePath: PropTypes.string
 };
 
 export default Admin;
