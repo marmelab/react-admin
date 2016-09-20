@@ -1,25 +1,25 @@
 import React, { PropTypes } from 'react';
 
-export const stripTags = input => input.replace(/<[^>]+>/gm, '');
+export const removeTags = input => input.replace(/<[^>]+>/gm, '');
 
-const RichTextField = ({ source, record = {}, stripped }) => {
+const RichTextField = ({ source, record = {}, stripTags }) => {
     const value = record[source];
-    if (stripped) {
-        return <div>{stripTags(value)}</div>;
+    if (stripTags) {
+        return <div>{removeTags(value)}</div>;
     }
 
     return <div dangerouslySetInnerHTML={{ __html: value }}></div>;
 };
 
 RichTextField.defaultProps = {
-    stripped: false,
+    stripTags: false,
 };
 
 RichTextField.propTypes = {
     source: PropTypes.string.isRequired,
     label: PropTypes.string,
     record: PropTypes.object,
-    stripped: PropTypes.bool,
+    stripTags: PropTypes.bool,
 };
 
 export default RichTextField;

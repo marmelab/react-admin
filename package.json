@@ -43,7 +43,6 @@
     "fetch-mock": "~5.1.1",
     "ignore-styles": "^5.0.1",
     "mocha": "~3.0.2",
-    "node-sass": "^3.10.0",
     "react-addons-test-utils": "~15.3.1",
     "style-loader": "^0.13.1",
     "webpack": "~1.13.2",
@@ -51,7 +50,6 @@
   },
   "dependencies": {
     "babel-runtime": "~6.11.6",
-    "compass-mixins": "^0.12.10",
     "inflection": "~1.10.0",
     "lodash.debounce": "^4.0.8",
     "material-ui": "~0.15.4",
