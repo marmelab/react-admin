@@ -1,36 +1,39 @@
 import React, { Component, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 
-const EMPTY_STRING = '';
-
 class TextInput extends Component {
-    handleChange(event) {
+    handleChange = (event) => {
         this.props.onChange(this.props.source, event.target.value);
-    }
+    };
 
     render() {
-        const { source, label, record, options } = this.props;
+        const {
+            input,
+            label,
+            meta: { touched, error },
+            options,
+        } = this.props;
+
         return (<TextField
-            name={source}
             floatingLabelText={label}
-            value={record[source] || EMPTY_STRING}
-            onChange={::this.handleChange}
+            errorText={touched && error}
+            onChange={this.handleChange}
+            {...input}
             {...options}
         />);
     }
 }
 
 TextInput.propTypes = {
-    source: PropTypes.string.isRequired,
-    label: PropTypes.string,
-    record: PropTypes.object,
-    options: PropTypes.object,
-    onChange: PropTypes.func,
     includesLabel: PropTypes.bool.isRequired,
+    input: PropTypes.object,
+    label: PropTypes.string,
+    onChange: PropTypes.func,
+    options: PropTypes.object,
+    meta: PropTypes.object,
 };
 
 TextInput.defaultProps = {
-    record: {},
     options: {},
     includesLabel: true,
 };
