@@ -31,22 +31,27 @@
     "babel-preset-react": "~6.11.1",
     "babel-preset-stage-0": "~6.5.0",
     "babel-register": "~6.14.0",
+    "css-loader": "^0.25.0",
     "enzyme": "~2.4.1",
     "eslint": "~3.4.0",
     "eslint-config-airbnb": "~10.0.1",
     "eslint-plugin-import": "~1.14.0",
     "eslint-plugin-jsx-a11y": "~2.2.1",
     "eslint-plugin-react": "~6.2.0",
+    "extract-text-webpack-plugin": "^1.0.1",
     "fakerest": "~1.2.0",
     "fetch-mock": "~5.1.1",
+    "ignore-styles": "^5.0.1",
     "mocha": "~3.0.2",
     "react-addons-test-utils": "~15.3.1",
+    "style-loader": "^0.13.1",
     "webpack": "~1.13.2",
     "webpack-dev-server": "~1.15.1"
   },
   "dependencies": {
     "babel-runtime": "~6.11.6",
     "inflection": "~1.10.0",
+    "lodash.debounce": "^4.0.8",
     "material-ui": "~0.15.4",
     "react": "~15.3.1",
     "react-dom": "~15.3.1",
@@ -56,5 +61,8 @@
     "react-tap-event-plugin": "~1.0.0",
     "redux": "~3.6.0",
     "redux-saga": "~0.11.1"
+  },
+  "peerDependencies": {
+    "quill": "^1.0.4"
   }
 }

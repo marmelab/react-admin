@@ -6,10 +6,11 @@ A frontend Framework for building admin applications on top of REST services, us
 
 ## Installation
 
-Admin-on-rest is available from npm.
+Admin-on-rest is available from npm. You can install it (and its required dependencies)
+using:
 
 ```sh
-npm install --save-dev admin-on-rest
+npm install --save-dev admin-on-rest quill
 ```
 
 ## Usage
