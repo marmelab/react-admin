@@ -1,47 +1,45 @@
 import React, { Component, PropTypes } from 'react';
 import DatePicker from 'material-ui/DatePicker';
 
-class DateInput extends Component {
-    handleChange(event, date) {
-        this.props.onChange(this.props.source, date.toISOString());
+const datify = input => {
+    if (!input) {
+        return null;
     }
 
+    return (input instanceof Date ? input : new Date(input));
+};
+
+class DateInput extends Component {
+    _onChange = (_, date) => this.props.input.onChange(date);
+
     render() {
-        const { source, label, record, locale, options } = this.props;
-        let date = null;
-        if (record[source] instanceof Date) {
-            date = record[source];
-        } else if (record[source]) {
-            date = new Date(record[source]);
-        }
+        const { input, options, label, locale } = this.props;
+
         return (<DatePicker
+            {...input}
+            {...options}
             floatingLabelText={label}
             locale={locale}
             DateTimeFormat={Intl.DateTimeFormat}
-            value={date}
-            onChange={::this.handleChange}
             container="inline"
             autoOk
-            {...options}
+            value={datify(input.value)}
+            onChange={this._onChange}
+            format="dd/mm/YYYY"
         />);
     }
 }
 
 DateInput.propTypes = {
-    source: PropTypes.string.isRequired,
+    input: PropTypes.object,
     label: PropTypes.string,
-    record: PropTypes.object,
     locale: PropTypes.string.isRequired,
     options: PropTypes.object,
-    onChange: PropTypes.func,
-    includesLabel: PropTypes.bool.isRequired,
 };
 
 DateInput.defaultProps = {
-    record: {},
     options: {},
     locale: 'en-US',
-    includesLabel: true,
 };
 
 export default DateInput;

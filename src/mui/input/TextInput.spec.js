@@ -11,22 +11,41 @@ const muiTheme = getMuiTheme({
 
 describe('<TextInput />', () => {
     it('should use a mui TextField', () => {
-        const wrapper = shallow(<TextInput label="hello" record={{ foo: 'bar' }} source="foo" />);
+        const wrapper = shallow(<TextInput label='hello' />);
         const TextFieldElement = wrapper.find('TextField');
         assert.equal(TextFieldElement.length, 1);
-        assert.equal(TextFieldElement.prop('name'), 'foo');
-        assert.equal(TextFieldElement.prop('value'), 'bar');
         assert.equal(TextFieldElement.prop('floatingLabelText'), 'hello');
     });
 
     it('should render an input of type text', () => {
         const wrapper = render(<MuiThemeProvider muiTheme={muiTheme}>
-            <TextInput record={{ foo: 'bar' }} source="foo" />
+            <TextInput input={{ id: 'foo' }} />
         </MuiThemeProvider>);
+
         const inputs = wrapper.find('input');
         assert.equal(inputs.length, 1);
+
         const input = inputs.first();
         assert.equal(input.attr('type'), 'text');
-        assert.equal(input.attr('value'), 'bar');
+    });
+
+    describe('error message', () => {
+        it('should not be displayed if field is pristine', () => {
+            const wrapper = shallow(<TextInput meta={{ touched: false }} />);
+            const TextFieldElement = wrapper.find('TextField');
+            assert.equal(TextFieldElement.prop('errorText'), false);
+        });
+
+        it('should not be displayed if field has been touched but is valid', () => {
+            const wrapper = shallow(<TextInput meta={{ touched: true, error: false }} />);
+            const TextFieldElement = wrapper.find('TextField');
+            assert.equal(TextFieldElement.prop('errorText'), false);
+        });
+
+        it('should be displayed if field has been touched and is invalid', () => {
+            const wrapper = shallow(<TextInput meta={{ touched: true, error: 'Required field.' }} />);
+            const TextFieldElement = wrapper.find('TextField');
+            assert.equal(TextFieldElement.prop('errorText'), 'Required field.');
+        });
     });
 });

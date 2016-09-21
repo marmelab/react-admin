@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardTitle, CardActions } from 'material-ui/Card';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import inflection from 'inflection';
-import InputList from './InputList';
 import Title from '../layout/Title';
-import { ListButton, DeleteButton, SaveButton } from '../button';
+import { ListButton, DeleteButton } from '../button';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
+import RecordForm from './RecordForm';
 
 /**
  * Turns a children data structure (either single child or array of children) into an array.
@@ -19,7 +18,6 @@ export class Edit extends Component {
         super(props);
         this.state = { record: props.data };
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -52,13 +50,8 @@ export class Edit extends Component {
         return location.pathname.split('/').slice(0, -1).join('/');
     }
 
-    handleChange(key, value) {
-        this.setState({ record: { ...this.state.record, [key]: value } });
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-        this.props.crudUpdate(this.props.resource, this.props.id, this.state.record, this.getBasePath());
+    handleSubmit(record) {
+        this.props.crudUpdate(this.props.resource, this.props.id, record, this.getBasePath());
     }
 
     render() {
@@ -71,16 +64,12 @@ export class Edit extends Component {
                     {hasDelete && <DeleteButton basePath={basePath} record={data} />}
                 </CardActions>
                 <CardTitle title={<Title title={title} record={data} defaultTitle={`${inflection.humanize(inflection.singularize(resource))} #${id}`} />} />
-                <form onSubmit={this.handleSubmit}>
-                    <div style={{ padding: '0 1em 1em 1em' }}>
-                        <InputList record={this.state.record} inputs={children} resource={resource} handleChange={this.handleChange} basePath={basePath} />
-                    </div>
-                    <Toolbar>
-                        <ToolbarGroup>
-                            <SaveButton />
-                        </ToolbarGroup>
-                    </Toolbar>
-                </form>
+                <RecordForm
+                    onSubmit={this.handleSubmit}
+                    initialValues={data}
+                >
+                    {children}
+                </RecordForm>
             </Card>
         );
     }

@@ -8,23 +8,18 @@ import Title from '../layout/Title';
 import ListButton from '../button/ListButton';
 import SaveButton from '../button/SaveButton';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
-import CreateForm from './CreateForm';
+import RecordForm from './RecordForm';
 
 class Create extends Component {
     constructor(props) {
         super(props);
         this.state = { record: {} };
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
     }
 
     getBasePath() {
         const { location } = this.props;
         return location.pathname.split('/').slice(0, -1).join('/');
-    }
-
-    handleChange(key, value) {
-        this.setState({ record: { ...this.state.record, [key]: value } });
     }
 
     handleSubmit(event) {
@@ -41,11 +36,9 @@ class Create extends Component {
                     <ListButton basePath={basePath} />
                 </CardActions>
                 <CardTitle title={<Title title={title} record={data} defaultTitle={`Create ${inflection.humanize(inflection.singularize(resource))}`} />} />
-                <div style={{ padding: '0 1em 1em 1em' }}>
-                    <CreateForm handleSubmit={this.handleSubmit}>
-                        {children}
-                    </CreateForm>
-                </div>
+                <RecordForm onSubmit={this.handleSubmit}>
+                    {children}
+                </RecordForm>
             </Card>
         );
     }
