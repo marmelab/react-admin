@@ -19,11 +19,6 @@ class RichTextInput extends Component {
         this.quill.on('text-change', debounce(this.onTextChange, 500));
     }
 
-    componentWillUpdate(nextProps) {
-        const { record, source } = nextProps;
-        this.quill.pasteHTML(record[source]);
-    }
-
     componentWillUnmount() {
         this.quill.off('text-change', this.onTextChange);
         this.quill = null;
@@ -42,7 +37,7 @@ class RichTextInput extends Component {
     }
 
     render() {
-        return <div ref={updateDivRef} />;
+        return <div ref={this.updateDivRef} />;
     }
 }
 
