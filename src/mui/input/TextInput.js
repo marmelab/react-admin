@@ -2,10 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 
 class TextInput extends Component {
-    handleChange = (event) => {
-        this.props.onChange(this.props.source, event.target.value);
-    };
-
     render() {
         const {
             input,
@@ -15,11 +11,10 @@ class TextInput extends Component {
         } = this.props;
 
         return (<TextField
-            floatingLabelText={label}
-            errorText={touched && error}
-            onChange={this.handleChange}
             {...input}
             {...options}
+            floatingLabelText={label}
+            errorText={touched && error}
         />);
     }
 }
@@ -28,14 +23,19 @@ TextInput.propTypes = {
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
+    meta: PropTypes.object,
+    name: PropTypes.string,
     onChange: PropTypes.func,
     options: PropTypes.object,
-    meta: PropTypes.object,
 };
 
 TextInput.defaultProps = {
     options: {},
     includesLabel: true,
+    meta: {
+        touched: false,
+        error: false,
+    },
 };
 
 export default TextInput;
