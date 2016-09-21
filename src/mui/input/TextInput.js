@@ -33,6 +33,10 @@ TextInput.propTypes = {
 TextInput.defaultProps = {
     options: {},
     includesLabel: true,
+    meta: {
+        touched: false,
+        error: false,
+    },
 };
 
 export default TextInput;
