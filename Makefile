@@ -3,7 +3,7 @@
 install:
 	@npm install
 
-example:
+run:
 	@cd example && ../node_modules/.bin/webpack-dev-server --hot --inline --config ./webpack.config.js
 
 build:
