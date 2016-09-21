@@ -18,6 +18,14 @@ depending of their types.
 `<RichTextInput />` is the ideal component if you want to allow your users to edit some HTML contents. It
 is powered by [Quill](https://quilljs.com/).
 
+*Tip*: `quill` is only specified as a peer dependency in the `package.json`. If you want to use the `<RichTextInput>` component in your app, you'll have to add `quill` to your app:
+
+```sh
+npm install --save-dev quill
+```
+
+The component usage is simple:
+
 ``` js
 import { RichTextInput } from 'admin-on-rest/mui';
 
@@ -30,9 +38,7 @@ import { RichTextInput } from 'admin-on-rest/mui';
 />
 ```
 
-By default, the toolbar in above screenshot is displayed. However, you can
-override it using the `toolbar` prop and specifying it options as described on
-the [Quill official toolbar documentation](https://quilljs.com/docs/modules/toolbar/).
+By default, the toolbar in above screenshot is displayed. However, you can override it using the `toolbar` prop and specifying it options, as described on the [Quill official toolbar documentation](https://quilljs.com/docs/modules/toolbar/).
 
 ### Rich Text Field
 

@@ -8,6 +8,9 @@
   },
   "author": "",
   "license": "MIT",
+  "dependencies": {
+      "quill": "^1.0.4"
+  },
   "devDependencies": {
     "babel-plugin-transform-react-jsx": "^6.8.0",
     "babel-polyfill": "^6.9.1",
