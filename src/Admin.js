@@ -3,6 +3,7 @@ import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { Router, IndexRoute, Route, Redirect, hashHistory } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware, routerReducer } from 'react-router-redux';
+import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 
 import adminReducer from './reducer';
@@ -17,6 +18,7 @@ const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', theme
     const sagaMiddleware = createSagaMiddleware();
     const reducer = combineReducers({
         admin: adminReducer(resources),
+        form: formReducer,
         routing: routerReducer,
     });
     const store = createStore(reducer, undefined, compose(

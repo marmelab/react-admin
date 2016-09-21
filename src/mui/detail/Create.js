@@ -8,6 +8,7 @@ import Title from '../layout/Title';
 import ListButton from '../button/ListButton';
 import SaveButton from '../button/SaveButton';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
+import CreateForm from './CreateForm';
 
 class Create extends Component {
     constructor(props) {
@@ -40,16 +41,11 @@ class Create extends Component {
                     <ListButton basePath={basePath} />
                 </CardActions>
                 <CardTitle title={<Title title={title} record={data} defaultTitle={`Create ${inflection.humanize(inflection.singularize(resource))}`} />} />
-                <form onSubmit={this.handleSubmit}>
-                    <div style={{ padding: '0 1em 1em 1em' }}>
-                        <InputList record={this.state.record} inputs={children} resource={resource} handleChange={this.handleChange} basePath={basePath} />
-                    </div>
-                    <Toolbar>
-                        <ToolbarGroup>
-                            <SaveButton />
-                        </ToolbarGroup>
-                    </Toolbar>
-                </form>
+                <div style={{ padding: '0 1em 1em 1em' }}>
+                    <CreateForm handleSubmit={this.handleSubmit}>
+                        {children}
+                    </CreateForm>
+                </div>
             </Card>
         );
     }
