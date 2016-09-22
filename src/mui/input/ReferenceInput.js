@@ -26,10 +26,6 @@ export class ReferenceInput extends Component {
         this.props.crudGetMatching(reference, relatedTo, {});
     }
 
-    handleChange(event, key, payload) {
-        this.props.onChange(this.props.source, payload);
-    }
-
     render() {
         const { resource, label, source, record, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children } = this.props;
         if (!referenceRecord && !allowEmpty) {
