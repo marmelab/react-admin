@@ -27,15 +27,12 @@ TextInput.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func,
     options: PropTypes.object,
+    validation: PropTypes.func,
 };
 
 TextInput.defaultProps = {
     options: {},
     includesLabel: true,
-    meta: {
-        touched: false,
-        error: false,
-    },
 };
 
 export default TextInput;
