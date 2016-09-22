@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Card, CardTitle, CardActions } from 'material-ui/Card';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import inflection from 'inflection';
-import InputList from './InputList';
 import Title from '../layout/Title';
 import ListButton from '../button/ListButton';
 import SaveButton from '../button/SaveButton';

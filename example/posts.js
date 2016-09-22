@@ -47,12 +47,19 @@ const PostTitle = ({ record }) => {
 export const PostEdit = (props) => (
     <Edit title={PostTitle} {...props}>
         <DisabledInput label="Id" source="id" />
-        <TextInput label="Title" source="title" />
+        <TextInput label="Title" source="title" validation={
+            value => {
+                if (!value) {
+                    return 'Required.';
+                }
+
+                return null;
+            }
+        } />
         <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
         <RichTextInput label="Body" source="body" />
         <DateInput label="Publication date" source="published_at" />
         <TextInput label="Average note" source="average_note" />
-        <DisabledInput label="Nb views" source="views" />
         <ReferenceManyField label="Comments" reference="comments" target="post_id">
             <Datagrid selectable={false}>
                 <TextField source="body" />
@@ -60,6 +67,7 @@ export const PostEdit = (props) => (
                 <EditButton />
             </Datagrid>
         </ReferenceManyField>
+        <DisabledInput label="Nb views" source="views" />
     </Edit>
 );
 
@@ -67,7 +75,7 @@ export const PostCreate = (props) => (
     <Create {...props}>
         <TextInput label="Title" source="title" />
         <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
-        <LongTextInput label="Body" source="body" />
+        <RichTextInput label="Body" source="body" />
         <DateInput label="Publication date" source="published_at" />
         <TextInput label="Average note" source="average_note" />
     </Create>
