@@ -52,14 +52,14 @@ export const PostEdit = (props) => (
         <RichTextInput label="Body" source="body" />
         <DateInput label="Publication date" source="published_at" />
         <TextInput label="Average note" source="average_note" />
-        {/*<ReferenceManyField label="Comments" reference="comments" target="post_id">
-        //     <Datagrid selectable={false}>
-        //         <TextField source="body" />
-        //         <DateField source="created_at" />
-        //         <EditButton />
-        //     </Datagrid>
-        // </ReferenceManyField>*/}
         <DisabledInput label="Nb views" source="views" />
+        <ReferenceManyField label="Comments" reference="comments" target="post_id">
+            <Datagrid selectable={false}>
+                <TextField source="body" />
+                <DateField source="created_at" />
+                <EditButton />
+            </Datagrid>
+        </ReferenceManyField>
     </Edit>
 );
 

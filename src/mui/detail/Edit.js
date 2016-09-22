@@ -57,6 +57,7 @@ export class Edit extends Component {
     render() {
         const { title, children, id, data, isLoading, resource, hasDelete } = this.props;
         const basePath = this.getBasePath();
+
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
@@ -64,12 +65,15 @@ export class Edit extends Component {
                     {hasDelete && <DeleteButton basePath={basePath} record={data} />}
                 </CardActions>
                 <CardTitle title={<Title title={title} record={data} defaultTitle={`${inflection.humanize(inflection.singularize(resource))} #${id}`} />} />
-                <RecordForm
+                {data ? <RecordForm
                     onSubmit={this.handleSubmit}
+                    record={data}
+                    resource={resource}
+                    basePath={basePath}
                     initialValues={data}
                 >
                     {children}
-                </RecordForm>
+                </RecordForm> : <div>Loading...</div>}
             </Card>
         );
     }
