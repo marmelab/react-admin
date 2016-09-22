@@ -45,7 +45,18 @@ const PostTitle = ({ record }) => {
 };
 
 export const PostEdit = (props) => (
-    <Edit title={PostTitle} {...props}>
+    <Edit title={PostTitle} validation={{
+        title: { required: true },
+        teaser: { required: true },
+        average_note: { min: 0, max: 5 },
+        body: { custom: (value, record) => {
+            if (value === record.teaser) {
+                return 'Body and teaser should be different.';
+            }
+
+            return '';
+        }}
+    }} {...props}>
         <DisabledInput label="Id" source="id" />
         <TextInput label="Title" source="title" validation={
             value => {
