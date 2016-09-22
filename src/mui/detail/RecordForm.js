@@ -1,70 +1,57 @@
 import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
+import validate from '../../util/validate';
 import { SaveButton } from '../button';
 import { Labeled } from '../input';
 
-let validators = {};
-
-const validate = (values) => {
+export const validateForm = (values, { validation }) => {
     const errors = {};
 
-    for (const key in validators) {
-        if (!validators[key]) {
-            continue;
-        }
-
-        const errorMessage = validators[key](values[key]);
+    for (const fieldName in values) {
+        const errorMessage = validate(values, fieldName, validation);
         if (errorMessage) {
-            errors[key] = errorMessage;
+            errors[fieldName] = errorMessage;
         }
     }
 
     return errors;
 };
 
-const RecordForm = ({ children, handleSubmit, record, resource, basePath }) => {
-    validators = {};
-    React.Children.map(children, input => {
-        const { source, validation } = input.props;
-        validators[source] = validation;
-    });
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <div style={{ padding: '0 1em 1em 1em' }}>
-                {React.Children.map(children, input => {
-                    return (
-                        <div key={input.props.source}>
-                            {
-                                input.props.reference ?
-                                    <Labeled
-                                        label={input.props.label}
-                                        resource={resource}
-                                        record={record}
-                                        basePath={basePath}
-                                    >
-                                        {input}
-                                    </Labeled>
-                                    :
-                                    <Field
-                                        {...input.props}
-                                        name={input.props.source}
-                                        component={input.type}
-                                    />
-                            }
-                        </div>
-                    );
-                })}
-            </div>
-            <Toolbar>
-                <ToolbarGroup>
-                    <SaveButton />
-                </ToolbarGroup>
-            </Toolbar>
-        </form>
-    );
-};
+const RecordForm = ({ children, handleSubmit, record, resource, basePath }) => (
+    <form onSubmit={handleSubmit}>
+        <div style={{ padding: '0 1em 1em 1em' }}>
+            {React.Children.map(children, input => {
+                return (
+                    <div key={input.props.source}>
+                        {
+                            input.props.reference ?
+                                <Labeled
+                                    label={input.props.label}
+                                    resource={resource}
+                                    record={record}
+                                    basePath={basePath}
+                                >
+                                    {input}
+                                </Labeled>
+                                :
+                                <Field
+                                    {...input.props}
+                                    name={input.props.source}
+                                    component={input.type}
+                                />
+                        }
+                    </div>
+                );
+            })}
+        </div>
+        <Toolbar>
+            <ToolbarGroup>
+                <SaveButton />
+            </ToolbarGroup>
+        </Toolbar>
+    </form>
+);
 
 RecordForm.propTypes = {
     children: PropTypes.array,
@@ -76,5 +63,5 @@ RecordForm.propTypes = {
 
 export default reduxForm({
     form: 'record-form',
-    validate,
+    validate: validateForm,
 })(RecordForm);
