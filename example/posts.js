@@ -83,7 +83,18 @@ export const PostEdit = (props) => (
 );
 
 export const PostCreate = (props) => (
-    <Create {...props}>
+    <Create {...props} validation={{
+        title: { required: true },
+        teaser: { required: true },
+        average_note: { min: 0, max: 5 },
+        body: { custom: (value, record) => {
+            if (value === record.teaser) {
+                return 'Body and teaser should be different.';
+            }
+
+            return '';
+        }}
+    }}>
         <TextInput label="Title" source="title" />
         <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
         <RichTextInput label="Body" source="body" />

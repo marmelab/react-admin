@@ -1,23 +1,38 @@
 import React, { Component, PropTypes } from 'react';
 import DatePicker from 'material-ui/DatePicker';
 
-const datify = input => {
+export const datify = input => {
     if (!input) {
         return null;
     }
 
-    return (input instanceof Date ? input : new Date(input));
+    const date = input instanceof Date ? input : new Date(input);
+    if (isNaN(date)) {
+        throw new Error(`Invalid date: ${input}`);
+    }
+
+    return date;
 };
 
 class DateInput extends Component {
     _onChange = (_, date) => this.props.input.onChange(date);
 
     render() {
-        const { input, options, label, locale } = this.props;
+        const {
+            input,
+            label,
+            locale,
+            meta: {
+                touched,
+                error,
+            },
+            options,
+        } = this.props;
 
         return (<DatePicker
             {...input}
             {...options}
+            errorText={touched && error}
             floatingLabelText={label}
             locale={locale}
             DateTimeFormat={Intl.DateTimeFormat}
@@ -25,7 +40,6 @@ class DateInput extends Component {
             autoOk
             value={datify(input.value)}
             onChange={this._onChange}
-            format="dd/mm/YYYY"
         />);
     }
 }
@@ -34,6 +48,7 @@ DateInput.propTypes = {
     input: PropTypes.object,
     label: PropTypes.string,
     locale: PropTypes.string.isRequired,
+    meta: PropTypes.object,
     options: PropTypes.object,
 };
 
