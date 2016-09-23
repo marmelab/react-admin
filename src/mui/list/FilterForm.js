@@ -56,6 +56,7 @@ export class FilterForm extends Component {
                             </IconButton>
                         }
                         <filterElement.type
+                            meta={{}}
                             {...filterElement.props}
                             resource={resource}
                             record={this.state.filterValues}
