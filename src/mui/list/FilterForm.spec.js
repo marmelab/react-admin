@@ -4,8 +4,10 @@ import React from 'react';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import FilterForm from './FilterForm';
+import { FilterForm } from './FilterForm';
 import TextInput from '../input/TextInput';
+
+require('react-tap-event-plugin')();
 
 describe('<FilterForm />', () => {
     let resource;

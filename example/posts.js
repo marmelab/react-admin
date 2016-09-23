@@ -44,33 +44,31 @@ const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 
-export const PostEdit = (props) => (
-    <Edit title={PostTitle} validation={{
-        title: { required: true },
-        teaser: { required: true },
-        average_note: { min: 0, max: 5 },
-        body: { custom: (value, record) => {
-            if (value === record.teaser) {
-                return 'Body and teaser should be different.';
-            }
-
-            return '';
+export const PostCreate = (props) => (
+    <Create
+        {...props}
+        validation={{
+            title: { required: true },
+            teaser: { required: true },
+            average_note: { min: 0, max: 5 },
         }}
-    }} {...props}>
-        <DisabledInput label="Id" source="id" />
-        <TextInput label="Title" source="title" validation={
-            value => {
-                if (!value) {
-                    return 'Required.';
-                }
-
-                return null;
-            }
-        } />
+    >
+        <TextInput label="Title" source="title" />
         <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
         <RichTextInput label="Body" source="body" />
         <DateInput label="Publication date" source="published_at" />
         <TextInput label="Average note" source="average_note" />
+    </Create>
+);
+
+export const PostEdit = (props) => (
+    <Edit title={PostTitle} {...props}>
+        <DisabledInput label="Id" source="id" />
+        <TextInput label="Title" source="title" validation={{ required: true }} />
+        <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} validation={{ required: true }} />
+        <RichTextInput label="Body" source="body" validation={{ required: true }} />
+        <DateInput label="Publication date" source="published_at" />
+        <TextInput label="Average note" source="average_note" validation={{ min: 0 }} />
         <ReferenceManyField label="Comments" reference="comments" target="post_id">
             <Datagrid selectable={false}>
                 <TextField source="body" />
@@ -80,25 +78,4 @@ export const PostEdit = (props) => (
         </ReferenceManyField>
         <DisabledInput label="Nb views" source="views" />
     </Edit>
-);
-
-export const PostCreate = (props) => (
-    <Create {...props} validation={{
-        title: { required: true },
-        teaser: { required: true },
-        average_note: { min: 0, max: 5 },
-        body: { custom: (value, record) => {
-            if (value === record.teaser) {
-                return 'Body and teaser should be different.';
-            }
-
-            return '';
-        }}
-    }}>
-        <TextInput label="Title" source="title" />
-        <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
-        <RichTextInput label="Body" source="body" />
-        <DateInput label="Publication date" source="published_at" />
-        <TextInput label="Average note" source="average_note" />
-    </Create>
 );

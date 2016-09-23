@@ -1,29 +1,36 @@
-export default (record, field, validators) => {
-    if (!validators[field]) {
-        return '';
+const checkConstraint = (record, field, constraint) => {
+    if (typeof constraint.custom === 'function') {
+        return constraint.custom(record[field], record);
     }
 
-    if (typeof validators[field].custom === 'function') {
-        return validators[field].custom(record[field], record);
-    }
-
-    if (validators[field].required) {
-        if (!record[field]) {
+    if (constraint.required) {
+        if (typeof record[field] === 'undefined' || record[field] === null || record[field] === '') {
             return 'Required field';
         }
     }
 
-    if (typeof validators[field].min !== 'undefined') {
-        if (parseInt(record[field], 10) < validators[field].min) {
-            return `Minimum value: ${validators[field].min}`;
+    if (typeof constraint.min !== 'undefined') {
+        if (parseInt(record[field], 10) < constraint.min) {
+            return `Minimum value: ${constraint.min}`;
         }
     }
 
-    if (typeof validators[field].max !== 'undefined') {
-        if (parseInt(record[field], 10) > validators[field].max) {
-            return `Maximum value: ${validators[field].max}`;
+    if (typeof constraint.max !== 'undefined') {
+        if (parseInt(record[field], 10) > constraint.max) {
+            return `Maximum value: ${constraint.max}`;
         }
     }
 
     return '';
+};
+
+export default (record, field, constraints = []) => {
+    if (!constraints.length) {
+        return '';
+    }
+
+    return constraints.reduce(
+        (error, constraint) => error || checkConstraint(record, field, constraint),
+        ''
+    );
 };

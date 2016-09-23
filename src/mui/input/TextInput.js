@@ -27,7 +27,7 @@ TextInput.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func,
     options: PropTypes.object,
-    validation: PropTypes.func,
+    validation: PropTypes.object,
 };
 
 TextInput.defaultProps = {
