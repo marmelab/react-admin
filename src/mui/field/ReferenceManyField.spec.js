@@ -77,4 +77,32 @@ describe('<ReferenceManyField />', () => {
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), {});
         assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), []);
     });
+
+    it('should support record with string identifier', () => {
+        const referenceRecords = {
+            "abc-1": { id: "abc-1", title: 'hello' },
+            "abc-2": { id: "abc-2", title: 'world' },
+        };
+        const wrapper = shallow(
+            <ReferenceManyField
+                resource="foo"
+                reference="bar"
+                target="foo_id"
+                basePath=""
+                referenceRecords={referenceRecords}
+                crudGetManyReference={() => {}}
+            >
+                <SingleFieldList>
+                    <TextField source="title" />
+                </SingleFieldList>
+            </ReferenceManyField>
+        );
+        const ProgressElements = wrapper.find('LinearProgress');
+        assert.equal(ProgressElements.length, 0);
+        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        assert.equal(SingleFieldListElement.length, 1);
+        assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
+        assert.deepEqual(SingleFieldListElement.at(0).prop('data'), referenceRecords);
+        assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), ["abc-1", "abc-2"]);
+    });
 });

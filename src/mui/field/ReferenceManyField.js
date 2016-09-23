@@ -50,7 +50,7 @@ export class ReferenceManyField extends Component {
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
         return React.cloneElement(children, {
             resource: reference,
-            ids: Object.keys(referenceRecords).map(id => parseInt(id, 10)),
+            ids: Object.keys(referenceRecords),
             data: referenceRecords,
             basePath: referenceBasePath,
             currentSort: {},
