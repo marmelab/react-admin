@@ -37,7 +37,7 @@ describe('RecordForm .validateForm', () => {
 
     it('should allow to specify validators on inputs directly', () => {
         const props = {
-            children: <TextInput name="title" validation={{ required: true }} />,
+            children: <TextInput source="title" validation={{ required: true }} />,
         };
 
         const errors = validateForm({ title: '' }, props);
@@ -51,7 +51,7 @@ describe('RecordForm .validateForm', () => {
             validation: {
                 rate: { min: 0, max: 5 },
             },
-            children: <TextInput name="rate" validation={{ required: true }} />,
+            children: <TextInput source="rate" validation={{ required: true }} />,
         };
 
         const nullError = validateForm({ rate: '' }, props);

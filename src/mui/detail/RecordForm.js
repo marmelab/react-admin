@@ -14,15 +14,15 @@ export const validateForm = (values, { children, validation }) => {
     }
 
     React.Children.map(children, child => {
-        const { name, validation } = child.props;
+        const { source, validation } = child.props;
         if (!validation) {
             return;
         }
 
-        if (typeof constraints[name] === 'undefined') {
-            constraints[name] = [validation];
+        if (typeof constraints[source] === 'undefined') {
+            constraints[source] = [validation];
         } else {
-            constraints[name].push(validation);
+            constraints[source].push(validation);
         }
     });
 
