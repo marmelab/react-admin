@@ -27,15 +27,18 @@ class Create extends Component {
     }
 
     render() {
-        const { title, children, data, isLoading, resource } = this.props;
+        const { title, children, data, isLoading, resource, validation } = this.props;
         const basePath = this.getBasePath();
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
+            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     <ListButton basePath={basePath} />
                 </CardActions>
                 <CardTitle title={<Title title={title} record={data} defaultTitle={`Create ${inflection.humanize(inflection.singularize(resource))}`} />} />
-                <RecordForm onSubmit={this.handleSubmit}>
+                <RecordForm
+                    onSubmit={this.handleSubmit}
+                    validation={validation}
+                >
                     {children}
                 </RecordForm>
             </Card>

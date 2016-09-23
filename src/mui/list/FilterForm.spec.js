@@ -7,7 +7,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import FilterForm from './FilterForm';
 import TextInput from '../input/TextInput';
 
-describe.only('<FilterForm />', () => {
+describe('<FilterForm />', () => {
     let resource;
     let filters;
     let setFilter;
@@ -25,7 +25,7 @@ describe.only('<FilterForm />', () => {
     });
 
     it('should display correctly passed filters', () => {
-        filters = [<TextInput source="title" />];
+        filters = [<TextInput source="title" label="Title" />];
         displayedFilters = { title: true };
 
         const muiTheme = getMuiTheme({ userAgent: false });

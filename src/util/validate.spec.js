@@ -1,7 +1,7 @@
 import assert from 'assert';
 import validate from './validate';
 
-describe.only('Validator', () => {
+describe('Validator', () => {
     describe('Required Validator', () => {
         it('should return error message if field is either null or empty', () => {
             assert.equal(validate({}, 'name', {

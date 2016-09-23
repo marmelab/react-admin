@@ -11,7 +11,7 @@ const muiTheme = getMuiTheme({
 
 describe('<TextInput />', () => {
     it('should use a mui TextField', () => {
-        const wrapper = shallow(<TextInput label='hello' />);
+        const wrapper = shallow(<TextInput meta={{}} label='hello' />);
         const TextFieldElement = wrapper.find('TextField');
         assert.equal(TextFieldElement.length, 1);
         assert.equal(TextFieldElement.prop('floatingLabelText'), 'hello');
@@ -19,7 +19,7 @@ describe('<TextInput />', () => {
 
     it('should render an input of type text', () => {
         const wrapper = render(<MuiThemeProvider muiTheme={muiTheme}>
-            <TextInput input={{ id: 'foo' }} />
+            <TextInput meta={{}} input={{ id: 'foo' }} />
         </MuiThemeProvider>);
 
         const inputs = wrapper.find('input');
