@@ -5,11 +5,33 @@ import validate from '../../util/validate';
 import { SaveButton } from '../button';
 import Labeled from '../input/Labeled';
 
-export const validateForm = (values, { validation }) => {
+export const validateForm = (values, { children, validation }) => {
     const errors = {};
 
+    const constraints = {};
     for (const fieldName in validation) {
-        const errorMessage = validate(values, fieldName, validation);
+        constraints[fieldName] = [validation[fieldName]];
+    }
+
+    React.Children.map(children, child => {
+        const { name, validation } = child.props;
+        if (!validation) {
+            return;
+        }
+
+        if (typeof constraints[name] === 'undefined') {
+            constraints[name] = [validation];
+        } else {
+            constraints[name].push(validation);
+        }
+    });
+
+    for (const fieldName in constraints) {
+        if (!constraints[fieldName] || !constraints[fieldName].length) {
+            continue;
+        }
+
+        const errorMessage = validate(values, fieldName, constraints[fieldName]);
         if (errorMessage) {
             errors[fieldName] = errorMessage;
         }
@@ -21,29 +43,27 @@ export const validateForm = (values, { validation }) => {
 export const RecordForm = ({ children, handleSubmit, record, resource, basePath }) => (
     <form onSubmit={handleSubmit}>
         <div style={{ padding: '0 1em 1em 1em' }}>
-            {React.Children.map(children, input => {
-                return (
-                    <div key={input.props.source}>
-                        {
-                            input.props.reference ?
-                                <Labeled
-                                    label={input.props.label}
-                                    resource={resource}
-                                    record={record}
-                                    basePath={basePath}
-                                >
-                                    {input}
-                                </Labeled>
-                                :
-                                <Field
-                                    {...input.props}
-                                    name={input.props.source}
-                                    component={input.type}
-                                />
-                        }
-                    </div>
-                );
-            })}
+            {React.Children.map(children, input => (
+                <div key={input.props.source}>
+                    {
+                        input.props.reference ?
+                            <Labeled
+                                label={input.props.label}
+                                resource={resource}
+                                record={record}
+                                basePath={basePath}
+                            >
+                                {input}
+                            </Labeled>
+                            :
+                            <Field
+                                {...input.props}
+                                name={input.props.source}
+                                component={input.type}
+                            />
+                    }
+                </div>
+            ))}
         </div>
         <Toolbar>
             <ToolbarGroup>
@@ -54,7 +74,7 @@ export const RecordForm = ({ children, handleSubmit, record, resource, basePath 
 );
 
 RecordForm.propTypes = {
-    children: PropTypes.node,
+    children: PropTypes.node    ,
     handleSubmit: PropTypes.func,
     record: PropTypes.object,
     resource: PropTypes.string,

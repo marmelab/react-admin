@@ -34,6 +34,32 @@ describe('RecordForm .validateForm', () => {
             rate: 'Maximum value: 5',
         });
     });
+
+    it('should allow to specify validators on inputs directly', () => {
+        const props = {
+            children: <TextInput name="title" validation={{ required: true }} />,
+        };
+
+        const errors = validateForm({ title: '' }, props);
+        assert.deepEqual(errors, {
+            title: 'Required field',
+        });
+    });
+
+    it('should apply both input and form validators', () => {
+        const props = {
+            validation: {
+                rate: { min: 0, max: 5 },
+            },
+            children: <TextInput name="rate" validation={{ required: true }} />,
+        };
+
+        const nullError = validateForm({ rate: '' }, props);
+        assert.deepEqual(nullError, { rate: 'Required field' });
+
+        const valueError = validateForm({ rate: 6 }, props);
+        assert.deepEqual(valueError, { rate: 'Maximum value: 5' });
+    });
 });
 
 describe('<RecordForm />', () => {
