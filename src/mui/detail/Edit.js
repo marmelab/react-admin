@@ -8,7 +8,13 @@ import Title from '../layout/Title';
 import { ListButton, DeleteButton, SaveButton } from '../button';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
 
-class Edit extends Component {
+/**
+ * Turns a children data structure (either single child or array of children) into an array.
+ * We can't use React.Children.toArray as it loses references.
+ */
+const arrayizeChildren = children => (Array.isArray(children) ? children : [children]);
+
+export class Edit extends Component {
     constructor(props) {
         super(props);
         this.state = { record: props.data };
@@ -31,8 +37,14 @@ class Edit extends Component {
 
     // FIXME Seems that the cloneElement in CrudRoute slices the children array, which makes this necessary to avoid rerenders
     shouldComponentUpdate(nextProps) {
-        return nextProps.isLoading !== this.props.isLoading
-            || nextProps.children.every((child, index) => child === this.props.children[index]);
+        if (nextProps.isLoading !== this.props.isLoading) {
+            return true;
+        }
+
+        const currentChildren = arrayizeChildren(this.props.children);
+        const newChildren = arrayizeChildren(nextProps.children);
+
+        return newChildren.every((child, index) => child === currentChildren[index]);
     }
 
     getBasePath() {
@@ -75,16 +87,17 @@ class Edit extends Component {
 }
 
 Edit.propTypes = {
-    title: PropTypes.any,
-    id: PropTypes.string.isRequired,
-    resource: PropTypes.string.isRequired,
-    location: PropTypes.object.isRequired,
-    hasDelete: PropTypes.bool.isRequired,
-    params: PropTypes.object.isRequired,
-    data: PropTypes.object,
-    isLoading: PropTypes.bool.isRequired,
+    children: PropTypes.node,
     crudGetOne: PropTypes.func.isRequired,
     crudUpdate: PropTypes.func.isRequired,
+    data: PropTypes.object,
+    hasDelete: PropTypes.bool.isRequired,
+    id: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    location: PropTypes.object.isRequired,
+    params: PropTypes.object.isRequired,
+    resource: PropTypes.string.isRequired,
+    title: PropTypes.any,
 };
 
 function mapStateToProps(state, props) {
