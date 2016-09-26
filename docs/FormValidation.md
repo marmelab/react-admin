@@ -1,43 +1,92 @@
 # Form Validation
 
-## Adding Validation Prop
+To validating a form, you can add `validation` props to the form component (`<Edit>` and `<Create>`), to individual inputs, or even a mix both approaches.
 
-Validating your forms just consists in adding some `validation` props either to your form components, inputs, or even a mix of both.
+## Global Form Validation
 
-Form `validation` props is an object whose keys are the source names of your fields and values are constraints objects (see [Constraints Reference](#constraints-reference) below):
-
-``` js
-<Create
-    {...props}
-    validation={{
-        title: { required: true },
-        teaser: { required: true },
-        average_note: { min: 0, max: 5 },
-    }}
->
-    <TextInput label="Title" source="title" />
-    <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
-    <TextInput label="Average note" source="average_note" />
-</Create>
-```
-
-If you want to add a constraint on a given field, just pass a constraint object to your input. For instance, the previous example becomes:
+The value of the form `validation` prop must be a function taking the record as input, and returning an object with error messages indexed by field. For instance:
 
 ``` js
-<Create {...props}>
-    <TextInput label="Title" source="title" validation={{ required: true }} />
-    <TextInput label="Teaser" source="teaser" validation={{ required: true }} />
-    <TextInput label="Average note" source="average_note" validation={{ min: 0, max: 5 }}/>
-</Create>
+const createValidation = (values) => {
+    const errors = {};
+    if (!values.firstName) {
+        errors.firstName = ['The firstName is required'];
+    }
+    if (!values.age) {
+        errors.age = ['The age is required'];
+    } else if (values.age < 18) {
+        errors.age = ['Must be over 18'];
+    }
+    return errors
+};
+
+export const UserCreate = (props) => (
+    <Create {...props} validation={createValidation}>
+        <TextInput label="First Name" source="firstName" />
+        <TextInput label="Age" source="age" />
+    </Create>
+);
 ```
 
-If two kinds of validation are used, they will be merged and applied both.
+## Per Field Form Validation: Function Validator
 
-## Constrains Reference
+Alternatively, you can specify a `validation` prop directly in `<Input>` components. Admin-on-rest will mash all the individual functions up to a single function looking just like the previous one:
 
-Here are all available validation constraints you can use:
+```js
+const firstNameValidation = (value, values) => {
+    if (!value) {
+        return ['The firstName is required'];
+    }
+    return [];
+};
 
-* **required:** *(boolean)* is the field mandatory?
-* **min:** *(Number)* minimum allowed value
-* **max:** *(Number)* maximum allowed value
-* **custom:** *(function)* function taking current field value and the whole record as arguments and returning an error message or an empty string.
+const ageValidation = (value, values) => {
+    if (!value) {
+        return ['The age is required'];
+    }
+    if (age < 18) {
+        return ['Must be over 18'];
+    }
+    return [];
+}
+
+export const UserCreate = (props) => (
+    <Create {...props}>
+        <TextInput label="First Name" source="firstName" validation={firstNameValidation} />
+        <TextInput label="Age" source="age" validation={ageValidation}/>
+    </Create>
+);
+```
+
+Input validation functions receive the current field value, and the values of all fields of the current record. This allows for complex validation scenarios (e.g. validate that two passwords are the same).
+
+**Tip**: You can use *both* Form validation and input validation.
+
+## Per Field Form Validation: Constraints Object
+
+Validation constraints often look the same: asserting presence, size, format, etc. Instead of passing a function as validation, you can pass a constraints object:
+
+```js
+export const UserCreate = (props) => (
+    <Create {...props}>
+        <TextInput label="First Name" source="firstName" validation={{ required: true }} />
+        <TextInput label="Age" source="age" validation={{ required: true, min: 18 }}/>
+    </Create>
+);
+```
+
+As Admin-on-rest translates these constraints objects to functions, the result is the same as before.
+
+## Constraints Reference
+
+You can use the following validation constraint names:
+
+* `required` if the field is mandatory,
+* `min` to specify a minimum value for integers,
+* `max` to specify a maximum value for integers,
+* `minLength` to specify a minimum length for strings,
+* `maxLength` to specify a maximum length for strings,
+* `email` to check that the input is a valid email address,
+* `regex` to validate that the input matches a regex,
+* `choices` to validate that the input is within a given list,
+* `custom` to use the function of your choice,
