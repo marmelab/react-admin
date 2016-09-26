@@ -30,7 +30,7 @@ export const PostList = (props) => (
     <List {...props} filter={PostFilter}>
         <Datagrid>
             <TextField label="id" source="id" />
-            <TextField label="title" source="title" />
+            <TextField label="title" source="title" type="email" />
             <RichTextField label="body" source="body" stripTags={true} />
             <DateField label="published_at" source="published_at" />
             <TextField label="average_note" source="average_note" />

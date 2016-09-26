@@ -17,7 +17,9 @@ All inputs and fields accept the following properties:
 In addition to these common `props`, you can also configure each field independently,
 depending of their types.
 
-## Text Inputs (and Related Ones: Email, Password, etc.)
+## Text Fields and Inputs (and Related Ones: Email, Password, etc.)
+
+## Text Inputs
 
 `<TextInput />` is the most common input. It is used for texts, emails, URL or passwords.
 
@@ -36,7 +38,21 @@ import TextInput from 'admin-on-rest/mui';
 
 By default, it renders a `text` field.
 
-## Rich Text
+## Text Fields
+
+`<TextField />` also supports a `type` property, helping you to handle very easily common types of data. Accepting the same
+values as `<TextInput />` `type` property, it automatically converts URL and emails to links.
+
+``` js
+import TextField from 'admin-on-rest/mui';
+
+<TextField
+    label="Email Address"
+    source="email"
+    type="email" />
+```
+
+## Rich Text Field and Input
 
 ### Rich Text Input
 
