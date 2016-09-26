@@ -17,7 +17,7 @@ describe('<TextInput />', () => {
         assert.equal(TextFieldElement.prop('floatingLabelText'), 'hello');
     });
 
-    it('should render an input of type text', () => {
+    it('should render an input of type text by default', () => {
         const wrapper = render(<MuiThemeProvider muiTheme={muiTheme}>
             <TextInput meta={{}} input={{ id: 'foo' }} />
         </MuiThemeProvider>);
@@ -27,6 +27,18 @@ describe('<TextInput />', () => {
 
         const input = inputs.first();
         assert.equal(input.attr('type'), 'text');
+    });
+
+    it('should allow to customize input type', () => {
+        const wrapper = render(<MuiThemeProvider muiTheme={muiTheme}>
+            <TextInput meta={{}} input={{ id: 'foo' }} type="password" />
+        </MuiThemeProvider>);
+
+        const inputs = wrapper.find('input');
+        assert.equal(inputs.length, 1);
+
+        const input = inputs.first();
+        assert.equal(input.attr('type'), 'password');
     });
 
     describe('error message', () => {

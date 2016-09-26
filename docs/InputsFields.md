@@ -10,11 +10,33 @@ display view of a record property.
 
 All inputs and fields accept the following properties:
 
+* **label:** text indicating which piece of data should be filled,
 * **record:** object describing your entity as retrieved by your API,
 * **source:** property name of your entity to view/edit.
 
 In addition to these common `props`, you can also configure each field independently,
 depending of their types.
+
+## Text Inputs (and Related Ones: Email, Password, etc.)
+
+`<TextInput />` is the most common input. It is used for texts, emails, URL or passwords.
+
+![TextInput](./img/text-input.png)
+
+You can switch input types using the `type` props, like:
+
+``` js
+import TextInput from 'admin-on-rest/mui';
+
+<TextInput
+    label="Email Address"
+    source="email"
+    type="email" />
+```
+
+By default, it renders a `text` field.
+
+## Rich Text
 
 ### Rich Text Input
 
