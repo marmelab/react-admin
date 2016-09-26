@@ -86,23 +86,14 @@ describe('<RecordForm />', () => {
         assert.equal(button.length, 1);
     });
 
-    it('should render <Labeled /> component for each reference inputs', () => {
+    it('should render <Labeled /> component if input does not include label', () => {
         const wrapper = shallow(
             <RecordForm>
-                <ReferenceManyField
-                    label="Comments"
-                    resource="post"
-                    reference="foo"
-                    target=""
-                    basePath=""
-                    crudGetManyReference={() => {}}
-                >
-                    <TextInput source="name" label="Name" />
-                </ReferenceManyField>
+                <TextInput source="name" label="Name" includesLabel={false} />
             </RecordForm>
         );
 
-        const button = wrapper.find('Labeled');
-        assert.equal(button.length, 1);
+        const component = wrapper.find('Field').prop('component').name;
+        assert.equal(component, 'Labeled');
     });
 });

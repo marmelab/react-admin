@@ -45,6 +45,7 @@ class DateInput extends Component {
 }
 
 DateInput.propTypes = {
+    includesLabel: PropTypes.bool,
     input: PropTypes.object,
     label: PropTypes.string,
     locale: PropTypes.string.isRequired,
@@ -53,8 +54,9 @@ DateInput.propTypes = {
 };
 
 DateInput.defaultProps = {
-    options: {},
+    includesLabel: true,
     locale: 'en-US',
+    options: {},
 };
 
 export default DateInput;

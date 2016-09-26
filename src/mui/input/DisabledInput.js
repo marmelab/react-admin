@@ -8,11 +8,13 @@ const DisabledInput = ({ input, label }) => <TextField
 />;
 
 DisabledInput.propTypes = {
+    includesLabel: PropTypes.bool,
     input: PropTypes.object,
     label: PropTypes.string,
 };
 
 DisabledInput.defaultProps = {
+    includesLabel: true,
 };
 
 export default DisabledInput;

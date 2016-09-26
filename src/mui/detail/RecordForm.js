@@ -45,22 +45,22 @@ export const RecordForm = ({ children, handleSubmit, record, resource, basePath 
         <div style={{ padding: '0 1em 1em 1em' }}>
             {React.Children.map(children, input => (
                 <div key={input.props.source}>
-                    {
-                        input.props.reference ?
-                            <Labeled
-                                label={input.props.label}
-                                resource={resource}
-                                record={record}
-                                basePath={basePath}
-                            >
-                                {input}
-                            </Labeled>
-                            :
-                            <Field
-                                {...input.props}
-                                name={input.props.source}
-                                component={input.type}
-                            />
+                    { input.props.includesLabel ?
+                        <Field
+                            {...input.props}
+                            name={input.props.source}
+                            component={input.type}
+                        />
+                        :
+                        <Field
+                            {...input.props}
+                            name={input.props.source}
+                            component={Labeled}
+                            label={input.props.label}
+                            resource={resource}
+                            record={record}
+                            basePath={basePath}
+                        >{ input }</Field>
                     }
                 </div>
             ))}
@@ -74,7 +74,7 @@ export const RecordForm = ({ children, handleSubmit, record, resource, basePath 
 );
 
 RecordForm.propTypes = {
-    children: PropTypes.node    ,
+    children: PropTypes.node,
     handleSubmit: PropTypes.func,
     record: PropTypes.object,
     resource: PropTypes.string,
