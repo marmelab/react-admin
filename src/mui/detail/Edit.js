@@ -8,6 +8,12 @@ import Title from '../layout/Title';
 import { ListButton, DeleteButton, SaveButton } from '../button';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
 
+/**
+ * Turns a children data structure (either single child or array of children) into an array.
+ * We can't use React.Children.toArray as it loses references.
+ */
+const arrayizeChildren = children => (Array.isArray(children) ? children : [children]);
+
 export class Edit extends Component {
     constructor(props) {
         super(props);
@@ -35,8 +41,8 @@ export class Edit extends Component {
             return true;
         }
 
-        const currentChildren = this.arrayizeChildren(this.props.children);
-        const newChildren = this.arrayizeChildren(nextProps.children);
+        const currentChildren = arrayizeChildren(this.props.children);
+        const newChildren = arrayizeChildren(nextProps.children);
 
         return newChildren.every((child, index) => child === currentChildren[index]);
     }
@@ -45,12 +51,6 @@ export class Edit extends Component {
         const { location } = this.props;
         return location.pathname.split('/').slice(0, -1).join('/');
     }
-
-    /**
-     * Turns a children data structure (either single child or array of children) into an array.
-     * We can't use React.Children.toArray as it lost references.
-     */
-    arrayizeChildren = children => (Array.isArray(children) ? children : [children]);
 
     handleChange(key, value) {
         this.setState({ record: { ...this.state.record, [key]: value } });
