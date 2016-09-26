@@ -1,42 +1,46 @@
 import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import validate from '../../util/validate';
+import { getConstraintsFunctionFromFunctionOrObject } from '../../util/validate';
 import { SaveButton } from '../button';
 import Labeled from '../input/Labeled';
 
+/**
+ * @example
+ * from the following fields:
+ *     <TextField source="title" validation={{ minLength: 5 }} />
+ *     <TextField source="age" validation={{ required: true, min: 18 }} />
+ * produces the following output
+ * {
+ *    title: (value) => value.length < 5 ? ['title is too short'] : [],
+ *    age:   (value) => {
+ *       const errors = [];
+ *       if (value) errors.push('age is required');
+ *       if (value < 18) errors.push('age is under 18');
+ *       return errors;
+ *    }
+ * }
+ */
+const getFieldConstraints = (children) => React.Children.toArray(children)
+    .map(({ props: { source: fieldName, validation }}) => ({ fieldName, validation }))
+    .filter(({ validation }) => !!validation)
+    .reduce((constraints, { fieldName, validation }) => {
+        constraints[fieldName] = getConstraintsFunctionFromFunctionOrObject(validation);
+        return constraints;
+    }, {});
+
 export const validateForm = (values, { children, validation }) => {
-    const errors = {};
-
-    const constraints = {};
-    for (const fieldName in validation) {
-        constraints[fieldName] = [validation[fieldName]];
-    }
-
-    React.Children.map(children, child => {
-        const { source, validation } = child.props;
-        if (!validation) {
-            return;
-        }
-
-        if (typeof constraints[source] === 'undefined') {
-            constraints[source] = [validation];
-        } else {
-            constraints[source].push(validation);
+    const errors = typeof validation === 'function' ? validation(values) : {};
+    const fieldConstraints = getFieldConstraints(children);
+    Object.keys(fieldConstraints).forEach(fieldName => {
+        const error = fieldConstraints[fieldName](values[fieldName], values);
+        if (error.length > 0) {
+            if (!errors[fieldName]) {
+                errors[fieldName] = [];
+            }
+            errors[fieldName] = [...errors[fieldName], ...error]
         }
     });
-
-    for (const fieldName in constraints) {
-        if (!constraints[fieldName] || !constraints[fieldName].length) {
-            continue;
-        }
-
-        const errorMessage = validate(values, fieldName, constraints[fieldName]);
-        if (errorMessage) {
-            errors[fieldName] = errorMessage;
-        }
-    }
-
     return errors;
 };
 

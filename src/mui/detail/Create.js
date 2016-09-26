@@ -1,13 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardTitle, CardActions } from 'material-ui/Card';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import inflection from 'inflection';
 import Title from '../layout/Title';
 import ListButton from '../button/ListButton';
-import SaveButton from '../button/SaveButton';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
-import RecordForm from './RecordForm';
+import RecordForm from './RecordForm'; // eslint-disable-line import/no-named-as-default
 
 class Create extends Component {
     constructor(props) {
@@ -37,6 +35,8 @@ class Create extends Component {
                 <CardTitle title={<Title title={title} record={data} defaultTitle={`Create ${inflection.humanize(inflection.singularize(resource))}`} />} />
                 <RecordForm
                     onSubmit={this.handleSubmit}
+                    resource={resource}
+                    basePath={basePath}
                     validation={validation}
                 >
                     {children}

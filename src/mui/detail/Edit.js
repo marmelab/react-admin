@@ -5,7 +5,7 @@ import inflection from 'inflection';
 import Title from '../layout/Title';
 import { ListButton, DeleteButton } from '../button';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
-import RecordForm from './RecordForm';
+import RecordForm from './RecordForm'; // eslint-disable-line import/no-named-as-default
 
 /**
  * Turns a children data structure (either single child or array of children) into an array.
@@ -65,7 +65,7 @@ export class Edit extends Component {
                     {hasDelete && <DeleteButton basePath={basePath} record={data} />}
                 </CardActions>
                 <CardTitle title={<Title title={title} record={data} defaultTitle={`${inflection.humanize(inflection.singularize(resource))} #${id}`} />} />
-                {data ? <RecordForm
+                {data && <RecordForm
                     onSubmit={this.handleSubmit}
                     record={data}
                     resource={resource}
@@ -74,7 +74,7 @@ export class Edit extends Component {
                     validation={validation}
                 >
                     {children}
-                </RecordForm> : <div>Loading...</div>}
+                </RecordForm>}
             </Card>
         );
     }
