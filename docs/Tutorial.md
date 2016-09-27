@@ -334,6 +334,7 @@ const App = () => (
 
 By default, admin-on-rest displays the list view of the first resource as home page. If you want to display a custom component instead, pass it in the `dashboard` attribute of the `<Admin>` component.
 
+{% raw %}
 ```js
 // in src/Dashboard.js
 import React from 'react';
@@ -346,6 +347,7 @@ export default () => (
     </Card>
 );
 ```
+{% endraw %}
 
 ```js
 // in src/App.js

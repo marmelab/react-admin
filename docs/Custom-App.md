@@ -109,6 +109,7 @@ const reducer = combineReducers({
 
 The `<Layout>` component has the responsibility for displaying the menu. So you can build your own custom menu, wrap it in a custom layout, and pass that to the `<Route path="/">` route.
 
+{% raw %}
 ```js
 // in src/MyLayout
 const MyMenu = () => (
@@ -152,6 +153,7 @@ const App = () => (
     </Provider>
 );
 ```
+{% endraw %}
 
 ## Replacing Saga by Another Side Effect library
 
