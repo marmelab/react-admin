@@ -3,7 +3,7 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import TextField from './TextField';
 
-describe.only('<TextField />', () => {
+describe('<TextField />', () => {
     it('should display record specific value as plain text by default', () => {
         const record = { title: "I'm sorry, Dave. I'm afraid I can't do that." };
         const wrapper = shallow(<TextField record={record} source="title" />);
