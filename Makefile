@@ -9,6 +9,9 @@ run:
 build:
 	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore '*.spec.js'
 
+doc:
+	@cd docs && jekyll server . --watch
+
 test:
 	@NODE_ENV=test ./node_modules/.bin/mocha \
 		--require ignore-styles \
