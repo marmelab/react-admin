@@ -59,15 +59,20 @@ export class ReferenceManyField extends Component {
 }
 
 ReferenceManyField.propTypes = {
-    resource: PropTypes.string.isRequired,
-    label: PropTypes.string,
-    record: PropTypes.object,
-    reference: PropTypes.string.isRequired,
-    target: PropTypes.string.isRequired,
-    referenceRecords: PropTypes.object,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
     crudGetManyReference: PropTypes.func.isRequired,
+    includesLabel: PropTypes.bool,
+    label: PropTypes.string,
+    record: PropTypes.object,
+    reference: PropTypes.string.isRequired,
+    referenceRecords: PropTypes.object,
+    resource: PropTypes.string.isRequired,
+    target: PropTypes.string.isRequired,
+};
+
+ReferenceManyField.defaultProps = {
+    includesLabel: false,
 };
 
 function mapStateToProps(state, props) {

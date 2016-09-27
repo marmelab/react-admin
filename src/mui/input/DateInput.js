@@ -1,47 +1,62 @@
 import React, { Component, PropTypes } from 'react';
 import DatePicker from 'material-ui/DatePicker';
 
-class DateInput extends Component {
-    handleChange(event, date) {
-        this.props.onChange(this.props.source, date.toISOString());
+export const datify = input => {
+    if (!input) {
+        return null;
     }
 
+    const date = input instanceof Date ? input : new Date(input);
+    if (isNaN(date)) {
+        throw new Error(`Invalid date: ${input}`);
+    }
+
+    return date;
+};
+
+class DateInput extends Component {
+    _onChange = (_, date) => this.props.input.onChange(date);
+
     render() {
-        const { source, label, record, locale, options } = this.props;
-        let date = null;
-        if (record[source] instanceof Date) {
-            date = record[source];
-        } else if (record[source]) {
-            date = new Date(record[source]);
-        }
+        const {
+            input,
+            label,
+            locale,
+            meta: {
+                touched,
+                error,
+            },
+            options,
+        } = this.props;
+
         return (<DatePicker
+            {...input}
+            {...options}
+            errorText={touched && error}
             floatingLabelText={label}
             locale={locale}
             DateTimeFormat={Intl.DateTimeFormat}
-            value={date}
-            onChange={::this.handleChange}
             container="inline"
             autoOk
-            {...options}
+            value={datify(input.value)}
+            onChange={this._onChange}
         />);
     }
 }
 
 DateInput.propTypes = {
-    source: PropTypes.string.isRequired,
+    includesLabel: PropTypes.bool,
+    input: PropTypes.object,
     label: PropTypes.string,
-    record: PropTypes.object,
     locale: PropTypes.string.isRequired,
+    meta: PropTypes.object,
     options: PropTypes.object,
-    onChange: PropTypes.func,
-    includesLabel: PropTypes.bool.isRequired,
 };
 
 DateInput.defaultProps = {
-    record: {},
-    options: {},
-    locale: 'en-US',
     includesLabel: true,
+    locale: 'en-US',
+    options: {},
 };
 
 export default DateInput;

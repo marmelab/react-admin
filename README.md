@@ -15,7 +15,10 @@ npm install --save-dev admin-on-rest
 
 ## Usage
 
-Read the [docs/Tutorial.md](docs/Tutorial.md) for a presentation of admin-on-rest usage.
+* [Getting Started Tutorial](docs/Tutorial.md)
+* [Inputs and Fields](docs/InputsFields.md)
+* [Form Validation](docs/FormValidation.md)
+* [Including Admin-on-Rest on Another React App](docs/Custom-App.md)
 
 ## Example
 

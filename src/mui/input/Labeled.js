@@ -12,7 +12,7 @@ import TextField from 'material-ui/TextField';
  *     <FooComponent source="title" />
  * </Labeled>
  */
-const Labeled = ({ label, resource, record, onChange, basePath, children }) => (
+const Labeled = ({ input, label, resource, record, onChange, basePath, children }) => (
     <TextField
         floatingLabelText={label}
         floatingLabelFixed
@@ -21,11 +21,12 @@ const Labeled = ({ label, resource, record, onChange, basePath, children }) => (
         underlineShow={false}
         style={{ paddingTop: '2em', height: 'auto' }}
     >
-        {React.cloneElement(children, { record, resource, onChange, basePath })}
+        {React.cloneElement(children, { input, record, resource, onChange, basePath })}
     </TextField>
 );
 
 Labeled.propTypes = {
+    input: PropTypes.object,
     label: PropTypes.string.isRequired,
     record: PropTypes.object,
     resource: PropTypes.string,

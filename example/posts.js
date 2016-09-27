@@ -44,14 +44,40 @@ const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 
-export const PostEdit = (props) => (
-    <Edit title={PostTitle} {...props}>
-        <DisabledInput label="Id" source="id" />
+export const PostCreate = (props) => (
+    <Create
+        {...props}
+        validation={(values) => {
+            const errors = {};
+            ['title', 'teaser'].forEach(field => {
+                if (!values[field]) {
+                    errors[field] = ['Required field'];
+                }
+            });
+
+            if (values.average_note < 0 || values.average_note > 5) {
+                errors.average_note = ['Should be between 0 and 5'];
+            }
+
+            return errors;
+        }}
+    >
         <TextInput label="Title" source="title" />
         <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
         <RichTextInput label="Body" source="body" />
         <DateInput label="Publication date" source="published_at" />
         <TextInput label="Average note" source="average_note" />
+    </Create>
+);
+
+export const PostEdit = (props) => (
+    <Edit title={PostTitle} {...props}>
+        <DisabledInput label="Id" source="id" />
+        <TextInput label="Title" source="title" validation={{ required: true }} />
+        <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} validation={{ required: true }} />
+        <RichTextInput label="Body" source="body" validation={{ required: true }} />
+        <DateInput label="Publication date" source="published_at" />
+        <TextInput label="Average note" source="average_note" validation={{ min: 0 }} />
         <ReferenceManyField label="Comments" reference="comments" target="post_id">
             <Datagrid selectable={false}>
                 <TextField source="body" />
@@ -61,14 +87,4 @@ export const PostEdit = (props) => (
         </ReferenceManyField>
         <DisabledInput label="Nb views" source="views" />
     </Edit>
-);
-
-export const PostCreate = (props) => (
-    <Create {...props}>
-        <TextInput label="Title" source="title" />
-        <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
-        <LongTextInput label="Body" source="body" />
-        <DateInput label="Publication date" source="published_at" />
-        <TextInput label="Average note" source="average_note" />
-    </Create>
 );

@@ -12,6 +12,7 @@
         "indent": ["warn", 4],
         "max-len": ["off"],
         "react/jsx-indent": ["warn", 4],
-        "react/jsx-indent-props": ["warn", 4]
+        "react/jsx-indent-props": ["warn", 4],
+        "react/jsx-filename-extension": ["off"]
     },
 }

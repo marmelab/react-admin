@@ -6,14 +6,19 @@ require('./RichTextInput.css');
 
 class RichTextInput extends Component {
     componentDidMount() {
-        const { toolbar } = this.props;
+        const {
+            input: {
+                value,
+            },
+            toolbar,
+        } = this.props;
+
         this.quill = new Quill(this.divRef, {
             modules: { toolbar },
             theme: 'snow',
         });
 
-        const { record, source } = this.props;
-        this.quill.pasteHTML(record[source]);
+        this.quill.pasteHTML(value);
 
         this.editor = this.divRef.querySelector('.ql-editor');
         this.quill.on('text-change', debounce(this.onTextChange, 500));
@@ -25,11 +30,7 @@ class RichTextInput extends Component {
     }
 
     onTextChange = () => {
-        if (!this.editor) {
-            return;
-        }
-
-        this.props.onChange(this.props.source, this.editor.innerHTML);
+        this.props.input.onChange(this.editor.innerHTML);
     }
 
     updateDivRef = ref => {
@@ -42,11 +43,9 @@ class RichTextInput extends Component {
 }
 
 RichTextInput.propTypes = {
-    source: PropTypes.string.isRequired,
+    input: PropTypes.object,
     label: PropTypes.string,
-    record: PropTypes.object,
     options: PropTypes.object,
-    onChange: PropTypes.func,
     includesLabel: PropTypes.bool.isRequired,
     toolbar: PropTypes.oneOfType([
         PropTypes.array,
