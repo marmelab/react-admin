@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 import React from 'react';
 
 import { RecordForm, validateForm } from './RecordForm';
-import { ReferenceManyField } from '../field/ReferenceManyField';
 import TextInput from '../input/TextInput';
 
 describe('RecordForm .validateForm', () => {
@@ -20,18 +19,26 @@ describe('RecordForm .validateForm', () => {
         assert.deepEqual(errors, []);
     });
 
-    it('should return dictionnary with field as key and error message as values for all validator errors', () => {
+    it('should return validatoin function result if validation function is passed to the form', () => {
         const props = {
-            validation: {
-                title: { required: true },
-                rate: { min: 0, max: 5 },
+            validation: (values) => {
+                const errors = {};
+                if (!values.title) {
+                    errors.title = 'Required field';
+                }
+
+                if (values.rate < 0 || values.rate > 5) {
+                    errors.rate = 'Rate should be between 0 and 5.';
+                }
+
+                return errors;
             },
         };
 
         const errors = validateForm({ title: '', rate: 12 }, props);
         assert.deepEqual(errors, {
             title: 'Required field',
-            rate: 'Maximum value: 5',
+            rate: 'Rate should be between 0 and 5.',
         });
     });
 
@@ -42,20 +49,18 @@ describe('RecordForm .validateForm', () => {
 
         const errors = validateForm({ title: '' }, props);
         assert.deepEqual(errors, {
-            title: 'Required field',
+            title: ['Required field'],
         });
     });
 
     it('should apply both input and form validators', () => {
         const props = {
-            validation: {
-                rate: { min: 0, max: 5 },
-            },
             children: <TextInput source="rate" validation={{ required: true }} />,
+            validation: (values) => (values.rate > 5 ? { rate: 'Maximum value: 5' } : {}),
         };
 
         const nullError = validateForm({ rate: '' }, props);
-        assert.deepEqual(nullError, { rate: 'Required field' });
+        assert.deepEqual(nullError, { rate: ['Required field'] });
 
         const valueError = validateForm({ rate: 6 }, props);
         assert.deepEqual(valueError, { rate: 'Maximum value: 5' });

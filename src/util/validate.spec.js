@@ -1,7 +1,7 @@
 import assert from 'assert';
-import { coreConstraints } from './validate';
+import { coreConstraints, getConstraintsFunctionFromFunctionOrObject } from './validate';
 
-describe.only('Validator', () => {
+describe('Validator', () => {
     describe('Core Constraints', () => {
         it('.required should return error message if field is empty', () => {
             assert.equal(coreConstraints.required(), 'Required field');
@@ -114,6 +114,38 @@ describe.only('Validator', () => {
 
                 coreConstraints.custom('foo', record, (...args) => { passedArguments = args; });
                 assert.deepEqual(passedArguments, ['foo', record]);
+            });
+        });
+    });
+
+    describe('.getConstraintsFunctionFromFunctionOrObject', () => {
+        it('should return passed function if given constraint is already a function', () => {
+            const barFactory = () => 'bar';
+            const constraintsFunction = getConstraintsFunctionFromFunctionOrObject(barFactory);
+            assert.equal(constraintsFunction, barFactory);
+        });
+
+        it('should return a function checking all given constraints as single function', () => {
+            const constraints = {
+                required: true,
+                min: 100,
+            };
+
+            const constraintsFunction = getConstraintsFunctionFromFunctionOrObject(constraints);
+            assert.equal(constraintsFunction(''), 'Required field');
+            assert.equal(constraintsFunction(10), 'Minimum value: 100');
+        });
+
+        it('should throw an error if validation is neither a function nor an object', () => {
+            [false, true, '', 'foobar', 12, [1, 2]].forEach(constraints => {
+                try {
+                    getConstraintsFunctionFromFunctionOrObject(constraints);
+                } catch (e) {
+                    assert.equal(e.message, 'Unsupported validation type');
+                    return;
+                }
+
+                throw new Error(`Passing ${constraints} to getConstraintsFunction should throw an error`);
             });
         });
     });

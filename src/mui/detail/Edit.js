@@ -59,7 +59,7 @@ export class Edit extends Component {
         const basePath = this.getBasePath();
 
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
+            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     <ListButton basePath={basePath} />
                     {hasDelete && <DeleteButton basePath={basePath} record={data} />}
