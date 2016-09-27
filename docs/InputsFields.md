@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "admin-on-rest - Input and Field Components"
+title: "Input and Field Components"
 ---
 
 # Inputs and Fields Types

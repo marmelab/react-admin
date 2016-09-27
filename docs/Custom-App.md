@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "admin-on-rest - Including the Admin in Another App"
+title: "Including the Admin in Another App"
 ---
 
 # Including admin-on-rest on another React app
