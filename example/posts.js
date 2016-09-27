@@ -47,10 +47,19 @@ const PostTitle = ({ record }) => {
 export const PostCreate = (props) => (
     <Create
         {...props}
-        validation={{
-            title: { required: true },
-            teaser: { required: true },
-            average_note: { min: 0, max: 5 },
+        validation={(values) => {
+            const errors = {};
+            ['title', 'teaser'].forEach(field => {
+                if (!values[field]) {
+                    errors[field] = 'Required field';
+                }
+            });
+
+            if (values.average_note < 0 || values.average_note > 5) {
+                errors.average_note = 'Should be between 0 and 5';
+            }
+
+            return errors;
         }}
     >
         <TextInput label="Title" source="title" />

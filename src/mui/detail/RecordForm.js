@@ -31,6 +31,12 @@ const getFieldConstraints = (children) => React.Children.toArray(children)
 
 export const validateForm = (values, { children, validation }) => {
     const errors = typeof validation === 'function' ? validation(values) : {};
+
+    // warn user we expect an object here, in case of validation just returned an error message
+    if (errors === null || typeof errors !== 'object') {
+        throw new Error('Validation function given to form components should return an object.');
+    }
+
     const fieldConstraints = getFieldConstraints(children);
     Object.keys(fieldConstraints).forEach(fieldName => {
         const error = fieldConstraints[fieldName](values[fieldName], values);
@@ -38,7 +44,7 @@ export const validateForm = (values, { children, validation }) => {
             if (!errors[fieldName]) {
                 errors[fieldName] = [];
             }
-            errors[fieldName] = [...errors[fieldName], ...error]
+            errors[fieldName] = [...errors[fieldName], ...error];
         }
     });
     return errors;

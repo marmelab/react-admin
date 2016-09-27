@@ -24,21 +24,21 @@ export const coreConstraints = {
  *
  * @return {function} A function (value, values) => [errors]
  */
-export const getConstraintsFunction = (constraints) => (value, values) => Object.keys(constraints)
+const getConstraintsFunction = (constraints) => (value, values) => Object.keys(constraints)
     .filter(constraintName => coreConstraints[constraintName])
     .map(constraintName => {
         const constraint = coreConstraints[constraintName];
         constraint._name = constraintName; // .name does not exist on IE
         return constraint;
     })
-    .reduce((errors, constraint) => [
-        ...errors,
-        ...constraint(value, values, constraints[constraint._name]),
-    ], [])
+    .reduce((errors, constraint) => {
+        errors = [...errors, constraint(value, values, constraints[constraint.name])];
+        return errors;
+    }, [])
     .filter(error => error !== null);
 
 export const getConstraintsFunctionFromFunctionOrObject = (constraints) => {
     if (typeof constraints === 'function') return constraints;
-    if (typeof constraints === 'object') return getConstraintsFunction(constraints);
+    if (!Array.isArray(constraints) && typeof constraints === 'object') return getConstraintsFunction(constraints);
     throw new Error('Unsupported validation type');
 };
