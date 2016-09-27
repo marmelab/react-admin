@@ -1,3 +1,8 @@
+---
+layout: default
+title: "admin-on-rest - Input and Field Components"
+---
+
 # Inputs and Fields Types
 
 An `Input` allows to edit a record property whereas a `Field` view is a read-only

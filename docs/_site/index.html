@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <title>admin-on-rest - Documentation</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/syntax.css">
+    </head>
+    <body>
+        <div class="book with-summary font-size-2 font-family-1">
+            <div class="book-summary">
+                <nav role="navigation">
+                    <ul class="summary">
+                        <li class="header">Table of Contents</li>
+                        <li class="chapter active" data-level="1">
+                            <a href="./index.html">
+                                <b>1.</b> Read Me
+                            </a>
+                        </li>
+                        <li class="chapter " data-level="2">
+                            <a href="./Tutorial.html">
+                                <b>2.</b> Tutorial
+                            </a>
+                        </li>
+                        <li class="chapter " data-level="3">
+                            <a href="./InputsFields.html">
+                                <b>3.</b> Input and Field Components
+                            </a>
+                        </li>
+                        <li class="chapter " data-level="4">
+                            <a href="./Custom-App.html">
+                                <b>4.</b> Including in Another App
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="book-body">
+                <div class="body-inner">
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+
+                            <div id="book-search-results">
+                                <div class="search-noresults">
+
+                                <section class="normal markdown-section">
+
+                                <h1 id="admin-on-rest-build-statushttpstravis-ciorgmarmelabadmin-on-restsvgbranchmasterhttpstravis-ciorgmarmelabadmin-on-rest">admin-on-rest <a href="https://travis-ci.org/marmelab/admin-on-rest"><img src="https://travis-ci.org/marmelab/admin-on-rest.svg?branch=master" alt="Build Status" /></a></h1>
+
+<p>A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI.</p>
+
+<p><img src="http://static.marmelab.com/admin-on-rest.gif" alt="admin-on-rest demo" /></p>
+
+<h2 id="installation">Installation</h2>
+
+<p>Admin-on-rest is available from npm. You can install it (and its required dependencies)<br />
+using:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>npm install --save-dev admin-on-rest
+</code></pre>
+</div>
+
+<h2 id="usage">Usage</h2>
+
+<p>Read the <a href="docs/Tutorial.md">docs/Tutorial.md</a> for a presentation of admin-on-rest usage.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c1">// in app.js</span>
+<span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">'react'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">render</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'react-dom'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">simpleRestClient</span><span class="p">,</span> <span class="nx">Admin</span><span class="p">,</span> <span class="nx">Resource</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'admin-on-rest'</span><span class="p">;</span>
+
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">PostList</span><span class="p">,</span> <span class="nx">PostEdit</span><span class="p">,</span> <span class="nx">PostCreate</span><span class="p">,</span> <span class="nx">PostIcon</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'./posts'</span><span class="p">;</span>
+
+<span class="nx">render</span><span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">Admin</span> <span class="nx">restClient</span><span class="o">=</span><span class="p">{</span><span class="nx">simpleRestClient</span><span class="p">(</span><span class="s1">'http://localhost:3000'</span><span class="p">)}</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Resource</span> <span class="nx">name</span><span class="o">=</span><span class="s2">"posts"</span> <span class="nx">list</span><span class="o">=</span><span class="p">{</span><span class="nx">PostList</span><span class="p">}</span> <span class="nx">edit</span><span class="o">=</span><span class="p">{</span><span class="nx">PostEdit</span><span class="p">}</span> <span class="nx">create</span><span class="o">=</span><span class="p">{</span><span class="nx">PostCreate</span><span class="p">}</span> <span class="nx">icon</span><span class="o">=</span><span class="p">{</span><span class="nx">PostIcon</span><span class="p">}</span><span class="sr">/</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/Admin&gt;</span><span class="err">,
+</span>    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'root'</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre>
+</div>
+
+<p>The <code class="highlighter-rouge">&lt;Resource&gt;</code> component is a configuration component that allows to define sub components for each of the admin view: <code class="highlighter-rouge">list</code>, <code class="highlighter-rouge">edit</code>, and <code class="highlighter-rouge">create</code>. These components use Material UI and custom components from admin-on-rest:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c1">// in posts.js</span>
+<span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">'react'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">List</span><span class="p">,</span> <span class="nx">Edit</span><span class="p">,</span> <span class="nx">Create</span><span class="p">,</span> <span class="nx">Datagrid</span><span class="p">,</span> <span class="nx">DateField</span><span class="p">,</span> <span class="nx">TextField</span><span class="p">,</span> <span class="nx">EditButton</span><span class="p">,</span> <span class="nx">DisabledInput</span><span class="p">,</span> <span class="nx">TextInput</span><span class="p">,</span> <span class="nx">LongTextInput</span><span class="p">,</span> <span class="nx">DateInput</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'admin-on-rest/lib/mui'</span><span class="p">;</span>
+<span class="kr">export</span> <span class="nx">PostIcon</span> <span class="nx">from</span> <span class="s1">'material-ui/svg-icons/action/book'</span><span class="p">;</span>
+
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">PostList</span> <span class="o">=</span> <span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">List</span> <span class="p">{...</span><span class="nx">props</span><span class="p">}</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Datagrid</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="nx">TextField</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"id"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"id"</span> <span class="o">/&gt;</span>
+            <span class="o">&lt;</span><span class="nx">TextField</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"title"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"title"</span> <span class="o">/&gt;</span>
+            <span class="o">&lt;</span><span class="nx">DateField</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"published_at"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"published_at"</span> <span class="o">/&gt;</span>
+            <span class="o">&lt;</span><span class="nx">TextField</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"average_note"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"average_note"</span> <span class="o">/&gt;</span>
+            <span class="o">&lt;</span><span class="nx">TextField</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"views"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"views"</span> <span class="o">/&gt;</span>
+            <span class="o">&lt;</span><span class="nx">EditButton</span> <span class="nx">basePath</span><span class="o">=</span><span class="s2">"/posts"</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="sr">/Datagrid</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/List</span><span class="err">&gt;
+</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">PostTitle</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">record</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="o">&lt;</span><span class="nx">span</span><span class="o">&gt;</span><span class="nx">Post</span> <span class="p">{</span><span class="nx">record</span> <span class="p">?</span> <span class="err">`</span><span class="s2">"${record.title}"</span><span class="err">`</span> <span class="p">:</span> <span class="s1">''</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/span&gt;</span><span class="err">;
+</span><span class="p">};</span>
+
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">PostEdit</span> <span class="o">=</span> <span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">Edit</span> <span class="nx">title</span><span class="o">=</span><span class="p">{</span><span class="nx">PostTitle</span><span class="p">}</span> <span class="p">{...</span><span class="nx">props</span><span class="p">}</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">DisabledInput</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"Id"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"id"</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">TextInput</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"Title"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"title"</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">TextInput</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"Teaser"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"teaser"</span> <span class="nx">options</span><span class="o">=</span> <span class="sr">/</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="nx">LongTextInput</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"Body"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"body"</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">DateInput</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"Publication date"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"published_at"</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">TextInput</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"Average note"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"average_note"</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">DisabledInput</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"Nb views"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"views"</span> <span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="sr">/Edit</span><span class="err">&gt;
+</span><span class="p">);</span>
+
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">PostCreate</span> <span class="o">=</span> <span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">Create</span> <span class="nx">title</span><span class="o">=</span><span class="s2">"Create a Post"</span> <span class="p">{...</span><span class="nx">props</span><span class="p">}</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">TextInput</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"Title"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"title"</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">TextInput</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"Teaser"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"teaser"</span> <span class="nx">options</span><span class="o">=</span> <span class="sr">/</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="nx">LongTextInput</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"Body"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"body"</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">TextInput</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"Publication date"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"published_at"</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">TextInput</span> <span class="nx">label</span><span class="o">=</span><span class="s2">"Average note"</span> <span class="nx">source</span><span class="o">=</span><span class="s2">"average_note"</span> <span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="sr">/Create</span><span class="err">&gt;
+</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<h2 id="configuring-the-rest-client">Configuring The REST Client</h2>
+
+<p>REST isn’t a standard, so it’s impossible to make a REST client library that will work for all REST backends. Admin-on-rest deals with this problem by letting you provide a REST client function. This is the place to translate REST requests to HTTP requests, and HTTP responses to REST responses.</p>
+
+<p>The <code class="highlighter-rouge">&lt;Admin&gt;</code> component expects a <code class="highlighter-rouge">restClient</code> parameter, which is a function with the following signature:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+ * Execute the REST request and return a promise for a REST response
+ *
+ * @example
+ * restClient(GET_ONE, 'posts', { id: 123 })
+ *  =&gt; new Promise(resolve =&gt; resolve({ data: { id: 123, title: "hello, world" } }))
+ *
+ * @param {string} type Request type, e.g GET_LIST
+ * @param {string} resource Resource name, e.g. "posts"
+ * @param {Object} payload Request parameters. Depends on the action type
+ * @returns {Promise} the Promise for a REST response
+ */</span>
+<span class="kr">const</span> <span class="nx">restClient</span> <span class="o">=</span> <span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">resource</span><span class="p">,</span> <span class="nx">params</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>The expected format for REST requests and responses is documented in <code class="highlighter-rouge">src/rest/README.md</code>; you can find an example in <code class="highlighter-rouge">src/rest/simple.js</code>;</p>
+
+<p>The <code class="highlighter-rouge">restClient</code> is also the ideal place to add custom HTTP headers, authentication, etc.</p>
+
+<h2 id="batteries-included-but-removable">Batteries Included But Removable</h2>
+
+<p>Although it’s fast and easy to build an admin using the <code class="highlighter-rouge">&lt;Admin&gt;</code> and <code class="highlighter-rouge">&lt;Resource&gt;</code> components, it is also possible to include the admin logic into an <em>existing</em> React application. You are strongly encouraged to use the lower-level elements or admin-to-rest, provided you’re familiar with Redux, react-router and redux-saga.</p>
+
+<p>The library makes no assumption on the side effect library you want to use, but provides examples for redux-saga.</p>
+
+<p>The side effects expected by admin-on-rest are AJAX calls to the REST backend(s), and redirects. They must respond to the following actions:</p>
+
+<ul>
+  <li>CRUD_GET_LIST =&gt; CRUD_GET_LIST_SUCCESS</li>
+  <li>CRUD_GET_ONE =&gt; CRUD_GET_ONE_SUCCESS</li>
+  <li>CRUD_UPDATE =&gt; CRUD_UPDATE_SUCCESS</li>
+  <li>CRUD_CREATE =&gt; CRUD_CREATE_SUCCESS</li>
+  <li>CRUD_DELETE =&gt; CRUD_DELETE_SUCCESS</li>
+</ul>
+
+<p>Check <code class="highlighter-rouge">sideEffect/saga.js</code> for a detail of the inputs and outputs</p>
+
+<h2 id="todo">Todo</h2>
+
+<ul>
+  <li>Add more documentation</li>
+  <li>Improve error handling</li>
+  <li>Form validation</li>
+  <li>Add unit tests</li>
+  <li>Add <code class="highlighter-rouge">&lt;ReferenceMany&gt;</code> field</li>
+  <li>Add complex field &amp; input types</li>
+</ul>
+
+
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

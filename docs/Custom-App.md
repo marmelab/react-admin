@@ -1,3 +1,8 @@
+---
+layout: default
+title: "admin-on-rest - Including the Admin in Another App"
+---
+
 # Including admin-on-rest on another React app
 
 The `<Admin>` tag is a great shortcut got be up and running with admin-on-rest in minutes. However, in many cases, you will want to embed the admin in another application, or customize the admin deeply (custom menus, custom actions, custom reducers). Fortunately, you can do all the work that `<Admin>` does on any React application.
