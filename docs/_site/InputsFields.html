@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <title>admin-on-rest - Input and Field Components</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/syntax.css">
+    </head>
+    <body>
+        <div class="book with-summary font-size-2 font-family-1">
+            <div class="book-summary">
+                <nav role="navigation">
+                    <ul class="summary">
+                        <li class="header">Table of Contents</li>
+                        <li class="chapter " data-level="1">
+                            <a href="./index.html">
+                                <b>1.</b> Read Me
+                            </a>
+                        </li>
+                        <li class="chapter " data-level="2">
+                            <a href="./Tutorial.html">
+                                <b>2.</b> Tutorial
+                            </a>
+                        </li>
+                        <li class="chapter active" data-level="3">
+                            <a href="./InputsFields.html">
+                                <b>3.</b> Input and Field Components
+                            </a>
+                        </li>
+                        <li class="chapter " data-level="4">
+                            <a href="./Custom-App.html">
+                                <b>4.</b> Including in Another App
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="book-body">
+                <div class="body-inner">
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+
+                            <div id="book-search-results">
+                                <div class="search-noresults">
+
+                                <section class="normal markdown-section">
+
+                                <h1 id="inputs-and-fields-types">Inputs and Fields Types</h1>
+
+<p>An <code class="highlighter-rouge">Input</code> allows to edit a record property whereas a <code class="highlighter-rouge">Field</code> view is a read-only<br />
+display view of a record property.</p>
+
+<p>All inputs and fields accept the following properties:</p>
+
+<ul>
+  <li><strong>record:</strong> object describing your entity as retrieved by your API,</li>
+  <li><strong>source:</strong> property name of your entity to view/edit.</li>
+</ul>
+
+<p>In addition to these common <code class="highlighter-rouge">props</code>, you can also configure each field independently,<br />
+depending of their types.</p>
+
+<h3 id="rich-text-input">Rich Text Input</h3>
+
+<p><img src="./img/rich-text-input.png" alt="RichTextInput" /></p>
+
+<p><code class="highlighter-rouge">&lt;RichTextInput /&gt;</code> is the ideal component if you want to allow your users to edit some HTML contents. It<br />
+is powered by <a href="https://quilljs.com/">Quill</a>.</p>
+
+<p><em>Tip</em>: <code class="highlighter-rouge">quill</code> is only specified as a peer dependency in the <code class="highlighter-rouge">package.json</code>. If you want to use the <code class="highlighter-rouge">&lt;RichTextInput&gt;</code> component in your app, you’ll have to add <code class="highlighter-rouge">quill</code> to your app:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>npm install --save-dev quill
+</code></pre>
+</div>
+
+<p>The component usage is simple:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">RichTextInput</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'admin-on-rest/mui'</span><span class="p">;</span>
+
+<span class="o">&lt;</span><span class="nx">RichTextInput</span>
+    <span class="nx">record</span><span class="o">=</span><span class="p">{</span><span class="nx">record</span><span class="p">}</span>
+    <span class="nx">source</span><span class="o">=</span><span class="s2">"body"</span>
+    <span class="nx">toolbar</span><span class="o">=</span><span class="p">{[</span>
+        <span class="p">[</span><span class="s1">'bold'</span><span class="p">,</span> <span class="s1">'italic'</span><span class="p">,</span> <span class="s1">'underline'</span><span class="p">,</span> <span class="s1">'link'</span><span class="p">],</span>
+    <span class="p">]}</span>
+<span class="sr">/</span><span class="err">&gt;
+</span></code></pre>
+</div>
+
+<p>By default, the toolbar in above screenshot is displayed. However, you can override it using the <code class="highlighter-rouge">toolbar</code> prop and specifying it options, as described on the <a href="https://quilljs.com/docs/modules/toolbar/">Quill official toolbar documentation</a>.</p>
+
+<h3 id="rich-text-field">Rich Text Field</h3>
+
+<p><img src="./img/rich-text-field.png" alt="RichTextInput" /></p>
+
+<p>Displaying some HTML content is as simple as using <code class="highlighter-rouge">RichTextField</code> component:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">RichTextField</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'admin-on-rest/mui'</span><span class="p">;</span>
+
+<span class="o">&lt;</span><span class="nx">RichTextField</span>
+    <span class="nx">record</span><span class="o">=</span><span class="p">{</span><span class="nx">record</span><span class="p">}</span>
+    <span class="nx">source</span><span class="o">=</span><span class="s2">"body"</span>
+    <span class="nx">stripTags</span><span class="o">=</span><span class="p">{</span><span class="kc">true</span><span class="p">}</span>
+<span class="sr">/</span><span class="err">&gt;
+</span></code></pre>
+</div>
+<p>The <code class="highlighter-rouge">stripTags</code> option (whose value is <code class="highlighter-rouge">false</code> by default) allows you to remove<br />
+any HTML markup, preventing some display glitches (which is especially useful in<br />
+list views).</p>
+
+
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
