@@ -19,7 +19,7 @@ depending of their types.
 
 ## Text Fields and Inputs (and Related Ones: Email, Password, etc.)
 
-## Text Inputs
+### Text Inputs
 
 `<TextInput />` is the most common input. It is used for texts, emails, URL or passwords.
 
