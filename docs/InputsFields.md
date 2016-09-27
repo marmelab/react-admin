@@ -38,7 +38,7 @@ import TextInput from 'admin-on-rest/mui';
 
 By default, it renders a `text` field.
 
-## Text Fields
+### Text Fields
 
 `<TextField />` also supports a `type` property, helping you to handle very easily common types of data. Accepting the same
 values as `<TextInput />` `type` property, it automatically converts URL and emails to links.
