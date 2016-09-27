@@ -1,3 +1,8 @@
+---
+layout: default
+title: "My First Project Tutorial"
+---
+
 # Admin-on-REST Tutorial
 
 This 15 minutes tutorial will expose how to create a new admin app based on an existing REST API.

@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+    <head>
+        <title>Admin-on-rest - {{ page.title }}</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="{{ page.description }}">
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/syntax.css">
+    </head>
+    <body>
+        <div class="book with-summary font-size-2 font-family-1">
+            <div class="book-summary">
+                <nav role="navigation">
+                    <ul class="summary">
+                        <li class="header">Table of Contents</li>
+                        <li class="chapter {% if page.path == 'index.md' %}active{% endif %}">
+                            <a href="./index.html">
+                                <b>1.</b> Read Me
+                            </a>
+                        </li>
+                        <li class="chapter {% if page.path == 'Tutorial.md' %}active{% endif %}">
+                            <a href="./Tutorial.html">
+                                <b>2.</b> Tutorial
+                            </a>
+                        </li>
+                        <li class="chapter {% if page.path == 'InputsFields.md' %}active{% endif %}">
+                            <a href="./InputsFields.html">
+                                <b>3.</b> Input and Field Components
+                            </a>
+                        </li>
+                        <li class="chapter {% if page.path == 'Custom-App.md' %}active{% endif %}">
+                            <a href="./Custom-App.html">
+                                <b>4.</b> Including in Another App
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="book-body">
+                <div class="body-inner">
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+
+                            <div id="book-search-results">
+                                <div class="search-noresults">
+
+                                <section class="normal markdown-section">
+
+                                {{ content }}
+
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
