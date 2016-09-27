@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "admin-on-rest - Documentation"
+title: "Documentation"
 ---
 
 # admin-on-rest [![Build Status](https://travis-ci.org/marmelab/admin-on-rest.svg?branch=master)](https://travis-ci.org/marmelab/admin-on-rest)

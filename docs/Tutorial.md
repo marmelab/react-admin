@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "admin-on-rest - My First Project Tutorial"
+title: "My First Project Tutorial"
 ---
 
 # Admin-on-REST Tutorial
