@@ -19,7 +19,7 @@ describe('RecordForm .validateForm', () => {
         assert.deepEqual(errors, []);
     });
 
-    it('should return validatoin function result if validation function is passed to the form', () => {
+    it('should return validation function result if validation function is passed to the form', () => {
         const props = {
             validation: (values) => {
                 const errors = {};
