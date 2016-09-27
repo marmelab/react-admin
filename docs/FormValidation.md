@@ -1,6 +1,11 @@
+---
+layout: default
+title: "Form Validation"
+---
+
 # Form Validation
 
-To validating a form, you can add `validation` props to the form component (`<Edit>` and `<Create>`), to individual inputs, or even a mix both approaches.
+To validate a form, you can add `validation` props to the form component (`<Edit>` and `<Create>`), to individual inputs, or even mix both approaches.
 
 ## Global Form Validation
 
@@ -66,6 +71,7 @@ Input validation functions receive the current field value, and the values of al
 
 Validation constraints often look the same: asserting presence, size, format, etc. Instead of passing a function as validation, you can pass a constraints object:
 
+{% raw %}
 ```js
 export const UserCreate = (props) => (
     <Create {...props}>
@@ -74,6 +80,7 @@ export const UserCreate = (props) => (
     </Create>
 );
 ```
+{% endraw %}
 
 As Admin-on-rest translates these constraints objects to functions, the result is the same as before.
 
