@@ -31,10 +31,10 @@ const getConstraintsFunction = (constraints) => (value, values) => Object.keys(c
         constraint._name = constraintName; // .name does not exist on IE
         return constraint;
     })
-    .reduce((errors, constraint) => {
-        errors = [...errors, constraint(value, values, constraints[constraint.name])];
-        return errors;
-    }, [])
+    .reduce((errors, constraint) => [
+        ...errors,
+        constraint(value, values, constraints[constraint.name]),
+    ], [])
     .filter(error => error !== null);
 
 export const getConstraintsFunctionFromFunctionOrObject = (constraints) => {

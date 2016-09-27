@@ -7,6 +7,7 @@ import TextInput from '../input/TextInput';
 
 describe('<Edit />', () => {
     const defaultProps = {
+        data: {},
         crudGetOne: () => {},
         crudUpdate: () => {},
         hasDelete: false,
@@ -20,8 +21,8 @@ describe('<Edit />', () => {
     it('should display correctly even with no child', () => {
         const wrapper = shallow(<Edit {...defaultProps} />);
 
-        const inputs = wrapper.find('InputList').prop('inputs');
-        assert.equal(inputs, undefined);
+        const inputs = wrapper.find('TextInput');
+        assert.equal(inputs.length, 0);
     });
 
     it('should display its child if it contains only a single child', () => {
@@ -29,8 +30,8 @@ describe('<Edit />', () => {
             <TextInput source="foo" />
         </Edit>);
 
-        const inputs = wrapper.find('InputList').prop('inputs');
-        assert.equal(inputs.props.source, 'foo');
+        const inputs = wrapper.find('TextInput');
+        assert.deepEqual(inputs.map(i => i.prop('source')), ['foo']);
     });
 
     it('should display all its children if it contains many', () => {
@@ -39,7 +40,7 @@ describe('<Edit />', () => {
             <TextInput source="bar" />
         </Edit>);
 
-        const inputs = wrapper.find('InputList').prop('inputs');
-        assert.deepEqual(inputs.map(i => i.props.source), ['foo', 'bar']);
+        const inputs = wrapper.find('TextInput');
+        assert.deepEqual(inputs.map(i => i.prop('source')), ['foo', 'bar']);
     });
 });
