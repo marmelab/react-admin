@@ -24,6 +24,7 @@ LongTextInput.propTypes = {
 
 LongTextInput.defaultProps = {
     includesLabel: true,
+    input: {},
     options: {},
 };
 
