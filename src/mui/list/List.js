@@ -5,6 +5,7 @@ import { Card, CardTitle, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import inflection from 'inflection';
+import { getFormValues } from 'redux-form';
 import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER } from '../../reducer/resource/list/queryReducer';
 import Title from '../layout/Title';
 import Pagination from './Pagination';
@@ -18,7 +19,6 @@ class List extends Component {
         this.state = {};
         this.updateSort = this.updateSort.bind(this);
         this.setPage = this.setPage.bind(this);
-        this.setFilter = this.setFilter.bind(this);
         this.showFilter = this.showFilter.bind(this);
         this.hideFilter = this.hideFilter.bind(this);
     }
@@ -35,6 +35,13 @@ class List extends Component {
          || nextProps.query.filter !== this.props.query.filter) {
             this.updateData(Object.keys(nextProps.query).length > 0 ? nextProps.query : nextProps.params);
         }
+    }
+
+    componentWillUpdate(nextProps) {
+        const changedProps = this.getChangedProps(nextProps);
+        Object.keys(changedProps).forEach(changedPropName => {
+            this.setFilter(changedPropName, changedProps[changedPropName]);
+        });
     }
 
     getBasePath() {
@@ -60,11 +67,25 @@ class List extends Component {
         this.changeParams({ type: SET_SORT, payload: event.currentTarget.dataset.sort });
     }
 
+    /**
+     * check which props has changed, and return an object whose keys is
+     * changed prop name and value is the new prop value.
+     */
+    getChangedProps = ({ filters }) => Object.keys(filters)
+        .reduce((changedProps, filterName) => {
+            const updatedProps = { ...changedProps };
+            if (filters[filterName] !== this.props.filters[filterName]) {
+                updatedProps[filterName] = filters[filterName];
+            }
+
+            return updatedProps;
+        }, {});
+
     setPage(page) {
         this.changeParams({ type: SET_PAGE, payload: page });
     }
 
-    setFilter(field, value) {
+    setFilter = (field, value) => {
         this.changeParams({ type: SET_FILTER, payload: { field, value } });
     }
 
@@ -89,7 +110,7 @@ class List extends Component {
         const filterValues = query.filter;
         const basePath = this.getBasePath();
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
+            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     {filter && React.createElement(filter, {
                         resource,
@@ -105,7 +126,6 @@ class List extends Component {
                 {filter && React.createElement(filter, {
                     resource,
                     hideFilter: this.hideFilter,
-                    setFilter: this.setFilter,
                     filterValues,
                     displayedFilters: this.state,
                     context: 'form',
@@ -130,6 +150,7 @@ List.propTypes = {
         PropTypes.func,
         PropTypes.string,
     ]),
+    filters: PropTypes.object,
     resource: PropTypes.string.isRequired,
     hasCreate: PropTypes.bool.isRequired,
     hasEdit: PropTypes.bool.isRequired,
@@ -147,12 +168,17 @@ List.propTypes = {
     push: PropTypes.func.isRequired,
 };
 
+List.defaultProps = {
+    filters: {},
+};
+
 function mapStateToProps(state, props) {
     const resourceState = state.admin[props.resource];
     const query = props.location.query;
     if (query.filter && typeof query.filter === 'string') {
         query.filter = JSON.parse(query.filter);
     }
+
     return {
         query,
         params: resourceState.list.params,
@@ -160,6 +186,7 @@ function mapStateToProps(state, props) {
         total: resourceState.list.total,
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
+        filters: getFormValues('filterForm')(state),
     };
 }
 
