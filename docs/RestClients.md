@@ -1,3 +1,8 @@
+---
+layout: default
+title: "REST Clients"
+---
+
 # REST Clients
 
 Admin-on-rest can communicate with any REST server, regardless of the REST dialect it uses. Whether it's [JSON API](http://jsonapi.org/), [HAL](http://stateless.co/hal_specification.html), [OData](http://www.odata.org/) or a custom dialect, the only thing admin-on-rest needs is a REST client function. This is the place to translate REST requests to HTTP requests, and HTTP responses to REST responses.
@@ -20,11 +25,85 @@ The `restClient` parameter of the `<Admin>` component, must be a function with t
 const restClient = (type, resource, params) => new Promise();
 ```
 
-You can find a REST client example implementation in `src/rest/simple.js`;
+You can find a REST client example implementation in [`src/rest/simple.js`](https://github.com/marmelab/admin-on-rest/blob/master/src/rest/simple.js);
 
 The `restClient` is also the ideal place to add custom HTTP headers, authentication, etc.
 
-## Request Format
+## Core REST clients
+
+Admin-on-rest bundles two REST clients that you can use if your API uses a similar REST dialect.
+
+### Simple REST
+
+This REST client fits APIs using simple GET parameters for filters and sorting. This is the dialect used for instance in [FakeRest](https://github.com/marmelab/FakeRest).
+
+| REST verb      | API calls
+|----------------|----------------------------------------------------------------
+| `GET_LIST`     | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]`
+| `GET_MATCHING` | `GET http://my.api.url/posts?filter={title:'bar'}`
+| `GET_ONE`      | `GET http://my.api.url/posts/123`
+| `GET_MANY`     | `GET http://my.api.url/posts?filter={ids:[123,456,789]}`
+| `UPDATE`       | `PUT http://my.api.url/posts/123`
+| `CREATE`       | `POST http://my.api.url/posts/123`
+| `DELETE`       | `DELETE http://my.api.url/posts/123`
+
+Here is how to use it in your admin:
+
+```js
+// in src/App.js
+import React from 'react';
+
+import { simpleRestClient, Admin, Resource } from 'admin-on-rest';
+
+import { PostList } from './posts';
+
+const App = () => (
+    <Admin restClient={simpleRestClient('http://path.to.my.api/')}>
+        <Resource name="posts" list={PostList} />
+    </Admin>
+);
+
+export default App;
+```
+
+### jsonServer REST
+
+This REST client fits APIs powered by [jsonServer](https://github.com/typicode/json-server), such as [JSONPlaceholder](http://jsonplaceholder.typicode.com/).
+
+| REST verb      | API calls
+|----------------|----------------------------------------------------------------
+| `GET_LIST`     | `GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24`
+| `GET_MATCHING` | `GET http://my.api.url/posts?title=bar`
+| `GET_ONE`      | `GET http://my.api.url/posts/123`
+| `GET_MANY`     | `GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789`
+| `UPDATE`       | `PUT http://my.api.url/posts/123`
+| `CREATE`       | `POST http://my.api.url/posts/123`
+| `DELETE`       | `DELETE http://my.api.url/posts/123`
+
+Here is how to use it in your admin:
+
+```js
+// in src/App.js
+import React from 'react';
+
+import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
+
+import { PostList } from './posts';
+
+const App = () => (
+    <Admin restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+        <Resource name="posts" list={PostList} />
+    </Admin>
+);
+
+export default App;
+```
+
+## Writing your own REST client
+
+Quite often, none of the the core REST clients match your API exactly. In such cases, you'll have to write your own REST client. But don't be afraid, it's easy!
+
+### Request Format
 
 REST requests require a *type* (e.g. `GET_ONE`), a *resource* (e.g. 'posts') and a set of *parameters*.
 
@@ -59,7 +138,7 @@ restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123 });
 restClient(GET_MATCHING, 'posts', { filter: { title: 'hello' } });
 ```
 
-## Response Format
+### Response Format
 
 REST responses are objects. The format depends on the type.
 
@@ -141,6 +220,6 @@ restClient(GET_MATCHING, 'posts', { filter: { title: 'hello' } })
 // ]
 ```
 
-## Error Format
+### Error Format
 
 To be completed
