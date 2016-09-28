@@ -36,26 +36,42 @@
                             </a>
                             <ul class="articles" {% if page.path != 'RestClients.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
-                                    <a href="./RestClients.html#core-rest-clients">Core clients</a>
+                                    <a href="#core-rest-clients">Core clients</a>
                                 </li>
                                 <li class="chapter">
-                                    <a href="./RestClients.html#writing-your-own-rest-client">Writing your own REST client</a>
+                                    <a href="#writing-your-own-rest-client">Writing your own REST client</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="chapter {% if page.path == 'AdminResource.md' %}active{% endif %}">
+                            <a href="./AdminResource.html">
+                                <b>4.</b> Admin and Resource Components
+                            </a>
+                            <ul class="articles" {% if page.path != 'AdminResource.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#the-admin-component"><code>&lt;Admin&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#the-resource-component"><code>&lt;Resource&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#using-admin-on-rest-without-admin-and-resource">Not using <code>&lt;admin&gt;</code> and <code>&lt;Resource&gt;</code></a>
                                 </li>
                             </ul>
                         </li>
                         <li class="chapter {% if page.path == 'InputsFields.md' %}active{% endif %}">
                             <a href="./InputsFields.html">
-                                <b>4.</b> Input and Field Components
+                                <b>5.</b> Input and Field Components
                             </a>
                         </li>
                         <li class="chapter {% if page.path == 'FormValidation.md' %}active{% endif %}">
                             <a href="./FormValidation.html">
-                                <b>5.</b> Form Validation
+                                <b>6.</b> Form Validation
                             </a>
                         </li>
                         <li class="chapter {% if page.path == 'CustomApp.md' %}active{% endif %}">
                             <a href="./CustomApp.html">
-                                <b>6.</b> Including in Another App
+                                <b>7.</b> Including in Another App
                             </a>
                         </li>
                     </ul>
