@@ -27,7 +27,7 @@ import MenuItem from 'material-ui/MenuItem';
  * ]} />
  */
 class SelectInput extends Component {
-    handleChange = (e, _, value) => this.props.input.onChange(value);
+    onChange = (e, _, value) => this.props.input.onChange(value);
 
     render() {
         const { input, label, choices, optionText, optionValue, options } = this.props;
@@ -36,7 +36,7 @@ class SelectInput extends Component {
                 menuStyle={{ maxHeight: '41px', overflowY: 'hidden' }}
                 floatingLabelText={label}
                 value={input.value}
-                onChange={this.handleChange}
+                onChange={this.onChange}
                 autoWidth
                 {...options}
             >
@@ -53,7 +53,6 @@ SelectInput.propTypes = {
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
-    onChange: PropTypes.func,
     options: PropTypes.object,
     optionText: PropTypes.string.isRequired,
     optionValue: PropTypes.string.isRequired,
