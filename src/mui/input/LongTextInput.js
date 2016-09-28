@@ -3,9 +3,8 @@ import TextField from 'material-ui/TextField';
 
 const LongTextInput = ({ input, label, meta: { touched, error }, options }) => (
     <TextField
-        value={input.value}
-        onChange={input.onChange}
         {...options}
+        {...input}
         multiLine
         fullWidth
         floatingLabelText={label}
@@ -25,7 +24,6 @@ LongTextInput.propTypes = {
 
 LongTextInput.defaultProps = {
     includesLabel: true,
-    input: {},
     options: {},
 };
 

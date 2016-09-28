@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import inflection from 'inflection';
 import { getFormValues } from 'redux-form';
+import debounce from 'lodash.debounce';
 import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER } from '../../reducer/resource/list/queryReducer';
 import Title from '../layout/Title';
 import Pagination from './Pagination';
@@ -38,10 +39,9 @@ class List extends Component {
     }
 
     componentWillUpdate(nextProps) {
-        const changedProps = this.getChangedProps(nextProps);
-        Object.keys(changedProps).forEach(changedPropName => {
-            this.setFilter(changedPropName, changedProps[changedPropName]);
-        });
+        if (nextProps.filters !== this.props.filters) {
+            this.debouncedUpdateFilter(nextProps.filters);
+        }
     }
 
     getBasePath() {
@@ -88,6 +88,12 @@ class List extends Component {
     setFilter = (field, value) => {
         this.changeParams({ type: SET_FILTER, payload: { field, value } });
     }
+
+    debouncedUpdateFilter = debounce((nextFilters) => {
+        Object.keys(nextFilters).forEach(filter => {
+            this.setFilter(filter, nextFilters[filter]);
+        });
+    }, 500);
 
     showFilter(filterName) {
         this.setState({ [filterName]: true });

@@ -26,7 +26,6 @@ TextInput.propTypes = {
 
 TextInput.defaultProps = {
     includesLabel: true,
-    input: {},
     options: {},
     type: 'text',
 };
