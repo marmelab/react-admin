@@ -30,19 +30,32 @@
                                 <b>2.</b> Tutorial
                             </a>
                         </li>
+                        <li class="chapter {% if page.path == 'RestClients.md' %}active{% endif %}">
+                            <a href="./RestClients.html">
+                                <b>3.</b> REST Clients
+                            </a>
+                            <ul class="articles" {% if page.path != 'RestClients.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="./RestClients.html#core-rest-clients">Core clients</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="./RestClients.html#writing-your-own-rest-client">Writing your own REST client</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="chapter {% if page.path == 'InputsFields.md' %}active{% endif %}">
                             <a href="./InputsFields.html">
-                                <b>3.</b> Input and Field Components
+                                <b>4.</b> Input and Field Components
                             </a>
                         </li>
                         <li class="chapter {% if page.path == 'FormValidation.md' %}active{% endif %}">
                             <a href="./FormValidation.html">
-                                <b>4.</b> Form Validation
+                                <b>5.</b> Form Validation
                             </a>
                         </li>
                         <li class="chapter {% if page.path == 'CustomApp.md' %}active{% endif %}">
                             <a href="./CustomApp.html">
-                                <b>5.</b> Including in Another App
+                                <b>6.</b> Including in Another App
                             </a>
                         </li>
                     </ul>
