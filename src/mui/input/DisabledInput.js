@@ -14,6 +14,7 @@ DisabledInput.propTypes = {
 };
 
 DisabledInput.defaultProps = {
+    includesLabel: true,
 };
 
 export default DisabledInput;

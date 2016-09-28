@@ -5,3 +5,4 @@ export ReferenceField from './ReferenceField';
 export ReferenceManyField from './ReferenceManyField';
 export RichTextField from './RichTextField';
 export TextField from './TextField';
+export UrlField from './UrlField';
