@@ -27,7 +27,6 @@ LongTextInput.defaultProps = {
     includesLabel: true,
     input: {},
     options: {},
-    includesLabel: true,
 };
 
 export default LongTextInput;
