@@ -4,7 +4,6 @@ const EmailField = ({ source, record = {} }) => <a href={`mailto:${record[source
 
 EmailField.propTypes = {
     source: PropTypes.string.isRequired,
-    label: PropTypes.string,
     record: PropTypes.object,
 };
 
