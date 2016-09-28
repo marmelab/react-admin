@@ -30,7 +30,7 @@ export const PostList = (props) => (
     <List {...props} filter={PostFilter}>
         <Datagrid>
             <TextField label="id" source="id" />
-            <TextField label="title" source="title" />
+            <TextField label="title" source="title" type="email" />
             <RichTextField label="body" source="body" stripTags={true} />
             <DateField label="published_at" source="published_at" />
             <TextField label="average_note" source="average_note" />
@@ -63,6 +63,7 @@ export const PostCreate = (props) => (
         }}
     >
         <TextInput label="Title" source="title" />
+        <TextInput label="Password (if protected post)" source="password" type="password" />
         <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
         <RichTextInput label="Body" source="body" />
         <DateInput label="Publication date" source="published_at" />
@@ -74,6 +75,7 @@ export const PostEdit = (props) => (
     <Edit title={PostTitle} {...props}>
         <DisabledInput label="Id" source="id" />
         <TextInput label="Title" source="title" validation={{ required: true }} />
+        <TextInput label="Password (if protected post)" source="password" type="password" />
         <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} validation={{ required: true }} />
         <RichTextInput label="Body" source="body" validation={{ required: true }} />
         <DateInput label="Publication date" source="published_at" />

@@ -8,11 +8,13 @@ class TextInput extends Component {
             label,
             meta: { touched, error },
             options,
+            type,
         } = this.props;
 
         return (<TextField
             {...input}
             {...options}
+            type={type}
             floatingLabelText={label}
             errorText={touched && error}
         />);
@@ -27,12 +29,14 @@ TextInput.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func,
     options: PropTypes.object,
+    type: PropTypes.string,
     validation: PropTypes.object,
 };
 
 TextInput.defaultProps = {
-    options: {},
     includesLabel: true,
+    options: {},
+    type: 'text',
 };
 
 export default TextInput;

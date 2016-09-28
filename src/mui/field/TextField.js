@@ -4,7 +4,6 @@ const TextField = ({ source, record = {} }) => <span>{record[source]}</span>;
 
 TextField.propTypes = {
     source: PropTypes.string.isRequired,
-    label: PropTypes.string,
     record: PropTypes.object,
 };
 
