@@ -1,25 +1,16 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 
-class TextInput extends Component {
-    render() {
-        const {
-            input,
-            label,
-            meta: { touched, error },
-            options,
-            type,
-        } = this.props;
-
-        return (<TextField
-            {...input}
-            {...options}
-            type={type}
-            floatingLabelText={label}
-            errorText={touched && error}
-        />);
-    }
-}
+const TextInput = ({ input, label, meta: { touched, error }, options, type }) => (
+    <TextField
+        value={input.value}
+        onChange={input.onChange}
+        {...options}
+        type={type}
+        floatingLabelText={label}
+        errorText={touched && error}
+    />
+);
 
 TextInput.propTypes = {
     includesLabel: PropTypes.bool.isRequired,

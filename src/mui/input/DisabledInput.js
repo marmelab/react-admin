@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 
 const DisabledInput = ({ input, label }) => <TextField
-    {...input}
+    value={input.value}
     floatingLabelText={label}
     disabled
 />;
