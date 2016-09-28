@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import debounce from 'lodash.debounce';
 import { CardText } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import ActionHide from 'material-ui/svg-icons/action/highlight-off';
@@ -8,7 +9,6 @@ export class FilterForm extends Component {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleHide = this.handleHide.bind(this);
-        this.timer = null;
         this.state = {
             filterValues: props.filterValues,
         };
@@ -32,11 +32,7 @@ export class FilterForm extends Component {
 
     handleChange(key, value) {
         this.setState({ filterValues: { ...this.state.filterValues, [key]: value } });
-        // poor man's debounce
-        if (this.timer) {
-            clearTimeout(this.timer);
-        }
-        this.timer = setTimeout(() => this.props.setFilter(key, value), 500);
+        debounce(() => this.props.setFilter(key, value), 500);
     }
 
     handleHide(event) {
