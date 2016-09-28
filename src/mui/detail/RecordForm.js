@@ -60,6 +60,9 @@ export const RecordForm = ({ children, handleSubmit, record, resource, basePath 
                             {...input.props}
                             name={input.props.source}
                             component={input.type}
+                            resource={resource}
+                            record={record}
+                            basePath={basePath}
                         />
                         :
                         <Field

@@ -20,12 +20,14 @@ LongTextInput.propTypes = {
     meta: PropTypes.object,
     name: PropTypes.string,
     options: PropTypes.object,
+    validation: PropTypes.object,
 };
 
 LongTextInput.defaultProps = {
     includesLabel: true,
     input: {},
     options: {},
+    includesLabel: true,
 };
 
 export default LongTextInput;

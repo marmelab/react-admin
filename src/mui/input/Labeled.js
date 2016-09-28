@@ -21,7 +21,7 @@ const Labeled = ({ input, label, resource, record, onChange, basePath, children 
         underlineShow={false}
         style={{ paddingTop: '2em', height: 'auto' }}
     >
-        {React.cloneElement(children, { input, record, resource, onChange, basePath })}
+        {children && React.cloneElement(children, { input, record, resource, onChange, basePath })}
     </TextField>
 );
 
