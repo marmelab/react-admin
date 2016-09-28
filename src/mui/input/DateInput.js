@@ -15,7 +15,7 @@ export const datify = input => {
 };
 
 class DateInput extends Component {
-    _onChange = (_, date) => this.props.input.onChange(date);
+    onChange = (_, date) => this.props.input.onChange(date);
 
     render() {
         const {
@@ -39,7 +39,7 @@ class DateInput extends Component {
             container="inline"
             autoOk
             value={datify(input.value)}
-            onChange={this._onChange}
+            onChange={this.onChange}
         />);
     }
 }
