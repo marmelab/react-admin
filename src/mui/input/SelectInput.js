@@ -27,17 +27,15 @@ import MenuItem from 'material-ui/MenuItem';
  * ]} />
  */
 class SelectInput extends Component {
-    handleChange = (event, key, payload) => {
-        this.props.onChange(this.props.source, payload);
-    }
+    handleChange = (e, _, value) => this.props.input.onChange(value);
 
     render() {
-        const { label, source, record, choices, optionText, optionValue, options } = this.props;
+        const { input, label, choices, optionText, optionValue, options } = this.props;
         return (
             <SelectField
                 menuStyle={{ maxHeight: '41px', overflowY: 'hidden' }}
                 floatingLabelText={label}
-                value={record[source]}
+                value={input.value}
                 onChange={this.handleChange}
                 autoWidth
                 {...options}
@@ -51,19 +49,17 @@ class SelectInput extends Component {
 }
 
 SelectInput.propTypes = {
-    label: PropTypes.string,
-    source: PropTypes.string,
-    record: PropTypes.object,
     choices: PropTypes.arrayOf(PropTypes.object),
+    includesLabel: PropTypes.bool.isRequired,
+    input: PropTypes.object,
+    label: PropTypes.string,
+    onChange: PropTypes.func,
+    options: PropTypes.object,
     optionText: PropTypes.string.isRequired,
     optionValue: PropTypes.string.isRequired,
-    options: PropTypes.object,
-    onChange: PropTypes.func,
-    includesLabel: PropTypes.bool.isRequired,
 };
 
 SelectInput.defaultProps = {
-    record: {},
     options: {},
     optionText: 'name',
     optionValue: 'id',

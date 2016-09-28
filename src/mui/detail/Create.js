@@ -19,9 +19,8 @@ class Create extends Component {
         return location.pathname.split('/').slice(0, -1).join('/');
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-        this.props.crudCreate(this.props.resource, this.state.record, this.getBasePath());
+    handleSubmit(record) {
+        this.props.crudCreate(this.props.resource, record, this.getBasePath());
     }
 
     render() {
@@ -47,12 +46,17 @@ class Create extends Component {
 }
 
 Create.propTypes = {
-    title: PropTypes.any,
-    resource: PropTypes.string.isRequired,
+    children: PropTypes.node,
+    crudCreate: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    crudCreate: PropTypes.func.isRequired,
+    resource: PropTypes.string.isRequired,
+    title: PropTypes.any,
+};
+
+Create.defaultProps = {
+    data: {},
 };
 
 function mapStateToProps(state) {
