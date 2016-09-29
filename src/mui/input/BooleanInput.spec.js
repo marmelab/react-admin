@@ -4,7 +4,7 @@ import React from 'react';
 
 import BooleanInput from './BooleanInput';
 
-describe.only('<BooleanInput />', () => {
+describe('<BooleanInput />', () => {
     const defaultProps = {
         input: {},
         meta: {},
