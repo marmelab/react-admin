@@ -27,11 +27,13 @@ export class ReferenceInput extends Component {
     }
 
     render() {
-        const { resource, label, source, record, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children } = this.props;
+        const { input, resource, label, source, record, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children } = this.props;
         if (!referenceRecord && !allowEmpty) {
-            return <Labeled label={label}><div>&nbsp;</div></Labeled>;
+            return <Labeled label={label} />;
         }
+
         return React.cloneElement(children, {
+            input,
             label,
             resource,
             source,
@@ -44,20 +46,21 @@ export class ReferenceInput extends Component {
 }
 
 ReferenceInput.propTypes = {
-    children: PropTypes.element.isRequired,
-    resource: PropTypes.string.isRequired,
-    source: PropTypes.string.isRequired,
-    label: PropTypes.string,
-    record: PropTypes.object,
-    matchingReferences: PropTypes.array,
     allowEmpty: PropTypes.bool.isRequired,
+    basePath: PropTypes.string,
+    children: PropTypes.element.isRequired,
+    crudGetMatching: PropTypes.func.isRequired,
+    crudGetOne: PropTypes.func.isRequired,
+    includesLabel: PropTypes.bool.isRequired,
+    input: PropTypes.object.isRequired,
+    label: PropTypes.string,
+    matchingReferences: PropTypes.array,
+    onChange: PropTypes.func,
+    record: PropTypes.object,
     reference: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
-    basePath: PropTypes.string,
-    onChange: PropTypes.func,
-    crudGetOne: PropTypes.func.isRequired,
-    crudGetMatching: PropTypes.func.isRequired,
-    includesLabel: PropTypes.bool.isRequired,
+    resource: PropTypes.string.isRequired,
+    source: PropTypes.string.isRequired,
 };
 
 ReferenceInput.defaultProps = {

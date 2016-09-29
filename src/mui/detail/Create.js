@@ -8,31 +8,22 @@ import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import RecordForm from './RecordForm'; // eslint-disable-line import/no-named-as-default
 
 class Create extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { record: {} };
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
     getBasePath() {
         const { location } = this.props;
         return location.pathname.split('/').slice(0, -1).join('/');
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-        this.props.crudCreate(this.props.resource, this.state.record, this.getBasePath());
-    }
+    handleSubmit = (record) => this.props.crudCreate(this.props.resource, record, this.getBasePath());
 
     render() {
-        const { title, children, data, isLoading, resource, validation } = this.props;
+        const { title, children, isLoading, resource, validation } = this.props;
         const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     <ListButton basePath={basePath} />
                 </CardActions>
-                <CardTitle title={<Title title={title} record={data} defaultTitle={`Create ${inflection.humanize(inflection.singularize(resource))}`} />} />
+                <CardTitle title={<Title title={title} defaultTitle={`Create ${inflection.humanize(inflection.singularize(resource))}`} />} />
                 <RecordForm
                     onSubmit={this.handleSubmit}
                     resource={resource}
@@ -47,12 +38,18 @@ class Create extends Component {
 }
 
 Create.propTypes = {
-    title: PropTypes.any,
-    resource: PropTypes.string.isRequired,
+    children: PropTypes.node,
+    crudCreate: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    crudCreate: PropTypes.func.isRequired,
+    resource: PropTypes.string.isRequired,
+    title: PropTypes.any,
+    validation: PropTypes.func,
+};
+
+Create.defaultProps = {
+    data: {},
 };
 
 function mapStateToProps(state) {

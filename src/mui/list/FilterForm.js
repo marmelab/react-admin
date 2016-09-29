@@ -1,50 +1,24 @@
 import React, { Component, PropTypes } from 'react';
+import { Field, reduxForm } from 'redux-form';
 import { CardText } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import ActionHide from 'material-ui/svg-icons/action/highlight-off';
 
 export class FilterForm extends Component {
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleHide = this.handleHide.bind(this);
-        this.timer = null;
-        this.state = {
-            filterValues: props.filterValues,
-        };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.filterValues !== nextProps.filterValues) {
-            this.setState({ filterValues: nextProps.filterValues }); // FIXME: erases user entry when fetch response arrives late
-        }
-    }
-
     getShownFilters() {
-        const { filters, displayedFilters, filterValues } = this.props;
+        const { filters, displayedFilters, currentFilters } = this.props;
         return filters
             .filter(filterElement =>
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                filterValues[filterElement.props.source]
+                currentFilters[filterElement.props.source]
             );
     }
 
-    handleChange(key, value) {
-        this.setState({ filterValues: { ...this.state.filterValues, [key]: value } });
-        // poor man's debounce
-        if (this.timer) {
-            clearTimeout(this.timer);
-        }
-        this.timer = setTimeout(() => this.props.setFilter(key, value), 500);
-    }
-
-    handleHide(event) {
-        this.props.hideFilter(event.currentTarget.dataset.key);
-    }
+    handleHide = (event) => this.props.hideFilter(event.currentTarget.dataset.key);
 
     render() {
-        const { resource } = this.props;
+        const { currentFilters, resource } = this.props;
         return (<div>
             <CardText style={{ float: 'right', marginTop: '-14px', paddingTop: 0 }}>
                 {this.getShownFilters().map(filterElement =>
@@ -55,12 +29,12 @@ export class FilterForm extends Component {
                                 <ActionHide />
                             </IconButton>
                         }
-                        <filterElement.type
-                            meta={{}}
+                        <Field
                             {...filterElement.props}
+                            name={filterElement.props.source}
+                            component={filterElement.type}
                             resource={resource}
-                            record={this.state.filterValues}
-                            onChange={this.handleChange}
+                            record={currentFilters}
                         />
                     </div>
                 )}
@@ -72,11 +46,16 @@ export class FilterForm extends Component {
 
 FilterForm.propTypes = {
     resource: PropTypes.string.isRequired,
+    currentFilters: PropTypes.object.isRequired,
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
     displayedFilters: PropTypes.object.isRequired,
-    filterValues: PropTypes.object.isRequired,
     hideFilter: PropTypes.func.isRequired,
-    setFilter: PropTypes.func.isRequired,
 };
 
-export default FilterForm;
+FilterForm.defaultProps = {
+    currentFilters: {},
+};
+
+export default reduxForm({
+    form: 'filterForm',
+})(FilterForm);

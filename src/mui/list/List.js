@@ -5,6 +5,8 @@ import { Card, CardTitle, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import inflection from 'inflection';
+import { getFormValues } from 'redux-form';
+import debounce from 'lodash.debounce';
 import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER } from '../../reducer/resource/list/queryReducer';
 import Title from '../layout/Title';
 import Pagination from './Pagination';
@@ -12,15 +14,10 @@ import CreateButton from '../button/CreateButton';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
 
-class List extends Component {
+export class List extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.updateSort = this.updateSort.bind(this);
-        this.setPage = this.setPage.bind(this);
-        this.setFilter = this.setFilter.bind(this);
-        this.showFilter = this.showFilter.bind(this);
-        this.hideFilter = this.hideFilter.bind(this);
     }
 
     componentDidMount() {
@@ -35,6 +32,10 @@ class List extends Component {
          || nextProps.query.filter !== this.props.query.filter) {
             this.updateData(Object.keys(nextProps.query).length > 0 ? nextProps.query : nextProps.params);
         }
+    }
+
+    componentWillUpdate(nextProps) {
+        this.debouncedUpdateFilter(nextProps.filters, this.props.filters);
     }
 
     getBasePath() {
@@ -55,24 +56,33 @@ class List extends Component {
         this.props.crudGetList(this.props.resource, { page, perPage }, { field: sort, order }, filter);
     }
 
-    updateSort(event) {
+    updateSort = (event) => {
         event.stopPropagation();
         this.changeParams({ type: SET_SORT, payload: event.currentTarget.dataset.sort });
     }
 
-    setPage(page) {
-        this.changeParams({ type: SET_PAGE, payload: page });
-    }
+    setPage = (page) => this.changeParams({ type: SET_PAGE, payload: page });
 
-    setFilter(field, value) {
+    setFilter = (field, value) => {
         this.changeParams({ type: SET_FILTER, payload: { field, value } });
     }
 
-    showFilter(filterName) {
-        this.setState({ [filterName]: true });
-    }
+    debouncedUpdateFilter = debounce((nextFilters, currentFilters) => {
+        if (nextFilters !== currentFilters) {
+            const allFilters = new Set([
+                ...Object.keys(currentFilters),
+                ...Object.keys(nextFilters),
+            ]);
 
-    hideFilter(filterName) {
+            allFilters.forEach(filter => {
+                this.setFilter(filter, nextFilters[filter]);
+            });
+        }
+    }, 1000);
+
+    showFilter = (filterName) => this.setState({ [filterName]: true });
+
+    hideFilter = (filterName) => {
         this.setState({ [filterName]: false });
         this.setFilter(filterName);
     }
@@ -89,7 +99,7 @@ class List extends Component {
         const filterValues = query.filter;
         const basePath = this.getBasePath();
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
+            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     {filter && React.createElement(filter, {
                         resource,
@@ -105,7 +115,6 @@ class List extends Component {
                 {filter && React.createElement(filter, {
                     resource,
                     hideFilter: this.hideFilter,
-                    setFilter: this.setFilter,
                     filterValues,
                     displayedFilters: this.state,
                     context: 'form',
@@ -130,6 +139,7 @@ List.propTypes = {
         PropTypes.func,
         PropTypes.string,
     ]),
+    filters: PropTypes.object,
     resource: PropTypes.string.isRequired,
     hasCreate: PropTypes.bool.isRequired,
     hasEdit: PropTypes.bool.isRequired,
@@ -147,12 +157,17 @@ List.propTypes = {
     push: PropTypes.func.isRequired,
 };
 
+List.defaultProps = {
+    filters: {},
+};
+
 function mapStateToProps(state, props) {
     const resourceState = state.admin[props.resource];
     const query = props.location.query;
     if (query.filter && typeof query.filter === 'string') {
         query.filter = JSON.parse(query.filter);
     }
+
     return {
         query,
         params: resourceState.list.params,
@@ -160,6 +175,7 @@ function mapStateToProps(state, props) {
         total: resourceState.list.total,
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
+        filters: getFormValues('filterForm')(state),
     };
 }
 
