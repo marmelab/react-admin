@@ -14,7 +14,7 @@ import CreateButton from '../button/CreateButton';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
 
-class List extends Component {
+export class List extends Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -75,7 +75,12 @@ class List extends Component {
 
     debouncedUpdateFilter = debounce((nextFilters, currentFilters) => {
         if (nextFilters !== currentFilters) {
-            Object.keys(nextFilters).forEach(filter => {
+            const allFilters = new Set([
+                ...Object.keys(currentFilters),
+                ...Object.keys(nextFilters),
+            ]);
+
+            allFilters.forEach(filter => {
                 this.setFilter(filter, nextFilters[filter]);
             });
         }
