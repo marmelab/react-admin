@@ -1,3 +1,4 @@
+export BooleanInput from './BooleanInput';
 export DateInput from './DateInput';
 export DisabledInput from './DisabledInput';
 export Labeled from './Labeled';
