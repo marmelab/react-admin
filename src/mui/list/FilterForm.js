@@ -11,12 +11,12 @@ export class FilterForm extends Component {
     }
 
     getShownFilters() {
-        const { filters, displayedFilters, filterValues } = this.props;
+        const { filters, displayedFilters, currentFilters } = this.props;
         return filters
             .filter(filterElement =>
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                filterValues[filterElement.props.source]
+                currentFilters[filterElement.props.source]
             );
     }
 
@@ -53,10 +53,9 @@ export class FilterForm extends Component {
 
 FilterForm.propTypes = {
     resource: PropTypes.string.isRequired,
-    currentFilters: PropTypes.object,
+    currentFilters: PropTypes.object.isRequired,
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
     displayedFilters: PropTypes.object.isRequired,
-    filterValues: PropTypes.object.isRequired,
     hideFilter: PropTypes.func.isRequired,
 };
 

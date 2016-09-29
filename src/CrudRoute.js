@@ -1,6 +1,6 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
-import { createRoutesFromReactChildren } from 'react-router/lib//RouteUtils';
+import { createRoutesFromReactChildren } from 'react-router/lib/RouteUtils';
 
 const CrudRoute = () => <div>&lt;CrudRoute&gt; elements are for configuration only and should not be rendered</div>;
 
