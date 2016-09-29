@@ -18,10 +18,6 @@ export class List extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.updateSort = this.updateSort.bind(this);
-        this.setPage = this.setPage.bind(this);
-        this.showFilter = this.showFilter.bind(this);
-        this.hideFilter = this.hideFilter.bind(this);
     }
 
     componentDidMount() {
@@ -60,14 +56,12 @@ export class List extends Component {
         this.props.crudGetList(this.props.resource, { page, perPage }, { field: sort, order }, filter);
     }
 
-    updateSort(event) {
+    updateSort = (event) => {
         event.stopPropagation();
         this.changeParams({ type: SET_SORT, payload: event.currentTarget.dataset.sort });
     }
 
-    setPage(page) {
-        this.changeParams({ type: SET_PAGE, payload: page });
-    }
+    setPage = (page) => this.changeParams({ type: SET_PAGE, payload: page });
 
     setFilter = (field, value) => {
         this.changeParams({ type: SET_FILTER, payload: { field, value } });
@@ -86,11 +80,9 @@ export class List extends Component {
         }
     }, 1000);
 
-    showFilter(filterName) {
-        this.setState({ [filterName]: true });
-    }
+    showFilter = (filterName) => this.setState({ [filterName]: true });
 
-    hideFilter(filterName) {
+    hideFilter = (filterName) => {
         this.setState({ [filterName]: false });
         this.setFilter(filterName);
     }

@@ -5,11 +5,6 @@ import IconButton from 'material-ui/IconButton';
 import ActionHide from 'material-ui/svg-icons/action/highlight-off';
 
 export class FilterForm extends Component {
-    constructor(props) {
-        super(props);
-        this.handleHide = this.handleHide.bind(this);
-    }
-
     getShownFilters() {
         const { filters, displayedFilters, currentFilters } = this.props;
         return filters
@@ -20,9 +15,7 @@ export class FilterForm extends Component {
             );
     }
 
-    handleHide(event) {
-        this.props.hideFilter(event.currentTarget.dataset.key);
-    }
+    handleHide = (event) => this.props.hideFilter(event.currentTarget.dataset.key);
 
     render() {
         const { currentFilters, resource } = this.props;

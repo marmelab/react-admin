@@ -8,30 +8,22 @@ import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import RecordForm from './RecordForm'; // eslint-disable-line import/no-named-as-default
 
 class Create extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { record: {} };
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
     getBasePath() {
         const { location } = this.props;
         return location.pathname.split('/').slice(0, -1).join('/');
     }
 
-    handleSubmit(record) {
-        this.props.crudCreate(this.props.resource, record, this.getBasePath());
-    }
+    handleSubmit = (record) => this.props.crudCreate(this.props.resource, record, this.getBasePath());
 
     render() {
-        const { title, children, data, isLoading, resource, validation } = this.props;
+        const { title, children, isLoading, resource, validation } = this.props;
         const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     <ListButton basePath={basePath} />
                 </CardActions>
-                <CardTitle title={<Title title={title} record={data} defaultTitle={`Create ${inflection.humanize(inflection.singularize(resource))}`} />} />
+                <CardTitle title={<Title title={title} defaultTitle={`Create ${inflection.humanize(inflection.singularize(resource))}`} />} />
                 <RecordForm
                     onSubmit={this.handleSubmit}
                     resource={resource}
@@ -53,6 +45,7 @@ Create.propTypes = {
     params: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
+    validation: PropTypes.func,
 };
 
 Create.defaultProps = {
