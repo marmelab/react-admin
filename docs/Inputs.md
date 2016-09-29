@@ -52,6 +52,18 @@ Then you can display a text input to edit the author first name as follows:
 <TextInput source="author.firstName" />
 ```
 
+## `<BooleanInput>` and `<NotNullableBooleanInput>`
+
+`<BooleanInput />` is a nullable boolean field displayed as a select list.
+
+![BooleanInput](./img/boolean-input.png)
+
+`<NotNullableBooleanInput />` is a toggle button allowing you to attribute a `true` or `false` value to a record field.
+
+![NotNullableBooleanInput](./img/not-nullable-boolean-input.png)
+
+This input does not handle `null` values. You would need the `<BooleanInput />` component if you have to handle non-set booleans.
+
 ## `<DateInput>`
 
 Ideal for editing dates, `<DateInput>` renders a beautiful [Date Picker](http://www.material-ui.com/#/components/date-picker) with full localization support.

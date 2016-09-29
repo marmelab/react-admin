@@ -1,6 +1,8 @@
 import React from 'react';
 import {
     BooleanField,
+    BooleanInput,
+    NotNullableBooleanInput,
     Create,
     Datagrid,
     DateField,
@@ -10,7 +12,6 @@ import {
     EditButton,
     Filter,
     List,
-    NotNullableBoolean,
     ReferenceManyField,
 <<<<<<< 401900dfa6ce1edc748808c178535db9106facbb
     Show,
@@ -78,7 +79,7 @@ export const PostCreate = (props) => (
         <RichTextInput source="body" />
         <DateInput label="Publication date" source="published_at" />
         <TextInput source="average_note" />
-        <NotNullableBoolean label="Allow comments?" source="commentable" />
+        <NotNullableBooleanInput label="Allow comments?" source="commentable" />
     </Create>
 );
 
@@ -91,7 +92,7 @@ export const PostEdit = (props) => (
         <RichTextInput source="body" validation={{ required: true }} />
         <DateInput label="Publication date" source="published_at" />
         <TextInput source="average_note" validation={{ min: 0 }} />
-        <NotNullableBoolean label="Allow comments?" source="commentable" />
+        <NotNullableBooleanInput label="Allow comments?" source="commentable" />
         <ReferenceManyField label="Comments" reference="comments" target="post_id">
             <Datagrid>
                 <TextField source="body" />

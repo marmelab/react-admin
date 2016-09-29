@@ -14,7 +14,7 @@ const styles = {
     },
 };
 
-const NotNullableBoolean = ({ input, label }) => (
+const NotNullableBooleanInput = ({ input, label }) => (
     <div style={styles.block}>
         <Toggle
             {...input}
@@ -25,14 +25,14 @@ const NotNullableBoolean = ({ input, label }) => (
     </div>
 );
 
-NotNullableBoolean.propTypes = {
+NotNullableBooleanInput.propTypes = {
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
 };
 
-NotNullableBoolean.defaultProps = {
+NotNullableBooleanInput.defaultProps = {
     includesLabel: true,
 };
 
-export default NotNullableBoolean;
+export default NotNullableBooleanInput;
