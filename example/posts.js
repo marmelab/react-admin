@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    NotNullableBoolean,
+    BooleanField,
     Create,
     Datagrid,
     DateField,
@@ -10,13 +10,21 @@ import {
     EditButton,
     Filter,
     List,
+    NotNullableBoolean,
     ReferenceManyField,
+<<<<<<< 401900dfa6ce1edc748808c178535db9106facbb
     Show,
     ShowButton,
     TextField,
     TextInput,
     RichTextField,
     RichTextInput,
+=======
+    RichTextField,
+    RichTextInput,
+    TextField,
+    TextInput,
+>>>>>>> Add BooleanField component
 } from 'admin-on-rest/mui';
 
 export PostIcon from 'material-ui/svg-icons/action/book';
@@ -34,6 +42,7 @@ export const PostList = (props) => (
             <TextField source="id" />
             <TextField source="title" type="email" style={{ display: 'inline-block', maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis' }}/>
             <DateField source="published_at" style={{ fontStyle: 'italic' }} />
+            <BooleanField label="Commentable" source="commentable" />
             <TextField source="views" />
             <EditButton />
             <ShowButton />

@@ -14,7 +14,7 @@ const styles = {
     },
 };
 
-const NotNullableBoolean = ({ input, meta: { touched, error }, label }) => (
+const NotNullableBoolean = ({ input, label }) => (
     <div style={styles.block}>
         <Toggle
             {...input}
@@ -29,7 +29,6 @@ NotNullableBoolean.propTypes = {
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
-    meta: PropTypes.object,
 };
 
 NotNullableBoolean.defaultProps = {
