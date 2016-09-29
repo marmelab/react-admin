@@ -39,9 +39,7 @@ class List extends Component {
     }
 
     componentWillUpdate(nextProps) {
-        if (nextProps.filters !== this.props.filters) {
-            this.debouncedUpdateFilter(nextProps.filters);
-        }
+        this.debouncedUpdateFilter(nextProps.filters, this.props.filters);
     }
 
     getBasePath() {
@@ -67,20 +65,6 @@ class List extends Component {
         this.changeParams({ type: SET_SORT, payload: event.currentTarget.dataset.sort });
     }
 
-    /**
-     * check which props has changed, and return an object whose keys is
-     * changed prop name and value is the new prop value.
-     */
-    getChangedProps = ({ filters }) => Object.keys(filters)
-        .reduce((changedProps, filterName) => {
-            const updatedProps = { ...changedProps };
-            if (filters[filterName] !== this.props.filters[filterName]) {
-                updatedProps[filterName] = filters[filterName];
-            }
-
-            return updatedProps;
-        }, {});
-
     setPage(page) {
         this.changeParams({ type: SET_PAGE, payload: page });
     }
@@ -89,11 +73,13 @@ class List extends Component {
         this.changeParams({ type: SET_FILTER, payload: { field, value } });
     }
 
-    debouncedUpdateFilter = debounce((nextFilters) => {
-        Object.keys(nextFilters).forEach(filter => {
-            this.setFilter(filter, nextFilters[filter]);
-        });
-    }, 500);
+    debouncedUpdateFilter = debounce((nextFilters, currentFilters) => {
+        if (nextFilters !== currentFilters) {
+            Object.keys(nextFilters).forEach(filter => {
+                this.setFilter(filter, nextFilters[filter]);
+            });
+        }
+    }, 1000);
 
     showFilter(filterName) {
         this.setState({ [filterName]: true });
