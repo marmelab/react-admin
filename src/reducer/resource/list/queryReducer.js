@@ -21,27 +21,33 @@ export default (previousState, { type, payload }) => {
                 page: 1,
             };
         }
+
         return {
             ...previousState,
             sort: payload,
             order: SORT_ASC,
             page: 1,
         };
+
     case SET_PAGE:
         return { ...previousState, page: payload };
+
     case SET_FILTER: {
         const filter = { ...previousState.filter };
+
         if (typeof payload.value === 'undefined' || payload.value.length === 0) {
             delete filter[payload.field];
         } else {
             filter[payload.field] = payload.value;
         }
+
         return {
             ...previousState,
             page: 1,
             filter,
         };
     }
+
     default:
         return previousState;
     }

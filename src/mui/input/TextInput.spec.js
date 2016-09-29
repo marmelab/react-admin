@@ -10,8 +10,13 @@ const muiTheme = getMuiTheme({
 });
 
 describe('<TextInput />', () => {
+    const defaultProps = {
+        meta: {},
+        input: {},
+    };
+
     it('should use a mui TextField', () => {
-        const wrapper = shallow(<TextInput meta={{}} label='hello' />);
+        const wrapper = shallow(<TextInput {...defaultProps} label='hello' />);
         const TextFieldElement = wrapper.find('TextField');
         assert.equal(TextFieldElement.length, 1);
         assert.equal(TextFieldElement.prop('floatingLabelText'), 'hello');
@@ -19,7 +24,7 @@ describe('<TextInput />', () => {
 
     it('should render an input of type text by default', () => {
         const wrapper = render(<MuiThemeProvider muiTheme={muiTheme}>
-            <TextInput meta={{}} input={{ id: 'foo' }} />
+            <TextInput {...defaultProps} input={{ id: 'foo' }} />
         </MuiThemeProvider>);
 
         const inputs = wrapper.find('input');
@@ -31,7 +36,7 @@ describe('<TextInput />', () => {
 
     it('should allow to customize input type', () => {
         const wrapper = render(<MuiThemeProvider muiTheme={muiTheme}>
-            <TextInput meta={{}} input={{ id: 'foo' }} type="password" />
+            <TextInput {...defaultProps} input={{ id: 'foo' }} type="password" />
         </MuiThemeProvider>);
 
         const inputs = wrapper.find('input');
@@ -43,19 +48,19 @@ describe('<TextInput />', () => {
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const wrapper = shallow(<TextInput meta={{ touched: false }} />);
+            const wrapper = shallow(<TextInput {...defaultProps} meta={{ touched: false }} />);
             const TextFieldElement = wrapper.find('TextField');
             assert.equal(TextFieldElement.prop('errorText'), false);
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const wrapper = shallow(<TextInput meta={{ touched: true, error: false }} />);
+            const wrapper = shallow(<TextInput {...defaultProps} meta={{ touched: true, error: false }} />);
             const TextFieldElement = wrapper.find('TextField');
             assert.equal(TextFieldElement.prop('errorText'), false);
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const wrapper = shallow(<TextInput meta={{ touched: true, error: 'Required field.' }} />);
+            const wrapper = shallow(<TextInput {...defaultProps} meta={{ touched: true, error: 'Required field.' }} />);
             const TextFieldElement = wrapper.find('TextField');
             assert.equal(TextFieldElement.prop('errorText'), 'Required field.');
         });
