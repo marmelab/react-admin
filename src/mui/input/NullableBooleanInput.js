@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import SelectInput from './SelectInput';
 
-const BooleanInput = ({ input, meta: { touched, error }, label }) => (
+const NullableBooleanInput = ({ input, meta: { touched, error }, label }) => (
     <SelectInput
         input={input}
         label={label}
