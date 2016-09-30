@@ -2,16 +2,16 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import NotNullableBoolean from './NotNullableBoolean';
+import NotNullableBooleanInput from './NotNullableBooleanInput';
 
-describe('<NotNullableBoolean />', () => {
+describe('<NotNullableBooleanInput />', () => {
     const defaultProps = {
         input: {},
         meta: {},
     };
 
     it('should render as a toggle', () => {
-        const wrapper = shallow(<NotNullableBoolean {...defaultProps} />);
+        const wrapper = shallow(<NotNullableBooleanInput {...defaultProps} />);
         const choices = wrapper.find('Toggle');
         assert.equal(choices.length, 1);
     });
