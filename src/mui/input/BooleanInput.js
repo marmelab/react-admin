@@ -31,7 +31,7 @@ BooleanInput.propTypes = {
     label: PropTypes.string,
 };
 
-NotNullableBooleanInput.defaultProps = {
+BooleanInput.defaultProps = {
     includesLabel: true,
 };
 
