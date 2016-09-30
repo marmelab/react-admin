@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import SelectInput from './SelectInput';
 
-const BooleanInput = ({ input, meta: { touched, error }, label }) => (
+const NullableBooleanInput = ({ input, meta: { touched, error }, label }) => (
     <SelectInput
         input={input}
         label={label}
@@ -16,7 +16,7 @@ const BooleanInput = ({ input, meta: { touched, error }, label }) => (
     />
 );
 
-NullableBooleanInput.propTypes = {
+BooleanInput.propTypes = {
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
@@ -27,4 +27,4 @@ BooleanInput.defaultProps = {
     includesLabel: true,
 };
 
-export default BooleanInput;
+export default NullableBooleanInput;
