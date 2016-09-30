@@ -16,7 +16,7 @@ const NullableBooleanInput = ({ input, meta: { touched, error }, label }) => (
     />
 );
 
-BooleanInput.propTypes = {
+NullableBooleanInput.propTypes = {
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
