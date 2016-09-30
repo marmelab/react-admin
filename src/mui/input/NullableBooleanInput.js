@@ -23,7 +23,7 @@ NullableBooleanInput.propTypes = {
     meta: PropTypes.object,
 };
 
-BooleanInput.defaultProps = {
+NullableBooleanInput.defaultProps = {
     includesLabel: true,
 };
 
