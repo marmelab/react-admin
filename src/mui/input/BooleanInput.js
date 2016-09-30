@@ -35,4 +35,4 @@ BooleanInput.defaultProps = {
     includesLabel: true,
 };
 
-export default NotNullableBooleanInput;
+export default BooleanInput;
