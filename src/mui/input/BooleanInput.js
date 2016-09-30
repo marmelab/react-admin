@@ -14,7 +14,7 @@ const styles = {
     },
 };
 
-const NotNullableBooleanInput = ({ input, label }) => (
+const BooleanInput = ({ input, label }) => (
     <div style={styles.block}>
         <Toggle
             {...input}
