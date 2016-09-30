@@ -1,30 +1,38 @@
 import React, { PropTypes } from 'react';
-import SelectInput from './SelectInput';
+import Toggle from 'material-ui/Toggle';
 
-const BooleanInput = ({ input, meta: { touched, error }, label }) => (
-    <SelectInput
-        input={input}
-        label={label}
-        choices={[
-            { value: null, label: 'Unknown' }, // can't set it to null to prevent from label overlap issues
-            { value: false, label: 'No' },
-            { value: true, label: 'Yes' },
-        ]}
-        optionText="label"
-        optionValue="value"
-        errorText={touched && error}
-    />
+const styles = {
+    block: {
+        margin: '1rem 0',
+        maxWidth: 250,
+    },
+    label: {
+        color: 'rgba(0, 0, 0, 0.298039)',
+    },
+    toggle: {
+        marginBottom: 16,
+    },
+};
+
+const NotNullableBooleanInput = ({ input, label }) => (
+    <div style={styles.block}>
+        <Toggle
+            {...input}
+            labelStyle={styles.label}
+            style={styles.toggle}
+            label={label}
+        />
+    </div>
 );
 
-BooleanInput.propTypes = {
+NotNullableBooleanInput.propTypes = {
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
-    meta: PropTypes.object,
 };
 
-BooleanInput.defaultProps = {
+NotNullableBooleanInput.defaultProps = {
     includesLabel: true,
 };
 
-export default BooleanInput;
+export default NotNullableBooleanInput;

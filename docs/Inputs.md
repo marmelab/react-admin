@@ -52,17 +52,17 @@ Then you can display a text input to edit the author first name as follows:
 <TextInput source="author.firstName" />
 ```
 
-## `<BooleanInput>` and `<NotNullableBooleanInput>`
+## `<BooleanInput>` and `<NullableBooleanInput>`
 
-`<BooleanInput />` is a nullable boolean field displayed as a select list.
+`<BooleanInput />` is a toggle button allowing you to attribute a `true` or `false` value to a record field.
 
 ![BooleanInput](./img/boolean-input.png)
 
-`<NotNullableBooleanInput />` is a toggle button allowing you to attribute a `true` or `false` value to a record field.
+This input does not handle `null` values. You would need the `<NullableBooleanInput />` component if you have to handle non-set booleans.
 
-![NotNullableBooleanInput](./img/not-nullable-boolean-input.png)
+`<NullableBooleanInput />` is a dropdown list allowing to choose between true, false, and null values.
 
-This input does not handle `null` values. You would need the `<BooleanInput />` component if you have to handle non-set booleans.
+![NullableBooleanInput](./img/nullable-boolean-input.png)
 
 ## `<DateInput>`
 

@@ -2,7 +2,6 @@ import React from 'react';
 import {
     BooleanField,
     BooleanInput,
-    NotNullableBooleanInput,
     Create,
     Datagrid,
     DateField,
@@ -12,20 +11,13 @@ import {
     EditButton,
     Filter,
     List,
-    ReferenceManyField,
-<<<<<<< 401900dfa6ce1edc748808c178535db9106facbb
     Show,
     ShowButton,
-    TextField,
-    TextInput,
-    RichTextField,
-    RichTextInput,
-=======
+    ReferenceManyField,
     RichTextField,
     RichTextInput,
     TextField,
     TextInput,
->>>>>>> Add BooleanField component
 } from 'admin-on-rest/mui';
 
 export PostIcon from 'material-ui/svg-icons/action/book';
@@ -78,8 +70,13 @@ export const PostCreate = (props) => (
         <TextInput source="teaser" options={{ multiLine: true }} />
         <RichTextInput source="body" />
         <DateInput label="Publication date" source="published_at" />
+<<<<<<< a8df20b486df51152e1bff55e084fab528ccb696
         <TextInput source="average_note" />
         <NotNullableBooleanInput label="Allow comments?" source="commentable" />
+=======
+        <TextInput label="Average note" source="average_note" />
+        <BooleanInput label="Allow comments?" source="commentable" />
+>>>>>>> Code review
     </Create>
 );
 
@@ -92,7 +89,7 @@ export const PostEdit = (props) => (
         <RichTextInput source="body" validation={{ required: true }} />
         <DateInput label="Publication date" source="published_at" />
         <TextInput source="average_note" validation={{ min: 0 }} />
-        <NotNullableBooleanInput label="Allow comments?" source="commentable" />
+        <BooleanInput label="Allow comments?" source="commentable" />
         <ReferenceManyField label="Comments" reference="comments" target="post_id">
             <Datagrid>
                 <TextField source="body" />
