@@ -25,7 +25,7 @@ const BooleanInput = ({ input, label }) => (
     </div>
 );
 
-NotNullableBooleanInput.propTypes = {
+BooleanInput.propTypes = {
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
