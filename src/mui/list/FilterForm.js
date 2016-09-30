@@ -36,10 +36,16 @@ export class FilterForm extends Component {
         return (<div>
             <CardText style={styles.card}>
                 {this.getShownFilters().reverse().map(filterElement =>
-                    <div key={filterElement.props.source} style={filterElement.props.style || styles.body}>
+                    <div key={filterElement.props.source} className="filter-field" style={filterElement.props.style || styles.body}>
                         {filterElement.props.alwaysOn ?
                             <div style={styles.spacer}>&nbsp;</div> :
-                            <IconButton iconStyle={styles.icon} onTouchTap={this.handleHide} data-key={filterElement.props.source} tooltip={translate('aor.action.remove_filter')}>
+                            <IconButton
+                                iconStyle={styles.icon}
+                                className="hide-filter"
+                                onTouchTap={this.handleHide}
+                                data-key={filterElement.props.source}
+                                tooltip={translate('aor.action.remove_filter')}
+                            >
                                 <ActionHide />
                             </IconButton>
                         }
