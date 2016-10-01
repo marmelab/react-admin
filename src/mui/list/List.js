@@ -37,6 +37,7 @@ export class List extends Component {
             const nextFilters = nextProps.filters;
             Object.keys(nextFilters).forEach(filterName => {
                 if (nextFilters[filterName] === '') {
+                    // remove empty filter from query
                     delete nextFilters[filterName];
                 }
             });
