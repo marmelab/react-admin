@@ -34,11 +34,11 @@ const crudFetch = (restClient, successSideEffects = () => [], failureSideEffects
             }
         }
         const sideEffects = successSideEffects(type, meta.resource, payload, response);
-        yield put({ type: FETCH_END });
         yield [
             ...sideEffects.map(a => put(a)),
             put({ type: `${type}_SUCCESS`, payload: response, meta }),
         ];
+        yield put({ type: FETCH_END });
     }
 
     return function *watchCrudFetch() {
