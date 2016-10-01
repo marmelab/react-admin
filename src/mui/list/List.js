@@ -55,6 +55,11 @@ export class List extends Component {
         return this.props.location.pathname;
     }
 
+    refresh = (event) => {
+        event.stopPropagation();
+        this.updateData();
+    }
+
     getQuery() {
         return (Object.keys(this.props.query).length > 0) ? this.props.query : { ...this.props.params };
     }
@@ -67,11 +72,6 @@ export class List extends Component {
     updateSort = (event) => {
         event.stopPropagation();
         this.changeParams({ type: SET_SORT, payload: event.currentTarget.dataset.sort });
-    }
-
-    refresh = (event) => {
-        event.stopPropagation();
-        this.updateData();
     }
 
     setPage = (page) => this.changeParams({ type: SET_PAGE, payload: page });
