@@ -6,12 +6,13 @@ import ActionHide from 'material-ui/svg-icons/action/highlight-off';
 
 export class FilterForm extends Component {
     getShownFilters() {
-        const { filters, displayedFilters, currentFilters } = this.props;
+        const { filters, displayedFilters, currentFilters, initialValues } = this.props;
         return filters
             .filter(filterElement =>
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                currentFilters[filterElement.props.source]
+                currentFilters[filterElement.props.source] ||
+                initialValues[filterElement.props.source]
             );
     }
 
@@ -50,6 +51,7 @@ FilterForm.propTypes = {
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
     displayedFilters: PropTypes.object.isRequired,
     hideFilter: PropTypes.func.isRequired,
+    initialValues: PropTypes.object,
 };
 
 FilterForm.defaultProps = {

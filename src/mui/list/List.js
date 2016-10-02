@@ -17,6 +17,7 @@ import { changeListParams as changeListParamsAction } from '../../actions/listAc
 export class List extends Component {
     constructor(props) {
         super(props);
+        this.debouncedSetFilters = debounce(this.setFilters.bind(this), 500);
         this.state = {};
     }
 
@@ -32,17 +33,30 @@ export class List extends Component {
          || nextProps.query.filter !== this.props.query.filter) {
             this.updateData(Object.keys(nextProps.query).length > 0 ? nextProps.query : nextProps.params);
         }
+        if (nextProps.filters !== this.props.filters) {
+            const nextFilters = nextProps.filters;
+            Object.keys(nextFilters).forEach(filterName => {
+                if (nextFilters[filterName] === '') {
+                    // remove empty filter from query
+                    delete nextFilters[filterName];
+                }
+            });
+            this.debouncedSetFilters(nextFilters);
+        }
     }
 
-    componentWillUpdate(nextProps) {
-        this.debouncedUpdateFilter(nextProps.filters, this.props.filters);
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.isLoading === this.props.isLoading && nextState === this.state) {
+            return false;
+        }
+        return true;
     }
 
     getBasePath() {
         return this.props.location.pathname;
     }
 
-    refresh(event) {
+    refresh = (event) => {
         event.stopPropagation();
         this.updateData();
     }
@@ -63,28 +77,15 @@ export class List extends Component {
 
     setPage = (page) => this.changeParams({ type: SET_PAGE, payload: page });
 
-    setFilter = (field, value) => {
-        this.changeParams({ type: SET_FILTER, payload: { field, value } });
+    setFilters = (filters) => {
+        this.changeParams({ type: SET_FILTER, payload: filters });
     }
-
-    debouncedUpdateFilter = debounce((nextFilters, currentFilters) => {
-        if (nextFilters !== currentFilters) {
-            const allFilters = new Set([
-                ...Object.keys(currentFilters),
-                ...Object.keys(nextFilters),
-            ]);
-
-            allFilters.forEach(filter => {
-                this.setFilter(filter, nextFilters[filter]);
-            });
-        }
-    }, 1000);
 
     showFilter = (filterName) => this.setState({ [filterName]: true });
 
     hideFilter = (filterName) => {
         this.setState({ [filterName]: false });
-        this.setFilter(filterName);
+        this.setFilters({ ...this.props.filters, [filterName]: undefined });
     }
 
     changeParams(action) {
@@ -109,7 +110,7 @@ export class List extends Component {
                         context: 'button',
                     })}
                     {hasCreate && <CreateButton basePath={basePath} />}
-                    <FlatButton primary label="Refresh" onClick={::this.refresh} icon={<NavigationRefresh />} />
+                    <FlatButton primary label="Refresh" onClick={this.refresh} icon={<NavigationRefresh />} />
                 </CardActions>
                 <CardTitle title={<Title title={title} defaultTitle={`${inflection.humanize(inflection.pluralize(resource))} List`} />} />
                 {filter && React.createElement(filter, {
@@ -175,7 +176,7 @@ function mapStateToProps(state, props) {
         total: resourceState.list.total,
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
-        filters: getFormValues('filterForm')(state),
+        filters: getFormValues('filterForm')(state) || resourceState.list.params.filter,
     };
 }
 
