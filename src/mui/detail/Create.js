@@ -29,6 +29,7 @@ class Create extends Component {
                     resource={resource}
                     basePath={basePath}
                     validation={validation}
+                    record={{}}
                 >
                     {children}
                 </RecordForm>
