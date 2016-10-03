@@ -61,9 +61,9 @@ import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
 export const PostList = (props) => (
     <List {...props}>
         <Datagrid>
-            <TextField label="id" source="id" />
-            <TextField label="title" source="title" />
-            <TextField label="body" source="body" />
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="body" />
         </Datagrid>
     </List>
 );
@@ -91,10 +91,10 @@ import { List, Datagrid, EmailField, TextField } from 'admin-on-rest/lib/mui';
 export const UserList = (props) => (
     <List title="All users" {...props}>
         <Datagrid>
-            <TextField label="id" source="id" />
-            <TextField label="name" source="name" />
-            <TextField label="username" source="username" />
-            <EmailField label="email" source="email" />
+            <TextField source="id" />
+            <TextField source="name" />
+            <TextField source="username" />
+            <EmailField source="email" />
         </Datagrid>
     </List>
 );
@@ -160,18 +160,18 @@ import { List, Datagrid, TextField, EmailField, ReferenceField } from 'admin-on-
 export const PostList = (props) => (
     <List {...props}>
         <Datagrid>
-            <TextField label="id" source="id" />
+            <TextField source="id" />
             <ReferenceField label="User" source="userId" reference="users">
                 <TextField source="name" />
             </ReferenceField>
-            <TextField label="title" source="title" />
-            <TextField label="body" source="body" />
+            <TextField source="title" />
+            <TextField source="body" />
         </Datagrid>
     </List>
 );
 ```
 
-When displaying the posts list, the browser now fetches related user records, and displays their `name` as a `<TextField>`.
+When displaying the posts list, the browser now fetches related user records, and displays their `name` as a `<TextField>`. Notice the `label` property: you can use it on any field component to customize the list header.
 
 ![reference posts in comment list](http://static.marmelab.com/admin-on-rest/reference_posts.png)
 
@@ -189,12 +189,12 @@ import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, Di
 export const PostList = (props) => (
     <List {...props}>
         <Datagrid>
-            <TextField label="id" source="id" />
+            <TextField source="id" />
             <ReferenceField label="User" source="userId" reference="users">
                 <TextField source="name" />
             </ReferenceField>
-            <TextField label="title" source="title" />
-            <TextField label="body" source="body" />
+            <TextField source="title" />
+            <TextField source="body" />
             <EditButton />
         </Datagrid>
     </List>
@@ -206,12 +206,12 @@ const PostTitle = ({ record }) => {
 
 export const PostEdit = (props) => (
     <Edit title={PostTitle} {...props}>
-        <DisabledInput label="Id" source="id" />
+        <DisabledInput source="id" />
         <ReferenceInput label="User" source="userId" reference="users">
             <SelectInput optionText="name" />
         </ReferenceInput>
-        <TextInput label="Title" source="title" />
-        <LongTextInput label="Body" source="body" />
+        <TextInput source="title" />
+        <LongTextInput source="body" />
     </Edit>
 );
 
@@ -220,8 +220,8 @@ export const PostCreate = (props) => (
         <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
             <SelectInput optionText="name" />
         </ReferenceInput>
-        <TextInput label="Title" source="title" />
-        <LongTextInput label="Body" source="body" />
+        <TextInput source="title" />
+        <LongTextInput source="body" />
     </Create>
 );
 ```
