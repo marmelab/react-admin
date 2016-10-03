@@ -101,17 +101,23 @@ import { EmailField } from 'admin-on-rest/mui';
 
 ## `<RichTextField>`
 
-![RichTextField](./img/rich-text-field.png)
-
 This component displays some HTML content. The content is "rich" (i.e. unescaped) by default.
 
 ``` js
 import { RichTextField } from 'admin-on-rest/mui';
 
-<RichTextField record={record} source="body" stripTags={true} />
+<RichTextField source="body" />
 ```
 
+![RichTextField](./img/rich-text-field.png)
+
 The `stripTags` attribute (`false` by default) allows you to remove any HTML markup, preventing some display glitches (which is especially useful in list views).
+
+``` js
+import { RichTextField } from 'admin-on-rest/mui';
+
+<RichTextField source="body" stripTags={true} />
+```
 
 ## `<TextField>`
 
