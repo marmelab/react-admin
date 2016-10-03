@@ -59,19 +59,55 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="chapter {% if page.path == 'InputsFields.md' %}active{% endif %}">
-                            <a href="./InputsFields.html">
-                                <b>5.</b> Input and Field Components
+                        <li class="chapter {% if page.path == 'Fields.md' %}active{% endif %}">
+                            <a href="./Fields.html">
+                                <b>5.</b> Field Components
                             </a>
+                            <ul class="articles" {% if page.path != 'Fields.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#chipfield"><code>&lt;ChipField&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#datefield"><code>&lt;DateField&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#emailfield"><code>&lt;EmailField&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#richtextfield"><code>&lt;RichTextField&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#textfield"><code>&lt;TextField&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#urlfield"><code>&lt;UrlField&gt;</code></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="chapter {% if page.path == 'Inputs.md' %}active{% endif %}">
+                            <a href="./Inputs.html">
+                                <b>6.</b> Input Components
+                            </a>
+                            <ul class="articles" {% if page.path != 'Inputs.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#longtextinput"><code>&lt;LongTextInput&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#richtextinput"><code>&lt;RichTextInput&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#textinput"><code>&lt;TextInput&gt;</code></a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="chapter {% if page.path == 'FormValidation.md' %}active{% endif %}">
                             <a href="./FormValidation.html">
-                                <b>6.</b> Form Validation
+                                <b>7.</b> Form Validation
                             </a>
                         </li>
                         <li class="chapter {% if page.path == 'CustomApp.md' %}active{% endif %}">
                             <a href="./CustomApp.html">
-                                <b>7.</b> Including in Another App
+                                <b>8.</b> Including in Another App
                             </a>
                         </li>
                     </ul>
