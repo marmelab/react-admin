@@ -88,6 +88,7 @@ class Layout extends Component {
                     </div>
                     <Notification />
                     {isLoading && <CircularProgress
+                        className="app-loader"
                         color="#fff"
                         size={width === 1 ? 20 : 30}
                         thickness={2}

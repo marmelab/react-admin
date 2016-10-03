@@ -1,12 +1,12 @@
 const assert = require('assert');
 const webdriver = require('selenium-webdriver');
 const driver = require('../chromeDriver');
-const ListPageFactory = require('../pages/ListPage');
+const listPageFactory = require('../pages/ListPage');
 
 const until = webdriver.until;
 
 describe('List Page', () => {
-    const ListPage = ListPageFactory('posts')(driver);
+    const ListPage = listPageFactory('posts')(driver);
 
     beforeEach(function* () {
         yield ListPage.navigate();
@@ -35,9 +35,12 @@ describe('List Page', () => {
         });
     });
 
-    describe.only('Filtering', () => {
-        it('should display by default `alwaysOn` filters', function* () {
+    describe('Filtering', () => {
+        it('should display `alwaysOn` filters by default', function* () {
             yield driver.wait(until.elementLocated(ListPage.elements.filter('q')));
+
+            const qFilter = yield driver.findElements(ListPage.elements.filter('q'));
+            assert.equal(qFilter.length, 1);
         });
 
         it('should filter directly while typing (with some debounce)', function* () {
@@ -46,7 +49,7 @@ describe('List Page', () => {
             const displayedPosts = yield driver.findElements(ListPage.elements.recordRows);
             assert.equal(displayedPosts.length, 1);
 
-            const title = yield displayedPosts[0].findElement(webdriver.By.css('[data-source="title"]'));
+            const title = yield displayedPosts[0].findElement(webdriver.By.css('.column-title'));
             assert.equal(yield title.getText(), 'Omnis voluptate enim similique est possimus');
         });
 
@@ -57,7 +60,9 @@ describe('List Page', () => {
         });
 
         it('should hide filter field when clicking on hiding button', function* () {
-            // yield driver.wait(() => {});
+            // @FIXME: filters are persisted even when reloading URL without query params
+            yield ListPage.hideFilter('title');
+
             yield ListPage.showFilter('title');
             yield ListPage.hideFilter('title');
 

@@ -6,6 +6,7 @@ const until = webdriver.until;
 module.exports = (entity) => (driver) => ({
     elements: {
         addFilterButton: by.css('.add-filter'),
+        appLoader: by.css('app-loader'),
         displayedRecords: by.css('.displayed-records'),
         filter: name => by.css(`.filter-field[data-source='${name}']`),
         filterMenuItem: source => by.css(`.new-filter-item[data-key="${source}"]`),
@@ -20,21 +21,29 @@ module.exports = (entity) => (driver) => ({
         return driver.wait(until.elementLocated(this.elements.recordRows));
     },
 
+    waitEndOfLoading() {
+        // @FIXME: find a less empiric method
+        return driver.sleep(1000);
+    },
+
     navigate() {
         driver.navigate().to(`http://localhost:8081/#/${entity}`);
         return this.waitUntilVisible();
     },
 
     nextPage() {
-        return driver.findElement(this.elements.nextPage).click();
+        driver.findElement(this.elements.nextPage).click();
+        return this.waitEndOfLoading();
     },
 
     previousPage() {
-        return driver.findElement(this.elements.previousPage).click();
+        driver.findElement(this.elements.previousPage).click();
+        return this.waitEndOfLoading();
     },
 
     goToPage(n) {
-        return driver.findElement(this.elements.pageNumber(n)).click();
+        driver.findElement(this.elements.pageNumber(n)).click();
+        return this.waitEndOfLoading();
     },
 
     filter(name, value) {
