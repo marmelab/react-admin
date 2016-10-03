@@ -36,6 +36,18 @@ describe('stripTags', () => {
 });
 
 describe('<RichTextField />', () => {
+    it('should render as HTML', () => {
+        const record = { body: '<h1>Hello world!</h1>' };
+        const wrapper = render(<RichTextField record={record} source="body" />);
+        assert.equal(wrapper.html(), '<div><h1>Hello world!</h1></div>');
+    });
+
+    it('should handle deep fields', () => {
+        const record = { foo: { body: '<h1>Hello world!</h1>' } };
+        const wrapper = render(<RichTextField record={record} source="foo.body" />);
+        assert.equal(wrapper.html(), '<div><h1>Hello world!</h1></div>');
+    });
+
     it('should strip HTML tags if stripTags is set to true', () => {
         const record = { body: '<h1>Hello world!</h1>' };
         const wrapper = render(<RichTextField stripTags={true} record={record} source="body" />);
