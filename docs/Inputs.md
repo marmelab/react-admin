@@ -3,7 +3,7 @@ layout: default
 title: "Input Components"
 ---
 
-# Inputs Components
+# Input Components
 
 An `Input` component displays an input, or a dropdown list, a list of radio buttons, etc. Such components allow to edit a record property, and are common in the `<Edit>`, `<Create>`, and `<Filter>` views.
 
