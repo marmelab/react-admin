@@ -1,6 +1,5 @@
 export ChipField from './ChipField';
 export DateField from './DateField';
-export DeepField from './DeepField';
 export EmailField from './EmailField';
 export ReferenceField from './ReferenceField';
 export ReferenceManyField from './ReferenceManyField';

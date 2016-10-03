@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import LinearProgress from 'material-ui/LinearProgress';
+import get from 'lodash.get';
 import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/referenceActions';
 
 /**
@@ -12,12 +13,12 @@ import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/
  */
 export class ReferenceField extends Component {
     componentDidMount() {
-        this.props.crudGetOneReference(this.props.reference, this.props.record[this.props.source]);
+        this.props.crudGetOneReference(this.props.reference, get(this.props.record, this.props.source));
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.record.id !== nextProps.record.id) {
-            this.props.crudGetOneReference(nextProps.reference, nextProps.record[nextProps.source]);
+            this.props.crudGetOneReference(nextProps.reference, get(nextProps.record, nextProps.source));
         }
     }
 
@@ -31,7 +32,7 @@ export class ReferenceField extends Component {
         }
         const rootPath = basePath.split('/').slice(0, -1).join('/');
         return (
-            <Link to={`${rootPath}/${reference}/${record[source]}`}>
+            <Link to={`${rootPath}/${reference}/${get(record, source)}`}>
                 {React.cloneElement(children, {
                     record: referenceRecord,
                     resource: reference,
