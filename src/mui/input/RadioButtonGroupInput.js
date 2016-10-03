@@ -34,7 +34,7 @@ class RadioButtonGroupInput extends Component {
     render() {
         const { label, source, record, choices, optionText, optionValue, options } = this.props;
         return (
-            <Labeled label={label} onChange={this.handleChange}>
+            <Labeled label={label} onChange={this.handleChange} source={source}>
                 <RadioButtonGroup
                     name={source}
                     defaultSelected={record[source]}
@@ -66,7 +66,7 @@ RadioButtonGroupInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
-    includesLabel: false,
+    includesLabel: true,
 };
 
 export default RadioButtonGroupInput;

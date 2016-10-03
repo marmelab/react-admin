@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
+import title from '../../util/title';
 
 /**
  * Use any component as read-only Input, labeled just like other Inputs.
@@ -12,9 +13,9 @@ import TextField from 'material-ui/TextField';
  *     <FooComponent source="title" />
  * </Labeled>
  */
-const Labeled = ({ input, label, resource, record, onChange, basePath, children }) => (
+const Labeled = ({ input, label, resource, record, onChange, basePath, children, source }) => (
     <TextField
-        floatingLabelText={label}
+        floatingLabelText={title(label, source)}
         floatingLabelFixed
         disabled
         fullWidth
@@ -26,13 +27,14 @@ const Labeled = ({ input, label, resource, record, onChange, basePath, children 
 );
 
 Labeled.propTypes = {
+    basePath: PropTypes.string,
+    children: PropTypes.element,
     input: PropTypes.object,
     label: PropTypes.string.isRequired,
+    onChange: PropTypes.func,
     record: PropTypes.object,
     resource: PropTypes.string,
-    basePath: PropTypes.string,
-    onChange: PropTypes.func,
-    children: PropTypes.element,
+    source: PropTypes.string.isRequired,
 };
 
 export default Labeled;

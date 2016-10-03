@@ -14,7 +14,7 @@ const CommentFilter = (props) => (
 export const CommentList = (props) => (
     <List title="All comments" {...props} filter={CommentFilter}>
         <Datagrid>
-            <TextField label="id" source="id" />
+            <TextField source="id" />
             <ReferenceField label="Post" source="post_id" reference="posts">
                 <TextField source="title" />
             </ReferenceField>
@@ -27,13 +27,13 @@ export const CommentList = (props) => (
 
 export const CommentEdit = (props) => (
     <Edit {...props}>
-        <DisabledInput label="id" source="id" />
+        <DisabledInput source="id" />
         <ReferenceInput label="Post" source="post_id" reference="posts">
             <SelectInput optionText="title" />
         </ReferenceInput>
         <TextInput label="Author name" source="author.name" />
         <DateInput label="date" source="created_at" />
-        <LongTextInput label="body" source="body" />
+        <LongTextInput source="body" />
     </Edit>
 );
 
@@ -43,6 +43,6 @@ export const CommentCreate = (props) => (
             <SelectInput optionText="title" />
         </ReferenceInput>
         <DateInput label="date" source="created_at" />
-        <LongTextInput label="body" source="body" />
+        <LongTextInput source="body" />
     </Create>
 );

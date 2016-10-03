@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
+import title from '../../util/title';
 
 const Datagrid = ({ resource, children, ids, data, currentSort, basePath, selectable, updateSort }) => (
     <Table multiSelectable={selectable}>
@@ -14,7 +15,7 @@ const Datagrid = ({ resource, children, ids, data, currentSort, basePath, select
                                 labelPosition="before"
                                 onClick={updateSort}
                                 data-sort={field.props.source}
-                                label={field.props.label || field.props.source}
+                                label={title(field.props.label, field.props.source)}
                                 icon={field.props.source === currentSort.sort ? <ContentSort style={currentSort.order === 'ASC' ? { transform: 'rotate(180deg)' } : {}} /> : false}
                             />
                         }
