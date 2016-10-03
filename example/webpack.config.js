@@ -1,4 +1,4 @@
-var path = require('path');
+const path = require('path');
 
 module.exports = {
     devtool: 'eval',
@@ -17,7 +17,7 @@ module.exports = {
     resolve: {
         alias: {
             'admin-on-rest': path.join(__dirname, '..', 'src'),
-            'quill': path.join(__dirname, 'node_modules/quill'),
+            quill: path.join(__dirname, 'node_modules/quill'),
         },
     },
 };
