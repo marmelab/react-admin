@@ -38,7 +38,7 @@ const Datagrid = ({ resource, children, ids, data, currentSort, basePath, select
 );
 
 Datagrid.propTypes = {
-    ids: PropTypes.arrayOf(PropTypes.number).isRequired,
+    ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     resource: PropTypes.string,
     selectable: PropTypes.bool,
     data: PropTypes.object.isRequired,
