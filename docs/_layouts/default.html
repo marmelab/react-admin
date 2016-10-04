@@ -29,6 +29,41 @@
                             <a href="./Tutorial.html">
                                 <b>2.</b> Tutorial
                             </a>
+                            <ul class="articles" {% if page.path != 'Tutorial.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#installation">Installation</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#making-contact-with-the-api">Making Contact With The API</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#field-types">Field Types</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#relationships">Relationships</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#creation-and-edition">Creation and Edition</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#deletion">Deletion</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#filters">Filters</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#customizing-the-menu-icons">Customizing the Menu Icons</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#using-a-custom-home-page">Using a Custom Home Page</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#using-another-rest-dialect">Using Another REST Dialect</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#conclusion">Conclusion</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="chapter {% if page.path == 'RestClients.md' %}active{% endif %}">
                             <a href="./RestClients.html">
@@ -36,7 +71,10 @@
                             </a>
                             <ul class="articles" {% if page.path != 'RestClients.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
-                                    <a href="#core-rest-clients">Core clients</a>
+                                    <a href="#simple-rest">Simple REST</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#jsonserver-rest">JSON Server REST</a>
                                 </li>
                                 <li class="chapter">
                                     <a href="#writing-your-own-rest-client">Writing your own REST client</a>
@@ -55,7 +93,7 @@
                                     <a href="#the-resource-component"><code>&lt;Resource&gt;</code></a>
                                 </li>
                                 <li class="chapter">
-                                    <a href="#using-admin-on-rest-without-admin-and-resource">Not using <code>&lt;admin&gt;</code> and <code>&lt;Resource&gt;</code></a>
+                                    <a href="#using-admin-on-rest-without-admin-and-resource">Not using <code>&lt;Admin&gt;</code> and <code>&lt;Resource&gt;</code></a>
                                 </li>
                             </ul>
                         </li>
@@ -74,6 +112,9 @@
                                     <a href="#emailfield"><code>&lt;EmailField&gt;</code></a>
                                 </li>
                                 <li class="chapter">
+                                    <a href="#referencefield"><code>&lt;ReferenceField&gt;</code></a>
+                                </li>
+                                <li class="chapter">
                                     <a href="#richtextfield"><code>&lt;RichTextField&gt;</code></a>
                                 </li>
                                 <li class="chapter">
@@ -81,6 +122,9 @@
                                 </li>
                                 <li class="chapter">
                                     <a href="#urlfield"><code>&lt;UrlField&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#writing-your-own-field-component">Writing your own field component</a>
                                 </li>
                             </ul>
                         </li>
@@ -97,6 +141,9 @@
                                 </li>
                                 <li class="chapter">
                                     <a href="#textinput"><code>&lt;TextInput&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#writing-your-own-input-component">Writing your own input component</a>
                                 </li>
                             </ul>
                         </li>

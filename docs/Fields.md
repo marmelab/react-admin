@@ -99,6 +99,58 @@ import { EmailField } from 'admin-on-rest/mui';
 <EmailField source="personal_email" />
 ```
 
+## `<ReferenceField>`
+
+This component fetches a single referenced record (using the `GET_MANY` REST method), and displays one field of this record. That's why a `<ReferenceField>` must always have a child `<Field>`.
+
+For instance, here is how to fetch the `post` related to `comment` records, and display the `title` for each:
+
+```js
+import React from 'react';
+import { List, Datagrid, ReferenceField, TextField } from 'admin-on-rest/mui';
+
+export const CommentList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="id" />
+            <ReferenceField label="Post" source="post_id" reference="posts">
+                <TextField source="title" />
+            </ReferenceField>
+        </Datagrid>
+    </List>
+);
+```
+
+With this configuration, `<ReferenceField>` wraps the comment title in a link to the related post `<Edit>` view.
+
+![ReferenceField](./img/reference-field.png)
+
+`<ReferenceField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. Also, you can use any `Field` component as child.
+
+**Tip**: Admin-on-rest accumulates and deduplicates the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
+
+```js
+[
+    {
+        id: 123,
+        body: 'Totally agree',
+        post_id: 789,
+    },
+    {
+        id: 124,
+        title: 'You are right my friend',
+        post_id: 789
+    },
+    {
+        id: 125,
+        title: 'Not sure about this one',
+        post_id: 735
+    }
+]
+```
+
+Then admin-on-rest renders the `<CommentList>` with a loader for the `<ReferenceField>`, fetches the API for the related posts in one call (`GET http://path.to.my.api/posts?ids=[789,735]`), and re-renders the list once the data arrives. This accelerates the rendering, and minimizes network load.
+
 ## `<RichTextField>`
 
 This component displays some HTML content. The content is "rich" (i.e. unescaped) by default.
@@ -137,4 +189,60 @@ import { TextField } from 'admin-on-rest/mui';
 import { UrlField } from 'admin-on-rest/mui';
 
 <UrlField source="site_url" />
+```
+
+## Writing Your Own Field Component
+
+If you don't find what you need in the list above, it's very easy to write your own Field component. It must be a regular React component, accepting not only a `source` attribute, but also a `record` attribute. Admin-on-rest will inject the `record` based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
+
+For instance, here is an equivalent of admin-on-rest's `<TextField>` component:
+
+```js
+import React, { PropTypes } from 'react';
+
+const TextField = ({ source, record = {} }) => <span>{record[source]}</span>;
+
+TextField.propTypes = {
+    source: PropTypes.string.isRequired,
+    record: PropTypes.object,
+    label: PropTypes.string,
+};
+
+export default TextField;
+```
+
+**Tip**: The `label` attribute isn't used in the `render()` method, but admin-on-rest uses it to display the table header.
+
+**Tip**: If you want to support deep field sources (e.g. source values like `author.name`), use `lodash.get` to replace the simple object lookup:
+
+```js
+import get from 'lodash.get';
+const TextField = ({ source, record = {} }) => <span>{get(record, source)}</span>;
+```
+
+If you are not looking for reusability, you can create even simpler components, with no attributes. Let's say an API returns user records with `firstName` and `lastName` properties, and that you want to display a full name in a user list.
+
+```js
+{
+    id: 123,
+    firstName: 'John',
+    lastName: 'Doe'
+}
+```
+
+It's as easy as writing:
+
+```js
+import React, { PropTypes } from 'react';
+import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
+
+const FullNameField = ({ record = {}, label = 'Name' }) => <span>{record.firstName} {record.lastName}</span>;
+
+export const UserList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <FullNameField />
+        </Datagrid>
+    </List>
+);
 ```

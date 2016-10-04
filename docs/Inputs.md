@@ -104,3 +104,36 @@ You can choose a specific input type using the `type` attribute, among `text` (t
 ``` js
 <TextInput label="Email Address" source="email" type="email" />
 ```
+
+## Writing Your Own Input Component
+
+If you need a more specific input type, you can also write it yourself. In addition to `source` and `label` attributes, it must accept an `input` attribute to integrate with admin-on-rest forms (powered by redux-form). Admin-on-rest will inject the `input` attribute at runtime, and it will contain a `value` (computed from the current record and source), and an `onChange` function (to manage the input).
+
+For instance, here is an simplified version of admin-on-rest's `<TextInput>` component:
+
+```js
+import React, { PropTypes } from 'react';
+
+const TextInput = ({ source, label, input }) => (
+    <span>
+        <label for={source}>{label}</label>
+        <input name={source} value={input.value} onChange={input.onChange} type="text" />
+    </span>
+);
+
+TextInput.propTypes = {
+    includesLabel: PropTypes.bool.isRequired,
+    input: PropTypes.object,
+    label: PropTypes.string,
+    onChange: PropTypes.func,
+    source: PropTypes.string.isRequired,
+};
+
+TextInput.defaultProps = {
+    includesLabel: true,
+};
+
+export default TextInput;
+```
+
+**Tip**: Admin-on-rest inspects the `includesLabel` attribute to determine whether to render an additional label on top of the input component or not. If `includesLabel` is false, admin-on-rest considers the components doesn't have its own label, and adds another one.
