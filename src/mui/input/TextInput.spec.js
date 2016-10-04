@@ -1,9 +1,9 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow, render } from 'enzyme';
-import TextInput from './TextInput';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import TextInput from './TextInput';
 
 const muiTheme = getMuiTheme({
     userAgent: false,
@@ -11,12 +11,13 @@ const muiTheme = getMuiTheme({
 
 describe('<TextInput />', () => {
     const defaultProps = {
+        source: 'foo',
         meta: {},
         input: {},
     };
 
     it('should use a mui TextField', () => {
-        const wrapper = shallow(<TextInput {...defaultProps} label='hello' />);
+        const wrapper = shallow(<TextInput {...defaultProps} label="hello" />);
         const TextFieldElement = wrapper.find('TextField');
         assert.equal(TextFieldElement.length, 1);
         assert.equal(TextFieldElement.prop('floatingLabelText'), 'hello');
@@ -32,6 +33,15 @@ describe('<TextInput />', () => {
 
         const input = inputs.first();
         assert.equal(input.attr('type'), 'text');
+    });
+
+    it('should use the input parameter value as the initial input value', () => {
+        const wrapper = render(<MuiThemeProvider muiTheme={muiTheme}>
+            <TextInput {...defaultProps} input={{ value: 2 }} />
+        </MuiThemeProvider>);
+
+        const input = wrapper.find('input').first();
+        assert.equal(input.attr('value'), '2');
     });
 
     it('should allow to customize input type', () => {

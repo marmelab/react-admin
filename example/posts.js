@@ -29,12 +29,12 @@ const PostFilter = (props) => (
 export const PostList = (props) => (
     <List {...props} filter={PostFilter}>
         <Datagrid>
-            <TextField label="id" source="id" />
-            <TextField label="title" source="title" type="email" />
-            <RichTextField label="body" source="body" stripTags={true} />
-            <DateField label="published_at" source="published_at" />
-            <TextField label="average_note" source="average_note" />
-            <TextField label="views" source="views" />
+            <TextField source="id" />
+            <TextField source="title" type="email" />
+            <RichTextField source="body" stripTags={true} />
+            <DateField source="published_at" />
+            <TextField source="average_note" />
+            <TextField source="views" />
             <EditButton />
         </Datagrid>
     </List>
@@ -62,24 +62,24 @@ export const PostCreate = (props) => (
             return errors;
         }}
     >
-        <TextInput label="Title" source="title" />
+        <TextInput source="title" />
         <TextInput label="Password (if protected post)" source="password" type="password" />
-        <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
-        <RichTextInput label="Body" source="body" />
+        <TextInput source="teaser" options={{ multiLine: true }} />
+        <RichTextInput source="body" />
         <DateInput label="Publication date" source="published_at" />
-        <TextInput label="Average note" source="average_note" />
+        <TextInput source="average_note" />
     </Create>
 );
 
 export const PostEdit = (props) => (
     <Edit title={PostTitle} {...props}>
         <DisabledInput label="Id" source="id" />
-        <TextInput label="Title" source="title" validation={{ required: true }} />
+        <TextInput source="title" validation={{ required: true }} />
         <TextInput label="Password (if protected post)" source="password" type="password" />
-        <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} validation={{ required: true }} />
-        <RichTextInput label="Body" source="body" validation={{ required: true }} />
+        <TextInput source="teaser" options={{ multiLine: true }} validation={{ required: true }} />
+        <RichTextInput source="body" validation={{ required: true }} />
         <DateInput label="Publication date" source="published_at" />
-        <TextInput label="Average note" source="average_note" validation={{ min: 0 }} />
+        <TextInput source="average_note" validation={{ min: 0 }} />
         <ReferenceManyField label="Comments" reference="comments" target="post_id">
             <Datagrid selectable={false}>
                 <TextField source="body" />

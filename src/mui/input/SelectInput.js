@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import title from '../../util/title';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
@@ -30,11 +31,11 @@ class SelectInput extends Component {
     onChange = (e, _, value) => this.props.input.onChange(value);
 
     render() {
-        const { input, label, choices, optionText, optionValue, options } = this.props;
+        const { input, label, choices, optionText, optionValue, options, source } = this.props;
         return (
             <SelectField
                 menuStyle={{ maxHeight: '41px', overflowY: 'hidden' }}
-                floatingLabelText={label}
+                floatingLabelText={title(label, source)}
                 value={input.value}
                 onChange={this.onChange}
                 autoWidth
@@ -56,6 +57,7 @@ SelectInput.propTypes = {
     options: PropTypes.object,
     optionText: PropTypes.string.isRequired,
     optionValue: PropTypes.string.isRequired,
+    source: PropTypes.string.isRequired,
 };
 
 SelectInput.defaultProps = {
