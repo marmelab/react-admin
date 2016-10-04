@@ -13,6 +13,9 @@ build:
 doc:
 	@cd docs && jekyll server . --watch
 
+doc:
+	@cd docs && jekyll server . --watch
+
 test:
 	@NODE_ENV=test ./node_modules/.bin/mocha \
 		--require ignore-styles \
