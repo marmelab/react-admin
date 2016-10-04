@@ -61,6 +61,8 @@ import { ChipField } from 'admin-on-rest/mui';
 <ChipField source="category" />
 ```
 
+![ChipField](./img/chip-field.png)
+
 This field type is especially useful for one to many relationships, e.g. to display a list of books for a given author:
 
 ``` js
@@ -168,7 +170,7 @@ The `stripTags` attribute (`false` by default) allows you to remove any HTML mar
 ``` js
 import { RichTextField } from 'admin-on-rest/mui';
 
-<RichTextField source="body" stripTags={true} />
+<RichTextField source="body" stripTags />
 ```
 
 ## `<TextField>`
