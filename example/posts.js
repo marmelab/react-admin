@@ -14,7 +14,7 @@ import {
     TextField,
     TextInput,
     RichTextField,
-    RichTextInput
+    RichTextInput,
 } from 'admin-on-rest/mui';
 
 export PostIcon from 'material-ui/svg-icons/action/book';
@@ -76,7 +76,7 @@ export const PostEdit = (props) => (
         <DisabledInput label="Id" source="id" />
         <TextInput source="title" validation={{ required: true }} />
         <TextInput label="Password (if protected post)" source="password" type="password" />
-        <TextInput source="teaser" options={{ multiLine: true }} validation={{ required: true }} />
+        <LongTextInput source="teaser" validation={{ required: true }} />
         <RichTextInput source="body" validation={{ required: true }} />
         <DateInput label="Publication date" source="published_at" />
         <TextInput source="average_note" validation={{ min: 0 }} />

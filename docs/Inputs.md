@@ -59,8 +59,10 @@ Then you can display a text input to edit the author first name as follows:
 ``` js
 import { LongTextInput } from 'admin-on-rest/mui';
 
-<LongTextInput source="summary" />
+<LongTextInput source="teaser" />
 ```
+
+![LongTextInput](./img/long-text-input.png)
 
 ## `<RichTextInput>`
 
