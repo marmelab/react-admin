@@ -135,6 +135,42 @@ You can also customize the properties to use for the option name and value, than
 ]} />
 ```
 
+## `<ReferenceInput>`
+
+Use `<ReferenceInput>` for foreign-key values, i.e. to let users choose a value from another REST endpoint. This component fetches the possible values in the reference resource (using the `CRUD_GET_MATCHING` REST method), then delegates rendering to a subcomponent, to which it passs the possible choices as the `choices` attribute.
+
+This means you can use `<ReferenceInput>` either with [`<SelectInput>`](#selectinput), or with [`<RadioButtonGroupInput>`](#radiobuttongroupinput), or even with the component of your choice, provided it supports the `choices` attribute.
+
+The component expects a `source` and a `reference` attributes. For instance, to make the `post_id` for a `comment` editable:
+
+```js
+import { ReferenceInput, SelectInput } from 'admin-on-rest/mui'
+
+export const CommentEdit = (props) => (
+    <Edit {...props}>
+        <DisabledInput source="id" />
+        <ReferenceInput label="Post" source="post_id" reference="posts">
+            <SelectInput optionText="title" />
+        </ReferenceInput>
+        <LongTextInput source="body" />
+    </Edit>
+);
+```
+
+![ReferenceInput](./img/reference-input.gif)
+
+Set the `allowEmpty` attribute to `true` when the empty value is allowed. This is necessary for instance when used as a filter:
+
+```js
+const CommentFilter = (props) => (
+    <Filter {...props}>
+        <ReferenceInput label="Post" source="post_id" reference="posts" allowEmpty>
+            <SelectInput optionText="title" />
+        </ReferenceInput>
+    </Filter>
+);
+```
+
 ## `<RichTextInput>`
 
 `<RichTextInput>` is the ideal component if you want to allow your users to edit some HTML contents. It
