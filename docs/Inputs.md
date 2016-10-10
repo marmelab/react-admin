@@ -66,6 +66,7 @@ import { DateInput } from 'admin-on-rest/mui';
 
 You can override any of Material UI's `<DatePicker>` attributes by setting the `options` attribute:
 
+{% raw %}
 ``` js
 <DateInput source="published_at" options={{
     mode: 'landscape',
@@ -77,8 +78,9 @@ You can override any of Material UI's `<DatePicker>` attributes by setting the `
     locale: 'fr'
 }} />
 ```
+{% endraw %}
 
-Refer to [Material UI Datapicker documentation]([Date Picker](http://www.material-ui.com/#/components/date-picker) for more details.
+Refer to [Material UI Datepicker documentation](http://www.material-ui.com/#/components/date-picker) for more details.
 
 ## `<DisabledInput>`
 
@@ -104,6 +106,35 @@ import { LongTextInput } from 'admin-on-rest/mui';
 
 ![LongTextInput](./img/long-text-input.png)
 
+## `<RadioButtonGroupInput>`
+
+If you want to let the user choose a value among a list of possible values by showing them all (instead of hiding them behind a dropdown list, as in [`<SelectInput>`](#selectinput)), `<RadioButtonGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+
+```js
+import { Edit, RadioButtonGroupInput } from 'admin-on-rest/mui';
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <RadioButtonGroupInput source="category" choices={[
+            { id: 'programming', name: 'Programming' },
+            { id: 'lifestyle', name: 'Lifestyle' },
+            { id: 'photography', name: 'Photography' },
+        ]} />
+    </Edit>
+);
+```
+
+![RadioButtonGroupInput](./img/radio-button-group-input.png)
+
+You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
+
+```js
+<RadioButtonGroupInput label="Author" source="author_id" optionText="full_name" optionValue="_id" choices={[
+    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+]} />
+```
+
 ## `<RichTextInput>`
 
 `<RichTextInput>` is the ideal component if you want to allow your users to edit some HTML contents. It
@@ -128,6 +159,49 @@ You can customize the rich text editor toolbar using the `toolbar` attribute, as
 ```js
 <RichTextInput source="body" toolbar={[ ['bold', 'italic', 'underline', 'link'] ]} />
 ```
+
+## `<SelectInput>`
+
+To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<SelectField>`](http://www.material-ui.com/#/components/select-field). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+
+```js
+import { Edit, SelectInput } from 'admin-on-rest/mui';
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <SelectInput source="category" choices={[
+            { id: 'programming', name: 'Programming' },
+            { id: 'lifestyle', name: 'Lifestyle' },
+            { id: 'photography', name: 'Photography' },
+        ]} />
+    </Edit>
+);
+```
+
+![SelectInput](./img/select-input.gif)
+
+You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
+
+```js
+<SelectInput label="Author" source="author_id" optionText="full_name" optionValue="_id" choices={[
+    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+]} />
+```
+
+Lastly, use the `options` attribute if you want to override any of Material UI's `<SelectField>` attributes:
+
+{% raw %}
+```js
+<SelectInput source="category" options={{
+    maxHeight: 200
+}} />
+```
+{% endraw %}
+
+Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/components/select-field) for more details.
+
+And if, instead of showing choices as a dropdown list, you prefer to display them as a list of radio buttons, try the [`<RadioButtonGroupInput>`](#radiobuttongroupinput).
 
 ## `<TextInput>`
 
