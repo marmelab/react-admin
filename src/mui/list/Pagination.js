@@ -46,7 +46,7 @@ export class Pagination extends Component {
         return Math.ceil(this.props.total / this.props.perPage) || 1;
     }
 
-    prevPage(event) {
+    prevPage = (event) => {
         event.stopPropagation();
         if (this.props.page === 1) {
             throw new Error('Cannot go before page 1');
@@ -54,7 +54,7 @@ export class Pagination extends Component {
         this.props.setPage(this.props.page - 1);
     }
 
-    nextPage(event) {
+    nextPage = (event) => {
         event.stopPropagation();
         if (this.props.page > this.getNbPages()) {
             throw new Error('Cannot after last page');
@@ -62,7 +62,7 @@ export class Pagination extends Component {
         this.props.setPage(this.props.page + 1);
     }
 
-    gotoPage(event) {
+    gotoPage = (event) => {
         event.stopPropagation();
         const page = event.currentTarget.dataset.page;
         if (page < 1 || page > this.getNbPages()) {
@@ -75,7 +75,7 @@ export class Pagination extends Component {
         return this.range().map(pageNum =>
             (pageNum === '.') ?
                 <span key={pageNum} style={{ padding: '1.2em' }}>&hellip;</span> :
-                <FlatButton key={pageNum} label={pageNum} data-page={pageNum} onClick={::this.gotoPage} primary={pageNum !== this.props.page} style={buttonStyle} />
+                <FlatButton key={pageNum} label={pageNum} data-page={pageNum} onClick={this.gotoPage} primary={pageNum !== this.props.page} style={buttonStyle} />
         );
     }
 
@@ -94,11 +94,11 @@ export class Pagination extends Component {
                 {nbPages > 1 &&
                     <ToolbarGroup>
                     {page > 1 &&
-                        <FlatButton primary key="prev" label="Prev" icon={<ChevronLeft />} onClick={::this.prevPage} style={buttonStyle} />
+                        <FlatButton primary key="prev" label="Prev" icon={<ChevronLeft />} onClick={this.prevPage} style={buttonStyle} />
                     }
                     {this.renderPageNums()}
                     {page !== nbPages &&
-                        <FlatButton primary key="next" label="Next" icon={<ChevronRight />} labelPosition="before" onClick={::this.nextPage} style={buttonStyle} />
+                        <FlatButton primary key="next" label="Next" icon={<ChevronRight />} labelPosition="before" onClick={this.nextPage} style={buttonStyle} />
                     }
                     </ToolbarGroup>
                 }
