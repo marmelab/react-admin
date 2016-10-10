@@ -9,6 +9,7 @@ import {
     DisabledInput,
     Edit,
     EditButton,
+    FileInput,
     Filter,
     FormTab,
     List,
@@ -87,6 +88,7 @@ export const PostEdit = (props) => (
                 <DisabledInput label="Id" source="id" />
                 <TextInput source="title" validation={{ required: true }} />
                 <LongTextInput source="teaser" validation={{ required: true }} />
+                <FileInput source="picture" label="Preview Pictures" accept="image/*" />
             </FormTab>
             <FormTab label="body">
                 <RichTextInput source="body" validation={{ required: true }} addLabel={false} />
