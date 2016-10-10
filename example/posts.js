@@ -10,6 +10,7 @@ import {
     DisabledInput,
     Edit,
     EditButton,
+    FileInput,
     Filter,
     FormTab,
     List,
@@ -103,6 +104,7 @@ export const PostEdit = Translate(({ translate, ...props }) => (
                     ]}
                 />
                 <LongTextInput source="teaser" label={translate('post.form.teaser')} validation={{ required: true }} />
+                <FileInput source="picture" label="Preview Pictures" accept="image/*" />
             </FormTab>
             <FormTab label={translate('post.form.body')}>
                 <RichTextInput source="body" label={translate('post.form.body')} validation={{ required: true }} addLabel={false} />
