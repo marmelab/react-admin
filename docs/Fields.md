@@ -153,6 +153,57 @@ With this configuration, `<ReferenceField>` wraps the comment title in a link to
 
 Then admin-on-rest renders the `<CommentList>` with a loader for the `<ReferenceField>`, fetches the API for the related posts in one call (`GET http://path.to.my.api/posts?ids=[789,735]`), and re-renders the list once the data arrives. This accelerates the rendering, and minimizes network load.
 
+## `<ReferenceManyField>`
+
+This component fetches a list of referenced record (using the `GET_MANY_REFERENCE` REST method), and passes the result to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
+
+For instance, here is how to fetch the `comments` related to a `post` record, and display the `author.name` for each, in a `<ChipField>`:
+
+```js
+import React from 'react';
+import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'admin-on-rest/mui';
+
+export const PostList = (props) => (
+    <List {...props} filter={PostFilter}>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" type="email" />
+            <ReferenceManyField label="Comments by" reference="comments" target="post_id">
+                <SingleFieldList>
+                    <ChipField source="author.name" />
+                </SingleFieldList>
+            </ReferenceManyField>
+            <EditButton />
+        </Datagrid>
+    </List>
+);
+```
+
+![ReferenceManyFieldSingleFieldList](./img/reference-many-field-single-field-list.png)
+
+You can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside another `<Datagrid>`! This is useful if you want to display a read-only list of related records. For instance, if you want to show the `comments` related to a `post` in the post's `<Edit>` view:
+
+```js
+import React from 'react';
+import { Edit, Datagrid, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'admin-on-rest/mui';
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <DisabledInput label="Id" source="id" />
+        <TextInput source="title" />
+        <ReferenceManyField label="Comments" reference="comments" target="post_id">
+            <Datagrid>
+                <TextField source="body" />
+                <DateField source="created_at" />
+                <EditButton />
+            </Datagrid>
+        </ReferenceManyField>
+    </Edit>
+);
+```
+
+![ReferenceManyFieldDatagrid](./img/reference-many-field-datagrid.png)
+
 ## `<RichTextField>`
 
 This component displays some HTML content. The content is "rich" (i.e. unescaped) by default.
