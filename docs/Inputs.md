@@ -80,6 +80,18 @@ You can override any of Material UI's `<DatePicker>` attributes by setting the `
 
 Refer to [Material UI Datapicker documentation]([Date Picker](http://www.material-ui.com/#/components/date-picker) for more details.
 
+## `<DisabledInput>`
+
+When you want to display a record property in an `<Edit>` form without letting users update it (such as for auto-incremented primary keys), use the `<DisabledInput>`:
+
+``` js
+import { DisabledInput } from 'admin-on-rest/mui';
+
+<DisabledInput source="id" />
+```
+
+![DisabledInput](./img/disabled-input.gif)
+
 ## `<LongTextInput>`
 
 `<LongTextInput>` is the best choice for multiline text values. It renders as an auto expandable textarea.
