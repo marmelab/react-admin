@@ -66,9 +66,9 @@ const App = () => (
 export default App;
 ```
 
-### jsonServer REST
+### JSON Server REST
 
-This REST client fits APIs powered by [jsonServer](https://github.com/typicode/json-server), such as [JSONPlaceholder](http://jsonplaceholder.typicode.com/).
+This REST client fits APIs powered by [JSON Server](https://github.com/typicode/json-server), such as [JSONPlaceholder](http://jsonplaceholder.typicode.com/).
 
 | REST verb      | API calls
 |----------------|----------------------------------------------------------------

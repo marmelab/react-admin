@@ -31,7 +31,7 @@ describe('DateInput .datify', () => {
 describe('<DateInput />', () => {
     it('should render a localized <DatePicker />', () => {
         const input = { value: null };
-        const wrapper = shallow(<DateInput source="foo" meta={{}} input={input} locale="de-DE" />);
+        const wrapper = shallow(<DateInput source="foo" meta={{}} input={input} options={{ locale:'de-DE' }} />);
 
         const datePicker = wrapper.find('DatePicker');
         assert.equal(datePicker.length, 1);

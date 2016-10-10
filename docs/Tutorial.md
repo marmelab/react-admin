@@ -75,7 +75,7 @@ The main component of the post list is a `<List>` component, responsible for gra
 
 That should be enough to display the post list:
 
-![Simple posts list](http://static.marmelab.com/admin-on-rest/simple_post_list.png)
+![Simple posts list](./img/simple-post-list.png)
 
 The list is already functional: you can change the ordering by clicking on column headers, or change pages by using the bottom pagination controls.
 
@@ -115,7 +115,7 @@ const App = () => (
 );
 ```
 
-![Simple user datagrid](http://static.marmelab.com/admin-on-rest/simple_user_list.png)
+![Simple user datagrid](./img/simple-user-list.png)
 
 The sidebar now gives access to the second resource, Users. The users list shows the email as a `<a href="mailto:">` tag.
 
@@ -173,7 +173,7 @@ export const PostList = (props) => (
 
 When displaying the posts list, the browser now fetches related user records, and displays their `name` as a `<TextField>`. Notice the `label` property: you can use it on any field component to customize the list header.
 
-![reference posts in comment list](http://static.marmelab.com/admin-on-rest/reference_posts.png)
+![reference posts in comment list](./img/reference-posts.png)
 
 **Tip**: Reference components always pass the data they fetch to a child component, which is responsible for displaying the data.
 
@@ -251,11 +251,11 @@ const App = () => (
 
 Admin-on-rest automatically adds a "create" button on top of the posts list to give access to the `<PostCreate>` component. And the `<EditButton>` renders in each line of the list to give access to the `<PostEdit>` component.
 
-![post list with access to edit and create](http://static.marmelab.com/admin-on-rest/editable_post.png)
+![post list with access to edit and create](./img/editable-post.png)
 
 The create and edit views render as a form. It's already functional, and automatically issues `POST` and `PUT` requests to the REST API.
 
-![post edition form](http://static.marmelab.com/admin-on-rest/post_edition.png)
+![post edition form](./img/post-edition.png)
 
 **Note**: JSONPlaceholder is a read-only API: although it seems to accept `POST` and `PUT` requests, it doesn't take into account the creations and editions - that's why, in this particular case, you will see errors after creation, and you won't see your editions after you save them.
 
@@ -277,7 +277,7 @@ const App = () => (
 
 In the edition view, a new "delete" button appears. And you can also use the `<DeleteButton>` as a field in the list.
 
-![post deletion view](http://static.marmelab.com/admin-on-rest/post_deletion.png)
+![post deletion view](./img/post-deletion.png)
 
 ## Filters
 
@@ -309,7 +309,7 @@ The first filter, 'q', takes advantage of a full-text functionality offered by J
 
 Filters are "search-as-you-type", meaning that when the user enters new values in the filter form, the list refreshes (via an API request) immediately.
 
-![posts search engine](http://static.marmelab.com/admin-on-rest/filters.gif)
+![posts search engine](./img/filters.gif)
 
 ## Customizing the Menu Icons
 
@@ -328,7 +328,7 @@ const App = () => (
 );
 ```
 
-![custom menu icons](http://static.marmelab.com/admin-on-rest/custom_menu.png)
+![custom menu icons](./img/custom-menu.png)
 
 ## Using a Custom Home Page
 
@@ -360,7 +360,7 @@ const App = () => (
 );
 ```
 
-![Custom home page](http://static.marmelab.com/admin-on-rest/dashboard.png)
+![Custom home page](./img/dashboard.png)
 
 ## Using Another REST Dialect
 

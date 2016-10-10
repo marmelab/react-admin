@@ -52,6 +52,48 @@ Then you can display a text input to edit the author first name as follows:
 <TextInput source="author.firstName" />
 ```
 
+## `<DateInput>`
+
+Ideal for editing dates, `<DateInput>` renders a beautiful [Date Picker](http://www.material-ui.com/#/components/date-picker) with full localization support.
+
+``` js
+import { DateInput } from 'admin-on-rest/mui';
+
+<DateInput source="published_at" />
+```
+
+![DateInput](./img/date-input.gif)
+
+You can override any of Material UI's `<DatePicker>` attributes by setting the `options` attribute:
+
+{% raw %}
+``` js
+<DateInput source="published_at" options={{
+    mode: 'landscape',
+    minDate: new Date(),
+    hintText: 'Choisissez une date',
+    DateTimeFormat,
+    okLabel: 'OK',
+    cancelLabel: 'Annuler'
+    locale: 'fr'
+}} />
+```
+{% endraw %}
+
+Refer to [Material UI Datepicker documentation](http://www.material-ui.com/#/components/date-picker) for more details.
+
+## `<DisabledInput>`
+
+When you want to display a record property in an `<Edit>` form without letting users update it (such as for auto-incremented primary keys), use the `<DisabledInput>`:
+
+``` js
+import { DisabledInput } from 'admin-on-rest/mui';
+
+<DisabledInput source="id" />
+```
+
+![DisabledInput](./img/disabled-input.png)
+
 ## `<LongTextInput>`
 
 `<LongTextInput>` is the best choice for multiline text values. It renders as an auto expandable textarea.
@@ -59,7 +101,74 @@ Then you can display a text input to edit the author first name as follows:
 ``` js
 import { LongTextInput } from 'admin-on-rest/mui';
 
-<LongTextInput source="summary" />
+<LongTextInput source="teaser" />
+```
+
+![LongTextInput](./img/long-text-input.png)
+
+## `<RadioButtonGroupInput>`
+
+If you want to let the user choose a value among a list of possible values by showing them all (instead of hiding them behind a dropdown list, as in [`<SelectInput>`](#selectinput)), `<RadioButtonGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+
+```js
+import { Edit, RadioButtonGroupInput } from 'admin-on-rest/mui';
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <RadioButtonGroupInput source="category" choices={[
+            { id: 'programming', name: 'Programming' },
+            { id: 'lifestyle', name: 'Lifestyle' },
+            { id: 'photography', name: 'Photography' },
+        ]} />
+    </Edit>
+);
+```
+
+![RadioButtonGroupInput](./img/radio-button-group-input.png)
+
+You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
+
+```js
+<RadioButtonGroupInput label="Author" source="author_id" optionText="full_name" optionValue="_id" choices={[
+    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+]} />
+```
+
+## `<ReferenceInput>`
+
+Use `<ReferenceInput>` for foreign-key values, i.e. to let users choose a value from another REST endpoint. This component fetches the possible values in the reference resource (using the `CRUD_GET_MATCHING` REST method), then delegates rendering to a subcomponent, to which it passs the possible choices as the `choices` attribute.
+
+This means you can use `<ReferenceInput>` either with [`<SelectInput>`](#selectinput), or with [`<RadioButtonGroupInput>`](#radiobuttongroupinput), or even with the component of your choice, provided it supports the `choices` attribute.
+
+The component expects a `source` and a `reference` attributes. For instance, to make the `post_id` for a `comment` editable:
+
+```js
+import { ReferenceInput, SelectInput } from 'admin-on-rest/mui'
+
+export const CommentEdit = (props) => (
+    <Edit {...props}>
+        <DisabledInput source="id" />
+        <ReferenceInput label="Post" source="post_id" reference="posts">
+            <SelectInput optionText="title" />
+        </ReferenceInput>
+        <LongTextInput source="body" />
+    </Edit>
+);
+```
+
+![ReferenceInput](./img/reference-input.gif)
+
+Set the `allowEmpty` attribute to `true` when the empty value is allowed. This is necessary for instance when used as a filter:
+
+```js
+const CommentFilter = (props) => (
+    <Filter {...props}>
+        <ReferenceInput label="Post" source="post_id" reference="posts" allowEmpty>
+            <SelectInput optionText="title" />
+        </ReferenceInput>
+    </Filter>
+);
 ```
 
 ## `<RichTextInput>`
@@ -87,6 +196,49 @@ You can customize the rich text editor toolbar using the `toolbar` attribute, as
 <RichTextInput source="body" toolbar={[ ['bold', 'italic', 'underline', 'link'] ]} />
 ```
 
+## `<SelectInput>`
+
+To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<SelectField>`](http://www.material-ui.com/#/components/select-field). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+
+```js
+import { Edit, SelectInput } from 'admin-on-rest/mui';
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <SelectInput source="category" choices={[
+            { id: 'programming', name: 'Programming' },
+            { id: 'lifestyle', name: 'Lifestyle' },
+            { id: 'photography', name: 'Photography' },
+        ]} />
+    </Edit>
+);
+```
+
+![SelectInput](./img/select-input.gif)
+
+You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
+
+```js
+<SelectInput label="Author" source="author_id" optionText="full_name" optionValue="_id" choices={[
+    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+]} />
+```
+
+Lastly, use the `options` attribute if you want to override any of Material UI's `<SelectField>` attributes:
+
+{% raw %}
+```js
+<SelectInput source="category" options={{
+    maxHeight: 200
+}} />
+```
+{% endraw %}
+
+Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/components/select-field) for more details.
+
+And if, instead of showing choices as a dropdown list, you prefer to display them as a list of radio buttons, try the [`<RadioButtonGroupInput>`](#radiobuttongroupinput).
+
 ## `<TextInput>`
 
 `<TextInput>` is the most common input. It is used for texts, emails, URL or passwords. In translates to an HTML `<input>` tag.
@@ -104,3 +256,36 @@ You can choose a specific input type using the `type` attribute, among `text` (t
 ``` js
 <TextInput label="Email Address" source="email" type="email" />
 ```
+
+## Writing Your Own Input Component
+
+If you need a more specific input type, you can also write it yourself. In addition to `source` and `label` attributes, it must accept an `input` attribute to integrate with admin-on-rest forms (powered by redux-form). Admin-on-rest will inject the `input` attribute at runtime, and it will contain a `value` (computed from the current record and source), and an `onChange` function (to manage the input).
+
+For instance, here is an simplified version of admin-on-rest's `<TextInput>` component:
+
+```js
+import React, { PropTypes } from 'react';
+
+const TextInput = ({ source, label, input }) => (
+    <span>
+        <label for={source}>{label}</label>
+        <input name={source} value={input.value} onChange={input.onChange} type="text" />
+    </span>
+);
+
+TextInput.propTypes = {
+    includesLabel: PropTypes.bool.isRequired,
+    input: PropTypes.object,
+    label: PropTypes.string,
+    onChange: PropTypes.func,
+    source: PropTypes.string.isRequired,
+};
+
+TextInput.defaultProps = {
+    includesLabel: true,
+};
+
+export default TextInput;
+```
+
+**Tip**: Admin-on-rest inspects the `includesLabel` attribute to determine whether to render an additional label on top of the input component or not. If `includesLabel` is false, admin-on-rest considers the components doesn't have its own label, and adds another one.

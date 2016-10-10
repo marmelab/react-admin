@@ -117,6 +117,8 @@ const App = () => (
 );
 ```
 
+![Dark theme](./img/dark-theme.png)
+
 For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](http://www.material-ui.com/#/customization/themes).
 
 ### `appLayout`
@@ -125,6 +127,7 @@ If you want to deeply customize the app header, the menu, or the notifications, 
 
 Use the [default layout](https://github.com/marmelab/admin-on-rest/blob/master/src/mui/layout/Layout.js) as a starting point:
 
+{% raw %}
 ```js
 // in src/myLayout.js
 import React, { PropTypes } from 'react';
@@ -174,6 +177,7 @@ export default connect(
   mapStateToProps,
 )(myLayout);
 ```
+{% endraw %}
 
 ```js
 // in src/App.js

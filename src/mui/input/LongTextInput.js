@@ -4,12 +4,12 @@ import title from '../../util/title';
 
 const LongTextInput = ({ input, label, meta: { touched, error }, options, source }) => (
     <TextField
-        {...options}
         {...input}
         multiLine
         fullWidth
         floatingLabelText={title(label, source)}
         errorText={touched && error}
+        {...options}
     />
 );
 

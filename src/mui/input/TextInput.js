@@ -6,10 +6,10 @@ const TextInput = ({ input, label, meta: { touched, error }, options, type, sour
     <TextField
         value={input.value}
         onChange={input.onChange}
-        {...options}
         type={type}
         floatingLabelText={title(label, source)}
         errorText={touched && error}
+        {...options}
     />
 );
 
