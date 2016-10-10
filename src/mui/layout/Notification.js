@@ -20,7 +20,7 @@ class Notification extends React.Component {
             open={!!this.props.message}
             message={this.props.message}
             autoHideDuration={4000}
-            onRequestClose={::this.handleRequestClose}
+            onRequestClose={this.handleRequestClose}
             bodyStyle={style}
         />);
     }
