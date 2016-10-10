@@ -19,19 +19,18 @@ class DateInput extends Component {
     onChange = (_, date) => this.props.input.onChange(date);
 
     render() {
-        const { input, label, locale, meta: { touched, error }, options, source } = this.props;
+        const { input, label, meta: { touched, error }, options, source } = this.props;
 
         return (<DatePicker
             {...input}
-            {...options}
             errorText={touched && error}
             floatingLabelText={title(label, source)}
-            locale={locale}
             DateTimeFormat={Intl.DateTimeFormat}
             container="inline"
             autoOk
             value={datify(input.value)}
             onChange={this.onChange}
+            {...options}
         />);
     }
 }
@@ -40,7 +39,6 @@ DateInput.propTypes = {
     includesLabel: PropTypes.bool,
     input: PropTypes.object,
     label: PropTypes.string,
-    locale: PropTypes.string.isRequired,
     meta: PropTypes.object,
     options: PropTypes.object,
     source: PropTypes.string.isRequired,
@@ -48,7 +46,6 @@ DateInput.propTypes = {
 
 DateInput.defaultProps = {
     includesLabel: true,
-    locale: 'en-US',
     options: {},
 };
 

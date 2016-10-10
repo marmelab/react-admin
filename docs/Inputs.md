@@ -52,6 +52,34 @@ Then you can display a text input to edit the author first name as follows:
 <TextInput source="author.firstName" />
 ```
 
+## `<DateInput>`
+
+Ideal for editing dates, `<DateInput>` renders a beautiful [Date Picker](http://www.material-ui.com/#/components/date-picker) with full localization support.
+
+``` js
+import { DateInput } from 'admin-on-rest/mui';
+
+<DateInput source="published_at" />
+```
+
+![DateInput](./img/date-input.gif)
+
+You can override any of Material UI's `<DatePicker>` attributes by setting the `options` attribute:
+
+``` js
+<DateInput source="published_at" options={{
+    mode: 'landscape',
+    minDate: new Date(),
+    hintText: 'Choisissez une date',
+    DateTimeFormat,
+    okLabel: 'OK',
+    cancelLabel: 'Annuler'
+    locale: 'fr'
+}} />
+```
+
+Refer to [Material UI Datapicker documentation]([Date Picker](http://www.material-ui.com/#/components/date-picker) for more details.
+
 ## `<LongTextInput>`
 
 `<LongTextInput>` is the best choice for multiline text values. It renders as an auto expandable textarea.
