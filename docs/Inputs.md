@@ -92,7 +92,7 @@ import { DisabledInput } from 'admin-on-rest/mui';
 <DisabledInput source="id" />
 ```
 
-![DisabledInput](./img/disabled-input.gif)
+![DisabledInput](./img/disabled-input.png)
 
 ## `<LongTextInput>`
 
