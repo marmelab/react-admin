@@ -68,11 +68,8 @@ ReferenceManyField.propTypes = {
     reference: PropTypes.string.isRequired,
     referenceRecords: PropTypes.object,
     resource: PropTypes.string.isRequired,
+    source: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
-};
-
-ReferenceManyField.defaultProps = {
-    includesLabel: false,
 };
 
 function mapStateToProps(state, props) {
@@ -82,6 +79,13 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default connect(mapStateToProps, {
+const ConnectedReferenceManyField = connect(mapStateToProps, {
     crudGetManyReference: crudGetManyReferenceAction,
 })(ReferenceManyField);
+
+ConnectedReferenceManyField.defaultProps = {
+    includesLabel: false,
+    source: '',
+};
+
+export default ConnectedReferenceManyField;

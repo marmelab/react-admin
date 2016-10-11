@@ -30,7 +30,7 @@ Labeled.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.element,
     input: PropTypes.object,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.string,
     onChange: PropTypes.func,
     record: PropTypes.object,
     resource: PropTypes.string,
