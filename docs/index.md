@@ -131,12 +131,3 @@ The side effects expected by admin-on-rest are AJAX calls to the REST backend(s)
 * CRUD_DELETE => CRUD_DELETE_SUCCESS
 
 Check `sideEffect/saga.js` for a detail of the inputs and outputs
-
-## Todo
-
-* Add more documentation
-* Improve error handling
-* Form validation
-* Add unit tests
-* Add `<ReferenceMany>` field
-* Add complex field & input types
