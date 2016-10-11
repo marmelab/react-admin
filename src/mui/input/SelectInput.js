@@ -57,7 +57,7 @@ SelectInput.propTypes = {
     options: PropTypes.object,
     optionText: PropTypes.string.isRequired,
     optionValue: PropTypes.string.isRequired,
-    source: PropTypes.string.isRequired,
+    source: PropTypes.string,
 };
 
 SelectInput.defaultProps = {
