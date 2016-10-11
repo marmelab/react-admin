@@ -13,12 +13,9 @@ using:
 npm install --save-dev admin-on-rest
 ```
 
-## Usage
+## Documentation
 
-* [Getting Started Tutorial](docs/Tutorial.md)
-* [Inputs and Fields](docs/InputsFields.md)
-* [Form Validation](docs/FormValidation.md)
-* [Including Admin-on-Rest on Another React App](docs/Custom-App.md)
+Head to [http://marmelab.com/admin-on-rest/](http://marmelab.com/admin-on-rest/) for a complete documentation. If you installed the library via npm, it's also available offline, under the `node_modules/admin-on-rest/docs/` directory.
 
 ## Example
 
