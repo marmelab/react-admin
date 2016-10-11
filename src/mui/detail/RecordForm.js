@@ -89,6 +89,7 @@ export const RecordForm = ({ children, handleSubmit, record, resource, basePath 
 RecordForm.propTypes = {
     children: PropTypes.node,
     handleSubmit: PropTypes.func,
+    initialValues: PropTypes.object.isRequired,
     record: PropTypes.object,
     resource: PropTypes.string,
     basePath: PropTypes.string,
