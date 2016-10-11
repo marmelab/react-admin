@@ -5,7 +5,7 @@ import { Card, CardTitle, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import inflection from 'inflection';
-import { getFormValues } from 'redux-form';
+import { change as changeFormValueAction, getFormValues } from 'redux-form';
 import debounce from 'lodash.debounce';
 import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER } from '../../reducer/resource/list/queryReducer';
 import Title from '../layout/Title';
@@ -13,6 +13,8 @@ import Pagination from './Pagination';
 import CreateButton from '../button/CreateButton';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
+
+const filterFormName = 'filterForm';
 
 export class List extends Component {
     constructor(props) {
@@ -81,10 +83,13 @@ export class List extends Component {
         this.changeParams({ type: SET_FILTER, payload: filters });
     }
 
-    showFilter = (filterName) => this.setState({ [filterName]: true });
+    showFilter = (filterName) => {
+        this.setState({ [filterName]: true });
+    };
 
     hideFilter = (filterName) => {
         this.setState({ [filterName]: false });
+        this.props.changeFormValue(filterFormName, filterName, '');
         this.setFilters({ ...this.props.filters, [filterName]: undefined });
     }
 
@@ -153,6 +158,7 @@ List.propTypes = {
     data: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     crudGetList: PropTypes.func.isRequired,
+    changeFormValue: PropTypes.func.isRequired,
     changeListParams: PropTypes.func.isRequired,
     children: PropTypes.element.isRequired,
     push: PropTypes.func.isRequired,
@@ -176,7 +182,7 @@ function mapStateToProps(state, props) {
         total: resourceState.list.total,
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
-        filters: getFormValues('filterForm')(state) || resourceState.list.params.filter,
+        filters: getFormValues(filterFormName)(state) || resourceState.list.params.filter,
     };
 }
 
@@ -184,6 +190,7 @@ export default connect(
     mapStateToProps,
     {
         crudGetList: crudGetListAction,
+        changeFormValue: changeFormValueAction,
         changeListParams: changeListParamsAction,
         push: pushAction,
     },

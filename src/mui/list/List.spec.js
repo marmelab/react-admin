@@ -49,6 +49,26 @@ describe('<List />', () => {
             ]);
         });
 
+        it('should call `changeFormValue` prop function when a filter is removed (hidden)', () => {
+            const changeListParams = sinon.spy();
+            const changeFormValue = sinon.spy();
+            const wrapper = shallow(
+                <List
+                    {...defaultProps}
+                    changeListParams={changeListParams}
+                    changeFormValue={changeFormValue}
+                >
+                    <div />
+                </List>
+            );
+
+            wrapper.instance().hideFilter('q');
+
+            assert.deepEqual(changeFormValue.args, [
+                ['filterForm', 'q', ''],
+            ]);
+        });
+
         afterEach(() => {
             if (clock) {
                 clock.restore();
