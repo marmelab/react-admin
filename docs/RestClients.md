@@ -223,3 +223,7 @@ restClient(GET_MATCHING, 'posts', { filter: { title: 'hello' } })
 ### Error Format
 
 To be completed
+
+### Example implementation
+
+Check the code from the [simple REST client](https://github.com/marmelab/admin-on-rest/blob/master/src/rest/simple.js): it's a good starting point for a custom rest client implementation.

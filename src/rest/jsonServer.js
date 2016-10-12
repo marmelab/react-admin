@@ -90,7 +90,7 @@ export default (apiUrl) => {
         case GET_LIST:
             return {
                 data: json.map(x => x),
-                total: parseInt(headers['x-total-count'].split('/').pop(), 10),
+                total: parseInt(headers.get('x-total-count').split('/').pop(), 10),
             };
         case CREATE:
             return { ...params.data, id: json.id };

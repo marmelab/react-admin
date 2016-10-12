@@ -1,30 +1,25 @@
 export const fetchJson = (url, options = {}) => {
-    const requestHeaders = {
+    const requestHeaders = new Headers({
         Accept: 'application/json',
-    };
+    });
     if (!(options && options.body && options.body instanceof FormData)) {
-        requestHeaders['Content-Type'] = 'application/json';
+        requestHeaders.set('Content-Type', 'application/json');
     }
     if (options.user && options.user.authenticated && options.user.authenticated) {
-        requestHeaders.Authorization = options.user.token;
+        requestHeaders.set('Authorization', options.user.token);
     }
 
-    let status, statusText, headers = {}, body, json;
-
     return fetch(url, { ...options, headers: requestHeaders, credentials: 'include' })
-        .then(response => {
-            for (var pair of response.headers.entries()) {
-                headers[pair[0]] = pair[1];
-            }
-            status = response.status;
-            statusText = response.statusText;
-            return response;
-        })
-        .then(response => response.text())
-        .then(text => {
-            body = text;
+        .then(response => response.text().then(text => ({
+            status: response.status,
+            statusText: response.statusText,
+            headers: response.headers,
+            body: text,
+        })))
+        .then(({ status, statusText, headers, body }) => {
+            let json;
             try {
-                json = JSON.parse(text);
+                json = JSON.parse(body);
             } catch (e) {
                 // not json, no big deal
             }
