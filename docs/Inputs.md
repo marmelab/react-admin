@@ -184,12 +184,6 @@ import { RichTextInput } from 'admin-on-rest/mui';
 
 ![RichTextInput](./img/rich-text-input.png)
 
-*Tip*: `quill` is only specified as a peer dependency in the `package.json`. If you want to use the `<RichTextInput>` component in your app, you'll have to add `quill` to your app:
-
-```sh
-npm install --save-dev quill
-```
-
 You can customize the rich text editor toolbar using the `toolbar` attribute, as described on the [Quill official toolbar documentation](https://quilljs.com/docs/modules/toolbar/).
 
 ```js
