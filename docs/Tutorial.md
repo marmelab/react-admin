@@ -470,7 +470,7 @@ const convertHTTPResponseToREST = (response, type, resource, params) => {
     case GET_LIST:
         return {
             data: json.map(x => x),
-            total: parseInt(headers['content-range'].split('/').pop(), 10),
+            total: parseInt(headers.get('content-range').split('/').pop(), 10),
         };
     case CREATE:
         return { ...params.data, id: json.id };
@@ -508,4 +508,4 @@ const App = () => (
 
 ## Conclusion
 
-Admin-on-rest was build with customization in mind. You can use your custom React components everywhere to display a custom list, or a different edition form for a given resource. If you wants to go deeper, read the Material UI components documentation, or dive in the library code.
+Admin-on-rest was build with customization in mind. You can use your custom React components everywhere to display a custom list, or a different edition form for a given resource. If you want to go deeper, continue reading the [admin-on-rest documentation](http://marmelab.com/admin-on-rest/), and read the [Material UI components documentation](http://www.material-ui.com/#/).
