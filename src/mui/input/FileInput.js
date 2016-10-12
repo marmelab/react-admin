@@ -25,6 +25,7 @@ class FileInput extends Component {
 
     onDrop = files => {
         this.setState({ files });
+        this.props.onUpload(files);
     }
 
     label() {
@@ -80,12 +81,14 @@ FileInput.propTypes = {
     maxSize: PropTypes.number,
     minSize: PropTypes.number,
     multiple: PropTypes.bool,
+    onUpload: PropTypes.func,
     style: PropTypes.object,
 };
 
 FileInput.defaultProps = {
     includesLabel: false,
-    multiple: true,
+    multiple: false,
+    onUpload: () => {},
 };
 
 export default FileInput;

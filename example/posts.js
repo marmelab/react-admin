@@ -88,7 +88,24 @@ export const PostEdit = (props) => (
                 <DisabledInput label="Id" source="id" />
                 <TextInput source="title" validation={{ required: true }} />
                 <LongTextInput source="teaser" validation={{ required: true }} />
-                <FileInput source="picture" label="Preview Pictures" accept="image/*" />
+                <FileInput
+                    source="picture"
+                    label="Preview Pictures"
+                    onUpload={files => {
+                        console.table(files);
+                        /*
+                            // Upload your file here. For instance with fetch:
+                            const data = new FormData();
+                            data.append('file', files[0]);
+
+                            fetch('/post/upload', {
+                                method: 'POST',
+                                body: data,
+                            });
+                        */
+                    }}
+                    accept="image/*"
+                />
             </FormTab>
             <FormTab label="body">
                 <RichTextInput source="body" validation={{ required: true }} addLabel={false} />
