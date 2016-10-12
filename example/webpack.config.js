@@ -17,7 +17,6 @@ module.exports = {
     resolve: {
         alias: {
             'admin-on-rest': path.join(__dirname, '..', 'src'),
-            quill: path.join(__dirname, 'node_modules/quill'),
         },
     },
 };
