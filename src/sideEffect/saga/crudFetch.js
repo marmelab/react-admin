@@ -19,26 +19,23 @@ const crudFetch = (restClient, successSideEffects = () => [], failureSideEffects
         let response;
         try {
             response = yield call(restClient, restType, meta.resource, payload);
-        } catch (error) {
-            const sideEffects = failureSideEffects(type, meta.resource, payload, error);
             yield [
-                ...sideEffects.map(a => put(a)),
+                put({ type: `${type}_SUCCESS`, payload: response, meta }),
+                ...successSideEffects(type, meta.resource, payload, response).map(a => put(a)),
+                put({ type: FETCH_END }),
+            ];
+        } catch (error) {
+            yield [
                 put({ type: `${type}_FAILURE`, error: error.message ? error.message : error, meta }),
+                ...failureSideEffects(type, meta.resource, payload, error).map(a => put(a)),
                 put({ type: FETCH_ERROR }),
             ];
-            return;
         } finally {
             if (yield cancelled()) {
                 yield put({ type: FETCH_CANCEL });
                 return; /* eslint no-unsafe-finally:0 */
             }
         }
-        const sideEffects = successSideEffects(type, meta.resource, payload, response);
-        yield [
-            ...sideEffects.map(a => put(a)),
-            put({ type: `${type}_SUCCESS`, payload: response, meta }),
-        ];
-        yield put({ type: FETCH_END });
     }
 
     return function *watchCrudFetch() {
