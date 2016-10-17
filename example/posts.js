@@ -97,6 +97,7 @@ export const PostEdit = (props) => (
                             const data = new FormData();
                             data.append('file', files[0]);
 
+<<<<<<< 3a3047bcb5b62f3499c856e37f43e3423ec697b1
                             fetch('/post/upload', {
                                 method: 'POST',
                                 body: data,
