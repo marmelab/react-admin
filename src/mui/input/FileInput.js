@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Dropzone from 'react-dropzone';
+import CircularProgress from 'material-ui/CircularProgress';
 
 const defaultStyle = {
     dropZone: {
@@ -9,12 +10,24 @@ const defaultStyle = {
         textAlign: 'center',
         color: '#999',
     },
+    previewContainer: {
+        position: 'relative',
+        display: 'inline-block',
+    },
     preview: {
         margin: '.5rem',
         maxHeight: '10rem',
     },
+    loader: {
+        margin: 0,
+        display: 'block',
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+    },
     uploading: {
-        opacity: .5,
+        opacity: .3,
     }
 };
 
@@ -59,12 +72,14 @@ class FileInput extends Component {
         };
 
         return (
-            <img
-                key={file.data.name}
-                alt={file.data.alt}
-                src={file.data.preview}
-                style={style}
-            />
+            <div style={defaultStyle.previewContainer} key={file.data.name}>
+                {file.uploading ? <CircularProgress style={defaultStyle.loader}/> : null}
+                <img
+                    alt={file.data.alt}
+                    src={file.data.preview}
+                    style={style}
+                />
+            </div>
         );
     }
 
@@ -97,7 +112,7 @@ class FileInput extends Component {
                     {this.label()}
                 </Dropzone>
                 <div className="previews">
-                    <div>{this.state.files.map(this.renderFile)}</div>
+                    {this.state.files.map(this.renderFile)}
                 </div>
             </div>
         );
