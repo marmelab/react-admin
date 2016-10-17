@@ -13,6 +13,9 @@ const defaultStyle = {
         margin: '.5rem',
         maxHeight: '10rem',
     },
+    uploading: {
+        opacity: .5,
+    }
 };
 
 class FileInput extends Component {
@@ -24,8 +27,19 @@ class FileInput extends Component {
     }
 
     onDrop = files => {
-        this.setState({ files });
-        this.props.onUpload(files);
+        const loadingFiles = files.map(f => ({
+            data: f, // destructuring a File object remove almost all its properties
+            uploading: true,
+        }));
+        this.setState({ files: loadingFiles });
+
+        this.props.onUpload(files, () => {
+            const loadedFiles = files.map(f => ({
+                data: f,
+                uploading: false,
+            }));
+            this.setState({ files: loadedFiles });
+        });
     }
 
     label() {
@@ -34,6 +48,24 @@ class FileInput extends Component {
         }
 
         return <p>Drop a file to upload, or click to select it.</p>;
+    }
+
+    renderFile = file => {
+        const uploadingStyle = file.uploading ? defaultStyle.uploading : {};
+        const style = {
+            ...defaultStyle.preview,
+            ...uploadingStyle,
+            ...this.props.style.preview,
+        };
+
+        return (
+            <img
+                key={file.data.name}
+                alt={file.data.alt}
+                src={file.data.preview}
+                style={style}
+            />
+        );
     }
 
     render() {
@@ -48,7 +80,7 @@ class FileInput extends Component {
 
         const finalStyle = {
             ...defaultStyle,
-            style,
+            ...style,
         };
 
         return (
@@ -65,9 +97,7 @@ class FileInput extends Component {
                     {this.label()}
                 </Dropzone>
                 <div className="previews">
-                    <div>{this.state.files.map(file => (
-                        <img src={file.preview} style={finalStyle.preview} alt={file.name} />
-                    ))}</div>
+                    <div>{this.state.files.map(this.renderFile)}</div>
                 </div>
             </div>
         );

@@ -91,8 +91,7 @@ export const PostEdit = (props) => (
                 <FileInput
                     source="picture"
                     label="Preview Pictures"
-                    onUpload={files => {
-                        console.table(files);
+                    onUpload={(files, done) => {
                         /*
                             // Upload your file here. For instance with fetch:
                             const data = new FormData();
@@ -103,6 +102,8 @@ export const PostEdit = (props) => (
                                 body: data,
                             });
                         */
+                        console.table(files);
+                        setTimeout(done, 1500);
                     }}
                     accept="image/*"
                 />
