@@ -52,11 +52,11 @@ export PostIcon from 'material-ui/svg-icons/action/book';
 export const PostList = (props) => (
     <List {...props}>
         <Datagrid>
-            <TextField label="id" source="id" />
-            <TextField label="title" source="title" />
-            <DateField label="published_at" source="published_at" />
-            <TextField label="average_note" source="average_note" />
-            <TextField label="views" source="views" />
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="published_at" />
+            <TextField source="average_note" />
+            <TextField source="views" />
             <EditButton basePath="/posts" />
         </Datagrid>
     </List>
@@ -68,23 +68,23 @@ const PostTitle = ({ record }) => {
 
 export const PostEdit = (props) => (
     <Edit title={PostTitle} {...props}>
-        <DisabledInput label="Id" source="id" />
-        <TextInput label="Title" source="title" />
-        <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
-        <LongTextInput label="Body" source="body" />
+        <DisabledInput source="id" />
+        <TextInput source="title" />
+        <TextInput source="teaser" options={{ multiLine: true }} />
+        <LongTextInput source="body" />
         <DateInput label="Publication date" source="published_at" />
-        <TextInput label="Average note" source="average_note" />
+        <TextInput source="average_note" />
         <DisabledInput label="Nb views" source="views" />
     </Edit>
 );
 
 export const PostCreate = (props) => (
     <Create title="Create a Post" {...props}>
-        <TextInput label="Title" source="title" />
-        <TextInput label="Teaser" source="teaser" options={{ multiLine: true }} />
-        <LongTextInput label="Body" source="body" />
+        <TextInput source="title" />
+        <TextInput source="teaser" options={{ multiLine: true }} />
+        <LongTextInput source="body" />
         <TextInput label="Publication date" source="published_at" />
-        <TextInput label="Average note" source="average_note" />
+        <TextInput source="average_note" />
     </Create>
 );
 ```
