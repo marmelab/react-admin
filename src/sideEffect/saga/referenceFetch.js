@@ -11,20 +11,19 @@ import { crudGetMany } from '../../actions/dataActions';
  *   authors: { 23: true, 47: true, 78: true },
  * }
  */
-let ids = {};
+const ids = {};
+const tasks = {};
 
 // see http://yelouafi.github.io/redux-saga/docs/recipes/index.html#debouncing
-function *fetchReference(resource) {
+function* fetchReference(resource) {
     // combined with cancel(), this debounces the calls
     yield call(delay, 50);
-    yield Object.keys(ids).map(reference =>
-        put(crudGetMany(resource, Object.keys(ids[reference])))
-    );
-    ids = {};
+    yield put(crudGetMany(resource, Object.keys(ids[resource])));
+    delete ids[resource];
+    delete tasks[resource];
 }
 
-function *watchFetchReference() {
-    let task;
+function* watchFetchReference() {
     while (true) { // eslint-disable-line no-constant-condition
         const { payload } = yield take(CRUD_GET_ONE_REFERENCE);
         const { id, resource } = payload;
@@ -32,13 +31,13 @@ function *watchFetchReference() {
             ids[resource] = {};
         }
         ids[resource][id] = true; // fast UNIQUE
-        if (task) {
-            yield cancel(task);
+        if (tasks[resource]) {
+            yield cancel(tasks[resource]);
         }
-        task = yield fork(fetchReference, resource);
+        tasks[resource] = yield fork(fetchReference, resource);
     }
 }
 
-export default function*() {
+export default function* () {
     yield watchFetchReference();
 }
