@@ -1,4 +1,4 @@
-import { delay } from 'redux-saga';
+import { delay, takeEvery } from 'redux-saga';
 import { call, cancel, fork, put, take } from 'redux-saga/effects';
 import { CRUD_GET_ONE_REFERENCE } from '../../actions/referenceActions';
 import { crudGetMany } from '../../actions/dataActions';
@@ -23,21 +23,18 @@ function* fetchReference(resource) {
     delete tasks[resource];
 }
 
-function* watchFetchReference() {
-    while (true) { // eslint-disable-line no-constant-condition
-        const { payload } = yield take(CRUD_GET_ONE_REFERENCE);
-        const { id, resource } = payload;
-        if (!ids[resource]) {
-            ids[resource] = {};
-        }
-        ids[resource][id] = true; // fast UNIQUE
-        if (tasks[resource]) {
-            yield cancel(tasks[resource]);
-        }
-        tasks[resource] = yield fork(fetchReference, resource);
+function* accumulate({ payload }) {
+    const { id, resource } = payload;
+    if (!ids[resource]) {
+        ids[resource] = {};
     }
+    ids[resource][id] = true; // fast UNIQUE
+    if (tasks[resource]) {
+        yield cancel(tasks[resource]);
+    }
+    tasks[resource] = yield fork(fetchReference, resource);
 }
 
 export default function* () {
-    yield watchFetchReference();
+    yield takeEvery(CRUD_GET_ONE_REFERENCE, accumulate);
 }
