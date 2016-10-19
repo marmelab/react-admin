@@ -4,7 +4,6 @@ import { render } from 'react-dom';
 
 import FakeRest from 'fakerest';
 import fetchMock from 'fetch-mock';
-import data from './data';
 
 import { simpleRestClient, Admin, Resource } from 'admin-on-rest';
 import { Delete } from 'admin-on-rest/mui';
@@ -13,7 +12,7 @@ import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
 import { CommentList, CommentEdit, CommentCreate, CommentIcon } from './comments';
 
 const restServer = new FakeRest.FetchServer('http://localhost:3000');
-restServer.init(data);
+restServer.init(require('json!./data.json'));
 restServer.toggleLogging(); // logging is off by default, enable it
 fetchMock.mock('^http://localhost:3000', restServer.getHandler());
 
