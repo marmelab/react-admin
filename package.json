@@ -20,6 +20,7 @@
   "bugs": "https://github.com/marmelab/admin-on-rest/issues",
   "license": "MIT",
   "devDependencies": {
+    "babel-cli": "~6.16.0",
     "babel-core": "~6.17.0",
     "babel-eslint": "~7.0.0",
     "babel-loader": "~6.2.5",
