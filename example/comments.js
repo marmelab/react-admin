@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Filter, Edit, Create, Datagrid, DateField, ReferenceField, TextField, EditButton, DisabledInput, DateInput, LongTextInput, SelectInput, ReferenceInput, TextInput } from 'admin-on-rest/mui';
+import { List, Export, Filter, Edit, Create, Datagrid, DateField, ReferenceField, TextField, EditButton, DisabledInput, DateInput, LongTextInput, SelectInput, ReferenceInput, TextInput } from 'admin-on-rest/mui';
 
 export CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
 
@@ -11,8 +11,20 @@ const CommentFilter = (props) => (
     </Filter>
 );
 
+export const CommentExport = (props) => (
+    <Export {...props}>
+          <TextField source="id" />
+          <ReferenceField label="Post" source="post_id" reference="posts">
+              <TextField source="title" />
+          </ReferenceField>
+          <TextField label="Author name" source="author.name" />
+          <DateField label="date" source="created_at" />
+    </Export>
+);
+
+
 export const CommentList = (props) => (
-    <List title="All comments" {...props} filter={CommentFilter}>
+    <List title="All comments" {...props} filter={CommentFilter} export={CommentExport}>
         <Datagrid>
             <TextField source="id" />
             <ReferenceField label="Post" source="post_id" reference="posts">
