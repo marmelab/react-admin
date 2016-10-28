@@ -96,9 +96,14 @@ Check the [react-router documentation](https://github.com/reactjs/react-router/t
 If you use custom components dispatching your own actions, you will want to store the result in a custom part of the state. That's easy: add an entry in the `combineReducers()` call:
 
 ```js
+import { routerReducer } from 'react-router-redux';
+import { adminReducer } from 'admin-on-rest';
+import { reducer as formReducer } from 'redux-form';
+
 import checkoutReducer from './reducers/checkout';
 const reducer = combineReducers({
     admin: adminReducer(['posts, comments, users']),
+    form: formReducer,
     routing: routerReducer,
     // add your own reducers here
     checkout: checkoutReducer,
