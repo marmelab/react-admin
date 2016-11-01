@@ -110,23 +110,32 @@ The expected format for REST requests and responses is documented in `src/rest/R
 
 The `restClient` is also the ideal place to add custom HTTP headers, authentication, etc.
 
-## Batteries Included But Removable
+## Contributing
 
-Although it's fast and easy to build an admin using the `<Admin>` and `<Resource>` components, it is also possible to include the admin logic into an *existing* React application. You are strongly encouraged to use the lower-level elements or admin-to-rest, provided you're familiar with Redux, react-router and redux-saga.
+You can run the example app by calling
 
-The library makes no assumption on the side effect library you want to use, but provides examples for redux-saga.
+```sh
+make run
+```
 
-The side effects expected by admin-on-rest are AJAX calls to the REST backend(s), and redirects. They must respond to the following actions:
+And then browse to [http://localhost:8080/](http://localhost:8080/).
 
-* CRUD_GET_LIST => CRUD_GET_LIST_SUCCESS
-* CRUD_GET_ONE => CRUD_GET_ONE_SUCCESS
-* CRUD_UPDATE => CRUD_UPDATE_SUCCESS
-* CRUD_CREATE => CRUD_CREATE_SUCCESS
-* CRUD_DELETE => CRUD_DELETE_SUCCESS
+If you want to contribute to the documentation, install jekyll, then call
 
-Check `sideEffect/saga.js` for a detail of the inputs and outputs
+```sh
+make doc
+```
 
-## Todo
+And then browse to [http://localhost:4000/](http://localhost:4000/)
 
-* Add more documentation
-* Improve error handling
+You can run the unit tests by calling
+
+```sh
+make test
+```
+
+Pull requests are welcome. Try to follow the coding style of the existing files, and to add unit tests to prove that your patch does what it says.
+
+## License
+
+Admin-on-rest is licensed under the [MIT Licence](LICENSE), and sponsored by [marmelab](http://marmelab.com).
