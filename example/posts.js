@@ -32,7 +32,7 @@ export const PostList = (props) => (
             <TextField source="id" />
             <TextField source="title" type="email" />
             <RichTextField source="body" stripTags={true} />
-            <DateField source="published_at" />
+            <DateField source="published_at" style={{ fontStyle: 'italic' }} />
             <TextField source="average_note" />
             <TextField source="views" />
             <EditButton />

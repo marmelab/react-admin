@@ -13,14 +13,14 @@ import title from '../../util/title';
  *     <FooComponent source="title" />
  * </Labeled>
  */
-const Labeled = ({ input, label, resource, record, onChange, basePath, children, source }) => (
+const Labeled = ({ input, label, resource, record, onChange, basePath, children, source, style = { paddingTop: '2em', height: 'auto' } }) => (
     <TextField
         floatingLabelText={title(label, source)}
         floatingLabelFixed
         disabled
         fullWidth
         underlineShow={false}
-        style={{ paddingTop: '2em', height: 'auto' }}
+        style={style}
     >
         {children && React.cloneElement(children, { input, record, resource, onChange, basePath })}
     </TextField>
@@ -35,6 +35,7 @@ Labeled.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string.isRequired,
+    style: PropTypes.object,
 };
 
 export default Labeled;
