@@ -3,10 +3,10 @@
 install: package.json
 	@npm install
 
-run: .example_install
+run: example_install
 	@cd example && ../node_modules/.bin/webpack-dev-server --hot --inline --config ./webpack.config.js
 
-.example_install: example/package.json
+example_install: example/package.json
 	@cd example && npm install
 
 build:
