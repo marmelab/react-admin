@@ -2,12 +2,13 @@ import React, { PropTypes } from 'react';
 import Chip from 'material-ui/Chip';
 import get from 'lodash.get';
 
-const ChipField = ({ source, record = {} }) => <Chip style={{ margin: 4 }}>{get(record, source)}</Chip>;
+const ChipField = ({ source, record = {}, style = { margin: 4 } }) => <Chip style={style}>{get(record, source)}</Chip>;
 
 ChipField.propTypes = {
-    source: PropTypes.string.isRequired,
     label: PropTypes.string,
+    source: PropTypes.string.isRequired,
     record: PropTypes.object,
+    style: PropTypes.object,
 };
 
 export default ChipField;

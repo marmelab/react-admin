@@ -19,7 +19,7 @@ class DateInput extends Component {
     onChange = (_, date) => this.props.input.onChange(date);
 
     render() {
-        const { input, label, meta: { touched, error }, options, source } = this.props;
+        const { input, label, meta: { touched, error }, options, source, style } = this.props;
 
         return (<DatePicker
             {...input}
@@ -30,6 +30,7 @@ class DateInput extends Component {
             autoOk
             value={datify(input.value)}
             onChange={this.onChange}
+            style={style}
             {...options}
         />);
     }
@@ -42,6 +43,7 @@ DateInput.propTypes = {
     meta: PropTypes.object,
     options: PropTypes.object,
     source: PropTypes.string.isRequired,
+    style: PropTypes.object,
 };
 
 DateInput.defaultProps = {

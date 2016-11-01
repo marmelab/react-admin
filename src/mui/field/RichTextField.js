@@ -3,13 +3,13 @@ import get from 'lodash.get';
 
 export const removeTags = input => input.replace(/<[^>]+>/gm, '');
 
-const RichTextField = ({ source, record = {}, stripTags }) => {
+const RichTextField = ({ source, record = {}, stripTags, style }) => {
     const value = get(record, source);
     if (stripTags) {
-        return <div>{removeTags(value)}</div>;
+        return <div style={style}>{removeTags(value)}</div>;
     }
 
-    return <div dangerouslySetInnerHTML={{ __html: value }}></div>;
+    return <div style={style} dangerouslySetInnerHTML={{ __html: value }}></div>;
 };
 
 RichTextField.defaultProps = {
@@ -17,10 +17,11 @@ RichTextField.defaultProps = {
 };
 
 RichTextField.propTypes = {
-    source: PropTypes.string.isRequired,
     label: PropTypes.string,
     record: PropTypes.object,
+    source: PropTypes.string.isRequired,
     stripTags: PropTypes.bool,
+    style: PropTypes.object,
 };
 
 export default RichTextField;

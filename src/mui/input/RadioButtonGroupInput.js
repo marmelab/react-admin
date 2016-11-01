@@ -32,12 +32,13 @@ class RadioButtonGroupInput extends Component {
     }
 
     render() {
-        const { label, source, record, choices, optionText, optionValue, options } = this.props;
+        const { label, source, record, choices, optionText, optionValue, options, style } = this.props;
         return (
             <Labeled label={label} onChange={this.handleChange} source={source}>
                 <RadioButtonGroup
                     name={source}
                     defaultSelected={record[source]}
+                    style={style}
                     {...options}
                 >
                     {choices.map(choice =>
@@ -50,15 +51,16 @@ class RadioButtonGroupInput extends Component {
 }
 
 RadioButtonGroupInput.propTypes = {
-    label: PropTypes.string,
-    source: PropTypes.string,
-    record: PropTypes.object,
     choices: PropTypes.arrayOf(PropTypes.object),
+    includesLabel: PropTypes.bool.isRequired,
+    label: PropTypes.string,
+    onChange: PropTypes.func,
+    options: PropTypes.object,
     optionText: PropTypes.string.isRequired,
     optionValue: PropTypes.string.isRequired,
-    options: PropTypes.object,
-    onChange: PropTypes.func,
-    includesLabel: PropTypes.bool.isRequired,
+    record: PropTypes.object,
+    source: PropTypes.string,
+    style: PropTypes.object,
 };
 
 RadioButtonGroupInput.defaultProps = {

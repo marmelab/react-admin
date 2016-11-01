@@ -31,7 +31,7 @@ class SelectInput extends Component {
     onChange = (e, _, value) => this.props.input.onChange(value);
 
     render() {
-        const { input, label, choices, optionText, optionValue, options, source } = this.props;
+        const { input, label, choices, optionText, optionValue, options, source, style } = this.props;
         return (
             <SelectField
                 menuStyle={{ maxHeight: '41px', overflowY: 'hidden' }}
@@ -39,6 +39,7 @@ class SelectInput extends Component {
                 value={input.value}
                 onChange={this.onChange}
                 autoWidth
+                style={style}
                 {...options}
             >
                 {choices.map(choice =>
@@ -58,6 +59,7 @@ SelectInput.propTypes = {
     optionText: PropTypes.string.isRequired,
     optionValue: PropTypes.string.isRequired,
     source: PropTypes.string,
+    style: PropTypes.object,
 };
 
 SelectInput.defaultProps = {

@@ -170,9 +170,26 @@
                                 <b>7.</b> Form Validation
                             </a>
                         </li>
+                        <li class="chapter {% if page.path == 'Theming.md' %}active{% endif %}">
+                            <a href="./Theming.html">
+                                <b>8.</b> Theming
+                            </a>
+                            <ul class="articles" {% if page.path != 'Theming.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#overriding-a-component-style">Overriding A Component Style</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#using-a-predefined-theme">Using a Predefined Theme</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#writing-a-custom-theme">Writing a Custom Theme</a>
+                                </li>
+                            </ul>
+                        </li>
+
                         <li class="chapter {% if page.path == 'CustomApp.md' %}active{% endif %}">
                             <a href="./CustomApp.html">
-                                <b>8.</b> Including in Another App
+                                <b>9.</b> Including in Another App
                             </a>
                         </li>
                     </ul>
