@@ -165,7 +165,9 @@ function mapStateToProps(state, props) {
     const resourceState = state.admin[props.resource];
     const query = props.location.query;
     if (query.filter && typeof query.filter === 'string') {
-        query.filter = JSON.parse(query.filter);
+        // if the List has no filter component, the filter is always "{}"
+        // avoid deserialization and keep identity by using a constant
+        query.filter = props.filter ? JSON.parse(query.filter) : resourceState.list.params.filter;
     }
 
     return {
