@@ -177,7 +177,7 @@ function mapStateToProps(state, props) {
         total: resourceState.list.total,
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
-        filters: getFormValues(filterFormName)(state) || resourceState.list.params.filter,
+        filters: props.filter ? getFormValues(filterFormName)(state) : resourceState.list.params.filter,
     };
 }
 
