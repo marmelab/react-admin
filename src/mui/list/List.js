@@ -72,20 +72,13 @@ export class List extends Component {
         this.props.crudGetList(this.props.resource, { page, perPage }, { field: sort, order }, filter);
     }
 
-    updateSort = (event) => {
-        event.stopPropagation();
-        this.changeParams({ type: SET_SORT, payload: event.currentTarget.dataset.sort });
-    }
+    setSort = sort => this.changeParams({ type: SET_SORT, payload: sort });
 
-    setPage = (page) => this.changeParams({ type: SET_PAGE, payload: page });
+    setPage = page => this.changeParams({ type: SET_PAGE, payload: page });
 
-    setFilters = (filters) => {
-        this.changeParams({ type: SET_FILTER, payload: filters });
-    }
+    setFilters = filters => this.changeParams({ type: SET_FILTER, payload: filters });
 
-    showFilter = (filterName) => {
-        this.setState({ [filterName]: true });
-    };
+    showFilter = filterName => this.setState({ [filterName]: true });
 
     hideFilter = (filterName) => {
         this.setState({ [filterName]: false });
@@ -131,7 +124,7 @@ export class List extends Component {
                     data,
                     currentSort: query,
                     basePath,
-                    updateSort: this.updateSort,
+                    setSort: this.setSort,
                 })}
                 <Pagination resource={resource} page={parseInt(query.page, 10)} perPage={parseInt(query.perPage, 10)} total={total} setPage={this.setPage} />
             </Card>
@@ -172,7 +165,9 @@ function mapStateToProps(state, props) {
     const resourceState = state.admin[props.resource];
     const query = props.location.query;
     if (query.filter && typeof query.filter === 'string') {
-        query.filter = JSON.parse(query.filter);
+        // if the List has no filter component, the filter is always "{}"
+        // avoid deserialization and keep identity by using a constant
+        query.filter = props.filter ? JSON.parse(query.filter) : resourceState.list.params.filter;
     }
 
     return {

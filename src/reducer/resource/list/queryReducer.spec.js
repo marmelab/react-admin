@@ -2,6 +2,28 @@ import assert from 'assert';
 import queryReducer from './queryReducer';
 
 describe('Query Reducer', () => {
+    describe('SET_PAGE action', () => {
+        it('should update the page', () => {
+            const updatedState = queryReducer({
+                page: 1,
+            }, {
+                type: 'SET_PAGE',
+                payload: 2,
+            });
+            assert.equal(updatedState.page, 2);
+        });
+        it('should not update the filter', () => {
+            const initialFilter = {};
+            const updatedState = queryReducer({
+                filter: initialFilter,
+                page: 1,
+            }, {
+                type: 'SET_PAGE',
+                payload: 2,
+            });
+            assert.equal(updatedState.filter, initialFilter);
+        });
+    });
     describe('SET_FILTER action', () => {
         it('should add new filter with given value when set', () => {
             const updatedState = queryReducer({}, {
