@@ -28,7 +28,7 @@ import Labeled from './Labeled';
  */
 class RadioButtonGroupInput extends Component {
     handleChange = (event, value) => {
-        this.props.onChange(this.props.source, value);
+        this.props.input.onChange(value);
     }
 
     render() {
