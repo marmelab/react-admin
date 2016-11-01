@@ -22,10 +22,11 @@ import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { Router, IndexRoute, Route, Redirect, hashHistory } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware, routerReducer } from 'react-router-redux';
+import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 
 // prebuilt admin-on-rest features
-import { adminReducer, crudSaga, CrudRoute, simpleRestClient} from 'admin-on-rest';
+import { adminReducer, crudSaga, CrudRoute, simpleRestClient } from 'admin-on-rest';
 
 // your app components
 import Layout from './Layout';
@@ -38,6 +39,7 @@ import { Delete } from 'admin-on-rest/lib/mui';
 // create a Redux app
 const reducer = combineReducers({
     admin: adminReducer([{ name: 'posts' }, { name: 'comments' }, { name: 'users' }]),
+    form: formReducer,
     routing: routerReducer,
 });
 const sagaMiddleware = createSagaMiddleware();
