@@ -11,13 +11,13 @@ class Datagrid extends Component {
     }
 
     render() {
-        const { resource, children, ids, data, currentSort, basePath, selectable, updateSort } = this.props;
+        const { resource, children, ids, data, currentSort, basePath, updateSort } = this.props;
         return (
-            <Table multiSelectable={selectable}>
-                <TableHeader adjustForCheckbox={selectable} displaySelectAll={selectable}>
-                    <TableRow>
+            <table>
+                <thead>
+                    <tr>
                         {React.Children.toArray(children).map(field => (
-                            <TableHeaderColumn key={field.props.label || 'no-key'}>
+                            <TableHeaderColumn key={field.props.label || field.props.source || 'no-key'}>
                                 {(field.props.label || field.props.source) &&
                                     <FlatButton
                                         labelPosition="before"
@@ -29,20 +29,20 @@ class Datagrid extends Component {
                                 }
                             </TableHeaderColumn>
                         ))}
-                    </TableRow>
-                </TableHeader>
-                <TableBody showRowHover displayRowCheckbox={selectable}>
+                    </tr>
+                </thead>
+                <tbody>
                     {ids.map(id => (
-                        <TableRow key={id}>
+                        <tr key={id}>
                             {React.Children.toArray(children).map(field => (
                                 <TableRowColumn key={`${id}-${field.props.source}`}>
                                     <field.type {...field.props} record={data[id]} basePath={basePath} resource={resource} />
                                 </TableRowColumn>
                             ))}
-                        </TableRow>
+                        </tr>
                     ))}
-                </TableBody>
-            </Table>
+                </tbody>
+            </table>
         );
     }
 }
@@ -50,7 +50,6 @@ class Datagrid extends Component {
 Datagrid.propTypes = {
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     resource: PropTypes.string,
-    selectable: PropTypes.bool,
     data: PropTypes.object.isRequired,
     currentSort: PropTypes.shape({
         sort: PropTypes.string,
@@ -63,7 +62,6 @@ Datagrid.propTypes = {
 Datagrid.defaultProps = {
     data: {},
     ids: [],
-    selectable: true,
 };
 
 export default Datagrid;
