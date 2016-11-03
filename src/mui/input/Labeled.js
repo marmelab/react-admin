@@ -13,11 +13,11 @@ import title from '../../util/title';
  *     <FooComponent source="title" />
  * </Labeled>
  */
-const Labeled = ({ input, label, resource, record, onChange, basePath, children, source, style = { paddingTop: '2em', height: 'auto' } }) => (
+const Labeled = ({ input, label, resource, record, onChange, basePath, children, source, disabled = true, style = { paddingTop: '2em', height: 'auto' } }) => (
     <TextField
         floatingLabelText={title(label, source)}
         floatingLabelFixed
-        disabled
+        disabled={disabled}
         fullWidth
         underlineShow={false}
         style={style}
@@ -29,6 +29,7 @@ const Labeled = ({ input, label, resource, record, onChange, basePath, children,
 Labeled.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.element,
+    disabled: PropTypes.bool,
     input: PropTypes.object,
     label: PropTypes.string,
     onChange: PropTypes.func,

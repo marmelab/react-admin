@@ -9,7 +9,7 @@ import data from './data';
 import { simpleRestClient, Admin, Resource } from 'admin-on-rest';
 import { Delete } from 'admin-on-rest/mui';
 
-import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
+import { PostList, PostCreate, PostEdit, PostShow, PostIcon } from './posts';
 import { CommentList, CommentEdit, CommentCreate, CommentIcon } from './comments';
 
 const restServer = new FakeRest.FetchServer('http://localhost:3000');
@@ -22,8 +22,8 @@ const delayedRestClient = (type, resource, params) => new Promise(resolve => set
 
 render(
     <Admin restClient={delayedRestClient} title="Example Admin">
-        <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} icon={PostIcon} />
-        <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} remove={Delete} icon={CommentIcon} />
+        <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={Delete} icon={PostIcon} />
+        <Resource name="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} remove={Delete} icon={CommentIcon} />
     </Admin>,
     document.getElementById('root')
 );

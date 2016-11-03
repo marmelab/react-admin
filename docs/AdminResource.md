@@ -214,7 +214,8 @@ Under the hood, the `<Resource>` component uses react-router to create several r
 
 * `/` maps to the `list` component
 * `/create` maps to the `create` component
-* `/:id` maps to the edit component
+* `/:id` maps to the `edit` component
+* `/:id/show` maps to the `show` component
 * `/:id/delete` maps to the `remove` component
 
 The `<Resource>` props allow you to customize all the CRUD operations for a given resource.
@@ -228,7 +229,7 @@ The `<Resource>` props allow you to customize all the CRUD operations for a give
 Admin-on-rest uses the `name` prop both to determine the API endpoint (passed to the `restClient`), and to form the URL for the resource.
 
 ```js
-<Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} remove={PostRemove} />
+<Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={PostRemove} />
 ```
 
 For this resource admin-on-rest will fetch the `http://jsonplaceholder.typicode.com/posts` endpoint for data.
@@ -238,6 +239,7 @@ The routing will map the component as follows:
 * `/posts/` maps to `PostList`
 * `/posts/create` maps to `PostCreate`
 * `/posts/:id` maps to `PostEdit`
+* `/posts/:id/show` maps to `PostShow`
 * `/posts/:id/delete` maps to `PostRemove`
 
 **Tip**: If you want to use a special API endpoint without altering the URL, write the translation from the resource `name` to the API endpoint in your own `restClient`

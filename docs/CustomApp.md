@@ -31,7 +31,7 @@ import { adminReducer, crudSaga, CrudRoute, simpleRestClient } from 'admin-on-re
 // your app components
 import Layout from './Layout';
 import Dashboard from './Dashboard';
-import { PostList, PostEdit, PostCreate } from './Post';
+import { PostList, PostCreate, PostEdit, PostShow } from './Post';
 import { CommentList, CommentEdit, CommentCreate } from './Comment';
 import { UserList, UserEdit, UserCreate } from './User';
 import { Delete } from 'admin-on-rest/lib/mui';
@@ -59,9 +59,9 @@ const App = () => (
         <Router history={history}>
             <Route path="/" component={Layout}>
                 <IndexRoute component={Dashboard} restClient={restClient} />
-                <CrudRoute path="posts" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} />
-                <CrudRoute path="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} remove={Delete} />
-                <CrudRoute path="users" list={UserList} edit={UserEdit} create={UserCreate} remove={Delete} />
+                <CrudRoute path="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={Delete} />
+                <CrudRoute path="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} remove={Delete} />
+                <CrudRoute path="users" list={UserList} create={UserCreate} edit={UserEdit} remove={Delete} />
             </Route>
         </Router>
     </Provider>
@@ -83,7 +83,7 @@ const App = () => (
                 <Route path="checkout" component={Checkout}>
                     <Route path="/:id" component={Cart} />
                 </Route>
-                <CrudRoute key="posts" path="posts" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} />
+                <CrudRoute key="posts" path="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={Delete} />
                 <!-- ... -->
             </Route>
         </Router>

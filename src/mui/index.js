@@ -1,10 +1,7 @@
 export * from './button';
+export * from './detail';
 export * from './field';
 export * from './input';
+export * from './layout';
 export * from './list';
-
 export Delete from './delete/Delete';
-export Create from './detail/Create';
-export Edit from './detail/Edit';
-export Layout from './layout/Layout';
-export Notification from './layout/Notification';

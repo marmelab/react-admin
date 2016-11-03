@@ -36,7 +36,7 @@ const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', theme
                 <Route path="/" component={appLayout} resources={resources}>
                     {dashboard && <IndexRoute component={dashboard} restClient={restClient} />}
                     {resources.map(resource =>
-                        <CrudRoute key={resource.name} path={resource.name} list={resource.list} edit={resource.edit} create={resource.create} remove={resource.remove} options={resource.options} />
+                        <CrudRoute key={resource.name} path={resource.name} list={resource.list} create={resource.create} edit={resource.edit} show={resource.show} remove={resource.remove} options={resource.options} />
                     )}
                 </Route>
             </Router>
