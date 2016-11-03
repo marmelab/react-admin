@@ -30,7 +30,7 @@ export const PostList = (props) => (
     <List {...props} filter={PostFilter}>
         <Datagrid>
             <TextField source="id" />
-            <TextField source="title" type="email" style={{ display: 'inline-block', maxWidth: '15em', overflow: 'hidden', textOverflow: 'ellipsis' }}/>
+            <TextField source="title" type="email" style={{ display: 'inline-block', maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis' }}/>
             <DateField source="published_at" style={{ fontStyle: 'italic' }} />
             <TextField source="average_note" />
             <TextField source="views" />
