@@ -30,8 +30,7 @@ export const PostList = (props) => (
     <List {...props} filter={PostFilter}>
         <Datagrid>
             <TextField source="id" />
-            <TextField source="title" type="email" />
-            <RichTextField source="body" stripTags={true} />
+            <TextField source="title" type="email" style={{ display: 'inline-block', maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis' }}/>
             <DateField source="published_at" style={{ fontStyle: 'italic' }} />
             <TextField source="average_note" />
             <TextField source="views" />
@@ -81,7 +80,7 @@ export const PostEdit = (props) => (
         <DateInput label="Publication date" source="published_at" />
         <TextInput source="average_note" validation={{ min: 0 }} />
         <ReferenceManyField label="Comments" reference="comments" target="post_id">
-            <Datagrid selectable={false}>
+            <Datagrid>
                 <TextField source="body" />
                 <DateField source="created_at" />
                 <EditButton />
