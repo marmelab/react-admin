@@ -8,8 +8,9 @@ const Resource = () => <span>&lt;Resource&gt; elements are for configuration onl
 Resource.propTypes = {
     name: PropTypes.string.isRequired,
     list: componentPropType,
-    edit: componentPropType,
     create: componentPropType,
+    edit: componentPropType,
+    show: componentPropType,
     remove: componentPropType,
     icon: componentPropType,
     options: PropTypes.object,
