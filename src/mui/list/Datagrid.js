@@ -34,8 +34,8 @@ class Datagrid extends Component {
             <table style={styles.table}>
                 <thead>
                     <tr style={styles.tr}>
-                        {React.Children.toArray(children).map(field => (
-                            <TableHeaderColumn key={field.props.label || field.props.source || 'no-key'}>
+                        {React.Children.map(children, (field, index) => (
+                            <TableHeaderColumn key={field.props.label || field.props.source || index}>
                                 {(field.props.label || field.props.source) &&
                                     <FlatButton
                                         labelPosition="before"
