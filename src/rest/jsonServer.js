@@ -23,7 +23,7 @@ import {
  * CREATE       => POST http://my.api.url/posts/123
  * DELETE       => DELETE http://my.api.url/posts/123
  */
-export default (apiUrl) => {
+export default (apiUrl, httpClient = fetchJson) => {
     /**
      * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
      * @param {String} resource Name of the resource to fetch, e.g. 'posts'
@@ -112,7 +112,7 @@ export default (apiUrl) => {
                 .then(responses => responses.map(response => response.json));
         }
         const { url, options } = convertRESTRequestToHTTP(type, resource, params);
-        return fetchJson(url, options)
+        return httpClient(url, options)
             .then(response => convertHTTPResponseToREST(response, type, resource, params));
     };
 };
