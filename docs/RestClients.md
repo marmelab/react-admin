@@ -99,6 +99,49 @@ const App = () => (
 export default App;
 ```
 
+### Adding Custom Headers
+
+Both the `simpleRestClient` and the `jsonServerRestClient` functions accept an http client function as second argument. By default, they use admin-on-rest's `fetchUtils.fetchJson()` as http client. It's similar to HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
+
+That means that if you need to add custom headers to your requests, you just need to *wrap* the `fetchJson()` call inside your own function:
+
+```js
+import { simpleRestClient, fetchUtils, Admin, Resource } from 'admin-on-rest';
+const httpClient = (url, options) => {
+    if (!options.headers) {
+        options.headers = new Headers({ Accept: 'application/json' });
+    }
+    // add your own headers here
+    options.headers.set('X-Custom-Header', 'foobar');
+    return fetchUtils.fetchJson(url, options);
+}
+const restClient = simpleRestClient('http://localhost:3000', httpClient);
+
+render(
+    <Admin restClient={restClient} title="Example Admin">
+       ...
+    </Admin>,
+    document.getElementById('root')
+);
+```
+
+Now all the requests to the REST API will contain the `X-Custom-Header: foobar` header.
+
+**Tip**: The most common usage of custom headers is for authentication. `fetchJson` has built-on support for the `Authorization` token header:
+
+```js
+const httpClient = (url, options) => {
+    options.user = {
+        authenticated: true,
+        token: 'SRTRDFVESGNJYTUKTYTHRG'
+    }
+    return fetchUtils.fetchJson(url, options);
+}
+```
+
+Now all the requests to the REST API will contain the `Authorization: SRTRDFVESGNJYTUKTYTHRG` header.
+
+
 ## Writing your own REST client
 
 Quite often, none of the the core REST clients match your API exactly. In such cases, you'll have to write your own REST client. But don't be afraid, it's easy!
