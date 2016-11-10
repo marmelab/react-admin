@@ -34,7 +34,6 @@ export const PostList = (props) => (
             <TextField source="id" />
             <TextField source="title" type="email" style={{ display: 'inline-block', maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis' }}/>
             <DateField source="published_at" style={{ fontStyle: 'italic' }} />
-            <TextField source="average_note" />
             <TextField source="views" />
             <EditButton />
             <ShowButton />
