@@ -1,5 +1,61 @@
 # Changelog
 
+## v0.5.0
+
+* [BC Break] Remove `authenticated` header enabled by default
+* Add `<Show>` View
+* Add custom headers support
+* Add support for the `style` attribute in all components
+* Add Theming Documentation (by [MattWilliamsDev](https://github.com/MattWilliamsDev))
+* Update the `<Datagrid>` to use real tables (and auto-size columns)
+* Upgrade to material-ui 0.16
+* Update package to bundle quill
+* Export more components and functions to ease customization
+* Fix multiple ReferenceFields in a list incorrectly loads data
+* Fix spinner not stopping after delete
+* Fix Router now scrolls to top
+* Fix `<RadioButtonGroupInput>`
+* Fix datagrid layout to make columns adapt width to content
+* Fix doc on reducers in CustomApp (by [ArnaudD](https://github.com/ArnaudD))
+* Fix custom app docs now that redux form is required
+* Fix RadioButtonGroupInput
+* Fix Pagination when list has no filter
+* Fix clearing text filter doesn't fetch the unfiltered list
+* Fix Warning when Datagrid contains two action buttons
+
+## v0.4.0
+
+* [BC Break] Pass Headers object to `restClient`
+* Add loads of documentation
+* Use `source` as implicit `label` in fields and input components
+* Add `<RichTextField>` and `<RichTextInput>` components (powered by [quill](http://quilljs.com/))
+* Add `<UrlField>` component
+* Add Form Validation in `<Edit>` and `<Create>` views (powered by [redux-form](http://redux-form.com/))
+* Add material-ui theme support in the `<Admin>` component (by [fnberta](https://github.com/fnberta))
+* Add option to show date with time (by [fnberta](https://github.com/fnberta))
+* Add UUID support (by [bjet007](https://github.com/bjet007))
+* Add deep field selection
+* Add unit tests
+* Fix form display issue when single or no fields
+* Fix and speedup filters
+* Fix create form
+* Fix filter value reset when filter is removed
+
+## V0.3.0
+
+* [BC Break] `<List>` takes an iterator child (like `<Datagrid>`)
+* [BC Break] `<ReferenceField>` replaces `referenceSource` by a child field
+* [BC Break] `<ReferenceInput>` replaces `referenceSource` by a child input
+* [BC Break] Rename `fetchJSON` to `fetchJson`
+* Switch FakeRest as an external dependency
+* Add ability to customize admin title
+* Add `<Labeled>` component, and introduce the `includesLabel` prop on inputs
+* Add `<SingleFieldList>` and `<ChipField>` components
+* Add `<ReferenceManyField>` component and related reducer logic
+* Add `<RadioButtonGroupInput>` component
+* Add `<SelectInput>` component
+* Add notifications
+* Add Custom App doc
 
 ## v0.2.0
 
