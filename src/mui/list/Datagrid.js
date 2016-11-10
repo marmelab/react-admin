@@ -35,7 +35,7 @@ class Datagrid extends Component {
                 <thead>
                     <tr style={styles.tr}>
                         {React.Children.map(children, (field, index) => (
-                            <TableHeaderColumn key={field.props.label || field.props.source || index}>
+                            <TableHeaderColumn key={field.props.source || index}>
                                 {(field.props.label || field.props.source) &&
                                     <FlatButton
                                         labelPosition="before"
@@ -52,8 +52,8 @@ class Datagrid extends Component {
                 <tbody style={styles.tbody}>
                     {ids.map(id => (
                         <tr style={styles.tr} key={id}>
-                            {React.Children.toArray(children).map(field => (
-                                <TableRowColumn key={`${id}-${field.props.source}`}>
+                            {React.Children.toArray(children).map((field, index) => (
+                                <TableRowColumn key={`${id}-${field.props.source || index}`}>
                                     <field.type {...field.props} record={data[id]} basePath={basePath} resource={resource} />
                                 </TableRowColumn>
                             ))}
