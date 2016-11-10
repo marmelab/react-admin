@@ -2,7 +2,7 @@
 
 ## v0.5.0
 
-* [BC Break] Remove `authenticated` header enabled by default
+* [BC Break] Remove `credentials: include` HTTP option enabled by default
 * Add `<Show>` View
 * Add custom headers support
 * Add support for the `style` attribute in all components
