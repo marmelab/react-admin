@@ -16,7 +16,7 @@ export default (previousState = initialState, { type, payload, meta }) => {
 
 export const getPossibleReferences = (state, referenceSource, reference, selectedId) => {
     if (!state.admin.references.possibleValues[referenceSource]) {
-        return typeof selectedId === 'undefined' ? [] : [state.admin[reference].data[selectedId]];
+        return typeof selectedId === 'undefined' || !state.admin[reference].data[selectedId] ? [] : [state.admin[reference].data[selectedId]];
     }
     const possibleValues = state.admin.references.possibleValues[referenceSource];
     if (typeof selectedId !== 'undefined' && !possibleValues.includes(selectedId)) {
