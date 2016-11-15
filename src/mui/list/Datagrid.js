@@ -35,14 +35,17 @@ class Datagrid extends Component {
                 <thead>
                     <tr style={styles.tr}>
                         {React.Children.map(children, (field, index) => (
-                            <TableHeaderColumn key={field.props.source || index}>
+                            <TableHeaderColumn key={field.props.source || index} style={{ padding: index ? 0 : '0 0 0 12px' }} >
                                 {(field.props.label || field.props.source) &&
                                     <FlatButton
                                         labelPosition="before"
                                         onClick={this.updateSort}
                                         data-sort={field.props.source}
                                         label={title(field.props.label, field.props.source)}
-                                        icon={field.props.source === currentSort.sort ? <ContentSort style={currentSort.order === 'ASC' ? { transform: 'rotate(180deg)' } : {}} /> : false}
+                                        icon={field.props.source === currentSort.sort ?
+                                            <ContentSort style={currentSort.order === 'ASC' ? { transform: 'rotate(180deg)' } : {}} /> : false
+                                        }
+                                        style={{ minWidth: 40 }}
                                     />
                                 }
                             </TableHeaderColumn>
@@ -53,7 +56,7 @@ class Datagrid extends Component {
                     {ids.map(id => (
                         <tr style={styles.tr} key={id}>
                             {React.Children.toArray(children).map((field, index) => (
-                                <TableRowColumn key={`${id}-${field.props.source || index}`}>
+                                <TableRowColumn key={`${id}-${field.props.source || index}`} style={{ padding: index ? '0 12px' : '0 12px 0 24px' }} >
                                     <field.type {...field.props} record={data[id]} basePath={basePath} resource={resource} />
                                 </TableRowColumn>
                             ))}
