@@ -35,6 +35,9 @@ export class List extends Component {
          || nextProps.query.filter !== this.props.query.filter) {
             this.updateData(Object.keys(nextProps.query).length > 0 ? nextProps.query : nextProps.params);
         }
+        if (Object.keys(nextProps.filters).length === 0 && Object.keys(this.props.filters).length === 0) {
+            return;
+        }
         if (nextProps.filters !== this.props.filters) {
             const nextFilters = nextProps.filters;
             Object.keys(nextFilters).forEach(filterName => {
@@ -52,6 +55,10 @@ export class List extends Component {
             return false;
         }
         return true;
+    }
+
+    componentWillUnmount() {
+        this.debouncedSetFilters.cancel();
     }
 
     getBasePath() {
