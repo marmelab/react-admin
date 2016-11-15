@@ -33,6 +33,7 @@ export class ReferenceInput extends Component {
         }
 
         return React.cloneElement(children, {
+            allowEmpty,
             input,
             label,
             resource,

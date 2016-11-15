@@ -31,7 +31,7 @@ class SelectInput extends Component {
     onChange = (e, _, value) => this.props.input.onChange(value);
 
     render() {
-        const { input, label, choices, optionText, optionValue, options, source, style } = this.props;
+        const { allowEmpty, input, label, choices, optionText, optionValue, options, source, style } = this.props;
         return (
             <SelectField
                 menuStyle={{ maxHeight: '41px', overflowY: 'hidden' }}
@@ -42,6 +42,9 @@ class SelectInput extends Component {
                 style={style}
                 {...options}
             >
+                {allowEmpty &&
+                    <MenuItem value={null} primaryText="" />
+                }
                 {choices.map(choice =>
                     <MenuItem key={choice[optionText]} primaryText={choice[optionText]} value={choice[optionValue]} />
                 )}
@@ -51,6 +54,7 @@ class SelectInput extends Component {
 }
 
 SelectInput.propTypes = {
+    allowEmpty: PropTypes.bool.isRequired,
     choices: PropTypes.arrayOf(PropTypes.object),
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
@@ -63,6 +67,7 @@ SelectInput.propTypes = {
 };
 
 SelectInput.defaultProps = {
+    allowEmpty: false,
     options: {},
     optionText: 'name',
     optionValue: 'id',
