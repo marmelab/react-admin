@@ -15,7 +15,7 @@ import MenuItem from 'material-ui/MenuItem';
  * @example
  * <SelectInput source="gender" choices={[
  *    { id: 'M', name: 'Male' },
- *    { id: 'F', label: 'Female' },
+ *    { id: 'F', name: 'Female' },
  * ]} />
  *
  * You can also customize the properties to use for the option name and value,
@@ -68,6 +68,7 @@ SelectInput.propTypes = {
 
 SelectInput.defaultProps = {
     allowEmpty: false,
+    choices: [],
     options: {},
     optionText: 'name',
     optionValue: 'id',
