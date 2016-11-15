@@ -8,7 +8,12 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import FilterForm from './FilterForm';
 import TextInput from '../input/TextInput';
 
-require('react-tap-event-plugin')();
+try {
+    require('react-tap-event-plugin')();
+} catch(e) {
+    // already loaded, probably in watch mode
+    // do nothing
+}
 
 describe('<FilterForm />', () => {
     const defaultProps = {
