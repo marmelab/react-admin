@@ -219,6 +219,16 @@ You can also customize the properties to use for the option name and value, than
 ]} />
 ```
 
+Enabling the `allowEmpty` props adds an empty choice (with `null` value) on top of the options, and makes the value nullable:
+
+```js
+<SelectInput source="category" allowEmpty choices={[
+    { id: 'programming', name: 'Programming' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'photography', name: 'Photography' },
+]} />
+```
+
 Lastly, use the `options` attribute if you want to override any of Material UI's `<SelectField>` attributes:
 
 {% raw %}
