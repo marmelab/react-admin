@@ -88,6 +88,9 @@ export default (apiUrl, httpClient = fetchJson) => {
         const { headers, json } = response;
         switch (type) {
         case GET_LIST:
+            if (!headers.has('x-total-count')) {
+                throw new Error('The X-Total-Count header is missing in the HTTP Response. This header is necessary for pagination. If you are using CORS, did you declare X-Total-Count in the Access-Control-Allow-Headers header?');
+            }
             return {
                 data: json.map(x => x),
                 total: parseInt(headers.get('x-total-count').split('/').pop(), 10),
