@@ -46,7 +46,7 @@ class SelectInput extends Component {
                     <MenuItem value={null} primaryText="" />
                 }
                 {choices.map(choice =>
-                    <MenuItem key={choice[optionText]} primaryText={choice[optionText]} value={choice[optionValue]} />
+                    <MenuItem key={choice[optionValue]} primaryText={choice[optionText]} value={choice[optionValue]} />
                 )}
             </SelectField>
         );
