@@ -1,6 +1,6 @@
 {
   "name": "admin-on-rest",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
   "files": [
     "*.md",
@@ -54,7 +54,7 @@
     "inflection": "~1.10.0",
     "lodash.debounce": "~4.0.8",
     "lodash.get": "~4.4.2",
-    "material-ui": "~0.16.1",
+    "material-ui": "0.16.1",
     "quill": "~1.0.4",
     "react": "~15.3.2",
     "react-dom": "~15.3.2",
