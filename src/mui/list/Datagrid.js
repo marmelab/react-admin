@@ -4,7 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
 import title from '../../util/title';
 
-const styles = {
+const defaultStyles = {
     table: {
         backgroundColor: '#fff',
         padding: '0px 24px',
@@ -20,6 +20,21 @@ const styles = {
         color: 'rgba(0, 0, 0, 0.870588)',
         height: 48,
     },
+    'th:first-child': {
+        padding: '0 0 0 12px',
+    },
+    th: {
+        padding: 0,
+    },
+    sortButton: {
+        minWidth: 40,
+    },
+    'td:first-child': {
+        padding: '0 12px 0 24px',
+    },
+    td: {
+        padding: '0 12px',
+    },
 };
 
 class Datagrid extends Component {
@@ -29,20 +44,23 @@ class Datagrid extends Component {
     }
 
     render() {
-        const { resource, children, ids, data, currentSort, basePath, updateSort } = this.props;
+        const { resource, children, ids, data, currentSort, basePath, styles = defaultStyles, updateSort } = this.props;
         return (
             <table style={styles.table}>
                 <thead>
                     <tr style={styles.tr}>
                         {React.Children.map(children, (field, index) => (
-                            <TableHeaderColumn key={field.props.source || index}>
+                            <TableHeaderColumn key={field.props.source || index} style={index ? styles.th : styles['th:first-child']} >
                                 {(field.props.label || field.props.source) &&
                                     <FlatButton
                                         labelPosition="before"
                                         onClick={this.updateSort}
                                         data-sort={field.props.source}
                                         label={title(field.props.label, field.props.source)}
-                                        icon={field.props.source === currentSort.sort ? <ContentSort style={currentSort.order === 'ASC' ? { transform: 'rotate(180deg)' } : {}} /> : false}
+                                        icon={field.props.source === currentSort.sort ?
+                                            <ContentSort style={currentSort.order === 'ASC' ? { transform: 'rotate(180deg)' } : {}} /> : false
+                                        }
+                                        style={styles.sortButton}
                                     />
                                 }
                             </TableHeaderColumn>
@@ -53,7 +71,7 @@ class Datagrid extends Component {
                     {ids.map(id => (
                         <tr style={styles.tr} key={id}>
                             {React.Children.toArray(children).map((field, index) => (
-                                <TableRowColumn key={`${id}-${field.props.source || index}`}>
+                                <TableRowColumn key={`${id}-${field.props.source || index}`} style={index ? styles.td : styles['td:first-child']} >
                                     <field.type {...field.props} record={data[id]} basePath={basePath} resource={resource} />
                                 </TableRowColumn>
                             ))}
@@ -75,6 +93,7 @@ Datagrid.propTypes = {
     }),
     basePath: PropTypes.string,
     setSort: PropTypes.func,
+    styles: PropTypes.object,
 };
 
 Datagrid.defaultProps = {
