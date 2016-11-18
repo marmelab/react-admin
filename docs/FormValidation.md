@@ -94,6 +94,6 @@ You can use the following validation constraint names:
 * `minLength` to specify a minimum length for strings,
 * `maxLength` to specify a maximum length for strings,
 * `email` to check that the input is a valid email address,
-* `regex` to validate that the input matches a regex,
+* `regex` to validate that the input matches a regex (must be an object with `pattern` and `message` keys),
 * `choices` to validate that the input is within a given list,
 * `custom` to use the function of your choice,
