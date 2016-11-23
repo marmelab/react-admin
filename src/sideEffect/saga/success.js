@@ -21,7 +21,7 @@ export default (type, resource, payload, response) => {
     case CRUD_DELETE:
         return [
             showNotification('Element deleted'),
-            push(`${payload.basePath}`),
+            push(payload.basePath),
         ];
     default:
         return [];

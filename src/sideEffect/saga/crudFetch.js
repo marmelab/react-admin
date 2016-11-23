@@ -20,13 +20,23 @@ const crudFetch = (restClient, successSideEffects = () => [], failureSideEffects
         try {
             response = yield call(restClient, restType, meta.resource, payload);
             yield [
-                put({ type: `${type}_SUCCESS`, payload: response, meta }),
+                put({
+                    type: `${type}_SUCCESS`,
+                    payload: response,
+                    requestPayload: payload,
+                    meta,
+                }),
                 ...successSideEffects(type, meta.resource, payload, response).map(a => put(a)),
                 put({ type: FETCH_END }),
             ];
         } catch (error) {
             yield [
-                put({ type: `${type}_FAILURE`, error: error.message ? error.message : error, meta }),
+                put({
+                    type: `${type}_FAILURE`,
+                    error: error.message ? error.message : error,
+                    requestPayload: payload,
+                    meta,
+                }),
                 ...failureSideEffects(type, meta.resource, payload, error).map(a => put(a)),
                 put({ type: FETCH_ERROR }),
             ];
