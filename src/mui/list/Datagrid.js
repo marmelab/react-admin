@@ -26,6 +26,16 @@ const defaultStyles = {
     th: {
         padding: 0,
     },
+    nonSortableHeader: {
+        position: 'relative',
+        paddingLeft: 16,
+        paddingRight: 16,
+        verticalAlign: 'middle',
+        letterSpacing: 0,
+        textTransform: 'uppercase',
+        fontWeight: 500,
+        fontSize: 14,
+    },
     sortButton: {
         minWidth: 40,
     },
@@ -51,7 +61,7 @@ class Datagrid extends Component {
                     <tr style={styles.tr}>
                         {React.Children.map(children, (field, index) => (
                             <TableHeaderColumn key={field.props.source || index} style={index ? styles.th : styles['th:first-child']} >
-                                {(field.props.label || field.props.source) &&
+                                {field.props.source ?
                                     <FlatButton
                                         labelPosition="before"
                                         onClick={this.updateSort}
@@ -62,6 +72,8 @@ class Datagrid extends Component {
                                         }
                                         style={styles.sortButton}
                                     />
+                                    :
+                                    (field.props.label && <span style={styles.nonSortableHeader}>{title(field.props.label, field.props.source)}</span>)
                                 }
                             </TableHeaderColumn>
                         ))}

@@ -298,8 +298,10 @@ FullNameField.defaultProps = { label: 'Name' };
 export const UserList = (props) => (
     <List {...props}>
         <Datagrid>
-            <FullNameField />
+            <FullNameField source="lastName" />
         </Datagrid>
     </List>
 );
 ```
+
+**Tip**: In such custom fields, the `source` is optional. Admin-on-rest uses it to determine which column to use for sorting when the column header is clicked.
