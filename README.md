@@ -141,18 +141,16 @@ If you are using admin-on-rest as a dependency, and if you want to try and hack 
 # install admin-on-rest from GitHub in another directory
 $ cd ..
 $ git clone git@github.com:marmelab/admin-on-rest.git && cd admin-on-rest && make install
-# compile the ES6 source to JavaScript
-$ make build
 # replace your node_modules/admin-on-rest by a symbolic link to the github checkout
 $ cd ../myapp
 $ npm link ../admin-on-rest
 # go back to the checkout, and replace the version of react by the one in your app
 $ cd ../admin-on-rest
 $ npm link ../myapp/node_modules/react
-# go back to your app, and start it as usual
+$ make watch
+# in another terminal, go back to your app, and start it as usual
 $ cd ../myapp
 $ npm run
-# don't forget to call make build in admin-on-rest each time you make a change
 ```
 
 Pull requests are welcome. Try to follow the coding style of the existing files, and to add unit tests to prove that your patch does what it says.
