@@ -39,7 +39,7 @@ export const CRUD_CREATE_SUCCESS = 'CRUD_CREATE_SUCCESS';
 export const crudCreate = (resource, data, basePath) => ({
     type: CRUD_CREATE,
     payload: { data, basePath },
-    meta: { resource, fetch: CREATE, cancelPrevious: true },
+    meta: { resource, fetch: CREATE, cancelPrevious: false },
 });
 
 export const CRUD_UPDATE = 'CRUD_UPDATE';
@@ -50,7 +50,7 @@ export const CRUD_UPDATE_SUCCESS = 'CRUD_UPDATE_SUCCESS';
 export const crudUpdate = (resource, id, data, basePath) => ({
     type: CRUD_UPDATE,
     payload: { id, data, basePath },
-    meta: { resource, fetch: UPDATE, cancelPrevious: true },
+    meta: { resource, fetch: UPDATE, cancelPrevious: false },
 });
 
 export const CRUD_DELETE = 'CRUD_DELETE';
