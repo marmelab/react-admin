@@ -61,7 +61,7 @@ export const CRUD_DELETE_SUCCESS = 'CRUD_DELETE_SUCCESS';
 export const crudDelete = (resource, id, basePath) => ({
     type: CRUD_DELETE,
     payload: { id, basePath },
-    meta: { resource, fetch: DELETE, cancelPrevious: true },
+    meta: { resource, fetch: DELETE, cancelPrevious: false },
 });
 
 export const CRUD_GET_MANY = 'CRUD_GET_MANY';
