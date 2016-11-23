@@ -289,7 +289,8 @@ It's as easy as writing:
 import React, { PropTypes } from 'react';
 import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
 
-const FullNameField = ({ record = {}, label = 'Name' }) => <span>{record.firstName} {record.lastName}</span>;
+const FullNameField = ({ record = {} }) => <span>{record.firstName} {record.lastName}</span>;
+FullNameField.defaultProps = { label: 'Name' };
 
 export const UserList = (props) => (
     <List {...props}>
