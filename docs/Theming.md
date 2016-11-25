@@ -23,6 +23,33 @@ import { DateField } from 'admin-on-rest/mui';
 
 If you need more control over the HTML code, you can also create your own [Field](./Fields.html#writing-your-own-field-component) and [Input](./Inputs.html#writing-your-own-input-component) components.
 
+## Conditional Formatting
+
+Sometimes you want the format to depend on the value. Admin-on-rest doesn't provide any special way to do it, because React already has all that's necessary - in particular, Higher-Order Components (HOCs).
+
+For instance, if you want to highlight a `<TextField>` in red if the value is higher than 100, just wrap the field into a HOC:
+
+```js
+const colored = WrappedComponent => props => props.record[props.source] > 100 ?
+    <span style={{ color: 'red' }}><WrappedComponent {...props} /></span> :
+    <WrappedComponent {...props} />;
+
+const ColoredTextField = colored(TextField);
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="id" />
+            ...
+            <ColoredTextField source="nb_views" />
+            <EditButton />
+        </Datagrid>
+    </List>
+);
+```
+
+If you want to read more about higher-order components, check out this SitePoint tutorial: [Higher Order Components: A React Application Design Pattern](https://www.sitepoint.com/react-higher-order-components/)
+
 ## Using a Predefined Theme
 
 Material UI also supports [complete theming](http://www.material-ui.com/#/customization/themes) out of the box. Material UI ships two base themes: light and dark. Admin-on-rest uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `getMuiTheme()`).
