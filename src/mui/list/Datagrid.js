@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { TableHeaderColumn, TableRowColumn } from 'material-ui/Table';
+import { TableHeaderColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
+import TableCell from './TableCell';
 import title from '../../util/title';
 
 const defaultStyles = {
@@ -83,9 +84,12 @@ class Datagrid extends Component {
                     {ids.map(id => (
                         <tr style={styles.tr} key={id}>
                             {React.Children.toArray(children).map((field, index) => (
-                                <TableRowColumn key={`${id}-${field.props.source || index}`} style={index ? styles.td : styles['td:first-child']} >
-                                    <field.type {...field.props} record={data[id]} basePath={basePath} resource={resource} />
-                                </TableRowColumn>
+                                <TableCell
+                                    key={`${id}-${field.props.source || index}`}
+                                    record={data[id]}
+                                    defaultStyle={index ? styles.td : styles['td:first-child']}
+                                    {...{ field, basePath, resource }}
+                                />
                             ))}
                         </tr>
                     ))}
