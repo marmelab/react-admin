@@ -27,12 +27,13 @@ All field components accept the following attributes:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
 * `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
+* `style`: A style object to customize the look and feel of the field.
 
 ```js
-<TextField source="zb_title" label="Title" />
+<TextField source="zb_title" label="Title" style={{ color: 'purple' }}/>
 ```
 
-If you display a record with a complex structure, you can use a path with dot separators as the `source` attribute. For instance, if the API returns the following 'book' record:
+**Tip**: If you display a record with a complex structure, you can use a path with dot separators as the `source` attribute. For instance, if the API returns the following 'book' record:
 
 ```js
 {
@@ -50,6 +51,8 @@ Then you can display the author first name as follows:
 ```js
 <TextField source="author.firstName" />
 ```
+
+**Tip**: If you want to format a field according to the value, use a higher-order component to do conditional formatting, as described in the [Theming documentation](./Theming.html#conditional-formatting).
 
 ## `<ChipField>`
 
