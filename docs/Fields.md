@@ -251,14 +251,17 @@ import { UrlField } from 'admin-on-rest/mui';
 
 All field components accept the `style` prop, which overrides the default style of the field content:
 
+{% raw %}
 ```js
 <TextField source="price" style={{ color: 'purple' }}/>
 // renders in the datagrid as
 <td><span style="color: purple;">2</span></td>
 ```
+{% endraw %}
 
 However, you may want to override the field *container* (for instance, the `<td>` element in the datagrid). In that case, use the `cellStyle` and `headerStyle` props:
 
+{% raw %}
 ```js
 export const ProductList = (props) => (
     <List {...props} filter={VisitorFilter}>
@@ -277,6 +280,7 @@ export const ProductList = (props) => (
 // renders in the table header as
 <th style="text-align:right;font-weight:bold"><button>Price</button></td>
 ```
+{% endraw %}
 
 Both `cellStyle` and `headerStyle` props must be an object. To see the expected structure and default values, check out the [Datagrid component source](https://github.com/marmelab/admin-on-rest/blob/master/src/mui/list/Datagrid.js).
 
