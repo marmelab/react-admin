@@ -1,9 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { TableHeaderColumn } from 'material-ui/Table';
-import FlatButton from 'material-ui/FlatButton';
-import ContentSort from 'material-ui/svg-icons/content/sort';
-import TableCell from './TableCell';
-import title from '../../util/title';
+import DatagridCell from './DatagridCell';
+import DatagridHeaderCell from './DatagridHeaderCell';
 
 const defaultStyles = {
     table: {
@@ -21,30 +18,34 @@ const defaultStyles = {
         color: 'rgba(0, 0, 0, 0.870588)',
         height: 48,
     },
-    'th:first-child': {
-        padding: '0 0 0 12px',
+    header: {
+        th: {
+            padding: 0,
+        },
+        'th:first-child': {
+            padding: '0 0 0 12px',
+        },
+        sortButton: {
+            minWidth: 40,
+        },
+        nonSortableLabel: {
+            position: 'relative',
+            paddingLeft: 16,
+            paddingRight: 16,
+            verticalAlign: 'middle',
+            letterSpacing: 0,
+            textTransform: 'uppercase',
+            fontWeight: 500,
+            fontSize: 14,
+        },
     },
-    th: {
-        padding: 0,
-    },
-    nonSortableHeader: {
-        position: 'relative',
-        paddingLeft: 16,
-        paddingRight: 16,
-        verticalAlign: 'middle',
-        letterSpacing: 0,
-        textTransform: 'uppercase',
-        fontWeight: 500,
-        fontSize: 14,
-    },
-    sortButton: {
-        minWidth: 40,
-    },
-    'td:first-child': {
-        padding: '0 12px 0 24px',
-    },
-    td: {
-        padding: '0 12px',
+    cell: {
+        td: {
+            padding: '0 12px',
+        },
+        'td:first-child': {
+            padding: '0 12px 0 24px',
+        },
     },
 };
 
@@ -61,22 +62,14 @@ class Datagrid extends Component {
                 <thead>
                     <tr style={styles.tr}>
                         {React.Children.map(children, (field, index) => (
-                            <TableHeaderColumn key={field.props.source || index} style={index ? styles.th : styles['th:first-child']} >
-                                {field.props.source ?
-                                    <FlatButton
-                                        labelPosition="before"
-                                        onClick={this.updateSort}
-                                        data-sort={field.props.source}
-                                        label={title(field.props.label, field.props.source)}
-                                        icon={field.props.source === currentSort.sort ?
-                                            <ContentSort style={currentSort.order === 'ASC' ? { transform: 'rotate(180deg)' } : {}} /> : false
-                                        }
-                                        style={styles.sortButton}
-                                    />
-                                    :
-                                    (field.props.label && <span style={styles.nonSortableHeader}>{title(field.props.label, field.props.source)}</span>)
-                                }
-                            </TableHeaderColumn>
+                            <DatagridHeaderCell
+                                key={field.props.source || index}
+                                field={field}
+                                defaultStyle={styles.header}
+                                isFirst={index === 0}
+                                currentSort={currentSort}
+                                updateSort={this.updateSort}
+                            />
                         ))}
                     </tr>
                 </thead>
@@ -84,10 +77,11 @@ class Datagrid extends Component {
                     {ids.map(id => (
                         <tr style={styles.tr} key={id}>
                             {React.Children.toArray(children).map((field, index) => (
-                                <TableCell
+                                <DatagridCell
                                     key={`${id}-${field.props.source || index}`}
                                     record={data[id]}
-                                    defaultStyle={index ? styles.td : styles['td:first-child']}
+                                    defaultStyle={styles.cell}
+                                    isFirst={index === 0}
                                     {...{ field, basePath, resource }}
                                 />
                             ))}
