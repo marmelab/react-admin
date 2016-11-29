@@ -55,7 +55,7 @@
     "lodash.debounce": "~4.0.8",
     "lodash.get": "~4.4.2",
     "material-ui": "0.16.1",
-    "quill": "~1.0.4",
+    "quill": "~1.1.5",
     "react": "~15.3.2",
     "react-dom": "~15.3.2",
     "react-redux": "~4.4.5",
