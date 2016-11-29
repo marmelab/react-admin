@@ -56,7 +56,7 @@ class Datagrid extends Component {
     }
 
     render() {
-        const { resource, children, ids, data, currentSort, basePath, styles = defaultStyles, updateSort } = this.props;
+        const { resource, children, ids, data, currentSort, basePath, styles = defaultStyles, rowStyle, updateSort } = this.props;
         return (
             <table style={styles.table}>
                 <thead>
@@ -74,8 +74,8 @@ class Datagrid extends Component {
                     </tr>
                 </thead>
                 <tbody style={styles.tbody}>
-                    {ids.map(id => (
-                        <tr style={styles.tr} key={id}>
+                    {ids.map((id, index) => (
+                        <tr style={rowStyle ? rowStyle(data[id], index) : styles.tr} key={id}>
                             {React.Children.toArray(children).map((field, index) => (
                                 <DatagridCell
                                     key={`${id}-${field.props.source || index}`}
@@ -104,6 +104,7 @@ Datagrid.propTypes = {
     basePath: PropTypes.string,
     setSort: PropTypes.func,
     styles: PropTypes.object,
+    rowStyle: PropTypes.func,
 };
 
 Datagrid.defaultProps = {
