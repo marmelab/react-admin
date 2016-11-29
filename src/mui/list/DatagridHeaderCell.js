@@ -15,7 +15,7 @@ const DatagridHeaderCell = ({ field, defaultStyle, isFirst, currentSort, updateS
                     onClick={updateSort}
                     data-sort={field.props.source}
                     label={title(field.props.label, field.props.source)}
-                    icon={field.props.source === currentSort.sort ?
+                    icon={field.props.source === currentSort.field ?
                         <ContentSort style={currentSort.order === 'ASC' ? { transform: 'rotate(180deg)' } : {}} /> : false
                     }
                     style={styles.sortButton}

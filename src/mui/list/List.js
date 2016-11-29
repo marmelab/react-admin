@@ -7,7 +7,7 @@ import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import inflection from 'inflection';
 import { change as changeFormValueAction, getFormValues } from 'redux-form';
 import debounce from 'lodash.debounce';
-import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER } from '../../reducer/resource/list/queryReducer';
+import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER, SORT_DESC } from '../../reducer/resource/list/queryReducer';
 import Title from '../layout/Title';
 import Pagination from './Pagination';
 import CreateButton from '../button/CreateButton';
@@ -74,9 +74,16 @@ export class List extends Component {
         return (Object.keys(this.props.query).length > 0) ? this.props.query : { ...this.props.params };
     }
 
+    getSort(params) {
+        const { sort, order } = params;
+        const { defaultSort } = this.props;
+        return { field: sort || defaultSort.field, order: order || defaultSort.order };
+    }
+
     updateData(query) {
-        const { sort, order, page, perPage, filter } = query || this.getQuery();
-        this.props.crudGetList(this.props.resource, { page, perPage }, { field: sort, order }, filter);
+        const params = query || this.getQuery();
+        const { page, perPage, filter } = params;
+        this.props.crudGetList(this.props.resource, { page, perPage }, this.getSort(params), filter);
     }
 
     setSort = sort => this.changeParams({ type: SET_SORT, payload: sort });
@@ -129,7 +136,7 @@ export class List extends Component {
                     resource,
                     ids,
                     data,
-                    currentSort: query,
+                    currentSort: this.getSort(query),
                     basePath,
                     setSort: this.setSort,
                 })}
@@ -146,6 +153,10 @@ List.propTypes = {
         PropTypes.string,
     ]),
     filters: PropTypes.object,
+    defaultSort: PropTypes.shape({
+        field: PropTypes.string,
+        order: PropTypes.string,
+    }),
     resource: PropTypes.string.isRequired,
     hasCreate: PropTypes.bool.isRequired,
     hasEdit: PropTypes.bool.isRequired,
@@ -166,6 +177,10 @@ List.propTypes = {
 
 List.defaultProps = {
     filters: {},
+    defaultSort: {
+        field: 'id',
+        order: SORT_DESC,
+    },
 };
 
 function mapStateToProps(state, props) {
