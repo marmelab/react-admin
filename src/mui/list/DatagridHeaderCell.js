@@ -6,7 +6,7 @@ import ContentSort from 'material-ui/svg-icons/content/sort';
 import title from '../../util/title';
 
 const DatagridHeaderCell = ({ field, defaultStyle, isFirst, currentSort, updateSort }) => {
-    const styles = defaultsDeep({}, defaultStyle, field.props.headerStyle);
+    const styles = defaultsDeep({}, field.props.headerStyle, defaultStyle);
     return (
         <TableHeaderColumn style={isFirst ? { ...styles.th, ...styles['th:first-child'] } : styles.th}>
             {field.props.source ?
