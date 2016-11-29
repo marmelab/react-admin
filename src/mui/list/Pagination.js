@@ -72,9 +72,9 @@ export class Pagination extends Component {
     }
 
     renderPageNums() {
-        return this.range().map(pageNum =>
+        return this.range().map((pageNum, index) =>
             (pageNum === '.') ?
-                <span key={pageNum} style={{ padding: '1.2em' }}>&hellip;</span> :
+                <span key={`hyphen_${index}`} style={{ padding: '1.2em' }}>&hellip;</span> :
                 <FlatButton key={pageNum} label={pageNum} data-page={pageNum} onClick={this.gotoPage} primary={pageNum !== this.props.page} style={buttonStyle} />
         );
     }
