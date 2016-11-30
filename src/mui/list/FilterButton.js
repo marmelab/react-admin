@@ -52,7 +52,7 @@ export class FilterButton extends Component {
 
     render() {
         const hiddenFilters = this.getHiddenFilters();
-        return (hiddenFilters.length > 0 && <span>
+        return (hiddenFilters.length > 0 && <div style={{ display: 'inline-block' }}>
             <FlatButton primary label="Add Filter" icon={<ContentFilter />} onTouchTap={this.handleTouchTap} />
             <Popover
                 open={this.state.open}
@@ -67,7 +67,7 @@ export class FilterButton extends Component {
                     )}
                 </Menu>
             </Popover>
-        </span>);
+        </div>);
     }
 }
 
