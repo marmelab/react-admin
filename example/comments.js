@@ -12,7 +12,7 @@ const CommentFilter = (props) => (
 );
 
 export const CommentList = (props) => (
-    <List title="All comments" {...props} filter={CommentFilter}>
+    <List title="All comments" {...props} Filter={CommentFilter}>
         <Datagrid>
             <TextField source="id" />
             <ReferenceField label="Post" source="post_id" reference="posts">

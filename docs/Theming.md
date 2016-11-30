@@ -26,7 +26,7 @@ Some components support additional props to style their own elements. For instan
 {% raw %}
 ```js
 export const ProductList = (props) => (
-    <List {...props} filter={VisitorFilter}>
+    <List {...props} Filter={VisitorFilter}>
         <Datagrid>
             <TextField source="sku" />
             <TextField

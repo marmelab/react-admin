@@ -107,14 +107,14 @@ export class List extends Component {
     }
 
     render() {
-        const { filter, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
+        const { Filter, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    {filter && React.createElement(filter, {
+                    {Filter && React.createElement(Filter, {
                         resource,
                         showFilter: this.showFilter,
                         displayedFilters: this.state,
@@ -125,7 +125,7 @@ export class List extends Component {
                     <FlatButton primary label="Refresh" onClick={this.refresh} icon={<NavigationRefresh />} />
                 </CardActions>
                 <CardTitle title={<Title title={title} defaultTitle={`${inflection.humanize(inflection.pluralize(resource))} List`} />} />
-                {filter && React.createElement(filter, {
+                {Filter && React.createElement(Filter, {
                     resource,
                     hideFilter: this.hideFilter,
                     filterValues,
@@ -148,7 +148,7 @@ export class List extends Component {
 
 List.propTypes = {
     title: PropTypes.any,
-    filter: PropTypes.oneOfType([
+    Filter: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.string,
     ]),
@@ -191,6 +191,7 @@ function mapStateToProps(state, props) {
         // avoid deserialization and keep identity by using a constant
         query.filter = props.filter ? JSON.parse(query.filter) : resourceState.list.params.filter;
     }
+    const Filter = props.filter || props.Filter; // FIXME only for BC with lowercase `filter` name
 
     return {
         query,
@@ -199,7 +200,8 @@ function mapStateToProps(state, props) {
         total: resourceState.list.total,
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
-        filters: props.filter ? getFormValues(filterFormName)(state) : resourceState.list.params.filter,
+        filters: Filter ? getFormValues(filterFormName)(state) : resourceState.list.params.filter,
+        Filter,
     };
 }
 

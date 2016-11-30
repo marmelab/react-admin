@@ -167,7 +167,7 @@ import React from 'react';
 import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'admin-on-rest/mui';
 
 export const PostList = (props) => (
-    <List {...props} filter={PostFilter}>
+    <List {...props} Filter={PostFilter}>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" type="email" />
@@ -264,7 +264,7 @@ However, you may want to override the field *container* (for instance, the `<td>
 {% raw %}
 ```js
 export const ProductList = (props) => (
-    <List {...props} filter={VisitorFilter}>
+    <List {...props} Filter={VisitorFilter}>
         <Datagrid>
             <TextField source="sku" />
             <TextField source="price"
