@@ -7,7 +7,7 @@ title: "The List View"
 
 The List view displays a list of records fetched from the REST API. The entry point for this view is the `<List>` component, which takes care of fetching the data. Then, it passes the data to an iterator view - usually `<Datagrid>`, which then delegates the rendering of each record property to `<Field>` components.
 
-![The List View](./img/filters.gif)
+![The List View](./img/list-view.png)
 
 ## The `<List>` Component
 
@@ -21,7 +21,7 @@ Here are all the props accepted by this component:
 * [`perPage`](#records-per-page)
 * [`defaultSort`](#default-sort-field)
 * [`Actions`](#actions)
-* [`Filters`](#filters)
+* [`Filter`](#filters)
 * [`Pagination`](#pagination)
 
 Here is the minimal code necessary to display a list of posts:
@@ -276,7 +276,7 @@ export const PostList = (props) => (
 ```
 {% endraw %}
 
-**Tip**: if you want to go even further and apply a custom styme cell by cell, check out the [Conditional Formatting section of the Theming chapter](./Theming.html#conditional-formatting.)
+**Tip**: if you want to go even further and apply a custom style cell by cell, check out the [Conditional Formatting section of the Theming chapter](./Theming.html#conditional-formatting.)
 
 ### Row Style Function
 
