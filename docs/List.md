@@ -15,7 +15,7 @@ The `<List>` component renders the list layout (title, buttons, filters, paginat
 
 **Tip**: In Redux terms, `<List>` is a connected component, and `<Datagrid>` is a dumb component.
 
-Here are all the props accepted by this component:
+Here are all the props accepted by the `<List>` component:
 
 * [`title`](#page-title)
 * [`perPage`](#records-per-page)
@@ -56,11 +56,11 @@ export const PostList = (props) => (
 );
 ```
 
-Notice that the `<List>`, `<Datagrid>`, and `<TextField>` components that we use here are from `admin-on-rest/lib/mui` - these are Material UI components.
-
 That's enough to display the post list:
 
 ![Simple posts list](./img/simple-post-list.png)
+
+Notice that the `<List>`, `<Datagrid>`, and `<TextField>` components that we use here are from `admin-on-rest/lib/mui` - these are Material UI components.
 
 ### Page Title
 
@@ -123,10 +123,10 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const PostActions = ({ resource, Filter, displayedFilters, filterValues, hasCreate, basePath, showFilter, refresh }) => (
+const PostActions = ({ resource, Filter, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
     <CardActions style={cardActionStyle}>
         {Filter && <Filter context="button" {...{ resource, showFilter, displayedFilters, filterValues }} />}
-        {hasCreate && <CreateButton basePath={basePath} />}
+        <CreateButton basePath={basePath} />
         <FlatButton primary label="refresh" onClick={refresh} icon={<NavigationRefresh />} />
         {/* Add your custom actions */}
         <FlatButton primary label="Custom Action" onClick={customAction} />
@@ -161,11 +161,18 @@ export const PostList = (props) => (
 
 The filter component must be a `<Filter>` with `<Input>` children.
 
-**Tip**: `<Filter>` is a special component, which renders in two ways: once as a filter button, and two as a filter form. It does so by inspecting its children components, which must all be `<Input>` components.
+**Tip**: `<Filter>` is a special component, which renders in two ways:
+
+- as a filter button (to add new filters)
+- as a filter form (to enter filter values)
+
+It does so by inspecting its `context` prop.
 
 ### Pagination
 
 You can replace the default pagination component by your own, using the `Pagination` prop. The pagination component receives the current page, the number of records per page, the total number of records, as well as a `setPage()` function that changes the page.
+
+So if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
 
 ```js
 import FlatButton from 'material-ui/FlatButton';
@@ -199,7 +206,7 @@ export const PostList = (props) => (
 
 ## The `<Datagrid>` component
 
-The datagrid component renders the a list of records as a table. it is usually used as a child of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.html#referencemanyfield) components.
+The datagrid component renders a list of records as a table. It is usually used as a child of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.html#referencemanyfield) components.
 
 Here are all the props accepted by the component:
 
@@ -219,6 +226,7 @@ export const PostList = (props) => (
             <TextField source="id" />
             <TextField source="title" />
             <TextField source="body" />
+            <EditButton />
         </Datagrid>
     </List>
 );
@@ -226,9 +234,9 @@ export const PostList = (props) => (
 
 The datagrid is an *iterator* component: it receives an array of ids, and a data store, and is supposed to iterate over the ids to display each record. Another example of iterator component is [`<SingleFieldList>`](#the-singlefieldlist-component).
 
-### Custom Grid style
+### Custom Grid Style
 
-You can customize the datagrid style by passing a `styles` object as prop. The object should have the following properties:
+You can customize the datagrid styles by passing a `styles` object as prop. The object should have the following properties:
 
 ```js
 const datagridStyles = {
@@ -285,7 +293,6 @@ You can customize the datagrid row style (applied to the `<tr>` element) based o
 For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
 
 ```js
-//
 const postRowStyle = (record, index) => ({
     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
 });
