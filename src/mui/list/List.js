@@ -230,12 +230,19 @@ List.defaultProps = {
 function mapStateToProps(state, props) {
     const resourceState = state.admin[props.resource];
     const query = props.location.query;
+    let Filter;
+    // FIXME only for BC with lowercase `filter` name
+    if (props.filter) {
+        console.warn('The filter prop of the <List> component was renamed to Filter (capital F). Please update your code.');
+        Filter = props.filter;
+    } else {
+        Filter = props.Filter;
+    }
     if (query.filter && typeof query.filter === 'string') {
         // if the List has no filter component, the filter is always "{}"
         // avoid deserialization and keep identity by using a constant
-        query.filter = props.filter ? JSON.parse(query.filter) : resourceState.list.params.filter;
+        query.filter = Filter ? JSON.parse(query.filter) : resourceState.list.params.filter;
     }
-    const Filter = props.filter || props.Filter; // FIXME only for BC with lowercase `filter` name
 
     return {
         query,
