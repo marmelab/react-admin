@@ -36,7 +36,7 @@
     "eslint": "~3.11.0",
     "eslint-config-airbnb": "~13.0.0",
     "eslint-plugin-import": "~2.2.0",
-    "eslint-plugin-jsx-a11y": "~3.0.1",
+    "eslint-plugin-jsx-a11y": "~2.2.3",
     "eslint-plugin-react": "~6.7.1",
     "extract-text-webpack-plugin": "~1.0.1",
     "fakerest": "~1.2.1",
