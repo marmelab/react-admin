@@ -26,10 +26,11 @@ const filterFormName = 'filterForm';
  *
  * Props:
  *   - title
- *   - Filter
- *   - Pagination
  *   - perPage
  *   - defaultSort
+ *   - Actions
+ *   - Filter
+ *   - Pagination
  *
  * @example
  *     const PostFilter = (props) => (
