@@ -26,6 +26,13 @@ const filterFormName = 'filterForm';
  *
  * In Redux terms, <List> is a connected component, and <Datagrid> is a dumb component.
  *
+ * Props:
+ *   - title
+ *   - Filter
+ *   - Pagination
+ *   - perPage
+ *   - defaultSort
+ *
  * @example
  *     const PostFilter = (props) => (
  *         <Filter {...props}>

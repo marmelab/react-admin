@@ -18,10 +18,6 @@ import {
     RichTextField,
     RichTextInput,
 } from 'admin-on-rest/mui';
-import FlatButton from 'material-ui/FlatButton';
-import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
-import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 
 export PostIcon from 'material-ui/svg-icons/action/book';
 
@@ -32,25 +28,8 @@ const PostFilter = (props) => (
     </Filter>
 );
 
-const PostPagination = ({ page, perPage, total, setPage }) => {
-    const nbPages = Math.ceil(total / perPage) || 1;
-    return (
-        nbPages > 1 &&
-            <Toolbar>
-                <ToolbarGroup>
-                {page > 1 &&
-                    <FlatButton primary key="prev" label="Prev" icon={<ChevronLeft />} onClick={() => setPage(page - 1)} />
-                }
-                {page !== nbPages &&
-                    <FlatButton primary key="next" label="Next" icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before" />
-                }
-                </ToolbarGroup>
-            </Toolbar>
-    );
-}
-
 export const PostList = (props) => (
-    <List {...props} Filter={PostFilter} Pagination={PostPagination}>
+    <List {...props} Filter={PostFilter}>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" type="email" style={{ display: 'inline-block', maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis' }}/>
