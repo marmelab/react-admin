@@ -1,16 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { push as pushAction } from 'react-router-redux';
-import { Card, CardTitle, CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+import { Card, CardTitle } from 'material-ui/Card';
 import inflection from 'inflection';
 import { change as changeFormValueAction, getFormValues } from 'redux-form';
 import debounce from 'lodash.debounce';
 import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER, SORT_DESC } from '../../reducer/resource/list/queryReducer';
 import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
-import CreateButton from '../button/CreateButton';
+import DefaultActions from './Actions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
 
@@ -150,23 +148,13 @@ export class List extends Component {
     }
 
     render() {
-        const { Filter, Pagination = DefaultPagination, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
+        const { Filter, Pagination = DefaultPagination, Actions = DefaultActions, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
-                <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    {Filter && React.createElement(Filter, {
-                        resource,
-                        showFilter: this.showFilter,
-                        displayedFilters: this.state,
-                        filterValues,
-                        context: 'button',
-                    })}
-                    {hasCreate && <CreateButton basePath={basePath} />}
-                    <FlatButton primary label="Refresh" onClick={this.refresh} icon={<NavigationRefresh />} />
-                </CardActions>
+                <Actions {...{ resource, Filter, filterValues, basePath, hasCreate }} displayedFilters={this.state} showFilter={this.showFilter} refresh={this.refresh} />
                 <CardTitle title={<Title title={title} defaultTitle={`${inflection.humanize(inflection.pluralize(resource))} List`} />} />
                 {Filter && React.createElement(Filter, {
                     resource,
@@ -197,6 +185,10 @@ List.propTypes = {
         PropTypes.string,
     ]),
     Pagination: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.string,
+    ]),
+    Actions: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.string,
     ]),

@@ -20,6 +20,7 @@ Here are all the props accepted by this component:
 * [`title`](#page-title)
 * [`perPage`](#records-per-page)
 * [`defaultSort`](#default-sort-field)
+* [`Actions`](#actions)
 * [`Filters`](#filters)
 * [`Pagination`](#pagination)
 
@@ -106,6 +107,39 @@ export const PostList = (props) => (
 
 `defaultSort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
 
+### Actions
+
+You can replace the list of default actions by your own using the `Actions` prop:
+
+```js
+import { CardActions } from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+import CreateButton from '../button/CreateButton';
+
+const cardActionStyle = {
+    zIndex: 2,
+    display: 'inline-block',
+    float: 'right',
+};
+
+const PostActions = ({ resource, Filter, displayedFilters, filterValues, hasCreate, basePath, showFilter, refresh }) => (
+    <CardActions style={cardActionStyle}>
+        {Filter && <Filter context="button" {...{ resource, showFilter, displayedFilters, filterValues }} />}
+        {hasCreate && <CreateButton basePath={basePath} />}
+        <FlatButton primary label="refresh" onClick={refresh} icon={<NavigationRefresh />} />
+        {/* Add your custom actions */}
+        <FlatButton primary label="Custom Action" onClick={customAction} />
+    </CardActions>
+);
+
+export const PostList = (props) => (
+    <List {...props} Actions={PostActions}>
+        ...
+    </List>
+);
+```
+
 ### Filters
 
 You can add a filter component to the list:
@@ -119,7 +153,7 @@ const PostFilter = (props) => (
 );
 
 export const PostList = (props) => (
-    <List {...props} filter={PostFilter}>
+    <List {...props} Filter={PostFilter}>
         ...
     </List>
 );
