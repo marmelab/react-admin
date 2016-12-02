@@ -17,7 +17,8 @@ const styles = {
 const BooleanInput = ({ input, label }) => (
     <div style={styles.block}>
         <Toggle
-            {...input}
+            defaultToggled={!!input.value}
+            onToggle={input.onChange}
             labelStyle={styles.label}
             style={styles.toggle}
             label={label}
