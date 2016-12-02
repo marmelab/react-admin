@@ -20,7 +20,7 @@ Here are all the props accepted by the `<List>` component:
 * [`title`](#page-title)
 * [`perPage`](#records-per-page)
 * [`defaultSort`](#default-sort-field)
-* [`Actions`](#actions)
+* [`actions`](#actions)
 * [`Filter`](#filters)
 * [`pagination`](#pagination)
 
@@ -109,7 +109,7 @@ export const PostList = (props) => (
 
 ### Actions
 
-You can replace the list of default actions by your own using the `Actions` prop:
+You can replace the list of default actions by your own element using the `actions` prop:
 
 ```js
 import { CardActions } from 'material-ui/Card';
@@ -134,7 +134,7 @@ const PostActions = ({ resource, Filter, displayedFilters, filterValues, basePat
 );
 
 export const PostList = (props) => (
-    <List {...props} Actions={PostActions}>
+    <List {...props} actions={<PostActions />}>
         ...
     </List>
 );

@@ -28,7 +28,7 @@ const filterFormName = 'filterForm';
  *   - title
  *   - perPage
  *   - defaultSort
- *   - Actions
+ *   - actions
  *   - Filter
  *   - pagination
  *
@@ -149,13 +149,22 @@ export class List extends Component {
     }
 
     render() {
-        const { Filter, pagination = <DefaultPagination />, Actions = DefaultActions, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
+        const { Filter, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
-                <Actions {...{ resource, Filter, filterValues, basePath, hasCreate }} displayedFilters={this.state} showFilter={this.showFilter} refresh={this.refresh} />
+                {React.cloneElement(actions, {
+                    resource,
+                    Filter,
+                    filterValues,
+                    basePath,
+                    hasCreate,
+                    displayedFilters: this.state,
+                    showFilter: this.showFilter,
+                    refresh: this.refresh,
+                })}
                 <CardTitle title={<Title title={title} defaultTitle={`${inflection.humanize(inflection.pluralize(resource))} List`} />} />
                 {Filter && React.createElement(Filter, {
                     resource,
@@ -192,10 +201,7 @@ List.propTypes = {
         PropTypes.string,
     ]),
     pagination: PropTypes.element,
-    Actions: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.string,
-    ]),
+    actions: PropTypes.element,
     perPage: PropTypes.number.isRequired,
     defaultSort: PropTypes.shape({
         field: PropTypes.string,
