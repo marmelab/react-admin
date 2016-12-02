@@ -58,12 +58,11 @@ SelectInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     choices: PropTypes.arrayOf(PropTypes.object),
     includesLabel: PropTypes.bool.isRequired,
-    input: PropTypes.object.isRequired,
+    input: PropTypes.object,
     label: PropTypes.string,
     options: PropTypes.object,
     optionText: PropTypes.string.isRequired,
     optionValue: PropTypes.string.isRequired,
-    record: PropTypes.object,
     source: PropTypes.string,
     style: PropTypes.object,
 };
