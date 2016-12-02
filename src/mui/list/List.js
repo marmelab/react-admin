@@ -182,7 +182,6 @@ export class List extends Component {
                     setSort: this.setSort,
                 })}
                 {React.cloneElement(pagination, {
-                    resource,
                     total,
                     page: parseInt(query.page, 10),
                     perPage: parseInt(query.perPage, 10),
