@@ -32,7 +32,6 @@ class SelectInput extends Component {
 
     render() {
         const { allowEmpty, input, label, choices, optionText, optionValue, options, source, style } = this.props;
-        const { input, label, choices, optionText, optionValue, options } = this.props;
 
         return (
             <SelectField

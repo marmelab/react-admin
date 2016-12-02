@@ -11,6 +11,7 @@ import {
     EditButton,
     Filter,
     List,
+    LongTextInput,
     Show,
     ShowButton,
     ReferenceManyField,
@@ -70,13 +71,8 @@ export const PostCreate = (props) => (
         <TextInput source="teaser" options={{ multiLine: true }} />
         <RichTextInput source="body" />
         <DateInput label="Publication date" source="published_at" />
-<<<<<<< a8df20b486df51152e1bff55e084fab528ccb696
         <TextInput source="average_note" />
-        <NotNullableBooleanInput label="Allow comments?" source="commentable" />
-=======
-        <TextInput label="Average note" source="average_note" />
         <BooleanInput label="Allow comments?" source="commentable" />
->>>>>>> Code review
     </Create>
 );
 
