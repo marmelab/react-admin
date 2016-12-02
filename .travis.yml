@@ -7,3 +7,4 @@ cache:
 branches:
   only:
     - master
+    - next
