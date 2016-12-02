@@ -29,7 +29,7 @@ const PostFilter = (props) => (
 );
 
 export const PostList = (props) => (
-    <List {...props} Filter={PostFilter}>
+    <List {...props} filter={<PostFilter />}>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" type="email" style={{ display: 'inline-block', maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis' }}/>

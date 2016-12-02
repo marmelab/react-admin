@@ -10,9 +10,9 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const Actions = ({ resource, Filter, displayedFilters, filterValues, hasCreate, basePath, showFilter, refresh }) => (
+const Actions = ({ resource, filter, displayedFilters, filterValues, hasCreate, basePath, showFilter, refresh }) => (
     <CardActions style={cardActionStyle}>
-        {Filter && <Filter context="button" {...{ resource, showFilter, displayedFilters, filterValues }} />}
+        {filter && React.cloneElement(filter, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         {hasCreate && <CreateButton basePath={basePath} />}
         <FlatButton primary label="Refresh" onClick={refresh} icon={<NavigationRefresh />} />
     </CardActions>

@@ -283,7 +283,7 @@ In the edition view, a new "delete" button appears. And you can also use the `<D
 
 Let's get back to the post list for a minute. It offers sorting and pagination, but one feature is missing: the ability to search content.
 
-Admin-on-rest can use input components to create a multi-criteria search engine in the list view. First, create a `<Filter>` component just like you would with a `<Create>` component, using input components. Then, tell the list to use this filter component using the `Filter` prop:
+Admin-on-rest can use input components to create a multi-criteria search engine in the list view. First, create a `<Filter>` component just like you would with a `<Create>` component, using input components. Then, tell the list to use a filter element using the `filter` prop:
 
 ```js
 // in src/posts.js
@@ -299,7 +299,7 @@ const PostFilter = (props) => (
 );
 
 export const PostList = (props) => (
-    <List {...props} Filter={PostFilter}>
+    <List {...props} filter={<PostFilter />}>
         // ...
     </List>
 );

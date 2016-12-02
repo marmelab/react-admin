@@ -21,7 +21,7 @@ Here are all the props accepted by the `<List>` component:
 * [`perPage`](#records-per-page)
 * [`defaultSort`](#default-sort-field)
 * [`actions`](#actions)
-* [`Filter`](#filters)
+* [`filter`](#filters)
 * [`pagination`](#pagination)
 
 Here is the minimal code necessary to display a list of posts:
@@ -123,9 +123,9 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const PostActions = ({ resource, Filter, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
+const PostActions = ({ resource, filter, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
     <CardActions style={cardActionStyle}>
-        {Filter && <Filter context="button" {...{ resource, showFilter, displayedFilters, filterValues }} />}
+        {filter && React.cloneElement(filter, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         <CreateButton basePath={basePath} />
         <FlatButton primary label="refresh" onClick={refresh} icon={<NavigationRefresh />} />
         {/* Add your custom actions */}
@@ -142,7 +142,7 @@ export const PostList = (props) => (
 
 ### Filters
 
-You can add a filter component to the list:
+You can add a filter element to the list:
 
 ```js
 const PostFilter = (props) => (
@@ -153,7 +153,7 @@ const PostFilter = (props) => (
 );
 
 export const PostList = (props) => (
-    <List {...props} Filter={PostFilter}>
+    <List {...props} filter={<PostFilter />}>
         ...
     </List>
 );

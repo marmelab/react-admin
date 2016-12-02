@@ -29,7 +29,7 @@ const filterFormName = 'filterForm';
  *   - perPage
  *   - defaultSort
  *   - actions
- *   - Filter
+ *   - filter
  *   - pagination
  *
  * @example
@@ -40,7 +40,7 @@ const filterFormName = 'filterForm';
  *         </Filter>
  *     );
  *     export const PostList = (props) => (
- *         <List {...props} title="List of posts" Filter={PostFilter} defaultSort={{ field: 'published_at' }}>
+ *         <List {...props} title="List of posts" filter={<PostFilter />} defaultSort={{ field: 'published_at' }}>
  *             <Datagrid>
  *                 <TextField source="id" />
  *                 <TextField source="title" />
@@ -149,15 +149,15 @@ export class List extends Component {
     }
 
     render() {
-        const { Filter, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
+        const { filter, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
-                {React.cloneElement(actions, {
+                {actions && React.cloneElement(actions, {
                     resource,
-                    Filter,
+                    filter,
                     filterValues,
                     basePath,
                     hasCreate,
@@ -166,7 +166,7 @@ export class List extends Component {
                     refresh: this.refresh,
                 })}
                 <CardTitle title={<Title title={title} defaultTitle={`${inflection.humanize(inflection.pluralize(resource))} List`} />} />
-                {Filter && React.createElement(Filter, {
+                {filter && React.cloneElement(filter, {
                     resource,
                     hideFilter: this.hideFilter,
                     filterValues,
@@ -181,7 +181,7 @@ export class List extends Component {
                     basePath,
                     setSort: this.setSort,
                 })}
-                {React.cloneElement(pagination, {
+                {pagination && React.cloneElement(pagination, {
                     total,
                     page: parseInt(query.page, 10),
                     perPage: parseInt(query.perPage, 10),
@@ -195,10 +195,7 @@ export class List extends Component {
 List.propTypes = {
     // the props you can change
     title: PropTypes.any,
-    Filter: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.string,
-    ]),
+    filter: PropTypes.element,
     pagination: PropTypes.element,
     actions: PropTypes.element,
     perPage: PropTypes.number.isRequired,
@@ -238,18 +235,10 @@ List.defaultProps = {
 function mapStateToProps(state, props) {
     const resourceState = state.admin[props.resource];
     const query = props.location.query;
-    let Filter;
-    // FIXME only for BC with lowercase `filter` name
-    if (props.filter) {
-        console.warn('The filter prop of the <List> component was renamed to Filter (capital F). Please update your code.');
-        Filter = props.filter;
-    } else {
-        Filter = props.Filter;
-    }
     if (query.filter && typeof query.filter === 'string') {
         // if the List has no filter component, the filter is always "{}"
         // avoid deserialization and keep identity by using a constant
-        query.filter = Filter ? JSON.parse(query.filter) : resourceState.list.params.filter;
+        query.filter = props.filter ? JSON.parse(query.filter) : resourceState.list.params.filter;
     }
 
     return {
@@ -259,8 +248,7 @@ function mapStateToProps(state, props) {
         total: resourceState.list.total,
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
-        filters: Filter ? getFormValues(filterFormName)(state) : resourceState.list.params.filter,
-        Filter,
+        filters: props.filter ? getFormValues(filterFormName)(state) : resourceState.list.params.filter,
     };
 }
 
