@@ -22,7 +22,7 @@ Here are all the props accepted by the `<List>` component:
 * [`defaultSort`](#default-sort-field)
 * [`Actions`](#actions)
 * [`Filter`](#filters)
-* [`Pagination`](#pagination)
+* [`pagination`](#pagination)
 
 Here is the minimal code necessary to display a list of posts:
 
@@ -170,7 +170,7 @@ It does so by inspecting its `context` prop.
 
 ### Pagination
 
-You can replace the default pagination component by your own, using the `Pagination` prop. The pagination component receives the current page, the number of records per page, the total number of records, as well as a `setPage()` function that changes the page.
+You can replace the default pagination element by your own, using the `pagination` prop. The pagination element receives the current page, the number of records per page, the total number of records, as well as a `setPage()` function that changes the page.
 
 So if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
 
@@ -198,7 +198,7 @@ const PostPagination = ({ page, perPage, total, setPage }) => {
 }
 
 export const PostList = (props) => (
-    <List {...props} Pagination={PostPagination}>
+    <List {...props} pagination={<PostPagination />}>
         ...
     </List>
 );

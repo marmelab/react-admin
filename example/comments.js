@@ -74,7 +74,7 @@ CommentGrid.defaultProps = {
 };
 
 export const CommentList = (props) => (
-    <List title="All comments" {...props} perPage={6} Filter={CommentFilter} Pagination={CommentPagination}>
+    <List title="All comments" {...props} perPage={6} Filter={CommentFilter} pagination={<CommentPagination />}>
         <CommentGrid />
     </List>
 );

@@ -30,7 +30,7 @@ const filterFormName = 'filterForm';
  *   - defaultSort
  *   - Actions
  *   - Filter
- *   - Pagination
+ *   - pagination
  *
  * @example
  *     const PostFilter = (props) => (
@@ -149,7 +149,7 @@ export class List extends Component {
     }
 
     render() {
-        const { Filter, Pagination = DefaultPagination, Actions = DefaultActions, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
+        const { Filter, pagination = <DefaultPagination />, Actions = DefaultActions, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
@@ -172,7 +172,13 @@ export class List extends Component {
                     basePath,
                     setSort: this.setSort,
                 })}
-                <Pagination resource={resource} page={parseInt(query.page, 10)} perPage={parseInt(query.perPage, 10)} total={total} setPage={this.setPage} />
+                {React.cloneElement(pagination, {
+                    resource,
+                    total,
+                    page: parseInt(query.page, 10),
+                    perPage: parseInt(query.perPage, 10),
+                    setPage: this.setPage,
+                })}
             </Card>
         );
     }
@@ -185,10 +191,7 @@ List.propTypes = {
         PropTypes.func,
         PropTypes.string,
     ]),
-    Pagination: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.string,
-    ]),
+    pagination: PropTypes.element,
     Actions: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.string,
