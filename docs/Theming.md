@@ -21,6 +21,26 @@ import { DateField } from 'admin-on-rest/mui';
 ```
 {% endraw %}
 
+Some components support additional props to style their own elements. For instance, when using a `<Datagrid>`, you can specify how a `<Field>` renders header and cells with the `headerStyle` and `cellStyle` props. Here is how to use these props to make a column right aligned:
+
+{% raw %}
+```js
+export const ProductList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="sku" />
+            <TextField
+                source="price"
+                cellStyle={{ td: { textAlign: 'right' } }}
+                headerStyle={{ th: { textAlign: 'right' } }}
+            />
+            <EditButton />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
 If you need more control over the HTML code, you can also create your own [Field](./Fields.html#writing-your-own-field-component) and [Input](./Inputs.html#writing-your-own-input-component) components.
 
 ## Conditional Formatting

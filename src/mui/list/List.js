@@ -1,21 +1,55 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { push as pushAction } from 'react-router-redux';
-import { Card, CardTitle, CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+import { Card, CardTitle } from 'material-ui/Card';
 import inflection from 'inflection';
 import { change as changeFormValueAction, getFormValues } from 'redux-form';
 import debounce from 'lodash.debounce';
-import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER } from '../../reducer/resource/list/queryReducer';
+import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER, SORT_DESC } from '../../reducer/resource/list/queryReducer';
 import Title from '../layout/Title';
-import Pagination from './Pagination';
-import CreateButton from '../button/CreateButton';
+import DefaultPagination from './Pagination';
+import DefaultActions from './Actions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
 
 const filterFormName = 'filterForm';
 
+/**
+ * List page component
+ *
+ * The <List> component renders the list layout (title, buttons, filters, pagination),
+ * and fetches the list of records from the REST API.
+ * It then delegates the rendering of the list of records to its child component.
+ * Usually, it's a <Datagrid>, responsible for displaying a table with one row for each post.
+ *
+ * In Redux terms, <List> is a connected component, and <Datagrid> is a dumb component.
+ *
+ * Props:
+ *   - title
+ *   - perPage
+ *   - defaultSort
+ *   - actions
+ *   - filter
+ *   - pagination
+ *
+ * @example
+ *     const PostFilter = (props) => (
+ *         <Filter {...props}>
+ *             <TextInput label="Search" source="q" alwaysOn />
+ *             <TextInput label="Title" source="title" />
+ *         </Filter>
+ *     );
+ *     export const PostList = (props) => (
+ *         <List {...props} title="List of posts" filter={<PostFilter />} defaultSort={{ field: 'published_at' }}>
+ *             <Datagrid>
+ *                 <TextField source="id" />
+ *                 <TextField source="title" />
+ *                 <DateField source="published_at" style={{ fontStyle: 'italic' }} />
+ *                 <EditButton />
+ *             </Datagrid>
+ *         </List>
+ *     );
+ */
 export class List extends Component {
     constructor(props) {
         super(props);
@@ -70,12 +104,27 @@ export class List extends Component {
         this.updateData();
     }
 
+    /**
+     * Merge list params from 3 different sources:
+     *   - the query string
+     *   - the params stored in the state (from previous navigation)
+     *   - the props passed to the List component
+     */
     getQuery() {
-        return (Object.keys(this.props.query).length > 0) ? this.props.query : { ...this.props.params };
+        const query = Object.keys(this.props.query).length > 0 ? this.props.query : { ...this.props.params };
+        if (!query.sort) {
+            query.sort = this.props.defaultSort.field;
+            query.order = this.props.defaultSort.order;
+        }
+        if (!query.perPage) {
+            query.perPage = this.props.perPage;
+        }
+        return query;
     }
 
     updateData(query) {
-        const { sort, order, page, perPage, filter } = query || this.getQuery();
+        const params = query || this.getQuery();
+        const { sort, order, page, perPage, filter } = params;
         this.props.crudGetList(this.props.resource, { page, perPage }, { field: sort, order }, filter);
     }
 
@@ -100,25 +149,24 @@ export class List extends Component {
     }
 
     render() {
-        const { filter, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
+        const { filter, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
-                <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    {filter && React.createElement(filter, {
-                        resource,
-                        showFilter: this.showFilter,
-                        displayedFilters: this.state,
-                        filterValues,
-                        context: 'button',
-                    })}
-                    {hasCreate && <CreateButton basePath={basePath} />}
-                    <FlatButton primary label="Refresh" onClick={this.refresh} icon={<NavigationRefresh />} />
-                </CardActions>
+                {actions && React.cloneElement(actions, {
+                    resource,
+                    filter,
+                    filterValues,
+                    basePath,
+                    hasCreate,
+                    displayedFilters: this.state,
+                    showFilter: this.showFilter,
+                    refresh: this.refresh,
+                })}
                 <CardTitle title={<Title title={title} defaultTitle={`${inflection.humanize(inflection.pluralize(resource))} List`} />} />
-                {filter && React.createElement(filter, {
+                {filter && React.cloneElement(filter, {
                     resource,
                     hideFilter: this.hideFilter,
                     filterValues,
@@ -129,43 +177,59 @@ export class List extends Component {
                     resource,
                     ids,
                     data,
-                    currentSort: query,
+                    currentSort: { field: query.sort, order: query.order },
                     basePath,
                     setSort: this.setSort,
                 })}
-                <Pagination resource={resource} page={parseInt(query.page, 10)} perPage={parseInt(query.perPage, 10)} total={total} setPage={this.setPage} />
+                {pagination && React.cloneElement(pagination, {
+                    total,
+                    page: parseInt(query.page, 10),
+                    perPage: parseInt(query.perPage, 10),
+                    setPage: this.setPage,
+                })}
             </Card>
         );
     }
 }
 
 List.propTypes = {
+    // the props you can change
     title: PropTypes.any,
-    filter: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.string,
-    ]),
-    filters: PropTypes.object,
-    resource: PropTypes.string.isRequired,
+    filter: PropTypes.element,
+    pagination: PropTypes.element,
+    actions: PropTypes.element,
+    perPage: PropTypes.number.isRequired,
+    defaultSort: PropTypes.shape({
+        field: PropTypes.string,
+        order: PropTypes.string,
+    }),
+    children: PropTypes.element.isRequired,
+    // the props managed by admin-on-rest
+    changeFormValue: PropTypes.func.isRequired,
+    changeListParams: PropTypes.func.isRequired,
+    crudGetList: PropTypes.func.isRequired,
+    data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    filters: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     hasCreate: PropTypes.bool.isRequired,
     hasEdit: PropTypes.bool.isRequired,
+    ids: PropTypes.array,
+    isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     path: PropTypes.string,
     params: PropTypes.object.isRequired,
-    query: PropTypes.object.isRequired,
-    ids: PropTypes.array,
-    total: PropTypes.number.isRequired,
-    data: PropTypes.object,
-    isLoading: PropTypes.bool.isRequired,
-    crudGetList: PropTypes.func.isRequired,
-    changeFormValue: PropTypes.func.isRequired,
-    changeListParams: PropTypes.func.isRequired,
-    children: PropTypes.element.isRequired,
     push: PropTypes.func.isRequired,
+    query: PropTypes.object.isRequired,
+    resource: PropTypes.string.isRequired,
+    total: PropTypes.number.isRequired,
 };
 
 List.defaultProps = {
     filters: {},
+    perPage: 10,
+    defaultSort: {
+        field: 'id',
+        order: SORT_DESC,
+    },
 };
 
 function mapStateToProps(state, props) {

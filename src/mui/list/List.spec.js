@@ -44,8 +44,8 @@ describe('<List />', () => {
             clock.tick(1000); // wait for debounce
 
             assert.deepEqual(changeListParams.args, [
-                ['post', { page: 1, filter: { q: 'hello' } }],
-                ['post', { page: 1, filter: {} }],
+                ['post', { page: 1, perPage: 10, sort: 'id', order: 'DESC', filter: { q: 'hello' } }],
+                ['post', { page: 1, perPage: 10, sort: 'id', order: 'DESC', filter: {} }],
             ]);
         });
 

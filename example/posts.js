@@ -29,7 +29,7 @@ const PostFilter = (props) => (
 );
 
 export const PostList = (props) => (
-    <List {...props} filter={PostFilter}>
+    <List {...props} filter={<PostFilter />}>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" type="email" style={{ display: 'inline-block', maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis' }}/>
@@ -73,7 +73,7 @@ export const PostCreate = (props) => (
 );
 
 export const PostEdit = (props) => (
-    <Edit title={PostTitle} {...props}>
+    <Edit title={<PostTitle />} {...props}>
         <DisabledInput label="Id" source="id" />
         <TextInput source="title" validation={{ required: true }} />
         <TextInput label="Password (if protected post)" source="password" type="password" />

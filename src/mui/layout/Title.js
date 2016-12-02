@@ -7,13 +7,16 @@ const Title = ({ defaultTitle, record, title }) => {
     if (typeof title === 'string') {
         return <span>{title}</span>;
     }
-    return React.createElement(title, { record });
+    return React.cloneElement(title, { record });
 };
 
 Title.propTypes = {
     defaultTitle: PropTypes.string.isRequired,
     record: PropTypes.object,
-    title: PropTypes.any,
+    title: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.element,
+    ]),
 };
 
 export default Title;

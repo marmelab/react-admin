@@ -108,11 +108,10 @@ export class Pagination extends Component {
 }
 
 Pagination.propTypes = {
-    resource: PropTypes.string.isRequired,
     page: PropTypes.number,
     perPage: PropTypes.number,
     total: PropTypes.number,
-    setPage: PropTypes.func.isRequired,
+    setPage: PropTypes.func,
 };
 
 export default Pagination;

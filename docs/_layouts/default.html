@@ -100,9 +100,28 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="chapter {% if page.path == 'List.md' %}active{% endif %}">
+                            <a href="./List.html">
+                                <b>5.</b> The List View
+                            </a>
+                            <ul class="articles" {% if page.path != 'List.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#the-list-component"><code>&lt;List&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#the-datagrid-component"><code>&lt;Datagrid&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#the-singlefieldlist-component"><code>&lt;SingleFieldList&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#using-a-custom-iterator">Using a Custom Iterator</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="chapter {% if page.path == 'Fields.md' %}active{% endif %}">
                             <a href="./Fields.html">
-                                <b>5.</b> Field Components
+                                <b>6.</b> Field Components
                             </a>
                             <ul class="articles" {% if page.path != 'Fields.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -130,13 +149,16 @@
                                     <a href="#urlfield"><code>&lt;UrlField&gt;</code></a>
                                 </li>
                                 <li class="chapter">
+                                    <a href="#styling-fields">Styling Fields</a>
+                                </li>
+                                <li class="chapter">
                                     <a href="#writing-your-own-field-component">Writing your own field component</a>
                                 </li>
                             </ul>
                         </li>
                         <li class="chapter {% if page.path == 'Inputs.md' %}active{% endif %}">
                             <a href="./Inputs.html">
-                                <b>6.</b> Input Components
+                                <b>7.</b> Input Components
                             </a>
                             <ul class="articles" {% if page.path != 'Inputs.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -170,12 +192,12 @@
                         </li>
                         <li class="chapter {% if page.path == 'FormValidation.md' %}active{% endif %}">
                             <a href="./FormValidation.html">
-                                <b>7.</b> Form Validation
+                                <b>8.</b> Form Validation
                             </a>
                         </li>
                         <li class="chapter {% if page.path == 'Theming.md' %}active{% endif %}">
                             <a href="./Theming.html">
-                                <b>8.</b> Theming
+                                <b>9.</b> Theming
                             </a>
                             <ul class="articles" {% if page.path != 'Theming.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -195,7 +217,7 @@
 
                         <li class="chapter {% if page.path == 'CustomApp.md' %}active{% endif %}">
                             <a href="./CustomApp.html">
-                                <b>9.</b> Including in Another App
+                                <b>10.</b> Including in Another App
                             </a>
                         </li>
                     </ul>

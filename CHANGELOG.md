@@ -1,5 +1,16 @@
 # Changelog
 
+## Next
+
+* [BC Break] The `filter` prop of the <List> component now expects an element rather than a component (`<List filter={<MyFilter/>} >` rather than `<List filter={MyFilter} >`)
+* [BC Break] The `title` prop of all view components now expect an element rather than a component (`<List title={<MyTitle/>`} > rather than `<List title={MyTitle} >`)
+* Add special design for non-sortable columns in datagrid
+* Add `cellStyle` and `headerStyle` to Field components (ability to style `<td>` and `<th>`, e.g. for number alignment)
+* Add `rowStyle` to `<Datagrid>` (ability to style `<tr>` according to the value)
+* Add `defaultSort` to `<Datagrid>` (ability to set default sort order on list)
+* Add `actions`, `perPage`, and `pagination` props to the `<List>` component
+* Add List view documentation
+
 ## v0.5.0
 
 * [BC Break] Remove `credentials: include` HTTP option enabled by default

@@ -167,7 +167,7 @@ import React from 'react';
 import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'admin-on-rest/mui';
 
 export const PostList = (props) => (
-    <List {...props} filter={PostFilter}>
+    <List {...props}>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" type="email" />
@@ -247,6 +247,43 @@ import { UrlField } from 'admin-on-rest/mui';
 <UrlField source="site_url" />
 ```
 
+## Styling Fields
+
+All field components accept the `style` prop, which overrides the default style of the field content:
+
+{% raw %}
+```js
+<TextField source="price" style={{ color: 'purple' }}/>
+// renders in the datagrid as
+<td><span style="color: purple;">2</span></td>
+```
+{% endraw %}
+
+However, you may want to override the field *container* (for instance, the `<td>` element in the datagrid). In that case, use the `cellStyle` and `headerStyle` props:
+
+{% raw %}
+```js
+export const ProductList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="sku" />
+            <TextField source="price"
+                cellStyle={{ td: { textAlign: 'right' } }}
+                headerStyle={{ th: { textAlign: 'right', fontWeight: 'bold' } }}
+            />
+            <EditButton />
+        </Datagrid>
+    </List>
+);
+// renders in the datagrid as
+<td style="text-align:right"><span>2</span></td>
+// renders in the table header as
+<th style="text-align:right;font-weight:bold"><button>Price</button></td>
+```
+{% endraw %}
+
+Both `cellStyle` and `headerStyle` props must be an object. To see the expected structure and default values, check out the [Datagrid component source](https://github.com/marmelab/admin-on-rest/blob/master/src/mui/list/Datagrid.js).
+
 ## Writing Your Own Field Component
 
 If you don't find what you need in the list above, it's very easy to write your own Field component. It must be a regular React component, accepting not only a `source` attribute, but also a `record` attribute. Admin-on-rest will inject the `record` based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
@@ -298,8 +335,10 @@ FullNameField.defaultProps = { label: 'Name' };
 export const UserList = (props) => (
     <List {...props}>
         <Datagrid>
-            <FullNameField />
+            <FullNameField source="lastName" />
         </Datagrid>
     </List>
 );
 ```
+
+**Tip**: In such custom fields, the `source` is optional. Admin-on-rest uses it to determine which column to use for sorting when the column header is clicked.
