@@ -56,11 +56,23 @@ Then you can display a text input to edit the author first name as follows:
 
 `<BooleanInput />` is a toggle button allowing you to attribute a `true` or `false` value to a record field.
 
+``` js
+import { BooleanInput } from 'admin-on-rest/mui';
+
+<BooleanInput label="Allow comments?" source="commentable" />
+```
+
 ![BooleanInput](./img/boolean-input.png)
 
 This input does not handle `null` values. You would need the `<NullableBooleanInput />` component if you have to handle non-set booleans.
 
-`<NullableBooleanInput />` is a dropdown list allowing to choose between true, false, and null values.
+`<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
+
+``` js
+import { NullableBooleanInput } from 'admin-on-rest/mui';
+
+<NullableBooleanInput label="Allow comments?" source="commentable" />
+```
 
 ![NullableBooleanInput](./img/nullable-boolean-input.png)
 

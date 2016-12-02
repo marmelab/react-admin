@@ -58,6 +58,12 @@ Then you can display the author first name as follows:
 
 Displays a boolean value as a check.
 
+``` js
+import { BooleanField } from 'admin-on-rest/mui';
+
+<BooleanField source="commentable" />
+```
+
 ![BooleanField](./img/boolean-field.png)
 
 ## `<ChipField>`
