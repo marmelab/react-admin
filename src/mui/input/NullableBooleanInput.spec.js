@@ -14,9 +14,9 @@ describe('<NullableBooleanInput />', () => {
         const wrapper = shallow(<NullableBooleanInput {...defaultProps} />);
         const choices = wrapper.find('SelectInput').prop('choices');
         assert.deepEqual(choices, [
-            { value: null, label: '' },
-            { value: false, label: 'No' },
-            { value: true, label: 'Yes' },
+            { id: null, name: '' },
+            { id: false, name: 'No' },
+            { id: true, name: 'Yes' },
         ]);
     });
 

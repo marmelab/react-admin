@@ -41,7 +41,6 @@ class SelectInput extends Component {
                 onChange={this.onChange}
                 autoWidth
                 style={style}
-                onChange={this.onChange}
                 {...options}
             >
                 {allowEmpty &&

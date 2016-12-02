@@ -6,12 +6,10 @@ const NullableBooleanInput = ({ input, meta: { touched, error }, label }) => (
         input={input}
         label={label}
         choices={[
-            { value: null, label: '' },
-            { value: false, label: 'No' },
-            { value: true, label: 'Yes' },
+            { id: null, name: '' },
+            { id: false, name: 'No' },
+            { id: true, name: 'Yes' },
         ]}
-        optionText="label"
-        optionValue="value"
         errorText={touched && error}
     />
 );
