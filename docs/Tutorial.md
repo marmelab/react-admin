@@ -205,7 +205,7 @@ const PostTitle = ({ record }) => {
 };
 
 export const PostEdit = (props) => (
-    <Edit title={PostTitle} {...props}>
+    <Edit title={<PostTitle />} {...props}>
         <DisabledInput source="id" />
         <ReferenceInput label="User" source="userId" reference="users">
             <SelectInput optionText="name" />

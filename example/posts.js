@@ -73,7 +73,7 @@ export const PostCreate = (props) => (
 );
 
 export const PostEdit = (props) => (
-    <Edit title={PostTitle} {...props}>
+    <Edit title={<PostTitle />} {...props}>
         <DisabledInput label="Id" source="id" />
         <TextInput source="title" validation={{ required: true }} />
         <TextInput label="Password (if protected post)" source="password" type="password" />

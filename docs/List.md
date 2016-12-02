@@ -75,7 +75,7 @@ export const PostList = (props) => (
 );
 ```
 
-The title can be either a string, or a component of your own.
+The title can be either a string, or an element of your own.
 
 ### Records Per Page
 

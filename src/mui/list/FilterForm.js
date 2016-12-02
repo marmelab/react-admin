@@ -22,8 +22,8 @@ export class FilterForm extends Component {
         const { currentFilters, resource } = this.props;
         return (<div>
             <CardText style={{ float: 'right', marginTop: '-14px', paddingTop: 0 }}>
-                {this.getShownFilters().map(filterElement =>
-                    <div key={filterElement.props.source}>
+                {this.getShownFilters().reverse().map(filterElement =>
+                    <div key={filterElement.props.source} style={{ display: 'inline-block' }}>
                         {filterElement.props.alwaysOn ?
                             <div style={{ width: 48, display: 'inline-block' }}>&nbsp;</div> :
                             <IconButton iconStyle={{ color: '#00bcd4' }} onTouchTap={this.handleHide} data-key={filterElement.props.source} tooltip="Remove this filter">
