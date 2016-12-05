@@ -1,5 +1,7 @@
 import React from 'react';
 import {
+    BooleanField,
+    BooleanInput,
     Create,
     Datagrid,
     DateField,
@@ -10,13 +12,13 @@ import {
     Filter,
     List,
     LongTextInput,
-    ReferenceManyField,
     Show,
     ShowButton,
-    TextField,
-    TextInput,
+    ReferenceManyField,
     RichTextField,
     RichTextInput,
+    TextField,
+    TextInput,
 } from 'admin-on-rest/mui';
 
 export PostIcon from 'material-ui/svg-icons/action/book';
@@ -34,6 +36,7 @@ export const PostList = (props) => (
             <TextField source="id" />
             <TextField source="title" type="email" style={{ display: 'inline-block', maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis' }}/>
             <DateField source="published_at" style={{ fontStyle: 'italic' }} />
+            <BooleanField label="Commentable" source="commentable" />
             <TextField source="views" />
             <EditButton />
             <ShowButton />
@@ -69,6 +72,7 @@ export const PostCreate = (props) => (
         <RichTextInput source="body" />
         <DateInput label="Publication date" source="published_at" />
         <TextInput source="average_note" />
+        <BooleanInput label="Allow comments?" source="commentable" />
     </Create>
 );
 
@@ -81,6 +85,7 @@ export const PostEdit = (props) => (
         <RichTextInput source="body" validation={{ required: true }} />
         <DateInput label="Publication date" source="published_at" />
         <TextInput source="average_note" validation={{ min: 0 }} />
+        <BooleanInput label="Allow comments?" source="commentable" />
         <ReferenceManyField label="Comments" reference="comments" target="post_id">
             <Datagrid>
                 <TextField source="body" />

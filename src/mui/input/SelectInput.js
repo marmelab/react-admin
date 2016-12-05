@@ -28,15 +28,16 @@ import MenuItem from 'material-ui/MenuItem';
  * ]} />
  */
 class SelectInput extends Component {
-    onChange = (e, _, value) => this.props.input.onChange(value);
+    onChange = (event, index, value) => this.props.input.onChange(value);
 
     render() {
         const { allowEmpty, input, label, choices, optionText, optionValue, options, source, style } = this.props;
+
         return (
             <SelectField
+                {...input}
                 menuStyle={{ maxHeight: '41px', overflowY: 'hidden' }}
                 floatingLabelText={title(label, source)}
-                value={input.value}
                 onChange={this.onChange}
                 autoWidth
                 style={style}

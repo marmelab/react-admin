@@ -10,6 +10,7 @@
 * Add `defaultSort` to `<Datagrid>` (ability to set default sort order on list)
 * Add `actions`, `perPage`, and `pagination` props to the `<List>` component
 * Add List view documentation
+* Add `<BooleanField>`, `<BooleanInput>`, and `<NullableBooleanInput>` components
 
 ## v0.5.0
 

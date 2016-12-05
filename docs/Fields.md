@@ -54,6 +54,18 @@ Then you can display the author first name as follows:
 
 **Tip**: If you want to format a field according to the value, use a higher-order component to do conditional formatting, as described in the [Theming documentation](./Theming.html#conditional-formatting).
 
+## `<BooleanField>`
+
+Displays a boolean value as a check.
+
+``` js
+import { BooleanField } from 'admin-on-rest/mui';
+
+<BooleanField source="commentable" />
+```
+
+![BooleanField](./img/boolean-field.png)
+
 ## `<ChipField>`
 
 Displays a value inside a ["Chip"](http://www.material-ui.com/#/components/chip), which is Material UI's term for a label.
