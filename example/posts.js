@@ -12,6 +12,7 @@ import {
     Filter,
     List,
     LongTextInput,
+    NumberField,
     Show,
     ShowButton,
     ReferenceManyField,
@@ -37,7 +38,7 @@ export const PostList = (props) => (
             <TextField source="title" type="email" style={{ display: 'inline-block', maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis' }}/>
             <DateField source="published_at" style={{ fontStyle: 'italic' }} />
             <BooleanField label="Commentable" source="commentable" />
-            <TextField source="views" />
+            <NumberField source="views" />
             <EditButton />
             <ShowButton />
         </Datagrid>
@@ -98,7 +99,7 @@ export const PostEdit = (props) => (
 );
 
 export const PostShow = (props) => (
-    <Show title={PostTitle} {...props}>
+    <Show title={<PostTitle />} {...props}>
         <TextField source="id" />
         <TextField source="title" />
         <TextField source="teaser" />

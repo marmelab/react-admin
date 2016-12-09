@@ -54,12 +54,24 @@ Then you can display the author first name as follows:
 
 **Tip**: If you want to format a field according to the value, use a higher-order component to do conditional formatting, as described in the [Theming documentation](./Theming.html#conditional-formatting).
 
+## `<AmountField>`
+
+Displays an amount of money with a currency symbol. The value is right aligned.
+
+The `currency` prop is a string (defaults to dollar). The `decimals` prop determines how many decimals are displayed (defaults to 2).
+
+```js
+import { AmountField }  from 'admin-on-rest/lib/mui';
+
+<AmountField source="total" currency="€" decimals={0} />
+```
+
 ## `<BooleanField>`
 
 Displays a boolean value as a check.
 
 ``` js
-import { BooleanField } from 'admin-on-rest/mui';
+import { BooleanField } from 'admin-on-rest/lib/mui';
 
 <BooleanField source="commentable" />
 ```
@@ -71,7 +83,7 @@ import { BooleanField } from 'admin-on-rest/mui';
 Displays a value inside a ["Chip"](http://www.material-ui.com/#/components/chip), which is Material UI's term for a label.
 
 ``` js
-import { ChipField } from 'admin-on-rest/mui';
+import { ChipField } from 'admin-on-rest/lib/mui';
 
 <ChipField source="category" />
 ```
@@ -81,7 +93,7 @@ import { ChipField } from 'admin-on-rest/mui';
 This field type is especially useful for one to many relationships, e.g. to display a list of books for a given author:
 
 ``` js
-import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest/mui';
+import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest/lib/mui';
 
 <ReferenceManyField reference="books" target="author_id">
     <SingleFieldList>
@@ -95,7 +107,7 @@ import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest/mu
 Displays a date or datetime.
 
 ``` js
-import { DateField } from 'admin-on-rest/mui';
+import { DateField } from 'admin-on-rest/lib/mui';
 
 <DateField source="publication_date" />
 ```
@@ -111,9 +123,33 @@ This component accepts a `showTime` attribute (false by default) to force the di
 `<EmailField>` displays an email as a `<a href="mailto:" />` link.
 
 ``` js
-import { EmailField } from 'admin-on-rest/mui';
+import { EmailField } from 'admin-on-rest/lib/mui';
 
 <EmailField source="personal_email" />
+```
+
+## `<FunctionField>`
+
+If you need a special function to render a field, `<FunctionField>` is the perfect match. It passes the `record` to a `render` function supplied by the developer. For instance, to display the full name of a `user` record based on `first_name` and `last_name` properties:
+
+```js
+import { FunctionField } from 'admin-on-rest/lib/mui'
+
+<FunctionField label="Name" render={record => `${record.first_name} ${record.last_name}`} />
+```
+
+**Tip**: Technically, you can omit the `source` property for the `<FunctionField>` since you provide the render function. However, providing a `source` will allow the datagrid to make the column sortable, since when a user clicks on a column, the datagrid uses the `source` prop as sort field.
+
+## `<NumberField>`
+
+Displays a number, right aligned.
+
+The `decimals` prop allows to set the number of decimals (default to 0).
+
+```js
+import { NumberField }  from 'admin-on-rest/lib/mui';
+
+<AmountField source="total" decimals={2} />
 ```
 
 ## `<ReferenceField>`
@@ -124,7 +160,7 @@ For instance, here is how to fetch the `post` related to `comment` records, and 
 
 ```js
 import React from 'react';
-import { List, Datagrid, ReferenceField, TextField } from 'admin-on-rest/mui';
+import { List, Datagrid, ReferenceField, TextField } from 'admin-on-rest/lib/mui';
 
 export const CommentList = (props) => (
     <List {...props}>
@@ -143,6 +179,15 @@ With this configuration, `<ReferenceField>` wraps the comment title in a link to
 ![ReferenceField](./img/reference-field.png)
 
 `<ReferenceField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. Also, you can use any `Field` component as child.
+
+**Note**: You **must** add a `<Resource>` for the reference resource - admin-on-rest needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
+
+```js
+<Admin restClient={myRestClient}>
+    <Resource name="comments" list={CommentList} />
+    <Resource name="posts" />
+</Admin>
+```
 
 **Tip**: Admin-on-rest accumulates and deduplicates the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
 
@@ -176,7 +221,7 @@ For instance, here is how to fetch the `comments` related to a `post` record, an
 
 ```js
 import React from 'react';
-import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'admin-on-rest/mui';
+import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'admin-on-rest/lib/mui';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -200,7 +245,7 @@ You can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside ano
 
 ```js
 import React from 'react';
-import { Edit, Datagrid, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'admin-on-rest/mui';
+import { Edit, Datagrid, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'admin-on-rest/lib/mui';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -224,7 +269,7 @@ export const PostEdit = (props) => (
 This component displays some HTML content. The content is "rich" (i.e. unescaped) by default.
 
 ``` js
-import { RichTextField } from 'admin-on-rest/mui';
+import { RichTextField } from 'admin-on-rest/lib/mui';
 
 <RichTextField source="body" />
 ```
@@ -234,7 +279,7 @@ import { RichTextField } from 'admin-on-rest/mui';
 The `stripTags` attribute (`false` by default) allows you to remove any HTML markup, preventing some display glitches (which is especially useful in list views).
 
 ``` js
-import { RichTextField } from 'admin-on-rest/mui';
+import { RichTextField } from 'admin-on-rest/lib/mui';
 
 <RichTextField source="body" stripTags />
 ```
@@ -244,7 +289,7 @@ import { RichTextField } from 'admin-on-rest/mui';
 The most simple as all fields, `<TextField>` simply displays the record property as plain text.
 
 ``` js
-import { TextField } from 'admin-on-rest/mui';
+import { TextField } from 'admin-on-rest/lib/mui';
 
 <TextField label="Author Name" source="name" />
 ```
@@ -254,7 +299,7 @@ import { TextField } from 'admin-on-rest/mui';
 `<UrlField>` displays an url in an `< a href="">` tag.
 
 ``` js
-import { UrlField } from 'admin-on-rest/mui';
+import { UrlField } from 'admin-on-rest/lib/mui';
 
 <UrlField source="site_url" />
 ```

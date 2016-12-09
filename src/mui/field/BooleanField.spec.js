@@ -4,21 +4,28 @@ import { shallow } from 'enzyme';
 import BooleanField from './BooleanField';
 
 describe('<BooleanField />', () => {
-    it('should display tick if value is true', () => {
-        const record = { published: true };
-        const wrapper = shallow(<BooleanField record={record} source="published" />);
-        assert.equal(wrapper.find('ActionDone').length, 1);
-    });
+    it('should display tick if value is true', () => assert.ok(
+        shallow(<BooleanField record={{ published: true }} source="published" />)
+        .is('ActionDone')
+    ));
 
-    it('should display cross if value is false', () => {
-        const record = { published: false };
-        const wrapper = shallow(<BooleanField record={record} source="published" />);
-        assert.equal(wrapper.find('ContentClear').length, 1);
-    });
+    it('should display cross if value is false', () => assert.ok(
+        shallow(<BooleanField record={{ published: false }} source="published" />)
+        .is('ContentClear')
+    ));
 
-    it('should not display anything if value is null', () => {
-        const record = { published: null };
-        const wrapper = shallow(<BooleanField record={record} source="published" />);
-        assert.equal(wrapper.find('span').length, 1);
-    });
+    it('should not display anything if value is null', () => assert.ok(
+        shallow(<BooleanField record={{ published: null }} source="published" />)
+        .is('span')
+    ));
+
+    it('should use custom styles passed as a style prop', () => assert.deepEqual(
+        shallow(<BooleanField record={{ foo: true }} source="foo" style={{ margin: 1 }} />).prop('style'),
+        { margin: 1 },
+    ));
+
+    it('should handle deep fields', () => assert.ok(
+        shallow(<BooleanField record={{ foo: { bar: true } }} source="foo.bar" />)
+        .is('ActionDone')
+    ));
 });
