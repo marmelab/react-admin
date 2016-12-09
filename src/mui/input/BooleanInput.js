@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Toggle from 'material-ui/Toggle';
+import title from '../../util/title';
 
 const styles = {
     block: {
@@ -14,14 +15,14 @@ const styles = {
     },
 };
 
-const BooleanInput = ({ input, label }) => (
+const BooleanInput = ({ input, label, source }) => (
     <div style={styles.block}>
         <Toggle
             defaultToggled={!!input.value}
             onToggle={input.onChange}
             labelStyle={styles.label}
             style={styles.toggle}
-            label={label}
+            label={title(label, source)}
         />
     </div>
 );
@@ -30,6 +31,7 @@ BooleanInput.propTypes = {
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
+    source: PropTypes.string.isRequired,
 };
 
 BooleanInput.defaultProps = {
