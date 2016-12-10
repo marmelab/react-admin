@@ -5,10 +5,26 @@ import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
 import title from '../../util/title';
 
-const DatagridHeaderCell = ({ field, defaultStyle, isFirst, currentSort, updateSort }) => {
-    const styles = defaultsDeep({}, field.props.headerStyle, defaultStyle);
+const styles = {
+    sortButton: {
+        minWidth: 40,
+    },
+    nonSortableLabel: {
+        position: 'relative',
+        paddingLeft: 16,
+        paddingRight: 16,
+        verticalAlign: 'middle',
+        letterSpacing: 0,
+        textTransform: 'uppercase',
+        fontWeight: 500,
+        fontSize: 14,
+    },
+};
+
+const DatagridHeaderCell = ({ field, defaultStyle, currentSort, updateSort }) => {
+    const style = defaultsDeep({}, field.props.headerStyle, defaultStyle);
     return (
-        <TableHeaderColumn style={isFirst ? { ...styles.th, ...styles['th:first-child'] } : styles.th}>
+        <TableHeaderColumn style={style}>
             {field.props.source ?
                 <FlatButton
                     labelPosition="before"
@@ -35,7 +51,6 @@ DatagridHeaderCell.propTypes = {
         sortButton: PropTypes.object,
         nonSortableLabel: PropTypes.object,
     }),
-    isFirst: PropTypes.bool,
     currentSort: PropTypes.shape({
         sort: PropTypes.string,
         order: PropTypes.string,

@@ -28,6 +28,9 @@ All input components accept the following attributes:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
 * `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
+* `style`: A style object to customize the look and feel of the field container (e.g. the `<div>` in a form).
+* `elStyle`: A style object to customize the look and feel of the field element itself
+
 
 ```js
 <TextInput source="zb_title" label="Title" />

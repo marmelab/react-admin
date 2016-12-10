@@ -2,6 +2,11 @@ import React, { PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import title from '../../util/title';
 
+const defaultLabelStyle = {
+    paddingTop: '2em',
+    height: 'auto'
+};
+
 /**
  * Use any component as read-only Input, labeled just like other Inputs.
  *
@@ -13,14 +18,14 @@ import title from '../../util/title';
  *     <FooComponent source="title" />
  * </Labeled>
  */
-const Labeled = ({ input, label, resource, record, onChange, basePath, children, source, disabled = true, style = { paddingTop: '2em', height: 'auto' } }) => (
+const Labeled = ({ input, label, resource, record, onChange, basePath, children, source, disabled = true, labelStyle = defaultLabelStyle }) => (
     <TextField
         floatingLabelText={title(label, source)}
         floatingLabelFixed
-        disabled={disabled}
         fullWidth
+        disabled={disabled}
         underlineShow={false}
-        style={style}
+        style={labelStyle}
     >
         {children && React.cloneElement(children, { input, record, resource, onChange, basePath })}
     </TextField>
@@ -36,7 +41,7 @@ Labeled.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string.isRequired,
-    style: PropTypes.object,
+    labelStyle: PropTypes.object,
 };
 
 export default Labeled;

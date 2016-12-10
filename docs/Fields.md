@@ -27,7 +27,8 @@ All field components accept the following attributes:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
 * `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
-* `style`: A style object to customize the look and feel of the field.
+* `style`: A style object to customize the look and feel of the field container (e.g. the `<td>` in a datagrid).
+* `elStyle`: A style object to customize the look and feel of the field element itself
 
 ```js
 <TextField source="zb_title" label="Title" style={{ color: 'purple' }}/>
@@ -306,17 +307,29 @@ import { UrlField } from 'admin-on-rest/lib/mui';
 
 ## Styling Fields
 
-All field components accept the `style` prop, which overrides the default style of the field content:
+All field components accept the `style` prop, which overrides the default style of the field *container*:
 
 {% raw %}
 ```js
 <TextField source="price" style={{ color: 'purple' }}/>
 // renders in the datagrid as
+<td style="color: purple;"><span>2</span></td>
+```
+{% endraw %}
+
+If you want to override the styles of the field *element*, use the `elStyle` prop instead:
+
+{% raw %}
+```js
+<TextField source="price" elStyle={{ color: 'purple' }}/>
+// renders in the datagrid as
 <td><span style="color: purple;">2</span></td>
 ```
 {% endraw %}
 
-However, you may want to override the field *container* (for instance, the `<td>` element in the datagrid). In that case, use the `cellStyle` and `headerStyle` props:
+admin-on-rest usually delegates the rendering of fields components to material ui components. Refer to the material ui documentation to see the default styles for elements.
+
+Lastly, you may want to override the field header (the `<th>` element in the datagrid). In that case, use the `headerStyle` prop:
 
 {% raw %}
 ```js
@@ -325,8 +338,8 @@ export const ProductList = (props) => (
         <Datagrid>
             <TextField source="sku" />
             <TextField source="price"
-                cellStyle={{ td: { textAlign: 'right' } }}
-                headerStyle={{ th: { textAlign: 'right', fontWeight: 'bold' } }}
+                style={{ textAlign: 'right'}}
+                headerStyle={{ textAlign: 'right' }}
             />
             <EditButton />
         </Datagrid>
@@ -338,8 +351,6 @@ export const ProductList = (props) => (
 <th style="text-align:right;font-weight:bold"><button>Price</button></td>
 ```
 {% endraw %}
-
-Both `cellStyle` and `headerStyle` props must be an object. To see the expected structure and default values, check out the [Datagrid component source](https://github.com/marmelab/admin-on-rest/blob/master/src/mui/list/Datagrid.js).
 
 ## Writing Your Own Field Component
 
@@ -353,9 +364,9 @@ import React, { PropTypes } from 'react';
 const TextField = ({ source, record = {} }) => <span>{record[source]}</span>;
 
 TextField.propTypes = {
-    source: PropTypes.string.isRequired,
-    record: PropTypes.object,
     label: PropTypes.string,
+    record: PropTypes.object,
+    source: PropTypes.string.isRequired,
 };
 
 export default TextField;

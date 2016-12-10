@@ -2,10 +2,10 @@ import React, { PropTypes } from 'react';
 import defaultsDeep from 'lodash.defaultsdeep';
 import { TableRowColumn } from 'material-ui/Table';
 
-const DatagridCell = ({ field, record, basePath, resource, defaultStyle, isFirst }) => {
-    const styles = defaultsDeep({}, field.props.cellStyle, defaultStyle);
+const DatagridCell = ({ field, record, basePath, resource, defaultStyle }) => {
+    const style = defaultsDeep({}, field.props.style, defaultStyle);
     return (
-        <TableRowColumn style={isFirst ? { ...styles.td, ...styles['td:first-child'] } : styles.td}>
+        <TableRowColumn style={style}>
             <field.type {...field.props} {...{ record, basePath, resource }} />
         </TableRowColumn>
     );
@@ -20,7 +20,6 @@ DatagridCell.propTypes = {
         td: PropTypes.object,
         'td:first-child': PropTypes.object,
     }),
-    isFirst: PropTypes.bool,
 };
 
 export default DatagridCell;

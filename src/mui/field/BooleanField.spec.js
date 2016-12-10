@@ -19,8 +19,8 @@ describe('<BooleanField />', () => {
         .is('span')
     ));
 
-    it('should use custom styles passed as a style prop', () => assert.deepEqual(
-        shallow(<BooleanField record={{ foo: true }} source="foo" style={{ margin: 1 }} />).prop('style'),
+    it('should use custom styles passed as an elStyle prop', () => assert.deepEqual(
+        shallow(<BooleanField record={{ foo: true }} source="foo" elStyle={{ margin: 1 }} />).prop('style'),
         { margin: 1 },
     ));
 

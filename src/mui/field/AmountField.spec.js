@@ -24,8 +24,8 @@ describe('<AmountField />', () => {
         '<span>€1.00</span>',
     ));
 
-    it('should use custom styles passed as a style prop', () => assert.equal(
-        shallow(<AmountField record={{ foo: 1 }} source="foo" style={{ margin: 1 }} />).html(),
+    it('should use custom styles passed as an elStyle prop', () => assert.equal(
+        shallow(<AmountField record={{ foo: 1 }} source="foo" elStyle={{ margin: 1 }} />).html(),
         '<span style="margin:1px;">$1.00</span>',
     ));
 
