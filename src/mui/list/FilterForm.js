@@ -5,21 +5,34 @@ import IconButton from 'material-ui/IconButton';
 import ActionHide from 'material-ui/svg-icons/action/highlight-off';
 
 export class FilterForm extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentFilters: props.initialValues,
+        };
+    }
+
     getShownFilters() {
-        const { filters, displayedFilters, currentFilters, initialValues } = this.props;
+        const { filters, displayedFilters, initialValues } = this.props;
         return filters
             .filter(filterElement =>
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                currentFilters[filterElement.props.source] ||
+                this.state.currentFilters[filterElement.props.source] ||
                 initialValues[filterElement.props.source]
             );
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.initialValues !== this.props.initialValues) {
+            this.setState({ currentFilters: newProps.initialValues });
+        }
     }
 
     handleHide = (event) => this.props.hideFilter(event.currentTarget.dataset.key);
 
     render() {
-        const { currentFilters, resource } = this.props;
+        const { resource } = this.props;
         return (<div>
             <CardText style={{ float: 'right', marginTop: '-14px', paddingTop: 0 }}>
                 {this.getShownFilters().map(filterElement =>
@@ -35,7 +48,7 @@ export class FilterForm extends Component {
                             name={filterElement.props.source}
                             component={filterElement.type}
                             resource={resource}
-                            record={currentFilters}
+                            record={this.state.currentFilters}
                         />
                     </div>
                 )}
@@ -47,15 +60,10 @@ export class FilterForm extends Component {
 
 FilterForm.propTypes = {
     resource: PropTypes.string.isRequired,
-    currentFilters: PropTypes.object.isRequired,
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
     displayedFilters: PropTypes.object.isRequired,
     hideFilter: PropTypes.func.isRequired,
-    initialValues: PropTypes.object,
-};
-
-FilterForm.defaultProps = {
-    currentFilters: {},
+    initialValues: PropTypes.object.isRequired,
 };
 
 export default reduxForm({
