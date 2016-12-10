@@ -31,7 +31,7 @@ const defaultStyles = {
             padding: '0 12px',
         },
         'td:first-child': {
-            padding: '0 12px 0 24px',
+            padding: '0 12px 0 16px',
         },
     },
 };
