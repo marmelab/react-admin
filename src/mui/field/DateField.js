@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import get from 'lodash.get';
 
 const DateField = ({ source, record, showTime = false, elStyle }) => {
+    if (!record) return null;
     const value = get(record, source);
     const date = value instanceof Date ? value : new Date(value);
     return <span style={elStyle} >{showTime ? date.toLocaleString() : date.toLocaleDateString()}</span>;
