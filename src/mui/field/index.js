@@ -1,4 +1,3 @@
-export AmountField from './AmountField';
 export BooleanField from './BooleanField';
 export ChipField from './ChipField';
 export DateField from './DateField';
