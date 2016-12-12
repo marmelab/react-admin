@@ -131,30 +131,37 @@ import { FunctionField } from 'admin-on-rest/lib/mui'
 
 ## `<NumberField>`
 
-Displays a number, right aligned.
+Displays a number formatted according to the browser locale, right aligned.
 
-The `decimals` prop allows to set the number of decimals (default to 0).
+Uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments.
+
+If Intl is not available, it outputs number as is (and ignores the `locales` and `options` props).
 
 ```js
 import { NumberField }  from 'admin-on-rest/lib/mui';
 
-<AmountField source="total" decimals={2} />
-```
-
-Use the `prefix` and `suffix` props to decorate the result with custom strings:
-
-```js
-<AmountField source="total" prefix="$" />
-// renders the record { id: 123, total: 2 } as
-<span>$2</span>
-
-<AmountField source="percentage" suffix="%" />
-// renders the record { id: 123, percentage: 25 } as
+<NumberField source="score" />
+// renders the record { id: 1234, score: 567 } as
+<span>567</span>
+*
+<NumberField source="score" elStyle={{ color: 'red' }} />
+// renders the record { id: 1234, score: 567 } as
+<span style="color:red;">567</span>
+*
+<NumberField source="share" options={{ style: 'percent' }} />
+// renders the record { id: 1234, share: 0.2545 } as
 <span>25%</span>
-
+*
+<NumberField source="price" options={{ style: 'currency', currency: 'USD' }} />
+// renders the record { id: 1234, price: 25.99 } as
+<span>$25.99</span>
+*
+<NumberField source="price" locale="fr-FR" options={{ style: 'currency', currency: 'USD' }} />
+// renders the record { id: 1234, price: 25.99 } as
+<span>25,99 $US</span>
 ```
 
-Complex formatting of thousands, currencies, percentages, and locale handling are outside the scope of `<NumberField>`. If you need these features, build your own field component based on a specialized library like [numeral.js](http://numeraljs.com/).
+See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) for options syntax.
 
 ## `<ReferenceField>`
 

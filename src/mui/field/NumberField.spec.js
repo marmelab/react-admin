@@ -14,19 +14,15 @@ describe('<NumberField />', () => {
         '<span>1</span>',
     ));
 
-    it('should render as many decimals as set in the decimals prop', () => assert.equal(
-        shallow(<NumberField record={{ foo: 1 }} source="foo" decimals={2} />).html(),
+    it('should pass the options prop to Intl.NumberFormat', () => assert.equal(
+        shallow(<NumberField record={{ foo: 1 }} source="foo" options={{ minimumFractionDigits: 2 }} />).html(),
         '<span>1.00</span>',
     ));
 
-    it('should prepend prefix prop', () => assert.equal(
-        shallow(<NumberField record={{ foo: 1 }} source="foo" prefix="$" />).html(),
-        '<span>$1</span>',
-    ));
-
-    it('should append sufffix prop', () => assert.equal(
-        shallow(<NumberField record={{ foo: 1 }} source="foo" suffix="€" />).html(),
-        '<span>1€</span>',
+    // Node is usually not copiled with all locales
+    it.skip('should use the locales props as an argument to Intl.NumberFormat', () => assert.equal(
+        shallow(<NumberField record={{ foo: 1 }} source="foo" locales="fr-FR" options={{ minimumFractionDigits: 2 }} />).html(),
+        '<span>1,00</span>',
     ));
 
     it('should use custom styles passed as an elStyle prop', () => assert.equal(
