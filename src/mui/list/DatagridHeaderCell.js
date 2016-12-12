@@ -22,7 +22,7 @@ const styles = {
 };
 
 const DatagridHeaderCell = ({ field, defaultStyle, currentSort, updateSort }) => {
-    const style = defaultsDeep({}, field.props.headerStyle, defaultStyle);
+    const style = defaultsDeep({}, field.props.headerStyle, field.type.defaultProps ? field.type.defaultProps.headerStyle : {}, defaultStyle);
     return (
         <TableHeaderColumn style={style}>
             {field.props.source ?

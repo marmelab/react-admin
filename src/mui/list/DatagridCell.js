@@ -3,7 +3,7 @@ import defaultsDeep from 'lodash.defaultsdeep';
 import { TableRowColumn } from 'material-ui/Table';
 
 const DatagridCell = ({ field, record, basePath, resource, defaultStyle }) => {
-    const style = defaultsDeep({}, field.props.style, defaultStyle);
+    const style = defaultsDeep({}, field.props.style, field.type.defaultProps ? field.type.defaultProps.style : {}, defaultStyle);
     return (
         <TableRowColumn style={style}>
             <field.type {...field.props} {...{ record, basePath, resource }} />
