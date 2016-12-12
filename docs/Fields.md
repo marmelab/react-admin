@@ -55,18 +55,6 @@ Then you can display the author first name as follows:
 
 **Tip**: If you want to format a field according to the value, use a higher-order component to do conditional formatting, as described in the [Theming documentation](./Theming.html#conditional-formatting).
 
-## `<AmountField>`
-
-Displays an amount of money with a currency symbol. The value is right aligned.
-
-The `currency` prop is a string (defaults to dollar). The `decimals` prop determines how many decimals are displayed (defaults to 2).
-
-```js
-import { AmountField }  from 'admin-on-rest/lib/mui';
-
-<AmountField source="total" currency="€" decimals={0} />
-```
-
 ## `<BooleanField>`
 
 Displays a boolean value as a check.
@@ -152,6 +140,21 @@ import { NumberField }  from 'admin-on-rest/lib/mui';
 
 <AmountField source="total" decimals={2} />
 ```
+
+Use the `prefix` and `suffix` props to decorate the result with custom strings:
+
+```js
+<AmountField source="total" prefix="$" />
+// renders the record { id: 123, total: 2 } as
+<span>$2</span>
+
+<AmountField source="percentage" suffix="%" />
+// renders the record { id: 123, percentage: 25 } as
+<span>25%</span>
+
+```
+
+Complex formatting of thousands, currencies, percentages, and locale handling are outside the scope of `<NumberField>`. If you need these features, build your own field component based on a specialized library like [numeral.js](http://numeraljs.com/).
 
 ## `<ReferenceField>`
 

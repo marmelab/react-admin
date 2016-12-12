@@ -16,7 +16,6 @@
 * Add `<BooleanInput>` component
 * Add `<NullableBooleanInput>` component
 * Add `<NumberField>` component
-* Add `<AmountField>` component
 * Add `<FunctionField>` component
 * Align datagrid first column to the page title
 * Hide resources in the Menu when they don't have a list view
