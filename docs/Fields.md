@@ -143,19 +143,19 @@ import { NumberField }  from 'admin-on-rest/lib/mui';
 <NumberField source="score" />
 // renders the record { id: 1234, score: 567 } as
 <span>567</span>
-*
+
 <NumberField source="score" elStyle={{ color: 'red' }} />
 // renders the record { id: 1234, score: 567 } as
 <span style="color:red;">567</span>
-*
+
 <NumberField source="share" options={{ style: 'percent' }} />
 // renders the record { id: 1234, share: 0.2545 } as
 <span>25%</span>
-*
+
 <NumberField source="price" options={{ style: 'currency', currency: 'USD' }} />
 // renders the record { id: 1234, price: 25.99 } as
 <span>$25.99</span>
-*
+
 <NumberField source="price" locale="fr-FR" options={{ style: 'currency', currency: 'USD' }} />
 // renders the record { id: 1234, price: 25.99 } as
 <span>25,99 $US</span>
