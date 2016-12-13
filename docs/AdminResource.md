@@ -129,7 +129,7 @@ Use the [default layout](https://github.com/marmelab/admin-on-rest/blob/master/s
 
 {% raw %}
 ```js
-// in src/myLayout.js
+// in src/MyLayout.js
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -143,7 +143,7 @@ import Menu from './Menu';
 
 injectTapEventPlugin();
 
-const myLayout = ({ isLoading, children, route }) => {
+const MyLayout = ({ isLoading, children, route }) => {
     const Title = <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>Admin on REST</Link>;
     const RightElement = isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span />;
 
@@ -161,7 +161,7 @@ const myLayout = ({ isLoading, children, route }) => {
     );
 };
 
-myLayout.propTypes = {
+MyLayout.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     children: PropTypes.node,
     route: PropTypes.object.isRequired,
@@ -175,16 +175,16 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-)(myLayout);
+)(MyLayout);
 ```
 {% endraw %}
 
 ```js
 // in src/App.js
-import myLayout from './myLayout';
+import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin appLayout={myLayout} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin appLayout={MyLayout} restClient={simpleRestClient('http://path.to.my.api')}>
         // ...
     </Admin>
 );

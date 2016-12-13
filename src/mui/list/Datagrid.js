@@ -25,26 +25,13 @@ const defaultStyles = {
         'th:first-child': {
             padding: '0 0 0 12px',
         },
-        sortButton: {
-            minWidth: 40,
-        },
-        nonSortableLabel: {
-            position: 'relative',
-            paddingLeft: 16,
-            paddingRight: 16,
-            verticalAlign: 'middle',
-            letterSpacing: 0,
-            textTransform: 'uppercase',
-            fontWeight: 500,
-            fontSize: 14,
-        },
     },
     cell: {
         td: {
             padding: '0 12px',
         },
         'td:first-child': {
-            padding: '0 12px 0 24px',
+            padding: '0 12px 0 16px',
         },
     },
 };
@@ -98,8 +85,7 @@ class Datagrid extends Component {
                             <DatagridHeaderCell
                                 key={field.props.source || index}
                                 field={field}
-                                defaultStyle={styles.header}
-                                isFirst={index === 0}
+                                defaultStyle={index === 0 ? styles.header['th:first-child'] : styles.header.th}
                                 currentSort={currentSort}
                                 updateSort={this.updateSort}
                             />
@@ -107,14 +93,13 @@ class Datagrid extends Component {
                     </tr>
                 </thead>
                 <tbody style={styles.tbody}>
-                    {ids.map((id, index) => (
-                        <tr style={rowStyle ? rowStyle(data[id], index) : styles.tr} key={id}>
-                            {React.Children.toArray(children).map((field, index) => (
+                    {ids.map((id, rowIndex) => (
+                        <tr style={rowStyle ? rowStyle(data[id], rowIndex) : styles.tr} key={id}>
+                            {React.Children.map(children, (field, index) => (
                                 <DatagridCell
                                     key={`${id}-${field.props.source || index}`}
                                     record={data[id]}
-                                    defaultStyle={styles.cell}
-                                    isFirst={index === 0}
+                                    defaultStyle={index === 0 ? styles.cell['td:first-child'] : styles.cell.td}
                                     {...{ field, basePath, resource }}
                                 />
                             ))}

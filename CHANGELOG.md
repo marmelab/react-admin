@@ -4,13 +4,23 @@
 
 * [BC Break] The `filter` prop of the <List> component now expects an element rather than a component (`<List filter={<MyFilter/>} >` rather than `<List filter={MyFilter} >`)
 * [BC Break] The `title` prop of all view components now expect an element rather than a component (`<List title={<MyTitle/>`} > rather than `<List title={MyTitle} >`)
+* [BC Break] Rename `style` to `elStyle` and let style override container element
 * Add special design for non-sortable columns in datagrid
-* Add `cellStyle` and `headerStyle` to Field components (ability to style `<td>` and `<th>`, e.g. for number alignment)
+* Add `style`, `elStyle` to all components
+* Add `headerStyle` to Field components (ability to style `<th>`)
 * Add `rowStyle` to `<Datagrid>` (ability to style `<tr>` according to the value)
 * Add `defaultSort` to `<Datagrid>` (ability to set default sort order on list)
 * Add `actions`, `perPage`, and `pagination` props to the `<List>` component
 * Add List view documentation
-* Add `<BooleanField>`, `<BooleanInput>`, and `<NullableBooleanInput>` components
+* Add `<BooleanField>` component
+* Add `<BooleanInput>` component
+* Add `<NullableBooleanInput>` component
+* Add `<NumberField>` component
+* Add `<FunctionField>` component
+* Align datagrid first column to the page title
+* Hide resources in the Menu when they don't have a list view
+* Fix warning for fields with no source and no label
+* Fix FilterButton for fields without label
 
 ## v0.5.0
 

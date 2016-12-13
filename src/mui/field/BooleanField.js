@@ -1,28 +1,33 @@
 import React, { PropTypes } from 'react';
+import get from 'lodash.get';
 
 import FalseIcon from 'material-ui/svg-icons/content/clear';
 import TrueIcon from 'material-ui/svg-icons/action/done';
 
-const style = {
-    display: 'block',
-    margin: 'auto',
-};
-
-const BooleanField = ({ source, record = {} }) => {
-    if (record[source] === false) {
-        return <FalseIcon style={style} />;
+const BooleanField = ({ source, record = {}, elStyle }) => {
+    if (get(record, source) === false) {
+        return <FalseIcon style={elStyle} />;
     }
 
-    if (record[source] === true) {
-        return <TrueIcon style={style} />;
+    if (get(record, source) === true) {
+        return <TrueIcon style={elStyle} />;
     }
 
-    return <span style={style} />;
+    return <span style={elStyle} />;
 };
 
 BooleanField.propTypes = {
-    source: PropTypes.string.isRequired,
+    elStyle: PropTypes.object,
+    label: PropTypes.string,
     record: PropTypes.object,
+    source: PropTypes.string.isRequired,
+};
+
+BooleanField.defaultProps = {
+    elStyle: {
+        display: 'block',
+        margin: 'auto',
+    },
 };
 
 export default BooleanField;

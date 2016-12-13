@@ -246,8 +246,6 @@ const datagridStyles = {
     header: {
         th: { },
         'th:first-child': { }, // special style for the first header column
-        sortButton: { }, // styles for sortable column headers
-        nonSortableLabel: { }, // styles for non sortable column headers
     },
     cell: {
         td: { },
@@ -264,7 +262,7 @@ export const PostList = (props) => (
 );
 ```
 
-**Tip**: If you want to override the `header` and `cell` styles independently for each column, use the `cellStyle` and `headerStyle` props in `<Field>` components:
+**Tip**: If you want to override the `header` and `cell` styles independently for each column, use the `headerStyle` and `style` props in `<Field>` components:
 
 {% raw %}
 ```js
@@ -275,8 +273,8 @@ export const PostList = (props) => (
             <TextField source="title" />
             <TextField
                 source="views"
-                cellStyle={{ td: { textAlign: 'right' } }}
-                headerStyle={{ th: { textAlign: 'right' } }}
+                style={{ textAlign: 'right' }}
+                headerStyle={{ textAlign: 'right' }}
             />
         </Datagrid>
     </List>

@@ -11,17 +11,12 @@ describe('<DatagridCell />', () => {
         assert.equal(col.length, 1);
     });
     it('should use regular col style by default', () => {
-        const wrapper = shallow(<DatagridCell field={{ type: 'foo', props: {} }} defaultStyle={{ td: { color: 'blue' }, 'td:first-child': { color: 'red' } }} />);
+        const wrapper = shallow(<DatagridCell field={{ type: 'foo', props: {} }} defaultStyle={{ color: 'blue' }} />);
         const col = wrapper.find('TableRowColumn');
         assert.deepEqual(col.at(0).prop('style'), { color: 'blue' });
     });
-    it('should use first col style if isFirst is true', () => {
-        const wrapper = shallow(<DatagridCell isFirst field={{ type: 'foo', props: {} }} defaultStyle={{ td: { color: 'blue' }, 'td:first-child': { color: 'red' } }} />);
-        const col = wrapper.find('TableRowColumn');
-        assert.deepEqual(col.at(0).prop('style'), { color: 'red' });
-    });
-    it('should use field cellStyle to override default style', () => {
-        const wrapper = shallow(<DatagridCell field={{ type: 'foo', props: { cellStyle: { td: { color: 'red' } } } }} />);
+    it('should use field style to override default style', () => {
+        const wrapper = shallow(<DatagridCell field={{ type: 'foo', props: { style: { color: 'red' } } }} />);
         const col = wrapper.find('TableRowColumn');
         assert.deepEqual(col.at(0).prop('style'), { color: 'red' });
     });

@@ -1,18 +1,19 @@
 import React, { PropTypes } from 'react';
 import get from 'lodash.get';
 
-const DateField = ({ source, record, showTime = false, style }) => {
+const DateField = ({ source, record, showTime = false, elStyle }) => {
+    if (!record) return null;
     const value = get(record, source);
     const date = value instanceof Date ? value : new Date(value);
-    return <span style={style} >{showTime ? date.toLocaleString() : date.toLocaleDateString()}</span>;
+    return <span style={elStyle} >{showTime ? date.toLocaleString() : date.toLocaleDateString()}</span>;
 };
 
 DateField.propTypes = {
+    elStyle: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
     showTime: PropTypes.bool,
     source: PropTypes.string.isRequired,
-    style: PropTypes.object,
 };
 
 export default DateField;
