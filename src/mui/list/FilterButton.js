@@ -4,6 +4,7 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import ContentFilter from 'material-ui/svg-icons/content/filter-list';
+import title from '../../util/title';
 
 export class FilterButton extends Component {
     constructor(props) {
@@ -63,7 +64,7 @@ export class FilterButton extends Component {
             >
                 <Menu>
                     {hiddenFilters.map(filterElement =>
-                        <MenuItem data-key={filterElement.props.source} key={filterElement.props.source} primaryText={filterElement.props.label} onTouchTap={this.handleShow} />
+                        <MenuItem data-key={filterElement.props.source} key={filterElement.props.source} primaryText={title(filterElement.props.label, filterElement.props.source)} onTouchTap={this.handleShow} />
                     )}
                 </Menu>
             </Popover>

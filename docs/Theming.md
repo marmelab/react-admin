@@ -9,17 +9,48 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 ## Overriding A Component Style
 
-Admin-on-rest uses Material UI, which uses [inline styles](http://www.material-ui.com/#/customization/styles). All admin-on-rest components support the `style` attribute. It expects a style object:
+Most admin-on-rest components support two style props to set inline styles:
+
+* `style`: A style object to customize the look and feel of the component container (e.g. the `<td>` in a datagrid). Most of the time, that's where you'll want to put your custom styles.
+* `elStyle`: A style object to customize the look and feel of the component element itself, usually a material ui component. Use this prop when you want to fine tune the display of a material ui component, according to [their styling documentation]((http://www.material-ui.com/#/customization/styles)).
+
+These props accept a style object:
 
 {% raw %}
 ```js
-import { DateField } from 'admin-on-rest/mui';
+import { EmailField } from 'admin-on-rest/mui';
 
-<DateField source="publication_date" style={{
-    fontWeight: 'bold',
-}} />
+<EmailField source="email" style={{ backgroundColor: 'lightgrey' }} elStyle={{ textDecoration: 'none' }} />
+// renders in the datagrid as
+<td style="background-color:lightgrey">
+    <a style="text-decoration:none" href="mailto:foo@example.com">
+        foo@example.com
+    </a>
+</td>
 ```
 {% endraw %}
+
+Some components support additional props to style their own elements. For instance, when using a `<Datagrid>`, you can specify how a `<Field>` renders headers with the `headerStyle` prop. Here is how to make a column right aligned:
+
+{% raw %}
+```js
+export const ProductList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="sku" />
+            <TextField
+                source="price"
+                style={{ textAlign: 'right' }}
+                headerStyle={{ textAlign: 'right' }}
+            />
+            <EditButton />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+Refer to each component documentation for a list of supported style props.
 
 If you need more control over the HTML code, you can also create your own [Field](./Fields.html#writing-your-own-field-component) and [Input](./Inputs.html#writing-your-own-input-component) components.
 

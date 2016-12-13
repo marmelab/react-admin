@@ -11,6 +11,7 @@
     "rules": {
         "indent": ["warn", 4],
         "max-len": ["off"],
+        "react/forbid-prop-types": ["warn", { "forbid": ["any", "array"] }],
         "react/jsx-indent": ["warn", 4],
         "react/jsx-indent-props": ["warn", 4],
         "react/jsx-filename-extension": ["off"]

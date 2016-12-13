@@ -27,7 +27,8 @@ All field components accept the following attributes:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
 * `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
-* `style`: A style object to customize the look and feel of the field.
+* `style`: A style object to customize the look and feel of the field container (e.g. the `<td>` in a datagrid).
+* `elStyle`: A style object to customize the look and feel of the field element itself
 
 ```js
 <TextField source="zb_title" label="Title" style={{ color: 'purple' }}/>
@@ -54,12 +55,24 @@ Then you can display the author first name as follows:
 
 **Tip**: If you want to format a field according to the value, use a higher-order component to do conditional formatting, as described in the [Theming documentation](./Theming.html#conditional-formatting).
 
+## `<BooleanField>`
+
+Displays a boolean value as a check.
+
+``` js
+import { BooleanField } from 'admin-on-rest/lib/mui';
+
+<BooleanField source="commentable" />
+```
+
+![BooleanField](./img/boolean-field.png)
+
 ## `<ChipField>`
 
 Displays a value inside a ["Chip"](http://www.material-ui.com/#/components/chip), which is Material UI's term for a label.
 
 ``` js
-import { ChipField } from 'admin-on-rest/mui';
+import { ChipField } from 'admin-on-rest/lib/mui';
 
 <ChipField source="category" />
 ```
@@ -69,7 +82,7 @@ import { ChipField } from 'admin-on-rest/mui';
 This field type is especially useful for one to many relationships, e.g. to display a list of books for a given author:
 
 ``` js
-import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest/mui';
+import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest/lib/mui';
 
 <ReferenceManyField reference="books" target="author_id">
     <SingleFieldList>
@@ -83,7 +96,7 @@ import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest/mu
 Displays a date or datetime.
 
 ``` js
-import { DateField } from 'admin-on-rest/mui';
+import { DateField } from 'admin-on-rest/lib/mui';
 
 <DateField source="publication_date" />
 ```
@@ -99,10 +112,56 @@ This component accepts a `showTime` attribute (false by default) to force the di
 `<EmailField>` displays an email as a `<a href="mailto:" />` link.
 
 ``` js
-import { EmailField } from 'admin-on-rest/mui';
+import { EmailField } from 'admin-on-rest/lib/mui';
 
 <EmailField source="personal_email" />
 ```
+
+## `<FunctionField>`
+
+If you need a special function to render a field, `<FunctionField>` is the perfect match. It passes the `record` to a `render` function supplied by the developer. For instance, to display the full name of a `user` record based on `first_name` and `last_name` properties:
+
+```js
+import { FunctionField } from 'admin-on-rest/lib/mui'
+
+<FunctionField label="Name" render={record => `${record.first_name} ${record.last_name}`} />
+```
+
+**Tip**: Technically, you can omit the `source` property for the `<FunctionField>` since you provide the render function. However, providing a `source` will allow the datagrid to make the column sortable, since when a user clicks on a column, the datagrid uses the `source` prop as sort field.
+
+## `<NumberField>`
+
+Displays a number formatted according to the browser locale, right aligned.
+
+Uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments.
+
+If Intl is not available, it outputs number as is (and ignores the `locales` and `options` props).
+
+```js
+import { NumberField }  from 'admin-on-rest/lib/mui';
+
+<NumberField source="score" />
+// renders the record { id: 1234, score: 567 } as
+<span>567</span>
+
+<NumberField source="score" elStyle={{ color: 'red' }} />
+// renders the record { id: 1234, score: 567 } as
+<span style="color:red;">567</span>
+
+<NumberField source="share" options={{ style: 'percent' }} />
+// renders the record { id: 1234, share: 0.2545 } as
+<span>25%</span>
+
+<NumberField source="price" options={{ style: 'currency', currency: 'USD' }} />
+// renders the record { id: 1234, price: 25.99 } as
+<span>$25.99</span>
+
+<NumberField source="price" locale="fr-FR" options={{ style: 'currency', currency: 'USD' }} />
+// renders the record { id: 1234, price: 25.99 } as
+<span>25,99 $US</span>
+```
+
+See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) for options syntax.
 
 ## `<ReferenceField>`
 
@@ -112,7 +171,7 @@ For instance, here is how to fetch the `post` related to `comment` records, and 
 
 ```js
 import React from 'react';
-import { List, Datagrid, ReferenceField, TextField } from 'admin-on-rest/mui';
+import { List, Datagrid, ReferenceField, TextField } from 'admin-on-rest/lib/mui';
 
 export const CommentList = (props) => (
     <List {...props}>
@@ -131,6 +190,15 @@ With this configuration, `<ReferenceField>` wraps the comment title in a link to
 ![ReferenceField](./img/reference-field.png)
 
 `<ReferenceField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. Also, you can use any `Field` component as child.
+
+**Note**: You **must** add a `<Resource>` for the reference resource - admin-on-rest needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
+
+```js
+<Admin restClient={myRestClient}>
+    <Resource name="comments" list={CommentList} />
+    <Resource name="posts" />
+</Admin>
+```
 
 **Tip**: Admin-on-rest accumulates and deduplicates the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
 
@@ -164,10 +232,10 @@ For instance, here is how to fetch the `comments` related to a `post` record, an
 
 ```js
 import React from 'react';
-import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'admin-on-rest/mui';
+import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'admin-on-rest/lib/mui';
 
 export const PostList = (props) => (
-    <List {...props} filter={PostFilter}>
+    <List {...props}>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" type="email" />
@@ -188,7 +256,7 @@ You can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside ano
 
 ```js
 import React from 'react';
-import { Edit, Datagrid, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'admin-on-rest/mui';
+import { Edit, Datagrid, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'admin-on-rest/lib/mui';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -212,7 +280,7 @@ export const PostEdit = (props) => (
 This component displays some HTML content. The content is "rich" (i.e. unescaped) by default.
 
 ``` js
-import { RichTextField } from 'admin-on-rest/mui';
+import { RichTextField } from 'admin-on-rest/lib/mui';
 
 <RichTextField source="body" />
 ```
@@ -222,7 +290,7 @@ import { RichTextField } from 'admin-on-rest/mui';
 The `stripTags` attribute (`false` by default) allows you to remove any HTML markup, preventing some display glitches (which is especially useful in list views).
 
 ``` js
-import { RichTextField } from 'admin-on-rest/mui';
+import { RichTextField } from 'admin-on-rest/lib/mui';
 
 <RichTextField source="body" stripTags />
 ```
@@ -232,7 +300,7 @@ import { RichTextField } from 'admin-on-rest/mui';
 The most simple as all fields, `<TextField>` simply displays the record property as plain text.
 
 ``` js
-import { TextField } from 'admin-on-rest/mui';
+import { TextField } from 'admin-on-rest/lib/mui';
 
 <TextField label="Author Name" source="name" />
 ```
@@ -242,10 +310,57 @@ import { TextField } from 'admin-on-rest/mui';
 `<UrlField>` displays an url in an `< a href="">` tag.
 
 ``` js
-import { UrlField } from 'admin-on-rest/mui';
+import { UrlField } from 'admin-on-rest/lib/mui';
 
 <UrlField source="site_url" />
 ```
+
+## Styling Fields
+
+All field components accept the `style` prop, which overrides the default style of the field *container*:
+
+{% raw %}
+```js
+<TextField source="price" style={{ color: 'purple' }}/>
+// renders in the datagrid as
+<td style="color: purple;"><span>2</span></td>
+```
+{% endraw %}
+
+If you want to override the styles of the field *element*, use the `elStyle` prop instead:
+
+{% raw %}
+```js
+<TextField source="price" elStyle={{ color: 'purple' }}/>
+// renders in the datagrid as
+<td><span style="color: purple;">2</span></td>
+```
+{% endraw %}
+
+admin-on-rest usually delegates the rendering of fields components to material ui components. Refer to the material ui documentation to see the default styles for elements.
+
+Lastly, you may want to override the field header (the `<th>` element in the datagrid). In that case, use the `headerStyle` prop:
+
+{% raw %}
+```js
+export const ProductList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="sku" />
+            <TextField source="price"
+                style={{ textAlign: 'right'}}
+                headerStyle={{ textAlign: 'right' }}
+            />
+            <EditButton />
+        </Datagrid>
+    </List>
+);
+// renders in the datagrid as
+<td style="text-align:right"><span>2</span></td>
+// renders in the table header as
+<th style="text-align:right;font-weight:bold"><button>Price</button></td>
+```
+{% endraw %}
 
 ## Writing Your Own Field Component
 
@@ -259,9 +374,9 @@ import React, { PropTypes } from 'react';
 const TextField = ({ source, record = {} }) => <span>{record[source]}</span>;
 
 TextField.propTypes = {
-    source: PropTypes.string.isRequired,
-    record: PropTypes.object,
     label: PropTypes.string,
+    record: PropTypes.object,
+    source: PropTypes.string.isRequired,
 };
 
 export default TextField;
@@ -298,8 +413,10 @@ FullNameField.defaultProps = { label: 'Name' };
 export const UserList = (props) => (
     <List {...props}>
         <Datagrid>
-            <FullNameField />
+            <FullNameField source="lastName" />
         </Datagrid>
     </List>
 );
 ```
+
+**Tip**: In such custom fields, the `source` is optional. Admin-on-rest uses it to determine which column to use for sorting when the column header is clicked.

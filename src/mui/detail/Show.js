@@ -56,9 +56,11 @@ export class Show extends Component {
                 {data &&
                     <div style={{ padding: '0 1em 1em 1em' }}>
                         {React.Children.map(children, field => (
-                            <Labeled label={field.props.label} source={field.props.source} disabled={false} record={data} basePath={basePath} resource={resource} >
-                                <field.type {...field.props} />
-                            </Labeled>
+                            <div key={field.props.source} style={field.props.style}>
+                                <Labeled label={field.props.label} source={field.props.source} disabled={false} record={data} basePath={basePath} resource={resource} >
+                                    <field.type {...field.props} />
+                                </Labeled>
+                            </div>
                         ))}
                     </div>
                 }

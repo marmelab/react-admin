@@ -1,5 +1,7 @@
 import React from 'react';
 import {
+    BooleanField,
+    BooleanInput,
     Create,
     Datagrid,
     DateField,
@@ -10,13 +12,14 @@ import {
     Filter,
     List,
     LongTextInput,
-    ReferenceManyField,
+    NumberField,
     Show,
     ShowButton,
-    TextField,
-    TextInput,
+    ReferenceManyField,
     RichTextField,
     RichTextInput,
+    TextField,
+    TextInput,
 } from 'admin-on-rest/mui';
 
 export PostIcon from 'material-ui/svg-icons/action/book';
@@ -29,12 +32,13 @@ const PostFilter = (props) => (
 );
 
 export const PostList = (props) => (
-    <List {...props} filter={PostFilter}>
+    <List {...props} filter={<PostFilter />}>
         <Datagrid>
             <TextField source="id" />
-            <TextField source="title" type="email" style={{ display: 'inline-block', maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis' }}/>
+            <TextField source="title" type="email" style={{ maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis' }}/>
             <DateField source="published_at" style={{ fontStyle: 'italic' }} />
-            <TextField source="views" />
+            <BooleanField label="Commentable" source="commentable" />
+            <NumberField source="views" />
             <EditButton />
             <ShowButton />
         </Datagrid>
@@ -69,11 +73,12 @@ export const PostCreate = (props) => (
         <RichTextInput source="body" />
         <DateInput label="Publication date" source="published_at" />
         <TextInput source="average_note" />
+        <BooleanInput label="Allow comments?" source="commentable" />
     </Create>
 );
 
 export const PostEdit = (props) => (
-    <Edit title={PostTitle} {...props}>
+    <Edit title={<PostTitle />} {...props}>
         <DisabledInput label="Id" source="id" />
         <TextInput source="title" validation={{ required: true }} />
         <TextInput label="Password (if protected post)" source="password" type="password" />
@@ -81,6 +86,7 @@ export const PostEdit = (props) => (
         <RichTextInput source="body" validation={{ required: true }} />
         <DateInput label="Publication date" source="published_at" />
         <TextInput source="average_note" validation={{ min: 0 }} />
+        <BooleanInput label="Allow comments?" source="commentable" />
         <ReferenceManyField label="Comments" reference="comments" target="post_id">
             <Datagrid>
                 <TextField source="body" />
@@ -93,7 +99,7 @@ export const PostEdit = (props) => (
 );
 
 export const PostShow = (props) => (
-    <Show title={PostTitle} {...props}>
+    <Show title={<PostTitle />} {...props}>
         <TextField source="id" />
         <TextField source="title" />
         <TextField source="teaser" />

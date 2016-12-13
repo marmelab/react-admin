@@ -28,6 +28,9 @@ All input components accept the following attributes:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
 * `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
+* `style`: A style object to customize the look and feel of the field container (e.g. the `<div>` in a form).
+* `elStyle`: A style object to customize the look and feel of the field element itself
+
 
 ```js
 <TextInput source="zb_title" label="Title" />
@@ -51,6 +54,30 @@ Then you can display a text input to edit the author first name as follows:
 ```js
 <TextInput source="author.firstName" />
 ```
+
+## `<BooleanInput>` and `<NullableBooleanInput>`
+
+`<BooleanInput />` is a toggle button allowing you to attribute a `true` or `false` value to a record field.
+
+``` js
+import { BooleanInput } from 'admin-on-rest/mui';
+
+<BooleanInput label="Allow comments?" source="commentable" />
+```
+
+![BooleanInput](./img/boolean-input.png)
+
+This input does not handle `null` values. You would need the `<NullableBooleanInput />` component if you have to handle non-set booleans.
+
+`<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
+
+``` js
+import { NullableBooleanInput } from 'admin-on-rest/mui';
+
+<NullableBooleanInput label="Allow comments?" source="commentable" />
+```
+
+![NullableBooleanInput](./img/nullable-boolean-input.png)
 
 ## `<DateInput>`
 

@@ -42,6 +42,7 @@
     "fakerest": "~1.2.1",
     "fetch-mock": "~5.5.0",
     "ignore-styles": "~5.0.1",
+    "lodash.defaultsdeep": "^4.6.0",
     "mocha": "~3.2.0",
     "react-addons-test-utils": "~15.4.0",
     "sinon": "~1.17.6",
