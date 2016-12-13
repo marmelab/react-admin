@@ -89,7 +89,7 @@ export default (apiUrl, httpClient = fetchJson) => {
         switch (type) {
         case GET_LIST:
             if (!headers.has('x-total-count')) {
-                throw new Error('The X-Total-Count header is missing in the HTTP Response. This header is necessary for pagination. If you are using CORS, did you declare X-Total-Count in the Access-Control-Allow-Headers header?');
+                throw new Error('The X-Total-Count header is missing in the HTTP Response. The jsonServer REST client expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare X-Total-Count in the Access-Control-Expose-Headers header?');
             }
             return {
                 data: json.map(x => x),
