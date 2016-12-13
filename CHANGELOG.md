@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## v0.6.0
 
 * [BC Break] The `filter` prop of the <List> component now expects an element rather than a component (`<List filter={<MyFilter/>} >` rather than `<List filter={MyFilter} >`)
 * [BC Break] The `title` prop of all view components now expect an element rather than a component (`<List title={<MyTitle/>`} > rather than `<List title={MyTitle} >`)
@@ -21,6 +21,36 @@
 * Hide resources in the Menu when they don't have a list view
 * Fix warning for fields with no source and no label
 * Fix FilterButton for fields without label
+
+## v0.5.4
+
+* Document conditional formatting
+* Fix node incompatibility error caused by `quill` when installing with `yarn` ([tinhnguyen-ea](https://github.com/tinhnguyen-ea))
+* Fix pagination when the number of pages exceeds 8
+* Fix React 14.4 compatibility by updating `react-tap-event` dependency ([petetnt](https://github.com/petetnt))
+* Fix regression in material UI Popover
+* Update dependencies (`react`, `material-ui`, `redux-form`, `redux-saga`)
+
+## v0.5.3
+
+* Fix `jsonServer` `GET_MANY` when overriding `htpClient` ([aceofspades](https://github.com/aceofspades))
+* Fix bad refresh of list after create, update, and delete
+* Fix unstable state after create, update, and delete
+
+## v0.5.2
+
+* Fix `<SelectInput>` subcomponent key in case of duplicate value ([rweindl](https://github.com/rweindl))
+* Fix `make test-watch` command
+* Fix  datagrid margins to accomodate more content
+* Fix cannot set empty value on `<ReferenceInput/>`
+* Fix bad error message in `restClient` when no count header is found
+* Fix Infinite loop when two menu clicked quickly
+* Fix Warning when Datagrid contains two action buttons
+* Add ability to intercept HTTP request and add custom headers
+
+## v0.5.1
+
+Fix bad built files
 
 ## v0.5.0
 
