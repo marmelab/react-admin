@@ -42,7 +42,7 @@ export default (apiUrl, httpClient = fetchJson) => {
                 _sort: field,
                 _order: order,
                 _start: (page - 1) * perPage,
-                _end: page * perPage - 1,
+                _end: page * perPage,
             };
             url = `${apiUrl}/${resource}?${queryParameters(query)}`;
             break;
