@@ -3,6 +3,21 @@ import { connect } from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
 import { hideNotification as hideNotificationAction } from '../../actions/notificationActions' ;
 
+function getStyles(context) {
+    if (!context) return { primary1Color: '#00bcd4', accent1Color: '#ff4081' };
+    const {
+      muiTheme: {
+        baseTheme: {
+          palette: {
+              primary1Color,
+              accent1Color,
+          },
+        },
+      },
+    } = context;
+    return { primary1Color, accent1Color };
+}
+
 class Notification extends React.Component {
     handleRequestClose = () => {
         this.props.hideNotification();
@@ -10,11 +25,12 @@ class Notification extends React.Component {
 
     render() {
         const style = {};
+        const { primary1Color, accent1Color } = getStyles(this.context);
         if (this.props.type === 'warning') {
-            style.backgroundColor = '#ff4081';
+            style.backgroundColor = accent1Color;
         }
         if (this.props.type === 'confirm') {
-            style.backgroundColor = '#00bcd4';
+            style.backgroundColor = primary1Color;
         }
         return (<Snackbar
             open={!!this.props.message}
@@ -34,6 +50,10 @@ Notification.propTypes = {
 
 Notification.defaultProps = {
     type: 'info',
+};
+
+Notification.contextTypes = {
+    muiTheme: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
