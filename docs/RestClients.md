@@ -47,6 +47,18 @@ This REST client fits APIs using simple GET parameters for filters and sorting. 
 | `CREATE`       | `POST http://my.api.url/posts/123`
 | `DELETE`       | `DELETE http://my.api.url/posts/123`
 
+**Note**: The simple REST client expects the API to include a `Content-Range` header in the response to `GET_LIST` and `GET_MATCHING` calls. The value must be the total number of resources in the collection. This allows admin-on-rest to know how many pages of resources there are in total, and build the pagination controls.
+
+```
+Content-Range: posts 0-24/319
+```
+
+If your API is on another domain as the JS code, you'll need to whitelist this header with an `Access-Control-Expose-Headers` [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) header.
+
+```
+Access-Control-Expose-Headers: Content-Range
+```
+
 Here is how to use it in your admin:
 
 ```js
@@ -79,6 +91,18 @@ This REST client fits APIs powered by [JSON Server](https://github.com/typicode/
 | `UPDATE`       | `PUT http://my.api.url/posts/123`
 | `CREATE`       | `POST http://my.api.url/posts/123`
 | `DELETE`       | `DELETE http://my.api.url/posts/123`
+
+**Note**: The jsonServer REST client expects the API to include a `X-Total-Count` header in the response to `GET_LIST` and `GET_MATCHING` calls. The value must be the total number of resources in the collection. This allows admin-on-rest to know how many pages of resources there are in total, and build the pagination controls.
+
+```
+X-Total-Count: 319
+```
+
+If your API is on another domain as the JS code, you'll need to whitelist this header with an `Access-Control-Expose-Headers` [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) header.
+
+```
+Access-Control-Expose-Headers: X-Total-Count
+```
 
 Here is how to use it in your admin:
 
