@@ -165,8 +165,6 @@ MyLayout.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     children: PropTypes.node,
     route: PropTypes.object.isRequired,
-    title: PropTypes.string.isRequired,
-    theme: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
