@@ -29,9 +29,11 @@ const defaultStyles = {
     cell: {
         td: {
             padding: '0 12px',
+            whiteSpace: 'normal',
         },
         'td:first-child': {
             padding: '0 12px 0 16px',
+            whiteSpace: 'normal',
         },
     },
 };
