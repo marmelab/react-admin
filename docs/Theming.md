@@ -157,3 +157,20 @@ const App = () => (
     </Admin>
 );
 ```
+
+## Using a Custom Layout
+
+Instead of the default layout, you can use your own component as the admin layout. Just use the `appLayout` prop of the `<Admin>` component:
+
+```js
+// in src/App.js
+import MyLayout from './MyLayout';
+
+const App = () => (
+    <Admin appLayout={MyLayout} restClient={simpleRestClient('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
+Refer to [the `<Admin>` component documentation](./AdminResource.html#applayout) for more details.
