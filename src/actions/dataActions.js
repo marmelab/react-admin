@@ -82,9 +82,9 @@ export const CRUD_GET_MATCHING_LOADING = 'CRUD_GET_MATCHING_LOADING';
 export const CRUD_GET_MATCHING_FAILURE = 'CRUD_GET_MATCHING_FAILURE';
 export const CRUD_GET_MATCHING_SUCCESS = 'CRUD_GET_MATCHING_SUCCESS';
 
-export const crudGetMatching = (reference, relatedTo, filter) => ({
+export const crudGetMatching = (reference, relatedTo, pagination, sort, filter) => ({
     type: CRUD_GET_MATCHING,
-    payload: { filter },
+    payload: { pagination, sort, filter },
     meta: { resource: reference, relatedTo, fetch: GET_MATCHING, cancelPrevious: false },
 });
 

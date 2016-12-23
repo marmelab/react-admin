@@ -1,3 +1,4 @@
+export AutocompleteInput from './AutocompleteInput';
 export BooleanInput from './BooleanInput';
 export DateInput from './DateInput';
 export DisabledInput from './DisabledInput';
