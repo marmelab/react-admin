@@ -9,6 +9,11 @@ describe('<NumberField />', () => {
         null,
     ));
 
+    it('should return null when the record has no value for the source', () => assert.equal(
+        shallow(<NumberField record={{}} source="foo" />).html(),
+        null,
+    ));
+
     it('should render a number', () => assert.equal(
         shallow(<NumberField record={{ foo: 1 }} source="foo" />).html(),
         '<span>1</span>',
@@ -19,7 +24,7 @@ describe('<NumberField />', () => {
         '<span>1.00</span>',
     ));
 
-    // Node is usually not copiled with all locales
+    // Node is usually not compiled with all locales
     it.skip('should use the locales props as an argument to Intl.NumberFormat', () => assert.equal(
         shallow(<NumberField record={{ foo: 1 }} source="foo" locales="fr-FR" options={{ minimumFractionDigits: 2 }} />).html(),
         '<span>1,00</span>',
