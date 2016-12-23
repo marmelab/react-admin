@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Filter, Edit, Create, Datagrid, DateField, ReferenceField, TextField, EditButton, DisabledInput, DateInput, LongTextInput, SelectInput, ReferenceInput, TextInput } from 'admin-on-rest/mui';
+import { List, Filter, Edit, Create, Datagrid, DateField, ReferenceField, TextField, EditButton, AutocompleteInput, DisabledInput, DateInput, LongTextInput, SelectInput, ReferenceInput, TextInput } from 'admin-on-rest/mui';
 
 export CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
 import PersonIcon from 'material-ui/svg-icons/social/person';
@@ -82,8 +82,8 @@ export const CommentList = (props) => (
 export const CommentEdit = (props) => (
     <Edit {...props}>
         <DisabledInput source="id" />
-        <ReferenceInput label="Post" source="post_id" reference="posts">
-            <SelectInput optionText="title" />
+        <ReferenceInput label="Post" source="post_id" reference="posts" perPage={5} sort={{ field: 'title', order: 'ASC' }}>
+            <AutocompleteInput optionText="title" />
         </ReferenceInput>
         <TextInput label="Author name" source="author.name" />
         <DateInput label="date" source="created_at" />

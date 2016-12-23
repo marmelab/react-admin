@@ -34,7 +34,8 @@ export default (apiUrl, httpClient = fetchJson) => {
         let url = '';
         const options = {};
         switch (type) {
-        case GET_LIST: {
+        case GET_LIST:
+        case GET_MATCHING: {
             const { page, perPage } = params.pagination;
             const { field, order } = params.sort;
             const query = {
@@ -45,10 +46,6 @@ export default (apiUrl, httpClient = fetchJson) => {
                 _end: page * perPage,
             };
             url = `${apiUrl}/${resource}?${queryParameters(query)}`;
-            break;
-        }
-        case GET_MATCHING: {
-            url = `${apiUrl}/${resource}?${queryParameters(params.filter)}`;
             break;
         }
         case GET_ONE:

@@ -1,29 +1,123 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import debounce from 'lodash.debounce';
 import Labeled from './Labeled';
 import { crudGetOne as crudGetOneAction, crudGetMatching as crudGetMatchingAction } from '../../actions/dataActions';
 import { getPossibleReferences } from '../../reducer/references/possibleValues';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
+/**
+ * An Input component for choosing a reference record. Useful for foreign keys.
+ *
+ * This component fetches the possible values in the reference resource
+ * (using the `CRUD_GET_MATCHING` REST method), then delegates rendering
+ * to a subcomponent, to which it passes the possible choices
+ * as the `choices` attribute.
+ *
+ * Use it with a selector component as child, like `<AutocompleteInput>`,
+ * `<SelectInput>`, or `<RadioButtonGroupInput>`.
+ *
+ * @example
+ * export const CommentEdit = (props) => (
+ *     <Edit {...props}>
+ *         <ReferenceInput label="Post" source="post_id" reference="posts">
+ *             <AutocompleteInput optionText="title" />
+ *         </ReferenceInput>
+ *     </Edit>
+ * );
+ *
+ * @example
+ * export const CommentEdit = (props) => (
+ *     <Edit {...props}>
+ *         <ReferenceInput label="Post" source="post_id" reference="posts">
+ *             <SelectInput optionText="title" />
+ *         </ReferenceInput>
+ *     </Edit>
+ * );
+ *
+ * By default, restricts the possible values to 25. You can extend this limit
+ * by setting the `perPage` prop.
+ *
+ * @example
+ * <ReferenceInput
+ *      source="post_id"
+ *      reference="posts"
+ *      perPage={100}>
+ *     <SelectInput optionText="title" />
+ * </ReferenceInput>
+ *
+ * By default, orders the possible values by id desc. You can change this order
+ * by setting the `sort` prop (an object with `field` and `order` properties).
+ *
+ * @example
+ * <ReferenceInput
+ *      source="post_id"
+ *      reference="posts"
+ *      sort={{ field: 'title', order: 'ASC' }}>
+ *     <SelectInput optionText="title" />
+ * </ReferenceInput>
+ *
+ * The enclosed component may filter results. ReferenceInput passes a `setFilter`
+ * function as prop to its child component. It uses the value to create a filter
+ * for the query - by default { q: [searchText] }. You can customize the mapping
+ * searchText => searchQuery by setting a custom `filterToQuery` function prop:
+ *
+ * @example
+ * <ReferenceInput
+ *      source="post_id"
+ *      reference="posts"
+ *      filterToQuery={searchText => ({ title: searchText })}>
+ *     <SelectInput optionText="title" />
+ * </ReferenceInput>
+ */
 export class ReferenceInput extends Component {
+    constructor(props) {
+        super(props);
+        const { perPage, sort, filter } = props;
+        // stored as a property rather than state because we don't want redraw of async updates
+        this.params = { pagination: { page: 1, perPage }, sort, filter };
+        this.debouncedSetFilter = debounce(this.setFilter.bind(this), 500);
+    }
+
     componentDidMount() {
-        const { reference, record, source, resource } = this.props;
-        this.fetchReferenceAndOptions(reference, record[source], referenceSource(resource, source));
+        this.fetchReferenceAndOptions();
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.record.id !== nextProps.record.id) {
-            const { reference, record, source, resource } = nextProps;
-            this.fetchReferenceAndOptions(reference, record[source], referenceSource(resource, source));
+            this.fetchReferenceAndOptions(nextProps);
         }
     }
 
-    fetchReferenceAndOptions(reference, id, relatedTo) {
+    setFilter = (filter) => {
+        if (filter !== this.params.filter) {
+            this.params.filter = this.props.filterToQuery(filter);
+            this.fetchReferenceAndOptions();
+        }
+    }
+
+    setPagination = (pagination) => {
+        if (pagination !== this.param.pagination) {
+            this.param.pagination = pagination;
+            this.fetchReferenceAndOptions();
+        }
+    }
+
+    setSort = (sort) => {
+        if (sort !== this.params.sort) {
+            this.params.sort = sort;
+            this.fetchReferenceAndOptions();
+        }
+    }
+
+    fetchReferenceAndOptions({ reference, record, source, resource } = this.props) {
+        const { pagination, sort, filter } = this.params;
+        const id = record[source];
         if (id) {
             this.props.crudGetOne(reference, id, null, false);
         }
-        this.props.crudGetMatching(reference, relatedTo, {});
+        this.props.crudGetMatching(reference, referenceSource(resource, source), pagination, sort, filter);
     }
 
     render() {
@@ -42,6 +136,9 @@ export class ReferenceInput extends Component {
             choices: matchingReferences,
             basePath,
             onChange,
+            setFilter: this.debouncedSetFilter,
+            setPagination: this.setPagination,
+            setSort: this.setSort,
         });
     }
 }
@@ -52,23 +149,34 @@ ReferenceInput.propTypes = {
     children: PropTypes.element.isRequired,
     crudGetMatching: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,
+    filter: PropTypes.object,
+    filterToQuery: PropTypes.func.isRequired,
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
     label: PropTypes.string,
     matchingReferences: PropTypes.array,
     onChange: PropTypes.func,
+    perPage: PropTypes.number,
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
     resource: PropTypes.string.isRequired,
+    sort: PropTypes.shape({
+        field: PropTypes.string,
+        order: PropTypes.oneOf(['ASC', 'DESC']),
+    }),
     source: PropTypes.string.isRequired,
 };
 
 ReferenceInput.defaultProps = {
-    referenceRecord: null,
-    record: {},
     allowEmpty: false,
+    filter: {},
+    filterToQuery: searchText => ({ q: searchText }),
     matchingReferences: [],
+    perPage: 25,
+    sort: { field: 'id', order: 'DESC' },
+    record: {},
+    referenceRecord: null,
 };
 
 function mapStateToProps(state, props) {

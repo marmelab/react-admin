@@ -35,19 +35,13 @@ export default (apiUrl, httpClient = fetchJson) => {
         let url = '';
         const options = {};
         switch (type) {
-        case GET_LIST: {
+        case GET_LIST:
+        case GET_MATCHING: {
             const { page, perPage } = params.pagination;
             const { field, order } = params.sort;
             const query = {
                 sort: JSON.stringify([field, order]),
                 range: JSON.stringify([(page - 1) * perPage, (page * perPage) - 1]),
-                filter: JSON.stringify(params.filter),
-            };
-            url = `${apiUrl}/${resource}?${queryParameters(query)}`;
-            break;
-        }
-        case GET_MATCHING: {
-            const query = {
                 filter: JSON.stringify(params.filter),
             };
             url = `${apiUrl}/${resource}?${queryParameters(query)}`;
