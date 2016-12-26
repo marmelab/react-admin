@@ -27,7 +27,7 @@ describe('<AutocompleteInput />', () => {
         assert.equal(AutoCompleteElement.prop('searchText'), 'foo');
     });
 
-    it('should render pass choices as dataSource', () => {
+    it('should pass choices as dataSource', () => {
         const wrapper = shallow(<AutocompleteInput
             {...defaultProps}
             choices={[
