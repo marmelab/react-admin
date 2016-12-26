@@ -306,12 +306,22 @@ export const CommentEdit = (props) => (
 
 ![ReferenceInput](./img/reference-input.gif)
 
-Set the `allowEmpty` attribute to `true` when the empty value is allowed. This is necessary for instance when unig the `<ReferenceInput>` in [the `Filter` component](./List.html#filters):
+Set the `allowEmpty` prop when the empty value is allowed.
+
+```js
+import { ReferenceInput, SelectInput } from 'admin-on-rest/mui'
+
+<ReferenceInput label="Post" source="post_id" reference="posts" allowEmpty>
+    <SelectInput optionText="title" />
+</ReferenceInput>
+```
+
+**Tip**: `allowEmpty` is set by default for all Input components children of the `<Filter>` component:
 
 ```js
 const CommentFilter = (props) => (
     <Filter {...props}>
-        <ReferenceInput label="Post" source="post_id" reference="posts" allowEmpty>
+        <ReferenceInput label="Post" source="post_id" reference="posts"> // no need for allowEmpty
             <SelectInput optionText="title" />
         </ReferenceInput>
     </Filter>
