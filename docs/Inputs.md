@@ -55,6 +55,77 @@ Then you can display a text input to edit the author first name as follows:
 <TextInput source="author.firstName" />
 ```
 
+## `<AutocompleteInput>`
+
+To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`. It renders using [Material ui's `<AutoComplete>` component](http://www.material-ui.com/#/components/auto-complete) and a `fuzzySearch` filter. Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
+
+```js
+import { Edit, AutocompleteInput } from 'admin-on-rest/mui';
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <AutocompleteInput source="category" choices={[
+            { id: 'programming', name: 'Programming' },
+            { id: 'lifestyle', name: 'Lifestyle' },
+            { id: 'photography', name: 'Photography' },
+        ]} />
+    </Edit>
+);
+```
+
+You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
+
+```js
+<AutocompleteInput label="Author" source="author_id" optionText="full_name" optionValue="_id" choices={[
+    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+]} />
+```
+
+You can customize the `filter` function used to filter the results. By default, it's `AutoComplete.fuzzyFilter`, but you can use any of [the functions provided by `AutoComplete`](http://www.material-ui.com/#/components/auto-complete), or a function of your own (`(searchText: string, key: string) => boolean`):
+
+```js
+import { Edit, AutocompleteInput } from 'admin-on-rest/mui';
+import AutoComplete from 'material-ui/AutoComplete';
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <AutocompleteInput source="category" filter={AutoComplete.caseInsensitiveFilter} choices={choices} />
+    </Edit>
+);
+```
+
+Lastly, use the `options` attribute if you want to override any of Material UI's `<AutoComplete>` attributes:
+
+{% raw %}
+```js
+<AutocompleteInput source="category" options={{
+    fullWidth: true,
+    filter: AutoComplete.fuzzyFilter,
+}} />
+```
+{% endraw %}
+
+Refer to [Material UI Autocomplete documentation](http://www.material-ui.com/#/components/auto-complete) for more details.
+
+**Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
+
+```js
+import { Edit, AutocompleteInput, ReferenceInput } from 'admin-on-rest/mui'
+
+export const CommentEdit = (props) => (
+    <Edit {...props}>
+        <ReferenceInput label="Post" source="post_id" reference="posts">
+            <AutocompleteInput optionText="title" />
+        </ReferenceInput>
+    </Edit>
+);
+```
+
+**Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](#referenceinput) doesn't cover your need), you'll have to [write your own Input component](#writing-your-own-input-component) based on material-ui `<AutoComplete>` component.
+
+**Tip**: Admin-on-rest's `<AutocompleteInput>` has only a capital A, while material-ui's `<AutoComplete>` has a capital A and a capital C. Don't mix up the components!
+
 ## `<BooleanInput>` and `<NullableBooleanInput>`
 
 `<BooleanInput />` is a toggle button allowing you to attribute a `true` or `false` value to a record field.
@@ -162,11 +233,13 @@ You can also customize the properties to use for the option name and value, than
 ]} />
 ```
 
+**Tip**: If you want to populate the `choices` attribute with a list of related records, you should use the [`<ReferenceInput>`](#referenceinput).
+
 ## `<ReferenceInput>`
 
 Use `<ReferenceInput>` for foreign-key values, i.e. to let users choose a value from another REST endpoint. This component fetches the possible values in the reference resource (using the `CRUD_GET_MATCHING` REST method), then delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
 
-This means you can use `<ReferenceInput>` either with [`<SelectInput>`](#selectinput), or with [`<RadioButtonGroupInput>`](#radiobuttongroupinput), or even with the component of your choice, provided it supports the `choices` attribute.
+This means you can use `<ReferenceInput>` with any of [`<SelectInput>`](#selectinput), [`<AutocompleteInput>`](#autocompleteinput), or [`<RadioButtonGroupInput>`](#radiobuttongroupinput), or even with the component of your choice, provided it supports the `choices` attribute.
 
 The component expects a `source` and a `reference` attributes. For instance, to make the `post_id` for a `comment` editable:
 
@@ -186,7 +259,7 @@ export const CommentEdit = (props) => (
 
 ![ReferenceInput](./img/reference-input.gif)
 
-Set the `allowEmpty` attribute to `true` when the empty value is allowed. This is necessary for instance when used as a filter:
+Set the `allowEmpty` attribute to `true` when the empty value is allowed. This is necessary for instance when unig the `<ReferenceInput>` in [the `Filter` component](./List.html#filters):
 
 ```js
 const CommentFilter = (props) => (
@@ -196,6 +269,51 @@ const CommentFilter = (props) => (
         </ReferenceInput>
     </Filter>
 );
+```
+
+You can tweak how this component fetches the possible values using the `perPage`, `sort`, and `filter` props.
+
+{% raw %}
+```js
+// by default, fetches only the first 25 values. You can extend this limit
+// by setting the `perPage` prop.
+<ReferenceInput
+     source="post_id"
+     reference="posts"
+     perPage={100}>
+    <SelectInput optionText="title" />
+</ReferenceInput>
+
+// by default, orders the possible values by id desc. You can change this order
+// by setting the `sort` prop (an object with `field` and `order` properties).
+<ReferenceInput
+     source="post_id"
+     reference="posts"
+     sort={{ field: 'title', order: 'ASC' }}>
+    <SelectInput optionText="title" />
+</ReferenceInput>
+
+// you can filter the query used to populate the possible values. Use the
+// `filter` prop for that.
+<ReferenceInput
+     source="post_id"
+     reference="posts"
+     filter={{ is_published: true }}>
+    <SelectInput optionText="title" />
+</ReferenceInput>
+```
+{% endraw %}
+
+The enclosed component may further filter results (that's the case, for instance, for `<AutocompleteInput>`). ReferenceInput passes a `setFilter` function as prop to its child component. It uses the value to create a filter for the query - by default `{ q: [searchText] }`. You can customize the mapping
+`searchText => searchQuery` by setting a custom `filterToQuery` function prop:
+
+```js
+<ReferenceInput
+     source="post_id"
+     reference="posts"
+     filterToQuery={searchText => ({ title: searchText })}>
+    <SelectInput optionText="title" />
+</ReferenceInput>
 ```
 
 ## `<RichTextInput>`
@@ -268,7 +386,21 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 
 Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/components/select-field) for more details.
 
-And if, instead of showing choices as a dropdown list, you prefer to display them as a list of radio buttons, try the [`<RadioButtonGroupInput>`](#radiobuttongroupinput).
+**Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
+
+```js
+import { Edit, SelectInput, ReferenceInput } from 'admin-on-rest/mui'
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <ReferenceInput label="Author" source="author_id" reference="authors">
+            <SelectInput optionText="last_name" />
+        </ReferenceInput>
+    </Edit>
+);
+```
+
+If, instead of showing choices as a dropdown list, you prefer to display them as a list of radio buttons, try the [`<RadioButtonGroupInput>`](#radiobuttongroupinput). And if the list is too big, prefer the [`<AutocompleteInput>`](#autocompleteinput).
 
 ## `<TextInput>`
 

@@ -6,6 +6,7 @@ import { crudGetOne as crudGetOneAction, crudGetMatching as crudGetMatchingActio
 import { getPossibleReferences } from '../../reducer/references/possibleValues';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
+const noFilter = () => true;
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -55,6 +56,17 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  *      source="post_id"
  *      reference="posts"
  *      sort={{ field: 'title', order: 'ASC' }}>
+ *     <SelectInput optionText="title" />
+ * </ReferenceInput>
+ *
+ * Also, you can filter the query used to populate the possible values. Use the
+ * `filter` prop for that.
+ *
+ * @example
+ * <ReferenceInput
+ *      source="post_id"
+ *      reference="posts"
+ *      filter={{ is_published: true }}>
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  *
@@ -136,6 +148,7 @@ export class ReferenceInput extends Component {
             choices: matchingReferences,
             basePath,
             onChange,
+            filter: noFilter, // for AutocompleteInput
             setFilter: this.debouncedSetFilter,
             setPagination: this.setPagination,
             setSort: this.setSort,
