@@ -39,15 +39,14 @@ This REST client fits APIs using simple GET parameters for filters and sorting. 
 
 | REST verb      | API calls
 |----------------|----------------------------------------------------------------
-| `GET_LIST`     | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]`
-| `GET_MATCHING` | `GET http://my.api.url/posts?filter={title:'bar'}`
+| `GET_LIST`     | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}`
 | `GET_ONE`      | `GET http://my.api.url/posts/123`
 | `GET_MANY`     | `GET http://my.api.url/posts?filter={ids:[123,456,789]}`
 | `UPDATE`       | `PUT http://my.api.url/posts/123`
 | `CREATE`       | `POST http://my.api.url/posts/123`
 | `DELETE`       | `DELETE http://my.api.url/posts/123`
 
-**Note**: The simple REST client expects the API to include a `Content-Range` header in the response to `GET_LIST` and `GET_MATCHING` calls. The value must be the total number of resources in the collection. This allows admin-on-rest to know how many pages of resources there are in total, and build the pagination controls.
+**Note**: The simple REST client expects the API to include a `Content-Range` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows admin-on-rest to know how many pages of resources there are in total, and build the pagination controls.
 
 ```
 Content-Range: posts 0-24/319
@@ -84,15 +83,14 @@ This REST client fits APIs powered by [JSON Server](https://github.com/typicode/
 
 | REST verb      | API calls
 |----------------|----------------------------------------------------------------
-| `GET_LIST`     | `GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24`
-| `GET_MATCHING` | `GET http://my.api.url/posts?title=bar`
+| `GET_LIST`     | `GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24&title=bar`
 | `GET_ONE`      | `GET http://my.api.url/posts/123`
 | `GET_MANY`     | `GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789`
 | `UPDATE`       | `PUT http://my.api.url/posts/123`
 | `CREATE`       | `POST http://my.api.url/posts/123`
 | `DELETE`       | `DELETE http://my.api.url/posts/123`
 
-**Note**: The jsonServer REST client expects the API to include a `X-Total-Count` header in the response to `GET_LIST` and `GET_MATCHING` calls. The value must be the total number of resources in the collection. This allows admin-on-rest to know how many pages of resources there are in total, and build the pagination controls.
+**Note**: The jsonServer REST client expects the API to include a `X-Total-Count` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows admin-on-rest to know how many pages of resources there are in total, and build the pagination controls.
 
 ```
 X-Total-Count: 319
@@ -187,7 +185,6 @@ Type | Params format
 `DELETE`             | `{ id: {mixed} }`
 `GET_MANY`           | `{ ids: {mixed[]} }`
 `GET_MANY_REFERENCE` | `{ target: {string}, id: {mixed} }`
-`GET_MATCHING`       | `{ filter: {Object} }`
 
 Examples:
 
@@ -202,7 +199,6 @@ restClient(UPDATE, 'posts', { id: 123, { title: "hello, world!" } });
 restClient(DELETE, 'posts', { id: 123 });
 restClient(GET_MANY, 'posts', { ids: [123, 124, 125] });
 restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123 });
-restClient(GET_MATCHING, 'posts', { filter: { title: 'hello' } });
 ```
 
 ### Response Format
@@ -218,7 +214,6 @@ Type | Response format
 `DELETE`             | `{Record}`
 `GET_MANY`           | `{Record[]}`
 `GET_MANY_REFERENCE` | `{Record[]}`
-`GET_MATCHING`       | `{Record[]}`
 
 A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 123, title: "hello, world" }`.
 
@@ -278,12 +273,6 @@ restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123 });
 // [
 //     { id: 667, title: "I agree", post_id: 123 },
 //     { id: 895, title: "I don't agree", post_id: 123 },
-// ]
-
-restClient(GET_MATCHING, 'posts', { filter: { title: 'hello' } })
-.then(record => console.log(record));
-// [
-//     { id: 123, title: "hello, world" },
 // ]
 ```
 

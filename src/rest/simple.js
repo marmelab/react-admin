@@ -1,7 +1,6 @@
 import { queryParameters, fetchJson } from '../util/fetch';
 import {
     GET_LIST,
-    GET_MATCHING,
     GET_ONE,
     GET_MANY,
     GET_MANY_REFERENCE,
@@ -17,7 +16,6 @@ import {
  * @see https://github.com/marmelab/FakeRest
  * @example
  * GET_LIST     => GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]
- * GET_MATCHING => GET http://my.api.url/posts?filter={title:'bar'}
  * GET_ONE      => GET http://my.api.url/posts/123
  * GET_MANY     => GET http://my.api.url/posts?filter={ids:[123,456,789]}
  * UPDATE       => PUT http://my.api.url/posts/123
@@ -35,8 +33,7 @@ export default (apiUrl, httpClient = fetchJson) => {
         let url = '';
         const options = {};
         switch (type) {
-        case GET_LIST:
-        case GET_MATCHING: {
+        case GET_LIST: {
             const { page, perPage } = params.pagination;
             const { field, order } = params.sort;
             const query = {

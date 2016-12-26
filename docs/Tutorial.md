@@ -379,7 +379,7 @@ For instance, let's imagine you have to use the my.api.url API, which expects th
 | Create a record     | `POST http://my.api.url/posts/123` |
 | Delete a record     | `DELETE http://my.api.url/posts/123` |
 
-Admin-on-rest defines custom verbs for each of the actions of this list. Just like HTTP verbs (`GET`, `POST`, etc.), REST verbs qualify a request to a REST server. Admin-on-rest verbs are called `GET_LIST`, `GET_MATCHING`, `GET_ONE`, `GET_MANY`, `CREATE`, `UPDATE`, and `DELETE`. The REST client will have to map each of these verbs to one (or many) HTTP request(s).
+Admin-on-rest defines custom verbs for each of the actions of this list. Just like HTTP verbs (`GET`, `POST`, etc.), REST verbs qualify a request to a REST server. Admin-on-rest verbs are called `GET_LIST`, `GET_ONE`, `GET_MANY`, `CREATE`, `UPDATE`, and `DELETE`. The REST client will have to map each of these verbs to one (or many) HTTP request(s).
 
 The code for an API client for my.api.url is as follows:
 
@@ -387,7 +387,6 @@ The code for an API client for my.api.url is as follows:
 // in src/restClient
 import {
     GET_LIST,
-    GET_MATCHING,
     GET_ONE,
     GET_MANY,
     CREATE,
@@ -415,13 +414,6 @@ const convertRESTRequestToHTTP = (type, resource, params) => {
         const query = {
             sort: JSON.stringify([field, order]),
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
-            filter: JSON.stringify(params.filter),
-        };
-        url = `${API_URL}/${resource}?${queryParameters(query)}`;
-        break;
-    }
-    case GET_MATCHING: {
-        const query = {
             filter: JSON.stringify(params.filter),
         };
         url = `${API_URL}/${resource}?${queryParameters(query)}`;

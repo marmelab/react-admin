@@ -7,7 +7,7 @@ export default (previousState = initialState, { type, payload, meta }) => {
     case CRUD_GET_MATCHING_SUCCESS:
         return {
             ...previousState,
-            [meta.relatedTo]: payload.map(record => record.id),
+            [meta.relatedTo]: payload.data.map(record => record.id),
         };
     default:
         return previousState;
