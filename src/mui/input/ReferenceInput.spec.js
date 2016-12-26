@@ -148,14 +148,14 @@ describe('<ReferenceInput />', () => {
         ]);
     });
 
-    it('should call crudGetOne on mount if record is set', () => {
+    it('should call crudGetOne on mount if value is set', () => {
         const crudGetOne = sinon.spy();
         shallow((
             <ReferenceInput
                 {...defaultProps}
                 allowEmpty
                 crudGetOne={crudGetOne}
-                record={{ post_id: 5 }}
+                input={{ value: 5 }}
             >
                 <MyComponent />
             </ReferenceInput>
