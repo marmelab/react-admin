@@ -76,10 +76,22 @@ export const PostEdit = (props) => (
 You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
 ```js
-<AutocompleteInput label="Author" source="author_id" optionText="full_name" optionValue="_id" choices={[
+const choices = [
     { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
     { _id: 456, full_name: 'Jane Austen', sex: 'F' },
-]} />
+];
+<AutocompleteInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+```
+
+`optionText` also accepts a function, so you can shape the option text at will:
+
+```js
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
+<AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
 ```
 
 You can customize the `filter` function used to filter the results. By default, it's `AutoComplete.fuzzyFilter`, but you can use any of [the functions provided by `AutoComplete`](http://www.material-ui.com/#/components/auto-complete), or a function of your own (`(searchText: string, key: string) => boolean`):
@@ -227,11 +239,46 @@ export const PostEdit = (props) => (
 You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
 ```js
-<RadioButtonGroupInput label="Author" source="author_id" optionText="full_name" optionValue="_id" choices={[
+const choices = [
     { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
     { _id: 456, full_name: 'Jane Austen', sex: 'F' },
-]} />
+];
+<RadioButtonGroupInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
 ```
+
+`optionText` also accepts a function, so you can shape the option text at will:
+
+```js
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
+<RadioButtonGroupInput source="author_id" choices={choices} optionText={optionRenderer} />
+```
+
+`optionText` also accepts a React Element, that will be cloned and receive the related choice as the `record` prop. You can use Field components there.
+
+```js
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
+<RadioButtonGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
+```
+
+Lastly, use the `options` attribute if you want to override any of Material UI's `<RadioButtonGroup>` attributes:
+
+{% raw %}
+```js
+<RadioButtonGroupInput source="category" options={{
+    labelPosition: 'right'
+}} />
+```
+{% endraw %}
+
+Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/components/radio-button) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should use the [`<ReferenceInput>`](#referenceinput).
 
@@ -358,10 +405,33 @@ export const PostEdit = (props) => (
 You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
 ```js
-<SelectInput label="Author" source="author_id" optionText="full_name" optionValue="_id" choices={[
+const choices = [
     { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
     { _id: 456, full_name: 'Jane Austen', sex: 'F' },
-]} />
+];
+<SelectInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+```
+
+`optionText` also accepts a function, so you can shape the option text at will:
+
+```js
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
+<SelectInput source="author_id" choices={choices} optionText={optionRenderer} />
+```
+
+`optionText` also accepts a React Element, that will be cloned and receive the related choice as the `record` prop. You can use Field components there.
+
+```js
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
+<SelectInput source="gender" choices={choices} optionText={<FullNameField />}/>
 ```
 
 Enabling the `allowEmpty` props adds an empty choice (with `null` value) on top of the options, and makes the value nullable:
