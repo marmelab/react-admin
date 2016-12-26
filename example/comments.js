@@ -13,7 +13,7 @@ import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 
 const CommentFilter = (props) => (
     <Filter {...props}>
-        <ReferenceInput label="Post" source="post_id" reference="posts" allowEmpty>
+        <ReferenceInput label="Post" source="post_id" reference="posts">
             <SelectInput optionText="title" />
         </ReferenceInput>
     </Filter>
