@@ -11,18 +11,29 @@ import title from '../../util/title';
  *  - the 'id' property as the option value,
  *  - the 'name' property an the option text
  * @example
- * <AutocompleteInput source="gender" choices={[
+ * const choices = [
  *    { id: 'M', name: 'Male' },
  *    { id: 'F', name: 'Female' },
- * ]} />
+ * ];
+ * <AutocompleteInput source="gender" choices={choices} />
  *
  * You can also customize the properties to use for the option name and value,
- * thanks to the `optionText` and `optionValue` props.
+ * thanks to the 'optionText' and 'optionValue' attributes.
  * @example
- * <AutocompleteInput label="Author" source="author_id" optionText="full_name" optionValue="_id" choices={[
+ * const choices = [
  *    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
  *    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
- * ]} />
+ * ];
+ * <AutocompleteInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+ *
+ * `optionText` also accepts a function, so you can shape the option text at will:
+ * @example
+ * const choices = [
+ *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+ *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
+ * ];
+ * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
+ * <AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
  *
  * You can customize the `filter` function used to filter the results.
  * By default, it's `AutoComplete.fuzzyFilter`, but you can use any of
@@ -53,14 +64,18 @@ class AutocompleteInput extends Component {
 
     render() {
         const { choices, elStyle, filter, input, label, options, optionText, optionValue, setFilter, source } = this.props;
+
         const selectedSource = choices.find(choice => choice[optionValue] === input.value);
+        const option = typeof optionText === 'function' ?
+            optionText :
+            choice => choice[optionText];
         const dataSource = choices.map(choice => ({
             value: choice[optionValue],
-            text: choice[optionText],
+            text: option(choice),
         }));
         return (
             <AutoComplete
-                searchText={selectedSource && selectedSource[optionText]}
+                searchText={selectedSource && option(selectedSource)}
                 dataSource={dataSource}
                 floatingLabelText={title(label, source)}
                 filter={filter}
@@ -82,7 +97,11 @@ AutocompleteInput.propTypes = {
     input: PropTypes.object,
     label: PropTypes.string,
     options: PropTypes.object,
-    optionText: PropTypes.string.isRequired,
+    optionElement: PropTypes.element,
+    optionText: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.func,
+    ]).isRequired,
     optionValue: PropTypes.string.isRequired,
     setFilter: PropTypes.func,
     source: PropTypes.string,
