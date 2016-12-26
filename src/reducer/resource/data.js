@@ -77,9 +77,9 @@ export default (resource) => (previousState = initialState, { type, payload, met
     }
     switch (type) {
     case CRUD_GET_LIST_SUCCESS:
+    case CRUD_GET_MATCHING_SUCCESS:
         return addRecords(payload.data, previousState);
     case CRUD_GET_MANY_SUCCESS:
-    case CRUD_GET_MATCHING_SUCCESS:
     case CRUD_GET_MANY_REFERENCE_SUCCESS:
         return addRecords(payload, previousState);
     case CRUD_UPDATE: // replace record in edit form with edited one to avoid displaying previous record version
