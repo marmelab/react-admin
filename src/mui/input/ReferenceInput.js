@@ -123,9 +123,9 @@ export class ReferenceInput extends Component {
         }
     }
 
-    fetchReferenceAndOptions({ reference, record, source, resource } = this.props) {
+    fetchReferenceAndOptions({ input, reference, source, resource } = this.props) {
         const { pagination, sort, filter } = this.params;
-        const id = record[source];
+        const id = input.value;
         if (id) {
             this.props.crudGetOne(reference, id, null, false);
         }
@@ -133,7 +133,7 @@ export class ReferenceInput extends Component {
     }
 
     render() {
-        const { input, resource, label, source, record, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children } = this.props;
+        const { input, resource, label, source, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children } = this.props;
         if (!referenceRecord && !allowEmpty) {
             return <Labeled label={label} source={source} />;
         }
@@ -144,7 +144,6 @@ export class ReferenceInput extends Component {
             label,
             resource,
             source,
-            record,
             choices: matchingReferences,
             basePath,
             onChange,
@@ -170,7 +169,6 @@ ReferenceInput.propTypes = {
     matchingReferences: PropTypes.array,
     onChange: PropTypes.func,
     perPage: PropTypes.number,
-    record: PropTypes.object,
     reference: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
     resource: PropTypes.string.isRequired,
@@ -188,12 +186,11 @@ ReferenceInput.defaultProps = {
     matchingReferences: [],
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
-    record: {},
     referenceRecord: null,
 };
 
 function mapStateToProps(state, props) {
-    const referenceId = props.record[props.source];
+    const referenceId = props.input.value;
     return {
         referenceRecord: state.admin[props.reference].data[referenceId],
         matchingReferences: getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference, referenceId),
