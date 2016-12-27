@@ -216,6 +216,22 @@ import { LongTextInput } from 'admin-on-rest/mui';
 
 ![LongTextInput](./img/long-text-input.png)
 
+## `<NumberInput>`
+
+`<NumberInput>` translates to a HTMl `<input type="number">`. It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
+
+``` js
+import { NumberInput } from 'admin-on-rest/mui';
+
+<NumberInput source="nb_views" />
+```
+
+You can customize the `step` props (which defaults to "any"):
+
+``` js
+<NumberInput source="nb_views" step={1} />
+```
+
 ## `<RadioButtonGroupInput>`
 
 If you want to let the user choose a value among a list of possible values by showing them all (instead of hiding them behind a dropdown list, as in [`<SelectInput>`](#selectinput)), `<RadioButtonGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
@@ -506,11 +522,13 @@ import { TextInput } from 'admin-on-rest/mui';
 
 ![TextInput](./img/text-input.png)
 
-You can choose a specific input type using the `type` attribute, among `text` (the default), `email`, `url`, or `password`:
+You can choose a specific input type using the `type` attribute, for instance `text` (the default), `email`, `url`, or `password`:
 
 ``` js
 <TextInput label="Email Address" source="email" type="email" />
 ```
+
+**Warning**: Do not use `type="number"`, or you'll receive a string as value (this is a [known React bug](https://github.com/facebook/react/issues/1425)). Instead, use [`<NumberInput>`](#numberinput).
 
 ## Writing Your Own Input Component
 
