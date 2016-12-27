@@ -33,8 +33,10 @@ const hasNumberFormat = !!(typeof Intl === 'object' && Intl && typeof Intl.Numbe
  */
 const NumberField = ({ record, source, locales, options, elStyle }) => {
     if (!record) return null;
-    if (!hasNumberFormat) return <span style={elStyle}>{get(record, source)}</span>
-    return <span style={elStyle}>{get(record, source).toLocaleString(locales, options)}</span>;
+    const value = get(record, source);
+    if (value == null) return null;
+    if (!hasNumberFormat) return <span style={elStyle}>{value}</span>;
+    return <span style={elStyle}>{value.toLocaleString(locales, options)}</span>;
 };
 
 NumberField.propTypes = {
