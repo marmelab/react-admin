@@ -1,5 +1,19 @@
 # Changelog
 
+## V0.6.2
+
+* Fix bad `_end` argument for `jsonServer` REST client
+* Clarify CORS headers documentation and exception message
+* Fix wrong table cell wrap in `<Datagrid>`
+* Add custom layout documentation to Theming chapter
+* Fix `<NumberField>` when record has no value for the source
+* Fix `<DateField>` for null values
+
+## V0.6.1
+
+* Fix notification background colors to use mui theme
+* Fix missing `lodash.defaultdeep` not mentioned as dependency
+
 ## v0.6.0
 
 * [BC Break] The `filter` prop of the <List> component now expects an element rather than a component (`<List filter={<MyFilter/>} >` rather than `<List filter={MyFilter} >`)
