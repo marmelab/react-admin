@@ -53,7 +53,7 @@
     "babel-runtime": "~6.18.0",
     "inflection": "~1.10.0",
     "lodash.debounce": "~4.0.8",
-    "lodash.defaultsdeep": "^4.6.0",
+    "lodash.defaultsdeep": "~4.6.0",
     "lodash.get": "~4.4.2",
     "material-ui": "~0.16.5",
     "quill": "~1.1.5",
