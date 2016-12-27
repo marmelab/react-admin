@@ -16,7 +16,7 @@ class Create extends Component {
     handleSubmit = (record) => this.props.crudCreate(this.props.resource, record, this.getBasePath());
 
     render() {
-        const { title, children, isLoading, resource, validation } = this.props;
+        const { title, children, isLoading, data, resource, validation } = this.props;
         const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
@@ -29,7 +29,8 @@ class Create extends Component {
                     resource={resource}
                     basePath={basePath}
                     validation={validation}
-                    record={{}}
+                    initialValues={data}
+                    record={data}
                 >
                     {children}
                 </RecordForm>
@@ -47,6 +48,7 @@ Create.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     validation: PropTypes.func,
+    data: PropTypes.object,
 };
 
 Create.defaultProps = {
