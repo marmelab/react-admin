@@ -42,4 +42,46 @@ describe('<AutocompleteInput />', () => {
             { value: 'F', text: 'Female' },
         ]);
     });
+
+    it('should use optionValue as value identifier', () => {
+        const wrapper = shallow(<AutocompleteInput
+            {...defaultProps}
+            optionValue="foobar"
+            choices={[
+                { foobar: 'M', name: 'Male' },
+            ]}
+        />);
+        const AutoCompleteElement = wrapper.find('AutoComplete').first();
+        assert.deepEqual(AutoCompleteElement.prop('dataSource'), [
+            { value: 'M', text: 'Male' },
+        ]);
+    });
+
+    it('should use optionText with a string value as text identifier', () => {
+        const wrapper = shallow(<AutocompleteInput
+            {...defaultProps}
+            optionText="foobar"
+            choices={[
+                { id: 'M', foobar: 'Male' },
+            ]}
+        />);
+        const AutoCompleteElement = wrapper.find('AutoComplete').first();
+        assert.deepEqual(AutoCompleteElement.prop('dataSource'), [
+            { value: 'M', text: 'Male' },
+        ]);
+    });
+
+    it('should use optionText with a function value as text identifier', () => {
+        const wrapper = shallow(<AutocompleteInput
+            {...defaultProps}
+            optionText={choice => choice.foobar}
+            choices={[
+                { id: 'M', foobar: 'Male' },
+            ]}
+        />);
+        const AutoCompleteElement = wrapper.find('AutoComplete').first();
+        assert.deepEqual(AutoCompleteElement.prop('dataSource'), [
+            { value: 'M', text: 'Male' },
+        ]);
+    });
 });

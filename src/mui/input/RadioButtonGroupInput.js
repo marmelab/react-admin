@@ -94,6 +94,7 @@ RadioButtonGroupInput.propTypes = {
 };
 
 RadioButtonGroupInput.defaultProps = {
+    choices: [],
     options: {},
     optionText: 'name',
     optionValue: 'id',
