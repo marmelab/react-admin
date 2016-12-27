@@ -1,5 +1,17 @@
 # Changelog
 
+## Next
+
+* Add `<AutocompleteInput>` field
+* [BC Break] Add a limit to the fetching of `<ReferenceInput>` (set to 25 by default)
+* Add a `perPage` prop to `<ReferenceInput>` to allow fetching more or less options
+* Add a `sort` prop to `<ReferenceInput>` to allow sorting of options
+* [BC Break] Remove `GET_MATCHING` REST verb (and merge with `GET_LIST`)
+* `optionText` accepts a function in `<SelectInput>`, `<RadioButtonGroupInput>`, and `<AutocompleteInput>`
+* `optionText` accepts an element in `<SelectInput>`, and `<RadioButtonGroupInput>`
+* Fix bad setup of `ReferenceInput` value in filters
+* Set `allowEmpty` to true by default in `Filter` form (was breaking `<ReferenceInput>` in filters by default)
+
 ## V0.6.2
 
 * Fix bad `_end` argument for `jsonServer` REST client
