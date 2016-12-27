@@ -49,7 +49,7 @@ import MenuItem from 'material-ui/MenuItem';
  * The object passed as `options` props is passed to the material-ui <SelectField> component
  */
 class SelectInput extends Component {
-    onChange = (event, index, value) => this.props.input.onChange(value);
+    handleChange = (event, index, value) => this.props.input.onChange(value);
 
     render() {
         const { allowEmpty, input, label, choices, optionText, optionValue, options, source, elStyle } = this.props;
@@ -64,7 +64,7 @@ class SelectInput extends Component {
                 {...input}
                 menuStyle={{ maxHeight: '41px', overflowY: 'hidden' }}
                 floatingLabelText={title(label, source)}
-                onChange={this.onChange}
+                onChange={this.handleChange}
                 autoWidth
                 style={elStyle}
                 {...options}

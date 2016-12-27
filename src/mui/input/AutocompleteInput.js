@@ -55,7 +55,7 @@ import title from '../../util/title';
  * <AutocompleteInput source="author_id" options={{ fullWidth: true }} />
  */
 class AutocompleteInput extends Component {
-    onNewRequest = (chosenRequest, index) => {
+    handleNewRequest = (chosenRequest, index) => {
         if (index !== -1) {
             const { choices, input, optionValue } = this.props;
             input.onChange(choices[index][optionValue]);
@@ -79,7 +79,7 @@ class AutocompleteInput extends Component {
                 dataSource={dataSource}
                 floatingLabelText={title(label, source)}
                 filter={filter}
-                onNewRequest={this.onNewRequest}
+                onNewRequest={this.handleNewRequest}
                 onUpdateInput={setFilter}
                 openOnFocus
                 style={elStyle}

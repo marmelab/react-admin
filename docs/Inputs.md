@@ -280,7 +280,19 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 
 Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/components/radio-button) for more details.
 
-**Tip**: If you want to populate the `choices` attribute with a list of related records, you should use the [`<ReferenceInput>`](#referenceinput).
+**Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
+
+```js
+import { Edit, RadioButtonGroupInput, ReferenceInput } from 'admin-on-rest/mui'
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <ReferenceInput label="Author" source="author_id" reference="authors">
+            <RadioButtonGroupInput optionText="last_name" />
+        </ReferenceInput>
+    </Edit>
+);
+```
 
 ## `<ReferenceInput>`
 
