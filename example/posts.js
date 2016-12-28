@@ -13,6 +13,7 @@ import {
     List,
     LongTextInput,
     NumberField,
+    NumberInput,
     Show,
     ShowButton,
     ReferenceManyField,
@@ -72,7 +73,7 @@ export const PostCreate = (props) => (
         <TextInput source="teaser" options={{ multiLine: true }} />
         <RichTextInput source="body" />
         <DateInput label="Publication date" source="published_at" />
-        <TextInput source="average_note" />
+        <NumberInput source="average_note" />
         <BooleanInput label="Allow comments?" source="commentable" />
     </Create>
 );
@@ -85,7 +86,7 @@ export const PostEdit = (props) => (
         <LongTextInput source="teaser" validation={{ required: true }} />
         <RichTextInput source="body" validation={{ required: true }} />
         <DateInput label="Publication date" source="published_at" />
-        <TextInput source="average_note" validation={{ min: 0 }} />
+        <NumberInput source="average_note" validation={{ min: 0 }} />
         <BooleanInput label="Allow comments?" source="commentable" />
         <ReferenceManyField label="Comments" reference="comments" target="post_id">
             <Datagrid>
