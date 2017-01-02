@@ -20,12 +20,11 @@ describe('<NumberField />', () => {
     ));
 
     it('should pass the options prop to Intl.NumberFormat', () => assert.equal(
-        shallow(<NumberField record={{ foo: 1 }} source="foo" options={{ minimumFractionDigits: 2 }} />).html(),
+        shallow(<NumberField record={{ foo: 1 }} source="foo" locales="en-US" options={{ minimumFractionDigits: 2 }} />).html(),
         '<span>1.00</span>',
     ));
 
-    // Node is usually not compiled with all locales
-    it.skip('should use the locales props as an argument to Intl.NumberFormat', () => assert.equal(
+    it('should use the locales props as an argument to Intl.NumberFormat', () => assert.equal(
         shallow(<NumberField record={{ foo: 1 }} source="foo" locales="fr-FR" options={{ minimumFractionDigits: 2 }} />).html(),
         '<span>1,00</span>',
     ));
