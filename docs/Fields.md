@@ -93,7 +93,7 @@ import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest/li
 
 ## `<DateField>`
 
-Displays a date or datetime.
+Displays a date or datetime using the browser locale (thanks to `Date.toLocaleDateString()` and `Date.toLocaleString()`).
 
 ``` js
 import { DateField } from 'admin-on-rest/lib/mui';
@@ -101,11 +101,35 @@ import { DateField } from 'admin-on-rest/lib/mui';
 <DateField source="publication_date" />
 ```
 
-This component accepts a `showTime` attribute (false by default) to force the display of time in addition to date (using `Date.toLocaleString()`):
+This component accepts a `showTime` attribute (false by default) to force the display of time in addition to date. It uses `Intl.DateTimeFormat()` if available, passing the `locales` and `options` props as arguments. If Intl is not available, it ignores the `locales` and `options` props.
 
+{% raw %}
 ```js
-<DateField source="publication_date" showTime={true} />
+<DateField source="publication_date" />
+// renders the record { id: 1234, publication_date: new Date('2017-04-23') } as
+<span>4/23/2017</span>
+
+<DateField source="publication_date" showTime />
+// renders the record { id: 1234, publication_date: new Date('2017-04-23 23:05') } as
+<span>4/23/2017, 11:05:00 PM</span>
+
+<DateField source="publication_date" options={{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }} />
+// renders the record { id: 1234, publication_date: new Date('2017-04-23') } as
+<span>Sunday, April 23, 2017</span>
+
+<DateField source="publication_date" locales="fr-FR" />
+// renders the record { id: 1234, publication_date: new Date('2017-04-23') } as
+<span>23/04/2017</span>
+
+<DateField source="publication_date" elStyle={{ color: 'red' }} />
+// renders the record { id: 1234, publication_date: new Date('2017-04-23') } as
+<span style="color:red;">4/23/2017</span>
 ```
+{% endraw %}
+
+See [Intl.DateTimeformat documentation](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Date/toLocaleDateString) for the `options` prop syntax.
+
+**Tip**: If you need more formatting options than what `Intl.DateTimeformat` can provide, build your own field component leveraging a third-party library like [moment.js](http://momentjs.com/).
 
 ## `<EmailField>`
 
@@ -133,10 +157,11 @@ import { FunctionField } from 'admin-on-rest/lib/mui'
 
 Displays a number formatted according to the browser locale, right aligned.
 
-Uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments.
+Uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments. This allows perfect display of decimals, currencies, percentage, etc.
 
 If Intl is not available, it outputs number as is (and ignores the `locales` and `options` props).
 
+{% raw %}
 ```js
 import { NumberField }  from 'admin-on-rest/lib/mui';
 
@@ -144,9 +169,9 @@ import { NumberField }  from 'admin-on-rest/lib/mui';
 // renders the record { id: 1234, score: 567 } as
 <span>567</span>
 
-<NumberField source="score" elStyle={{ color: 'red' }} />
-// renders the record { id: 1234, score: 567 } as
-<span style="color:red;">567</span>
+<NumberField source="score" options={{ maximumFractionDigits: 2 }}/>
+// renders the record { id: 1234, score: 567.3567458569 } as
+<span>567.35</span>
 
 <NumberField source="share" options={{ style: 'percent' }} />
 // renders the record { id: 1234, share: 0.2545 } as
@@ -159,9 +184,16 @@ import { NumberField }  from 'admin-on-rest/lib/mui';
 <NumberField source="price" locales="fr-FR" options={{ style: 'currency', currency: 'USD' }} />
 // renders the record { id: 1234, price: 25.99 } as
 <span>25,99 $US</span>
-```
 
-See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) for options syntax.
+<NumberField source="score" elStyle={{ color: 'red' }} />
+// renders the record { id: 1234, score: 567 } as
+<span style="color:red;">567</span>
+```
+{% endraw %}
+
+See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) for the `options` prop syntax.
+
+**Tip**: If you need more formatting options than what `Intl.Numberformat` can provide, build your own field component leveraging a third-party library like [numeral.js](http://numeraljs.com/).
 
 ## `<ReferenceField>`
 

@@ -15,23 +15,28 @@ describe('<DateField />', () => {
     ));
 
     it('should render a date', () => assert.equal(
-        shallow(<DateField record={{ foo: new Date('01/01/2016') }} source="foo" locales="en-US" />).html(),
-        '<span>1/1/2016</span>',
+        shallow(<DateField record={{ foo: new Date('2017-04-23') }} source="foo" locales="en-US" />).html(),
+        '<span>4/23/2017</span>',
+    ));
+
+    it('should render a date and time when the showtime prop is passed', () => assert.equal(
+        shallow(<DateField record={{ foo: new Date('2017-04-23 23:05') }} showTime source="foo" locales="en-US" />).html(),
+        '<span>4/23/2017, 11:05:00 PM</span>',
     ));
 
     it('should pass the options prop to Intl.DateTimeFormat', () => assert.equal(
-        shallow(<DateField record={{ foo: new Date('01/01/2016') }} source="foo" locales="en-US" options={{
+        shallow(<DateField record={{ foo: new Date('2017-04-23') }} source="foo" locales="en-US" options={{
             weekday: 'long',
             year: 'numeric',
             month: 'long',
             day: 'numeric',
         }} />).html(),
-        '<span>Friday, January 1, 2016</span>',
+        '<span>Sunday, April 23, 2017</span>',
     ));
 
     it('should use the locales props as an argument to Intl.DateTimeFormat', () => assert.equal(
-        shallow(<DateField record={{ foo: new Date('01/01/2016') }} source="foo" locales="fr-FR" />).html(),
-        '<span>01/01/2016</span>',
+        shallow(<DateField record={{ foo: new Date('2017-04-23') }} source="foo" locales="fr-FR" />).html(),
+        '<span>23/04/2017</span>',
     ));
 
     it('should use custom styles passed as an elStyle prop', () => assert.equal(
