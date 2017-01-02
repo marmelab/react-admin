@@ -8,13 +8,11 @@
   },
   "author": "",
   "license": "MIT",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
+    "aor-json-rest-client": "~1.3.0",
     "babel-plugin-transform-react-jsx": "^6.8.0",
     "babel-polyfill": "^6.9.1",
-    "babel-preset-react": "^6.11.1",
-    "fakerest": "^1.2.1",
-    "fetch-mock": "^4.6.0"
+    "babel-preset-react": "^6.11.1"
   }
 }

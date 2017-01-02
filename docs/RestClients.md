@@ -163,6 +163,11 @@ const httpClient = (url, options) => {
 
 Now all the requests to the REST API will contain the `Authorization: SRTRDFVESGNJYTUKTYTHRG` header.
 
+### Third-Party Clients
+
+You can find REST clients for admin-on-rest in third-party repositories.
+
+* [marmelab/aor-json-rest-client](https://github.com/marmelab/aor-json-rest-client) provides a local REST client based on a JavaScript object. It doesn't even use HTTP. Use it for testing purposes.
 
 ## Writing your own REST client
 
