@@ -50,7 +50,8 @@ NumberInput.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func,
     options: PropTypes.object,
-    source: PropTypes.string.isRequired,
+    requiresField: PropTypes.bool.isRequired,
+    source: PropTypes.string,
     step: PropTypes.string.isRequired,
     validation: PropTypes.object,
 };
@@ -58,6 +59,7 @@ NumberInput.propTypes = {
 NumberInput.defaultProps = {
     includesLabel: true,
     options: {},
+    requiresField: true,
     step: 'any',
 };
 

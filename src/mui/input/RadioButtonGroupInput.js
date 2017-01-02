@@ -89,16 +89,18 @@ RadioButtonGroupInput.propTypes = {
         PropTypes.element,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
+    requiresField: PropTypes.bool.isRequired,
     source: PropTypes.string,
     style: PropTypes.object,
 };
 
 RadioButtonGroupInput.defaultProps = {
     choices: [],
+    includesLabel: true,
     options: {},
     optionText: 'name',
     optionValue: 'id',
-    includesLabel: true,
+    requiresField: true,
 };
 
 export default RadioButtonGroupInput;

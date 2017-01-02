@@ -103,6 +103,7 @@ AutocompleteInput.propTypes = {
         PropTypes.func,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
+    requiresField: PropTypes.bool.isRequired,
     setFilter: PropTypes.func,
     source: PropTypes.string,
 };
@@ -114,6 +115,7 @@ AutocompleteInput.defaultProps = {
     optionText: 'name',
     optionValue: 'id',
     includesLabel: true,
+    requiresField: true,
 };
 
 export default AutocompleteInput;

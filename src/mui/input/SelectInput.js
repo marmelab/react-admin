@@ -94,6 +94,7 @@ SelectInput.propTypes = {
         PropTypes.element,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
+    requiresField: PropTypes.bool.isRequired,
     source: PropTypes.string,
 };
 
@@ -103,6 +104,7 @@ SelectInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
+    requiresField: true,
     includesLabel: true,
 };
 

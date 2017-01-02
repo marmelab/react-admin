@@ -55,25 +55,32 @@ export const RecordForm = ({ children, handleSubmit, record, resource, basePath 
         <div style={{ padding: '0 1em 1em 1em' }}>
             {React.Children.map(children, input => (
                 <div key={input.props.source} style={input.props.style}>
-                    { input.props.includesLabel ?
-                        <Field
-                            {...input.props}
-                            name={input.props.source}
-                            component={input.type}
-                            resource={resource}
-                            record={record}
-                            basePath={basePath}
-                        />
-                        :
-                        <Field
-                            {...input.props}
-                            name={input.props.source}
-                            component={Labeled}
-                            label={input.props.label}
-                            resource={resource}
-                            record={record}
-                            basePath={basePath}
-                        >{ input }</Field>
+                    { input.props.requiresField ?
+                        (input.props.includesLabel ?
+                            <Field
+                                {...input.props}
+                                name={input.props.source}
+                                component={input.type}
+                                resource={resource}
+                                record={record}
+                                basePath={basePath}
+                            />
+                            :
+                            <Field
+                                {...input.props}
+                                name={input.props.source}
+                                component={Labeled}
+                                label={input.props.label}
+                                resource={resource}
+                                record={record}
+                                basePath={basePath}
+                            >{ input }</Field>
+                        ) :
+                        (input.props.includesLabel ?
+                            React.cloneElement(input, { resource, record, basePath }) :
+                            <Labeled label={input.props.label} source={input.props.source} resource={resource} record={record} basePath={basePath}>{input}</Labeled>
+
+                        )
                     }
                 </div>
             ))}

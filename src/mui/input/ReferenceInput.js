@@ -171,12 +171,13 @@ ReferenceInput.propTypes = {
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
+    requiresField: PropTypes.bool.isRequired,
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
         order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
-    source: PropTypes.string.isRequired,
+    source: PropTypes.string,
 };
 
 ReferenceInput.defaultProps = {
@@ -204,6 +205,7 @@ const ConnectedReferenceInput = connect(mapStateToProps, {
 
 ConnectedReferenceInput.defaultProps = {
     includesLabel: true,
+    requiresField: true,
 };
 
 export default ConnectedReferenceInput;

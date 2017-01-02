@@ -22,11 +22,13 @@ NullableBooleanInput.propTypes = {
     input: PropTypes.object,
     label: PropTypes.string,
     meta: PropTypes.object,
-    source: PropTypes.string.isRequired,
+    requiresField: PropTypes.bool.isRequired,
+    source: PropTypes.string,
 };
 
 NullableBooleanInput.defaultProps = {
     includesLabel: true,
+    requiresField: true,
 };
 
 export default NullableBooleanInput;

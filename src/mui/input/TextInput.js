@@ -37,7 +37,8 @@ TextInput.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func,
     options: PropTypes.object,
-    source: PropTypes.string.isRequired,
+    requiresField: PropTypes.bool.isRequired,
+    source: PropTypes.string,
     type: PropTypes.string,
     validation: PropTypes.object,
 };
@@ -45,6 +46,7 @@ TextInput.propTypes = {
 TextInput.defaultProps = {
     includesLabel: true,
     options: {},
+    requiresField: true,
     type: 'text',
 };
 

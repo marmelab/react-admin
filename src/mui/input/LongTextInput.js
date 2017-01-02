@@ -22,13 +22,15 @@ LongTextInput.propTypes = {
     meta: PropTypes.object,
     name: PropTypes.string,
     options: PropTypes.object,
-    source: PropTypes.string.isRequired,
+    requiresField: PropTypes.bool.isRequired,
+    source: PropTypes.string,
     validation: PropTypes.object,
 };
 
 LongTextInput.defaultProps = {
     includesLabel: true,
     options: {},
+    requiresField: true,
 };
 
 export default LongTextInput;

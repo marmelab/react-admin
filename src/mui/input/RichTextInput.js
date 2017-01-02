@@ -43,10 +43,12 @@ class RichTextInput extends Component {
 }
 
 RichTextInput.propTypes = {
+    includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
     options: PropTypes.object,
-    includesLabel: PropTypes.bool.isRequired,
+    requiresField: PropTypes.bool.isRequired,
+    source: PropTypes.string,
     toolbar: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.bool,
@@ -54,9 +56,10 @@ RichTextInput.propTypes = {
 };
 
 RichTextInput.defaultProps = {
-    record: {},
-    options: {},
     includesLabel: false,
+    options: {},
+    record: {},
+    requiresField: true,
     toolbar: true,
 };
 

@@ -43,12 +43,14 @@ DateInput.propTypes = {
     label: PropTypes.string,
     meta: PropTypes.object,
     options: PropTypes.object,
-    source: PropTypes.string.isRequired,
+    requiresField: PropTypes.bool.isRequired,
+    source: PropTypes.string,
 };
 
 DateInput.defaultProps = {
     includesLabel: true,
     options: {},
+    requiresField: true,
 };
 
 export default DateInput;

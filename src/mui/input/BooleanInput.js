@@ -32,11 +32,13 @@ BooleanInput.propTypes = {
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
-    source: PropTypes.string.isRequired,
+    requiresField: PropTypes.bool.isRequired,
+    source: PropTypes.string,
 };
 
 BooleanInput.defaultProps = {
     includesLabel: true,
+    requiresField: true,
 };
 
 export default BooleanInput;
