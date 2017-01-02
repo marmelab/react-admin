@@ -30,6 +30,7 @@ const TextInput = ({ input, label, meta: { touched, error }, options, type, sour
 
 TextInput.propTypes = {
     elStyle: PropTypes.object,
+    includesField: PropTypes.bool.isRequired,
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
@@ -37,16 +38,15 @@ TextInput.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func,
     options: PropTypes.object,
-    requiresField: PropTypes.bool.isRequired,
     source: PropTypes.string,
     type: PropTypes.string,
     validation: PropTypes.object,
 };
 
 TextInput.defaultProps = {
+    includesField: false,
     includesLabel: true,
     options: {},
-    requiresField: true,
     type: 'text',
 };
 

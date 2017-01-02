@@ -93,6 +93,7 @@ AutocompleteInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     elStyle: PropTypes.object,
     filter: PropTypes.func.isRequired,
+    includesField: PropTypes.bool.isRequired,
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
@@ -103,7 +104,6 @@ AutocompleteInput.propTypes = {
         PropTypes.func,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
-    requiresField: PropTypes.bool.isRequired,
     setFilter: PropTypes.func,
     source: PropTypes.string,
 };
@@ -111,11 +111,11 @@ AutocompleteInput.propTypes = {
 AutocompleteInput.defaultProps = {
     choices: [],
     filter: AutoComplete.fuzzyFilter,
+    includesField: false,
+    includesLabel: true,
     options: {},
     optionText: 'name',
     optionValue: 'id',
-    includesLabel: true,
-    requiresField: true,
 };
 
 export default AutocompleteInput;

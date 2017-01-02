@@ -687,7 +687,7 @@ const LatLngInput = () => (
 
 For more details on how to use redux-form's `<Field>` component, please refer to [the redux-form doc](http://redux-form.com/6.4.3/docs/api/Field.md/).
 
-**Tip**: If you only need one `<Field>` component in a custom input, you can let admin-on-rest do the `<Field>` decoration for you by setting the `requiresField: true` default prop:
+**Tip**: If you only need one `<Field>` component in a custom input, you can let admin-on-rest do the `<Field>` decoration for you by setting the `includesField` default prop to `false`:
 
 ```js
 // in PersonEdit.js
@@ -712,8 +712,8 @@ const SexInput = ({ input, meta: { touched, error } }) => (
     </SelectField>
 );
 SexInput.defaultProps = {
+    includesField: false, // require a <Field> decoration
     includesLabel: true,
-    requiresField: true, // require a <Field> decoration
 }
 export default SexInput;
 
@@ -739,6 +739,6 @@ SexInput.defaultProps = {
 export default SexInput;
 ```
 
-Most admin-on-rest input components use `requiresField: true` in default props.
+Most admin-on-rest input components use `includeField: false` in default props.
 
 **Tip**: `<Field>` injects two props to its child component: `input` and `meta`. To learn more about these props, please refer to [the `<Field>` component documentation](http://redux-form.com/6.4.3/docs/api/Field.md/#props) in the redux-form website.

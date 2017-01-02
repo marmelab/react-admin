@@ -55,7 +55,7 @@ export const RecordForm = ({ children, handleSubmit, record, resource, basePath 
         <div style={{ padding: '0 1em 1em 1em' }}>
             {React.Children.map(children, input => (
                 <div key={input.props.source} style={input.props.style}>
-                    { input.props.requiresField ?
+                    { input.props.includesField === false ?
                         (input.props.includesLabel ?
                             <Field
                                 {...input.props}

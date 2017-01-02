@@ -163,6 +163,7 @@ ReferenceInput.propTypes = {
     crudGetOne: PropTypes.func.isRequired,
     filter: PropTypes.object,
     filterToQuery: PropTypes.func.isRequired,
+    includesField: PropTypes.bool.isRequired,
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
     label: PropTypes.string,
@@ -171,7 +172,6 @@ ReferenceInput.propTypes = {
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
-    requiresField: PropTypes.bool.isRequired,
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
@@ -204,8 +204,8 @@ const ConnectedReferenceInput = connect(mapStateToProps, {
 })(ReferenceInput);
 
 ConnectedReferenceInput.defaultProps = {
+    includesField: false,
     includesLabel: true,
-    requiresField: true,
 };
 
 export default ConnectedReferenceInput;
