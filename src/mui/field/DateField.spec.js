@@ -15,8 +15,8 @@ describe('<DateField />', () => {
     ));
 
     // locale-dependent test, works in a French computer but fails on Travis
-    it.skip('should render a date', () => assert.equal(
-        shallow(<DateField record={{ foo: new Date('01/01/2016') }} source="foo" />).html(),
+    it('should render a date', () => assert.equal(
+        shallow(<DateField record={{ foo: new Date('01/01/2016') }} source="foo" locales="fr-FR" />).html(),
         '<span>2016-01-01</span>',
     ));
 

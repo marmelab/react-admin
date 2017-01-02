@@ -23,13 +23,13 @@ doc: ## compile doc as html and launch doc web server
 	@cd docs && jekyll server . --watch
 
 test: ## launch unit tests
-	@NODE_ENV=test ./node_modules/.bin/mocha \
+	@NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/mocha \
 		--require ignore-styles \
 		--compilers js:babel-register \
 		'./src/**/*.spec.js'
 
 test-watch: ## launch unit tests and watch for changes
-	@NODE_ENV=test ./node_modules/.bin/mocha \
+	@NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/mocha \
 		--require ignore-styles \
 		--compilers js:babel-register \
 		--watch \
