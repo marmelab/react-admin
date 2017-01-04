@@ -11,6 +11,12 @@
 * `optionText` accepts an element in `<SelectInput>`, and `<RadioButtonGroupInput>`
 * Fix bad setup of `ReferenceInput` value in filters
 * Set `allowEmpty` to true by default in `Filter` form (was breaking `<ReferenceInput>` in filters by default)
+* Add `<NumberInput>` field
+* Add support for locales and options in `<DateField>`
+* [BC Break] Custom input elements are not decorated by `<Field>` by default
+* Add support for `includesField` prop in input components to automate decoration by `<Field>`
+* Add support for Field components in `<Edit>` and `<Create>` views
+* Use Json REST client (http-less client) in example
 
 ## V0.6.2
 
