@@ -1,9 +1,7 @@
 import assert from 'assert';
-import webdriver from 'selenium-webdriver';
+import { By, until } from 'selenium-webdriver';
 import driver from '../chromeDriver';
 import listPageFactory from '../pages/ListPage';
-
-const until = webdriver.until;
 
 describe('List Page', () => {
     const ListPage = listPageFactory('posts')(driver);
@@ -47,7 +45,7 @@ describe('List Page', () => {
             const displayedPosts = await driver.findElements(ListPage.elements.recordRows);
             assert.equal(displayedPosts.length, 1);
 
-            const title = await displayedPosts[0].findElement(webdriver.By.css('.column-title'));
+            const title = await displayedPosts[0].findElement(By.css('.column-title'));
             assert.equal(await title.getText(), 'Omnis voluptate enim similique est possimus');
         });
 
