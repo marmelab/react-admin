@@ -1,7 +1,5 @@
-'use strict';
-
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
 
 let listeningServer;
 
