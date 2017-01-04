@@ -1,7 +1,7 @@
 import { Children } from 'react';
 
-export default children => (data = {}, defaultValues = {}) => {
-    const childrenDefaultValues = Children.toArray(children)
+export default children => (data = {}, defaultValue = {}) => {
+    const defaultValueFromChildren = Children.toArray(children)
         .map(child => ({ source: child.props.source, defaultValue: child.props.defaultValue }))
         .reduce((prev, next) => {
             if (next.defaultValue != null) {
@@ -9,5 +9,5 @@ export default children => (data = {}, defaultValues = {}) => {
             }
             return prev;
         }, {});
-    return { ...defaultValues, ...childrenDefaultValues, ...data };
+    return { ...defaultValue, ...defaultValueFromChildren, ...data };
 };

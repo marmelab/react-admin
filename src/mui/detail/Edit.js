@@ -56,7 +56,7 @@ export class Edit extends Component {
     }
 
     render() {
-        const { children, data, defaultValues = {}, hasDelete, hasShow, id, isLoading, resource, title, validation } = this.props;
+        const { children, data, defaultValue = {}, hasDelete, hasShow, id, isLoading, resource, title, validation } = this.props;
         const basePath = this.getBasePath();
 
         return (
@@ -73,7 +73,7 @@ export class Edit extends Component {
                     basePath={basePath}
                     validation={validation}
                     record={data}
-                    initialValues={getDefaultValues(children)(data, defaultValues)}
+                    initialValues={getDefaultValues(children)(data, defaultValue)}
                 >
                     {children}
                 </RecordForm>}
@@ -87,7 +87,7 @@ Edit.propTypes = {
     crudGetOne: PropTypes.func.isRequired,
     crudUpdate: PropTypes.func.isRequired,
     data: PropTypes.object,
-    defaultValues: PropTypes.object,
+    defaultValue: PropTypes.object,
     hasDelete: PropTypes.bool,
     hasShow: PropTypes.bool,
     id: PropTypes.string.isRequired,
@@ -96,6 +96,7 @@ Edit.propTypes = {
     params: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
+    validation: PropTypes.func,
 };
 
 function mapStateToProps(state, props) {
