@@ -6,6 +6,7 @@ import Title from '../layout/Title';
 import ListButton from '../button/ListButton';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import RecordForm from './RecordForm'; // eslint-disable-line import/no-named-as-default
+import DefaultActions from './CreateActions';
 import getDefaultValues from './getDefaultValues';
 
 class Create extends Component {
@@ -17,13 +18,14 @@ class Create extends Component {
     handleSubmit = (record) => this.props.crudCreate(this.props.resource, record, this.getBasePath());
 
     render() {
-        const { children, defaultValue = {}, isLoading, resource, title, validation } = this.props;
+        const { actions = <DefaultActions/>, children, defaultValue = {}, isLoading, resource, title, validation } = this.props;
         const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
-                <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    <ListButton basePath={basePath} />
-                </CardActions>
+                {actions && React.cloneElement(actions, {
+                    basePath,
+                    resource,
+                })}
                 <CardTitle title={<Title title={title} defaultTitle={`Create ${inflection.humanize(inflection.singularize(resource))}`} />} />
                 <RecordForm
                     onSubmit={this.handleSubmit}
@@ -41,6 +43,7 @@ class Create extends Component {
 }
 
 Create.propTypes = {
+    actions: PropTypes.element,
     children: PropTypes.node,
     crudCreate: PropTypes.func.isRequired,
     defaultValue: PropTypes.object,

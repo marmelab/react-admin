@@ -14,6 +14,7 @@ Just like the `<List>` component, they are only responsible for rendering the pa
 Here are all the props accepted by the `<Create>` and `<Edit>` components:
 
 * [`title`](#page-title)
+* [`actions`](#actions)
 * [`defautValue`](#default-values)
 * [`validation`](#validation)
 
@@ -39,6 +40,40 @@ const PostTitle = ({ record }) => {
 };
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
+        ...
+    </Edit>
+);
+```
+
+## Actions
+
+You can replace the list of default actions by your own element using the `actions` prop:
+
+```js
+import { CardActions } from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+import { ListButton, ShowButton, DeleteButton } from 'admin-on-rest/lib/mui';
+
+const cardActionStyle = {
+    zIndex: 2,
+    display: 'inline-block',
+    float: 'right',
+};
+
+const PostEditActions = ({ basePath, data, refresh }) => (
+    <CardActions style={cardActionStyle}>
+        <ShowButton basePath={basePath} record={data} />
+        <ListButton basePath={basePath} />
+        <DeleteButton basePath={basePath} record={data} />
+        <FlatButton primary label="Refresh" onClick={refresh} icon={<NavigationRefresh />} />
+        {/* Add your custom actions */}
+        <FlatButton primary label="Custom Action" onClick={customAction} />
+    </CardActions>
+);
+
+export const PostEdit = (props) => (
+    <Edit actions={<PostEditActions />} {...props}>
         ...
     </Edit>
 );
@@ -173,7 +208,3 @@ You can use the following validation constraint names:
 * `regex` to validate that the input matches a regex (must be an object with `pattern` and `message` keys),
 * `choices` to validate that the input is within a given list,
 * `custom` to use the function of your choice
-
-## Buttons
-
-If you need to link to the `<Edit>` or `<Create>` view, use the provided button components:
