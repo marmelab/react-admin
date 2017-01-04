@@ -38,8 +38,12 @@ test-unit-watch: ## launch unit tests and watch for changes
 		--watch \
 		'./src/**/*.spec.js'
 
-test-e2e: ## launch end-to-end tests
-	@cd example && ../node_modules/.bin/webpack
+test-e2e: ## launch end-to-end tests. call make test-e2e skip-build to skip the build
+	@if [ "$(filter-out $@,$(MAKECMDGOALS))" != "skip-build" ]; then \
+		echo 'Building example code...'; \
+		NODE_ENV=production cd example && ../node_modules/.bin/webpack; \
+	fi
+	@echo 'Launching e2e tests...'
 	@NODE_ENV=test node_modules/.bin/mocha \
 		--require co-mocha \
 		--timeout 10000 \
