@@ -79,6 +79,7 @@ class RadioButtonGroupInput extends Component {
 
 RadioButtonGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
+    includesField: PropTypes.bool.isRequired,
     includesLabel: PropTypes.bool.isRequired,
     label: PropTypes.string,
     onChange: PropTypes.func,
@@ -95,10 +96,11 @@ RadioButtonGroupInput.propTypes = {
 
 RadioButtonGroupInput.defaultProps = {
     choices: [],
+    includesField: false,
+    includesLabel: true,
     options: {},
     optionText: 'name',
     optionValue: 'id',
-    includesLabel: true,
 };
 
 export default RadioButtonGroupInput;

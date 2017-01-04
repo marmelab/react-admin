@@ -60,7 +60,7 @@ Then you can display a text input to edit the author first name as follows:
 To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`. It renders using [Material ui's `<AutoComplete>` component](http://www.material-ui.com/#/components/auto-complete) and a `fuzzySearch` filter. Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
 
 ```js
-import { Edit, AutocompleteInput } from 'admin-on-rest/mui';
+import { Edit, AutocompleteInput } from 'admin-on-rest/lib/mui';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -97,7 +97,7 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 You can customize the `filter` function used to filter the results. By default, it's `AutoComplete.fuzzyFilter`, but you can use any of [the functions provided by `AutoComplete`](http://www.material-ui.com/#/components/auto-complete), or a function of your own (`(searchText: string, key: string) => boolean`):
 
 ```js
-import { Edit, AutocompleteInput } from 'admin-on-rest/mui';
+import { Edit, AutocompleteInput } from 'admin-on-rest/lib/mui';
 import AutoComplete from 'material-ui/AutoComplete';
 
 export const PostEdit = (props) => (
@@ -123,7 +123,7 @@ Refer to [Material UI Autocomplete documentation](http://www.material-ui.com/#/c
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
 ```js
-import { Edit, AutocompleteInput, ReferenceInput } from 'admin-on-rest/mui'
+import { Edit, AutocompleteInput, ReferenceInput } from 'admin-on-rest/lib/mui'
 
 export const CommentEdit = (props) => (
     <Edit {...props}>
@@ -143,7 +143,7 @@ export const CommentEdit = (props) => (
 `<BooleanInput />` is a toggle button allowing you to attribute a `true` or `false` value to a record field.
 
 ``` js
-import { BooleanInput } from 'admin-on-rest/mui';
+import { BooleanInput } from 'admin-on-rest/lib/mui';
 
 <BooleanInput label="Allow comments?" source="commentable" />
 ```
@@ -155,7 +155,7 @@ This input does not handle `null` values. You would need the `<NullableBooleanIn
 `<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
 
 ``` js
-import { NullableBooleanInput } from 'admin-on-rest/mui';
+import { NullableBooleanInput } from 'admin-on-rest/lib/mui';
 
 <NullableBooleanInput label="Allow comments?" source="commentable" />
 ```
@@ -167,7 +167,7 @@ import { NullableBooleanInput } from 'admin-on-rest/mui';
 Ideal for editing dates, `<DateInput>` renders a beautiful [Date Picker](http://www.material-ui.com/#/components/date-picker) with full localization support.
 
 ``` js
-import { DateInput } from 'admin-on-rest/mui';
+import { DateInput } from 'admin-on-rest/lib/mui';
 
 <DateInput source="published_at" />
 ```
@@ -197,19 +197,49 @@ Refer to [Material UI Datepicker documentation](http://www.material-ui.com/#/com
 When you want to display a record property in an `<Edit>` form without letting users update it (such as for auto-incremented primary keys), use the `<DisabledInput>`:
 
 ``` js
-import { DisabledInput } from 'admin-on-rest/mui';
+import { DisabledInput } from 'admin-on-rest/lib/mui';
 
 <DisabledInput source="id" />
 ```
 
 ![DisabledInput](./img/disabled-input.png)
 
+**Tip**: To add non-editable fields to the `<Edit>` view, you can also use one of admin-on-rest `Field` components:
+
+```js
+// in src/posts.js
+import { Edit, LongTextInput, TextField } from 'admin-on-rest/lib/mui';
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <TextField source="title" /> {/* NOT EDITABLE */}
+        <LongTextInput source="body" />
+    </Edit>
+);
+```
+
+**Tip**: You can even use a component of your own, provided it accepts `record` and `label` props:
+
+```js
+// in src/posts.js
+import { Edit, LongTextInput } from 'admin-on-rest/lib/mui';
+const titleStyle = { textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '20em' };
+const Title = ({ record }) => <span style={titleStyle}>{record.title}</span>;
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <Title label="Title" />
+        <LongTextInput source="body" />
+    </Edit>
+);
+```
+
 ## `<LongTextInput>`
 
 `<LongTextInput>` is the best choice for multiline text values. It renders as an auto expandable textarea.
 
 ``` js
-import { LongTextInput } from 'admin-on-rest/mui';
+import { LongTextInput } from 'admin-on-rest/lib/mui';
 
 <LongTextInput source="teaser" />
 ```
@@ -221,7 +251,7 @@ import { LongTextInput } from 'admin-on-rest/mui';
 `<NumberInput>` translates to a HTMl `<input type="number">`. It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
 
 ``` js
-import { NumberInput } from 'admin-on-rest/mui';
+import { NumberInput } from 'admin-on-rest/lib/mui';
 
 <NumberInput source="nb_views" />
 ```
@@ -237,7 +267,7 @@ You can customize the `step` props (which defaults to "any"):
 If you want to let the user choose a value among a list of possible values by showing them all (instead of hiding them behind a dropdown list, as in [`<SelectInput>`](#selectinput)), `<RadioButtonGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```js
-import { Edit, RadioButtonGroupInput } from 'admin-on-rest/mui';
+import { Edit, RadioButtonGroupInput } from 'admin-on-rest/lib/mui';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -299,7 +329,7 @@ Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/co
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
 ```js
-import { Edit, RadioButtonGroupInput, ReferenceInput } from 'admin-on-rest/mui'
+import { Edit, RadioButtonGroupInput, ReferenceInput } from 'admin-on-rest/lib/mui'
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -319,7 +349,7 @@ This means you can use `<ReferenceInput>` with any of [`<SelectInput>`](#selecti
 The component expects a `source` and a `reference` attributes. For instance, to make the `post_id` for a `comment` editable:
 
 ```js
-import { ReferenceInput, SelectInput } from 'admin-on-rest/mui'
+import { ReferenceInput, SelectInput } from 'admin-on-rest/lib/mui'
 
 export const CommentEdit = (props) => (
     <Edit {...props}>
@@ -337,7 +367,7 @@ export const CommentEdit = (props) => (
 Set the `allowEmpty` prop when the empty value is allowed.
 
 ```js
-import { ReferenceInput, SelectInput } from 'admin-on-rest/mui'
+import { ReferenceInput, SelectInput } from 'admin-on-rest/lib/mui'
 
 <ReferenceInput label="Post" source="post_id" reference="posts" allowEmpty>
     <SelectInput optionText="title" />
@@ -407,7 +437,7 @@ The enclosed component may further filter results (that's the case, for instance
 is powered by [Quill](https://quilljs.com/).
 
 ``` js
-import { RichTextInput } from 'admin-on-rest/mui';
+import { RichTextInput } from 'admin-on-rest/lib/mui';
 
 <RichTextInput source="body" />
 ```
@@ -425,7 +455,7 @@ You can customize the rich text editor toolbar using the `toolbar` attribute, as
 To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<SelectField>`](http://www.material-ui.com/#/components/select-field). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```js
-import { Edit, SelectInput } from 'admin-on-rest/mui';
+import { Edit, SelectInput } from 'admin-on-rest/lib/mui';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -497,7 +527,7 @@ Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/co
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
 ```js
-import { Edit, SelectInput, ReferenceInput } from 'admin-on-rest/mui'
+import { Edit, SelectInput, ReferenceInput } from 'admin-on-rest/lib/mui'
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -515,7 +545,7 @@ If, instead of showing choices as a dropdown list, you prefer to display them as
 `<TextInput>` is the most common input. It is used for texts, emails, URL or passwords. In translates to an HTML `<input>` tag.
 
 ``` js
-import { TextInput } from 'admin-on-rest/mui';
+import { TextInput } from 'admin-on-rest/lib/mui';
 
 <TextInput source="title" />
 ```
@@ -532,33 +562,183 @@ You can choose a specific input type using the `type` attribute, for instance `t
 
 ## Writing Your Own Input Component
 
-If you need a more specific input type, you can also write it yourself. In addition to `source` and `label` attributes, it must accept an `input` attribute to integrate with admin-on-rest forms (powered by redux-form). Admin-on-rest will inject the `input` attribute at runtime, and it will contain a `value` (computed from the current record and source), and an `onChange` function (to manage the input).
+If you need a more specific input type, you can also write it yourself. You'll have to rely on redux-form's [`<Field>`](http://redux-form.com/6.4.3/docs/api/Field.md/) component, so as to handle the value update cycle.
 
-For instance, here is an simplified version of admin-on-rest's `<TextInput>` component:
+For instance, let's write a component to edit the latitude and longitude of the current record:
 
 ```js
-import React, { PropTypes } from 'react';
-
-const TextInput = ({ source, label, input }) => (
+// in LatLongInput.js
+import { Field } from 'redux-form';
+const LatLngInput = () => (
     <span>
-        <label for={source}>{label}</label>
-        <input name={source} value={input.value} onChange={input.onChange} type="text" />
+        <Field name="lat" component="input" type="number" placeholder="latitude" />
+        &nbsp;
+        <Field name="lng" component="input" tyle="number" placeholder="longitude" />
     </span>
 );
+export default LatLngInput;
 
-TextInput.propTypes = {
-    includesLabel: PropTypes.bool.isRequired,
-    input: PropTypes.object,
-    label: PropTypes.string,
-    onChange: PropTypes.func,
-    source: PropTypes.string.isRequired,
-};
-
-TextInput.defaultProps = {
-    includesLabel: true,
-};
-
-export default TextInput;
+// in ItemEdit.js
+const ItemEdit = (props) => (
+    <Edit {...props}>
+        <LatLngInput label="Position" />
+    </Edit>
+);
 ```
 
-**Tip**: Admin-on-rest inspects the `includesLabel` attribute to determine whether to render an additional label on top of the input component or not. If `includesLabel` is false, admin-on-rest considers the components doesn't have its own label, and adds another one.
+`LatLngInput` takes no props, because the `<Field>` component can access the current record via its context. The `name` prop serves as a selector for the record property to edit. All `Field` props except `name` and `component` are passed to the child component/element (an `<input>` in that example). Executing this component will render roughly the following code:
+
+```html
+<label>Position</label>
+<span>
+    <input type="number" placeholder="longitude" value={record.lat} />
+    <input type="number" placeholder="longitude" value={record.lng} />
+</span>
+```
+
+**Tip**: Although the `LatLngInput` component doesn't specify a `label` prop, admin-on-rest uses it to create a label on top of the input. If your component already includes a label, you can disable this behavior by setting `includesLabel: true` in the default props:
+
+```js
+// in LatLongInput.js
+import { Field } from 'redux-form';
+const LatLngInput = () => (
+    <div>
+        <div>Position</div>
+        <Field name="lat" component="input" type="number" placeholder="latitude" />
+        &nbsp;
+        <Field name="lng" component="input" tyle="number" placeholder="longitude" />
+    </div>
+);
+LatLngInput.defaultProps = {
+    includesLabel: true,
+};
+export default LatLngInput;
+
+// in ItemEdit.js
+const ItemEdit = (props) => (
+    <Edit {...props}>
+        <LatLngInput />
+    </Edit>
+);
+```
+
+**Tip**: The `<Field>` component supports dot notation in the `name` prop, to edit nested props:
+
+```js
+const LatLongInput = () => (
+    <span>
+        <Field name="position.lat" component="input" type="number" placeholder="latitude" />
+        &nbsp;
+        <Field name="position.lng" component="input" tyle="number" placeholder="longitude" />
+    </span>
+);
+```
+
+Instead of HTML `input` elements, you can use admin-on-rest components in `<Field>`. For instance, `<NumberInput>`:
+
+```js
+// in LatLongInput.js
+import { Field } from 'redux-form';
+import { NumberInput } from 'admin-on-rest/lib/mui';
+const LatLngInput = () => (
+    <span>
+        <Field name="lat" component={NumberInput} label="latitude" />
+        &nbsp;
+        <Field name="lng" component={NumberInput} label="longitude" />
+    </span>
+);
+LatLngInput.defaultProps = {
+    includesLabel: true,
+};
+export default LatLngInput;
+
+// in ItemEdit.js
+const ItemEdit = (props) => (
+    <Edit {...props}>
+        <DisabledInput source="id" />
+        <LatLngInput />
+    </Edit>
+);
+```
+
+`<NumberInput>` receives the props passed to the `<Field>` componeny - `label` in the example. Since the `lat` and `lng` inputs are labeled, no need to label the `<LanLngInput>` component - that's with the `includesLabel` default prop is set to `true`.
+
+**Tip**: If you need to pass a material ui component to `Field`, use a [field renderer function](http://redux-form.com/6.4.3/examples/material-ui/) to map the props:
+
+```js
+import TextField from 'material-ui/TextField';
+const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
+    <TextField
+        hintText={label}
+        floatingLabelText={label}
+        errorText={touched && error}
+        {...input}
+        {...custom}
+    />
+);
+const LatLngInput = () => (
+    <span>
+        <Field name="lat" component={renderTextField} label="latitude" />
+        &nbsp;
+        <Field name="lng" component={renderTextField} label="longitude" />
+    </span>
+);
+```
+
+For more details on how to use redux-form's `<Field>` component, please refer to [the redux-form doc](http://redux-form.com/6.4.3/docs/api/Field.md/).
+
+**Tip**: If you only need one `<Field>` component in a custom input, you can let admin-on-rest do the `<Field>` decoration for you by setting the `includesField` default prop to `false`:
+
+```js
+// in PersonEdit.js
+import SexInput from './SexInput.js';
+const PersonEdit = (props) => (
+    <Edit {...props}>
+        <SexInput source="sex" />
+    </Edit>
+);
+
+// in SexInput.js
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+const SexInput = ({ input, meta: { touched, error } }) => (
+    <SelectField
+        floatingLabelText="Sex"
+        errorText={touched && error}
+        {...input}
+    >
+        <MenuItem value="M" primaryText="Male" />
+        <MenuItem value="F" primaryText="Female" />
+    </SelectField>
+);
+SexInput.defaultProps = {
+    includesField: false, // require a <Field> decoration
+    includesLabel: true,
+}
+export default SexInput;
+
+// equivalent of
+
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import { Field } from 'redux-form';
+const renderSexInput = ({ input, meta: { touched, error } }) => (
+    <SelectField
+        floatingLabelText="Sex"
+        errorText={touched && error}
+        {...input}
+    >
+        <MenuItem value="M" primaryText="Male" />
+        <MenuItem value="F" primaryText="Female" />
+    </SelectField>
+);
+const SexInput = ({ source }) => <Field name={source} component={renderSexInput} />
+SexInput.defaultProps = {
+    includesLabel: true,
+}
+export default SexInput;
+```
+
+Most admin-on-rest input components use `includeField: false` in default props.
+
+**Tip**: `<Field>` injects two props to its child component: `input` and `meta`. To learn more about these props, please refer to [the `<Field>` component documentation](http://redux-form.com/6.4.3/docs/api/Field.md/#props) in the redux-form website.

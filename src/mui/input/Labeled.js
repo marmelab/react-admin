@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import title from '../../util/title';
 
@@ -18,18 +18,26 @@ const defaultLabelStyle = {
  *     <FooComponent source="title" />
  * </Labeled>
  */
-const Labeled = ({ input, label, resource, record, onChange, basePath, children, source, disabled = true, labelStyle = defaultLabelStyle }) => (
-    <TextField
-        floatingLabelText={title(label, source)}
-        floatingLabelFixed
-        fullWidth
-        disabled={disabled}
-        underlineShow={false}
-        style={labelStyle}
-    >
-        {children && React.cloneElement(children, { input, record, resource, onChange, basePath })}
-    </TextField>
-);
+class Labeled extends Component {
+    render() {
+        const { input, label, resource, record, onChange, basePath, children, source, disabled = true, labelStyle = defaultLabelStyle } = this.props;
+        if (!label && !source) {
+            throw new Error(`Cannot create label for component <${children && children.type && children.type.name}>: You must set either the label or source props. You can also disable automated label insertion by setting 'includesLabel: true' in the component default props`);
+        }
+        return (
+            <TextField
+                floatingLabelText={title(label, source)}
+                floatingLabelFixed
+                fullWidth
+                disabled={disabled}
+                underlineShow={false}
+                style={labelStyle}
+            >
+                {children && React.cloneElement(children, { input, record, resource, onChange, basePath })}
+            </TextField>
+        );
+    }
+}
 
 Labeled.propTypes = {
     basePath: PropTypes.string,
@@ -40,8 +48,12 @@ Labeled.propTypes = {
     onChange: PropTypes.func,
     record: PropTypes.object,
     resource: PropTypes.string,
-    source: PropTypes.string.isRequired,
+    source: PropTypes.string,
     labelStyle: PropTypes.object,
+};
+
+Labeled.defaultProps = {
+    includesLabel: true,
 };
 
 export default Labeled;

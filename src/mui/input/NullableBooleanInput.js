@@ -18,14 +18,16 @@ const NullableBooleanInput = ({ input, meta: { touched, error }, label, source, 
 
 NullableBooleanInput.propTypes = {
     elStyle: PropTypes.object,
+    includesField: PropTypes.bool.isRequired,
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
     meta: PropTypes.object,
-    source: PropTypes.string.isRequired,
+    source: PropTypes.string,
 };
 
 NullableBooleanInput.defaultProps = {
+    includesField: false,
     includesLabel: true,
 };
 

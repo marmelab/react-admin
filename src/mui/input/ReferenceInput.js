@@ -163,6 +163,7 @@ ReferenceInput.propTypes = {
     crudGetOne: PropTypes.func.isRequired,
     filter: PropTypes.object,
     filterToQuery: PropTypes.func.isRequired,
+    includesField: PropTypes.bool.isRequired,
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
     label: PropTypes.string,
@@ -176,7 +177,7 @@ ReferenceInput.propTypes = {
         field: PropTypes.string,
         order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
-    source: PropTypes.string.isRequired,
+    source: PropTypes.string,
 };
 
 ReferenceInput.defaultProps = {
@@ -203,6 +204,7 @@ const ConnectedReferenceInput = connect(mapStateToProps, {
 })(ReferenceInput);
 
 ConnectedReferenceInput.defaultProps = {
+    includesField: false,
     includesLabel: true,
 };
 

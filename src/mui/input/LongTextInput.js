@@ -16,17 +16,19 @@ const LongTextInput = ({ input, label, meta: { touched, error }, options, source
 
 LongTextInput.propTypes = {
     elStyle: PropTypes.object,
+    includesField: PropTypes.bool.isRequired,
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
     meta: PropTypes.object,
     name: PropTypes.string,
     options: PropTypes.object,
-    source: PropTypes.string.isRequired,
+    source: PropTypes.string,
     validation: PropTypes.object,
 };
 
 LongTextInput.defaultProps = {
+    includesField: false,
     includesLabel: true,
     options: {},
 };

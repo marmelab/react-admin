@@ -50,41 +50,35 @@ export const validateForm = (values, { children, validation }) => {
     return errors;
 };
 
-export const RecordForm = ({ children, handleSubmit, record, resource, basePath }) => (
-    <form onSubmit={handleSubmit}>
-        <div style={{ padding: '0 1em 1em 1em' }}>
-            {React.Children.map(children, input => (
-                <div key={input.props.source} style={input.props.style}>
-                    { input.props.includesLabel ?
-                        <Field
-                            {...input.props}
-                            name={input.props.source}
-                            component={input.type}
-                            resource={resource}
-                            record={record}
-                            basePath={basePath}
-                        />
-                        :
-                        <Field
-                            {...input.props}
-                            name={input.props.source}
-                            component={Labeled}
-                            label={input.props.label}
-                            resource={resource}
-                            record={record}
-                            basePath={basePath}
-                        >{ input }</Field>
-                    }
-                </div>
-            ))}
-        </div>
-        <Toolbar>
-            <ToolbarGroup>
-                <SaveButton />
-            </ToolbarGroup>
-        </Toolbar>
-    </form>
-);
+export const RecordForm = ({ children, handleSubmit, record, resource, basePath }) => {
+    const commonProps = { resource, record, basePath };
+    return (
+        <form onSubmit={handleSubmit}>
+            <div style={{ padding: '0 1em 1em 1em' }}>
+                {React.Children.map(children, input => (
+                    <div key={input.props.source} style={input.props.style}>
+                        { input.props.includesField === false ?
+                            (input.props.includesLabel ?
+                                <Field {...commonProps} {...input.props} name={input.props.source} component={input.type} /> :
+                                <Field {...commonProps} {...input.props} name={input.props.source} component={Labeled} label={input.props.label}>{ input }</Field>
+                            ) :
+                            (input.props.includesLabel ?
+                                React.cloneElement(input, commonProps) :
+                                <Labeled {...commonProps} label={input.props.label} source={input.props.source}>{input}</Labeled>
+
+                            )
+                        }
+                    </div>
+                ))}
+            </div>
+            <Toolbar>
+                <ToolbarGroup>
+                    <SaveButton />
+                </ToolbarGroup>
+            </Toolbar>
+        </form>
+    );
+};
 
 RecordForm.propTypes = {
     children: PropTypes.node,

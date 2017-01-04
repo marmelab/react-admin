@@ -1,18 +1,19 @@
 import React, { PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
+import get from 'lodash.get';
 import title from '../../util/title';
 
-const DisabledInput = ({ input, label, source }) => <TextField
-    value={input.value}
+const DisabledInput = ({ label, record, source }) => <TextField
+    value={get(record, source)}
     floatingLabelText={title(label, source)}
     disabled
 />;
 
 DisabledInput.propTypes = {
     includesLabel: PropTypes.bool,
-    input: PropTypes.object,
     label: PropTypes.string,
-    source: PropTypes.string.isRequired,
+    record: PropTypes.object,
+    source: PropTypes.string,
 };
 
 DisabledInput.defaultProps = {

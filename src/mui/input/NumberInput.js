@@ -43,6 +43,7 @@ class NumberInput extends Component {
 
 NumberInput.propTypes = {
     elStyle: PropTypes.object,
+    includesField: PropTypes.bool.isRequired,
     includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
@@ -50,12 +51,13 @@ NumberInput.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func,
     options: PropTypes.object,
-    source: PropTypes.string.isRequired,
+    source: PropTypes.string,
     step: PropTypes.string.isRequired,
     validation: PropTypes.object,
 };
 
 NumberInput.defaultProps = {
+    includesField: false,
     includesLabel: true,
     options: {},
     step: 'any',
