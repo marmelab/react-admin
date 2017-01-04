@@ -8,7 +8,7 @@ let listeningServer;
 before(() => {
     const server = express();
     server.use('/', express.static(path.join(__dirname, '../../example')));
-    listeningServer = server.listen(8081);
+    listeningServer = server.listen(8083);
 });
 
 after(() => {
