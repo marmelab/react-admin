@@ -43,7 +43,7 @@ test-e2e: ## launch end-to-end tests. call make test-e2e skip-build to skip the 
 	fi
 	@echo 'Launching e2e tests...'
 	@NODE_ENV=test node_modules/.bin/mocha \
-		--require co-mocha \
+		--compilers js:babel-register \
 		--timeout 10000 \
 		./e2e/tests/server.js \
 		./e2e/tests/*.js
