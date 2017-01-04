@@ -27,7 +27,7 @@ module.exports = (entity) => (driver) => ({
     },
 
     navigate() {
-        driver.navigate().to(`http://localhost:8081/#/${entity}`);
+        driver.navigate().to(`http://localhost:8083/#/${entity}`);
         return this.waitUntilVisible();
     },
 
