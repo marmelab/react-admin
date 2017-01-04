@@ -72,9 +72,9 @@ export const PostCreate = (props) => (
         <TextInput label="Password (if protected post)" source="password" type="password" />
         <TextInput source="teaser" options={{ multiLine: true }} />
         <RichTextInput source="body" />
-        <DateInput label="Publication date" source="published_at" />
+        <DateInput label="Publication date" source="published_at" defaultValue={new Date()}  />
         <NumberInput source="average_note" />
-        <BooleanInput label="Allow comments?" source="commentable" />
+        <BooleanInput label="Allow comments?" source="commentable" defaultValue={true} />
     </Create>
 );
 
@@ -87,7 +87,7 @@ export const PostEdit = (props) => (
         <RichTextInput source="body" validation={{ required: true }} />
         <DateInput label="Publication date" source="published_at" />
         <NumberInput source="average_note" validation={{ min: 0 }} />
-        <BooleanInput label="Allow comments?" source="commentable" />
+        <BooleanInput label="Allow comments?" source="commentable" defaultValue={true} />
         <ReferenceManyField label="Comments" reference="comments" target="post_id">
             <Datagrid>
                 <TextField source="body" />

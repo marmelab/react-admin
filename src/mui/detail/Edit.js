@@ -6,6 +6,7 @@ import Title from '../layout/Title';
 import { ListButton, DeleteButton, ShowButton } from '../button';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
 import RecordForm from './RecordForm'; // eslint-disable-line import/no-named-as-default
+import getDefaultValues from './getDefaultValues';
 
 /**
  * Turns a children data structure (either single child or array of children) into an array.
@@ -55,7 +56,7 @@ export class Edit extends Component {
     }
 
     render() {
-        const { title, children, id, data, isLoading, resource, hasDelete, hasShow, validation } = this.props;
+        const { children, data, defaultValues = {}, hasDelete, hasShow, id, isLoading, resource, title, validation } = this.props;
         const basePath = this.getBasePath();
 
         return (
@@ -68,11 +69,11 @@ export class Edit extends Component {
                 <CardTitle title={<Title title={title} record={data} defaultTitle={`${inflection.humanize(inflection.singularize(resource))} #${id}`} />} />
                 {data && <RecordForm
                     onSubmit={this.handleSubmit}
-                    record={data}
                     resource={resource}
                     basePath={basePath}
-                    initialValues={data}
                     validation={validation}
+                    record={data}
+                    initialValues={getDefaultValues(children)(data, defaultValues)}
                 >
                     {children}
                 </RecordForm>}
@@ -86,6 +87,7 @@ Edit.propTypes = {
     crudGetOne: PropTypes.func.isRequired,
     crudUpdate: PropTypes.func.isRequired,
     data: PropTypes.object,
+    defaultValues: PropTypes.object,
     hasDelete: PropTypes.bool,
     hasShow: PropTypes.bool,
     id: PropTypes.string.isRequired,

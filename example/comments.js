@@ -92,7 +92,7 @@ export const CommentEdit = (props) => (
 );
 
 export const CommentCreate = (props) => (
-    <Create {...props}>
+    <Create {...props} defaultValues={{ created_at: new Date() }}>
         <ReferenceInput label="Post" source="post_id" reference="posts" allowEmpty>
             <SelectInput optionText="title" />
         </ReferenceInput>
