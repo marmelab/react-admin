@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
 import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/referenceActions';
+import linkToRecord from '../../util/linkToRecord'
 
 /**
  * @example
@@ -32,7 +33,7 @@ export class ReferenceField extends Component {
         }
         const rootPath = basePath.split('/').slice(0, -1).join('/');
         return (
-            <Link style={elStyle} to={`${rootPath}/${reference}/${get(record, source)}`}>
+            <Link style={elStyle} to={linkToRecord(`${rootPath}/${reference}`, get(record, source))}>
                 {React.cloneElement(children, {
                     record: referenceRecord,
                     resource: reference,
