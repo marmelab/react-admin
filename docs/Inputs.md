@@ -208,7 +208,7 @@ import { DisabledInput } from 'admin-on-rest/lib/mui';
 
 ```js
 // in src/posts.js
-import { Edit, DisabledInput, LongTextInput, TextField, TextInput } from 'admin-on-rest/lib/mui';
+import { Edit, LongTextInput, TextField } from 'admin-on-rest/lib/mui';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -222,7 +222,7 @@ export const PostEdit = (props) => (
 
 ```js
 // in src/posts.js
-import { Edit, DisabledInput, LongTextInput, TextInput } from 'admin-on-rest/lib/mui';
+import { Edit, LongTextInput } from 'admin-on-rest/lib/mui';
 const titleStyle = { textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '20em' };
 const Title = ({ record }) => <span style={titleStyle}>{record.title}</span>;
 
