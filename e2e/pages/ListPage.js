@@ -1,20 +1,17 @@
-const webdriver = require('selenium-webdriver');
-
-const by = webdriver.By;
-const until = webdriver.until;
+import { By, until } from 'selenium-webdriver';
 
 module.exports = (entity) => (driver) => ({
     elements: {
-        addFilterButton: by.css('.add-filter'),
-        appLoader: by.css('app-loader'),
-        displayedRecords: by.css('.displayed-records'),
-        filter: name => by.css(`.filter-field[data-source='${name}']`),
-        filterMenuItem: source => by.css(`.new-filter-item[data-key="${source}"]`),
-        hideFilterButton: source => by.css(`.filter-field[data-source="${source}"] .hide-filter`),
-        nextPage: by.css('.next-page'),
-        pageNumber: n => by.css(`.page-number[data-page='${n}']`),
-        previousPage: by.css('.previous-page'),
-        recordRows: by.css('.datagrid-body tr'),
+        addFilterButton: By.css('.add-filter'),
+        appLoader: By.css('app-loader'),
+        displayedRecords: By.css('.displayed-records'),
+        filter: name => By.css(`.filter-field[data-source='${name}']`),
+        filterMenuItem: source => By.css(`.new-filter-item[data-key="${source}"]`),
+        hideFilterButton: source => By.css(`.filter-field[data-source="${source}"] .hide-filter`),
+        nextPage: By.css('.next-page'),
+        pageNumber: n => By.css(`.page-number[data-page='${n}']`),
+        previousPage: By.css('.previous-page'),
+        recordRows: By.css('.datagrid-body tr'),
     },
 
     waitUntilVisible() {
@@ -48,7 +45,7 @@ module.exports = (entity) => (driver) => ({
 
     filter(name, value) {
         const filterField = driver.findElement(this.elements.filter(name));
-        filterField.findElement(by.css('input')).sendKeys(value);
+        filterField.findElement(By.css('input')).sendKeys(value);
         return driver.sleep(3000); // wait for debounce and reload
     },
 
