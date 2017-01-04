@@ -39,8 +39,6 @@
     "eslint-plugin-jsx-a11y": "~2.2.3",
     "eslint-plugin-react": "~6.7.1",
     "extract-text-webpack-plugin": "~1.0.1",
-    "fakerest": "~1.2.1",
-    "fetch-mock": "~5.5.0",
     "full-icu": "~1.0.3",
     "ignore-styles": "~5.0.1",
     "mocha": "~3.2.0",
