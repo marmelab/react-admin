@@ -81,7 +81,7 @@ export const PostEdit = (props) => (
 
 ## Default Values
 
-To define default values, you can add a `defaultValue` prop to both form components (`<Edit>` and `<Create>`), or add a `defaultValue` from to individual input components.
+To define default values, you can add a `defaultValue` prop to both form components (`<Edit>` and `<Create>`), or add a `defaultValue` to individual input components.
 
 ### Global Default Value
 
