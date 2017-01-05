@@ -300,10 +300,7 @@
 }
 .markdown-section h1,
 .markdown-section h2,
-.markdown-section h3,
-.markdown-section h4,
-.markdown-section h5,
-.markdown-section h6 {
+.markdown-section h3 {
     margin-top: 1.275em;
     margin-bottom: .85em;
     font-weight: 700
@@ -315,17 +312,8 @@
     font-size: 1.75em
 }
 .markdown-section h3 {
-    font-size: 1.5em
-}
-.markdown-section h4 {
-    font-size: 1.25em
-}
-.markdown-section h5 {
+    margin-top: .85em;
     font-size: 1em
-}
-.markdown-section h6 {
-    font-size: 1em;
-    color: #777
 }
 .markdown-section code,
 .markdown-section pre {
