@@ -17,6 +17,13 @@
 * Add support for `includesField` prop in input components to automate decoration by `<Field>`
 * Add support for Field components in `<Edit>` and `<Create>` views
 * Use Json REST client (http-less client) in example
+* Add support for special chars like "/" in id ([dunglas](https://github.com/dunglas))
+* Add support for actions in `<Create>` and `<Edit>` components
+* Add support for defaultValue in `<Create>` and `<Edit>` components
+* Add support for defaultValue in `<Input>` components
+* Add Refresh button in `<Edit>` view
+* Add double submission protection in `<SaveButton>`
+* Add animation on click in `<SaveButton>`
 
 ## V0.6.2
 
