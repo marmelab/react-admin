@@ -72,7 +72,7 @@ export const PostCreate = (props) => (
         <TextInput label="Password (if protected post)" source="password" type="password" />
         <TextInput source="teaser" options={{ multiLine: true }} />
         <RichTextInput source="body" />
-        <DateInput label="Publication date" source="published_at" defaultValue={new Date()}  />
+        <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />
         <NumberInput source="average_note" />
         <BooleanInput label="Allow comments?" source="commentable" defaultValue={true} />
     </Create>
