@@ -197,7 +197,19 @@ export default {
         { "date": "2012-08-07T00:00:00.000Z", "url": "http://example.com/foo/bar.html" },
         { "date": "2012-08-12T00:00:00.000Z", "url": "https://blog.johndoe.com/2012/08/12/foobar.html" }
       ]
-    }
+    },
+    {
+      "id": "/posts/13",
+      "title": "Fusce massa lorem, pulvinar a posuere ut, accumsan ac nisi",
+      "teaser": "Quam earum itaque corrupti labore quas nihil sed. Dolores sunt culpa voluptates exercitationem eveniet totam rerum. Molestias perspiciatis rem numquam accusamus.",
+      "body": "<p>Curabitur eu odio ullamcorper, pretium sem at, blandit libero. Nulla sodales facilisis libero, eu gravida tellus ultrices nec. In ut gravida mi. Vivamus finibus tortor tempus egestas lacinia. Cras eu arcu nisl. Donec pretium dolor ipsum, eget feugiat urna iaculis ut.</p> <p>Nullam lacinia accumsan diam, ac faucibus velit maximus ac. Donec eros ligula, ullamcorper sit amet varius eget, molestie nec sapien. Donec ac est non tellus convallis condimentum. Aliquam non vehicula mauris, ac rhoncus mi. Integer consequat ipsum a posuere ornare. Quisque mollis finibus libero scelerisque dapibus. </p>",
+      "views": 222,
+      "average_note": 4,
+      "commentable": true,
+      "published_at": new Date("2012-12-01"),
+      "tags": [3, 5],
+      "backlinks": []
+    },
   ],
   "comments": [
     {
