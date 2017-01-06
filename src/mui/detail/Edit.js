@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Card, CardTitle, CardActions } from 'material-ui/Card';
+import { Card, CardTitle, CardActions, CardText } from 'material-ui/Card';
 import inflection from 'inflection';
 import Title from '../layout/Title';
 import { ListButton, DeleteButton, ShowButton } from '../button';
@@ -79,7 +79,7 @@ export class Edit extends Component {
                     refresh: this.refresh,
                     resource,
                 })}
-                <CardTitle title={<Title title={title} record={data} defaultTitle={`${inflection.humanize(inflection.singularize(resource))} #${id}`} />} />
+                {data && <CardTitle title={<Title title={title} record={data} defaultTitle={`${inflection.humanize(inflection.singularize(resource))} #${id}`} />} />}
                 {data && <RecordForm
                     onSubmit={this.handleSubmit}
                     resource={resource}
@@ -90,6 +90,7 @@ export class Edit extends Component {
                 >
                     {children}
                 </RecordForm>}
+                {!data && <CardText>&nbsp;</CardText>}
             </Card>
         );
     }

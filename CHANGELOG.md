@@ -24,6 +24,7 @@
 * Add Refresh button in `<Edit>` view
 * Add double submission protection in `<SaveButton>`
 * Add animation on click in `<SaveButton>`
+* Add trigger to hide `<Edit>` view title until record is loaded
 
 ## V0.6.2
 
