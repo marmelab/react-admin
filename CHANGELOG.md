@@ -25,6 +25,7 @@
 * Add double submission protection in `<SaveButton>`
 * Add animation on click in `<SaveButton>`
 * Add trigger to hide `<Edit>` view title until record is loaded
+* [BC Break] All Redux action creators are now exported at the root level
 
 ## V0.6.2
 
