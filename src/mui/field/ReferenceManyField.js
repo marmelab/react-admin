@@ -59,10 +59,10 @@ export class ReferenceManyField extends Component {
 }
 
 ReferenceManyField.propTypes = {
+    addLabel: PropTypes.bool,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
     crudGetManyReference: PropTypes.func.isRequired,
-    includesLabel: PropTypes.bool,
     label: PropTypes.string,
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
@@ -84,7 +84,7 @@ const ConnectedReferenceManyField = connect(mapStateToProps, {
 })(ReferenceManyField);
 
 ConnectedReferenceManyField.defaultProps = {
-    includesLabel: false,
+    addLabel: true,
     source: '',
 };
 

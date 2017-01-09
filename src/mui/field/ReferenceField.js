@@ -46,6 +46,7 @@ export class ReferenceField extends Component {
 }
 
 ReferenceField.propTypes = {
+    addLabel: PropTypes.bool,
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
@@ -59,6 +60,7 @@ ReferenceField.propTypes = {
 };
 
 ReferenceField.defaultProps = {
+    addLabel: true,
     referenceRecord: null,
     record: {},
     allowEmpty: false,

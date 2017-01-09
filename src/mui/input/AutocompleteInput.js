@@ -90,11 +90,10 @@ class AutocompleteInput extends Component {
 }
 
 AutocompleteInput.propTypes = {
+    addField: PropTypes.bool.isRequired,
     choices: PropTypes.arrayOf(PropTypes.object),
     elStyle: PropTypes.object,
     filter: PropTypes.func.isRequired,
-    includesField: PropTypes.bool.isRequired,
-    includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
     options: PropTypes.object,
@@ -109,10 +108,9 @@ AutocompleteInput.propTypes = {
 };
 
 AutocompleteInput.defaultProps = {
+    addField: true,
     choices: [],
     filter: AutoComplete.fuzzyFilter,
-    includesField: false,
-    includesLabel: true,
     options: {},
     optionText: 'name',
     optionValue: 'id',

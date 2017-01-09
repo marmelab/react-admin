@@ -40,6 +40,7 @@ const NumberField = ({ record, source, locales, options, elStyle }) => {
 };
 
 NumberField.propTypes = {
+    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     locales: PropTypes.oneOfType([
@@ -52,6 +53,7 @@ NumberField.propTypes = {
 };
 
 NumberField.defaultProps = {
+    addLabel: true,
     style: { textAlign: 'right' },
     headerStyle: { textAlign: 'right' },
 };

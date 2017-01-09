@@ -12,16 +12,18 @@ const RichTextField = ({ source, record = {}, stripTags, elStyle }) => {
     return <div style={elStyle} dangerouslySetInnerHTML={{ __html: value }}></div>;
 };
 
-RichTextField.defaultProps = {
-    stripTags: false,
-};
-
 RichTextField.propTypes = {
+    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
     stripTags: PropTypes.bool,
+};
+
+RichTextField.defaultProps = {
+    addLabel: true,
+    stripTags: false,
 };
 
 export default RichTextField;
