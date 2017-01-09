@@ -49,6 +49,7 @@ const DateField = ({ elStyle, locales, options, record, showTime = false, source
 };
 
 DateField.propTypes = {
+    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     locales: PropTypes.oneOfType([
@@ -59,6 +60,10 @@ DateField.propTypes = {
     record: PropTypes.object,
     showTime: PropTypes.bool,
     source: PropTypes.string.isRequired,
+};
+
+DateField.defaultProps = {
+    addLabel: true,
 };
 
 export default DateField;

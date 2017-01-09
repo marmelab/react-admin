@@ -573,7 +573,7 @@ const LatLngInput = () => (
     <span>
         <Field name="lat" component="input" type="number" placeholder="latitude" />
         &nbsp;
-        <Field name="lng" component="input" tyle="number" placeholder="longitude" />
+        <Field name="lng" component="input" type="number" placeholder="longitude" />
     </span>
 );
 export default LatLngInput;
@@ -581,12 +581,39 @@ export default LatLngInput;
 // in ItemEdit.js
 const ItemEdit = (props) => (
     <Edit {...props}>
-        <LatLngInput label="Position" />
+        <LatLngInput />
     </Edit>
 );
 ```
 
 `LatLngInput` takes no props, because the `<Field>` component can access the current record via its context. The `name` prop serves as a selector for the record property to edit. All `Field` props except `name` and `component` are passed to the child component/element (an `<input>` in that example). Executing this component will render roughly the following code:
+
+```html
+<span>
+    <input type="number" placeholder="longitude" value={record.lat} />
+    <input type="number" placeholder="longitude" value={record.lng} />
+</span>
+```
+
+This component lacks a label. Admin-on-rest provides the `<Labeled>` component for that:
+
+```js
+// in LatLongInput.js
+import { Field } from 'redux-form';
+import { Labeled } from 'admin-on-rest/lib/mui';
+const LatLngInput = () => (
+    <Labeled label="position">
+        <span>
+            <Field name="lat" component="input" type="number" placeholder="latitude" />
+            &nbsp;
+            <Field name="lng" component="input" type="number" placeholder="longitude" />
+        </span>
+    </Labelled>
+);
+export default LatLngInput;
+```
+
+Now the component will render with a label:
 
 ```html
 <label>Position</label>
@@ -596,24 +623,44 @@ const ItemEdit = (props) => (
 </span>
 ```
 
-**Tip**: Although the `LatLngInput` component doesn't specify a `label` prop, admin-on-rest uses it to create a label on top of the input. If your component already includes a label, you can disable this behavior by setting `includesLabel: true` in the default props:
+Adding a label to an input component is such a common operation that admin-on-rest has the ability to do it automatically: just set the `addLabel` prop, and specify the label in the `label` prop:
 
 ```js
 // in LatLongInput.js
 import { Field } from 'redux-form';
 const LatLngInput = () => (
-    <div>
-        <div>Position</div>
+    <span>
         <Field name="lat" component="input" type="number" placeholder="latitude" />
         &nbsp;
-        <Field name="lng" component="input" tyle="number" placeholder="longitude" />
-    </div>
+        <Field name="lng" component="input" type="number" placeholder="longitude" />
+    </span>
+);
+export default LatLngInput;
+// in ItemEdit.js
+const ItemEdit = (props) => (
+    <Edit {...props}>
+        <LatLngInput addLabel label="Position" />
+    </Edit>
+);
+```
+
+**Tip**: To avoid repeating them each time you use the component, you should define `label` and `addLabel` as `defaultProps`:
+
+```js
+// in LatLongInput.js
+import { Field } from 'redux-form';
+const LatLngInput = () => (
+    <span>
+        <Field name="lat" component="input" type="number" placeholder="latitude" />
+        &nbsp;
+        <Field name="lng" component="input" type="number" placeholder="longitude" />
+    </span>
 );
 LatLngInput.defaultProps = {
-    includesLabel: true,
-};
+    addLabel: true,
+    label: 'Position',
+}
 export default LatLngInput;
-
 // in ItemEdit.js
 const ItemEdit = (props) => (
     <Edit {...props}>
@@ -647,9 +694,6 @@ const LatLngInput = () => (
         <Field name="lng" component={NumberInput} label="longitude" />
     </span>
 );
-LatLngInput.defaultProps = {
-    includesLabel: true,
-};
 export default LatLngInput;
 
 // in ItemEdit.js
@@ -661,7 +705,7 @@ const ItemEdit = (props) => (
 );
 ```
 
-`<NumberInput>` receives the props passed to the `<Field>` componeny - `label` in the example. Since the `lat` and `lng` inputs are labeled, no need to label the `<LanLngInput>` component - that's with the `includesLabel` default prop is set to `true`.
+`<NumberInput>` receives the props passed to the `<Field>` component - `label` in the example. `<NumberInput>` is already labelled, so there is no need to also label the `<LanLngInput>` component - that's why `addLabel` isn't set as default prop this time.
 
 **Tip**: If you need to pass a material ui component to `Field`, use a [field renderer function](http://redux-form.com/6.4.3/examples/material-ui/) to map the props:
 
@@ -687,7 +731,7 @@ const LatLngInput = () => (
 
 For more details on how to use redux-form's `<Field>` component, please refer to [the redux-form doc](http://redux-form.com/6.4.3/docs/api/Field.md/).
 
-**Tip**: If you only need one `<Field>` component in a custom input, you can let admin-on-rest do the `<Field>` decoration for you by setting the `includesField` default prop to `false`:
+**Tip**: If you only need one `<Field>` component in a custom input, you can let admin-on-rest do the `<Field>` decoration for you by setting the `addField` default prop to `true`:
 
 ```js
 // in PersonEdit.js
@@ -712,8 +756,7 @@ const SexInput = ({ input, meta: { touched, error } }) => (
     </SelectField>
 );
 SexInput.defaultProps = {
-    includesField: false, // require a <Field> decoration
-    includesLabel: true,
+    addField: true, // require a <Field> decoration
 }
 export default SexInput;
 
@@ -733,12 +776,9 @@ const renderSexInput = ({ input, meta: { touched, error } }) => (
     </SelectField>
 );
 const SexInput = ({ source }) => <Field name={source} component={renderSexInput} />
-SexInput.defaultProps = {
-    includesLabel: true,
-}
 export default SexInput;
 ```
 
-Most admin-on-rest input components use `includeField: false` in default props.
+Most admin-on-rest input components use `addField: true` in default props.
 
 **Tip**: `<Field>` injects two props to its child component: `input` and `meta`. To learn more about these props, please refer to [the `<Field>` component documentation](http://redux-form.com/6.4.3/docs/api/Field.md/#props) in the redux-form website.

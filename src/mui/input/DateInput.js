@@ -37,9 +37,8 @@ class DateInput extends Component {
 }
 
 DateInput.propTypes = {
+    addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
-    includesField: PropTypes.bool.isRequired,
-    includesLabel: PropTypes.bool,
     input: PropTypes.object,
     label: PropTypes.string,
     meta: PropTypes.object,
@@ -48,8 +47,7 @@ DateInput.propTypes = {
 };
 
 DateInput.defaultProps = {
-    includesField: false,
-    includesLabel: true,
+    addField: true,
     options: {},
 };
 

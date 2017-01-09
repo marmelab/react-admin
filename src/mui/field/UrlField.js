@@ -8,10 +8,15 @@ const UrlField = ({ source, record = {}, elStyle }) => (
 );
 
 UrlField.propTypes = {
+    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
+};
+
+UrlField.defaultProps = {
+    addLabel: true,
 };
 
 export default UrlField;

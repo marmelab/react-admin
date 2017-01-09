@@ -91,10 +91,10 @@ describe('<RecordForm />', () => {
         assert.equal(button.length, 1);
     });
 
-    it('should render <Labeled /> component if input does not include label', () => {
+    it('should render <Labeled /> component if input sets addLabel', () => {
         const wrapper = shallow(
             <RecordForm>
-                <TextInput source="name" label="Name" includesLabel={false} />
+                <TextInput source="name" label="Name" addLabel />
             </RecordForm>
         );
 

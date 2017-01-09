@@ -8,7 +8,6 @@ describe('<ReferenceInput />', () => {
     const defaultProps = {
         crudGetMatching: () => true,
         crudGetOne: () => true,
-        includesLabel: true,
         input: {},
         reference: 'posts',
         resource: 'comments',

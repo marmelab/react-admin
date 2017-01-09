@@ -156,6 +156,7 @@ export class ReferenceInput extends Component {
 }
 
 ReferenceInput.propTypes = {
+    addField: PropTypes.bool.isRequired,
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
@@ -163,8 +164,6 @@ ReferenceInput.propTypes = {
     crudGetOne: PropTypes.func.isRequired,
     filter: PropTypes.object,
     filterToQuery: PropTypes.func.isRequired,
-    includesField: PropTypes.bool.isRequired,
-    includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object.isRequired,
     label: PropTypes.string,
     matchingReferences: PropTypes.array,
@@ -204,8 +203,7 @@ const ConnectedReferenceInput = connect(mapStateToProps, {
 })(ReferenceInput);
 
 ConnectedReferenceInput.defaultProps = {
-    includesField: false,
-    includesLabel: true,
+    addField: true,
 };
 
 export default ConnectedReferenceInput;

@@ -57,15 +57,17 @@ export const RecordForm = ({ children, handleSubmit, record, resource, basePath 
             <div style={{ padding: '0 1em 1em 1em' }}>
                 {React.Children.map(children, input => (
                     <div key={input.props.source} style={input.props.style}>
-                        { input.props.includesField === false ?
-                            (input.props.includesLabel ?
-                                <Field {...commonProps} {...input.props} name={input.props.source} component={input.type} /> :
-                                <Field {...commonProps} {...input.props} name={input.props.source} component={Labeled} label={input.props.label}>{ input }</Field>
+                        { input.props.addField ?
+                            (input.props.addLabel ?
+                                <Field {...commonProps} {...input.props} name={input.props.source} component={Labeled} label={input.props.label}>{ input }</Field> :
+                                <Field {...commonProps} {...input.props} name={input.props.source} component={input.type} />
                             ) :
-                            (input.props.includesLabel ?
-                                React.cloneElement(input, commonProps) :
-                                <Labeled {...commonProps} label={input.props.label} source={input.props.source}>{input}</Labeled>
-
+                            (input.props.addLabel ?
+                                <Labeled {...commonProps} label={input.props.label} source={input.props.source}>{input}</Labeled> :
+                                (typeof input.type === 'string' ?
+                                    input :
+                                    React.cloneElement(input, commonProps)
+                                )
                             )
                         }
                     </div>

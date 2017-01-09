@@ -10,14 +10,9 @@ const DisabledInput = ({ label, record, source }) => <TextField
 />;
 
 DisabledInput.propTypes = {
-    includesLabel: PropTypes.bool,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string,
-};
-
-DisabledInput.defaultProps = {
-    includesLabel: true,
 };
 
 export default DisabledInput;

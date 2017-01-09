@@ -81,11 +81,10 @@ class SelectInput extends Component {
 }
 
 SelectInput.propTypes = {
+    addField: PropTypes.bool.isRequired,
     allowEmpty: PropTypes.bool.isRequired,
     choices: PropTypes.arrayOf(PropTypes.object),
     elStyle: PropTypes.object,
-    includesField: PropTypes.bool.isRequired,
-    includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
     options: PropTypes.object,
@@ -99,13 +98,12 @@ SelectInput.propTypes = {
 };
 
 SelectInput.defaultProps = {
+    addField: true,
     allowEmpty: false,
     choices: [],
     options: {},
     optionText: 'name',
     optionValue: 'id',
-    includesField: false,
-    includesLabel: true,
 };
 
 export default SelectInput;
