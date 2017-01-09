@@ -26,6 +26,9 @@
 * Add animation on click in `<SaveButton>`
 * Add trigger to hide `<Edit>` view title until record is loaded
 * [BC Break] All Redux action creators are now exported at the root level
+* [BC Break] Rename `includesField: true` to `addField: false` for Input components
+* [BC Break] Rename `includesLabel: true` to `addLabel: false` for Input components
+* Add ability to use any React component as `Edit` or `Create` element
 
 ## V0.6.2
 
