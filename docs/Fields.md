@@ -288,19 +288,21 @@ You can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside ano
 
 ```js
 import React from 'react';
-import { Edit, Datagrid, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'admin-on-rest/lib/mui';
+import { Edit, Datagrid, SimpleForm, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'admin-on-rest/lib/mui';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
-        <DisabledInput label="Id" source="id" />
-        <TextInput source="title" />
-        <ReferenceManyField label="Comments" reference="comments" target="post_id">
-            <Datagrid>
-                <TextField source="body" />
-                <DateField source="created_at" />
-                <EditButton />
-            </Datagrid>
-        </ReferenceManyField>
+        <SimpleForm>
+            <DisabledInput label="Id" source="id" />
+            <TextInput source="title" />
+            <ReferenceManyField label="Comments" reference="comments" target="post_id">
+                <Datagrid>
+                    <TextField source="body" />
+                    <DateField source="created_at" />
+                    <EditButton />
+                </Datagrid>
+            </ReferenceManyField>
+        </SimpleForm>
     </Edit>
 );
 ```

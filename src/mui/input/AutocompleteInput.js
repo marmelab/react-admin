@@ -40,12 +40,14 @@ import title from '../../util/title';
  * the functions provided by `AutoComplete`, or a function of your own
  * @see http://www.material-ui.com/#/components/auto-complete
  * @example
- * import { Edit, AutocompleteInput } from 'admin-on-rest/mui';
+ * import { Edit, SimpleForm, AutocompleteInput } from 'admin-on-rest/mui';
  * import AutoComplete from 'material-ui/AutoComplete';
  *
  * export const PostEdit = (props) => (
  *     <Edit {...props}>
- *         <AutocompleteInput source="category" filter={AutoComplete.caseInsensitiveFilter} choices={choices} />
+ *         <SimpleForm>
+ *             <AutocompleteInput source="category" filter={AutoComplete.caseInsensitiveFilter} choices={choices} />
+ *         </SimpleForm>
  *     </Edit>
  * );
  *

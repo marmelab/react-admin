@@ -22,18 +22,22 @@ const noFilter = () => true;
  * @example
  * export const CommentEdit = (props) => (
  *     <Edit {...props}>
- *         <ReferenceInput label="Post" source="post_id" reference="posts">
- *             <AutocompleteInput optionText="title" />
- *         </ReferenceInput>
+ *         <SimpleForm>
+ *             <ReferenceInput label="Post" source="post_id" reference="posts">
+ *                 <AutocompleteInput optionText="title" />
+ *             </ReferenceInput>
+ *         </SimpleForm>
  *     </Edit>
  * );
  *
  * @example
  * export const CommentEdit = (props) => (
  *     <Edit {...props}>
- *         <ReferenceInput label="Post" source="post_id" reference="posts">
- *             <SelectInput optionText="title" />
- *         </ReferenceInput>
+ *         <SimpleForm>
+ *             <ReferenceInput label="Post" source="post_id" reference="posts">
+ *                 <SelectInput optionText="title" />
+ *             </ReferenceInput>
+ *         </SimpleForm>
  *     </Edit>
  * );
  *
