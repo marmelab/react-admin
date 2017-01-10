@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import { validateForm } from '../../util/validate';
 import { SaveButton } from '../button';
-import Labeled from '../input/Labeled';
+import FormField from './FormField';
 
 export const SimpleForm = ({ children, handleSubmit, record, resource, basePath }) => {
     const commonProps = { resource, record, basePath };
@@ -12,19 +12,7 @@ export const SimpleForm = ({ children, handleSubmit, record, resource, basePath 
             <div style={{ padding: '0 1em 1em 1em' }}>
                 {React.Children.map(children, input => (
                     <div key={input.props.source} style={input.props.style}>
-                        { input.props.addField ?
-                            (input.props.addLabel ?
-                                <Field {...commonProps} {...input.props} name={input.props.source} component={Labeled} label={input.props.label}>{ input }</Field> :
-                                <Field {...commonProps} {...input.props} name={input.props.source} component={input.type} />
-                            ) :
-                            (input.props.addLabel ?
-                                <Labeled {...commonProps} label={input.props.label} source={input.props.source}>{input}</Labeled> :
-                                (typeof input.type === 'string' ?
-                                    input :
-                                    React.cloneElement(input, commonProps)
-                                )
-                            )
-                        }
+                        <FormField input={input} {...commonProps} />
                     </div>
                 ))}
             </div>
