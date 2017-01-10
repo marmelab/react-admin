@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Children, Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardTitle } from 'material-ui/Card';
 import inflection from 'inflection';
 import Title from '../layout/Title';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import DefaultActions from './CreateActions';
-import getDefaultValues from './getDefaultValues';
+import getDefaultValues from '../form/getDefaultValues';
 
 class Create extends Component {
     getBasePath() {
@@ -30,7 +30,7 @@ class Create extends Component {
                     resource,
                     basePath,
                     record: {},
-                    initialValues: getDefaultValues(children)({}, defaultValue),
+                    initialValues: getDefaultValues(Children.toArray(children))({}, defaultValue),
                 })}
             </Card>
         );

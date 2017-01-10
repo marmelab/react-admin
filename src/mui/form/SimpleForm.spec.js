@@ -13,9 +13,8 @@ describe('<SimpleForm />', () => {
                 <TextInput source="city" />
             </SimpleForm>
         );
-
-        const inputs = wrapper.find('Field');
-        assert.deepEqual(inputs.map(i => i.prop('source')), ['name', 'city']);
+        const inputs = wrapper.find('FormField');
+        assert.deepEqual(inputs.map(i => i.prop('input').props.source), ['name', 'city']);
     });
 
     it('should display <SaveButton />', () => {
@@ -27,16 +26,5 @@ describe('<SimpleForm />', () => {
 
         const button = wrapper.find('SaveButton');
         assert.equal(button.length, 1);
-    });
-
-    it('should render <Labeled /> component if input sets addLabel', () => {
-        const wrapper = shallow(
-            <SimpleForm>
-                <TextInput source="name" label="Name" addLabel />
-            </SimpleForm>
-        );
-
-        const component = wrapper.find('Field').prop('component').name;
-        assert.equal(component, 'Labeled');
     });
 });

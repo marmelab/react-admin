@@ -186,7 +186,7 @@ export const PostCreate = (props) => (
 
 The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as argument when the user submits the form.
 
-The `<SimpleForm>` renders its child components line by line (within `<div>` components).
+The `<SimpleForm>` renders its child components line by line (within `<div>` components). It uses `redux-form`.
 
 Here are all the props accepted by the `<SimpleForm>` component:
 

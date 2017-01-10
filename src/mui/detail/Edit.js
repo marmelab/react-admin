@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Children, Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import inflection from 'inflection';
 import Title from '../layout/Title';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
 import DefaultActions from './EditActions';
-import getDefaultValues from './getDefaultValues';
+import getDefaultValues from '../form/getDefaultValues';
 
 /**
  * Turns a children data structure (either single child or array of children) into an array.
@@ -83,7 +83,7 @@ export class Edit extends Component {
                     resource,
                     basePath,
                     record: data,
-                    initialValues: getDefaultValues(children)(data, defaultValue),
+                    initialValues: getDefaultValues(Children.toArray(children))(data, defaultValue),
                 })}
                 {!data && <CardText>&nbsp;</CardText>}
             </Card>
@@ -93,7 +93,7 @@ export class Edit extends Component {
 
 Edit.propTypes = {
     actions: PropTypes.element,
-    children: PropTypes.element,
+    children: PropTypes.element.isRequired,
     crudGetOne: PropTypes.func.isRequired,
     crudUpdate: PropTypes.func.isRequired,
     data: PropTypes.object,
