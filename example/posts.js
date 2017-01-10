@@ -14,6 +14,7 @@ import {
     LongTextInput,
     NumberField,
     NumberInput,
+    SimpleForm,
     Show,
     ShowButton,
     ReferenceManyField,
@@ -51,9 +52,8 @@ const PostTitle = ({ record }) => {
 };
 
 export const PostCreate = (props) => (
-    <Create
-        {...props}
-        validation={(values) => {
+    <Create {...props}>
+        <SimpleForm validation={(values) => {
             const errors = {};
             ['title', 'teaser'].forEach(field => {
                 if (!values[field]) {
@@ -66,36 +66,38 @@ export const PostCreate = (props) => (
             }
 
             return errors;
-        }}
-    >
-        <TextInput source="title" />
-        <TextInput label="Password (if protected post)" source="password" type="password" />
-        <TextInput source="teaser" options={{ multiLine: true }} />
-        <RichTextInput source="body" />
-        <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />
-        <NumberInput source="average_note" />
-        <BooleanInput label="Allow comments?" source="commentable" defaultValue={true} />
+        }}>
+            <TextInput source="title" />
+            <TextInput label="Password (if protected post)" source="password" type="password" />
+            <TextInput source="teaser" options={{ multiLine: true }} />
+            <RichTextInput source="body" />
+            <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />
+            <NumberInput source="average_note" />
+            <BooleanInput label="Allow comments?" source="commentable" defaultValue={true} />
+        </SimpleForm>
     </Create>
 );
 
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
-        <DisabledInput label="Id" source="id" />
-        <TextInput source="title" validation={{ required: true }} />
-        <TextInput label="Password (if protected post)" source="password" type="password" />
-        <LongTextInput source="teaser" validation={{ required: true }} />
-        <RichTextInput source="body" validation={{ required: true }} />
-        <DateInput label="Publication date" source="published_at" />
-        <NumberInput source="average_note" validation={{ min: 0 }} />
-        <BooleanInput label="Allow comments?" source="commentable" defaultValue={true} />
-        <ReferenceManyField label="Comments" reference="comments" target="post_id">
-            <Datagrid>
-                <TextField source="body" />
-                <DateField source="created_at" />
-                <EditButton />
-            </Datagrid>
-        </ReferenceManyField>
-        <DisabledInput label="Nb views" source="views" />
+        <SimpleForm>
+            <DisabledInput label="Id" source="id" />
+            <TextInput source="title" validation={{ required: true }} />
+            <TextInput label="Password (if protected post)" source="password" type="password" />
+            <LongTextInput source="teaser" validation={{ required: true }} />
+            <RichTextInput source="body" validation={{ required: true }} />
+            <DateInput label="Publication date" source="published_at" />
+            <NumberInput source="average_note" validation={{ min: 0 }} />
+            <BooleanInput label="Allow comments?" source="commentable" defaultValue={true} />
+            <ReferenceManyField label="Comments" reference="comments" target="post_id">
+                <Datagrid>
+                    <TextField source="body" />
+                    <DateField source="created_at" />
+                    <EditButton />
+                </Datagrid>
+            </ReferenceManyField>
+            <DisabledInput label="Nb views" source="views" />
+        </SimpleForm>
     </Edit>
 );
 

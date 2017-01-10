@@ -1,11 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Card, CardTitle, CardActions, CardText } from 'material-ui/Card';
+import { Card, CardTitle, CardText } from 'material-ui/Card';
 import inflection from 'inflection';
 import Title from '../layout/Title';
-import { ListButton, DeleteButton, ShowButton } from '../button';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
-import RecordForm from './RecordForm'; // eslint-disable-line import/no-named-as-default
 import DefaultActions from './EditActions';
 import getDefaultValues from './getDefaultValues';
 
@@ -66,7 +64,7 @@ export class Edit extends Component {
     }
 
     render() {
-        const { actions = <DefaultActions />, children, data, defaultValue = {}, hasDelete, hasShow, id, isLoading, resource, title, validation } = this.props;
+        const { actions = <DefaultActions />, children, data, defaultValue = {}, hasDelete, hasShow, id, isLoading, resource, title } = this.props;
         const basePath = this.getBasePath();
 
         return (
@@ -80,16 +78,13 @@ export class Edit extends Component {
                     resource,
                 })}
                 {data && <CardTitle title={<Title title={title} record={data} defaultTitle={`${inflection.humanize(inflection.singularize(resource))} #${id}`} />} />}
-                {data && <RecordForm
-                    onSubmit={this.handleSubmit}
-                    resource={resource}
-                    basePath={basePath}
-                    validation={validation}
-                    record={data}
-                    initialValues={getDefaultValues(children)(data, defaultValue)}
-                >
-                    {children}
-                </RecordForm>}
+                {data && React.cloneElement(children, {
+                    onSubmit: this.handleSubmit,
+                    resource,
+                    basePath,
+                    record: data,
+                    initialValues: getDefaultValues(children)(data, defaultValue),
+                })}
                 {!data && <CardText>&nbsp;</CardText>}
             </Card>
         );
@@ -98,7 +93,7 @@ export class Edit extends Component {
 
 Edit.propTypes = {
     actions: PropTypes.element,
-    children: PropTypes.node,
+    children: PropTypes.element,
     crudGetOne: PropTypes.func.isRequired,
     crudUpdate: PropTypes.func.isRequired,
     data: PropTypes.object,
@@ -111,7 +106,6 @@ Edit.propTypes = {
     params: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
-    validation: PropTypes.func,
 };
 
 function mapStateToProps(state, props) {
