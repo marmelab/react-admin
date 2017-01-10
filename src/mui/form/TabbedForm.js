@@ -19,14 +19,13 @@ export class TabbedForm extends Component {
 
     render() {
         const { children, contentContainerStyle, handleSubmit, record, resource, basePath } = this.props;
-        const commonProps = { resource, record, basePath };
         return (
             <form onSubmit={handleSubmit}>
                 <div style={{ padding: '0 1em 1em 1em' }}>
                     <Tabs value={this.state.value} onChange={this.handleChange} contentContainerStyle={contentContainerStyle}>
                         {React.Children.map(children, (tab, index) =>
                             <Tab key={tab.props.value} label={tab.props.label} value={index} icon={tab.props.icon}>
-                                {React.cloneElement(tab, commonProps)}
+                                {React.cloneElement(tab, { resource, record, basePath })}
                             </Tab>
                         )}
                     </Tabs>
