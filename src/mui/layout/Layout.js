@@ -37,6 +37,18 @@ Layout.propTypes = {
     title: PropTypes.string.isRequired,
     theme: PropTypes.object.isRequired,
 };
+Layout.defaultProps = {
+    theme: {
+        tabs: {
+            backgroundColor: 'white',
+            selectedTextColor: '#00bcd4',
+            textColor: '#757575',
+        },
+        inkBar: {
+            backgroundColor: '#00bcd4',
+        },
+    },
+};
 
 function mapStateToProps(state) {
     return { isLoading: state.admin.loading > 0 };
