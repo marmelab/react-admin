@@ -199,7 +199,7 @@ export default {
       ]
     },
     {
-      "id": "/posts/13",
+      "id": 13,
       "title": "Fusce massa lorem, pulvinar a posuere ut, accumsan ac nisi",
       "teaser": "Quam earum itaque corrupti labore quas nihil sed. Dolores sunt culpa voluptates exercitationem eveniet totam rerum. Molestias perspiciatis rem numquam accusamus.",
       "body": "<p>Curabitur eu odio ullamcorper, pretium sem at, blandit libero. Nulla sodales facilisis libero, eu gravida tellus ultrices nec. In ut gravida mi. Vivamus finibus tortor tempus egestas lacinia. Cras eu arcu nisl. Donec pretium dolor ipsum, eget feugiat urna iaculis ut.</p> <p>Nullam lacinia accumsan diam, ac faucibus velit maximus ac. Donec eros ligula, ullamcorper sit amet varius eget, molestie nec sapien. Donec ac est non tellus convallis condimentum. Aliquam non vehicula mauris, ac rhoncus mi. Integer consequat ipsum a posuere ornare. Quisque mollis finibus libero scelerisque dapibus. </p>",
