@@ -1,4 +1,4 @@
-import React, { Children, Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardTitle } from 'material-ui/Card';
 import inflection from 'inflection';
