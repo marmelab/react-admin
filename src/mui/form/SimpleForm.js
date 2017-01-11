@@ -5,7 +5,7 @@ import { validateForm } from '../../util/validate';
 import { SaveButton } from '../button';
 import FormField from './FormField';
 
-export const SimpleForm = ({ children, handleSubmit, record, resource, basePath }) => (
+export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, basePath }) => (
     <form onSubmit={handleSubmit}>
         <div style={{ padding: '0 1em 1em 1em' }}>
             {React.Children.map(children, input => (
@@ -16,7 +16,7 @@ export const SimpleForm = ({ children, handleSubmit, record, resource, basePath 
         </div>
         <Toolbar>
             <ToolbarGroup>
-                <SaveButton />
+                <SaveButton invalid={invalid} />
             </ToolbarGroup>
         </Toolbar>
     </form>
@@ -25,6 +25,7 @@ export const SimpleForm = ({ children, handleSubmit, record, resource, basePath 
 SimpleForm.propTypes = {
     children: PropTypes.node,
     handleSubmit: PropTypes.func,
+    invalid: PropTypes.bool,
     record: PropTypes.object,
     resource: PropTypes.string,
     basePath: PropTypes.string,

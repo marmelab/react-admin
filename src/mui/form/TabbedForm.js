@@ -18,7 +18,7 @@ export class TabbedForm extends Component {
     };
 
     render() {
-        const { children, contentContainerStyle, handleSubmit, record, resource, basePath } = this.props;
+        const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath } = this.props;
         return (
             <form onSubmit={handleSubmit}>
                 <div style={{ padding: '0 1em 1em 1em' }}>
@@ -32,7 +32,7 @@ export class TabbedForm extends Component {
                 </div>
                 <Toolbar>
                     <ToolbarGroup>
-                        <SaveButton />
+                        <SaveButton invalid={invalid} />
                     </ToolbarGroup>
                 </Toolbar>
             </form>
@@ -44,6 +44,7 @@ TabbedForm.propTypes = {
     children: PropTypes.node,
     contentContainerStyle: PropTypes.object,
     handleSubmit: PropTypes.func,
+    invalid: PropTypes.bool,
     record: PropTypes.object,
     resource: PropTypes.string,
     basePath: PropTypes.string,
