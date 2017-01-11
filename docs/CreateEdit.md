@@ -146,6 +146,8 @@ The `<SimpleForm>` component receives the `record` as prop from its parent compo
 
 The `<SimpleForm>` renders its child components line by line (within `<div>` components). It uses `redux-form`.
 
+![post edition form](./img/post-edition.png)
+
 Here are all the props accepted by the `<SimpleForm>` component:
 
 * [`defautValue`](#default-values)
@@ -160,6 +162,52 @@ export const PostCreate = (props) => (
             <NumberInput source="nb_views" />
         </SimpleForm>
     </Create>
+);
+```
+
+## The `<TabbedForm>` component
+
+Just like `<SimpleForm>`, `<TabbedForm>` the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop.
+
+![tabbed form](./img/tabbed-form.gif)
+
+Here are all the props accepted by the `<TabbedForm>` component:
+
+* [`defautValue`](#default-values)
+* [`validation`](#validation)
+
+```js
+import { TabbedForm, FormTab } from 'admin-on-rest/lib/mui'
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <TabbedForm>
+            <FormTab label="summary">
+                <DisabledInput label="Id" source="id" />
+                <TextInput source="title" validation={{ required: true }} />
+                <LongTextInput source="teaser" validation={{ required: true }} />
+            </FormTab>
+            <FormTab label="body">
+                <RichTextInput source="body" validation={{ required: true }} addLabel={false} />
+            </FormTab>
+            <FormTab label="Miscellaneous">
+                <TextInput label="Password (if protected post)" source="password" type="password" />
+                <DateInput label="Publication date" source="published_at" />
+                <NumberInput source="average_note" validation={{ min: 0 }} />
+                <BooleanInput label="Allow comments?" source="commentable" defaultValue />
+                <DisabledInput label="Nb views" source="views" />
+            </FormTab>
+            <FormTab label="comments">
+                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+                    <Datagrid>
+                        <TextField source="body" />
+                        <DateField source="created_at" />
+                        <EditButton />
+                    </Datagrid>
+                </ReferenceManyField>
+            </FormTab>
+        </TabbedForm>
+    </Edit>
 );
 ```
 
