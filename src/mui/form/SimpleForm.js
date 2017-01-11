@@ -1,8 +1,10 @@
-import React, { PropTypes } from 'react';
+import React, { Children, PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import { validateForm } from '../../util/validate';
 import { SaveButton } from '../button';
+import getDefaultValues from '../form/getDefaultValues';
 import FormField from './FormField';
 
 export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, basePath }) => (
@@ -24,6 +26,7 @@ export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, 
 
 SimpleForm.propTypes = {
     children: PropTypes.node,
+    defaultValue: PropTypes.object,
     handleSubmit: PropTypes.func,
     invalid: PropTypes.bool,
     record: PropTypes.object,
@@ -32,7 +35,13 @@ SimpleForm.propTypes = {
     validation: PropTypes.func,
 };
 
-export default reduxForm({
+const ReduxForm = reduxForm({
     form: 'record-form',
     validate: validateForm,
 })(SimpleForm);
+
+const mapStateToProps = (state, props) => ({
+    initialValues: getDefaultValues(Children.toArray(props.children))(props.record, props.defaultValue),
+});
+
+export default connect(mapStateToProps)(ReduxForm);

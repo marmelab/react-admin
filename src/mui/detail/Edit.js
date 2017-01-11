@@ -5,7 +5,6 @@ import inflection from 'inflection';
 import Title from '../layout/Title';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
 import DefaultActions from './EditActions';
-import getDefaultValues from '../form/getDefaultValues';
 
 /**
  * Turns a children data structure (either single child or array of children) into an array.
@@ -64,7 +63,7 @@ export class Edit extends Component {
     }
 
     render() {
-        const { actions = <DefaultActions />, children, data, defaultValue = {}, hasDelete, hasShow, id, isLoading, resource, title } = this.props;
+        const { actions = <DefaultActions />, children, data, hasDelete, hasShow, id, isLoading, resource, title } = this.props;
         const basePath = this.getBasePath();
 
         return (
@@ -83,7 +82,6 @@ export class Edit extends Component {
                     resource,
                     basePath,
                     record: data,
-                    initialValues: getDefaultValues(Children.toArray(children))(data, defaultValue),
                 })}
                 {!data && <CardText>&nbsp;</CardText>}
             </Card>
@@ -97,7 +95,6 @@ Edit.propTypes = {
     crudGetOne: PropTypes.func.isRequired,
     crudUpdate: PropTypes.func.isRequired,
     data: PropTypes.object,
-    defaultValue: PropTypes.object,
     hasDelete: PropTypes.bool,
     hasShow: PropTypes.bool,
     id: PropTypes.string.isRequired,

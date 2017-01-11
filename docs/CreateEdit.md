@@ -15,13 +15,10 @@ The Create and Edit views both display a form, initialized with an empty record 
 
 The `<Create>` and `<Edit>` components render the page title and actions, and fetch the record from the REST API. They are not responsible for rendering the actual form - that's the job of their child component (usually `<SimpleForm>`), to which they pass the `record` as prop.
 
-**Tip**: In Redux terms, `<Create>` and `<Edit>` are connected components, and `<SimpleForm>` is a dumb component.
-
 Here are all the props accepted by the `<Create>` and `<Edit>` components:
 
 * [`title`](#page-title)
 * [`actions`](#actions)
-* [`defautValue`](#default-values)
 
 Here is the minimal code necessary to display a form to create and edit comments:
 
@@ -143,6 +140,29 @@ export const PostEdit = (props) => (
 );
 ```
 
+## The `<SimpleForm>` component
+
+The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as argument when the user submits the form.
+
+The `<SimpleForm>` renders its child components line by line (within `<div>` components). It uses `redux-form`.
+
+Here are all the props accepted by the `<SimpleForm>` component:
+
+* [`defautValue`](#default-values)
+* [`validation`](#validation)
+
+```js
+export const PostCreate = (props) => (
+    <Create {...props}>
+        <SimpleForm>
+            <TextInput source="title" />
+            <RichTextInput source="body" />
+            <NumberInput source="nb_views" />
+        </SimpleForm>
+    </Create>
+);
+```
+
 ## Default Values
 
 To define default values, you can add a `defaultValue` prop to both view components (`<Edit>` and `<Create>`), or add a `defaultValue` to individual input components.
@@ -177,28 +197,6 @@ export const PostCreate = (props) => (
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" defaultValue={0} />
-        </SimpleForm>
-    </Create>
-);
-```
-
-## The `<SimpleForm>` component
-
-The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as argument when the user submits the form.
-
-The `<SimpleForm>` renders its child components line by line (within `<div>` components). It uses `redux-form`.
-
-Here are all the props accepted by the `<SimpleForm>` component:
-
-* [`validation`](#validation)
-
-```js
-export const PostCreate = (props) => (
-    <Create {...props}>
-        <SimpleForm>
-            <TextInput source="title" />
-            <RichTextInput source="body" />
-            <NumberInput source="nb_views" />
         </SimpleForm>
     </Create>
 );

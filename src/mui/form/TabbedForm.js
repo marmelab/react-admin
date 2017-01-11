@@ -1,9 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Children, Component, PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import { validateForm } from '../../util/validate';
 import { SaveButton } from '../button';
+import getDefaultValues from '../form/getDefaultValues';
 
 export class TabbedForm extends Component {
     constructor(props) {
@@ -43,6 +45,7 @@ export class TabbedForm extends Component {
 TabbedForm.propTypes = {
     children: PropTypes.node,
     contentContainerStyle: PropTypes.object,
+    defaultValue: PropTypes.object,
     handleSubmit: PropTypes.func,
     invalid: PropTypes.bool,
     record: PropTypes.object,
@@ -54,7 +57,13 @@ TabbedForm.defaultProps = {
     contentContainerStyle: { borderTop: 'solid 1px #e0e0e0' },
 };
 
-export default reduxForm({
+const ReduxForm = reduxForm({
     form: 'record-form',
     validate: validateForm,
 })(TabbedForm);
+
+const mapStateToProps = (state, props) => ({
+    initialValues: getDefaultValues(Children.toArray(props.children))(props.record, props.defaultValue),
+});
+
+export default connect(mapStateToProps)(ReduxForm);

@@ -55,7 +55,7 @@ const PostTitle = ({ record }) => {
 
 export const PostCreate = (props) => (
     <Create {...props}>
-        <SimpleForm validation={(values) => {
+        <SimpleForm defaultValue={{ average_note: 0 }} validation={(values) => {
             const errors = {};
             ['title', 'teaser'].forEach(field => {
                 if (!values[field]) {
@@ -82,7 +82,7 @@ export const PostCreate = (props) => (
 
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
-        <TabbedForm>
+        <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label="summary">
                 <DisabledInput label="Id" source="id" />
                 <TextInput source="title" validation={{ required: true }} />

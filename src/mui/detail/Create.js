@@ -16,7 +16,7 @@ class Create extends Component {
     handleSubmit = (record) => this.props.crudCreate(this.props.resource, record, this.getBasePath());
 
     render() {
-        const { actions = <DefaultActions />, children, defaultValue = {}, isLoading, resource, title } = this.props;
+        const { actions = <DefaultActions />, children, isLoading, resource, title } = this.props;
         const basePath = this.getBasePath();
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
@@ -30,7 +30,6 @@ class Create extends Component {
                     resource,
                     basePath,
                     record: {},
-                    initialValues: getDefaultValues(Children.toArray(children))({}, defaultValue),
                 })}
             </Card>
         );
@@ -41,7 +40,6 @@ Create.propTypes = {
     actions: PropTypes.element,
     children: PropTypes.element,
     crudCreate: PropTypes.func.isRequired,
-    defaultValue: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
