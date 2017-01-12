@@ -21,6 +21,7 @@ import {
     ReferenceManyField,
     RichTextField,
     RichTextInput,
+    SimpleShowLayout,
     TabbedForm,
     TextField,
     TextInput,
@@ -113,19 +114,21 @@ export const PostEdit = (props) => (
 
 export const PostShow = (props) => (
     <Show title={<PostTitle />} {...props}>
-        <TextField source="id" />
-        <TextField source="title" />
-        <TextField source="teaser" />
-        <RichTextField source="body" stripTags={false} />
-        <DateField source="published_at" style={{ fontStyle: 'italic' }} />
-        <TextField source="average_note" />
-        <ReferenceManyField label="Comments" reference="comments" target="post_id">
-            <Datagrid selectable={false}>
-                <TextField source="body" />
-                <DateField source="created_at" />
-                <EditButton />
-            </Datagrid>
-        </ReferenceManyField>
-        <TextField label="Nb views" source="views" />
+        <SimpleShowLayout>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="teaser" />
+            <RichTextField source="body" stripTags={false} />
+            <DateField source="published_at" style={{ fontStyle: 'italic' }} />
+            <TextField source="average_note" />
+            <ReferenceManyField label="Comments" reference="comments" target="post_id">
+                <Datagrid selectable={false}>
+                    <TextField source="body" />
+                    <DateField source="created_at" />
+                    <EditButton />
+                </Datagrid>
+            </ReferenceManyField>
+            <TextField label="Nb views" source="views" />
+        </SimpleShowLayout>
     </Show>
 );
