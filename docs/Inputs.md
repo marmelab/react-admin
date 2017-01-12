@@ -419,8 +419,16 @@ The enclosed component may further filter results (that's the case, for instance
 `<RichTextInput>` is the ideal component if you want to allow your users to edit some HTML contents. It
 is powered by [Quill](https://quilljs.com/).
 
+**Note**: Due to its size, `<RichTextInput>` is not bundled by default with admin-on-rest. You must install it first, using npm:
+
+```sh
+npm install aor-rich-text-input --save
+```
+
+Then use it as a normal input component:
+
 ``` js
-import { RichTextInput } from 'admin-on-rest/lib/mui';
+import RichTextInput from 'aor-rich-text-input';
 
 <RichTextInput source="body" />
 ```
