@@ -1,3 +1,5 @@
+import React from 'react';
+
 /* eslint-disable no-underscore-dangle */
 /* @link http://stackoverflow.com/questions/46155/validate-email-address-in-javascript */
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -24,7 +26,7 @@ export const coreConstraints = {
  *
  * @return {function} A function (value, values) => [errors]
  */
-const getConstraintsFunction = (constraints) => (value, values) => Object.keys(constraints)
+const getConstraintsFunction = constraints => (value, values) => Object.keys(constraints)
     .filter(constraintName => coreConstraints[constraintName])
     .map(constraintName => {
         const constraint = coreConstraints[constraintName];
@@ -41,4 +43,52 @@ export const getConstraintsFunctionFromFunctionOrObject = (constraints) => {
     if (typeof constraints === 'function') return constraints;
     if (!Array.isArray(constraints) && typeof constraints === 'object') return getConstraintsFunction(constraints);
     throw new Error('Unsupported validation type');
+};
+
+/**
+ * @example
+ * from the following fields:
+ *     <TextField source="title" validation={{ minLength: 5 }} />
+ *     <TextField source="age" validation={{ required: true, min: 18 }} />
+ * produces the following output
+ * {
+ *    title: (value) => value.length < 5 ? ['title is too short'] : [],
+ *    age:   (value) => {
+ *       const errors = [];
+ *       if (value) errors.push('age is required');
+ *       if (value < 18) errors.push('age is under 18');
+ *       return errors;
+ *    }
+ * }
+ */
+const getFieldConstraints = children => React.Children.toArray(children)
+    .map(({ props: { source: fieldName, validation } }) => ({ fieldName, validation }))
+    .filter(({ validation }) => !!validation)
+    .reduce((constraints, { fieldName, validation }) => {
+        constraints[fieldName] = getConstraintsFunctionFromFunctionOrObject(validation); // eslint-disable-line no-param-reassign
+        return constraints;
+    }, {});
+
+/**
+ * Validator function for redux-form
+ */
+export const validateForm = (values, { children, validation }) => {
+    const errors = typeof validation === 'function' ? validation(values) : {};
+
+    // warn user we expect an object here, in case of validation just returned an error message
+    if (errors === null || typeof errors !== 'object') {
+        throw new Error('Validation function given to form components should return an object.');
+    }
+
+    const fieldConstraints = getFieldConstraints(children);
+    Object.keys(fieldConstraints).forEach(fieldName => {
+        const error = fieldConstraints[fieldName](values[fieldName], values);
+        if (error.length > 0) {
+            if (!errors[fieldName]) {
+                errors[fieldName] = [];
+            }
+            errors[fieldName] = [...errors[fieldName], ...error];
+        }
+    });
+    return errors;
 };

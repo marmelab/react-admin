@@ -184,7 +184,7 @@ An admin interface is usually for more than seeing remote data - it's for editin
 ```js
 // in src/posts.js
 import React from 'react';
-import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, SelectInput, TextInput } from 'admin-on-rest/lib/mui';
+import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest/lib/mui';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -206,29 +206,33 @@ const PostTitle = ({ record }) => {
 
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
-        <DisabledInput source="id" />
-        <ReferenceInput label="User" source="userId" reference="users">
-            <SelectInput optionText="name" />
-        </ReferenceInput>
-        <TextInput source="title" />
-        <LongTextInput source="body" />
+        <SimpleForm>
+            <DisabledInput source="id" />
+            <ReferenceInput label="User" source="userId" reference="users">
+                <SelectInput optionText="name" />
+            </ReferenceInput>
+            <TextInput source="title" />
+            <LongTextInput source="body" />
+        </SimpleForm>
     </Edit>
 );
 
 export const PostCreate = (props) => (
     <Create {...props}>
-        <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
-            <SelectInput optionText="name" />
-        </ReferenceInput>
-        <TextInput source="title" />
-        <LongTextInput source="body" />
+        <SimpleForm>
+            <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
+                <SelectInput optionText="name" />
+            </ReferenceInput>
+            <TextInput source="title" />
+            <LongTextInput source="body" />
+        </SimpleForm>
     </Create>
 );
 ```
 
 Notice the additional `<EditButton>` field in the `<PostList>` component children: that's what gives access to the post edition view. Also, the `<Edit>` component uses a custom `<PostTitle>` component as title, which shows the way to customize the title of a given view.
 
-Just like the `<List>` component expects *field components* as children, the `<Edit>` and `<Create>` components expect *input components* as children. `<DisabledInput>`, `<TextInput>`, `<LongTextInput>`, and `<ReferenceInput>` are such inputs.
+If you've understood the `<List>` component, the `<Edit>` and `<Create>` components will be no surprise. They are responsible for displaying the page title and preparing the data (fetching and setting default values). They pass the data to the `<SimpleForm>` component, which is responsible for the form layout and validation. Just like `<Datagrid>`, `<SimpleForm>` uses its children to display the form inputs. It expects *input components* as children. `<DisabledInput>`, `<TextInput>`, `<LongTextInput>`, and `<ReferenceInput>` are such inputs.
 
 As for the `<ReferenceInput>`, it takes the same attributes as the `<ReferenceField>` (used earlier in the list view). `<ReferenceInput>` uses these attributes to fetch the API for possible references for the current record (in this case, possible `users` for the current `post`). Once it gets these possible records, it passes them to the child component (`<SelectInput>`), which is responsible for displaying them (via their `name` in that case) and letting the user select one. `<SelectInput>` renders as a `<select>` tag in HTML.
 

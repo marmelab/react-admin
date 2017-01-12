@@ -10,16 +10,18 @@ An `Input` component displays an input, or a dropdown list, a list of radio butt
 ```js
 // in src/posts.js
 import React from 'react';
-import { Edit, DisabledInput, LongTextInput, ReferenceInput, SelectInput, TextInput } from 'admin-on-rest/lib/mui';
+import { Edit, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest/lib/mui';
 
 export const PostEdit = (props) => (
     <Edit title={PostTitle} {...props}>
-        <DisabledInput source="id" />
-        <ReferenceInput label="User" source="userId" reference="users">
-            <SelectInput optionText="name" />
-        </ReferenceInput>
-        <TextInput source="title" />
-        <LongTextInput source="body" />
+        <SimpleForm>
+            <DisabledInput source="id" />
+            <ReferenceInput label="User" source="userId" reference="users">
+                <SelectInput optionText="name" />
+            </ReferenceInput>
+            <TextInput source="title" />
+            <LongTextInput source="body" />
+        </SimpleForm>
     </Edit>
 );
 ```
@@ -60,17 +62,13 @@ Then you can display a text input to edit the author first name as follows:
 To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`. It renders using [Material ui's `<AutoComplete>` component](http://www.material-ui.com/#/components/auto-complete) and a `fuzzySearch` filter. Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
 
 ```js
-import { Edit, AutocompleteInput } from 'admin-on-rest/lib/mui';
+import { AutocompleteInput } from 'admin-on-rest/lib/mui';
 
-export const PostEdit = (props) => (
-    <Edit {...props}>
-        <AutocompleteInput source="category" choices={[
-            { id: 'programming', name: 'Programming' },
-            { id: 'lifestyle', name: 'Lifestyle' },
-            { id: 'photography', name: 'Photography' },
-        ]} />
-    </Edit>
-);
+<AutocompleteInput source="category" choices={[
+    { id: 'programming', name: 'Programming' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'photography', name: 'Photography' },
+]} />
 ```
 
 You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
@@ -97,14 +95,10 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 You can customize the `filter` function used to filter the results. By default, it's `AutoComplete.fuzzyFilter`, but you can use any of [the functions provided by `AutoComplete`](http://www.material-ui.com/#/components/auto-complete), or a function of your own (`(searchText: string, key: string) => boolean`):
 
 ```js
-import { Edit, AutocompleteInput } from 'admin-on-rest/lib/mui';
+import { AutocompleteInput } from 'admin-on-rest/lib/mui';
 import AutoComplete from 'material-ui/AutoComplete';
 
-export const PostEdit = (props) => (
-    <Edit {...props}>
-        <AutocompleteInput source="category" filter={AutoComplete.caseInsensitiveFilter} choices={choices} />
-    </Edit>
-);
+<AutocompleteInput source="category" filter={AutoComplete.caseInsensitiveFilter} choices={choices} />
 ```
 
 Lastly, use the `options` attribute if you want to override any of Material UI's `<AutoComplete>` attributes:
@@ -123,15 +117,11 @@ Refer to [Material UI Autocomplete documentation](http://www.material-ui.com/#/c
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
 ```js
-import { Edit, AutocompleteInput, ReferenceInput } from 'admin-on-rest/lib/mui'
+import { AutocompleteInput, ReferenceInput } from 'admin-on-rest/lib/mui'
 
-export const CommentEdit = (props) => (
-    <Edit {...props}>
-        <ReferenceInput label="Post" source="post_id" reference="posts">
-            <AutocompleteInput optionText="title" />
-        </ReferenceInput>
-    </Edit>
-);
+<ReferenceInput label="Post" source="post_id" reference="posts">
+    <AutocompleteInput optionText="title" />
+</ReferenceInput>
 ```
 
 **Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](#referenceinput) doesn't cover your need), you'll have to [write your own Input component](#writing-your-own-input-component) based on material-ui `<AutoComplete>` component.
@@ -208,28 +198,35 @@ import { DisabledInput } from 'admin-on-rest/lib/mui';
 
 ```js
 // in src/posts.js
-import { Edit, LongTextInput, TextField } from 'admin-on-rest/lib/mui';
+import { Edit, LongTextInput, SimpleForm, TextField } from 'admin-on-rest/lib/mui';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
-        <TextField source="title" /> {/* NOT EDITABLE */}
-        <LongTextInput source="body" />
+        <SimpleForm>
+            <TextField source="title" /> {/* NOT EDITABLE */}
+            <LongTextInput source="body" />
+        </SimpleForm>
     </Edit>
 );
 ```
 
-**Tip**: You can even use a component of your own, provided it accepts `record` and `label` props:
+**Tip**: You can even use a component of your own, provided it accepts a `record` prop:
 
 ```js
 // in src/posts.js
-import { Edit, LongTextInput } from 'admin-on-rest/lib/mui';
+import { Edit, LongTextInput, SimpleForm } from 'admin-on-rest/lib/mui';
 const titleStyle = { textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '20em' };
 const Title = ({ record }) => <span style={titleStyle}>{record.title}</span>;
+Title.defaultProps = {
+    addLabel: true,
+};
 
 export const PostEdit = (props) => (
     <Edit {...props}>
-        <Title label="Title" />
-        <LongTextInput source="body" />
+        <SimpleForm>
+            <Title label="Title" />
+            <LongTextInput source="body" />
+        </SimpleForm>
     </Edit>
 );
 ```
@@ -267,17 +264,13 @@ You can customize the `step` props (which defaults to "any"):
 If you want to let the user choose a value among a list of possible values by showing them all (instead of hiding them behind a dropdown list, as in [`<SelectInput>`](#selectinput)), `<RadioButtonGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```js
-import { Edit, RadioButtonGroupInput } from 'admin-on-rest/lib/mui';
+import { RadioButtonGroupInput } from 'admin-on-rest/lib/mui';
 
-export const PostEdit = (props) => (
-    <Edit {...props}>
-        <RadioButtonGroupInput source="category" choices={[
-            { id: 'programming', name: 'Programming' },
-            { id: 'lifestyle', name: 'Lifestyle' },
-            { id: 'photography', name: 'Photography' },
-        ]} />
-    </Edit>
-);
+<RadioButtonGroupInput source="category" choices={[
+    { id: 'programming', name: 'Programming' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'photography', name: 'Photography' },
+]} />
 ```
 
 ![RadioButtonGroupInput](./img/radio-button-group-input.png)
@@ -329,15 +322,11 @@ Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/co
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
 ```js
-import { Edit, RadioButtonGroupInput, ReferenceInput } from 'admin-on-rest/lib/mui'
+import { RadioButtonGroupInput, ReferenceInput } from 'admin-on-rest/lib/mui'
 
-export const PostEdit = (props) => (
-    <Edit {...props}>
-        <ReferenceInput label="Author" source="author_id" reference="authors">
-            <RadioButtonGroupInput optionText="last_name" />
-        </ReferenceInput>
-    </Edit>
-);
+<ReferenceInput label="Author" source="author_id" reference="authors">
+    <RadioButtonGroupInput optionText="last_name" />
+</ReferenceInput>
 ```
 
 ## `<ReferenceInput>`
@@ -351,15 +340,9 @@ The component expects a `source` and a `reference` attributes. For instance, to 
 ```js
 import { ReferenceInput, SelectInput } from 'admin-on-rest/lib/mui'
 
-export const CommentEdit = (props) => (
-    <Edit {...props}>
-        <DisabledInput source="id" />
-        <ReferenceInput label="Post" source="post_id" reference="posts">
-            <SelectInput optionText="title" />
-        </ReferenceInput>
-        <LongTextInput source="body" />
-    </Edit>
-);
+<ReferenceInput label="Post" source="post_id" reference="posts">
+    <SelectInput optionText="title" />
+</ReferenceInput>
 ```
 
 ![ReferenceInput](./img/reference-input.gif)
@@ -455,17 +438,13 @@ You can customize the rich text editor toolbar using the `toolbar` attribute, as
 To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<SelectField>`](http://www.material-ui.com/#/components/select-field). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```js
-import { Edit, SelectInput } from 'admin-on-rest/lib/mui';
+import { SelectInput } from 'admin-on-rest/lib/mui';
 
-export const PostEdit = (props) => (
-    <Edit {...props}>
-        <SelectInput source="category" choices={[
-            { id: 'programming', name: 'Programming' },
-            { id: 'lifestyle', name: 'Lifestyle' },
-            { id: 'photography', name: 'Photography' },
-        ]} />
-    </Edit>
-);
+<SelectInput source="category" choices={[
+    { id: 'programming', name: 'Programming' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'photography', name: 'Photography' },
+]} />
 ```
 
 ![SelectInput](./img/select-input.gif)
@@ -527,15 +506,11 @@ Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/co
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
 ```js
-import { Edit, SelectInput, ReferenceInput } from 'admin-on-rest/lib/mui'
+import { SelectInput, ReferenceInput } from 'admin-on-rest/lib/mui'
 
-export const PostEdit = (props) => (
-    <Edit {...props}>
-        <ReferenceInput label="Author" source="author_id" reference="authors">
-            <SelectInput optionText="last_name" />
-        </ReferenceInput>
-    </Edit>
-);
+<ReferenceInput label="Author" source="author_id" reference="authors">
+    <SelectInput optionText="last_name" />
+</ReferenceInput>
 ```
 
 If, instead of showing choices as a dropdown list, you prefer to display them as a list of radio buttons, try the [`<RadioButtonGroupInput>`](#radiobuttongroupinput). And if the list is too big, prefer the [`<AutocompleteInput>`](#autocompleteinput).
@@ -581,7 +556,9 @@ export default LatLngInput;
 // in ItemEdit.js
 const ItemEdit = (props) => (
     <Edit {...props}>
-        <LatLngInput />
+        <SimpleForm>
+            <LatLngInput />
+        </SimpleForm>
     </Edit>
 );
 ```
@@ -639,7 +616,9 @@ export default LatLngInput;
 // in ItemEdit.js
 const ItemEdit = (props) => (
     <Edit {...props}>
-        <LatLngInput addLabel label="Position" />
+        <SimpleForm>
+            <LatLngInput addLabel label="Position" />
+        </SimpleForm>
     </Edit>
 );
 ```
@@ -664,7 +643,9 @@ export default LatLngInput;
 // in ItemEdit.js
 const ItemEdit = (props) => (
     <Edit {...props}>
-        <LatLngInput />
+        <SimpleForm>
+            <LatLngInput />
+        </SimpleForm>
     </Edit>
 );
 ```
@@ -699,8 +680,10 @@ export default LatLngInput;
 // in ItemEdit.js
 const ItemEdit = (props) => (
     <Edit {...props}>
-        <DisabledInput source="id" />
-        <LatLngInput />
+        <SimpleForm>
+            <DisabledInput source="id" />
+            <LatLngInput />
+        </SimpleForm>
     </Edit>
 );
 ```
@@ -738,7 +721,9 @@ For more details on how to use redux-form's `<Field>` component, please refer to
 import SexInput from './SexInput.js';
 const PersonEdit = (props) => (
     <Edit {...props}>
-        <SexInput source="sex" />
+        <SimpleForm>
+            <SexInput source="sex" />
+        </SimpleForm>
     </Edit>
 );
 

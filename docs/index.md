@@ -46,7 +46,7 @@ The `<Resource>` component is a configuration component that allows to define su
 ```js
 // in posts.js
 import React from 'react';
-import { List, Edit, Create, Datagrid, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'admin-on-rest/lib/mui';
 export PostIcon from 'material-ui/svg-icons/action/book';
 
 export const PostList = (props) => (
@@ -68,23 +68,27 @@ const PostTitle = ({ record }) => {
 
 export const PostEdit = (props) => (
     <Edit title={PostTitle} {...props}>
-        <DisabledInput source="id" />
-        <TextInput source="title" />
-        <TextInput source="teaser" options={{ multiLine: true }} />
-        <LongTextInput source="body" />
-        <DateInput label="Publication date" source="published_at" />
-        <TextInput source="average_note" />
-        <DisabledInput label="Nb views" source="views" />
+        <SimpleForm>
+            <DisabledInput source="id" />
+            <TextInput source="title" />
+            <TextInput source="teaser" options={{ multiLine: true }} />
+            <LongTextInput source="body" />
+            <DateInput label="Publication date" source="published_at" />
+            <TextInput source="average_note" />
+            <DisabledInput label="Nb views" source="views" />
+        </SimpleForm>
     </Edit>
 );
 
 export const PostCreate = (props) => (
     <Create title="Create a Post" {...props}>
-        <TextInput source="title" />
-        <TextInput source="teaser" options={{ multiLine: true }} />
-        <LongTextInput source="body" />
-        <TextInput label="Publication date" source="published_at" />
-        <TextInput source="average_note" />
+        <SimpleForm>
+            <TextInput source="title" />
+            <TextInput source="teaser" options={{ multiLine: true }} />
+            <LongTextInput source="body" />
+            <TextInput label="Publication date" source="published_at" />
+            <TextInput source="average_note" />
+        </SimpleForm>
     </Create>
 );
 ```

@@ -1,5 +1,7 @@
+import React from 'react';
 import assert from 'assert';
-import { coreConstraints, getConstraintsFunctionFromFunctionOrObject } from './validate';
+import { coreConstraints, getConstraintsFunctionFromFunctionOrObject, validateForm } from './validate';
+import TextInput from '../mui/input/TextInput';
 
 describe('Validator', () => {
     describe('Core Constraints', () => {
@@ -118,7 +120,7 @@ describe('Validator', () => {
         });
     });
 
-    describe('.getConstraintsFunctionFromFunctionOrObject', () => {
+    describe('getConstraintsFunctionFromFunctionOrObject', () => {
         it('should return passed function if given constraint is already a function', () => {
             const barFactory = () => 'bar';
             const constraintsFunction = getConstraintsFunctionFromFunctionOrObject(barFactory);
@@ -149,4 +151,67 @@ describe('Validator', () => {
             });
         });
     });
+
+    describe('validateForm', () => {
+        it('should return empty object if no validator return error message', () => {
+            const props = {
+                validation: {
+                    title: {
+                        custom: () => '',
+                    },
+                },
+            };
+
+            const errors = validateForm({ title: 'We <3 React!' }, props);
+            assert.deepEqual(errors, []);
+        });
+
+        it('should return validation function result if validation function is passed to the form', () => {
+            const props = {
+                validation: (values) => {
+                    const errors = {};
+                    if (!values.title) {
+                        errors.title = 'Required field';
+                    }
+
+                    if (values.rate < 0 || values.rate > 5) {
+                        errors.rate = 'Rate should be between 0 and 5.';
+                    }
+
+                    return errors;
+                },
+            };
+
+            const errors = validateForm({ title: '', rate: 12 }, props);
+            assert.deepEqual(errors, {
+                title: 'Required field',
+                rate: 'Rate should be between 0 and 5.',
+            });
+        });
+
+        it('should allow to specify validators on inputs directly', () => {
+            const props = {
+                children: <TextInput source="title" validation={{ required: true }} />,
+            };
+
+            const errors = validateForm({ title: '' }, props);
+            assert.deepEqual(errors, {
+                title: ['Required field'],
+            });
+        });
+
+        it('should apply both input and form validators', () => {
+            const props = {
+                children: <TextInput source="rate" validation={{ required: true }} />,
+                validation: (values) => (values.rate > 5 ? { rate: 'Maximum value: 5' } : {}),
+            };
+
+            const nullError = validateForm({ rate: '' }, props);
+            assert.deepEqual(nullError, { rate: ['Required field'] });
+
+            const valueError = validateForm({ rate: 6 }, props);
+            assert.deepEqual(valueError, { rate: 'Maximum value: 5' });
+        });
+    });
+
 });

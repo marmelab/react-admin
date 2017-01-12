@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentSave from 'material-ui/svg-icons/content/save';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -9,6 +9,12 @@ class SaveButton extends Component {
         this.state = {
             submitting: false,
         };
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.invalid) {
+            this.setState({ submitting: false });
+        }
     }
 
     handleClick = (e) => {
@@ -33,5 +39,9 @@ class SaveButton extends Component {
         />;
     }
 }
+
+SaveButton.propTypes = {
+    invalid: PropTypes.bool,
+};
 
 export default SaveButton;

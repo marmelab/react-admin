@@ -44,7 +44,6 @@ export class Show extends Component {
     render() {
         const { title, children, id, data, isLoading, resource, hasDelete, hasEdit } = this.props;
         const basePath = this.getBasePath();
-        const commonProps = { record: data, basePath, resource };
 
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
@@ -54,28 +53,18 @@ export class Show extends Component {
                     {hasDelete && <DeleteButton basePath={basePath} record={data} />}
                 </CardActions>
                 <CardTitle title={<Title title={title} record={data} defaultTitle={`${inflection.humanize(inflection.singularize(resource))} #${id}`} />} />
-                {data &&
-                    <div style={{ padding: '0 1em 1em 1em' }}>
-                        {React.Children.map(children, field => (
-                            <div key={field.props.source} style={field.props.style}>
-                                {field.props.addLabel ?
-                                    <Labeled {...commonProps} label={field.props.label} source={field.props.source} disabled={false}>{field}</Labeled> :
-                                    (typeof field.type === 'string' ?
-                                        field :
-                                        React.cloneElement(field, commonProps)
-                                    )
-                                }
-                            </div>
-                        ))}
-                    </div>
-                }
+                {data && React.cloneElement(children, {
+                    resource,
+                    basePath,
+                    record: data,
+                })}
             </Card>
         );
     }
 }
 
 Show.propTypes = {
-    children: PropTypes.node,
+    children: PropTypes.element,
     crudGetOne: PropTypes.func.isRequired,
     data: PropTypes.object,
     hasDelete: PropTypes.bool,
