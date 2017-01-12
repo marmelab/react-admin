@@ -213,7 +213,7 @@ export const PostEdit = (props) => (
 
 ## Default Values
 
-To define default values, you can add a `defaultValue` prop to both view components (`<Edit>` and `<Create>`), or add a `defaultValue` to individual input components.
+To define default values, you can add a `defaultValue` prop to form components (`<SimpleForm>`, `<Tabbedform>`, etc.), or add a `defaultValue` to individual input components.
 
 ### Global Default Value
 
@@ -222,8 +222,8 @@ The value of the form `defaultValue` prop must be an object, specifying default 
 ```js
 const postDefaultValue = { created_at: new Date(), nb_views: 0 };
 export const PostCreate = (props) => (
-    <Create {...props} defaultValue={postDefaultValue}>
-        <SimpleForm>
+    <Create {...props}>
+        <SimpleForm defaultValue={postDefaultValue}>
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" />
