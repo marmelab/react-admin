@@ -29,6 +29,14 @@
 * [BC Break] Rename `includesField: true` to `addField: false` for Input components
 * [BC Break] Rename `includesLabel: true` to `addLabel: false` for Input components
 * Add ability to use any React component as `Edit` or `Create` element
+* [BC Break] Remove `<RichTextInput>` from core, use `aor-rich-text-input` instead
+* [BC Break] Introduce `<SimpleForm>` component between `<Edit>/<Create>` and input components
+* Move `validation` and `defaultValue` props to form component
+* Add `<FormField>` component to allow reuse of the `addLabel/addField` decoration logic
+* Introduce `<TabbedForm>` component as an example of alternative form layout
+* Fix `<SavedButton>` in case of invalid form (was spinning forever)
+* Fix post creation on example (was lost in infinite loop because of #209)
+* [BC Break] Add `<SimpleShowLayout>` component to `<Show>` view
 
 ## V0.6.2
 
