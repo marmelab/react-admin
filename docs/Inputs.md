@@ -210,7 +210,7 @@ export const PostEdit = (props) => (
 );
 ```
 
-**Tip**: You can even use a component of your own, provided it accepts `record` prop:
+**Tip**: You can even use a component of your own, provided it accepts a `record` prop:
 
 ```js
 // in src/posts.js
