@@ -47,7 +47,7 @@ The `<Resource>` component is a configuration component that allows to define su
 // in posts.js
 import React from 'react';
 import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'admin-on-rest/lib/mui';
-export PostIcon from 'material-ui/svg-icons/action/book';
+import PostIcon from 'material-ui/svg-icons/action/book';
 
 export const PostList = (props) => (
     <List {...props}>
