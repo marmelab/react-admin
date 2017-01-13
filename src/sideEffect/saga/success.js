@@ -5,6 +5,7 @@ import {
     CRUD_DELETE,
 } from '../../actions/dataActions';
 import { showNotification } from '../../actions/notificationActions';
+import linkToRecord from '../../util/linkToRecord'
 
 export default (type, resource, payload, response) => {
     switch (type) {
@@ -16,7 +17,7 @@ export default (type, resource, payload, response) => {
     case CRUD_CREATE:
         return [
             showNotification('Element created'),
-            push(`${payload.basePath}/${response.id}`),
+            push(linkToRecord(payload.basePath, response.id)),
         ];
     case CRUD_DELETE:
         return [

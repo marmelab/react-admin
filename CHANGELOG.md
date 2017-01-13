@@ -1,6 +1,41 @@
 # Changelog
 
-## V0.6.2
+## v0.7.0
+
+* [BC Break] Remove `<RichTextInput>` from core, use `aor-rich-text-input` instead
+* [BC Break] Introduce `<SimpleForm>` component between `<Edit>/<Create>` and input components
+* [BC Break] Introduce `<SimpleShowLayout>` component between `<Show>` and field components
+* [BC Break] Remove `GET_MATCHING` REST verb (and merge with `GET_LIST`)
+* [BC Break] Add a limit to the fetching of `<ReferenceInput>` (set to 25 by default)
+* [BC Break] Custom input elements are not decorated by `<Field>` by default, set `addField: true` to get it
+* [BC Break] Custom input elements are not decorated by `<Labeled>` by default, set `addLabel: true` to get it
+* [BC Break] Rename `includesField: true` to `addField: false` for Input components
+* [BC Break] Rename `includesLabel: true` to `addLabel: false` for Input components
+* [BC Break] All Redux action creators are now exported at the root level
+* Introduce `<TabbedForm>` component as an example of alternative form layout
+* Add `<AutocompleteInput>` field
+* Add `<NumberInput>` field
+* Add ability to use any React component (including Fields) as `Edit` or `Create` element
+* Add support for locales and options in `<DateField>`
+* Add animation on click in `<SaveButton>`
+* Add Refresh button in `<Edit>` view
+* Add support for defaultValue in `<Create>` and `<Edit>` components
+* Add support for defaultValue in `<Input>` components
+* Add support for actions in `<Create>` and `<Edit>` components
+* Add a `perPage` prop to `<ReferenceInput>` to allow fetching more or less options
+* Add a `sort` prop to `<ReferenceInput>` to allow sorting of options
+* Add support for function as `optionText` value in `<SelectInput>`, `<RadioButtonGroupInput>`, and `<AutocompleteInput>`
+* Add support for element as `optionText` value in `<SelectInput>`, and `<RadioButtonGroupInput>`
+* Add double submission protection in `<SaveButton>`
+* Add trigger to hide `<Edit>` view title until record is loaded
+* Add support for special chars like "/" in id ([dunglas](https://github.com/dunglas))
+* Add `<FormField>` component to allow reuse of the `addLabel/addField` decoration logic
+* Use Json REST client (http-less client) in example
+* Set `allowEmpty` to true by default in `Filter` form (was breaking `<ReferenceInput>` in filters by default)
+* Fix bad setup of `ReferenceInput` value in filters
+* Fix `<SavedButton>` in case of invalid form (was spinning forever)
+
+## v0.6.2
 
 * Fix bad `_end` argument for `jsonServer` REST client
 * Clarify CORS headers documentation and exception message
@@ -9,7 +44,7 @@
 * Fix `<NumberField>` when record has no value for the source
 * Fix `<DateField>` for null values
 
-## V0.6.1
+## v0.6.1
 
 * Fix notification background colors to use mui theme
 * Fix missing `lodash.defaultdeep` not mentioned as dependency

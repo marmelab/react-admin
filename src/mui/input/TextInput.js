@@ -2,6 +2,20 @@ import React, { PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import title from '../../util/title';
 
+/**
+ * An Input component for a string
+ *
+ * @example
+ * <TextInput source="first_name" />
+ *
+ * You can customize the `type` props (which defaults to "text").
+ * Note that, due to a React bug, you should use `<NumberField>` instead of using type="number".
+ * @example
+ * <TextInput source="email" type="email" />
+ * <NumberInput source="nb_views" />
+ *
+ * The object passed as `options` props is passed to the material-ui <TextField> component
+ */
 const TextInput = ({ input, label, meta: { touched, error }, options, type, source, elStyle }) => (
     <TextField
         value={input.value}
@@ -15,21 +29,21 @@ const TextInput = ({ input, label, meta: { touched, error }, options, type, sour
 );
 
 TextInput.propTypes = {
+    addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
-    includesLabel: PropTypes.bool.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
     meta: PropTypes.object,
     name: PropTypes.string,
     onChange: PropTypes.func,
     options: PropTypes.object,
-    source: PropTypes.string.isRequired,
+    source: PropTypes.string,
     type: PropTypes.string,
     validation: PropTypes.object,
 };
 
 TextInput.defaultProps = {
-    includesLabel: true,
+    addField: true,
     options: {},
     type: 'text',
 };

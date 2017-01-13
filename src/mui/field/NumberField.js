@@ -27,7 +27,7 @@ const hasNumberFormat = !!(typeof Intl === 'object' && Intl && typeof Intl.Numbe
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>$25.99</span>
  *
- * <NumberField source="price" locale="fr-FR" options={{ style: 'currency', currency: 'USD' }} />
+ * <NumberField source="price" locales="fr-FR" options={{ style: 'currency', currency: 'USD' }} />
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
@@ -40,6 +40,7 @@ const NumberField = ({ record, source, locales, options, elStyle }) => {
 };
 
 NumberField.propTypes = {
+    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     locales: PropTypes.oneOfType([
@@ -52,6 +53,7 @@ NumberField.propTypes = {
 };
 
 NumberField.defaultProps = {
+    addLabel: true,
     style: { textAlign: 'right' },
     headerStyle: { textAlign: 'right' },
 };

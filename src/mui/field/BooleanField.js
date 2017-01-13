@@ -17,6 +17,7 @@ const BooleanField = ({ source, record = {}, elStyle }) => {
 };
 
 BooleanField.propTypes = {
+    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
@@ -24,6 +25,7 @@ BooleanField.propTypes = {
 };
 
 BooleanField.defaultProps = {
+    addLabel: true,
     elStyle: {
         display: 'block',
         margin: 'auto',

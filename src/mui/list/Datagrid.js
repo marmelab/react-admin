@@ -78,7 +78,7 @@ class Datagrid extends Component {
     }
 
     render() {
-        const { resource, children, ids, data, currentSort, basePath, styles = defaultStyles, rowStyle, updateSort } = this.props;
+        const { resource, children, ids, data, currentSort, basePath, styles = defaultStyles, rowStyle } = this.props;
         return (
             <table style={styles.table}>
                 <thead>

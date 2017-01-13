@@ -1,5 +1,6 @@
 export * from './button';
 export * from './detail';
+export * from './form';
 export * from './field';
 export * from './input';
 export * from './layout';

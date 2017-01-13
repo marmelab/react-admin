@@ -4,6 +4,7 @@ import { shallow } from 'enzyme';
 
 import { Edit } from './Edit';
 import TextInput from '../input/TextInput';
+import SimpleForm from '../form/SimpleForm';
 
 describe('<Edit />', () => {
     const defaultProps = {
@@ -18,28 +19,21 @@ describe('<Edit />', () => {
         resource: '',
     };
 
-    it('should display correctly even with no child', () => {
-        const wrapper = shallow(<Edit {...defaultProps} />);
+    it('should display correctly when called with a child', () => {
+        const Foo = () => <div/>;
+        const wrapper = shallow(<Edit {...defaultProps}><Foo/></Edit>);
 
-        const inputs = wrapper.find('TextInput');
-        assert.equal(inputs.length, 0);
+        const inner = wrapper.find('Foo');
+        assert.equal(inner.length, 1);
     });
 
-    it('should display its child if it contains only a single child', () => {
+    it('should display children inputs of SimpleForm', () => {
         const wrapper = shallow(<Edit {...defaultProps}>
-            <TextInput source="foo" />
+            <SimpleForm>
+                <TextInput source="foo" />
+                <TextInput source="bar" />
+            </SimpleForm>
         </Edit>);
-
-        const inputs = wrapper.find('TextInput');
-        assert.deepEqual(inputs.map(i => i.prop('source')), ['foo']);
-    });
-
-    it('should display all its children if it contains many', () => {
-        const wrapper = shallow(<Edit {...defaultProps}>
-            <TextInput source="foo" />
-            <TextInput source="bar" />
-        </Edit>);
-
         const inputs = wrapper.find('TextInput');
         assert.deepEqual(inputs.map(i => i.prop('source')), ['foo', 'bar']);
     });

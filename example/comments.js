@@ -1,19 +1,43 @@
 import React from 'react';
-import { List, Filter, Edit, Create, Datagrid, DateField, ReferenceField, TextField, EditButton, DisabledInput, DateInput, LongTextInput, SelectInput, ReferenceInput, TextInput } from 'admin-on-rest/mui';
-
-export CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
+import {
+    AutocompleteInput,
+    Create,
+    Datagrid,
+    DateField,
+    DateInput,
+    DisabledInput,
+    Edit,
+    EditButton,
+    Filter,
+    List,
+    LongTextInput,
+    ReferenceField,
+    ReferenceInput,
+    SelectInput,
+    SimpleForm,
+    TextField,
+    TextInput,
+} from 'admin-on-rest/mui';
 import PersonIcon from 'material-ui/svg-icons/social/person';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
+import {
+    Card,
+    CardActions,
+    CardHeader,
+    CardMedia,
+    CardText,
+    CardTitle,
+} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 
+export CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
 
 const CommentFilter = (props) => (
     <Filter {...props}>
-        <ReferenceInput label="Post" source="post_id" reference="posts" allowEmpty>
+        <ReferenceInput label="Post" source="post_id" reference="posts">
             <SelectInput optionText="title" />
         </ReferenceInput>
     </Filter>
@@ -81,22 +105,26 @@ export const CommentList = (props) => (
 
 export const CommentEdit = (props) => (
     <Edit {...props}>
-        <DisabledInput source="id" />
-        <ReferenceInput label="Post" source="post_id" reference="posts">
-            <SelectInput optionText="title" />
-        </ReferenceInput>
-        <TextInput label="Author name" source="author.name" />
-        <DateInput label="date" source="created_at" />
-        <LongTextInput source="body" />
+        <SimpleForm>
+            <DisabledInput source="id" />
+            <ReferenceInput label="Post" source="post_id" reference="posts" perPage={5} sort={{ field: 'title', order: 'ASC' }}>
+                <AutocompleteInput optionText="title" />
+            </ReferenceInput>
+            <TextInput label="Author name" source="author.name" />
+            <DateInput label="date" source="created_at" />
+            <LongTextInput source="body" />
+        </SimpleForm>
     </Edit>
 );
 
 export const CommentCreate = (props) => (
-    <Create {...props}>
-        <ReferenceInput label="Post" source="post_id" reference="posts" allowEmpty>
-            <SelectInput optionText="title" />
-        </ReferenceInput>
-        <DateInput label="date" source="created_at" />
-        <LongTextInput source="body" />
+    <Create {...props} defaultValues={{ created_at: new Date() }}>
+        <SimpleForm>
+            <ReferenceInput label="Post" source="post_id" reference="posts" allowEmpty>
+                <SelectInput optionText="title" />
+            </ReferenceInput>
+            <DateInput label="date" source="created_at" />
+            <LongTextInput source="body" />
+        </SimpleForm>
     </Create>
 );

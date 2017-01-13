@@ -53,24 +53,18 @@ export class Show extends Component {
                     {hasDelete && <DeleteButton basePath={basePath} record={data} />}
                 </CardActions>
                 <CardTitle title={<Title title={title} record={data} defaultTitle={`${inflection.humanize(inflection.singularize(resource))} #${id}`} />} />
-                {data &&
-                    <div style={{ padding: '0 1em 1em 1em' }}>
-                        {React.Children.map(children, field => (
-                            <div key={field.props.source} style={field.props.style}>
-                                <Labeled label={field.props.label} source={field.props.source} disabled={false} record={data} basePath={basePath} resource={resource} >
-                                    <field.type {...field.props} />
-                                </Labeled>
-                            </div>
-                        ))}
-                    </div>
-                }
+                {data && React.cloneElement(children, {
+                    resource,
+                    basePath,
+                    record: data,
+                })}
             </Card>
         );
     }
 }
 
 Show.propTypes = {
-    children: PropTypes.node,
+    children: PropTypes.element,
     crudGetOne: PropTypes.func.isRequired,
     data: PropTypes.object,
     hasDelete: PropTypes.bool,

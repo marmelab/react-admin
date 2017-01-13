@@ -32,6 +32,7 @@ export class FilterForm extends Component {
                         }
                         <div style={{ display: 'inline-block' }}>
                             <Field
+                                allowEmpty
                                 {...filterElement.props}
                                 name={filterElement.props.source}
                                 component={filterElement.type}

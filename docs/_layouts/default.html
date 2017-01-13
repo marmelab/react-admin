@@ -80,6 +80,9 @@
                                     <a href="#adding-custom-headers">Adding Custom Headers</a>
                                 </li>
                                 <li class="chapter">
+                                    <a href="#third-party-clients">Third-Party Clients</a>
+                                </li>
+                                <li class="chapter">
                                     <a href="#writing-your-own-rest-client">Writing your own REST client</a>
                                 </li>
                             </ul>
@@ -102,7 +105,7 @@
                         </li>
                         <li class="chapter {% if page.path == 'List.md' %}active{% endif %}">
                             <a href="./List.html">
-                                <b>5.</b> The List View
+                                <b>5.</b> The <code>&lt;List&gt;</code> View
                             </a>
                             <ul class="articles" {% if page.path != 'List.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -165,11 +168,42 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="chapter {% if page.path == 'CreateEdit.md' %}active{% endif %}">
+                            <a href="./CreateEdit.html">
+                                <b>7.</b> The <code>&lt;Create&gt;</code> and <code>&lt;Edit&gt;</code> Views
+                            </a>
+                            <ul class="articles" {% if page.path != 'CreateEdit.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#the-create-and-edit-components"><code>&lt;Create&gt;</code>, <code>&lt;Edit&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#page-title">Page Title</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#actions">Actions</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#the-simpleform-component"><code>&lt;SimpleForm&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#the-tabbedform-component"><code>&lt;TabbedForm&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#default-values">Default Values</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#validation">Validation</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="chapter {% if page.path == 'Inputs.md' %}active{% endif %}">
                             <a href="./Inputs.html">
-                                <b>7.</b> Input Components
+                                <b>8.</b> Input Components
                             </a>
                             <ul class="articles" {% if page.path != 'Inputs.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#autocompleteinput"><code>&lt;AutocompleteInput&gt;</code></a>
+                                </li>
                                 <li class="chapter">
                                     <a href="#booleaninput-and-nullablebooleaninput"><code>&lt;BooleanInput&gt;</code></a>
                                 </li>
@@ -181,6 +215,9 @@
                                 </li>
                                 <li class="chapter">
                                     <a href="#longtextinput"><code>&lt;LongTextInput&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#numberinput"><code>&lt;NumberInput&gt;</code></a>
                                 </li>
                                 <li class="chapter">
                                     <a href="#radiobuttongroupinput"><code>&lt;RadioButtonGroupInput&gt;</code></a>
@@ -201,11 +238,6 @@
                                     <a href="#writing-your-own-input-component">Writing your own input component</a>
                                 </li>
                             </ul>
-                        </li>
-                        <li class="chapter {% if page.path == 'FormValidation.md' %}active{% endif %}">
-                            <a href="./FormValidation.html">
-                                <b>8.</b> Form Validation
-                            </a>
                         </li>
                         <li class="chapter {% if page.path == 'Theming.md' %}active{% endif %}">
                             <a href="./Theming.html">

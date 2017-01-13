@@ -1,7 +1,6 @@
 import { queryParameters, fetchJson } from '../util/fetch';
 import {
     GET_LIST,
-    GET_MATCHING,
     GET_ONE,
     GET_MANY,
     GET_MANY_REFERENCE,
@@ -16,7 +15,6 @@ import {
  * @see https://github.com/typicode/json-server
  * @example
  * GET_LIST     => GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24
- * GET_MATCHING => GET http://my.api.url/posts?title=bar
  * GET_ONE      => GET http://my.api.url/posts/123
  * GET_MANY     => GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789
  * UPDATE       => PUT http://my.api.url/posts/123
@@ -45,10 +43,6 @@ export default (apiUrl, httpClient = fetchJson) => {
                 _end: page * perPage,
             };
             url = `${apiUrl}/${resource}?${queryParameters(query)}`;
-            break;
-        }
-        case GET_MATCHING: {
-            url = `${apiUrl}/${resource}?${queryParameters(params.filter)}`;
             break;
         }
         case GET_ONE:
