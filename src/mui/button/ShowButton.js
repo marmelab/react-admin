@@ -4,9 +4,9 @@ import FlatButton from 'material-ui/FlatButton';
 import ImageEye from 'material-ui/svg-icons/image/remove-red-eye';
 import linkToRecord from '../../util/linkToRecord'
 
-const ShowButton = ({ basePath = '', record = {} }) => <FlatButton
+const ShowButton = ({ basePath = '', label = 'Show', record = {} }) => <FlatButton
     primary
-    label="Show"
+    label={label}
     icon={<ImageEye />}
     containerElement={<Link to={`${linkToRecord(basePath, record.id)}/show`} />}
     style={{ overflow: 'inherit' }}
@@ -14,6 +14,7 @@ const ShowButton = ({ basePath = '', record = {} }) => <FlatButton
 
 ShowButton.propTypes = {
     basePath: PropTypes.string,
+    label: PropTypes.string,
     record: PropTypes.object,
 };
 

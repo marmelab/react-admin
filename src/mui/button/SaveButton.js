@@ -14,10 +14,10 @@ class SaveButton extends Component {
     }
 
     render() {
-        const { saving } = this.props;
+        const { saving, label = 'Save' } = this.props;
         return <RaisedButton
             type="submit"
-            label="Save"
+            label={label}
             icon={saving ? <CircularProgress size={25} thickness={2} /> : <ContentSave />}
             onClick={this.handleClick}
             primary={!saving}
@@ -30,6 +30,7 @@ class SaveButton extends Component {
 }
 
 SaveButton.propTypes = {
+    label: PropTypes.string,
     saving: PropTypes.bool,
 };
 
