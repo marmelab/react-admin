@@ -4,9 +4,9 @@ import FlatButton from 'material-ui/FlatButton';
 import ContentCreate from 'material-ui/svg-icons/content/create';
 import linkToRecord from '../../util/linkToRecord'
 
-const EditButton = ({ basePath = '', record = {} }) => <FlatButton
+const EditButton = ({ basePath = '', label = 'Edit', record = {} }) => <FlatButton
     primary
-    label="Edit"
+    label={label}
     icon={<ContentCreate />}
     containerElement={<Link to={linkToRecord(basePath, record.id)} />}
     style={{ overflow: 'inherit' }}
@@ -14,6 +14,7 @@ const EditButton = ({ basePath = '', record = {} }) => <FlatButton
 
 EditButton.propTypes = {
     basePath: PropTypes.string,
+    label: PropTypes.string,
     record: PropTypes.object,
 };
 

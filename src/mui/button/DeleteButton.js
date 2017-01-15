@@ -4,9 +4,9 @@ import FlatButton from 'material-ui/FlatButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import linkToRecord from '../../util/linkToRecord'
 
-const DeleteButton = ({ basePath = '', record = {} }) => <FlatButton
+const DeleteButton = ({ basePath = '', label = 'Delete', record = {} }) => <FlatButton
     secondary
-    label="Delete"
+    label={label}
     icon={<ActionDelete />}
     containerElement={<Link to={`${linkToRecord(basePath, record.id)}/delete`} />}
     style={{ overflow: 'inherit' }}
@@ -14,6 +14,7 @@ const DeleteButton = ({ basePath = '', record = {} }) => <FlatButton
 
 DeleteButton.propTypes = {
     basePath: PropTypes.string,
+    label: PropTypes.string,
     record: PropTypes.object,
 };
 
