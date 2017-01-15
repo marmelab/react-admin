@@ -56,7 +56,6 @@
     "lodash.get": "~4.4.2",
     "lodash.set": "~4.3.2",
     "material-ui": "~0.16.5",
-    "quill": "~1.1.5",
     "react": "~15.4.0",
     "react-dom": "~15.4.0",
     "react-redux": "~4.4.5",
