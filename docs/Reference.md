@@ -1,9 +1,11 @@
 ---
 layout: default
-title: "All Components"
+title: "Reference"
 ---
 
-# All admin-on-rest Components
+# Reference
+
+## Components
 
 <div style="column-count:3" markdown="1">
 
