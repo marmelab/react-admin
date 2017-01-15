@@ -8,6 +8,8 @@
 
 ## v0.7.0
 
+See the [v0.7.0 announcement in the marmelab blog](https://marmelab.com/blog/2017/01/13/admin-on-rest-0-7.html).
+
 * [BC Break] Remove `<RichTextInput>` from core, use `aor-rich-text-input` instead
 * [BC Break] Introduce `<SimpleForm>` component between `<Edit>/<Create>` and input components
 * [BC Break] Introduce `<SimpleShowLayout>` component between `<Show>` and field components
@@ -109,6 +111,8 @@ Fix bad built files
 
 ## v0.5.0
 
+See the [v0.5.0 announcement in the marmelab blog](http://marmelab.com/blog/2016/11/10/admin-on-rest-0-5.html).
+
 * [BC Break] Remove `credentials: include` HTTP option enabled by default
 * Add `<Show>` View
 * Add custom headers support
@@ -149,6 +153,8 @@ Fix bad built files
 * Fix filter value reset when filter is removed
 
 ## V0.3.0
+
+See the [v0.3.0 announcement in the marmelab blog](http://marmelab.com/blog/2016/09/02/admin-on-rest-react-admin-framework.html).
 
 * [BC Break] `<List>` takes an iterator child (like `<Datagrid>`)
 * [BC Break] `<ReferenceField>` replaces `referenceSource` by a child field
