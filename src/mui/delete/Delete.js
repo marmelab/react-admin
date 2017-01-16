@@ -56,7 +56,7 @@ class Delete extends Component {
                         <ToolbarGroup>
                             <RaisedButton
                                 type="submit"
-                                label="Yes"
+                                label="Delete"
                                 icon={<ActionCheck />}
                                 primary
                                 style={{
@@ -65,7 +65,7 @@ class Delete extends Component {
                                 }}
                             />
                             <RaisedButton
-                                label="No"
+                                label="Cancel"
                                 icon={<AlertError />}
                                 onClick={this.goBack}
                                 style={{
