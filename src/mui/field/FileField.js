@@ -22,20 +22,20 @@ const styles = {
     },
 };
 
-export const FileField = ({ src, alt, uploading, elStyle }) => {
-    const uploadingStyle = uploading ? styles.uploading : {};
+export const FileField = ({ file, elStyle }) => {
+    const uploadingStyle = file.uploading ? styles.uploading : {};
     const style = {
         ...styles.container,
         ...uploadingStyle,
         elStyle,
     };
-
+console.log(file);
     return (
         <div style={style}>
-            {uploading ? <CircularProgress style={styles.loader} /> : null}
+            {file.uploading ? <CircularProgress style={styles.loader} /> : null}
             <img
-                alt={alt}
-                src={src}
+                alt={file.title}
+                src={file.url}
                 style={styles.image}
             />
         </div>
@@ -43,14 +43,10 @@ export const FileField = ({ src, alt, uploading, elStyle }) => {
 };
 
 FileField.propTypes = {
-    src: PropTypes.string.isRequired,
-    alt: PropTypes.string,
-    uploading: PropTypes.bool,
     elStyle: PropTypes.object,
 };
 
 FileField.defaultProps = {
-    uploading: false,
 };
 
 export default FileField;

@@ -81,7 +81,7 @@ export const PostCreate = (props) => (
     </Create>
 );
 
-export const PostEdit = (props) => (
+export const PostEdit = props => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label="summary">
@@ -90,22 +90,7 @@ export const PostEdit = (props) => (
                 <LongTextInput source="teaser" validation={{ required: true }} />
                 <FileInput
                     source="picture"
-                    label="Preview Pictures"
-                    onUpload={(files, done) => {
-                        /*
-                            // Upload your file here. For instance with fetch:
-                            const data = new FormData();
-                            data.append('file', files[0]);
-
-<<<<<<< 3a3047bcb5b62f3499c856e37f43e3423ec697b1
-                            fetch('/post/upload', {
-                                method: 'POST',
-                                body: data,
-                            });
-                        */
-                        console.table(files);
-                        setTimeout(done, 1500);
-                    }}
+                    label="Preview Picture"
                     accept="image/*"
                 />
             </FormTab>
