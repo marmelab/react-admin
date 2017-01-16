@@ -26,9 +26,10 @@ class SaveButton extends Component {
     }
 
     render() {
+        const { label = 'Save' } = this.props;
         return <RaisedButton
             type="submit"
-            label="Save"
+            label={label}
             icon={this.state.submitting ? <CircularProgress size={25} thickness={2} /> : <ContentSave />}
             onClick={this.handleClick}
             primary={!this.state.submitting}
@@ -42,6 +43,7 @@ class SaveButton extends Component {
 
 SaveButton.propTypes = {
     invalid: PropTypes.bool,
+    label: PropTypes.string,
 };
 
 export default SaveButton;
