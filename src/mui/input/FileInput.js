@@ -19,37 +19,27 @@ const defaultStyle = {
 class FileInput extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            files: props.record[props.source] || [],
-        };
+
+        let files = props.record[props.source] || [];
+        if (!Array.isArray(files)) {
+            files = [files];
+        }
+
+        this.state = { files };
     }
 
     onDrop = (files) => {
         const updatedFiles = [
-            ...this.state.files.map(this.props.pictureFormatter),
+            ...this.state.files,
             ...files.map(f => ({
-                alt: f.name,
-                src: f.preview,
+                title: f.name,
+                url: f.preview,
                 uploading: true,
             })),
         ];
-console.table(updatedFiles, files);
-        this.setState({ files: updatedFiles });
 
-        // this.props.onUpload(files, (uploadedFiles) => {
-        //     const allFiles = {
-        //         ...this.state.files.map(this.props.pictureF),
-        //         ...uploadedFiles,
-        //     };
-        //
-        //     this.setState({ files: uploadedFiles });
-        //
-        //     this.props.input.onChange(uploadedFiles.map((f) => {
-        //         const cleanedFile = { ...f };
-        //         delete cleanedFile.uploading;
-        //         return cleanedFile;
-        //     }));
-        // });
+        this.setState({ files: updatedFiles });
+        this.props.input.onChange(files);
     }
 
     label() {
@@ -71,7 +61,6 @@ console.table(updatedFiles, files);
             maxSize,
             minSize,
             multiple,
-            pictureFormatter,
             style,
         } = this.props;
 
@@ -94,16 +83,7 @@ console.table(updatedFiles, files);
                     {this.label()}
                 </Dropzone>
                 <div className="previews">
-                    {this.state.files.map((f) => {
-                        const preparedFile = pictureFormatter(f);
-                        return (
-                            <FileField
-                                key={preparedFile.src}
-                                src={preparedFile.src}
-                                alt={preparedFile.alt}
-                            />
-                        );
-                    })}
+                    {this.state.files.map(f => <FileField key={f.url} file={f} />)}
                 </div>
             </div>
         );
@@ -113,21 +93,20 @@ console.table(updatedFiles, files);
 FileInput.propTypes = {
     accept: PropTypes.string,
     disableClick: PropTypes.bool,
-    includesLabel: PropTypes.bool.isRequired,
+    addLabel: PropTypes.bool,
     input: PropTypes.object,
     maxSize: PropTypes.number,
     minSize: PropTypes.number,
     multiple: PropTypes.bool,
     onUpload: PropTypes.func,
     style: PropTypes.object,
-    pictureFormatter: PropTypes.func,
 };
 
 FileInput.defaultProps = {
-    includesLabel: false,
+    addLabel: true,
+    addField: true,
     multiple: false,
     onUpload: () => {},
-    pictureFormatter: p => p,
 };
 
 export default FileInput;

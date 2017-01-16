@@ -106,22 +106,7 @@ export const PostEdit = Translate(({ translate, ...props }) => (
                 <LongTextInput source="teaser" label={translate('post.form.teaser')} validation={{ required: true }} />
                 <FileInput
                     source="picture"
-                    label="Preview Pictures"
-                    onUpload={(files, done) => {
-                        /*
-                            // Upload your file here. For instance with fetch:
-                            const data = new FormData();
-                            data.append('file', files[0]);
-
-<<<<<<< 3a3047bcb5b62f3499c856e37f43e3423ec697b1
-                            fetch('/post/upload', {
-                                method: 'POST',
-                                body: data,
-                            });
-                        */
-                        console.table(files);
-                        setTimeout(done, 1500);
-                    }}
+                    label="Preview Picture"
                     accept="image/*"
                 />
             </FormTab>
