@@ -97,8 +97,9 @@ export const PostEdit = props => (
                             title={file.title}
                         />
                     )}
-                    source="picture"
-                    label="Preview Picture"
+                    multiple
+                    source="pictures"
+                    label="Related pictures"
                     accept="image/*"
                 />
             </FormTab>
