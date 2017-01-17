@@ -2,7 +2,7 @@ import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 import { createRoutesFromReactChildren } from 'react-router/lib/RouteUtils';
 
-const scrollToTop = () => window.scrollTo(0,0);
+const scrollToTop = () => window.scrollTo(0, 0);
 
 const CrudRoute = () => <div>&lt;CrudRoute&gt; elements are for configuration only and should not be rendered</div>;
 
@@ -17,7 +17,7 @@ CrudRoute.createRouteFromReactElement = (element, parentRoute) => {
             {show && <Route path=":id/show" component={show} onEnter={scrollToTop} />}
             {remove && <Route path=":id/delete" component={remove} />}
         </Route>,
-        parentRoute
+        parentRoute,
     )[0];
     // higher-order component to pass path as resource to components
     crudRoute.component = ({ children }) => (

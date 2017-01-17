@@ -65,6 +65,7 @@
     "recompose": "~0.21.2",
     "redux": "~3.6.0",
     "redux-form": "~6.2.0",
-    "redux-saga": "~0.14.2"
+    "redux-saga": "~0.14.2",
+    "node-polyglot": "2.2.2"
   }
 }
