@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import FileField from './FileField';
+import ImageField from './ImageField';
 
 import get from 'lodash.get';
 
