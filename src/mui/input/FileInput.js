@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Dropzone from 'react-dropzone';
+import DroppedFileField from '../field/DroppedFileField';
 import FileField from '../field/FileField';
 
 const defaultStyle = {
@@ -92,13 +93,7 @@ class FileInput extends Component {
                     {this.state.files.map((file, index) => {
                         // if dropped picture, just use browser structure
                         if (file.dropped) {
-                            return (
-                                <FileField
-                                    key={index}
-                                    title={file.url}
-                                    url={file.url}
-                                />
-                            );
+                            return <DroppedFileField file={file} key={index} />
                         }
 
                         return previewComponent(file, index);

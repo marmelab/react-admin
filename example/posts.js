@@ -41,6 +41,7 @@ export const PostList = (props) => (
     <List {...props} filter={<PostFilter />}>
         <Datagrid>
             <TextField source="id" />
+            <FileField source="pictures[0]" src="src" title="title" />
             <TextField source="title" style={{ maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}/>
             <DateField source="published_at" style={{ fontStyle: 'italic' }} />
             <BooleanField label="Commentable" source="commentable" />
@@ -90,11 +91,11 @@ export const PostEdit = props => (
                 <TextInput source="title" validation={{ required: true }} />
                 <LongTextInput source="teaser" validation={{ required: true }} />
                 <FileInput
-                    previewComponent={file => (
+                    previewComponent={(file, index) => (
                         <FileField
-                            key={file.src}
-                            url={file.src}
-                            title={file.title}
+                            source={`pictures[${index}]`}
+                            src="src"
+                            title="title"
                         />
                     )}
                     multiple
