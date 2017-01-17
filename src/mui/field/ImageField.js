@@ -19,17 +19,17 @@ const styles = {
     },
 };
 
-export const ImageField = ({ elStyle, record, source, title, src }) => {
+export const ImageField = ({ elStyle, record, source, title }) => {
     const style = {
         ...styles.container,
         elStyle,
     };
 
-    const titleValue = get(record, `${source}.${title}`);
-    const srcValue = get(record, `${source}.${src}`);
+    const titleValue = get(record, title) || title;
+    const srcValue = get(record, source);
 
     if (!srcValue) {
-        return <div />;
+        return null;
     }
 
     return (
@@ -49,12 +49,6 @@ ImageField.propTypes = {
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
     title: PropTypes.string,
-    src: PropTypes.string.isRequired,
-};
-
-ImageField.defaultProps = {
-    title: 'alt',
-    src: 'src',
 };
 
 export default ImageField;
