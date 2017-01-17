@@ -63,11 +63,13 @@ class FileInput extends Component {
     render() {
         const {
             accept,
+            children,
             disableClick,
             maxSize,
             minSize,
             multiple,
-            previewComponent,
+            record,
+            source,
             style,
         } = this.props;
 
@@ -75,6 +77,8 @@ class FileInput extends Component {
             ...defaultStyle,
             ...style,
         };
+
+        const PreviewComponent = React.Children.toArray(children)[0];
 
         return (
             <div>
@@ -89,16 +93,16 @@ class FileInput extends Component {
                 >
                     {this.label()}
                 </Dropzone>
-                <div className="previews">
-                    {this.state.files.map((file, index) => {
-                        // if dropped picture, just use browser structure
-                        if (file.dropped) {
-                            return <DroppedFileField file={file} key={index} />
-                        }
-
-                        return previewComponent(file, index);
-                    })}
-                </div>
+                { PreviewComponent && (
+                    <div className="previews">
+                        {this.state.files.map((file, index) => React.cloneElement(
+                            PreviewComponent, {
+                                record: file,
+                                key: index,
+                            },
+                        ))}
+                    </div>
+                ) }
             </div>
         );
     }
