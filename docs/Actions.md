@@ -57,7 +57,7 @@ The `handleClick` function makes a `PUT` request the REST API with `fetch`, then
 
 `showNotification` and `push` are *action creators*. This is a Redux term for functions that return a simple action object. However, within the component, these functions are a bit more than that: they are *connected*, i.e. they are decorated by Redux' `dispatch` method. So in the `handleClick` function, a call to `showNotification()` is actually a call to `dispatch(showNotification())`. The decoration by `dispatch` is done in the final statement, `connect()`.
 
-This `ApproveButton` can be used right away, for instance in the list of comments:
+This `ApproveButton` can be used right away, for instance in the list of comments, where `<Datagrid>` automatically injects the `record` to its children:
 
 ```js
 // in src/comments/index.js
@@ -72,6 +72,34 @@ export const CommentList = (props) =>
             <BooleanField source="is_approved" />
             <ApproveButton />
         </Datagrid>
+    </List>;
+```
+
+Or, in the `<Edit>` page, as a [custom action](./CreateEdit.html#actions):
+
+```js
+// in src/comments/CommentEditActions.js
+import React from 'react';
+import { CardActions } from 'material-ui/Card';
+import { ListButton, DeleteButton } from 'admin-on-rest/lib/mui';
+import ApproveButton from './ApproveButton';
+
+const CommentEditActions = ({ basePath, data }) => (
+    <CardActions style={{ float: 'right' }}>
+        <ApproveButton record={data} />
+        <ListButton basePath={basePath} />
+        <DeleteButton basePath={basePath} record={data} />
+    </CardActions>
+);
+
+export default ReviewEditActions;
+
+// in src/comments/index.js
+import ReviewEditActions from './ReviewEditActions';
+
+export const CommentEdit = (props) =>
+    <Edit {...props} actions={<ReviewEditActions />}>
+        ...
     </List>;
 ```
 
