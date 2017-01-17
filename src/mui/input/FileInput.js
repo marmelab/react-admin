@@ -25,7 +25,12 @@ class FileInput extends Component {
             files = [files];
         }
 
-        this.state = { files };
+        this.state = {
+            files: files.map(f => ({
+                ...f,
+                dropped: false,
+            })),
+        };
     }
 
     onDrop = (files) => {
@@ -34,7 +39,7 @@ class FileInput extends Component {
             ...files.map(f => ({
                 title: f.name,
                 url: f.preview,
-                uploading: true,
+                dropped: true,
             })),
         ];
 
@@ -61,6 +66,7 @@ class FileInput extends Component {
             maxSize,
             minSize,
             multiple,
+            previewComponent,
             style,
         } = this.props;
 
@@ -83,7 +89,20 @@ class FileInput extends Component {
                     {this.label()}
                 </Dropzone>
                 <div className="previews">
-                    {this.state.files.map(f => <FileField key={f.url} file={f} />)}
+                    {this.state.files.map((file, index) => {
+                        // if dropped picture, just use browser structure
+                        if (file.dropped) {
+                            return (
+                                <FileField
+                                    key={index}
+                                    title={file.url}
+                                    url={file.url}
+                                />
+                            );
+                        }
+
+                        return previewComponent(file, index);
+                    })}
                 </div>
             </div>
         );
@@ -93,12 +112,13 @@ class FileInput extends Component {
 FileInput.propTypes = {
     accept: PropTypes.string,
     disableClick: PropTypes.bool,
-    addLabel: PropTypes.bool,
     input: PropTypes.object,
     maxSize: PropTypes.number,
     minSize: PropTypes.number,
     multiple: PropTypes.bool,
-    onUpload: PropTypes.func,
+    previewComponent: PropTypes.func,
+    record: PropTypes.object,
+    source: PropTypes.string.isRequired,
     style: PropTypes.object,
 };
 
@@ -106,6 +126,7 @@ FileInput.defaultProps = {
     addLabel: true,
     addField: true,
     multiple: false,
+    previewComponent: FileField,
     onUpload: () => {},
 };
 
