@@ -18,6 +18,7 @@ describe('<List />', () => {
         isLoading: false,
         crudGetList: () => {},
         push: () => {},
+        translate: () => {},
     };
 
     describe('Filters', () => {

@@ -5,6 +5,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import ContentFilter from 'material-ui/svg-icons/content/filter-list';
 import title from '../../util/title';
+import LocalizedComponent from '../../i18n/LocalizedComponent';
 
 export class FilterButton extends Component {
     constructor(props) {
@@ -53,11 +54,13 @@ export class FilterButton extends Component {
 
     render() {
         const hiddenFilters = this.getHiddenFilters();
+        const { open, anchorEl } = this.state;
+
         return (hiddenFilters.length > 0 && <div style={{ display: 'inline-block' }}>
-            <FlatButton primary label="Add Filter" icon={<ContentFilter />} onTouchTap={this.handleTouchTap} />
+            <FlatButton primary label={this.props.translate('aor.action.add_filter')} icon={<ContentFilter />} onTouchTap={this.handleTouchTap} />
             <Popover
-                open={this.state.open}
-                anchorEl={this.state.anchorEl}
+                open={open}
+                anchorEl={anchorEl}
                 anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
                 targetOrigin={{ horizontal: 'left', vertical: 'top' }}
                 onRequestClose={this.handleRequestClose}
@@ -78,6 +81,7 @@ FilterButton.propTypes = {
     displayedFilters: PropTypes.object.isRequired,
     filterValues: PropTypes.object.isRequired,
     showFilter: PropTypes.func.isRequired,
+    translate: PropTypes.func.isRequired,
 };
 
-export default FilterButton;
+export default LocalizedComponent(FilterButton);

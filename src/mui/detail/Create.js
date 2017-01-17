@@ -6,6 +6,7 @@ import Title from '../layout/Title';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import DefaultActions from './CreateActions';
 import getDefaultValues from '../form/getDefaultValues';
+import LocalizedComponent from '../../i18n/LocalizedComponent';
 
 class Create extends Component {
     getBasePath() {
@@ -16,15 +17,20 @@ class Create extends Component {
     handleSubmit = (record) => this.props.crudCreate(this.props.resource, record, this.getBasePath());
 
     render() {
-        const { actions = <DefaultActions />, children, isLoading, resource, title } = this.props;
+        const { actions = <DefaultActions />, children, isLoading, resource, title, translate } = this.props;
         const basePath = this.getBasePath();
+        const createItemLabel = translate(
+            'aor.action.create_item',
+            { name: inflection.humanize(inflection.singularize(resource)) },
+        );
+
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
                 {actions && React.cloneElement(actions, {
                     basePath,
                     resource,
                 })}
-                <CardTitle title={<Title title={title} defaultTitle={`Create ${inflection.humanize(inflection.singularize(resource))}`} />} />
+                <CardTitle title={<Title title={title} defaultTitle={createItemLabel} />} />
                 {React.cloneElement(children, {
                     onSubmit: this.handleSubmit,
                     resource,
@@ -45,6 +51,7 @@ Create.propTypes = {
     params: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
+    translate: PropTypes.func.isRequired,
 };
 
 Create.defaultProps = {
@@ -57,7 +64,7 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(
+export default LocalizedComponent(connect(
     mapStateToProps,
     { crudCreate: crudCreateAction },
-)(Create);
+)(Create));

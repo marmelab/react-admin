@@ -7,6 +7,7 @@ export default {
             save: 'Enregistrer',
             create: 'Créer',
             edit: 'Éditer',
+            cancel: 'Quitter',
             refresh: 'Rafraichir',
             add_filter: 'Ajouter un filtre',
             delete_item: 'Supprimer %{name}',

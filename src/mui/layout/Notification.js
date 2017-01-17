@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
 import { hideNotification as hideNotificationAction } from '../../actions/notificationActions' ;
+import LocalizedComponent from '../../i18n/LocalizedComponent';
 
 function getStyles(context) {
     if (!context) return { primary1Color: '#00bcd4', accent1Color: '#ff4081' };
@@ -26,15 +27,16 @@ class Notification extends React.Component {
     render() {
         const style = {};
         const { primary1Color, accent1Color } = getStyles(this.context);
-        if (this.props.type === 'warning') {
+        const { type, translate, message } = this.props;
+        if (type === 'warning') {
             style.backgroundColor = accent1Color;
         }
-        if (this.props.type === 'confirm') {
+        if (type === 'confirm') {
             style.backgroundColor = primary1Color;
         }
         return (<Snackbar
-            open={!!this.props.message}
-            message={this.props.message}
+            open={!!message}
+            message={!!message && translate(message)}
             autoHideDuration={4000}
             onRequestClose={this.handleRequestClose}
             bodyStyle={style}
@@ -46,6 +48,7 @@ Notification.propTypes = {
     message: PropTypes.string,
     type: PropTypes.string.isRequired,
     hideNotification: PropTypes.func.isRequired,
+    translate: PropTypes.func.isRequired,
 };
 
 Notification.defaultProps = {
@@ -56,12 +59,12 @@ Notification.contextTypes = {
     muiTheme: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     message: state.admin.notification.text,
     type: state.admin.notification.type,
 });
 
-export default connect(
+export default LocalizedComponent(connect(
   mapStateToProps,
   { hideNotification: hideNotificationAction },
-)(Notification);
+)(Notification));

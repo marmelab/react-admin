@@ -11,6 +11,7 @@ import DefaultPagination from './Pagination';
 import DefaultActions from './Actions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
+import LocalizedComponent from '../../i18n/LocalizedComponent';
 
 const filterFormName = 'filterForm';
 
@@ -155,10 +156,12 @@ export class List extends Component {
     }
 
     render() {
-        const { filters, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
+        const { filters, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading, translate } = this.props;
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
+        const listItemLabel = translate('aor.action.list_item', { name: inflection.humanize(inflection.pluralize(resource)) });
+
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
                 {actions && React.cloneElement(actions, {
@@ -171,7 +174,7 @@ export class List extends Component {
                     showFilter: this.showFilter,
                     refresh: this.refresh,
                 })}
-                <CardTitle title={<Title title={title} defaultTitle={`${inflection.humanize(inflection.pluralize(resource))} List`} />} />
+                <CardTitle title={<Title title={title} defaultTitle={listItemLabel} />} />
                 {filters && React.cloneElement(filters, {
                     resource,
                     hideFilter: this.hideFilter,
@@ -229,6 +232,7 @@ List.propTypes = {
     query: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     total: PropTypes.number.isRequired,
+    translate: PropTypes.func.isRequired,
 };
 
 List.defaultProps = {
@@ -261,7 +265,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default connect(
+export default LocalizedComponent(connect(
     mapStateToProps,
     {
         crudGetList: crudGetListAction,
@@ -269,4 +273,4 @@ export default connect(
         changeListParams: changeListParamsAction,
         push: pushAction,
     },
-)(List);
+)(List));
