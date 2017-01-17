@@ -26,35 +26,36 @@ import {
     TextInput,
 } from 'admin-on-rest/mui';
 import RichTextInput from 'aor-rich-text-input';
+import LocalizedComponent from 'admin-on-rest/i18n/LocalizedComponent';
 export PostIcon from 'material-ui/svg-icons/action/book';
 
-const PostFilter = (props) => (
+const PostFilter = LocalizedComponent(({ translate, ...props }) => (
     <Filter {...props}>
-        <TextInput label="Search" source="q" alwaysOn />
-        <TextInput label="Title" source="title" />
+        <TextInput label={translate('post.list.search')} source="q" alwaysOn />
+        <TextInput label={translate('post.list.title')} source="title" />
     </Filter>
-);
+));
 
 const titleFieldStyle = { maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' };
-export const PostList = props => (
-    <List {...props} filters={<PostFilter />} sort={{ field: 'published_at', order: 'DESC' }}>
+export const PostList = LocalizedComponent(({ translate, ...props }) => (
+    <List {...props} filters={<PostFilter />} sort={{ field: 'published_at', order: 'DESC' }} title={translate('post.all')}>
         <Datagrid>
             <TextField source="id" />
-            <TextField source="title" style={titleFieldStyle} />
-            <DateField source="published_at" style={{ fontStyle: 'italic' }} />
-            <BooleanField label="Commentable" source="commentable" />
-            <NumberField source="views" />
+            <TextField source="title" label={translate('post.list.title')} style={titleFieldStyle} />
+            <DateField source="published_at" label={translate('post.list.published_at')} style={{ fontStyle: 'italic' }} />
+            <BooleanField label={translate('post.list.commentable')} source="commentable" />
+            <NumberField source="views" label={translate('post.list.views')} />
             <EditButton />
             <ShowButton />
         </Datagrid>
     </List>
-);
+));
 
 const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 
-export const PostCreate = (props) => (
+export const PostCreate = LocalizedComponent(({ translate, ...props }) => (
     <Create {...props}>
         <SimpleForm defaultValue={{ average_note: 0 }} validation={(values) => {
             const errors = {};
@@ -70,65 +71,65 @@ export const PostCreate = (props) => (
 
             return errors;
         }}>
-            <TextInput source="title" />
-            <TextInput label="Password (if protected post)" source="password" type="password" />
-            <TextInput source="teaser" options={{ multiLine: true }} />
-            <RichTextInput source="body" />
-            <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />
-            <NumberInput source="average_note" />
-            <BooleanInput label="Allow comments?" source="commentable" defaultValue={true} />
+            <TextInput source="title" label={translate('post.form.title')} />
+            <TextInput label={translate('post.form.password')} source="password" type="password" />
+            <TextInput source="teaser" label={translate('post.form.teaser')} options={{ multiLine: true }} />
+            <RichTextInput source="body" label={translate('post.form.body')} />
+            <DateInput label={translate('post.form.published_at')} source="published_at" defaultValue={new Date()} />
+            <NumberInput source="average_note" label={translate('post.form.average_note')} />
+            <BooleanInput label={translate('post.form.allow_comments')} source="commentable" defaultValue={true} />
         </SimpleForm>
     </Create>
-);
+));
 
-export const PostEdit = (props) => (
+export const PostEdit = LocalizedComponent(({ translate, ...props }) => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
-            <FormTab label="summary">
+            <FormTab label={translate('post.form.summary')}>
                 <DisabledInput label="Id" source="id" />
-                <TextInput source="title" validation={{ required: true }} />
-                <LongTextInput source="teaser" validation={{ required: true }} />
+                <TextInput source="title" label={translate('post.form.title')} validation={{ required: true }} />
+                <LongTextInput source="teaser" label={translate('post.form.teaser')} validation={{ required: true }} />
             </FormTab>
-            <FormTab label="body">
-                <RichTextInput source="body" validation={{ required: true }} addLabel={false} />
+            <FormTab label={translate('post.form.body')}>
+                <RichTextInput source="body" label={translate('post.form.body')} validation={{ required: true }} addLabel={false} />
             </FormTab>
-            <FormTab label="Miscellaneous">
-                <TextInput label="Password (if protected post)" source="password" type="password" />
-                <DateInput label="Publication date" source="published_at" />
-                <NumberInput source="average_note" validation={{ min: 0 }} />
-                <BooleanInput label="Allow comments?" source="commentable" defaultValue />
-                <DisabledInput label="Nb views" source="views" />
+            <FormTab label={translate('post.form.miscellaneous')}>
+                <TextInput label={translate('post.form.password')} source="password" type="password" />
+                <DateInput label={translate('post.form.published_at')} source="published_at" />
+                <NumberInput source="average_note" label={translate('post.form.average_note')} validation={{ min: 0 }} />
+                <BooleanInput label={translate('post.form.allow_comments')} source="commentable" defaultValue />
+                <DisabledInput label={translate('post.form.nb_view')} source="views" />
             </FormTab>
-            <FormTab label="comments">
+            <FormTab label={translate('post.form.comments')}>
                 <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
                     <Datagrid>
-                        <TextField source="body" />
-                        <DateField source="created_at" />
+                        <TextField source="body" label={translate('post.form.body')} />
+                        <DateField source="created_at" label={translate('post.form.created_at')} />
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
             </FormTab>
         </TabbedForm>
     </Edit>
-);
+));
 
-export const PostShow = (props) => (
+export const PostShow = LocalizedComponent(({ translate, ...props }) => (
     <Show title={<PostTitle />} {...props}>
         <SimpleShowLayout>
             <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="teaser" />
-            <RichTextField source="body" stripTags={false} />
-            <DateField source="published_at" style={{ fontStyle: 'italic' }} />
-            <TextField source="average_note" />
-            <ReferenceManyField label="Comments" reference="comments" target="post_id" sort={{ field: 'created_at', order: 'DESC' }}>
+            <TextField source="title" label={translate('post.form.title')} />
+            <TextField source="teaser" label={translate('post.form.teaser')} />
+            <RichTextField source="body" label={translate('post.form.body')} stripTags={false} />
+            <DateField source="published_at" label={translate('post.form.published_at')} style={{ fontStyle: 'italic' }} />
+            <TextField source="average_note" label={translate('post.form.average_note')} />
+            <ReferenceManyField label={translate('post.form.comments')} reference="comments" target="post_id" sort={{ field: 'created_at', order: 'DESC' }}>
                 <Datagrid selectable={false}>
-                    <TextField source="body" />
-                    <DateField source="created_at" />
+                    <TextField source="body" label={translate('post.form.body')} />
+                    <DateField source="created_at" label={translate('post.form.created_at')} />
                     <EditButton />
                 </Datagrid>
             </ReferenceManyField>
-            <TextField label="Nb views" source="views" />
+            <TextField label={translate('post.form.nb_view')} source="views" />
         </SimpleShowLayout>
     </Show>
-);
+));
