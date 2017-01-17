@@ -19,7 +19,7 @@ const styles = {
     },
 };
 
-export const FileField = ({ elStyle, record, source, title, src }) => {
+export const ImageField = ({ elStyle, record, source, title, src }) => {
     const style = {
         ...styles.container,
         elStyle,
@@ -44,7 +44,7 @@ export const FileField = ({ elStyle, record, source, title, src }) => {
     );
 };
 
-FileField.propTypes = {
+ImageField.propTypes = {
     elStyle: PropTypes.object,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
@@ -52,9 +52,9 @@ FileField.propTypes = {
     src: PropTypes.string.isRequired,
 };
 
-FileField.defaultProps = {
+ImageField.defaultProps = {
     title: 'alt',
     src: 'src',
 };
 
-export default FileField;
+export default ImageField;

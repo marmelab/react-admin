@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Dropzone from 'react-dropzone';
 import DroppedFileField from '../field/DroppedFileField';
-import FileField from '../field/FileField';
+import ImageField from '../field/ImageField';
 
 const defaultStyle = {
     dropZone: {
@@ -121,7 +121,7 @@ FileInput.defaultProps = {
     addLabel: true,
     addField: true,
     multiple: false,
-    previewComponent: FileField,
+    previewComponent: ImageField,
     onUpload: () => {},
 };
 

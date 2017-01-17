@@ -9,8 +9,8 @@ import {
     DisabledInput,
     Edit,
     EditButton,
-    FileField,
-    FileInput,
+    ImageField,
+    ImageInput,
     Filter,
     FormTab,
     List,
@@ -41,7 +41,7 @@ export const PostList = (props) => (
     <List {...props} filter={<PostFilter />}>
         <Datagrid>
             <TextField source="id" />
-            <FileField source="pictures[0]" src="src" title="title" />
+            <ImageField source="pictures[0]" src="src" title="title" />
             <TextField source="title" style={{ maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}/>
             <DateField source="published_at" style={{ fontStyle: 'italic' }} />
             <BooleanField label="Commentable" source="commentable" />
@@ -90,9 +90,9 @@ export const PostEdit = props => (
                 <DisabledInput label="Id" source="id" />
                 <TextInput source="title" validation={{ required: true }} />
                 <LongTextInput source="teaser" validation={{ required: true }} />
-                <FileInput
+                <ImageInput
                     previewComponent={(file, index) => (
-                        <FileField
+                        <ImageField
                             source={`pictures[${index}]`}
                             src="src"
                             title="title"
