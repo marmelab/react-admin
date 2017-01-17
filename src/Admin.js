@@ -12,7 +12,7 @@ import CrudRoute from './CrudRoute';
 import Layout from './mui/layout/Layout';
 import withProps from './withProps';
 
-const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', theme, appLayout = withProps({ title, theme })(Layout) }) => {
+const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', saga = crudSaga(restClient), theme, appLayout = withProps({ title, theme })(Layout) }) => {
     const resources = React.Children.map(children, ({ props }) => props);
     const firstResource = resources[0].name;
     const sagaMiddleware = createSagaMiddleware();
@@ -25,7 +25,7 @@ const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', theme
         applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
         window.devToolsExtension ? window.devToolsExtension() : f => f,
     ));
-    sagaMiddleware.run(crudSaga(restClient));
+    sagaMiddleware.run(saga);
 
     const history = syncHistoryWithStore(hashHistory, store);
 
@@ -34,7 +34,7 @@ const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', theme
             <Router history={history}>
                 {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
                 <Route path="/" component={appLayout} resources={resources}>
-                    {dashboard && <IndexRoute component={dashboard} restClient={restClient} />}
+                    {dashboard && <IndexRoute component={dashboard} />}
                     {resources.map(resource =>
                         <CrudRoute key={resource.name} path={resource.name} list={resource.list} create={resource.create} edit={resource.edit} show={resource.show} remove={resource.remove} options={resource.options} />
                     )}
@@ -48,6 +48,7 @@ const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]
 
 Admin.propTypes = {
     restClient: PropTypes.func.isRequired,
+    saga: PropTypes.func.isRequired,
     appLayout: componentPropType,
     dashboard: componentPropType,
     children: PropTypes.node,
