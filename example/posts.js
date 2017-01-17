@@ -48,6 +48,7 @@ export const PostList = Translate(({ translate, ...props }) => (
     <List {...props} filters={<PostFilter />} sort={{ field: 'published_at', order: 'DESC' }}>
         <Datagrid>
             <TextField source="id" />
+            <FileField source="pictures[0]" src="src" title="title" />
             <TextField source="title" label={translate('post.list.title')} style={titleFieldStyle} />
             <DateField source="published_at" label={translate('post.list.published_at')} style={{ fontStyle: 'italic' }} />
             <BooleanField label={translate('post.list.commentable')} source="commentable" />
@@ -106,11 +107,11 @@ export const PostEdit = Translate(({ translate, ...props }) => (
                 />
                 <LongTextInput source="teaser" label={translate('post.form.teaser')} validation={{ required: true }} />
                 <FileInput
-                    previewComponent={file => (
+                    previewComponent={(file, index) => (
                         <FileField
-                            key={file.src}
-                            url={file.src}
-                            title={file.title}
+                            source={`pictures[${index}]`}
+                            src="src"
+                            title="title"
                         />
                     )}
                     multiple

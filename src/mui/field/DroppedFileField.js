@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+import FileField from './FileField';
+
 import get from 'lodash.get';
 
 const styles = {
@@ -19,42 +21,31 @@ const styles = {
     },
 };
 
-export const FileField = ({ elStyle, record, source, title, src }) => {
+export const DroppedFileField = ({ elStyle, file }) => {
     const style = {
         ...styles.container,
         elStyle,
     };
 
-    const titleValue = get(record, `${source}.${title}`);
-    const srcValue = get(record, `${source}.${src}`);
-
-    if (!srcValue) {
-        return <div />;
-    }
-
     return (
         <div style={style}>
             <img
-                title={titleValue}
-                alt={titleValue}
-                src={srcValue}
+                alt={file.url}
+                src={file.url}
                 style={styles.image}
             />
         </div>
     );
 };
 
-FileField.propTypes = {
+DroppedFileField.propTypes = {
     elStyle: PropTypes.object,
-    record: PropTypes.object,
-    source: PropTypes.string.isRequired,
-    title: PropTypes.string,
-    src: PropTypes.string.isRequired,
+    file: PropTypes.shape({
+        url: PropTypes.string.isRequired,
+    }),
 };
 
-FileField.defaultProps = {
-    title: 'alt',
-    src: 'src',
+DroppedFileField.defaultProps = {
 };
 
-export default FileField;
+export default DroppedFileField;
