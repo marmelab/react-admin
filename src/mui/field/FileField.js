@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import CircularProgress from 'material-ui/CircularProgress';
 
 const styles = {
     container: {
@@ -17,25 +16,19 @@ const styles = {
         top: '50%',
         transform: 'translate(-50%, -50%)',
     },
-    uploading: {
-        opacity: 0.3,
-    },
 };
 
-export const FileField = ({ file, elStyle }) => {
-    const uploadingStyle = file.uploading ? styles.uploading : {};
+export const FileField = ({ elStyle, title, url }) => {
     const style = {
         ...styles.container,
-        ...uploadingStyle,
         elStyle,
     };
-console.log(file);
+
     return (
         <div style={style}>
-            {file.uploading ? <CircularProgress style={styles.loader} /> : null}
             <img
-                alt={file.title}
-                src={file.url}
+                alt={title}
+                src={url}
                 style={styles.image}
             />
         </div>
@@ -44,6 +37,8 @@ console.log(file);
 
 FileField.propTypes = {
     elStyle: PropTypes.object,
+    title: PropTypes.string,
+    url: PropTypes.string.isRequired,
 };
 
 FileField.defaultProps = {
