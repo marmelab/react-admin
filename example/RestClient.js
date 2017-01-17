@@ -21,6 +21,15 @@ function log(type, resource, params, response) {
     }
 }
 
+const convertFileToBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+});
+
+
 /**
  * Respond to admin-on-rest REST queries using a local JavaScript object
  *
@@ -66,19 +75,16 @@ export default (data, loggingEnabled = false) => {
             return restServer.getAll(resource, { filter: { [params.target]: params.id } });
         case UPDATE:
             if (resource === 'posts') {
-                const formData = new FormData();
-                formData.append('picture', params.data.picture[0]);
-
-                // @TODO: find a way to upload file on FakeRest?
-                return fetch('http://localhost:3001/upload', {
-                    method: 'post',
-                    body: formData,
-                })
-                    .then(response => response.json())
-                    .then(picture => restServer.updateOne(resource, params.id, {
-                        ...params.data,
-                        picture,
-                    }));
+                if (params.data.pictures && params.data.pictures.length) {
+                    return Promise.all(params.data.pictures.map(convertFileToBase64))
+                        .then(base64Pictures => restServer.updateOne(resource, params.id, {
+                            ...params.data,
+                            pictures: base64Pictures.map((base64, index) => ({
+                                src: base64,
+                                title: `${params.data.title} - Photo ${index}`,
+                            })),
+                        }));
+                }
             }
 
             return restServer.updateOne(resource, params.id, { ...params.data });
