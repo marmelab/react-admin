@@ -61,7 +61,7 @@ export const getConstraintsFunctionFromFunctionOrObject = (constraints) => {
  *    }
  * }
  */
-const getFieldConstraints = children => React.Children.toArray(children)
+export const getFieldConstraints = children => React.Children.toArray(children)
     .map(({ props: { source: fieldName, validation } }) => ({ fieldName, validation }))
     .filter(({ validation }) => !!validation)
     .reduce((constraints, { fieldName, validation }) => {
