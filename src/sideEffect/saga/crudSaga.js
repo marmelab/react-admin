@@ -1,4 +1,3 @@
-import { fork } from 'redux-saga/effects';
 import crudFetch from './crudFetch';
 import crudResponse from './crudResponse';
 import referenceFetch from './referenceFetch';
@@ -8,8 +7,8 @@ import referenceFetch from './referenceFetch';
  */
 export default restClient => function* crudSaga() {
     yield [
-        fork(crudFetch(restClient)),
-        fork(crudResponse),
-        fork(referenceFetch),
+        crudFetch(restClient)(),
+        crudResponse(),
+        referenceFetch(),
     ];
 };
