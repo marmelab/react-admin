@@ -64,6 +64,6 @@
     "react-tap-event-plugin": "~2.0.0",
     "redux": "~3.6.0",
     "redux-form": "~6.2.0",
-    "redux-saga": "~0.13.0"
+    "redux-saga": "~0.14.2"
   }
 }
