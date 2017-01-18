@@ -7,7 +7,7 @@ import {
 } from '../../actions/fetchActions';
 
 const crudFetch = (restClient) => {
-    function *handleFetch(action) {
+    function* handleFetch(action) {
         const { type, payload, meta } = action;
         const restType = meta.fetch;
         delete meta.fetch;
@@ -22,7 +22,7 @@ const crudFetch = (restClient) => {
                 type: `${type}_SUCCESS`,
                 payload: response,
                 requestPayload: payload,
-                meta: { ...meta, fetchResponse: true },
+                meta: { ...meta, fetchResponse: restType, fetchStatus: FETCH_END },
             });
             yield put({ type: FETCH_END });
         } catch (error) {
@@ -30,7 +30,7 @@ const crudFetch = (restClient) => {
                 type: `${type}_FAILURE`,
                 error: error.message ? error.message : error,
                 requestPayload: payload,
-                meta: { ...meta, fetchResponse: true },
+                meta: { ...meta, fetchResponse: restType, fetchStatus: FETCH_ERROR },
             });
             yield put({ type: FETCH_ERROR });
         } finally {
@@ -41,7 +41,7 @@ const crudFetch = (restClient) => {
         }
     }
 
-    return function *watchCrudFetch() {
+    return function* watchCrudFetch() {
         yield [
             takeLatest(action => action.meta && action.meta.fetch && action.meta.cancelPrevious, handleFetch),
             takeEvery(action => action.meta && action.meta.fetch && !action.meta.cancelPrevious, handleFetch),

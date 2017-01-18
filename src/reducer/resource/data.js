@@ -1,13 +1,12 @@
+import { FETCH_END } from '../../actions/fetchActions';
 import {
-    CRUD_GET_LIST_SUCCESS,
-    CRUD_GET_ONE_SUCCESS,
-    CRUD_GET_MANY_SUCCESS,
-    CRUD_GET_MANY_REFERENCE_SUCCESS,
-    CRUD_UPDATE,
-    CRUD_UPDATE_SUCCESS,
-    CRUD_CREATE_SUCCESS,
-    CRUD_GET_MATCHING_SUCCESS,
-} from '../../actions/dataActions';
+    GET_LIST,
+    GET_ONE,
+    GET_MANY,
+    GET_MANY_REFERENCE,
+    CREATE,
+    UPDATE,
+} from '../../rest/types';
 
 /**
  * The data state is an instance pool, which keeps track of the fetch date of each instance.
@@ -71,22 +70,22 @@ const addRecords = (newRecords = [], oldRecords) => {
 const initialState = {};
 Object.defineProperty(initialState, 'fetchedAt', { value: {} }); // non enumerable by default
 
-export default (resource) => (previousState = initialState, { type, payload, meta }) => {
+export default resource => (previousState = initialState, { payload, meta }) => {
     if (!meta || meta.resource !== resource) {
         return previousState;
     }
-    switch (type) {
-    case CRUD_GET_LIST_SUCCESS:
-    case CRUD_GET_MATCHING_SUCCESS:
+    if (!meta.fetchResponse || meta.fetchStatus !== FETCH_END) {
+        return previousState;
+    }
+    switch (meta.fetchResponse) {
+    case GET_LIST:
         return addRecords(payload.data, previousState);
-    case CRUD_GET_MANY_SUCCESS:
-    case CRUD_GET_MANY_REFERENCE_SUCCESS:
+    case GET_MANY:
+    case GET_MANY_REFERENCE:
         return addRecords(payload, previousState);
-    case CRUD_UPDATE: // replace record in edit form with edited one to avoid displaying previous record version
-        return addRecords([payload.data], previousState);
-    case CRUD_GET_ONE_SUCCESS:
-    case CRUD_UPDATE_SUCCESS:
-    case CRUD_CREATE_SUCCESS:
+    case GET_ONE:
+    case UPDATE:
+    case CREATE:
         return addRecords([payload], previousState);
     default:
         return previousState;

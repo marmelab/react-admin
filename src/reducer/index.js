@@ -7,7 +7,7 @@ import saving from './saving';
 
 export default (resources) => {
     const resourceReducers = {};
-    resources.forEach(resource => {
+    resources.forEach((resource) => {
         resourceReducers[resource.name] = resourceReducer(resource.name, resource.options);
     });
     return combineReducers({
