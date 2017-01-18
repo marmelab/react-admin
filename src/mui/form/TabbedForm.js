@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import { getFieldConstraints } from '../../util/validate';
+import { getFieldConstraints, getErrorsForForm, getErrorsForFieldConstraints } from '../../util/validate';
 import { SaveButton } from '../button';
 import getDefaultValues from '../form/getDefaultValues';
 
@@ -11,28 +11,17 @@ import getDefaultValues from '../form/getDefaultValues';
  * Validator function for redux-form
  */
 export const validateForm = (values, { children, validation }) => {
-    const errors = typeof validation === 'function' ? validation(values) : {};
-
-    // warn user we expect an object here, in case of validation just returned an error message
-    if (errors === null || typeof errors !== 'object') {
-        throw new Error('Validation function given to form components should return an object.');
-    }
-
     // digging first in `<FormTab>`, then in all children
     const fieldConstraints = Children.toArray(children)
         .map(child => child.props.children)
         .map(getFieldConstraints)
+        // merge all constraints object into a single object
         .reduce((prev, next) => ({ ...prev, ...next }), {});
-    Object.keys(fieldConstraints).forEach(fieldName => {
-        const error = fieldConstraints[fieldName](values[fieldName], values);
-        if (error.length > 0) {
-            if (!errors[fieldName]) {
-                errors[fieldName] = [];
-            }
-            errors[fieldName] = [...errors[fieldName], ...error];
-        }
-    });
-    return errors;
+
+    return {
+        ...getErrorsForForm(validation, values),
+        ...getErrorsForFieldConstraints(fieldConstraints, values),
+    };
 };
 
 export class TabbedForm extends Component {
