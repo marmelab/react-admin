@@ -1,5 +1,5 @@
-import { delay, takeEvery } from 'redux-saga';
-import { call, cancel, fork, put, take } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
+import { call, cancel, fork, put, takeEvery } from 'redux-saga/effects';
 import { CRUD_GET_ONE_REFERENCE } from '../../actions/referenceActions';
 import { crudGetMany } from '../../actions/dataActions';
 
