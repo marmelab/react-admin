@@ -281,11 +281,15 @@ export default App;
 
 With this code, approving a review now displays the correct notification, and redirects to the comment list. And the side effects are [testable](https://redux-saga.github.io/redux-saga/docs/introduction/BeginnerTutorial.html#making-our-code-testable), too.
 
-## Optimistic Rendering By Using a Custom a Reducer
+## Bonus: Optimistic Rendering
 
-In this example, after clicking on the "Approve" button, users are redirected to the comments list. This page fetches the `/comments` resource to grab the list of updated comments from the server. But admin-on-rest doesn't wait for the response to this call to display the list of comments. In fact, it has an internal instance pool that is kept during navigation, and uses it to render the screen before the API calls are over - it's called *optimistic rendering*.
+In this example, after clicking on the "Approve" button, users are redirected to the comments list. Admin-on-rest then fetching the `/comments` resource to grab the list of updated comments from the server. But admin-on-rest doesn't wait for the response to this call to display the list of comments. In fact, it has an internal instance pool that is kept during navigation, and uses it to render the screen before the API calls are over - it's called *optimistic rendering*.
 
-So it displays the list of comments, but with the non-updated record. The user will therefore briefly see a record with `is_approved` set to false, then, after the response arrives, the `is_approved` value of the updated record will switch to true.
+As the custom `COMMENT_APPROVE` action contains the `fetch: UPDATE` meta, admin-on-rest will automatically update its instance pool with the response. That means that the initial rendering (before the `GET /comments` response arrives) will show the already approved comment!
+
+The fact that admin-on-rest will update the instance pool if you use custom actions with the `fetch` meta should be another motivation to avoid using raw `fetch`.
+
+## Using a Custom a Reducer
 
 [To be completed]
 
