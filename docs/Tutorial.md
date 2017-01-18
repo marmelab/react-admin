@@ -15,7 +15,7 @@ Admin-on-REST uses React. We'll use Facebook's [react-create-app](https://github
 npm install -g create-react-app
 create-react-app test-admin
 cd test-admin/
-npm install --save-dev admin-on-rest
+npm install --save-dev babel-runtime admin-on-rest
 npm start
 ```
 

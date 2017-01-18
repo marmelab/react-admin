@@ -9,6 +9,9 @@
     "src"
   ],
   "main": "lib/index",
+  "engines": {
+    "node": ">= 4.5"
+  },
   "scripts": {
     "test": "make test"
   },
