@@ -7,7 +7,7 @@ import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 
 import adminReducer from './reducer';
-import crudSaga from './sideEffect/saga';
+import { crudSaga } from './sideEffect/saga';
 import CrudRoute from './CrudRoute';
 import Layout from './mui/layout/Layout';
 import withProps from './withProps';
@@ -47,8 +47,8 @@ const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', saga 
 const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
 
 Admin.propTypes = {
-    restClient: PropTypes.func.isRequired,
-    saga: PropTypes.func.isRequired,
+    restClient: PropTypes.func,
+    saga: PropTypes.func,
     appLayout: componentPropType,
     dashboard: componentPropType,
     children: PropTypes.node,
