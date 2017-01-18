@@ -245,31 +245,30 @@ To use this saga, you'll need to merge it with admin-on-rest's own saga, `crudSa
 
 ```js
 // in src/saga.js
-import { fork } from 'redux-saga/effects';
-import { crudSaga } from 'admin-on-rest';
+import { crudSaga, jsonServerRestClient } from 'admin-on-rest';
 import commentSaga from './comments/commentSaga';
 
-export default function(restClient) {
-    return function*() {
-        yield fork(crudSaga(restClient));
-        yield fork(commentSaga);
-    }
+export default function*() {
+    yield [
+        crudSaga(jsonServerRestClient('http://jsonplaceholder.typicode.com'))(),
+        commentSaga(),
+    ];
 }
 ```
 
-`fork()` is saga's way to execute several sagas in parallel. The next step is to inject this core saga in the `<Admin>` component:
+`yield []` is saga's way to execute several sagas in parallel. The next step is to inject this core saga in the `<Admin>` component:
 
 ```js
 // in src/App.js
 import React from 'react';
 
-import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
+import { Admin, Resource } from 'admin-on-rest';
 
 import { CommentList } from './comments';
 import saga from './saga';
 
 const App = () => (
-    <Admin saga={saga(jsonServerRestClient('http://jsonplaceholder.typicode.com'))}>
+    <Admin saga={saga}>
         <Resource name="comments" list={CommentList} />
     </Admin>
 );
@@ -283,11 +282,11 @@ With this code, approving a review now displays the correct notification, and re
 
 ## Bonus: Optimistic Rendering
 
-In this example, after clicking on the "Approve" button, users are redirected to the comments list. Admin-on-rest then fetching the `/comments` resource to grab the list of updated comments from the server. But admin-on-rest doesn't wait for the response to this call to display the list of comments. In fact, it has an internal instance pool that is kept during navigation, and uses it to render the screen before the API calls are over - it's called *optimistic rendering*.
+In this example, after clicking on the "Approve" button, users are redirected to the comments list. Admin-on-rest then fetches the `/comments` resource to grab the list of updated comments from the server. But admin-on-rest doesn't wait for the response to this call to display the list of comments. In fact, it has an internal instance pool that is kept during navigation, and uses it to render the screen before the API calls are over - it's called *optimistic rendering*.
 
-As the custom `COMMENT_APPROVE` action contains the `fetch: UPDATE` meta, admin-on-rest will automatically update its instance pool with the response. That means that the initial rendering (before the `GET /comments` response arrives) will show the already approved comment!
+As the custom `COMMENT_APPROVE` action contains the `fetch: UPDATE` meta, admin-on-rest will automatically update its instance pool with the response. That means that the initial rendering (before the `GET /comments` response arrives) will show the approved comment!
 
-The fact that admin-on-rest will update the instance pool if you use custom actions with the `fetch` meta should be another motivation to avoid using raw `fetch`.
+The fact that admin-on-rest updates the instance pool if you use custom actions with the `fetch` meta should be another motivation to avoid using raw `fetch`.
 
 ## Using a Custom a Reducer
 
