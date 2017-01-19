@@ -112,6 +112,7 @@ ReferenceManyField.defaultProps = {
     filter: {},
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
+    source: '',
 };
 
 function mapStateToProps(state, props) {
