@@ -1,6 +1,6 @@
 import React from 'react';
 import assert from 'assert';
-import { coreConstraints, getConstraintsFunctionFromFunctionOrObject, validateForm } from './validate';
+import { coreConstraints, getErrorsForForm, getErrorsForFieldConstraints, getConstraintsFunctionFromFunctionOrObject, validateForm } from './validate';
 import TextInput from '../mui/input/TextInput';
 
 describe('Validator', () => {
@@ -211,6 +211,44 @@ describe('Validator', () => {
 
             const valueError = validateForm({ rate: 6 }, props);
             assert.deepEqual(valueError, { rate: 'Maximum value: 5' });
+        });
+    });
+
+    describe('getErrorsForForm', () => {
+        const values = { foo: 1, bar: 2, hello: 'world' };
+
+        it('should return an empty object when no validation function is passed', () => {
+            assert.deepEqual({}, getErrorsForForm(null, values));
+        });
+
+        it('should return an empty object when all values are correct', () => {
+            const validate = v => v.foo !== 1 ? { foo: ['error'] } : {}; // eslint-disable-line no-confusing-arrow
+            assert.deepEqual({}, getErrorsForForm(validate, values));
+        });
+
+        it('should return an error object for incorrect values', () => {
+            const validate = v => v.foo !== 2 ? { foo: ['error'] } : {}; // eslint-disable-line no-confusing-arrow
+            assert.deepEqual({ foo: ['error'] }, getErrorsForForm(validate, values));
+        });
+
+    });
+
+    describe('getErrorsForFieldConstraints', () => {
+        const values = { foo: 1, bar: 2, hello: 'world' };
+
+        it('should return an empty object when all values are correct', () => {
+            const constraints = {
+                foo: _ => [],
+            };
+            assert.deepEqual({}, getErrorsForFieldConstraints(constraints, values));
+        });
+
+        it('should return an error object for incorrect values', () => {
+            const constraints = {
+                foo: _ => [],
+                bar: _ => ['error'],
+            };
+            assert.deepEqual({ bar: ['error'] }, getErrorsForFieldConstraints(constraints, values));
         });
     });
 

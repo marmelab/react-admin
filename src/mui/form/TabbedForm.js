@@ -3,9 +3,26 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import { validateForm } from '../../util/validate';
+import { getFieldConstraints, getErrorsForForm, getErrorsForFieldConstraints } from '../../util/validate';
 import { SaveButton } from '../button';
 import getDefaultValues from '../form/getDefaultValues';
+
+/**
+ * Validator function for redux-form
+ */
+export const validateForm = (values, { children, validation }) => {
+    // digging first in `<FormTab>`, then in all children
+    const fieldConstraints = Children.toArray(children)
+        .map(child => child.props.children)
+        .map(getFieldConstraints)
+        // merge all constraints object into a single object
+        .reduce((prev, next) => ({ ...prev, ...next }), {});
+
+    return {
+        ...getErrorsForForm(validation, values),
+        ...getErrorsForFieldConstraints(fieldConstraints, values),
+    };
+};
 
 export class TabbedForm extends Component {
     constructor(props) {
