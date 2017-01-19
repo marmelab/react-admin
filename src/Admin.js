@@ -23,26 +23,27 @@ const Admin = ({
     appLayout = withProps({ title, theme })(Layout),
 }) => {
     const resources = React.Children.map(children, ({ props }) => props);
-    const firstResource = resources[0].name;
-    const sagaMiddleware = createSagaMiddleware();
     const reducer = combineReducers({
         admin: adminReducer(resources),
         form: formReducer,
         routing: routerReducer,
         ...customReducers,
     });
-    const store = createStore(reducer, undefined, compose(
-        applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
-        window.devToolsExtension ? window.devToolsExtension() : f => f,
-    ));
-    sagaMiddleware.run(function* rootSaga() {
+    const saga = function* rootSaga() {
         yield [
             crudSaga(restClient)(),
             ...customSagas,
         ];
-    });
+    };
+    const sagaMiddleware = createSagaMiddleware();
+    const store = createStore(reducer, undefined, compose(
+        applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
+        window.devToolsExtension ? window.devToolsExtension() : f => f,
+    ));
+    sagaMiddleware.run(saga);
 
     const history = syncHistoryWithStore(hashHistory, store);
+    const firstResource = resources[0].name;
 
     return (
         <Provider store={store}>
