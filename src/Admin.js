@@ -12,7 +12,16 @@ import CrudRoute from './CrudRoute';
 import Layout from './mui/layout/Layout';
 import withProps from './withProps';
 
-const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', saga = crudSaga(restClient), theme, appLayout = withProps({ title, theme })(Layout) }) => {
+const Admin = ({
+    children,
+    customReducers = {},
+    customSagas = [],
+    dashboard,
+    restClient,
+    theme,
+    title = 'Admin on REST',
+    appLayout = withProps({ title, theme })(Layout),
+}) => {
     const resources = React.Children.map(children, ({ props }) => props);
     const firstResource = resources[0].name;
     const sagaMiddleware = createSagaMiddleware();
@@ -20,12 +29,18 @@ const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', saga 
         admin: adminReducer(resources),
         form: formReducer,
         routing: routerReducer,
+        ...customReducers,
     });
     const store = createStore(reducer, undefined, compose(
         applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
         window.devToolsExtension ? window.devToolsExtension() : f => f,
     ));
-    sagaMiddleware.run(saga);
+    sagaMiddleware.run(function* rootSaga() {
+        yield [
+            crudSaga(restClient)(),
+            ...customSagas,
+        ];
+    });
 
     const history = syncHistoryWithStore(hashHistory, store);
 
@@ -47,13 +62,14 @@ const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', saga 
 const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
 
 Admin.propTypes = {
-    restClient: PropTypes.func,
-    saga: PropTypes.func,
     appLayout: componentPropType,
-    dashboard: componentPropType,
     children: PropTypes.node,
-    title: PropTypes.string,
+    customSagas: PropTypes.array,
+    customReducers: PropTypes.object,
+    dashboard: componentPropType,
+    restClient: PropTypes.func,
     theme: PropTypes.object,
+    title: PropTypes.string,
 };
 
 export default Admin;
