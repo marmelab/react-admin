@@ -309,6 +309,30 @@ export const PostEdit = (props) => (
 
 ![ReferenceManyFieldDatagrid](./img/reference-many-field-datagrid.png)
 
+By default, admin-on-rest restricts the possible values to 25. You can change this limit by setting the `perPage` prop.
+
+```js
+<ReferenceManyField perPage={10} reference="comments" target="post_id">
+   ...
+</ReferenceManyField>
+```
+
+By default, it orders the possible values by id desc. You can change this order by setting the `sort` prop (an object with `field` and `order` properties).
+
+```js
+<ReferenceManyField sort={{ field: 'created_at', order: 'DESC' }} reference="comments" target="post_id">
+   ...
+</ReferenceManyField>
+```
+
+Also, you can filter the query used to populate the possible values. Use the `filter` prop for that.
+
+```js
+<ReferenceManyField filter={{ is_published: true }} reference="comments" target="post_id">
+   ...
+</ReferenceManyField>
+```
+
 ## `<RichTextField>`
 
 This component displays some HTML content. The content is "rich" (i.e. unescaped) by default.

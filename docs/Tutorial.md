@@ -393,6 +393,7 @@ import {
     GET_LIST,
     GET_ONE,
     GET_MANY,
+    GET_MANY_REFERENCE,
     CREATE,
     UPDATE,
     DELETE,
@@ -429,6 +430,17 @@ const convertRESTRequestToHTTP = (type, resource, params) => {
     case GET_MANY: {
         const query = {
             filter: JSON.stringify({ id: params.ids }),
+        };
+        url = `${API_URL}/${resource}?${queryParameters(query)}`;
+        break;
+    }
+    case GET_MANY_REFERENCE: {
+        const { page, perPage } = params.pagination;
+        const { field, order } = params.sort;
+        const query = {
+            sort: JSON.stringify([field, order]),
+            range: JSON.stringify([(page - 1) * perPage, (page * perPage) - 1]),
+            filter: JSON.stringify({ ...params.filter, [params.target]: params.id }),
         };
         url = `${API_URL}/${resource}?${queryParameters(query)}`;
         break;
