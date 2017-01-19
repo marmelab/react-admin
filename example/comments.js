@@ -110,9 +110,9 @@ export const CommentEdit = (props) => (
             <ReferenceInput label="Post" source="post_id" reference="posts" perPage={5} sort={{ field: 'title', order: 'ASC' }}>
                 <AutocompleteInput optionText="title" />
             </ReferenceInput>
-            <TextInput label="Author name" source="author.name" />
+            <TextInput label="Author name" source="author.name" validation={{ minLength: 10 }} />
             <DateInput label="date" source="created_at" />
-            <LongTextInput source="body" />
+            <LongTextInput source="body" validation={{ minLength: 10 }} />
         </SimpleForm>
     </Edit>
 );

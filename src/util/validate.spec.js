@@ -250,6 +250,14 @@ describe('Validator', () => {
             };
             assert.deepEqual({ bar: ['error'] }, getErrorsForFieldConstraints(constraints, values));
         });
+
+        it('should work for nested fields', () => {
+            const values = { foo: { bar: 1 } };
+            const constraints = {
+                'foo.bar': v => v ===1 ? ['error'] : [],
+            };
+            assert.deepEqual({ foo: { bar: ['error'] } }, getErrorsForFieldConstraints(constraints, values));
+        })
     });
 
 });
