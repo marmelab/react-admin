@@ -23,8 +23,7 @@ describe('<SimpleForm />', () => {
                 <TextInput source="name" />
             </SimpleForm>
         );
-
-        const button = wrapper.find('SaveButton');
+        const button = wrapper.find('Connect(SaveButton)');
         assert.equal(button.length, 1);
     });
 });
