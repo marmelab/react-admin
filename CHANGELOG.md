@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.7.1
+
+* Fix validation on nested fields
+* Fix validation when passed as `<Input>` prop in `<TabbedForm>` component
+* Fix endless spinning `<SaveButton>` upon error
+
 ## v0.7.0
 
 * [BC Break] Remove `<RichTextInput>` from core, use `aor-rich-text-input` instead
