@@ -1,4 +1,6 @@
 import React from 'react';
+import get from 'lodash.get';
+import set from 'lodash.set';
 
 /* eslint-disable no-underscore-dangle */
 /* @link http://stackoverflow.com/questions/46155/validate-email-address-in-javascript */
@@ -81,12 +83,12 @@ export const getErrorsForForm = (validation, values) => {
 export const getErrorsForFieldConstraints = (fieldConstraints, values) => {
     const errors = {};
     Object.keys(fieldConstraints).forEach((fieldName) => {
-        const error = fieldConstraints[fieldName](values[fieldName], values);
+        const error = fieldConstraints[fieldName](get(values, fieldName), values);
         if (error.length > 0) {
-            if (!errors[fieldName]) {
-                errors[fieldName] = [];
+            if (!get(errors, fieldName)) {
+                set(errors, fieldName, []);
             }
-            errors[fieldName] = [...errors[fieldName], ...error];
+            set(errors, fieldName, [...get(errors, fieldName), ...error]);
         }
     });
     return errors;
