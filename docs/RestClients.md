@@ -37,14 +37,15 @@ Admin-on-rest bundles two REST clients that you can use if your API uses a simil
 
 This REST client fits APIs using simple GET parameters for filters and sorting. This is the dialect used for instance in [FakeRest](https://github.com/marmelab/FakeRest).
 
-| REST verb      | API calls
-|----------------|----------------------------------------------------------------
-| `GET_LIST`     | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}`
-| `GET_ONE`      | `GET http://my.api.url/posts/123`
-| `GET_MANY`     | `GET http://my.api.url/posts?filter={ids:[123,456,789]}`
-| `UPDATE`       | `PUT http://my.api.url/posts/123`
-| `CREATE`       | `POST http://my.api.url/posts/123`
-| `DELETE`       | `DELETE http://my.api.url/posts/123`
+| REST verb            | API calls
+|----------------------|----------------------------------------------------------------
+| `GET_LIST`           | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}`
+| `GET_ONE`            | `GET http://my.api.url/posts/123`
+| `CREATE`             | `POST http://my.api.url/posts/123`
+| `UPDATE`             | `PUT http://my.api.url/posts/123`
+| `DELETE`             | `DELETE http://my.api.url/posts/123`
+| `GET_MANY`           | `GET http://my.api.url/posts?filter={ids:[123,456,789]}`
+| `GET_MANY_REFERENCE` | `GET http://my.api.url/posts?filter={author_id:345}`
 
 **Note**: The simple REST client expects the API to include a `Content-Range` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows admin-on-rest to know how many pages of resources there are in total, and build the pagination controls.
 
@@ -81,14 +82,15 @@ export default App;
 
 This REST client fits APIs powered by [JSON Server](https://github.com/typicode/json-server), such as [JSONPlaceholder](http://jsonplaceholder.typicode.com/).
 
-| REST verb      | API calls
-|----------------|----------------------------------------------------------------
-| `GET_LIST`     | `GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24&title=bar`
-| `GET_ONE`      | `GET http://my.api.url/posts/123`
-| `GET_MANY`     | `GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789`
-| `UPDATE`       | `PUT http://my.api.url/posts/123`
-| `CREATE`       | `POST http://my.api.url/posts/123`
-| `DELETE`       | `DELETE http://my.api.url/posts/123`
+| REST verb            | API calls
+|----------------------|----------------------------------------------------------------
+| `GET_LIST`           | `GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24&title=bar`
+| `GET_ONE`            | `GET http://my.api.url/posts/123`
+| `CREATE`             | `POST http://my.api.url/posts/123`
+| `UPDATE`             | `PUT http://my.api.url/posts/123`
+| `DELETE`             | `DELETE http://my.api.url/posts/123`
+| `GET_MANY`           | `GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789`
+| `GET_MANY_REFERENCE` | `GET http://my.api.url/posts?author_id=345`
 
 **Note**: The jsonServer REST client expects the API to include a `X-Total-Count` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows admin-on-rest to know how many pages of resources there are in total, and build the pagination controls.
 
@@ -181,15 +183,15 @@ REST requests require a *type* (e.g. `GET_ONE`), a *resource* (e.g. 'posts') and
 
 Possible types are:
 
-Type | Params format
----- | ----------------
+Type                 | Params format
+-------------------- | ----------------
 `GET_LIST`           | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} } }`
 `GET_ONE`            | `{ id: {mixed} }`
 `CREATE`             | `{ data: {Object} }`
 `UPDATE`             | `{ id: {mixed}, data: {Object} }`
 `DELETE`             | `{ id: {mixed} }`
 `GET_MANY`           | `{ ids: {mixed[]} }`
-`GET_MANY_REFERENCE` | `{ target: {string}, id: {mixed} }`
+`GET_MANY_REFERENCE` | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} } }`
 
 Examples:
 
@@ -203,15 +205,15 @@ restClient(CREATE, 'posts', { title: "hello, world" });
 restClient(UPDATE, 'posts', { id: 123, { title: "hello, world!" } });
 restClient(DELETE, 'posts', { id: 123 });
 restClient(GET_MANY, 'posts', { ids: [123, 124, 125] });
-restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123 });
+restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123, sort: { field: 'created_at', order: 'DESC' } });
 ```
 
 ### Response Format
 
 REST responses are objects. The format depends on the type.
 
-Type | Response format
----- | ----------------
+Type                 | Response format
+-------------------- | ----------------
 `GET_LIST`           | `{ data: {Record[]}, total: {int} }`
 `GET_ONE`            | `{Record}`
 `CREATE`             | `{Record}`
@@ -273,7 +275,7 @@ restClient(GET_MANY, 'posts', { ids: [123, 124, 125] })
 //     { id: 125, title: "howdy partner" },
 // ]
 
-restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123 });
+restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123, sort: { field: 'created_at', order: 'DESC' } });
 .then(records => console.log(records));
 // [
 //     { id: 667, title: "I agree", post_id: 123 },
