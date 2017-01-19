@@ -237,26 +237,11 @@ export default function* commentSaga() {
 }
 ```
 
-Let's explain all of that, starting with the final `commentSaga` generator function. A [generator function](http://exploringjs.com/es6/ch_generators.html) (denoted by the `*` in the function name) gets paused on statements called by `yield` - until the yielded statement returns. `yield []` executes two commands [in parallel](https://redux-saga.github.io/redux-saga/docs/advanced/RunningTasksInParallel.html). `yield takeEvery([ACTION_NAME], callback)` executes the provided callback [every time the related action is called](https://redux-saga.github.io/redux-saga/docs/basics/UsingSagaHelpers.html). To summarize, this will execute `commentApproveSuccess` when the fetch initiated by `commentApprove()` succeeds, and `commentApproveFailure` otherwise.
+Let's explain all of that, starting with the final `commentSaga` generator function. A [generator function](http://exploringjs.com/es6/ch_generators.html) (denoted by the `*` in the function name) gets paused on statements called by `yield` - until the yielded statement returns. `yield []` yields two commands [in parallel](https://redux-saga.github.io/redux-saga/docs/advanced/RunningTasksInParallel.html). `yield takeEvery([ACTION_NAME], callback)` executes the provided callback [every time the related action is called](https://redux-saga.github.io/redux-saga/docs/basics/UsingSagaHelpers.html). To summarize, this will execute `commentApproveSuccess` when the fetch initiated by `commentApprove()` succeeds, and `commentApproveFailure` otherwise.
 
 As for `commentApproveSuccess` and `commentApproveFailure`, they simply dispatch (`put()`) the side effects - the same side effects as in the initial version.
 
-To use this saga, you'll need to merge it with admin-on-rest's own saga, `crudSaga`, which takes the `restClient` as a parameter:
-
-```js
-// in src/saga.js
-import { crudSaga, jsonServerRestClient } from 'admin-on-rest';
-import commentSaga from './comments/commentSaga';
-
-export default function*() {
-    yield [
-        crudSaga(jsonServerRestClient('http://jsonplaceholder.typicode.com'))(),
-        commentSaga(),
-    ];
-}
-```
-
-`yield []` is saga's way to execute several sagas in parallel. The next step is to inject this core saga in the `<Admin>` component:
+To use this saga, pass it in the `customSagas` props of the `<Admin>` component:
 
 ```js
 // in src/App.js
@@ -265,18 +250,16 @@ import React from 'react';
 import { Admin, Resource } from 'admin-on-rest';
 
 import { CommentList } from './comments';
-import saga from './saga';
+import commentSaga from './comments/commentSaga';
 
 const App = () => (
-    <Admin saga={saga}>
+    <Admin customSagas={[ commentSaga() ]} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         <Resource name="comments" list={CommentList} />
     </Admin>
 );
 
 export default App;
 ```
-
-**Tip**: The `Admin` component no longer needs the `restClient` prop, as it's only used for the `crudSaga` initialization.
 
 With this code, approving a review now displays the correct notification, and redirects to the comment list. And the side effects are [testable](https://redux-saga.github.io/redux-saga/docs/introduction/BeginnerTutorial.html#making-our-code-testable), too.
 
