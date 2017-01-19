@@ -8,7 +8,7 @@ const defaultState = {
     filter: {},
 };
 
-export default (resource) => (previousState = defaultState, { type, payload, meta }) => {
+export default resource => (previousState = defaultState, { type, payload, meta }) => {
     if (!meta || meta.resource !== resource) {
         return previousState;
     }
