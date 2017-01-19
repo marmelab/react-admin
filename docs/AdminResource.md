@@ -35,6 +35,8 @@ Here are all the props accepted by the component:
 * [`dashboard`](#dashboard)
 * [`theme`](#theme)
 * [`appLayout`](#applayout)
+* [`customReducers`](#customreducers)
+* [`customSagas`](#customsagas)
 
 ### `restClient`
 
@@ -186,6 +188,97 @@ const App = () => (
         // ...
     </Admin>
 );
+```
+
+### `customReducers`
+
+The `<Admin>` app uses [Redux](http://redux.js.org/) to manage state. The state has the following keys:
+
+```js
+{
+    admin: { /*...*/ }, // used by admin-on-rest
+    form: { /*...*/ }, // used by redux-form
+    routing: { /*...*/ }, // used by react-router-redux
+}
+```
+
+If your components dispatch custom actions, you probably need to register your own reducers to update the state with these actions. Let's imagine that you want to keep the bitcoin exchange rate inside the `bitcoinRate` key in the state. You probably have a reducer looking like the following:
+
+```js
+// in src/bitcoinRateReducer.js
+export const (previousState = 0, { type, payload }) => {
+    if (type === 'BITCOIN_RATE_RECEIVED') {
+        return payload.rate;
+    }
+    return previousState;
+}
+```
+
+To register this reducer in the `<Admin>` app, simply pass it in the `customReducers` prop:
+
+{% raw %}
+```js
+// in src/App.js
+import React from 'react';
+import { Admin } from 'admin-on-rest';
+
+import bitcoinRateReducer from './bitcoinRateReducer';
+
+const App = () => (
+    <Admin customReducers={{ bitcoinRate: bitcoinRateReducer }} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+        ...
+    </Admin>
+);
+
+export default App;
+```
+{% endraw %}
+
+Now the state will look like:
+
+```js
+{
+    admin: { /*...*/ }, // used by admin-on-rest
+    form: { /*...*/ }, // used by redux-form
+    routing: { /*...*/ }, // used by react-router-redux
+    bitcoinRate: 123, // managed by rateReducer
+}
+```
+
+### `customSagas`
+
+The `<Admin>` app uses [redux-saga](https://github.com/redux-saga/redux-saga) to handle side effects.
+
+If your components dispatch custom actions, you probably need to register your own side effects as sagas. Let's imagine that you want to show a notification whenever the `BITCOIN_RATE_RECEIVED` action is dispatched. You probably have a saga looking like the following:
+
+```js
+// in src/bitcoinSaga.js
+import { put, takeEvery } from 'redux-saga/effects';
+import { showNotification } from 'admin-on-rest';
+
+export default function* bitcoinSaga() {
+    yield takeEvery('BITCOIN_RATE_RECEIVED', function* () {
+        yield put(showNotification('Bitcoin rate updated'));
+    })
+}
+```
+
+To register this saga in the `<Admin>` app, simply pass it in the `customSagas` prop:
+
+```js
+// in src/App.js
+import React from 'react';
+import { Admin } from 'admin-on-rest';
+
+import bitcoinSaga from './bitcoinSaga';
+
+const App = () => (
+    <Admin customSagas={[ bitcoinSaga ]} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+        ...
+    </Admin>
+);
+
+export default App;
 ```
 
 ## The `<Resource>` component

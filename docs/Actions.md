@@ -77,6 +77,7 @@ export const CommentList = (props) =>
 
 Or, in the `<Edit>` page, as a [custom action](./CreateEdit.html#actions):
 
+{% raw %}
 ```js
 // in src/comments/CommentEditActions.js
 import React from 'react';
@@ -102,8 +103,9 @@ export const CommentEdit = (props) =>
         ...
     </List>;
 ```
+{% endraw %}
 
-## Using The REST client Instead of Fetch
+## Using The REST Client Instead of Fetch
 
 The previous code uses `fetch()`, which means it has to make raw HTTP requests. The REST logic often requires a bit of HTTP plumbing to deal with query parameters, encoding, headers, body formatting, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: the [REST Client](./RestClients.html). So it's a good idea to use this function instead of `fetch` - provided you have exported it:
 
@@ -246,7 +248,6 @@ To use this saga, pass it in the `customSagas` props of the `<Admin>` component:
 ```js
 // in src/App.js
 import React from 'react';
-
 import { Admin, Resource } from 'admin-on-rest';
 
 import { CommentList } from './comments';
@@ -271,9 +272,88 @@ As the custom `COMMENT_APPROVE` action contains the `fetch: UPDATE` meta, admin-
 
 The fact that admin-on-rest updates the instance pool if you use custom actions with the `fetch` meta should be another motivation to avoid using raw `fetch`.
 
-## Using a Custom a Reducer
+## Using a Custom Reducer
 
-[To be completed]
+In addition to triggering REST calls, you may want to store the effect of your own actions in the application state. For instance, if you want to display a widget showing the current exchange rate for the bitcoin, you might need the following action:
+
+```js
+// in src/bitcoinRateReceived.js
+export const BITCOIN_RATE_RECEIVED = 'BITCOIN_RATE_RECEIVED';
+export const bitcoinRateReceived = (rate) => ({
+    type: BITCOIN_RATE_RECEIVED,
+    payload: { rate },
+});
+```
+
+This action can be triggered on mount by the following component:
+
+```js
+// in src/BitCoinRate.js
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bitcoinRateReceived as bitcoinRateReceivedAction } from './bitcoinRateReceived';
+
+class BitCoinRate extends Component {
+    componentWillMount() {
+        fetch('https://blockchain.info/fr/ticker')
+            .then(response => response.json())
+            .then(rates => rates.USD['15m'])
+            .then(bitcoinRateReceived) // dispatch action when the response is received
+    }
+
+    render() {
+        const { rate } = this.props;
+        return <div>Current bitcoin value: {rate}$</div>
+    }
+}
+
+BitCoinRate.propTypes = {
+    bitcoinRateReceived: PropTypes.func,
+    rate: PropTypes.number,
+};
+
+const mapStateToProps = state => ({ rate: state.bitcoinRate });
+
+export default connect(mapStateToProps, {
+    bitcoinRateReceived: bitcoinRateReceivedAction,
+})(BitCoinRate);
+```
+
+In order to put the rate passed to `bitcoinRateReceived()` into the Redux store, you'll need a reducer:
+
+```js
+// in src/rateReducer.js
+import { BITCOIN_RATE_RECEIVED } from './bitcoinRateReceived';
+
+export const (previousState = 0, { type, payload }) => {
+    if (type === BITCOIN_RATE_RECEIVED) {
+        return payload.rate;
+    }
+    return previousState;
+}
+```
+
+Now the question is: How can you put this reducer in the `<Admin>` app? Simple: use the `customReducers` props:
+
+{% raw %}
+```js
+// in src/App.js
+import React from 'react';
+import { Admin } from 'admin-on-rest';
+
+import rate from './rateReducer';
+
+const App = () => (
+    <Admin customReducers={{ rate }} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+        ...
+    </Admin>
+);
+
+export default App;
+```
+{% endraw %}
+
+**Tip**: You can avoid storing data in the Redux state by storing data in a component state instead. It's much less complicated to deal with, and more performant, too. Use the global state only when you really need to.
 
 ## Conclusion
 
