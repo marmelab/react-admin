@@ -253,7 +253,7 @@ import { CommentList } from './comments';
 import commentSaga from './comments/commentSaga';
 
 const App = () => (
-    <Admin customSagas={[ commentSaga() ]} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin customSagas={[ commentSaga ]} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         <Resource name="comments" list={CommentList} />
     </Admin>
 );

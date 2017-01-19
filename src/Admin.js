@@ -5,6 +5,7 @@ import { Router, IndexRoute, Route, Redirect, hashHistory } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware, routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
+import { fork } from 'redux-saga/effects';
 
 import adminReducer from './reducer';
 import { crudSaga } from './sideEffect/saga';
@@ -31,9 +32,9 @@ const Admin = ({
     });
     const saga = function* rootSaga() {
         yield [
-            crudSaga(restClient)(),
+            crudSaga(restClient),
             ...customSagas,
-        ];
+        ].map(fork);
     };
     const sagaMiddleware = createSagaMiddleware();
     const store = createStore(reducer, undefined, compose(
