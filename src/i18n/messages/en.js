@@ -24,6 +24,7 @@ export default {
             page_range_info: '%{offsetBegin}-%{offsetEnd} of %{total}',
             next: 'Next',
             prev: 'Prev',
+            about: 'About',
         },
         flashes: {
             updated: 'Element updated',

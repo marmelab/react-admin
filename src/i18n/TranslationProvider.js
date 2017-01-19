@@ -1,7 +1,7 @@
 import Polyglot from 'node-polyglot';
 import { Component, Children, PropTypes } from 'react';
 
-class I18nProvider extends Component {
+class TranslationProvider extends Component {
     getChildContext() {
         const {
             locale,
@@ -21,15 +21,15 @@ class I18nProvider extends Component {
     }
 }
 
-I18nProvider.propTypes = {
+TranslationProvider.propTypes = {
     locale: PropTypes.string.isRequired,
     messages: PropTypes.object,
     children: PropTypes.element,
 };
 
-I18nProvider.childContextTypes = {
+TranslationProvider.childContextTypes = {
     locale: PropTypes.string.isRequired,
     translate: PropTypes.func.isRequired,
 };
 
-export default I18nProvider;
+export default TranslationProvider;

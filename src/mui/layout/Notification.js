@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
 import { hideNotification as hideNotificationAction } from '../../actions/notificationActions' ;
-import LocalizedComponent from '../../i18n/LocalizedComponent';
+import Translate from '../../i18n/Translate';
 
 function getStyles(context) {
     if (!context) return { primary1Color: '#00bcd4', accent1Color: '#ff4081' };
@@ -64,7 +64,7 @@ const mapStateToProps = state => ({
     type: state.admin.notification.type,
 });
 
-export default LocalizedComponent(connect(
+export default Translate(connect(
   mapStateToProps,
   { hideNotification: hideNotificationAction },
 )(Notification));

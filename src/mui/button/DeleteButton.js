@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import linkToRecord from '../../util/linkToRecord';
-import LocalizedComponent from '../../i18n/LocalizedComponent';
+import Translate from '../../i18n/Translate';
 
 const DeleteButton = ({ basePath = '', label = 'aor.action.delete', record = {}, translate }) => <FlatButton
     secondary
@@ -20,4 +20,4 @@ DeleteButton.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-export default LocalizedComponent(DeleteButton);
+export default Translate(DeleteButton);

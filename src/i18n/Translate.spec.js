@@ -3,15 +3,15 @@ import assert from 'assert';
 import React from 'react';
 import sinon from 'sinon';
 
-import localize from './LocalizedComponent';
+import translate from './Translate';
 
-describe('<LocalizedComponent />', () => {
+describe('<Translate />', () => {
     it('should add `translate` and `locale` prop based on context', () => {
         const Component = () => (<div>Hello world!</div>);
         const translateSpy = sinon.spy();
 
-        const LocalizedComponent = localize(Component);
-        const wrapper = shallow(<LocalizedComponent />, {
+        const TranslatedComponent = translate(Component);
+        const wrapper = shallow(<TranslatedComponent />, {
             context: {
                 translate: translateSpy,
                 locale: 'de',
@@ -26,8 +26,8 @@ describe('<LocalizedComponent />', () => {
     it('should keep all other props pristine', () => {
         const Component = () => (<div>Hello world!</div>);
 
-        const LocalizedComponent = localize(Component);
-        const wrapper = shallow(<LocalizedComponent className="awesome" />, {
+        const TranslatedComponent = translate(Component);
+        const wrapper = shallow(<TranslatedComponent className="awesome" />, {
             context: {
                 translate: x => x,
                 locale: 'fr',

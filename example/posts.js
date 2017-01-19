@@ -26,10 +26,10 @@ import {
     TextInput,
 } from 'admin-on-rest/mui';
 import RichTextInput from 'aor-rich-text-input';
-import LocalizedComponent from 'admin-on-rest/i18n/LocalizedComponent';
+import { Translate } from 'admin-on-rest';
 export PostIcon from 'material-ui/svg-icons/action/book';
 
-const PostFilter = LocalizedComponent(({ translate, ...props }) => (
+const PostFilter = Translate(({ translate, ...props }) => (
     <Filter {...props}>
         <TextInput label={translate('post.list.search')} source="q" alwaysOn />
         <TextInput label={translate('post.list.title')} source="title" />
@@ -37,7 +37,7 @@ const PostFilter = LocalizedComponent(({ translate, ...props }) => (
 ));
 
 const titleFieldStyle = { maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' };
-export const PostList = LocalizedComponent(({ translate, ...props }) => (
+export const PostList = Translate(({ translate, ...props }) => (
     <List {...props} filters={<PostFilter />} sort={{ field: 'published_at', order: 'DESC' }} title={translate('post.all')}>
         <Datagrid>
             <TextField source="id" />
@@ -55,7 +55,7 @@ const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 
-export const PostCreate = LocalizedComponent(({ translate, ...props }) => (
+export const PostCreate = Translate(({ translate, ...props }) => (
     <Create {...props}>
         <SimpleForm defaultValue={{ average_note: 0 }} validation={(values) => {
             const errors = {};
@@ -82,7 +82,7 @@ export const PostCreate = LocalizedComponent(({ translate, ...props }) => (
     </Create>
 ));
 
-export const PostEdit = LocalizedComponent(({ translate, ...props }) => (
+export const PostEdit = Translate(({ translate, ...props }) => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label={translate('post.form.summary')}>
@@ -113,7 +113,7 @@ export const PostEdit = LocalizedComponent(({ translate, ...props }) => (
     </Edit>
 ));
 
-export const PostShow = LocalizedComponent(({ translate, ...props }) => (
+export const PostShow = Translate(({ translate, ...props }) => (
     <Show title={<PostTitle />} {...props}>
         <SimpleShowLayout>
             <TextField source="id" />

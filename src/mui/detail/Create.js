@@ -6,7 +6,7 @@ import Title from '../layout/Title';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import DefaultActions from './CreateActions';
 import getDefaultValues from '../form/getDefaultValues';
-import LocalizedComponent from '../../i18n/LocalizedComponent';
+import Translate from '../../i18n/Translate';
 
 class Create extends Component {
     getBasePath() {
@@ -64,7 +64,7 @@ function mapStateToProps(state) {
     };
 }
 
-export default LocalizedComponent(connect(
+export default Translate(connect(
     mapStateToProps,
     { crudCreate: crudCreateAction },
 )(Create));

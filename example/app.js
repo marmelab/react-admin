@@ -5,7 +5,7 @@ import { render } from 'react-dom';
 import { Admin, Resource } from 'admin-on-rest';
 import jsonRestClient from 'aor-json-rest-client';
 import { Delete } from 'admin-on-rest/mui';
-import { resolveBrowserLocale } from 'admin-on-rest/i18n';
+import { resolveBrowserLocale } from 'admin-on-rest';
 
 import { PostList, PostCreate, PostEdit, PostShow, PostIcon } from './posts';
 import { CommentList, CommentEdit, CommentCreate, CommentIcon } from './comments';
@@ -14,7 +14,10 @@ import data from './data';
 import * as messages from './i18n';
 
 const restClient = jsonRestClient(data, true);
-const delayedRestClient = (type, resource, params) => new Promise(resolve => setTimeout(() => resolve(restClient(type, resource, params)), 1000));
+
+const delayedRestClient = (type, resource, params) => new Promise(
+    resolve => setTimeout(() => resolve(restClient(type, resource, params)), 1000),
+);
 
 render(
     <Admin restClient={delayedRestClient} title="Example Admin" locale={resolveBrowserLocale()} messages={messages}>

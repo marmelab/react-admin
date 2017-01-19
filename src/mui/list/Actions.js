@@ -1,9 +1,6 @@
 import React, { PropTypes } from 'react';
 import { CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import CreateButton from '../button/CreateButton';
-import LocalizedComponent from '../../i18n/LocalizedComponent';
+import { CreateButton, RefreshButton } from '../button';
 
 const cardActionStyle = {
     zIndex: 2,
@@ -11,16 +8,12 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const Actions = ({ resource, filters, displayedFilters, filterValues, hasCreate, basePath, showFilter, refresh, translate }) => (
+const Actions = ({ resource, filters, displayedFilters, filterValues, hasCreate, basePath, showFilter, refresh }) => (
     <CardActions style={cardActionStyle}>
         {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         {hasCreate && <CreateButton basePath={basePath} />}
-        <FlatButton primary label={translate('aor.action.refresh')} onClick={refresh} icon={<NavigationRefresh />} />
+        <RefreshButton onClick={refresh} />
     </CardActions>
 );
 
-Actions.propTypes = {
-    translate: PropTypes.func.isRequired,
-};
-
-export default LocalizedComponent(Actions);
+export default Actions;

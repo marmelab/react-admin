@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
-const localized = (BaseComponent) => {
-    const LocalizedComponent = (props, context) => (
+const translate = (BaseComponent) => {
+    const TranslatedComponent = (props, context) => (
         <BaseComponent
             translate={context.translate}
             locale={context.locale}
@@ -9,14 +9,14 @@ const localized = (BaseComponent) => {
         />
     );
 
-    LocalizedComponent.contextTypes = {
+    TranslatedComponent.contextTypes = {
         translate: PropTypes.func.isRequired,
         locale: PropTypes.string.isRequired,
     };
 
-    LocalizedComponent.displayName = BaseComponent.name;
+    TranslatedComponent.displayName = BaseComponent.name;
 
-    return LocalizedComponent;
+    return TranslatedComponent;
 };
 
-export default localized;
+export default translate;

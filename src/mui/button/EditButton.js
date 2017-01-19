@@ -4,7 +4,7 @@ import shouldUpdate from 'recompose/shouldUpdate';
 import FlatButton from 'material-ui/FlatButton';
 import ContentCreate from 'material-ui/svg-icons/content/create';
 import linkToRecord from '../../util/linkToRecord';
-import LocalizedComponent from '../../i18n/LocalizedComponent';
+import Translate from '../../i18n/Translate';
 
 const EditButton = ({ basePath = '', label = 'aor.action.edit', record = {}, translate }) => <FlatButton
     primary
@@ -21,7 +21,7 @@ EditButton.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-export default LocalizedComponent(shouldUpdate((props, nextProps) =>
+export default Translate(shouldUpdate((props, nextProps) =>
     props.record.id !== nextProps.record.id
     || props.basePath !== nextProps.basePath
 )(EditButton));

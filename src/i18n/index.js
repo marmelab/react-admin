@@ -1,3 +1,3 @@
-export * from './I18nLoader';
-export LocalizedComponent from './LocalizedComponent';
-export I18nProvider from './I18nProvider';
+export * from './TranslationLoader';
+export Translate from './Translate';
+export TranslationProvider from './TranslationProvider';
