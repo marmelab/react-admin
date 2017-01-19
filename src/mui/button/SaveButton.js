@@ -1,37 +1,26 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentSave from 'material-ui/svg-icons/content/save';
 import CircularProgress from 'material-ui/CircularProgress';
 
 class SaveButton extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            submitting: false,
-        };
-    }
-
-    componentWillReceiveProps(newProps) {
-        if (newProps.invalid) {
-            this.setState({ submitting: false });
-        }
-    }
 
     handleClick = (e) => {
-        if (this.state.submitting) {
+        if (this.props.saving) {
             // prevent double submission
             e.preventDefault();
         }
-        this.setState({ submitting: true });
     }
 
     render() {
+        const { saving } = this.props;
         return <RaisedButton
             type="submit"
             label="Save"
-            icon={this.state.submitting ? <CircularProgress size={25} thickness={2} /> : <ContentSave />}
+            icon={saving ? <CircularProgress size={25} thickness={2} /> : <ContentSave />}
             onClick={this.handleClick}
-            primary={!this.state.submitting}
+            primary={!saving}
             style={{
                 margin: '10px 24px',
                 position: 'relative',
@@ -41,7 +30,11 @@ class SaveButton extends Component {
 }
 
 SaveButton.propTypes = {
-    invalid: PropTypes.bool,
+    saving: PropTypes.bool,
 };
 
-export default SaveButton;
+const mapStateToProps = state => ({
+    saving: state.admin.saving,
+});
+
+export default connect(mapStateToProps)(SaveButton);

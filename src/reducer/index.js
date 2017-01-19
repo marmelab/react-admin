@@ -3,6 +3,7 @@ import resourceReducer from './resource';
 import loading from './loading';
 import notification from './notification';
 import references from './references';
+import saving from './saving';
 
 export default (resources) => {
     const resourceReducers = {};
@@ -14,5 +15,6 @@ export default (resources) => {
         loading,
         notification,
         references,
+        saving,
     });
 };
