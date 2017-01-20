@@ -20,7 +20,7 @@ const messages = {
     en: { ...englishMessages, ...customMessages.en },
 };
 
-const restClient = UploadCapableRestClient(data, true);
+const restClient = UploadCapableRestClient(data);
 const delayedRestClient = (type, resource, params) => new Promise(resolve => setTimeout(() => resolve(restClient(type, resource, params)), 1000));
 
 render(

@@ -9,7 +9,11 @@ describe('<ImageInput />', () => {
     it('should display a dropzone', () => {
         const wrapper = shallow((
             <ImageInput
-                record={{ picture: null }}
+                input={{
+                    value: {
+                        picture: null,
+                    },
+                }}
                 source="picture"
             />
         ));
@@ -22,7 +26,11 @@ describe('<ImageInput />', () => {
             const wrapper = shallow((
                 <ImageInput
                     multiple={multiple}
-                    record={{ picture: null }}
+                    input={{
+                        value: {
+                            picture: null,
+                        },
+                    }}
                     source="picture"
                 />
             ));
@@ -37,12 +45,12 @@ describe('<ImageInput />', () => {
     it('should display file preview using child as preview component', () => {
         const wrapper = shallow((
             <ImageInput
-                record={{ picture: {
-                    url: 'http://foo.com/bar.jpg',
-                    title: 'Hello world!',
-                } }}
-                source="picture"
-                title="picture"
+                input={{
+                    value: {
+                        url: 'http://foo.com/bar.jpg',
+                        title: 'Hello world!',
+                    },
+                }}
             >
                 <ImageField source="url" title="title" />
             </ImageInput>
@@ -53,19 +61,21 @@ describe('<ImageInput />', () => {
         assert.equal(previewImage.length, 1);
         assert.equal(previewImage.prop('source'), 'url');
         assert.equal(previewImage.prop('title'), 'title');
-        assert.deepEqual(previewImage.prop('record').title, 'Hello world!');
-        assert.deepEqual(previewImage.prop('record').url, 'http://foo.com/bar.jpg');
+        assert.deepEqual(previewImage.prop('record'), {
+            title: 'Hello world!',
+            url: 'http://foo.com/bar.jpg',
+        });
     });
 
     it('should display all files (when several) previews using child as preview component', () => {
         const wrapper = shallow((
             <ImageInput
-                record={{ pictures: [
-                    { url: 'http://foo.com/bar.jpg', title: 'Hello world!' },
-                    { url: 'http://foo.com/qux.bmp', title: 'A good old Bitmap!' },
-                ] }}
-                source="pictures"
-                title="picture"
+                input={{
+                    value: [
+                        { url: 'http://foo.com/bar.jpg', title: 'Hello world!' },
+                        { url: 'http://foo.com/qux.bmp', title: 'A good old Bitmap!' },
+                    ],
+                }}
             >
                 <ImageField source="url" title="title" />
             </ImageInput>

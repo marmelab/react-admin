@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Dropzone from 'react-dropzone';
-import DroppedFileField from '../field/DroppedFileField';
-import ImageField from '../field/ImageField';
 
 const defaultStyle = {
     dropZone: {
@@ -21,32 +19,37 @@ class FileInput extends Component {
     constructor(props) {
         super(props);
 
-        let files = props.record[props.source] || [];
+        let files = props.input.value || [];
         if (!Array.isArray(files)) {
             files = [files];
         }
 
-        this.state = {
-            files: files.map(f => ({
-                ...f,
-                dropped: false,
-            })),
-        };
+        this.state = { files };
     }
 
     onDrop = (files) => {
         const updatedFiles = [
             ...this.state.files,
-            ...files.map(f => ({
-                title: f.name,
-                url: f.preview,
-                dropped: true,
-            })),
+            ...files.map(this.transformFile),
         ];
 
         this.setState({ files: updatedFiles });
         this.props.input.onChange(files);
     }
+
+    // turn a browser dropped file structure into expected structure
+    transformFile = (droppedFile) => {
+        const { source, title } = React.Children.toArray(this.props.children)[0].props;
+
+        const transformedFile = { ...droppedFile };
+        transformedFile[source] = droppedFile.preview;
+
+        if (title) {
+            transformedFile[title] = droppedFile.name;
+        }
+
+        return transformedFile;
+    };
 
     label() {
         if (this.props.multiple) {
@@ -68,8 +71,6 @@ class FileInput extends Component {
             maxSize,
             minSize,
             multiple,
-            record,
-            source,
             style,
         } = this.props;
 
@@ -77,8 +78,6 @@ class FileInput extends Component {
             ...defaultStyle,
             ...style,
         };
-
-        const PreviewComponent = React.Children.toArray(children)[0];
 
         return (
             <div>
@@ -93,10 +92,10 @@ class FileInput extends Component {
                 >
                     {this.label()}
                 </Dropzone>
-                { PreviewComponent && (
+                { children && (
                     <div className="previews">
                         {this.state.files.map((file, index) => React.cloneElement(
-                            PreviewComponent, {
+                            children, {
                                 record: file,
                                 key: index,
                             },
@@ -110,22 +109,21 @@ class FileInput extends Component {
 
 FileInput.propTypes = {
     accept: PropTypes.string,
+    children: PropTypes.Element,
     disableClick: PropTypes.bool,
     input: PropTypes.object,
     maxSize: PropTypes.number,
     minSize: PropTypes.number,
     multiple: PropTypes.bool,
-    previewComponent: PropTypes.func,
-    record: PropTypes.object,
     source: PropTypes.string.isRequired,
     style: PropTypes.object,
+    title: PropTypes.string,
 };
 
 FileInput.defaultProps = {
     addLabel: true,
     addField: true,
     multiple: false,
-    previewComponent: ImageField,
     onUpload: () => {},
 };
 
