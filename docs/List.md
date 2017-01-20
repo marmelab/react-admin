@@ -331,6 +331,7 @@ For instance, what if you prefer to show a list of cards rather than a datagrid?
 
 Simple: Create your own iterator component as follows:
 
+{% raw %}
 ```js
 // in src/comments.js
 const cardStyle = {
@@ -376,5 +377,6 @@ export const CommentList = (props) => (
     </List>
 );
 ```
+{% endraw %}
 
 As you can see, nothing prevents you from using `<Field>` components inside your own components... provided you inject the current `record`. Also, notice that components building links require the `basePath` component, which is also injected.
