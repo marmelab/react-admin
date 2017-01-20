@@ -41,7 +41,6 @@ export const PostList = (props) => (
     <List {...props} filter={<PostFilter />}>
         <Datagrid>
             <TextField source="id" />
-            <ImageField source="pictures[0]" src="src" title="title" />
             <TextField source="title" style={{ maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}/>
             <DateField source="published_at" style={{ fontStyle: 'italic' }} />
             <BooleanField label="Commentable" source="commentable" />
