@@ -19,9 +19,10 @@ Here are all the props accepted by the `<List>` component:
 
 * [`title`](#page-title)
 * [`actions`](#actions)
+* [`filters`](#filters) (a React element used to display the filter form)
 * [`perPage`](#records-per-page)
 * [`sort`](#default-sort-field)
-* [`filter`](#filters)
+* [`filter`](#permanent-filter) (the permanent filter used in the REST request)
 * [`pagination`](#pagination)
 
 Here is the minimal code necessary to display a list of posts:
@@ -110,6 +111,36 @@ export const PostList = (props) => (
 );
 ```
 
+### Filters
+
+You can add a filter element to the list using the `filters` prop:
+
+```js
+const PostFilter = (props) => (
+    <Filter {...props}>
+        <TextInput label="Search" source="q" alwaysOn />
+        <TextInput label="Title" source="title" />
+    </Filter>
+);
+
+export const PostList = (props) => (
+    <List {...props} filters={<PostFilter />}>
+        ...
+    </List>
+);
+```
+
+The filter component must be a `<Filter>` with `<Input>` children.
+
+**Tip**: `<Filter>` is a special component, which renders in two ways:
+
+- as a filter button (to add new filters)
+- as a filter form (to enter filter values)
+
+It does so by inspecting its `context` prop.
+
+**Tip**: Don't mix up this `filters` prop, expecting a React element, with the `filter` props, which expects an object to define permanent filters (see below).
+
 ### Records Per Page
 
 By default, the list paginates results by groups of 10. You can override this setting by specifying the `perPage` prop:
@@ -140,33 +171,22 @@ export const PostList = (props) => (
 
 `sort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
 
-### Filters
+### Permanent Filter
 
-You can add a filter element to the list using the `filters` prop:
+You can choose to always filter the list, without letting the user disable this filter - for instance to display only published posts. Write the filter to be passed to the REST client in the `filter` props:
 
+{% raw %}
 ```js
-const PostFilter = (props) => (
-    <Filter {...props}>
-        <TextInput label="Search" source="q" alwaysOn />
-        <TextInput label="Title" source="title" />
-    </Filter>
-);
-
+// in src/posts.js
 export const PostList = (props) => (
-    <List {...props} filters={<PostFilter />}>
+    <List {...props} filter={{ is_published: true }}>
         ...
     </List>
 );
 ```
+{% endraw %}
 
-The filter component must be a `<Filter>` with `<Input>` children.
-
-**Tip**: `<Filter>` is a special component, which renders in two ways:
-
-- as a filter button (to add new filters)
-- as a filter form (to enter filter values)
-
-It does so by inspecting its `context` prop.
+The actual filter parameter sent to the REST client is the result of the combination of the *user* filters (the ones set through the `filters` component form), and the *permanent* filter. The user cannot override the permanent filters set by way of `filter`.
 
 ### Pagination
 

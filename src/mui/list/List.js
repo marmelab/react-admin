@@ -28,8 +28,9 @@ const filterFormName = 'filterForm';
  *   - title
  *   - perPage
  *   - sort
+ *   - filter (the permanent filter to apply to the query)
  *   - actions
- *   - filters
+ *   - filters (a React Element used to display the filter form)
  *   - pagination
  *
  * @example
@@ -40,11 +41,15 @@ const filterFormName = 'filterForm';
  *         </Filter>
  *     );
  *     export const PostList = (props) => (
- *         <List {...props} title="List of posts" filters={<PostFilter />} sort={{ field: 'published_at' }}>
+ *         <List {...props}
+ *             title="List of posts"
+ *             sort={{ field: 'published_at' }}
+ *             filter={{ is_published: true }}
+ *             filters={<PostFilter />}
+ *         >
  *             <Datagrid>
  *                 <TextField source="id" />
  *                 <TextField source="title" />
- *                 <DateField source="published_at" style={{ fontStyle: 'italic' }} />
  *                 <EditButton />
  *             </Datagrid>
  *         </List>
@@ -125,7 +130,8 @@ export class List extends Component {
     updateData(query) {
         const params = query || this.getQuery();
         const { sort, order, page, perPage, filter } = params;
-        this.props.crudGetList(this.props.resource, { page, perPage }, { field: sort, order }, filter);
+        const permanentFilter = this.props.filter;
+        this.props.crudGetList(this.props.resource, { page, perPage }, { field: sort, order }, { ...filter, ...permanentFilter });
     }
 
     setSort = sort => this.changeParams({ type: SET_SORT, payload: sort });
@@ -195,6 +201,7 @@ export class List extends Component {
 List.propTypes = {
     // the props you can change
     title: PropTypes.any,
+    filter: PropTypes.object,
     filters: PropTypes.element,
     pagination: PropTypes.element,
     actions: PropTypes.element,
@@ -224,6 +231,7 @@ List.propTypes = {
 };
 
 List.defaultProps = {
+    filter: {},
     filterValues: {},
     perPage: 10,
     sort: {
