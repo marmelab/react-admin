@@ -18,9 +18,9 @@ The `<List>` component renders the list layout (title, buttons, filters, paginat
 Here are all the props accepted by the `<List>` component:
 
 * [`title`](#page-title)
-* [`perPage`](#records-per-page)
-* [`defaultSort`](#default-sort-field)
 * [`actions`](#actions)
+* [`perPage`](#records-per-page)
+* [`sort`](#default-sort-field)
 * [`filter`](#filters)
 * [`pagination`](#pagination)
 
@@ -77,36 +77,6 @@ export const PostList = (props) => (
 
 The title can be either a string, or an element of your own.
 
-### Records Per Page
-
-By default, the list paginates results by groups of 10. You can override this setting by specifying the `perPage` prop:
-
-```js
-// in src/posts.js
-export const PostList = (props) => (
-    <List {...props} perPage={25}>
-        ...
-    </List>
-);
-```
-
-### Default Sort Field
-
-Pass an object literal as the `defaultSort` prop to determine the default `field` and `order` used for sorting:
-
-{% raw %}
-```js
-// in src/posts.js
-export const PostList = (props) => (
-    <List {...props} defaultSort={{ field: 'last_seen', order: 'DESC' }}>
-        ...
-    </List>
-);
-```
-{% endraw %}
-
-`defaultSort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
-
 ### Actions
 
 You can replace the list of default actions by your own element using the `actions` prop:
@@ -139,6 +109,36 @@ export const PostList = (props) => (
     </List>
 );
 ```
+
+### Records Per Page
+
+By default, the list paginates results by groups of 10. You can override this setting by specifying the `perPage` prop:
+
+```js
+// in src/posts.js
+export const PostList = (props) => (
+    <List {...props} perPage={25}>
+        ...
+    </List>
+);
+```
+
+### Default Sort Field
+
+Pass an object literal as the `sort` prop to determine the default `field` and `order` used for sorting:
+
+{% raw %}
+```js
+// in src/posts.js
+export const PostList = (props) => (
+    <List {...props} sort={{ field: 'published_at', order: 'DESC' }}>
+        ...
+    </List>
+);
+```
+{% endraw %}
+
+`sort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
 
 ### Filters
 

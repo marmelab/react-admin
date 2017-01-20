@@ -27,7 +27,7 @@ const filterFormName = 'filterForm';
  * Props:
  *   - title
  *   - perPage
- *   - defaultSort
+ *   - sort
  *   - actions
  *   - filter
  *   - pagination
@@ -40,7 +40,7 @@ const filterFormName = 'filterForm';
  *         </Filter>
  *     );
  *     export const PostList = (props) => (
- *         <List {...props} title="List of posts" filter={<PostFilter />} defaultSort={{ field: 'published_at' }}>
+ *         <List {...props} title="List of posts" filter={<PostFilter />} sort={{ field: 'published_at' }}>
  *             <Datagrid>
  *                 <TextField source="id" />
  *                 <TextField source="title" />
@@ -113,8 +113,8 @@ export class List extends Component {
     getQuery() {
         const query = Object.keys(this.props.query).length > 0 ? this.props.query : { ...this.props.params };
         if (!query.sort) {
-            query.sort = this.props.defaultSort.field;
-            query.order = this.props.defaultSort.order;
+            query.sort = this.props.sort.field;
+            query.order = this.props.sort.order;
         }
         if (!query.perPage) {
             query.perPage = this.props.perPage;
@@ -199,7 +199,7 @@ List.propTypes = {
     pagination: PropTypes.element,
     actions: PropTypes.element,
     perPage: PropTypes.number.isRequired,
-    defaultSort: PropTypes.shape({
+    sort: PropTypes.shape({
         field: PropTypes.string,
         order: PropTypes.string,
     }),
@@ -226,7 +226,7 @@ List.propTypes = {
 List.defaultProps = {
     filters: {},
     perPage: 10,
-    defaultSort: {
+    sort: {
         field: 'id',
         order: SORT_DESC,
     },

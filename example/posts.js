@@ -36,7 +36,7 @@ const PostFilter = (props) => (
 );
 
 export const PostList = (props) => (
-    <List {...props} filter={<PostFilter />}>
+    <List {...props} filter={<PostFilter />} sort={{ field: 'published_at', order: 'DESC' }}>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" style={{ maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}/>
