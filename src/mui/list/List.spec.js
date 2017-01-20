@@ -13,7 +13,7 @@ describe('<List />', () => {
         location: {},
         params: {},
         query: {},
-        filters: {},
+        filterValues: {},
         total: 100,
         isLoading: false,
         crudGetList: () => {},
@@ -32,15 +32,15 @@ describe('<List />', () => {
                 <List
                     {...defaultProps}
                     changeListParams={changeListParams}
-                    filters={{}}
+                    filterValues={{}}
                 >
                     <div />
                 </List>
             );
 
-            wrapper.setProps({ filters: { q: 'hello' } });
+            wrapper.setProps({ filterValues: { q: 'hello' } });
             clock.tick(1000); // wait for debounce
-            wrapper.setProps({ filters: {} });
+            wrapper.setProps({ filterValues: {} });
             clock.tick(1000); // wait for debounce
 
             assert.deepEqual(changeListParams.args, [

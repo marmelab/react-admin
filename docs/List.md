@@ -142,7 +142,7 @@ export const PostList = (props) => (
 
 ### Filters
 
-You can add a filter element to the list:
+You can add a filter element to the list using the `filters` prop:
 
 ```js
 const PostFilter = (props) => (
@@ -153,7 +153,7 @@ const PostFilter = (props) => (
 );
 
 export const PostList = (props) => (
-    <List {...props} filter={<PostFilter />}>
+    <List {...props} filters={<PostFilter />}>
         ...
     </List>
 );

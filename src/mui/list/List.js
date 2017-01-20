@@ -29,7 +29,7 @@ const filterFormName = 'filterForm';
  *   - perPage
  *   - sort
  *   - actions
- *   - filter
+ *   - filters
  *   - pagination
  *
  * @example
@@ -40,7 +40,7 @@ const filterFormName = 'filterForm';
  *         </Filter>
  *     );
  *     export const PostList = (props) => (
- *         <List {...props} title="List of posts" filter={<PostFilter />} sort={{ field: 'published_at' }}>
+ *         <List {...props} title="List of posts" filters={<PostFilter />} sort={{ field: 'published_at' }}>
  *             <Datagrid>
  *                 <TextField source="id" />
  *                 <TextField source="title" />
@@ -69,11 +69,11 @@ export class List extends Component {
          || nextProps.query.filter !== this.props.query.filter) {
             this.updateData(Object.keys(nextProps.query).length > 0 ? nextProps.query : nextProps.params);
         }
-        if (Object.keys(nextProps.filters).length === 0 && Object.keys(this.props.filters).length === 0) {
+        if (Object.keys(nextProps.filterValues).length === 0 && Object.keys(this.props.filterValues).length === 0) {
             return;
         }
-        if (nextProps.filters !== this.props.filters) {
-            const nextFilters = nextProps.filters;
+        if (nextProps.filterValues !== this.props.filterValues) {
+            const nextFilters = nextProps.filterValues;
             Object.keys(nextFilters).forEach(filterName => {
                 if (nextFilters[filterName] === '') {
                     // remove empty filter from query
@@ -139,7 +139,7 @@ export class List extends Component {
     hideFilter = (filterName) => {
         this.setState({ [filterName]: false });
         this.props.changeFormValue(filterFormName, filterName, '');
-        this.setFilters({ ...this.props.filters, [filterName]: undefined });
+        this.setFilters({ ...this.props.filterValues, [filterName]: undefined });
     }
 
     changeParams(action) {
@@ -149,7 +149,7 @@ export class List extends Component {
     }
 
     render() {
-        const { filter, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
+        const { filters, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
@@ -157,7 +157,7 @@ export class List extends Component {
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
                 {actions && React.cloneElement(actions, {
                     resource,
-                    filter,
+                    filters,
                     filterValues,
                     basePath,
                     hasCreate,
@@ -166,7 +166,7 @@ export class List extends Component {
                     refresh: this.refresh,
                 })}
                 <CardTitle title={<Title title={title} defaultTitle={`${inflection.humanize(inflection.pluralize(resource))} List`} />} />
-                {filter && React.cloneElement(filter, {
+                {filters && React.cloneElement(filters, {
                     resource,
                     hideFilter: this.hideFilter,
                     filterValues,
@@ -195,7 +195,7 @@ export class List extends Component {
 List.propTypes = {
     // the props you can change
     title: PropTypes.any,
-    filter: PropTypes.element,
+    filters: PropTypes.element,
     pagination: PropTypes.element,
     actions: PropTypes.element,
     perPage: PropTypes.number.isRequired,
@@ -209,7 +209,7 @@ List.propTypes = {
     changeListParams: PropTypes.func.isRequired,
     crudGetList: PropTypes.func.isRequired,
     data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    filters: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     hasCreate: PropTypes.bool.isRequired,
     hasEdit: PropTypes.bool.isRequired,
     ids: PropTypes.array,
@@ -224,7 +224,7 @@ List.propTypes = {
 };
 
 List.defaultProps = {
-    filters: {},
+    filterValues: {},
     perPage: 10,
     sort: {
         field: 'id',
@@ -238,7 +238,7 @@ function mapStateToProps(state, props) {
     if (query.filter && typeof query.filter === 'string') {
         // if the List has no filter component, the filter is always "{}"
         // avoid deserialization and keep identity by using a constant
-        query.filter = props.filter ? JSON.parse(query.filter) : resourceState.list.params.filter;
+        query.filter = props.filters ? JSON.parse(query.filter) : resourceState.list.params.filter;
     }
 
     return {
@@ -248,7 +248,7 @@ function mapStateToProps(state, props) {
         total: resourceState.list.total,
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
-        filters: props.filter ? getFormValues(filterFormName)(state) : resourceState.list.params.filter,
+        filterValues: props.filters ? getFormValues(filterFormName)(state) : resourceState.list.params.filter,
     };
 }
 
