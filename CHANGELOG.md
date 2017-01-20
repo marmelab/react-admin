@@ -1,5 +1,20 @@
 # Changelog
 
+## Next
+
+* [BC Break] Rename `defaultSort` prop to `sort` in `<List>` component, to make it consistent with the props of `<ReferenceInput>` and `<ReferenceManyField>`
+* [BC Break] Rename `filter` props (the one accepting a `<Filter>` element) to `filters` in `<List>` component
+* Add `filter` prop to `<List>` component for permanent filters
+* Add `perPage`, `sort`, and `filter` props to ``<ReferenceManyField>`
+* Add Custom Actions documentation
+* Add the ability to hook up custom sagas in `<Admin>`
+* Add the ability to hook up custom reducers in `<Admin>`
+* Refactor response side effects to a normal saga
+* Upgrade `redux-saga` to v0.14.2
+* Update optimistic rendering to also work with custom fetch actions
+* Add `label` prop to all buttons
+* Improve Delete button labels
+
 ## v0.7.1
 
 * Fix validation on nested fields
