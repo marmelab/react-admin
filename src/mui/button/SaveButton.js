@@ -40,4 +40,4 @@ const mapStateToProps = state => ({
     saving: state.admin.saving,
 });
 
-export default Translate(connect(mapStateToProps)(SaveButton));
+export default connect(mapStateToProps)(Translate(SaveButton));
