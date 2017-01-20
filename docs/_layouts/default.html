@@ -288,6 +288,26 @@
                             </ul>
                         </li>
 
+                        <li class="chapter {% if page.path == 'Translation.md' %}active{% endif %}">
+                            <a href="./Translation.html">
+                                <b>10.</b> Translation
+                            </a>
+                            <ul class="articles" {% if page.path != 'Translation.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#deal-with-existing-translations">Deal with existing translations</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#translate-your-own-components">Translate your own components</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#using-browser-locale">Using browser locale</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#using-specific-polyglot-features">Using specific polyglot features</a>
+                                </li>
+                            </ul>
+                        </li>
+
                         <li class="chapter {% if page.path == 'CustomApp.md' %}active{% endif %}">
                             <a href="./CustomApp.html">
                                 <b>11.</b> Including in Another App
