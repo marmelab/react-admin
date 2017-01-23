@@ -43,7 +43,7 @@ import { Admin, Resource, resolveBrowserLocale } from 'admin-on-rest';
 
 const App = () => (
     <Admin ...(your props) locale={resolveBrowserLocale()}>
-        (...)
+        ...
     </Admin>
 );
 
@@ -109,13 +109,40 @@ const messages = {
 
 const App = () => (
     <Admin ...(your props) messages={messages}>
-        (...)
+        ...
     </Admin>
 );
 
 export default App;
 
 ```
+
+## Translating Your Resources
+
+By default, Admin-on-rest uses your resource's name everywhere in the interface without taking into account the current user locale.
+
+To translate your resource, you must add it to the dictionary into the language(s) you want to cover under the special key "resource". After what, it will be automaticaly translated at runtime if resource name match.
+
+For example, if you want to translate your "shoe" resource, you must add the following object to the `messages` dictionary:
+
+```js
+
+{
+    en: {
+        resources: {
+            shoe: 'Shoe |||| Shoes'
+        }
+    },
+    fr: {
+        resources: {
+            shoe: 'Chaussure |||| Chaussures'
+        }
+    }
+}
+
+```
+
+As you can see, [polyglot pluralization](http://airbnb.io/polyglot.js/#pluralization) is used here, but it is optional.
 
 ## Translating Your Own Components
 
@@ -169,7 +196,7 @@ Polyglot.js is a fantastic library: in addition to being small, fully maintained
 ```js
 const messages = {
     'hello_name': 'Hello, %{name}',
-    'count_beer': '%{count} beer |||| %{count} beers',
+    'count_beer': '%{smart_count} beer |||| %{smart_count} beers',
 }
 
 // Interpolation
@@ -177,10 +204,10 @@ translate('hello_name', { name: 'John Doe' });
 => "Hello, John Doe."
 
 // Pluralization
-translate('count_beer', { count: 1 });
+translate('count_beer', { smart_count: 1 });
 => "1 beer"
 
-translate('count_beer', { count: 2 });
+translate('count_beer', { smart_count: 2 });
 => "2 beers"
 ```
 

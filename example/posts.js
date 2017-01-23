@@ -38,7 +38,7 @@ const PostFilter = Translate(({ translate, ...props }) => (
 
 const titleFieldStyle = { maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' };
 export const PostList = Translate(({ translate, ...props }) => (
-    <List {...props} filters={<PostFilter />} sort={{ field: 'published_at', order: 'DESC' }} title={translate('post.all')}>
+    <List {...props} filters={<PostFilter />} sort={{ field: 'published_at', order: 'DESC' }}>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" label={translate('post.list.title')} style={titleFieldStyle} />

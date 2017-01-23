@@ -50,10 +50,10 @@ const CommentPagination = Translate(({ page, perPage, total, setPage, translate 
             <Toolbar>
                 <ToolbarGroup>
                 {page > 1 &&
-                    <FlatButton primary key="prev" label={translate('aor.message.prev')} icon={<ChevronLeft />} onClick={() => setPage(page - 1)} />
+                    <FlatButton primary key="prev" label={translate('aor.navigation.prev')} icon={<ChevronLeft />} onClick={() => setPage(page - 1)} />
                 }
                 {page !== nbPages &&
-                    <FlatButton primary key="next" label={translate('aor.message.next')} icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before" />
+                    <FlatButton primary key="next" label={translate('aor.navigation.next')} icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before" />
                 }
                 </ToolbarGroup>
             </Toolbar>
@@ -100,7 +100,7 @@ CommentGrid.defaultProps = {
 };
 
 export const CommentList = Translate(({ translate, ...props }) => (
-    <List title={translate('comment.all')} {...props} perPage={6} filters={<CommentFilter />} pagination={<CommentPagination />}>
+    <List {...props} perPage={6} filters={<CommentFilter />} pagination={<CommentPagination />}>
         <CommentGrid />
     </List>
 ));
