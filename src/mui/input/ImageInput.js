@@ -15,7 +15,7 @@ const defaultStyle = {
     },
 };
 
-class FileInput extends Component {
+class ImageInput extends Component {
     constructor(props) {
         super(props);
 
@@ -107,9 +107,9 @@ class FileInput extends Component {
     }
 }
 
-FileInput.propTypes = {
+ImageInput.propTypes = {
     accept: PropTypes.string,
-    children: PropTypes.Element,
+    children: PropTypes.element,
     disableClick: PropTypes.bool,
     input: PropTypes.object,
     maxSize: PropTypes.number,
@@ -120,11 +120,11 @@ FileInput.propTypes = {
     title: PropTypes.string,
 };
 
-FileInput.defaultProps = {
+ImageInput.defaultProps = {
     addLabel: true,
     addField: true,
     multiple: false,
     onUpload: () => {},
 };
 
-export default FileInput;
+export default ImageInput;
