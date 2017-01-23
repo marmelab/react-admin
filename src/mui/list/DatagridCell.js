@@ -6,7 +6,7 @@ const DatagridCell = ({ field, record, basePath, resource, defaultStyle }) => {
     const style = defaultsDeep({}, field.props.style, field.type.defaultProps ? field.type.defaultProps.style : {}, defaultStyle);
     return (
         <TableRowColumn style={style}>
-            <field.type {...field.props} {...{ record, basePath, resource }} />
+            {React.cloneElement(field, { record, basePath, resource })}
         </TableRowColumn>
     );
 };
