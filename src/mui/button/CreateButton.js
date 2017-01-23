@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import FlatButton from 'material-ui/FlatButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
@@ -16,4 +17,4 @@ CreateButton.propTypes = {
     label: PropTypes.string,
 };
 
-export default CreateButton;
+export default onlyUpdateForKeys(['basePath, label'])(CreateButton);
