@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import pure from 'recompose/pure';
 import FlatButton from 'material-ui/FlatButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
@@ -114,4 +115,4 @@ Pagination.propTypes = {
     setPage: PropTypes.func,
 };
 
-export default Pagination;
+export default pure(Pagination);

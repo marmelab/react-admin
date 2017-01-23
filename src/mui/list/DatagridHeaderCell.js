@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import defaultsDeep from 'lodash.defaultsdeep';
+import shouldUpdate from 'recompose/shouldUpdate';
 import { TableHeaderColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
@@ -58,4 +59,8 @@ DatagridHeaderCell.propTypes = {
     updateSort: PropTypes.func.isRequired,
 };
 
-export default DatagridHeaderCell;
+export default shouldUpdate((props, nextProps) =>
+    props.currentSort.field !== nextProps.currentSort.field
+    || props.currentSort.order !== nextProps.currentSort.order
+    || props.cacheKey !== nextProps.cacheKey
+)(DatagridHeaderCell);

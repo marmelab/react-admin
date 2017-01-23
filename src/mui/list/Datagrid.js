@@ -86,6 +86,7 @@ class Datagrid extends Component {
                         {React.Children.map(children, (field, index) => (
                             <DatagridHeaderCell
                                 key={field.props.source || index}
+                                cacheKey={index}
                                 field={field}
                                 defaultStyle={index === 0 ? styles.header['th:first-child'] : styles.header.th}
                                 currentSort={currentSort}

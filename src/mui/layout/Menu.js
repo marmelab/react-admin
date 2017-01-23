@@ -3,6 +3,7 @@ import inflection from 'inflection';
 import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import { Link } from 'react-router';
+import pure from 'recompose/pure';
 
 const Menu = ({ resources }) => (
     <Paper style={{ flex: '0 0 15em', order: -1 }}>
@@ -26,4 +27,4 @@ Menu.propTypes = {
     resources: PropTypes.array.isRequired,
 };
 
-export default Menu;
+export default pure(Menu);
