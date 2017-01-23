@@ -56,11 +56,11 @@ DatagridHeaderCell.propTypes = {
         sort: PropTypes.string,
         order: PropTypes.string,
     }),
+    isSorting: PropTypes.bool,
     updateSort: PropTypes.func.isRequired,
 };
 
 export default shouldUpdate((props, nextProps) =>
-    props.currentSort.field !== nextProps.currentSort.field
-    || props.currentSort.order !== nextProps.currentSort.order
-    || props.cacheKey !== nextProps.cacheKey
+    props.isSorting !== nextProps.isSorting
+    || (nextProps.isSorting && props.currentSort.order !== nextProps.currentSort.order)
 )(DatagridHeaderCell);

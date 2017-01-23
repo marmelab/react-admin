@@ -185,6 +185,7 @@ export class List extends Component {
                     data,
                     currentSort: { field: query.sort, order: query.order },
                     basePath,
+                    isLoading,
                     setSort: this.setSort,
                 })}
                 {pagination && React.cloneElement(pagination, {

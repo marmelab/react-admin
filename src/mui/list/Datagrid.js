@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import DatagridCell from './DatagridCell';
 import DatagridHeaderCell from './DatagridHeaderCell';
+import DatagridBody from './DatagridBody';
 
 const defaultStyles = {
     table: {
@@ -78,7 +79,7 @@ class Datagrid extends Component {
     }
 
     render() {
-        const { resource, children, ids, data, currentSort, basePath, styles = defaultStyles, rowStyle } = this.props;
+        const { resource, children, ids, isLoading, data, currentSort, basePath, styles = defaultStyles, rowStyle } = this.props;
         return (
             <table style={styles.table}>
                 <thead>
@@ -86,29 +87,18 @@ class Datagrid extends Component {
                         {React.Children.map(children, (field, index) => (
                             <DatagridHeaderCell
                                 key={field.props.source || index}
-                                cacheKey={index}
                                 field={field}
                                 defaultStyle={index === 0 ? styles.header['th:first-child'] : styles.header.th}
                                 currentSort={currentSort}
+                                isSorting={field.props.source === currentSort.field}
                                 updateSort={this.updateSort}
                             />
                         ))}
                     </tr>
                 </thead>
-                <tbody style={styles.tbody}>
-                    {ids.map((id, rowIndex) => (
-                        <tr style={rowStyle ? rowStyle(data[id], rowIndex) : styles.tr} key={id}>
-                            {React.Children.map(children, (field, index) => (
-                                <DatagridCell
-                                    key={`${id}-${field.props.source || index}`}
-                                    record={data[id]}
-                                    defaultStyle={index === 0 ? styles.cell['td:first-child'] : styles.cell.td}
-                                    {...{ field, basePath, resource }}
-                                />
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
+                <DatagridBody resource={resource} ids={ids} data={data} basePath={basePath} styles={styles} rowStyle={rowStyle} isLoading={isLoading}>
+                    {children}
+                </DatagridBody>
             </table>
         );
     }
@@ -116,6 +106,7 @@ class Datagrid extends Component {
 
 Datagrid.propTypes = {
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
+    isLoading: PropTypes.bool,
     resource: PropTypes.string,
     data: PropTypes.object.isRequired,
     currentSort: PropTypes.shape({
