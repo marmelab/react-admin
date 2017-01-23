@@ -160,7 +160,9 @@ export class List extends Component {
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
-        const listItemLabel = translate('aor.action.list_item', { name: inflection.humanize(inflection.pluralize(resource)) });
+
+        const resourceName = translate(`resources.${resource}`, { smart_count: total, _: inflection.humanize(inflection.pluralize(resource)) });
+        const listItemLabel = translate('aor.action.list_item', { name: `${resourceName}` });
 
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>

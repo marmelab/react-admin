@@ -45,10 +45,9 @@ class Delete extends Component {
     render() {
         const { title, id, data, isLoading, resource, translate } = this.props;
         const basePath = this.getBasePath();
-        const deleteItemLabel = translate(
-            'aor.action.delete_item',
-            { name: `${inflection.humanize(inflection.singularize(resource))} #${id}` },
-        );
+
+        const resourceName = translate(`resources.${resource}`, { smart_count: 1, _: inflection.humanize(inflection.singularize(resource)) });
+        const deleteItemLabel = translate('aor.action.delete_item', { name: `${resourceName} #${id}` });
 
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>

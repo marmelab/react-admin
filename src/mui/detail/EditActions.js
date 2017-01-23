@@ -13,7 +13,7 @@ const EditActions = ({ basePath, data, hasDelete, hasShow, refresh }) => (
         {hasShow && <ShowButton basePath={basePath} record={data} />}
         <ListButton basePath={basePath} />
         {hasDelete && <DeleteButton basePath={basePath} record={data} />}
-        <RefreshButton onClick={refresh} />
+        <RefreshButton refresh={refresh} />
     </CardActions>
 );
 

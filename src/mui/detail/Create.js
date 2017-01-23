@@ -19,10 +19,9 @@ class Create extends Component {
     render() {
         const { actions = <DefaultActions />, children, isLoading, resource, title, translate } = this.props;
         const basePath = this.getBasePath();
-        const createItemLabel = translate(
-            'aor.action.create_item',
-            { name: inflection.humanize(inflection.singularize(resource)) },
-        );
+
+        const resourceName = translate(`resources.${resource}`, { smart_count: 1, _: inflection.humanize(inflection.singularize(resource)) });
+        const createItemLabel = translate('aor.action.create_item', { name: `${resourceName}` });
 
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>

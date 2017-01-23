@@ -12,7 +12,7 @@ const Actions = ({ resource, filters, displayedFilters, filterValues, hasCreate,
     <CardActions style={cardActionStyle}>
         {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         {hasCreate && <CreateButton basePath={basePath} />}
-        <RefreshButton onClick={refresh} />
+        <RefreshButton refresh={refresh} />
     </CardActions>
 );
 

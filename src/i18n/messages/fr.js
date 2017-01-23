@@ -18,15 +18,17 @@ export default {
             yes: 'Oui',
             no: 'Non',
             are_you_sure: 'Êtes vous sûr ?',
+            about: 'Au sujet de',
+        },
+        navigation: {
             page_out_of_boundaries: 'La page %{page} est en dehors des limites',
             page_out_from_end: 'Fin de la pagination',
             page_out_from_begin: 'La page doit être supérieure à 1',
             page_range_info: '%{offsetBegin}-%{offsetEnd} sur %{total}',
             next: 'Suivant',
             prev: 'Précédent',
-            about: 'Au sujet de',
         },
-        flashes: {
+        notification: {
             updated: 'Élement mis à jour',
             created: 'Élement créer',
             deleted: 'Élement supprimé',
