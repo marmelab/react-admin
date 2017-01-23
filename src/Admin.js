@@ -32,6 +32,7 @@ const Admin = ({
         admin: adminReducer(resources),
         form: formReducer,
         routing: routerReducer,
+        locale,
         ...customReducers,
     });
     const saga = function* rootSaga() {
@@ -54,8 +55,8 @@ const Admin = ({
     const translations = { ...loadTranslations(locale), ...customMessages };
 
     return (
-        <TranslationProvider locale={locale} messages={translations}>
-            <Provider store={store}>
+        <Provider store={store}>
+            <TranslationProvider messages={translations}>
                 <Router history={history}>
                     {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
                     <Route path="/" component={appLayout} resources={resources}>
@@ -65,8 +66,8 @@ const Admin = ({
                         )}
                     </Route>
                 </Router>
-            </Provider>
-        </TranslationProvider>
+            </TranslationProvider>
+        </Provider>
     );
 };
 

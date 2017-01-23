@@ -1,5 +1,6 @@
+import React, { Component, Children, PropTypes } from 'react';
 import Polyglot from 'node-polyglot';
-import { Component, Children, PropTypes } from 'react';
+import { connect } from 'react-redux';
 
 class TranslationProvider extends Component {
     getChildContext() {
@@ -32,4 +33,6 @@ TranslationProvider.childContextTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-export default TranslationProvider;
+const mapStateToProps = state => ({ locale: state.locale });
+
+export default connect(mapStateToProps)(TranslationProvider);
