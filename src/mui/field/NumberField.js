@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import get from 'lodash.get';
+import pure from 'recompose/pure';
 
 const hasNumberFormat = !!(typeof Intl === 'object' && Intl && typeof Intl.NumberFormat === 'function');
 
@@ -31,7 +32,7 @@ const hasNumberFormat = !!(typeof Intl === 'object' && Intl && typeof Intl.Numbe
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
-const NumberField = ({ record, source, locales, options, elStyle }) => {
+export const NumberField = ({ record, source, locales, options, elStyle }) => {
     if (!record) return null;
     const value = get(record, source);
     if (value == null) return null;
@@ -52,10 +53,12 @@ NumberField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-NumberField.defaultProps = {
+const PureNumberField = pure(NumberField);
+
+PureNumberField.defaultProps = {
     addLabel: true,
     style: { textAlign: 'right' },
     headerStyle: { textAlign: 'right' },
 };
 
-export default NumberField;
+export default PureNumberField;

@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import get from 'lodash.get';
+import pure from 'recompose/pure';
 
 const UrlField = ({ source, record = {}, elStyle }) => (
     <a href={get(record, source)} style={elStyle}>
@@ -15,8 +16,10 @@ UrlField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-UrlField.defaultProps = {
+const PureUrlField = pure(UrlField);
+
+PureUrlField.defaultProps = {
     addLabel: true,
 };
 
-export default UrlField;
+export default PureUrlField;

@@ -34,7 +34,7 @@ describe('<Show />', () => {
                 <TextField source="bar" />
             </SimpleShowLayout>
         </Show>);
-        const inputs = wrapper.find('TextField');
+        const inputs = wrapper.find('pure(TextField)');
         assert.deepEqual(inputs.map(i => i.prop('source')), ['foo', 'bar']);
     });
 });

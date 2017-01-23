@@ -35,11 +35,12 @@ const PostFilter = (props) => (
     </Filter>
 );
 
-export const PostList = (props) => (
+const titleFieldStyle = { maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' };
+export const PostList = props => (
     <List {...props} filters={<PostFilter />} sort={{ field: 'published_at', order: 'DESC' }}>
         <Datagrid>
             <TextField source="id" />
-            <TextField source="title" style={{ maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}/>
+            <TextField source="title" style={titleFieldStyle} />
             <DateField source="published_at" style={{ fontStyle: 'italic' }} />
             <BooleanField label="Commentable" source="commentable" />
             <NumberField source="views" />

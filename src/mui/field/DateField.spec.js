@@ -1,7 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import DateField from './DateField';
+import { DateField } from './DateField';
 
 describe('<DateField />', () => {
     it('should return null when the record is not set', () => assert.equal(
