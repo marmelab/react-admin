@@ -5,15 +5,37 @@ title: "Translation"
 
 # Translation
 
-Admin-on-rest uses English as the default language. But it also supports another ones thanks to [polyglot.js](http://airbnb.io/polyglot.js/) library which is included. Visit [marmelab/admin-on-rest](https://github.com/marmelab/admin-on-rest/tree/master/src/i18n) for a list of all supported languages. And, in case it doesn't support your own language, feel free to submit a pull request.
+The admin-on-rest interface uses English as the default language. But it also supports any other language, thanks to the [polyglot.js](http://airbnb.io/polyglot.js/) library.
 
-To handle translations, `Admin` component has two props: `messages` and `locale`. The first one is a dictionnary mapping locale codes (`fr`, `de`, and so on) to translation tree (ie `{ list: { buttons: { add: 'Add' } }`). Which value of the root dictionnary is determined by the `locale` property.
+## Changing Locale
 
-## Using browser locale
+To handle translations, the `<Admin>` component supports a `locale` prop ('`en`' by default). Override it with the locale of your choice to change the locale at runtime:
 
-English is used as default (and fallback) locale for translations, but it is also possible to use another locale as long as the corresponding translation is available with it.
+```js
+import React from 'react';
+import { Admin, Resource, resolveBrowserLocale } from 'admin-on-rest';
 
-Admin-on-rest provide an helper function named `resolveBrowserLocale` which help you to introduce a dynamic locale attribution from the locale configured on the browser. To use it, simply use it as locale prop argument.
+const App = () => (
+    <Admin ...(your props) locale='fr'>
+        ...
+    </Admin>
+);
+
+export default App;
+```
+
+The core interface is available in the following languages:
+
+- English (`en`)
+- French (`fr`)
+
+If you want to contribute a new translation for your own language, feel free to submit a pull request.
+
+## Using The Browser Locale
+
+It is also possible to use another locale, as long as the corresponding translation is available with it.
+
+Admin-on-rest provides a helper function named `resolveBrowserLocale()`, which helps you to introduce a dynamic locale attribution based on the locale configured in the user's browser. To use it, simply pass the function as `locale` prop.
 
 ```js
 import React from 'react';
@@ -26,14 +48,50 @@ const App = () => (
 );
 
 export default App;
-
 ```
 
-## Deal with Existing Translations
+## Translation Messages
 
-All translations are in `aor` namespace to prevent collisions with your own custom translations.
+Admin-on-rest uses a dictionary to translate the interface. This dictionary is a simple JavaScript object looking like the following:
 
-To override an existing translation, simply provide an object to the `messages` props of the admin, with the locale you want to cover as root key and a nested object to the wanted translation(s).
+```js
+{
+    en: {
+        aor: {
+            action: {
+                delete: 'Delete',
+                show: 'Show',
+                list: 'List',
+                save: 'Save',
+                create: 'Create',
+                edit: 'Edit',
+                cancel: 'Cancel',
+            },
+            ...
+        },
+    },
+    fr: {
+        aor: {
+            action: {
+                delete: 'Supprimer',
+                show: 'Afficher',
+                list: 'Liste',
+                save: 'Enregistrer',
+                create: 'Créer',
+                edit: 'Éditer',
+                cancel: 'Quitter',
+            },
+            ...
+        }
+    }
+}
+```
+
+All core translations are in the `aor` namespace, in order to prevent collisions with your own custom translations. The root key used for the interface is determined by the `locale` property.
+
+## Overriding Existing Translations
+
+To override an existing translation, simply provide a `messages` props to the `<Admin>` component, with the locale you want to cover as root key, and a nested object of the wanted translation(s). Admin-on-rest will merge this object with its default translations.
 
 ```js
 import React from 'react';
@@ -59,11 +117,40 @@ export default App;
 
 ```
 
-## Translate your own components
+## Translating Your Own Components
 
-The translation system use context to provide translations through the react component tree. To translate a component you must "map" the context "translate" function to the wanted component props. To do this, it is enough simply to use an HOC who is named "Translate" on your component. Of course, we assumes that you've previously add the corresponding translation to the `messages` props of the `Admin` component.
+The translation system use the React context to pass translations down the component tree. To translate a sentence, use the `translate` function from the context. Of course, this assumes that you've previously added the corresponding translation to the `messages` props of the `Admin` component.
 
 ```js
+// in src/MyHelloButton.js
+import React, { Component, PropTypes } from 'react';
+
+class MyHelloButton {
+    render() {
+        const { translate } = this.context;
+        return <button>{translate('myroot.hello.world')}</button>;
+    }
+}
+MyHelloButton.contextTypes = {
+    translate: PropTypoes.function,
+};
+
+// in src/App.js
+const messages = {
+    en: {
+        myroot: {
+            hello: {
+                world: 'Hello, World!',
+            },
+        },
+    },
+};
+```
+
+However, using the context makes components harder to test. That's why admin-on-rest provides a `Translate` HOC, which simply passes the `translate` function from context to props:
+
+```js
+// in src/MyHelloButton.js
 import React from 'react';
 import { Translate } from 'admin-on-rest';
 
@@ -75,30 +162,26 @@ export default Translate(MyHelloButton);
 
 ```
 
-## Using specific polyglot features
+## Using Specific Polyglot Features
 
-Polyglot.js is a fantastic library, in addition to being small, fully maintened and totaly agnostic, it provide some pretty features as interpolation and pluralization that you can use now in Admin-on-rest.
+Polyglot.js is a fantastic library: in addition to being small, fully maintained, and totally framework agnostic, it provides pretty features such as interpolation and pluralization, that you can use in admin-on-rest.
 
 ```js
-
 const messages = {
     'hello_name': 'Hello, %{name}',
     'count_beer': '%{count} beer |||| %{count} beers',
 }
 
-// Interpolation example
-
+// Interpolation
 translate('hello_name', { name: 'John Doe' });
 => "Hello, John Doe."
 
-// Pluralization example
-
+// Pluralization
 translate('count_beer', { count: 1 });
 => "1 beer"
 
 translate('count_beer', { count: 2 });
 => "2 beers"
-
 ```
 
 To find more detailed examples, please refer to [http://airbnb.io/polyglot.js/](http://airbnb.io/polyglot.js/)
