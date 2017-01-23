@@ -233,6 +233,22 @@ export const PostEdit = (props) => (
 );
 ```
 
+## `<ImageInput>`
+
+`<ImageInput>` allows to upload some pictures quite easily using [react-dropzone](https://github.com/okonet/react-dropzone).
+
+![ImageInput](./img/image-input.png)
+
+Previews are enabled using `<ImageInput>` children, as following:
+
+``` js
+<ImageInput multiple source="pictures" label="Related pictures" accept="image/*">
+    <ImageField source="src" title="title" />
+</ImageInput>
+```
+
+This component accepts all [react-dropzone properties](https://github.com/okonet/react-dropzone#features), in addition to those of admin-on-rest.
+
 ## `<LongTextInput>`
 
 `<LongTextInput>` is the best choice for multiline text values. It renders as an auto expandable textarea.

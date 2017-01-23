@@ -28,7 +28,7 @@ export const ImageField = ({ elStyle, record, source, title }) => {
     const titleValue = get(record, title) || title;
     const srcValue = get(record, source);
     if (!srcValue) {
-        throw new Error(`Unable to get <ImageField /> source from ${source} property.`);
+        return <div />;
     }
 
     return (

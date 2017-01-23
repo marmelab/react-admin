@@ -154,6 +154,20 @@ import { FunctionField } from 'admin-on-rest/lib/mui'
 
 **Tip**: Technically, you can omit the `source` property for the `<FunctionField>` since you provide the render function. However, providing a `source` will allow the datagrid to make the column sortable, since when a user clicks on a column, the datagrid uses the `source` prop as sort field.
 
+## `<ImageField>`
+
+If you need to display an image provided by your API, you can use `<ImageField />` component:
+
+``` js
+import { ImageField } from 'admin-on-rest/lib/mui';
+
+<ImageField source="picture.url" title="picture.title" />
+```
+
+This field is also generally used within an `<ImageInput />` component to display preview.
+
+The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. You can also specify an hard-written string.
+
 ## `<NumberField>`
 
 Displays a number formatted according to the browser locale, right aligned.
