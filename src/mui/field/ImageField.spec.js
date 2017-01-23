@@ -4,15 +4,8 @@ import { shallow } from 'enzyme';
 import ImageField from './ImageField';
 
 describe('<ImageField />', () => {
-    it('should trigger an error when record is not set', () => {
-        try {
-            shallow(<ImageField source="url" />);
-        } catch (e) {
-            assert.equal(e.message, 'Unable to get <ImageField /> source from url property.');
-            return;
-        }
-
-        assert.equal(true, false);
+    it('should return an empty div when record is not set', () => {
+        assert.equal(shallow(<ImageField source="url" />).html(), '<div></div>');
     });
 
     it('should render an image with correct attributes based on `source` and `title`', () => {

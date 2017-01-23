@@ -9,14 +9,6 @@ const styles = {
         maxHeight: '10rem',
         margin: '0.5rem',
     },
-    loader: {
-        margin: 0,
-        display: 'block',
-        position: 'absolute',
-        left: '50%',
-        top: '50%',
-        transform: 'translate(-50%, -50%)',
-    },
 };
 
 export const ImageField = ({ elStyle, record, source, title }) => {
