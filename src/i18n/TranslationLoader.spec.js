@@ -1,8 +1,8 @@
 import assert from 'assert';
 
-import { resolveBrowserLocale, DEFAULT_LOCALE } from './TranslationLoader';
+import { resolveBrowserLocale, DEFAULT_LOCALE } from './index';
 
-describe('TranslationLoader', () => {
+describe('TranslationUtils', () => {
     describe('resolveBrowserLocale', () => {
         beforeEach(() => {
             global.window = {};

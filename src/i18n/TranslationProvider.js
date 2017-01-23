@@ -1,6 +1,7 @@
 import React, { Component, Children, PropTypes } from 'react';
 import Polyglot from 'node-polyglot';
 import { connect } from 'react-redux';
+import * as buildInMessages from './messages';
 
 class TranslationProvider extends Component {
     getChildContext() {
@@ -9,7 +10,10 @@ class TranslationProvider extends Component {
             messages,
         } = this.props;
 
-        const polyglot = new Polyglot({ locale, phrases: messages });
+        const polyglot = new Polyglot({
+            locale,
+            phrases: { ...(buildInMessages[locale] || {}), ...(messages[locale] || {}) },
+        });
 
         return {
             locale,

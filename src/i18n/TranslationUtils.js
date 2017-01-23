@@ -1,6 +1,4 @@
-import * as messages from './messages';
-
-export const DEFAULT_LOCALE = 'en';
+import { DEFAULT_LOCALE } from './index';
 
 export const resolveBrowserLocale = () => {
     // from http://blog.ksol.fr/user-locale-detection-browser-javascript/
@@ -8,9 +6,3 @@ export const resolveBrowserLocale = () => {
     const { language, browserLanguage, userLanguage } = window.navigator;
     return (language || browserLanguage || userLanguage || DEFAULT_LOCALE).split('-')[0];
 };
-
-export const loadTranslations = locale => (
-    messages[locale] ? messages[locale] : messages[DEFAULT_LOCALE]
-);
-
-export default loadTranslations;

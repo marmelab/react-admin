@@ -13,7 +13,7 @@ import CrudRoute from './CrudRoute';
 import Layout from './mui/layout/Layout';
 import withProps from './withProps';
 import TranslationProvider from './i18n/TranslationProvider';
-import { loadTranslations, DEFAULT_LOCALE } from './i18n/TranslationLoader';
+import { DEFAULT_LOCALE, TranslationReducer as translationReducer } from './i18n';
 
 const Admin = ({
     children,
@@ -32,7 +32,7 @@ const Admin = ({
         admin: adminReducer(resources),
         form: formReducer,
         routing: routerReducer,
-        locale,
+        locale: translationReducer(locale),
         ...customReducers,
     });
     const saga = function* rootSaga() {
@@ -51,12 +51,9 @@ const Admin = ({
     const history = syncHistoryWithStore(hashHistory, store);
     const firstResource = resources[0].name;
 
-    const customMessages = messages[locale] || messages[DEFAULT_LOCALE] || {};
-    const translations = { ...loadTranslations(locale), ...customMessages };
-
     return (
         <Provider store={store}>
-            <TranslationProvider messages={translations}>
+            <TranslationProvider messages={messages}>
                 <Router history={history}>
                     {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
                     <Route path="/" component={appLayout} resources={resources}>
