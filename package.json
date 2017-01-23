@@ -62,7 +62,7 @@
     "react-router": "~2.8.1",
     "react-router-redux": "~4.0.6",
     "react-tap-event-plugin": "~2.0.0",
-    "recompose": "^0.21.2",
+    "recompose": "~0.21.2",
     "redux": "~3.6.0",
     "redux-form": "~6.2.0",
     "redux-saga": "~0.14.2"
