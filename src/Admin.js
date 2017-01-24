@@ -11,7 +11,8 @@ import adminReducer from './reducer';
 import { crudSaga } from './sideEffect/saga';
 import CrudRoute from './CrudRoute';
 import Layout from './mui/layout/Layout';
-import withProps from './withProps';
+import SignIn from './mui/auth/SignIn';
+import withProps from 'recompose/withProps';
 import TranslationProvider from './i18n/TranslationProvider';
 import { DEFAULT_LOCALE, TranslationReducer as translationReducer } from './i18n';
 
@@ -21,9 +22,12 @@ const Admin = ({
     customSagas = [],
     dashboard,
     restClient,
+    signInClient,
+    checkCredentials,
     theme,
     title = 'Admin on REST',
     appLayout = withProps({ title, theme })(Layout),
+    SignInPage = withProps({ title, theme, signInClient })(SignIn),
     locale = DEFAULT_LOCALE,
     messages = {},
 }) => {
@@ -56,10 +60,21 @@ const Admin = ({
             <TranslationProvider messages={messages}>
                 <Router history={history}>
                     {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
+                    <Route path="/sign-in" component={SignInPage} />
                     <Route path="/" component={appLayout} resources={resources}>
-                        {dashboard && <IndexRoute component={dashboard} />}
+                        {dashboard && <IndexRoute component={dashboard} onEnter={checkCredentials} />}
                         {resources.map(resource =>
-                            <CrudRoute key={resource.name} path={resource.name} list={resource.list} create={resource.create} edit={resource.edit} show={resource.show} remove={resource.remove} options={resource.options} />
+                            <CrudRoute
+                                key={resource.name}
+                                path={resource.name}
+                                list={resource.list}
+                                create={resource.create}
+                                edit={resource.edit}
+                                show={resource.show}
+                                remove={resource.remove}
+                                options={resource.options}
+                                checkCredentials={resource.checkCredentials || checkCredentials}
+                            />
                         )}
                     </Route>
                 </Router>
@@ -72,15 +87,22 @@ const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]
 
 Admin.propTypes = {
     appLayout: componentPropType,
+    checkCredentials: PropTypes.func,
     children: PropTypes.node,
     customSagas: PropTypes.array,
     customReducers: PropTypes.object,
     dashboard: componentPropType,
     restClient: PropTypes.func,
+    signInClient: PropTypes.func,
     theme: PropTypes.object,
     title: PropTypes.string,
     locale: PropTypes.string,
     messages: PropTypes.object,
+};
+
+Admin.defaultProps = {
+    signInClient: () => Promise.resolve(),
+    checkCredentials: () => true,
 };
 
 export default Admin;

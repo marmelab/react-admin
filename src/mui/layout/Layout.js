@@ -2,10 +2,11 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import AppBar from './AppBar';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import AppBar from './AppBar';
 import Notification from './Notification';
 import Menu from './Menu';
+import defaultTheme from '../defaultTheme';
 
 injectTapEventPlugin();
 
@@ -34,16 +35,7 @@ Layout.propTypes = {
     theme: PropTypes.object.isRequired,
 };
 Layout.defaultProps = {
-    theme: {
-        tabs: {
-            backgroundColor: 'white',
-            selectedTextColor: '#00bcd4',
-            textColor: '#757575',
-        },
-        inkBar: {
-            backgroundColor: '#00bcd4',
-        },
-    },
+    theme: defaultTheme
 };
 
 function mapStateToProps(state) {
