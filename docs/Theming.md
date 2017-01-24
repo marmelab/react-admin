@@ -60,6 +60,7 @@ Sometimes you want the format to depend on the value. Admin-on-rest doesn't prov
 
 For instance, if you want to highlight a `<TextField>` in red if the value is higher than 100, just wrap the field into a HOC:
 
+{% raw %}
 ```js
 const colored = WrappedComponent => props => props.record[props.source] > 100 ?
     <span style={{ color: 'red' }}><WrappedComponent {...props} /></span> :
@@ -78,6 +79,7 @@ export const PostList = (props) => (
     </List>
 );
 ```
+{% endraw %}
 
 If you want to read more about higher-order components, check out this SitePoint tutorial: [Higher Order Components: A React Application Design Pattern](https://www.sitepoint.com/react-higher-order-components/)
 
