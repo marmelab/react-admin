@@ -2,16 +2,22 @@ import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 
-import { Admin, Resource } from 'admin-on-rest';
+import { Admin, Resource, englishMessages } from 'admin-on-rest';
 import jsonRestClient from 'aor-json-rest-client';
 import { Delete } from 'admin-on-rest/mui';
 import { resolveBrowserLocale } from 'admin-on-rest';
+import frenchMessages from 'aor-language-french';
 
 import { PostList, PostCreate, PostEdit, PostShow, PostIcon } from './posts';
 import { CommentList, CommentEdit, CommentCreate, CommentIcon } from './comments';
 
 import data from './data';
-import * as messages from './i18n';
+import * as customMessages from './i18n';
+
+const messages = {
+    fr: { ...frenchMessages, ...customMessages.fr },
+    en: { ...englishMessages, ...customMessages.en },
+};
 
 const restClient = jsonRestClient(data, true);
 
