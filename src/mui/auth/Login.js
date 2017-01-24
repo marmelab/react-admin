@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { propTypes, reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import { push as pushAction } from 'react-router-redux';
+import compose from 'recompose/compose';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -14,6 +15,7 @@ import LockIcon from 'material-ui/svg-icons/action/lock-outline';
 import { cyan500, pinkA200 } from 'material-ui/styles/colors';
 
 import defaultTheme from '../defaultTheme';
+import Translate from '../../i18n/Translate';
 
 const styles = {
     main: {
@@ -55,13 +57,14 @@ class Login extends Component {
     }
 
     login = ({ username, password }) => {
-        this.props.loginClient(username, password)
-            .then(() => this.props.push(this.props.location.state ? this.props.location.state.nextPathname : '/'))
+        const { loginClient, push, location } = this.props;
+        loginClient(username, password)
+            .then(() => push(location.state ? location.state.nextPathname : '/'))
             .catch(e => this.setState({ signInError: e }));
     }
 
     render() {
-        const { handleSubmit, submitting, theme } = this.props;
+        const { handleSubmit, submitting, theme, translate } = this.props;
         const { signInError } = this.state;
         const muiTheme = getMuiTheme(theme);
         return (
@@ -71,7 +74,7 @@ class Login extends Component {
                         <div style={styles.avatar}>
                             <Avatar backgroundColor={pinkA200} icon={<LockIcon />} size={60} />
                         </div>
-                        {signInError && <Snackbar open autoHideDuration={4000} message={signInError.message || signInError || 'Login error'} />}
+                        {signInError && <Snackbar open autoHideDuration={4000} message={signInError.message || signInError || translate('aor.auth.sign_in_error')} />}
 
                         <form onSubmit={handleSubmit(this.login)}>
                             <div style={styles.form}>
@@ -79,20 +82,20 @@ class Login extends Component {
                                     <Field
                                         name="username"
                                         component={renderInput}
-                                        floatingLabelText="Username"
+                                        floatingLabelText={translate('aor.auth.username')}
                                     />
                                 </div>
                                 <div style={styles.input}>
                                     <Field
                                         name="password"
                                         component={renderInput}
-                                        floatingLabelText="Password"
+                                        floatingLabelText={translate('aor.auth.password')}
                                         type="password"
                                     />
                                 </div>
                             </div>
                             <CardActions>
-                                <RaisedButton type="submit" primary disabled={submitting} label="Sign in" fullWidth />
+                                <RaisedButton type="submit" primary disabled={submitting} label={translate('aor.auth.sign_in')} fullWidth />
                             </CardActions>
                         </form>
                     </Card>
@@ -107,22 +110,26 @@ Login.propTypes = {
     previousRoute: PropTypes.string,
     loginClient: PropTypes.func,
     theme: PropTypes.object.isRequired,
+    translate: PropTypes.func.isRequired,
 };
 
 Login.defaultProps = {
     theme: defaultTheme,
 };
 
-const validate = (values) => {
-    const errors = {};
-    if (!values.username) errors.username = 'Required';
-    if (!values.password) errors.password = 'Required';
-    return errors;
-};
+const enhance = compose(
+    Translate,
+    reduxForm({
+        form: 'signIn',
+        validate: (values, props) => {
+            const errors = {};
+            const { translate } = props;
+            if (!values.username) errors.username = translate('aor.validation.required');
+            if (!values.password) errors.password = translate('aor.validation.required');
+            return errors;
+        },
+    }),
+    connect(null, { push: pushAction }),
+);
 
-const LoginForm = reduxForm({
-    form: 'signIn',
-    validate,
-})(Login);
-
-export default (connect(null, { push: pushAction })(LoginForm));
+export default enhance(Login);

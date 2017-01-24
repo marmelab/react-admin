@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-
 import { push as pushAction } from 'react-router-redux';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+
 import { List, ListItem } from 'material-ui/List';
 import ExitIcon from 'material-ui/svg-icons/action/power-settings-new';
 
@@ -17,16 +18,21 @@ class Logout extends Component {
         const { logoutClient, translate } = this.props;
         return logoutClient ? (
             <List>
-                <ListItem leftIcon={<ExitIcon />} primaryText={translate('aor.action.logout')} onClick={this.handleLogout} />
+                <ListItem leftIcon={<ExitIcon />} primaryText={translate('aor.auth.logout')} onClick={this.handleLogout} />
             </List>
         ) : null;
     }
 }
 
 Logout.propTypes = {
-    logoutCient: PropTypes.func,
+    logoutClient: PropTypes.func,
     push: PropTypes.func,
     translate: PropTypes.func,
 };
 
-export default connect(null, { push: pushAction })(Translate(Logout));
+const enhance = compose(
+    Translate,
+    connect(null, { push: pushAction }),
+);
+
+export default enhance(Logout);
