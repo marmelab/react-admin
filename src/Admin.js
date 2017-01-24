@@ -12,6 +12,8 @@ import { crudSaga } from './sideEffect/saga';
 import CrudRoute from './CrudRoute';
 import Layout from './mui/layout/Layout';
 import withProps from './withProps';
+import TranslationProvider from './i18n/TranslationProvider';
+import { DEFAULT_LOCALE, TranslationReducer as translationReducer } from './i18n';
 
 const Admin = ({
     children,
@@ -22,12 +24,15 @@ const Admin = ({
     theme,
     title = 'Admin on REST',
     appLayout = withProps({ title, theme })(Layout),
+    locale = DEFAULT_LOCALE,
+    messages = {},
 }) => {
     const resources = React.Children.map(children, ({ props }) => props);
     const reducer = combineReducers({
         admin: adminReducer(resources),
         form: formReducer,
         routing: routerReducer,
+        locale: translationReducer(locale),
         ...customReducers,
     });
     const saga = function* rootSaga() {
@@ -48,15 +53,17 @@ const Admin = ({
 
     return (
         <Provider store={store}>
-            <Router history={history}>
-                {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
-                <Route path="/" component={appLayout} resources={resources}>
-                    {dashboard && <IndexRoute component={dashboard} />}
-                    {resources.map(resource =>
-                        <CrudRoute key={resource.name} path={resource.name} list={resource.list} create={resource.create} edit={resource.edit} show={resource.show} remove={resource.remove} options={resource.options} />
-                    )}
-                </Route>
-            </Router>
+            <TranslationProvider messages={messages}>
+                <Router history={history}>
+                    {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
+                    <Route path="/" component={appLayout} resources={resources}>
+                        {dashboard && <IndexRoute component={dashboard} />}
+                        {resources.map(resource =>
+                            <CrudRoute key={resource.name} path={resource.name} list={resource.list} create={resource.create} edit={resource.edit} show={resource.show} remove={resource.remove} options={resource.options} />
+                        )}
+                    </Route>
+                </Router>
+            </TranslationProvider>
         </Provider>
     );
 };
@@ -72,6 +79,8 @@ Admin.propTypes = {
     restClient: PropTypes.func,
     theme: PropTypes.object,
     title: PropTypes.string,
+    locale: PropTypes.string,
+    messages: PropTypes.object,
 };
 
 export default Admin;

@@ -7,3 +7,4 @@ export * as fetchUtils from './util/fetch';
 export Admin from './Admin';
 export CrudRoute from './CrudRoute';
 export Resource from './Resource';
+export * from './i18n';

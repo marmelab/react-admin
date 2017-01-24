@@ -9,6 +9,7 @@ import inflection from 'inflection';
 import Title from '../layout/Title';
 import { ListButton } from '../button';
 import { crudGetOne as crudGetOneAction, crudDelete as crudDeleteAction } from '../../actions/dataActions';
+import Translate from '../../i18n/Translate';
 
 class Delete extends Component {
     constructor(props) {
@@ -42,21 +43,25 @@ class Delete extends Component {
     }
 
     render() {
-        const { title, id, data, isLoading, resource } = this.props;
+        const { title, id, data, isLoading, resource, translate } = this.props;
         const basePath = this.getBasePath();
+
+        const resourceName = translate(`resources.${resource}`, { smart_count: 1, _: inflection.humanize(inflection.singularize(resource)) });
+        const deleteItemLabel = translate('aor.action.delete_item', { name: `${resourceName} #${id}` });
+
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     <ListButton basePath={basePath} />
                 </CardActions>
-                <CardTitle title={<Title title={title} record={data} defaultTitle={`Delete ${inflection.humanize(inflection.singularize(resource))} #${id}`} />} />
+                <CardTitle title={<Title title={title} record={data} defaultTitle={deleteItemLabel} />} />
                 <form onSubmit={this.handleSubmit}>
-                    <CardText>Are you sure ?</CardText>
+                    <CardText>{translate('aor.message.are_you_sure')}</CardText>
                     <Toolbar>
                         <ToolbarGroup>
                             <RaisedButton
                                 type="submit"
-                                label="Delete"
+                                label={translate('aor.action.delete')}
                                 icon={<ActionCheck />}
                                 primary
                                 style={{
@@ -65,7 +70,7 @@ class Delete extends Component {
                                 }}
                             />
                             <RaisedButton
-                                label="Cancel"
+                                label={translate('aor.action.cancel')}
                                 icon={<AlertError />}
                                 onClick={this.goBack}
                                 style={{
@@ -92,6 +97,7 @@ Delete.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     crudGetOne: PropTypes.func.isRequired,
     crudDelete: PropTypes.func.isRequired,
+    translate: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, props) {
@@ -102,7 +108,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default connect(
+export default Translate(connect(
     mapStateToProps,
     { crudGetOne: crudGetOneAction, crudDelete: crudDeleteAction },
-)(Delete);
+)(Delete));

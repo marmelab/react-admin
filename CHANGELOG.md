@@ -14,6 +14,7 @@
 * Update optimistic rendering to also work with custom fetch actions
 * Add `label` prop to all buttons
 * Improve Delete button labels
+* Introduce configurable i18n capabilities
 
 ## v0.7.1
 

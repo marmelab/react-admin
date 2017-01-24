@@ -4,6 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
+import Translate from '../../i18n/Translate';
 
 const buttonStyle = { margin: '10px 0' };
 
@@ -50,7 +51,7 @@ export class Pagination extends Component {
     prevPage = (event) => {
         event.stopPropagation();
         if (this.props.page === 1) {
-            throw new Error('Cannot go before page 1');
+            throw new Error(this.props.translate('aor.navigation.page_out_from_begin'));
         }
         this.props.setPage(this.props.page - 1);
     }
@@ -58,7 +59,7 @@ export class Pagination extends Component {
     nextPage = (event) => {
         event.stopPropagation();
         if (this.props.page > this.getNbPages()) {
-            throw new Error('Cannot after last page');
+            throw new Error(this.props.translate('aor.navigation.page_out_from_end'));
         }
         this.props.setPage(this.props.page + 1);
     }
@@ -67,7 +68,7 @@ export class Pagination extends Component {
         event.stopPropagation();
         const page = event.currentTarget.dataset.page;
         if (page < 1 || page > this.getNbPages()) {
-            throw new Error(`Page number ${page} out of boundaries`);
+            throw new Error(this.props.translate('aor.navigation.page_out_of_boundaries', { page }));
         }
         this.props.setPage(page);
     }
@@ -81,7 +82,7 @@ export class Pagination extends Component {
     }
 
     render() {
-        const { page, perPage, total } = this.props;
+        const { page, perPage, total, translate } = this.props;
         if (total === 0) return null;
         const offsetEnd = Math.min(page * perPage, total);
         const offsetBegin = Math.min((page - 1) * perPage + 1, offsetEnd);
@@ -90,16 +91,16 @@ export class Pagination extends Component {
         return (
             <Toolbar>
                 <ToolbarGroup firstChild>
-                    <span style={{ padding: '1.2em' }} >{offsetBegin}-{offsetEnd} of {total}</span>
+                    <span style={{ padding: '1.2em' }}>{ translate('aor.navigation.page_range_info', { offsetBegin, offsetEnd, total }) }</span>
                 </ToolbarGroup>
                 {nbPages > 1 &&
                     <ToolbarGroup>
                     {page > 1 &&
-                        <FlatButton primary key="prev" label="Prev" icon={<ChevronLeft />} onClick={this.prevPage} style={buttonStyle} />
+                        <FlatButton primary key="prev" label={translate('aor.navigation.prev')} icon={<ChevronLeft />} onClick={this.prevPage} style={buttonStyle} />
                     }
                     {this.renderPageNums()}
                     {page !== nbPages &&
-                        <FlatButton primary key="next" label="Next" icon={<ChevronRight />} labelPosition="before" onClick={this.nextPage} style={buttonStyle} />
+                        <FlatButton primary key="next" label={translate('aor.navigation.next')} icon={<ChevronRight />} labelPosition="before" onClick={this.nextPage} style={buttonStyle} />
                     }
                     </ToolbarGroup>
                 }
@@ -113,6 +114,7 @@ Pagination.propTypes = {
     perPage: PropTypes.number,
     total: PropTypes.number,
     setPage: PropTypes.func,
+    translate: PropTypes.func.isRequired,
 };
 
-export default pure(Pagination);
+export default Translate(pure(Pagination));
