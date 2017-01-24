@@ -13,6 +13,7 @@ export default {
             delete_item: 'Delete %{name}',
             create_item: 'Create %{name}',
             list_item: '%{name} List',
+            logout: 'Logout',
         },
         message: {
             yes: 'Yes',

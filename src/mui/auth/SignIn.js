@@ -55,8 +55,8 @@ class SignIn extends Component {
     }
 
     signIn = ({ username, password }) => {
-        this.props.signInClient(username, password)
-            .then(() => this.props.push(this.props.location.state.nextPathname))
+        this.props.loginClient(username, password)
+            .then(() => this.props.push(this.props.location.state ? this.props.location.state.nextPathname : '/'))
             .catch(e => this.setState({ signInError: e }));
     }
 
@@ -105,7 +105,7 @@ class SignIn extends Component {
 SignIn.propTypes = {
     ...propTypes,
     previousRoute: PropTypes.string,
-    signInClient: PropTypes.func,
+    loginClient: PropTypes.func,
     theme: PropTypes.object.isRequired,
 };
 

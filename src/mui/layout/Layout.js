@@ -10,16 +10,15 @@ import defaultTheme from '../defaultTheme';
 
 injectTapEventPlugin();
 
-const Layout = ({ isLoading, children, route, title, theme }) => {
+const Layout = ({ isLoading, children, route, title, theme, logout }) => {
     const muiTheme = getMuiTheme(theme);
-
     return (
         <MuiThemeProvider muiTheme={muiTheme}>
             <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
                 <AppBar title={title} isLoading={isLoading} />
                 <div className="body" style={{ display: 'flex', flex: '1', backgroundColor: '#edecec' }}>
                     <div style={{ flex: 1 }}>{children}</div>
-                    <Menu resources={route.resources} />
+                    <Menu resources={route.resources} logout={logout} />
                 </div>
                 <Notification />
             </div>
@@ -30,12 +29,14 @@ const Layout = ({ isLoading, children, route, title, theme }) => {
 Layout.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     children: PropTypes.node,
+    logout: PropTypes.element,
     route: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
     theme: PropTypes.object.isRequired,
 };
+
 Layout.defaultProps = {
-    theme: defaultTheme
+    theme: defaultTheme,
 };
 
 function mapStateToProps(state) {

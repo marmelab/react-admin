@@ -26,8 +26,12 @@ const delayedRestClient = (type, resource, params) => new Promise(
 );
 
 const authentication = {
-    signInClient(username) {
+    loginClient(username) {
         localStorage.setItem('username', username);
+        return Promise.resolve();
+    },
+    logoutClient() {
+        localStorage.removeItem('username');
         return Promise.resolve();
     },
     checkCredentials(nextState, replace) {

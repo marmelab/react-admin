@@ -11,23 +11,24 @@ import withProps from 'recompose/withProps';
 import adminReducer from './reducer';
 import { crudSaga } from './sideEffect/saga';
 import CrudRoute from './CrudRoute';
-import Layout from './mui/layout/Layout';
+import DefaultLayout from './mui/layout/Layout';
 import SignIn from './mui/auth/SignIn';
+import Logout from './mui/auth/Logout';
 import TranslationProvider from './i18n/TranslationProvider';
 import { DEFAULT_LOCALE, TranslationReducer as translationReducer } from './i18n';
 
 const Admin = ({
+    appLayout,
     authentication = {},
     children,
     customReducers = {},
     customSagas = [],
     dashboard,
+    locale = DEFAULT_LOCALE,
+    messages = {},
     restClient,
     theme,
     title = 'Admin on REST',
-    appLayout = withProps({ title, theme })(Layout),
-    locale = DEFAULT_LOCALE,
-    messages = {},
 }) => {
     const resources = React.Children.map(children, ({ props }) => props);
     const reducer = combineReducers({
@@ -53,10 +54,13 @@ const Admin = ({
     const history = syncHistoryWithStore(hashHistory, store);
     const firstResource = resources[0].name;
     const {
-        signInClient = () => Promise.resolve(),
+        loginClient = () => Promise.resolve(),
         checkCredentials = () => true,
-        SignInPage = withProps({ title, theme, signInClient })(SignIn),
+        SignInPage = withProps({ title, theme, loginClient })(SignIn),
+        logoutClient,
+        LogoutButton = withProps({ logoutClient })(Logout),
     } = authentication;
+    const Layout = appLayout || withProps({ title, theme, logout: <LogoutButton /> })(DefaultLayout);
 
     return (
         <Provider store={store}>
@@ -64,7 +68,7 @@ const Admin = ({
                 <Router history={history}>
                     {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
                     <Route path="/sign-in" component={SignInPage} />
-                    <Route path="/" component={appLayout} resources={resources}>
+                    <Route path="/" component={Layout} resources={resources}>
                         {dashboard && <IndexRoute component={dashboard} onEnter={checkCredentials} />}
                         {resources.map(resource =>
                             <CrudRoute
@@ -91,13 +95,11 @@ const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]
 Admin.propTypes = {
     appLayout: componentPropType,
     authentication: PropTypes.object,
-    checkCredentials: PropTypes.func,
     children: PropTypes.node,
     customSagas: PropTypes.array,
     customReducers: PropTypes.object,
     dashboard: componentPropType,
     restClient: PropTypes.func,
-    signInClient: PropTypes.func,
     theme: PropTypes.object,
     title: PropTypes.string,
     locale: PropTypes.string,
