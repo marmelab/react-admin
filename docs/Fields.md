@@ -166,7 +166,7 @@ import { ImageField } from 'admin-on-rest/lib/mui';
 
 This field is also generally used within an `<ImageInput />` component to display preview.
 
-The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. You can also specify an hard-written string.
+The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. You can also specify a hard-written string.
 
 ## `<NumberField>`
 
