@@ -48,13 +48,13 @@ const renderInput = ({ meta: { touched, error } = {}, input: { ...inputProps }, 
         fullWidth
     />;
 
-class SignIn extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this.state = { signInError: false };
     }
 
-    signIn = ({ username, password }) => {
+    login = ({ username, password }) => {
         this.props.loginClient(username, password)
             .then(() => this.props.push(this.props.location.state ? this.props.location.state.nextPathname : '/'))
             .catch(e => this.setState({ signInError: e }));
@@ -73,7 +73,7 @@ class SignIn extends Component {
                         </div>
                         {signInError && <Snackbar open autoHideDuration={4000} message={signInError.message || signInError || 'Login error'} />}
 
-                        <form onSubmit={handleSubmit(this.signIn)}>
+                        <form onSubmit={handleSubmit(this.login)}>
                             <div style={styles.form}>
                                 <div style={styles.input} >
                                     <Field
@@ -102,14 +102,14 @@ class SignIn extends Component {
     }
 }
 
-SignIn.propTypes = {
+Login.propTypes = {
     ...propTypes,
     previousRoute: PropTypes.string,
     loginClient: PropTypes.func,
     theme: PropTypes.object.isRequired,
 };
 
-SignIn.defaultProps = {
+Login.defaultProps = {
     theme: defaultTheme,
 };
 
@@ -120,9 +120,9 @@ const validate = (values) => {
     return errors;
 };
 
-const SignInForm = reduxForm({
+const LoginForm = reduxForm({
     form: 'signIn',
     validate,
-})(SignIn);
+})(Login);
 
-export default (connect(null, { push: pushAction })(SignInForm));
+export default (connect(null, { push: pushAction })(LoginForm));

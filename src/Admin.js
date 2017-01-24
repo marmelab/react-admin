@@ -12,7 +12,7 @@ import adminReducer from './reducer';
 import { crudSaga } from './sideEffect/saga';
 import CrudRoute from './CrudRoute';
 import DefaultLayout from './mui/layout/Layout';
-import SignIn from './mui/auth/SignIn';
+import Login from './mui/auth/Login';
 import Logout from './mui/auth/Logout';
 import TranslationProvider from './i18n/TranslationProvider';
 import { DEFAULT_LOCALE, TranslationReducer as translationReducer } from './i18n';
@@ -55,9 +55,9 @@ const Admin = ({
     const firstResource = resources[0].name;
     const {
         loginClient = () => Promise.resolve(),
-        checkCredentials = () => true,
-        SignInPage = withProps({ title, theme, loginClient })(SignIn),
         logoutClient,
+        checkCredentials = () => true,
+        LoginPage = withProps({ title, theme, loginClient })(Login),
         LogoutButton = withProps({ logoutClient })(Logout),
     } = authentication;
     const Layout = appLayout || withProps({ title, theme, logout: <LogoutButton /> })(DefaultLayout);
@@ -67,7 +67,7 @@ const Admin = ({
             <TranslationProvider messages={messages}>
                 <Router history={history}>
                     {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
-                    <Route path="/sign-in" component={SignInPage} />
+                    <Route path="/sign-in" component={LoginPage} />
                     <Route path="/" component={Layout} resources={resources}>
                         {dashboard && <IndexRoute component={dashboard} onEnter={checkCredentials} />}
                         {resources.map(resource =>
