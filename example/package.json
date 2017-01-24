@@ -8,7 +8,9 @@
   },
   "author": "",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "aor-language-french": "^1.0.1"
+  },
   "devDependencies": {
     "aor-json-rest-client": "~1.4.0",
     "aor-rich-text-input": "~1.0.0",

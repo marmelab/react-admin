@@ -9,14 +9,24 @@ The admin-on-rest interface uses English as the default language. But it also su
 
 ## Changing Locale
 
-To handle translations, the `<Admin>` component supports a `locale` prop ('`en`' by default). Override it with the locale of your choice to change the locale at runtime:
+To handle translations, the `<Admin>` component supports:
+
+- a `locale` prop expecting a string ('en', 'fr', etc), and
+- a `messages` prop, expecting a dictionary object.
+
+Admin-on-rest only ships the English locale; if you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, install the `aor-language-french` npm package, then configure the `<Admin>` component as follows:
 
 ```js
 import React from 'react';
 import { Admin, Resource, resolveBrowserLocale } from 'admin-on-rest';
+import frenchMessages from 'aor-language-french';
+
+const messages = {
+    fr: frenchMessages,
+};
 
 const App = () => (
-    <Admin ...(your props) locale='fr'>
+    <Admin ...(your props) locale="fr" messages={messages}>
         ...
     </Admin>
 );
@@ -24,12 +34,12 @@ const App = () => (
 export default App;
 ```
 
-The core interface is available in the following languages:
+You can find translation packages for the following languages:
 
-- English (`en`)
-- French (`fr`)
+- English (`en`) is the default
+- [French (`fr`)](https://github.com/marmelab/aor-language-french)
 
-If you want to contribute a new translation for your own language, feel free to submit a pull request.
+If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/admin-on-rest/blob/master/docs/Translation.md) with a link to your package.
 
 ## Using The Browser Locale
 
@@ -39,10 +49,16 @@ Admin-on-rest provides a helper function named `resolveBrowserLocale()`, which h
 
 ```js
 import React from 'react';
-import { Admin, Resource, resolveBrowserLocale } from 'admin-on-rest';
+import { Admin, Resource, englishMessages, resolveBrowserLocale } from 'admin-on-rest';
+import frenchMessages from 'aor-language-french';
+
+const messages = {
+    fr: frenchMessages,
+    en: englishMessages,
+};
 
 const App = () => (
-    <Admin ...(your props) locale={resolveBrowserLocale()}>
+    <Admin ...(your props) locale={resolveBrowserLocale()} messages={messages}>
         ...
     </Admin>
 );
@@ -52,7 +68,7 @@ export default App;
 
 ## Translation Messages
 
-Admin-on-rest uses a dictionary to translate the interface. This dictionary is a simple JavaScript object looking like the following:
+The `message` value should be a dictionary where keys are identifiers of interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
 
 ```js
 {
@@ -119,11 +135,11 @@ export default App;
 
 ## Translating Your Resources
 
-By default, Admin-on-rest uses your resource's name everywhere in the interface without taking into account the current user locale.
+By default, Admin-on-rest uses resource names ("post", "comment", etc) everywhere in the interface, without taking into account the current user locale.
 
-To translate your resource, you must add it to the dictionary into the language(s) you want to cover under the special key "resource". After what, it will be automaticaly translated at runtime if resource name match.
+To translate resource names in page titles, you must add them to the `messages` dictionary, under the special `resource` key. After what, it will be automatically translated at runtime if resource names match.
 
-For example, if you want to translate your "shoe" resource, you must add the following object to the `messages` dictionary:
+For example, if you want to translate a "shoe" resource, you must add the following object to the `messages` dictionary:
 
 ```js
 
