@@ -6,28 +6,26 @@ import { syncHistoryWithStore, routerMiddleware, routerReducer } from 'react-rou
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 import { fork } from 'redux-saga/effects';
+import withProps from 'recompose/withProps';
 
 import adminReducer from './reducer';
 import { crudSaga } from './sideEffect/saga';
 import CrudRoute from './CrudRoute';
 import Layout from './mui/layout/Layout';
 import SignIn from './mui/auth/SignIn';
-import withProps from 'recompose/withProps';
 import TranslationProvider from './i18n/TranslationProvider';
 import { DEFAULT_LOCALE, TranslationReducer as translationReducer } from './i18n';
 
 const Admin = ({
+    authentication = {},
     children,
     customReducers = {},
     customSagas = [],
     dashboard,
     restClient,
-    signInClient,
-    checkCredentials,
     theme,
     title = 'Admin on REST',
     appLayout = withProps({ title, theme })(Layout),
-    SignInPage = withProps({ title, theme, signInClient })(SignIn),
     locale = DEFAULT_LOCALE,
     messages = {},
 }) => {
@@ -54,6 +52,11 @@ const Admin = ({
 
     const history = syncHistoryWithStore(hashHistory, store);
     const firstResource = resources[0].name;
+    const {
+        signInClient = () => Promise.resolve(),
+        checkCredentials = () => true,
+        SignInPage = withProps({ title, theme, signInClient })(SignIn),
+    } = authentication;
 
     return (
         <Provider store={store}>
@@ -87,6 +90,7 @@ const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]
 
 Admin.propTypes = {
     appLayout: componentPropType,
+    authentication: PropTypes.object,
     checkCredentials: PropTypes.func,
     children: PropTypes.node,
     customSagas: PropTypes.array,
@@ -98,11 +102,6 @@ Admin.propTypes = {
     title: PropTypes.string,
     locale: PropTypes.string,
     messages: PropTypes.object,
-};
-
-Admin.defaultProps = {
-    signInClient: () => Promise.resolve(),
-    checkCredentials: () => true,
 };
 
 export default Admin;
