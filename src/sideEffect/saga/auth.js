@@ -4,7 +4,7 @@ import { FETCH_ERROR } from '../../actions/fetchActions';
 
 export default function* () {
     yield takeEvery(FETCH_ERROR, function* redirectIfNotauthenticated({ error }) {
-        if (error.status === 403) {
+        if (error.status === 401 || error.status === 403) {
             yield put(push('/login'));
         }
     });
