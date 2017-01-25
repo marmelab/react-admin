@@ -285,7 +285,7 @@ restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123, sort: {
 
 ### Error Format
 
-To be completed
+When the REST API returns an error, the rest client should `throw` an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). Admin-on-rest inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors).
 
 ### Example implementation
 

@@ -366,6 +366,59 @@ const App = () => (
 
 ![Custom home page](./img/dashboard.png)
 
+## Adding a Login Page
+
+Most admin apps require authentication, so admin-on-rest can check user credentials before displaying a page, and redirect to a login form when the REST API returns a 403 error code.
+
+*What* those credentials are, and *how* to get them, is the developer's responsibility. Admin-on-rest makes no assumption on your authentication strategy (basic auth, OAuth, custom route, etc), but gives you the hooks to plug your logic at the right place.
+
+For this tutorial, since there is no public authentication API, we'll use a fake authentication provider that accepts every login request, and stores the `username` in `localStorage`. We'll implement a credentials checker that validates only if `localStorage` contains a `username` item.
+
+The authentication configuration is a simple object with `loginClient`, `logoutClient`, and `checkCredentials` methods:
+
+```js
+// in src/authentication.js
+export default {
+    loginClient(username, password) {
+        localStorage.setItem('username', username);
+        // accept all username/password combinations
+        return Promise.resolve();
+    },
+    logoutClient() {
+        localStorage.removeItem('username');
+        return Promise.resolve();
+    },
+    checkCredentials(nextState, replace) {
+        if (!localStorage.getItem('username')) {
+            replace({
+                pathname: '/login',
+                state: { nextPathname: nextState.location.pathname },
+            });
+        }
+    },
+};
+```
+
+Both `loginClient` and `logoutClient` must return a `Promise`, so you can easily fetch an authentication server in there.
+
+To enable this configuration, pass it as the `authentication` prop in the `<Admin>` component:
+
+```js
+// in src/App.js
+import Dashboard from './Dashboard';
+import authentication from './authentication';
+
+const App = () => (
+    <Admin authentication={authentication} dashboard={Dashboard} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+        // ...
+    </Admin>
+);
+```
+
+Once the app reloads, it's now behind a login form that accepts everyone:
+
+![Login form](./img/login.gif)
+
 ## Using Another REST Dialect
 
 Here is the elephant in the room of this tutorial. In real world projects, the REST dialect of your API won't match the JSONPLaceholder dialect. Writing a REST client is probably the first thing you'll have to do to make admin-on-rest work. Depending on your API, this can require a few hours of additional work.
