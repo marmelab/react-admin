@@ -12,7 +12,7 @@ class Logout extends Component {
     handleLogout = () => {
         const { logoutClient, push } = this.props;
         logoutClient()
-            .then(() => push('/sign-in'));
+            .then(() => push('/login'));
     }
     render() {
         const { logoutClient, translate } = this.props;

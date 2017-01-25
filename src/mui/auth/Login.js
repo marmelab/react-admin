@@ -70,7 +70,7 @@ class Login extends Component {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div style={styles.main}>
-                    <Card className="sign-in" style={styles.card}>
+                    <Card style={styles.card}>
                         <div style={styles.avatar}>
                             <Avatar backgroundColor={pinkA200} icon={<LockIcon />} size={60} />
                         </div>

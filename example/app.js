@@ -37,7 +37,7 @@ const authentication = {
     checkCredentials(nextState, replace) {
         if (!localStorage.getItem('username')) {
             replace({
-                pathname: '/sign-in',
+                pathname: '/login',
                 state: { nextPathname: nextState.location.pathname },
             });
         }

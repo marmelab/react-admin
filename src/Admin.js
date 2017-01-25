@@ -67,7 +67,7 @@ const Admin = ({
             <TranslationProvider messages={messages}>
                 <Router history={history}>
                     {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
-                    <Route path="/sign-in" component={LoginPage} />
+                    <Route path="/login" component={LoginPage} />
                     <Route path="/" component={Layout} resources={resources}>
                         {dashboard && <IndexRoute component={dashboard} onEnter={checkCredentials} />}
                         {resources.map(resource =>
