@@ -37,6 +37,9 @@ Here are all the props accepted by the component:
 * [`appLayout`](#applayout)
 * [`customReducers`](#customreducers)
 * [`customSagas`](#customsagas)
+* [`authentication`](#authentication)
+* [`locale`](#internationalization)
+* [`messages`](#internationalization)
 
 ### `restClient`
 
@@ -280,6 +283,30 @@ const App = () => (
 
 export default App;
 ```
+
+### `authentication`
+
+The `authentication` props expect an object with `loginClient`, `logoutClient`, and `checkCredentials` methods, to control the application authentication strategy:
+
+```js
+const authentication = {
+    loginClient(username, password) { /* ... */ },
+    logoutClient() { /* ... */ },
+    checkCredentials(nextState, replace) { /* ... */},
+};
+
+const App = () => (
+    <Admin authentication={authentication} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+        ...
+    </Admin>
+);
+```
+
+The [Authentication documentation](./Authentication.html) explains how to implement these functions in detail.
+
+### Internationalization
+
+The `locale` and `messages` props let you translate the GUI. The [Translation Documentation](./Translation.html) details this process.
 
 ## The `<Resource>` component
 
