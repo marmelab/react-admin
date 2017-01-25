@@ -19,9 +19,9 @@ export const messages = {
             password: 'Mot de passe (si protégé)',
             summary: 'Résumé',
             miscellaneous: 'Extra',
-            nb_view: 'Nb de vues ?',
+            nb_view: 'Nb de vues',
             comments: 'Commentaires',
-            created_at: 'Créer le',
+            created_at: 'Créé le',
         },
     },
     comment: {
@@ -29,7 +29,7 @@ export const messages = {
         all: 'Commentaires',
         form: {
             body: 'Contenu',
-            created_at: 'Créer le',
+            created_at: 'Créé le',
             author_name: 'Nom de l\'auteur',
         },
     },
@@ -39,6 +39,9 @@ export const messages = {
             name: 'Nom',
         },
     },
+    resources: {
+        comments: 'Commentaire |||| Commentaires'
+    }
 };
 
 export default messages;
