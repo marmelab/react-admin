@@ -22,7 +22,7 @@ export default {
         },
         navigation: {
             page_out_of_boundaries: 'Page number %{page} out of boundaries',
-            page_out_from_end: 'Cannot after last page',
+            page_out_from_end: 'Cannot go after last page',
             page_out_from_begin: 'Cannot go before page 1',
             page_range_info: '%{offsetBegin}-%{offsetEnd} of %{total}',
             next: 'Next',
