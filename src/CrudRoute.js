@@ -11,10 +11,6 @@ const CrudRoute = () => <div>&lt;CrudRoute&gt; elements are for configuration on
 
 CrudRoute.createRouteFromReactElement = (element, parentRoute) => {
     const { path, list, create, edit, show, remove, options, checkCredentials } = element.props;
-    const checkCredentialsAndScroll = (nextState, replace, next) => {
-        checkCredentials(nextState, replace, next);
-        window.scrollTo(0, 0);
-    };
 
     // dynamically add crud routes
     const crudRoute = createRoutesFromReactChildren(

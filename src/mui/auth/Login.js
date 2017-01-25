@@ -25,7 +25,6 @@ const styles = {
         minHeight: '100vh',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: cyan500,
     },
     card: {
         minWidth: 300,
@@ -41,6 +40,17 @@ const styles = {
         display: 'flex',
     },
 };
+
+function getColorsFromTheme(theme) {
+    if (!theme) return { primary1Color: cyan500, accent1Color: pinkA200 };
+    const {
+        palette: {
+            primary1Color,
+            accent1Color,
+        },
+      } = theme;
+    return { primary1Color, accent1Color };
+}
 
 // see http://redux-form.com/6.4.3/examples/material-ui/
 const renderInput = ({ meta: { touched, error } = {}, input: { ...inputProps }, ...props }) =>
@@ -69,12 +79,13 @@ class Login extends Component {
         const { handleSubmit, submitting, theme, translate } = this.props;
         const { signInError } = this.state;
         const muiTheme = getMuiTheme(theme);
+        const { primary1Color, accent1Color } = getColorsFromTheme(muiTheme);
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
-                <div style={styles.main}>
+                <div style={{ ...styles.main, backgroundColor: primary1Color }}>
                     <Card style={styles.card}>
                         <div style={styles.avatar}>
-                            <Avatar backgroundColor={pinkA200} icon={<LockIcon />} size={60} />
+                            <Avatar backgroundColor={accent1Color} icon={<LockIcon />} size={60} />
                         </div>
                         {signInError && <Snackbar open autoHideDuration={4000} message={signInError.message || signInError || translate('aor.auth.sign_in_error')} />}
 

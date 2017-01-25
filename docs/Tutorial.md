@@ -370,7 +370,7 @@ const App = () => (
 
 Most admin apps require authentication, so admin-on-rest can check user credentials before displaying a page, and redirect to a login form when the REST API returns a 403 error code.
 
-*What* those credentials are, and *how* to get them, is the developer's responsibility. Admin-on-rest makes no assumption on your authentication strategy (basic auth, OAuth, custom route, etc), but gives you the hooks to plug your logic at the right place.
+*What* those credentials are, and *how* to get them, are questions that you must answer. Admin-on-rest makes no assumption about your authentication strategy (basic auth, OAuth, custom route, etc), but gives you the hooks to plug your logic at the right place.
 
 For this tutorial, since there is no public authentication API we can use, we'll use a fake authentication provider that accepts every login request, and stores the `username` in `localStorage`. We'll implement a credentials checker that validates only if `localStorage` contains a `username` item.
 

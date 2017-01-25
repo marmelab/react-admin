@@ -33,7 +33,7 @@ By default, the `/login` route renders a special component called `Login`, which
 
 ![Default Login Form](./img/login-form.png)
 
-What this form does upon submission depends on the `authClient` method of the `authentication` object. This method receives authentication requests `(type, params)`, and should return a Promise. `Login` calls `authClient` with the `AUTH_LOGIN` type, and it's the ideal place to grab and store the user credentials.
+What this form does upon submission depends on the `authClient` method of the `authentication` object. This method receives authentication requests `(type, params)`, and should return a Promise. `Login` calls `authClient` with the `AUTH_LOGIN` type, and `{ login, password }` as parameters. It's the ideal place to authenticate the user, and store their credentials.
 
 For instance, to query an authentication route via HTTPS and store the response (a token) in local storage, configure `authClient` as follows:
 
