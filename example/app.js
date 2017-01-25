@@ -25,27 +25,8 @@ const delayedRestClient = (type, resource, params) => new Promise(
     resolve => setTimeout(() => resolve(restClient(type, resource, params)), 1000),
 );
 
-const authentication = {
-    loginClient(username) {
-        localStorage.setItem('username', username);
-        return Promise.resolve();
-    },
-    logoutClient() {
-        localStorage.removeItem('username');
-        return Promise.resolve();
-    },
-    checkCredentials(nextState, replace) {
-        if (!localStorage.getItem('username')) {
-            replace({
-                pathname: '/login',
-                state: { nextPathname: nextState.location.pathname },
-            });
-        }
-    },
-};
-
 render(
-    <Admin restClient={delayedRestClient} title="Example Admin" locale={resolveBrowserLocale()} messages={messages} authentication={authentication}>
+    <Admin restClient={delayedRestClient} title="Example Admin" locale={resolveBrowserLocale()} messages={messages}>
         <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={Delete} icon={PostIcon} options={{ label: 'post.all' }} />
         <Resource name="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} remove={Delete} icon={CommentIcon} options={{ label: 'comment.all' }} />
     </Admin>,
