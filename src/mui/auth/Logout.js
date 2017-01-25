@@ -7,16 +7,17 @@ import { List, ListItem } from 'material-ui/List';
 import ExitIcon from 'material-ui/svg-icons/action/power-settings-new';
 
 import { Translate } from '../../i18n';
+import { AUTH_LOGOUT } from '../../auth';
 
 class Logout extends Component {
     handleLogout = () => {
-        const { logoutClient, push } = this.props;
-        logoutClient()
+        const { authClient, push } = this.props;
+        authClient(AUTH_LOGOUT)
             .then(() => push('/login'));
     }
     render() {
-        const { logoutClient, translate } = this.props;
-        return logoutClient ? (
+        const { authClient, translate } = this.props;
+        return authClient ? (
             <List>
                 <ListItem leftIcon={<ExitIcon />} primaryText={translate('aor.auth.logout')} onClick={this.handleLogout} />
             </List>
@@ -25,7 +26,7 @@ class Logout extends Component {
 }
 
 Logout.propTypes = {
-    logoutClient: PropTypes.func,
+    authClient: PropTypes.func,
     push: PropTypes.func,
     translate: PropTypes.func,
 };

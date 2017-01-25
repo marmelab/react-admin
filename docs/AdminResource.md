@@ -286,12 +286,11 @@ export default App;
 
 ### `authentication`
 
-The `authentication` props expect an object with `loginClient`, `logoutClient`, and `checkCredentials` methods, to control the application authentication strategy:
+The `authentication` props expect an object with `authClient` and `checkCredentials` methods, to control the application authentication strategy:
 
 ```js
 const authentication = {
-    loginClient(username, password) { /* ... */ },
-    logoutClient() { /* ... */ },
+    authClient(type, params) { /* ... */ },
     checkCredentials(nextState, replace) { /* ... */},
 };
 

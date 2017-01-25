@@ -15,6 +15,7 @@ import LockIcon from 'material-ui/svg-icons/action/lock-outline';
 import { cyan500, pinkA200 } from 'material-ui/styles/colors';
 
 import defaultTheme from '../defaultTheme';
+import { AUTH_LOGIN } from '../../auth';
 import Translate from '../../i18n/Translate';
 
 const styles = {
@@ -57,8 +58,9 @@ class Login extends Component {
     }
 
     login = ({ username, password }) => {
-        const { loginClient, push, location } = this.props;
-        loginClient(username, password)
+        const { authClient, push, location } = this.props;
+        if (!authClient) return;
+        authClient(AUTH_LOGIN, { username, password })
             .then(() => push(location.state ? location.state.nextPathname : '/'))
             .catch(e => this.setState({ signInError: e }));
     }
@@ -107,8 +109,8 @@ class Login extends Component {
 
 Login.propTypes = {
     ...propTypes,
+    authClient: PropTypes.func,
     previousRoute: PropTypes.string,
-    loginClient: PropTypes.func,
     theme: PropTypes.object.isRequired,
     translate: PropTypes.func.isRequired,
 };

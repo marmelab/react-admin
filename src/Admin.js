@@ -54,11 +54,10 @@ const Admin = ({
     const history = syncHistoryWithStore(hashHistory, store);
     const firstResource = resources[0].name;
     const {
-        loginClient = () => Promise.resolve(),
-        logoutClient,
+        authClient,
         checkCredentials = () => true,
-        LoginPage = withProps({ title, theme, loginClient })(Login),
-        LogoutButton = withProps({ logoutClient })(Logout),
+        LoginPage = withProps({ title, theme, authClient })(Login),
+        LogoutButton = withProps({ authClient })(Logout),
     } = authentication;
     const Layout = appLayout || withProps({ title, theme, logout: <LogoutButton /> })(DefaultLayout);
 
@@ -94,7 +93,12 @@ const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]
 
 Admin.propTypes = {
     appLayout: componentPropType,
-    authentication: PropTypes.object,
+    authentication: PropTypes.shape({
+        authClient: PropTypes.func,
+        checkCredentials: PropTypes.func,
+        LoginPage: componentPropType,
+        LogoutButton: componentPropType,
+    }),
     children: PropTypes.node,
     customSagas: PropTypes.array,
     customReducers: PropTypes.object,

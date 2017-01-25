@@ -372,20 +372,23 @@ Most admin apps require authentication, so admin-on-rest can check user credenti
 
 *What* those credentials are, and *how* to get them, is the developer's responsibility. Admin-on-rest makes no assumption on your authentication strategy (basic auth, OAuth, custom route, etc), but gives you the hooks to plug your logic at the right place.
 
-For this tutorial, since there is no public authentication API, we'll use a fake authentication provider that accepts every login request, and stores the `username` in `localStorage`. We'll implement a credentials checker that validates only if `localStorage` contains a `username` item.
+For this tutorial, since there is no public authentication API we can use, we'll use a fake authentication provider that accepts every login request, and stores the `username` in `localStorage`. We'll implement a credentials checker that validates only if `localStorage` contains a `username` item.
 
-The authentication configuration is a simple object with `loginClient`, `logoutClient`, and `checkCredentials` methods:
+The authentication configuration is a simple object with `authClient` and `checkCredentials` methods:
 
 ```js
 // in src/authentication.js
+import { AUTH_LOGIN, AUTH_LOGOUT } from 'admin-on-rest';
+
 export default {
-    loginClient(username, password) {
-        localStorage.setItem('username', username);
-        // accept all username/password combinations
-        return Promise.resolve();
-    },
-    logoutClient() {
-        localStorage.removeItem('username');
+    authClient(type, params) {
+        if (type === AUTH_LOGIN) {
+            localStorage.setItem('username', params.username);
+            // accept all username/password combinations
+        }
+        if (type === AUTH_LOGOUT) {
+            localStorage.removeItem('username');
+        }
         return Promise.resolve();
     },
     checkCredentials(nextState, replace) {
@@ -399,7 +402,7 @@ export default {
 };
 ```
 
-Both `loginClient` and `logoutClient` must return a `Promise`, so you can easily fetch an authentication server in there.
+`authClient` must return a `Promise`, so you can easily fetch an authentication server in there.
 
 To enable this configuration, pass it as the `authentication` prop in the `<Admin>` component:
 

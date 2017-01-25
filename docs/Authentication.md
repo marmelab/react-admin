@@ -27,25 +27,29 @@ const authentication = {
 
 This `authentication` object allows to configure the login and logout HTTP calls, the credentials check made during navigation, and the Login and Logout components. Read on to see that in detail.
 
-## Customizing The Login Client
+## Configuring the Auth Client
 
 By default, the `/login` route renders a special component called `Login`, which displays a login form asking for username and password.
 
 ![Default Login Form](./img/login-form.png)
 
-What this form does upon submission depends on the `loginClient` method of the `authentication` object. This method receives the username and password, and returns a Promise. It's the ideal place to grab and store the user credentials.
+What this form does upon submission depends on the `authClient` method of the `authentication` object. This method receives authentication requests `(type, params)`, and should return a Promise. `Login` calls `authClient` with the `AUTH_LOGIN` type, and it's the ideal place to grab and store the user credentials.
 
-For instance, to query an authentication route via HTTPS and store the response (a token) in local storage, configure `loginClient` as follows:
+For instance, to query an authentication route via HTTPS and store the response (a token) in local storage, configure `authClient` as follows:
 
 ```js
+import { AUTH_LOGIN } from 'admin-on-rest';
+
 const authentication = {
-    loginClient(username, password) {
-        const request = new Request('https://mydomain.com/authenticate', {
-            method: 'POST',
-            body: JSON.stringify({ username, password }),
-            headers: new Headers({ 'Content-Type': 'application/json' }),
-        })
-        return fetch(request)
+    authClient(type, params) {
+        if (type === AUTH_LOGIN) {
+            const { username, password } = params;
+            const request = new Request('https://mydomain.com/authenticate', {
+                method: 'POST',
+                body: JSON.stringify({ username, password }),
+                headers: new Headers({ 'Content-Type': 'application/json' }),
+            })
+            return fetch(request)
             .then(response => {
                 if (response.status < 200 || response.status >= 300) {
                     throw new Error(response.statusText);
@@ -55,13 +59,15 @@ const authentication = {
             .then(({ token }) => {
                 localStorage.setItem('token', token)
             });
+        }
+        return Promise.resolve();
     }
 }
 ```
 
 **Tip**: It's a good idea to store credentials in `localStorage`, to avoid reconnection when opening a new browser tab. But this makes your application [open to XSS attacks](http://www.redotheweb.com/2015/11/09/api-security.html), so you'd better double down on security, and add an `httpOnly` cookie on the server side, too.
 
-When the `loginClient` Promise resolves, the login form redirects to the previous page, or to the admin index if the user just arrived.
+When the `authClient` Promise resolves, the login form redirects to the previous page, or to the admin index if the user just arrived.
 
 ## Sending Credentials to the REST API
 
@@ -90,36 +96,41 @@ If you have a custom REST client, don't forget to add credentials yourself.
 
 ## Adding a Logout Button
 
-If you provide a `logoutClient` method to the `authorization` prop, admin-on-rest will display a logout button in the sidebar, and call the method when clicked. This method should return a Promise ; when resolved, the user gets redirected to the login page.
+If you provide an `authClient` method to the `authentication` prop, admin-on-rest will display a logout button in the sidebar. When the user clicks on the logout button, this calls the `authClient` with the `AUTH_LOGOUT` type. When resolved, the user gets redirected to the login page.
 
 For instance, to remove the token from local storage upon logout:
 
 ```js
-const authorization = {
-    loginClient(username, password) { /* ... */ },
-    logoutClient() {
-        localStorage.removeItem('token');
+import { AUTH_LOGIN, AUTH_LOGOUT } from 'admin-on-rest';
+
+const authentication = {
+    authClient(type, params) {
+        if (type === AUTH_LOGIN) {
+            // ...
+        }
+        if (type === AUTH_LOGOUT) {
+            localStorage.removeItem('token');
+        }
         return Promise.resolve();
-    },
+    }
 };
 ```
 
 ![Logout button](./img/logout.gif)
 
-The `logoutClient` is also a good place to notify the authentication API that the user credentials are no longer valid.
+The `authClient` is also a good place to notify the authentication API that the user credentials are no longer valid after logout.
 
 ## Checking Credentials During Navigation
 
 Admin-on-rest redirects to the login page whenever a REST response uses a 403 status code. But that's usually not enough, because admin-on-rest keeps data on the client side, and could display stale data while contacting the server - even after the credentials are no longer valid.
 
-That means you need a way to check credentials during navigation. That's the purpose of the `checkCredentials` method of the `authorization` object. It's a kind of middleware function that is called by the router before every page change, so it's the ideal place to check for credentials.
+That means you need a way to check credentials during navigation. That's the purpose of the `checkCredentials` method of the `authentication` object. It's a kind of middleware function that is called by the router before every page change, so it's the ideal place to check for credentials.
 
 For instance, to check for the existence of the token in local storage:
 
 ```js
 const authentication = {
-    loginClient(username, password) { /* ... */ },
-    logoutClient() { /* ... */ },
+    authClient(type, params) { /* ... */ },
     checkCredentials(nextState, replace) {
         if (!localStorage.getItem('token')) {
             replace({
@@ -148,7 +159,7 @@ const App = () => (
 
 ## Customizing The Login and Logout Components
 
-Using `loginClient`, `logoutClient`, and `checkCredentials` is enough to implement a full-featured authorization system if the authentication relies on a username and password.
+Using `authClient` and `checkCredentials` is enough to implement a full-featured authorization system if the authentication relies on a username and password.
 
 ?B?u?t??w?h?a?t??i?f??y?o?u??w?a?n?t??t?o??u?s?e??a?n??e?m?a?i?l??i?n?s?t?e?a?d??o?f??a??u?s?e?r?n?a?m?e????W?h?a?t??i?f??y?o?u??w?a?n?t??t?o??u?s?e??a??S?i?n?g?l?e?-?S?i?g?n?-?O?n??(?S?S?O?)??w?i?t?h??a??t?h?i?r?d?-?p?a?r?t?y??a?u?t?h?e?n?t?i?c?a?t?i?o?n??s?e?r?v?i?c?e?????W?h?a?t??i?f??y?o?u??w?a?n?t??t?o??u?s?e??t?w?o?-?f?a?c?t?o?r??a?u?t?h?e?n?t?i?c?a?t?i?o?n???
 
@@ -172,6 +183,6 @@ const authentication = {
 }
 ```
 
-**Tip**: When customizing `LoginPage` and `LogoutButton`, you no longer need the `loginClient` and `logoutClient` methods, since these are only passed to the default `Login` and `Logout` components.
+**Tip**: When customizing `LoginPage` and `LogoutButton`, you no longer need the `authClient` method, since it is only passed to the default `Login` and `Logout` components.
 
 **Tip**: If you want to use Redux and Saga to handle credentials and authorization, you will need to register  [custom reducers](./AdminResource.html#customreducers) and [custom sagas](./AdminResource.html#customsagas) in the `<Admin>` component.
