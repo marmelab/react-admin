@@ -5,13 +5,15 @@ title: "Authentication"
 
 # Authentication
 
-Most admin applications restrict access to authenticated users. Since there are many different authentication strategies (Basic Auth, JWT, OAuth, etc.), admin-on-rest only provides special hooks to execute your own authentication code.
+![Logout button](./img/login.gif)
+
+Admin-on-rest lets you secure your admin app with the authentication strategy of your choice. Since there are many different possible strategies (Basic Auth, JWT, OAuth, etc.), admin-on-rest simply provides hooks to execute your own authentication code.
 
 By default, an admin-on-rest app doesn't require authentication. But if the REST API ever returns a 401 (Unauthorized) or a 403 (Forbidden) response, then the user is redirected to the `/login` route. You have nothing to do - it's already built in.
 
 ## Authentication Configuration
 
-You can configure the authentication in the `<Admin>` component: pass an object as the `authentication` prop:
+You can configure authentication in the `<Admin>` component, by passing an object as the `authentication` prop:
 
 ```js
 const authentication = {
@@ -23,17 +25,17 @@ const authentication = {
 </Admin>
 ```
 
-This authentication object allows to configure the login and logout HTTP calls, the authentication check made during navigation, and the Login and Logout components. Read on to see that in detail.
+This `authentication` object allows to configure the login and logout HTTP calls, the credentials check made during navigation, and the Login and Logout components. Read on to see that in detail.
 
-## Customizing The Login and Logout Clients
+## Customizing The Login Client
 
 By default, the `/login` route renders a special component called `Login`, which displays a login form asking for username and password.
 
-![Default Login Form]()
+![Default Login Form](./img/login-form.png)
 
-What this form does when submitting depends on the `loginClient` method of the `authentication` object. This method receives the username and password, and returns a Promise.
+What this form does upon submission depends on the `loginClient` method of the `authentication` object. This method receives the username and password, and returns a Promise. It's the ideal place to grab and store the user credentials.
 
-For instance, to query an API route and store the response (a token) in local storage, configure `loginClient` as follows:
+For instance, to query an authentication route via HTTPS and store the response (a token) in local storage, configure `loginClient` as follows:
 
 ```js
 const authentication = {
@@ -57,13 +59,13 @@ const authentication = {
 }
 ```
 
-**Tip**: It's a good idea to store authentication tokens in `localStorage`, to avoid reconnection when opening a new browser tab.
+**Tip**: It's a good idea to store credentials in `localStorage`, to avoid reconnection when opening a new browser tab. But this makes your application [open to XSS attacks](http://www.redotheweb.com/2015/11/09/api-security.html), so you'd better double down on security, and add an `httpOnly` cookie on the server side, too.
 
 When the `loginClient` Promise resolves, the login form redirects to the previous page, or to the admin index if the user just arrived.
 
-## Sending Authentication Data to the REST API
+## Sending Credentials to the REST API
 
-To use the authentication data when calling REST API routes, you need to configure the `httpClient` passed as second parameter to `simpleRestClient` or `jsonServerRestClient`, as explained in the [REST client documentation](RestClients.html#adding-custom-headers).
+To use the credentials when calling REST API routes, you need to configure the `httpClient` passed as second parameter to `simpleRestClient` or `jsonServerRestClient`, as explained in the [REST client documentation](RestClients.html#adding-custom-headers).
 
 For instance, to pass the token obtained during login as an `Authorization` header, configure the REST client as follows:
 
@@ -84,7 +86,7 @@ const restClient = simpleRestClient('http://localhost:3000', httpClient);
 </Admin>
 ```
 
-If you have a custom REST client, don't forget to add authentication data yourself.
+If you have a custom REST client, don't forget to add credentials yourself.
 
 ## Adding a Logout Button
 
@@ -102,15 +104,15 @@ const authorization = {
 };
 ```
 
-![Logout button]()
+![Logout button](./img/logout.gif)
 
-The `logoutClient` is also a good place to notify the authentication API that the user authentication data is no longer valid.
+The `logoutClient` is also a good place to notify the authentication API that the user credentials are no longer valid.
 
 ## Checking Credentials During Navigation
 
-Admin-on-rest redirects to the login page whenever a REST response uses a 403 status code. But that's usually not enough, because admin-on-rest keeps data on the client side, and coud display stale data while contacting the server - even after the authentication data is no longer valid.
+Admin-on-rest redirects to the login page whenever a REST response uses a 403 status code. But that's usually not enough, because admin-on-rest keeps data on the client side, and could display stale data while contacting the server - even after the credentials are no longer valid.
 
-That means you need a way to check authentication data during navigation. That's the purpose of the `checkCredentials` method of the `authorization` object. It's a kind of middleware function that is called by the router before changing page, so it's the ideal place to check for credentials.
+That means you need a way to check credentials during navigation. That's the purpose of the `checkCredentials` method of the `authorization` object. It's a kind of middleware function that is called by the router before every page change, so it's the ideal place to check for credentials.
 
 For instance, to check for the existence of the token in local storage:
 
@@ -129,7 +131,20 @@ const authentication = {
 }
 ```
 
-**Tip**: The `replace` function is passed by the router ; it allows to redirect the user if the check fails.
+**Tip**: The `replace` function is passed by the router ; it allows to redirect the user if the check fails. Passing `state.nextPathname` allows the `Login` form to redirect to the page required by the user after authentication.
+
+**Tip**: You can override the `checkCredentials` in `<Resource>` components, to implement different checks for different resources:
+
+```js
+import { checkCredentialsForPowerUser, checkCredentials } from './credentials';
+
+const App = () => (
+    <Admin>
+        <Resource name="customers" checkCredentials={checkCredentials} list={CustomersList} />
+        <Resource name="bank_accounts" checkCredentials={checkCredentialsForPowerUser} list={AccountsList} />
+    </Admin>
+);
+```
 
 ## Customizing The Login and Logout Components
 
@@ -158,3 +173,5 @@ const authentication = {
 ```
 
 **Tip**: When customizing `LoginPage` and `LogoutButton`, you no longer need the `loginClient` and `logoutClient` methods, since these are only passed to the default `Login` and `Logout` components.
+
+**Tip**: If you want to use Redux and Saga to handle credentials and authorization, you will need to register  [custom reducers](./AdminResource.html#customreducers) and [custom sagas](./AdminResource.html#customsagas) in the `<Admin>` component.
