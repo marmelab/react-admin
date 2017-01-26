@@ -188,13 +188,13 @@ import MyLoginPage from './MyLoginPage';
 import MyLogoutButton from './MyLogoutButton';
 
 const App = () => (
-    <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton}>
+    <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton} authClient={authClient}>
     ...
     </Admin>
 );
 ```
 
 
-**Tip**: When setting the `loginPage` and `logoutButton` props, you no longer need the `authClient` method, since it is only passed to the default `Login` and `Logout` components. That means your custom login and logout components must implement their own authentication client.
+**Tip**: The `authClient` function is automatically passed as prop to your custom `LoginPage` and `LogoutButton` components.
 
 **Tip**: If you want to use Redux and Saga to handle credentials and authorization, you will need to register  [custom reducers](./AdminResource.html#customreducers) and [custom sagas](./AdminResource.html#customsagas) in the `<Admin>` component.
