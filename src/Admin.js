@@ -56,7 +56,6 @@ const Admin = ({
 
     const history = syncHistoryWithStore(hashHistory, store);
     const firstResource = resources[0].name;
-    const Layout = appLayout || withProps({ title, theme, logout: <LogoutButton /> })(DefaultLayout);
     const onEnter = authClient ?
         params => (nextState, replace, callback) => authClient(AUTH_CHECK, params)
             .then(() => params.scrollToTop ? window.scrollTo(0, 0) : null)
@@ -71,6 +70,7 @@ const Admin = ({
         : () => () => true;
     const LoginPage = withProps({ title, theme, authClient })(loginPage || Login);
     const LogoutButton = withProps({ authClient })(logoutButton || Logout);
+    const Layout = withProps({ title, theme, logout: <LogoutButton /> })(appLayout || DefaultLayout);
 
     return (
         <Provider store={store}>
