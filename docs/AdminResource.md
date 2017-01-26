@@ -37,6 +37,11 @@ Here are all the props accepted by the component:
 * [`appLayout`](#applayout)
 * [`customReducers`](#customreducers)
 * [`customSagas`](#customsagas)
+* [`authClient`](#authclient)
+* [`loginPage`](#loginpage)
+* [`logoutButton`](#logoutbutton)
+* [`locale`](#internationalization)
+* [`messages`](#internationalization)
 
 ### `restClient`
 
@@ -280,6 +285,63 @@ const App = () => (
 
 export default App;
 ```
+
+### `authClient`
+
+The `authClient` prop expect a function returning a Promise, to control the application authentication strategy:
+
+```js
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK } from 'admin-on-rest';
+
+const authClient(type, params) {
+    // type can be any of AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK
+    // ...
+    return Promise.resolve();
+};
+
+const App = () => (
+    <Admin authClient={authClient} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+        ...
+    </Admin>
+);
+```
+
+The [Authentication documentation](./Authentication.html) explains how to implement these functions in detail.
+
+### `loginPage`
+
+If you want to customize the Login page, or switch to another authentication strategy than a username/password form, pass a component of your own as the `loginPage` prop. Admin-on-rest will display this component whenever the `/login` route is called.
+
+```js
+import MyLoginPage from './MyLoginPage';
+
+const App = () => (
+    <Admin loginPage={MyLoginPage}>
+        ...
+    </Admin>
+);
+```
+
+See The [Authentication documentation](./Authentication.html#customizing-the-login-and-logout-components) for more explanations.
+
+### `logoutButton`
+
+If you customize the `loginPage`, you probably need to override the `logoutButton`, too - because they share the authentication strategy.
+
+```js
+import MyLoginPage from './MyLoginPage';
+import MyLogoutButton from './MyLogoutButton';
+
+const App = () => (
+    <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton}>
+        ...
+    </Admin>
+);
+```
+
+### Internationalization
+
+The `locale` and `messages` props let you translate the GUI. The [Translation Documentation](./Translation.html) details this process.
 
 ## The `<Resource>` component
 

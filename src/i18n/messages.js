@@ -28,11 +28,21 @@ export default {
             next: 'Next',
             prev: 'Prev',
         },
+        auth: {
+            username: 'Username',
+            password: 'Password',
+            sign_in: 'Sign in',
+            sign_in_error: 'Authentication failed, please retry',
+            logout: 'Logout',
+        },
         notification: {
             updated: 'Element updated',
             created: 'Element created',
             deleted: 'Element deleted',
             item_doesnt_exist: 'Element does not exist',
+        },
+        validation: {
+            required: 'Required',
         },
     },
 };

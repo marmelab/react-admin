@@ -6,26 +6,32 @@ import { syncHistoryWithStore, routerMiddleware, routerReducer } from 'react-rou
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 import { fork } from 'redux-saga/effects';
+import withProps from 'recompose/withProps';
 
 import adminReducer from './reducer';
 import { crudSaga } from './sideEffect/saga';
 import CrudRoute from './CrudRoute';
-import Layout from './mui/layout/Layout';
-import withProps from './withProps';
+import DefaultLayout from './mui/layout/Layout';
+import Login from './mui/auth/Login';
+import Logout from './mui/auth/Logout';
 import TranslationProvider from './i18n/TranslationProvider';
+import { AUTH_CHECK } from './auth';
 import { DEFAULT_LOCALE, TranslationReducer as translationReducer } from './i18n';
 
 const Admin = ({
+    appLayout,
+    authClient,
     children,
     customReducers = {},
     customSagas = [],
     dashboard,
+    locale = DEFAULT_LOCALE,
+    messages = {},
     restClient,
     theme,
     title = 'Admin on REST',
-    appLayout = withProps({ title, theme })(Layout),
-    locale = DEFAULT_LOCALE,
-    messages = {},
+    loginPage,
+    logoutButton,
 }) => {
     const resources = React.Children.map(children, ({ props }) => props);
     const reducer = combineReducers({
@@ -50,16 +56,42 @@ const Admin = ({
 
     const history = syncHistoryWithStore(hashHistory, store);
     const firstResource = resources[0].name;
+    const onEnter = authClient ?
+        params => (nextState, replace, callback) => authClient(AUTH_CHECK, params)
+            .then(() => params.scrollToTop ? window.scrollTo(0, 0) : null)
+            .then(callback)
+            .catch(e => {
+                replace({
+                    pathname: '/login',
+                    state: { nextPathname: nextState.location.pathname },
+                })
+                callback();
+            })
+        : () => () => true;
+    const LoginPage = withProps({ title, theme, authClient })(loginPage || Login);
+    const LogoutButton = withProps({ authClient })(logoutButton || Logout);
+    const Layout = withProps({ title, theme, logout: <LogoutButton /> })(appLayout || DefaultLayout);
 
     return (
         <Provider store={store}>
             <TranslationProvider messages={messages}>
                 <Router history={history}>
                     {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
-                    <Route path="/" component={appLayout} resources={resources}>
-                        {dashboard && <IndexRoute component={dashboard} />}
+                    <Route path="/login" component={LoginPage} />
+                    <Route path="/" component={Layout} resources={resources}>
+                        {dashboard && <IndexRoute component={dashboard} onEnter={onEnter()} />}
                         {resources.map(resource =>
-                            <CrudRoute key={resource.name} path={resource.name} list={resource.list} create={resource.create} edit={resource.edit} show={resource.show} remove={resource.remove} options={resource.options} />
+                            <CrudRoute
+                                key={resource.name}
+                                path={resource.name}
+                                list={resource.list}
+                                create={resource.create}
+                                edit={resource.edit}
+                                show={resource.show}
+                                remove={resource.remove}
+                                options={resource.options}
+                                onEnter={onEnter}
+                            />
                         )}
                     </Route>
                 </Router>
@@ -72,10 +104,13 @@ const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]
 
 Admin.propTypes = {
     appLayout: componentPropType,
+    authClient: PropTypes.func,
     children: PropTypes.node,
     customSagas: PropTypes.array,
     customReducers: PropTypes.object,
     dashboard: componentPropType,
+    loginPage: componentPropType,
+    logoutButton: componentPropType,
     restClient: PropTypes.func,
     theme: PropTypes.object,
     title: PropTypes.string,

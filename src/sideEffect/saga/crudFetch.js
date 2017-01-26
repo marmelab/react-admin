@@ -32,7 +32,7 @@ const crudFetch = (restClient) => {
                 requestPayload: payload,
                 meta: { ...meta, fetchResponse: restType, fetchStatus: FETCH_ERROR },
             });
-            yield put({ type: FETCH_ERROR });
+            yield put({ type: FETCH_ERROR, error });
         } finally {
             if (yield cancelled()) {
                 yield put({ type: FETCH_CANCEL });

@@ -58,6 +58,9 @@
                                     <a href="#using-a-custom-home-page">Using a Custom Home Page</a>
                                 </li>
                                 <li class="chapter">
+                                    <a href="#adding-a-login-page">Adding a Login Page</a>
+                                </li>
+                                <li class="chapter">
                                     <a href="#using-another-rest-dialect">Using Another REST Dialect</a>
                                 </li>
                                 <li class="chapter">
@@ -239,9 +242,31 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="chapter {% if page.path == 'Authentication.md' %}active{% endif %}">
+                            <a href="./Authentication.html">
+                                <b>9.</b> Authentication
+                            </a>
+                            <ul class="articles" {% if page.path != 'Authentication.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#configuring-the-auth-client">Configuring the Auth Client</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#sending-credentials-to-the-rest-api">Sending Credentials to the REST API</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#adding-a-logout-button">Adding a Logout Button</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#checking-credentials-during-navigation">Checking Credentials During Navigation</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#customizing-the-login-and-logout-components">Customizing The Login and Logout Components</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="chapter {% if page.path == 'Theming.md' %}active{% endif %}">
                             <a href="./Theming.html">
-                                <b>9.</b> Theming
+                                <b>10.</b> Theming
                             </a>
                             <ul class="articles" {% if page.path != 'Theming.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -264,7 +289,7 @@
 
                         <li class="chapter {% if page.path == 'Actions.md' %}active{% endif %}">
                             <a href="./Actions.html">
-                                <b>10.</b> Writing Actions
+                                <b>11.</b> Writing Actions
                             </a>
                             <ul class="articles" {% if page.path != 'Actions.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -290,7 +315,7 @@
 
                         <li class="chapter {% if page.path == 'Translation.md' %}active{% endif %}">
                             <a href="./Translation.html">
-                                <b>10.</b> Translation
+                                <b>12.</b> Translation
                             </a>
                             <ul class="articles" {% if page.path != 'Translation.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -319,13 +344,13 @@
 
                         <li class="chapter {% if page.path == 'CustomApp.md' %}active{% endif %}">
                             <a href="./CustomApp.html">
-                                <b>11.</b> Including in Another App
+                                <b>13.</b> Including in Another App
                             </a>
                         </li>
 
                         <li class="chapter {% if page.path == 'Reference.md' %}active{% endif %}">
                             <a href="./Reference.html">
-                                <b>12.</b> Reference
+                                <b>14.</b> Reference
                             </a>
                         </li>
                     </ul>

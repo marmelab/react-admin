@@ -4,10 +4,18 @@ import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import { Link } from 'react-router';
 import pure from 'recompose/pure';
-import { Translate } from 'admin-on-rest/i18n';
+import { Translate } from '../../i18n';
 
-const Menu = ({ resources, translate }) => (
-    <Paper style={{ flex: '0 0 15em', order: -1 }}>
+const style = {
+    flex: '0 0 15em',
+    order: -1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+};
+
+const Menu = ({ resources, translate, logout }) => (
+    <Paper style={style}>
         <List>
             {resources
                 .filter(r => r.list)
@@ -21,12 +29,14 @@ const Menu = ({ resources, translate }) => (
                 )
             }
         </List>
+        {logout}
     </Paper>
 );
 
 Menu.propTypes = {
     resources: PropTypes.array.isRequired,
     translate: PropTypes.func.isRequired,
+    logout: PropTypes.element,
 };
 
 export default Translate(pure(Menu));

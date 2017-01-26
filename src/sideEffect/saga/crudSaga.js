@@ -1,3 +1,4 @@
+import auth from './auth';
 import crudFetch from './crudFetch';
 import crudResponse from './crudResponse';
 import referenceFetch from './referenceFetch';
@@ -7,6 +8,7 @@ import referenceFetch from './referenceFetch';
  */
 export default restClient => function* crudSaga() {
     yield [
+        auth(),
         crudFetch(restClient)(),
         crudResponse(),
         referenceFetch(),
