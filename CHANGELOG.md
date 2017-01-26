@@ -14,7 +14,10 @@
 * Update optimistic rendering to also work with custom fetch actions
 * Add `label` prop to all buttons
 * Improve Delete button labels
-* Introduce configurable i18n capabilities
+* Speed up `<Datagrid>` rendering
+* Add I18n
+* Add Authentication
+* Add per-resource credentials check
 
 ## v0.7.1
 
