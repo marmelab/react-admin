@@ -15,11 +15,12 @@ import DefaultLayout from './mui/layout/Layout';
 import Login from './mui/auth/Login';
 import Logout from './mui/auth/Logout';
 import TranslationProvider from './i18n/TranslationProvider';
+import { AUTH_CHECK } from './auth';
 import { DEFAULT_LOCALE, TranslationReducer as translationReducer } from './i18n';
 
 const Admin = ({
     appLayout,
-    authentication = {},
+    authClient,
     children,
     customReducers = {},
     customSagas = [],
@@ -29,6 +30,8 @@ const Admin = ({
     restClient,
     theme,
     title = 'Admin on REST',
+    loginPage,
+    logoutButton,
 }) => {
     const resources = React.Children.map(children, ({ props }) => props);
     const reducer = combineReducers({
@@ -53,13 +56,21 @@ const Admin = ({
 
     const history = syncHistoryWithStore(hashHistory, store);
     const firstResource = resources[0].name;
-    const {
-        authClient,
-        checkCredentials = () => true,
-        LoginPage = withProps({ title, theme, authClient })(Login),
-        LogoutButton = withProps({ authClient })(Logout),
-    } = authentication;
     const Layout = appLayout || withProps({ title, theme, logout: <LogoutButton /> })(DefaultLayout);
+    const onEnter = authClient ?
+        params => (nextState, replace, callback) => authClient(AUTH_CHECK, params)
+            .then(() => params.scrollToTop ? window.scrollTo(0, 0) : null)
+            .then(callback)
+            .catch(e => {
+                replace({
+                    pathname: '/login',
+                    state: { nextPathname: nextState.location.pathname },
+                })
+                callback();
+            })
+        : () => () => true;
+    const LoginPage = withProps({ title, theme, authClient })(loginPage || Login);
+    const LogoutButton = withProps({ authClient })(logoutButton || Logout);
 
     return (
         <Provider store={store}>
@@ -68,7 +79,7 @@ const Admin = ({
                     {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
                     <Route path="/login" component={LoginPage} />
                     <Route path="/" component={Layout} resources={resources}>
-                        {dashboard && <IndexRoute component={dashboard} onEnter={checkCredentials} />}
+                        {dashboard && <IndexRoute component={dashboard} onEnter={onEnter()} />}
                         {resources.map(resource =>
                             <CrudRoute
                                 key={resource.name}
@@ -79,7 +90,7 @@ const Admin = ({
                                 show={resource.show}
                                 remove={resource.remove}
                                 options={resource.options}
-                                checkCredentials={resource.checkCredentials || checkCredentials}
+                                onEnter={onEnter}
                             />
                         )}
                     </Route>
@@ -93,16 +104,13 @@ const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]
 
 Admin.propTypes = {
     appLayout: componentPropType,
-    authentication: PropTypes.shape({
-        authClient: PropTypes.func,
-        checkCredentials: PropTypes.func,
-        LoginPage: componentPropType,
-        LogoutButton: componentPropType,
-    }),
+    authClient: PropTypes.func,
     children: PropTypes.node,
     customSagas: PropTypes.array,
     customReducers: PropTypes.object,
     dashboard: componentPropType,
+    loginPage: componentPropType,
+    logoutButton: componentPropType,
     restClient: PropTypes.func,
     theme: PropTypes.object,
     title: PropTypes.string,
