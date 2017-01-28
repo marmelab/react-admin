@@ -24,7 +24,7 @@ export class ReferenceField extends Component {
     }
 
     render() {
-        const { record, source, reference, referenceRecord, basePath, allowEmpty, children, elStyle } = this.props;
+        const { record, source, reference, referenceRecord, basePath, allowEmpty, children, elStyle, onlyShow } = this.props;
         if (React.Children.count(children) !== 1) {
             throw new Error('<ReferenceField> only accepts a single child');
         }
@@ -33,7 +33,7 @@ export class ReferenceField extends Component {
         }
         const rootPath = basePath.split('/').slice(0, -1).join('/');
         return (
-            <Link style={elStyle} to={linkToRecord(`${rootPath}/${reference}`, get(record, source))}>
+            <Link style={elStyle} to={linkToRecord(`${rootPath}/${reference}`, get(record, source)) + (onlyShow ? '/show' : '')}>
                 {React.cloneElement(children, {
                     record: referenceRecord,
                     resource: reference,
@@ -57,6 +57,7 @@ ReferenceField.propTypes = {
     reference: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
     source: PropTypes.string.isRequired,
+	onlyShow: PropTypes.bool,
 };
 
 ReferenceField.defaultProps = {
@@ -64,6 +65,7 @@ ReferenceField.defaultProps = {
     referenceRecord: null,
     record: {},
     allowEmpty: false,
+    onlyShow: false,
 };
 
 function mapStateToProps(state, props) {
