@@ -7,7 +7,8 @@ export const datify = input => {
         return null;
     }
 
-    const date = input instanceof Date ? input : new Date(input);
+    let date = input instanceof Date ? input : new Date(input);
+	date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
     if (isNaN(date)) {
         throw new Error(`Invalid date: ${input}`);
     }
@@ -20,7 +21,6 @@ class DateInput extends Component {
 
     render() {
         const { input, label, meta: { touched, error }, options, source, elStyle } = this.props;
-
         return (<DatePicker
             {...input}
             errorText={touched && error}
