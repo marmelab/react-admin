@@ -156,17 +156,17 @@ import { FunctionField } from 'admin-on-rest/lib/mui'
 
 ## `<ImageField>`
 
-If you need to display an image provided by your API, you can use `<ImageField />` component:
+If you need to display an image provided by your API, you can use the `<ImageField />` component:
 
 ``` js
 import { ImageField } from 'admin-on-rest/lib/mui';
 
-<ImageField source="picture.url" title="picture.title" />
+<ImageField source="url" title="title" />
 ```
 
-This field is also generally used within an `<ImageInput />` component to display preview.
+This field is also generally used within an [<ImageInput />](http://marmelab.com/admin-on-rest/Inputs.html#imageinput) component to display preview.
 
-The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. You can also specify a hard-written string.
+The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. If passed value is an existing path within your JSON object, then it uses the object attribute. Otherwise, it considers its value as an hard-written title.
 
 ## `<NumberField>`
 
