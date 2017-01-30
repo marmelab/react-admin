@@ -235,19 +235,21 @@ export const PostEdit = (props) => (
 
 ## `<ImageInput>`
 
-`<ImageInput>` allows to upload some pictures quite easily using [react-dropzone](https://github.com/okonet/react-dropzone).
+`<ImageInput>` allows to upload some pictures using [react-dropzone](https://github.com/okonet/react-dropzone).
 
 ![ImageInput](./img/image-input.png)
 
 Previews are enabled using `<ImageInput>` children, as following:
 
 ``` js
-<ImageInput multiple source="pictures" label="Related pictures" accept="image/*">
+<ImageInput source="pictures" label="Related pictures" accept="image/*">
     <ImageField source="src" title="title" />
 </ImageInput>
 ```
 
-This component accepts all [react-dropzone properties](https://github.com/okonet/react-dropzone#features), in addition to those of admin-on-rest.
+This component accepts all [react-dropzone properties](https://github.com/okonet/react-dropzone#features), in addition to those of admin-on-rest. For instance, if you need to upload several images at once, just add the `multiple` DropZone attribute to your `<ImageInput />` field.
+
+Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is developer responsability to handle it depending of your API behavior. You can for instance encode it in base64, or send it as a multi-part form data.
 
 ## `<LongTextInput>`
 

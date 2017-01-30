@@ -68,6 +68,7 @@ class ImageInput extends Component {
             accept,
             children,
             disableClick,
+            elStyle,
             maxSize,
             minSize,
             multiple,
@@ -80,7 +81,7 @@ class ImageInput extends Component {
         };
 
         return (
-            <div>
+            <div style={elStyle}>
                 <Dropzone
                     onDrop={this.onDrop}
                     accept={accept}
@@ -111,13 +112,12 @@ ImageInput.propTypes = {
     accept: PropTypes.string,
     children: PropTypes.element,
     disableClick: PropTypes.bool,
+    elStyle: PropTypes.object,
     input: PropTypes.object,
     maxSize: PropTypes.number,
     minSize: PropTypes.number,
     multiple: PropTypes.bool,
-    source: PropTypes.string.isRequired,
     style: PropTypes.object,
-    title: PropTypes.string,
 };
 
 ImageInput.defaultProps = {
