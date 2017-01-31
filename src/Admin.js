@@ -15,17 +15,24 @@ import withProps from './withProps';
 const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', theme, appLayout = withProps({ title, theme })(Layout) }) => {
     const resources = React.Children.map(children, ({ props }) => props);
     const firstResource = resources[0].name;
-    const sagaMiddleware = createSagaMiddleware();
     const reducer = combineReducers({
         admin: adminReducer(resources),
         form: formReducer,
         routing: routerReducer,
     });
-    const store = createStore(reducer, undefined, compose(
-        applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
-        window.devToolsExtension ? window.devToolsExtension() : f => f,
-    ));
-    sagaMiddleware.run(crudSaga(restClient));
+    
+    if (typeof window != "undefined") {
+        const sagaMiddleware = createSagaMiddleware();
+        const store = createStore(reducer, undefined, compose(
+            applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
+            window.devToolsExtension ? window.devToolsExtension() : f => f,
+        ));
+        sagaMiddleware.run(crudSaga(restClient));
+    }
+    else {
+        const store = createStore(reducer);
+    }
+    
 
     const history = syncHistoryWithStore(hashHistory, store);
 
