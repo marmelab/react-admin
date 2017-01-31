@@ -59,6 +59,9 @@ export class List extends Component {
 
     componentDidMount() {
         this.updateData();
+        if (Object.keys(this.props.query).length > 0) {
+             this.props.changeListParams(this.props.resource, this.props.query);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
