@@ -7,8 +7,7 @@ export const datify = input => {
         return null;
     }
 
-    let date = input instanceof Date ? input : new Date(input);
-	date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+    let date = input instanceof Date ? input : new Date(input.replace('-','/','g'));
     if (isNaN(date)) {
         throw new Error(`Invalid date: ${input}`);
     }
