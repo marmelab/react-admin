@@ -2,6 +2,7 @@ export AutocompleteInput from './AutocompleteInput';
 export BooleanInput from './BooleanInput';
 export DateInput from './DateInput';
 export DisabledInput from './DisabledInput';
+export ImageInput from './ImageInput';
 export Labeled from './Labeled';
 export LongTextInput from './LongTextInput';
 export NullableBooleanInput from './NullableBooleanInput';

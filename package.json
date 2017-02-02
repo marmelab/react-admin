@@ -59,6 +59,7 @@
     "quill": "~1.1.5",
     "react": "~15.4.0",
     "react-dom": "~15.4.0",
+    "react-dropzone": "~3.6.0",
     "react-redux": "~4.4.5",
     "react-router": "~2.8.1",
     "react-router-redux": "~4.0.6",

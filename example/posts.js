@@ -11,15 +11,17 @@ import {
     EditButton,
     Filter,
     FormTab,
+    ImageField,
+    ImageInput,
     List,
     LongTextInput,
     NumberField,
     NumberInput,
-    SimpleForm,
-    Show,
-    ShowButton,
     ReferenceManyField,
     RichTextField,
+    Show,
+    ShowButton,
+    SimpleForm,
     SimpleShowLayout,
     TabbedForm,
     TextField,
@@ -57,7 +59,7 @@ export const PostCreate = (props) => (
     <Create {...props}>
         <SimpleForm defaultValue={{ average_note: 0 }} validation={(values) => {
             const errors = {};
-            ['title', 'teaser'].forEach(field => {
+            ['title', 'teaser'].forEach((field) => {
                 if (!values[field]) {
                     errors[field] = ['Required field'];
                 }
@@ -80,13 +82,16 @@ export const PostCreate = (props) => (
     </Create>
 );
 
-export const PostEdit = (props) => (
+export const PostEdit = props => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label="summary">
                 <DisabledInput label="Id" source="id" />
                 <TextInput source="title" validation={{ required: true }} />
                 <LongTextInput source="teaser" validation={{ required: true }} />
+                <ImageInput multiple source="pictures" label="Related pictures" accept="image/*">
+                    <ImageField source="src" title="title" />
+                </ImageInput>
             </FormTab>
             <FormTab label="body">
                 <RichTextInput source="body" validation={{ required: true }} addLabel={false} />
