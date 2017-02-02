@@ -25,10 +25,11 @@ export const PostList = (props) => (
 
 All field components accept the following attributes:
 
-* `source`: Property name of your entity to view/edit. This attribute is required.
-* `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
-* `style`: A style object to customize the look and feel of the field container (e.g. the `<td>` in a datagrid).
 * `elStyle`: A style object to customize the look and feel of the field element itself
+* `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
+* `sortable`: Should the list be sortable using `source` attribute? Defaults to `true`.
+* `source`: Property name of your entity to view/edit. This attribute is required.
+* `style`: A style object to customize the look and feel of the field container (e.g. the `<td>` in a datagrid).
 
 ```js
 <TextField source="zb_title" label="Title" style={{ color: 'purple' }}/>

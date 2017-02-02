@@ -22,11 +22,11 @@ const styles = {
     },
 };
 
-const DatagridHeaderCell = ({ field, defaultStyle, currentSort, updateSort }) => {
+export const DatagridHeaderCell = ({ field, defaultStyle, currentSort, updateSort }) => {
     const style = defaultsDeep({}, field.props.headerStyle, field.type.defaultProps ? field.type.defaultProps.headerStyle : {}, defaultStyle);
     return (
         <TableHeaderColumn style={style}>
-            {field.props.source ?
+            {field.props.sortable !== false && field.props.source ?
                 <FlatButton
                     labelPosition="before"
                     onClick={updateSort}
@@ -57,6 +57,7 @@ DatagridHeaderCell.propTypes = {
         order: PropTypes.string,
     }),
     isSorting: PropTypes.bool,
+    sortable: PropTypes.bool,
     updateSort: PropTypes.func.isRequired,
 };
 
