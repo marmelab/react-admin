@@ -169,71 +169,7 @@ You can find REST clients for admin-on-rest in third-party repositories.
 
 * [marmelab/aor-json-rest-client](https://github.com/marmelab/aor-json-rest-client) provides a local REST client based on a JavaScript object. It doesn't even use HTTP. Use it for testing purposes.
 
-## Decorating your REST Client (Example of File Upload)
-
-Instead of writing your own REST client or using a third-party one, you can enhance its capabilities on a given resource. For instance, if you want to use upload components (such as `<ImageInput />` one), you can decorate it the following way:
-
-``` js
-/**
- * Convert a `File` object returned by the upload input into
- * a base 64 string. That's easier to use on FakeRest, used on
- * the ng-admin example. But that's probably not the most optimized
- * way to do in a production database.
- */
-const convertFileToBase64 = file => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-});
-
-/**
- * For posts update only, convert uploaded image in base 64 and attach it to
- * the `picture` sent property, with `src` and `title` attributes.
- */
-const addUploadCapabilities = requestHandler => (type, resource, params) => {
-    if (type === 'UPDATE' && resource === 'posts') {
-        if (params.data.picture && params.data.picture.length) {
-            return convertFileToBase64(params.data.picture)
-                .then(base64Picture => requestHandler(type, resource, {
-                    ...params,
-                    data: {
-                        ...params.data,
-                        picture: ({
-                            src: base64Picture,
-                            title: params.title,
-                        })),
-                    },
-                }));
-        }
-    }
-
-    return requestHandler(type, resource, params);
-};
-
-export default addUploadCapabilities;
-```
-
-This way, you can use simply your upload-capable client to your app calling this decorator:
-
-``` js
-import jsonRestClient from 'aor-json-rest-client';
-import addUploadFeature from './addUploadFeature';
-
-const restClient = jsonRestClient(data, true);
-const uploadCapableClient = addUploadFeature(restClient);
-
-render(
-    <Admin restClient={uploadCapableClient} title="Example Admin">
-        // [...]
-    </Admin>,
-    document.getElementById('root'),
-);
-
-```
-
-## Writing your own REST Client
+## Writing your own REST client
 
 Quite often, none of the the core REST clients match your API exactly. In such cases, you'll have to write your own REST client. But don't be afraid, it's easy!
 
