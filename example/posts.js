@@ -48,7 +48,6 @@ export const PostList = Translate(({ translate, ...props }) => (
     <List {...props} filters={<PostFilter />} sort={{ field: 'published_at', order: 'DESC' }}>
         <Datagrid>
             <TextField source="id" />
-            <ImageField source="pictures[0]" src="src" title="title" />
             <TextField source="title" label={translate('post.list.title')} style={titleFieldStyle} />
             <DateField source="published_at" label={translate('post.list.published_at')} style={{ fontStyle: 'italic' }} />
             <BooleanField label={translate('post.list.commentable')} source="commentable" />
@@ -106,7 +105,7 @@ export const PostEdit = Translate(({ translate, ...props }) => (
                     ]}
                 />
                 <LongTextInput source="teaser" label={translate('post.form.teaser')} validation={{ required: true }} />
-                <ImageInput multiple source="pictures" label="Related pictures" accept="image/*">
+                <ImageInput multiple source="pictures" label={translate('post.form.pictures')} accept="image/*">
                     <ImageField source="src" title="title" />
                 </ImageInput>
             </FormTab>

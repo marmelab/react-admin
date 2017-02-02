@@ -52,14 +52,16 @@ class ImageInput extends Component {
     };
 
     label() {
+        const { translate } = this.context;
+
         if (this.props.multiple) {
             return (
-                <p>Drop some files to upload, or click to select one.</p>
+                <p>{translate('aor.input.image.upload_several')}</p>
             );
         }
 
         return (
-            <p>Drop a file to upload, or click to select it.</p>
+            <p>{translate('aor.input.image.upload_single')}</p>
         );
     }
 
