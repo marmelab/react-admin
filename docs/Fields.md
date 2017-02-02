@@ -165,7 +165,19 @@ import { ImageField } from 'admin-on-rest/lib/mui';
 
 This field is also generally used within an [<ImageInput />](http://marmelab.com/admin-on-rest/Inputs.html#imageinput) component to display preview.
 
-The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. If passed value is an existing path within your JSON object, then it uses the object attribute. Otherwise, it considers its value as an hard-written title.
+The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. It can either be an hard-written string, or a path within your JSON object:
+
+``` js
+// { picture: { url: 'cover.jpg', title: 'Larry Cover (French pun intended)' } }
+
+// Title would be "picture.title", hence "Larry Cover (French pun intended)"
+<ImageField source="picture.url" title="picture.title" />
+
+// Title would be "Picture", as "Picture" is not a path in previous given object
+<ImageField source="picture.url" title="Picture" />
+```
+
+If passed value is an existing path within your JSON object, then it uses the object attribute. Otherwise, it considers its value as an hard-written title.
 
 ## `<NumberField>`
 
