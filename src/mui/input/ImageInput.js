@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Dropzone from 'react-dropzone';
+import Translate from '../../i18n/Translate';
 
 const defaultStyle = {
     dropZone: {
@@ -52,7 +53,7 @@ class ImageInput extends Component {
     };
 
     label() {
-        const { translate } = this.context;
+        const { translate } = this.props;
 
         if (this.props.multiple) {
             return (
@@ -129,4 +130,4 @@ ImageInput.defaultProps = {
     onUpload: () => {},
 };
 
-export default ImageInput;
+export default Translate(ImageInput);
