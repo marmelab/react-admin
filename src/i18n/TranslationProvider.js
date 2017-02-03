@@ -1,27 +1,27 @@
-import { Component, Children, PropTypes } from 'react';
+import { Children, PropTypes } from 'react';
 import Polyglot from 'node-polyglot';
 import { connect } from 'react-redux';
+import { compose, withContext } from 'recompose';
+
 import defaultMessages from './messages';
 
-class TranslationProvider extends Component {
-    getChildContext() {
-        const { locale, messages = {} } = this.props;
-        const userMessages = messages[locale] || {};
-        const polyglot = new Polyglot({
-            locale,
-            phrases: { ...defaultMessages, ...userMessages },
-        });
+const withI18nContext = withContext({
+    translate: PropTypes.func.isRequired,
+    locale: PropTypes.string.isRequired,
+}, ({ locale, messages = {} }) => {
+    const userMessages = messages[locale] || {};
+    const polyglot = new Polyglot({
+        locale,
+        phrases: { ...defaultMessages, ...userMessages },
+    });
 
-        return {
-            locale,
-            translate: polyglot.t.bind(polyglot),
-        };
-    }
+    return {
+        locale,
+        translate: polyglot.t.bind(polyglot),
+    };
+});
 
-    render() {
-        return Children.only(this.props.children);
-    }
-}
+const TranslationProvider = ({ children }) => Children.only(children);
 
 TranslationProvider.propTypes = {
     locale: PropTypes.string.isRequired,
@@ -29,11 +29,6 @@ TranslationProvider.propTypes = {
     children: PropTypes.element,
 };
 
-TranslationProvider.childContextTypes = {
-    locale: PropTypes.string.isRequired,
-    translate: PropTypes.func.isRequired,
-};
-
 const mapStateToProps = state => ({ locale: state.locale });
 
-export default connect(mapStateToProps)(TranslationProvider);
+export default compose(connect(mapStateToProps), withI18nContext)(TranslationProvider);
