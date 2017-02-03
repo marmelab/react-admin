@@ -2,7 +2,6 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import ImageField from '../field/ImageField';
 import { ImageInput } from './ImageInput';
 
 describe('<ImageInput />', () => {
