@@ -46,7 +46,8 @@ export class FilterButton extends Component {
     }
 
     handleShow(event) {
-        this.props.showFilter(event.currentTarget.dataset.key);
+        const { key, defaultValue } = event.currentTarget.dataset;
+        this.props.showFilter(key, defaultValue);
         this.setState({
             open: false,
         });
@@ -67,7 +68,13 @@ export class FilterButton extends Component {
             >
                 <Menu>
                     {hiddenFilters.map(filterElement =>
-                        <MenuItem data-key={filterElement.props.source} key={filterElement.props.source} primaryText={title(filterElement.props.label, filterElement.props.source)} onTouchTap={this.handleShow} />
+                        <MenuItem
+                            data-key={filterElement.props.source}
+                            data-default-value={filterElement.props.defaultValue}
+                            key={filterElement.props.source}
+                            primaryText={title(filterElement.props.label, filterElement.props.source)}
+                            onTouchTap={this.handleShow}
+                        />
                     )}
                 </Menu>
             </Popover>

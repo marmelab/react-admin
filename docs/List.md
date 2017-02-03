@@ -119,7 +119,7 @@ You can add a filter element to the list using the `filters` prop:
 const PostFilter = (props) => (
     <Filter {...props}>
         <TextInput label="Search" source="q" alwaysOn />
-        <TextInput label="Title" source="title" />
+        <TextInput label="Title" source="title" defaultValue="Hello, World!" />
     </Filter>
 );
 

@@ -27,12 +27,16 @@ import {
 } from 'admin-on-rest/mui';
 import RichTextInput from 'aor-rich-text-input';
 import { Translate } from 'admin-on-rest';
+import Chip from 'material-ui/Chip';
 export PostIcon from 'material-ui/svg-icons/action/book';
+
+const QuickFilter = ({ label }) => <Chip>{ label }</Chip>;
 
 const PostFilter = Translate(({ translate, ...props }) => (
     <Filter {...props}>
         <TextInput label={translate('post.list.search')} source="q" alwaysOn />
-        <TextInput label={translate('post.list.title')} source="title" />
+        <TextInput label={translate('post.list.title')} source="title" defaultValue="Qui tempore rerum et voluptates" />
+        <QuickFilter label={translate('post.list.commentable')} source="commentable" defaultValue={true} />
     </Filter>
 ));
 
