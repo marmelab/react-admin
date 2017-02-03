@@ -54,8 +54,10 @@
     "lodash.debounce": "~4.0.8",
     "lodash.defaultsdeep": "~4.6.0",
     "lodash.get": "~4.4.2",
+    "lodash.once": "^4.1.1",
     "lodash.set": "~4.3.2",
     "material-ui": "~0.16.5",
+    "node-polyglot": "2.2.2",
     "react": "~15.4.0",
     "react-dom": "~15.4.0",
     "react-redux": "~4.4.5",
@@ -65,7 +67,6 @@
     "recompose": "~0.21.2",
     "redux": "~3.6.0",
     "redux-form": "~6.2.0",
-    "redux-saga": "~0.14.2",
-    "node-polyglot": "2.2.2"
+    "redux-saga": "~0.14.2"
   }
 }
