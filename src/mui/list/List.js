@@ -141,7 +141,13 @@ export class List extends Component {
 
     setFilters = filters => this.changeParams({ type: SET_FILTER, payload: filters });
 
-    showFilter = filterName => this.setState({ [filterName]: true });
+    showFilter = (filterName, defaultValue) => {
+        this.setState({ [filterName]: true });
+        if (typeof defaultValue !== 'undefined') {
+            this.props.changeFormValue(filterFormName, filterName, defaultValue);
+            this.setFilters({ ...this.props.filterValues, [filterName]: defaultValue });
+        }
+    }
 
     hideFilter = (filterName) => {
         this.setState({ [filterName]: false });
