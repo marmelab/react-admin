@@ -2,6 +2,7 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
 
+import { ImageField } from '../field/ImageField';
 import { ImageInput } from './ImageInput';
 
 describe('<ImageInput />', () => {
@@ -13,6 +14,7 @@ describe('<ImageInput />', () => {
                         picture: null,
                     },
                 }}
+                translate={x => x}
                 source="picture"
             />
         ));
@@ -30,6 +32,7 @@ describe('<ImageInput />', () => {
                             picture: null,
                         },
                     }}
+                    translate={x => x}
                     source="picture"
                 />
             ));
@@ -50,6 +53,7 @@ describe('<ImageInput />', () => {
                         title: 'Hello world!',
                     },
                 }}
+                translate={x => x}
             >
                 <ImageField source="url" title="title" />
             </ImageInput>
@@ -75,6 +79,7 @@ describe('<ImageInput />', () => {
                         { url: 'http://foo.com/qux.bmp', title: 'A good old Bitmap!' },
                     ],
                 }}
+                translate={x => x}
             >
                 <ImageField source="url" title="title" />
             </ImageInput>
