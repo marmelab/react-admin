@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 
 import ImageField from '../field/ImageField';
-import ImageInput from './ImageInput';
+import { ImageInput } from './ImageInput';
 
 describe('<ImageInput />', () => {
     it('should display a dropzone', () => {
@@ -38,8 +38,8 @@ describe('<ImageInput />', () => {
             assert.equal(wrapper.find('Dropzone p').text(), expectedLabel);
         };
 
-        test(false, 'Drop a file to upload, or click to select it.');
-        test(true, 'Drop some files to upload, or click to select one.');
+        test(false, 'aor.input.image.upload_single');
+        test(true, 'aor.input.image.upload_several');
     });
 
     it('should display file preview using child as preview component', () => {

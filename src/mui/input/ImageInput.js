@@ -16,7 +16,7 @@ const defaultStyle = {
     },
 };
 
-class ImageInput extends Component {
+export class ImageInput extends Component {
     constructor(props) {
         super(props);
 
@@ -121,6 +121,7 @@ ImageInput.propTypes = {
     minSize: PropTypes.number,
     multiple: PropTypes.bool,
     style: PropTypes.object,
+    translate: PropTypes.func.isRequired,
 };
 
 ImageInput.defaultProps = {
@@ -128,6 +129,7 @@ ImageInput.defaultProps = {
     addField: true,
     multiple: false,
     onUpload: () => {},
+    translate: x => x,
 };
 
 export default Translate(ImageInput);
