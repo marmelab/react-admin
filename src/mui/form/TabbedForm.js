@@ -2,7 +2,7 @@ import React, { Children, Component, PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import once from 'lodash.once';
+
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import { getFieldConstraints, getErrorsForForm, getErrorsForFieldConstraints } from '../../util/validate';
 import { SaveButton } from '../button';
@@ -83,11 +83,9 @@ const ReduxForm = reduxForm({
     validate: validateForm,
 })(TabbedForm);
 
-const getInitialValues = once((children, record, defaultValue) =>
-    getDefaultValues(Children.toArray(children))(record, defaultValue));
 
 const mapStateToProps = (state, props) => ({
-    initialValues: getInitialValues(props.children, props.record, props.defaultValue),
+    initialValues: getDefaultValues(state, props),
 });
 
 export default connect(mapStateToProps)(ReduxForm);

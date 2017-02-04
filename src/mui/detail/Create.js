@@ -5,7 +5,6 @@ import inflection from 'inflection';
 import Title from '../layout/Title';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import DefaultActions from './CreateActions';
-import getDefaultValues from '../form/getDefaultValues';
 import Translate from '../../i18n/Translate';
 
 class Create extends Component {

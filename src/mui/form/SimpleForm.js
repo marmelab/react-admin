@@ -2,7 +2,6 @@ import React, { Children, PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import once from 'lodash.once';
 import { validateForm } from '../../util/validate';
 import { SaveButton } from '../button';
 import getDefaultValues from '../form/getDefaultValues';
@@ -44,11 +43,8 @@ const ReduxForm = reduxForm({
     validate: validateForm,
 })(SimpleForm);
 
-const getInitialValues = once((children, record, defaultValue) =>
-    getDefaultValues(Children.toArray(children))(record, defaultValue));
-
 const mapStateToProps = (state, props) => ({
-    initialValues: getInitialValues(props.children, props.record, props.defaultValue),
+    initialValues: getDefaultValues(state, props),
 });
 
 export default connect(mapStateToProps)(ReduxForm);
