@@ -58,7 +58,7 @@ const Admin = ({
     const firstResource = resources[0].name;
     const onEnter = authClient ?
         params => (nextState, replace, callback) => authClient(AUTH_CHECK, params)
-            .then(() => params.scrollToTop ? window.scrollTo(0, 0) : null)
+            .then(() => params && params.scrollToTop ? window.scrollTo(0, 0) : null)
             .catch(e => {
                 replace({
                     pathname: '/login',
