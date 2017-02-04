@@ -59,14 +59,13 @@ const Admin = ({
     const onEnter = authClient ?
         params => (nextState, replace, callback) => authClient(AUTH_CHECK, params)
             .then(() => params.scrollToTop ? window.scrollTo(0, 0) : null)
-            .then(callback)
             .catch(e => {
                 replace({
                     pathname: '/login',
                     state: { nextPathname: nextState.location.pathname },
                 })
-                callback();
             })
+            .then(callback)
         : () => () => true;
     const LoginPage = withProps({ title, theme, authClient })(loginPage || Login);
     const LogoutButton = withProps({ authClient })(logoutButton || Logout);
