@@ -13,6 +13,8 @@ const styles = {
     clearFix: { clear: 'right' },
 };
 
+const emptyRecord = {};
+
 export class FilterForm extends Component {
     getShownFilters() {
         const { filters, displayedFilters, initialValues } = this.props;
@@ -20,7 +22,7 @@ export class FilterForm extends Component {
             .filter(filterElement =>
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                initialValues[filterElement.props.source]
+                typeof initialValues[filterElement.props.source] !== 'undefined'
             );
     }
 
@@ -45,6 +47,7 @@ export class FilterForm extends Component {
                                 name={filterElement.props.source}
                                 component={filterElement.type}
                                 resource={resource}
+                                record={emptyRecord}
                             />
                         </div>
                     </div>
