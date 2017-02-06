@@ -26,7 +26,10 @@ export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, 
 
 SimpleForm.propTypes = {
     children: PropTypes.node,
-    defaultValue: PropTypes.object,
+    defaultValue: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.func,
+    ]),
     handleSubmit: PropTypes.func,
     invalid: PropTypes.bool,
     record: PropTypes.object,
@@ -41,7 +44,7 @@ const ReduxForm = reduxForm({
 })(SimpleForm);
 
 const mapStateToProps = (state, props) => ({
-    initialValues: getDefaultValues(Children.toArray(props.children))(props.record, props.defaultValue),
+    initialValues: getDefaultValues(state, props),
 });
 
 export default connect(mapStateToProps)(ReduxForm);

@@ -79,7 +79,7 @@ export const PostCreate = Translate(({ translate, ...props }) => (
             <TextInput label={translate('post.form.password')} source="password" type="password" />
             <TextInput source="teaser" label={translate('post.form.teaser')} options={{ multiLine: true }} />
             <RichTextInput source="body" label={translate('post.form.body')} />
-            <DateInput label={translate('post.form.published_at')} source="published_at" defaultValue={new Date()} />
+            <DateInput label={translate('post.form.published_at')} source="published_at" defaultValue={() => new Date()} />
             <NumberInput source="average_note" label={translate('post.form.average_note')} />
             <BooleanInput label={translate('post.form.allow_comments')} source="commentable" defaultValue={true} />
         </SimpleForm>

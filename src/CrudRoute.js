@@ -1,6 +1,7 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 import { createRoutesFromReactChildren } from 'react-router/lib/RouteUtils';
+import pure from 'recompose/pure';
 
 const CrudRoute = () => <div>&lt;CrudRoute&gt; elements are for configuration only and should not be rendered</div>;
 
@@ -19,7 +20,7 @@ CrudRoute.createRouteFromReactElement = (element, parentRoute) => {
         parentRoute,
     )[0];
     // higher-order component to pass path as resource to components
-    crudRoute.component = ({ children }) => (
+    crudRoute.component = pure(({ children }) => (
         <div>
             {React.Children.map(children, child => React.cloneElement(child, {
                 resource: path,
@@ -31,7 +32,7 @@ CrudRoute.createRouteFromReactElement = (element, parentRoute) => {
                 hasDelete: !!remove,
             }))}
         </div>
-    );
+    ));
     return crudRoute;
 };
 
