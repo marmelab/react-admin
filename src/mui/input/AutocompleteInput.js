@@ -65,7 +65,7 @@ class AutocompleteInput extends Component {
     }
 
     render() {
-        const { choices, elStyle, filter, input, label, options, optionText, optionValue, setFilter, source } = this.props;
+        const { choices, elStyle, filter, input, label, options, optionText, optionValue, setFilter, source, meta: { touched, error } } = this.props;
 
         const selectedSource = choices.find(choice => choice[optionValue] === input.value);
         const option = typeof optionText === 'function' ?
@@ -85,6 +85,7 @@ class AutocompleteInput extends Component {
                 onUpdateInput={setFilter}
                 openOnFocus
                 style={elStyle}
+                errorText={touched && error}
                 {...options}
             />
         );
@@ -98,6 +99,7 @@ AutocompleteInput.propTypes = {
     filter: PropTypes.func.isRequired,
     input: PropTypes.object,
     label: PropTypes.string,
+    meta: PropTypes.object,
     options: PropTypes.object,
     optionElement: PropTypes.element,
     optionText: PropTypes.oneOfType([

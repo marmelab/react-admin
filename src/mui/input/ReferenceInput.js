@@ -137,7 +137,7 @@ export class ReferenceInput extends Component {
     }
 
     render() {
-        const { input, resource, label, source, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children } = this.props;
+        const { input, resource, label, source, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children, meta } = this.props;
         if (!referenceRecord && !allowEmpty) {
             return <Labeled label={label} source={source} />;
         }
@@ -147,6 +147,7 @@ export class ReferenceInput extends Component {
             input,
             label,
             resource,
+            meta,
             source,
             choices: matchingReferences,
             basePath,
@@ -171,6 +172,7 @@ ReferenceInput.propTypes = {
     input: PropTypes.object.isRequired,
     label: PropTypes.string,
     matchingReferences: PropTypes.array,
+    meta: PropTypes.object,
     onChange: PropTypes.func,
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,

@@ -52,7 +52,7 @@ class SelectInput extends Component {
     handleChange = (event, index, value) => this.props.input.onChange(value);
 
     render() {
-        const { allowEmpty, input, label, choices, optionText, optionValue, options, source, elStyle } = this.props;
+        const { allowEmpty, input, label, choices, optionText, optionValue, options, source, elStyle, meta: { touched, error } } = this.props;
         const option = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
             choice => React.cloneElement(optionText, { record: choice }) :
             (typeof optionText === 'function' ?
@@ -67,6 +67,7 @@ class SelectInput extends Component {
                 onChange={this.handleChange}
                 autoWidth
                 style={elStyle}
+                errorText={touched && error}
                 {...options}
             >
                 {allowEmpty &&
@@ -87,6 +88,7 @@ SelectInput.propTypes = {
     elStyle: PropTypes.object,
     input: PropTypes.object,
     label: PropTypes.string,
+    meta: PropTypes.object,
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
