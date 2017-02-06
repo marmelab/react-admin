@@ -8,6 +8,9 @@ export default {
       "views": 143,
       "average_note": 2.72198,
       "commentable": true,
+      "notifications": [
+          { id: 12, name: 'Ray Hakt' },
+      ],
       "pictures": {
         "first": {
           "name": "the picture name",
@@ -41,7 +44,12 @@ export default {
       "subcategory": "computers",
       "backlinks": [
         { "date": "2012-08-09T00:00:00.000Z", "url": "http://example.com/bar/baz.html" },
-      ]
+      ],
+      "notifications": [
+          { id: 12, name: 'Ray Hakt' },
+          { id: 31, name: 'Ann Gullar' },
+          { id: 42, name: 'Sean Phonee' },
+      ],
     },
     {
       "id": 2,
@@ -53,7 +61,8 @@ export default {
       "commentable": true,
       "published_at": new Date("2012-08-08"),
       "tags": [3, 5],
-      "backlinks": []
+      "backlinks": [],
+      "notifications": [],
     },
     {
       "id": 3,
@@ -69,7 +78,12 @@ export default {
         { "date": "2012-08-14T00:00:00.000Z", "url": "https://blog.johndoe.com/2012/08/12/foobar.html" },
         { "date": "2012-08-22T00:00:00.000Z", "url": "https://foo.bar.com/lorem/ipsum" },
         { "date": "2012-08-29T00:00:00.000Z", "url": "http://dicta.es/nam_doloremque" }
-      ]
+      ],
+      "notifications": [
+          { id: 12, name: 'Ray Hakt' },
+          { id: 31, name: 'Ann Gullar' },
+          { id: 42, name: 'Sean Phonee' },
+      ],
     },
     {
       "id": 4,
@@ -80,7 +94,12 @@ export default {
       "average_note": 1.2319,
       "commentable": false,
       "published_at": new Date("2012-08-12"),
-      "tags": []
+      "tags": [],
+      "notifications": [
+          { id: 12, name: 'Ray Hakt' },
+          { id: 31, name: 'Ann Gullar' },
+          { id: 42, name: 'Sean Phonee' },
+      ],
     },
     {
       "id": 5,
@@ -91,7 +110,12 @@ export default {
       "average_note": 3,
       "commentable": true,
       "published_at": new Date("2012-08-24"),
-      "tags": []
+      "tags": [],
+      "notifications": [
+          { id: 12, name: 'Ray Hakt' },
+          { id: 31, name: 'Ann Gullar' },
+          { id: 42, name: 'Sean Phonee' },
+      ],
     },
     {
       "id": 6,
@@ -104,7 +128,10 @@ export default {
       "tags": [
         1,
         4
-      ]
+      ],
+      "notifications": [
+          { id: 42, name: 'Sean Phonee' },
+      ],
     },
     {
       "id": 7,
@@ -118,7 +145,10 @@ export default {
       "tags": [
         3,
         4
-      ]
+      ],
+      "notifications": [
+          { id: 31, name: 'Ann Gullar' },
+      ],
     },
     {
       "id": 8,
@@ -132,7 +162,12 @@ export default {
       "tags": [
         5,
         1
-      ]
+      ],
+      "notifications": [
+          { id: 12, name: 'Ray Hakt' },
+          { id: 31, name: 'Ann Gullar' },
+          { id: 42, name: 'Sean Phonee' },
+      ],
     },
     {
       "id": 9,
@@ -143,7 +178,12 @@ export default {
       "average_note": 3.1214,
       "commentable": true,
       "published_at": new Date("2012-10-16"),
-      "tags": []
+      "tags": [],
+      "notifications": [
+          { id: 12, name: 'Ray Hakt' },
+          { id: 31, name: 'Ann Gullar' },
+          { id: 42, name: 'Sean Phonee' },
+      ],
     },
     {
       "id": 10,
@@ -157,7 +197,12 @@ export default {
       "tags": [
         1,
         4
-      ]
+      ],
+      "notifications": [
+          { id: 12, name: 'Ray Hakt' },
+          { id: 31, name: 'Ann Gullar' },
+          { id: 42, name: 'Sean Phonee' },
+      ],
     },
     {
       "id": 11,
@@ -177,7 +222,12 @@ export default {
       "pictures": null,
       "backlinks": [
         { "date": "2012-10-29T00:00:00.000Z", "url": "http://dicta.es/similique_pariatur" }
-      ]
+    ],
+      "notifications": [
+          { id: 12, name: 'Ray Hakt' },
+          { id: 31, name: 'Ann Gullar' },
+          { id: 42, name: 'Sean Phonee' },
+      ],
     },
     {
       "id": 12,
@@ -195,7 +245,12 @@ export default {
       "backlinks": [
         { "date": "2012-08-07T00:00:00.000Z", "url": "http://example.com/foo/bar.html" },
         { "date": "2012-08-12T00:00:00.000Z", "url": "https://blog.johndoe.com/2012/08/12/foobar.html" }
-      ]
+    ],
+      "notifications": [
+          { id: 12, name: 'Ray Hakt' },
+          { id: 31, name: 'Ann Gullar' },
+          { id: 42, name: 'Sean Phonee' },
+      ],
     },
     {
       "id": 13,
@@ -207,7 +262,8 @@ export default {
       "commentable": true,
       "published_at": new Date("2012-12-01"),
       "tags": [3, 5],
-      "backlinks": []
+      "backlinks": [],
+      "notifications": [],
     },
   ],
   "comments": [
