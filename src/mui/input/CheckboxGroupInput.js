@@ -44,17 +44,29 @@ import Labeled from './Labeled';
  * ];
  * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
  * <CheckboxGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
- *
- * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
  */
 export class CheckboxGroupInput extends Component {
-    handleChange = (event, value) => {
-        console.log(this.props.input.value);
-        this.props.input.onChange(value);
-    }
+    handleCheck = (choice, isChecked) => {
+        const { optionValue, input: { value, onChange } } = this.props;
+
+        if (isChecked) {
+            onChange([...value, ...[choice]]);
+        } else {
+            onChange(value.filter(v => (v[optionValue] != choice[optionValue])));
+        }
+    };
 
     render() {
-        const { input, label, source, choices, optionText, optionValue } = this.props;
+        const {
+            choices,
+            optionValue,
+            optionText,
+            label,
+            source,
+            options,
+            input: { value },
+        } = this.props;
+
         const option = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
             choice => React.cloneElement(optionText, { record: choice }) :
             (typeof optionText === 'function' ?
@@ -63,29 +75,18 @@ export class CheckboxGroupInput extends Component {
             );
 
         return (
-            <Labeled label={label} onChange={this.handleChange} source={source}>
+            <Labeled label={label} source={source}>
                 <div>
-                    {choices.map((choice, index) => (
-                        <input
+                    {choices.map(choice =>
+                        <Checkbox
                             key={choice[optionValue]}
-                            type="checkbox"
-                            checked={input.value.indexOf(choice[optionValue]) >= 0}
-                            onChange={event => {
-                                const index = input.value.indexOf(choice[optionValue]);
-                                if (index < 0) { // wasn't selected
-                                    if(event.target.checked) { // was checked
-                                        input.onChange(input.value.concat(choice[optionValue]));
-                                    }
-                                } else {
-                                    if(event.target.checked) { // was unchecked
-                                        const copy = [...input.value]; // make copy to not mutate value
-                                        copy.splice(index, 1); // remove item at index
-                                        input.onChange(copy);
-                                    }
-                                }
-                            }}
-                        />
-                    ))}
+                            checked={value.filter(v => (v[optionValue] == choice[optionValue])).length > 0}
+                            onCheck={(e, isChecked) => this.handleCheck(choice, isChecked)}
+                            value={choice[optionValue]}
+                            label={option(choice)}
+                            {...options}
+                        />,
+                    )}
                 </div>
             </Labeled>
         );
@@ -95,25 +96,22 @@ export class CheckboxGroupInput extends Component {
 CheckboxGroupInput.propTypes = {
     addField: PropTypes.bool.isRequired,
     choices: PropTypes.arrayOf(PropTypes.object),
-    elStyle: PropTypes.object,
     label: PropTypes.string,
+    source: PropTypes.string,
+    options: PropTypes.object,
     input: PropTypes.shape({
         onChange: PropTypes.func.isRequired,
     }),
-    onChange: PropTypes.func,
-    options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.func,
         PropTypes.element,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
-    source: PropTypes.string,
-    style: PropTypes.object,
 };
 
 CheckboxGroupInput.defaultProps = {
-    addField: false,
+    addField: true,
     choices: [],
     options: {},
     optionText: 'name',
