@@ -1,5 +1,6 @@
 export AutocompleteInput from './AutocompleteInput';
 export BooleanInput from './BooleanInput';
+export CheckboxGroupInput from './CheckboxGroupInput';
 export DateInput from './DateInput';
 export DisabledInput from './DisabledInput';
 export Labeled from './Labeled';
