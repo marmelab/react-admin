@@ -6,9 +6,9 @@
 * [BC Break] Rename `filter` props (the one accepting a `<Filter>` element) to `filters` in `<List>` component
 * Add `filter` prop to `<List>` component for permanent filters
 * Add `perPage`, `sort`, and `filter` props to ``<ReferenceManyField>`
-* Add Custom Actions documentation
 * Add the ability to hook up custom sagas in `<Admin>`
 * Add the ability to hook up custom reducers in `<Admin>`
+* Add Custom Actions documentation
 * Refactor response side effects to a normal saga
 * Upgrade `redux-saga` to v0.14.2
 * Update optimistic rendering to also work with custom fetch actions
@@ -18,6 +18,13 @@
 * Add I18n
 * Add Authentication
 * Add per-resource credentials check
+* Add support for `defaultValue` in filters
+* Allow to disable sorting on some fields
+* Fix disconnection on dashboard
+* Fix edge case where list filter isn't shown
+* Add support for functions as value for the `defaultValue` prop
+* Add `<CheckboxGroupInput>` component
+* Fix validation ofr `<AutocompleteInput>`, `<ReferenceInput>`, and `<SelectInput>` ([AkselsLedins](https://github.com/AkselsLedins))
 
 ## v0.7.1
 
