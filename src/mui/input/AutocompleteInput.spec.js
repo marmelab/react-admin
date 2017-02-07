@@ -84,4 +84,24 @@ describe('<AutocompleteInput />', () => {
             { value: 'M', text: 'Male' },
         ]);
     });
+
+    describe('error message', () => {
+        it('should not be displayed if field is pristine', () => {
+            const wrapper = shallow(<AutocompleteInput {...defaultProps} meta={{ touched: false }} />);
+            const AutoCompleteElement = wrapper.find('AutoComplete');
+            assert.equal(AutoCompleteElement.prop('errorText'), false);
+        });
+
+        it('should not be displayed if field has been touched but is valid', () => {
+            const wrapper = shallow(<AutocompleteInput {...defaultProps} meta={{ touched: true, error: false }} />);
+            const AutoCompleteElement = wrapper.find('AutoComplete');
+            assert.equal(AutoCompleteElement.prop('errorText'), false);
+        });
+
+        it('should be displayed if field has been touched and is invalid', () => {
+            const wrapper = shallow(<AutocompleteInput {...defaultProps} meta={{ touched: true, error: 'Required field.' }} />);
+            const AutoCompleteElement = wrapper.find('AutoComplete');
+            assert.equal(AutoCompleteElement.prop('errorText'), 'Required field.');
+        });
+    });
 });
