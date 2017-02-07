@@ -8,9 +8,6 @@ export default {
       "views": 143,
       "average_note": 2.72198,
       "commentable": true,
-      "notifications": [
-          { id: 12, name: 'Ray Hakt' },
-      ],
       "pictures": {
         "first": {
           "name": "the picture name",
@@ -45,11 +42,7 @@ export default {
       "backlinks": [
         { "date": "2012-08-09T00:00:00.000Z", "url": "http://example.com/bar/baz.html" },
       ],
-      "notifications": [
-          { id: 12, name: 'Ray Hakt' },
-          { id: 31, name: 'Ann Gullar' },
-          { id: 42, name: 'Sean Phonee' },
-      ],
+      "notifications": [12, 31, 42],
     },
     {
       "id": 2,
@@ -79,11 +72,7 @@ export default {
         { "date": "2012-08-22T00:00:00.000Z", "url": "https://foo.bar.com/lorem/ipsum" },
         { "date": "2012-08-29T00:00:00.000Z", "url": "http://dicta.es/nam_doloremque" }
       ],
-      "notifications": [
-          { id: 12, name: 'Ray Hakt' },
-          { id: 31, name: 'Ann Gullar' },
-          { id: 42, name: 'Sean Phonee' },
-      ],
+      "notifications": [12, 31, 42],
     },
     {
       "id": 4,
@@ -95,11 +84,7 @@ export default {
       "commentable": false,
       "published_at": new Date("2012-08-12"),
       "tags": [],
-      "notifications": [
-          { id: 12, name: 'Ray Hakt' },
-          { id: 31, name: 'Ann Gullar' },
-          { id: 42, name: 'Sean Phonee' },
-      ],
+      "notifications": [12, 31, 42],
     },
     {
       "id": 5,
@@ -111,11 +96,7 @@ export default {
       "commentable": true,
       "published_at": new Date("2012-08-24"),
       "tags": [],
-      "notifications": [
-          { id: 12, name: 'Ray Hakt' },
-          { id: 31, name: 'Ann Gullar' },
-          { id: 42, name: 'Sean Phonee' },
-      ],
+      "notifications": [12, 31, 42],
     },
     {
       "id": 6,
@@ -129,9 +110,7 @@ export default {
         1,
         4
       ],
-      "notifications": [
-          { id: 42, name: 'Sean Phonee' },
-      ],
+      "notifications": [42],
     },
     {
       "id": 7,
@@ -146,9 +125,7 @@ export default {
         3,
         4
       ],
-      "notifications": [
-          { id: 31, name: 'Ann Gullar' },
-      ],
+      "notifications": [12, 31],
     },
     {
       "id": 8,
@@ -163,11 +140,7 @@ export default {
         5,
         1
       ],
-      "notifications": [
-          { id: 12, name: 'Ray Hakt' },
-          { id: 31, name: 'Ann Gullar' },
-          { id: 42, name: 'Sean Phonee' },
-      ],
+      "notifications": [12, 31, 42],
     },
     {
       "id": 9,
@@ -179,11 +152,7 @@ export default {
       "commentable": true,
       "published_at": new Date("2012-10-16"),
       "tags": [],
-      "notifications": [
-          { id: 12, name: 'Ray Hakt' },
-          { id: 31, name: 'Ann Gullar' },
-          { id: 42, name: 'Sean Phonee' },
-      ],
+      "notifications": [12, 31, 42],
     },
     {
       "id": 10,
@@ -198,11 +167,7 @@ export default {
         1,
         4
       ],
-      "notifications": [
-          { id: 12, name: 'Ray Hakt' },
-          { id: 31, name: 'Ann Gullar' },
-          { id: 42, name: 'Sean Phonee' },
-      ],
+      "notifications": [12, 31, 42],
     },
     {
       "id": 11,
@@ -223,11 +188,7 @@ export default {
       "backlinks": [
         { "date": "2012-10-29T00:00:00.000Z", "url": "http://dicta.es/similique_pariatur" }
     ],
-      "notifications": [
-          { id: 12, name: 'Ray Hakt' },
-          { id: 31, name: 'Ann Gullar' },
-          { id: 42, name: 'Sean Phonee' },
-      ],
+      "notifications": [12, 31, 42],
     },
     {
       "id": 12,
@@ -245,12 +206,8 @@ export default {
       "backlinks": [
         { "date": "2012-08-07T00:00:00.000Z", "url": "http://example.com/foo/bar.html" },
         { "date": "2012-08-12T00:00:00.000Z", "url": "https://blog.johndoe.com/2012/08/12/foobar.html" }
-    ],
-      "notifications": [
-          { id: 12, name: 'Ray Hakt' },
-          { id: 31, name: 'Ann Gullar' },
-          { id: 42, name: 'Sean Phonee' },
       ],
+      "notifications": [12, 31, 42],
     },
     {
       "id": 13,

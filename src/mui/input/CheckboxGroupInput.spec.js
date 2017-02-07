@@ -23,7 +23,7 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should use the input parameter value as the initial input value', () => {
-        const wrapper = shallow(<CheckboxGroupInput {...defaultProps} input={{ value: [{ id: 1 }] }} />);
+        const wrapper = shallow(<CheckboxGroupInput {...defaultProps} input={{ value: [1] }} />);
         const CheckboxElement = wrapper.find('Checkbox').first();
         assert.equal(CheckboxElement.prop('checked'), true);
     });

@@ -7,8 +7,8 @@ import Labeled from './Labeled';
  *
  * Pass possible options as an array of objects in the 'choices' attribute.
  *
- * The expected input must be an array of objects, objects must be present (by their 'optionValue')
- * in 'choices' attribute to be displayed as part of the checkbox list.
+ * The expected input must be an array of identifiers (e.g. [12, 31]) which correspond to
+ * the 'optionValue' of 'choices' attribute objects.
  *
  * By default, the options are built from:
  *  - the 'id' property as the option value,
@@ -25,8 +25,8 @@ import Labeled from './Labeled';
  * thanks to the 'optionText' and 'optionValue' attributes.
  * @example
  * const choices = [
- *    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
- *    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+ *    { _id: 123, full_name: 'Leo Tolstoi' },
+ *    { _id: 456, full_name: 'Jane Austen' },
  * ];
  * <CheckboxGroupInput source="recipients" choices={choices} optionText="full_name" optionValue="_id" />
  *
@@ -50,13 +50,13 @@ import Labeled from './Labeled';
  * <CheckboxGroupInput source="recipients" choices={choices} optionText={<FullNameField />}/>
  */
 export class CheckboxGroupInput extends Component {
-    handleCheck = (choice, isChecked) => {
-        const { optionValue, input: { value, onChange } } = this.props;
+    handleCheck = (event, isChecked) => {
+        const { input: { value, onChange } } = this.props;
 
         if (isChecked) {
-            onChange([...value, ...[choice]]);
+            onChange([...value, ...[event.target.value]]);
         } else {
-            onChange(value.filter(v => (v[optionValue] != choice[optionValue])));
+            onChange(value.filter(v => (v != event.target.value)));
         }
     };
 
@@ -84,8 +84,8 @@ export class CheckboxGroupInput extends Component {
                     {choices.map(choice =>
                         <Checkbox
                             key={choice[optionValue]}
-                            checked={value.filter(v => (v[optionValue] == choice[optionValue])).length > 0}
-                            onCheck={(e, isChecked) => this.handleCheck(choice, isChecked)}
+                            checked={value.find(v => (v == choice[optionValue])) !== undefined}
+                            onCheck={this.handleCheck}
                             value={choice[optionValue]}
                             label={option(choice)}
                             {...options}
