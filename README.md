@@ -1,8 +1,35 @@
 # admin-on-rest [![Build Status](https://travis-ci.org/marmelab/admin-on-rest.svg?branch=master)](https://travis-ci.org/marmelab/admin-on-rest)
 
-A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI.
+A frontend Framework for building admin applications running in the browser on top of REST services, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Open sourced and maintained by [marmelab](https://marmelab.com/).
+
+[Demo](https://marmelab.com/admin-on-rest-demo/) - [Documentation](https://marmelab.com/admin-on-rest/) - [Releases](https://github.com/marmelab/admin-on-rest/releases) - [Support](http://stackoverflow.com/questions/tagged/admin-on-rest)
 
 ![admin-on-rest demo](http://static.marmelab.com/admin-on-rest.gif)
+
+## Features
+
+* Adapts to any REST backend
+* Complete documentation
+* Optimistic rendering (renders before the server returns)
+* Relationships (many to one, one to many)
+* Internationalization (i18n)
+* Conditional formatting
+* Themeable
+* Supports any authentication provider (REST API, OAuth, Basic Auth, ...)
+* Full-featured Datagrid (sort, pagination, filters)
+* Filter-as-you-type
+* Supports any form layout (simple, tabbed, etc.)
+* Data Validation
+* Custom actions
+* Large library of components for various data types: boolean, number, rich text, etc.
+* WYSIWYG editor
+* Customize dashboard, menu, layout
+* Super easy to extend and override (it's just React components)
+* Highly customizable interface
+* Can connect to multiple backends
+* Leverages the best libraries in the React ecosystem (Redux, redux-form, redux-saga, material-ui, recompose)
+* Can be included in another React app
+* Inspired by the popular [ng-admin](https://github.com/marmelab/ng-admin) library (also by marmelab)
 
 ## Installation
 
@@ -15,9 +42,9 @@ npm install --save-dev admin-on-rest
 
 ## Documentation
 
-Head to [http://marmelab.com/admin-on-rest/](http://marmelab.com/admin-on-rest/) for a complete documentation. If you installed the library via npm, it's also available offline, under the `node_modules/admin-on-rest/docs/` directory.
+Read the [Tutorial](http://marmelab.com/admin-on-rest//Tutorial.html) for a 15 minutes introduction. After that, head to the [Documentation](http://marmelab.com/admin-on-rest//index.html), or checkout the [source code of the demo](https://github.com/marmelab/admin-on-rest-demo) for an example usage.
 
-## Example
+## At a Glance
 
 ```js
 // in app.js
@@ -37,8 +64,8 @@ render(
 
 The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use Material UI and custom components from admin-on-rest:
 
+{% raw %}
 ```js
-
 // in posts.js
 import React from 'react';
 import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'admin-on-rest/lib/mui';
@@ -87,36 +114,27 @@ export const PostCreate = (props) => (
     </Create>
 );
 ```
+{% endraw %}
 
-## Configuring The REST Client
+## Does It Work With My REST API?
 
-REST isn't a standard, so it's impossible to make a REST client library that will work for all REST backends. Admin-on-rest deals with this problem by letting you provide a REST client function. This is the place to translate REST requests to HTTP requests, and HTTP responses to REST responses.
+Yes.
 
-The `<Admin>` component expects a `restClient` parameter, which is a function with the following signature:
+Admin-on-rest uses an adapter approach, with a concept called *REST client*. Existing rest clients can be used as a blueprint to design your API, or you can write your own REST client to query an existing API. Writing a custom REST client is a matter of hours.
 
-```js
-/**
- * Execute the REST request and return a promise for a REST response
- *
- * @example
- * restClient(GET_ONE, 'posts', { id: 123 })
- *  => new Promise(resolve => resolve({ data: { id: 123, title: "hello, world" } }))
- *
- * @param {string} type Request type, e.g GET_LIST
- * @param {string} resource Resource name, e.g. "posts"
- * @param {Object} payload Request parameters. Depends on the action type
- * @returns {Promise} the Promise for a REST response
- */
-const restClient = (type, resource, params) => new Promise();
-```
+![REST client architecture](https://marmelab.com/admin-on-rest/img/rest-client.png)
 
-The expected format for REST requests and responses is documented in `src/rest/README.md`; you can find an example in `src/rest/simple.js`;
+See the [REST clients documentation](https://marmelab.com/admin-on-rest/RestClients.html) for details.
 
-The `restClient` is also the ideal place to add custom HTTP headers, authentication, etc.
+## Batteries Included But Removable
+
+Admin-on-rest is designed as a library of loosely coupled React components built on top of [material-ui](http://www.material-ui.com/#/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of admin-on-rest with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
 
 ## Contributing
 
-You can run the example app by calling
+Pull requests are welcome. Try to follow the coding style of the existing files, and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
+
+You can run the example app by calling:
 
 ```sh
 make run
@@ -157,8 +175,10 @@ $ cd ../myapp
 $ npm run
 ```
 
-Pull requests are welcome. Try to follow the coding style of the existing files, and to add unit tests to prove that your patch does what it says.
-
 ## License
 
-Admin-on-rest is licensed under the [MIT Licence](LICENSE), and sponsored by [marmelab](http://marmelab.com).
+Admin-on-rest is licensed under the [MIT Licence](https://github.com/marmelab/admin-on-rest/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
+
+## Donate
+
+This library is free to use, even for commercial purpose. If you want to give back, please talk about it, help newcomers, or contribute code. But the best way to give back is to **donate to a charity**. We recommend [Doctors Without Borders](http://www.doctorswithoutborders.org/).
