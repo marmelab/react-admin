@@ -22,7 +22,6 @@ import {
     ReferenceManyField,
     RichTextField,
     SimpleShowLayout,
-    RadioButtonGroupInput,
     TabbedForm,
     TextField,
     TextInput,
