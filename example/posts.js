@@ -2,6 +2,7 @@ import React from 'react';
 import {
     BooleanField,
     BooleanInput,
+    CheckboxGroupInput,
     Create,
     Datagrid,
     DateField,
@@ -92,6 +93,15 @@ export const PostEdit = Translate(({ translate, ...props }) => (
             <FormTab label={translate('post.form.summary')}>
                 <DisabledInput label="Id" source="id" />
                 <TextInput source="title" label={translate('post.form.title')} validation={{ required: true }} />
+                <CheckboxGroupInput
+                    source="notifications"
+                    label="Notification recipients"
+                    choices={[
+                        { id: 12, name: 'Ray Hakt' },
+                        { id: 31, name: 'Ann Gullar' },
+                        { id: 42, name: 'Sean Phonee' },
+                    ]}
+                />
                 <LongTextInput source="teaser" label={translate('post.form.teaser')} validation={{ required: true }} />
             </FormTab>
             <FormTab label={translate('post.form.body')}>
