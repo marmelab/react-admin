@@ -7,15 +7,19 @@ import Labeled from './Labeled';
  *
  * Pass possible options as an array of objects in the 'choices' attribute.
  *
+ * The expected input must be an array of objects, objects must be present (by their 'optionValue')
+ * in 'choices' attribute to be displayed as part of the checkbox list.
+ *
  * By default, the options are built from:
  *  - the 'id' property as the option value,
  *  - the 'name' property an the option text
  * @example
  * const choices = [
- *    { id: 'M', name: 'Male' },
- *    { id: 'F', name: 'Female' },
+ *     { id: 12, name: 'Ray Hakt' },
+ *     { id: 31, name: 'Ann Gullar' },
+ *     { id: 42, name: 'Sean Phonee' },
  * ];
- * <CheckboxGroupInput source="gender" choices={choices} />
+ * <CheckboxGroupInput source="recipients" choices={choices} />
  *
  * You can also customize the properties to use for the option name and value,
  * thanks to the 'optionText' and 'optionValue' attributes.
@@ -24,7 +28,7 @@ import Labeled from './Labeled';
  *    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
  *    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
  * ];
- * <CheckboxGroupInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+ * <CheckboxGroupInput source="recipients" choices={choices} optionText="full_name" optionValue="_id" />
  *
  * `optionText` also accepts a function, so you can shape the option text at will:
  * @example
@@ -33,7 +37,7 @@ import Labeled from './Labeled';
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
  * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
- * <CheckboxGroupInput source="author_id" choices={choices} optionText={optionRenderer} />
+ * <CheckboxGroupInput source="recipients" choices={choices} optionText={optionRenderer} />
  *
  * `optionText` also accepts a React Element, that will be cloned and receive
  * the related choice as the `record` prop. You can use Field components there.
@@ -43,7 +47,7 @@ import Labeled from './Labeled';
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
  * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
- * <CheckboxGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
+ * <CheckboxGroupInput source="recipients" choices={choices} optionText={<FullNameField />}/>
  */
 export class CheckboxGroupInput extends Component {
     handleCheck = (choice, isChecked) => {

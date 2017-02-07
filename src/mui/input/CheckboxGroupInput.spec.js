@@ -32,18 +32,18 @@ describe('<CheckboxGroupInput />', () => {
         const wrapper = shallow(<CheckboxGroupInput
             {...defaultProps}
             choices={[
-                { id: 'M', name: 'Male' },
-                { id: 'F', name: 'Female' },
+                { id: 'ang', name: 'Angular' },
+                { id: 'rct', name: 'React' },
             ]}
         />);
         const CheckboxElements = wrapper.find('Checkbox');
         assert.equal(CheckboxElements.length, 2);
         const CheckboxElement1 = CheckboxElements.first();
-        assert.equal(CheckboxElement1.prop('value'), 'M');
-        assert.equal(CheckboxElement1.prop('label'), 'Male');
+        assert.equal(CheckboxElement1.prop('value'), 'ang');
+        assert.equal(CheckboxElement1.prop('label'), 'Angular');
         const CheckboxElement2 = CheckboxElements.at(1);
-        assert.equal(CheckboxElement2.prop('value'), 'F');
-        assert.equal(CheckboxElement2.prop('label'), 'Female');
+        assert.equal(CheckboxElement2.prop('value'), 'rct');
+        assert.equal(CheckboxElement2.prop('label'), 'React');
     });
 
     it('should use optionValue as value identifier', () => {
@@ -51,13 +51,13 @@ describe('<CheckboxGroupInput />', () => {
             {...defaultProps}
             optionValue="foobar"
             choices={[
-                { foobar: 'M', name: 'Male' },
+                { foobar: 'foo', name: 'Bar' },
             ]}
         />);
         const CheckboxElements = wrapper.find('Checkbox');
         const CheckboxElement1 = CheckboxElements.first();
-        assert.equal(CheckboxElement1.prop('value'), 'M');
-        assert.equal(CheckboxElement1.prop('label'), 'Male');
+        assert.equal(CheckboxElement1.prop('value'), 'foo');
+        assert.equal(CheckboxElement1.prop('label'), 'Bar');
     });
 
     it('should use optionText with a string value as text identifier', () => {
@@ -65,13 +65,13 @@ describe('<CheckboxGroupInput />', () => {
             {...defaultProps}
             optionText="foobar"
             choices={[
-                { id: 'M', foobar: 'Male' },
+                { id: 'foo', foobar: 'Bar' },
             ]}
         />);
         const CheckboxElements = wrapper.find('Checkbox');
         const CheckboxElement1 = CheckboxElements.first();
-        assert.equal(CheckboxElement1.prop('value'), 'M');
-        assert.equal(CheckboxElement1.prop('label'), 'Male');
+        assert.equal(CheckboxElement1.prop('value'), 'foo');
+        assert.equal(CheckboxElement1.prop('label'), 'Bar');
     });
 
     it('should use optionText with a function value as text identifier', () => {
@@ -79,13 +79,13 @@ describe('<CheckboxGroupInput />', () => {
             {...defaultProps}
             optionText={choice => choice.foobar}
             choices={[
-                { id: 'M', foobar: 'Male' },
+                { id: 'foo', foobar: 'Bar' },
             ]}
         />);
         const CheckboxElements = wrapper.find('Checkbox');
         const CheckboxElement1 = CheckboxElements.first();
-        assert.equal(CheckboxElement1.prop('value'), 'M');
-        assert.equal(CheckboxElement1.prop('label'), 'Male');
+        assert.equal(CheckboxElement1.prop('value'), 'foo');
+        assert.equal(CheckboxElement1.prop('label'), 'Bar');
     });
 
     it('should use optionText with an element value as text identifier', () => {
@@ -94,12 +94,12 @@ describe('<CheckboxGroupInput />', () => {
             {...defaultProps}
             optionText={<Foobar />}
             choices={[
-                { id: 'M', foobar: 'Male' },
+                { id: 'foo', foobar: 'Bar' },
             ]}
         />);
         const CheckboxElements = wrapper.find('Checkbox');
         const CheckboxElement1 = CheckboxElements.first();
-        assert.equal(CheckboxElement1.prop('value'), 'M');
-        assert.deepEqual(CheckboxElement1.prop('label'), <Foobar record={{ id: 'M', foobar: 'Male' }} />);
+        assert.equal(CheckboxElement1.prop('value'), 'foo');
+        assert.deepEqual(CheckboxElement1.prop('label'), <Foobar record={{ id: 'foo', foobar: 'Bar' }} />);
     });
 });
