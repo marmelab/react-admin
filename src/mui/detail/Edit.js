@@ -15,7 +15,10 @@ const arrayizeChildren = children => (Array.isArray(children) ? children : [chil
 export class Edit extends Component {
     constructor(props) {
         super(props);
-        this.state = { record: props.data };
+        this.state = {
+            key: 0,
+            record: props.data,
+        };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -55,7 +58,7 @@ export class Edit extends Component {
 
     refresh = (event) => {
         event.stopPropagation();
-        this.updateData();
+        this.setState({ key: this.state.key + 1 }, () => this.updateData());
     }
 
     handleSubmit(record) {
@@ -64,10 +67,11 @@ export class Edit extends Component {
 
     render() {
         const { actions = <DefaultActions />, children, data, hasDelete, hasShow, id, isLoading, resource, title } = this.props;
+        const { key } = this.state;
         const basePath = this.getBasePath();
 
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
+            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }} key={key}>
                 {actions && React.cloneElement(actions, {
                     basePath,
                     data,

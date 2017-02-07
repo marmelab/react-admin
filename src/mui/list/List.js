@@ -54,7 +54,7 @@ export class List extends Component {
     constructor(props) {
         super(props);
         this.debouncedSetFilters = debounce(this.setFilters.bind(this), 500);
-        this.state = {};
+        this.state = { key: 0 };
     }
 
     componentDidMount() {
@@ -104,7 +104,7 @@ export class List extends Component {
 
     refresh = (event) => {
         event.stopPropagation();
-        this.updateData();
+        this.setState({ key: this.state.key + 1 }, () => this.updateData());
     }
 
     /**
@@ -153,11 +153,12 @@ export class List extends Component {
 
     render() {
         const { filter, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
+        const { key } = this.state;
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
+            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }} key={key}>
                 {actions && React.cloneElement(actions, {
                     resource,
                     filter,
