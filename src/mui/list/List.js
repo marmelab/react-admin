@@ -72,6 +72,10 @@ export class List extends Component {
          || nextProps.query.filter !== this.props.query.filter) {
             this.updateData(Object.keys(nextProps.query).length > 0 ? nextProps.query : nextProps.params);
         }
+        if (nextProps.data !== this.props.data && this.fullRefresh) {
+            this.fullRefresh = false;
+            this.setState({ key: this.state.key + 1 });
+        }
         if (Object.keys(nextProps.filters).length === 0 && Object.keys(this.props.filters).length === 0) {
             return;
         }
@@ -104,7 +108,8 @@ export class List extends Component {
 
     refresh = (event) => {
         event.stopPropagation();
-        this.setState({ key: this.state.key + 1 }, () => this.updateData());
+        this.fullRefresh = true;
+        this.updateData();
     }
 
     /**

@@ -29,6 +29,10 @@ export class Edit extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.data !== nextProps.data) {
             this.setState({ record: nextProps.data }); // FIXME: erases user entry when fetch response arrives late
+            if (this.fullRefresh) {
+                this.fullRefresh = false;
+                this.setState({ key: this.state.key + 1 });
+            }
         }
         if (this.props.id !== nextProps.id) {
             this.updateData(nextProps.resource, nextProps.id);
@@ -58,7 +62,8 @@ export class Edit extends Component {
 
     refresh = (event) => {
         event.stopPropagation();
-        this.setState({ key: this.state.key + 1 }, () => this.updateData());
+        this.fullRefresh = true;
+        this.updateData();
     }
 
     handleSubmit(record) {
