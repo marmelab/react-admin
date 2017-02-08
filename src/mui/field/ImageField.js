@@ -11,10 +11,10 @@ const styles = {
     },
 };
 
-export const ImageField = ({ elStyle, record, source, title }) => {
+export const ImageField = ({ elStyle = {}, record, source, title }) => {
     const style = {
         ...styles.container,
-        elStyle,
+        ...elStyle,
     };
 
     const titleValue = get(record, title) || title;
