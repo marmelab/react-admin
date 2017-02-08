@@ -25,6 +25,7 @@
 * Add support for functions as value for the `defaultValue` prop
 * Add `<CheckboxGroupInput>` component
 * Fix validation ofr `<AutocompleteInput>`, `<ReferenceInput>`, and `<SelectInput>` ([AkselsLedins](https://github.com/AkselsLedins))
+* Add `<ImageField>` and `<ImageIput>` to upload images
 
 ## v0.7.1
 
