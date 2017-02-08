@@ -26,6 +26,7 @@
 * Add `<CheckboxGroupInput>` component
 * Fix validation ofr `<AutocompleteInput>`, `<ReferenceInput>`, and `<SelectInput>` ([AkselsLedins](https://github.com/AkselsLedins))
 * Add `<ImageField>` and `<ImageIput>` to upload images
+* Prefix flex-box elements ([yshing](https://github.com/yshing))
 
 ## v0.7.1
 
