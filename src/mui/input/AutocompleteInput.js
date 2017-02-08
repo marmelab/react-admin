@@ -115,6 +115,7 @@ AutocompleteInput.defaultProps = {
     addField: true,
     choices: [],
     filter: AutoComplete.fuzzyFilter,
+    meta: {},
     options: {},
     optionText: 'name',
     optionValue: 'id',

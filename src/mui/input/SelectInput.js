@@ -103,6 +103,7 @@ SelectInput.defaultProps = {
     addField: true,
     allowEmpty: false,
     choices: [],
+    meta: {},
     options: {},
     optionText: 'name',
     optionValue: 'id',
