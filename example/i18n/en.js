@@ -13,6 +13,7 @@ export const messages = {
             title: 'Title',
             published_at: 'Published at',
             teaser: 'Teaser',
+            pictures: 'Related Pictures',
             body: 'Body',
             average_note: 'Average note',
             allow_comments: 'Allow comments?',

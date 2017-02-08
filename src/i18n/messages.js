@@ -14,6 +14,12 @@ export default {
             create_item: 'Create %{name}',
             list_item: '%{name} List',
         },
+        input: {
+            image: {
+                upload_several: 'Drop some files to upload, or click to select one.',
+                upload_single: 'Drop a file to upload, or click to select it.',
+            },
+        },
         message: {
             yes: 'Yes',
             no: 'No',

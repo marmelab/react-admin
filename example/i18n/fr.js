@@ -13,6 +13,7 @@ export const messages = {
             title: 'Titre',
             published_at: 'Publié le',
             teaser: 'Description',
+            pictures: 'Photos associées',
             body: 'Contenu',
             average_note: 'Note moyenne',
             allow_comments: 'Accepte les commentaires ?',
