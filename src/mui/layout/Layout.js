@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import autoprefixer from 'material-ui/utils/autoprefixer';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import AppBar from './AppBar';
 import Notification from './Notification';
@@ -12,12 +13,13 @@ injectTapEventPlugin();
 
 const Layout = ({ isLoading, children, route, title, theme, logout }) => {
     const muiTheme = getMuiTheme(theme);
+    const prefix = autoprefixer(muiTheme);
     return (
         <MuiThemeProvider muiTheme={muiTheme}>
-            <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+            <div style={prefix({ display: 'flex', flexDirection: 'column', minHeight: '100vh' })}>
                 <AppBar title={title} isLoading={isLoading} />
-                <div className="body" style={{ display: 'flex', flex: '1', backgroundColor: '#edecec' }}>
-                    <div style={{ flex: 1 }}>{children}</div>
+                <div className="body" style={prefix({ display: 'flex', flex: '1', backgroundColor: '#edecec' })}>
+                    <div style={prefix({ flex: 1 })}>{children}</div>
                     <Menu resources={route.resources} logout={logout} />
                 </div>
                 <Notification />
