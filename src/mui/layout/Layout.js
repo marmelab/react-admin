@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import prefix from 'react-prefixer';
+import autoprefixer from 'material-ui/utils/autoprefixer';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import AppBar from 'material-ui/AppBar';
@@ -16,7 +16,7 @@ const Layout = ({ isLoading, children, route, title, theme }) => {
     const Title = <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>{title}</Link>;
     const RightElement = isLoading ? <CircularProgress color="#fff" size={30} thickness={2} style={{ margin: 8 }} /> : <span />;
     const muiTheme = getMuiTheme(theme);
-
+    const prefix = autoprefixer(muiTheme);
     return (
         <MuiThemeProvider muiTheme={muiTheme}>
             <div style={prefix({ display: 'flex', flexDirection: 'column', minHeight: '100vh' })}>
