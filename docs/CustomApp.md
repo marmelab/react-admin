@@ -5,9 +5,11 @@ title: "Including the Admin in Another App"
 
 # Including admin-on-rest on another React app
 
-The `<Admin>` tag is a great shortcut got be up and running with admin-on-rest in minutes. However, in many cases, you will want to embed the admin in another application, or customize the admin deeply (custom menus, custom actions, custom reducers). Fortunately, you can do all the work that `<Admin>` does on any React application.
+The `<Admin>` tag is a great shortcut got be up and running with admin-on-rest in minutes. However, in many cases, you will want to embed the admin in another application, or customize the admin deeply. Fortunately, you can do all the work that `<Admin>` does on any React application.
 
 Beware that you need to know about [redux](http://redux.js.org/), [react-router](https://github.com/reactjs/react-router), and [redux-saga](https://github.com/yelouafi/redux-saga) to go further.
+
+**Tip**: Before going for the Custom App route, explore all the options of [the `<Admin>` component](./AdminResource.html##the-admin-component). They allow you to add custom routes, custom reducers, custom sagas, and customize the layout.
 
 ## Basic Admin App
 

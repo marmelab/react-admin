@@ -37,6 +37,7 @@ Here are all the props accepted by the component:
 * [`appLayout`](#applayout)
 * [`customReducers`](#customreducers)
 * [`customSagas`](#customsagas)
+* [`customRoutes`](#customroutes)
 * [`authClient`](#authclient)
 * [`loginPage`](#loginpage)
 * [`logoutButton`](#logoutbutton)
@@ -285,6 +286,49 @@ const App = () => (
 
 export default App;
 ```
+
+### `customRoutes`
+
+To register your own routes, create a function returning a [react-router](https://github.com/ReactTraining/react-router) `<Route>` component:
+
+```js
+// in src/customRoutes.js
+import React from 'react';
+import { Route } from 'react-router';
+import Foo from './Foo';
+import Bar from './Bar';
+
+export default () => (
+    <Route>
+        <Route path="/foo" component={Foo} />
+        <Route path="/bar" component={Bar} />
+    </Route>
+);
+```
+
+Then, pass this function as `customRoutes` prop to the `<Admin>` component:
+
+```js
+// in src/App.js
+import React from 'react';
+import { Admin } from 'admin-on-rest';
+
+import customRoutes from './customRoutes';
+
+const App = () => (
+    <Admin customRoutes={customRoutes} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+        ...
+    </Admin>
+);
+
+export default App;
+```
+
+Now, when a user browses to `/foo` or `/bar`, the components you defined will appear in the main part of the screen.
+
+**Tip**: It's up to you to create a [custom menu](#applayout) entry, or custom buttons, to lead to your custom pages.
+
+**Tip**: Your custom pages take precedence over admin-on-rest's own routes. That means that `customRoutes` lets you override any route you want!
 
 ### `authClient`
 

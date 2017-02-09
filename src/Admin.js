@@ -24,6 +24,7 @@ const Admin = ({
     children,
     customReducers = {},
     customSagas = [],
+    customRoutes,
     dashboard,
     locale = DEFAULT_LOCALE,
     messages = {},
@@ -78,6 +79,7 @@ const Admin = ({
                     {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
                     <Route path="/login" component={LoginPage} />
                     <Route path="/" component={Layout} resources={resources}>
+                        {customRoutes && customRoutes()}
                         {dashboard && <IndexRoute component={dashboard} onEnter={onEnter()} />}
                         {resources.map(resource =>
                             <CrudRoute
@@ -107,6 +109,7 @@ Admin.propTypes = {
     children: PropTypes.node,
     customSagas: PropTypes.array,
     customReducers: PropTypes.object,
+    customRoutes: PropTypes.func,
     dashboard: componentPropType,
     loginPage: componentPropType,
     logoutButton: componentPropType,
