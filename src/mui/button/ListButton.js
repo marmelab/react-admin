@@ -6,7 +6,7 @@ import Translate from '../../i18n/Translate';
 
 const ListButton = ({ basePath = '', label = 'aor.action.list', translate }) => <FlatButton
     primary
-    label={translate(label)}
+    label={label && translate(label)}
     icon={<ActionList />}
     containerElement={<Link to={basePath} />}
     style={{ overflow: 'inherit' }}

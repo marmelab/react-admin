@@ -5,7 +5,7 @@ import Translate from '../../i18n/Translate';
 
 const RefreshButton = ({ label = 'aor.action.refresh', translate, refresh }) => <FlatButton
     primary
-    label={translate(label)}
+    label={label && translate(label)}
     onClick={refresh}
     icon={<NavigationRefresh />}
 />;

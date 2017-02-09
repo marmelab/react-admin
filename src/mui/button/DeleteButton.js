@@ -7,7 +7,7 @@ import Translate from '../../i18n/Translate';
 
 const DeleteButton = ({ basePath = '', label = 'aor.action.delete', record = {}, translate }) => <FlatButton
     secondary
-    label={translate(label)}
+    label={label && translate(label)}
     icon={<ActionDelete />}
     containerElement={<Link to={`${linkToRecord(basePath, record.id)}/delete`} />}
     style={{ overflow: 'inherit' }}
