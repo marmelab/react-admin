@@ -212,7 +212,7 @@ If your components dispatch custom actions, you probably need to register your o
 
 ```js
 // in src/bitcoinRateReducer.js
-export const (previousState = 0, { type, payload }) => {
+export default (previousState = 0, { type, payload }) => {
     if (type === 'BITCOIN_RATE_RECEIVED') {
         return payload.rate;
     }
