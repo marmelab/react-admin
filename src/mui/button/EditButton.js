@@ -8,7 +8,7 @@ import Translate from '../../i18n/Translate';
 
 const EditButton = ({ basePath = '', label = 'aor.action.edit', record = {}, translate }) => <FlatButton
     primary
-    label={translate(label)}
+    label={label && translate(label)}
     icon={<ContentCreate />}
     containerElement={<Link to={linkToRecord(basePath, record.id)} />}
     style={{ overflow: 'inherit' }}

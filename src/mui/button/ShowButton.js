@@ -7,7 +7,7 @@ import Translate from '../../i18n/Translate';
 
 const ShowButton = ({ basePath = '', label = 'aor.action.show', record = {}, translate }) => <FlatButton
     primary
-    label={translate(label)}
+    label={label && translate(label)}
     icon={<ImageEye />}
     containerElement={<Link to={`${linkToRecord(basePath, record.id)}/show`} />}
     style={{ overflow: 'inherit' }}

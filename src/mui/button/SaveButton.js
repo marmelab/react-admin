@@ -18,7 +18,7 @@ class SaveButton extends Component {
         const { saving, label = 'aor.action.save', translate } = this.props;
         return <RaisedButton
             type="submit"
-            label={translate(label)}
+            label={label && translate(label)}
             icon={saving ? <CircularProgress size={25} thickness={2} /> : <ContentSave />}
             onClick={this.handleClick}
             primary={!saving}

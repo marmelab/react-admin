@@ -7,7 +7,7 @@ import Translate from '../../i18n/Translate';
 
 const CreateButton = ({ basePath = '', translate, label = 'aor.action.create' }) => <FlatButton
     primary
-    label={translate(label)}
+    label={label && translate(label)}
     icon={<ContentAdd />}
     containerElement={<Link to={`${basePath}/create`} />}
     style={{ overflow: 'inherit' }}
