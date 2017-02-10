@@ -3,48 +3,51 @@ export const messages = {
         posts: {
             name: 'Article |||| Articles',
             fields: {
-                title: 'Titre',
-                published_at: 'Publié le',
+                allow_comments: 'Accepte les commentaires ?',
+                average_note: 'Note moyenne',
+                body: 'Contenu',
+                comments: 'Commentaires',
                 commentable: 'Commentable',
+                created_at: 'Créé le',
+                notifications: 'Destinataires de notifications',
+                nb_view: 'Nb de vues',
+                password: 'Mot de passe (si protégé)',
+                pictures: 'Photos associées',
+                published_at: 'Publié le',
+                teaser: 'Description',
+                title: 'Titre',
                 views: 'Vues',
             },
         },
-        comments: 'Commentaire |||| Commentaires',
-        author: 'Auteur |||| Auteurs',
+        comments: {
+            name: 'Commentaire |||| Commentaires',
+            fields: {
+                body: 'Contenu',
+                created_at: 'Créé le',
+                posts: 'Articles',
+                author: {
+                    name: 'Auteur',
+                },
+            },
+        },
     },
     post: {
         list: {
             search: 'Recherche',
         },
         form: {
-            title: 'Titre',
-            published_at: 'Publié le',
-            teaser: 'Description',
-            pictures: 'Photos associées',
-            body: 'Contenu',
-            average_note: 'Note moyenne',
-            allow_comments: 'Accepte les commentaires ?',
-            password: 'Mot de passe (si protégé)',
             summary: 'Résumé',
+            body: 'Contenu',
             miscellaneous: 'Extra',
-            nb_view: 'Nb de vues',
             comments: 'Commentaires',
-            created_at: 'Créé le',
         },
-        title: {
-            edit: 'Article "%{title}"',
+        edit: {
+            title: 'Article "%{title}"',
         },
     },
     comment: {
-        form: {
-            body: 'Contenu',
-            created_at: 'Créé le',
-            author_name: 'Nom de l\'auteur',
-        },
-    },
-    author: {
         list: {
-            name: 'Nom',
+            about: 'Au sujet de',
         },
     },
 };

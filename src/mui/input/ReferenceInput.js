@@ -139,7 +139,7 @@ export class ReferenceInput extends Component {
     render() {
         const { input, resource, label, source, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children, meta } = this.props;
         if (!referenceRecord && !allowEmpty) {
-            return <Labeled label={label} source={source} />;
+            return <Labeled label={label} source={source} resource={resource} />;
         }
 
         return React.cloneElement(children, {

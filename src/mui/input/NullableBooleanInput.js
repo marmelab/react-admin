@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
 import SelectInput from './SelectInput';
-import title from '../../util/title';
+import FieldTitle from '../../util/FieldTitle';
 
-const NullableBooleanInput = ({ input, meta: { touched, error }, label, source, elStyle }) => (
+const NullableBooleanInput = ({ input, meta: { touched, error }, label, source, elStyle, resource }) => (
     <SelectInput
         input={input}
-        label={title(label, source)}
+        label={<FieldTitle label={label} source={source} resource={resource} />}
         choices={[
             { id: null, name: '' },
             { id: false, name: 'No' },
@@ -22,6 +22,7 @@ NullableBooleanInput.propTypes = {
     input: PropTypes.object,
     label: PropTypes.string,
     meta: PropTypes.object,
+    resource: PropTypes.string,
     source: PropTypes.string,
 };
 

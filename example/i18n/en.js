@@ -1,46 +1,53 @@
 export const messages = {
     resources: {
-        posts: 'Post |||| Posts',
-        comments: 'Comment |||| Comments',
-        author: 'Author |||| Authors',
+        posts: {
+            name: 'Post |||| Posts',
+            fields: {
+                allow_comments: 'Allo comments?',
+                average_note: 'Average note',
+                body: 'Body',
+                comments: 'Comments',
+                commentable: 'Commentable',
+                created_at: 'Created at',
+                notifications: 'Notifications recipients',
+                nb_view: 'Nb views',
+                password: 'Password (if protected post)',
+                pictures: 'Related Pictures',
+                published_at: 'Published at',
+                teaser: 'Teaser',
+                title: 'Title',
+                views: 'Vues',
+            },
+        },
+        comments: {
+            name: 'Comment |||| Comments',
+            fields: {
+                body: 'Body',
+                created_at: 'Created at',
+                posts: 'Posts',
+                author: {
+                    name: 'Author',
+                },
+            },
+        },
     },
     post: {
         list: {
             search: 'Search',
-            title: 'Title',
-            published_at: 'Published at',
-            commentable: 'Commentable',
-            views: 'Views',
         },
         form: {
-            title: 'Title',
-            published_at: 'Published at',
-            teaser: 'Teaser',
-            pictures: 'Related Pictures',
-            body: 'Body',
-            average_note: 'Average note',
-            allow_comments: 'Allow comments?',
-            password: 'Password (if protected post)',
             summary: 'Summary',
+            body: 'Body',
             miscellaneous: 'Miscellaneous',
-            nb_view: 'Nb views?',
             comments: 'Comments',
-            created_at: 'Created at',
         },
-        title: {
-            edit: 'Post "%{title}"',
+        edit: {
+            title: 'Post "%{title}"',
         },
     },
     comment: {
-        form: {
-            body: 'Body',
-            created_at: 'Created at',
-            author_name: 'Author name',
-        },
-    },
-    author: {
         list: {
-            name: 'Name',
+            about: 'About',
         },
     },
 };

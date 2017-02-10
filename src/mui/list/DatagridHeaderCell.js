@@ -38,7 +38,7 @@ export const DatagridHeaderCell = ({ field, defaultStyle, currentSort, updateSor
                     style={styles.sortButton}
                 />
                 :
-                (field.props.label && <span style={styles.nonSortableLabel}>{title(field.props.label, field.props.source)}</span>)
+                (field.props.label && <span style={styles.nonSortableLabel}>{<FieldTitle label={field.props.label} source={field.props.source} resource={resource} /> }</span>)
             }
         </TableHeaderColumn>
     );

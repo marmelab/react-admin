@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
-import title from '../../util/title';
+import FieldTitle from '../../util/FieldTitle';
 
 /**
  * An Input component for a number
@@ -24,7 +24,7 @@ class NumberInput extends Component {
     }
 
     render() {
-        const { elStyle, input, label, meta: { touched, error }, options, source, step } = this.props;
+        const { elStyle, input, label, meta: { touched, error }, options, source, step, resource } = this.props;
         return (
             <TextField
                 value={input.value}
@@ -32,7 +32,7 @@ class NumberInput extends Component {
                 onBlur={this.handleBlur}
                 type="number"
                 step={step}
-                floatingLabelText={title(label, source)}
+                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
                 errorText={touched && error}
                 style={elStyle}
                 {...options}
@@ -50,6 +50,7 @@ NumberInput.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func,
     options: PropTypes.object,
+    resource: PropTypes.string,
     source: PropTypes.string,
     step: PropTypes.string.isRequired,
     validation: PropTypes.object,

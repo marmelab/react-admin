@@ -22,6 +22,7 @@ EditButton.propTypes = {
 };
 
 export default Translate(shouldUpdate((props, nextProps) =>
-    props.record.id !== nextProps.record.id
+    props.record
+    && props.record.id !== nextProps.record.id
     || props.basePath !== nextProps.basePath
 )(EditButton));

@@ -105,6 +105,8 @@ The `message` value should be a dictionary where keys are identifiers of interfa
 
 All core translations are in the `aor` namespace, in order to prevent collisions with your own custom translations. The root key used for the interface is determined by the `locale` property.
 
+The default messages are available [here](https://github.com/marmelab/admin-on-rest/blob/master/src/i18n/messages.js).
+
 ## Overriding Existing Translations
 
 To override an existing translation, simply provide a `messages` props to the `<Admin>` component, with the locale you want to cover as root key, and a nested object of the wanted translation(s). Admin-on-rest will merge this object with its default translations.
@@ -154,7 +156,7 @@ const App = () => (
 );
 ```
 
-## Translating Your Resources
+## Translating Resources and Fields Names
 
 By default, Admin-on-rest uses resource names ("post", "comment", etc) everywhere in the interface, without taking into account the current user locale.
 
@@ -163,7 +165,6 @@ To translate resource names in page titles, you must add them to the `messages` 
 For example, if you want to translate a "shoe" resource, you must add the following object to the `messages` dictionary:
 
 ```js
-
 {
     en: {
         resources: {
@@ -180,10 +181,37 @@ For example, if you want to translate a "shoe" resource, you must add the follow
         }
     }
 }
-
 ```
 
 As you can see, [polyglot pluralization](http://airbnb.io/polyglot.js/#pluralization) is used here, but it is optional.
+
+You can also translate field names:
+
+```js
+{
+    en: {
+        resources: {
+            shoe: {
+                name: 'Shoe |||| Shoes',
+                fields: {
+                    model: 'Model',
+                    stock: 'Nb in stock',
+                    color: 'Color',
+                },
+            },
+            customer: {
+                name: 'Customer |||| Customers',
+                fields: {
+                    first_name: 'First name',
+                    last_name: 'Last name',
+                    dob: 'Date of birth',
+                }
+            }
+        }
+    },
+    ...
+}
+```
 
 ## Translating Your Own Components
 
