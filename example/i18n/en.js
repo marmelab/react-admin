@@ -1,7 +1,10 @@
 export const messages = {
+    resources: {
+        posts: 'Post |||| Posts',
+        comments: 'Comment |||| Comments',
+        author: 'Author |||| Authors',
+    },
     post: {
-        name: 'Post',
-        all: 'All Posts',
         list: {
             search: 'Search',
             title: 'Title',
@@ -26,8 +29,6 @@ export const messages = {
         },
     },
     comment: {
-        name: 'Comment',
-        all: 'All comments',
         form: {
             body: 'Body',
             created_at: 'Created at',
@@ -35,7 +36,6 @@ export const messages = {
         },
     },
     author: {
-        name: 'Author',
         list: {
             name: 'Name',
         },

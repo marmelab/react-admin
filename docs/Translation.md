@@ -130,7 +130,28 @@ const App = () => (
 );
 
 export default App;
+```
 
+If you want to handle multiple languages *and* override the default translations, use the following approach:
+
+```js
+// default translations
+import { englishMessages } from 'admin-on-rest';
+import frenchMessages from 'aor-language-french';
+
+// your custom messages
+import * as customMessages from './i18n';
+
+const messages = {
+    fr: { ...frenchMessages, ...customMessages.fr },
+    en: { ...englishMessages, ...customMessages.en },
+};
+
+const App = () => (
+    <Admin ...(your props) messages={messages}>
+        ...
+    </Admin>
+);
 ```
 
 ## Translating Your Resources
@@ -175,7 +196,7 @@ class MyHelloButton {
     }
 }
 MyHelloButton.contextTypes = {
-    translate: PropTypoes.function,
+    translate: PropTypes.function,
 };
 
 // in src/App.js

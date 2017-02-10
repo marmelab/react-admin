@@ -14,6 +14,15 @@ const style = {
     justifyContent: 'space-between',
 };
 
+const translatedResourceName = (resource, translate) =>
+    translate(`resources.${resource.name}`, {
+        smart_count: 2,
+        _: translate(resource.options.label, {
+            smart_count: 2,
+            _: inflection.humanize(inflection.pluralize(resource.name)),
+        }),
+    });
+
 const Menu = ({ resources, translate, logout }) => (
     <Paper style={style}>
         <List>
@@ -23,7 +32,7 @@ const Menu = ({ resources, translate, logout }) => (
                     <ListItem
                         key={resource.name}
                         containerElement={<Link to={`/${resource.name}`} />}
-                        primaryText={translate(resource.options.label || inflection.humanize(inflection.pluralize(resource.name)))}
+                        primaryText={translatedResourceName(resource, translate)}
                         leftIcon={<resource.icon />}
                     />,
                 )

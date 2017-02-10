@@ -167,8 +167,11 @@ export class List extends Component {
         const filterValues = query.filter;
         const basePath = this.getBasePath();
 
-        const resourceName = translate(`resources.${resource}`, { smart_count: total, _: inflection.humanize(inflection.pluralize(resource)) });
-        const listItemLabel = translate('aor.action.list_item', { name: `${resourceName}` });
+        const resourceName = translate(`resources.${resource}`, {
+            smart_count: 2,
+            _: inflection.humanize(inflection.pluralize(resource)),
+        });
+        const defaultTitle = translate('aor.page.list', { name: `${resourceName}` });
 
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
@@ -182,7 +185,7 @@ export class List extends Component {
                     showFilter: this.showFilter,
                     refresh: this.refresh,
                 })}
-                <CardTitle title={<Title title={title} defaultTitle={listItemLabel} />} />
+                <CardTitle title={<Title title={title} defaultTitle={defaultTitle} />} />
                 {filters && React.cloneElement(filters, {
                     resource,
                     hideFilter: this.hideFilter,

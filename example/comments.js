@@ -37,7 +37,7 @@ export CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
 
 const CommentFilter = Translate(({ translate, ...props }) => (
     <Filter {...props}>
-        <ReferenceInput label={translate('post.name')} source="post_id" reference="posts">
+        <ReferenceInput label={translate('resources.posts', { smart_count: 1 })} source="post_id" reference="posts">
             <SelectInput optionText="title" />
         </ReferenceInput>
     </Filter>
@@ -82,7 +82,7 @@ const CommentGrid = Translate(({ ids, data, basePath, translate }) => (
             </CardText>
             <CardText>
                 {translate('aor.message.about')}&nbsp;
-                <ReferenceField label={translate('post.name')} resource="comments" record={data[id]} source="post_id" reference="posts" basePath={basePath}>
+                <ReferenceField label={translate('resources.posts', { smart_count: 1 })} resource="comments" record={data[id]} source="post_id" reference="posts" basePath={basePath}>
                     <TextField source="title" label={translate('post.list.title')} />
                 </ReferenceField>
             </CardText>
@@ -109,7 +109,7 @@ export const CommentEdit = Translate(({ translate, ...props }) => (
     <Edit {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
-            <ReferenceInput label={translate('post.name')} source="post_id" reference="posts" perPage={5} sort={{ field: 'title', order: 'ASC' }}>
+            <ReferenceInput label={translate('resources.posts', { smart_count: 1 })} source="post_id" reference="posts" perPage={5} sort={{ field: 'title', order: 'ASC' }}>
                 <AutocompleteInput optionText="title" />
             </ReferenceInput>
             <TextInput label={translate('comment.form.author_name')} source="author.name" validation={{ minLength: 10 }} />
@@ -122,7 +122,7 @@ export const CommentEdit = Translate(({ translate, ...props }) => (
 export const CommentCreate = Translate(({ translate, ...props }) => (
     <Create {...props} defaultValues={{ created_at: new Date() }}>
         <SimpleForm>
-            <ReferenceInput label={translate('post.name')} source="post_id" reference="posts" allowEmpty>
+            <ReferenceInput label={translate('resources.posts', { smart_count: 1 })} source="post_id" reference="posts" allowEmpty>
                 <SelectInput optionText="title" />
             </ReferenceInput>
             <DateInput label={translate('comment.form.created_at')} source="created_at" />
