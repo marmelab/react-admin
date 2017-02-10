@@ -81,6 +81,7 @@ class Datagrid extends Component {
                                 currentSort={currentSort}
                                 isSorting={field.props.source === currentSort.field}
                                 updateSort={this.updateSort}
+                                resource={resource}
                             />
                         ))}
                     </tr>

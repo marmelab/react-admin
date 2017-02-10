@@ -67,7 +67,7 @@ export class Edit extends Component {
         const { actions = <DefaultActions />, children, data, hasDelete, hasShow, id, isLoading, resource, title, translate } = this.props;
         const basePath = this.getBasePath();
 
-        const resourceName = translate(`resources.${resource}`, {
+        const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
             _: inflection.humanize(inflection.singularize(resource)),
         });

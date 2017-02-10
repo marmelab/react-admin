@@ -4,7 +4,7 @@ import shouldUpdate from 'recompose/shouldUpdate';
 import { TableHeaderColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
-import title from '../../util/title';
+import FieldTitle from '../../util/FieldTitle';
 
 const styles = {
     sortButton: {
@@ -22,7 +22,7 @@ const styles = {
     },
 };
 
-export const DatagridHeaderCell = ({ field, defaultStyle, currentSort, updateSort }) => {
+export const DatagridHeaderCell = ({ field, defaultStyle, currentSort, updateSort, resource }) => {
     const style = defaultsDeep({}, field.props.headerStyle, field.type.defaultProps ? field.type.defaultProps.headerStyle : {}, defaultStyle);
     return (
         <TableHeaderColumn style={style}>
@@ -31,7 +31,7 @@ export const DatagridHeaderCell = ({ field, defaultStyle, currentSort, updateSor
                     labelPosition="before"
                     onClick={updateSort}
                     data-sort={field.props.source}
-                    label={title(field.props.label, field.props.source)}
+                    label={<FieldTitle label={field.props.label} source={field.props.source} resource={resource} />}
                     icon={field.props.source === currentSort.field ?
                         <ContentSort style={currentSort.order === 'ASC' ? { transform: 'rotate(180deg)' } : {}} /> : false
                     }
@@ -58,6 +58,7 @@ DatagridHeaderCell.propTypes = {
     }),
     isSorting: PropTypes.bool,
     sortable: PropTypes.bool,
+    resource: PropTypes.string,
     updateSort: PropTypes.func.isRequired,
 };
 

@@ -15,7 +15,7 @@ const style = {
 };
 
 const translatedResourceName = (resource, translate) =>
-    translate(`resources.${resource.name}`, {
+    translate(`resources.${resource.name}.name`, {
         smart_count: 2,
         _: translate(resource.options.label, {
             smart_count: 2,

@@ -48,10 +48,10 @@ export const PostList = Translate(({ translate, ...props }) => (
     <List {...props} filters={<PostFilter />} sort={{ field: 'published_at', order: 'DESC' }}>
         <Datagrid>
             <TextField source="id" />
-            <TextField source="title" label={translate('post.list.title')} style={titleFieldStyle} />
-            <DateField source="published_at" label={translate('post.list.published_at')} style={{ fontStyle: 'italic' }} />
-            <BooleanField label={translate('post.list.commentable')} source="commentable" />
-            <NumberField source="views" label={translate('post.list.views')} />
+            <TextField source="title" style={titleFieldStyle} />
+            <DateField source="published_at" style={{ fontStyle: 'italic' }} />
+            <BooleanField source="commentable" />
+            <NumberField source="views" />
             <EditButton />
             <ShowButton />
         </Datagrid>

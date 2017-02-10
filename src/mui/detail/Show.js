@@ -45,7 +45,7 @@ export class Show extends Component {
         const { title, children, id, data, isLoading, resource, hasDelete, hasEdit, translate } = this.props;
         const basePath = this.getBasePath();
 
-        const resourceName = translate(`resources.${resource}`, {
+        const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
             _: inflection.humanize(inflection.singularize(resource)),
         });

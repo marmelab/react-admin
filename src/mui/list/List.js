@@ -167,7 +167,7 @@ export class List extends Component {
         const filterValues = query.filter;
         const basePath = this.getBasePath();
 
-        const resourceName = translate(`resources.${resource}`, {
+        const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 2,
             _: inflection.humanize(inflection.pluralize(resource)),
         });

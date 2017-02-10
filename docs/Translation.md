@@ -167,12 +167,16 @@ For example, if you want to translate a "shoe" resource, you must add the follow
 {
     en: {
         resources: {
-            shoe: 'Shoe |||| Shoes'
+            shoe: {
+                name: 'Shoe |||| Shoes',
+            },
         }
     },
     fr: {
         resources: {
-            shoe: 'Chaussure |||| Chaussures'
+            shoe: {
+                name: 'Chaussure |||| Chaussures',
+            },
         }
     }
 }

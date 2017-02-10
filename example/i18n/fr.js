@@ -1,16 +1,20 @@
 export const messages = {
     resources: {
-        posts: 'Article |||| Articles',
+        posts: {
+            name: 'Article |||| Articles',
+            fields: {
+                title: 'Titre',
+                published_at: 'Publié le',
+                commentable: 'Commentable',
+                views: 'Vues',
+            },
+        },
         comments: 'Commentaire |||| Commentaires',
         author: 'Auteur |||| Auteurs',
     },
     post: {
         list: {
             search: 'Recherche',
-            title: 'Titre',
-            published_at: 'Publié le',
-            commentable: 'Commentable',
-            views: 'Vues',
         },
         form: {
             title: 'Titre',
