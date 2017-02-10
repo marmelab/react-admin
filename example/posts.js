@@ -58,9 +58,9 @@ export const PostList = Translate(({ translate, ...props }) => (
     </List>
 ));
 
-const PostTitle = ({ record }) => {
-    return <span>Post {record ? `"${record.title}"` : ''}</span>;
-};
+const PostTitle = Translate(({ record, translate }) => {
+    return <span>{record ? translate('post.title.edit', { title: record.title }) : ''}</span>;
+});
 
 export const PostCreate = Translate(({ translate, ...props }) => (
     <Create {...props}>

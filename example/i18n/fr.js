@@ -27,6 +27,9 @@ export const messages = {
             comments: 'Commentaires',
             created_at: 'Créé le',
         },
+        title: {
+            edit: 'Article "%{title}"',
+        },
     },
     comment: {
         form: {
