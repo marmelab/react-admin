@@ -113,7 +113,7 @@ CheckboxGroupInput.propTypes = {
         PropTypes.element,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
-    resource: PropTypes.string.isRequired,
+    resource: PropTypes.string,
 };
 
 CheckboxGroupInput.defaultProps = {

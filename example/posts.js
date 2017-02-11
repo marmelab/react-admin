@@ -93,7 +93,7 @@ export const PostEdit = ({ ...props }) => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label="post.form.summary">
-                <DisabledInput label="Id" source="id" />
+                <DisabledInput source="id" />
                 <TextInput source="title" validation={{ required: true }} />
                 <CheckboxGroupInput
                     source="notifications"
