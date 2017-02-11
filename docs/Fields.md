@@ -25,14 +25,14 @@ export const PostList = (props) => (
 
 All field components accept the following attributes:
 
+* `source`: Property name of your entity to view/edit. This attribute is required.
 * `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
 * `sortable`: Should the list be sortable using `source` attribute? Defaults to `true`.
-* `source`: Property name of your entity to view/edit. This attribute is required.
 * `elStyle`: A style object to customize the look and feel of the field element itself
 * `style`: A style object to customize the look and feel of the field container (e.g. the `<td>` in a datagrid).
 
 ```js
-<TextField source="zb_title" label="Title" style={{ color: 'purple' }}/>
+<TextField source="zb_title" label="Title" style={{ color: 'purple' }} />
 ```
 
 **Tip**: If you display a record with a complex structure, you can use a path with dot separators as the `source` attribute. For instance, if the API returns the following 'book' record:
@@ -55,6 +55,8 @@ Then you can display the author first name as follows:
 ```
 
 **Tip**: If you want to format a field according to the value, use a higher-order component to do conditional formatting, as described in the [Theming documentation](./Theming.html#conditional-formatting).
+
+**Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.html#translating-resource-and-field-names) for details.
 
 ## `<BooleanField>`
 

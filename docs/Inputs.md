@@ -40,7 +40,7 @@ All input components accept the following attributes:
 <TextInput source="zb_title" label="Title" />
 ```
 
-If you edit a record with a complex structure, you can use a path as the `source` parameter. For instance, if the API returns the following 'book' record:
+**Tip**: If you edit a record with a complex structure, you can use a path as the `source` parameter. For instance, if the API returns the following 'book' record:
 
 ```js
 {
@@ -58,6 +58,8 @@ Then you can display a text input to edit the author first name as follows:
 ```js
 <TextInput source="author.firstName" />
 ```
+
+**Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.html#translating-resource-and-field-names) for details.
 
 ## `<AutocompleteInput>`
 

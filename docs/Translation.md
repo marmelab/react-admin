@@ -37,13 +37,11 @@ export default App;
 You can find translation packages for the following languages:
 
 - English (`en`) is the default
-- [French (`fr`)](https://github.com/marmelab/aor-language-french)
+- [aor-language-french](https://github.com/marmelab/aor-language-french) for French (`fr`)
 
 If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/admin-on-rest/blob/master/docs/Translation.md) with a link to your package.
 
 ## Using The Browser Locale
-
-It is also possible to use another locale, as long as the corresponding translation is available with it.
 
 Admin-on-rest provides a helper function named `resolveBrowserLocale()`, which helps you to introduce a dynamic locale attribution based on the locale configured in the user's browser. To use it, simply pass the function as `locale` prop.
 
@@ -68,7 +66,7 @@ export default App;
 
 ## Translation Messages
 
-The `message` value should be a dictionary where keys are identifiers of interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
+The `message` value should be a dictionary with one entry per language supported. For a given language, the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
 
 ```js
 {
@@ -103,89 +101,20 @@ The `message` value should be a dictionary where keys are identifiers of interfa
 }
 ```
 
-All core translations are in the `aor` namespace, in order to prevent collisions with your own custom translations. The root key used for the interface is determined by the `locale` property.
+All core translations are in the `aor` namespace, in order to prevent collisions with your own custom translations. The root key used at runtime is determined by the value of the `locale` prop.
 
 The default messages are available [here](https://github.com/marmelab/admin-on-rest/blob/master/src/i18n/messages.js).
 
-## Overriding Existing Translations
+## Translating Resource and Field Names
 
-To override an existing translation, simply provide a `messages` props to the `<Admin>` component, with the locale you want to cover as root key, and a nested object of the wanted translation(s). Admin-on-rest will merge this object with its default translations.
+By default, Admin-on-rest uses resource names ("post", "comment", etc) and field names ("title", "first_name", etc) everywhere in the interface. It simply "humanizes" the technical identifiers to make them look better (e.g. "first_name" becomes "First name").
 
-```js
-import React from 'react';
-import { Admin, Resource } from 'admin-on-rest';
+However, before humanizing names, admin-on-rest checks the `messages` dictionary for a possible translation, with the following keys:
 
-const messages = {
-    en: {
-        aor: {
-            action: {
-                delete: 'Remove',
-            },
-        },
-    },
-};
+- `${locale}.resources.${resourceName}.name` for resource names (used for the menu and page titles)
+- `${locale}.resources.${resourceName}.fields.${fieldName}` for field names (used for datagrid header and form input labels)
 
-const App = () => (
-    <Admin ...(your props) messages={messages}>
-        ...
-    </Admin>
-);
-
-export default App;
-```
-
-If you want to handle multiple languages *and* override the default translations, use the following approach:
-
-```js
-// default translations
-import { englishMessages } from 'admin-on-rest';
-import frenchMessages from 'aor-language-french';
-
-// your custom messages
-import * as customMessages from './i18n';
-
-const messages = {
-    fr: { ...frenchMessages, ...customMessages.fr },
-    en: { ...englishMessages, ...customMessages.en },
-};
-
-const App = () => (
-    <Admin ...(your props) messages={messages}>
-        ...
-    </Admin>
-);
-```
-
-## Translating Resources and Fields Names
-
-By default, Admin-on-rest uses resource names ("post", "comment", etc) everywhere in the interface, without taking into account the current user locale.
-
-To translate resource names in page titles, you must add them to the `messages` dictionary, under the special `resource` key. After what, it will be automatically translated at runtime if resource names match.
-
-For example, if you want to translate a "shoe" resource, you must add the following object to the `messages` dictionary:
-
-```js
-{
-    en: {
-        resources: {
-            shoe: {
-                name: 'Shoe |||| Shoes',
-            },
-        }
-    },
-    fr: {
-        resources: {
-            shoe: {
-                name: 'Chaussure |||| Chaussures',
-            },
-        }
-    }
-}
-```
-
-As you can see, [polyglot pluralization](http://airbnb.io/polyglot.js/#pluralization) is used here, but it is optional.
-
-You can also translate field names:
+This lets you translate your own resource and field names by passing a `messages` object with a `resources` key:
 
 ```js
 {
@@ -213,9 +142,37 @@ You can also translate field names:
 }
 ```
 
+As you can see, [polyglot pluralization](http://airbnb.io/polyglot.js/#pluralization) is used here, but it is optional.
+
+Using `resources` keys is an alternative to using the `label` prop in Field and Input components, with the advantage of supporting translation.
+
+## Mixing Interface and Domain Translations
+
+When translating an admin, interface messages (e.g. "List", "Page", etc.) usually come from a third-party package, while your domain messages (e.g. "Shoe", "Date of birth", etc.) come from your own code. That means you need to combine these messages before passing them to `<Admin>`. The recipe for combining messages is to use ES6 destructuring:
+
+```js
+// interface translations
+import { englishMessages } from 'admin-on-rest';
+import frenchMessages from 'aor-language-french';
+
+// domain translations
+import * as domainMessages from './i18n';
+
+const messages = {
+    fr: { ...frenchMessages, ...domainMessages.fr },
+    en: { ...englishMessages, ...domainMessages.en },
+};
+
+const App = () => (
+    <Admin ...(your props) messages={messages}>
+        ...
+    </Admin>
+);
+```
+
 ## Translating Your Own Components
 
-The translation system use the React context to pass translations down the component tree. To translate a sentence, use the `translate` function from the context. Of course, this assumes that you've previously added the corresponding translation to the `messages` props of the `Admin` component.
+The translation system use the React `context` to pass translations down the component tree. To translate a sentence, use the `translate` function from the context. Of course, this assumes that you've previously added the corresponding translation to the `messages` props of the `Admin` component.
 
 ```js
 // in src/MyHelloButton.js
@@ -255,29 +212,48 @@ const MyHelloButton = ({ translate }) => (
 );
 
 export default Translate(MyHelloButton);
+```
 
+**Tip**: For your message identifiers, choose a different root name than `aor` and `resources`, which are reserved.
+
+**Tip**: Don't use `translate` for Field and Input labels, or for page titles, as they are already translated:
+
+```js
+// don't do this
+<TextField source="first_name" label={translate('myroot.first_name')} />
+
+// do this instead
+<TextField source="first_name" label="myroot.first_name" />
+
+// or even better, use the default translation key
+<TextField source="first_name" />
+// and translate the `resources.customers.fields.first_name` key
 ```
 
 ## Using Specific Polyglot Features
 
-Polyglot.js is a fantastic library: in addition to being small, fully maintained, and totally framework agnostic, it provides pretty features such as interpolation and pluralization, that you can use in admin-on-rest.
+Polyglot.js is a fantastic library: in addition to being small, fully maintained, and totally framework agnostic, it provides some nice features such as interpolation and pluralization, that you can use in admin-on-rest.
 
 ```js
 const messages = {
     'hello_name': 'Hello, %{name}',
-    'count_beer': '%{smart_count} beer |||| %{smart_count} beers',
+    'count_beer': 'One beer |||| %{smart_count} beers',
 }
 
-// Interpolation
+// interpolation
 translate('hello_name', { name: 'John Doe' });
-=> "Hello, John Doe."
+=> 'Hello, John Doe.'
 
-// Pluralization
+// pluralization
 translate('count_beer', { smart_count: 1 });
-=> "1 beer"
+=> 'One beer'
 
 translate('count_beer', { smart_count: 2 });
-=> "2 beers"
+=> '2 beers'
+
+// default value
+translate('not_yet_translated', { _: 'Default translation' })
+=> 'Default translation'
 ```
 
 To find more detailed examples, please refer to [http://airbnb.io/polyglot.js/](http://airbnb.io/polyglot.js/)
