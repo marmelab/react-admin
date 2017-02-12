@@ -16,7 +16,6 @@ import Login from './mui/auth/Login';
 import Logout from './mui/auth/Logout';
 import TranslationProvider from './i18n/TranslationProvider';
 import { AUTH_CHECK } from './auth';
-import { DEFAULT_LOCALE, TranslationReducer as translationReducer } from './i18n';
 
 const Admin = ({
     appLayout,
@@ -26,7 +25,7 @@ const Admin = ({
     customSagas = [],
     customRoutes,
     dashboard,
-    locale = DEFAULT_LOCALE,
+    locale,
     messages = {},
     restClient,
     theme,
@@ -36,10 +35,9 @@ const Admin = ({
 }) => {
     const resources = React.Children.map(children, ({ props }) => props);
     const reducer = combineReducers({
-        admin: adminReducer(resources),
+        admin: adminReducer(resources, locale),
         form: formReducer,
         routing: routerReducer,
-        locale: translationReducer(locale),
         ...customReducers,
     });
     const saga = function* rootSaga() {

@@ -41,6 +41,56 @@ You can find translation packages for the following languages:
 
 If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/admin-on-rest/blob/master/docs/Translation.md) with a link to your package.
 
+## Changing Locale At Runtime
+
+If you want to offer the ability to change locale at runtime, you must provide the messages for all possible translations:
+
+```js
+import React from 'react';
+import { Admin, Resource, englishMessages } from 'admin-on-rest';
+import frenchMessages from 'aor-language-french';
+
+const messages = {
+    fr: frenchMessages,
+    en: englishMessages,
+};
+
+const App = () => (
+    <Admin ...(your props) locale="en" messages={messages}>
+        ...
+    </Admin>
+);
+
+export default App;
+```
+
+Then, dispatch the `CHANGE_LOCALE` action, by using the `changeLocale` action creator. For instance, the following component switches language between English and French:
+
+```js
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import RaisedButton from 'material-ui/RaisedButton';
+import { changeLocale as changeLocaleAction } from 'admin-on-rest';
+
+class LocaleSwitcher extends Component {
+    switchToFrench = () => this.changeLocale('fr');
+    switchToEnglish = () => this.changeLocale('en');
+
+    render() {
+        const { changeLocale } = this.props;
+        return (
+            <div>
+                <div style={styles.label}>Language</div>
+                <RaisedButton style={styles.button} label="en" onClick={this.switchToEnglish} />
+                <RaisedButton style={styles.button} label="fr" onClick={this.switchToFrench} />
+            </div>
+        );
+    }
+}
+
+export default connect(undefined, { changeLocale: changeLocaleAction })(LocaleSwitcher);
+```
+
 ## Using The Browser Locale
 
 Admin-on-rest provides a helper function named `resolveBrowserLocale()`, which helps you to introduce a dynamic locale attribution based on the locale configured in the user's browser. To use it, simply pass the function as `locale` prop.
