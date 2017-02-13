@@ -28,6 +28,14 @@
 * Add `<ImageField>` and `<ImageIput>` to upload images
 * Prefix flex-box elements ([yshing](https://github.com/yshing))
 
+## v0.7.2
+
+* Fix code snippets disappearing from documentation
+* Add mention of aor-postgrest-client in REST clients documentation
+* Fix missed refresh in example due to aor-json-rest-client not cloning the objects
+* Fix Refresh button doesn't refresh References
+* Fix pagination error in console during load
+
 ## v0.7.1
 
 * Fix validation on nested fields

@@ -7,6 +7,8 @@ title: "REST Clients"
 
 Admin-on-rest can communicate with any REST server, regardless of the REST dialect it uses. Whether it's [JSON API](http://jsonapi.org/), [HAL](http://stateless.co/hal_specification.html), [OData](http://www.odata.org/) or a custom dialect, the only thing admin-on-rest needs is a REST client function. This is the place to translate REST requests to HTTP requests, and HTTP responses to REST responses.
 
+![REST client architecture](./img/rest-client.png)
+
 The `restClient` parameter of the `<Admin>` component, must be a function with the following signature:
 
 ```js
@@ -169,7 +171,8 @@ Now all the requests to the REST API will contain the `Authorization: SRTRDFVESG
 
 You can find REST clients for admin-on-rest in third-party repositories.
 
-* [marmelab/aor-json-rest-client](https://github.com/marmelab/aor-json-rest-client) provides a local REST client based on a JavaScript object. It doesn't even use HTTP. Use it for testing purposes.
+* [marmelab/aor-json-rest-client](https://github.com/marmelab/aor-json-rest-client): a local REST client based on a JavaScript object. It doesn't even use HTTP. Use it for testing purposes.
+* [tomberek/aor-postgrest-client](https://github.com/tomberek/aor-postgrest-client): a REST client for [Postgrest](http://postgrest.com/en/v0.4/) client
 
 ## Decorating your REST Client (Example of File Upload)
 

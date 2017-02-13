@@ -148,7 +148,7 @@ const MyMenu = () => (
 
 const MyLayout = ({ isLoading, children, route, title }) => {
     const Title = <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>{title}</Link>;
-    const RightElement = isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span />;
+    const RightElement = isLoading ? <CircularProgress color="#fff" size={30} thickness={2} style={{ margin: 8 }} /> : <span />;
 
     return (
         <MuiThemeProvider>

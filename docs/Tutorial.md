@@ -9,14 +9,14 @@ This 15 minutes tutorial will expose how to create a new admin app based on an e
 
 ## Installation
 
-Admin-on-REST uses React. We'll use Facebook's [react-create-app](https://github.com/facebookincubator/create-react-app) to create an empty React app, and install the `admin-on-rest` npm package:
+Admin-on-REST uses React. We'll use Facebook's [react-create-app](https://github.com/facebookincubator/create-react-app) to create an empty React app, and install the `admin-on-rest` package:
 
 ```sh
 npm install -g create-react-app
 create-react-app test-admin
 cd test-admin/
-npm install --save-dev admin-on-rest
-npm start
+yarnpkg add admin-on-rest
+yarnpkg start
 ```
 
 You should be up and running with an empty React application on port 3000.

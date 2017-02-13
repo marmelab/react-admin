@@ -22,6 +22,7 @@ Here are all the props accepted by the `<Create>` and `<Edit>` components:
 
 Here is the minimal code necessary to display a form to create and edit comments:
 
+{% raw %}
 ```js
 // in src/App.js
 import React from 'react';
@@ -72,6 +73,7 @@ export const PostEdit = (props) => (
     </Edit>
 );
 ```
+{% endraw %}
 
 That's enough to display the post edit form:
 
@@ -176,6 +178,7 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * [`defautValue`](#default-values)
 * [`validation`](#validation)
 
+{% raw %}
 ```js
 import { TabbedForm, FormTab } from 'admin-on-rest/lib/mui'
 
@@ -210,6 +213,7 @@ export const PostEdit = (props) => (
     </Edit>
 );
 ```
+{% endraw %}
 
 ## Default Values
 

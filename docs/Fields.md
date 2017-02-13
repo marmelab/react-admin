@@ -31,9 +31,11 @@ All field components accept the following attributes:
 * `elStyle`: A style object to customize the look and feel of the field element itself
 * `style`: A style object to customize the look and feel of the field container (e.g. the `<td>` in a datagrid).
 
+{% raw %}
 ```js
 <TextField source="zb_title" label="Title" style={{ color: 'purple' }} />
 ```
+{% endraw %}
 
 **Tip**: If you display a record with a complex structure, you can use a path with dot separators as the `source` attribute. For instance, if the API returns the following 'book' record:
 

@@ -16,7 +16,10 @@ const arrayizeChildren = children => (Array.isArray(children) ? children : [chil
 export class Edit extends Component {
     constructor(props) {
         super(props);
-        this.state = { record: props.data };
+        this.state = {
+            key: 0,
+            record: props.data,
+        };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -27,6 +30,10 @@ export class Edit extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.data !== nextProps.data) {
             this.setState({ record: nextProps.data }); // FIXME: erases user entry when fetch response arrives late
+            if (this.fullRefresh) {
+                this.fullRefresh = false;
+                this.setState({ key: this.state.key + 1 });
+            }
         }
         if (this.props.id !== nextProps.id) {
             this.updateData(nextProps.resource, nextProps.id);
@@ -56,6 +63,7 @@ export class Edit extends Component {
 
     refresh = (event) => {
         event.stopPropagation();
+        this.fullRefresh = true;
         this.updateData();
     }
 
@@ -65,6 +73,7 @@ export class Edit extends Component {
 
     render() {
         const { actions = <DefaultActions />, children, data, hasDelete, hasShow, id, isLoading, resource, title, translate } = this.props;
+        const { key } = this.state;
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
@@ -78,7 +87,7 @@ export class Edit extends Component {
         });
 
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
+            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }} key={key}>
                 {actions && React.cloneElement(actions, {
                     basePath,
                     data,

@@ -60,11 +60,14 @@ export class List extends Component {
     constructor(props) {
         super(props);
         this.debouncedSetFilters = debounce(this.setFilters.bind(this), 500);
-        this.state = {};
+        this.state = { key: 0 };
     }
 
     componentDidMount() {
         this.updateData();
+        if (Object.keys(this.props.query).length > 0) {
+             this.props.changeListParams(this.props.resource, this.props.query);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -74,6 +77,10 @@ export class List extends Component {
          || nextProps.query.page !== this.props.query.page
          || nextProps.query.filter !== this.props.query.filter) {
             this.updateData(Object.keys(nextProps.query).length > 0 ? nextProps.query : nextProps.params);
+        }
+        if (nextProps.data !== this.props.data && this.fullRefresh) {
+            this.fullRefresh = false;
+            this.setState({ key: this.state.key + 1 });
         }
         if (Object.keys(nextProps.filterValues).length === 0 && Object.keys(this.props.filterValues).length === 0) {
             return;
@@ -107,6 +114,7 @@ export class List extends Component {
 
     refresh = (event) => {
         event.stopPropagation();
+        this.fullRefresh = true;
         this.updateData();
     }
 
@@ -163,6 +171,7 @@ export class List extends Component {
 
     render() {
         const { filters, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading, translate } = this.props;
+        const { key } = this.state;
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
@@ -174,7 +183,7 @@ export class List extends Component {
         const defaultTitle = translate('aor.page.list', { name: `${resourceName}` });
 
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
+            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }} key={key}>
                 {actions && React.cloneElement(actions, {
                     resource,
                     filters,
