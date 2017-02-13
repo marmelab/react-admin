@@ -250,18 +250,18 @@ const messages = {
 };
 ```
 
-However, using the context makes components harder to test. That's why admin-on-rest provides a `Translate` HOC, which simply passes the `translate` function from context to props:
+However, using the context makes components harder to test. That's why admin-on-rest provides a `translate` Higher-Order Component, which simply passes the `translate` function from context to props:
 
 ```js
 // in src/MyHelloButton.js
 import React from 'react';
-import { Translate } from 'admin-on-rest';
+import { translate } from 'admin-on-rest';
 
 const MyHelloButton = ({ translate }) => (
     <button>{translate('myroot.hello.world')}</button>
 );
 
-export default Translate(MyHelloButton);
+export default translate(MyHelloButton);
 ```
 
 **Tip**: For your message identifiers, choose a different root name than `aor` and `resources`, which are reserved.

@@ -5,7 +5,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import ContentFilter from 'material-ui/svg-icons/content/filter-list';
 import FieldTitle from '../../util/FieldTitle';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 export class FilterButton extends Component {
     constructor(props) {
@@ -93,4 +93,4 @@ FilterButton.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-export default Translate(FilterButton);
+export default translate(FilterButton);

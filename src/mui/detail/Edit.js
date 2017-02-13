@@ -5,7 +5,7 @@ import inflection from 'inflection';
 import Title from '../layout/Title';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
 import DefaultActions from './EditActions';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 /**
  * Turns a children data structure (either single child or array of children) into an array.
@@ -125,7 +125,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default Translate(connect(
+export default translate(connect(
     mapStateToProps,
     { crudGetOne: crudGetOneAction, crudUpdate: crudUpdateAction },
 )(Edit));

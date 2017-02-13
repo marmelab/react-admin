@@ -3,7 +3,7 @@ import inflection from 'inflection';
 import pure from 'recompose/pure';
 import compose from 'recompose/compose';
 
-import Translate from '../i18n/Translate';
+import translate from '../i18n/translate';
 
 const FieldTitle = ({ resource, source, label, translate }) => (
     <span>
@@ -30,6 +30,6 @@ FieldTitle.defaultProps = {
     translate: x => x,
 };
 
-const enhance = compose(pure, Translate);
+const enhance = compose(pure, translate);
 
 export default enhance(FieldTitle);

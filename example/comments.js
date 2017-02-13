@@ -25,7 +25,7 @@ import FlatButton from 'material-ui/FlatButton';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import { Translate } from 'admin-on-rest';
+import { translate } from 'admin-on-rest';
 export CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
 
 const CommentFilter = ({ ...props }) => (
@@ -36,7 +36,7 @@ const CommentFilter = ({ ...props }) => (
     </Filter>
 );
 
-const CommentPagination = Translate(({ page, perPage, total, setPage, translate }) => {
+const CommentPagination = translate(({ page, perPage, total, setPage, translate }) => {
     const nbPages = Math.ceil(total / perPage) || 1;
     return (
         nbPages > 1 &&
@@ -61,7 +61,7 @@ const cardStyle = {
     verticalAlign: 'top',
 };
 
-const CommentGrid = Translate(({ ids, data, basePath, translate }) => (
+const CommentGrid = translate(({ ids, data, basePath, translate }) => (
     <div style={{ margin: '1em' }}>
     {ids.map(id =>
         <Card key={id} style={cardStyle}>

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 const Title = ({ defaultTitle, record, title, translate }) => {
     if (!title) {
@@ -21,4 +21,4 @@ Title.propTypes = {
     ]),
 };
 
-export default Translate(Title);
+export default translate(Title);

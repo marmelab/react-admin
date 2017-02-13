@@ -5,7 +5,7 @@ import inflection from 'inflection';
 import Title from '../layout/Title';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import DefaultActions from './CreateActions';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 class Create extends Component {
     getBasePath() {
@@ -67,7 +67,7 @@ function mapStateToProps(state) {
     };
 }
 
-export default Translate(connect(
+export default translate(connect(
     mapStateToProps,
     { crudCreate: crudCreateAction },
 )(Create));

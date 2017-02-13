@@ -11,7 +11,7 @@ import DefaultPagination from './Pagination';
 import DefaultActions from './Actions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 const filterFormName = 'filterForm';
 
@@ -276,7 +276,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default Translate(connect(
+export default translate(connect(
     mapStateToProps,
     {
         crudGetList: crudGetListAction,

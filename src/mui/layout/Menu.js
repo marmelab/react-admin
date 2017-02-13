@@ -4,7 +4,7 @@ import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import { Link } from 'react-router';
 import pure from 'recompose/pure';
-import { Translate } from '../../i18n';
+import translate from '../../i18n/translate';
 
 const style = {
     flex: '0 0 15em',
@@ -48,4 +48,4 @@ Menu.propTypes = {
     logout: PropTypes.element,
 };
 
-export default Translate(pure(Menu));
+export default translate(pure(Menu));

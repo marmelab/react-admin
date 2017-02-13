@@ -7,7 +7,7 @@ import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import { getFieldConstraints, getErrorsForForm, getErrorsForFieldConstraints } from '../../util/validate';
 import { SaveButton } from '../button';
 import getDefaultValues from '../form/getDefaultValues';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 /**
  * Validator function for redux-form
@@ -90,4 +90,4 @@ const mapStateToProps = (state, props) => ({
     initialValues: getDefaultValues(state, props),
 });
 
-export default connect(mapStateToProps)(Translate(ReduxForm));
+export default connect(mapStateToProps)(translate(ReduxForm));

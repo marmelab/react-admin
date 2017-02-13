@@ -29,7 +29,7 @@ import {
     TextInput,
 } from 'admin-on-rest/mui';
 import RichTextInput from 'aor-rich-text-input';
-import { Translate } from 'admin-on-rest';
+import { translate } from 'admin-on-rest';
 import Chip from 'material-ui/Chip';
 export PostIcon from 'material-ui/svg-icons/action/book';
 
@@ -58,7 +58,7 @@ export const PostList = ({ ...props }) => (
     </List>
 );
 
-const PostTitle = Translate(({ record, translate }) => {
+const PostTitle = translate(({ record, translate }) => {
     return <span>{record ? translate('post.edit.title', { title: record.title }) : ''}</span>;
 });
 

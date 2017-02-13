@@ -9,7 +9,7 @@ import inflection from 'inflection';
 import Title from '../layout/Title';
 import { ListButton } from '../button';
 import { crudGetOne as crudGetOneAction, crudDelete as crudDeleteAction } from '../../actions/dataActions';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 class Delete extends Component {
     constructor(props) {
@@ -115,7 +115,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default Translate(connect(
+export default translate(connect(
     mapStateToProps,
     { crudGetOne: crudGetOneAction, crudDelete: crudDeleteAction },
 )(Delete));

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Dropzone from 'react-dropzone';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 const defaultStyle = {
     dropZone: {
@@ -130,4 +130,4 @@ ImageInput.defaultProps = {
     onUpload: () => {},
 };
 
-export default Translate(ImageInput);
+export default translate(ImageInput);
