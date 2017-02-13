@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## v0.8.0
 
 * [BC Break] Rename `defaultSort` prop to `sort` in `<List>` component, to make it consistent with the props of `<ReferenceInput>` and `<ReferenceManyField>`
 * [BC Break] Rename `filter` props (the one accepting a `<Filter>` element) to `filters` in `<List>` component
