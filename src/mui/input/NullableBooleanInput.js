@@ -1,15 +1,17 @@
 import React, { PropTypes } from 'react';
 import SelectInput from './SelectInput';
-import FieldTitle from '../../util/FieldTitle';
+import translate from '../../i18n/translate';
 
-const NullableBooleanInput = ({ input, meta: { touched, error }, label, source, elStyle, resource }) => (
+export const NullableBooleanInput = ({ input, meta: { touched, error }, label, source, elStyle, resource, translate }) => (
     <SelectInput
         input={input}
-        label={<FieldTitle label={label} source={source} resource={resource} />}
+        label={label}
+        source={source}
+        resource={resource}
         choices={[
             { id: null, name: '' },
-            { id: false, name: 'No' },
-            { id: true, name: 'Yes' },
+            { id: false, name: translate('aor.boolean.false') },
+            { id: true, name: translate('aor.boolean.true') },
         ]}
         errorText={touched && error}
         style={elStyle}
@@ -24,10 +26,11 @@ NullableBooleanInput.propTypes = {
     meta: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
+    translate: PropTypes.func.isRequired,
 };
 
 NullableBooleanInput.defaultProps = {
     addField: true,
 };
 
-export default NullableBooleanInput;
+export default translate(NullableBooleanInput);

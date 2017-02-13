@@ -10,6 +10,11 @@ export default {
             cancel: 'Cancel',
             refresh: 'Refresh',
             add_filter: 'Add filter',
+            remove_filter: 'Remove this filter',
+        },
+        boolean: {
+            true: 'Yes',
+            false: 'No',
         },
         page: {
             list: '%{name} List',

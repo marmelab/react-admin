@@ -30,7 +30,7 @@ export CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
 
 const CommentFilter = ({ ...props }) => (
     <Filter {...props}>
-        <ReferenceInput label="resources.comments.fields.posts" source="post_id" reference="posts">
+        <ReferenceInput source="post_id" reference="posts">
             <SelectInput optionText="title" />
         </ReferenceInput>
     </Filter>

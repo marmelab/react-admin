@@ -140,7 +140,7 @@ export class ReferenceInput extends Component {
         const { input, resource, label, source, reference, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children, meta } = this.props;
         if (!referenceRecord && !allowEmpty) {
             return <Labeled
-                label={typeof label === 'undefined' ? `resources.${resource}.fields.${reference}` : label}
+                label={typeof label === 'undefined' ? `resources.${resource}.fields.${source}` : label}
                 source={source}
                 resource={resource}
             />;
@@ -149,7 +149,7 @@ export class ReferenceInput extends Component {
         return React.cloneElement(children, {
             allowEmpty,
             input,
-            label: typeof label === 'undefined' ? `resources.${resource}.fields.${reference}` : label,
+            label: typeof label === 'undefined' ? `resources.${resource}.fields.${source}` : label,
             resource,
             meta,
             source,
