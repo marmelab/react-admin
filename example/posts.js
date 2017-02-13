@@ -121,8 +121,9 @@ export const PostEdit = ({ ...props }) => (
             <FormTab label="post.form.comments">
                 <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
                     <Datagrid>
-                        <TextField source="body" label="resources.comments.fields.body" />
-                        <DateField source="created_at" label="resources.comments.fields.created_at" />
+                        <DateField source="created_at" />
+                        <TextField source="author.name" />
+                        <TextField source="body" />
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
@@ -142,8 +143,9 @@ export const PostShow = ({ ...props }) => (
             <TextField source="average_note" />
             <ReferenceManyField label="resources.posts.fields.comments" reference="comments" target="post_id" sort={{ field: 'created_at', order: 'DESC' }}>
                 <Datagrid selectable={false}>
-                    <TextField source="body" label="resources.comments.fields.body" />
-                    <DateField source="created_at" label="resources.comments.fields.created_at" />
+                    <DateField source="created_at" />
+                    <TextField source="author.name" />
+                    <TextField source="body" />
                     <EditButton />
                 </Datagrid>
             </ReferenceManyField>

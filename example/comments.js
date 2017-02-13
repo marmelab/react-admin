@@ -102,7 +102,7 @@ export const CommentEdit = ({ ...props }) => (
     <Edit {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
-            <ReferenceInput label="resources.comments.fields.posts" source="post_id" reference="posts" perPage={5} sort={{ field: 'title', order: 'ASC' }}>
+            <ReferenceInput source="post_id" reference="posts" perPage={5} sort={{ field: 'title', order: 'ASC' }}>
                 <AutocompleteInput optionText="title" />
             </ReferenceInput>
             <TextInput source="author.name" validation={{ minLength: 10 }} />
@@ -115,7 +115,7 @@ export const CommentEdit = ({ ...props }) => (
 export const CommentCreate = ({ ...props }) => (
     <Create {...props} defaultValues={{ created_at: new Date() }}>
         <SimpleForm>
-            <ReferenceInput label="resources.comments.fields.posts" source="post_id" reference="posts" allowEmpty>
+            <ReferenceInput source="post_id" reference="posts" allowEmpty>
                 <SelectInput optionText="title" />
             </ReferenceInput>
             <DateInput source="created_at" />
