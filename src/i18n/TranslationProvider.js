@@ -29,6 +29,6 @@ TranslationProvider.propTypes = {
     children: PropTypes.element,
 };
 
-const mapStateToProps = state => ({ locale: state.admin.locale });
+const mapStateToProps = state => ({ locale: state.locale });
 
 export default compose(connect(mapStateToProps), withI18nContext)(TranslationProvider);

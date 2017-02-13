@@ -2,6 +2,7 @@ export * from './actions';
 export * from './auth';
 export * from './i18n';
 export adminReducer from './reducer';
+export localeReducer from './reducer/locale';
 export queryReducer from './reducer/resource/list/queryReducer';
 export * from './rest';
 export * from './sideEffect/saga';

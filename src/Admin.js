@@ -9,6 +9,7 @@ import { fork } from 'redux-saga/effects';
 import withProps from 'recompose/withProps';
 
 import adminReducer from './reducer';
+import localeReducer from './reducer/locale';
 import { crudSaga } from './sideEffect/saga';
 import CrudRoute from './CrudRoute';
 import DefaultLayout from './mui/layout/Layout';
@@ -35,7 +36,8 @@ const Admin = ({
 }) => {
     const resources = React.Children.map(children, ({ props }) => props);
     const reducer = combineReducers({
-        admin: adminReducer(resources, locale),
+        admin: adminReducer(resources),
+        locale: localeReducer(locale),
         form: formReducer,
         routing: routerReducer,
         ...customReducers,
