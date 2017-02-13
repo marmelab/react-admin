@@ -4,7 +4,7 @@ import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import { Link } from 'react-router';
 import pure from 'recompose/pure';
-import { Translate } from '../../i18n';
+import translate from '../../i18n/translate';
 
 const style = {
     flex: '0 0 15em',
@@ -13,6 +13,15 @@ const style = {
     flexDirection: 'column',
     justifyContent: 'space-between',
 };
+
+const translatedResourceName = (resource, translate) =>
+    translate(`resources.${resource.name}.name`, {
+        smart_count: 2,
+        _: translate(resource.options.label, {
+            smart_count: 2,
+            _: inflection.humanize(inflection.pluralize(resource.name)),
+        }),
+    });
 
 const Menu = ({ resources, translate, logout }) => (
     <Paper style={style}>
@@ -23,7 +32,7 @@ const Menu = ({ resources, translate, logout }) => (
                     <ListItem
                         key={resource.name}
                         containerElement={<Link to={`/${resource.name}`} />}
-                        primaryText={translate(resource.options.label || inflection.humanize(inflection.pluralize(resource.name)))}
+                        primaryText={translatedResourceName(resource, translate)}
                         leftIcon={<resource.icon />}
                     />,
                 )
@@ -39,4 +48,4 @@ Menu.propTypes = {
     logout: PropTypes.element,
 };
 
-export default Translate(pure(Menu));
+export default translate(pure(Menu));

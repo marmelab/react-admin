@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import DatePicker from 'material-ui/DatePicker';
-import title from '../../util/title';
+import FieldTitle from '../../util/FieldTitle';
 
 export const datify = input => {
     if (!input) {
@@ -19,12 +19,12 @@ class DateInput extends Component {
     onChange = (_, date) => this.props.input.onChange(date);
 
     render() {
-        const { input, label, meta: { touched, error }, options, source, elStyle } = this.props;
+        const { input, label, meta: { touched, error }, options, source, elStyle, resource } = this.props;
 
         return (<DatePicker
             {...input}
             errorText={touched && error}
-            floatingLabelText={title(label, source)}
+            floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
             DateTimeFormat={Intl.DateTimeFormat}
             container="inline"
             autoOk
@@ -43,6 +43,7 @@ DateInput.propTypes = {
     label: PropTypes.string,
     meta: PropTypes.object,
     options: PropTypes.object,
+    resource: PropTypes.string,
     source: PropTypes.string,
 };
 

@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import ImageEye from 'material-ui/svg-icons/image/remove-red-eye';
 import linkToRecord from '../../util/linkToRecord';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 const ShowButton = ({ basePath = '', label = 'aor.action.show', record = {}, translate }) => <FlatButton
     primary
@@ -20,4 +20,4 @@ ShowButton.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-export default Translate(ShowButton);
+export default translate(ShowButton);

@@ -7,6 +7,7 @@ import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import { getFieldConstraints, getErrorsForForm, getErrorsForFieldConstraints } from '../../util/validate';
 import { SaveButton } from '../button';
 import getDefaultValues from '../form/getDefaultValues';
+import translate from '../../i18n/translate';
 
 /**
  * Validator function for redux-form
@@ -38,13 +39,13 @@ export class TabbedForm extends Component {
     };
 
     render() {
-        const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath } = this.props;
+        const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath, translate } = this.props;
         return (
             <form onSubmit={handleSubmit}>
                 <div style={{ padding: '0 1em 1em 1em' }}>
                     <Tabs value={this.state.value} onChange={this.handleChange} contentContainerStyle={contentContainerStyle}>
                         {React.Children.map(children, (tab, index) =>
-                            <Tab key={tab.props.value} label={tab.props.label} value={index} icon={tab.props.icon}>
+                            <Tab key={tab.props.value} label={translate(tab.props.label)} value={index} icon={tab.props.icon}>
                                 {React.cloneElement(tab, { resource, record, basePath })}
                             </Tab>
                         )}
@@ -72,6 +73,7 @@ TabbedForm.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     basePath: PropTypes.string,
+    translate: PropTypes.func,
     validation: PropTypes.func,
 };
 TabbedForm.defaultProps = {
@@ -88,4 +90,4 @@ const mapStateToProps = (state, props) => ({
     initialValues: getDefaultValues(state, props),
 });
 
-export default connect(mapStateToProps)(ReduxForm);
+export default connect(mapStateToProps)(translate(ReduxForm));

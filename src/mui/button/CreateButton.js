@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import FlatButton from 'material-ui/FlatButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 const CreateButton = ({ basePath = '', translate, label = 'aor.action.create' }) => <FlatButton
     primary
@@ -19,4 +19,4 @@ CreateButton.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-export default Translate(onlyUpdateForKeys(['basePath, label'])(CreateButton));
+export default translate(onlyUpdateForKeys(['basePath, label'])(CreateButton));

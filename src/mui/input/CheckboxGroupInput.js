@@ -66,6 +66,7 @@ export class CheckboxGroupInput extends Component {
             optionValue,
             optionText,
             label,
+            resource,
             source,
             options,
             input: { value },
@@ -79,7 +80,7 @@ export class CheckboxGroupInput extends Component {
             );
 
         return (
-            <Labeled label={label} source={source}>
+            <Labeled label={label} source={source} resource={resource}>
                 <div>
                     {choices.map(choice =>
                         <Checkbox
@@ -112,6 +113,7 @@ CheckboxGroupInput.propTypes = {
         PropTypes.element,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
+    resource: PropTypes.string,
 };
 
 CheckboxGroupInput.defaultProps = {

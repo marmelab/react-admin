@@ -9,7 +9,7 @@ import inflection from 'inflection';
 import Title from '../layout/Title';
 import { ListButton } from '../button';
 import { crudGetOne as crudGetOneAction, crudDelete as crudDeleteAction } from '../../actions/dataActions';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 class Delete extends Component {
     constructor(props) {
@@ -46,15 +46,22 @@ class Delete extends Component {
         const { title, id, data, isLoading, resource, translate } = this.props;
         const basePath = this.getBasePath();
 
-        const resourceName = translate(`resources.${resource}`, { smart_count: 1, _: inflection.humanize(inflection.singularize(resource)) });
-        const deleteItemLabel = translate('aor.action.delete_item', { name: `${resourceName} #${id}` });
+        const resourceName = translate(`resources.${resource}.name`, {
+            smart_count: 1,
+            _: inflection.humanize(inflection.singularize(resource)),
+        });
+        const defaultTitle = translate('aor.page.delete', {
+            name: `${resourceName}`,
+            id,
+            data,
+        });
 
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     <ListButton basePath={basePath} />
                 </CardActions>
-                <CardTitle title={<Title title={title} record={data} defaultTitle={deleteItemLabel} />} />
+                <CardTitle title={<Title title={title} record={data} defaultTitle={defaultTitle} />} />
                 <form onSubmit={this.handleSubmit}>
                     <CardText>{translate('aor.message.are_you_sure')}</CardText>
                     <Toolbar>
@@ -108,7 +115,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default Translate(connect(
+export default translate(connect(
     mapStateToProps,
     { crudGetOne: crudGetOneAction, crudDelete: crudDeleteAction },
 )(Delete));

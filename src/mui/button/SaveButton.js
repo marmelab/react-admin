@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentSave from 'material-ui/svg-icons/content/save';
 import CircularProgress from 'material-ui/CircularProgress';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 class SaveButton extends Component {
 
@@ -40,4 +40,4 @@ const mapStateToProps = state => ({
     saving: state.admin.saving,
 });
 
-export default connect(mapStateToProps)(Translate(SaveButton));
+export default connect(mapStateToProps)(translate(SaveButton));

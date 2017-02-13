@@ -16,7 +16,7 @@ import { cyan500, pinkA200 } from 'material-ui/styles/colors';
 
 import defaultTheme from '../defaultTheme';
 import { AUTH_LOGIN } from '../../auth';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 const styles = {
     main: {
@@ -131,7 +131,7 @@ Login.defaultProps = {
 };
 
 const enhance = compose(
-    Translate,
+    translate,
     reduxForm({
         form: 'signIn',
         validate: (values, props) => {

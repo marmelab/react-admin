@@ -1,14 +1,14 @@
 import assert from 'assert';
 import React from 'react';
 
-import Translate from './Translate';
+import translate from './translate';
 
-describe('Translate HOC', () => {
+describe('translate HOC', () => {
     it('should conserve base component default props', () => {
         const Component = () => <div />;
         Component.defaultProps = { foo: 'bar' };
 
-        const TranslatedComponent = Translate(Component);
+        const TranslatedComponent = translate(Component);
         assert.deepEqual(TranslatedComponent.defaultProps, { foo: 'bar' });
     });
 });

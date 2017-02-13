@@ -5,6 +5,7 @@ import inflection from 'inflection';
 import Title from '../layout/Title';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
 import DefaultActions from './EditActions';
+import translate from '../../i18n/translate';
 
 /**
  * Turns a children data structure (either single child or array of children) into an array.
@@ -63,8 +64,18 @@ export class Edit extends Component {
     }
 
     render() {
-        const { actions = <DefaultActions />, children, data, hasDelete, hasShow, id, isLoading, resource, title } = this.props;
+        const { actions = <DefaultActions />, children, data, hasDelete, hasShow, id, isLoading, resource, title, translate } = this.props;
         const basePath = this.getBasePath();
+
+        const resourceName = translate(`resources.${resource}.name`, {
+            smart_count: 1,
+            _: inflection.humanize(inflection.singularize(resource)),
+        });
+        const defaultTitle = translate('aor.page.edit', {
+            name: `${resourceName}`,
+            id,
+            data,
+        });
 
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
@@ -76,7 +87,7 @@ export class Edit extends Component {
                     refresh: this.refresh,
                     resource,
                 })}
-                {data && <CardTitle title={<Title title={title} record={data} defaultTitle={`${inflection.humanize(inflection.singularize(resource))} #${id}`} />} />}
+                {data && <CardTitle title={<Title title={title} record={data} defaultTitle={defaultTitle} />} />}
                 {data && React.cloneElement(children, {
                     onSubmit: this.handleSubmit,
                     resource,
@@ -103,6 +114,7 @@ Edit.propTypes = {
     params: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
+    translate: PropTypes.func,
 };
 
 function mapStateToProps(state, props) {
@@ -113,7 +125,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default connect(
+export default translate(connect(
     mapStateToProps,
     { crudGetOne: crudGetOneAction, crudUpdate: crudUpdateAction },
-)(Edit);
+)(Edit));

@@ -26,8 +26,8 @@ const delayedRestClient = (type, resource, params) => new Promise(resolve => set
 
 render(
     <Admin restClient={delayedRestClient} title="Example Admin" locale={resolveBrowserLocale()} messages={messages}>
-        <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={Delete} icon={PostIcon} options={{ label: 'post.all' }} />
-        <Resource name="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} remove={Delete} icon={CommentIcon} options={{ label: 'comment.all' }} />
+        <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={Delete} icon={PostIcon} />
+        <Resource name="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} remove={Delete} icon={CommentIcon} />
     </Admin>,
     document.getElementById('root'),
 );

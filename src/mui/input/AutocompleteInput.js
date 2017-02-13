@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
-import title from '../../util/title';
+import FieldTitle from '../../util/FieldTitle';
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -65,7 +65,7 @@ class AutocompleteInput extends Component {
     }
 
     render() {
-        const { choices, elStyle, filter, input, label, options, optionText, optionValue, setFilter, source, meta: { touched, error } } = this.props;
+        const { choices, elStyle, filter, input, label, options, optionText, optionValue, setFilter, source, meta: { touched, error }, resource } = this.props;
 
         const selectedSource = choices.find(choice => choice[optionValue] === input.value);
         const option = typeof optionText === 'function' ?
@@ -79,7 +79,7 @@ class AutocompleteInput extends Component {
             <AutoComplete
                 searchText={selectedSource && option(selectedSource)}
                 dataSource={dataSource}
-                floatingLabelText={title(label, source)}
+                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
                 filter={filter}
                 onNewRequest={this.handleNewRequest}
                 onUpdateInput={setFilter}
@@ -107,6 +107,7 @@ AutocompleteInput.propTypes = {
         PropTypes.func,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     setFilter: PropTypes.func,
     source: PropTypes.string,
 };

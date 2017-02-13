@@ -4,7 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 const buttonStyle = { margin: '10px 0' };
 
@@ -117,4 +117,4 @@ Pagination.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-export default Translate(pure(Pagination));
+export default translate(pure(Pagination));

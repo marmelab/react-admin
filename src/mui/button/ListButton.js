@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import ActionList from 'material-ui/svg-icons/action/list';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 const ListButton = ({ basePath = '', label = 'aor.action.list', translate }) => <FlatButton
     primary
@@ -18,4 +18,4 @@ ListButton.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-export default Translate(ListButton);
+export default translate(ListButton);

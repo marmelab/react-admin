@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 import { List, ListItem } from 'material-ui/List';
 import ExitIcon from 'material-ui/svg-icons/action/power-settings-new';
 
-import { Translate } from '../../i18n';
+import translate from '../../i18n/translate';
 import { AUTH_LOGOUT } from '../../auth';
 
 class Logout extends Component {
@@ -32,7 +32,7 @@ Logout.propTypes = {
 };
 
 const enhance = compose(
-    Translate,
+    translate,
     connect(null, { push: pushAction }),
 );
 

@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import title from '../../util/title';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+
+import FieldTitle from '../../util/FieldTitle';
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -52,7 +53,7 @@ class SelectInput extends Component {
     handleChange = (event, index, value) => this.props.input.onChange(value);
 
     render() {
-        const { allowEmpty, input, label, choices, optionText, optionValue, options, source, elStyle, meta: { touched, error } } = this.props;
+        const { allowEmpty, input, label, choices, optionText, optionValue, options, source, elStyle, meta: { touched, error }, resource } = this.props;
         const option = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
             choice => React.cloneElement(optionText, { record: choice }) :
             (typeof optionText === 'function' ?
@@ -63,7 +64,7 @@ class SelectInput extends Component {
             <SelectField
                 {...input}
                 menuStyle={{ maxHeight: '41px', overflowY: 'hidden' }}
-                floatingLabelText={title(label, source)}
+                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
                 onChange={this.handleChange}
                 autoWidth
                 style={elStyle}
@@ -96,6 +97,7 @@ SelectInput.propTypes = {
         PropTypes.element,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     source: PropTypes.string,
 };
 

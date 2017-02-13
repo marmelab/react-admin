@@ -11,10 +11,10 @@ describe('<SelectInput />', () => {
     };
 
     it('should use a mui SelectField', () => {
-        const wrapper = shallow(<SelectInput {...defaultProps} label="hello" />);
+        const wrapper = shallow(<SelectInput {...defaultProps} input={{ value: 'hello' }} />);
         const SelectFieldElement = wrapper.find('SelectField');
         assert.equal(SelectFieldElement.length, 1);
-        assert.equal(SelectFieldElement.prop('floatingLabelText'), 'hello');
+        assert.equal(SelectFieldElement.prop('value'), 'hello');
     });
 
     it('should use the input parameter value as the initial input value', () => {

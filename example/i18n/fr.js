@@ -1,48 +1,55 @@
 export const messages = {
+    resources: {
+        posts: {
+            name: 'Article |||| Articles',
+            fields: {
+                allow_comments: 'Accepte les commentaires ?',
+                average_note: 'Note moyenne',
+                body: 'Contenu',
+                comments: 'Commentaires',
+                commentable: 'Commentable',
+                created_at: 'Créé le',
+                notifications: 'Destinataires de notifications',
+                nb_view: 'Nb de vues',
+                password: 'Mot de passe (si protégé)',
+                pictures: 'Photos associées',
+                published_at: 'Publié le',
+                teaser: 'Description',
+                title: 'Titre',
+                views: 'Vues',
+            },
+        },
+        comments: {
+            name: 'Commentaire |||| Commentaires',
+            fields: {
+                body: 'Contenu',
+                created_at: 'Créé le',
+                posts: 'Article',
+                author: {
+                    name: 'Auteur',
+                },
+            },
+        },
+    },
     post: {
-        name: 'Article',
-        all: 'Articles',
         list: {
             search: 'Recherche',
-            title: 'Titre',
-            published_at: 'Publié le',
-            commentable: 'Commentable',
-            views: 'Vues',
         },
         form: {
-            title: 'Titre',
-            published_at: 'Publié le',
-            teaser: 'Description',
-            pictures: 'Photos associées',
-            body: 'Contenu',
-            average_note: 'Note moyenne',
-            allow_comments: 'Accepte les commentaires ?',
-            password: 'Mot de passe (si protégé)',
             summary: 'Résumé',
+            body: 'Contenu',
             miscellaneous: 'Extra',
-            nb_view: 'Nb de vues',
             comments: 'Commentaires',
-            created_at: 'Créé le',
+        },
+        edit: {
+            title: 'Article "%{title}"',
         },
     },
     comment: {
-        name: 'Commentaire',
-        all: 'Commentaires',
-        form: {
-            body: 'Contenu',
-            created_at: 'Créé le',
-            author_name: 'Nom de l\'auteur',
-        },
-    },
-    author: {
-        name: 'Auteur',
         list: {
-            name: 'Nom',
+            about: 'Au sujet de',
         },
     },
-    resources: {
-        comments: 'Commentaire |||| Commentaires'
-    }
 };
 
 export default messages;

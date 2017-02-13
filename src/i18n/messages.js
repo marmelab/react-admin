@@ -10,9 +10,13 @@ export default {
             cancel: 'Cancel',
             refresh: 'Refresh',
             add_filter: 'Add filter',
-            delete_item: 'Delete %{name}',
-            create_item: 'Create %{name}',
-            list_item: '%{name} List',
+        },
+        page: {
+            list: '%{name} List',
+            edit: '%{name} #%{id}',
+            show: '%{name} #%{id}',
+            create: 'Create %{name}',
+            delete: 'Delete %{name} #%{id}',
         },
         input: {
             image: {

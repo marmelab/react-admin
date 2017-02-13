@@ -5,7 +5,7 @@ import inflection from 'inflection';
 import Title from '../layout/Title';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import DefaultActions from './CreateActions';
-import Translate from '../../i18n/Translate';
+import translate from '../../i18n/translate';
 
 class Create extends Component {
     getBasePath() {
@@ -19,8 +19,13 @@ class Create extends Component {
         const { actions = <DefaultActions />, children, isLoading, resource, title, translate } = this.props;
         const basePath = this.getBasePath();
 
-        const resourceName = translate(`resources.${resource}`, { smart_count: 1, _: inflection.humanize(inflection.singularize(resource)) });
-        const createItemLabel = translate('aor.action.create_item', { name: `${resourceName}` });
+        const resourceName = translate(`resources.${resource}.name`, {
+            smart_count: 1,
+            _: inflection.humanize(inflection.singularize(resource)),
+        });
+        const defaultTitle = translate('aor.page.create', {
+            name: `${resourceName}`,
+        });
 
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
@@ -28,7 +33,7 @@ class Create extends Component {
                     basePath,
                     resource,
                 })}
-                <CardTitle title={<Title title={title} defaultTitle={createItemLabel} />} />
+                <CardTitle title={<Title title={title} defaultTitle={defaultTitle} />} />
                 {React.cloneElement(children, {
                     onSubmit: this.handleSubmit,
                     resource,
@@ -62,7 +67,7 @@ function mapStateToProps(state) {
     };
 }
 
-export default Translate(connect(
+export default translate(connect(
     mapStateToProps,
     { crudCreate: crudCreateAction },
 )(Create));

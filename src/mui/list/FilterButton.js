@@ -4,8 +4,8 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import ContentFilter from 'material-ui/svg-icons/content/filter-list';
-import title from '../../util/title';
-import Translate from '../../i18n/Translate';
+import FieldTitle from '../../util/FieldTitle';
+import translate from '../../i18n/translate';
 
 export class FilterButton extends Component {
     constructor(props) {
@@ -55,6 +55,7 @@ export class FilterButton extends Component {
 
     render() {
         const hiddenFilters = this.getHiddenFilters();
+        const { resource } = this.props;
         const { open, anchorEl } = this.state;
 
         return (hiddenFilters.length > 0 && <div style={{ display: 'inline-block' }}>
@@ -72,7 +73,7 @@ export class FilterButton extends Component {
                             data-key={filterElement.props.source}
                             data-default-value={filterElement.props.defaultValue}
                             key={filterElement.props.source}
-                            primaryText={title(filterElement.props.label, filterElement.props.source)}
+                            primaryText={<FieldTitle label={filterElement.props.label} source={filterElement.props.source} resource={resource} />}
                             onTouchTap={this.handleShow}
                         />
                     )}
@@ -87,8 +88,9 @@ FilterButton.propTypes = {
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
     displayedFilters: PropTypes.object.isRequired,
     filterValues: PropTypes.object.isRequired,
+    resource: PropTypes.string,
     showFilter: PropTypes.func.isRequired,
     translate: PropTypes.func.isRequired,
 };
 
-export default Translate(FilterButton);
+export default translate(FilterButton);
