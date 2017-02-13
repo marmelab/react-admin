@@ -13,6 +13,7 @@ title: "Reference"
 * [`<AutocompleteInput>`](./Inputs.html#autocompleteinput)
 * [`<BooleanField>`](./Fields.html#booleanfield)
 * [`<BooleanInput>`](./Inputs.html#booleaninput-and-nullablebooleaninput)
+* [`<CheckboxGroupInput>`](./Inputs.html#checkboxgroupinput)
 * [`<ChipField>`](./Fields.html#chipfield)
 * [`<Create>`](./CreateEdit.html#the-create-and-edit-components)
 * `<CreateButton>`
@@ -30,6 +31,8 @@ title: "Reference"
 * `<FormField>`
 * [`<FormTab>`](./CreateEdit.html#the-tabbedform-component)
 * `<EditButton>`
+* [`<ImageField>`](./Fields.html#imagefield)
+* [`<ImageInput>`](./Inputs.html#imageinput)
 * [`<FunctionField>`](./Fields.html#functionfield)
 * `<Labeled>`
 * [`<Layout>`](./AdminResource.html#applayout)

@@ -350,19 +350,23 @@ By default, admin-on-rest restricts the possible values to 25. You can change th
 
 By default, it orders the possible values by id desc. You can change this order by setting the `sort` prop (an object with `field` and `order` properties).
 
+{% raw %}
 ```js
 <ReferenceManyField sort={{ field: 'created_at', order: 'DESC' }} reference="comments" target="post_id">
    ...
 </ReferenceManyField>
 ```
+{% endraw %}
 
 Also, you can filter the query used to populate the possible values. Use the `filter` prop for that.
 
+{% raw %}
 ```js
 <ReferenceManyField filter={{ is_published: true }} reference="comments" target="post_id">
    ...
 </ReferenceManyField>
 ```
+{% endraw %}
 
 ## `<RichTextField>`
 

@@ -156,6 +156,66 @@ import { NullableBooleanInput } from 'admin-on-rest/lib/mui';
 
 ![NullableBooleanInput](./img/nullable-boolean-input.png)
 
+## `<CheckboxGroupInput>`
+
+If you want to let the user choose multiple values among a list of possible values by showing them all, `<CheckboxGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+
+```js
+import { CheckboxGroupInput } from 'admin-on-rest/lib/mui';
+
+<CheckboxGroupInput source="category" choices={[
+    { id: 'programming', name: 'Programming' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'photography', name: 'Photography' },
+]} />
+```
+
+![CheckboxGroupInput](./img/checkbox-group-input.png)
+
+You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
+
+```js
+const choices = [
+    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+];
+<CheckboxGroupInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+```
+
+`optionText` also accepts a function, so you can shape the option text at will:
+
+```js
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
+<CheckboxGroupInput source="author_id" choices={choices} optionText={optionRenderer} />
+```
+
+`optionText` also accepts a React Element, that will be cloned and receive the related choice as the `record` prop. You can use Field components there.
+
+```js
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
+<CheckboxGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
+```
+
+Lastly, use the `options` attribute if you want to override any of Material UI's `<Checkbox>` attributes:
+
+{% raw %}
+```js
+<CheckboxGroupInput source="category" options={{
+    labelPosition: 'right'
+}} />
+```
+{% endraw %}
+
+Refer to [Material UI Checkbox documentation](http://www.material-ui.com/#/components/checkbox) for more details.
+
 ## `<DateInput>`
 
 Ideal for editing dates, `<DateInput>` renders a beautiful [Date Picker](http://www.material-ui.com/#/components/date-picker) with full localization support.
@@ -350,66 +410,6 @@ import { RadioButtonGroupInput, ReferenceInput } from 'admin-on-rest/lib/mui'
     <RadioButtonGroupInput optionText="last_name" />
 </ReferenceInput>
 ```
-
-## `<CheckboxGroupInput>`
-
-If you want to let the user choose multiple values among a list of possible values by showing them all, `<CheckboxGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
-
-```js
-import { CheckboxGroupInput } from 'admin-on-rest/lib/mui';
-
-<CheckboxGroupInput source="category" choices={[
-    { id: 'programming', name: 'Programming' },
-    { id: 'lifestyle', name: 'Lifestyle' },
-    { id: 'photography', name: 'Photography' },
-]} />
-```
-
-![CheckboxGroupInput](./img/checkbox-group-input.png)
-
-You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
-
-```js
-const choices = [
-    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
-    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
-];
-<CheckboxGroupInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
-```
-
-`optionText` also accepts a function, so you can shape the option text at will:
-
-```js
-const choices = [
-   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
-   { id: 456, first_name: 'Jane', last_name: 'Austen' },
-];
-const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
-<CheckboxGroupInput source="author_id" choices={choices} optionText={optionRenderer} />
-```
-
-`optionText` also accepts a React Element, that will be cloned and receive the related choice as the `record` prop. You can use Field components there.
-
-```js
-const choices = [
-   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
-   { id: 456, first_name: 'Jane', last_name: 'Austen' },
-];
-const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
-<CheckboxGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
-```
-
-Lastly, use the `options` attribute if you want to override any of Material UI's `<Checkbox>` attributes:
-
-{% raw %}
-```js
-<CheckboxGroupInput source="category" options={{
-    labelPosition: 'right'
-}} />
-```
-{% endraw %}
-
-Refer to [Material UI Checkbox documentation](http://www.material-ui.com/#/components/checkbox) for more details.
 
 ## `<ReferenceInput>`
 
