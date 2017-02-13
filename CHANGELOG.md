@@ -4,29 +4,28 @@
 
 * [BC Break] Rename `defaultSort` prop to `sort` in `<List>` component, to make it consistent with the props of `<ReferenceInput>` and `<ReferenceManyField>`
 * [BC Break] Rename `filter` props (the one accepting a `<Filter>` element) to `filters` in `<List>` component
-* Add `filter` prop to `<List>` component for permanent filters
-* Add `perPage`, `sort`, and `filter` props to ``<ReferenceManyField>`
-* Add the ability to hook up custom sagas in `<Admin>`
-* Add the ability to hook up custom reducers in `<Admin>`
-* Add Custom Actions documentation
-* Refactor response side effects to a normal saga
-* Upgrade `redux-saga` to v0.14.2
-* Update optimistic rendering to also work with custom fetch actions
-* Add `label` prop to all buttons
-* Improve Delete button labels
-* Speed up `<Datagrid>` rendering
 * Add I18n
 * Add Authentication
-* Add per-resource credentials check
+* Add `<ImageField>` and `<ImageInput>` to upload images
+* Add `<CheckboxGroupInput>` component
+* Add the ability to hook up custom sagas in `<Admin>`
+* Add the ability to hook up custom reducers in `<Admin>`
+* Add `filter` prop to `<List>` component for permanent filters
 * Add support for `defaultValue` in filters
-* Allow to disable sorting on some fields
+* Add support for functions as value for the `defaultValue` prop
+* Add ability to disable sorting on datagrid headers
+* Add `perPage`, `sort`, and `filter` props to ``<ReferenceManyField>`
+* Add `label` prop to all buttons
+* Add Custom Actions documentation
+* Add CSS prefix to flex-box elements ([yshing](https://github.com/yshing))
+* Improve Delete button labels
+* Update optimistic rendering to also work with custom fetch actions
+* Speed up `<Datagrid>` rendering
+* Refactor response side effects to a normal saga
+* Upgrade `redux-saga` to v0.14.2
 * Fix disconnection on dashboard
 * Fix edge case where list filter isn't shown
-* Add support for functions as value for the `defaultValue` prop
-* Add `<CheckboxGroupInput>` component
-* Fix validation ofr `<AutocompleteInput>`, `<ReferenceInput>`, and `<SelectInput>` ([AkselsLedins](https://github.com/AkselsLedins))
-* Add `<ImageField>` and `<ImageIput>` to upload images
-* Prefix flex-box elements ([yshing](https://github.com/yshing))
+* Fix validation for `<AutocompleteInput>`, `<ReferenceInput>`, and `<SelectInput>` ([AkselsLedins](https://github.com/AkselsLedins))
 
 ## v0.7.2
 
