@@ -26,6 +26,10 @@ FieldTitle.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
+FieldTitle.defaultProps = {
+    translate: x => x,
+};
+
 const enhance = compose(pure, Translate);
 
 export default enhance(FieldTitle);

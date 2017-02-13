@@ -11,10 +11,10 @@ describe('<AutocompleteInput />', () => {
     };
 
     it('should use a mui AutoComplete', () => {
-        const wrapper = shallow(<AutocompleteInput {...defaultProps} label="hello" />);
+        const wrapper = shallow(<AutocompleteInput {...defaultProps} input={{ value: 1 }} choices={[{ id: 1, name: 'hello' }]} />);
         const AutoCompleteElement = wrapper.find('AutoComplete');
         assert.equal(AutoCompleteElement.length, 1);
-        assert.equal(AutoCompleteElement.prop('floatingLabelText'), 'hello');
+        assert.equal(AutoCompleteElement.prop('searchText'), 'hello');
     });
 
     it('should use the input parameter value as the initial input searchText', () => {

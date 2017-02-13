@@ -17,6 +17,7 @@ describe('<Show />', () => {
         location: { pathname: '' },
         params: {},
         resource: '',
+        translate: x => x,
     };
 
     it('should display correctly when called with a child', () => {
