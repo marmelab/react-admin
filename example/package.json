@@ -8,9 +8,9 @@
   },
   "author": "",
   "license": "MIT",
-  "dependencies": {},
   "devDependencies": {
     "aor-json-rest-client": "~1.5.0",
+    "aor-language-french": "~1.5.0",
     "aor-rich-text-input": "~1.0.0",
     "babel-plugin-transform-react-jsx": "^6.8.0",
     "babel-polyfill": "^6.9.1",

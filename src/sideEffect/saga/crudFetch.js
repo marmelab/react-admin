@@ -1,5 +1,4 @@
-import { takeEvery, takeLatest, delay } from 'redux-saga';
-import { put, call, cancelled } from 'redux-saga/effects';
+import { put, call, cancelled, takeEvery, takeLatest } from 'redux-saga/effects';
 import {
     FETCH_START,
     FETCH_END,
@@ -7,8 +6,8 @@ import {
     FETCH_CANCEL,
 } from '../../actions/fetchActions';
 
-const crudFetch = (restClient, successSideEffects = () => [], failureSideEffects = () => []) => {
-    function *handleFetch(action) {
+const crudFetch = (restClient) => {
+    function* handleFetch(action) {
         const { type, payload, meta } = action;
         const restType = meta.fetch;
         delete meta.fetch;
@@ -19,27 +18,21 @@ const crudFetch = (restClient, successSideEffects = () => [], failureSideEffects
         let response;
         try {
             response = yield call(restClient, restType, meta.resource, payload);
-            yield [
-                put({
-                    type: `${type}_SUCCESS`,
-                    payload: response,
-                    requestPayload: payload,
-                    meta,
-                }),
-                ...successSideEffects(type, meta.resource, payload, response).map(a => put(a)),
-                put({ type: FETCH_END }),
-            ];
+            yield put({
+                type: `${type}_SUCCESS`,
+                payload: response,
+                requestPayload: payload,
+                meta: { ...meta, fetchResponse: restType, fetchStatus: FETCH_END },
+            });
+            yield put({ type: FETCH_END });
         } catch (error) {
-            yield [
-                put({
-                    type: `${type}_FAILURE`,
-                    error: error.message ? error.message : error,
-                    requestPayload: payload,
-                    meta,
-                }),
-                ...failureSideEffects(type, meta.resource, payload, error).map(a => put(a)),
-                put({ type: FETCH_ERROR }),
-            ];
+            yield put({
+                type: `${type}_FAILURE`,
+                error: error.message ? error.message : error,
+                requestPayload: payload,
+                meta: { ...meta, fetchResponse: restType, fetchStatus: FETCH_ERROR },
+            });
+            yield put({ type: FETCH_ERROR, error });
         } finally {
             if (yield cancelled()) {
                 yield put({ type: FETCH_CANCEL });
@@ -48,7 +41,7 @@ const crudFetch = (restClient, successSideEffects = () => [], failureSideEffects
         }
     }
 
-    return function *watchCrudFetch() {
+    return function* watchCrudFetch() {
         yield [
             takeLatest(action => action.meta && action.meta.fetch && action.meta.cancelPrevious, handleFetch),
             takeEvery(action => action.meta && action.meta.fetch && !action.meta.cancelPrevious, handleFetch),

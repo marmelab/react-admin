@@ -1,5 +1,32 @@
 # Changelog
 
+## v0.8.0
+
+* [BC Break] Rename `defaultSort` prop to `sort` in `<List>` component, to make it consistent with the props of `<ReferenceInput>` and `<ReferenceManyField>`
+* [BC Break] Rename `filter` props (the one accepting a `<Filter>` element) to `filters` in `<List>` component
+* Add I18n
+* Add Authentication
+* Add `<ImageField>` and `<ImageInput>` to upload images
+* Add `<CheckboxGroupInput>` component
+* Add the ability to hook up custom sagas in `<Admin>`
+* Add the ability to hook up custom reducers in `<Admin>`
+* Add `filter` prop to `<List>` component for permanent filters
+* Add support for `defaultValue` in filters
+* Add support for functions as value for the `defaultValue` prop
+* Add ability to disable sorting on datagrid headers
+* Add `perPage`, `sort`, and `filter` props to ``<ReferenceManyField>`
+* Add `label` prop to all buttons
+* Add Custom Actions documentation
+* Add CSS prefix to flex-box elements ([yshing](https://github.com/yshing))
+* Improve Delete button labels
+* Update optimistic rendering to also work with custom fetch actions
+* Speed up `<Datagrid>` rendering
+* Refactor response side effects to a normal saga
+* Upgrade `redux-saga` to v0.14.2
+* Fix disconnection on dashboard
+* Fix edge case where list filter isn't shown
+* Fix validation for `<AutocompleteInput>`, `<ReferenceInput>`, and `<SelectInput>` ([AkselsLedins](https://github.com/AkselsLedins))
+
 ## v0.7.2
 
 * Fix code snippets disappearing from documentation
@@ -15,6 +42,8 @@
 * Fix endless spinning `<SaveButton>` upon error
 
 ## v0.7.0
+
+See the [v0.7.0 announcement in the marmelab blog](https://marmelab.com/blog/2017/01/13/admin-on-rest-0-7.html).
 
 * [BC Break] Remove `<RichTextInput>` from core, use `aor-rich-text-input` instead
 * [BC Break] Introduce `<SimpleForm>` component between `<Edit>/<Create>` and input components
@@ -117,6 +146,8 @@ Fix bad built files
 
 ## v0.5.0
 
+See the [v0.5.0 announcement in the marmelab blog](http://marmelab.com/blog/2016/11/10/admin-on-rest-0-5.html).
+
 * [BC Break] Remove `credentials: include` HTTP option enabled by default
 * Add `<Show>` View
 * Add custom headers support
@@ -157,6 +188,8 @@ Fix bad built files
 * Fix filter value reset when filter is removed
 
 ## V0.3.0
+
+See the [v0.3.0 announcement in the marmelab blog](http://marmelab.com/blog/2016/09/02/admin-on-rest-react-admin-framework.html).
 
 * [BC Break] `<List>` takes an iterator child (like `<Datagrid>`)
 * [BC Break] `<ReferenceField>` replaces `referenceSource` by a child field

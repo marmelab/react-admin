@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentSave from 'material-ui/svg-icons/content/save';
 import CircularProgress from 'material-ui/CircularProgress';
+import translate from '../../i18n/translate';
 
 class SaveButton extends Component {
 
@@ -14,10 +15,10 @@ class SaveButton extends Component {
     }
 
     render() {
-        const { saving } = this.props;
+        const { saving, label = 'aor.action.save', translate } = this.props;
         return <RaisedButton
             type="submit"
-            label="Save"
+            label={label && translate(label)}
             icon={saving ? <CircularProgress size={25} thickness={2} /> : <ContentSave />}
             onClick={this.handleClick}
             primary={!saving}
@@ -30,11 +31,13 @@ class SaveButton extends Component {
 }
 
 SaveButton.propTypes = {
+    label: PropTypes.string,
     saving: PropTypes.bool,
+    translate: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
     saving: state.admin.saving,
 });
 
-export default connect(mapStateToProps)(SaveButton);
+export default connect(mapStateToProps)(translate(SaveButton));

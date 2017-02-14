@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import get from 'lodash.get';
+import pure from 'recompose/pure';
 
 const toLocaleStringSupportsLocales = (() => {
     // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
@@ -36,7 +37,7 @@ const toLocaleStringSupportsLocales = (() => {
  * <span>mercredi 7 novembre 2012</span>
  */
 
-const DateField = ({ elStyle, locales, options, record, showTime = false, source }) => {
+export const DateField = ({ elStyle, locales, options, record, showTime = false, source }) => {
     if (!record) return null;
     const value = get(record, source);
     if (value == null) return null;
@@ -62,8 +63,10 @@ DateField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-DateField.defaultProps = {
+const PureDateField = pure(DateField);
+
+PureDateField.defaultProps = {
     addLabel: true,
 };
 
-export default DateField;
+export default PureDateField;

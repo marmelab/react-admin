@@ -1,6 +1,6 @@
 import React, { Children, Component, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
-import title from '../../util/title';
+import FieldTitle from '../../util/FieldTitle';
 
 const defaultLabelStyle = {
     paddingTop: '2em',
@@ -30,7 +30,7 @@ class Labeled extends Component {
         }
         return (
             <TextField
-                floatingLabelText={title(label, source)}
+                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
                 floatingLabelFixed
                 fullWidth
                 disabled={disabled}

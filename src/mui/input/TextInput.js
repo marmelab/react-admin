@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
-import title from '../../util/title';
+import FieldTitle from '../../util/FieldTitle';
 
 /**
  * An Input component for a string
@@ -16,12 +16,12 @@ import title from '../../util/title';
  *
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
-const TextInput = ({ input, label, meta: { touched, error }, options, type, source, elStyle }) => (
+const TextInput = ({ input, label, meta: { touched, error }, options, type, source, elStyle, resource }) => (
     <TextField
         value={input.value}
         onChange={input.onChange}
         type={type}
-        floatingLabelText={title(label, source)}
+        floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
         errorText={touched && error}
         style={elStyle}
         {...options}
@@ -37,6 +37,7 @@ TextInput.propTypes = {
     name: PropTypes.string,
     onChange: PropTypes.func,
     options: PropTypes.object,
+    resource: PropTypes.string,
     source: PropTypes.string,
     type: PropTypes.string,
     validation: PropTypes.object,

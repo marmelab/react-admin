@@ -39,14 +39,15 @@ Admin-on-rest bundles two REST clients that you can use if your API uses a simil
 
 This REST client fits APIs using simple GET parameters for filters and sorting. This is the dialect used for instance in [FakeRest](https://github.com/marmelab/FakeRest).
 
-| REST verb      | API calls
-|----------------|----------------------------------------------------------------
-| `GET_LIST`     | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}`
-| `GET_ONE`      | `GET http://my.api.url/posts/123`
-| `GET_MANY`     | `GET http://my.api.url/posts?filter={ids:[123,456,789]}`
-| `UPDATE`       | `PUT http://my.api.url/posts/123`
-| `CREATE`       | `POST http://my.api.url/posts/123`
-| `DELETE`       | `DELETE http://my.api.url/posts/123`
+| REST verb            | API calls
+|----------------------|----------------------------------------------------------------
+| `GET_LIST`           | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}`
+| `GET_ONE`            | `GET http://my.api.url/posts/123`
+| `CREATE`             | `POST http://my.api.url/posts/123`
+| `UPDATE`             | `PUT http://my.api.url/posts/123`
+| `DELETE`             | `DELETE http://my.api.url/posts/123`
+| `GET_MANY`           | `GET http://my.api.url/posts?filter={ids:[123,456,789]}`
+| `GET_MANY_REFERENCE` | `GET http://my.api.url/posts?filter={author_id:345}`
 
 **Note**: The simple REST client expects the API to include a `Content-Range` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows admin-on-rest to know how many pages of resources there are in total, and build the pagination controls.
 
@@ -83,14 +84,15 @@ export default App;
 
 This REST client fits APIs powered by [JSON Server](https://github.com/typicode/json-server), such as [JSONPlaceholder](http://jsonplaceholder.typicode.com/).
 
-| REST verb      | API calls
-|----------------|----------------------------------------------------------------
-| `GET_LIST`     | `GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24&title=bar`
-| `GET_ONE`      | `GET http://my.api.url/posts/123`
-| `GET_MANY`     | `GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789`
-| `UPDATE`       | `PUT http://my.api.url/posts/123`
-| `CREATE`       | `POST http://my.api.url/posts/123`
-| `DELETE`       | `DELETE http://my.api.url/posts/123`
+| REST verb            | API calls
+|----------------------|----------------------------------------------------------------
+| `GET_LIST`           | `GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24&title=bar`
+| `GET_ONE`            | `GET http://my.api.url/posts/123`
+| `CREATE`             | `POST http://my.api.url/posts/123`
+| `UPDATE`             | `PUT http://my.api.url/posts/123`
+| `DELETE`             | `DELETE http://my.api.url/posts/123`
+| `GET_MANY`           | `GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789`
+| `GET_MANY_REFERENCE` | `GET http://my.api.url/posts?author_id=345`
 
 **Note**: The jsonServer REST client expects the API to include a `X-Total-Count` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows admin-on-rest to know how many pages of resources there are in total, and build the pagination controls.
 
@@ -172,7 +174,71 @@ You can find REST clients for admin-on-rest in third-party repositories.
 * [marmelab/aor-json-rest-client](https://github.com/marmelab/aor-json-rest-client): a local REST client based on a JavaScript object. It doesn't even use HTTP. Use it for testing purposes.
 * [tomberek/aor-postgrest-client](https://github.com/tomberek/aor-postgrest-client): a REST client for [Postgrest](http://postgrest.com/en/v0.4/) client
 
-## Writing your own REST client
+## Decorating your REST Client (Example of File Upload)
+
+Instead of writing your own REST client or using a third-party one, you can enhance its capabilities on a given resource. For instance, if you want to use upload components (such as `<ImageInput />` one), you can decorate it the following way:
+
+``` js
+/**
+ * Convert a `File` object returned by the upload input into
+ * a base 64 string. That's easier to use on FakeRest, used on
+ * the ng-admin example. But that's probably not the most optimized
+ * way to do in a production database.
+ */
+const convertFileToBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+});
+
+/**
+ * For posts update only, convert uploaded image in base 64 and attach it to
+ * the `picture` sent property, with `src` and `title` attributes.
+ */
+const addUploadCapabilities = requestHandler => (type, resource, params) => {
+    if (type === 'UPDATE' && resource === 'posts') {
+        if (params.data.picture && params.data.picture.length) {
+            return convertFileToBase64(params.data.picture)
+                .then(base64Picture => requestHandler(type, resource, {
+                    ...params,
+                    data: {
+                        ...params.data,
+                        picture: ({
+                            src: base64Picture,
+                            title: params.title,
+                        })),
+                    },
+                }));
+        }
+    }
+
+    return requestHandler(type, resource, params);
+};
+
+export default addUploadCapabilities;
+```
+
+This way, you can use simply your upload-capable client to your app calling this decorator:
+
+``` js
+import jsonRestClient from 'aor-json-rest-client';
+import addUploadFeature from './addUploadFeature';
+
+const restClient = jsonRestClient(data, true);
+const uploadCapableClient = addUploadFeature(restClient);
+
+render(
+    <Admin restClient={uploadCapableClient} title="Example Admin">
+        // [...]
+    </Admin>,
+    document.getElementById('root'),
+);
+
+```
+
+## Writing your own REST Client
 
 Quite often, none of the the core REST clients match your API exactly. In such cases, you'll have to write your own REST client. But don't be afraid, it's easy!
 
@@ -184,15 +250,15 @@ REST requests require a *type* (e.g. `GET_ONE`), a *resource* (e.g. 'posts') and
 
 Possible types are:
 
-Type | Params format
----- | ----------------
+Type                 | Params format
+-------------------- | ----------------
 `GET_LIST`           | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} } }`
 `GET_ONE`            | `{ id: {mixed} }`
 `CREATE`             | `{ data: {Object} }`
 `UPDATE`             | `{ id: {mixed}, data: {Object} }`
 `DELETE`             | `{ id: {mixed} }`
 `GET_MANY`           | `{ ids: {mixed[]} }`
-`GET_MANY_REFERENCE` | `{ target: {string}, id: {mixed} }`
+`GET_MANY_REFERENCE` | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} } }`
 
 Examples:
 
@@ -206,15 +272,15 @@ restClient(CREATE, 'posts', { title: "hello, world" });
 restClient(UPDATE, 'posts', { id: 123, { title: "hello, world!" } });
 restClient(DELETE, 'posts', { id: 123 });
 restClient(GET_MANY, 'posts', { ids: [123, 124, 125] });
-restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123 });
+restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123, sort: { field: 'created_at', order: 'DESC' } });
 ```
 
 ### Response Format
 
 REST responses are objects. The format depends on the type.
 
-Type | Response format
----- | ----------------
+Type                 | Response format
+-------------------- | ----------------
 `GET_LIST`           | `{ data: {Record[]}, total: {int} }`
 `GET_ONE`            | `{Record}`
 `CREATE`             | `{Record}`
@@ -276,7 +342,7 @@ restClient(GET_MANY, 'posts', { ids: [123, 124, 125] })
 //     { id: 125, title: "howdy partner" },
 // ]
 
-restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123 });
+restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123, sort: { field: 'created_at', order: 'DESC' } });
 .then(records => console.log(records));
 // [
 //     { id: 667, title: "I agree", post_id: 123 },
@@ -286,7 +352,7 @@ restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123 });
 
 ### Error Format
 
-To be completed
+When the REST API returns an error, the rest client should `throw` an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). Admin-on-rest inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors).
 
 ### Example implementation
 

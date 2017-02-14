@@ -287,7 +287,7 @@ In the edition view, a new "delete" button appears. And you can also use the `<D
 
 Let's get back to the post list for a minute. It offers sorting and pagination, but one feature is missing: the ability to search content.
 
-Admin-on-rest can use input components to create a multi-criteria search engine in the list view. First, create a `<Filter>` component just like you would with a `<Create>` component, using input components. Then, tell the list to use a filter element using the `filter` prop:
+Admin-on-rest can use input components to create a multi-criteria search engine in the list view. First, create a `<Filter>` component just like you would with a `<Create>` component, using input components. Then, tell the list to use a filter element using the `filters` prop:
 
 ```js
 // in src/posts.js
@@ -303,7 +303,7 @@ const PostFilter = (props) => (
 );
 
 export const PostList = (props) => (
-    <List {...props} filter={<PostFilter />}>
+    <List {...props} filters={<PostFilter />}>
         // ...
     </List>
 );
@@ -366,6 +366,58 @@ const App = () => (
 
 ![Custom home page](./img/dashboard.png)
 
+## Adding a Login Page
+
+Most admin apps require authentication, so admin-on-rest can check user credentials before displaying a page, and redirect to a login form when the REST API returns a 403 error code.
+
+*What* those credentials are, and *how* to get them, are questions that you must answer. Admin-on-rest makes no assumption about your authentication strategy (basic auth, OAuth, custom route, etc), but gives you the hooks to plug your logic at the right place - by calling an `authClient` function.
+
+For this tutorial, since there is no public authentication API we can use, we'll use a fake authentication provider that accepts every login request, and stores the `username` in `localStorage`. We'll implement a credentials checker that validates only if `localStorage` contains a `username` item.
+
+The `authClient` is a simple function, which must return a `Promise`:
+
+```js
+// in src/authClient.js
+import { AUTH_LOGIN, AUTH_LOGOUT } from 'admin-on-rest';
+
+export default (type, params) => {
+    if (type === AUTH_LOGIN) {
+        const { username } = params;
+        localStorage.setItem('username', username);
+        // accept all username/password combinations
+        return Promise.resolve();
+    }
+    if (type === AUTH_LOGOUT) {
+        localStorage.removeItem('username');
+        return Promise.resolve();
+    }
+    if (type === AUTH_CHECK) {
+        return localStorage.getItem('username') ? Promise.resolve() : Promise.reject();
+    }
+    return Promise.reject('Unkown method');
+};
+```
+
+As it's asynchronous, you can easily fetch an authentication server in there.
+
+To enable this authentication strategy, pass the client as the `authClient` prop in the `<Admin>` component:
+
+```js
+// in src/App.js
+import Dashboard from './Dashboard';
+import authClient from './authClient';
+
+const App = () => (
+    <Admin authClient={authClient} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+        // ...
+    </Admin>
+);
+```
+
+Once the app reloads, it's now behind a login form that accepts everyone:
+
+![Login form](./img/login.gif)
+
 ## Using Another REST Dialect
 
 Here is the elephant in the room of this tutorial. In real world projects, the REST dialect of your API won't match the JSONPLaceholder dialect. Writing a REST client is probably the first thing you'll have to do to make admin-on-rest work. Depending on your API, this can require a few hours of additional work.
@@ -393,6 +445,7 @@ import {
     GET_LIST,
     GET_ONE,
     GET_MANY,
+    GET_MANY_REFERENCE,
     CREATE,
     UPDATE,
     DELETE,
@@ -429,6 +482,17 @@ const convertRESTRequestToHTTP = (type, resource, params) => {
     case GET_MANY: {
         const query = {
             filter: JSON.stringify({ id: params.ids }),
+        };
+        url = `${API_URL}/${resource}?${queryParameters(query)}`;
+        break;
+    }
+    case GET_MANY_REFERENCE: {
+        const { page, perPage } = params.pagination;
+        const { field, order } = params.sort;
+        const query = {
+            sort: JSON.stringify([field, order]),
+            range: JSON.stringify([(page - 1) * perPage, (page * perPage) - 1]),
+            filter: JSON.stringify({ ...params.filter, [params.target]: params.id }),
         };
         url = `${API_URL}/${resource}?${queryParameters(query)}`;
         break;

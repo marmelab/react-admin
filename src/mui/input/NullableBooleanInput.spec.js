@@ -2,12 +2,13 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import NullableBooleanInput from './NullableBooleanInput';
+import { NullableBooleanInput } from './NullableBooleanInput';
 
 describe('<NullableBooleanInput />', () => {
     const defaultProps = {
         input: {},
         meta: {},
+        translate: x => x,
     };
 
     it('should give three different choices for true, false or unknown', () => {
@@ -15,8 +16,8 @@ describe('<NullableBooleanInput />', () => {
         const choices = wrapper.find('SelectInput').prop('choices');
         assert.deepEqual(choices, [
             { id: null, name: '' },
-            { id: false, name: 'No' },
-            { id: true, name: 'Yes' },
+            { id: false, name: 'aor.boolean.false' },
+            { id: true, name: 'aor.boolean.true' },
         ]);
     });
 

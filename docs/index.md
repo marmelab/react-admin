@@ -131,7 +131,7 @@ Yes.
 
 Admin-on-rest uses an adapter approach, with a concept called *REST client*. Existing rest clients can be used as a blueprint to design your API, or you can write your own REST client to query an existing API. Writing a custom REST client is a matter of hours.
 
-![REST client architecture](/img/rest-client.png)
+![REST client architecture](./img/rest-client.png)
 
 See the [REST clients documentation](./RestClients.html) for details.
 

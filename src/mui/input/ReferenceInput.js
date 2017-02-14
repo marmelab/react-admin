@@ -137,16 +137,21 @@ export class ReferenceInput extends Component {
     }
 
     render() {
-        const { input, resource, label, source, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children } = this.props;
+        const { input, resource, label, source, reference, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children, meta } = this.props;
         if (!referenceRecord && !allowEmpty) {
-            return <Labeled label={label} source={source} />;
+            return <Labeled
+                label={typeof label === 'undefined' ? `resources.${resource}.fields.${source}` : label}
+                source={source}
+                resource={resource}
+            />;
         }
 
         return React.cloneElement(children, {
             allowEmpty,
             input,
-            label,
+            label: typeof label === 'undefined' ? `resources.${resource}.fields.${source}` : label,
             resource,
+            meta,
             source,
             choices: matchingReferences,
             basePath,
@@ -171,6 +176,7 @@ ReferenceInput.propTypes = {
     input: PropTypes.object.isRequired,
     label: PropTypes.string,
     matchingReferences: PropTypes.array,
+    meta: PropTypes.object,
     onChange: PropTypes.func,
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
@@ -188,6 +194,7 @@ ReferenceInput.defaultProps = {
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
     matchingReferences: [],
+    meta: {},
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecord: null,

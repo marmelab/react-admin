@@ -11,6 +11,7 @@ import DefaultPagination from './Pagination';
 import DefaultActions from './Actions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
+import translate from '../../i18n/translate';
 
 const filterFormName = 'filterForm';
 
@@ -27,9 +28,10 @@ const filterFormName = 'filterForm';
  * Props:
  *   - title
  *   - perPage
- *   - defaultSort
+ *   - sort
+ *   - filter (the permanent filter to apply to the query)
  *   - actions
- *   - filter
+ *   - filters (a React Element used to display the filter form)
  *   - pagination
  *
  * @example
@@ -40,11 +42,15 @@ const filterFormName = 'filterForm';
  *         </Filter>
  *     );
  *     export const PostList = (props) => (
- *         <List {...props} title="List of posts" filter={<PostFilter />} defaultSort={{ field: 'published_at' }}>
+ *         <List {...props}
+ *             title="List of posts"
+ *             sort={{ field: 'published_at' }}
+ *             filter={{ is_published: true }}
+ *             filters={<PostFilter />}
+ *         >
  *             <Datagrid>
  *                 <TextField source="id" />
  *                 <TextField source="title" />
- *                 <DateField source="published_at" style={{ fontStyle: 'italic' }} />
  *                 <EditButton />
  *             </Datagrid>
  *         </List>
@@ -76,11 +82,11 @@ export class List extends Component {
             this.fullRefresh = false;
             this.setState({ key: this.state.key + 1 });
         }
-        if (Object.keys(nextProps.filters).length === 0 && Object.keys(this.props.filters).length === 0) {
+        if (Object.keys(nextProps.filterValues).length === 0 && Object.keys(this.props.filterValues).length === 0) {
             return;
         }
-        if (nextProps.filters !== this.props.filters) {
-            const nextFilters = nextProps.filters;
+        if (nextProps.filterValues !== this.props.filterValues) {
+            const nextFilters = nextProps.filterValues;
             Object.keys(nextFilters).forEach(filterName => {
                 if (nextFilters[filterName] === '') {
                     // remove empty filter from query
@@ -121,8 +127,8 @@ export class List extends Component {
     getQuery() {
         const query = Object.keys(this.props.query).length > 0 ? this.props.query : { ...this.props.params };
         if (!query.sort) {
-            query.sort = this.props.defaultSort.field;
-            query.order = this.props.defaultSort.order;
+            query.sort = this.props.sort.field;
+            query.order = this.props.sort.order;
         }
         if (!query.perPage) {
             query.perPage = this.props.perPage;
@@ -133,7 +139,8 @@ export class List extends Component {
     updateData(query) {
         const params = query || this.getQuery();
         const { sort, order, page, perPage, filter } = params;
-        this.props.crudGetList(this.props.resource, { page, perPage }, { field: sort, order }, filter);
+        const permanentFilter = this.props.filter;
+        this.props.crudGetList(this.props.resource, { page, perPage }, { field: sort, order }, { ...filter, ...permanentFilter });
     }
 
     setSort = sort => this.changeParams({ type: SET_SORT, payload: sort });
@@ -142,12 +149,18 @@ export class List extends Component {
 
     setFilters = filters => this.changeParams({ type: SET_FILTER, payload: filters });
 
-    showFilter = filterName => this.setState({ [filterName]: true });
+    showFilter = (filterName, defaultValue) => {
+        this.setState({ [filterName]: true });
+        if (typeof defaultValue !== 'undefined') {
+            this.props.changeFormValue(filterFormName, filterName, defaultValue);
+            this.setFilters({ ...this.props.filterValues, [filterName]: defaultValue });
+        }
+    }
 
     hideFilter = (filterName) => {
         this.setState({ [filterName]: false });
         this.props.changeFormValue(filterFormName, filterName, '');
-        this.setFilters({ ...this.props.filters, [filterName]: undefined });
+        this.setFilters({ ...this.props.filterValues, [filterName]: undefined });
     }
 
     changeParams(action) {
@@ -157,16 +170,23 @@ export class List extends Component {
     }
 
     render() {
-        const { filter, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading } = this.props;
+        const { filters, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading, translate } = this.props;
         const { key } = this.state;
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
+
+        const resourceName = translate(`resources.${resource}.name`, {
+            smart_count: 2,
+            _: inflection.humanize(inflection.pluralize(resource)),
+        });
+        const defaultTitle = translate('aor.page.list', { name: `${resourceName}` });
+
         return (
             <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }} key={key}>
                 {actions && React.cloneElement(actions, {
                     resource,
-                    filter,
+                    filters,
                     filterValues,
                     basePath,
                     hasCreate,
@@ -174,8 +194,8 @@ export class List extends Component {
                     showFilter: this.showFilter,
                     refresh: this.refresh,
                 })}
-                <CardTitle title={<Title title={title} defaultTitle={`${inflection.humanize(inflection.pluralize(resource))} List`} />} />
-                {filter && React.cloneElement(filter, {
+                <CardTitle title={<Title title={title} defaultTitle={defaultTitle} />} />
+                {filters && React.cloneElement(filters, {
                     resource,
                     hideFilter: this.hideFilter,
                     filterValues,
@@ -188,6 +208,7 @@ export class List extends Component {
                     data,
                     currentSort: { field: query.sort, order: query.order },
                     basePath,
+                    isLoading,
                     setSort: this.setSort,
                 })}
                 {pagination && React.cloneElement(pagination, {
@@ -204,11 +225,12 @@ export class List extends Component {
 List.propTypes = {
     // the props you can change
     title: PropTypes.any,
-    filter: PropTypes.element,
+    filter: PropTypes.object,
+    filters: PropTypes.element,
     pagination: PropTypes.element,
     actions: PropTypes.element,
     perPage: PropTypes.number.isRequired,
-    defaultSort: PropTypes.shape({
+    sort: PropTypes.shape({
         field: PropTypes.string,
         order: PropTypes.string,
     }),
@@ -218,7 +240,7 @@ List.propTypes = {
     changeListParams: PropTypes.func.isRequired,
     crudGetList: PropTypes.func.isRequired,
     data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    filters: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     hasCreate: PropTypes.bool.isRequired,
     hasEdit: PropTypes.bool.isRequired,
     ids: PropTypes.array,
@@ -230,12 +252,14 @@ List.propTypes = {
     query: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     total: PropTypes.number.isRequired,
+    translate: PropTypes.func.isRequired,
 };
 
 List.defaultProps = {
-    filters: {},
+    filter: {},
+    filterValues: {},
     perPage: 10,
-    defaultSort: {
+    sort: {
         field: 'id',
         order: SORT_DESC,
     },
@@ -247,7 +271,7 @@ function mapStateToProps(state, props) {
     if (query.filter && typeof query.filter === 'string') {
         // if the List has no filter component, the filter is always "{}"
         // avoid deserialization and keep identity by using a constant
-        query.filter = props.filter ? JSON.parse(query.filter) : resourceState.list.params.filter;
+        query.filter = props.filters ? JSON.parse(query.filter) : resourceState.list.params.filter;
     }
 
     return {
@@ -257,11 +281,11 @@ function mapStateToProps(state, props) {
         total: resourceState.list.total,
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
-        filters: props.filter ? getFormValues(filterFormName)(state) : resourceState.list.params.filter,
+        filterValues: props.filters ? getFormValues(filterFormName)(state) : resourceState.list.params.filter,
     };
 }
 
-export default connect(
+export default translate(connect(
     mapStateToProps,
     {
         crudGetList: crudGetListAction,
@@ -269,4 +293,4 @@ export default connect(
         changeListParams: changeListParamsAction,
         push: pushAction,
     },
-)(List);
+)(List));

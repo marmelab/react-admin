@@ -92,8 +92,8 @@ export const CRUD_GET_MANY_REFERENCE_LOADING = 'CRUD_GET_MANY_REFERENCE_LOADING'
 export const CRUD_GET_MANY_REFERENCE_FAILURE = 'CRUD_GET_MANY_REFERENCE_FAILURE';
 export const CRUD_GET_MANY_REFERENCE_SUCCESS = 'CRUD_GET_MANY_REFERENCE_SUCCESS';
 
-export const crudGetManyReference = (reference, target, id, relatedTo) => ({
+export const crudGetManyReference = (reference, target, id, relatedTo, pagination, sort, filter) => ({
     type: CRUD_GET_MANY_REFERENCE,
-    payload: { target, id },
+    payload: { target, id, pagination, sort, filter },
     meta: { resource: reference, relatedTo, fetch: GET_MANY_REFERENCE, cancelPrevious: false },
 });

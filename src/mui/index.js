@@ -6,3 +6,4 @@ export * from './input';
 export * from './layout';
 export * from './list';
 export Delete from './delete/Delete';
+export defaultTheme from './defaultTheme';

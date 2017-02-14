@@ -35,6 +35,14 @@ Here are all the props accepted by the component:
 * [`dashboard`](#dashboard)
 * [`theme`](#theme)
 * [`appLayout`](#applayout)
+* [`customReducers`](#customreducers)
+* [`customSagas`](#customsagas)
+* [`customRoutes`](#customroutes)
+* [`authClient`](#authclient)
+* [`loginPage`](#loginpage)
+* [`logoutButton`](#logoutbutton)
+* [`locale`](#internationalization)
+* [`messages`](#internationalization)
 
 ### `restClient`
 
@@ -187,6 +195,197 @@ const App = () => (
     </Admin>
 );
 ```
+
+### `customReducers`
+
+The `<Admin>` app uses [Redux](http://redux.js.org/) to manage state. The state has the following keys:
+
+```js
+{
+    admin: { /*...*/ }, // used by admin-on-rest
+    form: { /*...*/ }, // used by redux-form
+    routing: { /*...*/ }, // used by react-router-redux
+}
+```
+
+If your components dispatch custom actions, you probably need to register your own reducers to update the state with these actions. Let's imagine that you want to keep the bitcoin exchange rate inside the `bitcoinRate` key in the state. You probably have a reducer looking like the following:
+
+```js
+// in src/bitcoinRateReducer.js
+export default (previousState = 0, { type, payload }) => {
+    if (type === 'BITCOIN_RATE_RECEIVED') {
+        return payload.rate;
+    }
+    return previousState;
+}
+```
+
+To register this reducer in the `<Admin>` app, simply pass it in the `customReducers` prop:
+
+{% raw %}
+```js
+// in src/App.js
+import React from 'react';
+import { Admin } from 'admin-on-rest';
+
+import bitcoinRateReducer from './bitcoinRateReducer';
+
+const App = () => (
+    <Admin customReducers={{ bitcoinRate: bitcoinRateReducer }} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+        ...
+    </Admin>
+);
+
+export default App;
+```
+{% endraw %}
+
+Now the state will look like:
+
+```js
+{
+    admin: { /*...*/ }, // used by admin-on-rest
+    form: { /*...*/ }, // used by redux-form
+    routing: { /*...*/ }, // used by react-router-redux
+    bitcoinRate: 123, // managed by rateReducer
+}
+```
+
+### `customSagas`
+
+The `<Admin>` app uses [redux-saga](https://github.com/redux-saga/redux-saga) to handle side effects.
+
+If your components dispatch custom actions, you probably need to register your own side effects as sagas. Let's imagine that you want to show a notification whenever the `BITCOIN_RATE_RECEIVED` action is dispatched. You probably have a saga looking like the following:
+
+```js
+// in src/bitcoinSaga.js
+import { put, takeEvery } from 'redux-saga/effects';
+import { showNotification } from 'admin-on-rest';
+
+export default function* bitcoinSaga() {
+    yield takeEvery('BITCOIN_RATE_RECEIVED', function* () {
+        yield put(showNotification('Bitcoin rate updated'));
+    })
+}
+```
+
+To register this saga in the `<Admin>` app, simply pass it in the `customSagas` prop:
+
+```js
+// in src/App.js
+import React from 'react';
+import { Admin } from 'admin-on-rest';
+
+import bitcoinSaga from './bitcoinSaga';
+
+const App = () => (
+    <Admin customSagas={[ bitcoinSaga ]} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+        ...
+    </Admin>
+);
+
+export default App;
+```
+
+### `customRoutes`
+
+To register your own routes, create a function returning a [react-router](https://github.com/ReactTraining/react-router) `<Route>` component:
+
+```js
+// in src/customRoutes.js
+import React from 'react';
+import { Route } from 'react-router';
+import Foo from './Foo';
+import Bar from './Bar';
+
+export default () => (
+    <Route>
+        <Route path="/foo" component={Foo} />
+        <Route path="/bar" component={Bar} />
+    </Route>
+);
+```
+
+Then, pass this function as `customRoutes` prop to the `<Admin>` component:
+
+```js
+// in src/App.js
+import React from 'react';
+import { Admin } from 'admin-on-rest';
+
+import customRoutes from './customRoutes';
+
+const App = () => (
+    <Admin customRoutes={customRoutes} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+        ...
+    </Admin>
+);
+
+export default App;
+```
+
+Now, when a user browses to `/foo` or `/bar`, the components you defined will appear in the main part of the screen.
+
+**Tip**: It's up to you to create a [custom menu](#applayout) entry, or custom buttons, to lead to your custom pages.
+
+**Tip**: Your custom pages take precedence over admin-on-rest's own routes. That means that `customRoutes` lets you override any route you want!
+
+### `authClient`
+
+The `authClient` prop expect a function returning a Promise, to control the application authentication strategy:
+
+```js
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK } from 'admin-on-rest';
+
+const authClient(type, params) {
+    // type can be any of AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK
+    // ...
+    return Promise.resolve();
+};
+
+const App = () => (
+    <Admin authClient={authClient} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+        ...
+    </Admin>
+);
+```
+
+The [Authentication documentation](./Authentication.html) explains how to implement these functions in detail.
+
+### `loginPage`
+
+If you want to customize the Login page, or switch to another authentication strategy than a username/password form, pass a component of your own as the `loginPage` prop. Admin-on-rest will display this component whenever the `/login` route is called.
+
+```js
+import MyLoginPage from './MyLoginPage';
+
+const App = () => (
+    <Admin loginPage={MyLoginPage}>
+        ...
+    </Admin>
+);
+```
+
+See The [Authentication documentation](./Authentication.html#customizing-the-login-and-logout-components) for more explanations.
+
+### `logoutButton`
+
+If you customize the `loginPage`, you probably need to override the `logoutButton`, too - because they share the authentication strategy.
+
+```js
+import MyLoginPage from './MyLoginPage';
+import MyLogoutButton from './MyLogoutButton';
+
+const App = () => (
+    <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton}>
+        ...
+    </Admin>
+);
+```
+
+### Internationalization
+
+The `locale` and `messages` props let you translate the GUI. The [Translation Documentation](./Translation.html) details this process.
 
 ## The `<Resource>` component
 

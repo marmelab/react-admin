@@ -14,9 +14,12 @@ export default (previousState = initialState, { type, payload, meta }) => {
     }
 };
 
+export const getIds = (state, relatedTo) => state.admin.references.oneToMany[relatedTo];
+
 export const getReferences = (state, reference, relatedTo) => {
-    if (typeof state.admin.references.oneToMany[relatedTo] === 'undefined') return undefined;
-    return state.admin.references.oneToMany[relatedTo]
+    const ids = getIds(state, relatedTo);
+    if (typeof ids === 'undefined') return undefined;
+    return ids
         .map(id => state.admin[reference].data[id])
         .filter(r => typeof r !== 'undefined')
         .reduce((prev, record) => {

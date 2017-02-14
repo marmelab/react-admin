@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import get from 'lodash.get';
+import pure from 'recompose/pure';
 
 const EmailField = ({ source, record = {}, elStyle }) =>
     <a style={elStyle} href={`mailto:${get(record, source)}`}>{get(record, source)}</a>;
@@ -12,8 +13,10 @@ EmailField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-EmailField.defaultProps = {
+const PureEmailField = pure(EmailField);
+
+PureEmailField.defaultProps = {
     addLabel: true,
 };
 
-export default EmailField;
+export default PureEmailField;

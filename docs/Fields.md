@@ -27,12 +27,13 @@ All field components accept the following attributes:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
 * `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
-* `style`: A style object to customize the look and feel of the field container (e.g. the `<td>` in a datagrid).
+* `sortable`: Should the list be sortable using `source` attribute? Defaults to `true`.
 * `elStyle`: A style object to customize the look and feel of the field element itself
+* `style`: A style object to customize the look and feel of the field container (e.g. the `<td>` in a datagrid).
 
 {% raw %}
 ```js
-<TextField source="zb_title" label="Title" style={{ color: 'purple' }}/>
+<TextField source="zb_title" label="Title" style={{ color: 'purple' }} />
 ```
 {% endraw %}
 
@@ -56,6 +57,8 @@ Then you can display the author first name as follows:
 ```
 
 **Tip**: If you want to format a field according to the value, use a higher-order component to do conditional formatting, as described in the [Theming documentation](./Theming.html#conditional-formatting).
+
+**Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.html#translating-resource-and-field-names) for details.
 
 ## `<BooleanField>`
 
@@ -154,6 +157,32 @@ import { FunctionField } from 'admin-on-rest/lib/mui'
 ```
 
 **Tip**: Technically, you can omit the `source` property for the `<FunctionField>` since you provide the render function. However, providing a `source` will allow the datagrid to make the column sortable, since when a user clicks on a column, the datagrid uses the `source` prop as sort field.
+
+## `<ImageField>`
+
+If you need to display an image provided by your API, you can use the `<ImageField />` component:
+
+``` js
+import { ImageField } from 'admin-on-rest/lib/mui';
+
+<ImageField source="url" title="title" />
+```
+
+This field is also generally used within an [<ImageInput />](http://marmelab.com/admin-on-rest/Inputs.html#imageinput) component to display preview.
+
+The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. It can either be an hard-written string, or a path within your JSON object:
+
+``` js
+// { picture: { url: 'cover.jpg', title: 'Larry Cover (French pun intended)' } }
+
+// Title would be "picture.title", hence "Larry Cover (French pun intended)"
+<ImageField source="picture.url" title="picture.title" />
+
+// Title would be "Picture", as "Picture" is not a path in previous given object
+<ImageField source="picture.url" title="Picture" />
+```
+
+If passed value is an existing path within your JSON object, then it uses the object attribute. Otherwise, it considers its value as an hard-written title.
 
 ## `<NumberField>`
 
@@ -310,6 +339,34 @@ export const PostEdit = (props) => (
 ```
 
 ![ReferenceManyFieldDatagrid](./img/reference-many-field-datagrid.png)
+
+By default, admin-on-rest restricts the possible values to 25. You can change this limit by setting the `perPage` prop.
+
+```js
+<ReferenceManyField perPage={10} reference="comments" target="post_id">
+   ...
+</ReferenceManyField>
+```
+
+By default, it orders the possible values by id desc. You can change this order by setting the `sort` prop (an object with `field` and `order` properties).
+
+{% raw %}
+```js
+<ReferenceManyField sort={{ field: 'created_at', order: 'DESC' }} reference="comments" target="post_id">
+   ...
+</ReferenceManyField>
+```
+{% endraw %}
+
+Also, you can filter the query used to populate the possible values. Use the `filter` prop for that.
+
+{% raw %}
+```js
+<ReferenceManyField filter={{ is_published: true }} reference="comments" target="post_id">
+   ...
+</ReferenceManyField>
+```
+{% endraw %}
 
 ## `<RichTextField>`
 

@@ -40,7 +40,7 @@ All input components accept the following attributes:
 <TextInput source="zb_title" label="Title" />
 ```
 
-If you edit a record with a complex structure, you can use a path as the `source` parameter. For instance, if the API returns the following 'book' record:
+**Tip**: If you edit a record with a complex structure, you can use a path as the `source` parameter. For instance, if the API returns the following 'book' record:
 
 ```js
 {
@@ -58,6 +58,8 @@ Then you can display a text input to edit the author first name as follows:
 ```js
 <TextInput source="author.firstName" />
 ```
+
+**Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.html#translating-resource-and-field-names) for details.
 
 ## `<AutocompleteInput>`
 
@@ -154,6 +156,66 @@ import { NullableBooleanInput } from 'admin-on-rest/lib/mui';
 
 ![NullableBooleanInput](./img/nullable-boolean-input.png)
 
+## `<CheckboxGroupInput>`
+
+If you want to let the user choose multiple values among a list of possible values by showing them all, `<CheckboxGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+
+```js
+import { CheckboxGroupInput } from 'admin-on-rest/lib/mui';
+
+<CheckboxGroupInput source="category" choices={[
+    { id: 'programming', name: 'Programming' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'photography', name: 'Photography' },
+]} />
+```
+
+![CheckboxGroupInput](./img/checkbox-group-input.png)
+
+You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
+
+```js
+const choices = [
+    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+];
+<CheckboxGroupInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+```
+
+`optionText` also accepts a function, so you can shape the option text at will:
+
+```js
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
+<CheckboxGroupInput source="author_id" choices={choices} optionText={optionRenderer} />
+```
+
+`optionText` also accepts a React Element, that will be cloned and receive the related choice as the `record` prop. You can use Field components there.
+
+```js
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
+<CheckboxGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
+```
+
+Lastly, use the `options` attribute if you want to override any of Material UI's `<Checkbox>` attributes:
+
+{% raw %}
+```js
+<CheckboxGroupInput source="category" options={{
+    labelPosition: 'right'
+}} />
+```
+{% endraw %}
+
+Refer to [Material UI Checkbox documentation](http://www.material-ui.com/#/components/checkbox) for more details.
+
 ## `<DateInput>`
 
 Ideal for editing dates, `<DateInput>` renders a beautiful [Date Picker](http://www.material-ui.com/#/components/date-picker) with full localization support.
@@ -232,6 +294,24 @@ export const PostEdit = (props) => (
     </Edit>
 );
 ```
+
+## `<ImageInput>`
+
+`<ImageInput>` allows to upload some pictures using [react-dropzone](https://github.com/okonet/react-dropzone).
+
+![ImageInput](./img/image-input.png)
+
+Previews are enabled using `<ImageInput>` children, as following:
+
+``` js
+<ImageInput source="pictures" label="Related pictures" accept="image/*">
+    <ImageField source="src" title="title" />
+</ImageInput>
+```
+
+This component accepts all [react-dropzone properties](https://github.com/okonet/react-dropzone#features), in addition to those of admin-on-rest. For instance, if you need to upload several images at once, just add the `multiple` DropZone attribute to your `<ImageInput />` field.
+
+Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data.
 
 ## `<LongTextInput>`
 

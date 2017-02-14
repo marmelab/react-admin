@@ -1,8 +1,10 @@
 import React, { PropTypes } from 'react';
 import get from 'lodash.get';
+import pure from 'recompose/pure';
 
-const TextField = ({ source, record = {}, elStyle }) =>
-    <span style={elStyle}>{get(record, source)}</span>;
+const TextField = ({ source, record = {}, elStyle }) => {
+    return <span style={elStyle}>{get(record, source)}</span>;
+}
 
 TextField.propTypes = {
     addLabel: PropTypes.bool,
@@ -12,8 +14,10 @@ TextField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-TextField.defaultProps = {
+const PureTextField = pure(TextField);
+
+PureTextField.defaultProps = {
     addLabel: true,
 };
 
-export default TextField;
+export default PureTextField;
