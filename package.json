@@ -69,5 +69,9 @@
     "redux-form": "~6.2.0",
     "redux-saga": "~0.14.2",
     "reselect": "~2.5.4"
+  },
+  "peerDependencies": {
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-stage-0": "^6.22.0"
   }
 }
