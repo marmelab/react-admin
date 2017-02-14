@@ -216,29 +216,6 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 
 Refer to [Material UI Checkbox documentation](http://www.material-ui.com/#/components/checkbox) for more details.
 
-## `<ColorInput>`
-`<ColorInput>` is a color picker using [React Color](http://casesandberg.github.io/react-color/), a collection of color pickers.
-
-As this is a external component, you must install it via npm:
-```sh
-npm install aor-color-input --save-dev
-```
-
-Then use it as a normal input component:
-``` js
-import ColorInput from 'aor-color-input';
-<ColorInput source="color" />
-```
-![ColorInput](./img/color-input.gif)
-
-You can also customize the color picker using the `picker` attribute.
-```js
-<ColorInput source="color" picker="Sketch"/>
-```
-
-### Pickers
-`Alpha`, `Block`, `Chrome` (default), `Circle`, `Compact`, `Github`, `Hue`, `Material`, `Photoshop`, `Sketch`, `Slider`, `Swatches` and `Twitter`.
-
 ## `<DateInput>`
 
 Ideal for editing dates, `<DateInput>` renders a beautiful [Date Picker](http://www.material-ui.com/#/components/date-picker) with full localization support.
@@ -647,6 +624,12 @@ You can choose a specific input type using the `type` attribute, for instance `t
 ```
 
 **Warning**: Do not use `type="number"`, or you'll receive a string as value (this is a [known React bug](https://github.com/facebook/react/issues/1425)). Instead, use [`<NumberInput>`](#numberinput).
+
+## Third-Party Components
+
+You can find components for admin-on-rest in third-party repositories.
+
+* [dreinke/aor-color-input](https://github.com/dreinke/aor-color-input): a color input using [React Color](http://casesandberg.github.io/react-color/), a collection of color pickers.
 
 ## Writing Your Own Input Component
 
