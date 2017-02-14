@@ -17,10 +17,9 @@ const style = {
 const translatedResourceName = (resource, translate) =>
     translate(`resources.${resource.name}.name`, {
         smart_count: 2,
-        _: translate(resource.options.label, {
-            smart_count: 2,
-            _: inflection.humanize(inflection.pluralize(resource.name)),
-        }),
+        _: resource.options.label ?
+            translate(resource.options.label, { smart_count: 2, _: resource.options.label }) :
+            inflection.humanize(inflection.pluralize(resource.name)),
     });
 
 const Menu = ({ resources, translate, logout }) => (

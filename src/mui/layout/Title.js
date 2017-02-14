@@ -6,7 +6,7 @@ const Title = ({ defaultTitle, record, title, translate }) => {
         return <span>{defaultTitle}</span>;
     }
     if (typeof title === 'string') {
-        return <span>{translate(title, { _: defaultTitle })}</span>;
+        return <span>{translate(title, { _: title })}</span>;
     }
     return React.cloneElement(title, { record });
 };
