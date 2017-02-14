@@ -6,9 +6,9 @@ import ContentCreate from 'material-ui/svg-icons/content/create';
 import linkToRecord from '../../util/linkToRecord';
 import translate from '../../i18n/translate';
 
-const EditButton = ({ basePath = '', label = 'aor.action.edit', record = {}, translate }) => <FlatButton
+const EditButton = ({ basePath = '', label, record = {}, translate }) => <FlatButton
     primary
-    label={label && translate(label)}
+    label={label || translate('aor.action.edit')}
     icon={<ContentCreate />}
     containerElement={<Link to={linkToRecord(basePath, record.id)} />}
     style={{ overflow: 'inherit' }}

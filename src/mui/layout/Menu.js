@@ -32,7 +32,7 @@ const Menu = ({ resources, translate, logout }) => (
                     <ListItem
                         key={resource.name}
                         containerElement={<Link to={`/${resource.name}`} />}
-                        primaryText={translatedResourceName(resource, translate)}
+                        primaryText={resource.options.label || translatedResourceName(resource, translate)}
                         leftIcon={<resource.icon />}
                     />,
                 )

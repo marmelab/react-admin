@@ -3,9 +3,9 @@ import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import translate from '../../i18n/translate';
 
-const RefreshButton = ({ label = 'aor.action.refresh', translate, refresh }) => <FlatButton
+const RefreshButton = ({ label, translate, refresh }) => <FlatButton
     primary
-    label={label && translate(label)}
+    label={label || translate('aor.action.refresh')}
     onClick={refresh}
     icon={<NavigationRefresh />}
 />;
