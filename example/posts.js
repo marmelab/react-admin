@@ -33,13 +33,13 @@ import { translate } from 'admin-on-rest';
 import Chip from 'material-ui/Chip';
 export PostIcon from 'material-ui/svg-icons/action/book';
 
-const QuickFilter = ({ label }) => <Chip>{ label }</Chip>;
+const QuickFilter = translate(({ label, translate }) => <Chip>{translate(label)}</Chip>);
 
 const PostFilter = ({ ...props }) => (
     <Filter {...props}>
         <TextInput label="post.list.search" source="q" alwaysOn />
         <TextInput source="title" defaultValue="Qui tempore rerum et voluptates" />
-        <QuickFilter source="commentable" defaultValue={true} />
+        <QuickFilter label="resources.posts.fields.commentable" source="commentable" defaultValue={true} />
     </Filter>
 );
 
