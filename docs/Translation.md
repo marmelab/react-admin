@@ -39,8 +39,8 @@ export default App;
 You can find translation packages for the following languages:
 
 - English (`en`) is the default
-- [aor-language-french](https://github.com/marmelab/aor-language-french) for French (`fr`)
-- [aor-language-italian](https://github.com/stefsava/aor-language-italian) for Italian (`it`)
+- French (`fr`): [marmelab/aor-language-french](https://github.com/marmelab/aor-language-french)
+- Italian (`it`): [stefsava/aor-language-italian](https://github.com/stefsava/aor-language-italian)
 
 If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/admin-on-rest/blob/master/docs/Translation.md) with a link to your package.
 
