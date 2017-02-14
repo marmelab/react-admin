@@ -85,7 +85,7 @@ export class CheckboxGroupInput extends Component {
                     {choices.map(choice =>
                         <Checkbox
                             key={choice[optionValue]}
-                            checked={value.find(v => (v == choice[optionValue])) !== undefined}
+                            checked={value ? value.find(v => (v == choice[optionValue])) !== undefined : false}
                             onCheck={this.handleCheck}
                             value={choice[optionValue]}
                             label={option(choice)}
