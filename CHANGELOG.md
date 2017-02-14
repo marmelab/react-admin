@@ -2,6 +2,8 @@
 
 ## v0.8.0
 
+See the [v0.8.0 announcement in the marmelab blog](https://marmelab.com/blog/2017/02/14/admin-on-rest-0-8.html).
+
 * [BC Break] Rename `defaultSort` prop to `sort` in `<List>` component, to make it consistent with the props of `<ReferenceInput>` and `<ReferenceManyField>`
 * [BC Break] Rename `filter` props (the one accepting a `<Filter>` element) to `filters` in `<List>` component
 * Add I18n
