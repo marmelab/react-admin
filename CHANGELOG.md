@@ -1,5 +1,13 @@
 # Changelog
 
+## V0.8.1
+
+* Add link to GraphQl rest client in the docs
+* Add link to `<ColorInput>` component in the docs
+* Add link to Italian translation in the docs
+* Fix custom title in view and custom label in resource
+* Fix quick filter in example demo
+
 ## v0.8.0
 
 See the [v0.8.0 announcement in the marmelab blog](https://marmelab.com/blog/2017/02/14/admin-on-rest-0-8.html).
