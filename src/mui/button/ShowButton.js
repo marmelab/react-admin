@@ -5,9 +5,9 @@ import ImageEye from 'material-ui/svg-icons/image/remove-red-eye';
 import linkToRecord from '../../util/linkToRecord';
 import translate from '../../i18n/translate';
 
-const ShowButton = ({ basePath = '', label = 'aor.action.show', record = {}, translate }) => <FlatButton
+const ShowButton = ({ basePath = '', label, record = {}, translate }) => <FlatButton
     primary
-    label={label && translate(label)}
+    label={label || translate('aor.action.show')}
     icon={<ImageEye />}
     containerElement={<Link to={`${linkToRecord(basePath, record.id)}/show`} />}
     style={{ overflow: 'inherit' }}

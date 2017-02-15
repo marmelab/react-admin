@@ -5,9 +5,9 @@ import FlatButton from 'material-ui/FlatButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import translate from '../../i18n/translate';
 
-const CreateButton = ({ basePath = '', translate, label = 'aor.action.create' }) => <FlatButton
+const CreateButton = ({ basePath = '', translate, label }) => <FlatButton
     primary
-    label={label && translate(label)}
+    label={label || translate('aor.action.create')}
     icon={<ContentAdd />}
     containerElement={<Link to={`${basePath}/create`} />}
     style={{ overflow: 'inherit' }}

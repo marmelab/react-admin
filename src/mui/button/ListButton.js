@@ -4,9 +4,9 @@ import FlatButton from 'material-ui/FlatButton';
 import ActionList from 'material-ui/svg-icons/action/list';
 import translate from '../../i18n/translate';
 
-const ListButton = ({ basePath = '', label = 'aor.action.list', translate }) => <FlatButton
+const ListButton = ({ basePath = '', label, translate }) => <FlatButton
     primary
-    label={label && translate(label)}
+    label={label || translate('aor.action.list')}
     icon={<ActionList />}
     containerElement={<Link to={basePath} />}
     style={{ overflow: 'inherit' }}

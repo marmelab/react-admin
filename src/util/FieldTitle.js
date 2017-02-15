@@ -7,8 +7,8 @@ import translate from '../i18n/translate';
 
 const FieldTitle = ({ resource, source, label, translate }) => (
     <span>
-        {typeof label !== 'undefined' ?
-            translate(label, { _: label })
+        {typeof label === 'string' ?
+            label
             :
             (typeof source !== 'undefined' ?
                 translate(`resources.${resource}.fields.${source}`, { _: inflection.humanize(source) })
