@@ -625,6 +625,12 @@ You can choose a specific input type using the `type` attribute, for instance `t
 
 **Warning**: Do not use `type="number"`, or you'll receive a string as value (this is a [known React bug](https://github.com/facebook/react/issues/1425)). Instead, use [`<NumberInput>`](#numberinput).
 
+## Third-Party Components
+
+You can find components for admin-on-rest in third-party repositories.
+
+* [dreinke/aor-color-input](https://github.com/dreinke/aor-color-input): a color input using [React Color](http://casesandberg.github.io/react-color/), a collection of color pickers.
+
 ## Writing Your Own Input Component
 
 If you need a more specific input type, you can also write it yourself. You'll have to rely on redux-form's [`<Field>`](http://redux-form.com/6.4.3/docs/api/Field.md/) component, so as to handle the value update cycle.
