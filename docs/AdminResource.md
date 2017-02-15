@@ -468,7 +468,7 @@ const App = () => (
 
 {% raw %}
 ```js
-<Resource name="v2/posts" options={{ label: 'Posts' }}list={PostList} />
+<Resource name="v2/posts" options={{ label: 'Posts' }} list={PostList} />
 ```
 {% endraw %}
 
