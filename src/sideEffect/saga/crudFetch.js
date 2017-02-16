@@ -8,9 +8,9 @@ import {
 
 const crudFetch = (restClient) => {
     function* handleFetch(action) {
-        const { type, payload, meta } = action;
-        const restType = meta.fetch;
-        delete meta.fetch;
+        const { type, payload, meta: { fetch: fetchMeta, ...meta } } = action;
+        const restType = fetchMeta;
+
         yield [
             put({ type: `${type}_LOADING`, payload, meta }),
             put({ type: FETCH_START }),
