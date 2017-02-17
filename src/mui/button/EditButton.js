@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import shouldUpdate from 'recompose/shouldUpdate';
+import compose from 'recompose/compose';
 import FlatButton from 'material-ui/FlatButton';
 import ContentCreate from 'material-ui/svg-icons/content/create';
 import linkToRecord from '../../util/linkToRecord';
@@ -21,8 +22,13 @@ EditButton.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-export default translate(shouldUpdate((props, nextProps) =>
-    props.record
-    && props.record.id !== nextProps.record.id
-    || props.basePath !== nextProps.basePath
-)(EditButton));
+const enhance = compose(
+    translate,
+    shouldUpdate((props, nextProps) =>
+        props.record
+        && props.record.id !== nextProps.record.id
+        || props.basePath !== nextProps.basePath
+    ),
+);
+
+export default enhance(EditButton);

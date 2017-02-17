@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+import shouldUpdate from 'recompose/shouldUpdate';
+import compose from 'recompose/compose';
 import FlatButton from 'material-ui/FlatButton';
 import ImageEye from 'material-ui/svg-icons/image/remove-red-eye';
 import linkToRecord from '../../util/linkToRecord';
@@ -20,4 +22,13 @@ ShowButton.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-export default translate(ShowButton);
+const enhance = compose(
+    translate,
+    shouldUpdate((props, nextProps) =>
+        props.record
+        && props.record.id !== nextProps.record.id
+        || props.basePath !== nextProps.basePath
+    ),
+);
+
+export default enhance(ShowButton);
