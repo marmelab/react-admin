@@ -1,50 +1,70 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import inflection from 'inflection';
-import Paper from 'material-ui/Paper';
+import Drawer from 'material-ui/Drawer';
 import { List, ListItem } from 'material-ui/List';
+import { SMALL } from 'material-ui/utils/withWidth';
 import { Link } from 'react-router';
 import pure from 'recompose/pure';
+import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
 
-const style = {
-    flex: '0 0 15em',
-    order: -1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+const styles = {
+    small: {},
+    notSmall: {
+        zIndex: 0,
+        paddingTop: 60,
+    },
 };
 
-const translatedResourceName = (resource, translate) =>
-    translate(`resources.${resource.name}.name`, {
-        smart_count: 2,
-        _: resource.options.label ?
-            translate(resource.options.label, { smart_count: 2, _: resource.options.label }) :
-            inflection.humanize(inflection.pluralize(resource.name)),
-    });
+class Menu extends Component {
+    handleRequestChange = (open, reason) => {
+        if (reason === 'clickaway') this.props.toggleSidebar();
+    }
 
-const Menu = ({ resources, translate, logout }) => (
-    <Paper style={style}>
-        <List>
-            {resources
-                .filter(r => r.list)
-                .map(resource =>
-                    <ListItem
-                        key={resource.name}
-                        containerElement={<Link to={`/${resource.name}`} />}
-                        primaryText={translatedResourceName(resource, translate)}
-                        leftIcon={<resource.icon />}
-                    />,
-                )
-            }
-        </List>
-        {logout}
-    </Paper>
-);
+    translatedResourceName(resource) {
+        return this.props.translate(`resources.${resource.name}.name`, {
+            smart_count: 2,
+            _: resource.options.label ?
+                this.props.translate(resource.options.label, { smart_count: 2, _: resource.options.label }) :
+                inflection.humanize(inflection.pluralize(resource.name)),
+        });
+    }
+
+    render() {
+        const { resources, translate, logout, open, width } = this.props;
+        return (
+            <Drawer containerStyle={width === SMALL ? styles.small : styles.notSmall} open={open} onRequestChange={this.handleRequestChange} docked={width !== SMALL}>
+                <List>
+                    {resources
+                        .filter(r => r.list)
+                        .map(resource =>
+                            <ListItem
+                                key={resource.name}
+                                containerElement={<Link to={`/${resource.name}`} />}
+                                primaryText={this.translatedResourceName(resource)}
+                                leftIcon={<resource.icon />}
+                            />,
+                        )
+                    }
+                </List>
+                {logout}
+            </Drawer>
+        );
+    }
+}
 
 Menu.propTypes = {
     resources: PropTypes.array.isRequired,
     translate: PropTypes.func.isRequired,
     logout: PropTypes.element,
+    toggleSidebar: PropTypes.func.isRequired,
+    open: PropTypes.bool,
+    width: PropTypes.number.isRequired,
 };
 
-export default translate(pure(Menu));
+const enhanced = compose(
+    translate,
+    pure,
+);
+
+export default enhanced(Menu);
