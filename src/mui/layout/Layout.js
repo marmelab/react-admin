@@ -55,8 +55,8 @@ class Layout extends Component {
                 <div style={prefixedStyles.main}>
                     <AppBar title={title} isLoading={isLoading} onLeftIconButtonTouchTap={this.toggleSidebar} />
                     <div className="body" style={prefixedStyles.body}>
-                        <Menu resources={route.resources} logout={logout} open={sidebarOpen} />
                         <div style={prefixedStyles.content}>{children}</div>
+                        <Menu resources={route.resources} logout={logout} open={sidebarOpen} />
                     </div>
                     <Notification />
                 </div>
