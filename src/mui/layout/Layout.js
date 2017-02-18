@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -11,21 +11,58 @@ import defaultTheme from '../defaultTheme';
 
 injectTapEventPlugin();
 
-const Layout = ({ isLoading, children, route, title, theme, logout }) => {
-    const muiTheme = getMuiTheme(theme);
-    const prefix = autoprefixer(muiTheme);
-    return (
-        <MuiThemeProvider muiTheme={muiTheme}>
-            <div style={prefix({ display: 'flex', flexDirection: 'column', minHeight: '100vh' })}>
-                <AppBar title={title} isLoading={isLoading} />
-                <div className="body" style={prefix({ display: 'flex', flex: '1', backgroundColor: '#edecec' })}>
-                    <div style={prefix({ flex: 1 })}>{children}</div>
-                    <Menu resources={route.resources} logout={logout} />
+const styles = {
+    main: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+    },
+    body: {
+        backgroundColor: '#edecec',
+        display: 'flex',
+        flex: 1,
+        overflow: 'hidden',
+    },
+    content: {
+        flex: 1,
+    },
+};
+
+const prefixedStyles = {};
+
+class Layout extends Component {
+    state = {
+        sidebarOpen: true,
+    };
+
+    toggleSidebar = () => {
+        this.setState({ sidebarOpen: !this.state.sidebarOpen });
+    }
+
+    render() {
+        const { isLoading, children, route, title, theme, logout } = this.props;
+        const { sidebarOpen } = this.state;
+        const muiTheme = getMuiTheme(theme);
+        if (!prefixedStyles.main) {
+            // do this once because user agent never changes
+            const prefix = autoprefixer(muiTheme);
+            prefixedStyles.main = prefix(styles.main);
+            prefixedStyles.body = prefix(styles.body);
+            prefixedStyles.content = prefix(styles.content);
+        }
+        return (
+            <MuiThemeProvider muiTheme={muiTheme}>
+                <div style={prefixedStyles.main}>
+                    <AppBar title={title} isLoading={isLoading} onLeftIconButtonTouchTap={this.toggleSidebar} />
+                    <div className="body" style={prefixedStyles.body}>
+                        <Menu resources={route.resources} logout={logout} open={sidebarOpen} />
+                        <div style={prefixedStyles.content}>{children}</div>
+                    </div>
+                    <Notification />
                 </div>
-                <Notification />
-            </div>
-        </MuiThemeProvider>
-    );
+            </MuiThemeProvider>
+        );
+    }
 };
 
 Layout.propTypes = {

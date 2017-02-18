@@ -4,14 +4,20 @@ import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import { Link } from 'react-router';
 import pure from 'recompose/pure';
+import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
 
-const style = {
-    flex: '0 0 15em',
-    order: -1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+const styles = {
+    open: {
+        flex: '0 0 15em',
+        transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+        marginLeft: 0,
+    },
+    closed: {
+        flex: '0 0 15em',
+        transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+        marginLeft: '-15em',
+    },
 };
 
 const translatedResourceName = (resource, translate) =>
@@ -22,8 +28,8 @@ const translatedResourceName = (resource, translate) =>
             inflection.humanize(inflection.pluralize(resource.name)),
     });
 
-const Menu = ({ resources, translate, logout }) => (
-    <Paper style={style}>
+const Menu = ({ resources, translate, logout, open }) => (
+    <Paper style={open ? styles.open : styles.closed}>
         <List>
             {resources
                 .filter(r => r.list)
@@ -47,4 +53,9 @@ Menu.propTypes = {
     logout: PropTypes.element,
 };
 
-export default translate(pure(Menu));
+const enhanced = compose(
+    pure,
+    translate,
+);
+
+export default enhanced(Menu);
