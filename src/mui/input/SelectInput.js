@@ -62,7 +62,7 @@ class SelectInput extends Component {
             );
         return (
             <SelectField
-                {...input}
+                value={input.value}
                 menuStyle={{ maxHeight: '41px', overflowY: 'hidden' }}
                 floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
                 onChange={this.handleChange}
