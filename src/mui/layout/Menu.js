@@ -9,16 +9,16 @@ import translate from '../../i18n/translate';
 
 const styles = {
     open: {
-        flex: '0 0 15em',
+        flex: '0 0 16em',
         order: -1,
         transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
         marginLeft: 0,
     },
     closed: {
-        flex: '0 0 15em',
+        flex: '0 0 16em',
         order: -1,
         transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
-        marginLeft: '-15em',
+        marginLeft: '-16em',
     },
 };
 
