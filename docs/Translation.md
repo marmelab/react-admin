@@ -42,6 +42,7 @@ You can find translation packages for the following languages:
 - French (`fr`): [marmelab/aor-language-french](https://github.com/marmelab/aor-language-french)
 - Italian (`it`): [stefsava/aor-language-italian](https://github.com/stefsava/aor-language-italian)
 - Chinese (`cn`): [downup2u/aor-language-chinese](https://github.com/downup2u/aor-language-chinese)
+- German (`de`): [der-On/aor-language-german](https://github.com/der-On/aor-language-german)
 
 If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/admin-on-rest/blob/master/docs/Translation.md) with a link to your package.
 
