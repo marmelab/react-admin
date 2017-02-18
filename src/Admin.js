@@ -67,7 +67,8 @@ const Admin = ({
                 })
             })
             .then(callback)
-        : () => () => true;
+        :
+        params => () => params && params.scrollToTop ? window.scrollTo(0, 0) : null;
     const LoginPage = withProps({ title, theme, authClient })(loginPage || Login);
     const LogoutButton = withProps({ authClient })(logoutButton || Logout);
     const Layout = withProps({ title, theme, logout: <LogoutButton /> })(appLayout || DefaultLayout);
