@@ -17,7 +17,7 @@ const style = {
 const translatedResourceName = (resource, translate) =>
     translate(`resources.${resource.name}.name`, {
         smart_count: 2,
-        _: resource.options.label ?
+        _: resource.options && resource.options.label ?
             translate(resource.options.label, { smart_count: 2, _: resource.options.label }) :
             inflection.humanize(inflection.pluralize(resource.name)),
     });
@@ -32,7 +32,7 @@ const Menu = ({ resources, translate, logout }) => (
                         key={resource.name}
                         containerElement={<Link to={`/${resource.name}`} />}
                         primaryText={translatedResourceName(resource, translate)}
-                        leftIcon={<resource.icon />}
+                        leftIcon={resource.icon && <resource.icon />}
                     />,
                 )
             }
