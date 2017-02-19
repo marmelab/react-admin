@@ -1,10 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import muiThemeable from 'material-ui/styles/muiThemeable';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import DatagridCell from './DatagridCell';
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridBody from './DatagridBody';
 
 const defaultStyles = {
+    table: {
+        tableLayout: 'auto',
+    },
     tbody: {
         height: 'inherit',
     },
@@ -35,6 +39,10 @@ const defaultStyles = {
  * Props:
  *  - styles
  *  - rowStyle
+ *  - options (passed as props to <Table>)
+ *  - headerOptions (passed as props to mui <TableHeader>)
+ *  - bodyOptions (passed as props to mui <TableBody>)
+ *  - rowOptions (passed as props to mui <TableRow>)
  *
  * @example Display all posts as a datagrid
  * const postRowStyle = (record, index) => ({
@@ -68,11 +76,11 @@ class Datagrid extends Component {
     }
 
     render() {
-        const { resource, children, ids, isLoading, data, currentSort, basePath, styles = defaultStyles, muiTheme, rowStyle } = this.props;
+        const { resource, children, ids, isLoading, data, currentSort, basePath, styles = defaultStyles, muiTheme, rowStyle, options, headerOptions, bodyOptions, rowOptions } = this.props;
         return (
-            <table style={muiTheme.table}>
-                <thead>
-                    <tr style={muiTheme.tableRow}>
+            <Table style={options && options.fixedHeader ? null : styles.table} fixedHeader={false} {...options}>
+                <TableHeader displaySelectAll={false} adjustForCheckbox={false} {...headerOptions}>
+                    <TableRow style={muiTheme.tableRow}>
                         {React.Children.map(children, (field, index) => (
                             <DatagridHeaderCell
                                 key={field.props.source || index}
@@ -84,30 +92,34 @@ class Datagrid extends Component {
                                 resource={resource}
                             />
                         ))}
-                    </tr>
-                </thead>
-                <DatagridBody resource={resource} ids={ids} data={data} basePath={basePath} styles={styles} rowStyle={rowStyle} isLoading={isLoading}>
+                    </TableRow>
+                </TableHeader>
+                <DatagridBody resource={resource} ids={ids} data={data} basePath={basePath} styles={styles} rowStyle={rowStyle} isLoading={isLoading} options={bodyOptions} rowOptions={rowOptions}>
                     {children}
                 </DatagridBody>
-            </table>
+            </Table>
         );
     }
 }
 
 Datagrid.propTypes = {
-    ids: PropTypes.arrayOf(PropTypes.any).isRequired,
-    isLoading: PropTypes.bool,
-    resource: PropTypes.string,
-    data: PropTypes.object.isRequired,
+    basePath: PropTypes.string,
+    bodyOptions: PropTypes.object,
     currentSort: PropTypes.shape({
         sort: PropTypes.string,
         order: PropTypes.string,
     }),
-    basePath: PropTypes.string,
+    data: PropTypes.object.isRequired,
+    headerOptions: PropTypes.object,
+    ids: PropTypes.arrayOf(PropTypes.any).isRequired,
+    isLoading: PropTypes.bool,
+    muiTheme: PropTypes.object,
+    options: PropTypes.object,
+    resource: PropTypes.string,
+    rowOptions: PropTypes.object,
+    rowStyle: PropTypes.func,
     setSort: PropTypes.func,
     styles: PropTypes.object,
-    muiTheme: PropTypes.object,
-    rowStyle: PropTypes.func,
 };
 
 Datagrid.defaultProps = {
