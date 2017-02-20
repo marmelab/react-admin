@@ -175,6 +175,8 @@ $ cd ../myapp
 $ npm run
 ```
 
+**Tip**: If you're on Windows and can't use `make`, try [this Gist](https://gist.github.com/mantis/bb5d9f7d492f86e94341816321500934).
+
 ## License
 
 Admin-on-rest is licensed under the [MIT Licence](https://github.com/marmelab/admin-on-rest/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
