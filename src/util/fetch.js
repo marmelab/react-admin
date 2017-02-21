@@ -1,12 +1,4 @@
-class ErrorStatus {
-    constructor(message, status) {
-        this.name = 'ErrorStatus';
-        this.message = message;
-        this.status = status;
-        this.stack = new Error().stack;
-    }
-}
-ErrorStatus.prototype = Object.create(Error.prototype);
+import HttpError from './HttpError';
 
 export const fetchJson = (url, options = {}) => {
     const requestHeaders = options.headers || new Headers({
@@ -34,7 +26,7 @@ export const fetchJson = (url, options = {}) => {
                 // not json, no big deal
             }
             if (status < 200 || status >= 300) {
-                return Promise.reject(new ErrorStatus((json && json.message) || statusText, status));
+                return Promise.reject(new HttpError((json && json.message) || statusText, status));
             }
             return { status, headers, body, json };
         });
