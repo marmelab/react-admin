@@ -12,12 +12,18 @@ const styles = {
         flex: '0 0 16em',
         order: -1,
         transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
         marginLeft: 0,
     },
     closed: {
         flex: '0 0 16em',
         order: -1,
         transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
         marginLeft: '-16em',
     },
 };
