@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import autoprefixer from 'material-ui/utils/autoprefixer';
+import autoprefixer from 'material-ui/utils/autoprefixer'
+import CircularProgress from 'material-ui/CircularProgress';;
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import AppBar from './AppBar';
 import Notification from './Notification';
@@ -25,6 +26,13 @@ const styles = {
     },
     content: {
         flex: 1,
+    },
+    loader: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        margin: 16,
+        zIndex: 1200,
     },
 };
 
@@ -53,12 +61,18 @@ class Layout extends Component {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div style={prefixedStyles.main}>
-                    <AppBar title={title} isLoading={isLoading} onLeftIconButtonTouchTap={this.toggleSidebar} />
+                    <AppBar title={title} onLeftIconButtonTouchTap={this.toggleSidebar} />
                     <div className="body" style={prefixedStyles.body}>
                         <div style={prefixedStyles.content}>{children}</div>
                         <Menu resources={route.resources} logout={logout} open={sidebarOpen} />
                     </div>
                     <Notification />
+                    {isLoading && <CircularProgress
+                        color="#fff"
+                        size={30}
+                        thickness={2}
+                        style={styles.loader}
+                    />}
                 </div>
             </MuiThemeProvider>
         );
