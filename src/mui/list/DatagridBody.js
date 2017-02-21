@@ -6,7 +6,7 @@ import DatagridCell from './DatagridCell';
 const DatagridBody = ({ resource, children, ids, data, basePath, styles, rowStyle, options, rowOptions, ...rest }) => (
     <TableBody displayRowCheckbox={false} {...rest} {...options}>
         {ids.map((id, rowIndex) => (
-            <TableRow style={rowStyle ? rowStyle(data[id], rowIndex) : styles.tr} key={id} {...rowOptions}>
+            <TableRow style={rowStyle ? rowStyle(data[id], rowIndex) : styles.tr} key={id} selectable={false} {...rowOptions}>
                 {React.Children.map(children, (field, index) => (
                     <DatagridCell
                         key={`${id}-${field.props.source || index}`}
