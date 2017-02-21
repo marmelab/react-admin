@@ -1,12 +1,24 @@
 # Changelog
 
+## V0.8.2
+
+* Fix scroll to top during navigation when auth is disabled
+* Fix fetch saga to avoid mutating actions
+* Fix custom app documentation
+* Fix SelectInput arrow click hides input
+* Fix missing status in fetch when error is thrown ([wadjeroudi](https://github.com/wadjeroudi))
+* Remove documentation images from package
+* Add Chinese translation link ([downup2u](https://github.com/downup2u))
+* Add German translation link ([der-On](https://github.com/der-On))
+* Add link to powershell script for building ([mantis](https://github.com/mantis))
+
 ## V0.8.1
 
-* Add link to GraphQl rest client in the docs
-* Add link to `<ColorInput>` component in the docs
-* Add link to Italian translation in the docs
 * Fix custom title in view and custom label in resource
 * Fix quick filter in example demo
+* Add link to GraphQl rest client in the docs
+* Add link to `<ColorInput>` component in the docs
+* Add link to Italian translation in the docs ([stefsava](https://github.com/stefsava))
 
 ## v0.8.0
 
