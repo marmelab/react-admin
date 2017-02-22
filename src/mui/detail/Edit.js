@@ -68,7 +68,7 @@ export class Edit extends Component {
     }
 
     handleSubmit(record) {
-        this.props.crudUpdate(this.props.resource, this.props.id, record, this.getBasePath());
+        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath());
     }
 
     render() {
