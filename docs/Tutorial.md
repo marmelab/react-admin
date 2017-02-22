@@ -380,7 +380,7 @@ The `authClient` is a simple function, which must return a `Promise`:
 
 ```js
 // in src/authClient.js
-import { AUTH_LOGIN, AUTH_LOGOUT } from 'admin-on-rest';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK } from 'admin-on-rest';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
