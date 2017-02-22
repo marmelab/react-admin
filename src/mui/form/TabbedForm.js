@@ -83,6 +83,7 @@ TabbedForm.defaultProps = {
 const ReduxForm = reduxForm({
     form: 'record-form',
     validate: validateForm,
+    enableReinitialize: true,
 })(TabbedForm);
 
 
