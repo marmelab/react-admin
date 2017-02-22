@@ -23,12 +23,12 @@ ShowButton.propTypes = {
 };
 
 const enhance = compose(
-    translate,
     shouldUpdate((props, nextProps) =>
         props.record
         && props.record.id !== nextProps.record.id
         || props.basePath !== nextProps.basePath
     ),
+    translate,
 );
 
 export default enhance(ShowButton);
