@@ -7,6 +7,8 @@ title: "My First Project Tutorial"
 
 This 15 minutes tutorial will expose how to create a new admin app based on an existing REST API.
 
+![admin-on-rest blog demo](http://static.marmelab.com/admin-on-rest.gif)
+
 ## Installation
 
 Admin-on-REST uses React. We'll use Facebook's [react-create-app](https://github.com/facebookincubator/create-react-app) to create an empty React app, and install the `admin-on-rest` package:
