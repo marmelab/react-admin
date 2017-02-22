@@ -46,9 +46,9 @@ export const CRUD_UPDATE_LOADING = 'CRUD_UPDATE_LOADING';
 export const CRUD_UPDATE_FAILURE = 'CRUD_UPDATE_FAILURE';
 export const CRUD_UPDATE_SUCCESS = 'CRUD_UPDATE_SUCCESS';
 
-export const crudUpdate = (resource, id, data, basePath) => ({
+export const crudUpdate = (resource, id, data, previousData, basePath) => ({
     type: CRUD_UPDATE,
-    payload: { id, data, basePath },
+    payload: { id, data, previousData, basePath },
     meta: { resource, fetch: UPDATE, cancelPrevious: false },
 });
 
