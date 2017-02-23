@@ -1,6 +1,14 @@
 # Changelog
 
-## V0.8.2
+## v0.8.3
+
+* Fix Edit view shows stale data
+* Fix anchor typo on documentation index ([szappacosta](https://github.com/szappacosta))
+* Fix missing import in the Getting Started tutorial ([SilentKernel](https://github.com/SilentKernel))
+* Add demo video in doc and GitHub homepage
+* Add Russian translation link ([cytomich](https://github.com/cytomich))
+
+## v0.8.2
 
 * Fix scroll to top during navigation when auth is disabled
 * Fix fetch saga to avoid mutating actions
@@ -12,7 +20,7 @@
 * Add German translation link ([der-On](https://github.com/der-On))
 * Add link to powershell script for building ([mantis](https://github.com/mantis))
 
-## V0.8.1
+## v0.8.1
 
 * Fix custom title in view and custom label in resource
 * Fix quick filter in example demo
