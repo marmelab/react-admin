@@ -49,8 +49,11 @@ function* handleResponse({ type, requestPayload, error, payload }) {
     case CRUD_UPDATE_FAILURE:
     case CRUD_DELETE_FAILURE: {
         console.error(error);
+        const errorMessage = typeof error === 'string'
+            ? error
+            : (error.message || 'aor.notification.http_error');
         return yield [
-            put(showNotification(error.message, 'warning')),
+            put(showNotification(errorMessage, 'warning')),
         ];
     }
     default:
