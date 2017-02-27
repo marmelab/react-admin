@@ -2,12 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import autoprefixer from 'material-ui/utils/autoprefixer'
-import CircularProgress from 'material-ui/CircularProgress';;
+import autoprefixer from 'material-ui/utils/autoprefixer';
+import Paper from 'material-ui/Paper';
+import CircularProgress from 'material-ui/CircularProgress';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import AppBar from './AppBar';
 import Notification from './Notification';
-import Menu from './Menu';
 import defaultTheme from '../defaultTheme';
 
 injectTapEventPlugin();
@@ -34,6 +34,18 @@ const styles = {
         margin: 16,
         zIndex: 1200,
     },
+    sidebarOpen: {
+        flex: '0 0 16em',
+        marginLeft: 0,
+        order: -1,
+        transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+    },
+    sidebarClosed: {
+        flex: '0 0 16em',
+        marginLeft: '-16em',
+        order: -1,
+        transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+    },
 };
 
 const prefixedStyles = {};
@@ -48,7 +60,7 @@ class Layout extends Component {
     }
 
     render() {
-        const { isLoading, children, route, title, theme, logout } = this.props;
+        const { isLoading, children, title, theme, menu } = this.props;
         const { sidebarOpen } = this.state;
         const muiTheme = getMuiTheme(theme);
         if (!prefixedStyles.main) {
@@ -64,7 +76,9 @@ class Layout extends Component {
                     <AppBar title={title} onLeftIconButtonTouchTap={this.toggleSidebar} />
                     <div className="body" style={prefixedStyles.body}>
                         <div style={prefixedStyles.content}>{children}</div>
-                        <Menu resources={route.resources} logout={logout} open={sidebarOpen} />
+                        <Paper style={sidebarOpen ? styles.sidebarOpen : styles.sidebarClosed}>
+                            {menu}
+                        </Paper>
                     </div>
                     <Notification />
                     {isLoading && <CircularProgress
@@ -80,10 +94,11 @@ class Layout extends Component {
 };
 
 Layout.propTypes = {
+    authClient: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
     isLoading: PropTypes.bool.isRequired,
     children: PropTypes.node,
-    logout: PropTypes.element,
-    route: PropTypes.object.isRequired,
+    menu: PropTypes.element,
+    logout: PropTypes.element, // eslint-disable-line react/no-unused-prop-types
     title: PropTypes.string.isRequired,
     theme: PropTypes.object.isRequired,
 };
