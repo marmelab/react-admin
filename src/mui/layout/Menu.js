@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import inflection from 'inflection';
-import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import { Link } from 'react-router';
 import pure from 'recompose/pure';
@@ -8,23 +7,11 @@ import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
 
 const styles = {
-    open: {
-        flex: '0 0 16em',
-        order: -1,
-        transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+    main: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        marginLeft: 0,
-    },
-    closed: {
-        flex: '0 0 16em',
-        order: -1,
-        transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        marginLeft: '-16em',
+        height: '100%',
     },
 };
 
@@ -36,8 +23,8 @@ const translatedResourceName = (resource, translate) =>
             inflection.humanize(inflection.pluralize(resource.name)),
     });
 
-const Menu = ({ resources, translate, logout, open }) => (
-    <Paper style={open ? styles.open : styles.closed}>
+const Menu = ({ resources, translate, logout }) => (
+    <div style={styles.main}>
         <List>
             {resources
                 .filter(r => r.list)
@@ -51,8 +38,10 @@ const Menu = ({ resources, translate, logout, open }) => (
                 )
             }
         </List>
-        {logout}
-    </Paper>
+        <List>
+            {logout}
+        </List>
+    </div>
 );
 
 Menu.propTypes = {

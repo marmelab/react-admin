@@ -33,6 +33,7 @@ Here are all the props accepted by the component:
 * [`restClient`](#restclient)
 * [`title`](#title)
 * [`dashboard`](#dashboard)
+* [`menu`](#menu)
 * [`theme`](#theme)
 * [`appLayout`](#applayout)
 * [`customReducers`](#customreducers)
@@ -109,6 +110,39 @@ const App = () => (
 ```
 
 ![Custom home page](http://static.marmelab.com/admin-on-rest/dashboard.png)
+
+### `menu`
+
+Admin-on-rest uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component. If you want to add or remove menu items, for instance to link to non-resources pages, you can pass your own menu component as the `menu` prop.
+
+```js
+// in src/Menu.js
+import React from 'react';
+import { List, ListItem } from 'material-ui/List';
+import { Link } from 'react-router';
+
+export default ({ resources, logout }) => (
+    <List>
+        <ListItem container={<Link to="/posts" />} primaryText="Posts" />
+        <ListItem container={<Link to="/comments" />} primaryText="Comments" />
+        <ListItem container={<Link to="/custom-route" />} primaryText="Miscellaneous" />
+        {logout}
+    </List>
+);
+```
+
+**Tip**: If you use authentication, don't forget to render the `logout` prop.
+
+```js
+// in src/App.js
+import Menu from './Menu';
+
+const App = () => (
+    <Admin menu={Menu} restClient={simpleRestClient('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
 
 ### `theme`
 

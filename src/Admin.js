@@ -13,6 +13,7 @@ import localeReducer from './reducer/locale';
 import { crudSaga } from './sideEffect/saga';
 import CrudRoute from './CrudRoute';
 import DefaultLayout from './mui/layout/Layout';
+import Menu from './mui/layout/Menu';
 import Login from './mui/auth/Login';
 import Logout from './mui/auth/Logout';
 import TranslationProvider from './i18n/TranslationProvider';
@@ -28,6 +29,7 @@ const Admin = ({
     dashboard,
     locale,
     messages = {},
+    menu,
     restClient,
     theme,
     title = 'Admin on REST',
@@ -70,7 +72,14 @@ const Admin = ({
         : () => () => true;
     const LoginPage = withProps({ title, theme, authClient })(loginPage || Login);
     const LogoutButton = withProps({ authClient })(logoutButton || Logout);
-    const Layout = withProps({ title, theme, logout: <LogoutButton /> })(appLayout || DefaultLayout);
+    const MenuComponent = withProps({ authClient, logout: <LogoutButton />, resources })(menu || Menu);
+    const Layout = withProps({
+        authClient,
+        logout: <LogoutButton />,
+        menu: <MenuComponent />,
+        title,
+        theme,
+    })(appLayout || DefaultLayout);
 
     return (
         <Provider store={store}>
@@ -113,6 +122,7 @@ Admin.propTypes = {
     dashboard: componentPropType,
     loginPage: componentPropType,
     logoutButton: componentPropType,
+    menu: componentPropType,
     restClient: PropTypes.func,
     theme: PropTypes.object,
     title: PropTypes.string,
