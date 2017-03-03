@@ -56,12 +56,12 @@ class Layout extends Component {
         this.setState({ sidebarOpen: this.props.width !== 1 });
     }
 
-    toggleSidebar = () => {
-        this.setState({ sidebarOpen: !this.state.sidebarOpen });
-    }
-
     setSidebarVisibility = (open) => {
         this.setState({ sidebarOpen: open });
+    }
+
+    toggleSidebar = () => {
+        this.setState({ sidebarOpen: !this.state.sidebarOpen });
     }
 
     render() {
@@ -78,7 +78,7 @@ class Layout extends Component {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div style={prefixedStyles.main}>
-                    <AppBar title={title} onLeftIconButtonTouchTap={this.toggleSidebar} />
+                    { width !== 1 && <AppBar title={title} onLeftIconButtonTouchTap={this.toggleSidebar} />}
                     <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
                         <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>{children}</div>
                         {React.cloneElement(menu, {
