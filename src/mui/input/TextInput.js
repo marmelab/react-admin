@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import FieldTitle from '../../util/FieldTitle';
 
@@ -16,16 +16,49 @@ import FieldTitle from '../../util/FieldTitle';
  *
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
-const TextInput = ({ input, label, meta: { touched, error }, options, type, source, elStyle, resource }) => (
-    <TextField
-        {...input}
-        type={type}
-        floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
-        errorText={touched && error}
-        style={elStyle}
-        {...options}
-    />
-);
+export class TextInput extends Component {
+    handleBlur = (eventOrValue) => {
+        this.props.onBlur(eventOrValue);
+        this.props.input.onBlur(eventOrValue);
+    }
+
+    handleFocus = (event) => {
+        this.props.onFocus(event);
+        this.props.input.onFocus(event);
+    }
+
+    handleChange = (eventOrValue) => {
+        this.props.onChange(eventOrValue);
+        this.props.input.onChange(eventOrValue);
+    }
+
+    render() {
+        const {
+            elStyle,
+            input,
+            label,
+            meta: { touched, error },
+            options,
+            resource,
+            source,
+            type,
+        } = this.props;
+
+        return (
+            <TextField
+                {...input}
+                onBlur={this.handleBlur}
+                onFocus={this.handleFocus}
+                onChange={this.handleChange}
+                type={type}
+                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
+                errorText={touched && error}
+                style={elStyle}
+                {...options}
+            />
+        );
+    }
+}
 
 TextInput.propTypes = {
     addField: PropTypes.bool.isRequired,
@@ -34,7 +67,9 @@ TextInput.propTypes = {
     label: PropTypes.string,
     meta: PropTypes.object,
     name: PropTypes.string,
+    onBlur: PropTypes.func,
     onChange: PropTypes.func,
+    onFocus: PropTypes.func,
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
@@ -44,6 +79,9 @@ TextInput.propTypes = {
 
 TextInput.defaultProps = {
     addField: true,
+    onBlur: () => {},
+    onChange: () => {},
+    onFocus: () => {},
     options: {},
     type: 'text',
 };
