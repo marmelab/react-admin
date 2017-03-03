@@ -29,9 +29,37 @@ describe('<NumberInput />', () => {
 
     it('should return a numeric value', () => {
         const onChange = sinon.spy();
-        const wrapper = shallow(<NumberInput {...defaultProps} input={{ value: '2', onChange }} />);
+        const wrapper = shallow(
+            <NumberInput
+                {...defaultProps}
+                input={{
+                    value: '2',
+                    onBlur: () => {},
+                    onChange,
+                }}
+            />,
+        );
+
         const TextFieldElement = wrapper.find('TextField').first();
         TextFieldElement.simulate('blur');
         assert.deepEqual(onChange.args, [[2]]);
+    });
+
+    it('should call redux-form onBlur handler when blurred', () => {
+        const onBlur = sinon.spy();
+        const wrapper = shallow(
+            <NumberInput
+                {...defaultProps}
+                input={{
+                    value: '2',
+                    onBlur,
+                    onChange: () => {},
+                }}
+            />,
+        );
+
+        const TextFieldElement = wrapper.find('TextField').first();
+        TextFieldElement.simulate('blur', 'event');
+        assert.deepEqual(onBlur.args[0], ['event']);
     });
 });

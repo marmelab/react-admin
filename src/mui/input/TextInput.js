@@ -18,8 +18,7 @@ import FieldTitle from '../../util/FieldTitle';
  */
 const TextInput = ({ input, label, meta: { touched, error }, options, type, source, elStyle, resource }) => (
     <TextField
-        value={input.value}
-        onChange={input.onChange}
+        {...input}
         type={type}
         floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
         errorText={touched && error}

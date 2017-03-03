@@ -1,6 +1,8 @@
-import React from 'react';
-import assert from 'assert';
 import { shallow } from 'enzyme';
+import assert from 'assert';
+import React from 'react';
+import sinon from 'sinon';
+
 import TextInput from './TextInput';
 
 describe('<TextInput />', () => {
@@ -24,6 +26,20 @@ describe('<TextInput />', () => {
         const TextFieldElement = wrapper.find('TextField');
         assert.equal(TextFieldElement.length, 1);
         assert.equal(TextFieldElement.prop('type'), 'password');
+    });
+
+    it('should call redux-form onBlur handler when blurred', () => {
+        const onBlur = sinon.spy();
+        const wrapper = shallow(
+            <TextInput
+                {...defaultProps}
+                input={{ onBlur }}
+            />,
+        );
+
+        const TextFieldElement = wrapper.find('TextField').first();
+        TextFieldElement.simulate('blur', 'event');
+        assert.deepEqual(onBlur.args[0], ['event']);
     });
 
     describe('error message', () => {
