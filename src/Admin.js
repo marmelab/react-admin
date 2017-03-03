@@ -64,7 +64,7 @@ const Admin = ({
             .then(() => params && params.scrollToTop ? window.scrollTo(0, 0) : null)
             .catch(e => {
                 replace({
-                    pathname: (e && e.rediretTo) || '/login',
+                    pathname: (e && e.redirectTo) || '/login',
                     state: { nextPathname: nextState.location.pathname },
                 })
             })
