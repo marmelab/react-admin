@@ -183,7 +183,7 @@ export class List extends Component {
         const defaultTitle = translate('aor.page.list', { name: `${resourceName}` });
 
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }} key={key}>
+            <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
                 {actions && React.cloneElement(actions, {
                     resource,
                     filters,

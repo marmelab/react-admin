@@ -5,6 +5,8 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import autoprefixer from 'material-ui/utils/autoprefixer';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
+import withWidth from 'material-ui/utils/withWidth';
+import compose from 'recompose/compose';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import AppBar from './AppBar';
 import Notification from './Notification';
@@ -24,7 +26,14 @@ const styles = {
         flex: 1,
         overflow: 'hidden',
     },
+    bodySmall: {
+        backgroundColor: '#fff',
+    },
     content: {
+        flex: 1,
+        padding: '2em',
+    },
+    contentSmall: {
         flex: 1,
     },
     loader: {
@@ -33,18 +42,6 @@ const styles = {
         right: 0,
         margin: 16,
         zIndex: 1200,
-    },
-    sidebarOpen: {
-        flex: '0 0 16em',
-        marginLeft: 0,
-        order: -1,
-        transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
-    },
-    sidebarClosed: {
-        flex: '0 0 16em',
-        marginLeft: '-16em',
-        order: -1,
-        transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
     },
 };
 
@@ -55,12 +52,20 @@ class Layout extends Component {
         sidebarOpen: true,
     };
 
+    componentWillMount() {
+        this.setState({ sidebarOpen: this.props.width !== 1 });
+    }
+
     toggleSidebar = () => {
         this.setState({ sidebarOpen: !this.state.sidebarOpen });
     }
 
+    setSidebarVisibility = (open) => {
+        this.setState({ sidebarOpen: open });
+    }
+
     render() {
-        const { isLoading, children, title, theme, menu } = this.props;
+        const { isLoading, children, title, theme, menu, width } = this.props;
         const { sidebarOpen } = this.state;
         const muiTheme = getMuiTheme(theme);
         if (!prefixedStyles.main) {
@@ -74,11 +79,13 @@ class Layout extends Component {
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div style={prefixedStyles.main}>
                     <AppBar title={title} onLeftIconButtonTouchTap={this.toggleSidebar} />
-                    <div className="body" style={prefixedStyles.body}>
-                        <div style={prefixedStyles.content}>{children}</div>
-                        <Paper style={sidebarOpen ? styles.sidebarOpen : styles.sidebarClosed}>
-                            {menu}
-                        </Paper>
+                    <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
+                        <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>{children}</div>
+                        {React.cloneElement(menu, {
+                            open: sidebarOpen,
+                            onRequestChange: this.setSidebarVisibility,
+                            width,
+                        })}
                     </div>
                     <Notification />
                     {isLoading && <CircularProgress
@@ -91,7 +98,7 @@ class Layout extends Component {
             </MuiThemeProvider>
         );
     }
-};
+}
 
 Layout.propTypes = {
     authClient: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
@@ -101,6 +108,7 @@ Layout.propTypes = {
     logout: PropTypes.element, // eslint-disable-line react/no-unused-prop-types
     title: PropTypes.string.isRequired,
     theme: PropTypes.object.isRequired,
+    width: PropTypes.number,
 };
 
 Layout.defaultProps = {
@@ -111,6 +119,9 @@ function mapStateToProps(state) {
     return { isLoading: state.admin.loading > 0 };
 }
 
-export default connect(
-  mapStateToProps,
-)(Layout);
+const enhance = compose(
+    withWidth(),
+    connect(mapStateToProps),
+);
+
+export default enhance(Layout);

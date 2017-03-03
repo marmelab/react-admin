@@ -56,7 +56,7 @@ export class Show extends Component {
         });
 
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
+            <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     {hasEdit && <EditButton basePath={basePath} record={data} />}
                     <ListButton basePath={basePath} />

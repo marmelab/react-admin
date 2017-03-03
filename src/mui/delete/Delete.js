@@ -57,7 +57,7 @@ class Delete extends Component {
         });
 
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
+            <Card style={{ opacity: isLoading ? .8 : 1 }}>
                 <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
                     <ListButton basePath={basePath} />
                 </CardActions>

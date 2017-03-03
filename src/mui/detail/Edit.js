@@ -87,7 +87,7 @@ export class Edit extends Component {
         });
 
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }} key={key}>
+            <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
                 {actions && React.cloneElement(actions, {
                     basePath,
                     data,

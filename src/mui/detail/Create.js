@@ -28,7 +28,7 @@ class Create extends Component {
         });
 
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
+            <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                 {actions && React.cloneElement(actions, {
                     basePath,
                     resource,
