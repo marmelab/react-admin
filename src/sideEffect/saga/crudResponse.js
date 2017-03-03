@@ -23,17 +23,17 @@ import linkToRecord from '../../util/linkToRecord';
 function* handleResponse({ type, requestPayload, error, payload }) {
     switch (type) {
     case CRUD_UPDATE_SUCCESS:
-        return !requestPayload.silent ? yield [
+        return requestPayload.redirect ? yield [
             put(showNotification('aor.notification.updated')),
             put(push(requestPayload.basePath)),
         ] : yield [];
     case CRUD_CREATE_SUCCESS:
-        return !requestPayload.silent ? yield [
+        return requestPayload.redirect ? yield [
             put(showNotification('aor.notification.created')),
             put(push(linkToRecord(requestPayload.basePath, payload.id))),
         ] : yield [];
     case CRUD_DELETE_SUCCESS:
-        return !requestPayload.silent ? yield [
+        return requestPayload.redirect ? yield [
             put(showNotification('aor.notification.deleted')),
             put(push(requestPayload.basePath)),
         ] : yield [];
