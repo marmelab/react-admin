@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardTitle, CardActions } from 'material-ui/Card';
+import withWidth from 'material-ui/utils/withWidth';
+import compose from 'recompose/compose';
 import inflection from 'inflection';
+import AppBar from '../layout/AppBar';
 import Title from '../layout/Title';
 import { DeleteButton, EditButton, ListButton } from '../button';
 import { crudGetOne as crudGetOneAction } from '../../actions/dataActions';
@@ -42,8 +45,9 @@ export class Show extends Component {
     }
 
     render() {
-        const { title, children, id, data, isLoading, resource, hasDelete, hasEdit, translate } = this.props;
+        const { title, children, id, data, isLoading, resource, hasDelete, hasEdit, translate, width } = this.props;
         const basePath = this.getBasePath();
+        const isMobile = width === 1;
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
@@ -54,21 +58,25 @@ export class Show extends Component {
             id,
             data,
         });
+        const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
 
         return (
-            <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    {hasEdit && <EditButton basePath={basePath} record={data} />}
-                    <ListButton basePath={basePath} />
-                    {hasDelete && <DeleteButton basePath={basePath} record={data} />}
-                </CardActions>
-                <CardTitle title={<Title title={title} record={data} defaultTitle={defaultTitle} />} />
-                {data && React.cloneElement(children, {
-                    resource,
-                    basePath,
-                    record: data,
-                })}
-            </Card>
+            <div>
+                {isMobile && <AppBar title={titleElement} />}
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                    <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
+                        {hasEdit && <EditButton basePath={basePath} record={data} />}
+                        <ListButton basePath={basePath} />
+                        {hasDelete && <DeleteButton basePath={basePath} record={data} />}
+                    </CardActions>
+                    {!isMobile && <CardTitle title={titleElement} />}
+                    {data && React.cloneElement(children, {
+                        resource,
+                        basePath,
+                        record: data,
+                    })}
+                </Card>
+            </div>
         );
     }
 }
@@ -86,6 +94,7 @@ Show.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
+    width: PropTypes.number,
 };
 
 function mapStateToProps(state, props) {
@@ -96,7 +105,13 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default translate(connect(
-    mapStateToProps,
-    { crudGetOne: crudGetOneAction },
-)(Show));
+const enhance = compose(
+    connect(
+        mapStateToProps,
+        { crudGetOne: crudGetOneAction },
+    ),
+    translate,
+    withWidth(),
+);
+
+export default enhance(Show);

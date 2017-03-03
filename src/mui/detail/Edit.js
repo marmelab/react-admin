@@ -77,7 +77,7 @@ export class Edit extends Component {
     render() {
         const { actions = <DefaultActions />, children, data, hasDelete, hasShow, id, isLoading, resource, title, translate, width } = this.props;
         const { key } = this.state;
-        const isSmall = width === 1;
+        const isMobile = width === 1;
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
@@ -89,12 +89,11 @@ export class Edit extends Component {
             id,
             data,
         });
-
-        const titleElement = <Title title={title} record={data} defaultTitle={defaultTitle} />;
+        const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
 
         return (
             <div>
-                {isSmall && <AppBar title={titleElement} />}
+                {isMobile && <AppBar title={titleElement} />}
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
                     {actions && React.cloneElement(actions, {
                         basePath,
@@ -104,7 +103,7 @@ export class Edit extends Component {
                         refresh: this.refresh,
                         resource,
                     })}
-                    {data && !isSmall && <CardTitle title={titleElement} />}
+                    {!isMobile && <CardTitle title={titleElement} />}
                     {data && React.cloneElement(children, {
                         onSubmit: this.handleSubmit,
                         resource,

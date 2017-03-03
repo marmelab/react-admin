@@ -11,10 +11,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import AppBar from './AppBar';
 import Notification from './Notification';
 import defaultTheme from '../defaultTheme';
-import {
-    toggleSidebar as toggleSidebarAction,
-    setSidebarVisibility as setSidebarVisibilityAction,
-} from '../../actions';
+import { setSidebarVisibility as setSidebarVisibilityAction } from '../../actions';
 
 injectTapEventPlugin();
 
@@ -64,11 +61,9 @@ class Layout extends Component {
             isLoading,
             menu,
             route,
-            setSidebarVisibility,
             sidebarOpen,
             theme,
             title,
-            toggleSidebar,
             width,
         } = this.props;
         const muiTheme = getMuiTheme(theme);
@@ -82,7 +77,7 @@ class Layout extends Component {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div style={prefixedStyles.main}>
-                    { width !== 1 && <AppBar title={title} onLeftIconButtonTouchTap={toggleSidebar} />}
+                    { width !== 1 && <AppBar title={title} />}
                     <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
                         <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>{children}</div>
                         {React.cloneElement(menu, {
@@ -93,7 +88,7 @@ class Layout extends Component {
                     <Notification />
                     {isLoading && <CircularProgress
                         color="#fff"
-                        size={30}
+                        size={width === 1 ? 20 : 30}
                         thickness={2}
                         style={styles.loader}
                     />}
@@ -112,7 +107,6 @@ Layout.propTypes = {
     setSidebarVisibility: PropTypes.func.isRequired,
     sidebarOpen: PropTypes.bool,
     title: PropTypes.string.isRequired,
-    toggleSidebar: PropTypes.func.isRequired,
     theme: PropTypes.object.isRequired,
     width: PropTypes.number,
 };
@@ -131,7 +125,6 @@ function mapStateToProps(state) {
 const enhance = compose(
     withWidth(),
     connect(mapStateToProps, {
-        toggleSidebar: toggleSidebarAction,
         setSidebarVisibility: setSidebarVisibilityAction,
     }),
 );
