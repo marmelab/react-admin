@@ -1,13 +1,14 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import inflection from 'inflection';
 import Drawer from 'material-ui/Drawer';
 import { List, ListItem } from 'material-ui/List';
 import MenuItem from 'material-ui/MenuItem';
 import Paper from 'material-ui/Paper';
 import { Link } from 'react-router';
-import pure from 'recompose/pure';
 import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
+import { setSidebarVisibility as setSidebarVisibilityAction } from '../../actions';
 
 const styles = {
     sidebarOpen: {
@@ -40,13 +41,13 @@ const translatedResourceName = (resource, translate) =>
 
 class Menu extends Component {
     handleClose = () => {
-        this.props.onRequestChange(false);
+        this.props.setSidebarVisibility(false);
     }
 
     renderUndockedMenu() {
-        const { resources, translate, logout, open, onRequestChange } = this.props;
+        const { resources, translate, logout, open, setSidebarVisibility } = this.props;
         return (
-            <Drawer docked={false} open={open} onRequestChange={onRequestChange}>
+            <Drawer docked={false} open={open} onRequestChange={setSidebarVisibility}>
                 {resources
                     .filter(r => r.list)
                     .map(resource =>
@@ -97,14 +98,17 @@ class Menu extends Component {
 }
 
 Menu.propTypes = {
-    resources: PropTypes.array.isRequired,
-    translate: PropTypes.func.isRequired,
     logout: PropTypes.element,
+    resources: PropTypes.array.isRequired,
+    setSidebarVisibility: PropTypes.func.isRequired,
+    translate: PropTypes.func.isRequired,
     width: PropTypes.number,
 };
 
 const enhanced = compose(
-    pure,
+    connect(null, {
+        setSidebarVisibility: setSidebarVisibilityAction,
+    }),
     translate,
 );
 
