@@ -48,9 +48,20 @@ export default (apiUrl, httpClient = fetchJson) => {
         case GET_ONE:
             url = `${apiUrl}/${resource}/${params.id}`;
             break;
-        case GET_MANY_REFERENCE:
-            url = `${apiUrl}/${resource}?${queryParameters({ [params.target]: params.id })}`;
+        case GET_MANY_REFERENCE: {
+            const { page, perPage } = params.pagination;
+            const { field, order } = params.sort;
+            const query = {
+                ...params.filter,
+                [params.target]: params.id,
+                _sort: field,
+                _order: order,
+                _start: (page - 1) * perPage,
+                _end: page * perPage,
+            };
+            url = `${apiUrl}/${resource}?${queryParameters(query)}`;
             break;
+        }
         case UPDATE:
             url = `${apiUrl}/${resource}/${params.id}`;
             options.method = 'PUT';

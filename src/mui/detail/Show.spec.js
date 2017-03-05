@@ -17,6 +17,7 @@ describe('<Show />', () => {
         location: { pathname: '' },
         params: {},
         resource: '',
+        translate: x => x,
     };
 
     it('should display correctly when called with a child', () => {
@@ -34,7 +35,7 @@ describe('<Show />', () => {
                 <TextField source="bar" />
             </SimpleShowLayout>
         </Show>);
-        const inputs = wrapper.find('TextField');
+        const inputs = wrapper.find('pure(TextField)');
         assert.deepEqual(inputs.map(i => i.prop('source')), ['foo', 'bar']);
     });
 });

@@ -18,10 +18,11 @@ The `<List>` component renders the list layout (title, buttons, filters, paginat
 Here are all the props accepted by the `<List>` component:
 
 * [`title`](#page-title)
-* [`perPage`](#records-per-page)
-* [`defaultSort`](#default-sort-field)
 * [`actions`](#actions)
-* [`filter`](#filters)
+* [`filters`](#filters) (a React element used to display the filter form)
+* [`perPage`](#records-per-page)
+* [`sort`](#default-sort-field)
+* [`filter`](#permanent-filter) (the permanent filter used in the REST request)
 * [`pagination`](#pagination)
 
 Here is the minimal code necessary to display a list of posts:
@@ -77,36 +78,6 @@ export const PostList = (props) => (
 
 The title can be either a string, or an element of your own.
 
-### Records Per Page
-
-By default, the list paginates results by groups of 10. You can override this setting by specifying the `perPage` prop:
-
-```js
-// in src/posts.js
-export const PostList = (props) => (
-    <List {...props} perPage={25}>
-        ...
-    </List>
-);
-```
-
-### Default Sort Field
-
-Pass an object literal as the `defaultSort` prop to determine the default `field` and `order` used for sorting:
-
-{% raw %}
-```js
-// in src/posts.js
-export const PostList = (props) => (
-    <List {...props} defaultSort={{ field: 'last_seen', order: 'DESC' }}>
-        ...
-    </List>
-);
-```
-{% endraw %}
-
-`defaultSort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
-
 ### Actions
 
 You can replace the list of default actions by your own element using the `actions` prop:
@@ -142,18 +113,18 @@ export const PostList = (props) => (
 
 ### Filters
 
-You can add a filter element to the list:
+You can add a filter element to the list using the `filters` prop:
 
 ```js
 const PostFilter = (props) => (
     <Filter {...props}>
         <TextInput label="Search" source="q" alwaysOn />
-        <TextInput label="Title" source="title" />
+        <TextInput label="Title" source="title" defaultValue="Hello, World!" />
     </Filter>
 );
 
 export const PostList = (props) => (
-    <List {...props} filter={<PostFilter />}>
+    <List {...props} filters={<PostFilter />}>
         ...
     </List>
 );
@@ -167,6 +138,55 @@ The filter component must be a `<Filter>` with `<Input>` children.
 - as a filter form (to enter filter values)
 
 It does so by inspecting its `context` prop.
+
+**Tip**: Don't mix up this `filters` prop, expecting a React element, with the `filter` props, which expects an object to define permanent filters (see below).
+
+### Records Per Page
+
+By default, the list paginates results by groups of 10. You can override this setting by specifying the `perPage` prop:
+
+```js
+// in src/posts.js
+export const PostList = (props) => (
+    <List {...props} perPage={25}>
+        ...
+    </List>
+);
+```
+
+### Default Sort Field
+
+Pass an object literal as the `sort` prop to determine the default `field` and `order` used for sorting:
+
+{% raw %}
+```js
+// in src/posts.js
+export const PostList = (props) => (
+    <List {...props} sort={{ field: 'published_at', order: 'DESC' }}>
+        ...
+    </List>
+);
+```
+{% endraw %}
+
+`sort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
+
+### Permanent Filter
+
+You can choose to always filter the list, without letting the user disable this filter - for instance to display only published posts. Write the filter to be passed to the REST client in the `filter` props:
+
+{% raw %}
+```js
+// in src/posts.js
+export const PostList = (props) => (
+    <List {...props} filter={{ is_published: true }}>
+        ...
+    </List>
+);
+```
+{% endraw %}
+
+The actual filter parameter sent to the REST client is the result of the combination of the *user* filters (the ones set through the `filters` component form), and the *permanent* filter. The user cannot override the permanent filters set by way of `filter`.
 
 ### Pagination
 
@@ -331,6 +351,7 @@ For instance, what if you prefer to show a list of cards rather than a datagrid?
 
 Simple: Create your own iterator component as follows:
 
+{% raw %}
 ```js
 // in src/comments.js
 const cardStyle = {
@@ -376,5 +397,6 @@ export const CommentList = (props) => (
     </List>
 );
 ```
+{% endraw %}
 
 As you can see, nothing prevents you from using `<Field>` components inside your own components... provided you inject the current `record`. Also, notice that components building links require the `basePath` component, which is also injected.

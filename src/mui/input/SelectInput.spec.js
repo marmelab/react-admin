@@ -11,10 +11,10 @@ describe('<SelectInput />', () => {
     };
 
     it('should use a mui SelectField', () => {
-        const wrapper = shallow(<SelectInput {...defaultProps} label="hello" />);
+        const wrapper = shallow(<SelectInput {...defaultProps} input={{ value: 'hello' }} />);
         const SelectFieldElement = wrapper.find('SelectField');
         assert.equal(SelectFieldElement.length, 1);
-        assert.equal(SelectFieldElement.prop('floatingLabelText'), 'hello');
+        assert.equal(SelectFieldElement.prop('value'), 'hello');
     });
 
     it('should use the input parameter value as the initial input value', () => {
@@ -112,5 +112,25 @@ describe('<SelectInput />', () => {
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
         assert.deepEqual(MenuItemElement1.prop('primaryText'), <Foobar record={{ id: 'M', foobar: 'Male' }} />);
+    });
+
+    describe('error message', () => {
+        it('should not be displayed if field is pristine', () => {
+            const wrapper = shallow(<SelectInput {...defaultProps} meta={{ touched: false }} />);
+            const SelectFieldElement = wrapper.find('SelectField');
+            assert.equal(SelectFieldElement.prop('errorText'), false);
+        });
+
+        it('should not be displayed if field has been touched but is valid', () => {
+            const wrapper = shallow(<SelectInput {...defaultProps} meta={{ touched: true, error: false }} />);
+            const SelectFieldElement = wrapper.find('SelectField');
+            assert.equal(SelectFieldElement.prop('errorText'), false);
+        });
+
+        it('should be displayed if field has been touched and is invalid', () => {
+            const wrapper = shallow(<SelectInput {...defaultProps} meta={{ touched: true, error: 'Required field.' }} />);
+            const SelectFieldElement = wrapper.find('SelectField');
+            assert.equal(SelectFieldElement.prop('errorText'), 'Required field.');
+        });
     });
 });

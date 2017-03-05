@@ -5,9 +5,11 @@ title: "Including the Admin in Another App"
 
 # Including admin-on-rest on another React app
 
-The `<Admin>` tag is a great shortcut got be up and running with admin-on-rest in minutes. However, in many cases, you will want to embed the admin in another application, or customize the admin deeply (custom menus, custom actions, custom reducers). Fortunately, you can do all the work that `<Admin>` does on any React application.
+The `<Admin>` tag is a great shortcut got be up and running with admin-on-rest in minutes. However, in many cases, you will want to embed the admin in another application, or customize the admin deeply. Fortunately, you can do all the work that `<Admin>` does on any React application.
 
 Beware that you need to know about [redux](http://redux.js.org/), [react-router](https://github.com/reactjs/react-router), and [redux-saga](https://github.com/yelouafi/redux-saga) to go further.
+
+**Tip**: Before going for the Custom App route, explore all the options of [the `<Admin>` component](./AdminResource.html##the-admin-component). They allow you to add custom routes, custom reducers, custom sagas, and customize the layout.
 
 ## Basic Admin App
 
@@ -16,6 +18,7 @@ Here is the main code for bootstrapping an admin-on-rest application with 3 reso
 ```js
 // in src/App.js
 import React, { PropTypes } from 'react';
+import { render } from 'react-dom';
 
 // redux, react-router, and saga form the 'kernel' on which admin-on-rest runs
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
@@ -24,21 +27,24 @@ import { Router, IndexRoute, Route, Redirect, hashHistory } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware, routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
+import withProps from 'recompose/withProps';
 
 // prebuilt admin-on-rest features
-import { adminReducer, crudSaga, CrudRoute, simpleRestClient } from 'admin-on-rest';
+import { adminReducer, localeReducer, crudSaga, CrudRoute, TranslationProvider, simpleRestClient } from 'admin-on-rest';
 
 // your app components
-import Layout from './Layout';
 import Dashboard from './Dashboard';
 import { PostList, PostCreate, PostEdit, PostShow } from './Post';
 import { CommentList, CommentEdit, CommentCreate } from './Comment';
 import { UserList, UserEdit, UserCreate } from './User';
-import { Delete } from 'admin-on-rest/lib/mui';
+import { Delete, Layout } from 'admin-on-rest/lib/mui';
+// your app labels
+import messages from './i18n';
 
 // create a Redux app
 const reducer = combineReducers({
     admin: adminReducer([{ name: 'posts' }, { name: 'comments' }, { name: 'users' }]),
+    locale: localeReducer(),
     form: formReducer,
     routing: routerReducer,
 });
@@ -50,20 +56,30 @@ const store = createStore(reducer, undefined, compose(
 const restClient = simpleRestClient('http://path.to.my.api/');
 sagaMiddleware.run(crudSaga(restClient));
 
+// the resources array is used for the menu
+const resources = [
+    { name: 'posts', list: PostList },
+    { name: 'comments', list: CommentList },
+];
+
+const LayoutWithTitle = withProps({ title: 'My Admin' })(Layout);
+
 // initialize the router
 const history = syncHistoryWithStore(hashHistory, store);
 
 // bootstrap redux and the routes
 const App = () => (
     <Provider store={store}>
-        <Router history={history}>
-            <Route path="/" component={Layout}>
-                <IndexRoute component={Dashboard} restClient={restClient} />
-                <CrudRoute path="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={Delete} />
-                <CrudRoute path="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} remove={Delete} />
-                <CrudRoute path="users" list={UserList} create={UserCreate} edit={UserEdit} remove={Delete} />
-            </Route>
-        </Router>
+        <TranslationProvider messages={messages}>
+            <Router history={history}>
+                <Route path="/" component={LayoutWithTitle} resources={resources}>
+                    <IndexRoute component={Dashboard} />
+                    <CrudRoute path="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={Delete} />
+                    <CrudRoute path="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} remove={Delete} />
+                    <CrudRoute path="users" list={UserList} create={UserCreate} edit={UserEdit} remove={Delete} />
+                </Route>
+            </Router>
+        </TranslationProvider>
     </Provider>
 );
 ```
@@ -77,16 +93,18 @@ Since you're in control of the app, you can add `<Route>` components of your own
 ```js
 const App = () => (
     <Provider store={store}>
-        <Router history={history}>
-            <Route path="/" component={Layout}>
-                <IndexRoute component={Dashboard} restClient={restClient} />
-                <Route path="checkout" component={Checkout}>
-                    <Route path="/:id" component={Cart} />
+        <TranslationProvider messages={messages}>
+            <Router history={history}>
+                <Route path="/" component={Layout}>
+                    <IndexRoute component={Dashboard} />
+                    <Route path="checkout" component={Checkout}>
+                        <Route path="/:id" component={Cart} />
+                    </Route>
+                    <CrudRoute key="posts" path="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={Delete} />
+                    <!-- ... -->
                 </Route>
-                <CrudRoute key="posts" path="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={Delete} />
-                <!-- ... -->
-            </Route>
-        </Router>
+            </Router>
+        </TranslationProvider>
     </Provider>
 );
 ```
@@ -105,6 +123,7 @@ import { reducer as formReducer } from 'redux-form';
 import checkoutReducer from './reducers/checkout';
 const reducer = combineReducers({
     admin: adminReducer(['posts, comments, users']),
+    locale: localeReducer(),
     form: formReducer,
     routing: routerReducer,
     // add your own reducers here
@@ -118,6 +137,13 @@ The `<Layout>` component has the responsibility for displaying the menu. So you 
 
 {% raw %}
 ```js
+import React from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { Notification, AppBar } from 'admin-on-rest';
+import Paper from 'material-ui/Paper';
+import { List, ListItem } from 'material-ui/List';
+import { Link } from 'react-router';
+
 // in src/MyLayout
 const MyMenu = () => (
     <Paper style={{ flex: '0 0 15em', order: -1 }}>
@@ -132,7 +158,7 @@ const MyMenu = () => (
 
 const MyLayout = ({ isLoading, children, route, title }) => {
     const Title = <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>{title}</Link>;
-    const RightElement = isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span />;
+    const RightElement = isLoading ? <CircularProgress color="#fff" size={30} thickness={2} style={{ margin: 8 }} /> : <span />;
 
     return (
         <MuiThemeProvider>
@@ -152,11 +178,13 @@ const MyLayout = ({ isLoading, children, route, title }) => {
 import MyLayout from './MyLayout';
 const App = () => (
     <Provider store={store}>
-        <Router history={history}>
-            <Route path="/" component={MyLayout}>
-                <!-- ... -->
-            </Route>
-        </Router>
+        <TranslationProvider messages={messages}>
+            <Router history={history}>
+                <Route path="/" component={MyLayout}>
+                    <!-- ... -->
+                </Route>
+            </Router>
+        </TranslationProvider>
     </Provider>
 );
 ```

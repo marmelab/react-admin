@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import pure from 'recompose/pure';
 
 /**
  * @example
@@ -17,8 +18,10 @@ FunctionField.propTypes = {
     source: PropTypes.string,
 };
 
-FunctionField.defaultProps = {
+const PureFunctionField = pure(FunctionField);
+
+PureFunctionField.defaultProps = {
     addLabel: true,
 };
 
-export default FunctionField;
+export default PureFunctionField;

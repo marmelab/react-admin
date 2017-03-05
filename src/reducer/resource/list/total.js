@@ -1,6 +1,6 @@
 import { CRUD_GET_LIST_SUCCESS } from '../../../actions/dataActions';
 
-export default (resource) => (previousState = 0, { type, payload, meta }) => {
+export default resource => (previousState = 0, { type, payload, meta }) => {
     if (!meta || meta.resource !== resource) {
         return previousState;
     }

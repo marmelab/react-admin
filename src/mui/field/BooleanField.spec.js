@@ -1,7 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import BooleanField from './BooleanField';
+import { BooleanField } from './BooleanField';
 
 describe('<BooleanField />', () => {
     it('should display tick if value is true', () => assert.ok(

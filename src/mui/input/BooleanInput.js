@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import Toggle from 'material-ui/Toggle';
-import title from '../../util/title';
+import FieldTitle from '../../util/FieldTitle';
 
 const styles = {
     block: {
@@ -15,14 +15,14 @@ const styles = {
     },
 };
 
-const BooleanInput = ({ input, label, source, elStyle }) => (
+const BooleanInput = ({ input, label, source, elStyle, resource }) => (
     <div style={elStyle || styles.block}>
         <Toggle
             defaultToggled={!!input.value}
             onToggle={input.onChange}
             labelStyle={styles.label}
             style={styles.toggle}
-            label={title(label, source)}
+            label={<FieldTitle label={label} source={source} resource={resource} />}
         />
     </div>
 );
@@ -32,6 +32,7 @@ BooleanInput.propTypes = {
     elStyle: PropTypes.object,
     input: PropTypes.object,
     label: PropTypes.string,
+    resource: PropTypes.string,
     source: PropTypes.string,
 };
 

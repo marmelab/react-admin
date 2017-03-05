@@ -11,10 +11,10 @@ describe('<AutocompleteInput />', () => {
     };
 
     it('should use a mui AutoComplete', () => {
-        const wrapper = shallow(<AutocompleteInput {...defaultProps} label="hello" />);
+        const wrapper = shallow(<AutocompleteInput {...defaultProps} input={{ value: 1 }} choices={[{ id: 1, name: 'hello' }]} />);
         const AutoCompleteElement = wrapper.find('AutoComplete');
         assert.equal(AutoCompleteElement.length, 1);
-        assert.equal(AutoCompleteElement.prop('floatingLabelText'), 'hello');
+        assert.equal(AutoCompleteElement.prop('searchText'), 'hello');
     });
 
     it('should use the input parameter value as the initial input searchText', () => {
@@ -83,5 +83,25 @@ describe('<AutocompleteInput />', () => {
         assert.deepEqual(AutoCompleteElement.prop('dataSource'), [
             { value: 'M', text: 'Male' },
         ]);
+    });
+
+    describe('error message', () => {
+        it('should not be displayed if field is pristine', () => {
+            const wrapper = shallow(<AutocompleteInput {...defaultProps} meta={{ touched: false }} />);
+            const AutoCompleteElement = wrapper.find('AutoComplete');
+            assert.equal(AutoCompleteElement.prop('errorText'), false);
+        });
+
+        it('should not be displayed if field has been touched but is valid', () => {
+            const wrapper = shallow(<AutocompleteInput {...defaultProps} meta={{ touched: true, error: false }} />);
+            const AutoCompleteElement = wrapper.find('AutoComplete');
+            assert.equal(AutoCompleteElement.prop('errorText'), false);
+        });
+
+        it('should be displayed if field has been touched and is invalid', () => {
+            const wrapper = shallow(<AutocompleteInput {...defaultProps} meta={{ touched: true, error: 'Required field.' }} />);
+            const AutoCompleteElement = wrapper.find('AutoComplete');
+            assert.equal(AutoCompleteElement.prop('errorText'), 'Required field.');
+        });
     });
 });

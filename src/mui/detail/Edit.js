@@ -5,6 +5,7 @@ import inflection from 'inflection';
 import Title from '../layout/Title';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
 import DefaultActions from './EditActions';
+import translate from '../../i18n/translate';
 
 /**
  * Turns a children data structure (either single child or array of children) into an array.
@@ -15,7 +16,10 @@ const arrayizeChildren = children => (Array.isArray(children) ? children : [chil
 export class Edit extends Component {
     constructor(props) {
         super(props);
-        this.state = { record: props.data };
+        this.state = {
+            key: 0,
+            record: props.data,
+        };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -26,6 +30,10 @@ export class Edit extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.data !== nextProps.data) {
             this.setState({ record: nextProps.data }); // FIXME: erases user entry when fetch response arrives late
+            if (this.fullRefresh) {
+                this.fullRefresh = false;
+                this.setState({ key: this.state.key + 1 });
+            }
         }
         if (this.props.id !== nextProps.id) {
             this.updateData(nextProps.resource, nextProps.id);
@@ -55,6 +63,7 @@ export class Edit extends Component {
 
     refresh = (event) => {
         event.stopPropagation();
+        this.fullRefresh = true;
         this.updateData();
     }
 
@@ -63,11 +72,22 @@ export class Edit extends Component {
     }
 
     render() {
-        const { actions = <DefaultActions />, children, data, hasDelete, hasShow, id, isLoading, resource, title } = this.props;
+        const { actions = <DefaultActions />, children, data, hasDelete, hasShow, id, isLoading, resource, title, translate } = this.props;
+        const { key } = this.state;
         const basePath = this.getBasePath();
 
+        const resourceName = translate(`resources.${resource}.name`, {
+            smart_count: 1,
+            _: inflection.humanize(inflection.singularize(resource)),
+        });
+        const defaultTitle = translate('aor.page.edit', {
+            name: `${resourceName}`,
+            id,
+            data,
+        });
+
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
+            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }} key={key}>
                 {actions && React.cloneElement(actions, {
                     basePath,
                     data,
@@ -76,7 +96,7 @@ export class Edit extends Component {
                     refresh: this.refresh,
                     resource,
                 })}
-                {data && <CardTitle title={<Title title={title} record={data} defaultTitle={`${inflection.humanize(inflection.singularize(resource))} #${id}`} />} />}
+                {data && <CardTitle title={<Title title={title} record={data} defaultTitle={defaultTitle} />} />}
                 {data && React.cloneElement(children, {
                     onSubmit: this.handleSubmit,
                     resource,
@@ -103,6 +123,7 @@ Edit.propTypes = {
     params: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
+    translate: PropTypes.func,
 };
 
 function mapStateToProps(state, props) {
@@ -113,7 +134,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default connect(
+export default translate(connect(
     mapStateToProps,
     { crudGetOne: crudGetOneAction, crudUpdate: crudUpdateAction },
-)(Edit);
+)(Edit));

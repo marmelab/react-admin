@@ -1,22 +1,12 @@
 import React, { Component, PropTypes } from 'react';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import DatagridCell from './DatagridCell';
 import DatagridHeaderCell from './DatagridHeaderCell';
+import DatagridBody from './DatagridBody';
 
 const defaultStyles = {
-    table: {
-        backgroundColor: '#fff',
-        padding: '0px 24px',
-        width: '100%',
-        borderCollapse: 'collapse',
-        borderSpacing: 0,
-    },
     tbody: {
         height: 'inherit',
-    },
-    tr: {
-        borderBottom: '1px solid rgb(224, 224, 224)',
-        color: 'rgba(0, 0, 0, 0.870588)',
-        height: 48,
     },
     header: {
         th: {
@@ -78,36 +68,27 @@ class Datagrid extends Component {
     }
 
     render() {
-        const { resource, children, ids, data, currentSort, basePath, styles = defaultStyles, rowStyle } = this.props;
+        const { resource, children, ids, isLoading, data, currentSort, basePath, styles = defaultStyles, muiTheme, rowStyle } = this.props;
         return (
-            <table style={styles.table}>
+            <table style={muiTheme.table}>
                 <thead>
-                    <tr style={styles.tr}>
+                    <tr style={muiTheme.tableRow}>
                         {React.Children.map(children, (field, index) => (
                             <DatagridHeaderCell
                                 key={field.props.source || index}
                                 field={field}
                                 defaultStyle={index === 0 ? styles.header['th:first-child'] : styles.header.th}
                                 currentSort={currentSort}
+                                isSorting={field.props.source === currentSort.field}
                                 updateSort={this.updateSort}
+                                resource={resource}
                             />
                         ))}
                     </tr>
                 </thead>
-                <tbody style={styles.tbody}>
-                    {ids.map((id, rowIndex) => (
-                        <tr style={rowStyle ? rowStyle(data[id], rowIndex) : styles.tr} key={id}>
-                            {React.Children.map(children, (field, index) => (
-                                <DatagridCell
-                                    key={`${id}-${field.props.source || index}`}
-                                    record={data[id]}
-                                    defaultStyle={index === 0 ? styles.cell['td:first-child'] : styles.cell.td}
-                                    {...{ field, basePath, resource }}
-                                />
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
+                <DatagridBody resource={resource} ids={ids} data={data} basePath={basePath} styles={styles} rowStyle={rowStyle} isLoading={isLoading}>
+                    {children}
+                </DatagridBody>
             </table>
         );
     }
@@ -115,6 +96,7 @@ class Datagrid extends Component {
 
 Datagrid.propTypes = {
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
+    isLoading: PropTypes.bool,
     resource: PropTypes.string,
     data: PropTypes.object.isRequired,
     currentSort: PropTypes.shape({
@@ -124,6 +106,7 @@ Datagrid.propTypes = {
     basePath: PropTypes.string,
     setSort: PropTypes.func,
     styles: PropTypes.object,
+    muiTheme: PropTypes.object,
     rowStyle: PropTypes.func,
 };
 
@@ -132,4 +115,4 @@ Datagrid.defaultProps = {
     ids: [],
 };
 
-export default Datagrid;
+export default muiThemeable()(Datagrid);

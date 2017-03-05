@@ -55,8 +55,12 @@ export default (apiUrl, httpClient = fetchJson) => {
             break;
         }
         case GET_MANY_REFERENCE: {
+            const { page, perPage } = params.pagination;
+            const { field, order } = params.sort;
             const query = {
-                filter: JSON.stringify({ [params.target]: params.id }),
+                sort: JSON.stringify([field, order]),
+                range: JSON.stringify([(page - 1) * perPage, (page * perPage) - 1]),
+                filter: JSON.stringify({ ...params.filter, [params.target]: params.id }),
             };
             url = `${apiUrl}/${resource}?${queryParameters(query)}`;
             break;

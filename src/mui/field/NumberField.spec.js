@@ -1,7 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import NumberField from './NumberField';
+import { NumberField } from './NumberField';
 
 describe('<NumberField />', () => {
     it('should return null when the record is not set', () => assert.equal(

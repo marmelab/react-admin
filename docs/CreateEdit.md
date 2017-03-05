@@ -221,7 +221,7 @@ To define default values, you can add a `defaultValue` prop to form components (
 
 ### Global Default Value
 
-The value of the form `defaultValue` prop must be an object, specifying default value for the created record. For instance:
+The value of the form `defaultValue` prop can be an object or a function returning an object, specifying default value for the created record. For instance:
 
 ```js
 const postDefaultValue = { created_at: new Date(), nb_views: 0 };
@@ -246,6 +246,7 @@ Alternatively, you can specify a `defaultValue` prop directly in `<Input>` compo
 export const PostCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
+            <DisabledInput source="id" defaultValue={() => uuid()}/>
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" defaultValue={0} />

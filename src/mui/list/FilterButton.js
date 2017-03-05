@@ -4,7 +4,8 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import ContentFilter from 'material-ui/svg-icons/content/filter-list';
-import title from '../../util/title';
+import FieldTitle from '../../util/FieldTitle';
+import translate from '../../i18n/translate';
 
 export class FilterButton extends Component {
     constructor(props) {
@@ -45,7 +46,8 @@ export class FilterButton extends Component {
     }
 
     handleShow(event) {
-        this.props.showFilter(event.currentTarget.dataset.key);
+        const { key, defaultValue } = event.currentTarget.dataset;
+        this.props.showFilter(key, defaultValue);
         this.setState({
             open: false,
         });
@@ -53,18 +55,27 @@ export class FilterButton extends Component {
 
     render() {
         const hiddenFilters = this.getHiddenFilters();
+        const { resource } = this.props;
+        const { open, anchorEl } = this.state;
+
         return (hiddenFilters.length > 0 && <div style={{ display: 'inline-block' }}>
-            <FlatButton primary label="Add Filter" icon={<ContentFilter />} onTouchTap={this.handleTouchTap} />
+            <FlatButton primary label={this.props.translate('aor.action.add_filter')} icon={<ContentFilter />} onTouchTap={this.handleTouchTap} />
             <Popover
-                open={this.state.open}
-                anchorEl={this.state.anchorEl}
+                open={open}
+                anchorEl={anchorEl}
                 anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
                 targetOrigin={{ horizontal: 'left', vertical: 'top' }}
                 onRequestClose={this.handleRequestClose}
             >
                 <Menu>
                     {hiddenFilters.map(filterElement =>
-                        <MenuItem data-key={filterElement.props.source} key={filterElement.props.source} primaryText={title(filterElement.props.label, filterElement.props.source)} onTouchTap={this.handleShow} />
+                        <MenuItem
+                            data-key={filterElement.props.source}
+                            data-default-value={filterElement.props.defaultValue}
+                            key={filterElement.props.source}
+                            primaryText={<FieldTitle label={filterElement.props.label} source={filterElement.props.source} resource={resource} />}
+                            onTouchTap={this.handleShow}
+                        />
                     )}
                 </Menu>
             </Popover>
@@ -77,7 +88,9 @@ FilterButton.propTypes = {
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
     displayedFilters: PropTypes.object.isRequired,
     filterValues: PropTypes.object.isRequired,
+    resource: PropTypes.string,
     showFilter: PropTypes.func.isRequired,
+    translate: PropTypes.func.isRequired,
 };
 
-export default FilterButton;
+export default translate(FilterButton);

@@ -1,5 +1,70 @@
 # Changelog
 
+## v0.8.3
+
+* Fix Edit view shows stale data
+* Fix anchor typo on documentation index ([szappacosta](https://github.com/szappacosta))
+* Fix missing import in the Getting Started tutorial ([SilentKernel](https://github.com/SilentKernel))
+* Add demo video in doc and GitHub homepage
+* Add Russian translation link ([cytomich](https://github.com/cytomich))
+
+## v0.8.2
+
+* Fix scroll to top during navigation when auth is disabled
+* Fix fetch saga to avoid mutating actions
+* Fix custom app documentation
+* Fix SelectInput arrow click hides input
+* Fix missing status in fetch when error is thrown ([wadjeroudi](https://github.com/wadjeroudi))
+* Remove documentation images from package
+* Add Chinese translation link ([downup2u](https://github.com/downup2u))
+* Add German translation link ([der-On](https://github.com/der-On))
+* Add link to powershell script for building ([mantis](https://github.com/mantis))
+
+## v0.8.1
+
+* Fix custom title in view and custom label in resource
+* Fix quick filter in example demo
+* Add link to GraphQl rest client in the docs
+* Add link to `<ColorInput>` component in the docs
+* Add link to Italian translation in the docs ([stefsava](https://github.com/stefsava))
+
+## v0.8.0
+
+See the [v0.8.0 announcement in the marmelab blog](https://marmelab.com/blog/2017/02/14/admin-on-rest-0-8.html).
+
+* [BC Break] Rename `defaultSort` prop to `sort` in `<List>` component, to make it consistent with the props of `<ReferenceInput>` and `<ReferenceManyField>`
+* [BC Break] Rename `filter` props (the one accepting a `<Filter>` element) to `filters` in `<List>` component
+* Add I18n
+* Add Authentication
+* Add `<ImageField>` and `<ImageInput>` to upload images
+* Add `<CheckboxGroupInput>` component
+* Add the ability to hook up custom sagas in `<Admin>`
+* Add the ability to hook up custom reducers in `<Admin>`
+* Add `filter` prop to `<List>` component for permanent filters
+* Add support for `defaultValue` in filters
+* Add support for functions as value for the `defaultValue` prop
+* Add ability to disable sorting on datagrid headers
+* Add `perPage`, `sort`, and `filter` props to ``<ReferenceManyField>`
+* Add `label` prop to all buttons
+* Add Custom Actions documentation
+* Add CSS prefix to flex-box elements ([yshing](https://github.com/yshing))
+* Improve Delete button labels
+* Update optimistic rendering to also work with custom fetch actions
+* Speed up `<Datagrid>` rendering
+* Refactor response side effects to a normal saga
+* Upgrade `redux-saga` to v0.14.2
+* Fix disconnection on dashboard
+* Fix edge case where list filter isn't shown
+* Fix validation for `<AutocompleteInput>`, `<ReferenceInput>`, and `<SelectInput>` ([AkselsLedins](https://github.com/AkselsLedins))
+
+## v0.7.2
+
+* Fix code snippets disappearing from documentation
+* Add mention of aor-postgrest-client in REST clients documentation
+* Fix missed refresh in example due to aor-json-rest-client not cloning the objects
+* Fix Refresh button doesn't refresh References
+* Fix pagination error in console during load
+
 ## v0.7.1
 
 * Fix validation on nested fields
@@ -7,6 +72,8 @@
 * Fix endless spinning `<SaveButton>` upon error
 
 ## v0.7.0
+
+See the [v0.7.0 announcement in the marmelab blog](https://marmelab.com/blog/2017/01/13/admin-on-rest-0-7.html).
 
 * [BC Break] Remove `<RichTextInput>` from core, use `aor-rich-text-input` instead
 * [BC Break] Introduce `<SimpleForm>` component between `<Edit>/<Create>` and input components
@@ -109,6 +176,8 @@ Fix bad built files
 
 ## v0.5.0
 
+See the [v0.5.0 announcement in the marmelab blog](http://marmelab.com/blog/2016/11/10/admin-on-rest-0-5.html).
+
 * [BC Break] Remove `credentials: include` HTTP option enabled by default
 * Add `<Show>` View
 * Add custom headers support
@@ -149,6 +218,8 @@ Fix bad built files
 * Fix filter value reset when filter is removed
 
 ## V0.3.0
+
+See the [v0.3.0 announcement in the marmelab blog](http://marmelab.com/blog/2016/09/02/admin-on-rest-react-admin-framework.html).
 
 * [BC Break] `<List>` takes an iterator child (like `<Datagrid>`)
 * [BC Break] `<ReferenceField>` replaces `referenceSource` by a child field

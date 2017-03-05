@@ -3,6 +3,7 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import { ReferenceInput } from './ReferenceInput';
+import { SelectInput } from './SelectInput';
 
 describe('<ReferenceInput />', () => {
     const defaultProps = {
@@ -182,5 +183,20 @@ describe('<ReferenceInput />', () => {
         assert.deepEqual(onChange.args[0], [
             'foo',
         ]);
+    });
+
+    it('should pass meta down to child component', () => {
+        const wrapper = shallow(
+            <ReferenceInput
+                {...defaultProps}
+                allowEmpty
+                meta={{ touched: false }}
+            >
+                <MyComponent />
+            </ReferenceInput>,
+        );
+
+        const myComponent = wrapper.find('MyComponent');
+        assert.notEqual(myComponent.prop('meta', undefined));
     });
 });

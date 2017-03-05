@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
+import React, { PropTypes } from 'react';
 import { CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import CreateButton from '../button/CreateButton';
+import { CreateButton, RefreshButton } from '../button';
 
 const cardActionStyle = {
     zIndex: 2,
@@ -10,11 +8,11 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const Actions = ({ resource, filter, displayedFilters, filterValues, hasCreate, basePath, showFilter, refresh }) => (
+const Actions = ({ resource, filters, displayedFilters, filterValues, hasCreate, basePath, showFilter, refresh }) => (
     <CardActions style={cardActionStyle}>
-        {filter && React.cloneElement(filter, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
+        {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         {hasCreate && <CreateButton basePath={basePath} />}
-        <FlatButton primary label="Refresh" onClick={refresh} icon={<NavigationRefresh />} />
+        <RefreshButton refresh={refresh} />
     </CardActions>
 );
 
