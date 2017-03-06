@@ -753,7 +753,7 @@ const LatLongInput = () => (
     <span>
         <Field name="position.lat" component="input" type="number" placeholder="latitude" />
         &nbsp;
-        <Field name="position.lng" component="input" tyle="number" placeholder="longitude" />
+        <Field name="position.lng" component="input" type="number" placeholder="longitude" />
     </span>
 );
 ```
