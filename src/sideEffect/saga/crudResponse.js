@@ -26,17 +26,17 @@ function* handleResponse({ type, requestPayload, error, payload }) {
         return requestPayload.redirect ? yield [
             put(showNotification('aor.notification.updated')),
             put(push(requestPayload.basePath)),
-        ] : yield [];
+        ] : yield [put(showNotification('aor.notification.updated'))];
     case CRUD_CREATE_SUCCESS:
         return requestPayload.redirect ? yield [
             put(showNotification('aor.notification.created')),
             put(push(linkToRecord(requestPayload.basePath, payload.id))),
-        ] : yield [];
+        ] : yield [put(showNotification('aor.notification.created'))];
     case CRUD_DELETE_SUCCESS:
         return requestPayload.redirect ? yield [
             put(showNotification('aor.notification.deleted')),
             put(push(requestPayload.basePath)),
-        ] : yield [];
+        ] : yield [put(showNotification('aor.notification.deleted'))];
     case CRUD_GET_ONE_FAILURE:
         return requestPayload.basePath ? yield [
             put(showNotification('aor.notification.item_doesnt_exist', 'warning')),
