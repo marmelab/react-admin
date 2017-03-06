@@ -15,13 +15,25 @@ import FieldTitle from '../../util/FieldTitle';
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
 class NumberInput extends Component {
-    /**
-     * Necessary because of a React bug on <input type="number">
-     * @see https://github.com/facebook/react/issues/1425
-     */
     handleBlur = (event) => {
+        this.props.onBlur(event);
         this.props.input.onBlur(event);
-        this.props.input.onChange(parseFloat(this.props.input.value));
+
+        /**
+         * Necessary because of a React bug on <input type="number">
+         * @see https://github.com/facebook/react/issues/1425
+         */
+        this.handleChange(parseFloat(this.props.input.value));
+    }
+
+    handleFocus = (event) => {
+        this.props.onFocus(event);
+        this.props.input.onFocus(event);
+    }
+
+    handleChange = (event) => {
+        this.props.onChange(event);
+        this.props.input.onChange(event);
     }
 
     render() {
@@ -30,6 +42,8 @@ class NumberInput extends Component {
             <TextField
                 {...input}
                 onBlur={this.handleBlur}
+                onFocus={this.handleFocus}
+                onChange={this.handleChange}
                 type="number"
                 step={step}
                 floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
@@ -48,7 +62,9 @@ NumberInput.propTypes = {
     label: PropTypes.string,
     meta: PropTypes.object,
     name: PropTypes.string,
+    onBlur: PropTypes.func,
     onChange: PropTypes.func,
+    onFocus: PropTypes.func,
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
@@ -58,6 +74,9 @@ NumberInput.propTypes = {
 
 NumberInput.defaultProps = {
     addField: true,
+    onBlur: () => {},
+    onChange: () => {},
+    onFocus: () => {},
     options: {},
     step: 'any',
 };
