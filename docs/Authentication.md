@@ -128,7 +128,7 @@ For instance, to check for the existence of the token in local storage:
 
 ```js
 // in src/authClient.js
-import { AUTH_LOGIN, AUTH_LOGOUT } from 'admin-on-rest';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK } from 'admin-on-rest';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
@@ -144,13 +144,31 @@ export default (type, params) => {
 };
 ```
 
-If the promise is rejected, admin-on-rest redirects to the `/login` page.
+If the promise is rejected, admin-on-rest redirects by default to the `/login` page. You can override where to redirect the user by passing an argument with a `redirectTo` property to the rejected promise:
+
+```js
+// in src/authClient.js
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK } from 'admin-on-rest';
+
+export default (type, params) => {
+    if (type === AUTH_LOGIN) {
+        // ...
+    }
+    if (type === AUTH_LOGOUT) {
+        // ...
+    }
+    if (type === AUTH_CHECK) {
+        return localStorage.getItem('username') ? Promise.resolve() : Promise.reject({ redirectTo: '/no-access' });
+    }
+    return Promise.reject('Unkown method');
+};
+```
 
 **Tip**: For the `AUTH_CHECK` call, the `params` argument contains the `resource` name, so you can implement different checks for different resources:
 
 ```js
 // in src/authClient.js
-import { AUTH_LOGIN, AUTH_LOGOUT } from 'admin-on-rest';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK } from 'admin-on-rest';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
