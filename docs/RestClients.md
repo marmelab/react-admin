@@ -17,7 +17,7 @@ The `restClient` parameter of the `<Admin>` component, must be a function with t
  *
  * @example
  * restClient(GET_ONE, 'posts', { id: 123 })
- *  => new Promise(resolve => resolve({ id: 123, title: "hello, world" }))
+ *  => new Promise(resolve => resolve({ data: { id: 123, title: "hello, world" } }))
  *
  * @param {string} type Request type, e.g GET_LIST
  * @param {string} resource Resource name, e.g. "posts"
@@ -253,13 +253,13 @@ Possible types are:
 
 Type                 | Params format
 -------------------- | ----------------
-`GET_LIST`           | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} } }`
+`GET_LIST`           | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`
 `GET_ONE`            | `{ id: {mixed} }`
 `CREATE`             | `{ data: {Object} }`
 `UPDATE`             | `{ id: {mixed}, data: {Object} }`
 `DELETE`             | `{ id: {mixed} }`
 `GET_MANY`           | `{ ids: {mixed[]} }`
-`GET_MANY_REFERENCE` | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} } }`
+`GET_MANY_REFERENCE` | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`
 
 Examples:
 
@@ -267,13 +267,18 @@ Examples:
 restClient(GET_LIST, 'posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },
+    filter: { author_id: 12 },
 });
 restClient(GET_ONE, 'posts', { id: 123 });
 restClient(CREATE, 'posts', { title: "hello, world" });
 restClient(UPDATE, 'posts', { id: 123, { title: "hello, world!" } });
 restClient(DELETE, 'posts', { id: 123 });
 restClient(GET_MANY, 'posts', { ids: [123, 124, 125] });
-restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123, sort: { field: 'created_at', order: 'DESC' } });
+restClient(GET_MANY_REFERENCE, 'comments', {
+    target: 'post_id',
+    id: 123,
+    sort: { field: 'created_at', order: 'DESC' }
+});
 ```
 
 ### Response Format
@@ -283,12 +288,12 @@ REST responses are objects. The format depends on the type.
 Type                 | Response format
 -------------------- | ----------------
 `GET_LIST`           | `{ data: {Record[]}, total: {int} }`
-`GET_ONE`            | `{Record}`
-`CREATE`             | `{Record}`
-`UPDATE`             | `{Record}`
-`DELETE`             | `{Record}`
-`GET_MANY`           | `{Record[]}`
-`GET_MANY_REFERENCE` | `{Record[]}`
+`GET_ONE`            | `{ data: {Record} }`
+`CREATE`             | `{ data: {Record} }`
+`UPDATE`             | `{ data: {Record} }`
+`DELETE`             | `{ data: {Record} }`
+`GET_MANY`           | `{ data: {Record[]} }`
+`GET_MANY_REFERENCE` | `{ data: {Record[]}, total: {int} }`
 
 A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 123, title: "hello, world" }`.
 
@@ -298,57 +303,67 @@ Examples:
 restClient(GET_LIST, 'posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },
-}).then(response => console.log(response));
+    filter: { author_id: 12 },
+})
+.then(response => console.log(response));
 // {
 //     data: [
-//         { id: 126, title: "allo?" },
-//         { id: 127, title: "bien le bonjour" },
-//         { id: 124, title: "good day sunshise" },
-//         { id: 123, title: "hello, world" },
-//         { id: 125, title: "howdy partner" },
+//         { id: 126, title: "allo?", author_id: 12 },
+//         { id: 127, title: "bien le bonjour", author_id: 12 },
+//         { id: 124, title: "good day sunshine", author_id: 12 },
+//         { id: 123, title: "hello, world", author_id: 12 },
+//         { id: 125, title: "howdy partner", author_id: 12 },
 //     ],
 //     total: 27
 // }
 
 restClient(GET_ONE, 'posts', { id: 123 })
-.then(record => console.log(record));
+.then(response => console.log(response));
 // {
-//     id: 123,
-//     title: "hello, world"
+//     data: { id: 123, title: "hello, world" }
 // }
 
-restClient(CREATE, 'posts', { title: "hello, world" });
+restClient(CREATE, 'posts', { title: "hello, world" })
+.then(response => console.log(response));
 // {
-//     id: 450,
-//     title: "hello, world"
+//     data: { id: 450, title: "hello, world" }
 // }
 
-restClient(UPDATE, 'posts', { id: 123, { title: "hello, world!" } });
+restClient(UPDATE, 'posts', { id: 123, { title: "hello, world!" } })
+.then(response => console.log(response));
 // {
-//     id: 123,
-//     title: "hello, world!"
+//     data: { id: 123, title: "hello, world!" }
 // }
 
-restClient(DELETE, 'posts', { id: 123 });
+restClient(DELETE, 'posts', { id: 123 })
+.then(response => console.log(response));
 // {
-//     id: 123,
-//     title: "hello, world"
+//     data: { id: 123, title: "hello, world" }
 // }
 
 restClient(GET_MANY, 'posts', { ids: [123, 124, 125] })
-.then(records => console.log(records));
-// [
-//     { id: 123, title: "hello, world" },
-//     { id: 124, title: "good day sunshise" },
-//     { id: 125, title: "howdy partner" },
-// ]
+.then(response => console.log(response));
+// {
+//     data: [
+//         { id: 123, title: "hello, world" },
+//         { id: 124, title: "good day sunshise" },
+//         { id: 125, title: "howdy partner" },
+//     ]
+// }
 
-restClient(GET_MANY_REFERENCE, 'comments', { target: 'post_id', id: 123, sort: { field: 'created_at', order: 'DESC' } });
-.then(records => console.log(records));
-// [
-//     { id: 667, title: "I agree", post_id: 123 },
-//     { id: 895, title: "I don't agree", post_id: 123 },
-// ]
+restClient(GET_MANY_REFERENCE, 'comments', {
+    target: 'post_id',
+    id: 123,
+    sort: { field: 'created_at', order: 'DESC' }
+});
+.then(response => console.log(response));
+// {
+//     data: [
+//         { id: 667, title: "I agree", post_id: 123 },
+//         { id: 895, title: "I don't agree", post_id: 123 },
+//     ],
+//     total: 2,
+// }
 ```
 
 ### Error Format
