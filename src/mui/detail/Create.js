@@ -40,7 +40,7 @@ class Create extends Component {
                         basePath,
                         resource,
                     })}
-                    {!isMobile && <CardTitle title={<Title title={title} defaultTitle={defaultTitle} />} />}
+                    {!isMobile && <CardTitle title={titleElement} />}
                     {React.cloneElement(children, {
                         onSubmit: this.handleSubmit,
                         resource,
