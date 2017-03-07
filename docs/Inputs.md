@@ -35,6 +35,11 @@ All input components accept the following attributes:
 * `style`: A style object to customize the look and feel of the field container (e.g. the `<div>` in a form).
 * `elStyle`: A style object to customize the look and feel of the field element itself
 
+Some other props are progressively implemented. The `<TextInput />` and `<NumberInput />` inputs also accept following props:
+
+* `onBlur`: a function to call when the form field loses focus. It expects to either receive the [React SyntheticEvent](https://facebook.github.io/react/docs/events.html), or the current value of the field.
+* `onChange`: a function to call when the form field is changed. It expects to either receive the [React SyntheticEvent](https://facebook.github.io/react/docs/events.html), or the new value of the field.
+* `onFocus`: a function to call when the field receives focus. It takes the `event` as argument.
 
 ```js
 <TextInput source="zb_title" label="Title" />
