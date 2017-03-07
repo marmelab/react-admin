@@ -38,7 +38,7 @@ All input components accept the following attributes:
 Some other props are progressively implemented. The `<TextInput />` and `<NumberInput />` inputs also accept following props:
 
 * `onBlur`: a function to call when the form field loses focus. It expects to either receive the [React SyntheticEvent](https://facebook.github.io/react/docs/events.html), or the current value of the field.
-* `onChange`: a function to call when the form field is changed. It expects to either receive the [React SyntheticEvent](https://facebook.github.io/react/docs/events.html) or the new value of the field.
+* `onChange`: a function to call when the form field is changed. It expects to either receive the [React SyntheticEvent](https://facebook.github.io/react/docs/events.html), or the new value of the field.
 * `onFocus`: a function to call when the field receives focus. It takes the `event` as argument.
 
 ```js
