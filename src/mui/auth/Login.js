@@ -11,6 +11,7 @@ import Avatar from 'material-ui/Avatar';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
+import CircularProgress from 'material-ui/CircularProgress';
 import LockIcon from 'material-ui/svg-icons/action/lock-outline';
 import { cyan500, pinkA200 } from 'material-ui/styles/colors';
 
@@ -70,7 +71,7 @@ class Login extends Component {
     login = ({ username, password }) => {
         const { authClient, push, location } = this.props;
         if (!authClient) return;
-        authClient(AUTH_LOGIN, { username, password })
+        return authClient(AUTH_LOGIN, { username, password })
             .then(() => push(location.state ? location.state.nextPathname : '/'))
             .catch(e => this.setState({ signInError: e }));
     }
@@ -96,6 +97,7 @@ class Login extends Component {
                                         name="username"
                                         component={renderInput}
                                         floatingLabelText={translate('aor.auth.username')}
+                                        disabled={submitting}
                                     />
                                 </div>
                                 <div style={styles.input}>
@@ -104,11 +106,19 @@ class Login extends Component {
                                         component={renderInput}
                                         floatingLabelText={translate('aor.auth.password')}
                                         type="password"
+                                        disabled={submitting}
                                     />
                                 </div>
                             </div>
                             <CardActions>
-                                <RaisedButton type="submit" primary disabled={submitting} label={translate('aor.auth.sign_in')} fullWidth />
+                                <RaisedButton
+                                    type="submit"
+                                    primary
+                                    disabled={submitting}
+                                    icon={submitting && <CircularProgress size={25} thickness={2} />}
+                                    label={translate('aor.auth.sign_in')}
+                                    fullWidth
+                                />
                             </CardActions>
                         </form>
                     </Card>
