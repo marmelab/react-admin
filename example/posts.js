@@ -19,10 +19,12 @@ import {
     NumberField,
     NumberInput,
     ReferenceManyField,
+    Responsive,
     RichTextField,
     Show,
     ShowButton,
     SimpleForm,
+    SimpleList,
     SimpleShowLayout,
     TabbedForm,
     TextField,
@@ -32,6 +34,7 @@ import RichTextInput from 'aor-rich-text-input';
 import { translate } from 'admin-on-rest';
 import Chip from 'material-ui/Chip';
 export PostIcon from 'material-ui/svg-icons/action/book';
+import { Link } from 'react-router';
 
 const QuickFilter = translate(({ label, translate }) => <Chip>{translate(label)}</Chip>);
 
@@ -46,15 +49,26 @@ const PostFilter = ({ ...props }) => (
 const titleFieldStyle = { maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' };
 export const PostList = ({ ...props }) => (
     <List {...props} filters={<PostFilter />} sort={{ field: 'published_at', order: 'DESC' }}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" style={titleFieldStyle} />
-            <DateField source="published_at" style={{ fontStyle: 'italic' }} />
-            <BooleanField source="commentable" />
-            <NumberField source="views" />
-            <EditButton />
-            <ShowButton />
-        </Datagrid>
+        <Responsive
+            small={
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
+            }
+            medium={
+                <Datagrid>
+                    <TextField source="id" />
+                    <TextField source="title" style={titleFieldStyle} />
+                    <DateField source="published_at" style={{ fontStyle: 'italic' }} />
+                    <BooleanField source="commentable" />
+                    <NumberField source="views" />
+                    <EditButton />
+                    <ShowButton />
+                </Datagrid>
+            }
+        />
     </List>
 );
 
