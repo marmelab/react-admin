@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.8.4
+
+* Fix `defaultValue` assignment for nested resource attributes ([cytomich](https://github.com/cytomich))
+* Fix typo in Inputs documentation ([FallDi](https://github.com/FallDi))
+* Fix Custom App install instructions
+* Add Hebrew translation link ([mstmustisnt](https://github.com/mstmustisnt))
+* Add link to Feathers `restClient` ([josx](https://github.com/josx))
+
+
 ## v0.8.3
 
 * Fix Edit view shows stale data
