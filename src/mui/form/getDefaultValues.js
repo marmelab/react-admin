@@ -26,5 +26,5 @@ const getDefaultValue = (state, props) => props.defaultValue;
 
 export default createSelector(
     getChildren, getRecord, getDefaultValue,
-    (children, record, defaultValue) => getDefaultValues(Children.toArray(children), record, defaultValue),
+    (children, record, defaultValue) => getDefaultValues(Children.toArray(children), record, defaultValue)
 );
