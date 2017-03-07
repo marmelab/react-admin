@@ -139,7 +139,7 @@ The `<Layout>` component has the responsibility for displaying the menu. So you 
 ```js
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { Notification, AppBar } from 'admin-on-rest';
+import { Notification, AppBar } from 'admin-on-rest/lib/mui';
 import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import { Link } from 'react-router';
