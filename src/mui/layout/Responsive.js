@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import withWidth from 'material-ui/utils/withWidth';
 
-const Responsive = ({ small, medium, large, width, ...rest }) => {
+export const Responsive = ({ small, medium, large, width, ...rest }) => {
     let component;
     switch (width) {
     case 1:
