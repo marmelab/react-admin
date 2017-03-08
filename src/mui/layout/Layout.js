@@ -5,10 +5,13 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import autoprefixer from 'material-ui/utils/autoprefixer';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
+import withWidth from 'material-ui/utils/withWidth';
+import compose from 'recompose/compose';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import AppBar from './AppBar';
 import Notification from './Notification';
 import defaultTheme from '../defaultTheme';
+import { setSidebarVisibility as setSidebarVisibilityAction } from '../../actions';
 
 injectTapEventPlugin();
 
@@ -24,7 +27,14 @@ const styles = {
         flex: 1,
         overflow: 'hidden',
     },
+    bodySmall: {
+        backgroundColor: '#fff',
+    },
     content: {
+        flex: 1,
+        padding: '2em',
+    },
+    contentSmall: {
         flex: 1,
     },
     loader: {
@@ -34,34 +44,28 @@ const styles = {
         margin: 16,
         zIndex: 1200,
     },
-    sidebarOpen: {
-        flex: '0 0 16em',
-        marginLeft: 0,
-        order: -1,
-        transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
-    },
-    sidebarClosed: {
-        flex: '0 0 16em',
-        marginLeft: '-16em',
-        order: -1,
-        transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
-    },
 };
 
 const prefixedStyles = {};
 
 class Layout extends Component {
-    state = {
-        sidebarOpen: true,
-    };
-
-    toggleSidebar = () => {
-        this.setState({ sidebarOpen: !this.state.sidebarOpen });
+    componentWillMount() {
+        if (this.props.width !== 1) {
+            this.props.setSidebarVisibility(true);
+        }
     }
 
     render() {
-        const { isLoading, children, title, theme, menu } = this.props;
-        const { sidebarOpen } = this.state;
+        const {
+            children,
+            isLoading,
+            menu,
+            route,
+            sidebarOpen,
+            theme,
+            title,
+            width,
+        } = this.props;
         const muiTheme = getMuiTheme(theme);
         if (!prefixedStyles.main) {
             // do this once because user agent never changes
@@ -73,17 +77,18 @@ class Layout extends Component {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div style={prefixedStyles.main}>
-                    <AppBar title={title} onLeftIconButtonTouchTap={this.toggleSidebar} />
-                    <div className="body" style={prefixedStyles.body}>
-                        <div style={prefixedStyles.content}>{children}</div>
-                        <Paper style={sidebarOpen ? styles.sidebarOpen : styles.sidebarClosed}>
-                            {menu}
-                        </Paper>
+                    { width !== 1 && <AppBar title={title} />}
+                    <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
+                        <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>{children}</div>
+                        {React.cloneElement(menu, {
+                            open: sidebarOpen,
+                            width,
+                        })}
                     </div>
                     <Notification />
                     {isLoading && <CircularProgress
                         color="#fff"
-                        size={30}
+                        size={width === 1 ? 20 : 30}
                         thickness={2}
                         style={styles.loader}
                     />}
@@ -91,16 +96,19 @@ class Layout extends Component {
             </MuiThemeProvider>
         );
     }
-};
+}
 
 Layout.propTypes = {
     authClient: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
     isLoading: PropTypes.bool.isRequired,
     children: PropTypes.node,
     menu: PropTypes.element,
-    logout: PropTypes.element, // eslint-disable-line react/no-unused-prop-types
+    route: PropTypes.object.isRequired,
+    setSidebarVisibility: PropTypes.func.isRequired,
+    sidebarOpen: PropTypes.bool,
     title: PropTypes.string.isRequired,
     theme: PropTypes.object.isRequired,
+    width: PropTypes.number,
 };
 
 Layout.defaultProps = {
@@ -108,9 +116,17 @@ Layout.defaultProps = {
 };
 
 function mapStateToProps(state) {
-    return { isLoading: state.admin.loading > 0 };
+    return {
+        isLoading: state.admin.loading > 0,
+        sidebarOpen: state.admin.ui.sidebarOpen,
+    };
 }
 
-export default connect(
-  mapStateToProps,
-)(Layout);
+const enhance = compose(
+    withWidth(),
+    connect(mapStateToProps, {
+        setSidebarVisibility: setSidebarVisibilityAction,
+    }),
+);
+
+export default enhance(Layout);

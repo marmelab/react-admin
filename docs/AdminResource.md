@@ -113,25 +113,30 @@ const App = () => (
 
 ### `menu`
 
-Admin-on-rest uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component. If you want to add or remove menu items, for instance to link to non-resources pages, you can pass your own menu component as the `menu` prop.
+Admin-on-rest uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component.
+
+If you want to add or remove menu items, for instance to link to non-resources pages, you can create your own menu component:
 
 ```js
 // in src/Menu.js
 import React from 'react';
 import { List, ListItem } from 'material-ui/List';
+import Paper from 'material-ui/Paper';
 import { Link } from 'react-router';
 
-export default ({ resources, logout }) => (
-    <List>
-        <ListItem container={<Link to="/posts" />} primaryText="Posts" />
-        <ListItem container={<Link to="/comments" />} primaryText="Comments" />
-        <ListItem container={<Link to="/custom-route" />} primaryText="Miscellaneous" />
-        {logout}
-    </List>
+export default ({ resources, logout, open }) => (
+    <Paper style={{ flex: '0 0 16em', marginLeft: open ? 0 : '-16em', order: -1 }}>
+        <List>
+            <ListItem containerElement={<Link to="/posts" />} primaryText="Posts" />
+            <ListItem containerElement={<Link to="/comments" />} primaryText="Comments" />
+            <ListItem containerElement={<Link to="/custom-route" />} primaryText="Miscellaneous" />
+            {logout}
+        </List>
+    </Paper>
 );
 ```
 
-**Tip**: If you use authentication, don't forget to render the `logout` prop.
+Then, pass it to the `<Admin>` component as the `menu` prop:
 
 ```js
 // in src/App.js
@@ -143,6 +148,8 @@ const App = () => (
     </Admin>
 );
 ```
+
+**Tip**: If you use authentication, don't forget to render the `logout` prop in your custom menu component.
 
 ### `theme`
 

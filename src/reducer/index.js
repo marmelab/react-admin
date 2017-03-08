@@ -4,6 +4,7 @@ import loading from './loading';
 import notification from './notification';
 import references from './references';
 import saving from './saving';
+import ui from './ui';
 
 export default (resources) => {
     const resourceReducers = {};
@@ -16,5 +17,6 @@ export default (resources) => {
         notification,
         references,
         saving,
+        ui,
     });
 };

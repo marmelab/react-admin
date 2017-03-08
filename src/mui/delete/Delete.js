@@ -5,11 +5,20 @@ import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import ActionCheck from 'material-ui/svg-icons/action/check-circle';
 import AlertError from 'material-ui/svg-icons/alert/error-outline';
+import withWidth from 'material-ui/utils/withWidth';
+import compose from 'recompose/compose';
 import inflection from 'inflection';
+import AppBar from '../layout/AppBar';
 import Title from '../layout/Title';
 import { ListButton } from '../button';
 import { crudGetOne as crudGetOneAction, crudDelete as crudDeleteAction } from '../../actions/dataActions';
 import translate from '../../i18n/translate';
+
+const styles = {
+    actions: { zIndex: 2, display: 'inline-block', float: 'right' },
+    toolbar: { clear: 'both' },
+    button: { margin: '10px 24px', position: 'relative' },
+};
 
 class Delete extends Component {
     constructor(props) {
@@ -43,8 +52,9 @@ class Delete extends Component {
     }
 
     render() {
-        const { title, id, data, isLoading, resource, translate } = this.props;
+        const { title, id, data, isLoading, resource, translate, width } = this.props;
         const basePath = this.getBasePath();
+        const isMobile = width === 1;
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
@@ -55,40 +65,38 @@ class Delete extends Component {
             id,
             data,
         });
+        const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
 
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
-                <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    <ListButton basePath={basePath} />
-                </CardActions>
-                <CardTitle title={<Title title={title} record={data} defaultTitle={defaultTitle} />} />
-                <form onSubmit={this.handleSubmit}>
-                    <CardText>{translate('aor.message.are_you_sure')}</CardText>
-                    <Toolbar>
-                        <ToolbarGroup>
-                            <RaisedButton
-                                type="submit"
-                                label={translate('aor.action.delete')}
-                                icon={<ActionCheck />}
-                                primary
-                                style={{
-                                    margin: '10px 24px',
-                                    position: 'relative',
-                                }}
-                            />
-                            <RaisedButton
-                                label={translate('aor.action.cancel')}
-                                icon={<AlertError />}
-                                onClick={this.goBack}
-                                style={{
-                                    margin: '10px 24px',
-                                    position: 'relative',
-                                }}
-                            />
-                        </ToolbarGroup>
-                    </Toolbar>
-                </form>
-            </Card>
+            <div>
+                {isMobile && <AppBar title={titleElement} />}
+                <Card style={{ opacity: isLoading ? .8 : 1 }}>
+                    <CardActions style={styles.actions}>
+                        <ListButton basePath={basePath} />
+                    </CardActions>
+                    {!isMobile && <CardTitle title={titleElement} />}
+                    <form onSubmit={this.handleSubmit}>
+                        <CardText>{translate('aor.message.are_you_sure')}</CardText>
+                        <Toolbar style={styles.toolbar}>
+                            <ToolbarGroup>
+                                <RaisedButton
+                                    type="submit"
+                                    label={translate('aor.action.delete')}
+                                    icon={<ActionCheck />}
+                                    primary
+                                    style={styles.button}
+                                />
+                                <RaisedButton
+                                    label={translate('aor.action.cancel')}
+                                    icon={<AlertError />}
+                                    onClick={this.goBack}
+                                    style={styles.button}
+                                />
+                            </ToolbarGroup>
+                        </Toolbar>
+                    </form>
+                </Card>
+            </div>
         );
     }
 }
@@ -105,6 +113,7 @@ Delete.propTypes = {
     crudGetOne: PropTypes.func.isRequired,
     crudDelete: PropTypes.func.isRequired,
     translate: PropTypes.func.isRequired,
+    width: PropTypes.number,
 };
 
 function mapStateToProps(state, props) {
@@ -115,7 +124,13 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default translate(connect(
-    mapStateToProps,
-    { crudGetOne: crudGetOneAction, crudDelete: crudDeleteAction },
-)(Delete));
+const enhance = compose(
+    connect(
+        mapStateToProps,
+        { crudGetOne: crudGetOneAction, crudDelete: crudDeleteAction }
+    ),
+    translate,
+    withWidth(),
+);
+
+export default enhance(Delete);

@@ -2,7 +2,6 @@ import React from 'react';
 import {
     AutocompleteInput,
     Create,
-    Datagrid,
     DateField,
     DateInput,
     DisabledInput,
@@ -13,11 +12,14 @@ import {
     LongTextInput,
     ReferenceField,
     ReferenceInput,
+    Responsive,
     SelectInput,
+    SimpleList,
     SimpleForm,
     TextField,
     TextInput,
 } from 'admin-on-rest/mui';
+import { translate } from 'admin-on-rest';
 import PersonIcon from 'material-ui/svg-icons/social/person';
 import Avatar from 'material-ui/Avatar';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
@@ -25,7 +27,6 @@ import FlatButton from 'material-ui/FlatButton';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import { translate } from 'admin-on-rest';
 export CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
 
 const CommentFilter = ({ ...props }) => (
@@ -92,9 +93,20 @@ CommentGrid.defaultProps = {
     ids: [],
 };
 
+const CommentMobileList = (props) => (
+    <SimpleList
+        primaryText={record => record.author.name}
+        secondaryText={record => record.body}
+        secondaryTextLines={2}
+        tertiaryText={record => new Date(record.created_at).toLocaleDateString()}
+        leftAvatar={() => <Avatar icon={<PersonIcon />} />}
+        {...props}
+    />
+);
+
 export const CommentList = ({ ...props }) => (
     <List {...props} perPage={6} filters={<CommentFilter />} pagination={<CommentPagination />}>
-        <CommentGrid />
+        <Responsive small={<CommentMobileList />} medium={<CommentGrid />} />
     </List>
 );
 

@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
+import withWidth from 'material-ui/utils/withWidth';
+import compose from 'recompose/compose';
 import inflection from 'inflection';
+import AppBar from '../layout/AppBar';
 import Title from '../layout/Title';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
 import DefaultActions from './EditActions';
@@ -72,8 +75,9 @@ export class Edit extends Component {
     }
 
     render() {
-        const { actions = <DefaultActions />, children, data, hasDelete, hasShow, id, isLoading, resource, title, translate } = this.props;
+        const { actions = <DefaultActions />, children, data, hasDelete, hasShow, id, isLoading, resource, title, translate, width } = this.props;
         const { key } = this.state;
+        const isMobile = width === 1;
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
@@ -85,26 +89,30 @@ export class Edit extends Component {
             id,
             data,
         });
+        const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
 
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }} key={key}>
-                {actions && React.cloneElement(actions, {
-                    basePath,
-                    data,
-                    hasDelete,
-                    hasShow,
-                    refresh: this.refresh,
-                    resource,
-                })}
-                {data && <CardTitle title={<Title title={title} record={data} defaultTitle={defaultTitle} />} />}
-                {data && React.cloneElement(children, {
-                    onSubmit: this.handleSubmit,
-                    resource,
-                    basePath,
-                    record: data,
-                })}
-                {!data && <CardText>&nbsp;</CardText>}
-            </Card>
+            <div>
+                {isMobile && <AppBar title={titleElement} />}
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
+                    {actions && React.cloneElement(actions, {
+                        basePath,
+                        data,
+                        hasDelete,
+                        hasShow,
+                        refresh: this.refresh,
+                        resource,
+                    })}
+                    {!isMobile && <CardTitle title={titleElement} />}
+                    {data && React.cloneElement(children, {
+                        onSubmit: this.handleSubmit,
+                        resource,
+                        basePath,
+                        record: data,
+                    })}
+                    {!data && <CardText>&nbsp;</CardText>}
+                </Card>
+            </div>
         );
     }
 }
@@ -124,6 +132,7 @@ Edit.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
+    width: PropTypes.number,
 };
 
 function mapStateToProps(state, props) {
@@ -134,7 +143,13 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default translate(connect(
-    mapStateToProps,
-    { crudGetOne: crudGetOneAction, crudUpdate: crudUpdateAction },
-)(Edit));
+const enhance = compose(
+    connect(
+        mapStateToProps,
+        { crudGetOne: crudGetOneAction, crudUpdate: crudUpdateAction },
+    ),
+    translate,
+    withWidth(),
+);
+
+export default enhance(Edit);
