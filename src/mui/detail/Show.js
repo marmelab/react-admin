@@ -8,6 +8,7 @@ import AppBar from '../layout/AppBar';
 import Title from '../layout/Title';
 import { DeleteButton, EditButton, ListButton } from '../button';
 import { crudGetOne as crudGetOneAction } from '../../actions/dataActions';
+import DefaultActions from './ShowActions';
 import translate from '../../i18n/translate';
 
 /**
@@ -45,7 +46,7 @@ export class Show extends Component {
     }
 
     render() {
-        const { title, children, id, data, isLoading, resource, hasDelete, hasEdit, translate, width } = this.props;
+        const { actions = <DefaultActions />, title, children, id, data, isLoading, resource, hasDelete, hasEdit, translate, width } = this.props;
         const basePath = this.getBasePath();
         const isMobile = width === 1;
 
@@ -64,11 +65,14 @@ export class Show extends Component {
             <div>
                 {isMobile && <AppBar title={titleElement} />}
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                        {hasEdit && <EditButton basePath={basePath} record={data} />}
-                        <ListButton basePath={basePath} />
-                        {hasDelete && <DeleteButton basePath={basePath} record={data} />}
-                    </CardActions>
+                    {actions && React.cloneElement(actions, {
+                        basePath,
+                        data,
+                        hasDelete,
+                        hasEdit,
+                        refresh: this.refresh,
+                        resource,
+                    })}
                     {!isMobile && <CardTitle title={titleElement} />}
                     {data && React.cloneElement(children, {
                         resource,
@@ -82,6 +86,7 @@ export class Show extends Component {
 }
 
 Show.propTypes = {
+    actions: PropTypes.element,
     children: PropTypes.element,
     crudGetOne: PropTypes.func.isRequired,
     data: PropTypes.object,
