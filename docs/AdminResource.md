@@ -123,11 +123,11 @@ import React from 'react';
 import MenuItem from 'material-ui/MenuItem';
 import { Link } from 'react-router';
 
-export default ({ resources, logout }) => (
+export default ({ resources, onMenuTap, logout }) => (
     <div>
-        <MenuItem containerElement={<Link to="/posts" />} primaryText="Posts" />
-        <MenuItem containerElement={<Link to="/comments" />} primaryText="Comments" />
-        <MenuItem containerElement={<Link to="/custom-route" />} primaryText="Miscellaneous" />
+        <MenuItem containerElement={<Link to="/posts" />} primaryText="Posts" onTouchTap={onMenuTap} />
+        <MenuItem containerElement={<Link to="/comments" />} primaryText="Comments" onTouchTap={onMenuTap} />
+        <MenuItem containerElement={<Link to="/custom-route" />} primaryText="Miscellaneous" onTouchTap={onMenuTap} />
         {logout}
     </div>
 );
@@ -146,7 +146,7 @@ const App = () => (
 );
 ```
 
-**Tip**: If you use authentication, don't forget to render the `logout` prop in your custom menu component.
+**Tip**: If you use authentication, don't forget to render the `logout` prop in your custom menu component. Also, the `onMenuTap` function passed as prop is used to close the sidebar on mobile.
 
 ### `theme`
 
