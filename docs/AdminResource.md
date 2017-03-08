@@ -131,59 +131,9 @@ For more details on predefined themes and custom themes, refer to the [Material 
 
 ### `appLayout`
 
-If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where admin-on-rest will render the resources. If you use material UI fields and inputs, it *must* contain a `<MuiThemeProvider>` element, and it should also import `injectTapEventPlugin`, as stated in [the Material UI installation doc](http://www.material-ui.com/#/get-started/installation). And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
+If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where admin-on-rest will render the resources. If you use material UI fields and inputs, it *must* contain a `<MuiThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
 
-Use the [default layout](https://github.com/marmelab/admin-on-rest/blob/master/src/mui/layout/Layout.js) as a starting point:
-
-{% raw %}
-```js
-// in src/MyLayout.js
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import AppBar from 'material-ui/AppBar';
-import CircularProgress from 'material-ui/CircularProgress';
-import Notification from './Notification';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import Menu from './Menu';
-
-injectTapEventPlugin();
-
-const MyLayout = ({ isLoading, children, route }) => {
-    const Title = <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>Admin on REST</Link>;
-    const RightElement = isLoading ? <CircularProgress color="#fff" size={0.5} /> : <span />;
-
-    return (
-        <MuiThemeProvider muiTheme={getMuiTheme()}>
-            <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                <AppBar title={Title} iconElementRight={RightElement} />
-                <div className="body" style={{ display: 'flex', flex: '1', backgroundColor: '#edecec' }}>
-                    <div style={{ flex: 1 }}>{children}</div>
-                    <Menu resources={route.resources} />
-                </div>
-                <Notification />
-            </div>
-        </MuiThemeProvider>
-    );
-};
-
-MyLayout.propTypes = {
-    isLoading: PropTypes.bool.isRequired,
-    children: PropTypes.node,
-    route: PropTypes.object.isRequired,
-};
-
-function mapStateToProps(state) {
-    return { isLoading: state.admin.loading > 0 };
-}
-
-export default connect(
-  mapStateToProps,
-)(MyLayout);
-```
-{% endraw %}
+Use the [default layout](https://github.com/marmelab/admin-on-rest/blob/master/src/mui/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.html#using-a-custom-layout) for examples.
 
 ```js
 // in src/App.js
