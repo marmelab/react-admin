@@ -5,10 +5,9 @@ import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import ActionCheck from 'material-ui/svg-icons/action/check-circle';
 import AlertError from 'material-ui/svg-icons/alert/error-outline';
-import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-import AppBar from '../layout/AppBar';
+import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
 import { ListButton } from '../button';
 import { crudGetOne as crudGetOneAction, crudDelete as crudDeleteAction } from '../../actions/dataActions';
@@ -52,9 +51,8 @@ class Delete extends Component {
     }
 
     render() {
-        const { title, id, data, isLoading, resource, translate, width } = this.props;
+        const { title, id, data, isLoading, resource, translate } = this.props;
         const basePath = this.getBasePath();
-        const isMobile = width === 1;
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
@@ -69,12 +67,11 @@ class Delete extends Component {
 
         return (
             <div>
-                {isMobile && <AppBar title={titleElement} />}
                 <Card style={{ opacity: isLoading ? .8 : 1 }}>
                     <CardActions style={styles.actions}>
                         <ListButton basePath={basePath} />
                     </CardActions>
-                    {!isMobile && <CardTitle title={titleElement} />}
+                    <ViewTitle title={titleElement} />
                     <form onSubmit={this.handleSubmit}>
                         <CardText>{translate('aor.message.are_you_sure')}</CardText>
                         <Toolbar style={styles.toolbar}>
@@ -113,7 +110,6 @@ Delete.propTypes = {
     crudGetOne: PropTypes.func.isRequired,
     crudDelete: PropTypes.func.isRequired,
     translate: PropTypes.func.isRequired,
-    width: PropTypes.number,
 };
 
 function mapStateToProps(state, props) {
@@ -130,7 +126,6 @@ const enhance = compose(
         { crudGetOne: crudGetOneAction, crudDelete: crudDeleteAction }
     ),
     translate,
-    withWidth(),
 );
 
 export default enhance(Delete);

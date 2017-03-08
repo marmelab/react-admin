@@ -6,14 +6,38 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import compose from 'recompose/compose';
 import { toggleSidebar as toggleSidebarAction } from '../../actions';
 
-const AppBar = ({ title, toggleSidebar }) => (
+const style = {
+    bar: {
+        height: '3em',
+        position: 'absolute',
+        top: 0,
+    },
+    title: {
+        fontSize: '1.25em',
+        lineHeight: '2.5em',
+    },
+    icon: {
+        marginTop: 0,
+        marginRight: 0,
+        marginLeft: '-24px',
+    },
+    link: {
+        color: '#fff',
+        textDecoration: 'none',
+    },
+};
+
+const AppBarMobile = ({ title, toggleSidebar }) => (
     <MuiAppBar
-        title={<Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>{title}</Link>}
+        style={style.bar}
+        titleStyle={style.title}
+        iconStyleLeft={style.icon}
+        title={<Link to="/" style={style.link}>{title}</Link>}
         onLeftIconButtonTouchTap={toggleSidebar}
     />
 );
 
-AppBar.propTypes = {
+AppBarMobile.propTypes = {
     title: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.element
@@ -28,4 +52,4 @@ const enhance = compose(
     }),
 );
 
-export default enhance(AppBar);
+export default enhance(AppBarMobile);

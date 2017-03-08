@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardTitle } from 'material-ui/Card';
-import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-import AppBar from '../layout/AppBar';
+import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import DefaultActions from './CreateActions';
@@ -19,9 +18,8 @@ class Create extends Component {
     handleSubmit = (record) => this.props.crudCreate(this.props.resource, record, this.getBasePath());
 
     render() {
-        const { actions = <DefaultActions />, children, isLoading, resource, title, translate, width } = this.props;
+        const { actions = <DefaultActions />, children, isLoading, resource, title, translate } = this.props;
         const basePath = this.getBasePath();
-        const isMobile = width === 1;
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
@@ -34,13 +32,12 @@ class Create extends Component {
 
         return (
             <div>
-                {isMobile && <AppBar title={titleElement} />}
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     {actions && React.cloneElement(actions, {
                         basePath,
                         resource,
                     })}
-                    {!isMobile && <CardTitle title={titleElement} />}
+                    <ViewTitle title={titleElement} />
                     {React.cloneElement(children, {
                         onSubmit: this.handleSubmit,
                         resource,
@@ -63,7 +60,6 @@ Create.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func.isRequired,
-    width: PropTypes.number,
 };
 
 Create.defaultProps = {
@@ -82,7 +78,6 @@ const enhance = compose(
         { crudCreate: crudCreateAction },
     ),
     translate,
-    withWidth(),
 );
 
 export default enhance(Create);

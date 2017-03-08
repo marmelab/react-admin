@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import autoprefixer from 'material-ui/utils/autoprefixer';
-import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
 import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
@@ -37,6 +36,7 @@ const styles = {
     },
     contentSmall: {
         flex: 1,
+        paddingTop: '3em',
     },
     loader: {
         position: 'absolute',
@@ -72,7 +72,9 @@ class Layout extends Component {
             const prefix = autoprefixer(muiTheme);
             prefixedStyles.main = prefix(styles.main);
             prefixedStyles.body = prefix(styles.body);
+            prefixedStyles.bodySmall = prefix(styles.bodySmall);
             prefixedStyles.content = prefix(styles.content);
+            prefixedStyles.contentSmall = prefix(styles.contentSmall);
         }
         return (
             <MuiThemeProvider muiTheme={muiTheme}>

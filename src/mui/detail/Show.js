@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardTitle, CardActions } from 'material-ui/Card';
-import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-import AppBar from '../layout/AppBar';
+import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
 import { DeleteButton, EditButton, ListButton } from '../button';
 import { crudGetOne as crudGetOneAction } from '../../actions/dataActions';
@@ -46,9 +45,8 @@ export class Show extends Component {
     }
 
     render() {
-        const { actions = <DefaultActions />, title, children, id, data, isLoading, resource, hasDelete, hasEdit, translate, width } = this.props;
+        const { actions = <DefaultActions />, title, children, id, data, isLoading, resource, hasDelete, hasEdit, translate } = this.props;
         const basePath = this.getBasePath();
-        const isMobile = width === 1;
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
@@ -63,7 +61,6 @@ export class Show extends Component {
 
         return (
             <div>
-                {isMobile && <AppBar title={titleElement} />}
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     {actions && React.cloneElement(actions, {
                         basePath,
@@ -73,7 +70,7 @@ export class Show extends Component {
                         refresh: this.refresh,
                         resource,
                     })}
-                    {!isMobile && <CardTitle title={titleElement} />}
+                    <ViewTitle title={titleElement} />
                     {data && React.cloneElement(children, {
                         resource,
                         basePath,
@@ -99,7 +96,6 @@ Show.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
-    width: PropTypes.number,
 };
 
 function mapStateToProps(state, props) {
@@ -116,7 +112,6 @@ const enhance = compose(
         { crudGetOne: crudGetOneAction },
     ),
     translate,
-    withWidth(),
 );
 
 export default enhance(Show);
