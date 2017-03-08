@@ -11,6 +11,10 @@ const styles = {
     },
 };
 
+const clear = {
+    clear: 'both',
+};
+
 export const ImageField = ({ elStyle = {}, record, source, title }) => {
     const style = {
         ...styles.container,
@@ -24,13 +28,16 @@ export const ImageField = ({ elStyle = {}, record, source, title }) => {
     }
 
     return (
-        <div style={style}>
-            <img
-                title={titleValue}
-                alt={titleValue}
-                src={srcValue}
-                style={styles.image}
-            />
+        <div>
+            <div style={style}>
+                <img
+                    title={titleValue}
+                    alt={titleValue}
+                    src={srcValue}
+                    style={styles.image}
+                />
+            </div>
+            <div style={clear} />
         </div>
     );
 };
