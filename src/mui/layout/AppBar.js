@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import MuiAppBar from 'material-ui/AppBar';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 import { toggleSidebar as toggleSidebarAction } from '../../actions';
@@ -50,6 +51,7 @@ AppBar.propTypes = {
 };
 
 const enhance = compose(
+    muiThemeable(), // force redraw on theme change
     connect(null, {
         toggleSidebar: toggleSidebarAction,
     }),

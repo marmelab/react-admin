@@ -120,19 +120,16 @@ If you want to add or remove menu items, for instance to link to non-resources p
 ```js
 // in src/Menu.js
 import React from 'react';
-import { List, ListItem } from 'material-ui/List';
-import Paper from 'material-ui/Paper';
+import MenuItem from 'material-ui/MenuItem';
 import { Link } from 'react-router';
 
-export default ({ resources, logout, open }) => (
-    <Paper style={{ flex: '0 0 16em', marginLeft: open ? 0 : '-16em', order: -1 }}>
-        <List>
-            <ListItem containerElement={<Link to="/posts" />} primaryText="Posts" />
-            <ListItem containerElement={<Link to="/comments" />} primaryText="Comments" />
-            <ListItem containerElement={<Link to="/custom-route" />} primaryText="Miscellaneous" />
-            {logout}
-        </List>
-    </Paper>
+export default ({ resources, logout }) => (
+    <div>
+        <MenuItem containerElement={<Link to="/posts" />} primaryText="Posts" />
+        <MenuItem containerElement={<Link to="/comments" />} primaryText="Comments" />
+        <MenuItem containerElement={<Link to="/custom-route" />} primaryText="Miscellaneous" />
+        {logout}
+    </div>
 );
 ```
 

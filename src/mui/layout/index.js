@@ -3,4 +3,5 @@ export Layout from './Layout';
 export Menu from './Menu';
 export Notification from './Notification';
 export Responsive from './Responsive';
+export Sidebar from './Sidebar';
 export Title from './Title';

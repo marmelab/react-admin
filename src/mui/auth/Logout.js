@@ -3,7 +3,7 @@ import { push as pushAction } from 'react-router-redux';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
-import { ListItem } from 'material-ui/List';
+import MenuItem from 'material-ui/MenuItem';
 import ExitIcon from 'material-ui/svg-icons/action/power-settings-new';
 
 import translate from '../../i18n/translate';
@@ -18,7 +18,7 @@ class Logout extends Component {
     render() {
         const { authClient, translate } = this.props;
         return authClient
-         ? <ListItem leftIcon={<ExitIcon />} primaryText={translate('aor.auth.logout')} onClick={this.handleLogout} />
+         ? <MenuItem leftIcon={<ExitIcon />} primaryText={translate('aor.auth.logout')} onClick={this.handleLogout} />
          : null;
     }
 }
