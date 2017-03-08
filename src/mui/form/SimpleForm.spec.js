@@ -17,14 +17,13 @@ describe('<SimpleForm />', () => {
         assert.deepEqual(inputs.map(i => i.prop('input').props.source), ['name', 'city']);
     });
 
-    it('should display <SaveButton />', () => {
+    it('should display <Toolbar />', () => {
         const wrapper = shallow(
             <SimpleForm>
                 <TextInput source="name" />
             </SimpleForm>
         );
-
-        const button = wrapper.find('Connect(getContext(SaveButton))');
+        const button = wrapper.find('Toolbar');
         assert.equal(button.length, 1);
     });
 });
