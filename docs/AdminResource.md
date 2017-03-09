@@ -120,19 +120,16 @@ If you want to add or remove menu items, for instance to link to non-resources p
 ```js
 // in src/Menu.js
 import React from 'react';
-import { List, ListItem } from 'material-ui/List';
-import Paper from 'material-ui/Paper';
+import MenuItem from 'material-ui/MenuItem';
 import { Link } from 'react-router';
 
-export default ({ resources, logout, open }) => (
-    <Paper style={{ flex: '0 0 16em', marginLeft: open ? 0 : '-16em', order: -1 }}>
-        <List>
-            <ListItem containerElement={<Link to="/posts" />} primaryText="Posts" />
-            <ListItem containerElement={<Link to="/comments" />} primaryText="Comments" />
-            <ListItem containerElement={<Link to="/custom-route" />} primaryText="Miscellaneous" />
-            {logout}
-        </List>
-    </Paper>
+export default ({ resources, onMenuTap, logout }) => (
+    <div>
+        <MenuItem containerElement={<Link to="/posts" />} primaryText="Posts" onTouchTap={onMenuTap} />
+        <MenuItem containerElement={<Link to="/comments" />} primaryText="Comments" onTouchTap={onMenuTap} />
+        <MenuItem containerElement={<Link to="/custom-route" />} primaryText="Miscellaneous" onTouchTap={onMenuTap} />
+        {logout}
+    </div>
 );
 ```
 
@@ -149,7 +146,7 @@ const App = () => (
 );
 ```
 
-**Tip**: If you use authentication, don't forget to render the `logout` prop in your custom menu component.
+**Tip**: If you use authentication, don't forget to render the `logout` prop in your custom menu component. Also, the `onMenuTap` function passed as prop is used to close the sidebar on mobile.
 
 ### `theme`
 

@@ -1,14 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { push as pushAction } from 'react-router-redux';
-import { Card, CardTitle } from 'material-ui/Card';
-import withWidth from 'material-ui/utils/withWidth';
+import { Card } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
 import { change as changeFormValueAction, getFormValues } from 'redux-form';
 import debounce from 'lodash.debounce';
 import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER, SORT_DESC } from '../../reducer/resource/list/queryReducer';
-import AppBar from '../layout/AppBar';
+import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
 import DefaultActions from './Actions';
@@ -176,9 +175,8 @@ export class List extends Component {
     }
 
     render() {
-        const { filters, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading, translate, width } = this.props;
+        const { filters, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading, translate } = this.props;
         const { key } = this.state;
-        const isMobile = width === 1;
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
@@ -192,7 +190,6 @@ export class List extends Component {
 
         return (
             <div>
-                {isMobile && <AppBar title={titleElement} />}
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
                     {actions && React.cloneElement(actions, {
                         resource,
@@ -204,7 +201,7 @@ export class List extends Component {
                         showFilter: this.showFilter,
                         refresh: this.refresh,
                     })}
-                    {!isMobile && <CardTitle title={titleElement} />}
+                    <ViewTitle title={titleElement} />
                     {filters && React.cloneElement(filters, {
                         resource,
                         hideFilter: this.hideFilter,
@@ -264,7 +261,6 @@ List.propTypes = {
     resource: PropTypes.string.isRequired,
     total: PropTypes.number.isRequired,
     translate: PropTypes.func.isRequired,
-    width: PropTypes.number,
 };
 
 List.defaultProps = {
@@ -308,7 +304,6 @@ const enhance = compose(
         },
     ),
     translate,
-    withWidth(),
 );
 
 export default enhance(List);

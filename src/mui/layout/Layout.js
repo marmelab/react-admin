@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import autoprefixer from 'material-ui/utils/autoprefixer';
-import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
 import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import AppBar from './AppBar';
+import Sidebar from './Sidebar';
 import Notification from './Notification';
 import defaultTheme from '../defaultTheme';
 import { setSidebarVisibility as setSidebarVisibilityAction } from '../../actions';
@@ -36,6 +36,7 @@ const styles = {
     },
     contentSmall: {
         flex: 1,
+        paddingTop: '3em',
     },
     loader: {
         position: 'absolute',
@@ -61,7 +62,6 @@ class Layout extends Component {
             isLoading,
             menu,
             route,
-            sidebarOpen,
             theme,
             title,
             width,
@@ -72,7 +72,9 @@ class Layout extends Component {
             const prefix = autoprefixer(muiTheme);
             prefixedStyles.main = prefix(styles.main);
             prefixedStyles.body = prefix(styles.body);
+            prefixedStyles.bodySmall = prefix(styles.bodySmall);
             prefixedStyles.content = prefix(styles.content);
+            prefixedStyles.contentSmall = prefix(styles.contentSmall);
         }
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
@@ -80,10 +82,9 @@ class Layout extends Component {
                     { width !== 1 && <AppBar title={title} />}
                     <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
                         <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>{children}</div>
-                        {React.cloneElement(menu, {
-                            open: sidebarOpen,
-                            width,
-                        })}
+                        <Sidebar theme={theme}>
+                            {menu}
+                        </Sidebar>
                     </div>
                     <Notification />
                     {isLoading && <CircularProgress
@@ -105,7 +106,6 @@ Layout.propTypes = {
     menu: PropTypes.element,
     route: PropTypes.object.isRequired,
     setSidebarVisibility: PropTypes.func.isRequired,
-    sidebarOpen: PropTypes.bool,
     title: PropTypes.string.isRequired,
     theme: PropTypes.object.isRequired,
     width: PropTypes.number,
@@ -118,15 +118,14 @@ Layout.defaultProps = {
 function mapStateToProps(state) {
     return {
         isLoading: state.admin.loading > 0,
-        sidebarOpen: state.admin.ui.sidebarOpen,
     };
 }
 
 const enhance = compose(
-    withWidth(),
     connect(mapStateToProps, {
         setSidebarVisibility: setSidebarVisibilityAction,
     }),
+    withWidth(),
 );
 
 export default enhance(Layout);
