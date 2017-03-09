@@ -10,7 +10,6 @@ describe('<Show />', () => {
     const defaultProps = {
         data: {},
         crudGetOne: () => {},
-        crudUpdate: () => {},
         hasDelete: false,
         id: 'foo',
         isLoading: false,

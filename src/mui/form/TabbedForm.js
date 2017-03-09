@@ -1,11 +1,10 @@
 import React, { Children, Component, PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 import { Tabs, Tab } from 'material-ui/Tabs';
-
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import { getFieldConstraints, getErrorsForForm, getErrorsForFieldConstraints } from '../../util/validate';
-import { SaveButton } from '../button';
+import Toolbar from './Toolbar';
 import getDefaultValues from '../form/getDefaultValues';
 import translate from '../../i18n/translate';
 
@@ -51,11 +50,7 @@ export class TabbedForm extends Component {
                         )}
                     </Tabs>
                 </div>
-                <Toolbar>
-                    <ToolbarGroup>
-                        <SaveButton invalid={invalid} />
-                    </ToolbarGroup>
-                </Toolbar>
+                <Toolbar invalid={invalid} />
             </form>
         );
     }
@@ -76,19 +71,21 @@ TabbedForm.propTypes = {
     translate: PropTypes.func,
     validation: PropTypes.func,
 };
+
 TabbedForm.defaultProps = {
     contentContainerStyle: { borderTop: 'solid 1px #e0e0e0' },
 };
 
-const ReduxForm = reduxForm({
-    form: 'record-form',
-    validate: validateForm,
-    enableReinitialize: true,
-})(TabbedForm);
+const enhance = compose(
+    connect((state, props) => ({
+        initialValues: getDefaultValues(state, props),
+    })),
+    reduxForm({
+        form: 'record-form',
+        validate: validateForm,
+        enableReinitialize: true,
+    }),
+    translate,
+);
 
-
-const mapStateToProps = (state, props) => ({
-    initialValues: getDefaultValues(state, props),
-});
-
-export default connect(mapStateToProps)(translate(ReduxForm));
+export default enhance(TabbedForm);

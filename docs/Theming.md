@@ -83,6 +83,47 @@ export const PostList = (props) => (
 
 If you want to read more about higher-order components, check out this SitePoint tutorial: [Higher Order Components: A React Application Design Pattern](https://www.sitepoint.com/react-higher-order-components/)
 
+## Responsive Utility
+
+To provide an optimized experience on mobile, tablet, and desktop devices, you often need to display different components depending on the screen size. That's the purpose of the `<Responsive>` component, which offers a declarative approach to responsive web design.
+
+It expects element props named `small`, `medium`, and `large`. It displays the element that matches the screen size (with breakpoints at 768 and 992 pixels):
+
+```js
+// in src/posts.js
+import React from 'react';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest/lib/mui';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Responsive
+            small={
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
+            }
+            medium={
+                <Datagrid>
+                    <TextField source="id" />
+                    <ReferenceField label="User" source="userId" reference="users">
+                        <TextField source="name" />
+                    </ReferenceField>
+                    <TextField source="title" />
+                    <TextField source="body" />
+                    <EditButton />
+                </Datagrid>
+            }
+        />
+    </List>
+);
+```
+
+**Tip**: If you only provide `small` and `medium`, the `medium` element will also be used on large screens. The same kind of smart default exists for when you omit `small` or `medium`.
+
+**Tip**: You can also use [material-ui's `withWith()` higher order component](https://github.com/callemall/material-ui/blob/master/src/utils/withWidth.js) to have the `with` prop injected in your own components.
+
 ## Using a Predefined Theme
 
 Material UI also supports [complete theming](http://www.material-ui.com/#/customization/themes) out of the box. Material UI ships two base themes: light and dark. Admin-on-rest uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `getMuiTheme()`).
@@ -175,4 +216,92 @@ const App = () => (
 );
 ```
 
-Refer to [the `<Admin>` component documentation](./AdminResource.html#applayout) for more details.
+Use the [default layout](https://github.com/marmelab/admin-on-rest/blob/master/src/mui/layout/Layout.js) as a starting point for your custom layout. Here is a simplified version (with a fixed sidebar, and no responsive support):
+
+```js
+// in src/MyLayout.js
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import CircularProgress from 'material-ui/CircularProgress';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import { AppBar, Sidebar, Notification } from 'admin-on-rest/lib/mui';
+import { setSidebarVisibility as setSidebarVisibilityAction } from 'admin-on-rest';
+
+injectTapEventPlugin();
+
+const styles = {
+    main: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+    },
+    body: {
+        backgroundColor: '#edecec',
+        display: 'flex',
+        flex: 1,
+        overflow: 'hidden',
+    },
+    content: {
+        flex: 1,
+        padding: '2em',
+    },
+    loader: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        margin: 16,
+        zIndex: 1200,
+    },
+};
+
+class MyLayout extends Component {
+    componentWillMount() {
+        this.props.setSidebarVisibility(true);
+    }
+
+    render() {
+        const { children, isLoading, menu, title } = this.props;
+        return (
+            <MuiThemeProvider>
+                <div style={styles.main}>
+                    <AppBar title={title} />
+                    <div className="body" style={styles.body}>
+                        <div style={styles.content}>
+                            {children}
+                        </div>
+                        <Sidebar theme={theme}>
+                            {menu}
+                        </Sidebar>
+                    </div>
+                    <Notification />
+                    {isLoading && <CircularProgress
+                        color="#fff"
+                        size={width === 1 ? 20 : 30}
+                        thickness={2}
+                        style={styles.loader}
+                    />}
+                </div>
+            </MuiThemeProvider>
+        );
+    }
+}
+
+MyLayout.propTypes = {
+    isLoading: PropTypes.bool.isRequired,
+    children: PropTypes.node,
+    menu: PropTypes.element,
+    setSidebarVisibility: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+};
+
+function mapStateToProps(state) {
+    return {
+        isLoading: state.admin.loading > 0,
+    };
+}
+
+export default connect(mapStateToProps, {
+    setSidebarVisibility: setSidebarVisibilityAction,
+})(MyLayout);
+```

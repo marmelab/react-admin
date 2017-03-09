@@ -28,6 +28,15 @@ export class ImageInput extends Component {
         this.state = { files };
     }
 
+    componentWillReceiveProps(nextProps) {
+        let files = nextProps.input.value || [];
+        if (!Array.isArray(files)) {
+            files = [files];
+        }
+
+        this.setState({ files });
+    }
+
     onDrop = (files) => {
         const updatedFiles = [
             ...this.state.files,

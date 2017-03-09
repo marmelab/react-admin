@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { CardActions } from 'material-ui/Card';
 import { CreateButton, RefreshButton } from '../button';
+import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 
 const cardActionStyle = {
     zIndex: 2,
@@ -16,4 +17,4 @@ const Actions = ({ resource, filters, displayedFilters, filterValues, hasCreate,
     </CardActions>
 );
 
-export default Actions;
+export default onlyUpdateForKeys(['resource', 'filters', 'displayedFilters', 'filterValues'])(Actions);

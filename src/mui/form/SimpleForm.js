@@ -1,26 +1,22 @@
-import React, { Children, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
+import compose from 'recompose/compose';
 import { validateForm } from '../../util/validate';
-import { SaveButton } from '../button';
 import getDefaultValues from '../form/getDefaultValues';
 import FormField from './FormField';
+import Toolbar from './Toolbar';
 
 export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, basePath }) => (
     <form onSubmit={handleSubmit}>
         <div style={{ padding: '0 1em 1em 1em' }}>
-            {React.Children.map(children, input => (
+            {React.Children.map(children, input => input && (
                 <div key={input.props.source} style={input.props.style}>
                     <FormField input={input} resource={resource} record={record} basePath={basePath} />
                 </div>
             ))}
         </div>
-        <Toolbar>
-            <ToolbarGroup>
-                <SaveButton invalid={invalid} />
-            </ToolbarGroup>
-        </Toolbar>
+        <Toolbar invalid={invalid} />
     </form>
 );
 
@@ -38,14 +34,15 @@ SimpleForm.propTypes = {
     validation: PropTypes.func,
 };
 
-const ReduxForm = reduxForm({
-    form: 'record-form',
-    validate: validateForm,
-    enableReinitialize: true,
-})(SimpleForm);
+const enhance = compose(
+    connect((state, props) => ({
+        initialValues: getDefaultValues(state, props),
+    })),
+    reduxForm({
+        form: 'record-form',
+        validate: validateForm,
+        enableReinitialize: true,
+    }),
+);
 
-const mapStateToProps = (state, props) => ({
-    initialValues: getDefaultValues(state, props),
-});
-
-export default connect(mapStateToProps)(ReduxForm);
+export default enhance(SimpleForm);

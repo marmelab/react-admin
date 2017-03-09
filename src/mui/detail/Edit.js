@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
+import compose from 'recompose/compose';
 import inflection from 'inflection';
+import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
 import DefaultActions from './EditActions';
@@ -68,7 +70,7 @@ export class Edit extends Component {
     }
 
     handleSubmit(record) {
-        this.props.crudUpdate(this.props.resource, this.props.id, record, this.getBasePath());
+        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath());
     }
 
     render() {
@@ -85,26 +87,29 @@ export class Edit extends Component {
             id,
             data,
         });
+        const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
 
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }} key={key}>
-                {actions && React.cloneElement(actions, {
-                    basePath,
-                    data,
-                    hasDelete,
-                    hasShow,
-                    refresh: this.refresh,
-                    resource,
-                })}
-                {data && <CardTitle title={<Title title={title} record={data} defaultTitle={defaultTitle} />} />}
-                {data && React.cloneElement(children, {
-                    onSubmit: this.handleSubmit,
-                    resource,
-                    basePath,
-                    record: data,
-                })}
-                {!data && <CardText>&nbsp;</CardText>}
-            </Card>
+            <div>
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
+                    {actions && React.cloneElement(actions, {
+                        basePath,
+                        data,
+                        hasDelete,
+                        hasShow,
+                        refresh: this.refresh,
+                        resource,
+                    })}
+                    <ViewTitle title={titleElement} />
+                    {data && React.cloneElement(children, {
+                        onSubmit: this.handleSubmit,
+                        resource,
+                        basePath,
+                        record: data,
+                    })}
+                    {!data && <CardText>&nbsp;</CardText>}
+                </Card>
+            </div>
         );
     }
 }
@@ -134,7 +139,12 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default translate(connect(
-    mapStateToProps,
-    { crudGetOne: crudGetOneAction, crudUpdate: crudUpdateAction },
-)(Edit));
+const enhance = compose(
+    connect(
+        mapStateToProps,
+        { crudGetOne: crudGetOneAction, crudUpdate: crudUpdateAction },
+    ),
+    translate,
+);
+
+export default enhance(Edit);

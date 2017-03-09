@@ -81,14 +81,13 @@ export default resource => (previousState = initialState, { payload, meta }) => 
     }
     switch (meta.fetchResponse) {
     case GET_LIST:
-        return addRecords(payload.data, previousState);
     case GET_MANY:
     case GET_MANY_REFERENCE:
-        return addRecords(payload, previousState);
+        return addRecords(payload.data, previousState);
     case GET_ONE:
     case UPDATE:
     case CREATE:
-        return addRecords([payload], previousState);
+        return addRecords([payload.data], previousState);
     default:
         return previousState;
     }

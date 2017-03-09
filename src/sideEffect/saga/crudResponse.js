@@ -23,20 +23,20 @@ import linkToRecord from '../../util/linkToRecord';
 function* handleResponse({ type, requestPayload, error, payload }) {
     switch (type) {
     case CRUD_UPDATE_SUCCESS:
-        return yield [
+        return requestPayload.redirect ? yield [
             put(showNotification('aor.notification.updated')),
             put(push(requestPayload.basePath)),
-        ];
+        ] : yield [put(showNotification('aor.notification.updated'))];
     case CRUD_CREATE_SUCCESS:
-        return yield [
+        return requestPayload.redirect ? yield [
             put(showNotification('aor.notification.created')),
             put(push(linkToRecord(requestPayload.basePath, payload.id))),
-        ];
+        ] : yield [put(showNotification('aor.notification.created'))];
     case CRUD_DELETE_SUCCESS:
-        return yield [
+        return requestPayload.redirect ? yield [
             put(showNotification('aor.notification.deleted')),
             put(push(requestPayload.basePath)),
-        ];
+        ] : yield [put(showNotification('aor.notification.deleted'))];
     case CRUD_GET_ONE_FAILURE:
         return requestPayload.basePath ? yield [
             put(showNotification('aor.notification.item_doesnt_exist', 'warning')),
@@ -49,8 +49,11 @@ function* handleResponse({ type, requestPayload, error, payload }) {
     case CRUD_UPDATE_FAILURE:
     case CRUD_DELETE_FAILURE: {
         console.error(error);
+        const errorMessage = typeof error === 'string'
+            ? error
+            : (error.message || 'aor.notification.http_error');
         return yield [
-            put(showNotification(error.message, 'warning')),
+            put(showNotification(errorMessage, 'warning')),
         ];
     }
     default:

@@ -5,11 +5,19 @@ import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import ActionCheck from 'material-ui/svg-icons/action/check-circle';
 import AlertError from 'material-ui/svg-icons/alert/error-outline';
+import compose from 'recompose/compose';
 import inflection from 'inflection';
+import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
 import { ListButton } from '../button';
 import { crudGetOne as crudGetOneAction, crudDelete as crudDeleteAction } from '../../actions/dataActions';
 import translate from '../../i18n/translate';
+
+const styles = {
+    actions: { zIndex: 2, display: 'inline-block', float: 'right' },
+    toolbar: { clear: 'both' },
+    button: { margin: '10px 24px', position: 'relative' },
+};
 
 class Delete extends Component {
     constructor(props) {
@@ -55,40 +63,37 @@ class Delete extends Component {
             id,
             data,
         });
+        const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
 
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
-                <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    <ListButton basePath={basePath} />
-                </CardActions>
-                <CardTitle title={<Title title={title} record={data} defaultTitle={defaultTitle} />} />
-                <form onSubmit={this.handleSubmit}>
-                    <CardText>{translate('aor.message.are_you_sure')}</CardText>
-                    <Toolbar>
-                        <ToolbarGroup>
-                            <RaisedButton
-                                type="submit"
-                                label={translate('aor.action.delete')}
-                                icon={<ActionCheck />}
-                                primary
-                                style={{
-                                    margin: '10px 24px',
-                                    position: 'relative',
-                                }}
-                            />
-                            <RaisedButton
-                                label={translate('aor.action.cancel')}
-                                icon={<AlertError />}
-                                onClick={this.goBack}
-                                style={{
-                                    margin: '10px 24px',
-                                    position: 'relative',
-                                }}
-                            />
-                        </ToolbarGroup>
-                    </Toolbar>
-                </form>
-            </Card>
+            <div>
+                <Card style={{ opacity: isLoading ? .8 : 1 }}>
+                    <CardActions style={styles.actions}>
+                        <ListButton basePath={basePath} />
+                    </CardActions>
+                    <ViewTitle title={titleElement} />
+                    <form onSubmit={this.handleSubmit}>
+                        <CardText>{translate('aor.message.are_you_sure')}</CardText>
+                        <Toolbar style={styles.toolbar}>
+                            <ToolbarGroup>
+                                <RaisedButton
+                                    type="submit"
+                                    label={translate('aor.action.delete')}
+                                    icon={<ActionCheck />}
+                                    primary
+                                    style={styles.button}
+                                />
+                                <RaisedButton
+                                    label={translate('aor.action.cancel')}
+                                    icon={<AlertError />}
+                                    onClick={this.goBack}
+                                    style={styles.button}
+                                />
+                            </ToolbarGroup>
+                        </Toolbar>
+                    </form>
+                </Card>
+            </div>
         );
     }
 }
@@ -115,7 +120,12 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default translate(connect(
-    mapStateToProps,
-    { crudGetOne: crudGetOneAction, crudDelete: crudDeleteAction },
-)(Delete));
+const enhance = compose(
+    connect(
+        mapStateToProps,
+        { crudGetOne: crudGetOneAction, crudDelete: crudDeleteAction }
+    ),
+    translate,
+);
+
+export default enhance(Delete);

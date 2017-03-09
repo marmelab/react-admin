@@ -420,6 +420,67 @@ Once the app reloads, it's now behind a login form that accepts everyone:
 
 ![Login form](./img/login.gif)
 
+## Responsive List
+
+The admin-on-rest layout is already responsive. Try to resize your browser to see how the sidebar switches to a drawer on smaller screens.
+
+But the layout is not enough. Datagrid components work well on desktop, but are absolutely not adapted to mobile devices. If your admin can be used on mobile devices, you'll have to provide an alternative components for small screens
+
+First, you should know that you don't have to use a `<Datagrid>` as `<List>` child. You can use any other component. For instance, the `<SimpleList>` component:
+
+```js
+// in src/posts.js
+import React from 'react';
+import { List, SimpleList } from 'admin-on-rest/lib/mui';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => `${record.views} views`}
+            tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+        />
+    </List>
+);
+```
+
+The `<SimpleList>` component uses [material-ui's `<List>` and `<ListItem>` components](http://www.material-ui.com/#/components/list), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
+
+That works fine on mobile, but now the desktop user experience is worse. The best compromise would be to use `<SimpleList>` on small screens, and `<Datagrid>` on other screens. That's where the `<Responsive>` component comes in:
+
+```js
+// in src/posts.js
+import React from 'react';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest/lib/mui';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Responsive
+            small={
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
+            }
+            medium={
+                <Datagrid>
+                    <TextField source="id" />
+                    <ReferenceField label="User" source="userId" reference="users">
+                        <TextField source="name" />
+                    </ReferenceField>
+                    <TextField source="title" />
+                    <TextField source="body" />
+                    <EditButton />
+                </Datagrid>
+            }
+        />
+    </List>
+);
+```
+
+This works exactly how you expect. The lesson here is that admin-on-rest takes care of responsive web design for the layout, but it's your job to use `<Responsive>` in pages.
+
 ## Using Another REST Dialect
 
 Here is the elephant in the room of this tutorial. In real world projects, the REST dialect of your API won't match the JSONPLaceholder dialect. Writing a REST client is probably the first thing you'll have to do to make admin-on-rest work. Depending on your API, this can require a few hours of additional work.
