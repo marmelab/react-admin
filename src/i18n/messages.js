@@ -22,6 +22,7 @@ export default {
             show: '%{name} #%{id}',
             create: 'Create %{name}',
             delete: 'Delete %{name} #%{id}',
+            dashboard: 'Dashboard',
         },
         input: {
             image: {

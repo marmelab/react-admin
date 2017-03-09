@@ -1,7 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import inflection from 'inflection';
 import MenuItem from 'material-ui/MenuItem';
 import { Link } from 'react-router';
+import pure from 'recompose/pure';
+import compose from 'recompose/compose';
+import DashboardMenuItem from './DashboardMenuItem';
 import translate from '../../i18n/translate';
 
 const styles = {
@@ -21,8 +24,9 @@ const translatedResourceName = (resource, translate) =>
             inflection.humanize(inflection.pluralize(resource.name)),
     });
 
-const Menu = ({ onMenuTap, resources, translate, logout }) => (
+const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) => (
     <div style={styles.main}>
+        {hasDashboard && <DashboardMenuItem onTouchTap={onMenuTap}/>}
         {resources
             .filter(r => r.list)
             .map(resource =>
@@ -40,6 +44,7 @@ const Menu = ({ onMenuTap, resources, translate, logout }) => (
 );
 
 Menu.propTypes = {
+    hasDashboard: PropTypes.bool,
     logout: PropTypes.element,
     onMenuTap: PropTypes.func,
     resources: PropTypes.array.isRequired,
@@ -50,4 +55,9 @@ Menu.defaultProps = {
     onMenuTap: () => null,
 };
 
-export default translate(Menu);
+const enhance = compose(
+    pure,
+    translate,
+);
+
+export default enhance(Menu);

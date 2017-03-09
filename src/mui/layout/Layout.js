@@ -82,7 +82,7 @@ class Layout extends Component {
                     { width !== 1 && <AppBar title={title} />}
                     <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
                         <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>{children}</div>
-                        <Sidebar>
+                        <Sidebar theme={theme}>
                             {menu}
                         </Sidebar>
                     </div>
@@ -122,10 +122,10 @@ function mapStateToProps(state) {
 }
 
 const enhance = compose(
-    withWidth(),
     connect(mapStateToProps, {
         setSidebarVisibility: setSidebarVisibilityAction,
     }),
+    withWidth(),
 );
 
 export default enhance(Layout);

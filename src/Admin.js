@@ -72,7 +72,7 @@ const Admin = ({
         : () => () => true;
     const LoginPage = withProps({ title, theme, authClient })(loginPage || Login);
     const LogoutButton = withProps({ authClient })(logoutButton || Logout);
-    const MenuComponent = withProps({ authClient, logout: <LogoutButton />, resources })(menu || Menu);
+    const MenuComponent = withProps({ authClient, logout: <LogoutButton />, resources, hasDashboard: !!dashboard })(menu || Menu);
     const Layout = withProps({
         authClient,
         logout: <LogoutButton />,

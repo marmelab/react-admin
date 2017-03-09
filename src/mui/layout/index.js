@@ -1,5 +1,6 @@
 export AppBar from './AppBar';
 export AppBarMobile from './AppBarMobile';
+export DashboardMenuItem from './DashboardMenuItem';
 export Layout from './Layout';
 export Menu from './Menu';
 export Notification from './Notification';

@@ -1,12 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Drawer from 'material-ui/Drawer';
-import Menu from 'material-ui/Menu';
 import Paper from 'material-ui/Paper';
-import muiThemeable from 'material-ui/styles/muiThemeable';
-import compose from 'recompose/compose';
 import Responsive from './Responsive';
-import translate from '../../i18n/translate';
 import { setSidebarVisibility as setSidebarVisibilityAction } from '../../actions';
 
 const styles = {
@@ -24,7 +20,9 @@ const styles = {
     },
 };
 
-class Sidebar extends Component {
+// We shouldn't need PureComponent here as it's connected
+// but for some reason it keeps rendering even though mapStateToProps returns the same object
+class Sidebar extends PureComponent {
     handleClose = () => {
         this.props.setSidebarVisibility(false);
     }
@@ -53,17 +51,12 @@ Sidebar.propTypes = {
     open: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, props) => ({
     open: state.admin.ui.sidebarOpen,
     locale: state.locale, // force redraw on locale change
+    theme: props.theme, // force redraw on theme changes
 });
 
-const enhanced = compose(
-    muiThemeable(), // force redraw on theme change
-    connect(mapStateToProps, {
-        setSidebarVisibility: setSidebarVisibilityAction,
-    }),
-    translate,
-);
-
-export default enhanced(Sidebar);
+export default connect(mapStateToProps, {
+    setSidebarVisibility: setSidebarVisibilityAction,
+})(Sidebar);
