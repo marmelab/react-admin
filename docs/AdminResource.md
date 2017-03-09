@@ -318,6 +318,24 @@ Now, when a user browses to `/foo` or `/bar`, the components you defined will ap
 
 **Tip**: Your custom pages take precedence over admin-on-rest's own routes. That means that `customRoutes` lets you override any route you want!
 
+**Tip**: To look like other admin-on-rest pages, your custom pages should have the following structure:
+
+```js
+// in src/Foo.js
+import React from 'react';
+import { Card } from 'material-ui/Card';
+import { ViewTitle } from 'admin-on-rest/lib/mui';
+
+const Foo = () => (
+    <Card>
+        <ViewTitle title="My Page" />
+        ...
+    </Card>
+));
+
+export default Foo;
+```
+
 ### `authClient`
 
 The `authClient` prop expect a function returning a Promise, to control the application authentication strategy:
