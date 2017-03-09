@@ -18,7 +18,8 @@
 * Add support for default locale in `resolveBrowserLocale`
 * Add ability to translate `CRUD_UPDATE` to HTTP `PATCH` method
 * Add ability to hide fields
-* Add Spanish translations package ([JonatanSalas](https://github.com/JonatanSalas))
+* Add Spanish translations ([JonatanSalas](https://github.com/JonatanSalas))
+* Add Vietnamese translations ([kimkha](https://github.com/kimkha))
 * Improve Login page UX with form lock and loader ([Natsuke](https://github.com/Natsuke))
 * Improve `<Datagrid>` rendering options by using material-ui `<Table>` element
 * Improve loader and button components rendering speed
