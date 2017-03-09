@@ -3,27 +3,28 @@
 ## v0.9.0
 
 * [BC Break] Update REST response format to always expect a `data` key
-* Add dashboard MenuItem on top of Menu when relevant
-* Remove link to dashboard in the top bar
-* Separate Menu and Sidebar components
-* Improve Login page UX with form lock and loader ([Natsuke](https://github.com/Natsuke))
+* Add mobile UI (Sidebar, AppBar, Datagrid, actions, form action)
 * Add `<Responsive>` component
-* Make UI responsive (Sidebar, AppBar, Datagrid, actions, form action)
-* Allow to execute crud actions without redirect ([thedersen](https://github.com/thedersen))
-* Allow to pass custom `onBlur`, `onChange`, and `onFocus` props to `<NumberInput>` and `<TextInput>`
-* Update image preview when dispatching new form value
-* Allow to override redirect path when auth check fails ([thedersen](https://github.com/thedersen))
-* Allow overriding cancelPrevious on crudGetList ([thedersen](https://github.com/thedersen))
-* Remove CSS copy step from build
-* Allow to customize menu without overriding the layout
-* Show notification for server error even when the response body is empty
-* Pass old record in `CRUD_UPDATE` action payload (allows translation to HTTP `PATCH`)
-* Improve loader rendering speed
-* Allow to specify default locale in `resolveBrowserLocale`
-* Use material-ui `<Table>` element for datagrid (themeable, more features)
+* Add `<ViewTitle>` component (to be used instead of `<CardTitle>` for responsive views)
 * Add ability to hide sidebar using hamburger menu
+* Add `<Sidebar>` component
+* Add `menu` prop to `<Admin>`, to customize the menu without overriding the layout
+* Add dashboard MenuItem on top of Menu when relevant
+* Add ability to execute crud actions without redirect ([thedersen](https://github.com/thedersen))
+* Add support for custom `onBlur`, `onChange`, and `onFocus` props to `<NumberInput>` and `<TextInput>`
+* Add support for image preview change via dispatches form value in `<<ImageInput />`
+* Add support for custom redirect path when auth check fails ([thedersen](https://github.com/thedersen))
+* Add support for non-cancelable fetch in `crudGetList` action ([thedersen](https://github.com/thedersen))
+* Add support for default locale in `resolveBrowserLocale`
+* Add ability to translate `CRUD_UPDATE` to HTTP `PATCH` method
 * Add ability to hide fields
-* Avoid rerendering of some action button components
+* Add Spanish translations package ([JonatanSalas](https://github.com/JonatanSalas))
+* Improve Login page UX with form lock and loader ([Natsuke](https://github.com/Natsuke))
+* Improve `<Datagrid>` rendering options by using material-ui `<Table>` element
+* Improve loader and button components rendering speed
+* Remove link to dashboard in the top bar
+* Remove CSS copy step from build
+* Fix notification for server error even when the response body is empty
 
 ## v0.8.4
 
