@@ -1,5 +1,30 @@
 # Changelog
 
+## v0.9.0
+
+* [BC Break] Update REST response format to always expect a `data` key
+* Add dashboard MenuItem on top of Menu when relevant
+* Remove link to dashboard in the top bar
+* Separate Menu and Sidebar components
+* Improve Login page UX with form lock and loader ([Natsuke](https://github.com/Natsuke))
+* Add `<Responsive>` component
+* Make UI responsive (Sidebar, AppBar, Datagrid, actions, form action)
+* Allow to execute crud actions without redirect ([thedersen](https://github.com/thedersen))
+* Allow to pass custom `onBlur`, `onChange`, and `onFocus` props to `<NumberInput>` and `<TextInput>`
+* Update image preview when dispatching new form value
+* Allow to override redirect path when auth check fails ([thedersen](https://github.com/thedersen))
+* Allow overriding cancelPrevious on crudGetList ([thedersen](https://github.com/thedersen))
+* Remove CSS copy step from build
+* Allow to customize menu without overriding the layout
+* Show notification for server error even when the response body is empty
+* Pass old record in `CRUD_UPDATE` action payload (allows translation to HTTP `PATCH`)
+* Improve loader rendering speed
+* Allow to specify default locale in `resolveBrowserLocale`
+* Use material-ui `<Table>` element for datagrid (themeable, more features)
+* Add ability to hide sidebar using hamburger menu
+* Add ability to hide fields
+* Avoid rerendering of some action button components
+
 ## v0.8.4
 
 * Fix `defaultValue` assignment for nested resource attributes ([cytomich](https://github.com/cytomich))
