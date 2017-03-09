@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import MuiAppBar from 'material-ui/AppBar';
 import muiThemeable from 'material-ui/styles/muiThemeable';
@@ -32,7 +31,7 @@ const AppBarMobile = ({ title, toggleSidebar }) => (
         style={style.bar}
         titleStyle={style.title}
         iconStyleLeft={style.icon}
-        title={<Link to="/" style={style.link}>{title}</Link>}
+        title={title}
         onLeftIconButtonTouchTap={toggleSidebar}
     />
 );
