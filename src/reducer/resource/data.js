@@ -45,8 +45,10 @@ const addRecords = (newRecords = [], oldRecords) => {
     // remove outdated old records
     const latestValidDate = new Date();
     latestValidDate.setTime(latestValidDate.getTime() - cacheDuration);
-    const oldValidRecordIds = Object.keys(oldRecords.fetchedAt)
-        .filter(id => oldRecords.fetchedAt[id] > latestValidDate);
+    const oldValidRecordIds = oldRecords.fetchedAt
+        ? Object.keys(oldRecords.fetchedAt)
+            .filter(id => oldRecords.fetchedAt[id] > latestValidDate)
+        : [];
     const oldValidRecords = oldValidRecordIds.reduce((prev, id) => {
         prev[id] = oldRecords[id]; // eslint-disable-line no-param-reassign
         return prev;

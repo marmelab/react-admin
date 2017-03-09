@@ -4,7 +4,7 @@ A frontend Framework for building admin applications running in the browser on t
 
 [Demo](https://marmelab.com/admin-on-rest-demo/) - [Documentation](https://marmelab.com/admin-on-rest/) - [Releases](https://github.com/marmelab/admin-on-rest/releases) - [Support](http://stackoverflow.com/questions/tagged/admin-on-rest)
 
-![admin-on-rest demo](http://static.marmelab.com/admin-on-rest.gif)
+[![admin-on-rest-demo](https://marmelab.com/admin-on-rest/img/admin-on-rest-demo-still.png)](https://vimeo.com/205118063)
 
 ## Features
 
@@ -174,6 +174,8 @@ $ make watch
 $ cd ../myapp
 $ npm run
 ```
+
+**Tip**: If you're on Windows and can't use `make`, try [this Gist](https://gist.github.com/mantis/bb5d9f7d492f86e94341816321500934).
 
 ## License
 

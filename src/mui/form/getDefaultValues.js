@@ -1,5 +1,6 @@
 import { Children } from 'react';
 import { createSelector } from 'reselect';
+import set from 'lodash.set';
 
 const getDefaultValues = (children, data = {}, defaultValue = {}) => {
     const globalDefaultValue = typeof defaultValue === 'function' ? defaultValue() : defaultValue;
@@ -7,7 +8,11 @@ const getDefaultValues = (children, data = {}, defaultValue = {}) => {
         .map(child => ({ source: child.props.source, defaultValue: child.props.defaultValue }))
         .reduce((prev, next) => {
             if (next.defaultValue != null) {
-                prev[next.source] = typeof next.defaultValue === 'function' ? next.defaultValue() : next.defaultValue; // eslint-disable-line no-param-reassign
+                set(
+                    prev,
+                    next.source,
+                    typeof next.defaultValue === 'function' ? next.defaultValue() : next.defaultValue,
+                );
             }
             return prev;
         }, {});

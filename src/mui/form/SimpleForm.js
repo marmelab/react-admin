@@ -41,6 +41,7 @@ const enhance = compose(
     reduxForm({
         form: 'record-form',
         validate: validateForm,
+        enableReinitialize: true,
     }),
 );
 

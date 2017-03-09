@@ -6,7 +6,7 @@ import pure from 'recompose/pure';
 const CrudRoute = () => <div>&lt;CrudRoute&gt; elements are for configuration only and should not be rendered</div>;
 
 CrudRoute.createRouteFromReactElement = (element, parentRoute) => {
-    const { path, list, create, edit, show, remove, options, onEnter } = element.props;
+    const { path, list, create, edit, show, remove, options, onEnter = () => null } = element.props;
 
     // dynamically add crud routes
     const crudRoute = createRoutesFromReactChildren(

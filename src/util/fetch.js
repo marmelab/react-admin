@@ -1,3 +1,5 @@
+import HttpError from './HttpError';
+
 export const fetchJson = (url, options = {}) => {
     const requestHeaders = options.headers || new Headers({
         Accept: 'application/json',
@@ -24,7 +26,7 @@ export const fetchJson = (url, options = {}) => {
                 // not json, no big deal
             }
             if (status < 200 || status >= 300) {
-                return Promise.reject(new Error((json && json.message) || statusText));
+                return Promise.reject(new HttpError((json && json.message) || statusText, status));
             }
             return { status, headers, body, json };
         });
