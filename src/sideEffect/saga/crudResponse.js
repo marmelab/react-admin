@@ -30,7 +30,7 @@ function* handleResponse({ type, requestPayload, error, payload }) {
     case CRUD_CREATE_SUCCESS:
         return requestPayload.redirect ? yield [
             put(showNotification('aor.notification.created')),
-            put(push(linkToRecord(requestPayload.basePath, payload.id))),
+            put(push(linkToRecord(requestPayload.basePath, payload.data.id))),
         ] : yield [put(showNotification('aor.notification.created'))];
     case CRUD_DELETE_SUCCESS:
         return requestPayload.redirect ? yield [
