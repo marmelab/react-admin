@@ -18,8 +18,8 @@ import {
     SimpleForm,
     TextField,
     TextInput,
-} from 'admin-on-rest/mui';
-import { translate } from 'admin-on-rest';
+    translate,
+} from 'admin-on-rest';
 import PersonIcon from 'material-ui/svg-icons/social/person';
 import Avatar from 'material-ui/Avatar';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';

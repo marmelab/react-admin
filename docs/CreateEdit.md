@@ -40,7 +40,7 @@ export default App;
 
 // in src/posts.js
 import React from 'react';
-import { Create, Edit, SimpleForm, DisabledInput, TextInput, DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'admin-on-rest/lib/mui';
+import { Create, Edit, SimpleForm, DisabledInput, TextInput, DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'admin-on-rest';
 import RichTextInput from 'aor-rich-text-input';
 
 export const PostCreate = (props) => (
@@ -116,7 +116,7 @@ You can replace the list of default actions by your own element using the `actio
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import { ListButton, ShowButton, DeleteButton } from 'admin-on-rest/lib/mui';
+import { ListButton, ShowButton, DeleteButton } from 'admin-on-rest';
 
 const cardActionStyle = {
     zIndex: 2,
@@ -180,7 +180,7 @@ Here are all the props accepted by the `<TabbedForm>` component:
 
 {% raw %}
 ```js
-import { TabbedForm, FormTab } from 'admin-on-rest/lib/mui'
+import { TabbedForm, FormTab } from 'admin-on-rest'
 
 export const PostEdit = (props) => (
     <Edit {...props}>

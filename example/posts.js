@@ -29,9 +29,9 @@ import {
     TabbedForm,
     TextField,
     TextInput,
-} from 'admin-on-rest/mui';
+    translate,
+} from 'admin-on-rest';
 import RichTextInput from 'aor-rich-text-input';
-import { translate } from 'admin-on-rest';
 import Chip from 'material-ui/Chip';
 export PostIcon from 'material-ui/svg-icons/action/book';
 import { Link } from 'react-router';
