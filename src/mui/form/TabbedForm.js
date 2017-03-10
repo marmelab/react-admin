@@ -1,29 +1,11 @@
-import React, { Children, Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import { getFieldConstraints, getErrorsForForm, getErrorsForFieldConstraints } from '../../util/validate';
 import Toolbar from './Toolbar';
-import getDefaultValues from '../form/getDefaultValues';
+import getDefaultValues from './getDefaultValues';
 import translate from '../../i18n/translate';
-
-/**
- * Validator function for redux-form
- */
-export const validateForm = (values, { children, validation }) => {
-    // digging first in `<FormTab>`, then in all children
-    const fieldConstraints = Children.toArray(children)
-        .map(child => child.props.children)
-        .map(getFieldConstraints)
-        // merge all constraints object into a single object
-        .reduce((prev, next) => ({ ...prev, ...next }), {});
-
-    return {
-        ...getErrorsForForm(validation, values),
-        ...getErrorsForFieldConstraints(fieldConstraints, values),
-    };
-};
 
 export class TabbedForm extends Component {
     constructor(props) {
@@ -82,7 +64,6 @@ const enhance = compose(
     })),
     reduxForm({
         form: 'record-form',
-        validate: validateForm,
         enableReinitialize: true,
     }),
     translate,

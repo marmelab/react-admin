@@ -2,8 +2,7 @@ import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { validateForm } from '../../util/validate';
-import getDefaultValues from '../form/getDefaultValues';
+import getDefaultValues from './getDefaultValues';
 import FormField from './FormField';
 import Toolbar from './Toolbar';
 
@@ -40,7 +39,6 @@ const enhance = compose(
     })),
     reduxForm({
         form: 'record-form',
-        validate: validateForm,
         enableReinitialize: true,
     }),
 );
