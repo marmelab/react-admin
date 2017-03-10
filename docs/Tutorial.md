@@ -58,7 +58,7 @@ The `<Admin>` component contains `<Resource>` components, each resource being ma
 ```js
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, TextField } from 'admin-on-rest';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -70,8 +70,6 @@ export const PostList = (props) => (
     </List>
 );
 ```
-
-Notice that the components we use here are from `admin-on-rest/lib/mui` - these are Material UI components.
 
 The main component of the post list is a `<List>` component, responsible for grabbing the information from the url, displaying the page title, and handling pagination. This list then delegates the display of the actual list of posts to a `<Datagrid>`, responsible for displaying a table with one row for each post. As for which columns should be displayed in this table, that's what the bunch of `<TextField>` components are for, each mapping a different source field in the API response.
 
@@ -88,7 +86,7 @@ So far, you've only seen `<TextField>`, but if the API sends resources with othe
 ```js
 // in src/users.js
 import React from 'react';
-import { List, Datagrid, EmailField, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, EmailField, TextField } from 'admin-on-rest';
 
 export const UserList = (props) => (
     <List title="All users" {...props}>
@@ -157,7 +155,7 @@ Admin-on-REST knows how to take advantage of these foreign keys to fetch referen
 ```js
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField, EmailField, ReferenceField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, TextField, EmailField, ReferenceField } from 'admin-on-rest';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -186,7 +184,7 @@ An admin interface is usually for more than seeing remote data - it's for editin
 ```js
 // in src/posts.js
 import React from 'react';
-import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest/lib/mui';
+import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -271,7 +269,7 @@ There is not much to configure in a deletion view. To add removal abilities to a
 
 ```js
 // in src/App.js
-import { Delete } from 'admin-on-rest/lib/mui';
+import { Delete } from 'admin-on-rest';
 
 const App = () => (
     <Admin restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
@@ -293,7 +291,7 @@ Admin-on-rest can use input components to create a multi-criteria search engine 
 
 ```js
 // in src/posts.js
-import { Filter, ReferenceInput, SelectInput, TextInput } from 'admin-on-rest/lib/mui';
+import { Filter, ReferenceInput, SelectInput, TextInput } from 'admin-on-rest';
 
 const PostFilter = (props) => (
     <Filter {...props}>
@@ -431,7 +429,7 @@ First, you should know that you don't have to use a `<Datagrid>` as `<List>` chi
 ```js
 // in src/posts.js
 import React from 'react';
-import { List, SimpleList } from 'admin-on-rest/lib/mui';
+import { List, SimpleList } from 'admin-on-rest';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -451,7 +449,7 @@ That works fine on mobile, but now the desktop user experience is worse. The bes
 ```js
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest/lib/mui';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest';
 
 export const PostList = (props) => (
     <List {...props}>
