@@ -18,6 +18,7 @@ import {
     SimpleForm,
     TextField,
     TextInput,
+    minLength,
     translate,
 } from 'admin-on-rest';
 import PersonIcon from 'material-ui/svg-icons/social/person';
@@ -117,9 +118,9 @@ export const CommentEdit = ({ ...props }) => (
             <ReferenceInput source="post_id" reference="posts" perPage={5} sort={{ field: 'title', order: 'ASC' }}>
                 <AutocompleteInput optionText="title" />
             </ReferenceInput>
-            <TextInput source="author.name" validation={{ minLength: 10 }} />
+            <TextInput source="author.name" validate={minLength(10)} />
             <DateInput source="created_at" />
-            <LongTextInput source="body" validation={{ minLength: 10 }} />
+            <LongTextInput source="body" validate={minLength(10)} />
         </SimpleForm>
     </Edit>
 );
