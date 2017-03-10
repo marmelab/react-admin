@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.9.1
+
+* Fix redirection after creation
+* Fix `jsonServer` `GET_MANY` implementation ([wadjeroudi](https://github.com/wadjeroudi))
+* Add Loopback-like REST client ([kimkha](https://github.com/kimkha))
+* Update Webpack example config ([velociwabbit](https://github.com/velociwabbit))
+
 ## v0.9.0
 
 * [BC Break] Update REST response format to always expect a `data` key
