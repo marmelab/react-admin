@@ -1,6 +1,7 @@
 export * from './actions';
 export * from './auth';
 export * from './i18n';
+export * from './mui';
 export adminReducer from './reducer';
 export localeReducer from './reducer/locale';
 export queryReducer from './reducer/resource/list/queryReducer';

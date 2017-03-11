@@ -324,7 +324,7 @@ Now, when a user browses to `/foo` or `/bar`, the components you defined will ap
 // in src/Foo.js
 import React from 'react';
 import { Card } from 'material-ui/Card';
-import { ViewTitle } from 'admin-on-rest/lib/mui';
+import { ViewTitle } from 'admin-on-rest';
 
 const Foo = () => (
     <Card>

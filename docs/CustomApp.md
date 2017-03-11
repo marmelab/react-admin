@@ -35,7 +35,7 @@ import Dashboard from './Dashboard';
 import { PostList, PostCreate, PostEdit, PostShow } from './Post';
 import { CommentList, CommentEdit, CommentCreate } from './Comment';
 import { UserList, UserEdit, UserCreate } from './User';
-import { Delete, Layout } from 'admin-on-rest/lib/mui';
+import { Delete, Layout } from 'admin-on-rest';
 // your app labels
 import messages from './i18n';
 

@@ -2,9 +2,8 @@ import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 
-import { Admin, Resource, englishMessages, resolveBrowserLocale } from 'admin-on-rest';
+import { Admin, Resource, Delete, englishMessages, resolveBrowserLocale } from 'admin-on-rest';
 import jsonRestClient from 'aor-json-rest-client';
-import { Delete } from 'admin-on-rest/mui';
 import frenchMessages from 'aor-language-french';
 
 import addUploadFeature from './addUploadFeature';
