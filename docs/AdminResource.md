@@ -394,7 +394,7 @@ const App = () => (
 
 The `locale` and `messages` props let you translate the GUI. The [Translation Documentation](./Translation.html) details this process.
 
-### Initial Redux state
+### Initial State
 The `initialState` prop lets you pass preloaded state to Redux. See the [Redux Documentation](http://redux.js.org/docs/api/createStore.html#createstorereducer-preloadedstate-enhancer) for more details.
 
 ## The `<Resource>` component
