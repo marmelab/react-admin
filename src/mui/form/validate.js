@@ -7,16 +7,16 @@ const isEmpty = value => (typeof value === 'undefined' || value === null || valu
 export const required = value => isEmpty(value) ? 'Required field' : undefined;
 
 export const minLength = min => value =>
-    value && value.length <= min ? `Must be ${min} characters at least` : undefined;
+    value && value.length < min ? `Must be ${min} characters at least` : undefined;
 
 export const maxLength = max => value =>
-    value && value.length >= max ? `Must be ${max} characters or less` : undefined;
+    value && value.length > max ? `Must be ${max} characters or less` : undefined;
 
 export const minValue = min => value =>
-    value && value <= min ? `Must be at least ${min}` : undefined;
+    value && value < min ? `Must be at least ${min}` : undefined;
 
 export const maxValue = max => value =>
-    value && value >= max ? `Must be ${max} or less` : undefined;
+    value && value > max ? `Must be ${max} or less` : undefined;
 
 export const number = value => value && isNaN(Number(value)) ? 'Must be a number' : undefined;
 
