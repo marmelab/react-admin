@@ -35,6 +35,7 @@ const Admin = ({
     title = 'Admin on REST',
     loginPage,
     logoutButton,
+    initialState,
 }) => {
     const resources = React.Children.map(children, ({ props }) => props);
     const reducer = combineReducers({
@@ -51,7 +52,7 @@ const Admin = ({
         ].map(fork);
     };
     const sagaMiddleware = createSagaMiddleware();
-    const store = createStore(reducer, undefined, compose(
+    const store = createStore(reducer, initialState, compose(
         applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
         window.devToolsExtension ? window.devToolsExtension() : f => f,
     ));
@@ -129,6 +130,7 @@ Admin.propTypes = {
     title: PropTypes.string,
     locale: PropTypes.string,
     messages: PropTypes.object,
+    initialState: PropTypes.object,
 };
 
 export default Admin;
