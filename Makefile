@@ -1,7 +1,7 @@
 .PHONY: build help
 
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 install: package.json ## install dependencies
 	@npm install
@@ -36,9 +36,9 @@ test-unit-watch: ## launch unit tests and watch for changes
 		--watch \
 		'./src/**/*.spec.js'
 
-test-e2e: ## launch end-to-end tests. call make test-e2e skip-build to skip the build
+test-e2e: ## launch end-to-end tests
 	@if [ "$(filter-out $@,$(MAKECMDGOALS))" != "skip-build" ]; then \
-		echo 'Building example code...'; \
+		echo 'Building example code (call "make test-e2e skip-build" to skip the build)...'; \
 		NODE_ENV=production cd example && ../node_modules/.bin/webpack; \
 	fi
 	@echo 'Launching e2e tests...'

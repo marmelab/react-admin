@@ -25,7 +25,8 @@ const styles = {
         backgroundColor: '#edecec',
         display: 'flex',
         flex: 1,
-        overflow: 'hidden',
+        overflowY: 'hidden',
+        overflowX: 'scroll',
     },
     bodySmall: {
         backgroundColor: '#fff',
