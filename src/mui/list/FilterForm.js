@@ -36,7 +36,12 @@ export class FilterForm extends Component {
         return (<div>
             <CardText style={styles.card}>
                 {this.getShownFilters().reverse().map(filterElement =>
-                    <div key={filterElement.props.source} className="filter-field" style={filterElement.props.style || styles.body}>
+                    <div
+                        key={filterElement.props.source}
+                        data-source={filterElement.props.source}
+                        className="filter-field"
+                        style={filterElement.props.style || styles.body}
+                    >
                         {filterElement.props.alwaysOn ?
                             <div style={styles.spacer}>&nbsp;</div> :
                             <IconButton

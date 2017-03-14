@@ -11,23 +11,23 @@ describe('List Page', () => {
     describe('Pagination', () => {
         it('should display paginated list of available posts', async () => {
             const displayedRecords = await driver.findElement(ListPage.elements.displayedRecords);
-            assert.equal(await displayedRecords.getText(), '1-10 of 12');
+            assert.equal(await displayedRecords.getText(), '1-10 of 13');
         });
 
         it('should switch page when clicking on previous/next page buttons or page numbers', async () => {
             const displayedRecords = await driver.findElement(ListPage.elements.displayedRecords);
 
             await ListPage.nextPage();
-            assert.equal(await displayedRecords.getText(), '11-12 of 12');
+            assert.equal(await displayedRecords.getText(), '11-13 of 13');
 
             await ListPage.previousPage();
-            assert.equal(await displayedRecords.getText(), '1-10 of 12');
+            assert.equal(await displayedRecords.getText(), '1-10 of 13');
 
             await ListPage.goToPage(2);
-            assert.equal(await displayedRecords.getText(), '11-12 of 12');
+            assert.equal(await displayedRecords.getText(), '11-13 of 13');
 
             await ListPage.goToPage(1);
-            assert.equal(await displayedRecords.getText(), '1-10 of 12');
+            assert.equal(await displayedRecords.getText(), '1-10 of 13');
         });
     });
 
@@ -55,13 +55,9 @@ describe('List Page', () => {
             assert.equal(filters.length, 1);
         });
 
-        it('should hide filter field when clicking on hiding button', async () => {
-            // @FIXME: filters are persisted even when reloading URL without query params
+        it('should hide filter when clicking on hide button', async () => {
             await ListPage.hideFilter('title');
-
-            await ListPage.showFilter('title');
-            await ListPage.hideFilter('title');
-
+            await driver.sleep(5000);
             const filters = await driver.findElements(ListPage.elements.filter('title'));
             assert.equal(filters.length, 0);
         });
