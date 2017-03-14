@@ -57,7 +57,6 @@ describe('List Page', () => {
 
         it('should hide filter when clicking on hide button', async () => {
             await ListPage.hideFilter('title');
-            await driver.sleep(5000);
             const filters = await driver.findElements(ListPage.elements.filter('title'));
             assert.equal(filters.length, 0);
         });
