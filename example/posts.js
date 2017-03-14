@@ -29,6 +29,9 @@ import {
     TabbedForm,
     TextField,
     TextInput,
+    minValue,
+    number,
+    required,
     translate,
 } from 'admin-on-rest';
 import RichTextInput from 'aor-rich-text-input';
@@ -78,7 +81,7 @@ const PostTitle = translate(({ record, translate }) => {
 
 export const PostCreate = ({ ...props }) => (
     <Create {...props}>
-        <SimpleForm defaultValue={{ average_note: 0 }} validation={(values) => {
+        <SimpleForm defaultValue={{ average_note: 0 }} validate={(values) => {
             const errors = {};
             ['title', 'teaser'].forEach((field) => {
                 if (!values[field]) {
@@ -108,7 +111,7 @@ export const PostEdit = ({ ...props }) => (
         <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label="post.form.summary">
                 <DisabledInput source="id" />
-                <TextInput source="title" validation={{ required: true }} />
+                <TextInput source="title" validate={required} />
                 <CheckboxGroupInput
                     source="notifications"
                     choices={[
@@ -117,18 +120,18 @@ export const PostEdit = ({ ...props }) => (
                         { id: 42, name: 'Sean Phonee' },
                     ]}
                 />
-                <LongTextInput source="teaser" validation={{ required: true }} />
+                <LongTextInput source="teaser" validate={required} />
                 <ImageInput multiple source="pictures" accept="image/*">
                     <ImageField source="src" title="title" />
                 </ImageInput>
             </FormTab>
             <FormTab label="post.form.body">
-                <RichTextInput source="body" label="" validation={{ required: true }} addLabel={false} />
+                <RichTextInput source="body" label="" validate={required} addLabel={false} />
             </FormTab>
             <FormTab label="post.form.miscellaneous">
                 <TextInput source="password" type="password" />
                 <DateInput source="published_at" />
-                <NumberInput source="average_note" validation={{ min: 0 }} />
+                <NumberInput source="average_note" validate={[number, minValue(0)]} />
                 <BooleanInput source="commentable" defaultValue />
                 <DisabledInput source="views" />
             </FormTab>
