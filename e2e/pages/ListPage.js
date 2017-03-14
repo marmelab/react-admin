@@ -53,7 +53,9 @@ module.exports = (entity) => (driver) => ({
         const addFilterButton = driver.findElement(this.elements.addFilterButton);
         addFilterButton.click();
         driver.wait(until.elementLocated(this.elements.filterMenuItem(name)));
-        return driver.findElement(this.elements.filterMenuItem(name)).click();
+        const menuItem = driver.findElement(this.elements.filterMenuItem(name))
+        menuItem.click();
+        return driver.sleep(400); // wait until the menu hides
     },
 
     hideFilter(name) {
