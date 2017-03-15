@@ -37,8 +37,8 @@ test-unit-watch: ## launch unit tests and watch for changes
 		'./src/**/*.spec.js'
 
 test-e2e: ## launch end-to-end tests
-	@if [ "$(filter-out $@,$(MAKECMDGOALS))" != "skip-build" ]; then \
-		echo 'Building example code (call "make test-e2e skip-build" to skip the build)...'; \
+	@if [ "$(build)" != "false" ]; then \
+		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
 		cd example && ../node_modules/.bin/webpack; \
 	fi
 	@echo 'Launching e2e tests...'

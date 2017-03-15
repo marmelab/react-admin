@@ -7,7 +7,7 @@ import FormField from './FormField';
 import Toolbar from './Toolbar';
 
 export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, basePath }) => (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="simple-form">
         <div style={{ padding: '0 1em 1em 1em' }}>
             {React.Children.map(children, input => input && (
                 <div key={input.props.source} style={input.props.style}>

@@ -6,7 +6,7 @@ import AppBarMobile from './AppBarMobile';
 const ViewTitle = ({ title, width }) => (
     width === 1
         ? <AppBarMobile title={title} />
-        : <CardTitle title={title} />
+        : <CardTitle title={title} className="title" />
 );
 
 export default withWidth()(ViewTitle);

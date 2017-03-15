@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import driver from '../chromeDriver';
 
 let listeningServer;
 
@@ -9,6 +10,7 @@ before(() => {
     listeningServer = server.listen(8083);
 });
 
-after(() => {
+after(async () => {
     listeningServer.close();
+    return driver.quit();
 });

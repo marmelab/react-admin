@@ -4,7 +4,7 @@ import driver from '../chromeDriver';
 import listPageFactory from '../pages/ListPage';
 
 describe('List Page', () => {
-    const ListPage = listPageFactory('posts')(driver);
+    const ListPage = listPageFactory('http://localhost:8083/#posts')(driver);
 
     beforeEach(async () => await ListPage.navigate());
 
@@ -61,6 +61,4 @@ describe('List Page', () => {
             assert.equal(filters.length, 0);
         });
     });
-
-    after(() => ListPage.close());
 });

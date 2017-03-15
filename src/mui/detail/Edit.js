@@ -90,7 +90,7 @@ export class Edit extends Component {
         const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
 
         return (
-            <div>
+            <div className="edit-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
                     {actions && React.cloneElement(actions, {
                         basePath,
