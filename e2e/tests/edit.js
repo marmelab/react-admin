@@ -10,8 +10,19 @@ describe('Edit Page', () => {
 
     describe('TabbedForm', () => {
         it('should display the title in a TextField', async () => {
-            const titleField = await driver.findElement(EditPage.elements.input('title'));
-            assert.equal(await titleField.getAttribute('value'), 'Sed quo et et fugiat modi');
+            assert.equal(await EditPage.getInputValue('title'), 'Sed quo et et fugiat modi');
         });
+
+        it('should allow to update elements', async () => {
+            await EditPage.setInputValue('title', 'Lorem Ipsum');
+            await EditPage.submit();
+            await EditPage.navigate();
+            assert.equal(await EditPage.getInputValue('title'), 'Lorem Ipsum');
+        });
+
+        it('should allow to switch tabs', async () => {
+            await EditPage.gotoTab(2);
+            assert.equal(await EditPage.getInputValue('average_note'), '3');
+        })
     });
 });

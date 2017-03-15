@@ -5,7 +5,7 @@ module.exports = (url) => (driver) => ({
         addFilterButton: By.css('.add-filter'),
         appLoader: By.css('.app-loader'),
         displayedRecords: By.css('.displayed-records'),
-        filter: name => By.css(`.filter-field[data-source='${name}']`),
+        filter: name => By.css(`.filter-field[data-source='${name}'] input`),
         filterMenuItem: source => By.css(`.new-filter-item[data-key="${source}"]`),
         hideFilterButton: source => By.css(`.filter-field[data-source="${source}"] .hide-filter`),
         nextPage: By.css('.next-page'),
@@ -32,6 +32,15 @@ module.exports = (url) => (driver) => ({
             .then(() => driver.sleep(100)); // let some time to redraw
     },
 
+    getNbRows() {
+        return driver.findElements(this.elements.recordRows)
+            .then(rows => rows.length);
+    },
+
+    getNbPagesText() {
+        return driver.findElement(this.elements.displayedRecords).getText();
+    },
+
     nextPage() {
         driver.findElement(this.elements.nextPage).click();
         return this.waitUntilDataLoaded();
@@ -47,9 +56,12 @@ module.exports = (url) => (driver) => ({
         return this.waitUntilDataLoaded();
     },
 
-    filter(name, value) {
+    setFilterValue(name, value, clearPreviousValue = true) {
         const filterField = driver.findElement(this.elements.filter(name));
-        filterField.findElement(By.css('input')).sendKeys(value);
+        if (clearPreviousValue) {
+            filterField.clear();
+        }
+        filterField.sendKeys(value);
         return driver.sleep(3000); // wait for debounce and reload
     },
 
