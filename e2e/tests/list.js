@@ -10,24 +10,18 @@ describe('List Page', () => {
 
     describe('Pagination', () => {
         it('should display paginated list of available posts', async () => {
-            const displayedRecords = await driver.findElement(ListPage.elements.displayedRecords);
-            assert.equal(await displayedRecords.getText(), '1-10 of 13');
+            assert.equal(await ListPage.getNbPagesText(), '1-10 of 13');
         });
 
         it('should switch page when clicking on previous/next page buttons or page numbers', async () => {
-            const displayedRecords = await driver.findElement(ListPage.elements.displayedRecords);
-
             await ListPage.nextPage();
-            assert.equal(await displayedRecords.getText(), '11-13 of 13');
+            assert.equal(await ListPage.getNbPagesText(), '11-13 of 13');
 
             await ListPage.previousPage();
-            assert.equal(await displayedRecords.getText(), '1-10 of 13');
+            assert.equal(await ListPage.getNbPagesText(), '1-10 of 13');
 
             await ListPage.goToPage(2);
-            assert.equal(await displayedRecords.getText(), '11-13 of 13');
-
-            await ListPage.goToPage(1);
-            assert.equal(await displayedRecords.getText(), '1-10 of 13');
+            assert.equal(await ListPage.getNbPagesText(), '11-13 of 13');
         });
     });
 
@@ -40,11 +34,9 @@ describe('List Page', () => {
         });
 
         it('should filter directly while typing (with some debounce)', async () => {
-            await ListPage.filter('q', 'quis culpa impedit');
-
+            await ListPage.setFilterValue('q', 'quis culpa impedit');
+            assert.equal(await ListPage.getNbRows(), 1);
             const displayedPosts = await driver.findElements(ListPage.elements.recordRows);
-            assert.equal(displayedPosts.length, 1);
-
             const title = await displayedPosts[0].findElement(By.css('.column-title'));
             assert.equal(await title.getText(), 'Omnis voluptate enim similique est possimus');
         });
