@@ -39,7 +39,7 @@ test-unit-watch: ## launch unit tests and watch for changes
 test-e2e: ## launch end-to-end tests
 	@if [ "$(filter-out $@,$(MAKECMDGOALS))" != "skip-build" ]; then \
 		echo 'Building example code (call "make test-e2e skip-build" to skip the build)...'; \
-		NODE_ENV=production cd example && ../node_modules/.bin/webpack; \
+		cd example && ../node_modules/.bin/webpack; \
 	fi
 	@echo 'Launching e2e tests...'
 	@NODE_ENV=test node_modules/.bin/mocha \
