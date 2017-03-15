@@ -7,6 +7,11 @@ module.exports = (url) => (driver) => ({
         appLoader: By.css('.app-loader'),
     },
 
+    navigate() {
+        driver.navigate().to(url);
+        return this.waitUntilDataLoaded();
+    },
+
     waitUntilVisible() {
         return driver.wait(until.elementLocated(this.elements.title));
     },
@@ -17,10 +22,5 @@ module.exports = (url) => (driver) => ({
             .catch(() => continued = false) // no loader - we're on the same page !
             .then(() => continued ? driver.wait(until.stalenessOf(driver.findElement(this.elements.appLoader))) : true)
             .then(() => driver.sleep(100)); // let some time to redraw
-    },
-
-    navigate() {
-        driver.navigate().to(url);
-        return this.waitUntilDataLoaded();
     },
 });
