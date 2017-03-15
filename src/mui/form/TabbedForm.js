@@ -22,7 +22,7 @@ export class TabbedForm extends Component {
     render() {
         const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath, translate } = this.props;
         return (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="tabbed-form">
                 <div style={{ padding: '0 1em 1em 1em' }}>
                     <Tabs value={this.state.value} onChange={this.handleChange} contentContainerStyle={contentContainerStyle}>
                         {React.Children.map(children, (tab, index) =>
