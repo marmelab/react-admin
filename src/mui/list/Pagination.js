@@ -78,7 +78,7 @@ export class Pagination extends Component {
         return this.range().map((pageNum, index) =>
             (pageNum === '.') ?
                 <span key={`hyphen_${index}`} style={{ padding: '1.2em' }}>&hellip;</span> :
-                <FlatButton key={pageNum} label={pageNum} data-page={pageNum} onClick={this.gotoPage} primary={pageNum !== this.props.page} style={buttonStyle} />
+                <FlatButton className="page-number" key={pageNum} label={pageNum} data-page={pageNum} onClick={this.gotoPage} primary={pageNum !== this.props.page} style={buttonStyle} />
         );
     }
 
@@ -92,16 +92,16 @@ export class Pagination extends Component {
         return (
             <Toolbar>
                 <ToolbarGroup firstChild>
-                    <span style={{ padding: '1.2em' }}>{ translate('aor.navigation.page_range_info', { offsetBegin, offsetEnd, total }) }</span>
+                    <span className="displayed-records" style={{ padding: '1.2em' }}>{ translate('aor.navigation.page_range_info', { offsetBegin, offsetEnd, total }) }</span>
                 </ToolbarGroup>
                 {nbPages > 1 &&
                     <ToolbarGroup>
                     {page > 1 &&
-                        <FlatButton primary key="prev" label={translate('aor.navigation.prev')} icon={<ChevronLeft />} onClick={this.prevPage} style={buttonStyle} />
+                        <FlatButton className="previous-page" primary key="prev" label={translate('aor.navigation.prev')} icon={<ChevronLeft />} onClick={this.prevPage} style={buttonStyle} />
                     }
                     {this.renderPageNums()}
                     {page !== nbPages &&
-                        <FlatButton primary key="next" label={translate('aor.navigation.next')} icon={<ChevronRight />} labelPosition="before" onClick={this.nextPage} style={buttonStyle} />
+                        <FlatButton className="next-page" primary key="next" label={translate('aor.navigation.next')} icon={<ChevronRight />} labelPosition="before" onClick={this.nextPage} style={buttonStyle} />
                     }
                     </ToolbarGroup>
                 }

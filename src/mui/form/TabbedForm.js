@@ -22,11 +22,21 @@ export class TabbedForm extends Component {
     render() {
         const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath, translate } = this.props;
         return (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="tabbed-form">
                 <div style={{ padding: '0 1em 1em 1em' }}>
-                    <Tabs value={this.state.value} onChange={this.handleChange} contentContainerStyle={contentContainerStyle}>
+                    <Tabs
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                        contentContainerStyle={contentContainerStyle}
+                    >
                         {React.Children.map(children, (tab, index) =>
-                            <Tab key={tab.props.value} label={translate(tab.props.label)} value={index} icon={tab.props.icon}>
+                            <Tab
+                                key={tab.props.value}
+                                className="form-tab"
+                                label={translate(tab.props.label)}
+                                value={index}
+                                icon={tab.props.icon}
+                            >
                                 {React.cloneElement(tab, { resource, record, basePath })}
                             </Tab>
                         )}

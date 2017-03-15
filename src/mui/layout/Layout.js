@@ -25,7 +25,8 @@ const styles = {
         backgroundColor: '#edecec',
         display: 'flex',
         flex: 1,
-        overflow: 'hidden',
+        overflowY: 'hidden',
+        overflowX: 'scroll',
     },
     bodySmall: {
         backgroundColor: '#fff',
@@ -88,6 +89,7 @@ class Layout extends Component {
                     </div>
                     <Notification />
                     {isLoading && <CircularProgress
+                        className="app-loader"
                         color="#fff"
                         size={width === 1 ? 20 : 30}
                         thickness={2}

@@ -189,7 +189,7 @@ export class List extends Component {
         const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
 
         return (
-            <div>
+            <div className="list-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
                     {actions && React.cloneElement(actions, {
                         resource,
