@@ -8,13 +8,6 @@ env:
         - DISPLAY=:99.0
         - NODE_ENV=test
 dist: trusty
-addons:
-    apt:
-        sources:
-            - ubuntu-toolchain-r-test
-        packages:
-            - gcc-4.8
-            - g++-4.8
 cache:
   directories:
     - node_modules
@@ -22,6 +15,8 @@ before_install:
     - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
     - sh -e /etc/init.d/xvfb start
     - sleep 3
+before_script:
+    - make example_install
 branches:
   only:
     - master
