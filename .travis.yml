@@ -4,7 +4,6 @@ node_js:
 env:
     global:
         - CHROME_BIN="chromium-browser"
-        - CXX=g++-4.8
         - DISPLAY=:99.0
         - NODE_ENV=test
 dist: trusty
