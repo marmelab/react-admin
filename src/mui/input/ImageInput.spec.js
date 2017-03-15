@@ -98,4 +98,38 @@ describe('<ImageInput />', () => {
         assert.deepEqual(previewImages.at(1).prop('record').title, 'A good old Bitmap!');
         assert.deepEqual(previewImages.at(1).prop('record').url, 'http://foo.com/qux.bmp');
     });
+
+    it('should update previews when updating input value', () => {
+        const wrapper = shallow(
+            <ImageInput
+                source="picture"
+                translate={x => x}
+                input={{
+                    value: {
+                        url: 'http://static.acme.com/foo.jpg',
+                    },
+                }}
+            >
+                <ImageField source="url" />
+            </ImageInput>,
+        );
+
+        const previewImage = wrapper.find('ImageField');
+        const previewUrl = previewImage.prop('record').url;
+        assert.equal(previewUrl, 'http://static.acme.com/foo.jpg');
+
+        wrapper.setProps({
+            input: {
+                value: {
+                    url: 'http://static.acme.com/bar.jpg',
+                },
+            },
+        });
+
+        wrapper.update();
+
+        const updatedPreviewImage = wrapper.find('ImageField');
+        const updatedPreviewUrl = updatedPreviewImage.prop('record').url;
+        assert.equal(updatedPreviewUrl, 'http://static.acme.com/bar.jpg');
+    });
 });

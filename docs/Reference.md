@@ -50,14 +50,16 @@ title: "Reference"
 * [`<ReferenceInput>`](./Inputs.html#referenceinput)
 * [`<ReferenceManyField>`](./Fields.html#referencemanyfield)
 * [`<Resource>`](./AdminResource.html#the-resource-component)
+* [`<Responsive>`](./Theming.html#responsive-utility)
 * [`<RichTextField>`](./Fields.html#richtextfield)
 * [`<RichTextInput>`](./Inputs.html#richtextinput)
 * `<SaveButton>`
 * [`<SelectInput>`](./Inputs.html#selectinput)
-* `<SimpleShowLayout>`
 * `<Show>`
 * `<ShowButton>`
 * [`<SimpleForm>`](./CreateEdit.html#the-simpleform-component)
+* [`<SimpleList>`](./List.html#the-simplelist-component)
+* `<SimpleShowLayout>`
 * [`<SingleFieldList>`](./List.html#the-singlefieldlist-component)
 * [`<TabbedForm>`](./CreateEdit.html#the-tabbedform-component)
 * [`<TextField>`](./Fields.html#textfield)

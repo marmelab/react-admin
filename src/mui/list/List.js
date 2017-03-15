@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { push as pushAction } from 'react-router-redux';
-import { Card, CardTitle } from 'material-ui/Card';
+import { Card } from 'material-ui/Card';
+import compose from 'recompose/compose';
 import inflection from 'inflection';
 import { change as changeFormValueAction, getFormValues } from 'redux-form';
 import debounce from 'lodash.debounce';
 import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER, SORT_DESC } from '../../reducer/resource/list/queryReducer';
+import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
 import DefaultActions from './Actions';
@@ -98,7 +100,10 @@ export class List extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (nextProps.isLoading === this.props.isLoading && nextState === this.state) {
+        if (
+            nextProps.isLoading === this.props.isLoading
+         && nextProps.width === this.props.width
+         && nextState === this.state) {
             return false;
         }
         return true;
@@ -181,43 +186,46 @@ export class List extends Component {
             _: inflection.humanize(inflection.pluralize(resource)),
         });
         const defaultTitle = translate('aor.page.list', { name: `${resourceName}` });
+        const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
 
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }} key={key}>
-                {actions && React.cloneElement(actions, {
-                    resource,
-                    filters,
-                    filterValues,
-                    basePath,
-                    hasCreate,
-                    displayedFilters: this.state,
-                    showFilter: this.showFilter,
-                    refresh: this.refresh,
-                })}
-                <CardTitle title={<Title title={title} defaultTitle={defaultTitle} />} />
-                {filters && React.cloneElement(filters, {
-                    resource,
-                    hideFilter: this.hideFilter,
-                    filterValues,
-                    displayedFilters: this.state,
-                    context: 'form',
-                })}
-                {React.cloneElement(children, {
-                    resource,
-                    ids,
-                    data,
-                    currentSort: { field: query.sort, order: query.order },
-                    basePath,
-                    isLoading,
-                    setSort: this.setSort,
-                })}
-                {pagination && React.cloneElement(pagination, {
-                    total,
-                    page: parseInt(query.page, 10),
-                    perPage: parseInt(query.perPage, 10),
-                    setPage: this.setPage,
-                })}
-            </Card>
+            <div>
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
+                    {actions && React.cloneElement(actions, {
+                        resource,
+                        filters,
+                        filterValues,
+                        basePath,
+                        hasCreate,
+                        displayedFilters: this.state,
+                        showFilter: this.showFilter,
+                        refresh: this.refresh,
+                    })}
+                    <ViewTitle title={titleElement} />
+                    {filters && React.cloneElement(filters, {
+                        resource,
+                        hideFilter: this.hideFilter,
+                        filterValues,
+                        displayedFilters: this.state,
+                        context: 'form',
+                    })}
+                    {React.cloneElement(children, {
+                        resource,
+                        ids,
+                        data,
+                        currentSort: { field: query.sort, order: query.order },
+                        basePath,
+                        isLoading,
+                        setSort: this.setSort,
+                    })}
+                    {pagination && React.cloneElement(pagination, {
+                        total,
+                        page: parseInt(query.page, 10),
+                        perPage: parseInt(query.perPage, 10),
+                        setPage: this.setPage,
+                    })}
+                </Card>
+            </div>
         );
     }
 }
@@ -285,12 +293,17 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default translate(connect(
-    mapStateToProps,
-    {
-        crudGetList: crudGetListAction,
-        changeFormValue: changeFormValueAction,
-        changeListParams: changeListParamsAction,
-        push: pushAction,
-    },
-)(List));
+const enhance = compose(
+    connect(
+        mapStateToProps,
+        {
+            crudGetList: crudGetListAction,
+            changeFormValue: changeFormValueAction,
+            changeListParams: changeListParamsAction,
+            push: pushAction,
+        },
+    ),
+    translate,
+);
+
+export default enhance(List);

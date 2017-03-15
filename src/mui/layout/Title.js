@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
+import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
 
 const Title = ({ defaultTitle, record, title, translate }) => {
@@ -21,4 +23,9 @@ Title.propTypes = {
     ]),
 };
 
-export default translate(Title);
+const enhance = compose(
+    translate,
+    onlyUpdateForKeys('defaultTitle', 'record', 'title'),
+);
+
+export default enhance(Title);

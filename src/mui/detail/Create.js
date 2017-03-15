@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardTitle } from 'material-ui/Card';
+import compose from 'recompose/compose';
 import inflection from 'inflection';
+import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import DefaultActions from './CreateActions';
@@ -26,21 +28,24 @@ class Create extends Component {
         const defaultTitle = translate('aor.page.create', {
             name: `${resourceName}`,
         });
+        const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
 
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
-                {actions && React.cloneElement(actions, {
-                    basePath,
-                    resource,
-                })}
-                <CardTitle title={<Title title={title} defaultTitle={defaultTitle} />} />
-                {React.cloneElement(children, {
-                    onSubmit: this.handleSubmit,
-                    resource,
-                    basePath,
-                    record: {},
-                })}
-            </Card>
+            <div>
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                    {actions && React.cloneElement(actions, {
+                        basePath,
+                        resource,
+                    })}
+                    <ViewTitle title={titleElement} />
+                    {React.cloneElement(children, {
+                        onSubmit: this.handleSubmit,
+                        resource,
+                        basePath,
+                        record: {},
+                    })}
+                </Card>
+            </div>
         );
     }
 }
@@ -67,7 +72,12 @@ function mapStateToProps(state) {
     };
 }
 
-export default translate(connect(
-    mapStateToProps,
-    { crudCreate: crudCreateAction },
-)(Create));
+const enhance = compose(
+    connect(
+        mapStateToProps,
+        { crudCreate: crudCreateAction },
+    ),
+    translate,
+);
+
+export default enhance(Create);

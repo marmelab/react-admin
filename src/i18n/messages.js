@@ -22,6 +22,7 @@ export default {
             show: '%{name} #%{id}',
             create: 'Create %{name}',
             delete: 'Delete %{name} #%{id}',
+            dashboard: 'Dashboard',
         },
         input: {
             image: {
@@ -55,6 +56,7 @@ export default {
             created: 'Element created',
             deleted: 'Element deleted',
             item_doesnt_exist: 'Element does not exist',
+            http_error: 'Server communication error',
         },
         validation: {
             required: 'Required',
