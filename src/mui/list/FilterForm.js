@@ -8,11 +8,10 @@ import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
 
 const styles = {
-    card: { float: 'right', marginTop: '-14px', paddingTop: 0 },
-    body: { display: 'inline-block' },
-    spacer: { width: 48, display: 'inline-block' },
+    card: { float: 'right', marginTop: '-14px', paddingTop: 0, display: 'flex', alignItems: 'flex-end' },
+    body: { display: 'inline-block', display: 'flex', alignItems: 'flex-end' },
+    spacer: { width: 48 },
     icon: { color: '#00bcd4', maddingBottom: 0 },
-    field: { display: 'inline-block' },
     clearFix: { clear: 'right' },
 };
 
@@ -43,7 +42,7 @@ export class FilterForm extends Component {
                                 <ActionHide />
                             </IconButton>
                         }
-                        <div style={styles.field}>
+                        <div>
                             <Field
                                 allowEmpty
                                 {...filterElement.props}
