@@ -327,6 +327,12 @@ export const UserCreate = (props) => (
 
 Input validation functions receive the current field value, and the values of all fields of the current record. This allows for complex validation scenarios (e.g. validate that two passwords are the same).
 
+**Tip**: Validator functions receive the form `props` as third parameter, including the `translate` function. This lets you build internationalized validators:
+
+```js
+const required = (value, _, props) => value ? undefined : props.translate('myroot.validation.required');
+```
+
 **Tip**: The props of your Input components are passed to a redux-form `<Field>` component. So in addition to `validate`, you can also use `warn`.
 
 **Tip**: You can use *both* Form validation and input validation.

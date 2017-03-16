@@ -106,6 +106,7 @@ export class Edit extends Component {
                         resource,
                         basePath,
                         record: data,
+                        translate,
                     })}
                     {!data && <CardText>&nbsp;</CardText>}
                 </Card>

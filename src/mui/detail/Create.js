@@ -43,6 +43,7 @@ class Create extends Component {
                         resource,
                         basePath,
                         record: {},
+                        translate,
                     })}
                 </Card>
             </div>

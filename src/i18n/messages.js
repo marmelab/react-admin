@@ -60,6 +60,12 @@ export default {
         },
         validation: {
             required: 'Required',
+            minLength: 'Must be %{min} characters at least',
+            maxLength: 'Must be %{max} characters or less',
+            minValue: 'Must be at least %{min}',
+            maxValue: 'Must be %{max} or less',
+            number: 'Must be a number',
+            email: 'Must be a valid email',
         },
     },
 };

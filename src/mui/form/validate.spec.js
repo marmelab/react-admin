@@ -2,13 +2,21 @@ import assert from 'assert';
 import { required, minLength, maxLength, minValue, maxValue, number, regex, email, choices } from './validate';
 
 describe('Validators', () => {
-    const test = (func, inputs, output) => inputs.map(func).filter(v => v === output).length === inputs.length;
+    const test = (validator, inputs, message) =>
+        assert.deepEqual(
+            inputs
+                .map(input => validator(input, null, { translate: x => x }))
+                .filter(m => m === message)
+            ,
+            Array.apply(null, Array(inputs.length)).map(x => message)
+        );
+
     describe('required', () => {
         it('should return undefined if the value is not empty', () => {
             test(required, ['foo', 12], undefined);
         });
         it('should return an error message if the value is empty', () => {
-            test(required, [undefined, '', null], 'Required field');
+            test(required, [undefined, '', null], 'aor.validation.required');
         });
     });
     describe('minLength', () => {
@@ -22,7 +30,7 @@ describe('Validators', () => {
             test(minLength(5), ['12345', '123456'], undefined);
         });
         it('should return an error message if the value has smaller length than the given minimum', () => {
-            test(minLength(5), ['1234', '12'], 'Must be 5 characters at least');
+            test(minLength(5), ['1234', '12'], 'aor.validation.minLength');
         });
     });
     describe('maxLength', () => {
@@ -36,7 +44,7 @@ describe('Validators', () => {
             test(maxLength(5), ['12345', '123'], undefined);
         });
         it('should return an error message if the value has higher length than the given maximum', () => {
-            test(maxLength(10), ['12345678901'], 'Must be 10 characters or less');
+            test(maxLength(10), ['12345678901'], 'aor.validation.maxLength');
         });
     });
     describe('minValue', () => {
@@ -47,7 +55,7 @@ describe('Validators', () => {
             test(minValue(5), [5, 10, 5.5, '10'], undefined);
         });
         it('should return an error message if the value is lower than the given minimum', () => {
-            test(minValue(10), [1, 9.5, '5'], 'Must be at least 10');
+            test(minValue(10), [1, 9.5, '5'], 'aor.validation.minValue');
         });
     });
     describe('maxValue', () => {
@@ -58,7 +66,7 @@ describe('Validators', () => {
             test(maxValue(5), [5, 4, 4.5, '4'], undefined);
         });
         it('should return an error message if the value is higher than the given maximum', () => {
-            test(maxValue(10), [11, 10.5, '11'], 'Must be 10 or less');
+            test(maxValue(10), [11, 10.5, '11'], 'aor.validation.maxValue');
         });
     });
     describe('number', () => {
@@ -69,7 +77,7 @@ describe('Validators', () => {
             test(number, [123, '123', new Date(), 0, 2.5, -5], undefined);
         });
         it('should return an error message if the value is not a number', () => {
-            test(number, ['foo'], 'Must be a number');
+            test(number, ['foo'], 'aor.validation.number');
         });
     });
     describe('regex', () => {
@@ -97,7 +105,7 @@ describe('Validators', () => {
             test(email, ['foo@bar.com', 'john.doe@mydomain.co.uk'], undefined);
         });
         it('should return an error if the value is not a valid email', () => {
-            test(email, ['foo@bar', 'hello, world'], 'Must be a valid email');
+            test(email, ['foo@bar', 'hello, world'], 'aor.validation.email');
         });
     });
     describe('choices', () => {
