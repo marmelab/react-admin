@@ -66,7 +66,11 @@ export class ImageInput extends Component {
     };
 
     label() {
-        const { translate } = this.props;
+        const { translate, placeholder } = this.props;
+
+        if (placeholder) {
+            return placeholder;
+        }
 
         if (this.props.multiple) {
             return (
@@ -134,6 +138,7 @@ ImageInput.propTypes = {
     minSize: PropTypes.number,
     multiple: PropTypes.bool,
     style: PropTypes.object,
+    placeholder: PropTypes.node,
 };
 
 ImageInput.defaultProps = {

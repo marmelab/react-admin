@@ -44,6 +44,32 @@ describe('<ImageInput />', () => {
         test(true, 'aor.input.image.upload_several');
     });
 
+    it('should display correct custom label', () => {
+        const test = (expectedLabel) => {
+            const wrapper = shallow((
+                <ImageInput
+                    placeholder={expectedLabel}
+                    input={{
+                        value: {
+                            picture: null,
+                        },
+                    }}
+                    translate={x => x}
+                    source="picture"
+                />
+            ));
+
+            assert.ok(wrapper.find('Dropzone').contains(expectedLabel));
+        };
+        const CustomLabel = () => (
+            <div>Custom label</div>
+        );
+
+        test('custom label');
+        test(<h1>Custom label</h1>);
+        test(<CustomLabel />);
+    });
+
     describe('Image Preview', () => {
         it('should display file preview using child as preview component', () => {
             const wrapper = shallow((
