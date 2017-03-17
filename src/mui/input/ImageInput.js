@@ -34,7 +34,7 @@ export class ImageInput extends Component {
             files = [files];
         }
 
-        this.setState({ files });
+        this.setState({ files: files.map(this.transformFile) });
     }
 
     onDrop = (files) => {
@@ -48,14 +48,18 @@ export class ImageInput extends Component {
     }
 
     // turn a browser dropped file structure into expected structure
-    transformFile = (droppedFile) => {
+    transformFile = (file) => {
+        if (!file.preview) {
+            return file;
+        }
+
         const { source, title } = React.Children.toArray(this.props.children)[0].props;
 
-        const transformedFile = { ...droppedFile };
-        transformedFile[source] = droppedFile.preview;
+        const transformedFile = { ...file };
+        transformedFile[source] = file.preview;
 
         if (title) {
-            transformedFile[title] = droppedFile.name;
+            transformedFile[title] = file.name;
         }
 
         return transformedFile;
