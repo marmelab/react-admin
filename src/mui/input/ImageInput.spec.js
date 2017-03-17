@@ -48,7 +48,7 @@ describe('<ImageInput />', () => {
         const test = (expectedLabel) => {
             const wrapper = shallow((
                 <ImageInput
-                    dropAreaLabel={expectedLabel}
+                    placeholder={expectedLabel}
                     input={{
                         value: {
                             picture: null,
