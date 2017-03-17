@@ -18,8 +18,9 @@ import {
     SimpleForm,
     TextField,
     TextInput,
-} from 'admin-on-rest/mui';
-import { translate } from 'admin-on-rest';
+    minLength,
+    translate,
+} from 'admin-on-rest';
 import PersonIcon from 'material-ui/svg-icons/social/person';
 import Avatar from 'material-ui/Avatar';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
@@ -117,9 +118,9 @@ export const CommentEdit = ({ ...props }) => (
             <ReferenceInput source="post_id" reference="posts" perPage={5} sort={{ field: 'title', order: 'ASC' }}>
                 <AutocompleteInput optionText="title" />
             </ReferenceInput>
-            <TextInput source="author.name" validation={{ minLength: 10 }} />
+            <TextInput source="author.name" validate={minLength(10)} />
             <DateInput source="created_at" />
-            <LongTextInput source="body" validation={{ minLength: 10 }} />
+            <LongTextInput source="body" validate={minLength(10)} />
         </SimpleForm>
     </Edit>
 );

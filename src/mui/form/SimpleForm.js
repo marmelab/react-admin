@@ -2,13 +2,12 @@ import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { validateForm } from '../../util/validate';
-import getDefaultValues from '../form/getDefaultValues';
+import getDefaultValues from './getDefaultValues';
 import FormField from './FormField';
 import Toolbar from './Toolbar';
 
 export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, basePath }) => (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="simple-form">
         <div style={{ padding: '0 1em 1em 1em' }}>
             {React.Children.map(children, input => input && (
                 <div key={input.props.source} style={input.props.style}>
@@ -40,7 +39,6 @@ const enhance = compose(
     })),
     reduxForm({
         form: 'record-form',
-        validate: validateForm,
         enableReinitialize: true,
     }),
 );

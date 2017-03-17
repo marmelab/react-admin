@@ -44,6 +44,7 @@ Here are all the props accepted by the component:
 * [`logoutButton`](#logoutbutton)
 * [`locale`](#internationalization)
 * [`messages`](#internationalization)
+* [`initialState`](#initialstate)
 
 ### `restClient`
 
@@ -324,7 +325,7 @@ Now, when a user browses to `/foo` or `/bar`, the components you defined will ap
 // in src/Foo.js
 import React from 'react';
 import { Card } from 'material-ui/Card';
-import { ViewTitle } from 'admin-on-rest/lib/mui';
+import { ViewTitle } from 'admin-on-rest';
 
 const Foo = () => (
     <Card>
@@ -388,6 +389,9 @@ const App = () => (
     </Admin>
 );
 ```
+
+### `initialState`
+The `initialState` prop lets you pass preloaded state to Redux. See the [Redux Documentation](http://redux.js.org/docs/api/createStore.html#createstorereducer-preloadedstate-enhancer) for more details.
 
 ### Internationalization
 

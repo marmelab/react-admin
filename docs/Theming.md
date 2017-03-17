@@ -92,7 +92,7 @@ It expects element props named `small`, `medium`, and `large`. It displays the e
 ```js
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest/lib/mui';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -225,8 +225,7 @@ import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import CircularProgress from 'material-ui/CircularProgress';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import { AppBar, Sidebar, Notification } from 'admin-on-rest/lib/mui';
-import { setSidebarVisibility as setSidebarVisibilityAction } from 'admin-on-rest';
+import { AppBar, Sidebar, Notification, setSidebarVisibility as setSidebarVisibilityAction } from 'admin-on-rest';
 
 injectTapEventPlugin();
 

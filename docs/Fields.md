@@ -10,7 +10,7 @@ A `Field` component displays a given property of a REST resource. Such component
 ```js
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, TextField } from 'admin-on-rest';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -65,7 +65,7 @@ Then you can display the author first name as follows:
 Displays a boolean value as a check.
 
 ``` js
-import { BooleanField } from 'admin-on-rest/lib/mui';
+import { BooleanField } from 'admin-on-rest';
 
 <BooleanField source="commentable" />
 ```
@@ -77,7 +77,7 @@ import { BooleanField } from 'admin-on-rest/lib/mui';
 Displays a value inside a ["Chip"](http://www.material-ui.com/#/components/chip), which is Material UI's term for a label.
 
 ``` js
-import { ChipField } from 'admin-on-rest/lib/mui';
+import { ChipField } from 'admin-on-rest';
 
 <ChipField source="category" />
 ```
@@ -87,7 +87,7 @@ import { ChipField } from 'admin-on-rest/lib/mui';
 This field type is especially useful for one to many relationships, e.g. to display a list of books for a given author:
 
 ``` js
-import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest/lib/mui';
+import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest';
 
 <ReferenceManyField reference="books" target="author_id">
     <SingleFieldList>
@@ -101,7 +101,7 @@ import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest/li
 Displays a date or datetime using the browser locale (thanks to `Date.toLocaleDateString()` and `Date.toLocaleString()`).
 
 ``` js
-import { DateField } from 'admin-on-rest/lib/mui';
+import { DateField } from 'admin-on-rest';
 
 <DateField source="publication_date" />
 ```
@@ -141,7 +141,7 @@ See [Intl.DateTimeformat documentation](https://developer.mozilla.org/fr/docs/We
 `<EmailField>` displays an email as a `<a href="mailto:" />` link.
 
 ``` js
-import { EmailField } from 'admin-on-rest/lib/mui';
+import { EmailField } from 'admin-on-rest';
 
 <EmailField source="personal_email" />
 ```
@@ -151,7 +151,7 @@ import { EmailField } from 'admin-on-rest/lib/mui';
 If you need a special function to render a field, `<FunctionField>` is the perfect match. It passes the `record` to a `render` function supplied by the developer. For instance, to display the full name of a `user` record based on `first_name` and `last_name` properties:
 
 ```js
-import { FunctionField } from 'admin-on-rest/lib/mui'
+import { FunctionField } from 'admin-on-rest'
 
 <FunctionField label="Name" render={record => `${record.first_name} ${record.last_name}`} />
 ```
@@ -163,7 +163,7 @@ import { FunctionField } from 'admin-on-rest/lib/mui'
 If you need to display an image provided by your API, you can use the `<ImageField />` component:
 
 ``` js
-import { ImageField } from 'admin-on-rest/lib/mui';
+import { ImageField } from 'admin-on-rest';
 
 <ImageField source="url" title="title" />
 ```
@@ -194,7 +194,7 @@ If Intl is not available, it outputs number as is (and ignores the `locales` and
 
 {% raw %}
 ```js
-import { NumberField }  from 'admin-on-rest/lib/mui';
+import { NumberField }  from 'admin-on-rest';
 
 <NumberField source="score" />
 // renders the record { id: 1234, score: 567 } as
@@ -234,7 +234,7 @@ For instance, here is how to fetch the `post` related to `comment` records, and 
 
 ```js
 import React from 'react';
-import { List, Datagrid, ReferenceField, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, ReferenceField, TextField } from 'admin-on-rest';
 
 export const CommentList = (props) => (
     <List {...props}>
@@ -295,7 +295,7 @@ For instance, here is how to fetch the `comments` related to a `post` record, an
 
 ```js
 import React from 'react';
-import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'admin-on-rest';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -319,7 +319,7 @@ You can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside ano
 
 ```js
 import React from 'react';
-import { Edit, Datagrid, SimpleForm, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'admin-on-rest/lib/mui';
+import { Edit, Datagrid, SimpleForm, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'admin-on-rest';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -373,7 +373,7 @@ Also, you can filter the query used to populate the possible values. Use the `fi
 This component displays some HTML content. The content is "rich" (i.e. unescaped) by default.
 
 ``` js
-import { RichTextField } from 'admin-on-rest/lib/mui';
+import { RichTextField } from 'admin-on-rest';
 
 <RichTextField source="body" />
 ```
@@ -383,7 +383,7 @@ import { RichTextField } from 'admin-on-rest/lib/mui';
 The `stripTags` attribute (`false` by default) allows you to remove any HTML markup, preventing some display glitches (which is especially useful in list views).
 
 ``` js
-import { RichTextField } from 'admin-on-rest/lib/mui';
+import { RichTextField } from 'admin-on-rest';
 
 <RichTextField source="body" stripTags />
 ```
@@ -393,7 +393,7 @@ import { RichTextField } from 'admin-on-rest/lib/mui';
 The most simple as all fields, `<TextField>` simply displays the record property as plain text.
 
 ``` js
-import { TextField } from 'admin-on-rest/lib/mui';
+import { TextField } from 'admin-on-rest';
 
 <TextField label="Author Name" source="name" />
 ```
@@ -403,7 +403,7 @@ import { TextField } from 'admin-on-rest/lib/mui';
 `<UrlField>` displays an url in an `< a href="">` tag.
 
 ``` js
-import { UrlField } from 'admin-on-rest/lib/mui';
+import { UrlField } from 'admin-on-rest';
 
 <UrlField source="site_url" />
 ```
@@ -498,7 +498,7 @@ It's as easy as writing:
 
 ```js
 import React, { PropTypes } from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, TextField } from 'admin-on-rest';
 
 const FullNameField = ({ record = {} }) => <span>{record.firstName} {record.lastName}</span>;
 FullNameField.defaultProps = { label: 'Name' };
