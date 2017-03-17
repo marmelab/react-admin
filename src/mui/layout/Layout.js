@@ -16,6 +16,11 @@ import { setSidebarVisibility as setSidebarVisibilityAction } from '../../action
 injectTapEventPlugin();
 
 const styles = {
+    wrapper: {
+        // Avoid IE bug with Flexbox, see #467
+        display: 'flex',
+        flexDirection: 'column',
+    },
     main: {
         display: 'flex',
         flexDirection: 'column',
@@ -70,6 +75,7 @@ class Layout extends Component {
         if (!prefixedStyles.main) {
             // do this once because user agent never changes
             const prefix = autoprefixer(muiTheme);
+            prefixedStyles.wrapper = prefix(styles.wrapper);
             prefixedStyles.main = prefix(styles.main);
             prefixedStyles.body = prefix(styles.body);
             prefixedStyles.bodySmall = prefix(styles.bodySmall);
@@ -78,21 +84,23 @@ class Layout extends Component {
         }
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
-                <div style={prefixedStyles.main}>
-                    { width !== 1 && <AppBar title={title} />}
-                    <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
-                        <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>{children}</div>
-                        <Sidebar theme={theme}>
-                            {menu}
-                        </Sidebar>
+                <div style={prefixedStyles.wrapper}>
+                    <div style={prefixedStyles.main}>
+                        { width !== 1 && <AppBar title={title} />}
+                        <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
+                            <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>{children}</div>
+                            <Sidebar theme={theme}>
+                                {menu}
+                            </Sidebar>
+                        </div>
+                        <Notification />
+                        {isLoading && <CircularProgress
+                            color="#fff"
+                            size={width === 1 ? 20 : 30}
+                            thickness={2}
+                            style={styles.loader}
+                        />}
                     </div>
-                    <Notification />
-                    {isLoading && <CircularProgress
-                        color="#fff"
-                        size={width === 1 ? 20 : 30}
-                        thickness={2}
-                        style={styles.loader}
-                    />}
                 </div>
             </MuiThemeProvider>
         );
