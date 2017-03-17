@@ -4,6 +4,8 @@ import FlatButton from 'material-ui/FlatButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
+import compose from 'recompose/compose';
+import Responsive from '../layout/Responsive';
 import translate from '../../i18n/translate';
 
 const buttonStyle = { margin: '10px 0' };
@@ -90,22 +92,39 @@ export class Pagination extends Component {
         const nbPages = this.getNbPages();
 
         return (
-            <Toolbar>
-                <ToolbarGroup firstChild>
-                    <span style={{ padding: '1.2em' }}>{ translate('aor.navigation.page_range_info', { offsetBegin, offsetEnd, total }) }</span>
-                </ToolbarGroup>
-                {nbPages > 1 &&
-                    <ToolbarGroup>
-                    {page > 1 &&
-                        <FlatButton primary key="prev" label={translate('aor.navigation.prev')} icon={<ChevronLeft />} onClick={this.prevPage} style={buttonStyle} />
-                    }
-                    {this.renderPageNums()}
-                    {page !== nbPages &&
-                        <FlatButton primary key="next" label={translate('aor.navigation.next')} icon={<ChevronRight />} labelPosition="before" onClick={this.nextPage} style={buttonStyle} />
-                    }
-                    </ToolbarGroup>
+            <Responsive
+                small={
+                    <Toolbar>
+                        <ToolbarGroup>
+                            {page > 1 &&
+                                <FlatButton primary key="prev" icon={<ChevronLeft />} onClick={this.prevPage} style={buttonStyle} />
+                            }
+                            <span style={{ padding: '1.2em' }}>{ translate('aor.navigation.page_range_info', { offsetBegin, offsetEnd, total }) }</span>
+                            {page !== nbPages &&
+                                <FlatButton primary key="next" icon={<ChevronRight />} onClick={this.nextPage} style={buttonStyle} />
+                            }
+                        </ToolbarGroup>
+                    </Toolbar>
                 }
-            </Toolbar>
+                medium={
+                    <Toolbar>
+                        <ToolbarGroup firstChild>
+                            <span style={{ padding: '1.2em' }}>{ translate('aor.navigation.page_range_info', { offsetBegin, offsetEnd, total }) }</span>
+                        </ToolbarGroup>
+                        {nbPages > 1 &&
+                            <ToolbarGroup>
+                            {page > 1 &&
+                                <FlatButton primary key="prev" label={translate('aor.navigation.prev')} icon={<ChevronLeft />} onClick={this.prevPage} style={buttonStyle} />
+                            }
+                            {this.renderPageNums()}
+                            {page !== nbPages &&
+                                <FlatButton primary key="next" label={translate('aor.navigation.next')} icon={<ChevronRight />} labelPosition="before" onClick={this.nextPage} style={buttonStyle} />
+                            }
+                        </ToolbarGroup>
+                        }
+                    </Toolbar>
+                }
+            />
         );
     }
 }
@@ -118,4 +137,9 @@ Pagination.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-export default translate(pure(Pagination));
+const enhance = compose(
+    pure,
+    translate,
+);
+
+export default enhance(Pagination);
