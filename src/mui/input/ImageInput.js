@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Dropzone from 'react-dropzone';
+import { shallowEqual } from 'recompose';
+
 import translate from '../../i18n/translate';
 
 const defaultStyle = {
@@ -34,7 +36,7 @@ export class ImageInput extends Component {
             files = [files];
         }
 
-        this.setState({ files });
+        this.setState({ files: files.map(this.transformFile) });
     }
 
     onDrop = (files) => {
@@ -47,15 +49,26 @@ export class ImageInput extends Component {
         this.props.input.onChange(files);
     }
 
+    onRemove = (image) => {
+        const filteredFiles = this.state.files.filter(f => shallowEqual(f, image));
+
+        this.setState({ files: filteredFiles });
+        this.props.input.onChange(filteredFiles);
+    }
+
     // turn a browser dropped file structure into expected structure
-    transformFile = (droppedFile) => {
+    transformFile = (file) => {
+        if (!file.preview) {
+            return file;
+        }
+
         const { source, title } = React.Children.toArray(this.props.children)[0].props;
 
-        const transformedFile = { ...droppedFile };
-        transformedFile[source] = droppedFile.preview;
+        const transformedFile = { ...file };
+        transformedFile[source] = file.preview;
 
         if (title) {
-            transformedFile[title] = droppedFile.name;
+            transformedFile[title] = file.name;
         }
 
         return transformedFile;
@@ -111,6 +124,7 @@ export class ImageInput extends Component {
                             children, {
                                 record: file,
                                 key: index,
+                                onRemove: this.onRemove,
                             },
                         ))}
                     </div>
