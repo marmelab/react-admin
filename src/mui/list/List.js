@@ -17,6 +17,10 @@ import translate from '../../i18n/translate';
 
 const filterFormName = 'filterForm';
 
+const styles = {
+    noResults: { padding: 20, display: 'flex', alignItems: 'flex-end' },
+}
+
 /**
  * List page component
  *
@@ -209,21 +213,27 @@ export class List extends Component {
                         displayedFilters: this.state,
                         context: 'form',
                     })}
-                    {React.cloneElement(children, {
-                        resource,
-                        ids,
-                        data,
-                        currentSort: { field: query.sort, order: query.order },
-                        basePath,
-                        isLoading,
-                        setSort: this.setSort,
-                    })}
-                    {pagination && React.cloneElement(pagination, {
-                        total,
-                        page: parseInt(query.page, 10),
-                        perPage: parseInt(query.perPage, 10),
-                        setPage: this.setPage,
-                    })}
+                    { isLoading || total > 0 ?
+                        <div>
+                            {children && React.cloneElement(children, {
+                                resource,
+                                ids,
+                                data,
+                                currentSort: { field: query.sort, order: query.order },
+                                basePath,
+                                isLoading,
+                                setSort: this.setSort,
+                            })}
+                            { pagination && React.cloneElement(pagination, {
+                                total,
+                                page: parseInt(query.page, 10),
+                                perPage: parseInt(query.perPage, 10),
+                                setPage: this.setPage,
+                            }) }
+                        </div>
+                        :
+                        <cardText style={styles.noResults}>{translate('aor.list.no_results')}</cardText>
+                    }
                 </Card>
             </div>
         );
