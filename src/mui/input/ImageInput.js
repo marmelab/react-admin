@@ -51,7 +51,7 @@ export class ImageInput extends Component {
         this.props.input.onChange(files);
     }
 
-    onRemove = (file) => {
+    onRemove = file => () => {
         const filteredFiles = this.state.files
             .filter(stateFile => !shallowEqual(stateFile, file));
 
@@ -126,8 +126,7 @@ export class ImageInput extends Component {
                         {this.state.files.map((file, index) => (
                             <ImageInputPreview
                                 key={index}
-                                file={file}
-                                onRemove={this.onRemove}
+                                onRemove={this.onRemove(file)}
                             >
                                 {React.cloneElement(children, {
                                     record: file,

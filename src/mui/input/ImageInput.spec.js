@@ -132,4 +132,33 @@ describe('<ImageInput />', () => {
         const updatedPreviewUrl = updatedPreviewImage.prop('record').url;
         assert.equal(updatedPreviewUrl, 'http://static.acme.com/bar.jpg');
     });
+
+    it('should allow to remove an image from the input with `ImageInputPreview.onRemove`', () => {
+        const wrapper = shallow(
+            <ImageInput
+                source="picture"
+                translate={x => x}
+                input={{
+                    onChange: () => {},
+                    value: [
+                        { url: 'http://static.acme.com/foo.jpg' },
+                        { url: 'http://static.acme.com/bar.jpg' },
+                        { url: 'http://static.acme.com/quz.jpg' },
+                    ],
+                }}
+            >
+                <ImageField source="url" />
+            </ImageInput>,
+        );
+
+        const inputPreview = wrapper.find('ImageInputPreview');
+        inputPreview.at(1).prop('onRemove')();
+        wrapper.update();
+
+        const previewImages = wrapper.find('ImageField').map(f => f.prop('record'));
+        assert.deepEqual(previewImages, [
+            { url: 'http://static.acme.com/foo.jpg' },
+            { url: 'http://static.acme.com/quz.jpg' },
+        ]);
+    });
 });
