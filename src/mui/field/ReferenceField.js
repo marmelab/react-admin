@@ -4,12 +4,39 @@ import { Link } from 'react-router';
 import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
 import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/referenceActions';
-import linkToRecord from '../../util/linkToRecord'
+import linkToRecord from '../../util/linkToRecord';
 
 /**
- * @example
- * <ReferenceField label="Post" source="post_id" reference="posts">
- *     <TextField source="title" />
+ * @example Link to `/users/:userId` (`<Edit>` view)
+ * <ReferenceField label="User" source="userId" reference="users">
+ *     <TextField source="name" />
+ * </ReferenceField>
+ *
+ * This is equivalent to:
+ *
+ * @example Link to `/users/:userId` (`<Edit>` view)
+ * <ReferenceField label="User" source="userId" reference="users" linkType="edit">
+ *     <TextField source="name" />
+ * </ReferenceField>
+ *
+ * You can set `linkType` to `"show"` to link to the `<Show>` view.
+ *
+ * @example Link to `/users/:userId/show` (`<Show>` view)
+ * <ReferenceField label="User" source="userId" reference="users" linkType="edit">
+ *     <TextField source="name" />
+ * </ReferenceField>
+ *
+ * You can also prevent `<ReferenceField>` from adding link to children by setting
+ * `linkType` to other values.
+ *
+ * @example No link
+ * <ReferenceField label="User" source="userId" reference="users" linkType="">
+ *     <TextField source="name" />
+ * </ReferenceField>
+ *
+ * @example Custom link
+ * <ReferenceField label="User" source="userId" reference="users" linkType="none">
+ *     <FunctionField render={record => (<a href={record.homepage}>{record.name}</a>)} />
  * </ReferenceField>
  */
 export class ReferenceField extends Component {
@@ -24,7 +51,7 @@ export class ReferenceField extends Component {
     }
 
     render() {
-        const { record, source, reference, referenceRecord, basePath, allowEmpty, children, elStyle } = this.props;
+        const { record, source, reference, referenceRecord, basePath, allowEmpty, children, elStyle, linkType } = this.props;
         if (React.Children.count(children) !== 1) {
             throw new Error('<ReferenceField> only accepts a single child');
         }
@@ -32,16 +59,30 @@ export class ReferenceField extends Component {
             return <LinearProgress />;
         }
         const rootPath = basePath.split('/').slice(0, -1).join('/');
-        return (
-            <Link style={elStyle} to={linkToRecord(`${rootPath}/${reference}`, get(record, source))}>
-                {React.cloneElement(children, {
-                    record: referenceRecord,
-                    resource: reference,
-                    allowEmpty,
-                    basePath,
-                })}
-            </Link>
-        );
+        const href = linkToRecord(`${rootPath}/${reference}`, get(record, source));
+        const child = React.cloneElement(children, {
+            record: referenceRecord,
+            resource: reference,
+            allowEmpty,
+            basePath,
+        });
+        if (linkType === "edit") {
+            return (<Link style={elStyle} to={href}>
+                {child}
+            </Link>);
+        } else if (linkType === "show") {
+            return (<Link style={elStyle} to={href + '/show'}>
+                {child}
+            </Link>);
+        } else {
+            return React.cloneElement(children, {
+                record: referenceRecord,
+                resource: reference,
+                style: elStyle,
+                allowEmpty,
+                basePath,
+            });
+        }
     }
 }
 
@@ -57,6 +98,7 @@ ReferenceField.propTypes = {
     reference: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
     source: PropTypes.string.isRequired,
+    linkType: PropTypes.string.isRequired,
 };
 
 ReferenceField.defaultProps = {
@@ -64,6 +106,7 @@ ReferenceField.defaultProps = {
     referenceRecord: null,
     record: {},
     allowEmpty: false,
+    linkType: "edit",
 };
 
 function mapStateToProps(state, props) {
