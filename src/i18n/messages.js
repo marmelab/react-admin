@@ -37,6 +37,7 @@ export default {
             about: 'About',
         },
         navigation: {
+            no_results: 'No Results Found',
             page_out_of_boundaries: 'Page number %{page} out of boundaries',
             page_out_from_end: 'Cannot go after last page',
             page_out_from_begin: 'Cannot go before page 1',

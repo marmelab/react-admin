@@ -21,6 +21,38 @@ describe('<List />', () => {
         translate: () => {},
     };
 
+    describe('Content Values', () => {
+      it('check the no results text is displayed correctly', () => {
+        const translateSpy = sinon.spy();
+        const wrapper = shallow(
+            <List
+                {...defaultProps}
+                translate={translateSpy}
+                children={[]}
+                total={0}
+            >
+                <div />
+            </List>
+        );
+
+        assert.equal(translateSpy.calledWith('aor.navigation.no_results'), true);
+
+        const translateSpy2 = sinon.spy();
+        const wrapper2 = shallow(
+            <List
+                {...defaultProps}
+                translate={translateSpy2}
+                children={[ 'not_empty' ]}
+                total={1}
+            >
+                <div />
+            </List>
+        );
+
+        assert.equal(translateSpy2.calledWith('aor.navigation.no_results'), false);
+      });
+    });
+
     describe('Filters', () => {
         let clock;
         beforeEach(() => {
