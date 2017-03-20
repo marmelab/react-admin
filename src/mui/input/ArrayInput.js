@@ -21,7 +21,7 @@ import FieldTitle from '../../util/FieldTitle';
  *    { id: 'M', name: 'Male' },
  *    { id: 'F', name: 'Female' },
  * ];
- * <ArrayInput source="gender" type="embedded" choices={choices} />
+ * <ArrayInput source="gender" type="object" choices={choices} />
  *
  * The `type="embedded"` will result the array of choices with full json object inside.
  * If you just want the result value is array of ids, please use `type="object"`.
@@ -30,7 +30,7 @@ import FieldTitle from '../../util/FieldTitle';
  *    { id: 'M', name: 'Male' },
  *    { id: 'F', name: 'Female' },
  * ];
- * <ArrayInput source="gender" type="object" choices={choices} />
+ * <ArrayInput source="gender" type="embedded" choices={choices} />
  *
  * Values => ['M']
  *
