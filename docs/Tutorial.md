@@ -396,7 +396,7 @@ export default (type, params) => {
     if (type === AUTH_CHECK) {
         return localStorage.getItem('username') ? Promise.resolve() : Promise.reject();
     }
-    return Promise.reject('Unkown method');
+    return Promise.reject('Unknown method');
 };
 ```
 
