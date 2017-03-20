@@ -445,7 +445,7 @@ The routing will map the component as follows:
 * `/posts/:id/show` maps to `PostShow`
 * `/posts/:id/delete` maps to `PostRemove`
 
-**Tip**: If you want to use a special API endpoint without altering the URL, write the translation from the resource `name` to the API endpoint in your own `restClient`
+**Tip**: If you want to use a special API endpoint (e.g. 'http://jsonplaceholder.typicode.com/my-custom-posts-endpoint') without altering the URL in te admin-on-rest application (so still use `/posts`), write the mapping from the resource `name` (`posts`) to the API endpoint (`my-custom-posts-endpoint`) in your own `restClient`
 
 ### `icon`
 
