@@ -6,12 +6,12 @@ import FieldTitle from '../../util/FieldTitle';
  * An Input component for a array
  *
  * @example
- * <ArrayInput source="first_name" />
+ * <SelectManyInput source="first_name" />
  *
  * Pass possible options as an array of objects in the 'choices' attribute.
  * @example
  * const choices = [ 'Male', 'Female' ];
- * <ArrayInput source="gender" choices={choices} />
+ * <SelectManyInput source="gender" choices={choices} />
  *
  * You might want to pass the type='object', instead of 'text'. If then, the options are built from:
  *  - the 'id' property as the option value,
@@ -21,7 +21,7 @@ import FieldTitle from '../../util/FieldTitle';
  *    { id: 'M', name: 'Male' },
  *    { id: 'F', name: 'Female' },
  * ];
- * <ArrayInput source="gender" type="embedded" choices={choices} />
+ * <SelectManyInput source="gender" type="embedded" choices={choices} />
  *
  * The `type="embedded"` will result the array of choices with full json object inside.
  * If you just want the result value is array of ids, please use `type="object"`.
@@ -30,7 +30,7 @@ import FieldTitle from '../../util/FieldTitle';
  *    { id: 'M', name: 'Male' },
  *    { id: 'F', name: 'Female' },
  * ];
- * <ArrayInput source="gender" type="object" choices={choices} />
+ * <SelectManyInput source="gender" type="object" choices={choices} />
  *
  * Values => ['M']
  *
@@ -41,18 +41,18 @@ import FieldTitle from '../../util/FieldTitle';
  *    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
  *    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
  * ];
- * <ArrayInput source="author_id" type="embedded" choices={choices} optionText="full_name" optionValue="_id" />
+ * <SelectManyInput source="author_id" type="embedded" choices={choices} optionText="full_name" optionValue="_id" />
  *
  * The object passed as `options` props is passed to the material-ui-chip-input component
  * @see https://github.com/TeamWertarbyte/material-ui-chip-input
  */
-export class ArrayInput extends Component {
-    // Comment input onBlur because ArrayInput don't pass correct values on this event
+export class SelectManyInput extends Component {
+    // Comment input onBlur because SelectManyInput don't pass correct values on this event
     handleBlur = (eventOrValue) => {
         // this.props.onBlur(eventOrValue);
         // this.props.input.onBlur(eventOrValue);
     };
-    // Comment input onFocus because ArrayInput don't pass correct values on this event
+    // Comment input onFocus because SelectManyInput don't pass correct values on this event
     handleFocus = (event) => {
         // this.props.onFocus(event);
         // this.props.input.onFocus(event);
@@ -132,7 +132,7 @@ export class ArrayInput extends Component {
     }
 }
 
-ArrayInput.propTypes = {
+SelectManyInput.propTypes = {
     addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
     choices: PropTypes.arrayOf(PropTypes.object),
@@ -152,7 +152,7 @@ ArrayInput.propTypes = {
     validation: PropTypes.object,
 };
 
-ArrayInput.defaultProps = {
+SelectManyInput.defaultProps = {
     addField: true,
     choices: [],
     onBlur: () => {},
@@ -164,4 +164,4 @@ ArrayInput.defaultProps = {
     type: 'string',
 };
 
-export default ArrayInput;
+export default SelectManyInput;
