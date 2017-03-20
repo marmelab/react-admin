@@ -1,13 +1,9 @@
-import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
-import Labeled from '../input/Labeled';
-import {
-    crudGetOne as crudGetOneAction,
-    crudGetMany as crudGetManyAction,
-    crudGetMatching as crudGetMatchingAction
-} from '../../actions/dataActions';
-import {getPossibleReferences} from '../../reducer/references/possibleValues';
+import Labeled from './Labeled';
+import { crudGetOne as crudGetOneAction, crudGetMatching as crudGetMatchingAction } from '../../actions/dataActions';
+import { getPossibleReferences } from '../../reducer/references/possibleValues';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 const noFilter = () => true;
@@ -94,9 +90,9 @@ const noFilter = () => true;
 export class ReferenceInput extends Component {
     constructor(props) {
         super(props);
-        const {perPage, sort, filter} = props;
+        const { perPage, sort, filter } = props;
         // stored as a property rather than state because we don't want redraw of async updates
-        this.params = {pagination: {page: 1, perPage}, sort, filter};
+        this.params = { pagination: { page: 1, perPage }, sort, filter };
         this.debouncedSetFilter = debounce(this.setFilter.bind(this), 500);
     }
 
@@ -131,22 +127,18 @@ export class ReferenceInput extends Component {
         }
     }
 
-    fetchReferenceAndOptions({input, reference, source, resource} = this.props) {
-        const {pagination, sort, filter} = this.params;
+    fetchReferenceAndOptions({ input, reference, source, resource } = this.props) {
+        const { pagination, sort, filter } = this.params;
         const id = input.value;
         if (id) {
-            if (Array.isArray(id)) {
-                this.props.crudGetMany(reference, id);
-            } else {
-                this.props.crudGetOne(reference, id, null, false);
-            }
+            this.props.crudGetOne(reference, id, null, false);
         }
         this.props.crudGetMatching(reference, referenceSource(resource, source), pagination, sort, filter);
     }
 
     render() {
-        const {input, resource, label, source, reference, referenceRecord, referenceRecords, allowEmpty, matchingReferences, basePath, onChange, children, meta} = this.props;
-        if (!referenceRecord && !(referenceRecords && referenceRecords.length > 0) && !allowEmpty) {
+        const { input, resource, label, source, reference, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children, meta } = this.props;
+        if (!referenceRecord && !allowEmpty) {
             return <Labeled
                 label={typeof label === 'undefined' ? `resources.${resource}.fields.${source}` : label}
                 source={source}
@@ -179,7 +171,6 @@ ReferenceInput.propTypes = {
     children: PropTypes.element.isRequired,
     crudGetMatching: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,
-    crudGetMany: PropTypes.func.isRequired,
     filter: PropTypes.object,
     filterToQuery: PropTypes.func.isRequired,
     input: PropTypes.object.isRequired,
@@ -190,7 +181,6 @@ ReferenceInput.propTypes = {
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
-    referenceRecords: PropTypes.array,
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
@@ -202,42 +192,24 @@ ReferenceInput.propTypes = {
 ReferenceInput.defaultProps = {
     allowEmpty: false,
     filter: {},
-    filterToQuery: searchText => ({q: searchText}),
+    filterToQuery: searchText => ({ q: searchText }),
     matchingReferences: [],
     meta: {},
     perPage: 25,
-    sort: {field: 'id', order: 'DESC'},
+    sort: { field: 'id', order: 'DESC' },
     referenceRecord: null,
 };
 
 function mapStateToProps(state, props) {
     const referenceId = props.input.value;
-    if (Array.isArray(referenceId)) {
-        const referenceRecords = [];
-        let matchingReferences = [];
-        const data = state.admin[props.reference].data;
-        for (let i = 0; i < referenceId.length; i++) {
-            if (data[referenceId[i]]) {
-                referenceRecords.push(data[referenceId[i]]);
-                const possibleReferences = getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference, referenceId[i]);
-                matchingReferences = Object.assign(matchingReferences, possibleReferences);
-            }
-        }
-        return {
-            referenceRecords: referenceRecords,
-            matchingReferences: matchingReferences,
-        }
-    } else {
-        return {
-            referenceRecord: state.admin[props.reference].data[referenceId],
-            matchingReferences: getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference, referenceId),
-        }
-    }
+    return {
+        referenceRecord: state.admin[props.reference].data[referenceId],
+        matchingReferences: getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference, referenceId),
+    };
 }
 
 const ConnectedReferenceInput = connect(mapStateToProps, {
     crudGetOne: crudGetOneAction,
-    crudGetMany: crudGetManyAction,
     crudGetMatching: crudGetMatchingAction,
 })(ReferenceInput);
 
