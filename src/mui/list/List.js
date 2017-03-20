@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { push as pushAction } from 'react-router-redux';
-import { Card } from 'material-ui/Card';
+import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
 import { change as changeFormValueAction, getFormValues } from 'redux-form';
@@ -16,6 +16,10 @@ import { changeListParams as changeListParamsAction } from '../../actions/listAc
 import translate from '../../i18n/translate';
 
 const filterFormName = 'filterForm';
+
+const styles = {
+    noResults: { padding: 20 },
+}
 
 /**
  * List page component
@@ -209,21 +213,27 @@ export class List extends Component {
                         displayedFilters: this.state,
                         context: 'form',
                     })}
-                    {React.cloneElement(children, {
-                        resource,
-                        ids,
-                        data,
-                        currentSort: { field: query.sort, order: query.order },
-                        basePath,
-                        isLoading,
-                        setSort: this.setSort,
-                    })}
-                    {pagination && React.cloneElement(pagination, {
-                        total,
-                        page: parseInt(query.page, 10),
-                        perPage: parseInt(query.perPage, 10),
-                        setPage: this.setPage,
-                    })}
+                    { isLoading || total > 0 ?
+                        <div>
+                            {children && React.cloneElement(children, {
+                                resource,
+                                ids,
+                                data,
+                                currentSort: { field: query.sort, order: query.order },
+                                basePath,
+                                isLoading,
+                                setSort: this.setSort,
+                            })}
+                            { pagination && React.cloneElement(pagination, {
+                                total,
+                                page: parseInt(query.page, 10),
+                                perPage: parseInt(query.perPage, 10),
+                                setPage: this.setPage,
+                            }) }
+                        </div>
+                        :
+                        <CardText style={styles.noResults}>{translate('aor.navigation.no_results')}</CardText>
+                    }
                 </Card>
             </div>
         );
