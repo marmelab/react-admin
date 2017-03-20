@@ -263,7 +263,45 @@ With this configuration, `<ReferenceField>` wraps the comment title in a link to
 </Admin>
 ```
 
-**Tip**: Admin-on-rest accumulates and deduplicates the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
+`<ReferenceField>` add link to the reference record's `<Edit>` view by default.
+
+```js
+// Link to `/users/:userId` (`<Edit>` view))
+<ReferenceField label="User" source="userId" reference="users">
+    <TextField source="name" />
+</ReferenceField>
+
+// This is equivalent to the above
+<ReferenceField label="User" source="userId" reference="users" linkType="edit">
+    <TextField source="name" />
+</ReferenceField>
+```
+
+You can set `linkType` attribute to "show" to link to the `<Show>` view.
+
+```js
+// Link to `/users/:userId/show` (Show link)
+<ReferenceField label="User" source="userId" reference="users" linkType="edit">
+    <TextField source="name" />
+</ReferenceField>
+```
+
+You can also prevent `<ReferenceField>` from adding link to children by setting
+`linkType` to other values.
+
+```js
+// No link
+<ReferenceField label="User" source="userId" reference="users" linkType="">
+    <TextField source="name" />
+</ReferenceField>
+
+// Custom link
+<ReferenceField label="User" source="userId" reference="users" linkType="none">
+    <FunctionField render={record => (<a href={record.homepage}>{record.name}</a>)} />
+</ReferenceField>
+```
+
+**Tip**: Admin-on-rest uses `CRUD_GET_ONE_REFERENCE` action to accumulate and deduplicate the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
 
 ```js
 [
