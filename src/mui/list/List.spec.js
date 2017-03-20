@@ -21,36 +21,38 @@ describe('<List />', () => {
         translate: () => {},
     };
 
-    describe('Content Values', () => {
-      it('check the no results text is displayed correctly', () => {
-        const translateSpy = sinon.spy();
+    it('should display a no results text when there is no result', () => {
         const wrapper = shallow(
             <List
                 {...defaultProps}
-                translate={translateSpy}
+                translate={x => x}
                 children={[]}
                 total={0}
+                changeFormValue={() => true}
+                changeListParams={() => true}
             >
                 <div />
             </List>
         );
+        const textElement = wrapper.find('CardText').children();
+        assert.equal(textElement.text(), 'aor.navigation.no_results');
+    });
 
-        assert.equal(translateSpy.calledWith('aor.navigation.no_results'), true);
-
-        const translateSpy2 = sinon.spy();
-        const wrapper2 = shallow(
+    it('should not display a no results text when there are results', () => {
+        const wrapper = shallow(
             <List
                 {...defaultProps}
-                translate={translateSpy2}
+                translate={x => x}
                 children={[ 'not_empty' ]}
                 total={1}
+                changeFormValue={() => true}
+                changeListParams={() => true}
             >
                 <div />
             </List>
         );
-
-        assert.equal(translateSpy2.calledWith('aor.navigation.no_results'), false);
-      });
+        const textElement = wrapper.find('CardText');
+        assert.equal(textElement.length, 0);
     });
 
     describe('Filters', () => {
