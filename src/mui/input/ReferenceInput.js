@@ -194,7 +194,6 @@ ReferenceInput.defaultProps = {
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
     matchingReferences: [],
-    meta: {},
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecord: null,

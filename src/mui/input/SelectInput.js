@@ -63,7 +63,6 @@ class SelectInput extends Component {
         return (
             <SelectField
                 value={input.value}
-                menuStyle={{ maxHeight: '41px', overflowY: 'hidden' }}
                 floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
                 onChange={this.handleChange}
                 autoWidth
@@ -105,7 +104,6 @@ SelectInput.defaultProps = {
     addField: true,
     allowEmpty: false,
     choices: [],
-    meta: {},
     options: {},
     optionText: 'name',
     optionValue: 'id',
