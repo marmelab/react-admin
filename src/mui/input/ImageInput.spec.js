@@ -180,7 +180,7 @@ describe('<ImageInput />', () => {
             wrapper.setProps({
                 input: {
                     value: {
-                        preview: 'blob:http://localhost:8080/1234-5678',
+                        url: 'blob:http://localhost:8080/1234-5678',
                     },
                 },
             });
