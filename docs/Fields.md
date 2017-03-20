@@ -248,7 +248,7 @@ export const CommentList = (props) => (
 );
 ```
 
-With this configuration, `<ReferenceField>` wraps the comment title in a link to the related post `<Edit>` view.
+With this configuration, `<ReferenceField>` wraps the comment title in a link to the related post `<Edit>` page.
 
 ![ReferenceField](./img/reference-field.png)
 
@@ -263,41 +263,20 @@ With this configuration, `<ReferenceField>` wraps the comment title in a link to
 </Admin>
 ```
 
-`<ReferenceField>` add link to the reference record's `<Edit>` view by default.
+To change the link from the `<Edit>` page to the `<Show>` page, set the `linkType` prop to "show".
 
 ```js
-// Link to `/users/:userId` (`<Edit>` view))
-<ReferenceField label="User" source="userId" reference="users">
-    <TextField source="name" />
-</ReferenceField>
-
-// This is equivalent to the above
-<ReferenceField label="User" source="userId" reference="users" linkType="edit">
+<ReferenceField label="User" source="userId" reference="users" linkType="show">
     <TextField source="name" />
 </ReferenceField>
 ```
 
-You can set `linkType` attribute to "show" to link to the `<Show>` view.
-
-```js
-// Link to `/users/:userId/show` (Show link)
-<ReferenceField label="User" source="userId" reference="users" linkType="edit">
-    <TextField source="name" />
-</ReferenceField>
-```
-
-You can also prevent `<ReferenceField>` from adding link to children by setting
-`linkType` to other values.
+You can also prevent `<ReferenceField>` from adding link to children by setting `linkType` to `false`.
 
 ```js
 // No link
-<ReferenceField label="User" source="userId" reference="users" linkType="">
+<ReferenceField label="User" source="userId" reference="users" linkType={false}>
     <TextField source="name" />
-</ReferenceField>
-
-// Custom link
-<ReferenceField label="User" source="userId" reference="users" linkType="none">
-    <FunctionField render={record => (<a href={record.homepage}>{record.name}</a>)} />
 </ReferenceField>
 ```
 

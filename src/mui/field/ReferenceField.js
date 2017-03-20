@@ -7,36 +7,32 @@ import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/
 import linkToRecord from '../../util/linkToRecord';
 
 /**
- * @example Link to `/users/:userId` (`<Edit>` view)
+ * Fetch reference record, and delegate rendering to child component.
+ *
+ * The reference prop sould be the name of one of the <Resource> components
+ * added as <Admin> child.
+ *
+ * @example
  * <ReferenceField label="User" source="userId" reference="users">
  *     <TextField source="name" />
  * </ReferenceField>
  *
- * This is equivalent to:
+ * By default, includes a link to the <Edit> page of the related record
+ * (`/users/:userId` in the previous example).
  *
- * @example Link to `/users/:userId` (`<Edit>` view)
- * <ReferenceField label="User" source="userId" reference="users" linkType="edit">
- *     <TextField source="name" />
- * </ReferenceField>
+ * Set the linkType prop to "show" to link to the <Show> page instead.
  *
- * You can set `linkType` to `"show"` to link to the `<Show>` view.
- *
- * @example Link to `/users/:userId/show` (`<Show>` view)
+ * @example
  * <ReferenceField label="User" source="userId" reference="users" linkType="edit">
  *     <TextField source="name" />
  * </ReferenceField>
  *
  * You can also prevent `<ReferenceField>` from adding link to children by setting
- * `linkType` to other values.
+ * `linkType` to false.
  *
- * @example No link
- * <ReferenceField label="User" source="userId" reference="users" linkType="">
+ * @example
+ * <ReferenceField label="User" source="userId" reference="users" linkType={false}>
  *     <TextField source="name" />
- * </ReferenceField>
- *
- * @example Custom link
- * <ReferenceField label="User" source="userId" reference="users" linkType="none">
- *     <FunctionField render={record => (<a href={record.homepage}>{record.name}</a>)} />
  * </ReferenceField>
  */
 export class ReferenceField extends Component {
@@ -66,23 +62,19 @@ export class ReferenceField extends Component {
             allowEmpty,
             basePath,
         });
-        if (linkType === "edit") {
-            return (<Link style={elStyle} to={href}>
-                {child}
-            </Link>);
-        } else if (linkType === "show") {
-            return (<Link style={elStyle} to={href + '/show'}>
-                {child}
-            </Link>);
-        } else {
-            return React.cloneElement(children, {
-                record: referenceRecord,
-                resource: reference,
-                style: elStyle,
-                allowEmpty,
-                basePath,
-            });
+        if (linkType === 'edit') {
+            return <Link style={elStyle} to={href}>{child}</Link>;
         }
+        if (linkType === 'show') {
+            return <Link style={elStyle} to={`${href}/show`}>{child}</Link>;
+        }
+        return React.cloneElement(children, {
+            record: referenceRecord,
+            resource: reference,
+            style: elStyle,
+            allowEmpty,
+            basePath,
+        });
     }
 }
 
@@ -106,7 +98,7 @@ ReferenceField.defaultProps = {
     referenceRecord: null,
     record: {},
     allowEmpty: false,
-    linkType: "edit",
+    linkType: 'edit',
 };
 
 function mapStateToProps(state, props) {
