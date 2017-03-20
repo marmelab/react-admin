@@ -316,6 +316,14 @@ Previews are enabled using `<ImageInput>` children, as following:
 
 This component accepts all [react-dropzone properties](https://github.com/okonet/react-dropzone#features), in addition to those of admin-on-rest. For instance, if you need to upload several images at once, just add the `multiple` DropZone attribute to your `<ImageInput />` field.
 
+If the default Dropzone label don't fit with your need, you can pass a `placeholder` attribute to overwrite it. The attribute can be anything React can render (`React.PropTypes.node`):
+
+``` js
+<ImageInput source="pictures" label="Related pictures" accept="image/*" placeholder={<p>Drop your file here</p>}>
+    <ImageField source="src" title="title" />
+</ImageInput>
+```
+
 Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data.
 
 ## `<LongTextInput>`

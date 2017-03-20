@@ -53,7 +53,7 @@ const Admin = ({
     };
     const sagaMiddleware = createSagaMiddleware();
     const store = createStore(reducer, initialState, compose(
-        applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
+        applyMiddleware(sagaMiddleware, routerMiddleware(hashHistory)),
         window.devToolsExtension ? window.devToolsExtension() : f => f,
     ));
     sagaMiddleware.run(saga);
