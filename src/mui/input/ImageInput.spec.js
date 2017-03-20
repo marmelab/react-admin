@@ -1,11 +1,17 @@
+import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import React from 'react';
+import { File, FileReader } from 'file-api';
 
 import { ImageField } from '../field/ImageField';
 import { ImageInput } from './ImageInput';
 
 describe('<ImageInput />', () => {
+    before(() => {
+        global.File = File;
+        global.FileReader = FileReader;
+    });
+
     it('should display a dropzone', () => {
         const wrapper = shallow((
             <ImageInput

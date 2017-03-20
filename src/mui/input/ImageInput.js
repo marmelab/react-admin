@@ -1,6 +1,6 @@
+import React, { Component, PropTypes } from 'react';
 import { shallowEqual } from 'recompose';
 import Dropzone from 'react-dropzone';
-import React, { Component, PropTypes } from 'react';
 
 import ImageInputPreview from './ImageInputPreview';
 import translate from '../../i18n/translate';

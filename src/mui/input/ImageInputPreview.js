@@ -28,8 +28,8 @@ export class ImageInputPreview extends Component {
         };
     }
 
-    onMouseOut = () => this.setState({ hovered: false });
-    onMouseOver = () => this.setState({ hovered: true });
+    handleMouseOut = () => this.setState({ hovered: false });
+    handleMouseOver = () => this.setState({ hovered: true });
 
     render() {
         const { children, onRemove } = this.props;
@@ -41,15 +41,13 @@ export class ImageInputPreview extends Component {
 
         return (
             <div
-                onMouseOver={this.onMouseOver}
-                onMouseOut={this.onMouseOut}
+                onMouseOver={this.handleMouseOver}
+                onMouseOut={this.handleMouseOut}
                 style={styles.container}
             >
                 <FlatButton
                     style={removeButtonStyle}
-                    icon={<RemoveCircle
-                        color={pinkA200}
-                    />}
+                    icon={<RemoveCircle color={pinkA200} />}
                     onClick={onRemove}
                 />
                 {children}

@@ -26,14 +26,12 @@ test: test-unit test-e2e ## launch all tests
 test-unit: ## launch unit tests
 	@NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/mocha \
 		--require ignore-styles \
-		--require ./src/test-setup.js \
 		--compilers js:babel-register \
 		'./src/**/*.spec.js'
 
 test-unit-watch: ## launch unit tests and watch for changes
 	@NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/mocha \
 		--require ignore-styles \
-		--require ./src/test-setup.js \
 		--compilers js:babel-register \
 		--watch \
 		'./src/**/*.spec.js'
