@@ -83,7 +83,7 @@ The list is already functional: you can change the ordering by clicking on colum
 
 ## Field Types
 
-So far, you've only seen `<TextField>`, but if the API sends resources with other types of content, admin-on-rest can provide more features. For instance, [the `/users` endpoint in JSONPlaceholder](http://jsonplaceholder.typicode.com/comments) contains emails. Let's see how the list displays them:
+So far, you've only seen `<TextField>`, but if the API sends resources with other types of content, admin-on-rest can provide more features. For instance, [the `/users` endpoint in JSONPlaceholder](http://jsonplaceholder.typicode.com/users) contains emails. Let's see how the list displays them:
 
 ```js
 // in src/users.js
