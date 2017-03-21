@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js"
   },
   "author": "",
   "license": "MIT",
@@ -14,6 +15,7 @@
     "aor-rich-text-input": "~1.0.0",
     "babel-plugin-transform-react-jsx": "^6.8.0",
     "babel-polyfill": "^6.9.1",
-    "babel-preset-react": "^6.11.1"
+    "babel-preset-react": "^6.11.1",
+    "webpack": "^2.2.1"
   }
 }
