@@ -62,7 +62,7 @@ export class ReferenceField extends Component {
             allowEmpty,
             basePath,
         });
-        if (linkType === 'edit') {
+        if (linkType === 'edit' || linkType === true) {
             return <Link style={elStyle} to={href}>{child}</Link>;
         }
         if (linkType === 'show') {
