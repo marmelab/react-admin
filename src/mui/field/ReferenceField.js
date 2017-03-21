@@ -23,7 +23,7 @@ import linkToRecord from '../../util/linkToRecord';
  * Set the linkType prop to "show" to link to the <Show> page instead.
  *
  * @example
- * <ReferenceField label="User" source="userId" reference="users" linkType="edit">
+ * <ReferenceField label="User" source="userId" reference="users" linkType="show">
  *     <TextField source="name" />
  * </ReferenceField>
  *
