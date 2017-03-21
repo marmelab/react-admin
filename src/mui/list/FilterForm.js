@@ -8,7 +8,7 @@ import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
 
 const styles = {
-    card: { float: 'right', marginTop: '-14px', paddingTop: 0, display: 'flex', alignItems: 'flex-end' },
+    card: { marginTop: '-14px', paddingTop: 0, display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', flexWrap: 'wrap' },
     body: { display: 'inline-block', display: 'flex', alignItems: 'flex-end' },
     spacer: { width: 48 },
     icon: { color: '#00bcd4', maddingBottom: 0 },
