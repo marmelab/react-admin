@@ -248,7 +248,7 @@ export const CommentList = (props) => (
 );
 ```
 
-With this configuration, `<ReferenceField>` wraps the comment title in a link to the related post `<Edit>` view.
+With this configuration, `<ReferenceField>` wraps the comment title in a link to the related post `<Show>` view. To wrap it with an `<Edit>` link add a prop `linkToRecord=false`.
 
 ![ReferenceField](./img/reference-field.png)
 
