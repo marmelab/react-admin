@@ -10,12 +10,12 @@ const isEmpty = (value) => (typeof value === 'undefined' || value === null || va
 
 /* eslint-disable no-confusing-arrow */
 export const coreConstraints = {
-    required: (value) => isEmpty(value) ? 'Required field' : null,
+    required: (value, _, required) => required && isEmpty(value) ? 'Required field' : null,
     min: (value, _, min) => !isEmpty(value) && (isNaN(parseInt(value, 10)) || parseInt(value, 10) < min) ? `Minimum value: ${min}` : null,
     max: (value, _, max) => !isEmpty(value) && (isNaN(parseInt(value, 10)) || parseInt(value, 10) > max) ? `Maximum value: ${max}` : null,
     minLength: (value, _, min) => isEmpty(value) || `${value}`.length < min ? `Minimum length: ${min}` : null,
     maxLength: (value, _, max) => !isEmpty(value) && `${value}`.length > max ? `Maximum length: ${max}` : null,
-    email: (value) => !isEmpty(value) && !EMAIL_REGEX.test(value) ? 'Must be a valid email' : null,
+    email: (value, _, email) => email && !isEmpty(value) && !EMAIL_REGEX.test(value) ? 'Must be a valid email' : null,
     regex: (value, _, { pattern, message }) => !isEmpty(value) && !pattern.test(value) ? message : null,
     choices: (value, _, { list, message }) => !isEmpty(value) && list.indexOf(value) === -1 ? message : null,
     custom: (value, values, func) => func(value, values),
