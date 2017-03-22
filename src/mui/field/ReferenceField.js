@@ -61,6 +61,7 @@ export class ReferenceField extends Component {
             resource: reference,
             allowEmpty,
             basePath,
+            translateChoice: false,
         });
         if (linkType === 'edit' || linkType === true) {
             return <Link style={elStyle} to={href}>{child}</Link>;
@@ -68,13 +69,7 @@ export class ReferenceField extends Component {
         if (linkType === 'show') {
             return <Link style={elStyle} to={`${href}/show`}>{child}</Link>;
         }
-        return React.cloneElement(children, {
-            record: referenceRecord,
-            resource: reference,
-            style: elStyle,
-            allowEmpty,
-            basePath,
-        });
+        return child;
     }
 }
 

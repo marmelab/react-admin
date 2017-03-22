@@ -1,13 +1,14 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import SelectInput from './SelectInput';
+import { SelectInput } from './SelectInput';
 
 describe('<SelectInput />', () => {
     const defaultProps = {
         source: 'foo',
         meta: {},
         input: {},
+        translate: x => x,
     };
 
     it('should use a mui SelectField', () => {

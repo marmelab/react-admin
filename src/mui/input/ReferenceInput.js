@@ -160,6 +160,7 @@ export class ReferenceInput extends Component {
             setFilter: this.debouncedSetFilter,
             setPagination: this.setPagination,
             setSort: this.setSort,
+            translateChoice: false,
         });
     }
 }

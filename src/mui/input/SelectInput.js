@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
+import translate from '../../i18n/translate';
 import FieldTitle from '../../util/FieldTitle';
 
 /**
@@ -49,17 +50,43 @@ import FieldTitle from '../../util/FieldTitle';
  *
  * The object passed as `options` props is passed to the material-ui <SelectField> component
  */
-class SelectInput extends Component {
+export class SelectInput extends Component {
     handleChange = (event, index, value) => this.props.input.onChange(value);
 
-    render() {
-        const { allowEmpty, input, label, choices, optionText, optionValue, options, source, elStyle, meta: { touched, error }, resource } = this.props;
-        const option = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
-            choice => React.cloneElement(optionText, { record: choice }) :
+    renderMenuItem(choice) {
+        const {
+            optionText,
+            optionValue,
+            translate,
+            translateChoice,
+        } = this.props;
+        const choiceName = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
+            React.cloneElement(optionText, { record: choice }) :
             (typeof optionText === 'function' ?
-                optionText :
-                choice => choice[optionText]
+                optionText(choice) :
+                choice[optionText]
             );
+        return (
+            <MenuItem
+                key={choice[optionValue]}
+                primaryText={translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
+                value={choice[optionValue]}
+            />
+        );
+    }
+
+    render() {
+        const {
+            allowEmpty,
+            choices,
+            elStyle,
+            input,
+            label,
+            meta: { touched, error },
+            options,
+            resource,
+            source,
+        } = this.props;
         return (
             <SelectField
                 value={input.value}
@@ -73,9 +100,7 @@ class SelectInput extends Component {
                 {allowEmpty &&
                     <MenuItem value={null} primaryText="" />
                 }
-                {choices.map(choice =>
-                    <MenuItem key={choice[optionValue]} primaryText={option(choice)} value={choice[optionValue]} />
-                )}
+                {choices.map(choice => this.renderMenuItem(choice))}
             </SelectField>
         );
     }
@@ -98,6 +123,8 @@ SelectInput.propTypes = {
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     source: PropTypes.string,
+    translate: PropTypes.func.isRequired,
+    translateChoice: PropTypes.bool.isRequired,
 };
 
 SelectInput.defaultProps = {
@@ -107,6 +134,7 @@ SelectInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
+    translateChoice: true,
 };
 
-export default SelectInput;
+export default translate(SelectInput);
