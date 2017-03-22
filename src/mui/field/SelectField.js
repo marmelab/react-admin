@@ -56,11 +56,11 @@ import translate from '../../i18n/translate';
  * ];
  *
  * However, in some cases (e.g. inside a `<ReferenceField>`), you may not want
- * the choice to be translated. In that case, set the `translateChoice` to false.
+ * the choice to be translated. In that case, set the `translateChoice` prop to false.
  * @example
- * <ReferenceField label="Author Gender" source="user_id" reference="users">
- *     <SelectField source="gender" choices={choices} translateChoice={false}/>
- * </ReferenceField>
+ * <SelectField source="gender" choices={choices} translateChoice={false}/>
+ *
+ * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  *
  * The object passed as `options` props is passed to the material-ui <Chip> component
  */

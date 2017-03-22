@@ -48,6 +48,18 @@ import FieldTitle from '../../util/FieldTitle';
  * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
  * <SelectInput source="gender" choices={choices} optionText={<FullNameField />}/>
  *
+ * The choices are translated by default, so you can use translation identifiers as choices:
+ * @example
+ * const choices = [
+ *    { id: 'M', name: 'myroot.gender.male' },
+ *    { id: 'F', name: 'myroot.gender.female' },
+ * ];
+ *
+ * However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want
+ * the choice to be translated. In that case, set the `translateChoice` prop to false.
+ * @example
+ * <SelectInput source="gender" choices={choices} translateChoice={false}/>
+ *
  * The object passed as `options` props is passed to the material-ui <SelectField> component
  */
 export class SelectInput extends Component {

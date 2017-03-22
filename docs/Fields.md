@@ -226,6 +226,78 @@ See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/W
 
 **Tip**: If you need more formatting options than what `Intl.Numberformat` can provide, build your own field component leveraging a third-party library like [numeral.js](http://numeraljs.com/).
 
+## `<SelectField>`
+
+When you need to display an enumerated field, `<SelectField>` maps the value to a string, and displays it inside a material-ui `<Chip>` component.
+
+
+For instance, you the `gender` field can take values "M" and "F", here is hot to display a Cip containing `Male` or `Female` instead:
+
+```js
+import { SelectField } from 'admin-on-rest';
+
+<SelectField source="gender" choices={[
+   { id: 'M', name: 'Male' },
+   { id: 'F', name: 'Female' },
+]} />
+```
+
+By default, the Chip label is built from:
+
+ - the 'id' property as the option value,
+ - the 'name' property an the option text
+
+You can also customize the properties to use for the option name and value, thanks to the 'optionText' and 'optionValue' attributes.
+
+```js
+const choices = [
+   { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+   { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+];
+<SelectField source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+```
+
+`optionText` also accepts a function, so you can shape the option text at will:
+
+```js
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
+<SelectField source="author_id" choices={choices} optionText={optionRenderer} />
+```
+
+`optionText` also accepts a React Element, that will be cloned and receive the related choice as the `record` prop. You can use Field components there.
+
+```js
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
+<SelectField source="gender" choices={choices} optionText={<FullNameField />}/>
+```
+
+The current choice is translated by default, so you can use translation identifiers as choices:
+
+```js
+const choices = [
+   { id: 'M', name: 'myroot.gender.male' },
+   { id: 'F', name: 'myroot.gender.female' },
+];
+```
+
+However, in some cases (e.g. inside a `<ReferenceField>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+
+```js
+<SelectField source="gender" choices={choices} translateChoice={false}/>
+```
+
+**Tip**: <ReferenceField> sets `translateChoice` to false by default.
+
+The object passed as `options` props is passed to the material-ui <Chip> component
+
 ## `<ReferenceField>`
 
 This component fetches a single referenced record (using the `GET_MANY` REST method), and displays one field of this record. That's why a `<ReferenceField>` must always have a child `<Field>`.
