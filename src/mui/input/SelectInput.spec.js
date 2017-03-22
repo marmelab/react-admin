@@ -115,6 +115,37 @@ describe('<SelectInput />', () => {
         assert.deepEqual(MenuItemElement1.prop('primaryText'), <Foobar record={{ id: 'M', foobar: 'Male' }} />);
     });
 
+    it('should translate the choices by default', () => {
+        const wrapper = shallow(<SelectInput
+            {...defaultProps}
+            choices={[
+                { id: 'M', name: 'Male' },
+                { id: 'F', name: 'Female' },
+            ]}
+            translate={x => `**${x}**`}
+        />);
+        const MenuItemElements = wrapper.find('MenuItem');
+        const MenuItemElement1 = MenuItemElements.first();
+        assert.equal(MenuItemElement1.prop('value'), 'M');
+        assert.equal(MenuItemElement1.prop('primaryText'), '**Male**');
+    });
+
+    it('should not translate the choices if translateChoice is false', () => {
+        const wrapper = shallow(<SelectInput
+            {...defaultProps}
+            choices={[
+                { id: 'M', name: 'Male' },
+                { id: 'F', name: 'Female' },
+            ]}
+            translate={x => `**${x}**`}
+            translateChoice={false}
+        />);
+        const MenuItemElements = wrapper.find('MenuItem');
+        const MenuItemElement1 = MenuItemElements.first();
+        assert.equal(MenuItemElement1.prop('value'), 'M');
+        assert.equal(MenuItemElement1.prop('primaryText'), 'Male');
+    });
+
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             const wrapper = shallow(<SelectInput {...defaultProps} meta={{ touched: false }} />);
