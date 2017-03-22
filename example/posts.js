@@ -22,6 +22,7 @@ import {
     Responsive,
     RichTextField,
     SelectField,
+    SelectInput,
     Show,
     ShowButton,
     SimpleForm,
@@ -132,6 +133,10 @@ export const PostEdit = ({ ...props }) => (
             <FormTab label="post.form.miscellaneous">
                 <TextInput source="password" type="password" />
                 <DateInput source="published_at" />
+                <SelectInput source="category" choices={[
+                    { name: 'Tech', id: 'tech' },
+                    { name: 'Lifestyle', id: 'lifestyle' },
+                ]} />
                 <NumberInput source="average_note" validate={[number, minValue(0)]} />
                 <BooleanInput source="commentable" defaultValue />
                 <DisabledInput source="views" />

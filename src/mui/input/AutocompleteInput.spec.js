@@ -1,13 +1,14 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import AutocompleteInput from './AutocompleteInput';
+import { AutocompleteInput } from './AutocompleteInput';
 
 describe('<AutocompleteInput />', () => {
     const defaultProps = {
         source: 'foo',
         meta: {},
         input: {},
+        translate: x => x,
     };
 
     it('should use a mui AutoComplete', () => {

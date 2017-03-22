@@ -246,6 +246,8 @@ By default, the text is built by
 - finding a choice where the 'id' property equals the field value
 - using the 'name' property an the option text
 
+**Warning**: This component name may conflict with material-ui's [`<SelectField>`](http://www.material-ui.com/#/components/select-field) if you import both.
+
 You can also customize the properties to use for the lookup value and text, thanks to the 'optionValue' and 'optionText' attributes.
 
 ```js
