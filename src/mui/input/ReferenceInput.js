@@ -191,6 +191,7 @@ ReferenceInput.propTypes = {
 };
 
 ReferenceInput.defaultProps = {
+    addField: true,
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),

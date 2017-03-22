@@ -65,7 +65,7 @@ import FieldTitle from '../../util/FieldTitle';
 export class SelectInput extends Component {
     handleChange = (event, index, value) => this.props.input.onChange(value);
 
-    renderMenuItem(choice) {
+    renderMenuItem = (choice) => {
         const {
             optionText,
             optionValue,
@@ -112,7 +112,7 @@ export class SelectInput extends Component {
                 {allowEmpty &&
                     <MenuItem value={null} primaryText="" />
                 }
-                {choices.map(choice => this.renderMenuItem(choice))}
+                {choices.map(this.renderMenuItem)}
             </SelectField>
         );
     }
