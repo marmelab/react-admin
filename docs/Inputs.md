@@ -224,6 +224,22 @@ const FullNameField = ({ record }) => <span>{record.first_name} {record.last_nam
 <CheckboxGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
 ```
 
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```js
+const choices = [
+    { id: 'programming', name: 'myroot.category.programming' },
+    { id: 'lifestyle', name: 'myroot.category.lifestyle' },
+    { id: 'photography', name: 'myroot.category.photography' },
+];
+```
+
+However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+
+```js
+<CheckboxGroupInput source="gender" choices={choices} translateChoice={false}/>
+```
+
 Lastly, use the `options` attribute if you want to override any of Material UI's `<Checkbox>` attributes:
 
 {% raw %}
