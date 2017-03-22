@@ -228,10 +228,9 @@ See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/W
 
 ## `<SelectField>`
 
-When you need to display an enumerated field, `<SelectField>` maps the value to a string, and displays it inside a material-ui `<Chip>` component.
+When you need to display an enumerated field, `<SelectField>` maps the value to a string.
 
-
-For instance, you the `gender` field can take values "M" and "F", here is hot to display a Cip containing `Male` or `Female` instead:
+For instance, if the `gender` field can take values "M" and "F", here is how to display it as "Male" or "Female":
 
 ```js
 import { SelectField } from 'admin-on-rest';
@@ -242,12 +241,12 @@ import { SelectField } from 'admin-on-rest';
 ]} />
 ```
 
-By default, the Chip label is built from:
+By default, the text is built by
 
- - the 'id' property as the option value,
- - the 'name' property an the option text
+- finding a choice where the 'id' property equals the field value
+- using the 'name' property an the option text
 
-You can also customize the properties to use for the option name and value, thanks to the 'optionText' and 'optionValue' attributes.
+You can also customize the properties to use for the lookup value and text, thanks to the 'optionValue' and 'optionText' attributes.
 
 ```js
 const choices = [
@@ -275,7 +274,7 @@ const choices = [
    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
-const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
+const FullNameField = ({ record }) => <Chip>{record.first_name} {record.last_name}</Chip>;
 <SelectField source="gender" choices={choices} optionText={<FullNameField />}/>
 ```
 
@@ -295,8 +294,6 @@ However, in some cases (e.g. inside a `<ReferenceField>`), you may not want the 
 ```
 
 **Tip**: <ReferenceField> sets `translateChoice` to false by default.
-
-The object passed as `options` props is passed to the material-ui <Chip> component
 
 ## `<ReferenceField>`
 

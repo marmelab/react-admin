@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import get from 'lodash.get';
-import Chip from 'material-ui/Chip';
 import pure from 'recompose/pure';
 import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
@@ -10,9 +9,6 @@ import translate from '../../i18n/translate';
  *
  * Pass possible options as an array of objects in the 'choices' attribute.
  *
- * By default, the options are built from:
- *  - the 'id' property as the option value,
- *  - the 'name' property an the option text
  * @example
  * const choices = [
  *    { id: 'M', name: 'Male' },
@@ -20,8 +16,13 @@ import translate from '../../i18n/translate';
  * ];
  * <SelectField source="gender" choices={choices} />
  *
- * You can also customize the properties to use for the option name and value,
- * thanks to the 'optionText' and 'optionValue' attributes.
+ * By default, the text is built by
+ * - finding a choice where the 'id' property equals the field value
+ * - using the 'name' property an the option text
+ *
+ * You can also customize the properties to use for the value and text,
+ * thanks to the 'optionValue' and 'optionText' attributes.
+ *
  * @example
  * const choices = [
  *    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
@@ -45,7 +46,7 @@ import translate from '../../i18n/translate';
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
- * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
+ * const FullNameField = ({ record }) => <Chip>{record.first_name} {record.last_name}</Chip>;
  * <SelectField source="gender" choices={choices} optionText={<FullNameField />}/>
  *
  * The current choice is translated by default, so you can use translation identifiers as choices:
@@ -61,10 +62,8 @@ import translate from '../../i18n/translate';
  * <SelectField source="gender" choices={choices} translateChoice={false}/>
  *
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
- *
- * The object passed as `options` props is passed to the material-ui <Chip> component
  */
-export const SelectField = ({ source, record = {}, choices, elStyle, optionValue, optionText, translate, options, translateChoice = true }) => {
+export const SelectField = ({ source, record = {}, choices, elStyle, optionValue, optionText, translate, translateChoice = true }) => {
     const value = get(record, source);
     const choice = choices.find(c => c[optionValue] === value);
     if (!choice) return null;
@@ -75,9 +74,9 @@ export const SelectField = ({ source, record = {}, choices, elStyle, optionValue
             choice[optionText]
         );
     return (
-        <Chip style={elStyle} {...options}>
+        <span style={elStyle}>
             {translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
-        </Chip>
+        </span>
     );
 };
 

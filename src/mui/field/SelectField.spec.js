@@ -30,19 +30,8 @@ describe('<SelectField />', () => {
 
     it('should render the choice', () => {
         const wrapper = shallow(<SelectField {...defaultProps} record={{ foo: 0 }} />);
-        const chipElement = wrapper.find('Chip');
+        const chipElement = wrapper.find('span');
         assert.equal(chipElement.children().text(), 'hello');
-    });
-
-    it('should pass the options prop to mui Chip', () => {
-        const wrapper = shallow(<SelectField
-            {...defaultProps}
-            record={{ foo: 1 }}
-            options={{ labelColor: 'blue' }}
-        />);
-        const chipElement = wrapper.find('Chip');
-        assert.equal(chipElement.children().text(), 'world');
-        assert.equal(chipElement.prop('labelColor'), 'blue');
     });
 
     it('should use custom styles passed as an elStyle prop', () => {
@@ -51,7 +40,7 @@ describe('<SelectField />', () => {
             record={{ foo: 1 }}
             elStyle={{ margin: 1 }}
         />);
-        const chipElement = wrapper.find('Chip');
+        const chipElement = wrapper.find('span');
         assert.deepEqual(chipElement.prop('style'), { margin: 1 });
     });
 
@@ -61,7 +50,7 @@ describe('<SelectField />', () => {
             record={{ foo: { bar: 0 } }}
             source="foo.bar"
         />);
-        const chipElement = wrapper.find('Chip');
+        const chipElement = wrapper.find('span');
         assert.equal(chipElement.children().text(), 'hello');
     });
 
@@ -74,7 +63,7 @@ describe('<SelectField />', () => {
                 { foobar: 0, name: 'hello' },
             ]}
         />);
-        const chipElement = wrapper.find('Chip');
+        const chipElement = wrapper.find('span');
         assert.equal(chipElement.children().text(), 'hello');
     });
 
@@ -87,7 +76,7 @@ describe('<SelectField />', () => {
                 { id: 0, foobar: 'hello' },
             ]}
         />);
-        const chipElement = wrapper.find('Chip');
+        const chipElement = wrapper.find('span');
         assert.equal(chipElement.children().text(), 'hello');
     });
 
@@ -100,7 +89,7 @@ describe('<SelectField />', () => {
                 { id: 0, foobar: 'hello' },
             ]}
         />);
-        const chipElement = wrapper.find('Chip');
+        const chipElement = wrapper.find('span');
         assert.equal(chipElement.children().text(), 'hello');
     });
 
@@ -124,7 +113,7 @@ describe('<SelectField />', () => {
             record={{ foo: 0 }}
             translate={x => `**${x}**`}
         />);
-        const chipElement = wrapper.find('Chip');
+        const chipElement = wrapper.find('span');
         assert.equal(chipElement.children().text(), '**hello**');
     });
 
@@ -135,7 +124,7 @@ describe('<SelectField />', () => {
             translate={x => `**${x}**`}
             translateChoice={false}
         />);
-        const chipElement = wrapper.find('Chip');
+        const chipElement = wrapper.find('span');
         assert.equal(chipElement.children().text(), 'hello');
     });
 });
