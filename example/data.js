@@ -54,6 +54,7 @@ export default {
       "commentable": true,
       "published_at": new Date("2012-08-08"),
       "tags": [3, 5],
+      "category": "lifestyle",
       "backlinks": [],
       "notifications": [],
     },
@@ -66,6 +67,7 @@ export default {
       "commentable": true,
       "published_at": new Date("2012-08-08"),
       "tags": [1,2],
+      "category": "tech",
       "backlinks": [
         { "date": "2012-08-10T00:00:00.000Z", "url": "http://example.com/foo/bar.html" },
         { "date": "2012-08-14T00:00:00.000Z", "url": "https://blog.johndoe.com/2012/08/12/foobar.html" },
@@ -84,6 +86,7 @@ export default {
       "commentable": false,
       "published_at": new Date("2012-08-12"),
       "tags": [],
+      "category": "lifestyle",
       "notifications": [12, 31, 42],
     },
     {
@@ -96,6 +99,7 @@ export default {
       "commentable": true,
       "published_at": new Date("2012-08-24"),
       "tags": [],
+      "category": "tech",
       "notifications": [12, 31, 42],
     },
     {
@@ -106,10 +110,8 @@ export default {
       "views": 208,
       "average_note": 3.1214,
       "published_at": new Date("2012-09-05"),
-      "tags": [
-        1,
-        4
-      ],
+      "tags": [1, 4],
+      "category": "tech",
       "notifications": [42],
     },
     {
@@ -121,10 +123,8 @@ export default {
       "average_note": null,
       "commentable": true,
       "published_at": new Date("2012-09-29"),
-      "tags": [
-        3,
-        4
-      ],
+      "tags": [3, 4],
+      "category": "tech",
       "notifications": [12, 31],
     },
     {
@@ -136,10 +136,8 @@ export default {
       "average_note": null,
       "commentable": false,
       "published_at": new Date("2012-10-02"),
-      "tags": [
-        5,
-        1
-      ],
+      "tags": [5, 1],
+      "category": "lifestyle",
       "notifications": [12, 31, 42],
     },
     {
@@ -152,6 +150,7 @@ export default {
       "commentable": true,
       "published_at": new Date("2012-10-16"),
       "tags": [],
+      "category": "tech",
       "notifications": [12, 31, 42],
     },
     {
@@ -163,10 +162,8 @@ export default {
       "average_note": 4.121,
       "commentable": true,
       "published_at": new Date("2012-10-19"),
-      "tags": [
-        1,
-        4
-      ],
+      "tags": [1, 4],
+      "category": "lifestyle",
       "notifications": [12, 31, 42],
     },
     {
@@ -178,10 +175,7 @@ export default {
       "average_note": 3.12942,
       "commentable": true,
       "published_at": new Date("2012-10-22"),
-      "tags": [
-        4,
-        3
-      ],
+      "tags": [4, 3],
       "category": "tech",
       "subcategory": "computers",
       "pictures": null,
@@ -219,6 +213,7 @@ export default {
       "commentable": true,
       "published_at": new Date("2012-12-01"),
       "tags": [3, 5],
+      "category": "lifestyle",
       "backlinks": [],
       "notifications": [],
     },
