@@ -115,4 +115,4 @@ EnhancedSelectField.defaultProps = {
     addLabel: true,
 };
 
-export default translate(EnhancedSelectField);
+export default EnhancedSelectField;
