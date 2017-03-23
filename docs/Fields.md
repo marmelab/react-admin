@@ -248,7 +248,7 @@ export const CommentList = (props) => (
 );
 ```
 
-With this configuration, `<ReferenceField>` wraps the comment title in a link to the related post `<Edit>` view.
+With this configuration, `<ReferenceField>` wraps the comment title in a link to the related post `<Edit>` page.
 
 ![ReferenceField](./img/reference-field.png)
 
@@ -263,7 +263,24 @@ With this configuration, `<ReferenceField>` wraps the comment title in a link to
 </Admin>
 ```
 
-**Tip**: Admin-on-rest accumulates and deduplicates the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
+To change the link from the `<Edit>` page to the `<Show>` page, set the `linkType` prop to "show".
+
+```js
+<ReferenceField label="User" source="userId" reference="users" linkType="show">
+    <TextField source="name" />
+</ReferenceField>
+```
+
+You can also prevent `<ReferenceField>` from adding link to children by setting `linkType` to `false`.
+
+```js
+// No link
+<ReferenceField label="User" source="userId" reference="users" linkType={false}>
+    <TextField source="name" />
+</ReferenceField>
+```
+
+**Tip**: Admin-on-rest uses `CRUD_GET_ONE_REFERENCE` action to accumulate and deduplicate the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
 
 ```js
 [
