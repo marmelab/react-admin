@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react';
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import createHistory from 'history/createHashHistory';
 import { Router, IndexRoute, Route, Redirect, hashHistory } from 'react-router';
-import { syncHistoryWithStore, routerMiddleware, routerReducer } from 'react-router-redux';
+import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 import { fork } from 'redux-saga/effects';
@@ -52,13 +53,14 @@ const Admin = ({
         ].map(fork);
     };
     const sagaMiddleware = createSagaMiddleware();
+    const history = createHistory();
     const store = createStore(reducer, initialState, compose(
-        applyMiddleware(sagaMiddleware, routerMiddleware(hashHistory)),
+        applyMiddleware(sagaMiddleware, routerMiddleware(history)),
         window.devToolsExtension ? window.devToolsExtension() : f => f,
     ));
     sagaMiddleware.run(saga);
 
-    const history = syncHistoryWithStore(hashHistory, store);
+
     const firstResource = resources[0].name;
     const onEnter = authClient ?
         params => (nextState, replace, callback) => authClient(AUTH_CHECK, params)
@@ -77,8 +79,12 @@ const Admin = ({
     const MenuComponent = withProps({ authClient, logout: <LogoutButton />, resources, hasDashboard: !!dashboard })(menu || Menu);
     const Layout = withProps({
         authClient,
+        dashboard,
+        customRoutes,
         logout: <LogoutButton />,
         menu: <MenuComponent />,
+        onEnter,
+        resources,
         title,
         theme,
     })(appLayout || DefaultLayout);
@@ -86,27 +92,13 @@ const Admin = ({
     return (
         <Provider store={store}>
             <TranslationProvider messages={messages}>
-                <Router history={history}>
-                    {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
-                    <Route path="/login" component={LoginPage} />
-                    <Route path="/" component={Layout} resources={resources}>
-                        {customRoutes && customRoutes()}
-                        {dashboard && <IndexRoute component={dashboard} onEnter={onEnter()} />}
-                        {resources.map(resource =>
-                            <CrudRoute
-                                key={resource.name}
-                                path={resource.name}
-                                list={resource.list}
-                                create={resource.create}
-                                edit={resource.edit}
-                                show={resource.show}
-                                remove={resource.remove}
-                                options={resource.options}
-                                onEnter={onEnter}
-                            />
-                        )}
-                    </Route>
-                </Router>
+                <ConnectedRouter history={history}>
+                    <div>
+                        {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
+                        <Route path="/login" component={LoginPage} />
+                        <Route path="/" component={Layout} />
+                    </div>
+                </ConnectedRouter>
             </TranslationProvider>
         </Provider>
     );

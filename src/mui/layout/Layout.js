@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { IndexRoute } from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import autoprefixer from 'material-ui/utils/autoprefixer';
@@ -7,6 +8,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import CrudRoute from '../../CrudRoute';
 import AppBar from './AppBar';
 import Sidebar from './Sidebar';
 import Notification from './Notification';
@@ -65,9 +67,12 @@ class Layout extends Component {
     render() {
         const {
             children,
+            customRoutes,
+            dashboard,
             isLoading,
             menu,
-            route,
+            onEnter,
+            resources,
             theme,
             title,
             width,
@@ -89,7 +94,23 @@ class Layout extends Component {
                     <div style={prefixedStyles.main}>
                         { width !== 1 && <AppBar title={title} />}
                         <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
-                            <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>{children}</div>
+                            <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>
+                                {customRoutes && customRoutes()}
+                                {dashboard && <IndexRoute component={dashboard} onEnter={onEnter()} />}
+                                {resources.map(resource =>
+                                    <CrudRoute
+                                        key={resource.name}
+                                        path={resource.name}
+                                        list={resource.list}
+                                        create={resource.create}
+                                        edit={resource.edit}
+                                        show={resource.show}
+                                        remove={resource.remove}
+                                        options={resource.options}
+                                        onEnter={onEnter}
+                                    />
+                                )}
+                            </div>
                             <Sidebar theme={theme}>
                                 {menu}
                             </Sidebar>
@@ -114,7 +135,6 @@ Layout.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     children: PropTypes.node,
     menu: PropTypes.element,
-    route: PropTypes.object.isRequired,
     setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
     theme: PropTypes.object.isRequired,
