@@ -110,6 +110,21 @@ import AutoComplete from 'material-ui/AutoComplete';
 <AutocompleteInput source="category" filter={AutoComplete.caseInsensitiveFilter} choices={choices} />
 ```
 
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```js
+const choices = [
+   { id: 'M', name: 'myroot.gender.male' },
+   { id: 'F', name: 'myroot.gender.female' },
+];
+```
+
+However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+
+```js
+<AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
+```
+
 Lastly, use the `options` attribute if you want to override any of Material UI's `<AutoComplete>` attributes:
 
 {% raw %}
@@ -207,6 +222,22 @@ const choices = [
 ];
 const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
 <CheckboxGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
+```
+
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```js
+const choices = [
+    { id: 'programming', name: 'myroot.category.programming' },
+    { id: 'lifestyle', name: 'myroot.category.lifestyle' },
+    { id: 'photography', name: 'myroot.category.photography' },
+];
+```
+
+However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+
+```js
+<CheckboxGroupInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
 Lastly, use the `options` attribute if you want to override any of Material UI's `<Checkbox>` attributes:
@@ -402,6 +433,21 @@ const FullNameField = ({ record }) => <span>{record.first_name} {record.last_nam
 <RadioButtonGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
 ```
 
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```js
+const choices = [
+   { id: 'M', name: 'myroot.gender.male' },
+   { id: 'F', name: 'myroot.gender.female' },
+];
+```
+
+However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+
+```js
+<RadioButtonGroupInput source="gender" choices={choices} translateChoice={false}/>
+```
+
 Lastly, use the `options` attribute if you want to override any of Material UI's `<RadioButtonGroup>` attributes:
 
 {% raw %}
@@ -592,6 +638,21 @@ Enabling the `allowEmpty` props adds an empty choice (with `null` value) on top 
     { id: 'lifestyle', name: 'Lifestyle' },
     { id: 'photography', name: 'Photography' },
 ]} />
+```
+
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```js
+const choices = [
+   { id: 'M', name: 'myroot.gender.male' },
+   { id: 'F', name: 'myroot.gender.female' },
+];
+```
+
+However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+
+```js
+<SelectInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
 Lastly, use the `options` attribute if you want to override any of Material UI's `<SelectField>` attributes:

@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
+
 import FieldTitle from '../../util/FieldTitle';
+import translate from '../../i18n/translate';
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -51,12 +53,24 @@ import FieldTitle from '../../util/FieldTitle';
  *     </Edit>
  * );
  *
+ * The choices are translated by default, so you can use translation identifiers as choices:
+ * @example
+ * const choices = [
+ *    { id: 'M', name: 'myroot.gender.male' },
+ *    { id: 'F', name: 'myroot.gender.female' },
+ * ];
+ *
+ * However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want
+ * the choice to be translated. In that case, set the `translateChoice` prop to false.
+ * @example
+ * <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
+ *
  * The object passed as `options` props is passed to the material-ui <AutoComplete> component
  *
  * @example
  * <AutocompleteInput source="author_id" options={{ fullWidth: true }} />
  */
-class AutocompleteInput extends Component {
+export class AutocompleteInput extends Component {
     handleNewRequest = (chosenRequest, index) => {
         if (index !== -1) {
             const { choices, input, optionValue } = this.props;
@@ -64,20 +78,35 @@ class AutocompleteInput extends Component {
         }
     }
 
+    getSuggestion(choice) {
+        const { optionText, optionValue, translate, translateChoice } = this.props;
+        const choiceName = typeof optionText === 'function' ? optionText(choice) : choice[optionText];
+        return translateChoice ? translate(choiceName, { _: choiceName }) : choiceName;
+    }
+
     render() {
-        const { choices, elStyle, filter, input, label, options, optionText, optionValue, setFilter, source, meta: { touched, error }, resource } = this.props;
+        const {
+            choices,
+            elStyle,
+            filter,
+            input,
+            label,
+            meta: { touched, error },
+            options,
+            optionValue,
+            resource,
+            setFilter,
+            source,
+        } = this.props;
 
         const selectedSource = choices.find(choice => choice[optionValue] === input.value);
-        const option = typeof optionText === 'function' ?
-            optionText :
-            choice => choice[optionText];
         const dataSource = choices.map(choice => ({
             value: choice[optionValue],
-            text: option(choice),
+            text: this.getSuggestion(choice),
         }));
         return (
             <AutoComplete
-                searchText={selectedSource && option(selectedSource)}
+                searchText={selectedSource && this.getSuggestion(selectedSource)}
                 dataSource={dataSource}
                 floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
                 filter={filter}
@@ -110,6 +139,8 @@ AutocompleteInput.propTypes = {
     resource: PropTypes.string,
     setFilter: PropTypes.func,
     source: PropTypes.string,
+    translate: PropTypes.func.isRequired,
+    translateChoice: PropTypes.bool.isRequired,
 };
 
 AutocompleteInput.defaultProps = {
@@ -119,6 +150,7 @@ AutocompleteInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
+    translateChoice: true,
 };
 
-export default AutocompleteInput;
+export default translate(AutocompleteInput);

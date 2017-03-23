@@ -21,6 +21,8 @@ import {
     ReferenceManyField,
     Responsive,
     RichTextField,
+    SelectField,
+    SelectInput,
     Show,
     ShowButton,
     SimpleForm,
@@ -131,6 +133,10 @@ export const PostEdit = ({ ...props }) => (
             <FormTab label="post.form.miscellaneous">
                 <TextInput source="password" type="password" />
                 <DateInput source="published_at" />
+                <SelectInput source="category" choices={[
+                    { name: 'Tech', id: 'tech' },
+                    { name: 'Lifestyle', id: 'lifestyle' },
+                ]} />
                 <NumberInput source="average_note" validate={[number, minValue(0)]} />
                 <BooleanInput source="commentable" defaultValue />
                 <DisabledInput source="views" />
@@ -158,6 +164,10 @@ export const PostShow = ({ ...props }) => (
             <RichTextField source="body" stripTags={false} />
             <DateField source="published_at" style={{ fontStyle: 'italic' }} />
             <TextField source="average_note" />
+            <SelectField source="category" choices={[
+                { name: 'Tech', id: 'tech' },
+                { name: 'Lifestyle', id: 'lifestyle' },
+            ]} />
             <ReferenceManyField label="resources.posts.fields.comments" reference="comments" target="post_id" sort={{ field: 'created_at', order: 'DESC' }}>
                 <Datagrid selectable={false}>
                     <DateField source="created_at" />

@@ -160,6 +160,7 @@ export class ReferenceInput extends Component {
             setFilter: this.debouncedSetFilter,
             setPagination: this.setPagination,
             setSort: this.setSort,
+            translateChoice: false,
         });
     }
 }
@@ -190,6 +191,7 @@ ReferenceInput.propTypes = {
 };
 
 ReferenceInput.defaultProps = {
+    addField: true,
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
