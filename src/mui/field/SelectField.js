@@ -63,7 +63,7 @@ import translate from '../../i18n/translate';
  *
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
-export const SelectField = ({ source, record = {}, choices, elStyle, optionValue, optionText, translate, translateChoice = true }) => {
+export const SelectField = ({ source, record, choices, elStyle, optionValue, optionText, translate, translateChoice }) => {
     const value = get(record, source);
     const choice = choices.find(c => c[optionValue] === value);
     if (!choice) return null;
@@ -99,6 +99,7 @@ SelectField.propTypes = {
 };
 
 SelectField.defaultProps = {
+    record: {},
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
