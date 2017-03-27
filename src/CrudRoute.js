@@ -13,13 +13,18 @@ const CrudRoute = ({ match, resource, list, create, edit, show, remove, options,
     };
     return (
         <Switch>
-            {list ? <Route path="/" render={({ location }) => React.createElement(list, {
+            {list ? <Route exact path={match.url} render={({ location }) => React.createElement(list, {
                 ...commonProps,
                 location,
                 onEnter: onEnter({ resource, route: 'list' }),
-            }) } /> : null}
+            })} /> : null}
             {/*create ? <Route {...commonProps} path="/create" component={create} onEnter={onEnter({ resource, route: 'create' })} /> : null*/}
-            {/*edit ? <Route {...commonProps} path=":id" component={edit} onEnter={onEnter({ resource, route: 'edit', scrollToTop: true })} /> : null*/}
+            {edit ? <Route exact path={`${match.url}/:id`} render={({ location, match }) => React.createElement(edit, {
+                ...commonProps,
+                location,
+                match,
+                onEnter: onEnter({ resource, route: 'edit', scrollToTop: true }),
+            })} /> : null}
             {/*show ? <Route {...commonProps} path="/:id/show" component={show} onEnter={onEnter({ resource, route: 'show', scrollToTop: true })} /> : null*/}
             {/*remove ? <Route {...commonProps} path="/:id/delete" component={remove} onEnter={onEnter({ resource, route: 'delete' })} /> : null*/}
         </Switch>

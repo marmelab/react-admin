@@ -101,7 +101,8 @@ class Layout extends Component {
                                     <Route
                                         path={`/${resource.name}`}
                                         key={resource.name}
-                                        render={() => <CrudRoute
+                                        render={({ match }) => <CrudRoute
+                                            match={match}
                                             resource={resource.name}
                                             list={resource.list}
                                             create={resource.create}
