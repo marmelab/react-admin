@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import MenuItem from 'material-ui/MenuItem';
 import DashboardIcon from 'material-ui/svg-icons/action/dashboard';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import translate from '../../i18n/translate';
 
 const DashboardMenuItem = ({ onTouchTap, translate }) => (

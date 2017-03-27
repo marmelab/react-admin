@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import autoprefixer from 'material-ui/utils/autoprefixer';
@@ -95,28 +95,30 @@ class Layout extends Component {
                         { width !== 1 && <AppBar title={title} />}
                         <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
                             <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>
-                                {customRoutes && customRoutes()}
-                                {resources.map(resource =>
-                                    <Route
-                                        path={`/${resource.name}`}
-                                        key={resource.name}
-                                        render={({ match }) => <CrudRoute
-                                            match={match}
-                                            resource={resource.name}
-                                            list={resource.list}
-                                            create={resource.create}
-                                            edit={resource.edit}
-                                            show={resource.show}
-                                            remove={resource.remove}
-                                            options={resource.options}
-                                            onEnter={onEnter}
-                                        />}
-                                    />
-                                )}
-                                {dashboard
-                                    ? <Route exact path="/" component={dashboard} onEnter={onEnter()} />
-                                    : <Route exact path="/" render={() => <Redirect to={`/${resources[0].name}`} />} />
-                                }
+                                <Switch>
+                                    {customRoutes ? customRoutes() : <Route path="dummy" />}
+                                    {resources.map(resource =>
+                                        <Route
+                                            path={`/${resource.name}`}
+                                            key={resource.name}
+                                            render={({ match }) => <CrudRoute
+                                                match={match}
+                                                resource={resource.name}
+                                                list={resource.list}
+                                                create={resource.create}
+                                                edit={resource.edit}
+                                                show={resource.show}
+                                                remove={resource.remove}
+                                                options={resource.options}
+                                                onEnter={onEnter}
+                                            />}
+                                        />
+                                    )}
+                                    {dashboard
+                                        ? <Route exact path="/" component={dashboard} onEnter={onEnter()} />
+                                        : <Route exact path="/" render={() => <Redirect to={`/${resources[0].name}`} />} />
+                                    }
+                                </Switch>
                             </div>
                             <Sidebar theme={theme}>
                                 {menu}

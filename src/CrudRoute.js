@@ -17,27 +17,27 @@ const CrudRoute = ({ match, resource, list, create, edit, show, remove, options,
                 ...commonProps,
                 ...routeProps,
                 onEnter: onEnter({ resource, route: 'list' }),
-            })} /> : <Route />}
+            })} /> : <Route path="dummy" />}
             {create ? <Route exact path={`${match.url}/create`} render={routeProps => createElement(create, {
                 ...commonProps,
                 ...routeProps,
                 onEnter: onEnter({ resource, route: 'create' }),
-            })} /> : <Route />}
+            })} /> : <Route path="dummy" />}
             {edit ? <Route exact path={`${match.url}/:id`} render={routeProps => createElement(edit, {
                 ...commonProps,
                 ...routeProps,
                 onEnter: onEnter({ resource, route: 'edit', scrollToTop: true }),
-            })} /> : <Route />}
+            })} /> : <Route path="dummy" />}
             {show ? <Route exact path={`${match.url}/:id/show`} render={routeProps => createElement(show, {
                 ...commonProps,
                 ...routeProps,
                 onEnter: onEnter({ resource, route: 'show', scrollToTop: true }),
-            })} /> : <Route />}
+            })} /> : <Route path="dummy" />}
             {remove ? <Route exact path={`${match.url}/:id/delete`} render={routeProps => createElement(remove, {
                 ...commonProps,
                 ...routeProps,
                 onEnter: onEnter({ resource, route: 'delete' }),
-            })} /> : <Route />}
+            })} /> : <Route path="dummy" />}
         </Switch>
     );
 };
