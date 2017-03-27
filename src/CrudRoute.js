@@ -18,15 +18,30 @@ const CrudRoute = ({ match, resource, list, create, edit, show, remove, options,
                 location,
                 onEnter: onEnter({ resource, route: 'list' }),
             })} /> : null}
-            {/*create ? <Route {...commonProps} path="/create" component={create} onEnter={onEnter({ resource, route: 'create' })} /> : null*/}
+            {create ? <Route exact path={`${match.url}/create`} render={({ location }) => React.createElement(create, {
+                ...commonProps,
+                location,
+                onEnter: onEnter({ resource, route: 'create' }),
+            })} /> : null}
             {edit ? <Route exact path={`${match.url}/:id`} render={({ location, match }) => React.createElement(edit, {
                 ...commonProps,
                 location,
                 match,
                 onEnter: onEnter({ resource, route: 'edit', scrollToTop: true }),
             })} /> : null}
-            {/*show ? <Route {...commonProps} path="/:id/show" component={show} onEnter={onEnter({ resource, route: 'show', scrollToTop: true })} /> : null*/}
-            {/*remove ? <Route {...commonProps} path="/:id/delete" component={remove} onEnter={onEnter({ resource, route: 'delete' })} /> : null*/}
+            {show ? <Route exact path={`${match.url}/:id/show`} render={({ location, match }) => React.createElement(show, {
+                ...commonProps,
+                location,
+                match,
+                onEnter: onEnter({ resource, route: 'show', scrollToTop: true }),
+            })} /> : null}
+            {remove ? <Route exact path={`${match.url}/:id/delete`} render={({ location, match, history }) => React.createElement(remove, {
+                ...commonProps,
+                location,
+                match,
+                history,
+                onEnter: onEnter({ resource, route: 'delete' }),
+            })} /> : null}
         </Switch>
     );
 };

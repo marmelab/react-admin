@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createHistory from 'history/createHashHistory';
-import { Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
@@ -60,8 +60,6 @@ const Admin = ({
     ));
     sagaMiddleware.run(saga);
 
-
-    const firstResource = resources[0].name;
     const onEnter = authClient ?
         params => (nextState, replace, callback) => authClient(AUTH_CHECK, params)
             .then(() => params && params.scrollToTop ? window.scrollTo(0, 0) : null)
@@ -94,9 +92,10 @@ const Admin = ({
             <TranslationProvider messages={messages}>
                 <ConnectedRouter history={history}>
                     <div>
-                        {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
-                        <Route path="/login" component={LoginPage} />
-                        <Route path="/" component={Layout} />
+                        <Switch>
+                            <Route exact path="/login" component={LoginPage} />
+                            <Route path="/" component={Layout} />
+                        </Switch>
                     </div>
                 </ConnectedRouter>
             </TranslationProvider>

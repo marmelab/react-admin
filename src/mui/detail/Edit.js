@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { parse } from 'query-string';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';

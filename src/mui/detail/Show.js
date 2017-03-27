@@ -92,7 +92,7 @@ Show.propTypes = {
     id: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
@@ -100,8 +100,8 @@ Show.propTypes = {
 
 function mapStateToProps(state, props) {
     return {
-        id: props.params.id,
-        data: state.admin[props.resource].data[props.params.id],
+        id: props.match.params.id,
+        data: state.admin[props.resource].data[props.match.params.id],
         isLoading: state.admin.loading > 0,
     };
 }

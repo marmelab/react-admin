@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import autoprefixer from 'material-ui/utils/autoprefixer';
@@ -96,7 +96,6 @@ class Layout extends Component {
                         <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
                             <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>
                                 {customRoutes && customRoutes()}
-                                {dashboard && <Route component={dashboard} onEnter={onEnter()} />}
                                 {resources.map(resource =>
                                     <Route
                                         path={`/${resource.name}`}
@@ -114,6 +113,10 @@ class Layout extends Component {
                                         />}
                                     />
                                 )}
+                                {dashboard
+                                    ? <Route exact path="/" component={dashboard} onEnter={onEnter()} />
+                                    : <Route exact path="/" render={() => <Redirect to={`/${resources[0].name}`} />} />
+                                }
                             </div>
                             <Sidebar theme={theme}>
                                 {menu}
