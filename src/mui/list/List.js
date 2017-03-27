@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { parse } from 'query-string';
+import { parse, stringify } from 'query-string';
 import { push as pushAction } from 'react-router-redux';
 import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
+import { defaultMemoize } from 'reselect';
 import inflection from 'inflection';
 import { change as changeFormValueAction, getFormValues } from 'redux-form';
 import debounce from 'lodash.debounce';
@@ -20,7 +21,9 @@ const filterFormName = 'filterForm';
 
 const styles = {
     noResults: { padding: 20 },
-}
+};
+
+const parseOnce = defaultMemoize(parse);
 
 /**
  * List page component
@@ -175,7 +178,7 @@ export class List extends Component {
 
     changeParams(action) {
         const newParams = queryReducer(this.getQuery(), action);
-        this.props.push({ ...this.props.location, query: { ...newParams, filter: JSON.stringify(newParams.filter) } });
+        this.props.push({ ...this.props.location, search: '?' + stringify({ ...newParams, filter: JSON.stringify(newParams.filter) }) });
         this.props.changeListParams(this.props.resource, newParams);
     }
 
@@ -286,7 +289,7 @@ List.defaultProps = {
 
 function mapStateToProps(state, props) {
     const resourceState = state.admin[props.resource];
-    const query = parse(props.location);
+    const query = parseOnce(props.location.search);
     if (query.filter && typeof query.filter === 'string') {
         // if the List has no filter component, the filter is always "{}"
         // avoid deserialization and keep identity by using a constant
