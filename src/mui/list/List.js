@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { parse } from 'query-string';
 import { push as pushAction } from 'react-router-redux';
 import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
@@ -285,7 +286,7 @@ List.defaultProps = {
 
 function mapStateToProps(state, props) {
     const resourceState = state.admin[props.resource];
-    const query = props.location.query;
+    const query = parse(props.location);
     if (query.filter && typeof query.filter === 'string') {
         // if the List has no filter component, the filter is always "{}"
         // avoid deserialization and keep identity by using a constant

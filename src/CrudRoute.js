@@ -1,9 +1,9 @@
 import React from 'react';
-import { IndexRoute, Route, Switch } from 'react-router';
+import { Route, Switch } from 'react-router-dom';
 
-const CrudRoute = ({ path, list, create, edit, show, remove, options, onEnter = () => null }) => {
+const CrudRoute = ({ match, resource, list, create, edit, show, remove, options, onEnter = () => null }) => {
     const commonProps = {
-        resource: path,
+        resource,
         options,
         hasList: !!list,
         hasEdit: !!edit,
@@ -13,11 +13,15 @@ const CrudRoute = ({ path, list, create, edit, show, remove, options, onEnter = 
     };
     return (
         <Switch>
-            {list ? <IndexRoute {...commonProps} path={path} component={list} onEnter={onEnter({ resource: path, route: 'list' })} /> : null}
-            {create ? <Route {...commonProps} path={`${path}/create`} component={create} onEnter={onEnter({ resource: path, route: 'create' })} /> : null}
-            {edit ? <Route {...commonProps} path={`${path}/:id`} component={edit} onEnter={onEnter({ resource: path, route: 'edit', scrollToTop: true })} /> : null}
-            {/*show ? <Route {...commonProps} path={`${path}/:id/show`} component={show} onEnter={onEnter({ resource: path, route: 'show', scrollToTop: true })} /> : null*/}
-            {remove ? <Route {...commonProps} path={`${path}/:id/delete`} component={remove} onEnter={onEnter({ resource: path, route: 'delete' })} /> : null}
+            {list ? <Route path="/" render={({ location }) => React.createElement(list, {
+                ...commonProps,
+                location,
+                onEnter: onEnter({ resource, route: 'list' }),
+            }) } /> : null}
+            {/*create ? <Route {...commonProps} path="/create" component={create} onEnter={onEnter({ resource, route: 'create' })} /> : null*/}
+            {/*edit ? <Route {...commonProps} path=":id" component={edit} onEnter={onEnter({ resource, route: 'edit', scrollToTop: true })} /> : null*/}
+            {/*show ? <Route {...commonProps} path="/:id/show" component={show} onEnter={onEnter({ resource, route: 'show', scrollToTop: true })} /> : null*/}
+            {/*remove ? <Route {...commonProps} path="/:id/delete" component={remove} onEnter={onEnter({ resource, route: 'delete' })} /> : null*/}
         </Switch>
     );
 };

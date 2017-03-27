@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createHistory from 'history/createHashHistory';
-import { Router, IndexRoute, Route, Redirect, hashHistory } from 'react-router';
+import { Route, Redirect } from 'react-router-dom';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';

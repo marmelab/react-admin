@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { IndexRoute } from 'react-router';
+import { Route } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import autoprefixer from 'material-ui/utils/autoprefixer';
@@ -96,18 +96,21 @@ class Layout extends Component {
                         <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
                             <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>
                                 {customRoutes && customRoutes()}
-                                {dashboard && <IndexRoute component={dashboard} onEnter={onEnter()} />}
+                                {dashboard && <Route component={dashboard} onEnter={onEnter()} />}
                                 {resources.map(resource =>
-                                    <CrudRoute
+                                    <Route
+                                        path={`/${resource.name}`}
                                         key={resource.name}
-                                        path={resource.name}
-                                        list={resource.list}
-                                        create={resource.create}
-                                        edit={resource.edit}
-                                        show={resource.show}
-                                        remove={resource.remove}
-                                        options={resource.options}
-                                        onEnter={onEnter}
+                                        render={() => <CrudRoute
+                                            resource={resource.name}
+                                            list={resource.list}
+                                            create={resource.create}
+                                            edit={resource.edit}
+                                            show={resource.show}
+                                            remove={resource.remove}
+                                            options={resource.options}
+                                            onEnter={onEnter}
+                                        />}
                                     />
                                 )}
                             </div>
