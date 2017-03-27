@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { createElement, PropTypes } from 'react';
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createHistory from 'history/createHashHistory';
@@ -7,12 +7,10 @@ import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-r
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 import { fork } from 'redux-saga/effects';
-import withProps from 'recompose/withProps';
 
 import adminReducer from './reducer';
 import localeReducer from './reducer/locale';
 import { crudSaga } from './sideEffect/saga';
-import CrudRoute from './CrudRoute';
 import DefaultLayout from './mui/layout/Layout';
 import Menu from './mui/layout/Menu';
 import Login from './mui/auth/Login';
@@ -72,20 +70,7 @@ const Admin = ({
             .then(callback)
         :
         params => () => params && params.scrollToTop ? window.scrollTo(0, 0) : null;
-    const LoginPage = withProps({ title, theme, authClient })(loginPage || Login);
-    const LogoutButton = withProps({ authClient })(logoutButton || Logout);
-    const MenuComponent = withProps({ authClient, logout: <LogoutButton />, resources, hasDashboard: !!dashboard })(menu || Menu);
-    const Layout = withProps({
-        authClient,
-        dashboard,
-        customRoutes,
-        logout: <LogoutButton />,
-        menu: <MenuComponent />,
-        onEnter,
-        resources,
-        title,
-        theme,
-    })(appLayout || DefaultLayout);
+    const logout = createElement(logoutButton || Logout, { authClient });
 
     return (
         <Provider store={store}>
@@ -93,8 +78,27 @@ const Admin = ({
                 <ConnectedRouter history={history}>
                     <div>
                         <Switch>
-                            <Route exact path="/login" component={LoginPage} />
-                            <Route path="/" component={Layout} />
+                            <Route exact path="/login" render={() => createElement(loginPage || Login, {
+                                title,
+                                theme,
+                                authClient,
+                            })} />
+                            <Route path="/" render={() => createElement(appLayout || DefaultLayout, {
+                                authClient,
+                                dashboard,
+                                customRoutes,
+                                logout,
+                                menu: createElement(menu || Menu, {
+                                    authClient,
+                                    logout,
+                                    resources,
+                                    hasDashboard: !!dashboard,
+                                }),
+                                onEnter,
+                                resources,
+                                title,
+                                theme,
+                            })} />
                         </Switch>
                     </div>
                 </ConnectedRouter>
