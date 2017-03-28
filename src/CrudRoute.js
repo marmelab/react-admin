@@ -1,7 +1,8 @@
 import React, { createElement } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import Restricted from './auth/Restricted';
 
-const CrudRoute = ({ match, resource, list, create, edit, show, remove, options, onEnter = () => null }) => {
+const CrudRoute = ({ authClient = () => Promise.resolve(), match, resource, list, create, edit, show, remove, options }) => {
     const commonProps = {
         resource,
         options,
@@ -11,33 +12,27 @@ const CrudRoute = ({ match, resource, list, create, edit, show, remove, options,
         hasCreate: !!create,
         hasDelete: !!remove,
     };
+    const CrudComponent = (component, route) => routeProps =>
+        <Restricted authClient={authClient} authParams={{ resource, route }} {...routeProps}>
+            {createElement(component, { ...commonProps, ...routeProps })}
+        </Restricted>;
     return (
         <Switch>
-            {list ? <Route exact path={match.url} render={routeProps => createElement(list, {
-                ...commonProps,
-                ...routeProps,
-                onEnter: onEnter({ resource, route: 'list' }),
-            })} /> : <Route path="dummy" />}
-            {create ? <Route exact path={`${match.url}/create`} render={routeProps => createElement(create, {
-                ...commonProps,
-                ...routeProps,
-                onEnter: onEnter({ resource, route: 'create' }),
-            })} /> : <Route path="dummy" />}
-            {edit ? <Route exact path={`${match.url}/:id`} render={routeProps => createElement(edit, {
-                ...commonProps,
-                ...routeProps,
-                onEnter: onEnter({ resource, route: 'edit', scrollToTop: true }),
-            })} /> : <Route path="dummy" />}
-            {show ? <Route exact path={`${match.url}/:id/show`} render={routeProps => createElement(show, {
-                ...commonProps,
-                ...routeProps,
-                onEnter: onEnter({ resource, route: 'show', scrollToTop: true }),
-            })} /> : <Route path="dummy" />}
-            {remove ? <Route exact path={`${match.url}/:id/delete`} render={routeProps => createElement(remove, {
-                ...commonProps,
-                ...routeProps,
-                onEnter: onEnter({ resource, route: 'delete' }),
-            })} /> : <Route path="dummy" />}
+            {list
+                ? <Route exact path={match.url} render={CrudComponent(list, 'list')} />
+                : <Route path="dummy" />}
+            {create
+                ? <Route exact path={`${match.url}/create`} render={CrudComponent(create, 'create')} />
+                : <Route path="dummy" />}
+            {edit
+                ? <Route exact path={`${match.url}/:id`} render={CrudComponent(edit, 'edit')} />
+                : <Route path="dummy" />}
+            {show
+                ? <Route exact path={`${match.url}/:id/show`} render={CrudComponent(show, 'show')} />
+                : <Route path="dummy" />}
+            {remove
+                ? <Route exact path={`${match.url}/:id/delete`} render={CrudComponent(remove, 'delete')} />
+                : <Route path="dummy" />}
         </Switch>
     );
 };

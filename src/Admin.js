@@ -58,18 +58,6 @@ const Admin = ({
     ));
     sagaMiddleware.run(saga);
 
-    const onEnter = authClient ?
-        params => (nextState, replace, callback) => authClient(AUTH_CHECK, params)
-            .then(() => params && params.scrollToTop ? window.scrollTo(0, 0) : null)
-            .catch(e => {
-                replace({
-                    pathname: (e && e.redirectTo) || '/login',
-                    state: { nextPathname: nextState.location.pathname },
-                })
-            })
-            .then(callback)
-        :
-        params => () => params && params.scrollToTop ? window.scrollTo(0, 0) : null;
     const logout = createElement(logoutButton || Logout, { authClient });
 
     return (
@@ -78,7 +66,8 @@ const Admin = ({
                 <ConnectedRouter history={history}>
                     <div>
                         <Switch>
-                            <Route exact path="/login" render={() => createElement(loginPage || Login, {
+                            <Route exact path="/login" render={({ location }) => createElement(loginPage || Login, {
+                                location,
                                 title,
                                 theme,
                                 authClient,
@@ -94,7 +83,6 @@ const Admin = ({
                                     resources,
                                     hasDashboard: !!dashboard,
                                 }),
-                                onEnter,
                                 resources,
                                 title,
                                 theme,

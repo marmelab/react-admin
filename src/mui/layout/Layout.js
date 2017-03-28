@@ -66,12 +66,12 @@ class Layout extends Component {
 
     render() {
         const {
+            authClient,
             children,
             customRoutes,
             dashboard,
             isLoading,
             menu,
-            onEnter,
             resources,
             theme,
             title,
@@ -120,7 +120,7 @@ class Layout extends Component {
                                                 show={resource.show}
                                                 remove={resource.remove}
                                                 options={resource.options}
-                                                onEnter={onEnter}
+                                                authClient={authClient}
                                             />}
                                         />
                                     )}
