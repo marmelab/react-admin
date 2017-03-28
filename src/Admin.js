@@ -115,7 +115,7 @@ Admin.propTypes = {
     children: PropTypes.node,
     customSagas: PropTypes.array,
     customReducers: PropTypes.object,
-    customRoutes: PropTypes.func,
+    customRoutes: PropTypes.array,
     dashboard: componentPropType,
     loginPage: componentPropType,
     logoutButton: componentPropType,

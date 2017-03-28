@@ -278,7 +278,7 @@ export default App;
 
 ### `customRoutes`
 
-To register your own routes, create a function returning a [react-router](https://github.com/ReactTraining/react-router) `<Route>` component:
+To register your own routes, create a module returning a list of [react-router](https://github.com/ReactTraining/react-router) `<Route>` component:
 
 ```js
 // in src/customRoutes.js
@@ -287,15 +287,13 @@ import { Route } from 'react-router-dom';
 import Foo from './Foo';
 import Bar from './Bar';
 
-export default () => (
-    <Route>
-        <Route path="/foo" component={Foo} />
-        <Route path="/bar" component={Bar} />
-    </Route>
-);
+export default [
+    <Route exact path="/foo" component={Foo} />,
+    <Route exact path="/bar" component={Bar} />,
+];
 ```
 
-Then, pass this function as `customRoutes` prop to the `<Admin>` component:
+Then, pass this array as `customRoutes` prop in the `<Admin>` component:
 
 ```js
 // in src/App.js

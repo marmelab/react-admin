@@ -96,7 +96,17 @@ class Layout extends Component {
                         <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
                             <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>
                                 <Switch>
-                                    {customRoutes ? customRoutes() : <Route path="dummy" />}
+                                    {customRoutes
+                                        ? customRoutes.map((route, index) =>
+                                            <Route
+                                                key={index}
+                                                exact={route.props.exact}
+                                                path={route.props.path}
+                                                component={route.props.component}
+                                                render={route.props.render}
+                                                children={route.props.children}
+                                            />)
+                                        : <Route path="dummy" />}
                                     {resources.map(resource =>
                                         <Route
                                             path={`/${resource.name}`}
@@ -141,6 +151,7 @@ class Layout extends Component {
 
 Layout.propTypes = {
     authClient: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
+    customRoutes: PropTypes.array,
     isLoading: PropTypes.bool.isRequired,
     children: PropTypes.node,
     menu: PropTypes.element,
