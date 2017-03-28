@@ -264,7 +264,6 @@ List.propTypes = {
     data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     hasCreate: PropTypes.bool.isRequired,
-    hasEdit: PropTypes.bool.isRequired,
     ids: PropTypes.array,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
