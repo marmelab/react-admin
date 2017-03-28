@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import SelectInput from './SelectInput';
 import translate from '../../i18n/translate';
 
-export const NullableBooleanInput = ({ input, meta: { touched, error }, label, source, elStyle, resource, translate }) => (
+export const NullableBooleanInput = ({ input, meta, label, source, elStyle, resource, translate }) => (
     <SelectInput
         input={input}
         label={label}
@@ -13,7 +13,7 @@ export const NullableBooleanInput = ({ input, meta: { touched, error }, label, s
             { id: false, name: translate('aor.boolean.false') },
             { id: true, name: translate('aor.boolean.true') },
         ]}
-        errorText={touched && error}
+        meta={meta}
         style={elStyle}
     />
 );
