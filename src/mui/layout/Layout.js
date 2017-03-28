@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Redirect, Route, Switch } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import autoprefixer from 'material-ui/utils/autoprefixer';
@@ -8,7 +7,8 @@ import CircularProgress from 'material-ui/CircularProgress';
 import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import CrudRoute from '../../CrudRoute';
+
+import AdminRoutes from '../../AdminRoutes';
 import AppBar from './AppBar';
 import Sidebar from './Sidebar';
 import Notification from './Notification';
@@ -67,7 +67,6 @@ class Layout extends Component {
     render() {
         const {
             authClient,
-            children,
             customRoutes,
             dashboard,
             isLoading,
@@ -95,40 +94,12 @@ class Layout extends Component {
                         { width !== 1 && <AppBar title={title} />}
                         <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
                             <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>
-                                <Switch>
-                                    {customRoutes
-                                        ? customRoutes.map((route, index) =>
-                                            <Route
-                                                key={index}
-                                                exact={route.props.exact}
-                                                path={route.props.path}
-                                                component={route.props.component}
-                                                render={route.props.render}
-                                                children={route.props.children}
-                                            />)
-                                        : <Route path="dummy" />}
-                                    {resources.map(resource =>
-                                        <Route
-                                            path={`/${resource.name}`}
-                                            key={resource.name}
-                                            render={({ match }) => <CrudRoute
-                                                match={match}
-                                                resource={resource.name}
-                                                list={resource.list}
-                                                create={resource.create}
-                                                edit={resource.edit}
-                                                show={resource.show}
-                                                remove={resource.remove}
-                                                options={resource.options}
-                                                authClient={authClient}
-                                            />}
-                                        />
-                                    )}
-                                    {dashboard
-                                        ? <Route exact path="/" component={dashboard} onEnter={onEnter()} />
-                                        : <Route exact path="/" render={() => <Redirect to={`/${resources[0].name}`} />} />
-                                    }
-                                </Switch>
+                                <AdminRoutes
+                                    customRoutes={customRoutes}
+                                    resources={resources}
+                                    authClient={authClient}
+                                    dashboard={dashboard}
+                                />
                             </div>
                             <Sidebar theme={theme}>
                                 {menu}
@@ -152,9 +123,10 @@ class Layout extends Component {
 Layout.propTypes = {
     authClient: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
     customRoutes: PropTypes.array,
+    dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     isLoading: PropTypes.bool.isRequired,
-    children: PropTypes.node,
     menu: PropTypes.element,
+    resources: PropTypes.array,
     setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
     theme: PropTypes.object.isRequired,

@@ -16,7 +16,6 @@ import Menu from './mui/layout/Menu';
 import Login from './mui/auth/Login';
 import Logout from './mui/auth/Logout';
 import TranslationProvider from './i18n/TranslationProvider';
-import { AUTH_CHECK } from './auth';
 
 const Admin = ({
     appLayout,
