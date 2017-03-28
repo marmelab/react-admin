@@ -94,4 +94,4 @@ const App = () => (
 );
 ```
 
-This application has no sidebar, no auth control, no theming - it's up to you to add these. From then on, you can customize pretty much anything you want.
+This application has no sidebar, no theming, no [auth control](./Authentication.html#restricting-access-to-a-custom-page) - it's up to you to add these. From then on, you can customize pretty much anything you want.
