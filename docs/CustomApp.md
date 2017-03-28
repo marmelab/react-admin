@@ -21,7 +21,7 @@ import { render } from 'react-dom';
 // redux, react-router, and saga form the 'kernel' on which admin-on-rest runs
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { Router, IndexRoute, Route, Redirect, hashHistory } from 'react-router';
+import { Router, Route, Redirect, hashHistory } from 'react-router-dom';
 import { syncHistoryWithStore, routerMiddleware, routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';

@@ -38,8 +38,8 @@ import {
 } from 'admin-on-rest';
 import RichTextInput from 'aor-rich-text-input';
 import Chip from 'material-ui/Chip';
+
 export PostIcon from 'material-ui/svg-icons/action/book';
-import { Link } from 'react-router';
 
 const QuickFilter = translate(({ label, translate }) => <Chip style={{ marginBottom: 8 }}>{translate(label)}</Chip>);
 

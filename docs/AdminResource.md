@@ -122,7 +122,7 @@ If you want to add or remove menu items, for instance to link to non-resources p
 // in src/Menu.js
 import React from 'react';
 import MenuItem from 'material-ui/MenuItem';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export default ({ resources, onMenuTap, logout }) => (
     <div>
@@ -283,7 +283,7 @@ To register your own routes, create a function returning a [react-router](https:
 ```js
 // in src/customRoutes.js
 import React from 'react';
-import { Route } from 'react-router';
+import { Route } from 'react-router-dom';
 import Foo from './Foo';
 import Bar from './Bar';
 
