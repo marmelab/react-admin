@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 
-import { Admin, Resource, Delete, englishMessages, resolveBrowserLocale } from 'admin-on-rest';
+import { Admin, Resource, Delete, englishMessages } from 'admin-on-rest';
 import jsonRestClient from 'aor-json-rest-client';
 import frenchMessages from 'aor-language-french';
 
