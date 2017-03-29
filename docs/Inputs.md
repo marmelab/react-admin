@@ -13,7 +13,7 @@ import React from 'react';
 import { Edit, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest/lib/mui';
 
 export const PostEdit = (props) => (
-    <Edit title={PostTitle} {...props}>
+    <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
             <ReferenceInput label="User" source="userId" reference="users">
