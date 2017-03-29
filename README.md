@@ -31,6 +31,14 @@ A frontend Framework for building admin applications running in the browser on t
 * Can be included in another React app
 * Inspired by the popular [ng-admin](https://github.com/marmelab/ng-admin) library (also by marmelab)
 
+## Versions In This Repository
+
+* [master](https://github.com/marmelab/admin-on-rest/commits/master) - commits that will be included in the next _patch_ release
+
+* [next](https://github.com/marmelab/admin-on-rest/commits/next) - commits that will be included in the next _major_ or _minor_ release
+
+Most PRs should be made to **next**.
+
 ## Installation
 
 Admin-on-rest is available from npm. You can install it (and its required dependencies)
