@@ -39,7 +39,7 @@ const AdminRoutes = ({ customRoutes, resources, authClient, dashboard }) => (
                 path="/"
                 render={routeProps =>
                     <Restricted authClient={authClient} authParams={{ route: 'dashboard' }} {...routeProps}>
-                        {dashboard}
+                        {React.createElement(dashboard)}
                     </Restricted>}
                 />
             : <Route exact path="/" render={() => <Redirect to={`/${resources[0].name}`} />} />
