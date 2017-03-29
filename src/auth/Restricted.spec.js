@@ -26,7 +26,7 @@ describe('<Restricted>', () => {
     it('should not redirect to login when auth client resolves', async () => {
         const authClient = sinon.stub().returns(Promise.resolve());
         const replace = sinon.spy();
-        const wrapper = render(<Restricted authClient={authClient} replace={replace} location={{ pathname: 'foo' }}><Foo /></Restricted>);
+        render(<Restricted authClient={authClient} replace={replace} location={{ pathname: 'foo' }}><Foo /></Restricted>);
         // wait for promise to finish
         await new Promise(resolve => setTimeout(resolve, 10));
         assert(!replace.called);
@@ -34,7 +34,7 @@ describe('<Restricted>', () => {
     it('should redirect to login when auth client rejects', async () => {
         const authClient = sinon.stub().returns(Promise.reject());
         const replace = sinon.spy();
-        const wrapper = render(<Restricted authClient={authClient} replace={replace} location={{ pathname: 'foo' }}><Foo /></Restricted>);
+        render(<Restricted authClient={authClient} replace={replace} location={{ pathname: 'foo' }}><Foo /></Restricted>);
         // wait for promise to finish
         await new Promise(resolve => setTimeout(resolve, 10));
         assert(replace.calledOnce);
