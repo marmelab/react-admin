@@ -17,7 +17,7 @@ import { AUTH_CHECK } from './';
  *   </Restricted>
  * } />
  */
-class Restricted extends Component {
+export class Restricted extends Component {
     static propTypes = {
         authClient: PropTypes.func,
         authParams: PropTypes.object,
