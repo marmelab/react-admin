@@ -37,7 +37,7 @@ A frontend Framework for building admin applications running in the browser on t
 
 * [next](https://github.com/marmelab/admin-on-rest/commits/next) - commits that will be included in the next _major_ or _minor_ release
 
-Most PRs should be made to **next**.
+Bugfix PRs that don't break BC should be made against **master**. All other PRs (new features, bugfix with BC break) should be made against **next**.
 
 ## Installation
 
