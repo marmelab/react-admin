@@ -4,7 +4,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import CrudRoute from './CrudRoute';
 import Restricted from './auth/Restricted';
 
-const AdminRoutes = ({ customRoutes, resources, authClient, dashboard }) => (
+const AdminRoutes = ({ customRoutes, resources = [], authClient, dashboard }) => (
     <Switch>
         {customRoutes
             ? customRoutes.map((route, index) =>

@@ -25,6 +25,10 @@ export class Restricted extends Component {
         replace: PropTypes.func,
     }
 
+    static defaultProps = {
+        authClient: () => Promise.resolve(),
+    }
+
     componentWillMount() {
         this.checkAuthentication(this.props);
     }

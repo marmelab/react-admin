@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import Restricted from './auth/Restricted';
 
-const CrudRoute = ({ authClient = () => Promise.resolve(), resource, list, create, edit, show, remove, options }) => {
+const CrudRoute = ({ authClient, resource, list, create, edit, show, remove, options }) => {
     const commonProps = {
         resource,
         options,
