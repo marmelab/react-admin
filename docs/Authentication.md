@@ -138,7 +138,7 @@ export default (type, params) => {
         // ...
     }
     if (type === AUTH_CHECK) {
-        return localStorage.getItem('username') ? Promise.resolve() : Promise.reject();
+        return localStorage.getItem('token') ? Promise.resolve() : Promise.reject();
     }
     return Promise.reject('Unkown method');
 };
@@ -158,7 +158,7 @@ export default (type, params) => {
         // ...
     }
     if (type === AUTH_CHECK) {
-        return localStorage.getItem('username') ? Promise.resolve() : Promise.reject({ redirectTo: '/no-access' });
+        return localStorage.getItem('token') ? Promise.resolve() : Promise.reject({ redirectTo: '/no-access' });
     }
     return Promise.reject('Unkown method');
 };
