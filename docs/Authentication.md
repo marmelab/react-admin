@@ -73,7 +73,7 @@ For instance, to pass the token obtained during login as an `Authorization` head
 
 ```js
 import { simpleRestClient, fetchUtils, Admin, Resource } from 'admin-on-rest';
-const httpClient = (url, options) => {
+const httpClient = (url, options = {}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
     }
