@@ -121,7 +121,7 @@ class Layout extends Component {
 }
 
 Layout.propTypes = {
-    authClient: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
+    authClient: PropTypes.func,
     customRoutes: PropTypes.array,
     dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     isLoading: PropTypes.bool.isRequired,
