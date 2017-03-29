@@ -97,7 +97,7 @@ const PostTitle = ({ record }) => {
 };
 
 export const PostEdit = (props) => (
-    <Edit title={PostTitle} {...props}>
+    <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
             <TextInput source="title" />
