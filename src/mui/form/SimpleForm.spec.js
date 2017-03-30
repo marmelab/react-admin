@@ -38,7 +38,7 @@ describe('<SimpleForm />', () => {
         assert.notStrictEqual(form.prop('onSubmit'), handleSubmit);
 
         const button = wrapper.find('Toolbar');
-        assert.equal(button.prop('submitOnEnter'), true);
+        assert.equal(button.prop('submitOnEnter'), false);
         assert.equal(button.prop('handleSubmit'), handleSubmit);
     });
 
