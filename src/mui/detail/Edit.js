@@ -22,7 +22,7 @@ export class Edit extends Component {
             key: 0,
             record: props.data,
         };
-        this.fullRefresh = false;
+        this.previousKey = 0;
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -89,7 +89,11 @@ export class Edit extends Component {
             data,
         });
         const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
-        const isRefreshing = this.fullRefresh;
+        // using this.previousKEy instead of this.fullRefresh makes
+        // the new form mount, the old form unmount, and the new form update appear in the same frame
+        // so the form doesn't disappear while refreshing
+        const isRefreshing = key !== this.previousKey;
+        this.previousKey = key;
 
         return (
             <div>
