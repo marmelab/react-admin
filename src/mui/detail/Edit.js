@@ -89,7 +89,7 @@ export class Edit extends Component {
             data,
         });
         const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
-        // using this.previousKEy instead of this.fullRefresh makes
+        // using this.previousKey instead of this.fullRefresh makes
         // the new form mount, the old form unmount, and the new form update appear in the same frame
         // so the form doesn't disappear while refreshing
         const isRefreshing = key !== this.previousKey;
