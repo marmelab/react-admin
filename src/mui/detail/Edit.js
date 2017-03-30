@@ -22,6 +22,7 @@ export class Edit extends Component {
             key: 0,
             record: props.data,
         };
+        this.fullRefresh = false;
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -88,6 +89,7 @@ export class Edit extends Component {
             data,
         });
         const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
+        const isRefreshing = this.fullRefresh;
 
         return (
             <div>
@@ -101,7 +103,7 @@ export class Edit extends Component {
                         resource,
                     })}
                     <ViewTitle title={titleElement} />
-                    {data && React.cloneElement(children, {
+                    {data && !isRefreshing && React.cloneElement(children, {
                         onSubmit: this.handleSubmit,
                         resource,
                         basePath,
