@@ -146,6 +146,9 @@ export const PostEdit = (props) => (
 
 The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as argument when the user submits the form.
 
+By default the `<SimpleForm>` submits the form when the user presses `ENTER`, if you want
+to change this behaviour you can pass `false` for the `submitOnEnter` property.
+
 The `<SimpleForm>` renders its child components line by line (within `<div>` components). It uses `redux-form`.
 
 ![post edition form](./img/post-edition.png)
@@ -170,6 +173,9 @@ export const PostCreate = (props) => (
 ## The `<TabbedForm>` component
 
 Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop.
+
+By default the `<TabbedForm>` submits the form when the user presses `ENTER`, if you want
+to change this behaviour you can pass `false` for the `submitOnEnter` property.
 
 ![tabbed form](./img/tabbed-form.gif)
 
