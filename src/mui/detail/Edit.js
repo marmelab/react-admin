@@ -20,7 +20,6 @@ export class Edit extends Component {
         super(props);
         this.state = {
             key: 0,
-            record: props.data,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -31,7 +30,6 @@ export class Edit extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.data !== nextProps.data) {
-            this.setState({ record: nextProps.data }); // FIXME: erases user entry when fetch response arrives late
             if (this.fullRefresh) {
                 this.fullRefresh = false;
                 this.setState({ key: this.state.key + 1 });
@@ -102,6 +100,7 @@ export class Edit extends Component {
                     })}
                     <ViewTitle title={titleElement} />
                     {data && React.cloneElement(children, {
+                        form: `record-form-${key}`,
                         onSubmit: this.handleSubmit,
                         resource,
                         basePath,
