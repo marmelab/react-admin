@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
-import simple from 'simple-mock';
+import sinon from 'sinon';
 
 import { SaveButton } from './SaveButton';
 
@@ -37,7 +37,7 @@ describe('<SaveButton />', () => {
     });
 
     it('should not call handleSubmit when clicked while submitOnEnter is true and no saving in in progress', () => {
-        const handleSubmit = simple.mock(() => {});
+        const handleSubmit = sinon.spy();
         const raisedButtonWrapper = shallow(
             <SaveButton raised={true} submitOnEnter={true} translate={translate} handleSubmit={handleSubmit} saving={false} />
         );
@@ -48,11 +48,11 @@ describe('<SaveButton />', () => {
         raisedButtonWrapper.simulate('click');
         flatButtonWrapper.simulate('click');
 
-        assert.equal(handleSubmit.callCount, 0);
+        assert(handleSubmit.notCalled);
     });
 
     it('should call handleSubmit when clicked while submitOnEnter is false and no saving is in progress', () => {
-        const handleSubmit = simple.mock(() => {});
+        const handleSubmit = sinon.spy();
         const raisedButtonWrapper = shallow(
             <SaveButton raised={true} submitOnEnter={false} translate={translate} handleSubmit={handleSubmit} saving={false} />
         );
@@ -61,16 +61,17 @@ describe('<SaveButton />', () => {
         );
 
         raisedButtonWrapper.simulate('click');
-        assert.equal(handleSubmit.callCount, 1);
+        assert(handleSubmit.calledOnce);
         flatButtonWrapper.simulate('click');
-        assert.equal(handleSubmit.callCount, 2);
+        assert(handleSubmit.calledTwice);
     });
 
     it('should not call handleSubmit when clicked while submitOnEnter is false and saving is in progress', () => {
-        const handleSubmit = simple.mock(() => {});
+        const handleSubmit = sinon.spy();
         const event = {
-          preventDefault: simple.mock(() => {})
+          preventDefault: sinon.spy(),
         };
+
         const raisedButtonWrapper = shallow(
             <SaveButton raised={true} submitOnEnter={false} translate={translate} handleSubmit={handleSubmit} saving={true} />
         );
@@ -79,10 +80,10 @@ describe('<SaveButton />', () => {
         );
 
         raisedButtonWrapper.simulate('click', event);
-        assert.equal(event.preventDefault.callCount, 1);
+        assert(event.preventDefault.calledOnce);
         flatButtonWrapper.simulate('click', event);
-        assert.equal(event.preventDefault.callCount, 2);
+        assert(event.preventDefault.calledTwice);
 
-        assert.equal(handleSubmit.callCount, 0);
+        assert(handleSubmit.notCalled);
     });
 });
