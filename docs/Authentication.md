@@ -216,3 +216,26 @@ const App = () => (
 **Tip**: The `authClient` function is automatically passed as prop to your custom `LoginPage` and `LogoutButton` components.
 
 **Tip**: If you want to use Redux and Saga to handle credentials and authorization, you will need to register  [custom reducers](./AdminResource.html#customreducers) and [custom sagas](./AdminResource.html#customsagas) in the `<Admin>` component.
+
+## Restricting Access To A Custom Page
+
+If you add [custom pages](./Actions.html), of if you [create an admin app from scratch](./CustomApp.html), you may need to secure access to pages manually. That's the purpose of the `<Restricted>` component, that you can use as a decorator for your own components.
+
+```js
+// in src/MyPage.js
+import { withRouter } from 'react-router-dom';
+import { Restricted } from 'admin-on-rest';
+import authClient from './authClient';
+
+const MyPage = ({ location }) =>
+    <Restricted authClient={authClient} authParams={{ foo: 'bar' }} location={location} />
+        <div>
+            ...
+        </div>
+    </Restricted>
+}
+
+export default withRouter(MyPage);
+```
+
+The `<Restricted>` component calls the `authClient` function with `AUTH_CHECK` and `authParams`. If the response is a fulfilled promise, the child component is rendered. If the response is a rejected priomise, `<Restricted>` redirects to the login form. Upon successful login, the user is redirected to the initial location (that's why it's necessary to get the location from the router). 

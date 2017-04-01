@@ -122,7 +122,7 @@ If you want to add or remove menu items, for instance to link to non-resources p
 // in src/Menu.js
 import React from 'react';
 import MenuItem from 'material-ui/MenuItem';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export default ({ resources, onMenuTap, logout }) => (
     <div>
@@ -278,24 +278,22 @@ export default App;
 
 ### `customRoutes`
 
-To register your own routes, create a function returning a [react-router](https://github.com/ReactTraining/react-router) `<Route>` component:
+To register your own routes, create a module returning a list of [react-router](https://github.com/ReactTraining/react-router) `<Route>` component:
 
 ```js
 // in src/customRoutes.js
 import React from 'react';
-import { Route } from 'react-router';
+import { Route } from 'react-router-dom';
 import Foo from './Foo';
 import Bar from './Bar';
 
-export default () => (
-    <Route>
-        <Route path="/foo" component={Foo} />
-        <Route path="/bar" component={Bar} />
-    </Route>
-);
+export default [
+    <Route exact path="/foo" component={Foo} />,
+    <Route exact path="/bar" component={Bar} />,
+];
 ```
 
-Then, pass this function as `customRoutes` prop to the `<Admin>` component:
+Then, pass this array as `customRoutes` prop in the `<Admin>` component:
 
 ```js
 // in src/App.js

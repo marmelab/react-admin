@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
 import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/referenceActions';

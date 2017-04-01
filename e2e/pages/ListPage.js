@@ -13,6 +13,7 @@ module.exports = (url) => (driver) => ({
         previousPage: By.css('.previous-page'),
         recordRows: By.css('.datagrid-body tr'),
         title: By.css('.title'),
+        logout: By.css('.logout'),
     },
 
     navigate() {
@@ -77,5 +78,9 @@ module.exports = (url) => (driver) => ({
     hideFilter(name) {
         const hideFilterButton = driver.findElement(this.elements.hideFilterButton(name));
         return hideFilterButton.click();
+    },
+
+    logout() {
+        driver.findElement(this.elements.logout).click();
     },
 });

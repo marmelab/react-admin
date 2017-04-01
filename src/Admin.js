@@ -1,23 +1,21 @@
-import React, { PropTypes } from 'react';
+import React, { createElement, PropTypes } from 'react';
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { Router, IndexRoute, Route, Redirect, hashHistory } from 'react-router';
-import { syncHistoryWithStore, routerMiddleware, routerReducer } from 'react-router-redux';
+import createHistory from 'history/createHashHistory';
+import { Switch, Route } from 'react-router-dom';
+import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 import { fork } from 'redux-saga/effects';
-import withProps from 'recompose/withProps';
 
 import adminReducer from './reducer';
 import localeReducer from './reducer/locale';
 import { crudSaga } from './sideEffect/saga';
-import CrudRoute from './CrudRoute';
 import DefaultLayout from './mui/layout/Layout';
 import Menu from './mui/layout/Menu';
 import Login from './mui/auth/Login';
 import Logout from './mui/auth/Logout';
 import TranslationProvider from './i18n/TranslationProvider';
-import { AUTH_CHECK } from './auth';
 
 const Admin = ({
     appLayout,
@@ -52,61 +50,45 @@ const Admin = ({
         ].map(fork);
     };
     const sagaMiddleware = createSagaMiddleware();
+    const history = createHistory();
     const store = createStore(reducer, initialState, compose(
-        applyMiddleware(sagaMiddleware, routerMiddleware(hashHistory)),
+        applyMiddleware(sagaMiddleware, routerMiddleware(history)),
         window.devToolsExtension ? window.devToolsExtension() : f => f,
     ));
     sagaMiddleware.run(saga);
 
-    const history = syncHistoryWithStore(hashHistory, store);
-    const firstResource = resources[0].name;
-    const onEnter = authClient ?
-        params => (nextState, replace, callback) => authClient(AUTH_CHECK, params)
-            .then(() => params && params.scrollToTop ? window.scrollTo(0, 0) : null)
-            .catch(e => {
-                replace({
-                    pathname: (e && e.redirectTo) || '/login',
-                    state: { nextPathname: nextState.location.pathname },
-                })
-            })
-            .then(callback)
-        :
-        params => () => params && params.scrollToTop ? window.scrollTo(0, 0) : null;
-    const LoginPage = withProps({ title, theme, authClient })(loginPage || Login);
-    const LogoutButton = withProps({ authClient })(logoutButton || Logout);
-    const MenuComponent = withProps({ authClient, logout: <LogoutButton />, resources, hasDashboard: !!dashboard })(menu || Menu);
-    const Layout = withProps({
-        authClient,
-        logout: <LogoutButton />,
-        menu: <MenuComponent />,
-        title,
-        theme,
-    })(appLayout || DefaultLayout);
+    const logout = createElement(logoutButton || Logout, { authClient });
 
     return (
         <Provider store={store}>
             <TranslationProvider messages={messages}>
-                <Router history={history}>
-                    {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
-                    <Route path="/login" component={LoginPage} />
-                    <Route path="/" component={Layout} resources={resources}>
-                        {customRoutes && customRoutes()}
-                        {dashboard && <IndexRoute component={dashboard} onEnter={onEnter()} />}
-                        {resources.map(resource =>
-                            <CrudRoute
-                                key={resource.name}
-                                path={resource.name}
-                                list={resource.list}
-                                create={resource.create}
-                                edit={resource.edit}
-                                show={resource.show}
-                                remove={resource.remove}
-                                options={resource.options}
-                                onEnter={onEnter}
-                            />
-                        )}
-                    </Route>
-                </Router>
+                <ConnectedRouter history={history}>
+                    <div>
+                        <Switch>
+                            <Route exact path="/login" render={({ location }) => createElement(loginPage || Login, {
+                                location,
+                                title,
+                                theme,
+                                authClient,
+                            })} />
+                            <Route path="/" render={() => createElement(appLayout || DefaultLayout, {
+                                authClient,
+                                dashboard,
+                                customRoutes,
+                                logout,
+                                menu: createElement(menu || Menu, {
+                                    authClient,
+                                    logout,
+                                    resources,
+                                    hasDashboard: !!dashboard,
+                                }),
+                                resources,
+                                title,
+                                theme,
+                            })} />
+                        </Switch>
+                    </div>
+                </ConnectedRouter>
             </TranslationProvider>
         </Provider>
     );
@@ -120,7 +102,7 @@ Admin.propTypes = {
     children: PropTypes.node,
     customSagas: PropTypes.array,
     customReducers: PropTypes.object,
-    customRoutes: PropTypes.func,
+    customRoutes: PropTypes.array,
     dashboard: componentPropType,
     loginPage: componentPropType,
     logoutButton: componentPropType,

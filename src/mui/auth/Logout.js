@@ -18,7 +18,7 @@ class Logout extends Component {
     render() {
         const { authClient, translate } = this.props;
         return authClient
-         ? <MenuItem leftIcon={<ExitIcon />} primaryText={translate('aor.auth.logout')} onClick={this.handleLogout} />
+         ? <MenuItem className="logout" leftIcon={<ExitIcon />} primaryText={translate('aor.auth.logout')} onClick={this.handleLogout} />
          : null;
     }
 }
