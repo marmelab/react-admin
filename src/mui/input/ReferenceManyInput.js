@@ -1,12 +1,12 @@
-import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
 import Labeled from '../input/Labeled';
 import {
     crudGetMany as crudGetManyAction,
     crudGetMatching as crudGetMatchingAction
 } from '../../actions/dataActions';
-import {getPossibleReferences} from '../../reducer/references/possibleValues';
+import { getPossibleReferences } from '../../reducer/references/possibleValues';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 const noFilter = () => true;
@@ -81,9 +81,9 @@ const noFilter = () => true;
 export class ReferenceManyInput extends Component {
     constructor(props) {
         super(props);
-        const {perPage, sort, filter} = props;
+        const { perPage, sort, filter } = props;
         // stored as a property rather than state because we don't want redraw of async updates
-        this.params = {pagination: {page: 1, perPage}, sort, filter};
+        this.params = { pagination: { page: 1, perPage }, sort, filter };
         this.debouncedSetFilter = debounce(this.setFilter.bind(this), 500);
     }
 
@@ -118,8 +118,8 @@ export class ReferenceManyInput extends Component {
         }
     }
 
-    fetchReferenceAndOptions({input, reference, source, resource} = this.props) {
-        const {pagination, sort, filter} = this.params;
+    fetchReferenceAndOptions({ input, reference, source, resource } = this.props) {
+        const { pagination, sort, filter } = this.params;
         const ids = input.value;
         if (ids && Array.isArray(ids)) {
             this.props.crudGetMany(reference, ids);
@@ -128,7 +128,7 @@ export class ReferenceManyInput extends Component {
     }
 
     render() {
-        const {input, resource, label, source, reference, referenceRecords, allowEmpty, matchingReferences, basePath, onChange, children, meta} = this.props;
+        const { input, resource, label, source, reference, referenceRecords, allowEmpty, matchingReferences, basePath, onChange, children, meta } = this.props;
         if (!(referenceRecords && referenceRecords.length > 0) && !allowEmpty) {
             return <Labeled
                 label={typeof label === 'undefined' ? `resources.${resource}.fields.${source}` : label}
@@ -184,11 +184,11 @@ ReferenceManyInput.propTypes = {
 ReferenceManyInput.defaultProps = {
     allowEmpty: false,
     filter: {},
-    filterToQuery: searchText => ({q: searchText}),
+    filterToQuery: searchText => ({ q: searchText }),
     matchingReferences: [],
     meta: {},
     perPage: 25,
-    sort: {field: 'id', order: 'DESC'},
+    sort: { field: 'id', order: 'DESC' },
     referenceRecord: null,
 };
 
