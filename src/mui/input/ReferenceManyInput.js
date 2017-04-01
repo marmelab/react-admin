@@ -14,6 +14,11 @@ const noFilter = () => true;
 /**
  * An Input component for choosing many reference records. Useful for 'hasMany' relationship.
  *
+ * @example
+ * {
+ *    postIds: [ "1", "23", "4" ]
+ * }
+ *
  * This component fetches the possible values in the reference resource
  * (using the `CRUD_GET_MATCHING` REST method), then delegates rendering
  * to a subcomponent, to which it passes the possible choices
