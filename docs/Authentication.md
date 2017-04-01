@@ -41,7 +41,7 @@ export default (type, params) => {
                 return response.json();
             })
             .then(({ token }) => {
-                localStorage.setItem('token', token)
+                localStorage.setItem('token', token);
             });
     }
     return Promise.resolve();
@@ -77,7 +77,7 @@ const httpClient = (url, options) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
     }
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     options.headers.set('Authorization', `Bearer ${token}`);
     return fetchUtils.fetchJson(url, options);
 }

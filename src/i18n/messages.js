@@ -5,6 +5,7 @@ export default {
             show: 'Show',
             list: 'List',
             save: 'Save',
+            cancel: 'Cancel',
             create: 'Create',
             edit: 'Edit',
             cancel: 'Cancel',

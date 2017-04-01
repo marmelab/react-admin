@@ -1,7 +1,7 @@
 import React from 'react';
 import { Toolbar as MuiToolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import Responsive from '../layout/Responsive';
-import { SaveButton } from '../button';
+import { SaveButton, CancelButton } from '../button';
 
 const styles = {
     mobileToolbar: {
@@ -14,12 +14,13 @@ const styles = {
     },
 };
 
-const Toolbar = ({ invalid }) => (
+const Toolbar = ({ invalid, basepath }) => (
     <Responsive
         small={
             <MuiToolbar style={styles.mobileToolbar} noGutter>
                 <ToolbarGroup>
                     <SaveButton invalid={invalid} raised={false} />
+                    <CancelButton raised={false} />
                 </ToolbarGroup>
             </MuiToolbar>
         }
@@ -27,6 +28,7 @@ const Toolbar = ({ invalid }) => (
             <MuiToolbar>
                 <ToolbarGroup>
                     <SaveButton invalid={invalid} />
+                    <CancelButton invalid={invalid} basePath={basepath} />
                 </ToolbarGroup>
             </MuiToolbar>
         }
