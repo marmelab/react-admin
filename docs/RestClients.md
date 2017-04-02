@@ -17,7 +17,7 @@ The `restClient` parameter of the `<Admin>` component, must be a function with t
  *
  * @example
  * restClient(GET_ONE, 'posts', { id: 123 })
- *  => new Promise(resolve => resolve({ data: { id: 123, title: "hello, world" } }))
+ *  => Promise.resolve({ data: { id: 123, title: "hello, world" } })
  *
  * @param {string} type Request type, e.g GET_LIST
  * @param {string} resource Resource name, e.g. "posts"
