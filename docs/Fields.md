@@ -377,7 +377,7 @@ Then admin-on-rest renders the `<CommentList>` with a loader for the `<Reference
 
 ## `<ReferenceManyField>`
 
-This component fetches a list of referenced record (using the `GET_MANY_REFERENCE` REST method), and passes the result to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
+This component fetches a list of referenced records by filtering with a field of the current record (using the `GET_MANY_REFERENCE` REST method), and passes the result to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
 
 For instance, here is how to fetch the `comments` related to a `post` record, and display the `author.name` for each, in a `<ChipField>`:
 
@@ -455,6 +455,33 @@ Also, you can filter the query used to populate the possible values. Use the `fi
 </ReferenceManyField>
 ```
 {% endraw %}
+
+
+## `<ReferenceArrayField>`
+
+This component fetches a list of referenced records by an array of ids in the current record (using the `GET_MANY` REST method), and passes the result to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
+
+For instance, here is how to fetch the `tags` related to a `post` record, and display the `name` for each, in a `<ChipField>`:
+
+```js
+import React from 'react';
+import { List, Datagrid, ChipField, ReferenceArrayField, SingleFieldList, TextField } from 'admin-on-rest';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <ReferenceArrayField label="Tags" reference="tags" target="tags_ids">
+                <SingleFieldList>
+                    <ChipField source="name" />
+                </SingleFieldList>
+            </ReferenceArrayField>
+            <EditButton />
+        </Datagrid>
+    </List>
+);
+```
 
 ## `<RichTextField>`
 
