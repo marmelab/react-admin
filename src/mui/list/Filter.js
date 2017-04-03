@@ -23,8 +23,15 @@ class Filter extends Component {
 
     setFilters = debounce((filters) => {
         if (!shallowEqual(filters, this.filters)) { // fix for redux-form bug with onChange and enableReinitialize
-            this.props.setFilters(filters);
-            this.filters = filters;
+            const filtersWithoutEmpty = filters;
+            Object.keys(filtersWithoutEmpty).forEach((filterName) => {
+                if (filtersWithoutEmpty[filterName] === '') {
+                    // remove empty filter from query
+                    delete filtersWithoutEmpty[filterName];
+                }
+            })
+            this.props.setFilters(filtersWithoutEmpty);
+            this.filters = filtersWithoutEmpty;
         }
     }, this.props.debounce)
 
