@@ -84,7 +84,7 @@ const enhance = compose(
     translate,
     reduxForm({
         form: 'filterForm',
-        //enableReinitialize: true, // combined with onChange, creates repeated calls
+        enableReinitialize: true,
         onChange: (values, dispatch, props) => props.setFilters(values),
     }),
 );

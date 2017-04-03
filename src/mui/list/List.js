@@ -274,7 +274,6 @@ const getQuery = createSelector(
 
 function mapStateToProps(state, props) {
     const resourceState = state.admin[props.resource];
-
     return {
         query: getQuery(props),
         params: resourceState.list.params,

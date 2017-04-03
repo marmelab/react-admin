@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import debounce from 'lodash.debounce';
+import shallowEqual from 'recompose/shallowEqual';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
@@ -7,13 +8,26 @@ import FilterButton from './FilterButton';
 class Filter extends Component {
     constructor(props) {
         super(props);
-        if (props.setFilters) {
-            this.debouncedSetFilters = debounce(props.setFilters, 500);
+        this.filters = this.props.filterValues;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.filters = nextProps.filterValues;
+    }
+
+    componentWillUnmount() {
+        if (this.props.setFilters) {
+            this.setFilters.cancel();
         }
     }
-    componentWillUnmount() {
-        this.debouncedSetFilters.cancel();
-    }
+
+    setFilters = debounce((filters) => {
+        if (!shallowEqual(filters, this.filters)) { // fix for redux-form bug with onChange and enableReinitialize
+            this.props.setFilters(filters);
+            this.filters = filters;
+        }
+    }, this.props.debounce)
+
     renderButton() {
         const { resource, children, showFilter, displayedFilters, filterValues } = this.props;
         return (
@@ -26,6 +40,7 @@ class Filter extends Component {
             />
         );
     }
+
     renderForm() {
         const { resource, children, hideFilter, displayedFilters, filterValues } = this.props;
         return (
@@ -35,10 +50,11 @@ class Filter extends Component {
                 hideFilter={hideFilter}
                 displayedFilters={displayedFilters}
                 initialValues={filterValues}
-                setFilters={this.debouncedSetFilters}
+                setFilters={this.setFilters}
             />
         );
     }
+
     render() {
         return this.props.context === 'button' ? this.renderButton() : this.renderForm();
     }
@@ -47,12 +63,17 @@ class Filter extends Component {
 Filter.propTypes = {
     children: PropTypes.node,
     context: PropTypes.oneOf(['form', 'button']),
+    debounce: PropTypes.number.isRequired,
     displayedFilters: PropTypes.object,
     filterValues: PropTypes.object,
     hideFilter: React.PropTypes.func,
     setFilters: PropTypes.func,
     showFilter: React.PropTypes.func,
     resource: PropTypes.string.isRequired,
+};
+
+Filter.defaultProps = {
+    debounce: 500,
 };
 
 export default Filter;
