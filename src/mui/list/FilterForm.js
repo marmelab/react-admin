@@ -9,7 +9,7 @@ import translate from '../../i18n/translate';
 
 const styles = {
     card: { float: 'right', marginTop: '-14px', paddingTop: 0, display: 'flex', alignItems: 'flex-end' },
-    body: { display: 'inline-block', display: 'flex', alignItems: 'flex-end' },
+    body: { display: 'flex', alignItems: 'flex-end' },
     spacer: { width: 48 },
     icon: { color: '#00bcd4', maddingBottom: 0 },
     clearFix: { clear: 'right' },
@@ -82,7 +82,11 @@ FilterForm.propTypes = {
 
 const enhance = compose(
     translate,
-    reduxForm({ form: 'filterForm' }),
+    reduxForm({
+        form: 'filterForm',
+        enableReinitialize: true,
+        onChange: (values, dispatch, props) => props.setFilters(values),
+    }),
 );
 
 export default enhance(FilterForm);
