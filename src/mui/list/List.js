@@ -4,10 +4,8 @@ import { parse, stringify } from 'query-string';
 import { push as pushAction } from 'react-router-redux';
 import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
-import { defaultMemoize } from 'reselect';
+import { createSelector } from 'reselect';
 import inflection from 'inflection';
-import { change as changeFormValueAction, getFormValues } from 'redux-form';
-import debounce from 'lodash.debounce';
 import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER, SORT_DESC } from '../../reducer/resource/list/queryReducer';
 import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
@@ -17,13 +15,9 @@ import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
 import translate from '../../i18n/translate';
 
-const filterFormName = 'filterForm';
-
 const styles = {
     noResults: { padding: 20 },
 };
-
-const parseOnce = defaultMemoize(parse);
 
 /**
  * List page component
@@ -69,7 +63,6 @@ const parseOnce = defaultMemoize(parse);
 export class List extends Component {
     constructor(props) {
         super(props);
-        this.debouncedSetFilters = debounce(this.setFilters.bind(this), 500);
         this.state = { key: 0 };
     }
 
@@ -92,19 +85,6 @@ export class List extends Component {
             this.fullRefresh = false;
             this.setState({ key: this.state.key + 1 });
         }
-        if (Object.keys(nextProps.filterValues).length === 0 && Object.keys(this.props.filterValues).length === 0) {
-            return;
-        }
-        if (nextProps.filterValues !== this.props.filterValues) {
-            const nextFilters = nextProps.filterValues;
-            Object.keys(nextFilters).forEach(filterName => {
-                if (nextFilters[filterName] === '') {
-                    // remove empty filter from query
-                    delete nextFilters[filterName];
-                }
-            });
-            this.debouncedSetFilters(nextFilters);
-        }
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -115,10 +95,6 @@ export class List extends Component {
             return false;
         }
         return true;
-    }
-
-    componentWillUnmount() {
-        this.debouncedSetFilters.cancel();
     }
 
     getBasePath() {
@@ -165,14 +141,12 @@ export class List extends Component {
     showFilter = (filterName, defaultValue) => {
         this.setState({ [filterName]: true });
         if (typeof defaultValue !== 'undefined') {
-            this.props.changeFormValue(filterFormName, filterName, defaultValue);
             this.setFilters({ ...this.props.filterValues, [filterName]: defaultValue });
         }
     }
 
     hideFilter = (filterName) => {
         this.setState({ [filterName]: false });
-        this.props.changeFormValue(filterFormName, filterName, '');
         this.setFilters({ ...this.props.filterValues, [filterName]: undefined });
     }
 
@@ -215,6 +189,7 @@ export class List extends Component {
                         hideFilter: this.hideFilter,
                         filterValues,
                         displayedFilters: this.state,
+                        setFilters: this.setFilters,
                         context: 'form',
                     })}
                     { isLoading || total > 0 ?
@@ -258,7 +233,6 @@ List.propTypes = {
     }),
     children: PropTypes.element.isRequired,
     // the props managed by admin-on-rest
-    changeFormValue: PropTypes.func.isRequired,
     changeListParams: PropTypes.func.isRequired,
     crudGetList: PropTypes.func.isRequired,
     data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -286,23 +260,29 @@ List.defaultProps = {
     },
 };
 
+const getLocationSearch = props => props.location.search;
+const getQuery = createSelector(
+    getLocationSearch,
+    (locationSearch) => {
+        const query = parse(locationSearch);
+        if (query.filter && typeof query.filter === 'string') {
+            query.filter = JSON.parse(query.filter);
+        }
+        return query;
+    },
+);
+
 function mapStateToProps(state, props) {
     const resourceState = state.admin[props.resource];
-    const query = parseOnce(props.location.search);
-    if (query.filter && typeof query.filter === 'string') {
-        // if the List has no filter component, the filter is always "{}"
-        // avoid deserialization and keep identity by using a constant
-        query.filter = props.filters ? JSON.parse(query.filter) : resourceState.list.params.filter;
-    }
 
     return {
-        query,
+        query: getQuery(props),
         params: resourceState.list.params,
         ids: resourceState.list.ids,
         total: resourceState.list.total,
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
-        filterValues: props.filters ? getFormValues(filterFormName)(state) : resourceState.list.params.filter,
+        filterValues: resourceState.list.params.filter,
     };
 }
 
@@ -311,7 +291,6 @@ const enhance = compose(
         mapStateToProps,
         {
             crudGetList: crudGetListAction,
-            changeFormValue: changeFormValueAction,
             changeListParams: changeListParamsAction,
             push: pushAction,
         },
