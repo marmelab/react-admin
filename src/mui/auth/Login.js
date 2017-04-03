@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { propTypes, reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
-import { push as pushAction } from 'react-router-redux';
 import compose from 'recompose/compose';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -16,7 +15,7 @@ import LockIcon from 'material-ui/svg-icons/action/lock-outline';
 import { cyan500, pinkA200 } from 'material-ui/styles/colors';
 
 import defaultTheme from '../defaultTheme';
-import { AUTH_LOGIN } from '../../auth';
+import { userLogin as userLoginAction } from '../../actions/authActions';
 import translate from '../../i18n/translate';
 
 const styles = {
@@ -68,13 +67,8 @@ class Login extends Component {
         this.state = { signInError: false };
     }
 
-    login = ({ username, password }) => {
-        const { authClient, push, location } = this.props;
-        if (!authClient) return;
-        return authClient(AUTH_LOGIN, { username, password })
-            .then(() => push(location.state ? location.state.nextPathname : '/'))
-            .catch(e => this.setState({ signInError: e }));
-    }
+    // FIXME: no more error message upon unsuccessful login
+    login = (auth) => this.props.userLogin(auth, location.state ? location.state.nextPathname : '/');
 
     render() {
         const { handleSubmit, submitting, theme, translate } = this.props;
@@ -134,6 +128,7 @@ Login.propTypes = {
     previousRoute: PropTypes.string,
     theme: PropTypes.object.isRequired,
     translate: PropTypes.func.isRequired,
+    userLogin: PropTypes.func.isRequired,
 };
 
 Login.defaultProps = {
@@ -152,7 +147,7 @@ const enhance = compose(
             return errors;
         },
     }),
-    connect(null, { push: pushAction }),
+    connect(null, { userLogin: userLoginAction }),
 );
 
 export default enhance(Login);

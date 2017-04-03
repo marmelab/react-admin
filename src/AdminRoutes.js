@@ -4,7 +4,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import CrudRoute from './CrudRoute';
 import Restricted from './auth/Restricted';
 
-const AdminRoutes = ({ customRoutes, resources = [], authClient, dashboard }) => (
+const AdminRoutes = ({ customRoutes, resources = [], dashboard }) => (
     <Switch>
         {customRoutes
             ? customRoutes.map((route, index) =>
@@ -29,7 +29,6 @@ const AdminRoutes = ({ customRoutes, resources = [], authClient, dashboard }) =>
                     show={resource.show}
                     remove={resource.remove}
                     options={resource.options}
-                    authClient={authClient}
                 />}
             />
         )}
@@ -38,7 +37,7 @@ const AdminRoutes = ({ customRoutes, resources = [], authClient, dashboard }) =>
                 exact
                 path="/"
                 render={routeProps =>
-                    <Restricted authClient={authClient} authParams={{ route: 'dashboard' }} {...routeProps}>
+                    <Restricted authParams={{ route: 'dashboard' }} {...routeProps}>
                         {React.createElement(dashboard)}
                     </Restricted>}
                 />

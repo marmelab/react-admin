@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { replace as replaceAction } from 'react-router-redux';
-import { AUTH_CHECK } from './';
+
+import { userCheck as userCheckAction } from '../actions/authActions';
 
 /**
  * Restrict access to children
@@ -19,14 +19,9 @@ import { AUTH_CHECK } from './';
  */
 export class Restricted extends Component {
     static propTypes = {
-        authClient: PropTypes.func,
         authParams: PropTypes.object,
         location: PropTypes.object,
-        replace: PropTypes.func,
-    }
-
-    static defaultProps = {
-        authClient: () => Promise.resolve(),
+        userCheck: PropTypes.func,
     }
 
     componentWillMount() {
@@ -40,12 +35,9 @@ export class Restricted extends Component {
     }
 
     checkAuthentication(params) {
-        const { authClient, authParams, location, replace } = params;
-        authClient(AUTH_CHECK, authParams)
-            .catch(e => replace({
-                pathname: (e && e.redirectTo) || '/login',
-                state: { nextPathname: location.pathname },
-            }));
+        const { userCheck, authParams, location } = params;
+        // FIXME: does not redirect to the required page after login
+        userCheck(authParams, location.pathName);
     }
 
     // render the child even though the AUTH_CHECK isn't finished (optimistic rendering)
@@ -56,5 +48,5 @@ export class Restricted extends Component {
 }
 
 export default connect(null, {
-    replace: replaceAction,
+    userCheck: userCheckAction,
 })(Restricted);

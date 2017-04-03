@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import Restricted from './auth/Restricted';
 
-const CrudRoute = ({ authClient, resource, list, create, edit, show, remove, options }) => {
+const CrudRoute = ({ resource, list, create, edit, show, remove, options }) => {
     const commonProps = {
         resource,
         options,
@@ -14,7 +14,7 @@ const CrudRoute = ({ authClient, resource, list, create, edit, show, remove, opt
         hasDelete: !!remove,
     };
     const RestrictedPage = (component, route) => routeProps =>
-        <Restricted authClient={authClient} authParams={{ resource, route }} {...routeProps}>
+        <Restricted authParams={{ resource, route }} {...routeProps}>
             {createElement(component, { ...commonProps, ...routeProps })}
         </Restricted>;
     return (
