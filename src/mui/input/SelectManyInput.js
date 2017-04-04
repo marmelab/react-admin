@@ -9,11 +9,8 @@ import FieldTitle from '../../util/FieldTitle';
  * <SelectManyInput source="first_name" />
  *
  * Pass possible options as an array of objects in the 'choices' attribute.
- * @example
- * const choices = [ 'Male', 'Female' ];
- * <SelectManyInput source="gender" choices={choices} />
  *
- * You might want to pass the type='object', instead of 'text'. If then, the options are built from:
+ * By default, the options are built from:
  *  - the 'id' property as the option value,
  *  - the 'name' property an the option text
  * @example
@@ -21,18 +18,7 @@ import FieldTitle from '../../util/FieldTitle';
  *    { id: 'M', name: 'Male' },
  *    { id: 'F', name: 'Female' },
  * ];
- * <SelectManyInput source="gender" type="object" choices={choices} />
- *
- * The `type="embedded"` will result the array of choices with full json object inside.
- * If you just want the result value is array of ids, please use `type="object"`.
- * @example
- * const choices = [
- *    { id: 'M', name: 'Male' },
- *    { id: 'F', name: 'Female' },
- * ];
- * <SelectManyInput source="gender" type="embedded" choices={choices} />
- *
- * Values => ['M']
+ * <SelectManyInput source="gender" choices={choices} />
  *
  * You can also customize the properties to use for the option name and value,
  * thanks to the 'optionText' and 'optionValue' attributes.
@@ -41,7 +27,7 @@ import FieldTitle from '../../util/FieldTitle';
  *    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
  *    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
  * ];
- * <SelectManyInput source="author_id" type="embedded" choices={choices} optionText="full_name" optionValue="_id" />
+ * <SelectManyInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
  *
  * The object passed as `options` props is passed to the material-ui-chip-input component
  * @see https://github.com/TeamWertarbyte/material-ui-chip-input
@@ -59,11 +45,9 @@ export class SelectManyInput extends Component {
     };
 
     handleChange = (eventOrValue) => {
-        if (this.props.type == 'object') {
-            eventOrValue = this.extractIds(eventOrValue);
-        }
-        this.props.onChange(eventOrValue);
-        this.props.input.onChange(eventOrValue);
+        var extracted = this.extractIds(eventOrValue);
+        this.props.onChange(extracted);
+        this.props.input.onChange(extracted);
     };
 
     extractIds = (eventOrValue) => {
@@ -74,7 +58,7 @@ export class SelectManyInput extends Component {
         if (Array.isArray(value)) {
             return value.map((o) => o[this.props.optionValue])
         }
-        return value;
+        return [ value ];
     };
 
     filterObjectByIds = (ids) => {
@@ -97,20 +81,13 @@ export class SelectManyInput extends Component {
         } = this.props;
 
         // Always use uncontrolled mode
-        let defaultValue = input.value || [];
-        if (type == 'object') {
-            defaultValue = this.filterObjectByIds(defaultValue);
-        }
+        let defaultValue = this.filterObjectByIds(input.value || []);
 
-        if (type == 'embedded' || type == 'object') {
-            // Convert the name of fields in choices
-            options['dataSourceConfig'] = {
-                'text': optionText,
-                'value': optionValue,
-            };
-        } else {
-            delete options['dataSourceConfig'];
-        }
+        // Convert the name of fields in choices
+        options['dataSourceConfig'] = {
+            'text': optionText,
+            'value': optionValue,
+        };
         options['dataSource'] = choices;
 
 
@@ -148,7 +125,6 @@ SelectManyInput.propTypes = {
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     source: PropTypes.string,
-    type: PropTypes.oneOf(['string', 'object', 'embedded']),
     validation: PropTypes.object,
 };
 
@@ -161,7 +137,6 @@ SelectManyInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
-    type: 'string',
 };
 
 export default SelectManyInput;
