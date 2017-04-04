@@ -340,10 +340,10 @@ export default Foo;
 The `authClient` prop expect a function returning a Promise, to control the application authentication strategy:
 
 ```js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK } from 'admin-on-rest';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest';
 
 const authClient(type, params) {
-    // type can be any of AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK
+    // type can be any of AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, and AUTH_CHECK
     // ...
     return Promise.resolve();
 };
