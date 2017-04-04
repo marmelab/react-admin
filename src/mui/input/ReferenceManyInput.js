@@ -31,7 +31,7 @@ const noFilter = () => true;
  *     <Edit {...props}>
  *         <SimpleForm>
  *             <ReferenceManyInput label="Post" source="post_id" reference="posts">
- *                 <SelectManyInput type="object" optionText="title" />
+ *                 <SelectManyInput optionText="title" />
  *             </ReferenceManyInput>
  *         </SimpleForm>
  *     </Edit>
@@ -45,7 +45,7 @@ const noFilter = () => true;
  *      source="post_id"
  *      reference="posts"
  *      perPage={100}>
- *     <SelectManyInput type="object" optionText="title" />
+ *     <SelectManyInput optionText="title" />
  * </ReferenceManyInput>
  *
  * By default, orders the possible values by id desc. You can change this order
@@ -56,7 +56,7 @@ const noFilter = () => true;
  *      source="post_id"
  *      reference="posts"
  *      sort={{ field: 'title', order: 'ASC' }}>
- *     <SelectManyInput type="object" optionText="title" />
+ *     <SelectManyInput optionText="title" />
  * </ReferenceManyInput>
  *
  * Also, you can filter the query used to populate the possible values. Use the
@@ -67,7 +67,7 @@ const noFilter = () => true;
  *      source="post_id"
  *      reference="posts"
  *      filter={{ is_published: true }}>
- *     <SelectManyInput type="object" optionText="title" />
+ *     <SelectManyInput optionText="title" />
  * </ReferenceManyInput>
  *
  * The enclosed component may filter results. ReferenceManyInput passes a `setFilter`
@@ -80,7 +80,7 @@ const noFilter = () => true;
  *      source="post_id"
  *      reference="posts"
  *      filterToQuery={searchText => ({ title: searchText })}>
- *     <SelectManyInput type="object" optionText="title" />
+ *     <SelectManyInput optionText="title" />
  * </ReferenceManyInput>
  */
 export class ReferenceManyInput extends Component {
