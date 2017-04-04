@@ -37,7 +37,7 @@ export class Restricted extends Component {
     checkAuthentication(params) {
         const { userCheck, authParams, location } = params;
         // FIXME: does not redirect to the required page after login
-        userCheck(authParams, location.pathName);
+        userCheck(authParams, location && location.pathName);
     }
 
     // render the child even though the AUTH_CHECK isn't finished (optimistic rendering)
