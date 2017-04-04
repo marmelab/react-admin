@@ -63,7 +63,7 @@ const renderInput = ({ meta: { touched, error } = {}, input: { ...inputProps }, 
 
 class Login extends Component {
 
-    login = (auth) => this.props.userLogin(auth, location.state ? location.state.nextPathname : '/');
+    login = (auth) => this.props.userLogin(auth, this.props.location.state ? this.props.location.state.nextPathname : '/');
 
     render() {
         const { handleSubmit, submitting, theme, translate } = this.props;
