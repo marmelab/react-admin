@@ -1,8 +1,8 @@
 import { put, call, takeEvery } from 'redux-saga/effects';
 import { push, replace } from 'react-router-redux';
 
-import { hideNotification } from '../../actions/notificationActions';
-import { USER_LOGIN, USER_CHECK, USER_LOGOUT } from '../../actions/authActions';
+import { showNotification, hideNotification } from '../../actions/notificationActions';
+import { USER_LOGIN, USER_LOGIN_FAILURE, USER_CHECK, USER_LOGOUT } from '../../actions/authActions';
 import { FETCH_ERROR } from '../../actions/fetchActions';
 import { AUTH_LOGIN, AUTH_CHECK, AUTH_ERROR, AUTH_LOGOUT } from '../../auth';
 
@@ -17,8 +17,15 @@ export default (authClient) => {
                 yield put({ type: 'USER_LOGIN_SUCCESS' });
                 yield put(push(meta.pathName || '/'));
             } catch (e) {
-                yield put({ type: 'USER_LOGIN_FAILURE', error: e });
+                yield put({ type: 'USER_LOGIN_FAILURE', error: e, meta: { auth: true } });
             }
+            break;
+        }
+        case USER_LOGIN_FAILURE: {
+            const errorMessage = typeof error === 'string'
+                ? error
+                : (typeof error === 'undefined' || !error.message ? 'aor.auth.sign_in_error' : error.message);
+            yield put(showNotification(errorMessage, 'warning'));
             break;
         }
         case USER_CHECK: {
