@@ -81,17 +81,18 @@ const App = () => (
 
 ### `dashboard`
 
-By default, the homepage of an an admin app is the `list` of the first child `<Resource>`. But you can also specify a custom component instead. To fit in the general design, use Material UI's `<Card>` component:
+By default, the homepage of an an admin app is the `list` of the first child `<Resource>`. But you can also specify a custom component instead. To fit in the general design, use Material UI's `<Card>` component, and admin-on-rest's `<ViewTitle>` component:
 
 {% raw %}
 ```js
 // in src/Dashboard.js
 import React from 'react';
-import { Card, CardHeader, CardText } from 'material-ui/Card';
+import { Card, CardText } from 'material-ui/Card';
+import { ViewTitle } from 'admin-on-rest/lib/mui';
 
 export default () => (
-    <Card style={{ margin: '2em' }}>
-        <CardHeader title="Welcome to the administration" />
+    <Card>
+        <ViewTitle title="Dashboard" />
         <CardText>Lorem ipsum sic dolor amet...</CardText>
     </Card>
 );
