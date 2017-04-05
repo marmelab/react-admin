@@ -1,5 +1,5 @@
 import { Children, PropTypes } from 'react';
-import Polyglot from 'node-polyglot';
+import polyglotInstance from './polyglot';
 import { connect } from 'react-redux';
 import { compose, withContext } from 'recompose';
 
@@ -10,10 +10,9 @@ const withI18nContext = withContext({
     locale: PropTypes.string.isRequired,
 }, ({ locale, messages = {} }) => {
     const userMessages = messages[locale] || {};
-    const polyglot = new Polyglot({
-        locale,
-        phrases: { ...defaultMessages, ...userMessages },
-    });
+    const polyglot = polyglotInstance;
+    polyglot.locale(locale); // Polyglot only uses locale for pluralization.
+    polyglot.replace({ ...defaultMessages, ...userMessages });
 
     return {
         locale,
