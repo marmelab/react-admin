@@ -1,6 +1,6 @@
-export const CRUD_SHOW_FILTER = 'CRUD_SHOW_FILTER';
-export const CRUD_HIDE_FILTER = 'CRUD_HIDE_FILTER';
-export const CRUD_SET_FILTER = 'CRUD_SET_FILTER';
+export const CRUD_SHOW_FILTER = 'admin-on-rest/CRUD_SHOW_FILTER';
+export const CRUD_HIDE_FILTER = 'admin-on-rest/CRUD_HIDE_FILTER';
+export const CRUD_SET_FILTER = 'admin-on-rest/CRUD_SET_FILTER';
 
 export const showFilter = (resource, field) => ({
     type: CRUD_SHOW_FILTER,
