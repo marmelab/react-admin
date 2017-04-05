@@ -643,6 +643,7 @@ You can choose a specific input type using the `type` attribute, for instance `t
 You can find components for admin-on-rest in third-party repositories.
 
 * [dreinke/aor-color-input](https://github.com/dreinke/aor-color-input): a color input using [React Color](http://casesandberg.github.io/react-color/), a collection of color pickers.
+* [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
 
 ## Writing Your Own Input Component
 
