@@ -243,7 +243,7 @@ render(
 
 ```
 
-## Writing your own REST Client
+## Writing Your Own REST Client
 
 Quite often, none of the the core REST clients match your API exactly. In such cases, you'll have to write your own REST client. But don't be afraid, it's easy!
 
