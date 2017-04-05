@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import CrudRoute from './CrudRoute';
@@ -45,5 +45,11 @@ const AdminRoutes = ({ customRoutes, resources = [], dashboard }) => (
         }
     </Switch>
 );
+
+AdminRoutes.propTypes = {
+    customRoutes: PropTypes.array,
+    resources: PropTypes.array,
+    dashboard: PropTypes.node,
+};
 
 export default AdminRoutes;
