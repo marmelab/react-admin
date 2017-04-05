@@ -45,7 +45,7 @@ const Admin = ({
     });
     const saga = function* rootSaga() {
         yield [
-            crudSaga(restClient),
+            crudSaga(restClient, authClient),
             ...customSagas,
         ].map(fork);
     };
@@ -57,7 +57,7 @@ const Admin = ({
     ));
     sagaMiddleware.run(saga);
 
-    const logout = createElement(logoutButton || Logout, { authClient });
+    const logout = authClient ? createElement(logoutButton || Logout) : null;
 
     return (
         <Provider store={store}>
@@ -69,15 +69,11 @@ const Admin = ({
                                 location,
                                 title,
                                 theme,
-                                authClient,
                             })} />
                             <Route path="/" render={() => createElement(appLayout || DefaultLayout, {
-                                authClient,
                                 dashboard,
                                 customRoutes,
-                                logout,
                                 menu: createElement(menu || Menu, {
-                                    authClient,
                                     logout,
                                     resources,
                                     hasDashboard: !!dashboard,
