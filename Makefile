@@ -7,7 +7,7 @@ install: package.json ## install dependencies
 	@npm install
 
 run: example_install ## run the example
-	@cd example && ../node_modules/.bin/webpack-dev-server --hot --inline --config ./webpack.config.js
+	@npm install && cd example && ../node_modules/.bin/webpack-dev-server --hot --inline --config ./webpack.config.js
 
 example_install: example/package.json
 	@cd example && npm install
