@@ -94,9 +94,9 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const PostActions = ({ resource, filter, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
+const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
     <CardActions style={cardActionStyle}>
-        {filter && React.cloneElement(filter, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
+        {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         <CreateButton basePath={basePath} />
         <FlatButton primary label="refresh" onClick={refresh} icon={<NavigationRefresh />} />
         {/* Add your custom actions */}
