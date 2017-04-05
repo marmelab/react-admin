@@ -166,7 +166,6 @@ ReferenceManyInput.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     crudGetMatching: PropTypes.func.isRequired,
-    crudGetOne: PropTypes.func.isRequired,
     crudGetMany: PropTypes.func.isRequired,
     filter: PropTypes.object,
     filterToQuery: PropTypes.func.isRequired,
@@ -194,7 +193,7 @@ ReferenceManyInput.defaultProps = {
     meta: {},
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
-    referenceRecord: null,
+    referenceRecords: [],
 };
 
 function mapStateToProps(state, props) {

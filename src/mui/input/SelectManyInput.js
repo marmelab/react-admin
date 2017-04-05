@@ -33,15 +33,33 @@ import FieldTitle from '../../util/FieldTitle';
  * @see https://github.com/TeamWertarbyte/material-ui-chip-input
  */
 export class SelectManyInput extends Component {
-    // Comment input onBlur because SelectManyInput don't pass correct values on this event
-    handleBlur = (eventOrValue) => {
-        // this.props.onBlur(eventOrValue);
-        // this.props.input.onBlur(eventOrValue);
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            values : this.resolveValues(props.input.value || []),
+        };
+    }
+
+    handleBlur = () => {
+        var extracted = this.extractIds(this.state.values);
+        this.props.onBlur(extracted);
+        this.props.input.onBlur(extracted);
     };
-    // Comment input onFocus because SelectManyInput don't pass correct values on this event
-    handleFocus = (event) => {
-        // this.props.onFocus(event);
-        // this.props.input.onFocus(event);
+    handleFocus = () => {
+        var extracted = this.extractIds(this.state.values);
+        this.props.onFocus(extracted);
+        this.props.input.onFocus(extracted);
+    };
+
+    handleAdd = (newValue) => {
+        this.state.values = [...this.state.values, newValue];
+        this.handleChange(this.state.values);
+    };
+
+    handleDelete = (newValue) => {
+        this.state.values = this.state.values.filter(v => (v[this.props.optionValue] !== newValue));
+        this.handleChange(this.state.values);
     };
 
     handleChange = (eventOrValue) => {
@@ -61,8 +79,17 @@ export class SelectManyInput extends Component {
         return [ value ];
     };
 
-    filterObjectByIds = (ids) => {
-        return this.props.choices.filter((o) => ids.indexOf(o[this.props.optionValue]) >= 0);
+    resolveValues = (ids) => {
+        if (this.props.choices && this.props.choices.length > 0) {
+            return this.props.choices.filter((o) => ids.indexOf(o[this.props.optionValue]) >= 0);
+        } else {
+            return ids.map((id) => {
+                let o = {};
+                o[this.props.optionValue] = id;
+                o[this.props.optionText] = id;
+                return o;
+            });
+        }
     };
 
     render() {
@@ -80,9 +107,6 @@ export class SelectManyInput extends Component {
             type,
         } = this.props;
 
-        // Always use uncontrolled mode
-        let defaultValue = this.filterObjectByIds(input.value || []);
-
         // Convert the name of fields in choices
         options['dataSourceConfig'] = {
             'text': optionText,
@@ -94,12 +118,12 @@ export class SelectManyInput extends Component {
         return (
             <ChipInput
                 {...input}
-                defaultValue={defaultValue}
-                value={null}
+                value={this.state.values}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
                 onTouchTap={this.handleFocus}
-                onChange={this.handleChange}
+                onRequestDelete={this.handleDelete}
+                onRequestAdd={this.handleAdd}
                 floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
                 errorText={touched && error}
                 style={elStyle}
