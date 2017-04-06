@@ -72,7 +72,6 @@ render(
 
 The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use Material UI and custom components from admin-on-rest:
 
-{% raw %}
 ```js
 // in posts.js
 import React from 'react';
@@ -122,7 +121,6 @@ export const PostCreate = (props) => (
     </Create>
 );
 ```
-{% endraw %}
 
 ## Does It Work With My REST API?
 
