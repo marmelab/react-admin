@@ -8,11 +8,10 @@ import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
 
 const styles = {
-    card: { float: 'right', marginTop: '-14px', paddingTop: 0 },
-    body: { display: 'inline-block' },
-    spacer: { width: 48, display: 'inline-block' },
+    card: { float: 'right', marginTop: '-14px', paddingTop: 0, display: 'flex', alignItems: 'flex-end' },
+    body: { display: 'flex', alignItems: 'flex-end' },
+    spacer: { width: 48 },
     icon: { color: '#00bcd4', maddingBottom: 0 },
-    field: { display: 'inline-block' },
     clearFix: { clear: 'right' },
 };
 
@@ -36,14 +35,25 @@ export class FilterForm extends Component {
         return (<div>
             <CardText style={styles.card}>
                 {this.getShownFilters().reverse().map(filterElement =>
-                    <div key={filterElement.props.source} style={filterElement.props.style || styles.body}>
+                    <div
+                        key={filterElement.props.source}
+                        data-source={filterElement.props.source}
+                        className="filter-field"
+                        style={filterElement.props.style || styles.body}
+                    >
                         {filterElement.props.alwaysOn ?
                             <div style={styles.spacer}>&nbsp;</div> :
-                            <IconButton iconStyle={styles.icon} onTouchTap={this.handleHide} data-key={filterElement.props.source} tooltip={translate('aor.action.remove_filter')}>
+                            <IconButton
+                                iconStyle={styles.icon}
+                                className="hide-filter"
+                                onTouchTap={this.handleHide}
+                                data-key={filterElement.props.source}
+                                tooltip={translate('aor.action.remove_filter')}
+                            >
                                 <ActionHide />
                             </IconButton>
                         }
-                        <div style={styles.field}>
+                        <div>
                             <Field
                                 allowEmpty
                                 {...filterElement.props}
@@ -72,7 +82,11 @@ FilterForm.propTypes = {
 
 const enhance = compose(
     translate,
-    reduxForm({ form: 'filterForm' }),
+    reduxForm({
+        form: 'filterForm',
+        enableReinitialize: true,
+        onChange: (values, dispatch, props) => props.setFilters(values),
+    }),
 );
 
 export default enhance(FilterForm);

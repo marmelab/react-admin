@@ -1,9 +1,21 @@
 language: node_js
 node_js:
-  - '5'
+  - '7.8.0'
+env:
+    global:
+        - CHROME_BIN="chromium-browser"
+        - DISPLAY=:99.0
+        - NODE_ENV=test
+dist: trusty
 cache:
   directories:
     - node_modules
+before_install:
+    - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
+    - sh -e /etc/init.d/xvfb start
+    - sleep 3
+before_script:
+    - make example_install
 branches:
   only:
     - master

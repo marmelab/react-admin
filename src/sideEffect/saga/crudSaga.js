@@ -6,9 +6,9 @@ import referenceFetch from './referenceFetch';
 /**
  * @param {Object} restClient A REST object with two methods: fetch() and convertResponse()
  */
-export default restClient => function* crudSaga() {
+export default (restClient, authClient) => function* crudSaga() {
     yield [
-        auth(),
+        auth(authClient)(),
         crudFetch(restClient)(),
         crudResponse(),
         referenceFetch(),

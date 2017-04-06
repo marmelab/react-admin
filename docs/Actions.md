@@ -82,7 +82,7 @@ Or, in the `<Edit>` page, as a [custom action](./CreateEdit.html#actions):
 // in src/comments/CommentEditActions.js
 import React from 'react';
 import { CardActions } from 'material-ui/Card';
-import { ListButton, DeleteButton } from 'admin-on-rest/lib/mui';
+import { ListButton, DeleteButton } from 'admin-on-rest';
 import ApproveButton from './ApproveButton';
 
 const CommentEditActions = ({ basePath, data }) => (

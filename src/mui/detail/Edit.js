@@ -90,7 +90,7 @@ export class Edit extends Component {
         const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
 
         return (
-            <div>
+            <div className="edit-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
                     {actions && React.cloneElement(actions, {
                         basePath,
@@ -106,6 +106,7 @@ export class Edit extends Component {
                         resource,
                         basePath,
                         record: data,
+                        translate,
                     })}
                     {!data && <CardText>&nbsp;</CardText>}
                 </Card>
@@ -125,7 +126,7 @@ Edit.propTypes = {
     id: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
@@ -133,8 +134,8 @@ Edit.propTypes = {
 
 function mapStateToProps(state, props) {
     return {
-        id: props.params.id,
-        data: state.admin[props.resource].data[props.params.id],
+        id: props.match.params.id,
+        data: state.admin[props.resource].data[props.match.params.id],
         isLoading: state.admin.loading > 0,
     };
 }

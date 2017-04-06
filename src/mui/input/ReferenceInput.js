@@ -160,6 +160,7 @@ export class ReferenceInput extends Component {
             setFilter: this.debouncedSetFilter,
             setPagination: this.setPagination,
             setSort: this.setSort,
+            translateChoice: false,
         });
     }
 }
@@ -190,11 +191,11 @@ ReferenceInput.propTypes = {
 };
 
 ReferenceInput.defaultProps = {
+    addField: true,
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
     matchingReferences: [],
-    meta: {},
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecord: null,

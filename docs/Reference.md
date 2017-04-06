@@ -51,6 +51,7 @@ title: "Reference"
 * [`<ReferenceManyField>`](./Fields.html#referencemanyfield)
 * [`<Resource>`](./AdminResource.html#the-resource-component)
 * [`<Responsive>`](./Theming.html#responsive-utility)
+* [`<Restricted>`](./Authentication.html#restricting-access-to-a-custom-page)
 * [`<RichTextField>`](./Fields.html#richtextfield)
 * [`<RichTextInput>`](./Inputs.html#richtextinput)
 * `<SaveButton>`

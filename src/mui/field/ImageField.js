@@ -2,9 +2,6 @@ import React, { PropTypes } from 'react';
 import get from 'lodash.get';
 
 const styles = {
-    container: {
-        float: 'left',
-    },
     image: {
         maxHeight: '10rem',
         margin: '0.5rem',
