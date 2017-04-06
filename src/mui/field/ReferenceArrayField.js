@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
 
-// `crudGetOneReference` uses `crudGetMany` and deboucing
-// its usually more performant on `<List>`
-import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/dataActions';
+import { crudGetMany as crudGetManyAction } from '../../actions/dataActions';
+import { getReferencesByIds } from '../../reducer/references/oneToMany';
 
 /**
  * A container component that fetches records from another resource specified
@@ -14,6 +13,10 @@ import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/
  * You must define the fields to be passed to the iterator component as children.
  *
  * @example Display all the products of the current order as datagrid
+ * // order = {
+ * //   id: 123,
+ * //   product_ids: [456, 457, 458],
+ * // }
  * <ReferenceArrayField label="Products" reference="products" source="product_ids">
  *     <Datagrid>
  *         <TextField source="id" />
@@ -24,6 +27,10 @@ import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/
  * </ReferenceArrayField>
  *
  * @example Display all the categories of the current product as a list of chips
+ * // product = {
+ * //   id: 456,
+ * //   category_ids: [11, 22, 33],
+ * // }
  * <ReferenceArrayField label="Categories" reference="categories" source="category_ids">
  *     <SingleFieldList>
  *         <ChipField source="name" />
@@ -37,20 +44,28 @@ export class ReferenceArrayField extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.reference !== nextProps.reference ||
-            this.props.record.id !== nextProps.record.id) {
+        if (this.props.record.id !== nextProps.record.id) {
             this.fetchReferences(nextProps);
         }
     }
 
-    fetchReferences({ crudGetOneReference, reference, ids } = this.props) {
-        ids.map(id => crudGetOneReference(reference, id));
+    fetchReferences({ crudGetMany, reference, ids } = this.props) {
+        crudGetMany(reference, ids);
     }
 
     render() {
-        const { data, ids, children, resource, reference, basePath } = this.props;
+        const {
+            data,
+            ids,
+            children,
+            resource,
+            reference,
+            basePath,
+        } = this.props;
         if (React.Children.count(children) !== 1) {
-            throw new Error('<ReferenceArrayField> only accepts a single child (like <Datagrid>)');
+            throw new Error(
+                '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
+            );
         }
         if (typeof ids === 'undefined' || typeof data === 'undefined') {
             return <LinearProgress style={{ marginTop: '1em' }} />;
@@ -61,7 +76,7 @@ export class ReferenceArrayField extends Component {
             resource: reference,
             ids,
             data,
-            basePath: referenceBasePath
+            basePath: referenceBasePath,
         });
     }
 }
@@ -70,7 +85,7 @@ ReferenceArrayField.propTypes = {
     addLabel: PropTypes.bool,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
-    crudGetOneReference: PropTypes.func.isRequired,
+    crudGetMany: PropTypes.func.isRequired,
     data: PropTypes.object,
     ids: PropTypes.array,
     label: PropTypes.string,
@@ -85,18 +100,12 @@ const mapStateToProps = (state, props) => {
     const ids = get(record, source);
     return {
         ids,
-        data: ids
-            .map(id => state.admin[reference].data[id])
-            .filter(r => typeof r !== 'undefined')
-            .reduce((prev, next) => {
-                prev[next.id] = next;
-                return prev;
-            }, {}),
+        data: getReferencesByIds(state, reference, ids),
     };
 };
 
 const ConnectedReferenceArrayField = connect(mapStateToProps, {
-    crudGetOneReference: crudGetOneReferenceAction,
+    crudGetMany: crudGetManyAction,
 })(ReferenceArrayField);
 
 ConnectedReferenceArrayField.defaultProps = {
