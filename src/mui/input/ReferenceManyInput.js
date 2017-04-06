@@ -16,7 +16,7 @@ const noFilter = () => true;
  *
  * @example
  * {
- *    postIds: [ "1", "23", "4" ]
+ *    post_ids: [ "1", "23", "4" ]
  * }
  *
  * This component fetches the possible values in the reference resource
@@ -30,7 +30,7 @@ const noFilter = () => true;
  * export const CommentEdit = (props) => (
  *     <Edit {...props}>
  *         <SimpleForm>
- *             <ReferenceManyInput label="Post" source="post_id" reference="posts">
+ *             <ReferenceManyInput label="Post" source="post_ids" reference="posts">
  *                 <SelectManyInput optionText="title" />
  *             </ReferenceManyInput>
  *         </SimpleForm>
@@ -42,7 +42,7 @@ const noFilter = () => true;
  *
  * @example
  * <ReferenceManyInput
- *      source="post_id"
+ *      source="post_ids"
  *      reference="posts"
  *      perPage={100}>
  *     <SelectManyInput optionText="title" />
@@ -53,7 +53,7 @@ const noFilter = () => true;
  *
  * @example
  * <ReferenceManyInput
- *      source="post_id"
+ *      source="post_ids"
  *      reference="posts"
  *      sort={{ field: 'title', order: 'ASC' }}>
  *     <SelectManyInput optionText="title" />
@@ -64,7 +64,7 @@ const noFilter = () => true;
  *
  * @example
  * <ReferenceManyInput
- *      source="post_id"
+ *      source="post_ids"
  *      reference="posts"
  *      filter={{ is_published: true }}>
  *     <SelectManyInput optionText="title" />
@@ -77,7 +77,7 @@ const noFilter = () => true;
  *
  * @example
  * <ReferenceManyInput
- *      source="post_id"
+ *      source="post_ids"
  *      reference="posts"
  *      filterToQuery={searchText => ({ title: searchText })}>
  *     <SelectManyInput optionText="title" />
@@ -193,7 +193,6 @@ ReferenceManyInput.defaultProps = {
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
     matchingReferences: [],
-    meta: {},
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecords: [],

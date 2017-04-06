@@ -3,10 +3,10 @@ import ChipInput from 'material-ui-chip-input';
 import FieldTitle from '../../util/FieldTitle';
 
 /**
- * An Input component for a array
+ * An Input component for an array
  *
  * @example
- * <SelectManyInput source="first_name" />
+ * <SelectManyInput source="categories" />
  *
  * Pass possible options as an array of objects in the 'choices' attribute.
  *
@@ -15,19 +15,21 @@ import FieldTitle from '../../util/FieldTitle';
  *  - the 'name' property an the option text
  * @example
  * const choices = [
- *    { id: 'M', name: 'Male' },
- *    { id: 'F', name: 'Female' },
+ *    { id: '1', name: 'Book' },
+ *    { id: '2', name: 'Video' },
+ *    { id: '3', name: 'Audio' },
  * ];
- * <SelectManyInput source="gender" choices={choices} />
+ * <SelectManyInput source="categories" choices={choices} />
  *
  * You can also customize the properties to use for the option name and value,
  * thanks to the 'optionText' and 'optionValue' attributes.
  * @example
  * const choices = [
- *    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
- *    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+ *    { _id: '1', name: 'Book', plural_name: 'Books' },
+ *    { _id: '2', name: 'Video', plural_name: 'Videos' },
+ *    { _id: '3', name: 'Audio', plural_name: 'Audios' },
  * ];
- * <SelectManyInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+ * <SelectManyInput source="categories" choices={choices} optionText="plural_name" optionValue="_id" />
  *
  * The object passed as `options` props is passed to the material-ui-chip-input component
  * @see https://github.com/TeamWertarbyte/material-ui-chip-input
@@ -69,30 +71,25 @@ export class SelectManyInput extends Component {
     };
 
     extractIds = (eventOrValue) => {
-        let value = eventOrValue;
-        if (value.target && value.target.value) {
-            value = value.target.value;
-        }
+        const value = (eventOrValue.target && eventOrValue.target.value)? eventOrValue.target.value : eventOrValue;
         if (Array.isArray(value)) {
             return value.map((o) => o[this.props.optionValue])
         }
         return [ value ];
     };
 
-    resolveValues = (ids) => {
-        if (!ids || !Array.isArray(ids)) {
+    resolveValues = (values) => {
+        if (!values || !Array.isArray(values)) {
             throw Error("Value of SelectManyInput should be an array");
         }
 
         if (this.props.choices && this.props.choices.length > 0) {
-            return this.props.choices.filter((o) => ids.indexOf(o[this.props.optionValue]) >= 0);
+            return this.props.choices.filter((o) => values.indexOf(o[this.props.optionValue]) >= 0);
         } else {
-            return ids.map((id) => {
-                let o = {};
-                o[this.props.optionValue] = id;
-                o[this.props.optionText] = id;
-                return o;
-            });
+            return values.map((v) => ({
+                [this.props.optionValue]: v,
+                [this.props.optionText]: v,
+            }));
         }
     };
 
@@ -108,16 +105,7 @@ export class SelectManyInput extends Component {
             optionValue,
             resource,
             source,
-            type,
         } = this.props;
-
-        // Convert the name of fields in choices
-        options['dataSourceConfig'] = {
-            'text': optionText,
-            'value': optionValue,
-        };
-        options['dataSource'] = choices;
-
 
         return (
             <ChipInput
@@ -131,6 +119,8 @@ export class SelectManyInput extends Component {
                 floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
                 errorText={touched && error}
                 style={elStyle}
+                dataSource={choices}
+                dataSourceConfig={{ 'text': optionText, 'value': optionValue }}
                 {...options}
             />
         );
