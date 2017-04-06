@@ -67,7 +67,7 @@ Upon receiving a 403 response, the admin app shows the Login page. `authClient` 
 
 ## Sending Credentials to the REST API
 
-To use the credentials when calling REST API routes, you have to tweak, this time, the `restClient`. As explained in the [REST client documentation](RestClients.html#adding-custom-headers), `simpleRestClient` and `jsonServerRestClient` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
+To use the credentials when calling REST API routes, you have to tweak, this time, the `restClient`. As explained in the [REST client documentation](RestClients.md#adding-custom-headers), `simpleRestClient` and `jsonServerRestClient` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
 
 For instance, to pass the token obtained during login as an `Authorization` header, configure the REST client as follows:
 
@@ -215,4 +215,4 @@ const App = () => (
 
 **Tip**: The `authClient` function is automatically passed as prop to your custom `LoginPage` and `LogoutButton` components.
 
-**Tip**: If you want to use Redux and Saga to handle credentials and authorization, you will need to register  [custom reducers](./AdminResource.html#customreducers) and [custom sagas](./AdminResource.html#customsagas) in the `<Admin>` component.
+**Tip**: If you want to use Redux and Saga to handle credentials and authorization, you will need to register  [custom reducers](./AdminResource.md#customreducers) and [custom sagas](./AdminResource.md#customsagas) in the `<Admin>` component.
