@@ -8,5 +8,6 @@ export NumberField from './NumberField';
 export ReferenceField from './ReferenceField';
 export ReferenceManyField from './ReferenceManyField';
 export RichTextField from './RichTextField';
+export SelectField from './SelectField';
 export TextField from './TextField';
 export UrlField from './UrlField';

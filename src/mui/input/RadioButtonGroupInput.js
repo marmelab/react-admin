@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+
 import Labeled from './Labeled';
+import translate from '../../i18n/translate';
 
 /**
  * An Input component for a radio button group, using an array of objects for the options
@@ -45,21 +47,49 @@ import Labeled from './Labeled';
  * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
  * <RadioButtonGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
  *
+ * The choices are translated by default, so you can use translation identifiers as choices:
+ * @example
+ * const choices = [
+ *    { id: 'M', name: 'myroot.gender.male' },
+ *    { id: 'F', name: 'myroot.gender.female' },
+ * ];
+ *
+ * However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want
+ * the choice to be translated. In that case, set the `translateChoice` prop to false.
+ * @example
+ * <RadioButtonGroupInput source="gender" choices={choices} translateChoice={false}/>
+ *
  * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
  */
-class RadioButtonGroupInput extends Component {
+export class RadioButtonGroupInput extends Component {
     handleChange = (event, value) => {
         this.props.input.onChange(value);
     }
 
-    render() {
-        const { label, source, input, choices, optionText, optionValue, options, elStyle } = this.props;
-        const option = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
-            choice => React.cloneElement(optionText, { record: choice }) :
+    renderRadioButton = (choice) => {
+        const {
+            optionText,
+            optionValue,
+            translate,
+            translateChoice
+        } = this.props;
+        const choiceName = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
+            React.cloneElement(optionText, { record: choice }) :
             (typeof optionText === 'function' ?
-                optionText :
-                choice => choice[optionText]
+                optionText(choice) :
+                choice[optionText]
             );
+        return (
+            <RadioButton
+                key={choice[optionValue]}
+                label={translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
+                value={choice[optionValue]}
+            />
+        );
+    }
+
+    render() {
+        const { label, source, input, choices, options, elStyle } = this.props;
         return (
             <Labeled label={label} onChange={this.handleChange} source={source}>
                 <RadioButtonGroup
@@ -68,9 +98,7 @@ class RadioButtonGroupInput extends Component {
                     style={elStyle}
                     {...options}
                 >
-                    {choices.map(choice =>
-                        <RadioButton key={choice[optionValue]} label={option(choice)} value={choice[optionValue]} />
-                    )}
+                    {choices.map(this.renderRadioButton)}
                 </RadioButtonGroup>
             </Labeled>
         );
@@ -91,6 +119,8 @@ RadioButtonGroupInput.propTypes = {
     optionValue: PropTypes.string.isRequired,
     source: PropTypes.string,
     style: PropTypes.object,
+    translate: PropTypes.func.isRequired,
+    translateChoice: PropTypes.bool.isRequired,
 };
 
 RadioButtonGroupInput.defaultProps = {
@@ -99,6 +129,7 @@ RadioButtonGroupInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
+    translateChoice: true,
 };
 
-export default RadioButtonGroupInput;
+export default translate(RadioButtonGroupInput);

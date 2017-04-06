@@ -44,6 +44,7 @@ Here are all the props accepted by the component:
 * [`logoutButton`](#logoutbutton)
 * [`locale`](#internationalization)
 * [`messages`](#internationalization)
+* [`initialState`](#initialstate)
 
 ### `restClient`
 
@@ -121,7 +122,7 @@ If you want to add or remove menu items, for instance to link to non-resources p
 // in src/Menu.js
 import React from 'react';
 import MenuItem from 'material-ui/MenuItem';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export default ({ resources, onMenuTap, logout }) => (
     <div>
@@ -277,24 +278,22 @@ export default App;
 
 ### `customRoutes`
 
-To register your own routes, create a function returning a [react-router](https://github.com/ReactTraining/react-router) `<Route>` component:
+To register your own routes, create a module returning a list of [react-router](https://github.com/ReactTraining/react-router) `<Route>` component:
 
 ```js
 // in src/customRoutes.js
 import React from 'react';
-import { Route } from 'react-router';
+import { Route } from 'react-router-dom';
 import Foo from './Foo';
 import Bar from './Bar';
 
-export default () => (
-    <Route>
-        <Route path="/foo" component={Foo} />
-        <Route path="/bar" component={Bar} />
-    </Route>
-);
+export default [
+    <Route exact path="/foo" component={Foo} />,
+    <Route exact path="/bar" component={Bar} />,
+];
 ```
 
-Then, pass this function as `customRoutes` prop to the `<Admin>` component:
+Then, pass this array as `customRoutes` prop in the `<Admin>` component:
 
 ```js
 // in src/App.js
@@ -324,7 +323,7 @@ Now, when a user browses to `/foo` or `/bar`, the components you defined will ap
 // in src/Foo.js
 import React from 'react';
 import { Card } from 'material-ui/Card';
-import { ViewTitle } from 'admin-on-rest/lib/mui';
+import { ViewTitle } from 'admin-on-rest';
 
 const Foo = () => (
     <Card>
@@ -341,10 +340,10 @@ export default Foo;
 The `authClient` prop expect a function returning a Promise, to control the application authentication strategy:
 
 ```js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK } from 'admin-on-rest';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest';
 
 const authClient(type, params) {
-    // type can be any of AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK
+    // type can be any of AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, and AUTH_CHECK
     // ...
     return Promise.resolve();
 };
@@ -388,6 +387,9 @@ const App = () => (
     </Admin>
 );
 ```
+
+### `initialState`
+The `initialState` prop lets you pass preloaded state to Redux. See the [Redux Documentation](http://redux.js.org/docs/api/createStore.html#createstorereducer-preloadedstate-enhancer) for more details.
 
 ### Internationalization
 

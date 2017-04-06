@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.9.2
+
+* Fix IE11/Edge flexbox issue ([LoicMahieu](https://github.com/LoicMahieu))
+* Fix custom sagas can't reliably watch router actions
+* Fix image input previews on drop
+* Fix pagination on mobile
+* Fix SelectInput error text position
+* Add mention of Hungarian translations ([s33m4nn](https://github.com/s33m4nn))
+* Add mention of `aor-parseserver-client`
+* Add contribution guidelines
+
 ## v0.9.1
 
 * Fix redirection after creation

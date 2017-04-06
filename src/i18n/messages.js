@@ -37,6 +37,7 @@ export default {
             about: 'About',
         },
         navigation: {
+            no_results: 'No results found',
             page_out_of_boundaries: 'Page number %{page} out of boundaries',
             page_out_from_end: 'Cannot go after last page',
             page_out_from_begin: 'Cannot go before page 1',
@@ -60,6 +61,12 @@ export default {
         },
         validation: {
             required: 'Required',
+            minLength: 'Must be %{min} characters at least',
+            maxLength: 'Must be %{max} characters or less',
+            minValue: 'Must be at least %{min}',
+            maxValue: 'Must be %{max} or less',
+            number: 'Must be a number',
+            email: 'Must be a valid email',
         },
     },
 };

@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import Checkbox from 'material-ui/Checkbox';
+
 import Labeled from './Labeled';
+import translate from '../../i18n/translate';
 
 /**
  * An Input component for a checkbox group, using an array of objects for the options
@@ -48,6 +50,21 @@ import Labeled from './Labeled';
  * ];
  * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
  * <CheckboxGroupInput source="recipients" choices={choices} optionText={<FullNameField />}/>
+ *
+ * The choices are translated by default, so you can use translation identifiers as choices:
+ * @example
+ * const choices = [
+ *    { id: 'programming', name: 'myroot.category.programming' },
+ *    { id: 'lifestyle', name: 'myroot.category.lifestyle' },
+ *    { id: 'photography', name: 'myroot.category.photography' },
+ * ];
+ *
+ * However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want
+ * the choice to be translated. In that case, set the `translateChoice` prop to false.
+ * @example
+ * <CheckboxGroupInput source="gender" choices={choices} translateChoice={false}/>
+ *
+ * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
 export class CheckboxGroupInput extends Component {
     handleCheck = (event, isChecked) => {
@@ -60,38 +77,39 @@ export class CheckboxGroupInput extends Component {
         }
     };
 
-    render() {
+    renderCheckbox = (choice) => {
         const {
-            choices,
-            optionValue,
-            optionText,
-            label,
-            resource,
-            source,
-            options,
             input: { value },
+            optionText,
+            optionValue,
+            options,
+            translate,
+            translateChoice
         } = this.props;
-
-        const option = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
-            choice => React.cloneElement(optionText, { record: choice }) :
+        const choiceName = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
+            React.cloneElement(optionText, { record: choice }) :
             (typeof optionText === 'function' ?
-                optionText :
-                choice => choice[optionText]
+                optionText(choice) :
+                choice[optionText]
             );
+        return (
+            <Checkbox
+                key={choice[optionValue]}
+                checked={value ? value.find(v => (v == choice[optionValue])) !== undefined : false}
+                onCheck={this.handleCheck}
+                value={choice[optionValue]}
+                label={translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
+                {...options}
+            />
+        );
+    }
 
+    render() {
+        const { choices, label, resource, source } = this.props;
         return (
             <Labeled label={label} source={source} resource={resource}>
                 <div>
-                    {choices.map(choice =>
-                        <Checkbox
-                            key={choice[optionValue]}
-                            checked={value ? value.find(v => (v == choice[optionValue])) !== undefined : false}
-                            onCheck={this.handleCheck}
-                            value={choice[optionValue]}
-                            label={option(choice)}
-                            {...options}
-                        />,
-                    )}
+                    {choices.map(this.renderCheckbox)}
                 </div>
             </Labeled>
         );
@@ -114,6 +132,8 @@ CheckboxGroupInput.propTypes = {
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
+    translate: PropTypes.func.isRequired,
+    translateChoice: PropTypes.bool.isRequired,
 };
 
 CheckboxGroupInput.defaultProps = {
@@ -122,6 +142,7 @@ CheckboxGroupInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
+    translateChoice: true,
 };
 
-export default CheckboxGroupInput;
+export default translate(CheckboxGroupInput);
