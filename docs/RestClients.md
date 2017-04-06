@@ -46,6 +46,7 @@ You can find more REST clients for admin-on-rest in third-party repositories:
 * [josx/aor-feathers-client](https://github.com/josx/aor-feathers-client): a REST client using [Feathersjs](http://www.feathersjs.com/)
 * [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback): a REST client works with [Loopback](http://loopback.io/)
 * [leperone/aor-parseserver-client](https://github.com/leperone/aor-parseserver-client): a REST client for [Parse Server](https://github.com/ParsePlatform/parse-server)
+* [moonlight-labs/aor-jsonapi-client](https://github.com/moonlight-labs/aor-jsonapi-client): a REST client for [JSON API](http://jsonapi.org/)
 
 ### Simple REST
 
