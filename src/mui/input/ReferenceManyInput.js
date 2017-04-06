@@ -136,7 +136,7 @@ export class ReferenceManyInput extends Component {
     }
 
     render() {
-        const { input, resource, label, source, reference, referenceRecords, allowEmpty, matchingReferences, basePath, onChange, children, meta } = this.props;
+        const { input, resource, label, source, referenceRecords, allowEmpty, matchingReferences, basePath, onChange, children, meta } = this.props;
         if (!(referenceRecords && referenceRecords.length > 0) && !allowEmpty) {
             return <Labeled
                 label={typeof label === 'undefined' ? `resources.${resource}.fields.${source}` : label}
