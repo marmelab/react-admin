@@ -12,9 +12,11 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
 const noFilter = () => true;
 
 /**
- * An Input component for choosing many reference records. Useful for 'hasMany' relationship.
+ * An Input component for choosing many reference records.
+ * Useful for 'hasMany' relationship.
  *
  * @example
+ * The author object has many post, so, the object will like that:
  * {
  *    post_ids: [ "1", "23", "4" ]
  * }
