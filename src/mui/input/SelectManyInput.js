@@ -37,7 +37,7 @@ export class SelectManyInput extends Component {
         super(props);
 
         this.state = {
-            values : this.resolveValues(props.input.value || []),
+            values: this.resolveValues(props.input.value || []),
         };
     }
 
@@ -80,6 +80,10 @@ export class SelectManyInput extends Component {
     };
 
     resolveValues = (ids) => {
+        if (!ids || !Array.isArray(ids)) {
+            throw Error("Value of SelectManyInput should be an array");
+        }
+
         if (this.props.choices && this.props.choices.length > 0) {
             return this.props.choices.filter((o) => ids.indexOf(o[this.props.optionValue]) >= 0);
         } else {

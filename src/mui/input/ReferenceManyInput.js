@@ -126,7 +126,10 @@ export class ReferenceManyInput extends Component {
     fetchReferenceAndOptions({ input, reference, source, resource } = this.props) {
         const { pagination, sort, filter } = this.params;
         const ids = input.value;
-        if (ids && Array.isArray(ids)) {
+        if (ids) {
+            if (!Array.isArray(ids)) {
+                throw Error("Value of ReferenceManyInput should be an array");
+            }
             this.props.crudGetMany(reference, ids);
         }
         this.props.crudGetMatching(reference, referenceSource(resource, source), pagination, sort, filter);
@@ -201,13 +204,19 @@ function mapStateToProps(state, props) {
     const referenceRecords = [];
     let matchingReferences = [];
     const data = state.admin[props.reference].data;
-    for (let i = 0; i < referenceIds.length; i++) {
-        if (data[referenceIds[i]]) {
-            referenceRecords.push(data[referenceIds[i]]);
-            const possibleReferences = getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference, referenceIds[i]);
-            matchingReferences = Object.assign(matchingReferences, possibleReferences);
+
+    if (!referenceIds.length) {
+        matchingReferences = getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference);
+    } else {
+        for (let i = 0; i < referenceIds.length; i++) {
+            if (data[referenceIds[i]]) {
+                referenceRecords.push(data[referenceIds[i]]);
+                const possibleReferences = getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference, referenceIds[i]);
+                matchingReferences = Object.assign(matchingReferences, possibleReferences);
+            }
         }
     }
+
     return {
         referenceRecords: referenceRecords,
         matchingReferences: matchingReferences,
