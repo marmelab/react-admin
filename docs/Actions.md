@@ -75,7 +75,7 @@ export const CommentList = (props) =>
     </List>;
 ```
 
-Or, in the `<Edit>` page, as a [custom action](./CreateEdit.html#actions):
+Or, in the `<Edit>` page, as a [custom action](./CreateEdit.md#actions):
 
 {% raw %}
 ```js
@@ -107,7 +107,7 @@ export const CommentEdit = (props) =>
 
 ## Using The REST Client Instead of Fetch
 
-The previous code uses `fetch()`, which means it has to make raw HTTP requests. The REST logic often requires a bit of HTTP plumbing to deal with query parameters, encoding, headers, body formatting, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: the [REST Client](./RestClients.html). So it's a good idea to use this function instead of `fetch` - provided you have exported it:
+The previous code uses `fetch()`, which means it has to make raw HTTP requests. The REST logic often requires a bit of HTTP plumbing to deal with query parameters, encoding, headers, body formatting, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: the [REST Client](./RestClients.md). So it's a good idea to use this function instead of `fetch` - provided you have exported it:
 
 ```js
 // in src/restClient.js
