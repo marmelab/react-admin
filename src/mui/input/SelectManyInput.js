@@ -152,12 +152,9 @@ SelectManyInput.propTypes = {
 SelectManyInput.defaultProps = {
     addField: true,
     choices: [],
-    onBlur: () => {
-    },
-    onChange: () => {
-    },
-    onFocus: () => {
-    },
+    onBlur: () => true,
+    onChange: () => true,
+    onFocus: () => true,
     options: {},
     optionText: 'name',
     optionValue: 'id',
