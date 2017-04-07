@@ -67,7 +67,11 @@ export class ReferenceArrayField extends Component {
                 '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
             );
         }
-        if (typeof ids === 'undefined' || typeof data === 'undefined') {
+
+        if (
+            typeof ids === 'undefined' ||
+            Object.keys(data).length !== ids.length
+        ) {
             return <LinearProgress style={{ marginTop: '1em' }} />;
         }
 

@@ -5,7 +5,7 @@ import { ReferenceArrayField } from './ReferenceArrayField';
 import TextField from './TextField';
 import SingleFieldList from '../list/SingleFieldList';
 
-describe.only('<ReferenceArrayField />', () => {
+describe('<ReferenceArrayField />', () => {
   it('should render a loading indicator when related records are not yet fetched', () => {
     const wrapper = shallow(
       <ReferenceArrayField
@@ -14,6 +14,8 @@ describe.only('<ReferenceArrayField />', () => {
         reference="bar"
         source="barIds"
         basePath=""
+        data={{}}
+        ids={[1, 2]}
         crudGetMany={() => {}}
       >
         <SingleFieldList>
@@ -58,7 +60,6 @@ describe.only('<ReferenceArrayField />', () => {
   });
 
   it('should render nothing when there are no related records', () => {
-    const data = {};
     const wrapper = shallow(
       <ReferenceArrayField
         record={{ barIds: [1, 2] }}
@@ -66,8 +67,8 @@ describe.only('<ReferenceArrayField />', () => {
         reference="bar"
         source="barIds"
         basePath=""
-        data={data}
-        ids={[1, 2]}
+        data={{}}
+        ids={[]}
         crudGetMany={() => {}}
       >
         <SingleFieldList>
@@ -81,7 +82,7 @@ describe.only('<ReferenceArrayField />', () => {
     assert.equal(SingleFieldListElement.length, 1);
     assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
     assert.deepEqual(SingleFieldListElement.at(0).prop('data'), {});
-    assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), [1, 2]);
+    assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), []);
   });
 
   it('should support record with string identifier', () => {
