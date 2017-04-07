@@ -138,6 +138,11 @@ export class ReferenceManyInput extends Component {
 
     render() {
         const { input, resource, label, source, referenceRecords, allowEmpty, matchingReferences, basePath, onChange, children, meta } = this.props;
+
+        if (React.Children.count(children) !== 1) {
+            throw new Error('<ReferenceManyInput> only accepts a single child (like <Datagrid>)');
+        }
+
         if (!(referenceRecords && referenceRecords.length > 0) && !allowEmpty) {
             return <Labeled
                 label={typeof label === 'undefined' ? `resources.${resource}.fields.${source}` : label}
