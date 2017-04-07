@@ -9,7 +9,6 @@ import {
 import { getPossibleReferences } from '../../reducer/references/possibleValues';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
-const noFilter = () => true;
 
 /**
  * An Input component for choosing many reference records.
@@ -157,7 +156,6 @@ export class ReferenceManyInput extends Component {
             choices: matchingReferences,
             basePath,
             onChange,
-            filter: noFilter, // for AutocompleteInput
             setFilter: this.debouncedSetFilter,
             setPagination: this.setPagination,
             setSort: this.setSort,
@@ -185,7 +183,7 @@ ReferenceManyInput.propTypes = {
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC']),
+        order: PropTypes.oneOf([ 'ASC', 'DESC' ]),
     }),
     source: PropTypes.string,
 };
@@ -204,15 +202,15 @@ function mapStateToProps(state, props) {
     const referenceIds = props.input.value;
     const referenceRecords = [];
     let matchingReferences = [];
-    const data = state.admin[props.reference].data;
+    const data = state.admin[ props.reference ].data;
 
     if (!referenceIds.length) {
         matchingReferences = getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference);
     } else {
         for (let i = 0; i < referenceIds.length; i++) {
-            if (data[referenceIds[i]]) {
-                referenceRecords.push(data[referenceIds[i]]);
-                const possibleReferences = getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference, referenceIds[i]);
+            if (data[ referenceIds[ i ] ]) {
+                referenceRecords.push(data[ referenceIds[ i ] ]);
+                const possibleReferences = getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference, referenceIds[ i ]);
                 matchingReferences = Object.assign(matchingReferences, possibleReferences);
             }
         }

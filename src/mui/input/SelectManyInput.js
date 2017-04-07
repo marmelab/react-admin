@@ -48,6 +48,7 @@ export class SelectManyInput extends Component {
         this.props.onBlur(extracted);
         this.props.input.onBlur(extracted);
     };
+
     handleFocus = () => {
         var extracted = this.extractIds(this.state.values);
         this.props.onFocus(extracted);
@@ -55,12 +56,12 @@ export class SelectManyInput extends Component {
     };
 
     handleAdd = (newValue) => {
-        this.state.values = [...this.state.values, newValue];
+        this.setState({ values: [ ...this.state.values, newValue ] });
         this.handleChange(this.state.values);
     };
 
     handleDelete = (newValue) => {
-        this.state.values = this.state.values.filter(v => (v[this.props.optionValue] !== newValue));
+        this.setState({ values: this.state.values.filter(v => (v[ this.props.optionValue ] !== newValue)) });
         this.handleChange(this.state.values);
     };
 
@@ -71,9 +72,9 @@ export class SelectManyInput extends Component {
     };
 
     extractIds = (eventOrValue) => {
-        const value = (eventOrValue.target && eventOrValue.target.value)? eventOrValue.target.value : eventOrValue;
+        const value = (eventOrValue.target && eventOrValue.target.value) ? eventOrValue.target.value : eventOrValue;
         if (Array.isArray(value)) {
-            return value.map((o) => o[this.props.optionValue])
+            return value.map((o) => o[ this.props.optionValue ])
         }
         return [ value ];
     };
@@ -84,13 +85,12 @@ export class SelectManyInput extends Component {
         }
 
         if (this.props.choices && this.props.choices.length > 0) {
-            return this.props.choices.filter((o) => values.indexOf(o[this.props.optionValue]) >= 0);
-        } else {
-            return values.map((v) => ({
-                [this.props.optionValue]: v,
-                [this.props.optionText]: v,
-            }));
+            return this.props.choices.filter((o) => values.indexOf(o[ this.props.optionValue ]) >= 0);
         }
+        return values.map((v) => ({
+            [this.props.optionValue]: v,
+            [this.props.optionText]: v,
+        }));
     };
 
     render() {
@@ -105,6 +105,7 @@ export class SelectManyInput extends Component {
             optionValue,
             resource,
             source,
+            setFilter,
         } = this.props;
 
         return (
@@ -116,7 +117,8 @@ export class SelectManyInput extends Component {
                 onTouchTap={this.handleFocus}
                 onRequestDelete={this.handleDelete}
                 onRequestAdd={this.handleAdd}
-                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
+                onUpdateInput={setFilter}
+                floatingLabelText={<FieldTitle label={label} source={source} resource={resource}/>}
                 errorText={touched && error}
                 style={elStyle}
                 dataSource={choices}
@@ -138,6 +140,7 @@ SelectManyInput.propTypes = {
     onBlur: PropTypes.func,
     onChange: PropTypes.func,
     onFocus: PropTypes.func,
+    setFilter: PropTypes.func,
     options: PropTypes.object,
     optionText: PropTypes.string.isRequired,
     optionValue: PropTypes.string.isRequired,
@@ -149,9 +152,12 @@ SelectManyInput.propTypes = {
 SelectManyInput.defaultProps = {
     addField: true,
     choices: [],
-    onBlur: () => {},
-    onChange: () => {},
-    onFocus: () => {},
+    onBlur: () => {
+    },
+    onChange: () => {
+    },
+    onFocus: () => {
+    },
     options: {},
     optionText: 'name',
     optionValue: 'id',
