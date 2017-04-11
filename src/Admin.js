@@ -58,7 +58,7 @@ const Admin = ({
     sagaMiddleware.run(saga);
 
     const history = syncHistoryWithStore(hashHistory, store);
-    const firstResource = resources[0].name;
+    const firstResource = resources[0];
     const onEnter = authClient ?
         params => (nextState, replace, callback) => authClient(AUTH_CHECK, params)
             .then(() => params && params.scrollToTop ? window.scrollTo(0, 0) : null)
@@ -86,7 +86,9 @@ const Admin = ({
         <Provider store={store}>
             <TranslationProvider messages={messages}>
                 <Router history={history}>
-                    {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
+                    {!dashboard && firstResource &&
+                      <Redirect from="/" to={`/${firstResource.name}`} />
+                    }
                     <Route path="/login" component={LoginPage} />
                     <Route path="/" component={Layout} resources={resources}>
                         {customRoutes && customRoutes()}
