@@ -36,7 +36,7 @@ const Admin = ({
     loginPage,
     logoutButton,
 }) => {
-    const resources = React.Children.map(children, ({ props }) => props);
+    const resources = React.Children.map(children, ({ props }) => props) || [];
     const reducer = combineReducers({
         admin: adminReducer(resources),
         locale: localeReducer(locale),
