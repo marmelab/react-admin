@@ -1,4 +1,5 @@
-import React, { createElement, PropTypes } from 'react';
+import React, { createElement } from 'react';
+import PropTypes from 'prop-types';
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createHistory from 'history/createHashHistory';

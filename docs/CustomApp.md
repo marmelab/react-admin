@@ -15,7 +15,8 @@ Here is the main code for bootstrapping a barebones admin-on-rest application wi
 
 ```js
 // in src/App.js
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { render } from 'react-dom';
 
 // redux, react-router, redux-form, saga, and material-ui

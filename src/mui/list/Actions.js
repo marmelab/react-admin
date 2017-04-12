@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { CardActions } from 'material-ui/Card';
 import { CreateButton, RefreshButton } from '../button';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
