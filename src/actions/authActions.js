@@ -1,7 +1,7 @@
-export const USER_LOGIN = 'admin-on-rest/USER_LOGIN';
-export const USER_LOGIN_LOADING = 'admin-on-rest/USER_LOGIN_LOADING';
-export const USER_LOGIN_FAILURE = 'admin-on-rest/USER_LOGIN_FAILURE';
-export const USER_LOGIN_SUCCESS = 'admin-on-rest/USER_LOGIN_SUCCESS';
+export const USER_LOGIN = 'aor/USER_LOGIN';
+export const USER_LOGIN_LOADING = 'aor/USER_LOGIN_LOADING';
+export const USER_LOGIN_FAILURE = 'aor/USER_LOGIN_FAILURE';
+export const USER_LOGIN_SUCCESS = 'aor/USER_LOGIN_SUCCESS';
 
 export const userLogin = (payload, pathName) => ({
     type: USER_LOGIN,

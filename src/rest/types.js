@@ -1,7 +1,7 @@
-export const GET_LIST = 'admin-on-rest/GET_LIST';
-export const GET_ONE = 'admin-on-rest/GET_ONE';
-export const GET_MANY = 'admin-on-rest/GET_MANY';
-export const GET_MANY_REFERENCE = 'admin-on-rest/GET_MANY_REFERENCE';
-export const CREATE = 'admin-on-rest/CREATE';
-export const UPDATE = 'admin-on-rest/UPDATE';
-export const DELETE = 'admin-on-rest/DELETE';
+export const GET_LIST = 'aor/GET_LIST';
+export const GET_ONE = 'aor/GET_ONE';
+export const GET_MANY = 'aor/GET_MANY';
+export const GET_MANY_REFERENCE = 'aor/GET_MANY_REFERENCE';
+export const CREATE = 'aor/CREATE';
+export const UPDATE = 'aor/UPDATE';
+export const DELETE = 'aor/DELETE';
