@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MuiAppBar from 'material-ui/AppBar';
 import muiThemeable from 'material-ui/styles/muiThemeable';

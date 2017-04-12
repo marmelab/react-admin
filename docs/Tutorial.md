@@ -123,7 +123,8 @@ In admin-on-rest, fields are simple React components. At runtime, they receive t
 
 ```js
 // in admin-on-rest/src/mui/field/EmailField.js
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const EmailField = ({ record = {}, source }) => <a href={`mailto:${record[source]}`}>{record[source]}</a>;
 

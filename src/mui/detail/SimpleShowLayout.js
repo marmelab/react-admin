@@ -1,4 +1,5 @@
-import React, { Children, PropTypes } from 'react';
+import React, { Children } from 'react';
+import PropTypes from 'prop-types';
 import Labeled from '../input/Labeled';
 
 export const SimpleShowLayout = ({ basePath, children, record, resource }) => (

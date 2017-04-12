@@ -15,7 +15,8 @@ Here is an implementation of the "Approve" button that works perfectly:
 
 ```js
 // in src/comments/ApproveButton.js
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
 import { showNotification as showNotificationAction } from 'admin-on-rest';
@@ -180,7 +181,8 @@ To use the new action creator in the component, `connect` it:
 
 ```js
 // in src/comments/ApproveButton.js
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
 import { commentApprove as commentApproveAction } from './commentActions';
@@ -289,7 +291,8 @@ This action can be triggered on mount by the following component:
 
 ```js
 // in src/BitCoinRate.js
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bitcoinRateReceived as bitcoinRateReceivedAction } from './bitcoinRateReceived';
 

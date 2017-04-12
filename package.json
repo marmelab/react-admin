@@ -62,6 +62,7 @@
     "lodash.set": "~4.3.2",
     "material-ui": "~0.17.3",
     "node-polyglot": "2.2.2",
+    "prop-types": "~15.5.7",
     "query-string": "~4.3.2",
     "react": "~15.5.4",
     "react-dom": "~15.5.4",

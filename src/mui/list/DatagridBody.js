@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import { TableBody, TableRow } from 'material-ui/Table';
 import DatagridCell from './DatagridCell';

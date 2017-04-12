@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import shallowEqual from 'recompose/shallowEqual';
 
@@ -73,9 +74,9 @@ Filter.propTypes = {
     debounce: PropTypes.number.isRequired,
     displayedFilters: PropTypes.object,
     filterValues: PropTypes.object,
-    hideFilter: React.PropTypes.func,
+    hideFilter: PropTypes.func,
     setFilters: PropTypes.func,
-    showFilter: React.PropTypes.func,
+    showFilter: PropTypes.func,
     resource: PropTypes.string.isRequired,
 };
 

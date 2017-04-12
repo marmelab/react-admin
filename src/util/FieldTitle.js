@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import inflection from 'inflection';
 import pure from 'recompose/pure';
 import compose from 'recompose/compose';
