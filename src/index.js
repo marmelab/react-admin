@@ -8,6 +8,6 @@ export * from './rest';
 export * from './sideEffect/saga';
 export * as fetchUtils from './util/fetch';
 export FieldTitle from './util/FieldTitle';
-export Admin from './Admin';
+export * from './Admin';
 export CrudRoute from './CrudRoute';
 export Resource from './Resource';

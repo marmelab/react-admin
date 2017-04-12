@@ -51,7 +51,7 @@ const Admin = ({
         ].map(fork);
     };
     const sagaMiddleware = createSagaMiddleware();
-    const store = createStore(reducer, undefined, compose(
+    export const store = createStore(reducer, undefined, compose(
         applyMiddleware(sagaMiddleware, routerMiddleware(hashHistory)),
         window.devToolsExtension ? window.devToolsExtension() : f => f,
     ));
