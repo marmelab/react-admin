@@ -5,6 +5,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import getDefaultValues from '../form/getDefaultValues';
 import translate from '../../i18n/translate';
 
+const divStyle = { padding: '0 1em 1em 1em' };
 export class TabbedShowLayout extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +21,7 @@ export class TabbedShowLayout extends Component {
     render() {
         const { children, contentContainerStyle, record, resource, basePath, translate } = this.props;
         return (
-            <div style={{ padding: '0 1em 1em 1em' }}>
+            <div style={divStyle}>
                 <Tabs value={this.state.value} onChange={this.handleChange} contentContainerStyle={contentContainerStyle}>
                     {React.Children.map(children, (tab, index) =>
                         <Tab key={tab.props.value} label={translate(tab.props.label)} value={index} icon={tab.props.icon}>

@@ -8,6 +8,7 @@ import Toolbar from './Toolbar';
 import getDefaultValues from './getDefaultValues';
 import translate from '../../i18n/translate';
 
+const divStyle = { padding: '0 1em 1em 1em' };
 export class TabbedForm extends Component {
     constructor(props) {
         super(props);
@@ -24,7 +25,7 @@ export class TabbedForm extends Component {
         const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath, translate } = this.props;
         return (
             <form onSubmit={handleSubmit} className="tabbed-form">
-                <div style={{ padding: '0 1em 1em 1em' }}>
+                <div style={divStyle}>
                     <Tabs
                         value={this.state.value}
                         onChange={this.handleChange}

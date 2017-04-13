@@ -169,7 +169,7 @@ export const PostCreate = (props) => (
 
 ## The `<TabbedForm>` component
 
-Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop.
+Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<Tab>` components, which expect a `label` and an `icon` prop.
 
 ![tabbed form](./img/tabbed-form.gif)
 
@@ -180,27 +180,27 @@ Here are all the props accepted by the `<TabbedForm>` component:
 
 {% raw %}
 ```js
-import { TabbedForm, FormTab } from 'admin-on-rest'
+import { TabbedForm, Tab } from 'admin-on-rest'
 
 export const PostEdit = (props) => (
     <Edit {...props}>
         <TabbedForm>
-            <FormTab label="summary">
+            <Tab label="summary">
                 <DisabledInput label="Id" source="id" />
                 <TextInput source="title" validation={{ required: true }} />
                 <LongTextInput source="teaser" validation={{ required: true }} />
-            </FormTab>
-            <FormTab label="body">
+            </Tab>
+            <Tab label="body">
                 <RichTextInput source="body" validation={{ required: true }} addLabel={false} />
-            </FormTab>
-            <FormTab label="Miscellaneous">
+            </Tab>
+            <Tab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
                 <DateInput label="Publication date" source="published_at" />
                 <NumberInput source="average_note" validation={{ min: 0 }} />
                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
                 <DisabledInput label="Nb views" source="views" />
-            </FormTab>
-            <FormTab label="comments">
+            </Tab>
+            <Tab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
                     <Datagrid>
                         <TextField source="body" />
@@ -208,7 +208,7 @@ export const PostEdit = (props) => (
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
-            </FormTab>
+            </Tab>
         </TabbedForm>
     </Edit>
 );

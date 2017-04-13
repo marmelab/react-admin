@@ -29,7 +29,6 @@ title: "Reference"
 * [`<EmailField>`](./Fields.html#emailfield)
 * [`<Filter>`](./List.html#filters)
 * `<FormField>`
-* [`<FormTab>`](./CreateEdit.html#the-tabbedform-component)
 * `<EditButton>`
 * [`<ImageField>`](./Fields.html#imagefield)
 * [`<ImageInput>`](./Inputs.html#imageinput)
@@ -62,7 +61,9 @@ title: "Reference"
 * [`<SimpleList>`](./List.html#the-simplelist-component)
 * `<SimpleShowLayout>`
 * [`<SingleFieldList>`](./List.html#the-singlefieldlist-component)
+* `<Tab>`
 * [`<TabbedForm>`](./CreateEdit.html#the-tabbedform-component)
+* `<TabbedShowLayout>`
 * [`<TextField>`](./Fields.html#textfield)
 * [`<TextInput>`](./Inputs.html#textinput)
 * `<Title>`
