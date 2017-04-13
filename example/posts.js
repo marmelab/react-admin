@@ -29,6 +29,7 @@ import {
     SimpleList,
     SimpleShowLayout,
     TabbedForm,
+    TabbedView,
     TextField,
     TextInput,
     minValue,
@@ -157,26 +158,31 @@ export const PostEdit = ({ ...props }) => (
 
 export const PostShow = ({ ...props }) => (
     <Show title={<PostTitle />} {...props}>
-        <SimpleShowLayout>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="teaser" />
-            <RichTextField source="body" stripTags={false} />
-            <DateField source="published_at" style={{ fontStyle: 'italic' }} />
-            <TextField source="average_note" />
-            <SelectField source="category" choices={[
-                { name: 'Tech', id: 'tech' },
-                { name: 'Lifestyle', id: 'lifestyle' },
-            ]} />
-            <ReferenceManyField label="resources.posts.fields.comments" reference="comments" target="post_id" sort={{ field: 'created_at', order: 'DESC' }}>
-                <Datagrid selectable={false}>
-                    <DateField source="created_at" />
-                    <TextField source="author.name" />
-                    <TextField source="body" />
-                    <EditButton />
-                </Datagrid>
-            </ReferenceManyField>
-            <TextField source="views" />
-        </SimpleShowLayout>
+        <TabbedView defaultValue={{ average_note: 0 }}>
+            <FormTab label="post.form.summary">
+                <TextField source="id" />
+                <TextField source="title" validation={{ required: true }} />
+                <TextField source="teaser" validation={{ required: true }} />
+            </FormTab>
+            <FormTab label="post.form.body">
+                <RichTextField source="body" label="" validation={{ required: true }} addLabel={false} />
+            </FormTab>
+            <FormTab label="post.form.miscellaneous">
+                <DateField source="published_at" />
+                <TextField source="average_note" validation={{ min: 0 }} />
+                <BooleanField source="commentable" defaultValue />
+                <TextField source="views" />
+            </FormTab>
+            <FormTab label="post.form.comments">
+                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+                    <Datagrid>
+                        <DateField source="created_at" />
+                        <TextField source="author.name" />
+                        <TextField source="body" />
+                        <EditButton />
+                    </Datagrid>
+                </ReferenceManyField>
+            </FormTab>
+        </TabbedView>
     </Show>
 );

@@ -1,0 +1,1 @@
+export TabbedView from './TabbedView';
