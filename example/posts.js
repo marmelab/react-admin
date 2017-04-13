@@ -11,7 +11,7 @@ import {
     Edit,
     EditButton,
     Filter,
-    FormTab,
+    Tab,
     ImageField,
     ImageInput,
     List,
@@ -112,7 +112,7 @@ export const PostCreate = ({ ...props }) => (
 export const PostEdit = ({ ...props }) => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
-            <FormTab label="post.form.summary">
+            <Tab label="post.form.summary">
                 <DisabledInput source="id" />
                 <TextInput source="title" validate={required} />
                 <CheckboxGroupInput
@@ -127,11 +127,11 @@ export const PostEdit = ({ ...props }) => (
                 <ImageInput multiple source="pictures" accept="image/*">
                     <ImageField source="src" title="title" />
                 </ImageInput>
-            </FormTab>
-            <FormTab label="post.form.body">
+            </Tab>
+            <Tab label="post.form.body">
                 <RichTextInput source="body" label="" validate={required} addLabel={false} />
-            </FormTab>
-            <FormTab label="post.form.miscellaneous">
+            </Tab>
+            <Tab label="post.form.miscellaneous">
                 <TextInput source="password" type="password" />
                 <DateInput source="published_at" />
                 <SelectInput source="category" choices={[
@@ -141,8 +141,8 @@ export const PostEdit = ({ ...props }) => (
                 <NumberInput source="average_note" validate={[number, minValue(0)]} />
                 <BooleanInput source="commentable" defaultValue />
                 <DisabledInput source="views" />
-            </FormTab>
-            <FormTab label="post.form.comments">
+            </Tab>
+            <Tab label="post.form.comments">
                 <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
                     <Datagrid>
                         <DateField source="created_at" />
@@ -151,7 +151,7 @@ export const PostEdit = ({ ...props }) => (
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
-            </FormTab>
+            </Tab>
         </TabbedForm>
     </Edit>
 );
@@ -159,21 +159,21 @@ export const PostEdit = ({ ...props }) => (
 export const PostShow = ({ ...props }) => (
     <Show title={<PostTitle />} {...props}>
         <TabbedShowLayout>
-            <FormTab label="post.form.summary">
+            <Tab label="post.form.summary">
                 <TextField source="id" />
                 <TextField source="title" validation={{ required: true }} />
                 <TextField source="teaser" validation={{ required: true }} />
-            </FormTab>
-            <FormTab label="post.form.body">
+            </Tab>
+            <Tab label="post.form.body">
                 <RichTextField source="body" label="" validation={{ required: true }} addLabel={false} />
-            </FormTab>
-            <FormTab label="post.form.miscellaneous">
+            </Tab>
+            <Tab label="post.form.miscellaneous">
                 <DateField source="published_at" />
                 <TextField source="average_note" validation={{ min: 0 }} />
                 <BooleanField source="commentable" defaultValue />
                 <TextField source="views" />
-            </FormTab>
-            <FormTab label="post.form.comments">
+            </Tab>
+            <Tab label="post.form.comments">
                 <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
                     <Datagrid>
                         <DateField source="created_at" />
@@ -182,7 +182,7 @@ export const PostShow = ({ ...props }) => (
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
-            </FormTab>
+            </Tab>
         </TabbedShowLayout>
     </Show>
 );
