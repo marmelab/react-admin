@@ -3,8 +3,7 @@ import { By, until } from 'selenium-webdriver';
 module.exports = (url) => (driver) => ({
     elements: {
         appLoader: By.css('.app-loader'),
-        titleInput: By.css(`.create-page input[name='title']`),
-        teaserInput: By.css(`.create-page textarea[name='teaser']`),
+        input: (type, name) => By.css(`.create-page ${type}[name='${name}']`),
         submitButton: By.css(".create-page button[type='submit']"),
         descInput: By.css(".ql-editor"),
     },
@@ -26,16 +25,8 @@ module.exports = (url) => (driver) => ({
             .then(() => driver.sleep(100)); // let some time to redraw
     },
 
-    setTitleValue(value, clearPreviousValue = true) {
-        const input = driver.findElement(this.elements.titleInput);
-        if (clearPreviousValue) {
-            input.clear();
-        }
-        return input.sendKeys(value);
-    },
-    
-    setTeaserValue(value, clearPreviousValue = true) {
-        const input = driver.findElement(this.elements.teaserInput);
+    setInputValue(type, name, value, clearPreviousValue = true) {
+        const input = driver.findElement(this.elements.input(type, name));
         if (clearPreviousValue) {
             input.clear();
         }

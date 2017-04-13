@@ -9,8 +9,8 @@ describe('Create Page', () => {
     beforeEach(async () => await CreatePage.navigate());
 
     it('should redirect to created post', async () => {
-        await CreatePage.setTitleValue('title', 'Test title');
-        await CreatePage.setTeaserValue('teaser', 'Test teaser');
+        await CreatePage.setInputValue('input', 'title', 'Test title');
+        await CreatePage.setInputValue('textarea', 'teaser', 'Test teaser');
         await CreatePage.setDescValue('Lorem Ipsum');
         await CreatePage.submit();
         assert.equal(await driver.getCurrentUrl(), 'http://localhost:8083/#/posts/14');
