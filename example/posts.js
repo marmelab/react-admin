@@ -29,7 +29,7 @@ import {
     SimpleList,
     SimpleShowLayout,
     TabbedForm,
-    TabbedView,
+    TabbedShowLayout,
     TextField,
     TextInput,
     minValue,
@@ -158,7 +158,7 @@ export const PostEdit = ({ ...props }) => (
 
 export const PostShow = ({ ...props }) => (
     <Show title={<PostTitle />} {...props}>
-        <TabbedView defaultValue={{ average_note: 0 }}>
+        <TabbedShowLayout>
             <FormTab label="post.form.summary">
                 <TextField source="id" />
                 <TextField source="title" validation={{ required: true }} />
@@ -183,6 +183,6 @@ export const PostShow = ({ ...props }) => (
                     </Datagrid>
                 </ReferenceManyField>
             </FormTab>
-        </TabbedView>
+        </TabbedShowLayout>
     </Show>
 );

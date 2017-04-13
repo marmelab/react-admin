@@ -5,7 +5,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import getDefaultValues from '../form/getDefaultValues';
 import translate from '../../i18n/translate';
 
-export class TabbedView extends Component {
+export class TabbedShowLayout extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -33,7 +33,7 @@ export class TabbedView extends Component {
     }
 }
 
-TabbedView.propTypes = {
+TabbedShowLayout.propTypes = {
     children: PropTypes.node,
     contentContainerStyle: PropTypes.object,
     record: PropTypes.object,
@@ -42,7 +42,7 @@ TabbedView.propTypes = {
     translate: PropTypes.func,
 };
 
-TabbedView.defaultProps = {
+TabbedShowLayout.defaultProps = {
     contentContainerStyle: { borderTop: 'solid 1px #e0e0e0' },
 };
 
@@ -53,4 +53,4 @@ const enhance = compose(
     translate,
 );
 
-export default enhance(TabbedView);
+export default enhance(TabbedShowLayout);
