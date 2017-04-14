@@ -14,7 +14,7 @@ module.exports = (url) => (driver) => ({
     },
 
     waitUntilVisible() {
-        return driver.wait(until.elementLocated(this.elements.title));
+        return driver.wait(until.elementLocated(this.elements.submitButton));
     },
 
     waitUntilDataLoaded() {
@@ -31,6 +31,17 @@ module.exports = (url) => (driver) => ({
             input.clear();
         }
         return input.sendKeys(value);
+    },
+
+    setValues(values, descValue, clearPreviousValue = true){
+        let input;
+        values.forEach((val) => {
+            input = driver.findElement(this.elements.input(val.type, val.name));
+            if(clearPreviousValue)
+                input.clear();
+            input.sendKeys(val.value);
+        });
+        return this.setDescValue(descValue);
     },
 
     setDescValue(value, clearPreviousValue = true) {

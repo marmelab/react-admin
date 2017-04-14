@@ -15,9 +15,19 @@ describe('Create Page', () => {
     });
 
     it('should redirect to created post', async () => {
-        await CreatePage.setInputValue('input', 'title', 'Test title');
-        await CreatePage.setInputValue('textarea', 'teaser', 'Test teaser');
-        await CreatePage.setDescValue('Lorem Ipsum');
+        const values = [
+            {
+                type: 'input',
+                name: 'title',
+                value: 'Test title',
+            },
+            {
+                type: 'textarea',
+                name: 'teaser',
+                value: 'Test teaser',
+            }
+        ];
+        await CreatePage.setValues(values, 'Lorem Ipsum');
         await CreatePage.submit();
         assert.equal(await driver.getCurrentUrl(), 'http://localhost:8083/#/posts/14');
     });
