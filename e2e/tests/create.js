@@ -11,7 +11,7 @@ describe('Create Page', () => {
     const ShowPage = showPageFactory('http://localhost:8083/#posts/14/show')(driver);
 
     beforeEach(async () => await CreatePage.navigate());
-    async function afterTest(){
+    async function deleteNewPost(){
         await DeletePage.navigate();
         await DeletePage.delete();
     }
@@ -19,10 +19,7 @@ describe('Create Page', () => {
     it('should put the current date in the field by default', async () => {
         await CreatePage.navigate();
         const currentDate = new Date();
-        let day = formatNumber(currentDate.getDate());
-        let month = formatNumber(currentDate.getMonth()+1);
-        let year = currentDate.getFullYear();
-        const currentDateString = year + '-' + month + '-' + day;
+        const currentDateString = currentDate.toISOString().slice(0,10);
         assert.equal(await CreatePage.getInputValue('input','published_at'), currentDateString);
     });
 
@@ -42,7 +39,7 @@ describe('Create Page', () => {
         await CreatePage.setValues(values, 'Lorem Ipsum');
         await CreatePage.submit();
         assert.equal(await driver.getCurrentUrl(), 'http://localhost:8083/#/posts/14');
-        await afterTest();
+        await deleteNewPost();
     });
 
     it('should give good title to show page', async() => {
@@ -62,10 +59,10 @@ describe('Create Page', () => {
         await CreatePage.submit();
         await ShowPage.navigate();
         assert.equal(await ShowPage.getValue('title'), 'Test title'); 
-        await afterTest();
+        await deleteNewPost();
     });
 
-    it('should not submit creation without title', async() => {
+    it('should not accept creation without required fields', async() => {
         const values = [
             {
                 type: 'textarea',
@@ -76,26 +73,4 @@ describe('Create Page', () => {
         await CreatePage.setValues(values);
         assert.equal(await CreatePage.getInputValue('textarea', 'teaser'), 'Test teaser');
     });
-
-    it('should not submit creation without teaser', async() => {
-        const values = [
-            {
-                type: 'input',
-                name: 'title',
-                value: 'Test title',
-            }
-        ];
-        await CreatePage.setValues(values);
-        assert.equal(await CreatePage.getInputValue('input', 'title'), 'Test title');
-    });
 });
-
-/**
- * function which add a 0 before a number < 10.
- * It uses for write a date at YYYY-MM-DD format 
- */
-function formatNumber(number) {
-    if(number<10)
-        number = "0"+number;
-    return number;
-}

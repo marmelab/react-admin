@@ -3,7 +3,7 @@ import { By, until } from 'selenium-webdriver';
 module.exports = (url) => (driver) => ({
     elements: {
         appLoader: By.css('.app-loader'),
-        field: (name) => By.css(`.aor-field-${name} > div > span`),
+        field: name => By.css(`.aor-field-${name} > div > span`),
     },
 
     navigate() {
