@@ -16,6 +16,16 @@ describe('Create Page', () => {
         await DeletePage.delete();
     });
 
+    it('should put the current date in the field by default', async () => {
+        await CreatePage.navigate();
+        const currentDate = new Date();
+        let day = formatNumber(currentDate.getDate());
+        let month = formatNumber(currentDate.getMonth()+1);
+        let year = currentDate.getFullYear();
+        const currentDateString = year + '-' + month + '-' + day;
+        assert.equal(await CreatePage.getInputValue('input','published_at'), currentDateString);
+    });
+
     it('should redirect to created post', async () => {
         const values = [
             {
@@ -34,7 +44,7 @@ describe('Create Page', () => {
         assert.equal(await driver.getCurrentUrl(), 'http://localhost:8083/#/posts/14');
     });
 
-    it('should give good values to show page', async() => {
+    it('should give good title to show page', async() => {
         const values = [
             {
                 type: 'input',
@@ -53,3 +63,13 @@ describe('Create Page', () => {
         assert.equal(await ShowPage.getValue('title'), 'Test title');
     });
 });
+
+/**
+ * function which add a 0 before a number < 0.
+ * It uses for write a date at YYYY-MM-DD format 
+ */
+function formatNumber(number) {
+    if(number<10)
+        number = "0"+number;
+    return number;
+}

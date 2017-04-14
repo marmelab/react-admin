@@ -51,6 +51,10 @@ module.exports = (url) => (driver) => ({
         return input.sendKeys(value);
     },
 
+    getInputValue(type, name){
+        return driver.findElement(this.elements.input(type, name)).getAttribute('value');
+    },
+
     submit() {
         driver.findElement(this.elements.submitButton).click();
         return this.waitUntilDataLoaded();
