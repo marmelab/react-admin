@@ -23,21 +23,30 @@ yarnpkg start
 
 You should be up and running with an empty React application on port 3000.
 
-The API is not stable yet, so make sure you read the correct version of this tutorial,
-which you should be able to find locally as `node_modules/admin-on-rest/docs/Tutorial.md`.
-
 ## Making Contact With The API
 
-We'll be using [JSONPlaceholder](http://jsonplaceholder.typicode.com/), which is a fake online REST API for testing and prototyping, as the datasource for the admin.
+We'll be using [JSONPlaceholder](http://jsonplaceholder.typicode.com/), a fake REST API designed for testing and prototyping, as the datasource for the admin.
 
-JSONPlaceholder provides endpoints for fake posts, fake comments, and fake users. The admin we'll build will allow to Create, Retrieve, Update, and Delete (CRUD) these resources.
+```
+curl http://jsonplaceholder.typicode.com/posts/12
+```
+
+```json
+{
+  "id": 12,
+  "title": "in quibusdam tempore odit est dolorem",
+  "body": "itaque id aut magnam\npraesentium quia et ea odit et ea voluptas et\nsapiente quia nihil amet occaecati quia id voluptatem\nincidunt ea est distinctio odio",
+  "userId": 2
+}
+```
+
+JSONPlaceholder provides endpoints for posts, comments, and users. The admin we'll build will allow to Create, Retrieve, Update, and Delete (CRUD) these resources.
 
 Replace the `src/App.js` by the following code:
 
 ```js
 // in src/App.js
 import React from 'react';
-
 import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
 
 import { PostList } from './posts';
@@ -51,9 +60,9 @@ const App = () => (
 export default App;
 ```
 
-The App component now renders an `<Admin>` component, which is the main component of admin-on-rest. This component expects a REST client as a parameter - a function capable of translating REST commands into HTTP requests. Since REST isn't a standard, you will probably have to provide a custom client to connect to your own APIs. But we'll dive into REST clients later. For now, let's take advantage of the `jsonServerRestClient`, which speaks the same REST dialect as JSONPlaceholder.
+The `App` component now renders an `<Admin>` component, which is the main component of admin-on-rest. This component expects a REST client as a parameter - a function capable of translating REST commands into HTTP requests. Since REST isn't a standard, you will probably have to provide a custom client to connect to your own APIs. But we'll dive into REST clients later. For now, let's take advantage of the `jsonServerRestClient`, which speaks the same REST dialect as JSONPlaceholder.
 
-The `<Admin>` component contains `<Resource>` components, each resource being mapped to an endpoint in the API. To begin with, we'll display the list of posts. Here is what the `<PostList>` component looks like:
+The `<Admin>` component can contain one or more `<Resource>` components, each resource being mapped to an endpoint in the API. To begin with, we'll display the list of posts. Here is what the `<PostList>` component looks like:
 
 ```js
 // in src/posts.js
@@ -71,17 +80,49 @@ export const PostList = (props) => (
 );
 ```
 
-The main component of the post list is a `<List>` component, responsible for grabbing the information from the url, displaying the page title, and handling pagination. This list then delegates the display of the actual list of posts to a `<Datagrid>`, responsible for displaying a table with one row for each post. As for which columns should be displayed in this table, that's what the bunch of `<TextField>` components are for, each mapping a different source field in the API response.
+The main component of the post list is a `<List>` component, responsible for grabbing the information from the API, displaying the page title, and handling pagination. This list then delegates the display of the actual list of posts to a `<Datagrid>`, responsible for displaying a table with one row for each post. The datagrid uses it child components (here, a list of `<TextField>`) to determine the columns to render. Each Field component maps a different field in the API response, specified by the `source` prop.
 
-That should be enough to display the post list:
+That's enough to display the post list:
 
 ![Simple posts list](./img/simple-post-list.png)
 
-The list is already functional: you can change the ordering by clicking on column headers, or change pages by using the bottom pagination controls.
+The list is already functional: you can creorder it by clicking on column headers, or change pages by using the bottom pagination controls.
 
 ## Field Types
 
-So far, you've only seen `<TextField>`, but if the API sends resources with other types of content, admin-on-rest can provide more features. For instance, [the `/users` endpoint in JSONPlaceholder](http://jsonplaceholder.typicode.com/users) contains emails. Let's see how the list displays them:
+You've just met the `<TextField>` component, but admin-on-rest provides many Field components to map various content types. For instance, [the `/users` endpoint in JSONPlaceholder](http://jsonplaceholder.typicode.com/users) contains emails.
+
+```
+curl http://jsonplaceholder.typicode.com/users/2
+```
+
+```json
+{
+  "id": 2,
+  "name": "Ervin Howell",
+  "username": "Antonette",
+  "email": "Shanna@melissa.tv",
+  "address": {
+    "street": "Victor Plains",
+    "suite": "Suite 879",
+    "city": "Wisokyburgh",
+    "zipcode": "90566-7771",
+    "geo": {
+      "lat": "-43.9509",
+      "lng": "-34.4618"
+    }
+  },
+  "phone": "010-692-6593 x09125",
+  "website": "anastasia.net",
+  "company": {
+    "name": "Deckow-Crist",
+    "catchPhrase": "Proactive didactic contingency",
+    "bs": "synergize scalable supply-chains"
+  }
+}
+```
+
+Let's create a new `UserList`, using `<EmailField>` to map the `email` field:
 
 ```js
 // in src/users.js
@@ -100,7 +141,7 @@ export const UserList = (props) => (
 );
 ```
 
-You'll notice that we override the default `title` of this list. To include the new `users` resource in the admin app, add it in `src/App.js`:
+You'll notice that this list overrides the default `title`. To include the new `users` resource in the admin app, add it in `src/App.js`:
 
 ```js
 // in src/App.js
@@ -119,24 +160,27 @@ const App = () => (
 
 The sidebar now gives access to the second resource, Users. The users list shows the email as a `<a href="mailto:">` tag.
 
-In admin-on-rest, fields are simple React components. At runtime, they receive the `record` they operate on (coming from the API, e.g. `{ "id": 1, "name": "Leanne Graham", "username": "Bret", "email": "Sincere@april.biz" }`), and the `source` field they should display (e.g. 'email'). That means that the code for field components is really simple:
+In admin-on-rest, fields are simple React components. At runtime, they receive the `record` fetched from the API on (e.g. `{ "id": 2, "name": "Ervin Howell", "username": "Antonette", "email": "Shanna@melissa.tv", ... }`), and the `source` field they should display (e.g. 'email').
+
+That means that writing a custom Field component is really simple. For instance, to create an `UrlField`:
 
 ```js
-// in admin-on-rest/src/mui/field/EmailField.js
+// in admin-on-rest/src/mui/field/UrlField.js
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const EmailField = ({ record = {}, source }) => <a href={`mailto:${record[source]}`}>{record[source]}</a>;
+const UrlField = ({ record = {}, source }) =>
+    <a href={record[source]}>
+        {record[source]}
+    </a>;
 
-EmailField.propTypes = {
-    source: PropTypes.string.isRequired,
+UrlField.propTypes = {
     record: PropTypes.object,
+    source: PropTypes.string.isRequired,
 };
 
-export default EmailField;
+export default UrlField;
 ```
-
-Creating your own custom fields shouldn't be too difficult.
 
 ## Relationships
 
@@ -151,7 +195,7 @@ In JSONPlaceholder, each `post` record includes a `userId` field, which points t
 }
 ```
 
-Admin-on-REST knows how to take advantage of these foreign keys to fetch references to a given record. For instance, to include the user name in the posts list, use the `<ReferenceField>`:
+Admin-on-REST knows how to take advantage of these foreign keys to fetch references. For instance, to include the user name in the posts list, use the `<ReferenceField>`:
 
 ```js
 // in src/posts.js
@@ -172,7 +216,7 @@ export const PostList = (props) => (
 );
 ```
 
-When displaying the posts list, the browser now fetches related user records, and displays their `name` as a `<TextField>`. Notice the `label` property: you can use it on any field component to customize the list header.
+When displaying the posts list, the app now fetches related user records, and displays their `name` as a `<TextField>`. Notice the `label` property: you can use it on any field component to customize the field label.
 
 ![reference posts in comment list](./img/reference-posts.png)
 
@@ -180,7 +224,7 @@ When displaying the posts list, the browser now fetches related user records, an
 
 ## Creation and Edition
 
-An admin interface is usually for more than seeing remote data - it's for editing and creating, too. Admin-on-REST provides `<Create>` and `<Edit>` components for that purpose. We'll add them to the `posts` resource:
+An admin interface is about displaying remote data, but also about editing and creating. Admin-on-REST provides `<Create>` and `<Edit>` components for that purpose. Add them to the `posts` script:
 
 ```js
 // in src/posts.js
@@ -231,15 +275,15 @@ export const PostCreate = (props) => (
 );
 ```
 
-Notice the additional `<EditButton>` field in the `<PostList>` component children: that's what gives access to the post edition view. Also, the `<Edit>` component uses a custom `<PostTitle>` component as title, which shows the way to customize the title of a given view.
+Notice the additional `<EditButton>` field in the `<PostList>` children: that's what gives access to the post edition page. Also, the `<Edit>` component uses a custom `<PostTitle>` component as title, which shows the way to customize the title for a given page.
 
-If you've understood the `<List>` component, the `<Edit>` and `<Create>` components will be no surprise. They are responsible for displaying the page title and preparing the data (fetching and setting default values). They pass the data to the `<SimpleForm>` component, which is responsible for the form layout and validation. Just like `<Datagrid>`, `<SimpleForm>` uses its children to display the form inputs. It expects *input components* as children. `<DisabledInput>`, `<TextInput>`, `<LongTextInput>`, and `<ReferenceInput>` are such inputs.
+If you've understood the `<List>` component, the `<Edit>` and `<Create>` components will be no surprise. They are responsible for fetching the record, and displaying the page title. They pass the record down to the `<SimpleForm>` component, which is responsible for the form layout, dfault values, and validation. Just like `<Datagrid>`, `<SimpleForm>` uses its children to determine the form inputs to display. It expects *input components* as children. `<DisabledInput>`, `<TextInput>`, `<LongTextInput>`, and `<ReferenceInput>` are such inputs.
 
-As for the `<ReferenceInput>`, it takes the same attributes as the `<ReferenceField>` (used earlier in the list view). `<ReferenceInput>` uses these attributes to fetch the API for possible references for the current record (in this case, possible `users` for the current `post`). Once it gets these possible records, it passes them to the child component (`<SelectInput>`), which is responsible for displaying them (via their `name` in that case) and letting the user select one. `<SelectInput>` renders as a `<select>` tag in HTML.
+As for the `<ReferenceInput>`, it takes the same props as the `<ReferenceField>` (used earlier in the list page). `<ReferenceInput>` uses these props to fetch the API for possible references related to the current record (in this case, possible `users` for the current `post`). It then passes these possible references to the child component (`<SelectInput>`), which is responsible for displaying them (via their `name` in that case), and letting the user select one. `<SelectInput>` renders as a `<select>` tag in HTML.
 
 **Tip**: The `<Edit>` and the `<Create>` components use the same `<ReferenceInput>` configuration, except for the `allowEmpty` attribute, which is required in `<Create>`.
 
-To use the new `<PostEdit>` and `<PostCreate>` components in the posts resource, just add them as `edit` and `create` attributes to the `<Resource>` component:
+To use the new `<PostEdit>` and `<PostCreate>` components in the posts resource, just add them as `edit` and `create` attributes in the `<Resource>` component:
 
 ```js
 // in src/App.js
@@ -258,15 +302,15 @@ Admin-on-rest automatically adds a "create" button on top of the posts list to g
 
 ![post list with access to edit and create](./img/editable-post.png)
 
-The create and edit views render as a form. It's already functional, and automatically issues `POST` and `PUT` requests to the REST API.
+The form rendered in the create and edit pages is already functional. It issues `POST` and `PUT` requests to the REST API upon submission.
 
 ![post edition form](./img/post-edition.png)
 
-**Note**: JSONPlaceholder is a read-only API: although it seems to accept `POST` and `PUT` requests, it doesn't take into account the creations and editions - that's why, in this particular case, you will see errors after creation, and you won't see your editions after you save them.
+**Note**: JSONPlaceholder is a read-only API; although it seems to accept `POST` and `PUT` requests, it doesn't take into account the creations and editions - that's why, in this particular case, you will see errors after creation, and you won't see your editions after you save them. It's just an artifact of JSONPlaceholder.
 
 ## Deletion
 
-There is not much to configure in a deletion view. To add removal abilities to a `Resource`, simply use the bundled `<Delete>` component from admin-on-rest using the `remove` attribute ('delete' is a reserved word in JavaScript):
+There is not much to configure in a deletion view. To add removal abilities to a `Resource`, simply use the bundled `<Delete>` component from admin-on-rest, and register it using the `remove` prop ('delete' is a reserved word in JavaScript):
 
 ```js
 // in src/App.js
@@ -288,7 +332,7 @@ In the edition view, a new "delete" button appears. And you can also use the `<D
 
 Let's get back to the post list for a minute. It offers sorting and pagination, but one feature is missing: the ability to search content.
 
-Admin-on-rest can use input components to create a multi-criteria search engine in the list view. First, create a `<Filter>` component just like you would with a `<Create>` component, using input components. Then, tell the list to use a filter element using the `filters` prop:
+Admin-on-rest can use input components to create a multi-criteria search engine in the list view. First, create a `<Filter>` component just like you would write a `<SimpleForm>` component, using input components as children. Then, add it to the list using the `filters` prop:
 
 ```js
 // in src/posts.js
@@ -310,7 +354,7 @@ export const PostList = (props) => (
 );
 ```
 
-The first filter, 'q', takes advantage of a full-text functionality offered by JSONPlaceholder. It is `alwaysOn`, so it always appears on the screen. The second filter, 'userId', can be added by the "add filter" button on the top of the list. As it's a `<ReferenceInput>`, it's already populated with possible users. It can be turned off by the end user.
+The first filter, 'q', takes advantage of a full-text functionality offered by JSONPlaceholder. It is `alwaysOn`, so it always appears on the screen. The second filter, 'userId', can be added by way of the "add filter" button, located on the top of the list. As it's a `<ReferenceInput>`, it's already populated with possible users. It can be turned off by the end user.
 
 Filters are "search-as-you-type", meaning that when the user enters new values in the filter form, the list refreshes (via an API request) immediately.
 
@@ -337,7 +381,7 @@ const App = () => (
 
 ## Using a Custom Home Page
 
-By default, admin-on-rest displays the list view of the first resource as home page. If you want to display a custom component instead, pass it in the `dashboard` attribute of the `<Admin>` component.
+By default, admin-on-rest displays the list page of the first resource as home page. If you want to display a custom component instead, pass it in the `dashboard` prop of the `<Admin>` component.
 
 {% raw %}
 ```js
@@ -369,11 +413,11 @@ const App = () => (
 
 ## Adding a Login Page
 
-Most admin apps require authentication, so admin-on-rest can check user credentials before displaying a page, and redirect to a login form when the REST API returns a 403 error code.
+Most admin apps require authentication. Admin-on-rest can check user credentials before displaying a page, and redirect to a login form when the REST API returns a 403 error code.
 
 *What* those credentials are, and *how* to get them, are questions that you must answer. Admin-on-rest makes no assumption about your authentication strategy (basic auth, OAuth, custom route, etc), but gives you the hooks to plug your logic at the right place - by calling an `authClient` function.
 
-For this tutorial, since there is no public authentication API we can use, we'll use a fake authentication provider that accepts every login request, and stores the `username` in `localStorage`. We'll implement a credentials checker that validates only if `localStorage` contains a `username` item.
+For this tutorial, since there is no public authentication API we can use, let's use a fake authentication provider that accepts every login request, and stores the `username` in `localStorage`. Each page change will require that `localStorage` contains a `username` item.
 
 The `authClient` is a simple function, which must return a `Promise`:
 
@@ -411,7 +455,7 @@ export default (type, params) => {
 };
 ```
 
-As it's asynchronous, you can easily fetch an authentication server in there.
+**Tip**: As the `restClient` response is asynchronous, you can easily fetch an authentication server in there.
 
 To enable this authentication strategy, pass the client as the `authClient` prop in the `<Admin>` component:
 
@@ -435,9 +479,9 @@ Once the app reloads, it's now behind a login form that accepts everyone:
 
 The admin-on-rest layout is already responsive. Try to resize your browser to see how the sidebar switches to a drawer on smaller screens.
 
-But the layout is not enough. Datagrid components work well on desktop, but are absolutely not adapted to mobile devices. If your admin can be used on mobile devices, you'll have to provide an alternative components for small screens
+But a responsive layout is not enough to make a responsive app. Datagrid components work well on desktop, but are absolutely not adapted to mobile devices. If your admin must be used on mobile devices, you'll have to provide an alternative component for small screens
 
-First, you should know that you don't have to use a `<Datagrid>` as `<List>` child. You can use any other component. For instance, the `<SimpleList>` component:
+First, you should know that you don't have to use the `<Datagrid>` component as `<List>` child. You can use any other component you like. For instance, the `<SimpleList>` component:
 
 ```js
 // in src/posts.js
@@ -456,6 +500,8 @@ export const PostList = (props) => (
 ```
 
 The `<SimpleList>` component uses [material-ui's `<List>` and `<ListItem>` components](http://www.material-ui.com/#/components/list), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
+
+<img src="./img/mobile-post-list.png" alt="Mobile post list" style="display:block;margin:2em auto;box-shadow:none;filter:drop-shadow(13px 12px 7px rgba(0,0,0,0.5));" />
 
 That works fine on mobile, but now the desktop user experience is worse. The best compromise would be to use `<SimpleList>` on small screens, and `<Datagrid>` on other screens. That's where the `<Responsive>` component comes in:
 
@@ -490,13 +536,15 @@ export const PostList = (props) => (
 );
 ```
 
-This works exactly how you expect. The lesson here is that admin-on-rest takes care of responsive web design for the layout, but it's your job to use `<Responsive>` in pages.
+This works exactly the way you expect. The lesson here is that admin-on-rest takes care of responsive web design for the layout, but it's your job to use `<Responsive>` in pages.
+
+![Responsive List](./img/responsive-list.gif)
 
 ## Using Another REST Dialect
 
 Here is the elephant in the room of this tutorial. In real world projects, the REST dialect of your API won't match the JSONPLaceholder dialect. Writing a REST client is probably the first thing you'll have to do to make admin-on-rest work. Depending on your API, this can require a few hours of additional work.
 
-Admin-on-rest delegates every REST calls to a REST client function. This function must simply return a promise for the result. This gives extreme freedom to map any API dialect, add authentication, use endpoints from several domains, etc.
+Admin-on-rest delegates every REST calls to a REST client function. This function must simply return a promise for the result. This gives extreme freedom to map any API dialect, add authentication headers, use endpoints from several domains, etc.
 
 For instance, let's imagine you have to use the my.api.url API, which expects the following parameters:
 
@@ -642,4 +690,6 @@ const App = () => (
 
 ## Conclusion
 
-Admin-on-rest was build with customization in mind. You can use your custom React components everywhere to display a custom list, or a different edition form for a given resource. If you want to go deeper, continue reading the [admin-on-rest documentation](http://marmelab.com/admin-on-rest/), and read the [Material UI components documentation](http://www.material-ui.com/#/).
+Admin-on-rest was build with customization in mind. You can replace any admin-on-rest component with a component of your own, for instance to display a custom list layout, or a different edition form for a given resource.
+
+Now that you've completed the tutorial, continue reading the [admin-on-rest documentation](http://marmelab.com/admin-on-rest/), and read the [Material UI components documentation](http://www.material-ui.com/#/).
