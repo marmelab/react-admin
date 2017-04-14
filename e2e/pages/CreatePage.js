@@ -10,7 +10,7 @@ module.exports = (url) => (driver) => ({
 
     navigate() {
         driver.navigate().to(url);
-            return this.waitUntilDataLoaded();
+        return this.waitUntilDataLoaded();
     },
 
     waitUntilVisible() {

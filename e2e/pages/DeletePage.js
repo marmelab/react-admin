@@ -3,15 +3,16 @@ import { By, until } from 'selenium-webdriver';
 module.exports = (url) => (driver) => ({
     elements: {
         appLoader: By.css('.app-loader'),
+        deleteButton: By.css("button[type='submit']"),
     },
 
-    navigate() {
+     navigate() {
         driver.navigate().to(url);
-        return this.waitUntilDataLoaded();
+        return this.waitUntilVisible();
     },
 
     waitUntilVisible() {
-        return driver.wait(until.elementLocated(this.elements.title));
+        return driver.wait(until.elementLocated(this.elements.deleteButton));
     },
 
     waitUntilDataLoaded() {
@@ -22,5 +23,9 @@ module.exports = (url) => (driver) => ({
             .then(() => driver.sleep(100)); // let some time to redraw
     },
 
+    delete(){
+        driver.findElement(this.elements.deleteButton).click();
+        return this.waitUntilDataLoaded();
+    }
     
 });

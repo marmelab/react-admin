@@ -10,18 +10,18 @@ describe('List Page', () => {
 
     describe('Pagination', () => {
         it('should display paginated list of available posts', async () => {
-            assert.equal(await ListPage.getNbPagesText(), '1-10 of 14');
+            assert.equal(await ListPage.getNbPagesText(), '1-10 of 13');
         });
 
         it('should switch page when clicking on previous/next page buttons or page numbers', async () => {
             await ListPage.nextPage();
-            assert.equal(await ListPage.getNbPagesText(), '11-14 of 14');
+            assert.equal(await ListPage.getNbPagesText(), '11-13 of 13');
 
             await ListPage.previousPage();
-            assert.equal(await ListPage.getNbPagesText(), '1-10 of 14');
+            assert.equal(await ListPage.getNbPagesText(), '1-10 of 13');
 
             await ListPage.goToPage(2);
-            assert.equal(await ListPage.getNbPagesText(), '11-14 of 14');
+            assert.equal(await ListPage.getNbPagesText(), '11-13 of 13');
         });
     });
 
