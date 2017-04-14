@@ -11,10 +11,10 @@ describe('Create Page', () => {
     const ShowPage = showPageFactory('http://localhost:8083/#posts/14/show')(driver);
 
     beforeEach(async () => await CreatePage.navigate());
-    afterEach(async () => {
+    async function afterTest(){
         await DeletePage.navigate();
         await DeletePage.delete();
-    });
+    }
 
     it('should put the current date in the field by default', async () => {
         await CreatePage.navigate();
@@ -42,6 +42,7 @@ describe('Create Page', () => {
         await CreatePage.setValues(values, 'Lorem Ipsum');
         await CreatePage.submit();
         assert.equal(await driver.getCurrentUrl(), 'http://localhost:8083/#/posts/14');
+        await afterTest();
     });
 
     it('should give good title to show page', async() => {
@@ -57,15 +58,40 @@ describe('Create Page', () => {
                 value: 'Test teaser',
             }
         ];
-        await CreatePage.setValues(values, 'Lorem Ipsum');
+        await CreatePage.setValues(values);
         await CreatePage.submit();
         await ShowPage.navigate();
-        assert.equal(await ShowPage.getValue('title'), 'Test title');
+        assert.equal(await ShowPage.getValue('title'), 'Test title'); 
+        await afterTest();
+    });
+
+    it('should not submit creation without title', async() => {
+        const values = [
+            {
+                type: 'textarea',
+                name: 'teaser',
+                value: 'Test teaser',
+            }
+        ];
+        await CreatePage.setValues(values);
+        assert.equal(await CreatePage.getInputValue('textarea', 'teaser'), 'Test teaser');
+    });
+
+    it('should not submit creation without teaser', async() => {
+        const values = [
+            {
+                type: 'input',
+                name: 'title',
+                value: 'Test title',
+            }
+        ];
+        await CreatePage.setValues(values);
+        assert.equal(await CreatePage.getInputValue('input', 'title'), 'Test title');
     });
 });
 
 /**
- * function which add a 0 before a number < 0.
+ * function which add a 0 before a number < 10.
  * It uses for write a date at YYYY-MM-DD format 
  */
 function formatNumber(number) {
