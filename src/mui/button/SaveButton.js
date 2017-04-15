@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { submit } from 'redux-form';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import ContentSave from 'material-ui/svg-icons/content/save';
@@ -13,8 +14,8 @@ export class SaveButton extends Component {
         if (this.props.saving) {
             // prevent double submission
             e.preventDefault();
-        } else if (!this.props.submitOnEnter && this.props.handleSubmit) {
-            this.props.handleSubmit();
+        } else if (!this.props.submitOnEnter) {
+            this.props.dispatch(submit('record-form'));
         }
     }
 
@@ -54,11 +55,6 @@ SaveButton.propTypes = {
     saving: PropTypes.bool,
     translate: PropTypes.func.isRequired,
     submitOnEnter: PropTypes.bool,
-    handleSubmit: PropTypes.func,
-};
-
-SaveButton.defaultProps = {
-    submitOnEnter: true,
 };
 
 const mapStateToProps = state => ({

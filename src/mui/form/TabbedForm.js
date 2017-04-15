@@ -8,6 +8,8 @@ import Toolbar from './Toolbar';
 import getDefaultValues from './getDefaultValues';
 import translate from '../../i18n/translate';
 
+const noop = () => {};
+
 export class TabbedForm extends Component {
     constructor(props) {
         super(props);
@@ -22,10 +24,8 @@ export class TabbedForm extends Component {
 
     render() {
         const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath, translate, submitOnEnter } = this.props;
-        const formOnSubmit = submitOnEnter ? handleSubmit : function noop() {};
-        const toolbarProps = submitOnEnter ? {} : { submitOnEnter: submitOnEnter, handleSubmit: handleSubmit };
         return (
-            <form onSubmit={formOnSubmit} className="tabbed-form">
+            <form onSubmit={ submitOnEnter ? handleSubmit : noop } className="tabbed-form">
                 <div style={{ padding: '0 1em 1em 1em' }}>
                     <Tabs
                         value={this.state.value}
@@ -45,7 +45,7 @@ export class TabbedForm extends Component {
                         )}
                     </Tabs>
                 </div>
-                <Toolbar invalid={invalid} {...toolbarProps} />
+                <Toolbar invalid={invalid} submitOnEnter={submitOnEnter} />
             </form>
         );
     }

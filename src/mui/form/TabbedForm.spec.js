@@ -30,7 +30,7 @@ describe('<TabbedForm />', () => {
         assert.equal(button.length, 1);
     });
 
-    it('should not pass handleSubmit to the form and pass submitOnEnter and handleSumit to <Toolbar /> when submitOnEnter is false', () => {
+    it('should not pass handleSubmit to the form and pass submitOnEnter to <Toolbar /> when submitOnEnter is false', () => {
         const handleSubmit = () => {};
         const wrapper = shallow(
             <TabbedForm translate={translate} submitOnEnter={false} handleSubmit={handleSubmit}>
@@ -41,10 +41,9 @@ describe('<TabbedForm />', () => {
 
         const button = wrapper.find('Toolbar');
         assert.equal(button.prop('submitOnEnter'), false);
-        assert.equal(button.prop('handleSubmit'), handleSubmit);
     });
 
-    it('should pass handleSubmit to the form and not pass submitOnEnter and handleSumit to <Toolbar /> when submitOnEnter is true', () => {
+    it('should pass handleSubmit to the form and not pass submitOnEnter to <Toolbar /> when submitOnEnter is true', () => {
         const handleSubmit = () => {};
         const wrapper = shallow(
             <TabbedForm translate={translate} submitOnEnter={true} handleSubmit={handleSubmit}>
@@ -54,7 +53,6 @@ describe('<TabbedForm />', () => {
         assert.strictEqual(form.prop('onSubmit'), handleSubmit);
 
         const button = wrapper.find('Toolbar');
-        assert.strictEqual(button.prop('submitOnEnter'), undefined);
-        assert.strictEqual(button.prop('handleSubmit'), undefined);
+        assert.strictEqual(button.prop('submitOnEnter'), true);
     });
 });

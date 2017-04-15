@@ -7,11 +7,11 @@ import getDefaultValues from './getDefaultValues';
 import FormField from './FormField';
 import Toolbar from './Toolbar';
 
+const noop = () => {};
+
 export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, basePath, submitOnEnter }) => {
-    const formOnSubmit = submitOnEnter ? handleSubmit : function noop() {};
-    const toolbarProps = submitOnEnter ? {} : { submitOnEnter: submitOnEnter, handleSubmit: handleSubmit };
     return (
-        <form onSubmit={formOnSubmit} className="simple-form">
+        <form onSubmit={ submitOnEnter ? handleSubmit : noop } className="simple-form">
             <div style={{ padding: '0 1em 1em 1em' }}>
                 {React.Children.map(children, input => input && (
                     <div key={input.props.source} className={`aor-input-${input.props.source}`} style={input.props.style}>
@@ -19,7 +19,7 @@ export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, 
                     </div>
                 ))}
             </div>
-            <Toolbar invalid={invalid} {...toolbarProps} />
+            <Toolbar invalid={invalid} submitOnEnter={submitOnEnter} />
         </form>
     );
 };

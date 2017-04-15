@@ -36,47 +36,48 @@ describe('<SaveButton />', () => {
         assert.equal(flatButtonWrapper.prop('type'), 'submit');
     });
 
-    it('should not call handleSubmit when clicked while submitOnEnter is true and no saving in in progress', () => {
-        const handleSubmit = sinon.spy();
+    it('should not trigger submit action when clicked while submitOnEnter is true and no saving in in progress', () => {
+        const dispatch = sinon.spy();
         const raisedButtonWrapper = shallow(
-            <SaveButton raised={true} submitOnEnter={true} translate={translate} handleSubmit={handleSubmit} saving={false} />
+            <SaveButton raised={true} submitOnEnter={true} translate={translate} dispatch={dispatch} saving={false} />
         );
         const flatButtonWrapper = shallow(
-            <SaveButton raised={false} submitOnEnter={true} translate={translate} handleSubmit={handleSubmit} saving={false} />
+            <SaveButton raised={false} submitOnEnter={true} translate={translate} dispatch={dispatch} saving={false} />
         );
 
         raisedButtonWrapper.simulate('click');
         flatButtonWrapper.simulate('click');
 
-        assert(handleSubmit.notCalled);
+        assert(dispatch.notCalled);
     });
 
-    it('should call handleSubmit when clicked while submitOnEnter is false and no saving is in progress', () => {
-        const handleSubmit = sinon.spy();
+    it('should trigger submit action when clicked while submitOnEnter is false and no saving is in progress', () => {
+        const dispatch = sinon.spy();
         const raisedButtonWrapper = shallow(
-            <SaveButton raised={true} submitOnEnter={false} translate={translate} handleSubmit={handleSubmit} saving={false} />
+            <SaveButton raised={true} submitOnEnter={false} translate={translate} dispatch={dispatch} saving={false} />
         );
         const flatButtonWrapper = shallow(
-            <SaveButton raised={false} submitOnEnter={false} translate={translate} handleSubmit={handleSubmit} saving={false} />
+            <SaveButton raised={false} submitOnEnter={false} translate={translate} dispatch={dispatch} saving={false} />
         );
 
         raisedButtonWrapper.simulate('click');
-        assert(handleSubmit.calledOnce);
+        assert(dispatch.calledOnce);
+        assert(dispatch.calledWith({ type: sinon.match(/SUBMIT$/), meta: { form: 'record-form' } }));
         flatButtonWrapper.simulate('click');
-        assert(handleSubmit.calledTwice);
+        assert(dispatch.calledTwice);
     });
 
-    it('should not call handleSubmit when clicked while submitOnEnter is false and saving is in progress', () => {
-        const handleSubmit = sinon.spy();
+    it('should not trigger submit action when clicked while submitOnEnter is false and saving is in progress', () => {
+        const dispatch = sinon.spy();
         const event = {
           preventDefault: sinon.spy(),
         };
 
         const raisedButtonWrapper = shallow(
-            <SaveButton raised={true} submitOnEnter={false} translate={translate} handleSubmit={handleSubmit} saving={true} />
+            <SaveButton raised={true} submitOnEnter={false} translate={translate} dispatch={dispatch} saving={true} />
         );
         const flatButtonWrapper = shallow(
-            <SaveButton raised={false} submitOnEnter={false} translate={translate} handleSubmit={handleSubmit} saving={true} />
+            <SaveButton raised={false} submitOnEnter={false} translate={translate} dispatch={dispatch} saving={true} />
         );
 
         raisedButtonWrapper.simulate('click', event);
@@ -84,6 +85,6 @@ describe('<SaveButton />', () => {
         flatButtonWrapper.simulate('click', event);
         assert(event.preventDefault.calledTwice);
 
-        assert(handleSubmit.notCalled);
+        assert(dispatch.notCalled);
     });
 });
