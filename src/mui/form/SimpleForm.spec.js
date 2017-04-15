@@ -41,7 +41,7 @@ describe('<SimpleForm />', () => {
         assert.equal(button.prop('submitOnEnter'), false);
     });
 
-    it('should pass handleSubmit to the form and not pass submitOnEnter to <Toolbar /> when submitOnEnter is true', () => {
+    it('should pass handleSubmit to the form and pass submitOnEnter to <Toolbar /> when submitOnEnter is true', () => {
         const handleSubmit = () => {};
         const wrapper = shallow(
             <SimpleForm submitOnEnter={true} handleSubmit={handleSubmit}>
