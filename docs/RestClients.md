@@ -145,7 +145,7 @@ That means that if you need to add custom headers to your requests, you just nee
 
 ```js
 import { simpleRestClient, fetchUtils, Admin, Resource } from 'admin-on-rest';
-const httpClient = (url, options) => {
+const httpClient = (url, options={}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
     }
