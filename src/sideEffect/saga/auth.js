@@ -14,6 +14,7 @@ import { FETCH_ERROR } from '../../actions/fetchActions';
 import { AUTH_LOGIN, AUTH_CHECK, AUTH_ERROR, AUTH_LOGOUT } from '../../auth';
 
 export default (authClient) => {
+    if (!authClient) return () => null;
     function* handleAuth(action) {
         const { type, payload, error, meta } = action;
         switch (type) {
