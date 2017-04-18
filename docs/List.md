@@ -171,6 +171,28 @@ export const PostList = (props) => (
 
 `sort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
 
+### Disabling Sorting
+
+It is possible to disable sorting for a specific field by passing a `sortable` property set to `false`:
+
+{% raw %}
+```js
+// in src/posts.js
+import React from 'react';
+import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="id" sortable={false} />
+            <TextField source="title" />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
 ### Permanent Filter
 
 You can choose to always filter the list, without letting the user disable this filter - for instance to display only published posts. Write the filter to be passed to the REST client in the `filter` props:
