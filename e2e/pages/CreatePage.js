@@ -3,7 +3,7 @@ import { By, until } from 'selenium-webdriver';
 module.exports = (url) => (driver) => ({
     elements: {
         appLoader: By.css('.app-loader'),
-        input: (type, name) => By.css(`.create-page ${type}[name='${name}']`),
+        input: (name, type = 'input') => By.css(`.create-page ${type}[name='${name}']`),
         submitButton: By.css(".create-page button[type='submit']"),
         descInput: By.css(".ql-editor"),
     },
@@ -33,10 +33,10 @@ module.exports = (url) => (driver) => ({
         return input.sendKeys(value);
     },
 
-    setValues(values, descValue="", clearPreviousValue = true){
+    setValues(values, descValue, clearPreviousValue = true){
         let input;
         values.forEach((val) => {
-            input = driver.findElement(this.elements.input(val.type, val.name));
+            input = driver.findElement(this.elements.input(val.name, val.type));
             if(clearPreviousValue){
                 input.clear();
             }
@@ -52,8 +52,8 @@ module.exports = (url) => (driver) => ({
         return input.sendKeys(value);
     },
 
-    getInputValue(type, name){
-        return driver.findElement(this.elements.input(type, name)).getAttribute('value');
+    getInputValue(name, type='input'){
+        return driver.findElement(this.elements.input(name, type)).getAttribute('value');
     },
 
     submit() {
