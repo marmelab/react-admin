@@ -14,6 +14,7 @@ import DefaultActions from './Actions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
 import translate from '../../i18n/translate';
+import { toggleVisibilityField as toggleVisibilityFieldAction } from '../../actions/fieldsVisibilityAction';
 
 const styles = {
     noResults: { padding: 20 },
@@ -107,6 +108,11 @@ export class List extends Component {
         this.updateData();
     }
 
+    toggleVisibilityField = (field) => {
+        this.props.toggleVisibilityField(this.props.resource, field);
+        this.setState({ key: this.state.key + 1 });
+    }
+
     /**
      * Merge list params from 3 different sources:
      *   - the query string
@@ -122,6 +128,7 @@ export class List extends Component {
         if (!query.perPage) {
             query.perPage = this.props.perPage;
         }
+
         return query;
     }
 
@@ -182,6 +189,8 @@ export class List extends Component {
                         displayedFilters: this.state,
                         showFilter: this.showFilter,
                         refresh: this.refresh,
+                        handleFieldVisibility: this.toggleVisibilityField,
+                        hiddenFields: this.props.hiddenFields,
                     })}
                     <ViewTitle title={titleElement} />
                     {filters && React.cloneElement(filters, {
@@ -202,6 +211,7 @@ export class List extends Component {
                                 basePath,
                                 isLoading,
                                 setSort: this.setSort,
+                                hideFields: this.props.hiddenFields,
                             })}
                             { pagination && React.cloneElement(pagination, {
                                 total,
@@ -248,6 +258,8 @@ List.propTypes = {
     resource: PropTypes.string.isRequired,
     total: PropTypes.number.isRequired,
     translate: PropTypes.func.isRequired,
+    toggleVisibilityField: PropTypes.func.isRequired,
+    hiddenFields: PropTypes.arrayOf(PropTypes.string),
 };
 
 List.defaultProps = {
@@ -282,6 +294,7 @@ function mapStateToProps(state, props) {
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
         filterValues: resourceState.list.params.filter,
+        hiddenFields: resourceState.list.hiddenFields,
     };
 }
 
@@ -291,6 +304,7 @@ const enhance = compose(
         {
             crudGetList: crudGetListAction,
             changeListParams: changeListParamsAction,
+            toggleVisibilityField: toggleVisibilityFieldAction,
             push: pushAction,
         },
     ),

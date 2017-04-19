@@ -75,13 +75,19 @@ class Datagrid extends Component {
         this.props.setSort(event.currentTarget.dataset.sort);
     }
 
+    filterFields = column => (
+        !column.props.source || this.props.hideFields.indexOf(column.props.source) === -1
+    )
+
     render() {
         const { resource, children, ids, isLoading, data, currentSort, basePath, styles = defaultStyles, muiTheme, rowStyle, options, headerOptions, bodyOptions, rowOptions } = this.props;
+        const filteredChildren = children.filter(this.filterFields);
+
         return (
             <Table style={options && options.fixedHeader ? null : styles.table} fixedHeader={false} {...options}>
                 <TableHeader displaySelectAll={false} adjustForCheckbox={false} {...headerOptions}>
                     <TableRow style={muiTheme.tableRow}>
-                        {React.Children.map(children, (field, index) => (
+                        {React.Children.map(filteredChildren, (field, index) => (
                             <DatagridHeaderCell
                                 key={field.props.source || index}
                                 field={field}
@@ -95,7 +101,7 @@ class Datagrid extends Component {
                     </TableRow>
                 </TableHeader>
                 <DatagridBody resource={resource} ids={ids} data={data} basePath={basePath} styles={styles} rowStyle={rowStyle} isLoading={isLoading} options={bodyOptions} rowOptions={rowOptions}>
-                    {children}
+                    {filteredChildren}
                 </DatagridBody>
             </Table>
         );
@@ -120,11 +126,13 @@ Datagrid.propTypes = {
     rowStyle: PropTypes.func,
     setSort: PropTypes.func,
     styles: PropTypes.object,
+    hideFields: PropTypes.arrayOf(PropTypes.string),
 };
 
 Datagrid.defaultProps = {
     data: {},
     ids: [],
+    hideFields: [],
 };
 
 export default muiThemeable()(Datagrid);

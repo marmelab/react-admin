@@ -38,7 +38,7 @@ import {
 } from 'admin-on-rest';
 import RichTextInput from 'aor-rich-text-input';
 import Chip from 'material-ui/Chip';
-
+import DefaultActions from 'admin-on-rest/mui/list/Actions';
 export PostIcon from 'material-ui/svg-icons/action/book';
 
 const QuickFilter = translate(({ label, translate }) => <Chip style={{ marginBottom: 8 }}>{translate(label)}</Chip>);
@@ -53,7 +53,12 @@ const PostFilter = ({ ...props }) => (
 
 const titleFieldStyle = { maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' };
 export const PostList = ({ ...props }) => (
-    <List {...props} filters={<PostFilter />} sort={{ field: 'published_at', order: 'DESC' }}>
+    <List
+        {...props}
+        filters={<PostFilter />}
+        sort={{ field: 'published_at', order: 'DESC' }}
+        actions={<DefaultActions fields={[{ title: 'Title', source: 'title' }, { title: 'Commentable', source: 'commentable' }]} />}
+    >
         <Responsive
             small={
                 <SimpleList
