@@ -40,6 +40,7 @@ You can find translation packages for the following languages:
 
 - English (`en`) is the default
 - Chinese (`cn`): [downup2u/aor-language-chinese](https://github.com/downup2u/aor-language-chinese)
+- Dutch ('nl'): [pimschaaf/aor-language-dutch](https://github.com/pimschaaf/aor-language-dutch)
 - French (`fr`): [marmelab/aor-language-french](https://github.com/marmelab/aor-language-french)
 - German (`de`): [der-On/aor-language-german](https://github.com/der-On/aor-language-german)
 - Hebrew (`he`): [mstmustisnt/aor-language-hebrew](https://github.com/mstmustisnt/aor-language-hebrew)
