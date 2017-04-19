@@ -220,7 +220,8 @@ Use the [default layout](https://github.com/marmelab/admin-on-rest/blob/master/s
 
 ```js
 // in src/MyLayout.js
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import CircularProgress from 'material-ui/CircularProgress';

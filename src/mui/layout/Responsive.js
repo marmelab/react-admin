@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import withWidth from 'material-ui/utils/withWidth';
 
 export const Responsive = ({ small, medium, large, width, ...rest }) => {
