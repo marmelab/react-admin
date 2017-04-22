@@ -7,9 +7,7 @@ export const changeListParams = (resource, params) => ({
     meta: {resource},
 })
 
-export const refreshList = resource => {
-    return {
-        type: CRUD_REFRESH_LIST,
-        meta: {resource},
-    }
-}
+export const refreshList = resource => ({
+    type: CRUD_REFRESH_LIST,
+    meta: {resource},
+})
