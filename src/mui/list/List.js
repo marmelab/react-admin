@@ -67,7 +67,7 @@ const styles = {
 export class List extends Component {
     constructor(props) {
         super(props);
-        this.state = { key: 0 };
+        this.state = {};
     }
 
     componentDidMount() {
