@@ -106,7 +106,7 @@ export class List extends Component {
         return this.props.location.pathname;
     }
 
-    refresh = (event) => {
+    refresh = event => {
         event.stopPropagation();
         this.props.refreshList(this.props.resource);
     }
