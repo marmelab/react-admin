@@ -13,7 +13,10 @@ import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
 import DefaultActions from './Actions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
-import { changeListParams as changeListParamsAction } from '../../actions/listActions';
+import {
+    changeListParams as changeListParamsAction,
+    refreshList as refreshListAction,
+} from '../../actions/listActions';
 import translate from '../../i18n/translate';
 
 const styles = {
@@ -82,9 +85,9 @@ export class List extends Component {
          || nextProps.query.filter !== this.props.query.filter) {
             this.updateData(Object.keys(nextProps.query).length > 0 ? nextProps.query : nextProps.params);
         }
-        if (nextProps.data !== this.props.data && this.fullRefresh) {
-            this.fullRefresh = false;
-            this.setState({ key: this.state.key + 1 });
+
+        if (nextProps.version !== this.props.version) {
+            this.updateData();
         }
     }
 
@@ -92,6 +95,7 @@ export class List extends Component {
         if (
             nextProps.isLoading === this.props.isLoading
          && nextProps.width === this.props.width
+         && nextProps.version === this.props.version
          && nextState === this.state) {
             return false;
         }
@@ -104,8 +108,7 @@ export class List extends Component {
 
     refresh = (event) => {
         event.stopPropagation();
-        this.fullRefresh = true;
-        this.updateData();
+        this.props.refreshList(this.props.resource);
     }
 
     /**
@@ -159,7 +162,6 @@ export class List extends Component {
 
     render() {
         const { filters, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading, translate } = this.props;
-        const { key } = this.state;
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
@@ -173,7 +175,7 @@ export class List extends Component {
 
         return (
             <div className="list-page">
-                <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={this.props.version}>
                     {actions && React.cloneElement(actions, {
                         resource,
                         filters,
@@ -249,12 +251,15 @@ List.propTypes = {
     resource: PropTypes.string.isRequired,
     total: PropTypes.number.isRequired,
     translate: PropTypes.func.isRequired,
+    refreshList: PropTypes.func.isRequired,
+    version: PropTypes.number,
 };
 
 List.defaultProps = {
     filter: {},
     filterValues: {},
     perPage: 10,
+    version: 0,
     sort: {
         field: 'id',
         order: SORT_DESC,
@@ -283,6 +288,7 @@ function mapStateToProps(state, props) {
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
         filterValues: resourceState.list.params.filter,
+        version: resourceState.list.version,
     };
 }
 
@@ -293,6 +299,7 @@ const enhance = compose(
             crudGetList: crudGetListAction,
             changeListParams: changeListParamsAction,
             push: pushAction,
+            refreshList: refreshListAction,
         },
     ),
     translate,
