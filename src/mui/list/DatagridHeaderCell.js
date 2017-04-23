@@ -37,8 +37,10 @@ export const DatagridHeaderCell = ({ field, defaultStyle, currentSort, updateSor
                     }
                     style={styles.sortButton}
                 />
-                :
-                (field.props.label && <span style={styles.nonSortableLabel}>{<FieldTitle label={field.props.label} source={field.props.source} resource={resource} /> }</span>)
+            :
+                <span style={styles.nonSortableLabel}>
+                    {<FieldTitle label={field.props.label} source={field.props.source} resource={resource} />}
+                </span>
             }
         </TableHeaderColumn>
     );
@@ -64,5 +66,5 @@ DatagridHeaderCell.propTypes = {
 
 export default shouldUpdate((props, nextProps) =>
     props.isSorting !== nextProps.isSorting
-    || (nextProps.isSorting && props.currentSort.order !== nextProps.currentSort.order)
+    || (nextProps.isSorting && props.currentSort.order !== nextProps.currentSort.order),
 )(DatagridHeaderCell);
