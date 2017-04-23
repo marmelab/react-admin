@@ -5,10 +5,9 @@ export default resource => (previousState = 0, { type, meta }) => {
         return previousState;
     }
 
-    switch (type) {
-    case CRUD_REFRESH_LIST:
+    if (type === CRUD_REFRESH_LIST) {
         return previousState + 1;
-    default:
-        return previousState;
     }
+
+    return previousState;
 };
