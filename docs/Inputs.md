@@ -30,7 +30,7 @@ All input components accept the following attributes:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
 * `defaultValue`: Value to be set when the property is `null` or `undefined`.
-* `validation`: Validation rules for the current property (see the [Validation Documentation](./CreateEdit.html#validation))
+* `validation`: Validation rules for the current property (see the [Validation Documentation](./CreateEdit.md#validation))
 * `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
 * `style`: A style object to customize the look and feel of the field container (e.g. the `<div>` in a form).
 * `elStyle`: A style object to customize the look and feel of the field element itself
@@ -64,7 +64,7 @@ Then you can display a text input to edit the author first name as follows:
 <TextInput source="author.firstName" />
 ```
 
-**Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.html#translating-resource-and-field-names) for details.
+**Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
 
 ## `<AutocompleteInput>`
 
