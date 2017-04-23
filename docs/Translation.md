@@ -47,6 +47,7 @@ You can find translation packages for the following languages:
 - Hebrew (`he`): [mstmustisnt/aor-language-hebrew](https://github.com/mstmustisnt/aor-language-hebrew)
 - Hungarian (`hu`): [s33m4nn/aor-language-hungarian](https://github.com/s33m4nn/aor-language-hungarian)
 - Italian (`it`): [stefsava/aor-language-italian](https://github.com/stefsava/aor-language-italian)
+- Japanese (`ja`): [kuma-guy/aor-language-japanese](https://github.com/kuma-guy/aor-language-japanese)
 - Portuguese (`pt`): [movibe/aor-language-portugues](https://github.com/movibe/aor-language-portugues)
 - Russian (`ru`): [cytomich/aor-language-russian](https://github.com/cytomich/aor-language-russian)
 - Spanish (`es`): [blackboxvision/aor-language-spanish](https://github.com/BlackBoxVision/aor-language-spanish)
