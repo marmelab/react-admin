@@ -16,6 +16,7 @@ export const messages = {
                 pictures: 'Related Pictures',
                 published_at: 'Published at',
                 teaser: 'Teaser',
+                tags: 'Tags',
                 title: 'Title',
                 views: 'Views',
             },
