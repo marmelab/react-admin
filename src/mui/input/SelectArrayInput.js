@@ -93,7 +93,9 @@ export class SelectArrayInput extends Component {
         if (this.props.choices && this.props.choices.length > 0) {
             return this.getChoices().filter(choice => values.includes(choice.value));
         }
-        return [];
+        return values.map(value => ({
+            value, text: value, // FIXME will show ids instead of labels on first paint, with no redraw
+        }));
     };
 
     getChoices = () => {

@@ -754,11 +754,13 @@ const choices = [
 ];
 ```
 
-However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+However, in some cases, you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
 
 ```jsx
 <SelectInput source="gender" choices={choices} translateChoice={false}/>
 ```
+
+Note that `translateChoice` is set to false when `<SelectInput>` is a child of `<ReferenceInput>`.
 
 Lastly, use the `options` attribute if you want to override any of Material UI's `<SelectField>` attributes:
 
@@ -814,6 +816,22 @@ const choices = [
 <SelectArrayInput source="categories" choices={choices} optionText="plural_name" optionValue="_id" />
 ```
 
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```js
+const choices = [
+   { id: 'books', name: 'myroot.category.books' },
+   { id: 'sport', name: 'myroot.category.sport' },
+];
+```
+
+However, in some cases, you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+
+```js
+<SelectArrayInput source="gender" choices={choices} translateChoice={false}/>
+```
+
+Note that `translateChoice` is set to false when `<SelectArrayInput>` is a child of `<ReferenceArrayInput>`.
 
 Lastly, use the `options` attribute if you want to override any of the `<ChipInput>` attributes:
 
