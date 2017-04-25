@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ChipInput from 'material-ui-chip-input';
+
+import translate from '../../i18n/translate';
 import FieldTitle from '../../util/FieldTitle';
+
+const dataSourceConfig = { text: 'text', value: 'value' };
 
 /**
  * An Input component for an array
@@ -56,13 +60,15 @@ export class SelectArrayInput extends Component {
     };
 
     handleAdd = (newValue) => {
-        this.setState({ values: [...this.state.values, newValue] });
-        this.handleChange(this.state.values);
+        const values = [...this.state.values, newValue];
+        this.setState({ values });
+        this.handleChange(values);
     };
 
     handleDelete = (newValue) => {
-        this.setState({ values: this.state.values.filter(v => (v[this.props.optionValue] !== newValue)) });
-        this.handleChange(this.state.values);
+        const values = this.state.values.filter(v => (v.value !== newValue));
+        this.setState({ values });
+        this.handleChange(values);
     };
 
     handleChange = (eventOrValue) => {
@@ -74,7 +80,7 @@ export class SelectArrayInput extends Component {
     extractIds = (eventOrValue) => {
         const value = (eventOrValue.target && eventOrValue.target.value) ? eventOrValue.target.value : eventOrValue;
         if (Array.isArray(value)) {
-            return value.map(o => o[this.props.optionValue]);
+            return value.map(o => o.value);
         }
         return [value];
     };
@@ -85,13 +91,24 @@ export class SelectArrayInput extends Component {
         }
 
         if (this.props.choices && this.props.choices.length > 0) {
-            return this.props.choices.filter(o => values.indexOf(o[this.props.optionValue]) >= 0);
+            return this.getChoices().filter(choice => values.includes(choice.value));
         }
-        return values.map(v => ({
-            [this.props.optionValue]: v,
-            [this.props.optionText]: v,
-        }));
+        return [];
     };
+
+    getChoices = () => {
+        const {
+            choices,
+            optionText,
+            optionValue,
+            translate,
+            translateChoice,
+        } = this.props;
+        return choices.map(choice => ({
+            value: choice[optionValue],
+            text: translateChoice ? translate(choice[optionText], { _: choice[optionText] }) : choice[optionText],
+        }));
+    }
 
     render() {
         const {
@@ -106,6 +123,8 @@ export class SelectArrayInput extends Component {
             resource,
             source,
             setFilter,
+            translate,
+            translateChoice,
         } = this.props;
 
         return (
@@ -121,8 +140,9 @@ export class SelectArrayInput extends Component {
                 floatingLabelText={<FieldTitle label={label} source={source} resource={resource}/>}
                 errorText={touched && error}
                 style={elStyle}
-                dataSource={choices}
-                dataSourceConfig={{ 'text': optionText, 'value': optionValue }}
+                dataSource={this.getChoices()}
+                dataSourceConfig={dataSourceConfig}
+                openOnFocus
                 {...options}
             />
         );
@@ -146,7 +166,8 @@ SelectArrayInput.propTypes = {
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     source: PropTypes.string,
-    validation: PropTypes.object,
+    translate: PropTypes.func.isRequired,
+    translateChoice: PropTypes.bool.isRequired,
 };
 
 SelectArrayInput.defaultProps = {
@@ -158,6 +179,7 @@ SelectArrayInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
+    translateChoice: true,
 };
 
-export default SelectArrayInput;
+export default translate(SelectArrayInput);
