@@ -16,15 +16,15 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  * Useful for 'hasMany' relationship.
  *
  * @example
- * The post object has many tags, so, the post reource looks like:
+ * The post object has many tags, so the post resource looks like:
  * {
  *    id: 1234,
  *    tag_ids: [ "1", "23", "4" ]
  * }
  *
- * ReferenceArrayInput component fetches the current values (using the
- * `CRUD_GET_MANY` REST method) as well as possible values (using the
- * `CRUD_GET_MATCHING` REST method) in the reference resource. It then
+ * ReferenceArrayInput component fetches the current resources (using the
+ * `CRUD_GET_MANY` REST method) as well as possible resources (using the
+ * `CRUD_GET_MATCHING` REST method) in the reference endpoint. It then
  * delegates rendering to a subcomponent, to which it passes the possible
  * choices as the `choices` attribute.
  *
