@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
 import compose from 'recompose/compose';

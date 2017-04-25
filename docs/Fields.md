@@ -550,7 +550,8 @@ If you don't find what you need in the list above, it's very easy to write your 
 For instance, here is an equivalent of admin-on-rest's `<TextField>` component:
 
 ```js
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const TextField = ({ source, record = {} }) => <span>{record[source]}</span>;
 
@@ -585,7 +586,7 @@ If you are not looking for reusability, you can create even simpler components, 
 It's as easy as writing:
 
 ```js
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { List, Datagrid, TextField } from 'admin-on-rest';
 
 const FullNameField = ({ record = {} }) => <span>{record.firstName} {record.lastName}</span>;

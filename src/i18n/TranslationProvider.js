@@ -1,4 +1,5 @@
-import { Children, PropTypes } from 'react';
+import { Children } from 'react';
+import PropTypes from 'prop-types';
 import Polyglot from 'node-polyglot';
 import { connect } from 'react-redux';
 import { compose, withContext } from 'recompose';

@@ -6,17 +6,16 @@ import Restricted from './auth/Restricted';
 
 const AdminRoutes = ({ customRoutes, resources = [], dashboard }) => (
     <Switch>
-        {customRoutes
-            ? customRoutes.map((route, index) =>
-                <Route
-                    key={index}
-                    exact={route.props.exact}
-                    path={route.props.path}
-                    component={route.props.component}
-                    render={route.props.render}
-                    children={route.props.children}
-                />)
-            : <Route path="dummy" />}
+        {customRoutes && customRoutes.map((route, index) =>
+            <Route
+                key={index}
+                exact={route.props.exact}
+                path={route.props.path}
+                component={route.props.component}
+                render={route.props.render}
+                children={route.props.children}
+            />)
+        }
         {resources.map(resource =>
             <Route
                 path={`/${resource.name}`}
