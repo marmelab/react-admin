@@ -38,7 +38,6 @@ import FieldTitle from '../../util/FieldTitle';
 export class SelectArrayInput extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             values: this.resolveValues(props.input.value || []),
         };
@@ -116,8 +115,8 @@ export class SelectArrayInput extends Component {
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
                 onTouchTap={this.handleFocus}
-                onRequestDelete={this.handleDelete}
                 onRequestAdd={this.handleAdd}
+                onRequestDelete={this.handleDelete}
                 onUpdateInput={setFilter}
                 floatingLabelText={<FieldTitle label={label} source={source} resource={resource}/>}
                 errorText={touched && error}

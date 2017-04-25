@@ -208,7 +208,7 @@ ReferenceArrayInput.defaultProps = {
 };
 
 function mapStateToProps(state, props) {
-    const referenceIds = props.input.value;
+    const referenceIds = props.input.value || [];
     const data = state.admin[props.reference].data;
     return {
         referenceRecords: referenceIds.reduce((references, referenceId) => {
@@ -221,6 +221,7 @@ function mapStateToProps(state, props) {
             state,
             referenceSource(props.resource, props.source),
             props.reference,
+            referenceIds,
         ),
     };
 }

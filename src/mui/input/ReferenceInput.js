@@ -206,7 +206,7 @@ function mapStateToProps(state, props) {
     const referenceId = props.input.value;
     return {
         referenceRecord: state.admin[props.reference].data[referenceId],
-        matchingReferences: getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference, referenceId),
+        matchingReferences: getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference, [referenceId]),
     };
 }
 
