@@ -1,6 +1,6 @@
 import { delay } from 'redux-saga';
 import { call, cancel, fork, put, takeEvery } from 'redux-saga/effects';
-import { CRUD_GET_ONE_REFERENCE } from '../../actions/referenceActions';
+import { CRUD_GET_ONE_REFERENCE, CRUD_DEBOUNCED_GET_MANY } from '../../actions/referenceActions';
 import { crudGetMany } from '../../actions/dataActions';
 
 /**
@@ -35,6 +35,20 @@ function* accumulate({ payload }) {
     tasks[resource] = yield fork(fetchReference, resource);
 }
 
+function* accumulateMany({ payload }) {
+    console.log(payload);
+    const { ids: idArray, resource } = payload;
+    if (!ids[resource]) {
+        ids[resource] = {};
+    }
+    idArray.map(id => ids[resource][id] = true); // fast UNIQUE
+    if (tasks[resource]) {
+        yield cancel(tasks[resource]);
+    }
+    tasks[resource] = yield fork(fetchReference, resource);
+}
+
 export default function* () {
     yield takeEvery(CRUD_GET_ONE_REFERENCE, accumulate);
+    yield takeEvery(CRUD_DEBOUNCED_GET_MANY, accumulateMany);
 }

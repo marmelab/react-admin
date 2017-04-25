@@ -28,4 +28,15 @@ export const getReferences = (state, reference, relatedTo) => {
         }, {});
 };
 
+export const getReferencesByIds = (state, reference, ids) => {
+    if (ids.length === 0) return {};
+    return ids
+        .map(id => state.admin[reference].data[id])
+        .filter(r => typeof r !== 'undefined')
+        .reduce((prev, record) => {
+            prev[record.id] = record; // eslint-disable-line no-param-reassign
+            return prev;
+        }, {});
+};
+
 export const nameRelatedTo = (reference, id, resource, target) => `${resource}_${reference}@${target}_${id}`;

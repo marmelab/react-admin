@@ -377,9 +377,9 @@ Then admin-on-rest renders the `<CommentList>` with a loader for the `<Reference
 
 ## `<ReferenceManyField>`
 
-This component fetches a list of referenced record (using the `GET_MANY_REFERENCE` REST method), and passes the result to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
+This component fetches a list of referenced records by reverse lookup of the current `record.id` in other resource (using the `GET_MANY_REFERENCE` REST method). The field name of the current record's id in the other resource is specified by the required `target` field. The result is then passed to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
 
-For instance, here is how to fetch the `comments` related to a `post` record, and display the `author.name` for each, in a `<ChipField>`:
+For instance, here is how to fetch the `comments` related to a `post` record by matching `comment.post_id` to `post.id`, and then display the `author.name` for each, in a `<ChipField>`:
 
 ```jsx
 import React from 'react';
@@ -459,6 +459,32 @@ Also, you can filter the query used to populate the possible values. Use the `fi
 </ReferenceManyField>
 ```
 {% endraw %}
+
+## `<ReferenceArrayField>`
+
+This component fetches a list of referenced records by ids (using the `GET_MANY` REST method). The ids of the referenced records are specified by the required `source` field of the current record. The result is then passed to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
+
+For instance, here is how to fetch the `tags` related to a `post` record by matching `tag.id` to `post.tags_ids`, and then display the `name` for each `tag`, in a `<ChipField>`:
+
+```js
+import React from 'react';
+import { List, Datagrid, ChipField, ReferenceArrayField, SingleFieldList, TextField } from 'admin-on-rest';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <ReferenceArrayField label="Tags" reference="tags" source="tags_ids">
+                <SingleFieldList>
+                    <ChipField source="name" />
+                </SingleFieldList>
+            </ReferenceArrayField>
+            <EditButton />
+        </Datagrid>
+    </List>
+);
+```
 
 ## `<RichTextField>`
 

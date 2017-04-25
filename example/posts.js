@@ -3,6 +3,7 @@ import {
     BooleanField,
     BooleanInput,
     CheckboxGroupInput,
+    ChipField,
     Create,
     Datagrid,
     DateField,
@@ -18,6 +19,7 @@ import {
     LongTextInput,
     NumberField,
     NumberInput,
+    ReferenceArrayField,
     ReferenceManyField,
     Responsive,
     RichTextField,
@@ -28,6 +30,7 @@ import {
     SimpleForm,
     SimpleList,
     SimpleShowLayout,
+    SingleFieldList,
     TabbedForm,
     TextField,
     TextInput,
@@ -176,6 +179,11 @@ export const PostShow = ({ ...props }) => (
                     <EditButton />
                 </Datagrid>
             </ReferenceManyField>
+            <ReferenceArrayField reference="tags" source="tags">
+                <SingleFieldList>
+                    <ChipField source="name" />
+                </SingleFieldList>
+            </ReferenceArrayField>
             <TextField source="views" />
         </SimpleShowLayout>
     </Show>

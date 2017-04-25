@@ -6,6 +6,7 @@ export ImageField from './ImageField';
 export FunctionField from './FunctionField';
 export NumberField from './NumberField';
 export ReferenceField from './ReferenceField';
+export ReferenceArrayField from './ReferenceArrayField';
 export ReferenceManyField from './ReferenceManyField';
 export RichTextField from './RichTextField';
 export SelectField from './SelectField';
