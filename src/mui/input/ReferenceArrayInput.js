@@ -5,7 +5,7 @@ import debounce from 'lodash.debounce';
 import Labeled from '../input/Labeled';
 import {
     crudGetMany as crudGetManyAction,
-    crudGetMatching as crudGetMatchingAction
+    crudGetMatching as crudGetMatchingAction,
 } from '../../actions/dataActions';
 import { getPossibleReferences } from '../../reducer/references/possibleValues';
 
@@ -26,15 +26,15 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  * to a subcomponent, to which it passes the possible choices
  * as the `choices` attribute.
  *
- * Use it with a selector component as child, like `<SelectManyInput>`.
+ * Use it with a selector component as child, like `<SelectArrayInput>`.
  *
  * @example
  * export const CommentEdit = (props) => (
  *     <Edit {...props}>
  *         <SimpleForm>
- *             <ReferenceManyInput label="Post" source="post_ids" reference="posts">
- *                 <SelectManyInput optionText="title" />
- *             </ReferenceManyInput>
+ *             <ReferenceArrayInput label="Post" source="post_ids" reference="posts">
+ *                 <SelectArrayInput optionText="title" />
+ *             </ReferenceArrayInput>
  *         </SimpleForm>
  *     </Edit>
  * );
@@ -43,49 +43,49 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  * by setting the `perPage` prop.
  *
  * @example
- * <ReferenceManyInput
+ * <ReferenceArrayInput
  *      source="post_ids"
  *      reference="posts"
  *      perPage={100}>
- *     <SelectManyInput optionText="title" />
- * </ReferenceManyInput>
+ *     <SelectArrayInput optionText="title" />
+ * </ReferenceArrayInput>
  *
  * By default, orders the possible values by id desc. You can change this order
  * by setting the `sort` prop (an object with `field` and `order` properties).
  *
  * @example
- * <ReferenceManyInput
+ * <ReferenceArrayInput
  *      source="post_ids"
  *      reference="posts"
  *      sort={{ field: 'title', order: 'ASC' }}>
- *     <SelectManyInput optionText="title" />
- * </ReferenceManyInput>
+ *     <SelectArrayInput optionText="title" />
+ * </ReferenceArrayInput>
  *
  * Also, you can filter the query used to populate the possible values. Use the
  * `filter` prop for that.
  *
  * @example
- * <ReferenceManyInput
+ * <ReferenceArrayInput
  *      source="post_ids"
  *      reference="posts"
  *      filter={{ is_published: true }}>
- *     <SelectManyInput optionText="title" />
- * </ReferenceManyInput>
+ *     <SelectArrayInput optionText="title" />
+ * </ReferenceArrayInput>
  *
- * The enclosed component may filter results. ReferenceManyInput passes a `setFilter`
+ * The enclosed component may filter results. ReferenceArrayInput passes a `setFilter`
  * function as prop to its child component. It uses the value to create a filter
  * for the query - by default { q: [searchText] }. You can customize the mapping
  * searchText => searchQuery by setting a custom `filterToQuery` function prop:
  *
  * @example
- * <ReferenceManyInput
+ * <ReferenceArrayInput
  *      source="post_ids"
  *      reference="posts"
  *      filterToQuery={searchText => ({ title: searchText })}>
- *     <SelectManyInput optionText="title" />
- * </ReferenceManyInput>
+ *     <SelectArrayInput optionText="title" />
+ * </ReferenceArrayInput>
  */
-export class ReferenceManyInput extends Component {
+export class ReferenceArrayInput extends Component {
     constructor(props) {
         super(props);
         const { perPage, sort, filter } = props;
@@ -130,7 +130,7 @@ export class ReferenceManyInput extends Component {
         const ids = input.value;
         if (ids) {
             if (!Array.isArray(ids)) {
-                throw Error("Value of ReferenceManyInput should be an array");
+                throw Error("Value of ReferenceArrayInput should be an array");
             }
             this.props.crudGetMany(reference, ids);
         }
@@ -141,7 +141,7 @@ export class ReferenceManyInput extends Component {
         const { input, resource, label, source, referenceRecords, allowEmpty, matchingReferences, basePath, onChange, children, meta } = this.props;
 
         if (React.Children.count(children) !== 1) {
-            throw new Error('<ReferenceManyInput> only accepts a single child (like <Datagrid>)');
+            throw new Error('<ReferenceArrayInput> only accepts a single child (like <Datagrid>)');
         }
 
         if (!(referenceRecords && referenceRecords.length > 0) && !allowEmpty) {
@@ -169,7 +169,7 @@ export class ReferenceManyInput extends Component {
     }
 }
 
-ReferenceManyInput.propTypes = {
+ReferenceArrayInput.propTypes = {
     addField: PropTypes.bool.isRequired,
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string,
@@ -194,7 +194,7 @@ ReferenceManyInput.propTypes = {
     source: PropTypes.string,
 };
 
-ReferenceManyInput.defaultProps = {
+ReferenceArrayInput.defaultProps = {
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
@@ -223,15 +223,15 @@ function mapStateToProps(state, props) {
     }
 
     return {
-        referenceRecords: referenceRecords,
-        matchingReferences: matchingReferences,
-    }
+        referenceRecords,
+        matchingReferences,
+    };
 }
 
 const ConnectedReferenceInput = connect(mapStateToProps, {
     crudGetMany: crudGetManyAction,
     crudGetMatching: crudGetMatchingAction,
-})(ReferenceManyInput);
+})(ReferenceArrayInput);
 
 ConnectedReferenceInput.defaultProps = {
     addField: true,

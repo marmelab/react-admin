@@ -7,7 +7,7 @@ import FieldTitle from '../../util/FieldTitle';
  * An Input component for an array
  *
  * @example
- * <SelectManyInput source="categories" />
+ * <SelectArrayInput source="categories" />
  *
  * Pass possible options as an array of objects in the 'choices' attribute.
  *
@@ -20,7 +20,7 @@ import FieldTitle from '../../util/FieldTitle';
  *    { id: '2', name: 'Video' },
  *    { id: '3', name: 'Audio' },
  * ];
- * <SelectManyInput source="categories" choices={choices} />
+ * <SelectArrayInput source="categories" choices={choices} />
  *
  * You can also customize the properties to use for the option name and value,
  * thanks to the 'optionText' and 'optionValue' attributes.
@@ -30,12 +30,12 @@ import FieldTitle from '../../util/FieldTitle';
  *    { _id: '2', name: 'Video', plural_name: 'Videos' },
  *    { _id: '3', name: 'Audio', plural_name: 'Audios' },
  * ];
- * <SelectManyInput source="categories" choices={choices} optionText="plural_name" optionValue="_id" />
+ * <SelectArrayInput source="categories" choices={choices} optionText="plural_name" optionValue="_id" />
  *
  * The object passed as `options` props is passed to the material-ui-chip-input component
  * @see https://github.com/TeamWertarbyte/material-ui-chip-input
  */
-export class SelectManyInput extends Component {
+export class SelectArrayInput extends Component {
     constructor(props) {
         super(props);
 
@@ -45,29 +45,29 @@ export class SelectManyInput extends Component {
     }
 
     handleBlur = () => {
-        var extracted = this.extractIds(this.state.values);
+        const extracted = this.extractIds(this.state.values);
         this.props.onBlur(extracted);
         this.props.input.onBlur(extracted);
     };
 
     handleFocus = () => {
-        var extracted = this.extractIds(this.state.values);
+        const extracted = this.extractIds(this.state.values);
         this.props.onFocus(extracted);
         this.props.input.onFocus(extracted);
     };
 
     handleAdd = (newValue) => {
-        this.setState({ values: [ ...this.state.values, newValue ] });
+        this.setState({ values: [...this.state.values, newValue] });
         this.handleChange(this.state.values);
     };
 
     handleDelete = (newValue) => {
-        this.setState({ values: this.state.values.filter(v => (v[ this.props.optionValue ] !== newValue)) });
+        this.setState({ values: this.state.values.filter(v => (v[this.props.optionValue] !== newValue)) });
         this.handleChange(this.state.values);
     };
 
     handleChange = (eventOrValue) => {
-        var extracted = this.extractIds(eventOrValue);
+        const extracted = this.extractIds(eventOrValue);
         this.props.onChange(extracted);
         this.props.input.onChange(extracted);
     };
@@ -75,20 +75,20 @@ export class SelectManyInput extends Component {
     extractIds = (eventOrValue) => {
         const value = (eventOrValue.target && eventOrValue.target.value) ? eventOrValue.target.value : eventOrValue;
         if (Array.isArray(value)) {
-            return value.map((o) => o[ this.props.optionValue ])
+            return value.map(o => o[this.props.optionValue]);
         }
-        return [ value ];
+        return [value];
     };
 
     resolveValues = (values) => {
         if (!values || !Array.isArray(values)) {
-            throw Error("Value of SelectManyInput should be an array");
+            throw Error('Value of SelectArrayInput should be an array');
         }
 
         if (this.props.choices && this.props.choices.length > 0) {
-            return this.props.choices.filter((o) => values.indexOf(o[ this.props.optionValue ]) >= 0);
+            return this.props.choices.filter(o => values.indexOf(o[this.props.optionValue]) >= 0);
         }
-        return values.map((v) => ({
+        return values.map(v => ({
             [this.props.optionValue]: v,
             [this.props.optionText]: v,
         }));
@@ -130,7 +130,7 @@ export class SelectManyInput extends Component {
     }
 }
 
-SelectManyInput.propTypes = {
+SelectArrayInput.propTypes = {
     addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
     choices: PropTypes.arrayOf(PropTypes.object),
@@ -150,7 +150,7 @@ SelectManyInput.propTypes = {
     validation: PropTypes.object,
 };
 
-SelectManyInput.defaultProps = {
+SelectArrayInput.defaultProps = {
     addField: true,
     choices: [],
     onBlur: () => true,
@@ -161,4 +161,4 @@ SelectManyInput.defaultProps = {
     optionValue: 'id',
 };
 
-export default SelectManyInput;
+export default SelectArrayInput;
