@@ -12,28 +12,30 @@ import { getPossibleReferences } from '../../reducer/references/possibleValues';
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
 /**
- * An Input component for choosing many reference records.
+ * An Input component for fields containing a list of references to another resource.
  * Useful for 'hasMany' relationship.
  *
  * @example
- * The author object has many post, so, the object will like that:
+ * The post object has many tags, so, the post reource looks like:
  * {
- *    post_ids: [ "1", "23", "4" ]
+ *    id: 1234,
+ *    tag_ids: [ "1", "23", "4" ]
  * }
  *
- * This component fetches the possible values in the reference resource
- * (using the `CRUD_GET_MATCHING` REST method), then delegates rendering
- * to a subcomponent, to which it passes the possible choices
- * as the `choices` attribute.
+ * ReferenceArrayInput component fetches the current values (using the
+ * `CRUD_GET_MANY` REST method) as well as possible values (using the
+ * `CRUD_GET_MATCHING` REST method) in the reference resource. It then
+ * delegates rendering to a subcomponent, to which it passes the possible
+ * choices as the `choices` attribute.
  *
  * Use it with a selector component as child, like `<SelectArrayInput>`.
  *
  * @example
- * export const CommentEdit = (props) => (
+ * export const PostEdit = (props) => (
  *     <Edit {...props}>
  *         <SimpleForm>
- *             <ReferenceArrayInput label="Post" source="post_ids" reference="posts">
- *                 <SelectArrayInput optionText="title" />
+ *             <ReferenceArrayInput source="tag_ids" reference="tags">
+ *                 <SelectArrayInput optionText="name" />
  *             </ReferenceArrayInput>
  *         </SimpleForm>
  *     </Edit>
@@ -44,10 +46,10 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  *
  * @example
  * <ReferenceArrayInput
- *      source="post_ids"
- *      reference="posts"
+ *      source="tag_ids"
+ *      reference="tags"
  *      perPage={100}>
- *     <SelectArrayInput optionText="title" />
+ *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  *
  * By default, orders the possible values by id desc. You can change this order
@@ -55,10 +57,10 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  *
  * @example
  * <ReferenceArrayInput
- *      source="post_ids"
- *      reference="posts"
- *      sort={{ field: 'title', order: 'ASC' }}>
- *     <SelectArrayInput optionText="title" />
+ *      source="tag_ids"
+ *      reference="tags"
+ *      sort={{ field: 'name', order: 'ASC' }}>
+ *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  *
  * Also, you can filter the query used to populate the possible values. Use the
@@ -66,23 +68,24 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  *
  * @example
  * <ReferenceArrayInput
- *      source="post_ids"
- *      reference="posts"
- *      filter={{ is_published: true }}>
- *     <SelectArrayInput optionText="title" />
+ *      source="tag_ids"
+ *      reference="tags"
+ *      filter={{ is_public: true }}>
+ *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  *
- * The enclosed component may filter results. ReferenceArrayInput passes a `setFilter`
- * function as prop to its child component. It uses the value to create a filter
- * for the query - by default { q: [searchText] }. You can customize the mapping
- * searchText => searchQuery by setting a custom `filterToQuery` function prop:
+ * The enclosed component may filter results. ReferenceArrayInput passes a
+ * `setFilter` function as prop to its child component. It uses the value to
+ * create a filter for the query - by default { q: [searchText] }. You can
+ * customize the mapping searchText => searchQuery by setting a custom
+ * `filterToQuery` function prop:
  *
  * @example
  * <ReferenceArrayInput
- *      source="post_ids"
- *      reference="posts"
- *      filterToQuery={searchText => ({ title: searchText })}>
- *     <SelectArrayInput optionText="title" />
+ *      source="tag_ids"
+ *      reference="tags"
+ *      filterToQuery={searchText => ({ name: searchText })}>
+ *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
 export class ReferenceArrayInput extends Component {
@@ -130,7 +133,7 @@ export class ReferenceArrayInput extends Component {
         const ids = input.value;
         if (ids) {
             if (!Array.isArray(ids)) {
-                throw Error("Value of ReferenceArrayInput should be an array");
+                throw Error('The value of ReferenceArrayInput should be an array');
             }
             this.props.crudGetMany(reference, ids);
         }
@@ -189,7 +192,7 @@ ReferenceArrayInput.propTypes = {
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
-        order: PropTypes.oneOf([ 'ASC', 'DESC' ]),
+        order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
     source: PropTypes.string,
 };
@@ -206,25 +209,19 @@ ReferenceArrayInput.defaultProps = {
 
 function mapStateToProps(state, props) {
     const referenceIds = props.input.value;
-    const referenceRecords = [];
-    let matchingReferences = [];
-    const data = state.admin[ props.reference ].data;
-
-    if (!referenceIds.length) {
-        matchingReferences = getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference);
-    } else {
-        for (let i = 0; i < referenceIds.length; i++) {
-            if (data[ referenceIds[ i ] ]) {
-                referenceRecords.push(data[ referenceIds[ i ] ]);
-                const possibleReferences = getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference, referenceIds[ i ]);
-                matchingReferences = Object.assign(matchingReferences, possibleReferences);
-            }
-        }
-    }
-
+    const data = state.admin[props.reference].data;
     return {
-        referenceRecords,
-        matchingReferences,
+        referenceRecords: referenceIds.reduce((references, referenceId) => {
+            if (data[referenceId]) {
+                references.push(data[referenceId]);
+            }
+            return references;
+        }, []),
+        matchingReferences: getPossibleReferences(
+            state,
+            referenceSource(props.resource, props.source),
+            props.reference,
+        ),
     };
 }
 
