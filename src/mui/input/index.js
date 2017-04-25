@@ -10,5 +10,7 @@ export NullableBooleanInput from './NullableBooleanInput';
 export NumberInput from './NumberInput';
 export RadioButtonGroupInput from './RadioButtonGroupInput';
 export ReferenceInput from './ReferenceInput';
+export ReferenceManyInput from './ReferenceManyInput';
 export SelectInput from './SelectInput';
+export SelectManyInput from './SelectManyInput';
 export TextInput from './TextInput';
