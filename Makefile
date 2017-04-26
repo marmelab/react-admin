@@ -44,6 +44,6 @@ test-e2e: ## launch end-to-end tests
 	@echo 'Launching e2e tests...'
 	@NODE_ENV=test node_modules/.bin/mocha \
 		--compilers js:babel-register \
-		--timeout 10000 \
+		--timeout 15000 \
 		./e2e/tests/server.js \
 		./e2e/tests/*.js
