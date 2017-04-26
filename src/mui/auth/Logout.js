@@ -25,7 +25,10 @@ Logout.propTypes = {
 
 const enhance = compose(
     translate,
-    connect(null, { userLogout: userLogoutAction }),
+    connect((state, props) => ({
+        userLogout: userLogoutAction,
+        theme: state.theme,
+    })),
 );
 
 export default enhance(Logout);
