@@ -329,7 +329,7 @@
     word-wrap: normal;
     margin: 0;
     padding: .85em 1em;
-    margin-bottom: 1.275em!important;
+    margin-bottom: 1.275em;
     background: #f7f7f7
 }
 .markdown-section pre>code {
