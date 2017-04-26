@@ -44,7 +44,7 @@ JSONPlaceholder provides endpoints for posts, comments, and users. The admin we'
 
 Replace the `src/App.js` by the following code:
 
-```jsx
+```js
 // in src/App.js
 import React from 'react';
 import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
@@ -64,7 +64,7 @@ The `App` component now renders an `<Admin>` component, which is the main compon
 
 The `<Admin>` component can contain one or more `<Resource>` components, each resource being mapped to an endpoint in the API. To begin with, we'll display the list of posts. Here is what the `<PostList>` component looks like:
 
-```jsx
+```js
 // in src/posts.js
 import React from 'react';
 import { List, Datagrid, TextField } from 'admin-on-rest';
@@ -124,7 +124,7 @@ curl http://jsonplaceholder.typicode.com/users/2
 
 Let's create a new `UserList`, using `<EmailField>` to map the `email` field:
 
-```jsx
+```js
 // in src/users.js
 import React from 'react';
 import { List, Datagrid, EmailField, TextField } from 'admin-on-rest';
@@ -143,7 +143,7 @@ export const UserList = (props) => (
 
 You'll notice that this list overrides the default `title`. To include the new `users` resource in the admin app, add it in `src/App.js`:
 
-```jsx
+```js
 // in src/App.js
 import { PostList } from './posts';
 import { UserList } from './users';
@@ -164,7 +164,7 @@ In admin-on-rest, fields are simple React components. At runtime, they receive t
 
 That means that writing a custom Field component is really simple. For instance, to create an `UrlField`:
 
-```jsx
+```js
 // in admin-on-rest/src/mui/field/UrlField.js
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -197,7 +197,7 @@ In JSONPlaceholder, each `post` record includes a `userId` field, which points t
 
 Admin-on-REST knows how to take advantage of these foreign keys to fetch references. For instance, to include the user name in the posts list, use the `<ReferenceField>`:
 
-```jsx
+```js
 // in src/posts.js
 import React from 'react';
 import { List, Datagrid, TextField, EmailField, ReferenceField } from 'admin-on-rest';
@@ -226,7 +226,7 @@ When displaying the posts list, the app now fetches related user records, and di
 
 An admin interface is about displaying remote data, but also about editing and creating. Admin-on-REST provides `<Create>` and `<Edit>` components for that purpose. Add them to the `posts` script:
 
-```jsx
+```js
 // in src/posts.js
 import React from 'react';
 import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest';
@@ -285,7 +285,7 @@ As for the `<ReferenceInput>`, it takes the same props as the `<ReferenceField>`
 
 To use the new `<PostEdit>` and `<PostCreate>` components in the posts resource, just add them as `edit` and `create` attributes in the `<Resource>` component:
 
-```jsx
+```js
 // in src/App.js
 import { PostList, PostEdit, PostCreate } from './posts';
 import { UserList } from './users';
@@ -312,7 +312,7 @@ The form rendered in the create and edit pages is already functional. It issues 
 
 There is not much to configure in a deletion view. To add removal abilities to a `Resource`, simply use the bundled `<Delete>` component from admin-on-rest, and register it using the `remove` prop ('delete' is a reserved word in JavaScript):
 
-```jsx
+```js
 // in src/App.js
 import { Delete } from 'admin-on-rest';
 
@@ -334,7 +334,7 @@ Let's get back to the post list for a minute. It offers sorting and pagination, 
 
 Admin-on-rest can use input components to create a multi-criteria search engine in the list view. First, create a `<Filter>` component just like you would write a `<SimpleForm>` component, using input components as children. Then, add it to the list using the `filters` prop:
 
-```jsx
+```js
 // in src/posts.js
 import { Filter, ReferenceInput, SelectInput, TextInput } from 'admin-on-rest';
 
@@ -364,7 +364,7 @@ Filters are "search-as-you-type", meaning that when the user enters new values i
 
 The sidebar menu shows the same icon for both posts and users. Fortunately, customizing the menu icon is just a matter of passing an `icon` attribute to each `<Resource>`:
 
-```jsx
+```js
 // in src/App.js
 import PostIcon from 'material-ui/svg-icons/action/book';
 import UserIcon from 'material-ui/svg-icons/social/group';
@@ -384,7 +384,7 @@ const App = () => (
 By default, admin-on-rest displays the list page of the first resource as home page. If you want to display a custom component instead, pass it in the `dashboard` prop of the `<Admin>` component.
 
 {% raw %}
-```jsx
+```js
 // in src/Dashboard.js
 import React from 'react';
 import { Card, CardHeader, CardText } from 'material-ui/Card';
@@ -398,7 +398,7 @@ export default () => (
 ```
 {% endraw %}
 
-```jsx
+```js
 // in src/App.js
 import Dashboard from './Dashboard';
 
@@ -421,7 +421,7 @@ For this tutorial, since there is no public authentication API we can use, let's
 
 The `authClient` is a simple function, which must return a `Promise`:
 
-```jsx
+```js
 // in src/authClient.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest';
 
@@ -459,7 +459,7 @@ export default (type, params) => {
 
 To enable this authentication strategy, pass the client as the `authClient` prop in the `<Admin>` component:
 
-```jsx
+```js
 // in src/App.js
 import Dashboard from './Dashboard';
 import authClient from './authClient';
@@ -483,7 +483,7 @@ But a responsive layout is not enough to make a responsive app. Datagrid compone
 
 First, you should know that you don't have to use the `<Datagrid>` component as `<List>` child. You can use any other component you like. For instance, the `<SimpleList>` component:
 
-```jsx
+```js
 // in src/posts.js
 import React from 'react';
 import { List, SimpleList } from 'admin-on-rest';
@@ -505,7 +505,7 @@ The `<SimpleList>` component uses [material-ui's `<List>` and `<ListItem>` compo
 
 That works fine on mobile, but now the desktop user experience is worse. The best compromise would be to use `<SimpleList>` on small screens, and `<Datagrid>` on other screens. That's where the `<Responsive>` component comes in:
 
-```jsx
+```js
 // in src/posts.js
 import React from 'react';
 import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest';
@@ -677,7 +677,7 @@ export default (type, resource, params) => {
 
 Using this client instead of the previous `jsonServerRestClient` is just a matter of switching a function:
 
-```jsx
+```js
 // in src/app.js
 import myApiRestClient from './restClient';
 
