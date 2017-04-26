@@ -70,7 +70,7 @@ export class List extends Component {
     componentDidMount() {
         this.updateData();
         if (Object.keys(this.props.query).length > 0) {
-             this.props.changeListParams(this.props.resource, this.props.query);
+            this.props.changeListParams(this.props.resource, this.props.query);
         }
     }
 
@@ -116,6 +116,10 @@ export class List extends Component {
      */
     getQuery() {
         const query = Object.keys(this.props.query).length > 0 ? this.props.query : { ...this.props.params };
+        // we need to empty the query filter if full refresh
+        if (this.fullRefresh === true) {
+            query.filter = {};
+        }
         if (!query.sort) {
             query.sort = this.props.sort.field;
             query.order = this.props.sort.order;
@@ -153,7 +157,7 @@ export class List extends Component {
 
     changeParams(action) {
         const newParams = queryReducer(this.getQuery(), action);
-        this.props.push({ ...this.props.location, search: '?' + stringify({ ...newParams, filter: JSON.stringify(newParams.filter) }) });
+        this.props.push({ ...this.props.location, search: `?${stringify({ ...newParams, filter: JSON.stringify(newParams.filter) })}` });
         this.props.changeListParams(this.props.resource, newParams);
     }
 
