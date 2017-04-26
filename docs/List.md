@@ -353,6 +353,7 @@ Admin-on-rest relies on [material-ui's `<Table>` component](http://www.material-
 
 For instance, to get a fixed header on the table, override the `<Table>` props with `options`:
 
+{% raw %}
 ```js
 export const PostList = (props) => (
     <List {...props}>
@@ -362,9 +363,11 @@ export const PostList = (props) => (
     </List>
 );
 ```
+{% endraw %}
 
 To enable striped rows and row hover, override the `<TableBody>` props with `bodyOptions`:
 
+{% raw %}
 ```js
 export const PostList = (props) => (
     <List {...props}>
@@ -374,6 +377,7 @@ export const PostList = (props) => (
     </List>
 );
 ```
+{% endraw %}
 
 For a list of all the possible props that you can override via these options, please refer to [the material-ui `<Table>` component documentation](http://www.material-ui.com/#/components/table).
 
