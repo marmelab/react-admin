@@ -41,7 +41,7 @@ export default (type, params) => {
                 return response.json();
             })
             .then(({ token }) => {
-                localStorage.setItem('token', token)
+                localStorage.setItem('token', token);
             });
     }
     return Promise.resolve();
@@ -73,11 +73,11 @@ For instance, to pass the token obtained during login as an `Authorization` head
 
 ```js
 import { simpleRestClient, fetchUtils, Admin, Resource } from 'admin-on-rest';
-const httpClient = (url, options) => {
+const httpClient = (url, options = {}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
     }
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     options.headers.set('Authorization', `Bearer ${token}`);
     return fetchUtils.fetchJson(url, options);
 }
@@ -172,7 +172,7 @@ export default (type, params) => {
         // ...
     }
     if (type === AUTH_CHECK) {
-        return localStorage.getItem('username') ? Promise.resolve() : Promise.reject();
+        return localStorage.getItem('token') ? Promise.resolve() : Promise.reject();
     }
     return Promise.reject('Unkown method');
 };
@@ -195,7 +195,7 @@ export default (type, params) => {
         // ...
     }
     if (type === AUTH_CHECK) {
-        return localStorage.getItem('username') ? Promise.resolve() : Promise.reject({ redirectTo: '/no-access' });
+        return localStorage.getItem('token') ? Promise.resolve() : Promise.reject({ redirectTo: '/no-access' });
     }
     return Promise.reject('Unkown method');
 };

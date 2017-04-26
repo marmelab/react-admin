@@ -17,7 +17,7 @@ The `restClient` parameter of the `<Admin>` component, must be a function with t
  *
  * @example
  * restClient(GET_ONE, 'posts', { id: 123 })
- *  => new Promise(resolve => resolve({ data: { id: 123, title: "hello, world" } }))
+ *  => Promise.resolve({ data: { id: 123, title: "hello, world" } })
  *
  * @param {string} type Request type, e.g GET_LIST
  * @param {string} resource Resource name, e.g. "posts"
@@ -46,6 +46,7 @@ You can find more REST clients for admin-on-rest in third-party repositories:
 * [josx/aor-feathers-client](https://github.com/josx/aor-feathers-client): a REST client using [Feathersjs](http://www.feathersjs.com/)
 * [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback): a REST client works with [Loopback](http://loopback.io/)
 * [leperone/aor-parseserver-client](https://github.com/leperone/aor-parseserver-client): a REST client for [Parse Server](https://github.com/ParsePlatform/parse-server)
+* [moonlight-labs/aor-jsonapi-client](https://github.com/moonlight-labs/aor-jsonapi-client): a REST client for [JSON API](http://jsonapi.org/)
 
 ### Simple REST
 
@@ -145,7 +146,7 @@ That means that if you need to add custom headers to your requests, you just nee
 
 ```js
 import { simpleRestClient, fetchUtils, Admin, Resource } from 'admin-on-rest';
-const httpClient = (url, options) => {
+const httpClient = (url, options = {}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
     }
@@ -248,7 +249,7 @@ render(
 
 ```
 
-## Writing your own REST Client
+## Writing Your Own REST Client
 
 Quite often, none of the the core REST clients match your API exactly. In such cases, you'll have to write your own REST client. But don't be afraid, it's easy!
 

@@ -92,9 +92,9 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const PostActions = ({ resource, filter, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
+const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
     <CardActions style={cardActionStyle}>
-        {filter && React.cloneElement(filter, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
+        {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         <CreateButton basePath={basePath} />
         <FlatButton primary label="refresh" onClick={refresh} icon={<NavigationRefresh />} />
         {/* Add your custom actions */}
@@ -168,6 +168,28 @@ export const PostList = (props) => (
 {% endraw %}
 
 `sort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
+
+### Disabling Sorting
+
+It is possible to disable sorting for a specific field by passing a `sortable` property set to `false`:
+
+{% raw %}
+```js
+// in src/posts.js
+import React from 'react';
+import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="id" sortable={false} />
+            <TextField source="title" />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
 
 ### Permanent Filter
 

@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.9.4
+
+* Fix `<ReferenceManyField>` documentation by adding a warning about required `<Resource>`
+* Fix custom dashboard documentation for `<ViewTitle>`
+* Fix custom List actions documentation ([remi13131](https://github.com/remi13131))
+* Fix `restClient` documentation by simplifying example code ([kulakowka](https://github.com/kulakowka))
+* Fix refresh on Edit clears data
+* Fix bad "unauthorized" notification after login
+* Fix typo on authentication documentation ([faviouz](https://github.com/faviouz))
+* Fix custom style component documentation ([vysakh0](https://github.com/vysakh0))
+* Fix Custom HTTP Client documentation ([remi13131](https://github.com/remi13131))
+* Explain branches in README
+* Fix `<NullableBooleanInput>` bug on undefined `meta` prop
+
+## v0.9.3
+
+* Fix list layout breaking when there are more than 3 filters
+* Fix documentation about API endpoint and aor URL mapping
+* Fix typos in Actions documentation ([leesei](https://github.com/leesei))
+* Fix hyperlink to JSON API route in Tutorial ([damiansimonpeter](https://github.com/damiansimonpeter))
+* Add a `dropAreaLabel` prop to `<ImageInput>` to let developers customize label of drop area ([DjLeChuck](https://github.com/DjLeChuck))
+
 ## v0.9.2
 
 * Fix IE11/Edge flexbox issue ([LoicMahieu](https://github.com/LoicMahieu))

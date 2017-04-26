@@ -13,7 +13,7 @@ import React from 'react';
 import { Edit, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest';
 
 export const PostEdit = (props) => (
-    <Edit title={PostTitle} {...props}>
+    <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
             <ReferenceInput label="User" source="userId" reference="users">
@@ -355,7 +355,7 @@ If the default Dropzone label don't fit with your need, you can pass a `placehol
 </ImageInput>
 ```
 
-Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data.
+Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./RestClients.html#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
 ## `<LongTextInput>`
 
@@ -699,15 +699,55 @@ You can choose a specific input type using the `type` attribute, for instance `t
 
 **Warning**: Do not use `type="number"`, or you'll receive a string as value (this is a [known React bug](https://github.com/facebook/react/issues/1425)). Instead, use [`<NumberInput>`](#numberinput).
 
+## Transforming Input Value to/from Store
+
+The data format returned by the input component may not be what your store desires. Since Admin-on-rest uses Redux Form, we can use its `parse()` and `format()` functions to transform the input value to and from the store. It's better to understand the [input value's lifecycle](http://redux-form.com/6.5.0/docs/ValueLifecycle.md/) before you start.
+
+Mnemonic for the two functions:
+- `parse()`: input -> store
+- `format()`: store -> input
+
+Say the user would like to input values of 0-100 to a percentage field but your API (hence store) expects 0-1.0. You can use simple `parse()` and `format()` functions to archive the transform:
+
+```js
+<NumberInput source="percent" format={v => v*100} parse={v => v/100} label="Formatted number" />
+```
+
+`<DateInput>` stores and returns a `Date` object. If you would like to store the ISO date `"YYYY-MM-DD"` in your store:
+
+```js
+const dateFormatter = v => {
+  // v is a string of "YYYY-MM-DD" format
+  const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
+  if (match === null) return;
+  const d = new Date(match[1], parseInt(match[2])-1, match[3]);
+  if (isNaN(d)) return;
+  return d;
+};
+
+const dateParser = v => {
+  // v is a `Date` object
+  if (!(v instanceof Date) || isNaN(v)) return;
+  const pad = '00';
+  const yy = v.getFullYear().toString();
+  const mm = ((v.getMonth() + 1).toString();
+  const dd = v.getDate().toString();
+  return `${yy}-${(pad + mm).slice(-2)}-${(pad + dd).slice(-2)}`;
+};
+
+<DateInput source="isodate" format={dateFormatter} parse={dateParser} label="ISO date" />
+```
+
 ## Third-Party Components
 
 You can find components for admin-on-rest in third-party repositories.
 
 * [dreinke/aor-color-input](https://github.com/dreinke/aor-color-input): a color input using [React Color](http://casesandberg.github.io/react-color/), a collection of color pickers.
+* [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
 
 ## Writing Your Own Input Component
 
-If you need a more specific input type, you can also write it yourself. You'll have to rely on redux-form's [`<Field>`](http://redux-form.com/6.4.3/docs/api/Field.md/) component, so as to handle the value update cycle.
+If you need a more specific input type, you can also write it yourself. You'll have to rely on redux-form's [`<Field>`](http://redux-form.com/6.5.0/docs/api/Field.md/) component, so as to handle the value update cycle.
 
 For instance, let's write a component to edit the latitude and longitude of the current record:
 
@@ -860,7 +900,7 @@ const ItemEdit = (props) => (
 
 `<NumberInput>` receives the props passed to the `<Field>` component - `label` in the example. `<NumberInput>` is already labelled, so there is no need to also label the `<LanLngInput>` component - that's why `addLabel` isn't set as default prop this time.
 
-**Tip**: If you need to pass a material ui component to `Field`, use a [field renderer function](http://redux-form.com/6.4.3/examples/material-ui/) to map the props:
+**Tip**: If you need to pass a material ui component to `Field`, use a [field renderer function](http://redux-form.com/6.5.0/examples/material-ui/) to map the props:
 
 ```js
 import TextField from 'material-ui/TextField';
@@ -882,7 +922,7 @@ const LatLngInput = () => (
 );
 ```
 
-For more details on how to use redux-form's `<Field>` component, please refer to [the redux-form doc](http://redux-form.com/6.4.3/docs/api/Field.md/).
+For more details on how to use redux-form's `<Field>` component, please refer to [the redux-form doc](http://redux-form.com/6.5.0/docs/api/Field.md/).
 
 **Tip**: If you only need one `<Field>` component in a custom input, you can let admin-on-rest do the `<Field>` decoration for you by setting the `addField` default prop to `true`:
 
@@ -936,4 +976,4 @@ export default SexInput;
 
 Most admin-on-rest input components use `addField: true` in default props.
 
-**Tip**: `<Field>` injects two props to its child component: `input` and `meta`. To learn more about these props, please refer to [the `<Field>` component documentation](http://redux-form.com/6.4.3/docs/api/Field.md/#props) in the redux-form website.
+**Tip**: `<Field>` injects two props to its child component: `input` and `meta`. To learn more about these props, please refer to [the `<Field>` component documentation](http://redux-form.com/6.5.0/docs/api/Field.md/#props) in the redux-form website.

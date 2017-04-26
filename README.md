@@ -31,6 +31,14 @@ A frontend Framework for building admin applications running in the browser on t
 * Can be included in another React app
 * Inspired by the popular [ng-admin](https://github.com/marmelab/ng-admin) library (also by marmelab)
 
+## Versions In This Repository
+
+* [master](https://github.com/marmelab/admin-on-rest/commits/master) - commits that will be included in the next _patch_ release
+
+* [next](https://github.com/marmelab/admin-on-rest/commits/next) - commits that will be included in the next _major_ or _minor_ release
+
+Bugfix PRs that don't break BC should be made against **master**. All other PRs (new features, bugfix with BC break) should be made against **next**.
+
 ## Installation
 
 Admin-on-rest is available from npm. You can install it (and its required dependencies)
@@ -64,7 +72,6 @@ render(
 
 The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use Material UI and custom components from admin-on-rest:
 
-{% raw %}
 ```js
 // in posts.js
 import React from 'react';
@@ -89,7 +96,7 @@ const PostTitle = ({ record }) => {
 };
 
 export const PostEdit = (props) => (
-    <Edit title={PostTitle} {...props}>
+    <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
             <TextInput source="title" />
@@ -114,7 +121,6 @@ export const PostCreate = (props) => (
     </Create>
 );
 ```
-{% endraw %}
 
 ## Does It Work With My REST API?
 

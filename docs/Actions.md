@@ -56,7 +56,7 @@ export default connect(null, {
 
 The `handleClick` function makes a `PUT` request the REST API with `fetch`, then displays a notification (with `showNotification`) and redirects to the comments list page (with `push`);
 
-`showNotification` and `push` are *action creators*. This is a Redux term for functions that return a simple action object. However, within the component, these functions are a bit more than that: they are *connected*, i.e. they are decorated by Redux' `dispatch` method. So in the `handleClick` function, a call to `showNotification()` is actually a call to `dispatch(showNotification())`. The decoration by `dispatch` is done in the final statement, `connect()`.
+`showNotification` and `push` are *action creators*. This is a Redux term for functions that return a simple action object. When given an object of action creators in the second argument, `connect()` will [decorate each action creator](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) with Redux' `dispatch` method, so in the `handleClick` function, a call to `showNotification()` is actually a call to `dispatch(showNotification())`.
 
 This `ApproveButton` can be used right away, for instance in the list of comments, where `<Datagrid>` automatically injects the `record` to its children:
 
@@ -94,13 +94,13 @@ const CommentEditActions = ({ basePath, data }) => (
     </CardActions>
 );
 
-export default ReviewEditActions;
+export default CommentEditActions;
 
 // in src/comments/index.js
-import ReviewEditActions from './ReviewEditActions';
+import CommentEditActions from './CommentEditActions';
 
 export const CommentEdit = (props) =>
-    <Edit {...props} actions={<ReviewEditActions />}>
+    <Edit {...props} actions={<CommentEditActions />}>
         ...
     </List>;
 ```
@@ -268,7 +268,7 @@ With this code, approving a review now displays the correct notification, and re
 
 ## Bonus: Optimistic Rendering
 
-In this example, after clicking on the "Approve" button, users are redirected to the comments list. Admin-on-rest then fetches the `/comments` resource to grab the list of updated comments from the server. But admin-on-rest doesn't wait for the response to this call to display the list of comments. In fact, it has an internal instance pool that is kept during navigation, and uses it to render the screen before the API calls are over - it's called *optimistic rendering*.
+In this example, after clicking on the "Approve" button, users are redirected to the comments list. Admin-on-rest then fetches the `/comments` resource to grab the list of updated comments from the server. But admin-on-rest doesn't wait for the response to this call to display the list of comments. In fact, it has an internal instance pool (in `state.admin[resource]`) that is kept during navigation, and uses it to render the screen before the API calls are over - it's called *optimistic rendering*.
 
 As the custom `COMMENT_APPROVE` action contains the `fetch: UPDATE` meta, admin-on-rest will automatically update its instance pool with the response. That means that the initial rendering (before the `GET /comments` response arrives) will show the approved comment!
 

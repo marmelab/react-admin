@@ -34,7 +34,7 @@ export class TabbedForm extends Component {
                             <Tab
                                 key={tab.props.value}
                                 className="form-tab"
-                                label={translate(tab.props.label)}
+                                label={translate(tab.props.label, { _: tab.props.label })}
                                 value={index}
                                 icon={tab.props.icon}
                             >
