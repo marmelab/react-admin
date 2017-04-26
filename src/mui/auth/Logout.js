@@ -23,12 +23,15 @@ Logout.propTypes = {
     userLogout: PropTypes.func,
 };
 
+const mapStateToProps = state => ({
+    theme: state.theme,
+});
+
 const enhance = compose(
     translate,
-    connect((state, props) => ({
-        userLogout: userLogoutAction,
-        theme: state.theme,
-    })),
+    connect(
+    mapStateToProps, 
+    { userLogout: userLogoutAction, }),
 );
 
 export default enhance(Logout);
