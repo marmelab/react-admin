@@ -240,7 +240,8 @@ The translation system use the React `context` to pass translations down the com
 
 ```js
 // in src/MyHelloButton.js
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class MyHelloButton {
     render() {

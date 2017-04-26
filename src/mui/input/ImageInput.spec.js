@@ -1,11 +1,17 @@
+import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import React from 'react';
+import { File, FileReader } from 'file-api';
 
 import { ImageField } from '../field/ImageField';
 import { ImageInput } from './ImageInput';
 
 describe('<ImageInput />', () => {
+    before(() => {
+        global.File = File;
+        global.FileReader = FileReader;
+    });
+
     it('should display a dropzone', () => {
         const wrapper = shallow((
             <ImageInput
@@ -174,7 +180,7 @@ describe('<ImageInput />', () => {
             wrapper.setProps({
                 input: {
                     value: {
-                        preview: 'blob:http://localhost:8080/1234-5678',
+                        url: 'blob:http://localhost:8080/1234-5678',
                     },
                 },
             });
@@ -185,5 +191,34 @@ describe('<ImageInput />', () => {
             const previewUrl = imagePreview.prop('record').url;
             assert.equal(previewUrl, 'blob:http://localhost:8080/1234-5678');
         });
+    });
+
+    it('should allow to remove an image from the input with `ImageInputPreview.onRemove`', () => {
+        const wrapper = shallow(
+            <ImageInput
+                source="picture"
+                translate={x => x}
+                input={{
+                    onChange: () => {},
+                    value: [
+                        { url: 'http://static.acme.com/foo.jpg' },
+                        { url: 'http://static.acme.com/bar.jpg' },
+                        { url: 'http://static.acme.com/quz.jpg' },
+                    ],
+                }}
+            >
+                <ImageField source="url" />
+            </ImageInput>,
+        );
+
+        const inputPreview = wrapper.find('ImageInputPreview');
+        inputPreview.at(1).prop('onRemove')();
+        wrapper.update();
+
+        const previewImages = wrapper.find('ImageField').map(f => f.prop('record'));
+        assert.deepEqual(previewImages, [
+            { url: 'http://static.acme.com/foo.jpg' },
+            { url: 'http://static.acme.com/quz.jpg' },
+        ]);
     });
 });

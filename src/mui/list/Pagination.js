@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
@@ -92,7 +93,7 @@ export class Pagination extends Component {
         return this.range().map((pageNum, index) =>
             (pageNum === '.') ?
                 <span key={`hyphen_${index}`} style={{ padding: '1.2em' }}>&hellip;</span> :
-                <FlatButton key={pageNum} label={pageNum} data-page={pageNum} onClick={this.gotoPage} primary={pageNum !== this.props.page} style={styles.button} />
+                <FlatButton className="page-number" key={pageNum} label={pageNum} data-page={pageNum} onClick={this.gotoPage} primary={pageNum !== this.props.page} style={styles.button} />
         );
     }
 
@@ -122,16 +123,16 @@ export class Pagination extends Component {
         ) : (
             <Toolbar>
                 <ToolbarGroup firstChild>
-                    <span style={styles.pageInfo}>{translate('aor.navigation.page_range_info', { offsetBegin, offsetEnd, total })}</span>
+                    <span className="displayed-records" style={styles.pageInfo}>{translate('aor.navigation.page_range_info', { offsetBegin, offsetEnd, total })}</span>
                 </ToolbarGroup>
                 {nbPages > 1 &&
                     <ToolbarGroup>
                     {page > 1 &&
-                        <FlatButton primary key="prev" label={translate('aor.navigation.prev')} icon={<ChevronLeft />} onClick={this.prevPage} style={styles.button} />
+                        <FlatButton className="previous-page" primary key="prev" label={translate('aor.navigation.prev')} icon={<ChevronLeft />} onClick={this.prevPage} style={styles.button} />
                     }
                     {this.renderPageNums()}
                     {page !== nbPages &&
-                        <FlatButton primary key="next" label={translate('aor.navigation.next')} icon={<ChevronRight />} labelPosition="before" onClick={this.nextPage} style={styles.button} />
+                        <FlatButton className="next-page" primary key="next" label={translate('aor.navigation.next')} icon={<ChevronRight />} labelPosition="before" onClick={this.nextPage} style={styles.button} />
                     }
                 </ToolbarGroup>
                 }

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import defaultsDeep from 'lodash.defaultsdeep';
 import shouldUpdate from 'recompose/shouldUpdate';
 import { TableHeaderColumn } from 'material-ui/Table';

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import compose from 'recompose/compose';
 import translate from '../../i18n/translate';

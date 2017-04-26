@@ -1,13 +1,14 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import RadioButtonGroupInput from './RadioButtonGroupInput';
+import { RadioButtonGroupInput } from './RadioButtonGroupInput';
 
 describe('<RadioButtonGroupInput />', () => {
     const defaultProps = {
         source: 'foo',
         meta: {},
         input: {},
+        translate: x => x,
     };
 
     it('should use a mui RadioButtonGroup', () => {
@@ -95,5 +96,34 @@ describe('<RadioButtonGroupInput />', () => {
         const RadioButtonElement1 = RadioButtonElements.first();
         assert.equal(RadioButtonElement1.prop('value'), 'M');
         assert.deepEqual(RadioButtonElement1.prop('label'), <Foobar record={{ id: 'M', foobar: 'Male' }} />);
+    });
+
+    it('should translate the choices by default', () => {
+        const wrapper = shallow(<RadioButtonGroupInput
+            {...defaultProps}
+            choices={[
+                { id: 'M', name: 'Male' },
+                { id: 'F', name: 'Female' },
+            ]}
+            translate={x => `**${x}**`}
+        />);
+        const RadioButtonElements = wrapper.find('RadioButton');
+        const RadioButtonElement1 = RadioButtonElements.first();
+        assert.equal(RadioButtonElement1.prop('label'), '**Male**');
+    });
+
+    it('should not translate the choices if translateChoice is false', () => {
+        const wrapper = shallow(<RadioButtonGroupInput
+            {...defaultProps}
+            choices={[
+                { id: 'M', name: 'Male' },
+                { id: 'F', name: 'Female' },
+            ]}
+            translate={x => `**${x}**`}
+            translateChoice={false}
+        />);
+        const RadioButtonElements = wrapper.find('RadioButton');
+        const RadioButtonElement1 = RadioButtonElements.first();
+        assert.equal(RadioButtonElement1.prop('label'), 'Male');
     });
 });

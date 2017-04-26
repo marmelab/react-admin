@@ -1,11 +1,12 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { parse, stringify } from 'query-string';
 import { push as pushAction } from 'react-router-redux';
-import { Card } from 'material-ui/Card';
+import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
+import { createSelector } from 'reselect';
 import inflection from 'inflection';
-import { change as changeFormValueAction, getFormValues } from 'redux-form';
-import debounce from 'lodash.debounce';
 import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER, SORT_DESC } from '../../reducer/resource/list/queryReducer';
 import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
@@ -15,7 +16,9 @@ import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
 import translate from '../../i18n/translate';
 
-const filterFormName = 'filterForm';
+const styles = {
+    noResults: { padding: 20 },
+};
 
 /**
  * List page component
@@ -61,7 +64,6 @@ const filterFormName = 'filterForm';
 export class List extends Component {
     constructor(props) {
         super(props);
-        this.debouncedSetFilters = debounce(this.setFilters.bind(this), 500);
         this.state = { key: 0 };
     }
 
@@ -84,19 +86,6 @@ export class List extends Component {
             this.fullRefresh = false;
             this.setState({ key: this.state.key + 1 });
         }
-        if (Object.keys(nextProps.filterValues).length === 0 && Object.keys(this.props.filterValues).length === 0) {
-            return;
-        }
-        if (nextProps.filterValues !== this.props.filterValues) {
-            const nextFilters = nextProps.filterValues;
-            Object.keys(nextFilters).forEach(filterName => {
-                if (nextFilters[filterName] === '') {
-                    // remove empty filter from query
-                    delete nextFilters[filterName];
-                }
-            });
-            this.debouncedSetFilters(nextFilters);
-        }
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -107,10 +96,6 @@ export class List extends Component {
             return false;
         }
         return true;
-    }
-
-    componentWillUnmount() {
-        this.debouncedSetFilters.cancel();
     }
 
     getBasePath() {
@@ -157,20 +142,18 @@ export class List extends Component {
     showFilter = (filterName, defaultValue) => {
         this.setState({ [filterName]: true });
         if (typeof defaultValue !== 'undefined') {
-            this.props.changeFormValue(filterFormName, filterName, defaultValue);
             this.setFilters({ ...this.props.filterValues, [filterName]: defaultValue });
         }
     }
 
     hideFilter = (filterName) => {
         this.setState({ [filterName]: false });
-        this.props.changeFormValue(filterFormName, filterName, '');
         this.setFilters({ ...this.props.filterValues, [filterName]: undefined });
     }
 
     changeParams(action) {
         const newParams = queryReducer(this.getQuery(), action);
-        this.props.push({ ...this.props.location, query: { ...newParams, filter: JSON.stringify(newParams.filter) } });
+        this.props.push({ ...this.props.location, search: '?' + stringify({ ...newParams, filter: JSON.stringify(newParams.filter) }) });
         this.props.changeListParams(this.props.resource, newParams);
     }
 
@@ -189,7 +172,7 @@ export class List extends Component {
         const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
 
         return (
-            <div>
+            <div className="list-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
                     {actions && React.cloneElement(actions, {
                         resource,
@@ -207,23 +190,30 @@ export class List extends Component {
                         hideFilter: this.hideFilter,
                         filterValues,
                         displayedFilters: this.state,
+                        setFilters: this.setFilters,
                         context: 'form',
                     })}
-                    {React.cloneElement(children, {
-                        resource,
-                        ids,
-                        data,
-                        currentSort: { field: query.sort, order: query.order },
-                        basePath,
-                        isLoading,
-                        setSort: this.setSort,
-                    })}
-                    {pagination && React.cloneElement(pagination, {
-                        total,
-                        page: parseInt(query.page, 10),
-                        perPage: parseInt(query.perPage, 10),
-                        setPage: this.setPage,
-                    })}
+                    { isLoading || total > 0 ?
+                        <div>
+                            {children && React.cloneElement(children, {
+                                resource,
+                                ids,
+                                data,
+                                currentSort: { field: query.sort, order: query.order },
+                                basePath,
+                                isLoading,
+                                setSort: this.setSort,
+                            })}
+                            { pagination && React.cloneElement(pagination, {
+                                total,
+                                page: parseInt(query.page, 10),
+                                perPage: parseInt(query.perPage, 10),
+                                setPage: this.setPage,
+                            }) }
+                        </div>
+                        :
+                        <CardText style={styles.noResults}>{translate('aor.navigation.no_results')}</CardText>
+                    }
                 </Card>
             </div>
         );
@@ -244,13 +234,11 @@ List.propTypes = {
     }),
     children: PropTypes.element.isRequired,
     // the props managed by admin-on-rest
-    changeFormValue: PropTypes.func.isRequired,
     changeListParams: PropTypes.func.isRequired,
     crudGetList: PropTypes.func.isRequired,
     data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     hasCreate: PropTypes.bool.isRequired,
-    hasEdit: PropTypes.bool.isRequired,
     ids: PropTypes.array,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
@@ -273,23 +261,28 @@ List.defaultProps = {
     },
 };
 
+const getLocationSearch = props => props.location.search;
+const getQuery = createSelector(
+    getLocationSearch,
+    (locationSearch) => {
+        const query = parse(locationSearch);
+        if (query.filter && typeof query.filter === 'string') {
+            query.filter = JSON.parse(query.filter);
+        }
+        return query;
+    },
+);
+
 function mapStateToProps(state, props) {
     const resourceState = state.admin[props.resource];
-    const query = props.location.query;
-    if (query.filter && typeof query.filter === 'string') {
-        // if the List has no filter component, the filter is always "{}"
-        // avoid deserialization and keep identity by using a constant
-        query.filter = props.filters ? JSON.parse(query.filter) : resourceState.list.params.filter;
-    }
-
     return {
-        query,
+        query: getQuery(props),
         params: resourceState.list.params,
         ids: resourceState.list.ids,
         total: resourceState.list.total,
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
-        filterValues: props.filters ? getFormValues(filterFormName)(state) : resourceState.list.params.filter,
+        filterValues: resourceState.list.params.filter,
     };
 }
 
@@ -298,7 +291,6 @@ const enhance = compose(
         mapStateToProps,
         {
             crudGetList: crudGetListAction,
-            changeFormValue: changeFormValueAction,
             changeListParams: changeListParamsAction,
             push: pushAction,
         },

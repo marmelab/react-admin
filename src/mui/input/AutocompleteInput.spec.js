@@ -1,13 +1,14 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import AutocompleteInput from './AutocompleteInput';
+import { AutocompleteInput } from './AutocompleteInput';
 
 describe('<AutocompleteInput />', () => {
     const defaultProps = {
         source: 'foo',
         meta: {},
         input: {},
+        translate: x => x,
     };
 
     it('should use a mui AutoComplete', () => {
@@ -82,6 +83,39 @@ describe('<AutocompleteInput />', () => {
         const AutoCompleteElement = wrapper.find('AutoComplete').first();
         assert.deepEqual(AutoCompleteElement.prop('dataSource'), [
             { value: 'M', text: 'Male' },
+        ]);
+    });
+
+    it('should translate the choices by default', () => {
+        const wrapper = shallow(<AutocompleteInput
+            {...defaultProps}
+            choices={[
+                { id: 'M', name: 'Male' },
+                { id: 'F', name: 'Female' },
+            ]}
+            translate={x => `**${x}**`}
+        />);
+        const AutoCompleteElement = wrapper.find('AutoComplete').first();
+        assert.deepEqual(AutoCompleteElement.prop('dataSource'), [
+            { value: 'M', text: '**Male**' },
+            { value: 'F', text: '**Female**' },
+        ]);
+    });
+
+    it('should not translate the choices if translateChoice is false', () => {
+        const wrapper = shallow(<AutocompleteInput
+            {...defaultProps}
+            choices={[
+                { id: 'M', name: 'Male' },
+                { id: 'F', name: 'Female' },
+            ]}
+            translate={x => `**${x}**`}
+            translateChoice={false}
+        />);
+        const AutoCompleteElement = wrapper.find('AutoComplete').first();
+        assert.deepEqual(AutoCompleteElement.prop('dataSource'), [
+            { value: 'M', text: 'Male' },
+            { value: 'F', text: 'Female' },
         ]);
     });
 

@@ -1,5 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { shallowEqual } from 'recompose';
 import Dropzone from 'react-dropzone';
+
+import ImageInputPreview from './ImageInputPreview';
 import translate from '../../i18n/translate';
 
 const defaultStyle = {
@@ -10,9 +14,8 @@ const defaultStyle = {
         textAlign: 'center',
         color: '#999',
     },
-    previewContainer: {
-        position: 'relative',
-        display: 'inline-block',
+    preview: {
+        float: 'left',
     },
 };
 
@@ -25,7 +28,9 @@ export class ImageInput extends Component {
             files = [files];
         }
 
-        this.state = { files };
+        this.state = {
+            files: files.map(this.transformFile),
+        };
     }
 
     componentWillReceiveProps(nextProps) {
@@ -47,9 +52,17 @@ export class ImageInput extends Component {
         this.props.input.onChange(files);
     }
 
+    onRemove = file => () => {
+        const filteredFiles = this.state.files
+            .filter(stateFile => !shallowEqual(stateFile, file));
+
+        this.setState({ files: filteredFiles });
+        this.props.input.onChange(filteredFiles);
+    }
+
     // turn a browser dropped file structure into expected structure
     transformFile = (file) => {
-        if (!file.preview) {
+        if (!(file instanceof File)) {
             return file;
         }
 
@@ -115,11 +128,16 @@ export class ImageInput extends Component {
                 </Dropzone>
                 { children && (
                     <div className="previews">
-                        {this.state.files.map((file, index) => React.cloneElement(
-                            children, {
-                                record: file,
-                                key: index,
-                            },
+                        {this.state.files.map((file, index) => (
+                            <ImageInputPreview
+                                key={index}
+                                onRemove={this.onRemove(file)}
+                            >
+                                {React.cloneElement(children, {
+                                    record: file,
+                                    style: defaultStyle.preview,
+                                })}
+                            </ImageInputPreview>
                         ))}
                     </div>
                 ) }

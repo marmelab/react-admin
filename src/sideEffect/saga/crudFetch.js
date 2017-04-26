@@ -18,6 +18,9 @@ const crudFetch = (restClient) => {
         let response;
         try {
             response = yield call(restClient, restType, meta.resource, payload);
+            if (!response.data) {
+                throw new Error('REST response must contain a data key');
+            }
             yield put({
                 type: `${type}_SUCCESS`,
                 payload: response,

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
@@ -103,7 +104,7 @@ Delete.propTypes = {
     id: PropTypes.string.isRequired,
     resource: PropTypes.string.isRequired,
     location: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     data: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
@@ -114,8 +115,8 @@ Delete.propTypes = {
 
 function mapStateToProps(state, props) {
     return {
-        id: props.params.id,
-        data: state.admin[props.resource].data[props.params.id],
+        id: props.match.params.id,
+        data: state.admin[props.resource].data[props.match.params.id],
         isLoading: state.admin.loading > 0,
     };
 }

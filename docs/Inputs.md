@@ -10,7 +10,7 @@ An `Input` component displays an input, or a dropdown list, a list of radio butt
 ```js
 // in src/posts.js
 import React from 'react';
-import { Edit, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest/lib/mui';
+import { Edit, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest';
 
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
@@ -71,7 +71,7 @@ Then you can display a text input to edit the author first name as follows:
 To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`. It renders using [Material ui's `<AutoComplete>` component](http://www.material-ui.com/#/components/auto-complete) and a `fuzzySearch` filter. Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
 
 ```js
-import { AutocompleteInput } from 'admin-on-rest/lib/mui';
+import { AutocompleteInput } from 'admin-on-rest';
 
 <AutocompleteInput source="category" choices={[
     { id: 'programming', name: 'Programming' },
@@ -104,10 +104,25 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 You can customize the `filter` function used to filter the results. By default, it's `AutoComplete.fuzzyFilter`, but you can use any of [the functions provided by `AutoComplete`](http://www.material-ui.com/#/components/auto-complete), or a function of your own (`(searchText: string, key: string) => boolean`):
 
 ```js
-import { AutocompleteInput } from 'admin-on-rest/lib/mui';
+import { AutocompleteInput } from 'admin-on-rest';
 import AutoComplete from 'material-ui/AutoComplete';
 
 <AutocompleteInput source="category" filter={AutoComplete.caseInsensitiveFilter} choices={choices} />
+```
+
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```js
+const choices = [
+   { id: 'M', name: 'myroot.gender.male' },
+   { id: 'F', name: 'myroot.gender.female' },
+];
+```
+
+However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+
+```js
+<AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
 Lastly, use the `options` attribute if you want to override any of Material UI's `<AutoComplete>` attributes:
@@ -126,7 +141,7 @@ Refer to [Material UI Autocomplete documentation](http://www.material-ui.com/#/c
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
 ```js
-import { AutocompleteInput, ReferenceInput } from 'admin-on-rest/lib/mui'
+import { AutocompleteInput, ReferenceInput } from 'admin-on-rest'
 
 <ReferenceInput label="Post" source="post_id" reference="posts">
     <AutocompleteInput optionText="title" />
@@ -142,7 +157,7 @@ import { AutocompleteInput, ReferenceInput } from 'admin-on-rest/lib/mui'
 `<BooleanInput />` is a toggle button allowing you to attribute a `true` or `false` value to a record field.
 
 ``` js
-import { BooleanInput } from 'admin-on-rest/lib/mui';
+import { BooleanInput } from 'admin-on-rest';
 
 <BooleanInput label="Allow comments?" source="commentable" />
 ```
@@ -154,7 +169,7 @@ This input does not handle `null` values. You would need the `<NullableBooleanIn
 `<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
 
 ``` js
-import { NullableBooleanInput } from 'admin-on-rest/lib/mui';
+import { NullableBooleanInput } from 'admin-on-rest';
 
 <NullableBooleanInput label="Allow comments?" source="commentable" />
 ```
@@ -166,7 +181,7 @@ import { NullableBooleanInput } from 'admin-on-rest/lib/mui';
 If you want to let the user choose multiple values among a list of possible values by showing them all, `<CheckboxGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```js
-import { CheckboxGroupInput } from 'admin-on-rest/lib/mui';
+import { CheckboxGroupInput } from 'admin-on-rest';
 
 <CheckboxGroupInput source="category" choices={[
     { id: 'programming', name: 'Programming' },
@@ -209,6 +224,22 @@ const FullNameField = ({ record }) => <span>{record.first_name} {record.last_nam
 <CheckboxGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
 ```
 
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```js
+const choices = [
+    { id: 'programming', name: 'myroot.category.programming' },
+    { id: 'lifestyle', name: 'myroot.category.lifestyle' },
+    { id: 'photography', name: 'myroot.category.photography' },
+];
+```
+
+However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+
+```js
+<CheckboxGroupInput source="gender" choices={choices} translateChoice={false}/>
+```
+
 Lastly, use the `options` attribute if you want to override any of Material UI's `<Checkbox>` attributes:
 
 {% raw %}
@@ -226,7 +257,7 @@ Refer to [Material UI Checkbox documentation](http://www.material-ui.com/#/compo
 Ideal for editing dates, `<DateInput>` renders a beautiful [Date Picker](http://www.material-ui.com/#/components/date-picker) with full localization support.
 
 ``` js
-import { DateInput } from 'admin-on-rest/lib/mui';
+import { DateInput } from 'admin-on-rest';
 
 <DateInput source="published_at" />
 ```
@@ -256,7 +287,7 @@ Refer to [Material UI Datepicker documentation](http://www.material-ui.com/#/com
 When you want to display a record property in an `<Edit>` form without letting users update it (such as for auto-incremented primary keys), use the `<DisabledInput>`:
 
 ``` js
-import { DisabledInput } from 'admin-on-rest/lib/mui';
+import { DisabledInput } from 'admin-on-rest';
 
 <DisabledInput source="id" />
 ```
@@ -267,7 +298,7 @@ import { DisabledInput } from 'admin-on-rest/lib/mui';
 
 ```js
 // in src/posts.js
-import { Edit, LongTextInput, SimpleForm, TextField } from 'admin-on-rest/lib/mui';
+import { Edit, LongTextInput, SimpleForm, TextField } from 'admin-on-rest';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -283,7 +314,7 @@ export const PostEdit = (props) => (
 
 ```js
 // in src/posts.js
-import { Edit, LongTextInput, SimpleForm } from 'admin-on-rest/lib/mui';
+import { Edit, LongTextInput, SimpleForm } from 'admin-on-rest';
 const titleStyle = { textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '20em' };
 const Title = ({ record }) => <span style={titleStyle}>{record.title}</span>;
 Title.defaultProps = {
@@ -316,7 +347,7 @@ Previews are enabled using `<ImageInput>` children, as following:
 
 This component accepts all [react-dropzone properties](https://github.com/okonet/react-dropzone#features), in addition to those of admin-on-rest. For instance, if you need to upload several images at once, just add the `multiple` DropZone attribute to your `<ImageInput />` field.
 
-If the default Dropzone label don't fit with your need, you can pass a `placeholder` attribute to overwrite it. The attribute can be anything React can render (`React.PropTypes.node`):
+If the default Dropzone label don't fit with your need, you can pass a `placeholder` attribute to overwrite it. The attribute can be anything React can render (`PropTypes.node`):
 
 ``` js
 <ImageInput source="pictures" label="Related pictures" accept="image/*" placeholder={<p>Drop your file here</p>}>
@@ -331,7 +362,7 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 `<LongTextInput>` is the best choice for multiline text values. It renders as an auto expandable textarea.
 
 ``` js
-import { LongTextInput } from 'admin-on-rest/lib/mui';
+import { LongTextInput } from 'admin-on-rest';
 
 <LongTextInput source="teaser" />
 ```
@@ -343,7 +374,7 @@ import { LongTextInput } from 'admin-on-rest/lib/mui';
 `<NumberInput>` translates to a HTMl `<input type="number">`. It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
 
 ``` js
-import { NumberInput } from 'admin-on-rest/lib/mui';
+import { NumberInput } from 'admin-on-rest';
 
 <NumberInput source="nb_views" />
 ```
@@ -359,7 +390,7 @@ You can customize the `step` props (which defaults to "any"):
 If you want to let the user choose a value among a list of possible values by showing them all (instead of hiding them behind a dropdown list, as in [`<SelectInput>`](#selectinput)), `<RadioButtonGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```js
-import { RadioButtonGroupInput } from 'admin-on-rest/lib/mui';
+import { RadioButtonGroupInput } from 'admin-on-rest';
 
 <RadioButtonGroupInput source="category" choices={[
     { id: 'programming', name: 'Programming' },
@@ -402,6 +433,21 @@ const FullNameField = ({ record }) => <span>{record.first_name} {record.last_nam
 <RadioButtonGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
 ```
 
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```js
+const choices = [
+   { id: 'M', name: 'myroot.gender.male' },
+   { id: 'F', name: 'myroot.gender.female' },
+];
+```
+
+However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+
+```js
+<RadioButtonGroupInput source="gender" choices={choices} translateChoice={false}/>
+```
+
 Lastly, use the `options` attribute if you want to override any of Material UI's `<RadioButtonGroup>` attributes:
 
 {% raw %}
@@ -417,7 +463,7 @@ Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/co
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
 ```js
-import { RadioButtonGroupInput, ReferenceInput } from 'admin-on-rest/lib/mui'
+import { RadioButtonGroupInput, ReferenceInput } from 'admin-on-rest'
 
 <ReferenceInput label="Author" source="author_id" reference="authors">
     <RadioButtonGroupInput optionText="last_name" />
@@ -433,7 +479,7 @@ This means you can use `<ReferenceInput>` with any of [`<SelectInput>`](#selecti
 The component expects a `source` and a `reference` attributes. For instance, to make the `post_id` for a `comment` editable:
 
 ```js
-import { ReferenceInput, SelectInput } from 'admin-on-rest/lib/mui'
+import { ReferenceInput, SelectInput } from 'admin-on-rest'
 
 <ReferenceInput label="Post" source="post_id" reference="posts">
     <SelectInput optionText="title" />
@@ -445,7 +491,7 @@ import { ReferenceInput, SelectInput } from 'admin-on-rest/lib/mui'
 Set the `allowEmpty` prop when the empty value is allowed.
 
 ```js
-import { ReferenceInput, SelectInput } from 'admin-on-rest/lib/mui'
+import { ReferenceInput, SelectInput } from 'admin-on-rest'
 
 <ReferenceInput label="Post" source="post_id" reference="posts" allowEmpty>
     <SelectInput optionText="title" />
@@ -541,7 +587,7 @@ You can customize the rich text editor toolbar using the `toolbar` attribute, as
 To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<SelectField>`](http://www.material-ui.com/#/components/select-field). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```js
-import { SelectInput } from 'admin-on-rest/lib/mui';
+import { SelectInput } from 'admin-on-rest';
 
 <SelectInput source="category" choices={[
     { id: 'programming', name: 'Programming' },
@@ -594,6 +640,21 @@ Enabling the `allowEmpty` props adds an empty choice (with `null` value) on top 
 ]} />
 ```
 
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```js
+const choices = [
+   { id: 'M', name: 'myroot.gender.male' },
+   { id: 'F', name: 'myroot.gender.female' },
+];
+```
+
+However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+
+```js
+<SelectInput source="gender" choices={choices} translateChoice={false}/>
+```
+
 Lastly, use the `options` attribute if you want to override any of Material UI's `<SelectField>` attributes:
 
 {% raw %}
@@ -609,7 +670,7 @@ Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/co
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
 ```js
-import { SelectInput, ReferenceInput } from 'admin-on-rest/lib/mui'
+import { SelectInput, ReferenceInput } from 'admin-on-rest'
 
 <ReferenceInput label="Author" source="author_id" reference="authors">
     <SelectInput optionText="last_name" />
@@ -623,7 +684,7 @@ If, instead of showing choices as a dropdown list, you prefer to display them as
 `<TextInput>` is the most common input. It is used for texts, emails, URL or passwords. In translates to an HTML `<input>` tag.
 
 ``` js
-import { TextInput } from 'admin-on-rest/lib/mui';
+import { TextInput } from 'admin-on-rest';
 
 <TextInput source="title" />
 ```
@@ -726,7 +787,7 @@ This component lacks a label. Admin-on-rest provides the `<Labeled>` component f
 ```js
 // in LatLongInput.js
 import { Field } from 'redux-form';
-import { Labeled } from 'admin-on-rest/lib/mui';
+import { Labeled } from 'admin-on-rest';
 const LatLngInput = () => (
     <Labeled label="position">
         <span>
@@ -816,7 +877,7 @@ Instead of HTML `input` elements, you can use admin-on-rest components in `<Fiel
 ```js
 // in LatLongInput.js
 import { Field } from 'redux-form';
-import { NumberInput } from 'admin-on-rest/lib/mui';
+import { NumberInput } from 'admin-on-rest';
 const LatLngInput = () => (
     <span>
         <Field name="lat" component={NumberInput} label="latitude" />

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -7,6 +8,8 @@ import CircularProgress from 'material-ui/CircularProgress';
 import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+
+import AdminRoutes from '../../AdminRoutes';
 import AppBar from './AppBar';
 import Sidebar from './Sidebar';
 import Notification from './Notification';
@@ -30,7 +33,8 @@ const styles = {
         backgroundColor: '#edecec',
         display: 'flex',
         flex: 1,
-        overflow: 'hidden',
+        overflowY: 'hidden',
+        overflowX: 'scroll',
     },
     bodySmall: {
         backgroundColor: '#fff',
@@ -63,10 +67,12 @@ class Layout extends Component {
 
     render() {
         const {
-            children,
+            authClient,
+            customRoutes,
+            dashboard,
             isLoading,
             menu,
-            route,
+            resources,
             theme,
             title,
             width,
@@ -88,13 +94,21 @@ class Layout extends Component {
                     <div style={prefixedStyles.main}>
                         { width !== 1 && <AppBar title={title} />}
                         <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
-                            <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>{children}</div>
+                            <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>
+                                <AdminRoutes
+                                    customRoutes={customRoutes}
+                                    resources={resources}
+                                    authClient={authClient}
+                                    dashboard={dashboard}
+                                />
+                            </div>
                             <Sidebar theme={theme}>
                                 {menu}
                             </Sidebar>
                         </div>
                         <Notification />
                         {isLoading && <CircularProgress
+                            className="app-loader"
                             color="#fff"
                             size={width === 1 ? 20 : 30}
                             thickness={2}
@@ -108,11 +122,12 @@ class Layout extends Component {
 }
 
 Layout.propTypes = {
-    authClient: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
+    authClient: PropTypes.func,
+    customRoutes: PropTypes.array,
+    dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     isLoading: PropTypes.bool.isRequired,
-    children: PropTypes.node,
     menu: PropTypes.element,
-    route: PropTypes.object.isRequired,
+    resources: PropTypes.array,
     setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
     theme: PropTypes.object.isRequired,

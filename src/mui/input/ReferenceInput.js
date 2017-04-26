@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
 import Labeled from './Labeled';
@@ -160,6 +161,7 @@ export class ReferenceInput extends Component {
             setFilter: this.debouncedSetFilter,
             setPagination: this.setPagination,
             setSort: this.setSort,
+            translateChoice: false,
         });
     }
 }
@@ -190,6 +192,7 @@ ReferenceInput.propTypes = {
 };
 
 ReferenceInput.defaultProps = {
+    addField: true,
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),

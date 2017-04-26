@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card, CardTitle } from 'material-ui/Card';
 import compose from 'recompose/compose';
@@ -31,7 +32,7 @@ class Create extends Component {
         const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
 
         return (
-            <div>
+            <div className="create-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     {actions && React.cloneElement(actions, {
                         basePath,
@@ -43,6 +44,7 @@ class Create extends Component {
                         resource,
                         basePath,
                         record: {},
+                        translate,
                     })}
                 </Card>
             </div>
@@ -56,7 +58,6 @@ Create.propTypes = {
     crudCreate: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func.isRequired,

@@ -1,15 +1,17 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import { TableBody, TableRow } from 'material-ui/Table';
 import DatagridCell from './DatagridCell';
 
 const DatagridBody = ({ resource, children, ids, data, basePath, styles, rowStyle, options, rowOptions, ...rest }) => (
-    <TableBody displayRowCheckbox={false} {...rest} {...options}>
+    <TableBody displayRowCheckbox={false} className="datagrid-body" {...rest} {...options}>
         {ids.map((id, rowIndex) => (
             <TableRow style={rowStyle ? rowStyle(data[id], rowIndex) : styles.tr} key={id} selectable={false} {...rowOptions}>
                 {React.Children.map(children, (field, index) => (
                     <DatagridCell
                         key={`${id}-${field.props.source || index}`}
+                        className={`column-${field.props.source}`}
                         record={data[id]}
                         defaultStyle={index === 0 ? styles.cell['td:first-child'] : styles.cell.td}
                         {...{ field, basePath, resource }}

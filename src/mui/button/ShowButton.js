@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import shouldUpdate from 'recompose/shouldUpdate';
 import compose from 'recompose/compose';
 import FlatButton from 'material-ui/FlatButton';

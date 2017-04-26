@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import SelectInput from './SelectInput';
 import translate from '../../i18n/translate';
 
@@ -26,7 +27,6 @@ NullableBooleanInput.propTypes = {
     meta: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
 };
 
 NullableBooleanInput.defaultProps = {

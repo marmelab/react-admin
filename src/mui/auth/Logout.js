@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-import { push as pushAction } from 'react-router-redux';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
@@ -7,31 +7,25 @@ import MenuItem from 'material-ui/MenuItem';
 import ExitIcon from 'material-ui/svg-icons/action/power-settings-new';
 
 import translate from '../../i18n/translate';
-import { AUTH_LOGOUT } from '../../auth';
+import { userLogout as userLogoutAction } from '../../actions/authActions';
 
-class Logout extends Component {
-    handleLogout = () => {
-        const { authClient, push } = this.props;
-        authClient(AUTH_LOGOUT)
-            .then(() => push('/login'));
-    }
-    render() {
-        const { authClient, translate } = this.props;
-        return authClient
-         ? <MenuItem leftIcon={<ExitIcon />} primaryText={translate('aor.auth.logout')} onClick={this.handleLogout} />
-         : null;
-    }
-}
+const Logout = ({ translate, userLogout }) => (
+    <MenuItem
+        className="logout"
+        leftIcon={<ExitIcon />}
+        primaryText={translate('aor.auth.logout')}
+        onClick={userLogout}
+    />
+);
 
 Logout.propTypes = {
-    authClient: PropTypes.func,
-    push: PropTypes.func,
     translate: PropTypes.func,
+    userLogout: PropTypes.func,
 };
 
 const enhance = compose(
     translate,
-    connect(null, { push: pushAction }),
+    connect(null, { userLogout: userLogoutAction }),
 );
 
 export default enhance(Logout);

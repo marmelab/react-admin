@@ -21,6 +21,8 @@ import {
     ReferenceManyField,
     Responsive,
     RichTextField,
+    SelectField,
+    SelectInput,
     Show,
     ShowButton,
     SimpleForm,
@@ -29,12 +31,15 @@ import {
     TabbedForm,
     TextField,
     TextInput,
-} from 'admin-on-rest/mui';
+    minValue,
+    number,
+    required,
+    translate,
+} from 'admin-on-rest';
 import RichTextInput from 'aor-rich-text-input';
-import { translate } from 'admin-on-rest';
 import Chip from 'material-ui/Chip';
+
 export PostIcon from 'material-ui/svg-icons/action/book';
-import { Link } from 'react-router';
 
 const QuickFilter = translate(({ label, translate }) => <Chip style={{ marginBottom: 8 }}>{translate(label)}</Chip>);
 
@@ -78,7 +83,7 @@ const PostTitle = translate(({ record, translate }) => {
 
 export const PostCreate = ({ ...props }) => (
     <Create {...props}>
-        <SimpleForm defaultValue={{ average_note: 0 }} validation={(values) => {
+        <SimpleForm defaultValue={{ average_note: 0 }} validate={(values) => {
             const errors = {};
             ['title', 'teaser'].forEach((field) => {
                 if (!values[field]) {
@@ -108,7 +113,7 @@ export const PostEdit = ({ ...props }) => (
         <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label="post.form.summary">
                 <DisabledInput source="id" />
-                <TextInput source="title" validation={{ required: true }} />
+                <TextInput source="title" validate={required} />
                 <CheckboxGroupInput
                     source="notifications"
                     choices={[
@@ -117,18 +122,22 @@ export const PostEdit = ({ ...props }) => (
                         { id: 42, name: 'Sean Phonee' },
                     ]}
                 />
-                <LongTextInput source="teaser" validation={{ required: true }} />
+                <LongTextInput source="teaser" validate={required} />
                 <ImageInput multiple source="pictures" accept="image/*">
                     <ImageField source="src" title="title" />
                 </ImageInput>
             </FormTab>
             <FormTab label="post.form.body">
-                <RichTextInput source="body" label="" validation={{ required: true }} addLabel={false} />
+                <RichTextInput source="body" label="" validate={required} addLabel={false} />
             </FormTab>
             <FormTab label="post.form.miscellaneous">
                 <TextInput source="password" type="password" />
                 <DateInput source="published_at" />
-                <NumberInput source="average_note" validation={{ min: 0 }} />
+                <SelectInput source="category" choices={[
+                    { name: 'Tech', id: 'tech' },
+                    { name: 'Lifestyle', id: 'lifestyle' },
+                ]} />
+                <NumberInput source="average_note" validate={[number, minValue(0)]} />
                 <BooleanInput source="commentable" defaultValue />
                 <DisabledInput source="views" />
             </FormTab>
@@ -155,6 +164,10 @@ export const PostShow = ({ ...props }) => (
             <RichTextField source="body" stripTags={false} />
             <DateField source="published_at" style={{ fontStyle: 'italic' }} />
             <TextField source="average_note" />
+            <SelectField source="category" choices={[
+                { name: 'Tech', id: 'tech' },
+                { name: 'Lifestyle', id: 'lifestyle' },
+            ]} />
             <ReferenceManyField label="resources.posts.fields.comments" reference="comments" target="post_id" sort={{ field: 'created_at', order: 'DESC' }}>
                 <Datagrid selectable={false}>
                     <DateField source="created_at" />

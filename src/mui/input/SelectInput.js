@@ -1,7 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
+import translate from '../../i18n/translate';
 import FieldTitle from '../../util/FieldTitle';
 
 /**
@@ -47,19 +49,57 @@ import FieldTitle from '../../util/FieldTitle';
  * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
  * <SelectInput source="gender" choices={choices} optionText={<FullNameField />}/>
  *
+ * The choices are translated by default, so you can use translation identifiers as choices:
+ * @example
+ * const choices = [
+ *    { id: 'M', name: 'myroot.gender.male' },
+ *    { id: 'F', name: 'myroot.gender.female' },
+ * ];
+ *
+ * However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want
+ * the choice to be translated. In that case, set the `translateChoice` prop to false.
+ * @example
+ * <SelectInput source="gender" choices={choices} translateChoice={false}/>
+ *
  * The object passed as `options` props is passed to the material-ui <SelectField> component
  */
-class SelectInput extends Component {
+export class SelectInput extends Component {
     handleChange = (event, index, value) => this.props.input.onChange(value);
 
-    render() {
-        const { allowEmpty, input, label, choices, optionText, optionValue, options, source, elStyle, meta: { touched, error }, resource } = this.props;
-        const option = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
-            choice => React.cloneElement(optionText, { record: choice }) :
+    renderMenuItem = (choice) => {
+        const {
+            optionText,
+            optionValue,
+            translate,
+            translateChoice,
+        } = this.props;
+        const choiceName = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
+            React.cloneElement(optionText, { record: choice }) :
             (typeof optionText === 'function' ?
-                optionText :
-                choice => choice[optionText]
+                optionText(choice) :
+                choice[optionText]
             );
+        return (
+            <MenuItem
+                key={choice[optionValue]}
+                primaryText={translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
+                value={choice[optionValue]}
+            />
+        );
+    }
+
+    render() {
+        const {
+            allowEmpty,
+            choices,
+            elStyle,
+            input,
+            label,
+            meta: { touched, error },
+            options,
+            resource,
+            source,
+        } = this.props;
         return (
             <SelectField
                 value={input.value}
@@ -73,9 +113,7 @@ class SelectInput extends Component {
                 {allowEmpty &&
                     <MenuItem value={null} primaryText="" />
                 }
-                {choices.map(choice =>
-                    <MenuItem key={choice[optionValue]} primaryText={option(choice)} value={choice[optionValue]} />
-                )}
+                {choices.map(this.renderMenuItem)}
             </SelectField>
         );
     }
@@ -98,6 +136,8 @@ SelectInput.propTypes = {
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     source: PropTypes.string,
+    translate: PropTypes.func.isRequired,
+    translateChoice: PropTypes.bool.isRequired,
 };
 
 SelectInput.defaultProps = {
@@ -107,6 +147,7 @@ SelectInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
+    translateChoice: true,
 };
 
-export default SelectInput;
+export default translate(SelectInput);

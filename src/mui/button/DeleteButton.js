@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import FlatButton from 'material-ui/FlatButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import linkToRecord from '../../util/linkToRecord';

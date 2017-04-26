@@ -1,29 +1,12 @@
-import React, { Children, Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import { getFieldConstraints, getErrorsForForm, getErrorsForFieldConstraints } from '../../util/validate';
 import Toolbar from './Toolbar';
-import getDefaultValues from '../form/getDefaultValues';
+import getDefaultValues from './getDefaultValues';
 import translate from '../../i18n/translate';
-
-/**
- * Validator function for redux-form
- */
-export const validateForm = (values, { children, validation }) => {
-    // digging first in `<FormTab>`, then in all children
-    const fieldConstraints = Children.toArray(children)
-        .map(child => child.props.children)
-        .map(getFieldConstraints)
-        // merge all constraints object into a single object
-        .reduce((prev, next) => ({ ...prev, ...next }), {});
-
-    return {
-        ...getErrorsForForm(validation, values),
-        ...getErrorsForFieldConstraints(fieldConstraints, values),
-    };
-};
 
 export class TabbedForm extends Component {
     constructor(props) {
@@ -40,11 +23,21 @@ export class TabbedForm extends Component {
     render() {
         const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath, translate } = this.props;
         return (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="tabbed-form">
                 <div style={{ padding: '0 1em 1em 1em' }}>
-                    <Tabs value={this.state.value} onChange={this.handleChange} contentContainerStyle={contentContainerStyle}>
+                    <Tabs
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                        contentContainerStyle={contentContainerStyle}
+                    >
                         {React.Children.map(children, (tab, index) =>
-                            <Tab key={tab.props.value} label={translate(tab.props.label, { _: tab.props.label })} value={index} icon={tab.props.icon}>
+                            <Tab
+                                key={tab.props.value}
+                                className="form-tab"
+                                label={translate(tab.props.label, { _: tab.props.label })}
+                                value={index}
+                                icon={tab.props.icon}
+                            >
                                 {React.cloneElement(tab, { resource, record, basePath })}
                             </Tab>
                         )}
@@ -82,7 +75,6 @@ const enhance = compose(
     })),
     reduxForm({
         form: 'record-form',
-        validate: validateForm,
         enableReinitialize: true,
     }),
     translate,

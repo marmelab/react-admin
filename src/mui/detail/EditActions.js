@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { CardActions } from 'material-ui/Card';
 import { ListButton, ShowButton, DeleteButton, RefreshButton } from '../button';
 
