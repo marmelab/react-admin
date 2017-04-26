@@ -33,23 +33,17 @@ module.exports = (url) => (driver) => ({
         return input.sendKeys(value);
     },
 
-    setValues(values, descValue, clearPreviousValue = true){
+    setValues(values, clearPreviousValue = true){
         let input;
+        let lastPromise;
         values.forEach((val) => {
             input = driver.findElement(this.elements.input(val.name, val.type));
-            if(clearPreviousValue){
+            if (clearPreviousValue) {
                 input.clear();
             }
-            input.sendKeys(val.value);
+            lastPromise = input.sendKeys(val.value);
         });
-        return this.setDescValue(descValue);
-    },
-
-    setDescValue(value, clearPreviousValue = true) {
-        const input = driver.findElement(this.elements.descInput);
-        if(clearPreviousValue)
-            input.clear();
-        return input.sendKeys(value);
+        return lastPromise;
     },
 
     getInputValue(name, type='input'){
