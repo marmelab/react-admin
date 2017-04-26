@@ -13,7 +13,7 @@ How can you add such custom actions with admin-on-rest? The answer is twofold, a
 
 Here is an implementation of the "Approve" button that works perfectly:
 
-```js
+```jsx
 // in src/comments/ApproveButton.js
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -60,7 +60,7 @@ The `handleClick` function makes a `PUT` request the REST API with `fetch`, then
 
 This `ApproveButton` can be used right away, for instance in the list of comments, where `<Datagrid>` automatically injects the `record` to its children:
 
-```js
+```jsx
 // in src/comments/index.js
 import ApproveButton from './ApproveButton';
 
@@ -79,7 +79,7 @@ export const CommentList = (props) =>
 Or, in the `<Edit>` page, as a [custom action](./CreateEdit.html#actions):
 
 {% raw %}
-```js
+```jsx
 // in src/comments/CommentEditActions.js
 import React from 'react';
 import { CardActions } from 'material-ui/Card';
@@ -110,7 +110,7 @@ export const CommentEdit = (props) =>
 
 The previous code uses `fetch()`, which means it has to make raw HTTP requests. The REST logic often requires a bit of HTTP plumbing to deal with query parameters, encoding, headers, body formatting, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: the [REST Client](./RestClients.html). So it's a good idea to use this function instead of `fetch` - provided you have exported it:
 
-```js
+```jsx
 // in src/restClient.js
 import { simpleRestClient } from 'admin-on-rest';
 export default simpleRestClient('http://Mydomain.com/api/');
@@ -142,7 +142,7 @@ class ApproveButton extends Component {
 
 There you go: no more `fetch`. Just like `fetch`, the `restClient` returns a `Promise`. It's signature is:
 
-```js
+```jsx
 /**
  * Execute the REST request and return a promise for a REST response
  *
@@ -164,7 +164,7 @@ As for the syntax of the various request types (`GET_LIST`, `GET_ONE`, `UPDATE`,
 
 Fetching data right inside the component is easy. But if you're a Redux user, you might want to do it in a more idiomatic way - by dispatching actions. First, create your own action creator to replace the call to `restClient`:
 
-```js
+```jsx
 // in src/comment/commentActions.js
 import { UPDATE } from 'admin-on-rest';
 export const COMMENT_APPROVE = 'COMMENT_APPROVE';
@@ -179,7 +179,7 @@ This action creator takes advantage of admin-on-rest's built in fetcher, which l
 
 To use the new action creator in the component, `connect` it:
 
-```js
+```jsx
 // in src/comments/ApproveButton.js
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -217,7 +217,7 @@ This works fine: when a user presses the "Approve" button, the API receives the 
 
 In admin-on-rest, side effects are handled by Sagas. [Redux-saga](https://redux-saga.github.io/redux-saga/) is a side effect library built for Redux, where side effects are defined by generator functions. This may sound complicated, but it's not: Here is the generator function necessary to handle the side effects for the `COMMENT_APPROVE` action.
 
-```js
+```jsx
 // in src/comments/commentSaga.js
 import { put, takeEvery } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
@@ -247,7 +247,7 @@ As for `commentApproveSuccess` and `commentApproveFailure`, they simply dispatch
 
 To use this saga, pass it in the `customSagas` props of the `<Admin>` component:
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 import { Admin, Resource } from 'admin-on-rest';
@@ -278,7 +278,7 @@ The fact that admin-on-rest updates the instance pool if you use custom actions 
 
 In addition to triggering REST calls, you may want to store the effect of your own actions in the application state. For instance, if you want to display a widget showing the current exchange rate for the bitcoin, you might need the following action:
 
-```js
+```jsx
 // in src/bitcoinRateReceived.js
 export const BITCOIN_RATE_RECEIVED = 'BITCOIN_RATE_RECEIVED';
 export const bitcoinRateReceived = (rate) => ({
@@ -289,7 +289,7 @@ export const bitcoinRateReceived = (rate) => ({
 
 This action can be triggered on mount by the following component:
 
-```js
+```jsx
 // in src/BitCoinRate.js
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -324,7 +324,7 @@ export default connect(mapStateToProps, {
 
 In order to put the rate passed to `bitcoinRateReceived()` into the Redux store, you'll need a reducer:
 
-```js
+```jsx
 // in src/rateReducer.js
 import { BITCOIN_RATE_RECEIVED } from './bitcoinRateReceived';
 
@@ -339,7 +339,7 @@ export const (previousState = 0, { type, payload }) => {
 Now the question is: How can you put this reducer in the `<Admin>` app? Simple: use the `customReducers` props:
 
 {% raw %}
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 import { Admin } from 'admin-on-rest';

@@ -7,7 +7,7 @@ title: "Input Components"
 
 An `Input` component displays an input, or a dropdown list, a list of radio buttons, etc. Such components allow to edit a record property, and are common in the `<Edit>`, `<Create>`, and `<Filter>` views.
 
-```js
+```jsx
 // in src/posts.js
 import React from 'react';
 import { Edit, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest';
@@ -41,13 +41,13 @@ Some other props are progressively implemented. The `<TextInput />` and `<Number
 * `onChange`: a function to call when the form field is changed. It expects to either receive the [React SyntheticEvent](https://facebook.github.io/react/docs/events.html), or the new value of the field.
 * `onFocus`: a function to call when the field receives focus. It takes the `event` as argument.
 
-```js
+```jsx
 <TextInput source="zb_title" label="Title" />
 ```
 
 **Tip**: If you edit a record with a complex structure, you can use a path as the `source` parameter. For instance, if the API returns the following 'book' record:
 
-```js
+```jsx
 {
     id: 1234,
     title: 'War and Peace',
@@ -60,7 +60,7 @@ Some other props are progressively implemented. The `<TextInput />` and `<Number
 
 Then you can display a text input to edit the author first name as follows:
 
-```js
+```jsx
 <TextInput source="author.firstName" />
 ```
 
@@ -70,7 +70,7 @@ Then you can display a text input to edit the author first name as follows:
 
 To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`. It renders using [Material ui's `<AutoComplete>` component](http://www.material-ui.com/#/components/auto-complete) and a `fuzzySearch` filter. Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
 
-```js
+```jsx
 import { AutocompleteInput } from 'admin-on-rest';
 
 <AutocompleteInput source="category" choices={[
@@ -82,7 +82,7 @@ import { AutocompleteInput } from 'admin-on-rest';
 
 You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
-```js
+```jsx
 const choices = [
     { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
     { _id: 456, full_name: 'Jane Austen', sex: 'F' },
@@ -92,7 +92,7 @@ const choices = [
 
 `optionText` also accepts a function, so you can shape the option text at will:
 
-```js
+```jsx
 const choices = [
    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
@@ -103,7 +103,7 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 
 You can customize the `filter` function used to filter the results. By default, it's `AutoComplete.fuzzyFilter`, but you can use any of [the functions provided by `AutoComplete`](http://www.material-ui.com/#/components/auto-complete), or a function of your own (`(searchText: string, key: string) => boolean`):
 
-```js
+```jsx
 import { AutocompleteInput } from 'admin-on-rest';
 import AutoComplete from 'material-ui/AutoComplete';
 
@@ -112,7 +112,7 @@ import AutoComplete from 'material-ui/AutoComplete';
 
 The choices are translated by default, so you can use translation identifiers as choices:
 
-```js
+```jsx
 const choices = [
    { id: 'M', name: 'myroot.gender.male' },
    { id: 'F', name: 'myroot.gender.female' },
@@ -121,14 +121,14 @@ const choices = [
 
 However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
 
-```js
+```jsx
 <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
 Lastly, use the `options` attribute if you want to override any of Material UI's `<AutoComplete>` attributes:
 
 {% raw %}
-```js
+```jsx
 <AutocompleteInput source="category" options={{
     fullWidth: true,
     filter: AutoComplete.fuzzyFilter,
@@ -140,7 +140,7 @@ Refer to [Material UI Autocomplete documentation](http://www.material-ui.com/#/c
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
-```js
+```jsx
 import { AutocompleteInput, ReferenceInput } from 'admin-on-rest'
 
 <ReferenceInput label="Post" source="post_id" reference="posts">
@@ -180,7 +180,7 @@ import { NullableBooleanInput } from 'admin-on-rest';
 
 If you want to let the user choose multiple values among a list of possible values by showing them all, `<CheckboxGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
-```js
+```jsx
 import { CheckboxGroupInput } from 'admin-on-rest';
 
 <CheckboxGroupInput source="category" choices={[
@@ -194,7 +194,7 @@ import { CheckboxGroupInput } from 'admin-on-rest';
 
 You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
-```js
+```jsx
 const choices = [
     { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
     { _id: 456, full_name: 'Jane Austen', sex: 'F' },
@@ -204,7 +204,7 @@ const choices = [
 
 `optionText` also accepts a function, so you can shape the option text at will:
 
-```js
+```jsx
 const choices = [
    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
@@ -215,7 +215,7 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 
 `optionText` also accepts a React Element, that will be cloned and receive the related choice as the `record` prop. You can use Field components there.
 
-```js
+```jsx
 const choices = [
    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
@@ -226,7 +226,7 @@ const FullNameField = ({ record }) => <span>{record.first_name} {record.last_nam
 
 The choices are translated by default, so you can use translation identifiers as choices:
 
-```js
+```jsx
 const choices = [
     { id: 'programming', name: 'myroot.category.programming' },
     { id: 'lifestyle', name: 'myroot.category.lifestyle' },
@@ -236,14 +236,14 @@ const choices = [
 
 However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
 
-```js
+```jsx
 <CheckboxGroupInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
 Lastly, use the `options` attribute if you want to override any of Material UI's `<Checkbox>` attributes:
 
 {% raw %}
-```js
+```jsx
 <CheckboxGroupInput source="category" options={{
     labelPosition: 'right'
 }} />
@@ -296,7 +296,7 @@ import { DisabledInput } from 'admin-on-rest';
 
 **Tip**: To add non-editable fields to the `<Edit>` view, you can also use one of admin-on-rest `Field` components:
 
-```js
+```jsx
 // in src/posts.js
 import { Edit, LongTextInput, SimpleForm, TextField } from 'admin-on-rest';
 
@@ -312,7 +312,7 @@ export const PostEdit = (props) => (
 
 **Tip**: You can even use a component of your own, provided it accepts a `record` prop:
 
-```js
+```jsx
 // in src/posts.js
 import { Edit, LongTextInput, SimpleForm } from 'admin-on-rest';
 const titleStyle = { textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '20em' };
@@ -389,7 +389,7 @@ You can customize the `step` props (which defaults to "any"):
 
 If you want to let the user choose a value among a list of possible values by showing them all (instead of hiding them behind a dropdown list, as in [`<SelectInput>`](#selectinput)), `<RadioButtonGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
-```js
+```jsx
 import { RadioButtonGroupInput } from 'admin-on-rest';
 
 <RadioButtonGroupInput source="category" choices={[
@@ -403,7 +403,7 @@ import { RadioButtonGroupInput } from 'admin-on-rest';
 
 You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
-```js
+```jsx
 const choices = [
     { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
     { _id: 456, full_name: 'Jane Austen', sex: 'F' },
@@ -413,7 +413,7 @@ const choices = [
 
 `optionText` also accepts a function, so you can shape the option text at will:
 
-```js
+```jsx
 const choices = [
    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
@@ -424,7 +424,7 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 
 `optionText` also accepts a React Element, that will be cloned and receive the related choice as the `record` prop. You can use Field components there.
 
-```js
+```jsx
 const choices = [
    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
@@ -435,7 +435,7 @@ const FullNameField = ({ record }) => <span>{record.first_name} {record.last_nam
 
 The choices are translated by default, so you can use translation identifiers as choices:
 
-```js
+```jsx
 const choices = [
    { id: 'M', name: 'myroot.gender.male' },
    { id: 'F', name: 'myroot.gender.female' },
@@ -444,14 +444,14 @@ const choices = [
 
 However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
 
-```js
+```jsx
 <RadioButtonGroupInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
 Lastly, use the `options` attribute if you want to override any of Material UI's `<RadioButtonGroup>` attributes:
 
 {% raw %}
-```js
+```jsx
 <RadioButtonGroupInput source="category" options={{
     labelPosition: 'right'
 }} />
@@ -462,7 +462,7 @@ Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/co
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
-```js
+```jsx
 import { RadioButtonGroupInput, ReferenceInput } from 'admin-on-rest'
 
 <ReferenceInput label="Author" source="author_id" reference="authors">
@@ -478,7 +478,7 @@ This means you can use `<ReferenceInput>` with any of [`<SelectInput>`](#selecti
 
 The component expects a `source` and a `reference` attributes. For instance, to make the `post_id` for a `comment` editable:
 
-```js
+```jsx
 import { ReferenceInput, SelectInput } from 'admin-on-rest'
 
 <ReferenceInput label="Post" source="post_id" reference="posts">
@@ -490,7 +490,7 @@ import { ReferenceInput, SelectInput } from 'admin-on-rest'
 
 Set the `allowEmpty` prop when the empty value is allowed.
 
-```js
+```jsx
 import { ReferenceInput, SelectInput } from 'admin-on-rest'
 
 <ReferenceInput label="Post" source="post_id" reference="posts" allowEmpty>
@@ -500,7 +500,7 @@ import { ReferenceInput, SelectInput } from 'admin-on-rest'
 
 **Tip**: `allowEmpty` is set by default for all Input components children of the `<Filter>` component:
 
-```js
+```jsx
 const CommentFilter = (props) => (
     <Filter {...props}>
         <ReferenceInput label="Post" source="post_id" reference="posts"> // no need for allowEmpty
@@ -513,7 +513,7 @@ const CommentFilter = (props) => (
 You can tweak how this component fetches the possible values using the `perPage`, `sort`, and `filter` props.
 
 {% raw %}
-```js
+```jsx
 // by default, fetches only the first 25 values. You can extend this limit
 // by setting the `perPage` prop.
 <ReferenceInput
@@ -546,7 +546,7 @@ You can tweak how this component fetches the possible values using the `perPage`
 The enclosed component may further filter results (that's the case, for instance, for `<AutocompleteInput>`). ReferenceInput passes a `setFilter` function as prop to its child component. It uses the value to create a filter for the query - by default `{ q: [searchText] }`. You can customize the mapping
 `searchText => searchQuery` by setting a custom `filterToQuery` function prop:
 
-```js
+```jsx
 <ReferenceInput
      source="post_id"
      reference="posts"
@@ -578,7 +578,7 @@ import RichTextInput from 'aor-rich-text-input';
 
 You can customize the rich text editor toolbar using the `toolbar` attribute, as described on the [Quill official toolbar documentation](https://quilljs.com/docs/modules/toolbar/).
 
-```js
+```jsx
 <RichTextInput source="body" toolbar={[ ['bold', 'italic', 'underline', 'link'] ]} />
 ```
 
@@ -586,7 +586,7 @@ You can customize the rich text editor toolbar using the `toolbar` attribute, as
 
 To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<SelectField>`](http://www.material-ui.com/#/components/select-field). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
-```js
+```jsx
 import { SelectInput } from 'admin-on-rest';
 
 <SelectInput source="category" choices={[
@@ -600,7 +600,7 @@ import { SelectInput } from 'admin-on-rest';
 
 You can also customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
-```js
+```jsx
 const choices = [
     { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
     { _id: 456, full_name: 'Jane Austen', sex: 'F' },
@@ -610,7 +610,7 @@ const choices = [
 
 `optionText` also accepts a function, so you can shape the option text at will:
 
-```js
+```jsx
 const choices = [
    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
@@ -621,7 +621,7 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 
 `optionText` also accepts a React Element, that will be cloned and receive the related choice as the `record` prop. You can use Field components there.
 
-```js
+```jsx
 const choices = [
    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
@@ -632,7 +632,7 @@ const FullNameField = ({ record }) => <span>{record.first_name} {record.last_nam
 
 Enabling the `allowEmpty` props adds an empty choice (with `null` value) on top of the options, and makes the value nullable:
 
-```js
+```jsx
 <SelectInput source="category" allowEmpty choices={[
     { id: 'programming', name: 'Programming' },
     { id: 'lifestyle', name: 'Lifestyle' },
@@ -642,7 +642,7 @@ Enabling the `allowEmpty` props adds an empty choice (with `null` value) on top 
 
 The choices are translated by default, so you can use translation identifiers as choices:
 
-```js
+```jsx
 const choices = [
    { id: 'M', name: 'myroot.gender.male' },
    { id: 'F', name: 'myroot.gender.female' },
@@ -651,14 +651,14 @@ const choices = [
 
 However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
 
-```js
+```jsx
 <SelectInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
 Lastly, use the `options` attribute if you want to override any of Material UI's `<SelectField>` attributes:
 
 {% raw %}
-```js
+```jsx
 <SelectInput source="category" options={{
     maxHeight: 200
 }} />
@@ -669,7 +669,7 @@ Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/co
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
-```js
+```jsx
 import { SelectInput, ReferenceInput } from 'admin-on-rest'
 
 <ReferenceInput label="Author" source="author_id" reference="authors">
@@ -709,13 +709,13 @@ Mnemonic for the two functions:
 
 Say the user would like to input values of 0-100 to a percentage field but your API (hence store) expects 0-1.0. You can use simple `parse()` and `format()` functions to archive the transform:
 
-```js
+```jsx
 <NumberInput source="percent" format={v => v*100} parse={v => v/100} label="Formatted number" />
 ```
 
 `<DateInput>` stores and returns a `Date` object. If you would like to store the ISO date `"YYYY-MM-DD"` in your store:
 
-```js
+```jsx
 const dateFormatter = v => {
   // v is a string of "YYYY-MM-DD" format
   const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
@@ -751,7 +751,7 @@ If you need a more specific input type, you can also write it yourself. You'll h
 
 For instance, let's write a component to edit the latitude and longitude of the current record:
 
-```js
+```jsx
 // in LatLongInput.js
 import { Field } from 'redux-form';
 const LatLngInput = () => (
@@ -784,7 +784,7 @@ const ItemEdit = (props) => (
 
 This component lacks a label. Admin-on-rest provides the `<Labeled>` component for that:
 
-```js
+```jsx
 // in LatLongInput.js
 import { Field } from 'redux-form';
 import { Labeled } from 'admin-on-rest';
@@ -812,7 +812,7 @@ Now the component will render with a label:
 
 Adding a label to an input component is such a common operation that admin-on-rest has the ability to do it automatically: just set the `addLabel` prop, and specify the label in the `label` prop:
 
-```js
+```jsx
 // in LatLongInput.js
 import { Field } from 'redux-form';
 const LatLngInput = () => (
@@ -835,7 +835,7 @@ const ItemEdit = (props) => (
 
 **Tip**: To avoid repeating them each time you use the component, you should define `label` and `addLabel` as `defaultProps`:
 
-```js
+```jsx
 // in LatLongInput.js
 import { Field } from 'redux-form';
 const LatLngInput = () => (
@@ -862,7 +862,7 @@ const ItemEdit = (props) => (
 
 **Tip**: The `<Field>` component supports dot notation in the `name` prop, to edit nested props:
 
-```js
+```jsx
 const LatLongInput = () => (
     <span>
         <Field name="position.lat" component="input" type="number" placeholder="latitude" />
@@ -874,7 +874,7 @@ const LatLongInput = () => (
 
 Instead of HTML `input` elements, you can use admin-on-rest components in `<Field>`. For instance, `<NumberInput>`:
 
-```js
+```jsx
 // in LatLongInput.js
 import { Field } from 'redux-form';
 import { NumberInput } from 'admin-on-rest';
@@ -902,7 +902,7 @@ const ItemEdit = (props) => (
 
 **Tip**: If you need to pass a material ui component to `Field`, use a [field renderer function](http://redux-form.com/6.5.0/examples/material-ui/) to map the props:
 
-```js
+```jsx
 import TextField from 'material-ui/TextField';
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
     <TextField
@@ -926,7 +926,7 @@ For more details on how to use redux-form's `<Field>` component, please refer to
 
 **Tip**: If you only need one `<Field>` component in a custom input, you can let admin-on-rest do the `<Field>` decoration for you by setting the `addField` default prop to `true`:
 
-```js
+```jsx
 // in PersonEdit.js
 import SexInput from './SexInput.js';
 const PersonEdit = (props) => (

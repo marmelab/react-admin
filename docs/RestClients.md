@@ -11,7 +11,7 @@ Admin-on-rest can communicate with any REST server, regardless of the REST diale
 
 The `restClient` parameter of the `<Admin>` component, must be a function with the following signature:
 
-```js
+```jsx
 /**
  * Execute the REST request and return a promise for a REST response
  *
@@ -76,7 +76,7 @@ Access-Control-Expose-Headers: Content-Range
 
 Here is how to use it in your admin:
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 
@@ -121,7 +121,7 @@ Access-Control-Expose-Headers: X-Total-Count
 
 Here is how to use it in your admin:
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 
@@ -144,7 +144,7 @@ Both the `simpleRestClient` and the `jsonServerRestClient` functions accept an h
 
 That means that if you need to add custom headers to your requests, you just need to *wrap* the `fetchJson()` call inside your own function:
 
-```js
+```jsx
 import { simpleRestClient, fetchUtils, Admin, Resource } from 'admin-on-rest';
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -168,7 +168,7 @@ Now all the requests to the REST API will contain the `X-Custom-Header: foobar` 
 
 **Tip**: The most common usage of custom headers is for authentication. `fetchJson` has built-on support for the `Authorization` token header:
 
-```js
+```jsx
 const httpClient = (url, options) => {
     options.user = {
         authenticated: true,
@@ -273,7 +273,7 @@ Type                 | Params format
 
 Examples:
 
-```js
+```jsx
 restClient(GET_LIST, 'posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },
@@ -309,7 +309,7 @@ A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 12
 
 Examples:
 
-```js
+```jsx
 restClient(GET_LIST, 'posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },

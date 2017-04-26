@@ -11,7 +11,7 @@ The `<Admin>` and `<Resource>` components form the basis of the configuration of
 
 The `<Admin>` component creates an application with its own state, routing, and controller logic. `<Admin>` requires only a `restClient` and at least one child `<Resource>` to work:
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 
@@ -50,7 +50,7 @@ Here are all the props accepted by the component:
 
 The only required prop, it must be a function returning a promise, with the following signature:
 
-```js
+```jsx
 /**
  * Execute the REST request and return a promise for a REST response
  *
@@ -72,7 +72,7 @@ The `restClient` is also the ideal place to add custom HTTP headers, authenticat
 
 By default, the header of an admin app uses 'Admin on REST' as the main app title. It's probably the first thing you'll want to customize. The `title` prop serves exactly that purpose.
 
-```js
+```jsx
 const App = () => (
     <Admin title="My Custom Admin" restClient={simpleRestClient('http://path.to.my.api')}>
         // ...
@@ -85,7 +85,7 @@ const App = () => (
 By default, the homepage of an an admin app is the `list` of the first child `<Resource>`. But you can also specify a custom component instead. To fit in the general design, use Material UI's `<Card>` component, and admin-on-rest's `<ViewTitle>` component:
 
 {% raw %}
-```js
+```jsx
 // in src/Dashboard.js
 import React from 'react';
 import { Card, CardText } from 'material-ui/Card';
@@ -100,7 +100,7 @@ export default () => (
 ```
 {% endraw %}
 
-```js
+```jsx
 // in src/App.js
 import Dashboard from './Dashboard';
 
@@ -119,7 +119,7 @@ Admin-on-rest uses the list of `<Resource>` components passed as children of `<A
 
 If you want to add or remove menu items, for instance to link to non-resources pages, you can create your own menu component:
 
-```js
+```jsx
 // in src/Menu.js
 import React from 'react';
 import MenuItem from 'material-ui/MenuItem';
@@ -137,7 +137,7 @@ export default ({ resources, onMenuTap, logout }) => (
 
 Then, pass it to the `<Admin>` component as the `menu` prop:
 
-```js
+```jsx
 // in src/App.js
 import Menu from './Menu';
 
@@ -154,7 +154,7 @@ const App = () => (
 
 Material UI supports [theming](http://www.material-ui.com/#/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
 
-```js
+```jsx
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
@@ -175,7 +175,7 @@ If you want to deeply customize the app header, the menu, or the notifications, 
 
 Use the [default layout](https://github.com/marmelab/admin-on-rest/blob/master/src/mui/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.html#using-a-custom-layout) for examples.
 
-```js
+```jsx
 // in src/App.js
 import MyLayout from './MyLayout';
 
@@ -190,7 +190,7 @@ const App = () => (
 
 The `<Admin>` app uses [Redux](http://redux.js.org/) to manage state. The state has the following keys:
 
-```js
+```jsx
 {
     admin: { /*...*/ }, // used by admin-on-rest
     form: { /*...*/ }, // used by redux-form
@@ -200,7 +200,7 @@ The `<Admin>` app uses [Redux](http://redux.js.org/) to manage state. The state 
 
 If your components dispatch custom actions, you probably need to register your own reducers to update the state with these actions. Let's imagine that you want to keep the bitcoin exchange rate inside the `bitcoinRate` key in the state. You probably have a reducer looking like the following:
 
-```js
+```jsx
 // in src/bitcoinRateReducer.js
 export default (previousState = 0, { type, payload }) => {
     if (type === 'BITCOIN_RATE_RECEIVED') {
@@ -213,7 +213,7 @@ export default (previousState = 0, { type, payload }) => {
 To register this reducer in the `<Admin>` app, simply pass it in the `customReducers` prop:
 
 {% raw %}
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 import { Admin } from 'admin-on-rest';
@@ -232,7 +232,7 @@ export default App;
 
 Now the state will look like:
 
-```js
+```jsx
 {
     admin: { /*...*/ }, // used by admin-on-rest
     form: { /*...*/ }, // used by redux-form
@@ -247,7 +247,7 @@ The `<Admin>` app uses [redux-saga](https://github.com/redux-saga/redux-saga) to
 
 If your components dispatch custom actions, you probably need to register your own side effects as sagas. Let's imagine that you want to show a notification whenever the `BITCOIN_RATE_RECEIVED` action is dispatched. You probably have a saga looking like the following:
 
-```js
+```jsx
 // in src/bitcoinSaga.js
 import { put, takeEvery } from 'redux-saga/effects';
 import { showNotification } from 'admin-on-rest';
@@ -261,7 +261,7 @@ export default function* bitcoinSaga() {
 
 To register this saga in the `<Admin>` app, simply pass it in the `customSagas` prop:
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 import { Admin } from 'admin-on-rest';
@@ -281,7 +281,7 @@ export default App;
 
 To register your own routes, create a module returning a list of [react-router](https://github.com/ReactTraining/react-router) `<Route>` component:
 
-```js
+```jsx
 // in src/customRoutes.js
 import React from 'react';
 import { Route } from 'react-router-dom';
@@ -296,7 +296,7 @@ export default [
 
 Then, pass this array as `customRoutes` prop in the `<Admin>` component:
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 import { Admin } from 'admin-on-rest';
@@ -320,7 +320,7 @@ Now, when a user browses to `/foo` or `/bar`, the components you defined will ap
 
 **Tip**: To look like other admin-on-rest pages, your custom pages should have the following structure:
 
-```js
+```jsx
 // in src/Foo.js
 import React from 'react';
 import { Card } from 'material-ui/Card';
@@ -340,7 +340,7 @@ export default Foo;
 
 The `authClient` prop expect a function returning a Promise, to control the application authentication strategy:
 
-```js
+```jsx
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest';
 
 const authClient(type, params) {
@@ -362,7 +362,7 @@ The [Authentication documentation](./Authentication.html) explains how to implem
 
 If you want to customize the Login page, or switch to another authentication strategy than a username/password form, pass a component of your own as the `loginPage` prop. Admin-on-rest will display this component whenever the `/login` route is called.
 
-```js
+```jsx
 import MyLoginPage from './MyLoginPage';
 
 const App = () => (
@@ -378,7 +378,7 @@ See The [Authentication documentation](./Authentication.html#customizing-the-log
 
 If you customize the `loginPage`, you probably need to override the `logoutButton`, too - because they share the authentication strategy.
 
-```js
+```jsx
 import MyLoginPage from './MyLoginPage';
 import MyLogoutButton from './MyLogoutButton';
 
@@ -400,7 +400,7 @@ The `locale` and `messages` props let you translate the GUI. The [Translation Do
 
 A `<Resource>` component maps one API endpoint to a CRUD interface. For instance, the following admin app offers a read-only interface to the resources exposed by the JSONPlaceholder API at  [`http://jsonplaceholder.typicode.com/posts`](http://jsonplaceholder.typicode.com/posts) and [`http://jsonplaceholder.typicode.com/users`](http://jsonplaceholder.typicode.com/users):
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
@@ -434,7 +434,7 @@ The `<Resource>` props allow you to customize all the CRUD operations for a give
 
 Admin-on-rest uses the `name` prop both to determine the API endpoint (passed to the `restClient`), and to form the URL for the resource.
 
-```js
+```jsx
 <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={PostRemove} />
 ```
 
@@ -454,7 +454,7 @@ The routing will map the component as follows:
 
 Admin-on-rest will render the `icon` prop component in the menu:
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 import PostIcon from 'material-ui/svg-icons/action/book';
@@ -476,7 +476,7 @@ const App = () => (
 `options.label` allows to customize the display name of a given resource in the menu.
 
 {% raw %}
-```js
+```jsx
 <Resource name="v2/posts" options={{ label: 'Posts' }} list={PostList} />
 ```
 {% endraw %}

@@ -21,7 +21,7 @@ What this form does upon submission depends on the `authClient` prop of the `<Ad
 
 For instance, to query an authentication route via HTTPS and store the credentials (a token) in local storage, configure `authClient` as follows:
 
-```js
+```jsx
 // in src/authClient.js
 import { AUTH_LOGIN } from 'admin-on-rest';
 
@@ -52,7 +52,7 @@ export default (type, params) => {
 
 Then, pass this client to the `<Admin>` component:
 
-```js
+```jsx
 // in src/App.js
 import authClient from './authClient';
 
@@ -71,7 +71,7 @@ To use the credentials when calling REST API routes, you have to tweak, this tim
 
 For instance, to pass the token obtained during login as an `Authorization` header, configure the REST client as follows:
 
-```js
+```jsx
 import { simpleRestClient, fetchUtils, Admin, Resource } from 'admin-on-rest';
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -98,7 +98,7 @@ If you provide an `authClient` prop to `<Admin>`, admin-on-rest displays a logou
 
 For instance, to remove the token from local storage upon logout:
 
-```js
+```jsx
 // in src/authClient.js
 import { AUTH_LOGIN, AUTH_LOGOUT } from 'admin-on-rest';
 
@@ -126,7 +126,7 @@ Fortunately, each time the API returns an error, the `authClient` is called with
 
 For instance, to redirect the user to the login page for both 401 and 403 codes:
 
-```js
+```jsx
 // in src/authClient.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR } from 'admin-on-rest';
 
@@ -157,7 +157,7 @@ Fortunately, each time the user navigates, admin-on-rest calls the `authClient` 
 
 For instance, to check for the existence of the token in local storage:
 
-```js
+```jsx
 // in src/authClient.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest';
 
@@ -180,7 +180,7 @@ export default (type, params) => {
 
 If the promise is rejected, admin-on-rest redirects by default to the `/login` page. You can override where to redirect the user by passing an argument with a `redirectTo` property to the rejected promise:
 
-```js
+```jsx
 // in src/authClient.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest';
 
@@ -203,7 +203,7 @@ export default (type, params) => {
 
 **Tip**: For the `AUTH_CHECK` call, the `params` argument contains the `resource` name, so you can implement different checks for different resources:
 
-```js
+```jsx
 // in src/authClient.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest';
 
@@ -240,7 +240,7 @@ But what if you want to use an email instead of a username? What if you want to 
 
 For all these cases, it's up to you to implement your own `LoginPage` component, which will be displayed under the `/login` route instead of the default username/password form, and your own `LogoutButton` component, which will be displayed in the sidebar. Pass both these components to the `<Admin>` component:
 
-```js
+```jsx
 // in src/App.js
 import MyLoginPage from './MyLoginPage';
 import MyLogoutButton from './MyLogoutButton';
@@ -260,7 +260,7 @@ const App = () => (
 If you add [custom pages](./Actions.html), of if you [create an admin app from scratch](./CustomApp.html), you may need to secure access to pages manually. That's the purpose of the `<Restricted>` component, that you can use as a decorator for your own components.
 
 {% raw %}
-```js
+```jsx
 // in src/MyPage.js
 import { withRouter } from 'react-router-dom';
 import { Restricted } from 'admin-on-rest';

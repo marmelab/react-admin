@@ -27,7 +27,7 @@ Here are all the props accepted by the `<List>` component:
 
 Here is the minimal code necessary to display a list of posts:
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
@@ -65,7 +65,7 @@ That's enough to display the post list:
 
 The default title for a list view is "[resource] list" (e.g. "Posts list"). Use the `title` prop to customize the List view title:
 
-```js
+```jsx
 // in src/posts.js
 export const PostList = (props) => (
     <List {...props} title="List of posts">
@@ -80,7 +80,7 @@ The title can be either a string, or an element of your own.
 
 You can replace the list of default actions by your own element using the `actions` prop:
 
-```js
+```jsx
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
@@ -113,7 +113,7 @@ export const PostList = (props) => (
 
 You can add a filter element to the list using the `filters` prop:
 
-```js
+```jsx
 const PostFilter = (props) => (
     <Filter {...props}>
         <TextInput label="Search" source="q" alwaysOn />
@@ -143,7 +143,7 @@ It does so by inspecting its `context` prop.
 
 By default, the list paginates results by groups of 10. You can override this setting by specifying the `perPage` prop:
 
-```js
+```jsx
 // in src/posts.js
 export const PostList = (props) => (
     <List {...props} perPage={25}>
@@ -157,7 +157,7 @@ export const PostList = (props) => (
 Pass an object literal as the `sort` prop to determine the default `field` and `order` used for sorting:
 
 {% raw %}
-```js
+```jsx
 // in src/posts.js
 export const PostList = (props) => (
     <List {...props} sort={{ field: 'published_at', order: 'DESC' }}>
@@ -174,7 +174,7 @@ export const PostList = (props) => (
 It is possible to disable sorting for a specific field by passing a `sortable` property set to `false`:
 
 {% raw %}
-```js
+```jsx
 // in src/posts.js
 import React from 'react';
 import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
@@ -196,7 +196,7 @@ export const PostList = (props) => (
 You can choose to always filter the list, without letting the user disable this filter - for instance to display only published posts. Write the filter to be passed to the REST client in the `filter` props:
 
 {% raw %}
-```js
+```jsx
 // in src/posts.js
 export const PostList = (props) => (
     <List {...props} filter={{ is_published: true }}>
@@ -214,7 +214,7 @@ You can replace the default pagination element by your own, using the `paginatio
 
 So if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
 
-```js
+```jsx
 import FlatButton from 'material-ui/FlatButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
@@ -259,7 +259,7 @@ Here are all the props accepted by the component:
 
 It renders as many columns as it receives `<Field>` children.
 
-```js
+```jsx
 // in src/posts.js
 import React from 'react';
 import { List, Datagrid, TextField } from 'admin-on-rest';
@@ -282,7 +282,7 @@ The datagrid is an *iterator* component: it receives an array of ids, and a data
 
 You can customize the datagrid styles by passing a `styles` object as prop. The object should have the following properties:
 
-```js
+```jsx
 const datagridStyles = {
     table: { },
     tbody: { },
@@ -309,7 +309,7 @@ export const PostList = (props) => (
 **Tip**: If you want to override the `header` and `cell` styles independently for each column, use the `headerStyle` and `style` props in `<Field>` components:
 
 {% raw %}
-```js
+```jsx
 export const PostList = (props) => (
     <List {...props}>
         <Datagrid>
@@ -334,7 +334,7 @@ You can customize the datagrid row style (applied to the `<tr>` element) based o
 
 For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
 
-```js
+```jsx
 const postRowStyle = (record, index) => ({
     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
 });
@@ -354,7 +354,7 @@ Admin-on-rest relies on [material-ui's `<Table>` component](http://www.material-
 For instance, to get a fixed header on the table, override the `<Table>` props with `options`:
 
 {% raw %}
-```js
+```jsx
 export const PostList = (props) => (
     <List {...props}>
         <Datagrid options={{ fixedHeader: true, height: 400 }}>
@@ -368,7 +368,7 @@ export const PostList = (props) => (
 To enable striped rows and row hover, override the `<TableBody>` props with `bodyOptions`:
 
 {% raw %}
-```js
+```jsx
 export const PostList = (props) => (
     <List {...props}>
         <Datagrid bodyOptions={{ stripedRows: true, showRowHover: true }}>
@@ -385,7 +385,7 @@ For a list of all the possible props that you can override via these options, pl
 
 For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](http://www.material-ui.com/#/components/list). You can use it as `<List>` or `<ReferenceManyField>` child:
 
-```js
+```jsx
 // in src/posts.js
 import React from 'react';
 import { List, SimpleList } from 'admin-on-rest';
@@ -405,7 +405,7 @@ export const PostList = (props) => (
 
 **Tip**: To use a `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use the `<Responsive>` component:
 
-```js
+```jsx
 // in src/posts.js
 import React from 'react';
 import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest';
@@ -434,7 +434,7 @@ export const PostList = (props) => (
 
 When you want to display only one property of a list of records, instead of using a `<Datagrid>`, use the `<SingleFieldList>`. It expects a single `<Field>` as child. It's especially useful for `<ReferenceManyField>` components:
 
-```js
+```jsx
 // Display all the books by the current author
 <ReferenceManyField reference="books" target="author_id">
     <SingleFieldList>
@@ -459,7 +459,7 @@ For instance, what if you prefer to show a list of cards rather than a datagrid?
 Simple: Create your own iterator component as follows:
 
 {% raw %}
-```js
+```jsx
 // in src/comments.js
 const cardStyle = {
     width: 300,

@@ -16,7 +16,7 @@ To handle translations, the `<Admin>` component supports:
 
 Admin-on-rest only ships the English locale; if you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, install the `aor-language-french` npm package, then configure the `<Admin>` component as follows:
 
-```js
+```jsx
 import React from 'react';
 import { Admin, Resource, resolveBrowserLocale } from 'admin-on-rest';
 import frenchMessages from 'aor-language-french';
@@ -60,7 +60,7 @@ If you want to contribute a new translation, feel free to submit a pull request 
 
 If you want to offer the ability to change locale at runtime, you must provide the messages for all possible translations:
 
-```js
+```jsx
 import React from 'react';
 import { Admin, Resource, englishMessages } from 'admin-on-rest';
 import frenchMessages from 'aor-language-french';
@@ -81,7 +81,7 @@ export default App;
 
 Then, dispatch the `CHANGE_LOCALE` action, by using the `changeLocale` action creator. For instance, the following component switches language between English and French:
 
-```js
+```jsx
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -110,7 +110,7 @@ export default connect(undefined, { changeLocale: changeLocaleAction })(LocaleSw
 
 Admin-on-rest provides a helper function named `resolveBrowserLocale()`, which helps you to introduce a dynamic locale attribution based on the locale configured in the user's browser. To use it, simply pass the function as `locale` prop.
 
-```js
+```jsx
 import React from 'react';
 import { Admin, Resource, englishMessages, resolveBrowserLocale } from 'admin-on-rest';
 import frenchMessages from 'aor-language-french';
@@ -133,7 +133,7 @@ export default App;
 
 The `message` value should be a dictionary with one entry per language supported. For a given language, the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
 
-```js
+```jsx
 {
     en: {
         aor: {
@@ -181,7 +181,7 @@ However, before humanizing names, admin-on-rest checks the `messages` dictionary
 
 This lets you translate your own resource and field names by passing a `messages` object with a `resources` key:
 
-```js
+```jsx
 {
     en: {
         resources: {
@@ -215,7 +215,7 @@ Using `resources` keys is an alternative to using the `label` prop in Field and 
 
 When translating an admin, interface messages (e.g. "List", "Page", etc.) usually come from a third-party package, while your domain messages (e.g. "Shoe", "Date of birth", etc.) come from your own code. That means you need to combine these messages before passing them to `<Admin>`. The recipe for combining messages is to use ES6 destructuring:
 
-```js
+```jsx
 // interface translations
 import { englishMessages } from 'admin-on-rest';
 import frenchMessages from 'aor-language-french';
@@ -239,7 +239,7 @@ const App = () => (
 
 The translation system use the React `context` to pass translations down the component tree. To translate a sentence, use the `translate` function from the context. Of course, this assumes that you've previously added the corresponding translation to the `messages` props of the `Admin` component.
 
-```js
+```jsx
 // in src/MyHelloButton.js
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -268,7 +268,7 @@ const messages = {
 
 However, using the context makes components harder to test. That's why admin-on-rest provides a `translate` Higher-Order Component, which simply passes the `translate` function from context to props:
 
-```js
+```jsx
 // in src/MyHelloButton.js
 import React from 'react';
 import { translate } from 'admin-on-rest';
@@ -284,7 +284,7 @@ export default translate(MyHelloButton);
 
 **Tip**: Don't use `translate` for Field and Input labels, or for page titles, as they are already translated:
 
-```js
+```jsx
 // don't do this
 <TextField source="first_name" label={translate('myroot.first_name')} />
 
@@ -300,7 +300,7 @@ export default translate(MyHelloButton);
 
 Polyglot.js is a fantastic library: in addition to being small, fully maintained, and totally framework agnostic, it provides some nice features such as interpolation and pluralization, that you can use in admin-on-rest.
 
-```js
+```jsx
 const messages = {
     'hello_name': 'Hello, %{name}',
     'count_beer': 'One beer |||| %{smart_count} beers',

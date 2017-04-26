@@ -23,7 +23,7 @@ Here are all the props accepted by the `<Create>` and `<Edit>` components:
 Here is the minimal code necessary to display a form to create and edit comments:
 
 {% raw %}
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
@@ -87,7 +87,7 @@ By default, the title for the Create view is "Create [resource_name]", and the t
 
 You can customize this title by specifying a custom `title` prop:
 
-```js
+```jsx
 export const PostEdit = (props) => (
     <Edit title="Post edition" {...props}>
         ...
@@ -97,7 +97,7 @@ export const PostEdit = (props) => (
 
 More interestingly, you can pass a component as `title`. Admin-on-rest clones this component and, in the `<EditView>`, injects the current `record`. This allows to customize the title according to the current record:
 
-```js
+```jsx
 const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
@@ -112,7 +112,7 @@ export const PostEdit = (props) => (
 
 You can replace the list of default actions by your own element using the `actions` prop:
 
-```js
+```jsx
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
@@ -155,7 +155,7 @@ Here are all the props accepted by the `<SimpleForm>` component:
 * [`defautValue`](#default-values)
 * [`validation`](#validation)
 
-```js
+```jsx
 export const PostCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
@@ -179,7 +179,7 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * [`validation`](#validation)
 
 {% raw %}
-```js
+```jsx
 import { TabbedForm, FormTab } from 'admin-on-rest'
 
 export const PostEdit = (props) => (
@@ -223,7 +223,7 @@ To define default values, you can add a `defaultValue` prop to form components (
 
 The value of the form `defaultValue` prop can be an object or a function returning an object, specifying default value for the created record. For instance:
 
-```js
+```jsx
 const postDefaultValue = { created_at: new Date(), nb_views: 0 };
 export const PostCreate = (props) => (
     <Create {...props}>
@@ -242,7 +242,7 @@ export const PostCreate = (props) => (
 
 Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. Admin-on-rest will merge the child default values with the form default value (input > form):
 
-```js
+```jsx
 export const PostCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
@@ -297,7 +297,7 @@ Alternatively, you can specify a `validate` prop directly in `<Input>` component
 
 Admin-on-rest will mash all the individual functions up to a single function looking just like the previous one:
 
-```js
+```jsx
 const required = value => value ? undefined : 'Required';
 const maxLength = max => value =>
   value && value.length > max ? `Must be ${max} characters or less` : undefined;
@@ -329,7 +329,7 @@ Input validation functions receive the current field value, and the values of al
 
 **Tip**: Validator functions receive the form `props` as third parameter, including the `translate` function. This lets you build internationalized validators:
 
-```js
+```jsx
 const required = (value, _, props) => value ? undefined : props.translate('myroot.validation.required');
 ```
 
@@ -352,7 +352,7 @@ Admin-on-rest already bundles a few validator functions, that you can just requi
 
 Example usage:
 
-```js
+```jsx
 import { required, minLength, maxLength, minValue, maxValue, number, regex, email, choices } from 'admin-on-rest';
 
 export const UserCreate = (props) => (
