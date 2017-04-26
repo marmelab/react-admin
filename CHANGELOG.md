@@ -25,7 +25,7 @@
 * Add Dutch translation ([pimschaaf](https://github.com/pimschaaf))
 * Add aor-jsonapi-client to the list of REST clients ([maxschridde1494](https://github.com/maxschridde1494))
 * Add e2e tests for post creation ([demougin2u](https://github.com/demougin2u))
-* Upgrade dependencies (including React 15.5.4, redux-form 6.6.1, material-ui 0.17.3)
+* Upgrade dependencies (including React 15.5.4, redux-form 6.6.3, material-ui 0.17.4)
 * Fix error messages translation
 * Fix ability to disable sort for a field
 * Fix translation warning on tab names
