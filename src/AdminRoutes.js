@@ -39,8 +39,9 @@ const AdminRoutes = ({ customRoutes, resources = [], dashboard }) => (
                     <Restricted authParams={{ route: 'dashboard' }} {...routeProps}>
                         {React.createElement(dashboard)}
                     </Restricted>}
-                />
-            : <Route exact path="/" render={() => <Redirect to={`/${resources[0].name}`} />} />
+            />
+            : (resources[0] && <Route exact path="/" render={() => <Redirect to={`/${resources[0].name}`} />} />
+            )
         }
     </Switch>
 );
