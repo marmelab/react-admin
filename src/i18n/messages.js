@@ -61,5 +61,8 @@ export default {
         validation: {
             required: 'Required',
         },
+		list: {
+			no_results: 'No Results Found',
+		},
     },
 };
