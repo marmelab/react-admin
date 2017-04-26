@@ -156,7 +156,7 @@ import { AutocompleteInput, ReferenceInput } from 'admin-on-rest'
 
 `<BooleanInput />` is a toggle button allowing you to attribute a `true` or `false` value to a record field.
 
-``` js
+```jsx
 import { BooleanInput } from 'admin-on-rest';
 
 <BooleanInput label="Allow comments?" source="commentable" />
@@ -168,7 +168,7 @@ This input does not handle `null` values. You would need the `<NullableBooleanIn
 
 `<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
 
-``` js
+```jsx
 import { NullableBooleanInput } from 'admin-on-rest';
 
 <NullableBooleanInput label="Allow comments?" source="commentable" />
@@ -256,7 +256,7 @@ Refer to [Material UI Checkbox documentation](http://www.material-ui.com/#/compo
 
 Ideal for editing dates, `<DateInput>` renders a beautiful [Date Picker](http://www.material-ui.com/#/components/date-picker) with full localization support.
 
-``` js
+```jsx
 import { DateInput } from 'admin-on-rest';
 
 <DateInput source="published_at" />
@@ -267,7 +267,7 @@ import { DateInput } from 'admin-on-rest';
 You can override any of Material UI's `<DatePicker>` attributes by setting the `options` attribute:
 
 {% raw %}
-``` js
+```jsx
 <DateInput source="published_at" options={{
     mode: 'landscape',
     minDate: new Date(),
@@ -286,7 +286,7 @@ Refer to [Material UI Datepicker documentation](http://www.material-ui.com/#/com
 
 When you want to display a record property in an `<Edit>` form without letting users update it (such as for auto-incremented primary keys), use the `<DisabledInput>`:
 
-``` js
+```jsx
 import { DisabledInput } from 'admin-on-rest';
 
 <DisabledInput source="id" />
@@ -339,7 +339,7 @@ export const PostEdit = (props) => (
 
 Previews are enabled using `<ImageInput>` children, as following:
 
-``` js
+```jsx
 <ImageInput source="pictures" label="Related pictures" accept="image/*">
     <ImageField source="src" title="title" />
 </ImageInput>
@@ -349,7 +349,7 @@ This component accepts all [react-dropzone properties](https://github.com/okonet
 
 If the default Dropzone label don't fit with your need, you can pass a `placeholder` attribute to overwrite it. The attribute can be anything React can render (`PropTypes.node`):
 
-``` js
+```jsx
 <ImageInput source="pictures" label="Related pictures" accept="image/*" placeholder={<p>Drop your file here</p>}>
     <ImageField source="src" title="title" />
 </ImageInput>
@@ -361,7 +361,7 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 
 `<LongTextInput>` is the best choice for multiline text values. It renders as an auto expandable textarea.
 
-``` js
+```jsx
 import { LongTextInput } from 'admin-on-rest';
 
 <LongTextInput source="teaser" />
@@ -373,7 +373,7 @@ import { LongTextInput } from 'admin-on-rest';
 
 `<NumberInput>` translates to a HTMl `<input type="number">`. It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
 
-``` js
+```jsx
 import { NumberInput } from 'admin-on-rest';
 
 <NumberInput source="nb_views" />
@@ -381,7 +381,7 @@ import { NumberInput } from 'admin-on-rest';
 
 You can customize the `step` props (which defaults to "any"):
 
-``` js
+```jsx
 <NumberInput source="nb_views" step={1} />
 ```
 
@@ -568,7 +568,7 @@ npm install aor-rich-text-input --save
 
 Then use it as a normal input component:
 
-``` js
+```jsx
 import RichTextInput from 'aor-rich-text-input';
 
 <RichTextInput source="body" />
@@ -683,7 +683,7 @@ If, instead of showing choices as a dropdown list, you prefer to display them as
 
 `<TextInput>` is the most common input. It is used for texts, emails, URL or passwords. In translates to an HTML `<input>` tag.
 
-``` js
+```jsx
 import { TextInput } from 'admin-on-rest';
 
 <TextInput source="title" />
@@ -693,7 +693,7 @@ import { TextInput } from 'admin-on-rest';
 
 You can choose a specific input type using the `type` attribute, for instance `text` (the default), `email`, `url`, or `password`:
 
-``` js
+```jsx
 <TextInput label="Email Address" source="email" type="email" />
 ```
 

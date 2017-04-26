@@ -64,7 +64,7 @@ Then you can display the author first name as follows:
 
 Displays a boolean value as a check.
 
-``` js
+```jsx
 import { BooleanField } from 'admin-on-rest';
 
 <BooleanField source="commentable" />
@@ -76,7 +76,7 @@ import { BooleanField } from 'admin-on-rest';
 
 Displays a value inside a ["Chip"](http://www.material-ui.com/#/components/chip), which is Material UI's term for a label.
 
-``` js
+```jsx
 import { ChipField } from 'admin-on-rest';
 
 <ChipField source="category" />
@@ -86,7 +86,7 @@ import { ChipField } from 'admin-on-rest';
 
 This field type is especially useful for one to many relationships, e.g. to display a list of books for a given author:
 
-``` js
+```jsx
 import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest';
 
 <ReferenceManyField reference="books" target="author_id">
@@ -100,7 +100,7 @@ import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest';
 
 Displays a date or datetime using the browser locale (thanks to `Date.toLocaleDateString()` and `Date.toLocaleString()`).
 
-``` js
+```jsx
 import { DateField } from 'admin-on-rest';
 
 <DateField source="publication_date" />
@@ -140,7 +140,7 @@ See [Intl.DateTimeformat documentation](https://developer.mozilla.org/fr/docs/We
 
 `<EmailField>` displays an email as a `<a href="mailto:" />` link.
 
-``` js
+```jsx
 import { EmailField } from 'admin-on-rest';
 
 <EmailField source="personal_email" />
@@ -162,7 +162,7 @@ import { FunctionField } from 'admin-on-rest'
 
 If you need to display an image provided by your API, you can use the `<ImageField />` component:
 
-``` js
+```jsx
 import { ImageField } from 'admin-on-rest';
 
 <ImageField source="url" title="title" />
@@ -172,7 +172,7 @@ This field is also generally used within an [<ImageInput />](http://marmelab.com
 
 The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. It can either be an hard-written string, or a path within your JSON object:
 
-``` js
+```jsx
 // { picture: { url: 'cover.jpg', title: 'Larry Cover (French pun intended)' } }
 
 // Title would be "picture.title", hence "Larry Cover (French pun intended)"
@@ -464,7 +464,7 @@ Also, you can filter the query used to populate the possible values. Use the `fi
 
 This component displays some HTML content. The content is "rich" (i.e. unescaped) by default.
 
-``` js
+```jsx
 import { RichTextField } from 'admin-on-rest';
 
 <RichTextField source="body" />
@@ -474,7 +474,7 @@ import { RichTextField } from 'admin-on-rest';
 
 The `stripTags` attribute (`false` by default) allows you to remove any HTML markup, preventing some display glitches (which is especially useful in list views).
 
-``` js
+```jsx
 import { RichTextField } from 'admin-on-rest';
 
 <RichTextField source="body" stripTags />
@@ -484,7 +484,7 @@ import { RichTextField } from 'admin-on-rest';
 
 The most simple as all fields, `<TextField>` simply displays the record property as plain text.
 
-``` js
+```jsx
 import { TextField } from 'admin-on-rest';
 
 <TextField label="Author Name" source="name" />
@@ -494,7 +494,7 @@ import { TextField } from 'admin-on-rest';
 
 `<UrlField>` displays an url in an `< a href="">` tag.
 
-``` js
+```jsx
 import { UrlField } from 'admin-on-rest';
 
 <UrlField source="site_url" />

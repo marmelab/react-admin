@@ -265,7 +265,7 @@ To validate values submitted by a form, you can add a `validate` prop to the for
 
 The value of the form `validate` prop must be a function taking the record as input, and returning an object with error messages indexed by field. For instance:
 
-``` js
+```jsx
 const validateUserCreation = (values) => {
     const errors = {};
     if (!values.firstName) {

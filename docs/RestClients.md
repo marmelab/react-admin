@@ -184,7 +184,7 @@ Now all the requests to the REST API will contain the `Authorization: SRTRDFVESG
 
 Instead of writing your own REST client or using a third-party one, you can enhance its capabilities on a given resource. For instance, if you want to use upload components (such as `<ImageInput />` one), you can decorate it the following way:
 
-``` js
+```jsx
 /**
  * Convert a `File` object returned by the upload input into
  * a base 64 string. That's easier to use on FakeRest, used on
@@ -233,7 +233,7 @@ export default addUploadCapabilities;
 
 This way, you can use simply your upload-capable client to your app calling this decorator:
 
-``` js
+```jsx
 import jsonRestClient from 'aor-json-rest-client';
 import addUploadFeature from './addUploadFeature';
 
