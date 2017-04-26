@@ -66,7 +66,7 @@
     "query-string": "~4.3.2",
     "react": "~15.5.4",
     "react-dom": "~15.5.4",
-    "react-dropzone": "~3.12.3",
+    "react-dropzone": "~3.13.1",
     "react-redux": "~5.0.4",
     "react-router": "~4.1.0",
     "react-router-dom": "~4.1.0",
