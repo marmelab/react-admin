@@ -24,19 +24,6 @@ function* fetchReference(resource) {
 }
 
 function* accumulate({ payload }) {
-    const { id, resource } = payload;
-    if (!ids[resource]) {
-        ids[resource] = {};
-    }
-    ids[resource][id] = true; // fast UNIQUE
-    if (tasks[resource]) {
-        yield cancel(tasks[resource]);
-    }
-    tasks[resource] = yield fork(fetchReference, resource);
-}
-
-function* accumulateMany({ payload }) {
-    console.log(payload);
     const { ids: idArray, resource } = payload;
     if (!ids[resource]) {
         ids[resource] = {};
@@ -49,6 +36,7 @@ function* accumulateMany({ payload }) {
 }
 
 export default function* () {
-    yield takeEvery(CRUD_GET_ONE_REFERENCE, accumulate);
-    yield takeEvery(CRUD_DEBOUNCED_GET_MANY, accumulateMany);
+    yield takeEvery(CRUD_GET_ONE_REFERENCE,
+        ({ payload }) => accumulate({ ids: [payload.id], resource: payload.resource }));
+    yield takeEvery(CRUD_DEBOUNCED_GET_MANY, accumulate);
 }
