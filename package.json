@@ -1,7 +1,7 @@
 {
-  "name": "admin-on-rest",
-  "version": "1.0.0",
-  "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
+  "name": "admin-on-rest-custom",
+  "version": "1.0.2",
+  "description": "[Faster version bug fixed for own user] A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
   "files": [
     "*.md",
     "docs/*.md",
@@ -13,11 +13,11 @@
     "test": "make test"
   },
   "authors": [
-    "François Zaninotto"
+    "Chema Roldan"
   ],
-  "repository": "marmelab/admin-on-rest",
-  "homepage": "https://github.com/marmelab/admin-on-rest#readme",
-  "bugs": "https://github.com/marmelab/admin-on-rest/issues",
+  "repository": "chemitaxis/admin-on-rest",
+  "homepage": "https://github.com/chemitaxis/admin-on-rest",
+  "bugs": "https://github.com/chemitaxis/admin-on-rest/issues",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "~6.24.1",
