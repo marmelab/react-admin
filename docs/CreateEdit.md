@@ -58,9 +58,9 @@ export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
             <DisabledInput label="Id" source="id" />
-            <TextInput source="title" validation={{ required: true }} />
-            <LongTextInput source="teaser" validation={{ required: true }} />
-            <RichTextInput source="body" validation={{ required: true }} />
+            <TextInput source="title" validate={required} />
+            <LongTextInput source="teaser" validate={required} />
+            <RichTextInput source="body" validate={required} />
             <DateInput label="Publication date" source="published_at" />
             <ReferenceManyField label="Comments" reference="comments" target="post_id">
                 <Datagrid>
@@ -187,16 +187,16 @@ export const PostEdit = (props) => (
         <TabbedForm>
             <FormTab label="summary">
                 <DisabledInput label="Id" source="id" />
-                <TextInput source="title" validation={{ required: true }} />
-                <LongTextInput source="teaser" validation={{ required: true }} />
+                <TextInput source="title" validate={required} />
+                <LongTextInput source="teaser" validate={required} />
             </FormTab>
             <FormTab label="body">
-                <RichTextInput source="body" validation={{ required: true }} addLabel={false} />
+                <RichTextInput source="body" validate={required} addLabel={false} />
             </FormTab>
             <FormTab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
                 <DateInput label="Publication date" source="published_at" />
-                <NumberInput source="average_note" validation={{ min: 0 }} />
+                <NumberInput source="average_note" validate={[ number, minValue(0) ]} />
                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
                 <DisabledInput label="Nb views" source="views" />
             </FormTab>
@@ -319,7 +319,7 @@ export const UserCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
             <TextInput label="First Name" source="firstName" validate={[ required, maxLength(15) ]} />
-            <TextInput label="Age" source="age" validation={[ required, number, minValue(18) ]}/>
+            <TextInput label="Age" source="age" validate={[ required, number, minValue(18) ]}/>
         </SimpleForm>
     </Create>
 );
@@ -359,9 +359,9 @@ export const UserCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
             <TextInput label="First Name" source="firstName" validate={[ required, minLength(2), maxLength(15) ]} />
-            <TextInput label="Email" source="email" validation={email} />
-            <TextInput label="Age" source="age" validation={[ number, minValue(18) ]}/>
-            <TextInput label="Zip Code" source="zip" validation={regex(/^\d{5}$/, 'Must be a valid Zip Code')}/>
+            <TextInput label="Email" source="email" validate={email} />
+            <TextInput label="Age" source="age" validate={[ number, minValue(18) ]}/>
+            <TextInput label="Zip Code" source="zip" validate={regex(/^\d{5}$/, 'Must be a valid Zip Code')}/>
             <SelectInput label="Sex" source="sex" choices={[
                 { id: 'm', name: 'Male' },
                 { id: 'f', name: 'Female' },

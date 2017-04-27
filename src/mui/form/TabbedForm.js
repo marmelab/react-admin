@@ -62,7 +62,7 @@ TabbedForm.propTypes = {
     resource: PropTypes.string,
     basePath: PropTypes.string,
     translate: PropTypes.func,
-    validation: PropTypes.func,
+    validate: PropTypes.func,
 };
 
 TabbedForm.defaultProps = {

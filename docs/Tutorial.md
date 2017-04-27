@@ -86,7 +86,7 @@ That's enough to display the post list:
 
 ![Simple posts list](./img/simple-post-list.png)
 
-The list is already functional: you can creorder it by clicking on column headers, or change pages by using the bottom pagination controls.
+The list is already functional: you can reorder it by clicking on column headers, or change pages by using the bottom pagination controls.
 
 ## Field Types
 

@@ -75,7 +75,10 @@ TextInput.propTypes = {
     resource: PropTypes.string,
     source: PropTypes.string,
     type: PropTypes.string,
-    validation: PropTypes.object,
+    validate: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.arrayOf(PropTypes.func)
+    ]),
 };
 
 TextInput.defaultProps = {

@@ -30,7 +30,7 @@ All input components accept the following attributes:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
 * `defaultValue`: Value to be set when the property is `null` or `undefined`.
-* `validation`: Validation rules for the current property (see the [Validation Documentation](./CreateEdit.html#validation))
+* `validate`: Validation rules for the current property (see the [Validation Documentation](./CreateEdit.html#validation))
 * `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
 * `style`: A style object to customize the look and feel of the field container (e.g. the `<div>` in a form).
 * `elStyle`: A style object to customize the look and feel of the field element itself
