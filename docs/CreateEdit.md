@@ -185,7 +185,6 @@ import { TabbedForm, Tab } from 'admin-on-rest'
 =======
 ```jsx
 import { TabbedForm, FormTab } from 'admin-on-rest'
->>>>>>> 84498e8db20f913b538793b3c725523ac514bd88
 
 export const PostEdit = (props) => (
     <Edit {...props}>
