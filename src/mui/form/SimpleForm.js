@@ -31,7 +31,7 @@ SimpleForm.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     basePath: PropTypes.string,
-    validation: PropTypes.func,
+    validate: PropTypes.func,
 };
 
 const enhance = compose(

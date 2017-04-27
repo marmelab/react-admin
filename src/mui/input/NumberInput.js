@@ -70,7 +70,10 @@ NumberInput.propTypes = {
     resource: PropTypes.string,
     source: PropTypes.string,
     step: PropTypes.string.isRequired,
-    validation: PropTypes.object,
+    validate: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.arrayOf(PropTypes.func)
+    ]),
 };
 
 NumberInput.defaultProps = {

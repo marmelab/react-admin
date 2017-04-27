@@ -25,7 +25,10 @@ LongTextInput.propTypes = {
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-    validation: PropTypes.object,
+    validate: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.arrayOf(PropTypes.func)
+    ]),
 };
 
 LongTextInput.defaultProps = {
