@@ -1,6 +1,6 @@
 {
   "name": "admin-on-rest",
-  "version": "0.9.2",
+  "version": "1.0.0",
   "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
   "files": [
     "*.md",
@@ -34,7 +34,7 @@
     "babel-register": "~6.24.1",
     "chromedriver": "~2.26.1",
     "css-loader": "~0.28.0",
-    "enzyme": "~2.8.0",
+    "enzyme": "~2.8.2",
     "eslint": "~3.19.0",
     "eslint-config-airbnb": "~14.1.0",
     "eslint-plugin-import": "~2.2.0",
@@ -60,13 +60,13 @@
     "lodash.defaultsdeep": "~4.6.0",
     "lodash.get": "~4.4.2",
     "lodash.set": "~4.3.2",
-    "material-ui": "~0.17.3",
+    "material-ui": "~0.17.4",
     "node-polyglot": "2.2.2",
     "prop-types": "~15.5.7",
     "query-string": "~4.3.2",
     "react": "~15.5.4",
     "react-dom": "~15.5.4",
-    "react-dropzone": "~3.12.3",
+    "react-dropzone": "~3.13.1",
     "react-redux": "~5.0.4",
     "react-router": "~4.1.0",
     "react-router-dom": "~4.1.0",
@@ -74,7 +74,7 @@
     "react-tap-event-plugin": "~2.0.1",
     "recompose": "~0.23.1",
     "redux": "~3.6.0",
-    "redux-form": "~6.6.2",
+    "redux-form": "~6.6.3",
     "redux-saga": "~0.14.6",
     "reselect": "~3.0.0"
   }

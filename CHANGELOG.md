@@ -1,5 +1,60 @@
 # Changelog
 
+## v1.0.0
+
+* [BC Break] Switch validation system to redux-form native validation (breaks all input validation)
+* [BC Break] Move error mapping (HTTP to REST) to `authClient` (breaks HTTP 401 and 403 error handling)
+* [BC Break] Upgrade react-router to v4 (breaks custom routes)
+* [BC Break] Refactor Auth side effects to Saga (breaks custom app and custom layout)
+* Add ability to require all components from the `admin-on-rest` package (no more `admin-on-rest/lib/mui`)
+* Add `<SelectField>` component
+* Add `<Restricted>` component
+* Add `LOGIN`, `LOGOUT`, `CHECK`, and `ERROR` actions
+* Add translation of options in `<SelectInput>`, `<AutocompleteInput>`, `<RadioButtonGroupInput>`, and `<CheckboxGroupInput>`
+* Add `linkType` prop to `<ReferenceField>` to allow customization or removal of hyperlink on references
+* Add ability to override the `<Filter>` component by using redux-form's new `onChange` method
+* Add message in `<List>` when the REST API returns no result ([mantis](https://github.com/mantis))
+* Add ability to remove images in `<ImageInput>`
+* Add error when an erroneous REST response does not contain the `error` key
+* Add the ability to pass an initial state to `createStore` ([thedersen](https://github.com/thedersen))
+* Add link from `ImageInput` documentation to REST Client decoration documentation ([leesei](https://github.com/leesei))
+* Add documentation for `parse()` and `format()` in Inputs reference ([leesei](https://github.com/leesei))
+* Add warning in documentation about `<Resource>` required for `ReferenceManyField` usage
+* Add Czech translation ([magikMaker](https://github.com/magikMaker))
+* Add Japanese translation ([valueshimoda](https://github.com/valueshimoda))
+* Add Dutch translation ([pimschaaf](https://github.com/pimschaaf))
+* Add aor-jsonapi-client to the list of REST clients ([maxschridde1494](https://github.com/maxschridde1494))
+* Add e2e tests for post creation ([demougin2u](https://github.com/demougin2u))
+* Upgrade dependencies (including React 15.5.4, redux-form 6.6.3, material-ui 0.17.4)
+* Fix error messages translation
+* Fix ability to disable sort for a field
+* Fix translation warning on tab names
+* Fix Admin component crash while rendering if first resource isn't loaded yet ([lutangar](https://github.com/lutangar))
+* Fix missing menu dock for dashboard
+* Update tutorial screenshots
+
+## v0.9.4
+
+* Fix `<ReferenceManyField>` documentation by adding a warning about required `<Resource>`
+* Fix custom dashboard documentation for `<ViewTitle>`
+* Fix custom List actions documentation ([remi13131](https://github.com/remi13131))
+* Fix `restClient` documentation by simplifying example code ([kulakowka](https://github.com/kulakowka))
+* Fix refresh on Edit clears data
+* Fix bad "unauthorized" notification after login
+* Fix typo on authentication documentation ([faviouz](https://github.com/faviouz))
+* Fix custom style component documentation ([vysakh0](https://github.com/vysakh0))
+* Fix Custom HTTP Client documentation ([remi13131](https://github.com/remi13131))
+* Explain branches in README
+* Fix `<NullableBooleanInput>` bug on undefined `meta` prop
+
+## v0.9.3
+
+* Fix list layout breaking when there are more than 3 filters
+* Fix documentation about API endpoint and aor URL mapping
+* Fix typos in Actions documentation ([leesei](https://github.com/leesei))
+* Fix hyperlink to JSON API route in Tutorial ([damiansimonpeter](https://github.com/damiansimonpeter))
+* Add a `dropAreaLabel` prop to `<ImageInput>` to let developers customize label of drop area ([DjLeChuck](https://github.com/DjLeChuck))
+
 ## v0.9.2
 
 * Fix IE11/Edge flexbox issue ([LoicMahieu](https://github.com/LoicMahieu))
@@ -30,7 +85,7 @@
 * Add dashboard MenuItem on top of Menu when relevant
 * Add ability to execute crud actions without redirect ([thedersen](https://github.com/thedersen))
 * Add support for custom `onBlur`, `onChange`, and `onFocus` props to `<NumberInput>` and `<TextInput>`
-* Add support for image preview change via dispatches form value in `<<ImageInput />`
+* Add support for image preview change via dispatches form value in `<ImageInput />`
 * Add support for custom redirect path when auth check fails ([thedersen](https://github.com/thedersen))
 * Add support for non-cancelable fetch in `crudGetList` action ([thedersen](https://github.com/thedersen))
 * Add support for default locale in `resolveBrowserLocale`

@@ -13,7 +13,7 @@ Beware that you need to know about [redux](http://redux.js.org/), [react-router]
 
 Here is the main code for bootstrapping a barebones admin-on-rest application with 3 resources: `posts`, `comments`, and `users`:
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 import PropTypes from 'prop-types';

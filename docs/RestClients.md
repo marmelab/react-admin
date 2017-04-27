@@ -11,13 +11,13 @@ Admin-on-rest can communicate with any REST server, regardless of the REST diale
 
 The `restClient` parameter of the `<Admin>` component, must be a function with the following signature:
 
-```js
+```jsx
 /**
  * Execute the REST request and return a promise for a REST response
  *
  * @example
  * restClient(GET_ONE, 'posts', { id: 123 })
- *  => new Promise(resolve => resolve({ data: { id: 123, title: "hello, world" } }))
+ *  => Promise.resolve({ data: { id: 123, title: "hello, world" } })
  *
  * @param {string} type Request type, e.g GET_LIST
  * @param {string} resource Resource name, e.g. "posts"
@@ -46,6 +46,7 @@ You can find more REST clients for admin-on-rest in third-party repositories:
 * [josx/aor-feathers-client](https://github.com/josx/aor-feathers-client): a REST client using [Feathersjs](http://www.feathersjs.com/)
 * [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback): a REST client works with [Loopback](http://loopback.io/)
 * [leperone/aor-parseserver-client](https://github.com/leperone/aor-parseserver-client): a REST client for [Parse Server](https://github.com/ParsePlatform/parse-server)
+* [moonlight-labs/aor-jsonapi-client](https://github.com/moonlight-labs/aor-jsonapi-client): a REST client for [JSON API](http://jsonapi.org/)
 
 ### Simple REST
 
@@ -75,7 +76,7 @@ Access-Control-Expose-Headers: Content-Range
 
 Here is how to use it in your admin:
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 
@@ -120,7 +121,7 @@ Access-Control-Expose-Headers: X-Total-Count
 
 Here is how to use it in your admin:
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 
@@ -143,9 +144,9 @@ Both the `simpleRestClient` and the `jsonServerRestClient` functions accept an h
 
 That means that if you need to add custom headers to your requests, you just need to *wrap* the `fetchJson()` call inside your own function:
 
-```js
+```jsx
 import { simpleRestClient, fetchUtils, Admin, Resource } from 'admin-on-rest';
-const httpClient = (url, options) => {
+const httpClient = (url, options = {}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
     }
@@ -167,7 +168,7 @@ Now all the requests to the REST API will contain the `X-Custom-Header: foobar` 
 
 **Tip**: The most common usage of custom headers is for authentication. `fetchJson` has built-on support for the `Authorization` token header:
 
-```js
+```jsx
 const httpClient = (url, options) => {
     options.user = {
         authenticated: true,
@@ -183,7 +184,7 @@ Now all the requests to the REST API will contain the `Authorization: SRTRDFVESG
 
 Instead of writing your own REST client or using a third-party one, you can enhance its capabilities on a given resource. For instance, if you want to use upload components (such as `<ImageInput />` one), you can decorate it the following way:
 
-``` js
+```jsx
 /**
  * Convert a `File` object returned by the upload input into
  * a base 64 string. That's easier to use on FakeRest, used on
@@ -232,7 +233,7 @@ export default addUploadCapabilities;
 
 This way, you can use simply your upload-capable client to your app calling this decorator:
 
-``` js
+```jsx
 import jsonRestClient from 'aor-json-rest-client';
 import addUploadFeature from './addUploadFeature';
 
@@ -248,7 +249,7 @@ render(
 
 ```
 
-## Writing your own REST Client
+## Writing Your Own REST Client
 
 Quite often, none of the the core REST clients match your API exactly. In such cases, you'll have to write your own REST client. But don't be afraid, it's easy!
 
@@ -272,7 +273,7 @@ Type                 | Params format
 
 Examples:
 
-```js
+```jsx
 restClient(GET_LIST, 'posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },
@@ -308,7 +309,7 @@ A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 12
 
 Examples:
 
-```js
+```jsx
 restClient(GET_LIST, 'posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },

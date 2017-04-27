@@ -11,7 +11,7 @@ export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, 
     <form onSubmit={handleSubmit} className="simple-form">
         <div style={{ padding: '0 1em 1em 1em' }}>
             {React.Children.map(children, input => input && (
-                <div key={input.props.source} style={input.props.style}>
+                <div key={input.props.source} className={`aor-input-${input.props.source}`} style={input.props.style}>
                     <FormField input={input} resource={resource} record={record} basePath={basePath} />
                 </div>
             ))}
@@ -31,7 +31,7 @@ SimpleForm.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     basePath: PropTypes.string,
-    validation: PropTypes.func,
+    validate: PropTypes.func,
 };
 
 const enhance = compose(

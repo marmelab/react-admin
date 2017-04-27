@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/syntax.css">
+        <link rel="stylesheet" href="css/prism.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.css">
     </head>
     <body>
@@ -78,6 +79,9 @@
                             </a>
                             <ul class="articles" {% if page.path != 'RestClients.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
+                                    <a href="#available-clients">Available Clients</a>
+                                </li>
+                                <li class="chapter">
                                     <a href="#simple-rest">Simple REST</a>
                                 </li>
                                 <li class="chapter">
@@ -87,13 +91,10 @@
                                     <a href="#adding-custom-headers">Adding Custom Headers</a>
                                 </li>
                                 <li class="chapter">
-                                    <a href="#third-party-clients">Third-Party Clients</a>
+                                    <a href="#decorating-your-rest-client-example-of-file-upload">Decorating a REST Client</a>
                                 </li>
                                 <li class="chapter">
-                                    <a href="#decorating-your-rest-client-example-of-file-upload">Decorating your REST Client</a>
-                                </li>
-                                <li class="chapter">
-                                    <a href="#writing-your-own-rest-client">Writing your own REST client</a>
+                                    <a href="#writing-your-own-rest-client">Writing Your Own REST Client</a>
                                 </li>
                             </ul>
                         </li>
@@ -260,6 +261,9 @@
                                     <a href="#textinput"><code>&lt;TextInput&gt;</code></a>
                                 </li>
                                 <li class="chapter">
+                                    <a href="#transforming-input-value-tofrom-store">Transforming Input Value to/from Store</a>
+                                </li>
+                                <li class="chapter">
                                     <a href="#third-party-components">Third-Party Components</a>
                                 </li>
                                 <li class="chapter">
@@ -424,5 +428,6 @@
   ga('create', 'UA-46201426-1', 'auto');
   ga('send', 'pageview');
         </script>
+        <script src="js/prism.js"></script>
     </body>
 </html>
