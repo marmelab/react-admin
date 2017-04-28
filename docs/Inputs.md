@@ -613,7 +613,7 @@ import { ReferenceArrayInput, SelectArrayInput } from 'admin-on-rest'
 </ReferenceArrayInput>
 ```
 
-**Tip**: `allowEmpty` is set by default for all Input components children of the `<Filter>` component:
+**Tip**: `allowEmpty` is set by default for all Input components children of the `<Filter>` component
 
 You can tweak how this component fetches the possible values using the `perPage`, `sort`, and `filter` props.
 
