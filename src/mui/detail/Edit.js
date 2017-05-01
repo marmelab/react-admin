@@ -141,8 +141,8 @@ Edit.propTypes = {
 
 function mapStateToProps(state, props) {
     return {
-        id: props.match.params.id,
-        data: state.admin[props.resource].data[props.match.params.id],
+        id: decodeURIComponent(props.match.params.id),
+        data: state.admin[props.resource].data[decodeURIComponent(props.match.params.id)],
         isLoading: state.admin.loading > 0,
     };
 }
