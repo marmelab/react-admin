@@ -245,7 +245,6 @@ List.propTypes = {
     resource: PropTypes.string.isRequired,
     total: PropTypes.number.isRequired,
     translate: PropTypes.func.isRequired,
-    refreshList: PropTypes.func.isRequired,
     version: PropTypes.number,
 };
 
