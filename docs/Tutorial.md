@@ -655,9 +655,9 @@ const convertHTTPResponseToREST = (response, type, resource, params) => {
             total: parseInt(headers.get('content-range').split('/').pop(), 10),
         };
     case CREATE:
-        return { ...params.data, id: json.id };
+        return { data: { ...params.data, id: json.id } };
     default:
-        return json;
+        return { data: json };
     }
 };
 
