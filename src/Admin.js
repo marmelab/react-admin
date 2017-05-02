@@ -106,7 +106,7 @@ Admin.propTypes = {
     menu: componentPropType,
     restClient: PropTypes.func,
     theme: PropTypes.object,
-    title: PropTypes.string,
+    title: PropTypes.node,
     locale: PropTypes.string,
     messages: PropTypes.object,
     initialState: PropTypes.object,
