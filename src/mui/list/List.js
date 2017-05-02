@@ -106,11 +106,6 @@ export class List extends Component {
         return this.props.location.pathname;
     }
 
-    refresh = event => {
-        event.stopPropagation();
-        this.props.refreshList(this.props.resource);
-    }
-
     /**
      * Merge list params from 3 different sources:
      *   - the query string
@@ -184,7 +179,6 @@ export class List extends Component {
                         hasCreate,
                         displayedFilters: this.state,
                         showFilter: this.showFilter,
-                        refresh: this.refresh,
                     })}
                     <ViewTitle title={titleElement} />
                     {filters && React.cloneElement(filters, {
@@ -299,7 +293,6 @@ const enhance = compose(
             crudGetList: crudGetListAction,
             changeListParams: changeListParamsAction,
             push: pushAction,
-            refreshList: refreshListAction,
         },
     ),
     translate,

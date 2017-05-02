@@ -10,11 +10,11 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const Actions = ({ resource, filters, displayedFilters, filterValues, hasCreate, basePath, showFilter, refresh }) => (
+const Actions = ({ resource, filters, displayedFilters, filterValues, hasCreate, basePath, showFilter }) => (
     <CardActions style={cardActionStyle}>
         {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         {hasCreate && <CreateButton basePath={basePath} />}
-        <RefreshButton refresh={refresh} />
+        <RefreshButton resource={resource} />
     </CardActions>
 );
 
