@@ -22,7 +22,7 @@ export default (authClient) => {
             try {
                 yield put({ type: USER_LOGIN_LOADING });
                 yield call(authClient, AUTH_LOGIN, payload);
-                yield put({ type: USER_LOGIN_SUCCESS });
+                yield put({ type: USER_LOGIN_SUCCESS, payload });
                 yield put(push(meta.pathName || '/'));
             } catch (e) {
                 yield put({ type: USER_LOGIN_FAILURE, error: e, meta: { auth: true } });
