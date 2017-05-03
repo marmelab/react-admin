@@ -17,14 +17,21 @@ describe('<CheckboxGroupInput />', () => {
         translate: x => x,
     };
 
+    const context = {
+        muiTheme: {
+            baseTheme: {},
+            textField: {},
+        },
+    };
+
     it('should use a mui Checkbox', () => {
-        const wrapper = shallow(<CheckboxGroupInput {...defaultProps} />);
+        const wrapper = shallow(<CheckboxGroupInput {...defaultProps} />, { context });
         const CheckboxElement = wrapper.find('Checkbox');
         assert.equal(CheckboxElement.length, 1);
     });
 
     it('should use the input parameter value as the initial input value', () => {
-        const wrapper = shallow(<CheckboxGroupInput {...defaultProps} input={{ value: [1], onChange: () => {} }} />);
+        const wrapper = shallow(<CheckboxGroupInput {...defaultProps} input={{ value: [1], onChange: () => {} }} />, { context });
         const CheckboxElement = wrapper.find('Checkbox').first();
         assert.equal(CheckboxElement.prop('checked'), true);
     });
@@ -36,7 +43,7 @@ describe('<CheckboxGroupInput />', () => {
                 { id: 'ang', name: 'Angular' },
                 { id: 'rct', name: 'React' },
             ]}
-        />);
+        />, { context });
         const CheckboxElements = wrapper.find('Checkbox');
         assert.equal(CheckboxElements.length, 2);
         const CheckboxElement1 = CheckboxElements.first();
@@ -54,7 +61,7 @@ describe('<CheckboxGroupInput />', () => {
             choices={[
                 { foobar: 'foo', name: 'Bar' },
             ]}
-        />);
+        />, { context });
         const CheckboxElements = wrapper.find('Checkbox');
         const CheckboxElement1 = CheckboxElements.first();
         assert.equal(CheckboxElement1.prop('value'), 'foo');
@@ -68,7 +75,7 @@ describe('<CheckboxGroupInput />', () => {
             choices={[
                 { id: 'foo', foobar: 'Bar' },
             ]}
-        />);
+        />, { context });
         const CheckboxElements = wrapper.find('Checkbox');
         const CheckboxElement1 = CheckboxElements.first();
         assert.equal(CheckboxElement1.prop('value'), 'foo');
@@ -82,7 +89,7 @@ describe('<CheckboxGroupInput />', () => {
             choices={[
                 { id: 'foo', foobar: 'Bar' },
             ]}
-        />);
+        />, { context });
         const CheckboxElements = wrapper.find('Checkbox');
         const CheckboxElement1 = CheckboxElements.first();
         assert.equal(CheckboxElement1.prop('value'), 'foo');
@@ -97,7 +104,7 @@ describe('<CheckboxGroupInput />', () => {
             choices={[
                 { id: 'foo', foobar: 'Bar' },
             ]}
-        />);
+        />, { context });
         const CheckboxElements = wrapper.find('Checkbox');
         const CheckboxElement1 = CheckboxElements.first();
         assert.equal(CheckboxElement1.prop('value'), 'foo');
@@ -112,7 +119,7 @@ describe('<CheckboxGroupInput />', () => {
                 { id: 'F', name: 'Female' },
             ]}
             translate={x => `**${x}**`}
-        />);
+        />, { context });
         const CheckboxElements = wrapper.find('Checkbox');
         const CheckboxElement1 = CheckboxElements.first();
         assert.equal(CheckboxElement1.prop('label'), '**Male**');
@@ -127,7 +134,7 @@ describe('<CheckboxGroupInput />', () => {
             ]}
             translate={x => `**${x}**`}
             translateChoice={false}
-        />);
+        />, { context });
         const CheckboxElements = wrapper.find('Checkbox');
         const CheckboxElement1 = CheckboxElements.first();
         assert.equal(CheckboxElement1.prop('label'), 'Male');
