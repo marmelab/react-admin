@@ -15,6 +15,7 @@ import Sidebar from './Sidebar';
 import Notification from './Notification';
 import defaultTheme from '../defaultTheme';
 import { setSidebarVisibility as setSidebarVisibilityAction } from '../../actions';
+import { isLoading } from '../../reducer';
 
 injectTapEventPlugin();
 
@@ -140,7 +141,7 @@ Layout.defaultProps = {
 
 function mapStateToProps(state) {
     return {
-        isLoading: state.admin.loading > 0,
+        isLoading: isLoading(state),
     };
 }
 

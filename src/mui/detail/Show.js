@@ -10,6 +10,7 @@ import { DeleteButton, EditButton, ListButton } from '../button';
 import { crudGetOne as crudGetOneAction } from '../../actions/dataActions';
 import DefaultActions from './ShowActions';
 import translate from '../../i18n/translate';
+import { getResourceRecord, isLoading } from '../../reducer';
 
 /**
  * Turns a children data structure (either single child or array of children) into an array.
@@ -102,8 +103,8 @@ Show.propTypes = {
 function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
-        data: state.admin[props.resource].data[decodeURIComponent(props.match.params.id)],
-        isLoading: state.admin.loading > 0,
+        data: getResourceRecord(state)(props.resource, decodeURIComponent(props.match.params.id)),
+        isLoading: isLoading(state),
     };
 }
 

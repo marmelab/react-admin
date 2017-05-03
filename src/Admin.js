@@ -1,16 +1,13 @@
 import React, { createElement } from 'react';
 import PropTypes from 'prop-types';
-import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createHistory from 'history/createHashHistory';
 import { Switch, Route } from 'react-router-dom';
-import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
-import { reducer as formReducer } from 'redux-form';
+import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import { fork } from 'redux-saga/effects';
-
-import adminReducer from './reducer';
-import localeReducer from './reducer/locale';
+import reducer from './reducer';
 import { crudSaga } from './sideEffect/saga';
 import DefaultLayout from './mui/layout/Layout';
 import Menu from './mui/layout/Menu';
@@ -37,13 +34,7 @@ const Admin = ({
     initialState,
 }) => {
     const resources = React.Children.map(children, ({ props }) => props) || [];
-    const reducer = combineReducers({
-        admin: adminReducer(resources),
-        locale: localeReducer(locale),
-        form: formReducer,
-        routing: routerReducer,
-        ...customReducers,
-    });
+    const rootReducer = reducer(resources, customReducers, locale);
     const saga = function* rootSaga() {
         yield [
             crudSaga(restClient, authClient),
@@ -52,7 +43,7 @@ const Admin = ({
     };
     const sagaMiddleware = createSagaMiddleware();
     const history = createHistory();
-    const store = createStore(reducer, initialState, compose(
+    const store = createStore(rootReducer, initialState, compose(
         applyMiddleware(sagaMiddleware, routerMiddleware(history)),
         window.devToolsExtension ? window.devToolsExtension() : f => f,
     ));

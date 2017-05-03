@@ -9,6 +9,7 @@ import Title from '../layout/Title';
 import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
 import DefaultActions from './EditActions';
 import translate from '../../i18n/translate';
+import { getResourceRecord, isLoading } from '../../reducer';
 
 /**
  * Turns a children data structure (either single child or array of children) into an array.
@@ -142,8 +143,8 @@ Edit.propTypes = {
 function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
-        data: state.admin[props.resource].data[decodeURIComponent(props.match.params.id)],
-        isLoading: state.admin.loading > 0,
+        data: getResourceRecord(state)(props.resource, decodeURIComponent(props.match.params.id)),
+        isLoading: isLoading(state),
     };
 }
 

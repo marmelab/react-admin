@@ -13,6 +13,7 @@ import Title from '../layout/Title';
 import { ListButton } from '../button';
 import { crudGetOne as crudGetOneAction, crudDelete as crudDeleteAction } from '../../actions/dataActions';
 import translate from '../../i18n/translate';
+import { getResourceRecord, isLoading } from '../../reducer';
 
 const styles = {
     actions: { zIndex: 2, display: 'inline-block', float: 'right' },
@@ -116,8 +117,8 @@ Delete.propTypes = {
 function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
-        data: state.admin[props.resource].data[decodeURIComponent(props.match.params.id)],
-        isLoading: state.admin.loading > 0,
+        data: getResourceRecord(state)(props.resource, decodeURIComponent(props.match.params.id)),
+        isLoading: isLoading(state),
     };
 }
 
