@@ -70,7 +70,7 @@ export class List extends Component {
     componentDidMount() {
         this.updateData();
         if (Object.keys(this.props.query).length > 0) {
-             this.props.changeListParams(this.props.resource, this.props.query);
+            this.props.changeListParams(this.props.resource, this.props.query);
         }
     }
 
@@ -153,7 +153,7 @@ export class List extends Component {
 
     changeParams(action) {
         const newParams = queryReducer(this.getQuery(), action);
-        this.props.push({ ...this.props.location, search: '?' + stringify({ ...newParams, filter: JSON.stringify(newParams.filter) }) });
+        this.props.push({ ...this.props.location, search: `?${  stringify({ ...newParams, filter: JSON.stringify(newParams.filter) })}` });
         this.props.changeListParams(this.props.resource, newParams);
     }
 
@@ -173,7 +173,7 @@ export class List extends Component {
 
         return (
             <div className="list-page">
-                <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     {actions && React.cloneElement(actions, {
                         resource,
                         filters,
@@ -194,7 +194,7 @@ export class List extends Component {
                         context: 'form',
                     })}
                     { isLoading || total > 0 ?
-                        <div>
+                        <div key={key}>
                             {children && React.cloneElement(children, {
                                 resource,
                                 ids,
