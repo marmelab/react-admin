@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.0.1
+
+* Fix filters on refresh ([djhi](https://github.com/djhi))
+* Fix `<CheckboxGroupInput>` on IE ([djhi](https://github.com/djhi))
+* Fix warning when using non-string `title` prop in `<Admin>` ([JulienDemangeon](https://github.com/JulienDemangeon))
+* Fix id parameter not decoded in URL ([abarani](https://github.com/abarani))
+* Fix Auth error message not displayed ([tacoo](https://github.com/tacoo))
+* Fix `<Logout>` button not redrawn on theme change ([zyhou](https://github.com/zyhou))
+* Fix validation documentation (`validation` prop renamed to `validate`) ([tacoo](https://github.com/tacoo))
+* Fix JSX syntax highlighting in documentation ([fzaninotto](https://github.com/fzaninotto))
+* Add mention of obligation to declare a `Resource` for `ReferenceInput` to work ([fzaninotto](https://github.com/fzaninotto))
+* Add a missing link in the doc Table of Contents ([leesei](https://github.com/leesei))
+* Add link to Chinese (Traditional) (`cht`) translation ([leesei](https://github.com/leesei))
+* Add link to sandbox in the Contributing documentation ([fzaninotto](https://github.com/fzaninotto))
+
 ## v1.0.0
 
 * [BC Break] Switch validation system to redux-form native validation (breaks all input validation)
