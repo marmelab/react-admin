@@ -2,8 +2,40 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Checkbox from 'material-ui/Checkbox';
 
-import Labeled from './Labeled';
+import FieldTitle from '../../util/FieldTitle';
 import translate from '../../i18n/translate';
+
+const getStyles = (props, context) => {
+    const {
+        baseTheme,
+        textField: {
+            floatingLabelColor,
+            backgroundColor,
+        },
+    } = context.muiTheme;
+
+    return {
+        labelContainer: {
+            fontSize: 16,
+            lineHeight: '24px',
+            display: 'inline-block',
+            position: 'relative',
+            backgroundColor,
+            fontFamily: baseTheme.fontFamily,
+            cursor: 'auto',
+            marginTop: 14,
+        },
+        label: {
+            color: floatingLabelColor,
+            lineHeight: '22px',
+            zIndex: 1,
+            transform: 'scale(0.75)',
+            transformOrigin: 'left top',
+            pointerEvents: 'none',
+            userSelect: 'none',
+        },
+    };
+};
 
 /**
  * An Input component for a checkbox group, using an array of objects for the options
@@ -85,7 +117,7 @@ export class CheckboxGroupInput extends Component {
             optionValue,
             options,
             translate,
-            translateChoice
+            translateChoice,
         } = this.props;
         const choiceName = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
             React.cloneElement(optionText, { record: choice }) :
@@ -107,15 +139,24 @@ export class CheckboxGroupInput extends Component {
 
     render() {
         const { choices, label, resource, source } = this.props;
+        const styles = getStyles(this.props, this.context, this.state);
+
         return (
-            <Labeled label={label} source={source} resource={resource}>
-                <div>
-                    {choices.map(this.renderCheckbox)}
+            <div>
+                <div style={styles.labelContainer}>
+                    <div style={styles.label}>
+                        <FieldTitle label={label} source={source} resource={resource} />
+                    </div>
                 </div>
-            </Labeled>
+                {choices.map(this.renderCheckbox)}
+            </div>
         );
     }
 }
+
+CheckboxGroupInput.contextTypes = {
+    muiTheme: PropTypes.object.isRequired,
+};
 
 CheckboxGroupInput.propTypes = {
     addField: PropTypes.bool.isRequired,
