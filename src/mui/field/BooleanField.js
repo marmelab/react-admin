@@ -1,10 +1,12 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import get from 'lodash.get';
+import pure from 'recompose/pure';
 
 import FalseIcon from 'material-ui/svg-icons/content/clear';
 import TrueIcon from 'material-ui/svg-icons/action/done';
 
-const BooleanField = ({ source, record = {}, elStyle }) => {
+export const BooleanField = ({ source, record = {}, elStyle }) => {
     if (get(record, source) === false) {
         return <FalseIcon style={elStyle} />;
     }
@@ -17,17 +19,21 @@ const BooleanField = ({ source, record = {}, elStyle }) => {
 };
 
 BooleanField.propTypes = {
+    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
 };
 
-BooleanField.defaultProps = {
+const PureBooleanField = pure(BooleanField);
+
+PureBooleanField.defaultProps = {
+    addLabel: true,
     elStyle: {
         display: 'block',
         margin: 'auto',
     },
 };
 
-export default BooleanField;
+export default PureBooleanField;

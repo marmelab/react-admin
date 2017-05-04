@@ -1,7 +1,6 @@
 import { queryParameters, fetchJson } from '../util/fetch';
 import {
     GET_LIST,
-    GET_MATCHING,
     GET_ONE,
     GET_MANY,
     GET_MANY_REFERENCE,
@@ -17,7 +16,6 @@ import {
  * @see https://github.com/marmelab/FakeRest
  * @example
  * GET_LIST     => GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]
- * GET_MATCHING => GET http://my.api.url/posts?filter={title:'bar'}
  * GET_ONE      => GET http://my.api.url/posts/123
  * GET_MANY     => GET http://my.api.url/posts?filter={ids:[123,456,789]}
  * UPDATE       => PUT http://my.api.url/posts/123
@@ -46,13 +44,6 @@ export default (apiUrl, httpClient = fetchJson) => {
             url = `${apiUrl}/${resource}?${queryParameters(query)}`;
             break;
         }
-        case GET_MATCHING: {
-            const query = {
-                filter: JSON.stringify(params.filter),
-            };
-            url = `${apiUrl}/${resource}?${queryParameters(query)}`;
-            break;
-        }
         case GET_ONE:
             url = `${apiUrl}/${resource}/${params.id}`;
             break;
@@ -64,8 +55,12 @@ export default (apiUrl, httpClient = fetchJson) => {
             break;
         }
         case GET_MANY_REFERENCE: {
+            const { page, perPage } = params.pagination;
+            const { field, order } = params.sort;
             const query = {
-                filter: JSON.stringify({ [params.target]: params.id }),
+                sort: JSON.stringify([field, order]),
+                range: JSON.stringify([(page - 1) * perPage, (page * perPage) - 1]),
+                filter: JSON.stringify({ ...params.filter, [params.target]: params.id }),
             };
             url = `${apiUrl}/${resource}?${queryParameters(query)}`;
             break;
@@ -101,17 +96,18 @@ export default (apiUrl, httpClient = fetchJson) => {
         const { headers, json } = response;
         switch (type) {
         case GET_LIST:
+        case GET_MANY_REFERENCE:
             if (!headers.has('content-range')) {
                 throw new Error('The Content-Range header is missing in the HTTP Response. The simple REST client expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare Content-Range in the Access-Control-Expose-Headers header?');
             }
             return {
-                data: json.map(x => x),
+                data: json,
                 total: parseInt(headers.get('content-range').split('/').pop(), 10),
             };
         case CREATE:
-            return { ...params.data, id: json.id };
+            return { data: { ...params.data, id: json.id } };
         default:
-            return json;
+            return { data: json };
         }
     };
 

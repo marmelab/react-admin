@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import pure from 'recompose/pure';
 
 /**
  * @example
@@ -9,6 +11,7 @@ const FunctionField = ({ record = {}, source, render, elStyle }) => record ?
     null;
 
 FunctionField.propTypes = {
+    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     render: PropTypes.func.isRequired,
@@ -16,4 +19,10 @@ FunctionField.propTypes = {
     source: PropTypes.string,
 };
 
-export default FunctionField;
+const PureFunctionField = pure(FunctionField);
+
+PureFunctionField.defaultProps = {
+    addLabel: true,
+};
+
+export default PureFunctionField;

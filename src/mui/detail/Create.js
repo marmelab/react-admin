@@ -1,11 +1,14 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card, CardTitle, CardActions } from 'material-ui/Card';
+import { Card, CardTitle } from 'material-ui/Card';
+import compose from 'recompose/compose';
 import inflection from 'inflection';
+import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
-import ListButton from '../button/ListButton';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
-import RecordForm from './RecordForm'; // eslint-disable-line import/no-named-as-default
+import DefaultActions from './CreateActions';
+import translate from '../../i18n/translate';
 
 class Create extends Component {
     getBasePath() {
@@ -16,37 +19,48 @@ class Create extends Component {
     handleSubmit = (record) => this.props.crudCreate(this.props.resource, record, this.getBasePath());
 
     render() {
-        const { title, children, isLoading, resource, validation } = this.props;
+        const { actions = <DefaultActions />, children, isLoading, resource, title, translate } = this.props;
         const basePath = this.getBasePath();
+
+        const resourceName = translate(`resources.${resource}.name`, {
+            smart_count: 1,
+            _: inflection.humanize(inflection.singularize(resource)),
+        });
+        const defaultTitle = translate('aor.page.create', {
+            name: `${resourceName}`,
+        });
+        const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
+
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
-                <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    <ListButton basePath={basePath} />
-                </CardActions>
-                <CardTitle title={<Title title={title} defaultTitle={`Create ${inflection.humanize(inflection.singularize(resource))}`} />} />
-                <RecordForm
-                    onSubmit={this.handleSubmit}
-                    resource={resource}
-                    basePath={basePath}
-                    validation={validation}
-                    record={{}}
-                >
-                    {children}
-                </RecordForm>
-            </Card>
+            <div className="create-page">
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                    {actions && React.cloneElement(actions, {
+                        basePath,
+                        resource,
+                    })}
+                    <ViewTitle title={titleElement} />
+                    {React.cloneElement(children, {
+                        onSubmit: this.handleSubmit,
+                        resource,
+                        basePath,
+                        record: {},
+                        translate,
+                    })}
+                </Card>
+            </div>
         );
     }
 }
 
 Create.propTypes = {
-    children: PropTypes.node,
+    actions: PropTypes.element,
+    children: PropTypes.element,
     crudCreate: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
-    validation: PropTypes.func,
+    translate: PropTypes.func.isRequired,
 };
 
 Create.defaultProps = {
@@ -59,7 +73,12 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    { crudCreate: crudCreateAction },
-)(Create);
+const enhance = compose(
+    connect(
+        mapStateToProps,
+        { crudCreate: crudCreateAction },
+    ),
+    translate,
+);
+
+export default enhance(Create);

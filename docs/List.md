@@ -5,7 +5,7 @@ title: "The List View"
 
 # The List View
 
-The List view displays a list of records fetched from the REST API. The entry point for this view is the `<List>` component, which takes care of fetching the data. Then, it passes the data to an iterator view - usually `<Datagrid>`, which then delegates the rendering of each record property to `<Field>` components.
+The List view displays a list of records fetched from the REST API. The entry point for this view is the `<List>` component, which takes care of fetching the data. Then, it passes the data to an iterator view - usually `<Datagrid>`, which then delegates the rendering of each record property to [`<Field>`](./Fields.html) components.
 
 ![The List View](./img/list-view.png)
 
@@ -18,15 +18,16 @@ The `<List>` component renders the list layout (title, buttons, filters, paginat
 Here are all the props accepted by the `<List>` component:
 
 * [`title`](#page-title)
-* [`perPage`](#records-per-page)
-* [`defaultSort`](#default-sort-field)
 * [`actions`](#actions)
-* [`filter`](#filters)
+* [`filters`](#filters) (a React element used to display the filter form)
+* [`perPage`](#records-per-page)
+* [`sort`](#default-sort-field)
+* [`filter`](#permanent-filter) (the permanent filter used in the REST request)
 * [`pagination`](#pagination)
 
 Here is the minimal code necessary to display a list of posts:
 
-```js
+```jsx
 // in src/App.js
 import React from 'react';
 import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
@@ -43,7 +44,7 @@ export default App;
 
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, TextField } from 'admin-on-rest';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -60,13 +61,11 @@ That's enough to display the post list:
 
 ![Simple posts list](./img/simple-post-list.png)
 
-Notice that the `<List>`, `<Datagrid>`, and `<TextField>` components that we use here are from `admin-on-rest/lib/mui` - these are Material UI components.
-
 ### Page Title
 
 The default title for a list view is "[resource] list" (e.g. "Posts list"). Use the `title` prop to customize the List view title:
 
-```js
+```jsx
 // in src/posts.js
 export const PostList = (props) => (
     <List {...props} title="List of posts">
@@ -77,41 +76,11 @@ export const PostList = (props) => (
 
 The title can be either a string, or an element of your own.
 
-### Records Per Page
-
-By default, the list paginates results by groups of 10. You can override this setting by specifying the `perPage` prop:
-
-```js
-// in src/posts.js
-export const PostList = (props) => (
-    <List {...props} perPage={25}>
-        ...
-    </List>
-);
-```
-
-### Default Sort Field
-
-Pass an object literal as the `defaultSort` prop to determine the default `field` and `order` used for sorting:
-
-{% raw %}
-```js
-// in src/posts.js
-export const PostList = (props) => (
-    <List {...props} defaultSort={{ field: 'last_seen', order: 'DESC' }}>
-        ...
-    </List>
-);
-```
-{% endraw %}
-
-`defaultSort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
-
 ### Actions
 
 You can replace the list of default actions by your own element using the `actions` prop:
 
-```js
+```jsx
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
@@ -123,9 +92,9 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const PostActions = ({ resource, filter, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
+const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
     <CardActions style={cardActionStyle}>
-        {filter && React.cloneElement(filter, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
+        {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         <CreateButton basePath={basePath} />
         <FlatButton primary label="refresh" onClick={refresh} icon={<NavigationRefresh />} />
         {/* Add your custom actions */}
@@ -142,18 +111,18 @@ export const PostList = (props) => (
 
 ### Filters
 
-You can add a filter element to the list:
+You can add a filter element to the list using the `filters` prop:
 
-```js
+```jsx
 const PostFilter = (props) => (
     <Filter {...props}>
         <TextInput label="Search" source="q" alwaysOn />
-        <TextInput label="Title" source="title" />
+        <TextInput label="Title" source="title" defaultValue="Hello, World!" />
     </Filter>
 );
 
 export const PostList = (props) => (
-    <List {...props} filter={<PostFilter />}>
+    <List {...props} filters={<PostFilter />}>
         ...
     </List>
 );
@@ -168,13 +137,84 @@ The filter component must be a `<Filter>` with `<Input>` children.
 
 It does so by inspecting its `context` prop.
 
+**Tip**: Don't mix up this `filters` prop, expecting a React element, with the `filter` props, which expects an object to define permanent filters (see below).
+
+### Records Per Page
+
+By default, the list paginates results by groups of 10. You can override this setting by specifying the `perPage` prop:
+
+```jsx
+// in src/posts.js
+export const PostList = (props) => (
+    <List {...props} perPage={25}>
+        ...
+    </List>
+);
+```
+
+### Default Sort Field
+
+Pass an object literal as the `sort` prop to determine the default `field` and `order` used for sorting:
+
+{% raw %}
+```jsx
+// in src/posts.js
+export const PostList = (props) => (
+    <List {...props} sort={{ field: 'published_at', order: 'DESC' }}>
+        ...
+    </List>
+);
+```
+{% endraw %}
+
+`sort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
+
+### Disabling Sorting
+
+It is possible to disable sorting for a specific field by passing a `sortable` property set to `false`:
+
+{% raw %}
+```jsx
+// in src/posts.js
+import React from 'react';
+import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="id" sortable={false} />
+            <TextField source="title" />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+### Permanent Filter
+
+You can choose to always filter the list, without letting the user disable this filter - for instance to display only published posts. Write the filter to be passed to the REST client in the `filter` props:
+
+{% raw %}
+```jsx
+// in src/posts.js
+export const PostList = (props) => (
+    <List {...props} filter={{ is_published: true }}>
+        ...
+    </List>
+);
+```
+{% endraw %}
+
+The actual filter parameter sent to the REST client is the result of the combination of the *user* filters (the ones set through the `filters` component form), and the *permanent* filter. The user cannot override the permanent filters set by way of `filter`.
+
 ### Pagination
 
 You can replace the default pagination element by your own, using the `pagination` prop. The pagination element receives the current page, the number of records per page, the total number of records, as well as a `setPage()` function that changes the page.
 
 So if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
 
-```js
+```jsx
 import FlatButton from 'material-ui/FlatButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
@@ -212,13 +252,17 @@ Here are all the props accepted by the component:
 
 * [`styles`](#custom-grid-style)
 * [`rowStyle`](#row-style-function)
+* [`options`](#options)
+* [`headerOptions`](#options)
+* [`bodyOptions`](#options)
+* [`rowOptions`](#options)
 
 It renders as many columns as it receives `<Field>` children.
 
-```js
+```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, TextField } from 'admin-on-rest';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -238,7 +282,7 @@ The datagrid is an *iterator* component: it receives an array of ids, and a data
 
 You can customize the datagrid styles by passing a `styles` object as prop. The object should have the following properties:
 
-```js
+```jsx
 const datagridStyles = {
     table: { },
     tbody: { },
@@ -265,7 +309,7 @@ export const PostList = (props) => (
 **Tip**: If you want to override the `header` and `cell` styles independently for each column, use the `headerStyle` and `style` props in `<Field>` components:
 
 {% raw %}
-```js
+```jsx
 export const PostList = (props) => (
     <List {...props}>
         <Datagrid>
@@ -290,7 +334,7 @@ You can customize the datagrid row style (applied to the `<tr>` element) based o
 
 For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
 
-```js
+```jsx
 const postRowStyle = (record, index) => ({
     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
 });
@@ -303,11 +347,94 @@ export const PostList = (props) => (
 );
 ```
 
+### `options`, `headerOptions`, `bodyOptions`, and `rowOptions`
+
+Admin-on-rest relies on [material-ui's `<Table>` component](http://www.material-ui.com/#/components/table) for rendering the datagrid. The `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props allow your to override the props of `<Table>`, `<TableHeader>`, `<TableBody>`, and `<TableRow>`.
+
+For instance, to get a fixed header on the table, override the `<Table>` props with `options`:
+
+{% raw %}
+```jsx
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid options={{ fixedHeader: true, height: 400 }}>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+To enable striped rows and row hover, override the `<TableBody>` props with `bodyOptions`:
+
+{% raw %}
+```jsx
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid bodyOptions={{ stripedRows: true, showRowHover: true }}>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+For a list of all the possible props that you can override via these options, please refer to [the material-ui `<Table>` component documentation](http://www.material-ui.com/#/components/table).
+
+## The `<SimpleList>` component
+
+For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](http://www.material-ui.com/#/components/list). You can use it as `<List>` or `<ReferenceManyField>` child:
+
+```jsx
+// in src/posts.js
+import React from 'react';
+import { List, SimpleList } from 'admin-on-rest';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => `${record.views} views`}
+            tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+        />
+    </List>
+);
+```
+
+`<SimpleList>` iterates over the list data. For each record, it executes the `primaryText`, `secondaryText`, `leftAvatar`, `leftIcon`, `rightAvatar`, and `rightIcon` props function, and passes the result as the corresponding `<ListItem>` prop.
+
+**Tip**: To use a `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use the `<Responsive>` component:
+
+```jsx
+// in src/posts.js
+import React from 'react';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Responsive
+            small={
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
+            }
+            medium={
+                <Datagrid>
+                    ...
+                </Datagrid>
+            }
+        />
+    </List>
+);
+```
+
 ## The `<SingleFieldList>` component
 
 When you want to display only one property of a list of records, instead of using a `<Datagrid>`, use the `<SingleFieldList>`. It expects a single `<Field>` as child. It's especially useful for `<ReferenceManyField>` components:
 
-```js
+```jsx
 // Display all the books by the current author
 <ReferenceManyField reference="books" target="author_id">
     <SingleFieldList>
@@ -331,7 +458,8 @@ For instance, what if you prefer to show a list of cards rather than a datagrid?
 
 Simple: Create your own iterator component as follows:
 
-```js
+{% raw %}
+```jsx
 // in src/comments.js
 const cardStyle = {
     width: 300,
@@ -376,5 +504,6 @@ export const CommentList = (props) => (
     </List>
 );
 ```
+{% endraw %}
 
 As you can see, nothing prevents you from using `<Field>` components inside your own components... provided you inject the current `record`. Also, notice that components building links require the `basePath` component, which is also injected.

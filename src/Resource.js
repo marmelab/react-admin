@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ViewListIcon from 'material-ui/svg-icons/action/view-list';
 
 const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
@@ -14,6 +15,7 @@ Resource.propTypes = {
     remove: componentPropType,
     icon: componentPropType,
     options: PropTypes.object,
+    checkCredentials: PropTypes.func,
 };
 
 Resource.defaultProps = {

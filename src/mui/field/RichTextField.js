@@ -1,5 +1,7 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import get from 'lodash.get';
+import pure from 'recompose/pure';
 
 export const removeTags = input => input.replace(/<[^>]+>/gm, '');
 
@@ -12,11 +14,8 @@ const RichTextField = ({ source, record = {}, stripTags, elStyle }) => {
     return <div style={elStyle} dangerouslySetInnerHTML={{ __html: value }}></div>;
 };
 
-RichTextField.defaultProps = {
-    stripTags: false,
-};
-
 RichTextField.propTypes = {
+    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
@@ -24,4 +23,11 @@ RichTextField.propTypes = {
     stripTags: PropTypes.bool,
 };
 
-export default RichTextField;
+const PureRichTextField = pure(RichTextField);
+
+PureRichTextField.defaultProps = {
+    addLabel: true,
+    stripTags: false,
+};
+
+export default PureRichTextField;

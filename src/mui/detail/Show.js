@@ -1,11 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card, CardTitle, CardActions } from 'material-ui/Card';
+import compose from 'recompose/compose';
 import inflection from 'inflection';
+import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
 import { DeleteButton, EditButton, ListButton } from '../button';
 import { crudGetOne as crudGetOneAction } from '../../actions/dataActions';
-import Labeled from '../input/Labeled';
+import DefaultActions from './ShowActions';
+import translate from '../../i18n/translate';
 
 /**
  * Turns a children data structure (either single child or array of children) into an array.
@@ -42,35 +46,46 @@ export class Show extends Component {
     }
 
     render() {
-        const { title, children, id, data, isLoading, resource, hasDelete, hasEdit } = this.props;
+        const { actions = <DefaultActions />, title, children, id, data, isLoading, resource, hasDelete, hasEdit, translate } = this.props;
         const basePath = this.getBasePath();
 
+        const resourceName = translate(`resources.${resource}.name`, {
+            smart_count: 1,
+            _: inflection.humanize(inflection.singularize(resource)),
+        });
+        const defaultTitle = translate('aor.page.show', {
+            name: `${resourceName}`,
+            id,
+            data,
+        });
+        const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
+
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? 0.8 : 1 }}>
-                <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    {hasEdit && <EditButton basePath={basePath} record={data} />}
-                    <ListButton basePath={basePath} />
-                    {hasDelete && <DeleteButton basePath={basePath} record={data} />}
-                </CardActions>
-                <CardTitle title={<Title title={title} record={data} defaultTitle={`${inflection.humanize(inflection.singularize(resource))} #${id}`} />} />
-                {data &&
-                    <div style={{ padding: '0 1em 1em 1em' }}>
-                        {React.Children.map(children, field => (
-                            <div key={field.props.source} style={field.props.style}>
-                                <Labeled label={field.props.label} source={field.props.source} disabled={false} record={data} basePath={basePath} resource={resource} >
-                                    <field.type {...field.props} />
-                                </Labeled>
-                            </div>
-                        ))}
-                    </div>
-                }
-            </Card>
+            <div>
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                    {actions && React.cloneElement(actions, {
+                        basePath,
+                        data,
+                        hasDelete,
+                        hasEdit,
+                        refresh: this.refresh,
+                        resource,
+                    })}
+                    <ViewTitle title={titleElement} />
+                    {data && React.cloneElement(children, {
+                        resource,
+                        basePath,
+                        record: data,
+                    })}
+                </Card>
+            </div>
         );
     }
 }
 
 Show.propTypes = {
-    children: PropTypes.node,
+    actions: PropTypes.element,
+    children: PropTypes.element,
     crudGetOne: PropTypes.func.isRequired,
     data: PropTypes.object,
     hasDelete: PropTypes.bool,
@@ -78,20 +93,26 @@ Show.propTypes = {
     id: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
+    translate: PropTypes.func,
 };
 
 function mapStateToProps(state, props) {
     return {
-        id: props.params.id,
-        data: state.admin[props.resource].data[props.params.id],
+        id: decodeURIComponent(props.match.params.id),
+        data: state.admin[props.resource].data[decodeURIComponent(props.match.params.id)],
         isLoading: state.admin.loading > 0,
     };
 }
 
-export default connect(
-    mapStateToProps,
-    { crudGetOne: crudGetOneAction },
-)(Show);
+const enhance = compose(
+    connect(
+        mapStateToProps,
+        { crudGetOne: crudGetOneAction },
+    ),
+    translate,
+);
+
+export default enhance(Show);

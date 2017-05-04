@@ -1,5 +1,7 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import get from 'lodash.get';
+import pure from 'recompose/pure';
 
 const hasNumberFormat = !!(typeof Intl === 'object' && Intl && typeof Intl.NumberFormat === 'function');
 
@@ -27,17 +29,20 @@ const hasNumberFormat = !!(typeof Intl === 'object' && Intl && typeof Intl.Numbe
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>$25.99</span>
  *
- * <NumberField source="price" locale="fr-FR" options={{ style: 'currency', currency: 'USD' }} />
+ * <NumberField source="price" locales="fr-FR" options={{ style: 'currency', currency: 'USD' }} />
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
-const NumberField = ({ record, source, locales, options, elStyle }) => {
+export const NumberField = ({ record, source, locales, options, elStyle }) => {
     if (!record) return null;
-    if (!hasNumberFormat) return <span style={elStyle}>{get(record, source)}</span>
-    return <span style={elStyle}>{get(record, source).toLocaleString(locales, options)}</span>;
+    const value = get(record, source);
+    if (value == null) return null;
+    if (!hasNumberFormat) return <span style={elStyle}>{value}</span>;
+    return <span style={elStyle}>{value.toLocaleString(locales, options)}</span>;
 };
 
 NumberField.propTypes = {
+    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     locales: PropTypes.oneOfType([
@@ -49,9 +54,12 @@ NumberField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-NumberField.defaultProps = {
+const PureNumberField = pure(NumberField);
+
+PureNumberField.defaultProps = {
+    addLabel: true,
     style: { textAlign: 'right' },
     headerStyle: { textAlign: 'right' },
 };
 
-export default NumberField;
+export default PureNumberField;

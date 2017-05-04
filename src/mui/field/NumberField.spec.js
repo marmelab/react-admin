@@ -1,11 +1,16 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import NumberField from './NumberField';
+import { NumberField } from './NumberField';
 
 describe('<NumberField />', () => {
     it('should return null when the record is not set', () => assert.equal(
         shallow(<NumberField source="foo" />).html(),
+        null,
+    ));
+
+    it('should return null when the record has no value for the source', () => assert.equal(
+        shallow(<NumberField record={{}} source="foo" />).html(),
         null,
     ));
 
@@ -15,12 +20,11 @@ describe('<NumberField />', () => {
     ));
 
     it('should pass the options prop to Intl.NumberFormat', () => assert.equal(
-        shallow(<NumberField record={{ foo: 1 }} source="foo" options={{ minimumFractionDigits: 2 }} />).html(),
+        shallow(<NumberField record={{ foo: 1 }} source="foo" locales="en-US" options={{ minimumFractionDigits: 2 }} />).html(),
         '<span>1.00</span>',
     ));
 
-    // Node is usually not copiled with all locales
-    it.skip('should use the locales props as an argument to Intl.NumberFormat', () => assert.equal(
+    it('should use the locales props as an argument to Intl.NumberFormat', () => assert.equal(
         shallow(<NumberField record={{ foo: 1 }} source="foo" locales="fr-FR" options={{ minimumFractionDigits: 2 }} />).html(),
         '<span>1,00</span>',
     ));

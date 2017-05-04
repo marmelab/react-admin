@@ -2,6 +2,7 @@ import React from 'react';
 import {
     BooleanField,
     BooleanInput,
+    CheckboxGroupInput,
     Create,
     Datagrid,
     DateField,
@@ -10,51 +11,81 @@ import {
     Edit,
     EditButton,
     Filter,
+    FormTab,
+    ImageField,
+    ImageInput,
     List,
     LongTextInput,
     NumberField,
+    NumberInput,
+    ReferenceManyField,
+    Responsive,
+    RichTextField,
+    SelectField,
+    SelectInput,
     Show,
     ShowButton,
-    ReferenceManyField,
-    RichTextField,
-    RichTextInput,
+    SimpleForm,
+    SimpleList,
+    SimpleShowLayout,
+    TabbedForm,
     TextField,
     TextInput,
-} from 'admin-on-rest/mui';
+    minValue,
+    number,
+    required,
+    translate,
+} from 'admin-on-rest';
+import RichTextInput from 'aor-rich-text-input';
+import Chip from 'material-ui/Chip';
 
 export PostIcon from 'material-ui/svg-icons/action/book';
 
-const PostFilter = (props) => (
+const QuickFilter = translate(({ label, translate }) => <Chip style={{ marginBottom: 8 }}>{translate(label)}</Chip>);
+
+const PostFilter = ({ ...props }) => (
     <Filter {...props}>
-        <TextInput label="Search" source="q" alwaysOn />
-        <TextInput label="Title" source="title" />
+        <TextInput label="post.list.search" source="q" alwaysOn />
+        <TextInput source="title" defaultValue="Qui tempore rerum et voluptates" />
+        <QuickFilter label="resources.posts.fields.commentable" source="commentable" defaultValue={true} />
     </Filter>
 );
 
-export const PostList = (props) => (
-    <List {...props} filter={<PostFilter />}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" type="email" style={{ maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis' }}/>
-            <DateField source="published_at" style={{ fontStyle: 'italic' }} />
-            <BooleanField label="Commentable" source="commentable" />
-            <NumberField source="views" />
-            <EditButton />
-            <ShowButton />
-        </Datagrid>
+const titleFieldStyle = { maxWidth: '20em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' };
+export const PostList = ({ ...props }) => (
+    <List {...props} filters={<PostFilter />} sort={{ field: 'published_at', order: 'DESC' }}>
+        <Responsive
+            small={
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
+            }
+            medium={
+                <Datagrid>
+                    <TextField source="id" />
+                    <TextField source="title" style={titleFieldStyle} />
+                    <DateField source="published_at" style={{ fontStyle: 'italic' }} />
+                    <BooleanField source="commentable" />
+                    <NumberField source="views" />
+                    <EditButton />
+                    <ShowButton />
+                </Datagrid>
+            }
+        />
     </List>
 );
 
-const PostTitle = ({ record }) => {
-    return <span>Post {record ? `"${record.title}"` : ''}</span>;
-};
+const PostTitle = translate(({ record, translate }) => {
+    return <span>{record ? translate('post.edit.title', { title: record.title }) : ''}</span>;
+});
 
-export const PostCreate = (props) => (
-    <Create
-        {...props}
-        validation={(values) => {
+export const PostCreate = ({ ...props }) => (
+    <Create {...props}>
+        <SimpleForm defaultValue={{ average_note: 0 }} validate={(values) => {
             const errors = {};
-            ['title', 'teaser'].forEach(field => {
+            ['title', 'teaser'].forEach((field) => {
                 if (!values[field]) {
                     errors[field] = ['Required field'];
                 }
@@ -65,54 +96,87 @@ export const PostCreate = (props) => (
             }
 
             return errors;
-        }}
-    >
-        <TextInput source="title" />
-        <TextInput label="Password (if protected post)" source="password" type="password" />
-        <TextInput source="teaser" options={{ multiLine: true }} />
-        <RichTextInput source="body" />
-        <DateInput label="Publication date" source="published_at" />
-        <TextInput source="average_note" />
-        <BooleanInput label="Allow comments?" source="commentable" />
+        }}>
+            <TextInput source="title" />
+            <TextInput source="password" type="password" />
+            <TextInput source="teaser" options={{ multiLine: true }} />
+            <RichTextInput source="body" />
+            <DateInput source="published_at" defaultValue={() => new Date()} />
+            <NumberInput source="average_note" />
+            <BooleanInput source="commentable" defaultValue={true} />
+        </SimpleForm>
     </Create>
 );
 
-export const PostEdit = (props) => (
+export const PostEdit = ({ ...props }) => (
     <Edit title={<PostTitle />} {...props}>
-        <DisabledInput label="Id" source="id" />
-        <TextInput source="title" validation={{ required: true }} />
-        <TextInput label="Password (if protected post)" source="password" type="password" />
-        <LongTextInput source="teaser" validation={{ required: true }} />
-        <RichTextInput source="body" validation={{ required: true }} />
-        <DateInput label="Publication date" source="published_at" />
-        <TextInput source="average_note" validation={{ min: 0 }} />
-        <BooleanInput label="Allow comments?" source="commentable" />
-        <ReferenceManyField label="Comments" reference="comments" target="post_id">
-            <Datagrid>
-                <TextField source="body" />
-                <DateField source="created_at" />
-                <EditButton />
-            </Datagrid>
-        </ReferenceManyField>
-        <DisabledInput label="Nb views" source="views" />
+        <TabbedForm defaultValue={{ average_note: 0 }}>
+            <FormTab label="post.form.summary">
+                <DisabledInput source="id" />
+                <TextInput source="title" validate={required} />
+                <CheckboxGroupInput
+                    source="notifications"
+                    choices={[
+                        { id: 12, name: 'Ray Hakt' },
+                        { id: 31, name: 'Ann Gullar' },
+                        { id: 42, name: 'Sean Phonee' },
+                    ]}
+                />
+                <LongTextInput source="teaser" validate={required} />
+                <ImageInput multiple source="pictures" accept="image/*">
+                    <ImageField source="src" title="title" />
+                </ImageInput>
+            </FormTab>
+            <FormTab label="post.form.body">
+                <RichTextInput source="body" label="" validate={required} addLabel={false} />
+            </FormTab>
+            <FormTab label="post.form.miscellaneous">
+                <TextInput source="password" type="password" />
+                <DateInput source="published_at" />
+                <SelectInput source="category" choices={[
+                    { name: 'Tech', id: 'tech' },
+                    { name: 'Lifestyle', id: 'lifestyle' },
+                ]} />
+                <NumberInput source="average_note" validate={[number, minValue(0)]} />
+                <BooleanInput source="commentable" defaultValue />
+                <DisabledInput source="views" />
+            </FormTab>
+            <FormTab label="post.form.comments">
+                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+                    <Datagrid>
+                        <DateField source="created_at" />
+                        <TextField source="author.name" />
+                        <TextField source="body" />
+                        <EditButton />
+                    </Datagrid>
+                </ReferenceManyField>
+            </FormTab>
+        </TabbedForm>
     </Edit>
 );
 
-export const PostShow = (props) => (
+export const PostShow = ({ ...props }) => (
     <Show title={<PostTitle />} {...props}>
-        <TextField source="id" />
-        <TextField source="title" />
-        <TextField source="teaser" />
-        <RichTextField source="body" stripTags={false} />
-        <DateField source="published_at" style={{ fontStyle: 'italic' }} />
-        <TextField source="average_note" />
-        <ReferenceManyField label="Comments" reference="comments" target="post_id">
-            <Datagrid selectable={false}>
-                <TextField source="body" />
-                <DateField source="created_at" />
-                <EditButton />
-            </Datagrid>
-        </ReferenceManyField>
-        <TextField label="Nb views" source="views" />
+        <SimpleShowLayout>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="teaser" />
+            <RichTextField source="body" stripTags={false} />
+            <DateField source="published_at" style={{ fontStyle: 'italic' }} />
+            <TextField source="average_note" />
+            <SelectField source="category" choices={[
+                { name: 'Tech', id: 'tech' },
+                { name: 'Lifestyle', id: 'lifestyle' },
+            ]} />
+            <ReferenceManyField label="resources.posts.fields.comments" reference="comments" target="post_id" sort={{ field: 'created_at', order: 'DESC' }}>
+                <Datagrid selectable={false}>
+                    <DateField source="created_at" />
+                    <TextField source="author.name" />
+                    <TextField source="body" />
+                    <EditButton />
+                </Datagrid>
+            </ReferenceManyField>
+            <TextField source="views" />
+        </SimpleShowLayout>
     </Show>
 );

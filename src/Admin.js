@@ -1,45 +1,92 @@
-import React, { PropTypes } from 'react';
+import React, { createElement } from 'react';
+import PropTypes from 'prop-types';
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { Router, IndexRoute, Route, Redirect, hashHistory } from 'react-router';
-import { syncHistoryWithStore, routerMiddleware, routerReducer } from 'react-router-redux';
+import createHistory from 'history/createHashHistory';
+import { Switch, Route } from 'react-router-dom';
+import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
+import { fork } from 'redux-saga/effects';
 
 import adminReducer from './reducer';
-import crudSaga from './sideEffect/saga';
-import CrudRoute from './CrudRoute';
-import Layout from './mui/layout/Layout';
-import withProps from './withProps';
+import localeReducer from './reducer/locale';
+import { crudSaga } from './sideEffect/saga';
+import DefaultLayout from './mui/layout/Layout';
+import Menu from './mui/layout/Menu';
+import Login from './mui/auth/Login';
+import Logout from './mui/auth/Logout';
+import TranslationProvider from './i18n/TranslationProvider';
 
-const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', theme = {}, appLayout = withProps({ title, theme })(Layout) }) => {
-    const resources = React.Children.map(children, ({ props }) => props);
-    const firstResource = resources[0].name;
-    const sagaMiddleware = createSagaMiddleware();
+const Admin = ({
+    appLayout,
+    authClient,
+    children,
+    customReducers = {},
+    customSagas = [],
+    customRoutes,
+    dashboard,
+    locale,
+    messages = {},
+    menu,
+    restClient,
+    theme,
+    title = 'Admin on REST',
+    loginPage,
+    logoutButton,
+    initialState,
+}) => {
+    const resources = React.Children.map(children, ({ props }) => props) || [];
     const reducer = combineReducers({
         admin: adminReducer(resources),
+        locale: localeReducer(locale),
         form: formReducer,
         routing: routerReducer,
+        ...customReducers,
     });
-    const store = createStore(reducer, undefined, compose(
-        applyMiddleware(routerMiddleware(hashHistory), sagaMiddleware),
+    const saga = function* rootSaga() {
+        yield [
+            crudSaga(restClient, authClient),
+            ...customSagas,
+        ].map(fork);
+    };
+    const sagaMiddleware = createSagaMiddleware();
+    const history = createHistory();
+    const store = createStore(reducer, initialState, compose(
+        applyMiddleware(sagaMiddleware, routerMiddleware(history)),
         window.devToolsExtension ? window.devToolsExtension() : f => f,
     ));
-    sagaMiddleware.run(crudSaga(restClient));
+    sagaMiddleware.run(saga);
 
-    const history = syncHistoryWithStore(hashHistory, store);
+    const logout = authClient ? createElement(logoutButton || Logout) : null;
 
     return (
         <Provider store={store}>
-            <Router history={history}>
-                {dashboard ? undefined : <Redirect from="/" to={`/${firstResource}`} />}
-                <Route path="/" component={appLayout} resources={resources}>
-                    {dashboard && <IndexRoute component={dashboard} restClient={restClient} />}
-                    {resources.map(resource =>
-                        <CrudRoute key={resource.name} path={resource.name} list={resource.list} create={resource.create} edit={resource.edit} show={resource.show} remove={resource.remove} options={resource.options} />
-                    )}
-                </Route>
-            </Router>
+            <TranslationProvider messages={messages}>
+                <ConnectedRouter history={history}>
+                    <div>
+                        <Switch>
+                            <Route exact path="/login" render={({ location }) => createElement(loginPage || Login, {
+                                location,
+                                title,
+                                theme,
+                            })} />
+                            <Route path="/" render={() => createElement(appLayout || DefaultLayout, {
+                                dashboard,
+                                customRoutes,
+                                menu: createElement(menu || Menu, {
+                                    logout,
+                                    resources,
+                                    hasDashboard: !!dashboard,
+                                }),
+                                resources,
+                                title,
+                                theme,
+                            })} />
+                        </Switch>
+                    </div>
+                </ConnectedRouter>
+            </TranslationProvider>
         </Provider>
     );
 };
@@ -47,12 +94,22 @@ const Admin = ({ restClient, dashboard, children, title = 'Admin on REST', theme
 const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
 
 Admin.propTypes = {
-    restClient: PropTypes.func.isRequired,
     appLayout: componentPropType,
-    dashboard: componentPropType,
+    authClient: PropTypes.func,
     children: PropTypes.node,
-    title: PropTypes.string,
+    customSagas: PropTypes.array,
+    customReducers: PropTypes.object,
+    customRoutes: PropTypes.array,
+    dashboard: componentPropType,
+    loginPage: componentPropType,
+    logoutButton: componentPropType,
+    menu: componentPropType,
+    restClient: PropTypes.func,
     theme: PropTypes.object,
+    title: PropTypes.node,
+    locale: PropTypes.string,
+    messages: PropTypes.object,
+    initialState: PropTypes.object,
 };
 
 export default Admin;

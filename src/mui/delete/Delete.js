@@ -1,14 +1,24 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import ActionCheck from 'material-ui/svg-icons/action/check-circle';
 import AlertError from 'material-ui/svg-icons/alert/error-outline';
+import compose from 'recompose/compose';
 import inflection from 'inflection';
+import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
 import { ListButton } from '../button';
 import { crudGetOne as crudGetOneAction, crudDelete as crudDeleteAction } from '../../actions/dataActions';
+import translate from '../../i18n/translate';
+
+const styles = {
+    actions: { zIndex: 2, display: 'inline-block', float: 'right' },
+    toolbar: { clear: 'both' },
+    button: { margin: '10px 24px', position: 'relative' },
+};
 
 class Delete extends Component {
     constructor(props) {
@@ -42,41 +52,49 @@ class Delete extends Component {
     }
 
     render() {
-        const { title, id, data, isLoading, resource } = this.props;
+        const { title, id, data, isLoading, resource, translate } = this.props;
         const basePath = this.getBasePath();
+
+        const resourceName = translate(`resources.${resource}.name`, {
+            smart_count: 1,
+            _: inflection.humanize(inflection.singularize(resource)),
+        });
+        const defaultTitle = translate('aor.page.delete', {
+            name: `${resourceName}`,
+            id,
+            data,
+        });
+        const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
+
         return (
-            <Card style={{ margin: '2em', opacity: isLoading ? .8 : 1 }}>
-                <CardActions style={{ zIndex: 2, display: 'inline-block', float: 'right' }}>
-                    <ListButton basePath={basePath} />
-                </CardActions>
-                <CardTitle title={<Title title={title} record={data} defaultTitle={`Delete ${inflection.humanize(inflection.singularize(resource))} #${id}`} />} />
-                <form onSubmit={this.handleSubmit}>
-                    <CardText>Are you sure ?</CardText>
-                    <Toolbar>
-                        <ToolbarGroup>
-                            <RaisedButton
-                                type="submit"
-                                label="Yes"
-                                icon={<ActionCheck />}
-                                primary
-                                style={{
-                                    margin: '10px 24px',
-                                    position: 'relative',
-                                }}
-                            />
-                            <RaisedButton
-                                label="No"
-                                icon={<AlertError />}
-                                onClick={this.goBack}
-                                style={{
-                                    margin: '10px 24px',
-                                    position: 'relative',
-                                }}
-                            />
-                        </ToolbarGroup>
-                    </Toolbar>
-                </form>
-            </Card>
+            <div>
+                <Card style={{ opacity: isLoading ? .8 : 1 }}>
+                    <CardActions style={styles.actions}>
+                        <ListButton basePath={basePath} />
+                    </CardActions>
+                    <ViewTitle title={titleElement} />
+                    <form onSubmit={this.handleSubmit}>
+                        <CardText>{translate('aor.message.are_you_sure')}</CardText>
+                        <Toolbar style={styles.toolbar}>
+                            <ToolbarGroup>
+                                <RaisedButton
+                                    type="submit"
+                                    label={translate('aor.action.delete')}
+                                    icon={<ActionCheck />}
+                                    primary
+                                    style={styles.button}
+                                />
+                                <RaisedButton
+                                    label={translate('aor.action.cancel')}
+                                    icon={<AlertError />}
+                                    onClick={this.goBack}
+                                    style={styles.button}
+                                />
+                            </ToolbarGroup>
+                        </Toolbar>
+                    </form>
+                </Card>
+            </div>
         );
     }
 }
@@ -86,23 +104,29 @@ Delete.propTypes = {
     id: PropTypes.string.isRequired,
     resource: PropTypes.string.isRequired,
     location: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     data: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     crudGetOne: PropTypes.func.isRequired,
     crudDelete: PropTypes.func.isRequired,
+    translate: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, props) {
     return {
-        id: props.params.id,
-        data: state.admin[props.resource].data[props.params.id],
+        id: decodeURIComponent(props.match.params.id),
+        data: state.admin[props.resource].data[decodeURIComponent(props.match.params.id)],
         isLoading: state.admin.loading > 0,
     };
 }
 
-export default connect(
-    mapStateToProps,
-    { crudGetOne: crudGetOneAction, crudDelete: crudDeleteAction },
-)(Delete);
+const enhance = compose(
+    connect(
+        mapStateToProps,
+        { crudGetOne: crudGetOneAction, crudDelete: crudDeleteAction }
+    ),
+    translate,
+);
+
+export default enhance(Delete);

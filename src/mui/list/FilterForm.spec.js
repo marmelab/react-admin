@@ -5,6 +5,7 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import TranslationProvider from '../../i18n/TranslationProvider';
 import FilterForm from './FilterForm';
 import TextInput from '../input/TextInput';
 
@@ -23,11 +24,12 @@ describe('<FilterForm />', () => {
         hideFilter: () => {},
         displayedFilters: {},
         filterValues: {},
+        translate: x => x,
     };
 
     let store;
     beforeEach(() => {
-        store = createStore(() => {});
+        store = createStore(() => ({ locale: 'en' }));
     });
 
     it('should display correctly passed filters', () => {
@@ -37,13 +39,15 @@ describe('<FilterForm />', () => {
         const muiTheme = getMuiTheme({ userAgent: false });
         const wrapper = render(
             <Provider store={store}>
-                <MuiThemeProvider muiTheme={muiTheme}>
-                    <FilterForm
-                        {...defaultProps}
-                        filters={filters}
-                        displayedFilters={displayedFilters}
-                    />
-                </MuiThemeProvider>
+                <TranslationProvider>
+                    <MuiThemeProvider muiTheme={muiTheme}>
+                        <FilterForm
+                            {...defaultProps}
+                            filters={filters}
+                            displayedFilters={displayedFilters}
+                        />
+                    </MuiThemeProvider>
+                </TranslationProvider>
             </Provider>
         );
 

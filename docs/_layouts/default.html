@@ -13,6 +13,8 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/syntax.css">
+        <link rel="stylesheet" href="css/prism.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.css">
     </head>
     <body>
         <div class="book with-summary font-size-2 font-family-1">
@@ -58,6 +60,12 @@
                                     <a href="#using-a-custom-home-page">Using a Custom Home Page</a>
                                 </li>
                                 <li class="chapter">
+                                    <a href="#adding-a-login-page">Adding a Login Page</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#responsive-list">Responsive List</a>
+                                </li>
+                                <li class="chapter">
                                     <a href="#using-another-rest-dialect">Using Another REST Dialect</a>
                                 </li>
                                 <li class="chapter">
@@ -71,16 +79,22 @@
                             </a>
                             <ul class="articles" {% if page.path != 'RestClients.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
+                                    <a href="#available-clients">Available Clients</a>
+                                </li>
+                                <li class="chapter">
                                     <a href="#simple-rest">Simple REST</a>
                                 </li>
                                 <li class="chapter">
-                                    <a href="#jsonserver-rest">JSON Server REST</a>
+                                    <a href="#json-server-rest">JSON Server REST</a>
                                 </li>
                                 <li class="chapter">
                                     <a href="#adding-custom-headers">Adding Custom Headers</a>
                                 </li>
                                 <li class="chapter">
-                                    <a href="#writing-your-own-rest-client">Writing your own REST client</a>
+                                    <a href="#decorating-your-rest-client-example-of-file-upload">Decorating a REST Client</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#writing-your-own-rest-client">Writing Your Own REST Client</a>
                                 </li>
                             </ul>
                         </li>
@@ -102,7 +116,7 @@
                         </li>
                         <li class="chapter {% if page.path == 'List.md' %}active{% endif %}">
                             <a href="./List.html">
-                                <b>5.</b> The List View
+                                <b>5.</b> The <code>&lt;List&gt;</code> View
                             </a>
                             <ul class="articles" {% if page.path != 'List.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -110,6 +124,9 @@
                                 </li>
                                 <li class="chapter">
                                     <a href="#the-datagrid-component"><code>&lt;Datagrid&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#the-simplelist-component"><code>&lt;SimpleList&gt;</code></a>
                                 </li>
                                 <li class="chapter">
                                     <a href="#the-singlefieldlist-component"><code>&lt;SingleFieldList&gt;</code></a>
@@ -137,10 +154,16 @@
                                     <a href="#emailfield"><code>&lt;EmailField&gt;</code></a>
                                 </li>
                                 <li class="chapter">
+                                    <a href="#imagefield"><code>&lt;ImageField&gt;</code></a>
+                                </li>
+                                <li class="chapter">
                                     <a href="#functionfield"><code>&lt;FunctionField&gt;</code></a>
                                 </li>
                                 <li class="chapter">
                                     <a href="#numberfield"><code>&lt;NumberField&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#selectfield"><code>&lt;SelectField&gt;</code></a>
                                 </li>
                                 <li class="chapter">
                                     <a href="#referencefield"><code>&lt;ReferenceField&gt;</code></a>
@@ -165,13 +188,47 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="chapter {% if page.path == 'CreateEdit.md' %}active{% endif %}">
+                            <a href="./CreateEdit.html">
+                                <b>7.</b> The <code>&lt;Create&gt;</code> and <code>&lt;Edit&gt;</code> Views
+                            </a>
+                            <ul class="articles" {% if page.path != 'CreateEdit.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#the-create-and-edit-components"><code>&lt;Create&gt;</code>, <code>&lt;Edit&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#page-title">Page Title</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#actions">Actions</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#the-simpleform-component"><code>&lt;SimpleForm&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#the-tabbedform-component"><code>&lt;TabbedForm&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#default-values">Default Values</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#validation">Validation</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="chapter {% if page.path == 'Inputs.md' %}active{% endif %}">
                             <a href="./Inputs.html">
-                                <b>7.</b> Input Components
+                                <b>8.</b> Input Components
                             </a>
                             <ul class="articles" {% if page.path != 'Inputs.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
+                                    <a href="#autocompleteinput"><code>&lt;AutocompleteInput&gt;</code></a>
+                                </li>
+                                <li class="chapter">
                                     <a href="#booleaninput-and-nullablebooleaninput"><code>&lt;BooleanInput&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#checkboxgroupinput"><code>&lt;CheckboxGroupInput&gt;</code></a>
                                 </li>
                                 <li class="chapter">
                                     <a href="#dateinput"><code>&lt;DateInput&gt;</code></a>
@@ -180,7 +237,13 @@
                                     <a href="#disabledinput"><code>&lt;DisabledInput&gt;</code></a>
                                 </li>
                                 <li class="chapter">
+                                    <a href="#imageinput"><code>&lt;ImageInput&gt;</code></a>
+                                </li>
+                                <li class="chapter">
                                     <a href="#longtextinput"><code>&lt;LongTextInput&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#numberinput"><code>&lt;NumberInput&gt;</code></a>
                                 </li>
                                 <li class="chapter">
                                     <a href="#radiobuttongroupinput"><code>&lt;RadioButtonGroupInput&gt;</code></a>
@@ -198,18 +261,47 @@
                                     <a href="#textinput"><code>&lt;TextInput&gt;</code></a>
                                 </li>
                                 <li class="chapter">
+                                    <a href="#transforming-input-value-tofrom-store">Transforming Input Value to/from Store</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#third-party-components">Third-Party Components</a>
+                                </li>
+                                <li class="chapter">
                                     <a href="#writing-your-own-input-component">Writing your own input component</a>
                                 </li>
                             </ul>
                         </li>
-                        <li class="chapter {% if page.path == 'FormValidation.md' %}active{% endif %}">
-                            <a href="./FormValidation.html">
-                                <b>8.</b> Form Validation
+                        <li class="chapter {% if page.path == 'Authentication.md' %}active{% endif %}">
+                            <a href="./Authentication.html">
+                                <b>9.</b> Authentication
                             </a>
+                            <ul class="articles" {% if page.path != 'Authentication.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#configuring-the-auth-client">Configuring the Auth Client</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#sending-credentials-to-the-rest-api">Sending Credentials to the REST API</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#adding-a-logout-button">Adding a Logout Button</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#catching-authentication-errors-on-the-api">Catching Authentication Errors On The API</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#checking-credentials-during-navigation">Checking Credentials During Navigation</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#customizing-the-login-and-logout-components">Customizing The Login and Logout Components</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#restricting-access-to-a-custom-page">Restricting Access To A Custom Page</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="chapter {% if page.path == 'Theming.md' %}active{% endif %}">
                             <a href="./Theming.html">
-                                <b>9.</b> Theming
+                                <b>10.</b> Theming
                             </a>
                             <ul class="articles" {% if page.path != 'Theming.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -219,17 +311,90 @@
                                     <a href="#conditional-formatting">Conditional Formatting</a>
                                 </li>
                                 <li class="chapter">
+                                    <a href="#responsive-utility">Responsive Utility</a>
+                                </li>
+                                <li class="chapter">
                                     <a href="#using-a-predefined-theme">Using a Predefined Theme</a>
                                 </li>
                                 <li class="chapter">
                                     <a href="#writing-a-custom-theme">Writing a Custom Theme</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#using-a-custom-layout">Using a Custom Layout</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="chapter {% if page.path == 'Actions.md' %}active{% endif %}">
+                            <a href="./Actions.html">
+                                <b>11.</b> Writing Actions
+                            </a>
+                            <ul class="articles" {% if page.path != 'Actions.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#the-simple-way">The Simple Way</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#using-the-rest-client-instead-of-fetch">Using The REST Client</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#using-a-custom-action-creator">Using a Custom Action Creator</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#handling-side-effects-with-a-custom-saga">Handling Side Effects With a Custom Saga</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#bonus-optimistic-rendering">Bonus: Optimistic Rendering</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#using-a-custom-reducer">Using a Custom Reducer</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="chapter {% if page.path == 'Translation.md' %}active{% endif %}">
+                            <a href="./Translation.html">
+                                <b>12.</b> Translation
+                            </a>
+                            <ul class="articles" {% if page.path != 'Translation.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#changing-locale">Changing Locale</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#available-locales">Available Locales</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#changing-locale-at-runtime">Changing Locale At Runtime</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#using-the-browser-locale">Using Browser Locale</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#translation-messages">Translation Messages</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#translating-resource-and-field-names">Translating Resource and Field names</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#mixing-interface-and-domain-translations">Mixing Interface and Domain Translations</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#translating-your-own-components">Translating Your Own Components</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#using-specific-polyglot-features">Using Specific Polyglot Features</a>
                                 </li>
                             </ul>
                         </li>
 
                         <li class="chapter {% if page.path == 'CustomApp.md' %}active{% endif %}">
                             <a href="./CustomApp.html">
-                                <b>10.</b> Including in Another App
+                                <b>13.</b> Including in Another App
+                            </a>
+                        </li>
+
+                        <li class="chapter {% if page.path == 'Reference.md' %}active{% endif %}">
+                            <a href="./Reference.html">
+                                <b>14.</b> Reference
                             </a>
                         </li>
                     </ul>
@@ -254,5 +419,15 @@
                 </div>
             </div>
         </div>
+        <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-46201426-1', 'auto');
+  ga('send', 'pageview');
+        </script>
+        <script src="js/prism.js"></script>
     </body>
 </html>

@@ -7,10 +7,10 @@ title: "Field Components"
 
 A `Field` component displays a given property of a REST resource. Such components are used in the `List` view, but you can also use them in the `Edit` and `Create` views for read-only fields. The most usual of all field components is `<TextField>`:
 
-```js
+```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, TextField } from 'admin-on-rest';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -27,16 +27,19 @@ All field components accept the following attributes:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
 * `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
-* `style`: A style object to customize the look and feel of the field container (e.g. the `<td>` in a datagrid).
+* `sortable`: Should the list be sortable using `source` attribute? Defaults to `true`.
 * `elStyle`: A style object to customize the look and feel of the field element itself
+* `style`: A style object to customize the look and feel of the field container (e.g. the `<td>` in a datagrid).
 
-```js
-<TextField source="zb_title" label="Title" style={{ color: 'purple' }}/>
+{% raw %}
+```jsx
+<TextField source="zb_title" label="Title" style={{ color: 'purple' }} />
 ```
+{% endraw %}
 
 **Tip**: If you display a record with a complex structure, you can use a path with dot separators as the `source` attribute. For instance, if the API returns the following 'book' record:
 
-```js
+```jsx
 {
     id: 1234,
     title: 'War and Peace',
@@ -49,18 +52,20 @@ All field components accept the following attributes:
 
 Then you can display the author first name as follows:
 
-```js
+```jsx
 <TextField source="author.firstName" />
 ```
 
 **Tip**: If you want to format a field according to the value, use a higher-order component to do conditional formatting, as described in the [Theming documentation](./Theming.html#conditional-formatting).
 
+**Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.html#translating-resource-and-field-names) for details.
+
 ## `<BooleanField>`
 
 Displays a boolean value as a check.
 
-``` js
-import { BooleanField } from 'admin-on-rest/lib/mui';
+```jsx
+import { BooleanField } from 'admin-on-rest';
 
 <BooleanField source="commentable" />
 ```
@@ -71,8 +76,8 @@ import { BooleanField } from 'admin-on-rest/lib/mui';
 
 Displays a value inside a ["Chip"](http://www.material-ui.com/#/components/chip), which is Material UI's term for a label.
 
-``` js
-import { ChipField } from 'admin-on-rest/lib/mui';
+```jsx
+import { ChipField } from 'admin-on-rest';
 
 <ChipField source="category" />
 ```
@@ -81,8 +86,8 @@ import { ChipField } from 'admin-on-rest/lib/mui';
 
 This field type is especially useful for one to many relationships, e.g. to display a list of books for a given author:
 
-``` js
-import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest/lib/mui';
+```jsx
+import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest';
 
 <ReferenceManyField reference="books" target="author_id">
     <SingleFieldList>
@@ -93,26 +98,50 @@ import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest/li
 
 ## `<DateField>`
 
-Displays a date or datetime.
+Displays a date or datetime using the browser locale (thanks to `Date.toLocaleDateString()` and `Date.toLocaleString()`).
 
-``` js
-import { DateField } from 'admin-on-rest/lib/mui';
+```jsx
+import { DateField } from 'admin-on-rest';
 
 <DateField source="publication_date" />
 ```
 
-This component accepts a `showTime` attribute (false by default) to force the display of time in addition to date (using `Date.toLocaleString()`):
+This component accepts a `showTime` attribute (false by default) to force the display of time in addition to date. It uses `Intl.DateTimeFormat()` if available, passing the `locales` and `options` props as arguments. If Intl is not available, it ignores the `locales` and `options` props.
 
-```js
-<DateField source="publication_date" showTime={true} />
+{% raw %}
+```jsx
+<DateField source="publication_date" />
+// renders the record { id: 1234, publication_date: new Date('2017-04-23') } as
+<span>4/23/2017</span>
+
+<DateField source="publication_date" showTime />
+// renders the record { id: 1234, publication_date: new Date('2017-04-23 23:05') } as
+<span>4/23/2017, 11:05:00 PM</span>
+
+<DateField source="publication_date" options={{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }} />
+// renders the record { id: 1234, publication_date: new Date('2017-04-23') } as
+<span>Sunday, April 23, 2017</span>
+
+<DateField source="publication_date" locales="fr-FR" />
+// renders the record { id: 1234, publication_date: new Date('2017-04-23') } as
+<span>23/04/2017</span>
+
+<DateField source="publication_date" elStyle={{ color: 'red' }} />
+// renders the record { id: 1234, publication_date: new Date('2017-04-23') } as
+<span style="color:red;">4/23/2017</span>
 ```
+{% endraw %}
+
+See [Intl.DateTimeformat documentation](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Date/toLocaleDateString) for the `options` prop syntax.
+
+**Tip**: If you need more formatting options than what `Intl.DateTimeformat` can provide, build your own field component leveraging a third-party library like [moment.js](http://momentjs.com/).
 
 ## `<EmailField>`
 
 `<EmailField>` displays an email as a `<a href="mailto:" />` link.
 
-``` js
-import { EmailField } from 'admin-on-rest/lib/mui';
+```jsx
+import { EmailField } from 'admin-on-rest';
 
 <EmailField source="personal_email" />
 ```
@@ -121,32 +150,59 @@ import { EmailField } from 'admin-on-rest/lib/mui';
 
 If you need a special function to render a field, `<FunctionField>` is the perfect match. It passes the `record` to a `render` function supplied by the developer. For instance, to display the full name of a `user` record based on `first_name` and `last_name` properties:
 
-```js
-import { FunctionField } from 'admin-on-rest/lib/mui'
+```jsx
+import { FunctionField } from 'admin-on-rest'
 
 <FunctionField label="Name" render={record => `${record.first_name} ${record.last_name}`} />
 ```
 
 **Tip**: Technically, you can omit the `source` property for the `<FunctionField>` since you provide the render function. However, providing a `source` will allow the datagrid to make the column sortable, since when a user clicks on a column, the datagrid uses the `source` prop as sort field.
 
+## `<ImageField>`
+
+If you need to display an image provided by your API, you can use the `<ImageField />` component:
+
+```jsx
+import { ImageField } from 'admin-on-rest';
+
+<ImageField source="url" title="title" />
+```
+
+This field is also generally used within an [<ImageInput />](http://marmelab.com/admin-on-rest/Inputs.html#imageinput) component to display preview.
+
+The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. It can either be an hard-written string, or a path within your JSON object:
+
+```jsx
+// { picture: { url: 'cover.jpg', title: 'Larry Cover (French pun intended)' } }
+
+// Title would be "picture.title", hence "Larry Cover (French pun intended)"
+<ImageField source="picture.url" title="picture.title" />
+
+// Title would be "Picture", as "Picture" is not a path in previous given object
+<ImageField source="picture.url" title="Picture" />
+```
+
+If passed value is an existing path within your JSON object, then it uses the object attribute. Otherwise, it considers its value as an hard-written title.
+
 ## `<NumberField>`
 
 Displays a number formatted according to the browser locale, right aligned.
 
-Uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments.
+Uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments. This allows perfect display of decimals, currencies, percentage, etc.
 
 If Intl is not available, it outputs number as is (and ignores the `locales` and `options` props).
 
-```js
-import { NumberField }  from 'admin-on-rest/lib/mui';
+{% raw %}
+```jsx
+import { NumberField }  from 'admin-on-rest';
 
 <NumberField source="score" />
 // renders the record { id: 1234, score: 567 } as
 <span>567</span>
 
-<NumberField source="score" elStyle={{ color: 'red' }} />
-// renders the record { id: 1234, score: 567 } as
-<span style="color:red;">567</span>
+<NumberField source="score" options={{ maximumFractionDigits: 2 }}/>
+// renders the record { id: 1234, score: 567.3567458569 } as
+<span>567.35</span>
 
 <NumberField source="share" options={{ style: 'percent' }} />
 // renders the record { id: 1234, share: 0.2545 } as
@@ -156,12 +212,90 @@ import { NumberField }  from 'admin-on-rest/lib/mui';
 // renders the record { id: 1234, price: 25.99 } as
 <span>$25.99</span>
 
-<NumberField source="price" locale="fr-FR" options={{ style: 'currency', currency: 'USD' }} />
+<NumberField source="price" locales="fr-FR" options={{ style: 'currency', currency: 'USD' }} />
 // renders the record { id: 1234, price: 25.99 } as
 <span>25,99 $US</span>
+
+<NumberField source="score" elStyle={{ color: 'red' }} />
+// renders the record { id: 1234, score: 567 } as
+<span style="color:red;">567</span>
+```
+{% endraw %}
+
+See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) for the `options` prop syntax.
+
+**Tip**: If you need more formatting options than what `Intl.Numberformat` can provide, build your own field component leveraging a third-party library like [numeral.js](http://numeraljs.com/).
+
+## `<SelectField>`
+
+When you need to display an enumerated field, `<SelectField>` maps the value to a string.
+
+For instance, if the `gender` field can take values "M" and "F", here is how to display it as "Male" or "Female":
+
+```jsx
+import { SelectField } from 'admin-on-rest';
+
+<SelectField source="gender" choices={[
+   { id: 'M', name: 'Male' },
+   { id: 'F', name: 'Female' },
+]} />
 ```
 
-See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) for options syntax.
+By default, the text is built by
+
+- finding a choice where the 'id' property equals the field value
+- using the 'name' property an the option text
+
+**Warning**: This component name may conflict with material-ui's [`<SelectField>`](http://www.material-ui.com/#/components/select-field) if you import both.
+
+You can also customize the properties to use for the lookup value and text, thanks to the 'optionValue' and 'optionText' attributes.
+
+```jsx
+const choices = [
+   { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+   { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+];
+<SelectField source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+```
+
+`optionText` also accepts a function, so you can shape the option text at will:
+
+```jsx
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
+<SelectField source="author_id" choices={choices} optionText={optionRenderer} />
+```
+
+`optionText` also accepts a React Element, that will be cloned and receive the related choice as the `record` prop. You can use Field components there.
+
+```jsx
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+const FullNameField = ({ record }) => <Chip>{record.first_name} {record.last_name}</Chip>;
+<SelectField source="gender" choices={choices} optionText={<FullNameField />}/>
+```
+
+The current choice is translated by default, so you can use translation identifiers as choices:
+
+```jsx
+const choices = [
+   { id: 'M', name: 'myroot.gender.male' },
+   { id: 'F', name: 'myroot.gender.female' },
+];
+```
+
+However, in some cases (e.g. inside a `<ReferenceField>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+
+```jsx
+<SelectField source="gender" choices={choices} translateChoice={false}/>
+```
+
+**Tip**: <ReferenceField> sets `translateChoice` to false by default.
 
 ## `<ReferenceField>`
 
@@ -169,9 +303,9 @@ This component fetches a single referenced record (using the `GET_MANY` REST met
 
 For instance, here is how to fetch the `post` related to `comment` records, and display the `title` for each:
 
-```js
+```jsx
 import React from 'react';
-import { List, Datagrid, ReferenceField, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, ReferenceField, TextField } from 'admin-on-rest';
 
 export const CommentList = (props) => (
     <List {...props}>
@@ -185,7 +319,7 @@ export const CommentList = (props) => (
 );
 ```
 
-With this configuration, `<ReferenceField>` wraps the comment title in a link to the related post `<Edit>` view.
+With this configuration, `<ReferenceField>` wraps the comment title in a link to the related post `<Edit>` page.
 
 ![ReferenceField](./img/reference-field.png)
 
@@ -193,16 +327,33 @@ With this configuration, `<ReferenceField>` wraps the comment title in a link to
 
 **Note**: You **must** add a `<Resource>` for the reference resource - admin-on-rest needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
 
-```js
+```jsx
 <Admin restClient={myRestClient}>
     <Resource name="comments" list={CommentList} />
     <Resource name="posts" />
 </Admin>
 ```
 
-**Tip**: Admin-on-rest accumulates and deduplicates the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
+To change the link from the `<Edit>` page to the `<Show>` page, set the `linkType` prop to "show".
 
-```js
+```jsx
+<ReferenceField label="User" source="userId" reference="users" linkType="show">
+    <TextField source="name" />
+</ReferenceField>
+```
+
+You can also prevent `<ReferenceField>` from adding link to children by setting `linkType` to `false`.
+
+```jsx
+// No link
+<ReferenceField label="User" source="userId" reference="users" linkType={false}>
+    <TextField source="name" />
+</ReferenceField>
+```
+
+**Tip**: Admin-on-rest uses `CRUD_GET_ONE_REFERENCE` action to accumulate and deduplicate the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
+
+```jsx
 [
     {
         id: 123,
@@ -230,9 +381,9 @@ This component fetches a list of referenced record (using the `GET_MANY_REFERENC
 
 For instance, here is how to fetch the `comments` related to a `post` record, and display the `author.name` for each, in a `<ChipField>`:
 
-```js
+```jsx
 import React from 'react';
-import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'admin-on-rest';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -252,35 +403,69 @@ export const PostList = (props) => (
 
 ![ReferenceManyFieldSingleFieldList](./img/reference-many-field-single-field-list.png)
 
+`<ReferenceManyField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record.
+
+**Note**: You **must** add a `<Resource>` for the reference resource - admin-on-rest needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
+
 You can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside another `<Datagrid>`! This is useful if you want to display a read-only list of related records. For instance, if you want to show the `comments` related to a `post` in the post's `<Edit>` view:
 
-```js
+```jsx
 import React from 'react';
-import { Edit, Datagrid, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'admin-on-rest/lib/mui';
+import { Edit, Datagrid, SimpleForm, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'admin-on-rest';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
-        <DisabledInput label="Id" source="id" />
-        <TextInput source="title" />
-        <ReferenceManyField label="Comments" reference="comments" target="post_id">
-            <Datagrid>
-                <TextField source="body" />
-                <DateField source="created_at" />
-                <EditButton />
-            </Datagrid>
-        </ReferenceManyField>
+        <SimpleForm>
+            <DisabledInput label="Id" source="id" />
+            <TextInput source="title" />
+            <ReferenceManyField label="Comments" reference="comments" target="post_id">
+                <Datagrid>
+                    <TextField source="body" />
+                    <DateField source="created_at" />
+                    <EditButton />
+                </Datagrid>
+            </ReferenceManyField>
+        </SimpleForm>
     </Edit>
 );
 ```
 
 ![ReferenceManyFieldDatagrid](./img/reference-many-field-datagrid.png)
 
+By default, admin-on-rest restricts the possible values to 25. You can change this limit by setting the `perPage` prop.
+
+```jsx
+<ReferenceManyField perPage={10} reference="comments" target="post_id">
+   ...
+</ReferenceManyField>
+```
+
+By default, it orders the possible values by id desc. You can change this order by setting the `sort` prop (an object with `field` and `order` properties).
+
+{% raw %}
+```jsx
+<ReferenceManyField sort={{ field: 'created_at', order: 'DESC' }} reference="comments" target="post_id">
+   ...
+</ReferenceManyField>
+```
+{% endraw %}
+
+Also, you can filter the query used to populate the possible values. Use the `filter` prop for that.
+
+{% raw %}
+```jsx
+<ReferenceManyField filter={{ is_published: true }} reference="comments" target="post_id">
+   ...
+</ReferenceManyField>
+```
+{% endraw %}
+
 ## `<RichTextField>`
 
 This component displays some HTML content. The content is "rich" (i.e. unescaped) by default.
 
-``` js
-import { RichTextField } from 'admin-on-rest/lib/mui';
+```jsx
+import { RichTextField } from 'admin-on-rest';
 
 <RichTextField source="body" />
 ```
@@ -289,8 +474,8 @@ import { RichTextField } from 'admin-on-rest/lib/mui';
 
 The `stripTags` attribute (`false` by default) allows you to remove any HTML markup, preventing some display glitches (which is especially useful in list views).
 
-``` js
-import { RichTextField } from 'admin-on-rest/lib/mui';
+```jsx
+import { RichTextField } from 'admin-on-rest';
 
 <RichTextField source="body" stripTags />
 ```
@@ -299,8 +484,8 @@ import { RichTextField } from 'admin-on-rest/lib/mui';
 
 The most simple as all fields, `<TextField>` simply displays the record property as plain text.
 
-``` js
-import { TextField } from 'admin-on-rest/lib/mui';
+```jsx
+import { TextField } from 'admin-on-rest';
 
 <TextField label="Author Name" source="name" />
 ```
@@ -309,8 +494,8 @@ import { TextField } from 'admin-on-rest/lib/mui';
 
 `<UrlField>` displays an url in an `< a href="">` tag.
 
-``` js
-import { UrlField } from 'admin-on-rest/lib/mui';
+```jsx
+import { UrlField } from 'admin-on-rest';
 
 <UrlField source="site_url" />
 ```
@@ -320,7 +505,7 @@ import { UrlField } from 'admin-on-rest/lib/mui';
 All field components accept the `style` prop, which overrides the default style of the field *container*:
 
 {% raw %}
-```js
+```jsx
 <TextField source="price" style={{ color: 'purple' }}/>
 // renders in the datagrid as
 <td style="color: purple;"><span>2</span></td>
@@ -330,7 +515,7 @@ All field components accept the `style` prop, which overrides the default style 
 If you want to override the styles of the field *element*, use the `elStyle` prop instead:
 
 {% raw %}
-```js
+```jsx
 <TextField source="price" elStyle={{ color: 'purple' }}/>
 // renders in the datagrid as
 <td><span style="color: purple;">2</span></td>
@@ -342,7 +527,7 @@ admin-on-rest usually delegates the rendering of fields components to material u
 Lastly, you may want to override the field header (the `<th>` element in the datagrid). In that case, use the `headerStyle` prop:
 
 {% raw %}
-```js
+```jsx
 export const ProductList = (props) => (
     <List {...props}>
         <Datagrid>
@@ -368,8 +553,9 @@ If you don't find what you need in the list above, it's very easy to write your 
 
 For instance, here is an equivalent of admin-on-rest's `<TextField>` component:
 
-```js
-import React, { PropTypes } from 'react';
+```jsx
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const TextField = ({ source, record = {} }) => <span>{record[source]}</span>;
 
@@ -386,14 +572,14 @@ export default TextField;
 
 **Tip**: If you want to support deep field sources (e.g. source values like `author.name`), use `lodash.get` to replace the simple object lookup:
 
-```js
+```jsx
 import get from 'lodash.get';
 const TextField = ({ source, record = {} }) => <span>{get(record, source)}</span>;
 ```
 
 If you are not looking for reusability, you can create even simpler components, with no attributes. Let's say an API returns user records with `firstName` and `lastName` properties, and that you want to display a full name in a user list.
 
-```js
+```jsx
 {
     id: 123,
     firstName: 'John',
@@ -403,9 +589,9 @@ If you are not looking for reusability, you can create even simpler components, 
 
 It's as easy as writing:
 
-```js
-import React, { PropTypes } from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
+```jsx
+import React from 'react';
+import { List, Datagrid, TextField } from 'admin-on-rest';
 
 const FullNameField = ({ record = {} }) => <span>{record.firstName} {record.lastName}</span>;
 FullNameField.defaultProps = { label: 'Name' };
