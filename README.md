@@ -140,13 +140,19 @@ Admin-on-rest is designed as a library of loosely coupled React components built
 
 Pull requests are welcome. Try to follow the coding style of the existing files, and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
 
+## Run the example
+
 You can run the example app by calling:
 
 ```sh
+npm install
 make run
 ```
 
 And then browse to [http://localhost:8080/](http://localhost:8080/).
+The credentials are **login/password**
+
+
 
 If you want to contribute to the documentation, install jekyll, then call
 
