@@ -136,10 +136,6 @@ See the [REST clients documentation](https://marmelab.com/admin-on-rest/RestClie
 
 Admin-on-rest is designed as a library of loosely coupled React components built on top of [material-ui](http://www.material-ui.com/#/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of admin-on-rest with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
 
-## Contributing
-
-Pull requests are welcome. Try to follow the coding style of the existing files, and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
-
 ## Run the example
 
 You can run the example app by calling:
@@ -152,7 +148,9 @@ make run
 And then browse to [http://localhost:8080/](http://localhost:8080/).
 The credentials are **login/password**
 
+## Contributing
 
+Pull requests are welcome. Try to follow the coding style of the existing files, and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
 
 If you want to contribute to the documentation, install jekyll, then call
 
