@@ -12,7 +12,7 @@ const styles = {
     card: { marginTop: '-14px', paddingTop: 0, display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', flexWrap: 'wrap' },
     body: { display: 'flex', alignItems: 'flex-end' },
     spacer: { width: 48 },
-    icon: { color: '#00bcd4', maddingBottom: 0 },
+    icon: { color: '#00bcd4', paddingBottom: 0 },
     clearFix: { clear: 'right' },
 };
 
