@@ -37,6 +37,26 @@ describe('<ReferenceInput />', () => {
         assert.equal(MyComponentElement.length, 1);
     });
 
+    it('should not render anything if input initial value is not empty and related record is not loaded', () => {
+        const wrapper = shallow((
+            <ReferenceInput {...defaultProps} input={{value: 1}}>
+                <MyComponent />
+            </ReferenceInput>
+        ));
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 0);
+    });
+
+    it('should render enclosed component if input initial value is not empty and related record is loaded', () => {
+        const wrapper = shallow((
+            <ReferenceInput {...defaultProps} input={{value: 1}} referenceRecord={{id: 1}}>
+                <MyComponent />
+            </ReferenceInput>
+        ));
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+    });
+
     it('should call crudGetMatching on mount with default fetch values', () => {
         const crudGetMatching = sinon.spy();
         shallow((
