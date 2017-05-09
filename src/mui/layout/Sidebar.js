@@ -10,20 +10,17 @@ import { setSidebarVisibility as setSidebarVisibilityAction } from '../../action
 export function getStyles(props, context) {
   const {
     sideBar,
-  } = context.muiTheme;
-
-  
-
+  } = context.muiTheme;  
   const styles = {
     sidebarOpen: {
-        flex: !(sideBar&&sideBar.width)?'0 0 16em':`0 0 ${sideBar.width}`,
+        flex: !(sideBar && sideBar.width) ? '0 0 16em' : `0 0 ${sideBar.width}`,
         marginLeft: 0,
         order: -1,
         transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
     },
     sidebarClosed: {
-        flex: !(sideBar&&sideBar.width)?'0 0 16em':`0 0 ${sideBar.width}`,
-        marginLeft: !(sideBar&&sideBar.width)?'-16em':`-${sideBar.width}`,
+        flex: !(sideBar && sideBar.width) ? '0 0 16em' : `0 0 ${sideBar.width}`,
+        marginLeft: !(sideBar && sideBar.width) ? '-16em' : `-${sideBar.width}`,
         order: -1,
         transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
     },
@@ -31,10 +28,6 @@ export function getStyles(props, context) {
 
   return styles;
 }
-
-
-
-
 
 // We shouldn't need PureComponent here as it's connected
 // but for some reason it keeps rendering even though mapStateToProps returns the same object
@@ -48,8 +41,7 @@ class Sidebar extends PureComponent {
         this.props.setSidebarVisibility(false);
     }
 
-    render() {
-        
+    render() {        
         const styles = getStyles(this.props, this.context);    
         const { open, setSidebarVisibility, children } = this.props;
         return (
