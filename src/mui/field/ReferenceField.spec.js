@@ -1,10 +1,46 @@
 import React from 'react';
 import assert from 'assert';
+import sinon from 'sinon';
 import { shallow } from 'enzyme';
+
 import { ReferenceField } from './ReferenceField';
 import TextField from './TextField';
 
 describe('<ReferenceField />', () => {
+    it('should call crudGetOneReference on componentDidMount if reference source is defined', () => {
+        const crudGetOneReference = sinon.spy();
+        shallow(
+            <ReferenceField
+                record={{ fooId: 123 }}
+                source="fooId"
+                referenceRecord={{ id: 123, title: 'foo' }}
+                reference="bar"
+                basePath=""
+                crudGetOneReference={crudGetOneReference}
+            >
+                <TextField source="title" />
+            </ReferenceField>,
+            { lifecycleExperimental: true },
+        );
+        assert(crudGetOneReference.calledOnce);
+    });
+    it('should not call crudGetOneReference on componentDidMount if reference source is null or undefined', () => {
+        const crudGetOneReference = sinon.spy();
+        shallow(
+            <ReferenceField
+                record={{ fooId: null }}
+                source="fooId"
+                referenceRecord={{ id: 123, title: 'foo' }}
+                reference="bar"
+                basePath=""
+                crudGetOneReference={crudGetOneReference}
+            >
+                <TextField source="title" />
+            </ReferenceField>,
+            { lifecycleExperimental: true },
+        );
+        assert(crudGetOneReference.notCalled);
+    });
     it('should render a link to the Edit page of the related record by default', () => {
         const wrapper = shallow(
             <ReferenceField
@@ -15,8 +51,8 @@ describe('<ReferenceField />', () => {
                 basePath=""
                 crudGetOneReference={() => {}}
             >
-                    <TextField source="title" />
-            </ReferenceField>
+                <TextField source="title" />
+            </ReferenceField>,
         );
         const linkElement = wrapper.find('Link');
         assert.equal(linkElement.prop('to'), '/bar/123');
@@ -32,8 +68,8 @@ describe('<ReferenceField />', () => {
                 linkType="show"
                 crudGetOneReference={() => {}}
             >
-                    <TextField source="title" />
-            </ReferenceField>
+                <TextField source="title" />
+            </ReferenceField>,
         );
         const linkElement = wrapper.find('Link');
         assert.equal(linkElement.prop('to'), '/bar/123/show');
@@ -49,8 +85,8 @@ describe('<ReferenceField />', () => {
                 linkType={false}
                 crudGetOneReference={() => {}}
             >
-                    <TextField source="title" />
-            </ReferenceField>
+                <TextField source="title" />
+            </ReferenceField>,
         );
         const linkElement = wrapper.find('Link');
         assert.equal(linkElement.length, 0);
