@@ -3,7 +3,7 @@ import { By, until } from 'selenium-webdriver';
 import driver from '../chromeDriver';
 import listPageFactory from '../pages/ListPage';
 
-describe.only('List Page', () => {
+describe('List Page', () => {
     const ListPagePosts = listPageFactory('http://localhost:8083/#posts')(driver);
     const ListPageComments = listPageFactory('http://localhost:8083/#comments')(driver);
 

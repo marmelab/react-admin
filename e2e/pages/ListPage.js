@@ -1,6 +1,6 @@
 import { By, until } from 'selenium-webdriver';
 
-module.exports = (url) => (driver) => ({
+module.exports = url => driver => ({
     elements: {
         addFilterButton: By.css('.add-filter'),
         appLoader: By.css('.app-loader'),
@@ -77,7 +77,8 @@ module.exports = (url) => (driver) => ({
 
     hideFilter(name) {
         const hideFilterButton = driver.findElement(this.elements.hideFilterButton(name));
-        return hideFilterButton.click();
+        hideFilterButton.click();
+        return this.waitUntilDataLoaded(); // wait for debounce and reload
     },
 
     logout() {

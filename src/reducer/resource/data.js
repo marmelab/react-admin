@@ -22,7 +22,7 @@ import {
  * }
  */
 
-const cacheDuration = 10 * 60 * 1000; // ten minutes
+const cacheDuration = 10 * 60 * 1; // ten minutes
 
 /**
  * Add new records to the pool, and remove outdated ones.
