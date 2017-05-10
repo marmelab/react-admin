@@ -9,16 +9,16 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import Responsive from './Responsive';
 import { setSidebarVisibility as setSidebarVisibilityAction } from '../../actions';
 
-const getStyles = ({ sideBar }) => ({
+const getStyles = ({ drawer }) => ({
     sidebarOpen: {
-        flex: (sideBar && sideBar.width) ? `0 0 ${sideBar.width}` : '0 0 16em',
+        flex: (drawer && drawer.width) ? `0 0 ${drawer.width}` : '0 0 16em',
         marginLeft: 0,
         order: -1,
         transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
     },
     sidebarClosed: {
-        flex: (sideBar && sideBar.width) ? `0 0 ${sideBar.width}` : '0 0 16em',
-        marginLeft: (sideBar && sideBar.width) ? `-${sideBar.width}` : '-16em',
+        flex: (drawer && drawer.width) ? `0 0 ${drawer.width}` : '0 0 16em',
+        marginLeft: (drawer && drawer.width) ? `-${drawer.width}` : '-16em',
         order: -1,
         transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
     },
