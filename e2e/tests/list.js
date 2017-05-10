@@ -16,13 +16,13 @@ describe('List Page', () => {
 
         it('should switch page when clicking on previous/next page buttons or page numbers', async () => {
             await ListPagePosts.nextPage();
-            assert.equal(await ListPagePosts.getNbPagesText(), '11-13 of 13');
+            await ListPagePosts.checkPagination('11-13 of 13');
 
             await ListPagePosts.previousPage();
-            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
+            await ListPagePosts.checkPagination('1-10 of 13');
 
             await ListPagePosts.goToPage(2);
-            assert.equal(await ListPagePosts.getNbPagesText(), '11-13 of 13');
+            await ListPagePosts.checkPagination('11-13 of 13');
         });
     });
 
@@ -47,21 +47,21 @@ describe('List Page', () => {
             await ListPagePosts.showFilter('title');
             const filters = await driver.findElements(ListPagePosts.elements.filter('title'));
             assert.equal(filters.length, 1);
-            assert.equal(await ListPagePosts.getNbPagesText(), '1-1 of 1');
+            await ListPagePosts.checkPagination('1-1 of 1');
         });
 
         it('should hide filter when clicking on hide button', async () => {
             await ListPagePosts.hideFilter('title');
             const filters = await driver.findElements(ListPagePosts.elements.filter('title'));
             assert.equal(filters.length, 0);
-            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
+            await ListPagePosts.checkPagination('1-10 of 13');
         });
 
         it('should have correctly reset filters after navigating', async () => {
             await ListPageComments.navigate();
             await ListPagePosts.navigate();
 
-            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
+            await ListPagePosts.checkPagination('1-10 of 13');
         });
     });
 });
