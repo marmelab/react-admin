@@ -49,7 +49,7 @@ export class ReferenceField extends Component {
 
     fetchReference(props) {
         const source = get(props.record, props.source);
-        console.log({ source });
+
         if (source !== null && typeof source !== 'undefined') {
             this.props.crudGetOneReference(props.reference, source);
         }
