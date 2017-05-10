@@ -148,12 +148,20 @@ export class List extends Component {
 
     hideFilter = (filterName) => {
         this.setState({ [filterName]: false });
-        this.setFilters({ ...this.props.filterValues, [filterName]: undefined });
+        const newFilters = Object.keys(this.props.filterValues).reduce((filters, key) => (
+            key === filterName ?
+            filters :
+            ({
+                ...filters,
+                [key]: this.props.filterValues[key],
+            })
+        ), {});
+        this.setFilters(newFilters);
     }
 
     changeParams(action) {
         const newParams = queryReducer(this.getQuery(), action);
-        this.props.push({ ...this.props.location, search: `?${  stringify({ ...newParams, filter: JSON.stringify(newParams.filter) })}` });
+        this.props.push({ ...this.props.location, search: `?${stringify({ ...newParams, filter: JSON.stringify(newParams.filter) })}` });
         this.props.changeListParams(this.props.resource, newParams);
     }
 
