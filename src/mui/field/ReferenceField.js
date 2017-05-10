@@ -38,15 +38,22 @@ import linkToRecord from '../../util/linkToRecord';
  */
 export class ReferenceField extends Component {
     componentDidMount() {
-        this.props.crudGetOneReference(this.props.reference, get(this.props.record, this.props.source));
+        this.fetchReference(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.record.id !== nextProps.record.id) {
-            this.props.crudGetOneReference(nextProps.reference, get(nextProps.record, nextProps.source));
+            this.fetchReference(nextProps);
         }
     }
 
+    fetchReference(props) {
+        const source = get(props.record, props.source);
+
+        if (source !== null && typeof source !== 'undefined') {
+            this.props.crudGetOneReference(props.reference, source);
+        }
+    }
     render() {
         const { record, source, reference, referenceRecord, basePath, allowEmpty, children, elStyle, linkType } = this.props;
         if (React.Children.count(children) !== 1) {
