@@ -3,7 +3,7 @@ import { By, until } from 'selenium-webdriver';
 import driver from '../chromeDriver';
 import listPageFactory from '../pages/ListPage';
 
-describe('List Page', () => {
+describe.only('List Page', () => {
     const ListPagePosts = listPageFactory('http://localhost:8083/#posts')(driver);
     const ListPageComments = listPageFactory('http://localhost:8083/#comments')(driver);
 
@@ -16,13 +16,13 @@ describe('List Page', () => {
 
         it('should switch page when clicking on previous/next page buttons or page numbers', async () => {
             await ListPagePosts.nextPage();
-            await ListPagePosts.checkPagination('11-13 of 13');
+            assert.equal(await ListPagePosts.getNbPagesText(), '11-13 of 13');
 
             await ListPagePosts.previousPage();
-            await ListPagePosts.checkPagination('1-10 of 13');
+            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
 
             await ListPagePosts.goToPage(2);
-            await ListPagePosts.checkPagination('11-13 of 13');
+            assert.equal(await ListPagePosts.getNbPagesText(), '11-13 of 13');
         });
     });
 
@@ -47,21 +47,20 @@ describe('List Page', () => {
             await ListPagePosts.showFilter('title');
             const filters = await driver.findElements(ListPagePosts.elements.filter('title'));
             assert.equal(filters.length, 1);
-            await ListPagePosts.checkPagination('1-1 of 1');
+            assert.equal(await ListPagePosts.getNbPagesText(), '1-1 of 1');
         });
 
         it('should hide filter when clicking on hide button', async () => {
             await ListPagePosts.hideFilter('title');
             const filters = await driver.findElements(ListPagePosts.elements.filter('title'));
             assert.equal(filters.length, 0);
-            await ListPagePosts.checkPagination('1-10 of 13');
+            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
         });
 
         it('should have correctly reset filters after navigating', async () => {
             await ListPageComments.navigate();
             await ListPagePosts.navigate();
-
-            await ListPagePosts.checkPagination('1-10 of 13');
+            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
         });
     });
 });
