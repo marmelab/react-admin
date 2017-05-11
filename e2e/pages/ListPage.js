@@ -40,11 +40,6 @@ module.exports = url => driver => ({
             .then(rows => rows.length);
     },
 
-    checkPagination(expected) {
-        return driver.findElement(this.elements.displayedRecords)
-            .then(pagination => driver.wait(until.elementTextIs(pagination, expected)));
-    },
-
     getNbPagesText() {
         return driver.findElement(this.elements.displayedRecords).getText();
     },
