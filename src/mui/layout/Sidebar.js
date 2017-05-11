@@ -9,20 +9,26 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import Responsive from './Responsive';
 import { setSidebarVisibility as setSidebarVisibilityAction } from '../../actions';
 
-const getStyles = ({ drawer }) => ({
-    sidebarOpen: {
-        flex: (drawer && drawer.width) ? `0 0 ${drawer.width}` : '0 0 16em',
-        marginLeft: 0,
-        order: -1,
-        transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
-    },
-    sidebarClosed: {
-        flex: (drawer && drawer.width) ? `0 0 ${drawer.width}` : '0 0 16em',
-        marginLeft: (drawer && drawer.width) ? `-${drawer.width}` : '-16em',
-        order: -1,
-        transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
-    },
-});
+const getWidth = width => (typeof width === 'number' ? `${width}px` : width);
+
+const getStyles = ({ drawer }) => {
+    const width = drawer && drawer.width ? getWidth(drawer.width) : '16em';
+
+    return ({
+        sidebarOpen: {
+            flex: `0 0 ${width}`,
+            marginLeft: 0,
+            order: -1,
+            transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+        },
+        sidebarClosed: {
+            flex: `0 0 ${width}`,
+            marginLeft: `-${width}`,
+            order: -1,
+            transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+        },
+    });
+};
 
 // We shouldn't need PureComponent here as it's connected
 // but for some reason it keeps rendering even though mapStateToProps returns the same object
