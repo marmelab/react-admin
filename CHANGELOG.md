@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.0.2
+
+* Fix typo in Login page instructions in tutorial ([DjLeChuck](https://github.com/DjLeChuck))
+* Fix clear filter breaks filters on subsequent refreshes ([djhi](https://github.com/djhi))
+* Add ability to customize sidebar width ([djhi](https://github.com/djhi))
+* Add example about using auth action creators ([djhi](https://github.com/djhi))
+* Fix `<ReferenceField>` should not fetch null values ([djhi](https://github.com/djhi))
+* Fix typo in `<FilterForm>` styles ([djhi](https://github.com/djhi))
+* Fix Edit View not being updated when fields get changed ([djhi](https://github.com/djhi))
+* Fix DateField tests on all timezones ([djhi](https://github.com/djhi))
+* Add instructions to run the example app in README ([juanda99](https://github.com/juanda99))
+* Fix edge case in `<RichTextField>` when string is falsey value ([faviouz](https://github.com/faviouz))
+
 ## v1.0.1
 
 * Fix filters on refresh ([djhi](https://github.com/djhi))
