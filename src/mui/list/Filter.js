@@ -5,6 +5,7 @@ import shallowEqual from 'recompose/shallowEqual';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
+import removeEmptyValues from '../../util/removeEmptyValues';
 
 class Filter extends Component {
     constructor(props) {
@@ -24,13 +25,7 @@ class Filter extends Component {
 
     setFilters = debounce((filters) => {
         if (!shallowEqual(filters, this.filters)) { // fix for redux-form bug with onChange and enableReinitialize
-            const filtersWithoutEmpty = filters;
-            Object.keys(filtersWithoutEmpty).forEach((filterName) => {
-                if (filtersWithoutEmpty[filterName] === '') {
-                    // remove empty filter from query
-                    delete filtersWithoutEmpty[filterName];
-                }
-            })
+            const filtersWithoutEmpty = removeEmptyValues(filters);
             this.props.setFilters(filtersWithoutEmpty);
             this.filters = filtersWithoutEmpty;
         }
