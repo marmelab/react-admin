@@ -4,7 +4,7 @@ const recursiveRemoveEmptyValues = (thing) => {
     if (thing === null || thing === undefined) {
         return null;
     }
-    if (typeof thing === 'number') {
+    if (typeof thing === 'number' || typeof thing === 'boolean') {
         return thing;
     }
 

@@ -11,6 +11,7 @@ const obj = {
         home: '  ',
     },
     emails: ['', 'john@doe.com', ''],
+    admin: false,
 };
 
 describe('Remove Empty Values', () => {
@@ -22,6 +23,7 @@ describe('Remove Empty Values', () => {
             },
             age: 20,
             emails: ['john@doe.com'],
+            admin: false,
         });
     });
 });
