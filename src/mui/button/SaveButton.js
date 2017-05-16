@@ -15,7 +15,7 @@ export class SaveButton extends Component {
             // prevent double submission
             e.preventDefault();
         } else if (!this.props.submitOnEnter) {
-            this.props.dispatch(submit('record-form'));
+            this.props.submit();
         }
     }
 
@@ -61,4 +61,6 @@ const mapStateToProps = state => ({
     saving: state.admin.saving,
 });
 
-export default connect(mapStateToProps)(translate(SaveButton));
+const mapDispatchToProps = ({ submit: () => submit('record-form') });
+
+export default connect(mapStateToProps, mapDispatchToProps)(translate(SaveButton));

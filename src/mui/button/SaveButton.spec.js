@@ -52,19 +52,18 @@ describe('<SaveButton />', () => {
     });
 
     it('should trigger submit action when clicked while submitOnEnter is false and no saving is in progress', () => {
-        const dispatch = sinon.spy();
+        const submit = sinon.spy();
         const raisedButtonWrapper = shallow(
-            <SaveButton raised={true} submitOnEnter={false} translate={translate} dispatch={dispatch} saving={false} />
+            <SaveButton raised={true} submitOnEnter={false} translate={translate} submit={submit} saving={false} />
         );
         const flatButtonWrapper = shallow(
-            <SaveButton raised={false} submitOnEnter={false} translate={translate} dispatch={dispatch} saving={false} />
+            <SaveButton raised={false} submitOnEnter={false} translate={translate} submit={submit} saving={false} />
         );
 
         raisedButtonWrapper.simulate('click');
-        assert(dispatch.calledOnce);
-        assert(dispatch.calledWith({ type: sinon.match(/SUBMIT$/), meta: { form: 'record-form' } }));
+        assert(submit.calledOnce);
         flatButtonWrapper.simulate('click');
-        assert(dispatch.calledTwice);
+        assert(submit.calledTwice);
     });
 
     it('should not trigger submit action when clicked while submitOnEnter is false and saving is in progress', () => {
