@@ -15,6 +15,7 @@ import DefaultActions from './Actions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
 import translate from '../../i18n/translate';
+import removeKey from '../../util/removeKey';
 
 const styles = {
     noResults: { padding: 20 },
@@ -148,14 +149,7 @@ export class List extends Component {
 
     hideFilter = (filterName) => {
         this.setState({ [filterName]: false });
-        const newFilters = Object.keys(this.props.filterValues).reduce((filters, key) => (
-            key === filterName ?
-            filters :
-            ({
-                ...filters,
-                [key]: this.props.filterValues[key],
-            })
-        ), {});
+        const newFilters = removeKey(this.props.filterValues, filterName);
         this.setFilters(newFilters);
     }
 
