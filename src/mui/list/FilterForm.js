@@ -12,7 +12,7 @@ const styles = {
     card: { marginTop: '-14px', paddingTop: 0, display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', flexWrap: 'wrap' },
     body: { display: 'flex', alignItems: 'flex-end' },
     spacer: { width: 48 },
-    icon: { color: '#00bcd4', maddingBottom: 0 },
+    icon: { color: '#00bcd4', paddingBottom: 0 },
     clearFix: { clear: 'right' },
 };
 
@@ -25,11 +25,11 @@ export class FilterForm extends Component {
             .filter(filterElement =>
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                typeof initialValues[filterElement.props.source] !== 'undefined'
+                typeof initialValues[filterElement.props.source] !== 'undefined',
             );
     }
 
-    handleHide = (event) => this.props.hideFilter(event.currentTarget.dataset.key);
+    handleHide = event => this.props.hideFilter(event.currentTarget.dataset.key);
 
     render() {
         const { resource, translate } = this.props;
@@ -64,7 +64,7 @@ export class FilterForm extends Component {
                                 record={emptyRecord}
                             />
                         </div>
-                    </div>
+                    </div>,
                 )}
             </CardText>
             <div style={styles.clearFix} />

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
 
-export const removeTags = input => input.replace(/<[^>]+>/gm, '');
+export const removeTags = input => input ? input.replace(/<[^>]+>/gm, '') : '';
 
 const RichTextField = ({ source, record = {}, stripTags, elStyle }) => {
     const value = get(record, source);

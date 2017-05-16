@@ -24,7 +24,8 @@ class NumberInput extends Component {
          * Necessary because of a React bug on <input type="number">
          * @see https://github.com/facebook/react/issues/1425
          */
-        this.handleChange(parseFloat(this.props.input.value));
+        const value = parseFloat(this.props.input.value);
+        this.handleChange(isNaN(value) ? undefined : value);
     }
 
     handleFocus = (event) => {
@@ -72,7 +73,7 @@ NumberInput.propTypes = {
     step: PropTypes.string.isRequired,
     validate: PropTypes.oneOfType([
         PropTypes.func,
-        PropTypes.arrayOf(PropTypes.func)
+        PropTypes.arrayOf(PropTypes.func),
     ]),
 };
 

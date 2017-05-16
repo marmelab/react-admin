@@ -27,7 +27,7 @@ export default (authClient) => {
             } catch (e) {
                 yield put({ type: USER_LOGIN_FAILURE, error: e, meta: { auth: true } });
                 const errorMessage = typeof e === 'string'
-                    ? error
+                    ? e
                     : (typeof e === 'undefined' || !e.message ? 'aor.auth.sign_in_error' : e.message);
                 yield put(showNotification(errorMessage, 'warning'));
             }
