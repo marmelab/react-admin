@@ -7,7 +7,7 @@ import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import inflection from 'inflection';
-import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER, SORT_DESC } from '../../reducer/resource/list/queryReducer';
+import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER, SORT_DESC } from '../../reducer/admin/resource/list/queryReducer';
 import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
@@ -15,6 +15,8 @@ import DefaultActions from './Actions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
 import translate from '../../i18n/translate';
+import { getResource, isLoading } from '../../reducer';
+import { getData, getListWithFiltersValues } from '../../reducer/admin/resource';
 
 const styles = {
     noResults: { padding: 20 },
@@ -282,15 +284,13 @@ const getQuery = createSelector(
 );
 
 function mapStateToProps(state, props) {
-    const resourceState = state.admin[props.resource];
+    const resource = getResource(state)(props.resource);
+
     return {
         query: getQuery(props),
-        params: resourceState.list.params,
-        ids: resourceState.list.ids,
-        total: resourceState.list.total,
-        data: resourceState.data,
-        isLoading: state.admin.loading > 0,
-        filterValues: resourceState.list.params.filter,
+        data: getData(resource),
+        isLoading: isLoading(state),
+        ...getListWithFiltersValues(resource),
     };
 }
 

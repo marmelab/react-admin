@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
 import Labeled from './Labeled';
 import { crudGetOne as crudGetOneAction, crudGetMatching as crudGetMatchingAction } from '../../actions/dataActions';
-import { getPossibleReferences } from '../../reducer/references/possibleValues';
+import { getResourceRecord, getPossibleReferences } from '../../reducer';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 const noFilter = () => true;
@@ -205,8 +205,8 @@ ReferenceInput.defaultProps = {
 function mapStateToProps(state, props) {
     const referenceId = props.input.value;
     return {
-        referenceRecord: state.admin[props.reference].data[referenceId],
-        matchingReferences: getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference, referenceId),
+        referenceRecord: getResourceRecord(state)(props.reference, referenceId),
+        matchingReferences: getPossibleReferences(state)(referenceSource(props.resource, props.source), props.reference, referenceId),
     };
 }
 

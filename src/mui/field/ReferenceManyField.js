@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions/dataActions';
-import { getIds, getReferences, nameRelatedTo } from '../../reducer/references/oneToMany';
+import { getIdsRelatedTo, getReferencesFromIds } from '../../reducer';
+import { nameRelatedTo } from '../../reducer/admin/references/oneToMany';
 
 /**
  * Render related records to the current one.
@@ -118,9 +119,11 @@ ReferenceManyField.defaultProps = {
 
 function mapStateToProps(state, props) {
     const relatedTo = nameRelatedTo(props.reference, props.record.id, props.resource, props.target);
+    const ids = getIdsRelatedTo(state)(relatedTo);
+
     return {
-        data: getReferences(state, props.reference, relatedTo),
-        ids: getIds(state, relatedTo),
+        data: getReferencesFromIds(state)(ids)(props.reference),
+        ids: ids,
     };
 }
 

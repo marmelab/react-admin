@@ -4,7 +4,7 @@ export * from './i18n';
 export * from './mui';
 export adminReducer from './reducer';
 export localeReducer from './reducer/locale';
-export queryReducer from './reducer/resource/list/queryReducer';
+export queryReducer from './reducer/admin/resource/list/queryReducer';
 export * from './rest';
 export * from './sideEffect/saga';
 export * as fetchUtils from './util/fetch';

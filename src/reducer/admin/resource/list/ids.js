@@ -1,4 +1,4 @@
-import { CRUD_GET_LIST_SUCCESS, CRUD_DELETE_SUCCESS } from '../../../actions/dataActions';
+import { CRUD_GET_LIST_SUCCESS, CRUD_DELETE_SUCCESS } from '../../../../actions/dataActions';
 
 export default resource => (previousState = [], { type, payload, requestPayload, meta }) => {
     if (!meta || meta.resource !== resource) {
