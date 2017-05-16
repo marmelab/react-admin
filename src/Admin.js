@@ -9,6 +9,7 @@ import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 import { fork } from 'redux-saga/effects';
 
+import { USER_LOGOUT } from './actions/authActions';
 import adminReducer from './reducer';
 import localeReducer from './reducer/locale';
 import { crudSaga } from './sideEffect/saga';
@@ -37,13 +38,19 @@ const Admin = ({
     initialState,
 }) => {
     const resources = React.Children.map(children, ({ props }) => props) || [];
-    const reducer = combineReducers({
+    const appReducer = combineReducers({
         admin: adminReducer(resources),
         locale: localeReducer(locale),
         form: formReducer,
         routing: routerReducer,
         ...customReducers,
     });
+    const rootReducer = (state, action) => {
+        if (action.type === 'USER_LOGOUT') {
+            state = undefined;
+        }
+        return appReducer(state, action);
+    }
     const saga = function* rootSaga() {
         yield [
             crudSaga(restClient, authClient),
@@ -52,7 +59,7 @@ const Admin = ({
     };
     const sagaMiddleware = createSagaMiddleware();
     const history = createHistory();
-    const store = createStore(reducer, initialState, compose(
+    const store = createStore(rootReducer, initialState, compose(
         applyMiddleware(sagaMiddleware, routerMiddleware(history)),
         window.devToolsExtension ? window.devToolsExtension() : f => f,
     ));
