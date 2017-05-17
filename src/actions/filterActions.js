@@ -1,6 +1,6 @@
-export const CRUD_SHOW_FILTER = 'CRUD_SHOW_FILTER';
-export const CRUD_HIDE_FILTER = 'CRUD_HIDE_FILTER';
-export const CRUD_SET_FILTER = 'CRUD_SET_FILTER';
+export const CRUD_SHOW_FILTER = 'aor/CRUD_SHOW_FILTER';
+export const CRUD_HIDE_FILTER = 'aor/CRUD_HIDE_FILTER';
+export const CRUD_SET_FILTER = 'aor/CRUD_SET_FILTER';
 
 export const showFilter = (resource, field) => ({
     type: CRUD_SHOW_FILTER,
