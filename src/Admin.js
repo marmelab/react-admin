@@ -45,12 +45,7 @@ const Admin = ({
         routing: routerReducer,
         ...customReducers,
     });
-    const rootReducer = (state, action) => {
-        if (action.type === 'USER_LOGOUT') {
-            state = undefined;
-        }
-        return appReducer(state, action);
-    }
+    const resettableAppReducer = (state, action) => appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
     const saga = function* rootSaga() {
         yield [
             crudSaga(restClient, authClient),
@@ -59,7 +54,7 @@ const Admin = ({
     };
     const sagaMiddleware = createSagaMiddleware();
     const history = createHistory();
-    const store = createStore(rootReducer, initialState, compose(
+    const store = createStore(resettableAppReducer, initialState, compose(
         applyMiddleware(sagaMiddleware, routerMiddleware(history)),
         window.devToolsExtension ? window.devToolsExtension() : f => f,
     ));
