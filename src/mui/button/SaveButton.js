@@ -15,6 +15,7 @@ export class SaveButton extends Component {
             // prevent double submission
             e.preventDefault();
         } else if (!this.props.submitOnEnter) {
+            // explicit submission of the form needed because button type is 'button', not 'submit'
             this.props.submit();
         }
     }
