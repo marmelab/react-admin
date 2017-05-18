@@ -28,7 +28,8 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  * delegates rendering to a subcomponent, to which it passes the possible
  * choices as the `choices` attribute.
  *
- * Use it with a selector component as child, like `<SelectArrayInput>`.
+ * Use it with a selector component as child, like `<SelectArrayInput>`
+ * or <CheckboxGroupInput>.
  *
  * @example
  * export const PostEdit = (props) => (
