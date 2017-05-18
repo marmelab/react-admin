@@ -567,7 +567,7 @@ For instance, if the post object has many tags, a post resource may look like:
 ```js
 {
     id: 1234,
-    tag_ids: [ "1", "23", "4" ]
+    tag_ids: [1, 23, 4]
 }
 ```
 

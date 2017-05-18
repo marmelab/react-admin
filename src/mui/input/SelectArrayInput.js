@@ -50,12 +50,26 @@ const dataSourceConfig = { text: 'text', value: 'value' };
  * @see https://github.com/TeamWertarbyte/material-ui-chip-input
  */
 export class SelectArrayInput extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            values: this.resolveValues(props.input.value || []),
-        };
+    state = {
+        values: [],
+    };
+
+    componentWillMount = () => {
+        this.setState({
+            values: this.resolveValues(this.props.input.value, this.props.choices),
+        });
     }
+
+    componentWillReceiveProps = (nextProps) => {
+        if (
+            this.props.choices !== nextProps.choices ||
+            this.props.input.value !== nextProps.input.value
+        ) {
+            this.setState({
+                values: this.resolveValues(nextProps.input.value, nextProps.choices),
+            });
+        }
+    };
 
     handleBlur = () => {
         const extracted = this.extractIds(this.state.values);
@@ -95,22 +109,21 @@ export class SelectArrayInput extends Component {
         return [value];
     };
 
-    resolveValues = (values) => {
+    resolveValues = (values, choices) => {
         if (!values || !Array.isArray(values)) {
             throw Error('Value of SelectArrayInput should be an array');
         }
 
-        if (this.props.choices && this.props.choices.length > 0) {
-            return this.getChoices().filter(choice => values.includes(choice.value));
+        if (choices && choices.length > 0) {
+            return this.formatChoices(choices).filter(choice => values.includes(choice.value));
         }
         return values.map(value => ({
-            value, text: value, // FIXME will show ids instead of labels on first paint, with no redraw
+            value, text: value,
         }));
     };
 
-    getChoices = () => {
+    formatChoices = (choices) => {
         const {
-            choices,
             optionText,
             optionValue,
             translate,
@@ -157,7 +170,7 @@ export class SelectArrayInput extends Component {
                 floatingLabelText={<FieldTitle label={label} source={source} resource={resource}/>}
                 errorText={touched && error}
                 style={elStyle}
-                dataSource={this.getChoices()}
+                dataSource={this.formatChoices(choices)}
                 dataSourceConfig={dataSourceConfig}
                 openOnFocus
                 {...options}
