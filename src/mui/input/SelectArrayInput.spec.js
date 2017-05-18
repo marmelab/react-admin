@@ -57,6 +57,28 @@ describe('<SelectArrayInput />', () => {
         ]);
     });
 
+    it('should update the value when the dataSource updates', () => {
+        const input = { value: [1, 2] };
+        const wrapper = shallow(<SelectArrayInput
+            {...defaultProps}
+            input={input}
+        />);
+        wrapper.setProps({
+            ...defaultProps,
+            choices: [
+                { id: 1, name: 'Book' },
+                { id: 2, name: 'Video' },
+                { id: 3, name: 'Audio' },
+            ],
+            input,
+        });
+        const ChipInputElement = wrapper.find('ChipInput').first();
+        assert.deepEqual(ChipInputElement.prop('value'), [
+            { value: 1, text: 'Book' },
+            { value: 2, text: 'Video' },
+        ]);
+    });
+
     it('should use optionValue as value identifier', () => {
         const wrapper = shallow(<SelectArrayInput
             {...defaultProps}
