@@ -816,6 +816,18 @@ const choices = [
 <SelectArrayInput source="categories" choices={choices} optionText="plural_name" optionValue="_id" />
 ```
 
+`optionText` also accepts a function, so you can shape the option text at will:
+
+```js
+const choices = [
+   { id: '1', name: 'Book', quantity: 23 },
+   { id: '2', name: 'Video', quantity: 56 },
+   { id: '3', name: 'Audio', quantity: 12 },
+];
+const optionRenderer = choice => `${choice.name} (${choice.quantity})`;
+<SelectArrayInput source="categories" choices={choices} optionText={optionRenderer} />
+```
+
 The choices are translated by default, so you can use translation identifiers as choices:
 
 ```js

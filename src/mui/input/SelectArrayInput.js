@@ -36,6 +36,16 @@ const dataSourceConfig = { text: 'text', value: 'value' };
  * ];
  * <SelectArrayInput source="categories" choices={choices} optionText="plural_name" optionValue="_id" />
  *
+ * `optionText` also accepts a function, so you can shape the option text at will:
+ * @example
+ * const choices = [
+ *    { id: '1', name: 'Book', quantity: 23 },
+ *    { id: '2', name: 'Video', quantity: 56 },
+ *    { id: '3', name: 'Audio', quantity: 12 },
+ * ];
+ * const optionRenderer = choice => `${choice.name} (${choice.quantity})`;
+ * <SelectArrayInput source="categories" choices={choices} optionText={optionRenderer} />
+ *
  * The object passed as `options` props is passed to the material-ui-chip-input component
  * @see https://github.com/TeamWertarbyte/material-ui-chip-input
  */
@@ -108,9 +118,14 @@ export class SelectArrayInput extends Component {
         } = this.props;
         return choices.map(choice => ({
             value: choice[optionValue],
-            text: translateChoice ? translate(choice[optionText], { _: choice[optionText] }) : choice[optionText],
+            text: this.getChoiceText(choice, optionText, translateChoice, translate),
         }));
     }
+
+    getChoiceText = (choice, optionText, translateChoice, translate) => {
+        const choiceText = typeof optionText === 'function' ? optionText(choice) : choice[optionText];
+        return translateChoice ? translate(choiceText, { _: choiceText }) : choiceText;
+    };
 
     render() {
         const {
