@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
 
-import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/referenceActions';
+import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
 import { getReferencesByIds } from '../../reducer/references/oneToMany';
 
 /**

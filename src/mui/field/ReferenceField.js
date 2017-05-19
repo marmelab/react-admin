@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
-import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/referenceActions';
+import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
 import linkToRecord from '../../util/linkToRecord';
 
 /**
