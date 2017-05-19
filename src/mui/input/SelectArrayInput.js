@@ -66,7 +66,7 @@ export class SelectArrayInput extends Component {
             this.props.input.value !== nextProps.input.value
         ) {
             this.setState({
-                values: this.resolveValues(nextProps.input.value, nextProps.choices),
+                values: this.resolveValues(nextProps.input.value || [], nextProps.choices),
             });
         }
     };
