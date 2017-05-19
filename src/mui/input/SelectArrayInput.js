@@ -56,7 +56,7 @@ export class SelectArrayInput extends Component {
 
     componentWillMount = () => {
         this.setState({
-            values: this.resolveValues(this.props.input.value, this.props.choices),
+            values: this.resolveValues(this.props.input.value || [], this.props.choices),
         });
     }
 
