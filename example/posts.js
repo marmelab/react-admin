@@ -70,8 +70,13 @@ export const PostList = ({ ...props }) => (
                     <TextField source="id" />
                     <TextField source="title" style={titleFieldStyle} />
                     <DateField source="published_at" style={{ fontStyle: 'italic' }} />
-                    <BooleanField source="commentable" />
+                    <BooleanField source="commentable" label="resources.posts.fields.commentable_short" />
                     <NumberField source="views" />
+                    <ReferenceArrayField label="Tags" reference="tags" source="tags">
+                        <SingleFieldList>
+                            <ChipField source="name" />
+                        </SingleFieldList>
+                     </ReferenceArrayField>
                     <EditButton />
                     <ShowButton />
                 </Datagrid>

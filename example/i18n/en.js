@@ -8,6 +8,7 @@ export const messages = {
                 body: 'Body',
                 comments: 'Comments',
                 commentable: 'Commentable',
+                commentable_short: 'Com.',
                 created_at: 'Created at',
                 notifications: 'Notifications recipients',
                 nb_view: 'Nb views',
@@ -16,7 +17,7 @@ export const messages = {
                 published_at: 'Published at',
                 teaser: 'Teaser',
                 title: 'Title',
-                views: 'Vues',
+                views: 'Views',
             },
         },
         comments: {
