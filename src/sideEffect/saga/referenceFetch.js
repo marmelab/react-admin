@@ -1,6 +1,6 @@
 import { delay } from 'redux-saga';
 import { call, cancel, fork, put, takeEvery } from 'redux-saga/effects';
-import { CRUD_GET_ONE_REFERENCE, CRUD_GET_MANY_ACCUMULATE } from '../../actions/referenceActions';
+import { CRUD_GET_ONE_ACCUMULATE, CRUD_GET_MANY_ACCUMULATE } from '../../actions/referenceActions';
 import { crudGetMany } from '../../actions/dataActions';
 
 /**
@@ -60,8 +60,5 @@ function* accumulate({ payload }) {
 }
 
 export default function* () {
-    yield takeEvery(CRUD_GET_ONE_REFERENCE,
-        ({ payload }) => accumulate({ payload: { ids: [payload.id], resource: payload.resource } })
-    );
     yield takeEvery(CRUD_GET_MANY_ACCUMULATE, accumulate);
 }
