@@ -13,7 +13,7 @@ describe('<ReferenceField />', () => {
                 referenceRecord={{ id: 123, title: 'foo' }}
                 reference="bar"
                 basePath=""
-                crudGetOneReference={() => {}}
+                crudGetManyAccumulate={() => {}}
             >
                     <TextField source="title" />
             </ReferenceField>
@@ -30,7 +30,7 @@ describe('<ReferenceField />', () => {
                 reference="bar"
                 basePath=""
                 linkType="show"
-                crudGetOneReference={() => {}}
+                crudGetManyAccumulate={() => {}}
             >
                     <TextField source="title" />
             </ReferenceField>
@@ -47,7 +47,7 @@ describe('<ReferenceField />', () => {
                 reference="bar"
                 basePath=""
                 linkType={false}
-                crudGetOneReference={() => {}}
+                crudGetManyAccumulate={() => {}}
             >
                     <TextField source="title" />
             </ReferenceField>

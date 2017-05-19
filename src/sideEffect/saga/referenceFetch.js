@@ -1,40 +1,62 @@
 import { delay } from 'redux-saga';
 import { call, cancel, fork, put, takeEvery } from 'redux-saga/effects';
-import { CRUD_GET_ONE_REFERENCE } from '../../actions/referenceActions';
-import { crudGetMany } from '../../actions/dataActions';
 
 /**
  * Example
  *
- * let id = {
+ * let debouncedIds = {
  *   posts: { 4: true, 7: true, 345: true },
  *   authors: { 23: true, 47: true, 78: true },
  * }
  */
-const ids = {};
+const debouncedIds = {};
+const addIds = (resource, ids) => {
+    if (!debouncedIds[resource]) {
+        debouncedIds[resource] = {};
+    }
+    ids.forEach((id) => {
+        debouncedIds[resource][id] = true;
+    }); // fast UNIQUE
+};
+const getIds = (resource) => {
+    const ids = Object.keys(debouncedIds[resource]);
+    delete debouncedIds[resource];
+    return ids;
+};
+
 const tasks = {};
 
-// see http://yelouafi.github.io/redux-saga/docs/recipes/index.html#debouncing
-function* fetchReference(resource) {
+/**
+ * Fetch the list of accumulated ids after a delay
+ *
+ * As this gets canceled by subsequent calls to accumulate(), only the last
+ * call to finalize() will not be canceled. The delay acts as a
+ * debounce.
+ *
+ * @see http://yelouafi.github.io/redux-saga/docs/recipes/index.html#debouncing
+ */
+function* finalize(resource, actionCreator) {
     // combined with cancel(), this debounces the calls
     yield call(delay, 50);
-    yield put(crudGetMany(resource, Object.keys(ids[resource])));
-    delete ids[resource];
+    yield put(actionCreator(resource, getIds(resource)));
     delete tasks[resource];
 }
 
-function* accumulate({ payload }) {
-    const { id, resource } = payload;
-    if (!ids[resource]) {
-        ids[resource] = {};
-    }
-    ids[resource][id] = true; // fast UNIQUE
+/**
+ * Cancel call to finalize, accumulate ids, and call finalize
+ *
+ * @example
+ * accumulate({ type: CRUD_GET_MANY_ACCUMULATE, payload: { ids: [1, 3, 5], resource: 'posts' } })
+ */
+function* accumulate({ payload, meta }) {
+    const { ids, resource } = payload;
     if (tasks[resource]) {
         yield cancel(tasks[resource]);
     }
-    tasks[resource] = yield fork(fetchReference, resource);
+    addIds(resource, ids);
+    tasks[resource] = yield fork(finalize, resource, meta.accumulate);
 }
 
 export default function* () {
-    yield takeEvery(CRUD_GET_ONE_REFERENCE, accumulate);
+    yield takeEvery(action => action.meta && action.meta.accumulate, accumulate);
 }
