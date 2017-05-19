@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
 
-import { crudDebouncedGetMany as crudDebouncedGetManyAction } from '../../actions/referenceActions';
+import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/referenceActions';
 import { getReferencesByIds } from '../../reducer/references/oneToMany';
 
 /**
@@ -50,8 +50,8 @@ export class ReferenceArrayField extends Component {
         }
     }
 
-    fetchReferences({ crudDebouncedGetMany, reference, ids } = this.props) {
-        crudDebouncedGetMany(reference, ids);
+    fetchReferences({ crudGetManyAccumulate, reference, ids } = this.props) {
+        crudGetManyAccumulate(reference, ids);
     }
 
     render() {
@@ -78,7 +78,7 @@ ReferenceArrayField.propTypes = {
     addLabel: PropTypes.bool,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
-    crudDebouncedGetMany: PropTypes.func.isRequired,
+    crudGetManyAccumulate: PropTypes.func.isRequired,
     data: PropTypes.object,
     ids: PropTypes.array.isRequired,
     label: PropTypes.string,
@@ -98,7 +98,7 @@ const mapStateToProps = (state, props) => {
 };
 
 const ConnectedReferenceArrayField = connect(mapStateToProps, {
-    crudDebouncedGetMany: crudDebouncedGetManyAction
+    crudGetManyAccumulate: crudGetManyAccumulateAction
 })(ReferenceArrayField);
 
 ConnectedReferenceArrayField.defaultProps = {

@@ -5,9 +5,9 @@ export const crudGetOneReference = (resource, id) => ({
     payload: { resource, id },
 });
 
-export const CRUD_DEBOUNCED_GET_MANY = 'CRUD_DEBOUNCED_GET_MANY';
+export const CRUD_GET_MANY_ACCUMULATE = 'CRUD_GET_MANY_ACCUMULATE';
 
-export const crudDebouncedGetMany = (resource, ids) => ({
-    type: CRUD_DEBOUNCED_GET_MANY,
+export const crudGetManyAccumulate = (resource, ids) => ({
+    type: CRUD_GET_MANY_ACCUMULATE,
     payload: { resource, ids },
 });

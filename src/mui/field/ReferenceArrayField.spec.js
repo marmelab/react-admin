@@ -16,7 +16,7 @@ describe('<ReferenceArrayField />', () => {
                 basePath=""
                 data={{}}
                 ids={[1, 2]}
-                crudDebouncedGetMany={() => {}}
+                crudGetManyAccumulate={() => {}}
             >
                 <SingleFieldList>
                     <TextField source="title" />
@@ -43,7 +43,7 @@ describe('<ReferenceArrayField />', () => {
                 basePath=""
                 data={data}
                 ids={[1, 2]}
-                crudDebouncedGetMany={() => {}}
+                crudGetManyAccumulate={() => {}}
             >
                 <SingleFieldList>
                     <TextField source="title" />
@@ -69,7 +69,7 @@ describe('<ReferenceArrayField />', () => {
                 basePath=""
                 data={{}}
                 ids={[]}
-                crudDebouncedGetMany={() => {}}
+                crudGetManyAccumulate={() => {}}
             >
                 <SingleFieldList>
                     <TextField source="title" />
@@ -99,7 +99,7 @@ describe('<ReferenceArrayField />', () => {
                 basePath=""
                 data={data}
                 ids={['abc-1', 'abc-2']}
-                crudDebouncedGetMany={() => {}}
+                crudGetManyAccumulate={() => {}}
             >
                 <SingleFieldList>
                     <TextField source="title" />
@@ -132,7 +132,7 @@ describe('<ReferenceArrayField />', () => {
                 basePath=""
                 data={data}
                 ids={[1, 2]}
-                crudDebouncedGetMany={() => {}}
+                crudGetManyAccumulate={() => {}}
             >
                 <SingleFieldList>
                     <TextField source="title" />

@@ -1,6 +1,6 @@
 import { delay } from 'redux-saga';
 import { call, cancel, fork, put, takeEvery } from 'redux-saga/effects';
-import { CRUD_GET_ONE_REFERENCE, CRUD_DEBOUNCED_GET_MANY } from '../../actions/referenceActions';
+import { CRUD_GET_ONE_REFERENCE, CRUD_GET_MANY_ACCUMULATE } from '../../actions/referenceActions';
 import { crudGetMany } from '../../actions/dataActions';
 
 /**
@@ -48,7 +48,7 @@ function* fetchReference(resource) {
  * Cancel call to fetchReference, accumulate ids, and call fetchReference
  *
  * @example
- * accumulate({ type: CRUD_DEBOUNCED_GET_MANY, payload: { ids: [1, 3, 5], resource: 'posts' } })
+ * accumulate({ type: CRUD_GET_MANY_ACCUMULATE, payload: { ids: [1, 3, 5], resource: 'posts' } })
  */
 function* accumulate({ payload }) {
     const { ids, resource } = payload;
@@ -63,5 +63,5 @@ export default function* () {
     yield takeEvery(CRUD_GET_ONE_REFERENCE,
         ({ payload }) => accumulate({ payload: { ids: [payload.id], resource: payload.resource } })
     );
-    yield takeEvery(CRUD_DEBOUNCED_GET_MANY, accumulate);
+    yield takeEvery(CRUD_GET_MANY_ACCUMULATE, accumulate);
 }
