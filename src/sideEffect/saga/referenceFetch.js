@@ -1,7 +1,5 @@
 import { delay } from 'redux-saga';
 import { call, cancel, fork, put, takeEvery } from 'redux-saga/effects';
-import { CRUD_GET_ONE_ACCUMULATE, CRUD_GET_MANY_ACCUMULATE } from '../../actions/referenceActions';
-import { crudGetMany } from '../../actions/dataActions';
 
 /**
  * Example
@@ -32,33 +30,33 @@ const tasks = {};
  * Fetch the list of accumulated ids after a delay
  *
  * As this gets canceled by subsequent calls to accumulate(), only the last
- * call to fetchReference() will not be canceled. The delay acts as a
+ * call to finalize() will not be canceled. The delay acts as a
  * debounce.
  *
  * @see http://yelouafi.github.io/redux-saga/docs/recipes/index.html#debouncing
  */
-function* fetchReference(resource) {
+function* finalize(resource, actionCreator) {
     // combined with cancel(), this debounces the calls
     yield call(delay, 50);
-    yield put(crudGetMany(resource, getIds(resource)));
+    yield put(actionCreator(resource, getIds(resource)));
     delete tasks[resource];
 }
 
 /**
- * Cancel call to fetchReference, accumulate ids, and call fetchReference
+ * Cancel call to finalize, accumulate ids, and call finalize
  *
  * @example
  * accumulate({ type: CRUD_GET_MANY_ACCUMULATE, payload: { ids: [1, 3, 5], resource: 'posts' } })
  */
-function* accumulate({ payload }) {
+function* accumulate({ payload, meta }) {
     const { ids, resource } = payload;
     if (tasks[resource]) {
         yield cancel(tasks[resource]);
     }
     addIds(resource, ids);
-    tasks[resource] = yield fork(fetchReference, resource);
+    tasks[resource] = yield fork(finalize, resource, meta.accumulate);
 }
 
 export default function* () {
-    yield takeEvery(CRUD_GET_MANY_ACCUMULATE, accumulate);
+    yield takeEvery(action => action.meta && action.meta.accumulate, accumulate);
 }
