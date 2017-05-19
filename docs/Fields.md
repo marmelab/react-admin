@@ -462,11 +462,33 @@ Also, you can filter the query used to populate the possible values. Use the `fi
 
 ## `<ReferenceArrayField>`
 
-This component fetches a list of referenced records by ids (using the `GET_MANY` REST method). The ids of the referenced records are specified by the required `source` field of the current record. The result is then passed to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
+Use `<ReferenceArrayField>` to display an list of reference values based on an array of foreign keys.
 
-For instance, here is how to fetch the `tags` related to a `post` record by matching `tag.id` to `post.tags_ids`, and then display the `name` for each `tag`, in a `<ChipField>`:
+For instance, if a post has many tags, a post resource may look like:
 
 ```js
+{
+    id: 1234,
+    title: 'Lorem Ipsum',
+    tag_ids: [1, 23, 4]
+}
+```
+
+Where `[1, 23, 4]` refer to ids of `tag` resources.
+
+`<ReferenceArrayField>` can fetch the `tag` resources related to this `post` resource by matching `post.tag_ids` to `tag.id`. `<ReferenceArrayField source="tags_ids" reference="tags">` would issue an HTTP request looking like:
+
+```
+http://myapi.com/tags?id=[1,23,4]
+```
+
+**Tip**: `<ReferenceArrayField>` fetches the related resources using the `GET_MANY` REST method, so the actual HTTP request depends on your REST client.
+
+Once it receives the related resources, `<ReferenceArrayField>` passes them to its child component using the `ids` and `data` props, so the child must be an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
+
+Here is how to fetch the list of tags for each post in a `PostList`, and display the `name` for each `tag` in a `<ChipField>`:
+
+```jsx
 import React from 'react';
 import { List, Datagrid, ChipField, ReferenceArrayField, SingleFieldList, TextField } from 'admin-on-rest';
 
@@ -475,13 +497,48 @@ export const PostList = (props) => (
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
-            <ReferenceArrayField label="Tags" reference="tags" source="tags_ids">
+            <ReferenceArrayField label="Tags" reference="tags" source="tag_ids">
                 <SingleFieldList>
                     <ChipField source="name" />
                 </SingleFieldList>
             </ReferenceArrayField>
             <EditButton />
         </Datagrid>
+    </List>
+);
+```
+
+**Note**: You **must** add a `<Resource>` component for the reference resource to your `<Admin>` component, because admin-on-rest needs it to fetch the reference data. You can omit the `list` prop in this Resource if you don't want to show an entry for it in the sidebar menu.
+
+```jsx
+export const App = () => (
+    <Admin restClient={simpleRestClient('http://path.to.my.api')}>
+        <Resource name="posts" list={PostList} />
+        <Resource name="tags" /> // <= this one is compulsory
+    </Admin>
+);
+```
+
+In an Edit of Show view, you can combine `<ReferenceArrayField>` with `<Datagrid>` to display a related resources in a table. For instance, to display more details about the tags related to a post in the `PostShow` view:
+
+```jsx
+import React from 'react';
+import { Show, SimpleShowLayout, TextField, ReferenceArrayField, Datagrid, ShowButton } from 'admin-on-rest';
+
+export const PostShow = (props) => (
+    <Show {...props}>
+        <SimpleShowLayout>
+            <TextField source="id" />
+            <TextField source="title" />
+            <ReferenceArrayField label="Tags" reference="tags" source="tag_ids">
+                <Datagrid>
+                    <TextField source="id" />
+                    <TextField source="name" />
+                    <ShowButton />
+                </SingleFieldList>
+            </ReferenceArrayField>
+            <EditButton />
+        </SimpleShowLayout>
     </List>
 );
 ```
