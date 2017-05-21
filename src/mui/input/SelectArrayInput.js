@@ -56,7 +56,7 @@ export class SelectArrayInput extends Component {
 
     componentWillMount = () => {
         this.setState({
-            values: this.resolveValues(this.props.input.value || [], this.props.choices),
+            values: this.getChoicesForValues(this.props.input.value || [], this.props.choices),
         });
     }
 
@@ -66,7 +66,7 @@ export class SelectArrayInput extends Component {
             this.props.input.value !== nextProps.input.value
         ) {
             this.setState({
-                values: this.resolveValues(nextProps.input.value || [], nextProps.choices),
+                values: this.getChoicesForValues(nextProps.input.value || [], nextProps.choices),
             });
         }
     };
@@ -109,36 +109,26 @@ export class SelectArrayInput extends Component {
         return [value];
     };
 
-    resolveValues = (values, choices) => {
+    getChoicesForValues = (values, choices = []) => {
+        const { optionValue, optionText } = this.props;
         if (!values || !Array.isArray(values)) {
             throw Error('Value of SelectArrayInput should be an array');
         }
-
-        if (choices && choices.length > 0) {
-            return this.formatChoices(choices).filter(choice => values.includes(choice.value));
-        }
-        return values.map(value => ({
-            value, text: value,
-        }));
+        return values
+            .map(value => choices.find(c => c[optionValue] === value) || { [optionValue]: value, [optionText]: value })
+            .map(this.formatChoice);
     };
 
-    formatChoices = (choices) => {
-        const {
-            optionText,
-            optionValue,
-            translate,
-            translateChoice,
-        } = this.props;
-        return choices.map(choice => ({
-            value: choice[optionValue],
-            text: this.getChoiceText(choice, optionText, translateChoice, translate),
-        }));
-    }
+    formatChoices = choices => choices.map(this.formatChoice);
 
-    getChoiceText = (choice, optionText, translateChoice, translate) => {
+    formatChoice = (choice) => {
+        const { optionText, optionValue, translateChoice, translate } = this.props;
         const choiceText = typeof optionText === 'function' ? optionText(choice) : choice[optionText];
-        return translateChoice ? translate(choiceText, { _: choiceText }) : choiceText;
-    };
+        return {
+            value: choice[optionValue],
+            text: translateChoice ? translate(choiceText, { _: choiceText }) : choiceText,
+        };
+    }
 
     render() {
         const {
