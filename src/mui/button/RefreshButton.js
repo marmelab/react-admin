@@ -2,16 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import withHandlers from 'recompose/withHandlers';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import translate from '../../i18n/translate';
 import { refreshList as refreshListAction } from '../../actions/listActions';
 
-const RefreshButton = ({ label, translate, onClick }) => <FlatButton
+const RefreshButton = ({ label, translate, refresh }) => <FlatButton
     primary
     label={label && translate(label)}
-    onClick={onClick}
+    onClick={refresh}
     icon={<NavigationRefresh />}
 />;
 
@@ -21,18 +20,20 @@ RefreshButton.defaultProps = {
 
 RefreshButton.propTypes = {
     label: PropTypes.string,
-    onClick: PropTypes.func.isRequired,
+    refresh: PropTypes.func.isRequired,
     translate: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
 };
 const enhance = compose(
-    connect(null, { refresh: refreshListAction }),
-    withHandlers({
-        onClick: props => (event) => {
-            event.preventDefault();
-            props.refresh(props.resource);
-        },
-    }),
+    connect(
+        null,
+        (dispatch, { resource }) => ({
+            refresh: (event) => {
+                event.preventDefault();
+                dispatch(refreshListAction(resource));
+            },
+        }),
+    ),
     translate,
 );
 
