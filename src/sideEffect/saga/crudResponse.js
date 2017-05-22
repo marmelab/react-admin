@@ -52,9 +52,13 @@ function* handleResponse({ type, requestPayload, error, payload }) {
         const errorMessage = typeof error === 'string'
             ? error
             : (error.message || 'aor.notification.http_error');
-        return yield [
-            put(showNotification(errorMessage, 'warning')),
-        ];
+
+        const sideActions = [];
+        if (error !== 'Unauthorized') { // redirect to login form if user credentials are no more valid
+            sideActions.push(put(showNotification(errorMessage, 'warning')));
+        }
+
+        return yield sideActions;
     }
     default:
         return yield [];
