@@ -46,6 +46,7 @@ title: "Reference"
 * [`<NumberInput>`](./Inputs.html#numberinput)
 * [`<Pagination>`](./List.html#pagination)
 * [`<RadioButtonGroupInput>`](./Inputs.html#radiobuttongroupinput)
+* [`<ReferenceArrayInput>`](./Inputs.html#referencearrayinput)
 * [`<ReferenceField>`](./Fields.html#referencefield)
 * [`<ReferenceInput>`](./Inputs.html#referenceinput)
 * [`<ReferenceManyField>`](./Fields.html#referencemanyfield)
@@ -55,6 +56,7 @@ title: "Reference"
 * [`<RichTextField>`](./Fields.html#richtextfield)
 * [`<RichTextInput>`](./Inputs.html#richtextinput)
 * `<SaveButton>`
+* [`<SelectArrayInput>`](./Inputs.html#selectarrayinput)
 * [`<SelectInput>`](./Inputs.html#selectinput)
 * `<Show>`
 * `<ShowButton>`

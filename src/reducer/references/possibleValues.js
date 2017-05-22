@@ -14,14 +14,11 @@ export default (previousState = initialState, { type, payload, meta }) => {
     }
 };
 
-export const getPossibleReferences = (state, referenceSource, reference, selectedId) => {
-    if (!state.admin.references.possibleValues[referenceSource]) {
-        return typeof selectedId === 'undefined' || !state.admin[reference].data[selectedId] ? [] : [state.admin[reference].data[selectedId]];
-    }
-    const possibleValues = state.admin.references.possibleValues[referenceSource];
-    if (typeof selectedId !== 'undefined' && !possibleValues.includes(selectedId)) {
-        possibleValues.unshift(selectedId);
-    }
+export const getPossibleReferences = (state, referenceSource, reference, selectedIds = []) => {
+    const possibleValues = state.admin.references.possibleValues[referenceSource]
+        ? Array.from(state.admin.references.possibleValues[referenceSource])
+        : [];
+    selectedIds.forEach(id => possibleValues.includes(id) || possibleValues.unshift(id));
     return possibleValues
         .map(id => state.admin[reference].data[id])
         .filter(r => typeof r !== 'undefined');
