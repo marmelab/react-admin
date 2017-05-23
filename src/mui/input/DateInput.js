@@ -18,6 +18,7 @@ export const datify = input => {
 
 class DateInput extends Component {
     onChange = (_, date) => this.props.input.onChange(date);
+    onBlur = () => this.props.input.onBlur();
 
     render() {
         const { input, isRequired, label, meta: { touched, error }, options, source, elStyle, resource } = this.props;
@@ -31,6 +32,7 @@ class DateInput extends Component {
             autoOk
             value={datify(input.value)}
             onChange={this.onChange}
+            onBlur={this.onBlur}
             style={elStyle}
             {...options}
         />);
