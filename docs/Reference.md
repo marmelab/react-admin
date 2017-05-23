@@ -5,8 +5,6 @@ title: "Reference"
 
 # Reference
 
-## Components
-
 <div style="column-count:3" markdown="1">
 
 * `<Actions>`
