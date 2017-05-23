@@ -22,6 +22,7 @@ import {
     ReferenceArrayField,
     ReferenceManyField,
     ReferenceArrayInput,
+    EmbeddedManyInput,
     Responsive,
     RichTextField,
     SelectArrayInput,
@@ -162,6 +163,12 @@ export const PostEdit = ({ ...props }) => (
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
+            </FormTab>
+            <FormTab label="post.form.links">
+                <EmbeddedManyInput source="links">
+                    <TextInput source="url" />
+                    <TextInput source="context"/>
+                </EmbeddedManyInput>
             </FormTab>
         </TabbedForm>
     </Edit>
