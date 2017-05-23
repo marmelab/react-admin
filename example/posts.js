@@ -94,7 +94,7 @@ const PostTitle = translate(({ record, translate }) => {
 });
 
 export const PostCreate = ({ ...props }) => (
-    <Create {...props}>
+    <Create {...props} afterSuccess="show">
         <SimpleForm defaultValue={{ average_note: 0 }} validate={(values) => {
             const errors = {};
             ['title', 'teaser'].forEach((field) => {

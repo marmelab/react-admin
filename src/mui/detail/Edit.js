@@ -54,7 +54,7 @@ export class Edit extends Component {
     }
 
     handleSubmit(record) {
-        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath());
+        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath(), this.props.afterSuccess);
     }
 
     render() {
@@ -119,6 +119,7 @@ Edit.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
+    afterSuccess: PropTypes.string,
 };
 
 function mapStateToProps(state, props) {

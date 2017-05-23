@@ -18,6 +18,14 @@ describe('Edit Page', () => {
             await EditPage.submit();
             await EditPage.navigate();
             assert.equal(await EditPage.getInputValue('title'), 'Lorem Ipsum');
+            await driver.sleep(3000);
+        });
+
+        it('should redirect to show page after edit success', async () => {
+            await EditPage.setInputValue('title', 'Lorem Ipsum +');
+            await EditPage.submit();
+            assert.equal(await driver.getCurrentUrl(), 'http://localhost:8083/#/posts/5/show');
+            await EditPage.navigate();
         });
 
         it('should allow to switch tabs', async () => {

@@ -16,7 +16,7 @@ describe('Create Page', () => {
         assert.equal(await CreatePage.getInputValue('published_at'), currentDateString);
     });
 
-    it('should redirect to created post', async () => {
+    it('should redirect to show page after create success', async () => {
         const values = [
             {
                 type: 'input',
@@ -31,7 +31,7 @@ describe('Create Page', () => {
         ];
         await CreatePage.setValues(values);
         await CreatePage.submit();
-        await driver.wait(until.urlIs('http://localhost:8083/#/posts/14'));
+        await driver.wait(until.urlIs('http://localhost:8083/#/posts/14/show'));
         await DeletePage.navigate();
         await DeletePage.delete();
         await driver.sleep(3000); // let the notification for deletion disappear (could block further submits)

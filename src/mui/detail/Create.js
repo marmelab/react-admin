@@ -16,7 +16,7 @@ class Create extends Component {
         return location.pathname.split('/').slice(0, -1).join('/');
     }
 
-    handleSubmit = (record) => this.props.crudCreate(this.props.resource, record, this.getBasePath());
+    handleSubmit = (record) => this.props.crudCreate(this.props.resource, record, this.getBasePath(), this.props.afterSuccess);
 
     render() {
         const { actions = <DefaultActions />, children, isLoading, resource, title, translate } = this.props;
@@ -61,6 +61,7 @@ Create.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func.isRequired,
+    afterSuccess: PropTypes.string,
 };
 
 Create.defaultProps = {
