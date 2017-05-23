@@ -43,6 +43,13 @@ export class Edit extends Component {
         return location.pathname.split('/').slice(0, -1).join('/');
     }
 
+    redirectTo() {
+        const { afterSuccess, hasShow, hasEdit } = this.props;
+        if (afterSuccess != null) return afterSuccess;
+        if (hasShow) return 'show';
+        return 'edit';
+    }
+
     updateData(resource = this.props.resource, id = this.props.id) {
         this.props.crudGetOne(resource, id, this.getBasePath());
     }
@@ -54,7 +61,7 @@ export class Edit extends Component {
     }
 
     handleSubmit(record) {
-        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath(), this.props.afterSuccess);
+        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath(), this.redirectTo());
     }
 
     render() {
