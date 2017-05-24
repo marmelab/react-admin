@@ -16,7 +16,7 @@ describe('Authentication', () => {
         await ListPage.navigate();
         await driver.sleep(300);
         assert.equal(await driver.getCurrentUrl(), 'http://localhost:8083/#/login');
-    })
+    });
     it('should not login with incorrect credentials', async () => {
         await LoginPage.navigate();
         await LoginPage.login('foo', 'bar');
