@@ -20,6 +20,7 @@ module.exports = url => driver => ({
         return driver.wait(until.elementLocated(this.elements.appLoader), 2000)
             .catch(() => continued = false) // no loader - we're on the same page !
             .then(() => continued ? driver.wait(until.stalenessOf(driver.findElement(this.elements.appLoader))) : true)
+            .catch(() => continued = false) // no loader - we're on the same page !
             .then(() => driver.sleep(100)); // let some time to redraw
     },
 
