@@ -2,6 +2,7 @@ export BooleanField from './BooleanField';
 export ChipField from './ChipField';
 export DateField from './DateField';
 export EmailField from './EmailField';
+export FileField from './FileField';
 export ImageField from './ImageField';
 export FunctionField from './FunctionField';
 export NumberField from './NumberField';
