@@ -34,25 +34,29 @@ export class EmbeddedManyInput extends Component {
     }
 
     renderList = ({ fields }) => {
-        const { children } = this.props;
+        const { children, elStyle } = this.props;
         return (
             <div style={{ margin: '1em' }}>
-                {fields.map((member, index) =>
-                    <div key={index} style={{ display: 'inline-block', verticalAlign: 'bottom' }}>
-                        <div style={{ padding: '0 1em 1em 1em' }}>
-                            {React.Children.map(children, input => input && (
-                                <div key={input.props.source} className={`aor-input-${input.props.source}`} style={input.props.style}>
-                                    <Field {...input.props} name={`${member}.${input.props.source}`} component={input.type} />
-                                </div>
-                            ))}
+                <div>
+                    {fields.map((member, index) =>
+                        <div key={index} style={elStyle}>
+                            <div style={{ padding: '0 1em 1em 1em' }}>
+                                {React.Children.map(children, input => input && (
+                                    <div key={input.props.source} className={`aor-input-${input.props.source}`} style={input.props.style}>
+                                        <Field {...input.props} name={`${member}.${input.props.source}`} component={input.type} />
+                                    </div>
+                                ))}
+                            </div>
+                            <FlatButton
+                                primary
+                                label="Remove"
+                                icon={<ActionDeleteIcon />}
+                                onClick={() => fields.remove(index)} />
                         </div>
-                        <FlatButton
-                            label="Remove"
-                            icon={<ActionDeleteIcon />}
-                            onClick={() => fields.remove(index)} />
-                    </div>
-                )}
-                <FlatButton icon={<ContentCreateIcon />} label="Add" onClick={() => fields.push({})} />
+                    )}
+                </div>
+                <FlatButton primary style={{ float: 'right' }} icon={<ContentCreateIcon />} label="Add" onClick={() => fields.push({})} />
+                <div style={{ clear: 'both' }} />
             </div>
         )
     }
@@ -78,11 +82,17 @@ EmbeddedManyInput.propTypes = {
     input: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
+    elStyle: PropTypes.object,
+    cnStyle: PropTypes.object
 };
 
 EmbeddedManyInput.defaultProps = {
     addField: false,
     allowEmpty: false,
+    elStyle: {
+        display: 'block',
+        verticalAlign: 'bottom'
+    }
 };
 
 export default EmbeddedManyInput;
