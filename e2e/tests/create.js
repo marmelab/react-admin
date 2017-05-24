@@ -1,4 +1,5 @@
 import assert from 'assert';
+import { until } from 'selenium-webdriver';
 import driver from '../chromeDriver';
 import createPageFactory from '../pages/CreatePage';
 import deletePageFactory from '../pages/DeletePage';
@@ -30,7 +31,7 @@ describe('Create Page', () => {
         ];
         await CreatePage.setValues(values);
         await CreatePage.submit();
-        assert.equal(await driver.getCurrentUrl(), 'http://localhost:8083/#/posts/14');
+        await driver.wait(until.urlIs('http://localhost:8083/#/posts/14'));
         await DeletePage.navigate();
         await DeletePage.delete();
         await driver.sleep(3000); // let the notification for deletion disappear (could block further submits)

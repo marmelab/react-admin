@@ -27,12 +27,10 @@ module.exports = url => driver => ({
 
     waitUntilDataLoaded() {
         let continued = true;
-        return driver.sleep(250).then(() => { // let some time to redraw
-            driver.wait(until.elementLocated(this.elements.appLoader), 400)
+        return driver.wait(until.elementLocated(this.elements.appLoader), 2000)
             .catch(() => continued = false) // no loader - we're on the same page !
-            .then(() => (continued ? driver.wait(until.stalenessOf(driver.findElement(this.elements.appLoader))) : true))
-            .then(() => driver.sleep(250)); // let some time to redraw
-        });
+            .then(() => continued ? driver.wait(until.stalenessOf(driver.findElement(this.elements.appLoader))) : true)
+            .then(() => driver.sleep(100)); // let some time to redraw;
     },
 
     getNbRows() {
