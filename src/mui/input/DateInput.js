@@ -17,8 +17,12 @@ export const datify = input => {
 };
 
 class DateInput extends Component {
-    onChange = (_, date) => this.props.input.onChange(date);
-    onBlur = () => this.props.input.onBlur();
+    onChange = (_, date) => {
+        this.props.input.onChange(date);
+        this.props.input.onBlur();
+    };
+    onBlur = () => {};
+    onDismiss = () => this.props.input.onBlur();
 
     render() {
         const { input, isRequired, label, meta: { touched, error }, options, source, elStyle, resource } = this.props;
@@ -33,6 +37,7 @@ class DateInput extends Component {
             value={datify(input.value)}
             onChange={this.onChange}
             onBlur={this.onBlur}
+            onDismiss={this.onDismiss}
             style={elStyle}
             {...options}
         />);
