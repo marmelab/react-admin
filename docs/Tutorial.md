@@ -362,6 +362,12 @@ Filters are "search-as-you-type", meaning that when the user enters new values i
 
 ## Customizing the Menu Icons
 
+To use material-ui you need to install `material-ui` node package :
+
+```sh
+npm install material-ui
+```
+
 The sidebar menu shows the same icon for both posts and users. Fortunately, customizing the menu icon is just a matter of passing an `icon` attribute to each `<Resource>`:
 
 ```jsx
