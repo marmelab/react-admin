@@ -64,7 +64,14 @@ import FieldTitle from '../../util/FieldTitle';
  * The object passed as `options` props is passed to the material-ui <SelectField> component
  */
 export class SelectInput extends Component {
-    handleChange = (event, index, value) => this.props.input.onChange(value);
+    state = {
+        value: this.props.input.value,
+    }
+
+    handleChange = (event, index, value) => {
+        this.props.input.onChange(value);
+        this.setState({ value });
+    }
 
     renderMenuItem = (choice) => {
         const {
@@ -103,7 +110,7 @@ export class SelectInput extends Component {
         } = this.props;
         return (
             <SelectField
-                value={input.value}
+                value={this.state.value}
                 floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
                 onChange={this.handleChange}
                 autoWidth
