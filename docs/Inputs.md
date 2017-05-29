@@ -488,6 +488,15 @@ import { ReferenceInput, SelectInput } from 'admin-on-rest'
 
 ![ReferenceInput](./img/reference-input.gif)
 
+**Note**: You **must** add a `<Resource>` for the reference resource - admin-on-rest needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
+
+```jsx
+<Admin restClient={myRestClient}>
+    <Resource name="comments" list={CommentList} />
+    <Resource name="posts" />
+</Admin>
+```
+
 Set the `allowEmpty` prop when the empty value is allowed.
 
 ```jsx

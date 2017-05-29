@@ -240,7 +240,45 @@ But what if you want to use an email instead of a username? What if you want to 
 
 For all these cases, it's up to you to implement your own `LoginPage` component, which will be displayed under the `/login` route instead of the default username/password form, and your own `LogoutButton` component, which will be displayed in the sidebar. Pass both these components to the `<Admin>` component:
 
+**Tip**: Use the `userLogin` and `userLogout` actions in your custom `Login` and `Logout` components.
+
 ```jsx
+// in src/MyLoginPage.js
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { userLogin } from '../../actions/authActions';
+
+class MyLoginPage extends Component {
+    submit = (e) => {
+        e.preventDefault();
+        // gather your data/credentials here
+        const credentials = { };
+
+        // Dispatch the userLogin action (injected by connect)
+        this.props.userLogin(credentials);
+    }
+
+    render() {
+        return (
+            <form onSubmit={this.submit}>
+            ...
+            </form>
+        );
+    }
+};
+
+export default connect(undefined, { userLogin })(MyLoginPage);
+
+// in src/MyLogoutButton.js
+import { connect } from 'react-redux';
+import { userLogout } from '../../actions/authActions';
+
+const MyLogoutButton = ({ userLogout }) => (
+    <button onClick={userLogout}>Logout</button>
+);
+
+export default connect(undefined, { userLogout })(MyLogoutButton);
+
 // in src/App.js
 import MyLoginPage from './MyLoginPage';
 import MyLogoutButton from './MyLogoutButton';
@@ -251,9 +289,6 @@ const App = () => (
     </Admin>
 );
 ```
-
-
-**Tip**: Use the `userLogin` and `userLogout` actions in your custom `Login` and `Logout` components.
 
 ## Restricting Access To A Custom Page
 

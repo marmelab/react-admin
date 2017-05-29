@@ -7,7 +7,7 @@ describe('Show Page', () => {
 
     beforeEach(async () => await ShowPage.navigate());
 
-    it('should fill the oage with data from the fetched record', async () => {
+    it('should fill the page with data from the fetched record', async () => {
         await ShowPage.navigate();
         assert.equal(await ShowPage.getValue('title'), 'Fusce massa lorem, pulvinar a posuere ut, accumsan ac nisi');
     });

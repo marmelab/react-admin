@@ -1,5 +1,5 @@
-const chrome = require('chromedriver');
-const webdriver = require('selenium-webdriver');
+import 'chromedriver';
+import webdriver from 'selenium-webdriver';
 
 module.exports = new webdriver.Builder()
     .forBrowser('chrome')

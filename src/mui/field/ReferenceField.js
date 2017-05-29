@@ -38,12 +38,19 @@ import linkToRecord from '../../util/linkToRecord';
  */
 export class ReferenceField extends Component {
     componentDidMount() {
-        this.props.crudGetManyAccumulate(this.props.reference, [get(this.props.record, this.props.source)]);
+        this.fetchReference(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.record.id !== nextProps.record.id) {
-            this.props.crudGetManyAccumulate(nextProps.reference, [get(nextProps.record, nextProps.source)]);
+            this.fetchReference(nextProps);
+        }
+    }
+
+    fetchReference(props) {
+        const source = get(props.record, props.source);
+        if (source !== null && typeof source !== 'undefined') {
+            this.props.crudGetManyAccumulate(props.reference, [source]);
         }
     }
 
