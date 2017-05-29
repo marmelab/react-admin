@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.1.0
+
+* Add `<ReferenceArrayInput>` and `<SelectArrayInput>` ([kimkha](https://github.com/kimkha) and [fzaninotto](https://github.com/fzaninotto))
+* Add `<ReferenceArrayField>` ([leesei](https://github.com/leesei) and [fzaninotto](https://github.com/fzaninotto))
+* Add payload to `USER_LOGIN_SUCCESS` action, using the `AUTH_LOGIN` response from the authClient ([SidFerreira](https://github.com/SidFerreira))
+* Add reset state after logout ([bodo22](https://github.com/bodo22))
+* Add ability to disable submit on enter in `<SimpleForm>` and `<TabbedForm>` ([jkrnak](https://github.com/jkrnak))
+* Add integer casting to pagination params ([grahamlyus](https://github.com/grahamlyus))
+* Add `elStyle` prop to `<DisabledInput>` ([wesley6j](https://github.com/wesley6j))
+* Add Frequently Asked Questions (FAQ) to the documentation ([djhi](https://github.com/djhi))
+* Add Ecosystem to the documentation ([djhi](https://github.com/djhi))
+* Add Swedish translation ([StefanWallin](https://github.com/StefanWallin))
+* Fix filters with dot notation not properly cleared ([djhi](https://github.com/djhi))
+* Fix show (edit) button in Edit (Show) page on initial load ([wesley6j](https://github.com/wesley6j))
+* Fix list optimistic rendering ([djhi](https://github.com/djhi))
+* Fix defaultValue typo in blog example ([wesley6j](https://github.com/wesley6j))
+
 ## v1.0.2
 
 * Fix typo in Login page instructions in tutorial ([DjLeChuck](https://github.com/DjLeChuck))
