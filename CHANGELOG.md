@@ -14,7 +14,6 @@
 * Add Swedish translation ([StefanWallin](https://github.com/StefanWallin))
 * Fix filters with dot notation not properly cleared ([djhi](https://github.com/djhi))
 * Fix show (edit) button in Edit (Show) page on initial load ([wesley6j](https://github.com/wesley6j))
-* Fix list optimistic rendering ([djhi](https://github.com/djhi))
 * Fix defaultValue typo in blog example ([wesley6j](https://github.com/wesley6j))
 
 ## v1.0.2
