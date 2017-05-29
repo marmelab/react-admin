@@ -15,14 +15,16 @@ class Create extends Component {
         const { location } = this.props;
         return location.pathname.split('/').slice(0, -1).join('/');
     }
-    redirectTo() {
+
+    getRedirectRoute() {
         const { afterSuccess, hasShow, hasEdit } = this.props;
         if (afterSuccess != null) return afterSuccess;
         if (hasEdit) return 'edit';
         if (hasShow) return 'show';
         return 'list';
     }
-    handleSubmit = (record) => this.props.crudCreate(this.props.resource, record, this.getBasePath(), this.redirectTo());
+
+    handleSubmit = (record) => this.props.crudCreate(this.props.resource, record, this.getBasePath(), this.getRedirectRoute());
 
     render() {
         const { actions = <DefaultActions />, children, isLoading, resource, title, translate } = this.props;
