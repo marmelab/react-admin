@@ -7,8 +7,8 @@ import { ReferenceField } from './ReferenceField';
 import TextField from './TextField';
 
 describe('<ReferenceField />', () => {
-    it('should call crudGetOneReference on componentDidMount if reference source is defined', () => {
-        const crudGetOneReference = sinon.spy();
+    it('should call crudGetManyAccumulate on componentDidMount if reference source is defined', () => {
+        const crudGetManyAccumulate = sinon.spy();
         shallow(
             <ReferenceField
                 record={{ fooId: 123 }}
@@ -16,16 +16,16 @@ describe('<ReferenceField />', () => {
                 referenceRecord={{ id: 123, title: 'foo' }}
                 reference="bar"
                 basePath=""
-                crudGetOneReference={crudGetOneReference}
+                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 <TextField source="title" />
             </ReferenceField>,
             { lifecycleExperimental: true },
         );
-        assert(crudGetOneReference.calledOnce);
+        assert(crudGetManyAccumulate.calledOnce);
     });
-    it('should not call crudGetOneReference on componentDidMount if reference source is null or undefined', () => {
-        const crudGetOneReference = sinon.spy();
+    it('should not call crudGetManyAccumulate on componentDidMount if reference source is null or undefined', () => {
+        const crudGetManyAccumulate = sinon.spy();
         shallow(
             <ReferenceField
                 record={{ fooId: null }}
@@ -33,13 +33,13 @@ describe('<ReferenceField />', () => {
                 referenceRecord={{ id: 123, title: 'foo' }}
                 reference="bar"
                 basePath=""
-                crudGetOneReference={crudGetOneReference}
+                crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 <TextField source="title" />
             </ReferenceField>,
             { lifecycleExperimental: true },
         );
-        assert(crudGetOneReference.notCalled);
+        assert(crudGetManyAccumulate.notCalled);
     });
     it('should render a link to the Edit page of the related record by default', () => {
         const wrapper = shallow(
