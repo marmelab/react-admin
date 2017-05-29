@@ -21,10 +21,10 @@ describe('Edit Page', () => {
             await driver.sleep(3000);
         });
 
-        it('should redirect to show page after edit success', async () => {
+        it('should redirect to list page after edit success', async () => {
             await EditPage.setInputValue('title', 'Lorem Ipsum +');
             await EditPage.submit();
-            assert.equal(await driver.getCurrentUrl(), 'http://localhost:8083/#/posts/5/show');
+            assert.equal(await driver.getCurrentUrl(), 'http://localhost:8083/#/posts');
             await EditPage.navigate();
         });
 

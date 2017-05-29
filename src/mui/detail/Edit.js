@@ -44,10 +44,9 @@ export class Edit extends Component {
     }
 
     getRedirectRoute() {
-        const { afterSuccess, hasShow, hasEdit } = this.props;
+        const { afterSuccess } = this.props;
         if (afterSuccess != null) return afterSuccess;
-        if (hasShow) return 'show';
-        return 'edit';
+        return 'list';
     }
 
     updateData(resource = this.props.resource, id = this.props.id) {
