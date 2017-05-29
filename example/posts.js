@@ -3,6 +3,7 @@ import {
     BooleanField,
     BooleanInput,
     CheckboxGroupInput,
+    ChipField,
     Create,
     Datagrid,
     DateField,
@@ -18,9 +19,12 @@ import {
     LongTextInput,
     NumberField,
     NumberInput,
+    ReferenceArrayField,
     ReferenceManyField,
+    ReferenceArrayInput,
     Responsive,
     RichTextField,
+    SelectArrayInput,
     SelectField,
     SelectInput,
     Show,
@@ -28,6 +32,7 @@ import {
     SimpleForm,
     SimpleList,
     SimpleShowLayout,
+    SingleFieldList,
     TabbedForm,
     TextField,
     TextInput,
@@ -67,8 +72,13 @@ export const PostList = ({ ...props }) => (
                     <TextField source="id" />
                     <TextField source="title" style={titleFieldStyle} />
                     <DateField source="published_at" style={{ fontStyle: 'italic' }} />
-                    <BooleanField source="commentable" />
+                    <BooleanField source="commentable" label="resources.posts.fields.commentable_short" />
                     <NumberField source="views" />
+                    <ReferenceArrayField label="Tags" reference="tags" source="tags">
+                        <SingleFieldList>
+                            <ChipField source="name" />
+                        </SingleFieldList>
+                     </ReferenceArrayField>
                     <EditButton />
                     <ShowButton />
                 </Datagrid>
@@ -131,7 +141,9 @@ export const PostEdit = ({ ...props }) => (
                 <RichTextInput source="body" label="" validate={required} addLabel={false} />
             </FormTab>
             <FormTab label="post.form.miscellaneous">
-                <TextInput source="password" type="password" />
+                <ReferenceArrayInput source="tags" reference="tags" allowEmpty>
+                    <SelectArrayInput optionText="name" options={{ fullWidth: true }} />
+                </ReferenceArrayInput>
                 <DateInput source="published_at" />
                 <SelectInput source="category" choices={[
                     { name: 'Tech', id: 'tech' },
@@ -176,6 +188,11 @@ export const PostShow = ({ ...props }) => (
                     <EditButton />
                 </Datagrid>
             </ReferenceManyField>
+            <ReferenceArrayField reference="tags" source="tags">
+                <SingleFieldList>
+                    <ChipField source="name" />
+                </SingleFieldList>
+            </ReferenceArrayField>
             <TextField source="views" />
         </SimpleShowLayout>
     </Show>

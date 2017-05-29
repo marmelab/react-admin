@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
-import { crudGetOneReference as crudGetOneReferenceAction } from '../../actions/referenceActions';
+import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
 import linkToRecord from '../../util/linkToRecord';
 
 /**
@@ -49,11 +49,11 @@ export class ReferenceField extends Component {
 
     fetchReference(props) {
         const source = get(props.record, props.source);
-
         if (source !== null && typeof source !== 'undefined') {
-            this.props.crudGetOneReference(props.reference, source);
+            this.props.crudGetManyAccumulate(props.reference, [source]);
         }
     }
+
     render() {
         const { record, source, reference, referenceRecord, basePath, allowEmpty, children, elStyle, linkType } = this.props;
         if (React.Children.count(children) !== 1) {
@@ -86,7 +86,7 @@ ReferenceField.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
-    crudGetOneReference: PropTypes.func.isRequired,
+    crudGetManyAccumulate: PropTypes.func.isRequired,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
@@ -114,5 +114,5 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, {
-    crudGetOneReference: crudGetOneReferenceAction,
+    crudGetManyAccumulate: crudGetManyAccumulateAction,
 })(ReferenceField);

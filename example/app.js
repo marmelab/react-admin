@@ -28,6 +28,7 @@ render(
     <Admin authClient={authClient} restClient={delayedRestClient} title="Example Admin" locale="en" messages={messages}>
         <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={Delete} icon={PostIcon} />
         <Resource name="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} remove={Delete} icon={CommentIcon} />
+        <Resource name="tags" />
     </Admin>,
     document.getElementById('root'),
 );

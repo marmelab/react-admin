@@ -21,8 +21,8 @@ export default (authClient) => {
         case USER_LOGIN: {
             try {
                 yield put({ type: USER_LOGIN_LOADING });
-                yield call(authClient, AUTH_LOGIN, payload);
-                yield put({ type: USER_LOGIN_SUCCESS });
+                const authPayload = yield call(authClient, AUTH_LOGIN, payload);
+                yield put({ type: USER_LOGIN_SUCCESS, payload: authPayload });
                 yield put(push(meta.pathName || '/'));
             } catch (e) {
                 yield put({ type: USER_LOGIN_FAILURE, error: e, meta: { auth: true } });

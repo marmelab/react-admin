@@ -2,26 +2,29 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import { SimpleForm } from './SimpleForm';
-import TextInput from '../input/TextInput';
+import { TabbedForm } from './TabbedForm';
+import FormTab from './FormTab';
 
-describe('<SimpleForm />', () => {
-    it('should embed a form with given component children', () => {
+const translate = (label) => label;
+
+describe('<TabbedForm />', () => {
+    it('should render tabs', () => {
         const wrapper = shallow(
-            <SimpleForm>
-                <TextInput source="name" />
-                <TextInput source="city" />
-            </SimpleForm>
+            <TabbedForm translate={translate}>
+              <FormTab />
+              <FormTab />
+            </TabbedForm>
         );
-        const inputs = wrapper.find('FormField');
-        assert.deepEqual(inputs.map(i => i.prop('input').props.source), ['name', 'city']);
+        const tabsContainer = wrapper.find('Tabs');
+        assert.equal(tabsContainer.length, 1);
+        const tabs = wrapper.find('FormTab');
+        assert.equal(tabs.length, 2);
     });
 
     it('should display <Toolbar />', () => {
         const wrapper = shallow(
-            <SimpleForm>
-                <TextInput source="name" />
-            </SimpleForm>
+            <TabbedForm translate={translate}>
+            </TabbedForm>
         );
         const button = wrapper.find('Toolbar');
         assert.equal(button.length, 1);
@@ -30,9 +33,8 @@ describe('<SimpleForm />', () => {
     it('should not pass handleSubmit to the form and pass submitOnEnter to <Toolbar /> when submitOnEnter is false', () => {
         const handleSubmit = () => {};
         const wrapper = shallow(
-            <SimpleForm submitOnEnter={false} handleSubmit={handleSubmit}>
-                <TextInput source="name" />
-            </SimpleForm>
+            <TabbedForm translate={translate} submitOnEnter={false} handleSubmit={handleSubmit}>
+            </TabbedForm>
         );
         const form = wrapper.find('form');
         assert.notStrictEqual(form.prop('onSubmit'), handleSubmit);
@@ -44,9 +46,8 @@ describe('<SimpleForm />', () => {
     it('should pass handleSubmit to the form and pass submitOnEnter to <Toolbar /> when submitOnEnter is true', () => {
         const handleSubmit = () => {};
         const wrapper = shallow(
-            <SimpleForm submitOnEnter={true} handleSubmit={handleSubmit}>
-                <TextInput source="name" />
-            </SimpleForm>
+            <TabbedForm translate={translate} submitOnEnter={true} handleSubmit={handleSubmit}>
+            </TabbedForm>
         );
         const form = wrapper.find('form');
         assert.strictEqual(form.prop('onSubmit'), handleSubmit);

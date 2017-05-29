@@ -130,8 +130,9 @@ export class List extends Component {
     updateData(query) {
         const params = query || this.getQuery();
         const { sort, order, page, perPage, filter } = params;
+        const pagination = { page: parseInt(page, 10), perPage: parseInt(perPage, 10) };
         const permanentFilter = this.props.filter;
-        this.props.crudGetList(this.props.resource, { page, perPage }, { field: sort, order }, { ...filter, ...permanentFilter });
+        this.props.crudGetList(this.props.resource, pagination, { field: sort, order }, { ...filter, ...permanentFilter });
     }
 
     setSort = sort => this.changeParams({ type: SET_SORT, payload: sort });
