@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 
 import translate from '../i18n/translate';
 
-const FieldTitle = ({ resource, source, label, isRequired, translate }) => (
+export const FieldTitle = ({ resource, source, label, isRequired, translate }) => (
     <span>
         {typeof label !== 'undefined' ?
             translate(label, { _: label })
