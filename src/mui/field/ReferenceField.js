@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
+import isPlainObject from 'lodash.isplainobject';
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
 import linkToRecord from '../../util/linkToRecord';
 
@@ -49,7 +50,7 @@ export class ReferenceField extends Component {
 
     fetchReference(props) {
         const source = get(props.record, props.source);
-        if (source !== null && typeof source !== 'undefined') {
+        if (source !== null && typeof source !== 'undefined' && !isRecord(source)) {
             this.props.crudGetManyAccumulate(props.reference, [source]);
         }
     }
@@ -107,9 +108,14 @@ ReferenceField.defaultProps = {
     linkType: 'edit',
 };
 
+export const isRecord = (reference) => isPlainObject(reference) && reference.id;
+
 function mapStateToProps(state, props) {
+    const source = get(props.record, props.source);
+    const referenceRecord = isRecord(source) ? source : state.admin[props.reference].data[source];
+
     return {
-        referenceRecord: state.admin[props.reference].data[get(props.record, props.source)],
+        referenceRecord,
     };
 }
 
