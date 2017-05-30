@@ -39,7 +39,7 @@ class NumberInput extends Component {
     }
 
     render() {
-        const { elStyle, input, label, meta: { touched, error }, options, source, step, resource } = this.props;
+        const { elStyle, input, isRequired, label, meta: { touched, error }, options, source, step, resource } = this.props;
         return (
             <TextField
                 {...input}
@@ -48,7 +48,7 @@ class NumberInput extends Component {
                 onChange={this.handleChange}
                 type="number"
                 step={step}
-                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
+                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
                 errorText={touched && error}
                 style={elStyle}
                 {...options}
@@ -61,6 +61,7 @@ NumberInput.propTypes = {
     addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
     input: PropTypes.object,
+    isRequired: PropTypes.bool,
     label: PropTypes.string,
     meta: PropTypes.object,
     name: PropTypes.string,

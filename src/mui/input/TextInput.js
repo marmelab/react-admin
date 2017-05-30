@@ -37,6 +37,7 @@ export class TextInput extends Component {
         const {
             elStyle,
             input,
+            isRequired,
             label,
             meta: { touched, error },
             options,
@@ -52,7 +53,7 @@ export class TextInput extends Component {
                 onFocus={this.handleFocus}
                 onChange={this.handleChange}
                 type={type}
-                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
+                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
                 errorText={touched && error}
                 style={elStyle}
                 {...options}
@@ -65,6 +66,7 @@ TextInput.propTypes = {
     addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
     input: PropTypes.object,
+    isRequired: PropTypes.bool,
     label: PropTypes.string,
     meta: PropTypes.object,
     name: PropTypes.string,
@@ -75,10 +77,6 @@ TextInput.propTypes = {
     resource: PropTypes.string,
     source: PropTypes.string,
     type: PropTypes.string,
-    validate: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.arrayOf(PropTypes.func)
-    ]),
 };
 
 TextInput.defaultProps = {

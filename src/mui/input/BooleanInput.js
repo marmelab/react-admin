@@ -16,14 +16,14 @@ const styles = {
     },
 };
 
-const BooleanInput = ({ input, label, source, elStyle, resource }) => (
+const BooleanInput = ({ input, isRequired, label, source, elStyle, resource }) => (
     <div style={elStyle || styles.block}>
         <Toggle
             defaultToggled={!!input.value}
             onToggle={input.onChange}
             labelStyle={styles.label}
             style={styles.toggle}
-            label={<FieldTitle label={label} source={source} resource={resource} />}
+            label={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
         />
     </div>
 );
@@ -32,6 +32,7 @@ BooleanInput.propTypes = {
     addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
     input: PropTypes.object,
+    isRequired: PropTypes.bool,
     label: PropTypes.string,
     resource: PropTypes.string,
     source: PropTypes.string,

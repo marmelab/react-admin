@@ -91,6 +91,7 @@ export class AutocompleteInput extends Component {
             elStyle,
             filter,
             input,
+            isRequired,
             label,
             meta: { touched, error },
             options,
@@ -109,7 +110,7 @@ export class AutocompleteInput extends Component {
             <AutoComplete
                 searchText={selectedSource && this.getSuggestion(selectedSource)}
                 dataSource={dataSource}
-                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
+                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
                 filter={filter}
                 onNewRequest={this.handleNewRequest}
                 onUpdateInput={setFilter}
@@ -128,6 +129,7 @@ AutocompleteInput.propTypes = {
     elStyle: PropTypes.object,
     filter: PropTypes.func.isRequired,
     input: PropTypes.object,
+    isRequired: PropTypes.bool,
     label: PropTypes.string,
     meta: PropTypes.object,
     options: PropTypes.object,
