@@ -42,7 +42,8 @@ export const DateField = ({ elStyle, locales, options, record, showTime = false,
     if (!record) return null;
     const value = get(record, source);
     if (value == null) return null;
-    const date = value instanceof Date ? value : new Date(value);
+    let date = value instanceof Date ? value : new Date(value);
+	date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
     const dateString = showTime ?
         (toLocaleStringSupportsLocales ? date.toLocaleString(locales, options) : date.toLocaleString()) :
         (toLocaleStringSupportsLocales ? date.toLocaleDateString(locales, options) : date.toLocaleDateString());
