@@ -86,7 +86,7 @@ export const PostEdit = (props) => (
 
 That's enough to display the post show view:
 
-![post show view](./img/show-view.png)
+![post show view](./img/post-show.png)
 
 ### Page Title
 
