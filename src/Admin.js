@@ -47,10 +47,10 @@ const Admin = ({
     });
     const resettableAppReducer = (state, action) => appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
     const saga = function* rootSaga() {
-        yield [
+        yield all([
             crudSaga(restClient, authClient),
             ...customSagas,
-        ].map(fork);
+        ].map(fork));
     };
     const sagaMiddleware = createSagaMiddleware();
     const history = createHistory();
