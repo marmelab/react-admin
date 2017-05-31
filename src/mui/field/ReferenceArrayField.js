@@ -90,7 +90,7 @@ ReferenceArrayField.propTypes = {
 
 const mapStateToProps = (state, props) => {
     const { record, source, reference } = props;
-    const ids = get(record, source);
+    const ids = get(record, source) || [];
     return {
         ids,
         data: getReferencesByIds(state, reference, ids)
