@@ -26,17 +26,17 @@ function* handleResponse({ type, requestPayload, error, payload }) {
         return requestPayload.redirect ? yield all([
             put(showNotification('aor.notification.updated')),
             put(push(requestPayload.basePath)),
-        ]) : yield all([put(showNotification('aor.notification.updated'))]);
+        ]) : yield put(showNotification('aor.notification.updated'));
     case CRUD_CREATE_SUCCESS:
         return requestPayload.redirect ? yield all([
             put(showNotification('aor.notification.created')),
             put(push(linkToRecord(requestPayload.basePath, payload.data.id))),
-        ]) : yield all([put(showNotification('aor.notification.created'))]);
+        ]) : yield put(showNotification('aor.notification.created'));
     case CRUD_DELETE_SUCCESS:
         return requestPayload.redirect ? yield all([
             put(showNotification('aor.notification.deleted')),
             put(push(requestPayload.basePath)),
-        ]) : yield all([put(showNotification('aor.notification.deleted'))]);
+        ]) : yield put(showNotification('aor.notification.deleted'));
     case CRUD_GET_ONE_FAILURE:
         return requestPayload.basePath ? yield all([
             put(showNotification('aor.notification.item_doesnt_exist', 'warning')),
@@ -52,9 +52,7 @@ function* handleResponse({ type, requestPayload, error, payload }) {
         const errorMessage = typeof error === 'string'
             ? error
             : (error.message || 'aor.notification.http_error');
-        return yield all([
-            put(showNotification(errorMessage, 'warning')),
-        ]);
+        return yield put(showNotification(errorMessage, 'warning'));
     }
     default:
         return yield all([]);

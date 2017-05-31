@@ -1,4 +1,4 @@
-import { all } from 'react-saga/effects';
+import { all } from 'redux-saga/effects';
 import auth from './auth';
 import crudFetch from './crudFetch';
 import crudResponse from './crudResponse';

@@ -7,7 +7,7 @@ import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
-import { fork } from 'redux-saga/effects';
+import { all, fork } from 'redux-saga/effects';
 
 import { USER_LOGOUT } from './actions/authActions';
 import adminReducer from './reducer';
