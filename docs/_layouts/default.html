@@ -136,6 +136,25 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="chapter {% if page.path == 'Show.md' %}active{% endif %}">
+                            <a href="./Show.html">
+                                <b>7.</b> The <code>&lt;Show&gt;</code> View
+                            </a>
+                            <ul class="articles" {% if page.path != 'Show.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#the-show-component"><code>&lt;Show&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#page-title">Page Title</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#actions">Actions</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#the-simpleshowlayout-component"><code>&lt;SimpleShowLayout&gt;</code></a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="chapter {% if page.path == 'Fields.md' %}active{% endif %}">
                             <a href="./Fields.html">
                                 <b>6.</b> Field Components
