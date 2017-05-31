@@ -38,8 +38,7 @@ export default App;
 
 // in src/posts.js
 import React from 'react';
-import { Show, Create, Edit, SimpleForm, SimpleShowLayout, DisabledInput, TextInput, DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton, RichTextField } from 'admin-on-rest';
-import RichTextInput from 'aor-rich-text-input';
+import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'admin-on-rest';
 
 export const PostShow = (props) => (
     <Show {...props}>
@@ -50,36 +49,6 @@ export const PostShow = (props) => (
             <DateField label="Publication date" source="created_at" />
         </SimpleShowLayout>
     </Show>
-);
-
-export const PostCreate = (props) => (
-    <Create {...props}>
-        <SimpleForm>
-            <TextInput source="title" />
-            <TextInput source="teaser" options={{ multiLine: true }} />
-            <RichTextInput source="body" />
-            <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />
-        </SimpleForm>
-    </Create>
-);
-
-export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
-        <SimpleForm>
-            <DisabledInput label="Id" source="id" />
-            <TextInput source="title" validate={required} />
-            <LongTextInput source="teaser" validate={required} />
-            <RichTextInput source="body" validate={required} />
-            <DateInput label="Publication date" source="published_at" />
-            <ReferenceManyField label="Comments" reference="comments" target="post_id">
-                <Datagrid>
-                    <TextField source="body" />
-                    <DateField source="created_at" />
-                    <EditButton />
-                </Datagrid>
-            </ReferenceManyField>
-        </SimpleForm>
-    </Edit>
 );
 ```
 {% endraw %}
