@@ -12,7 +12,7 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 Most admin-on-rest components support two style props to set inline styles:
 
 * `style`: A style object to customize the look and feel of the component container (e.g. the `<td>` in a datagrid). Most of the time, that's where you'll want to put your custom styles.
-* `elStyle`: A style object to customize the look and feel of the component element itself, usually a material ui component. Use this prop when you want to fine tune the display of a material ui component, according to [their styling documentation]((http://www.material-ui.com/#/customization/styles)).
+* `elStyle`: A style object to customize the look and feel of the component element itself, usually a material ui component. Use this prop when you want to fine tune the display of a material ui component, according to [their styling documentation](http://www.material-ui.com/#/customization/styles).
 
 These props accept a style object:
 
@@ -122,7 +122,7 @@ export const PostList = (props) => (
 
 **Tip**: If you only provide `small` and `medium`, the `medium` element will also be used on large screens. The same kind of smart default exists for when you omit `small` or `medium`.
 
-**Tip**: You can also use [material-ui's `withWith()` higher order component](https://github.com/callemall/material-ui/blob/master/src/utils/withWidth.js) to have the `with` prop injected in your own components.
+**Tip**: You can also use [material-ui's `withWidth()` higher order component](https://github.com/callemall/material-ui/blob/master/src/utils/withWidth.js) to have the `with` prop injected in your own components.
 
 ## Using a Predefined Theme
 
