@@ -76,11 +76,11 @@ title: "Reference"
 * `<Sidebar>`
 * `<SimpleList>`
 * `<SingleFieldList>`
-* `<Show>`
+* [`<Show>`](./Show.html#the-show-component)
 * `<ShowButton>`
 * [`<SimpleForm>`](./CreateEdit.html#the-simpleform-component)
 * [`<SimpleList>`](./List.html#the-simplelist-component)
-* `<SimpleShowLayout>`
+* [`<SimpleShowLayout>`](./Show.html#the-simpleshowlayout-component)
 * [`<SingleFieldList>`](./List.html#the-singlefieldlist-component)
 * [`<TabbedForm>`](./CreateEdit.html#the-tabbedform-component)
 * [`<TextField>`](./Fields.html#textfield)
