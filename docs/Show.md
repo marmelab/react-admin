@@ -11,7 +11,7 @@ The Show view displays a record fetched from the API in a readonly fashion. It d
 
 ## The `<Show>` component
 
-The `<Show>` component renders the page title and actions, and fetch the record from the REST API. It is not responsible for rendering the actual record - that's the job of its child component (usually `<SimpleShowLayout>`), to which they pass the `record` as prop.
+The `<Show>` component renders the page title and actions, and fetches the record from the REST API. It is not responsible for rendering the actual record - that's the job of its child component (usually `<SimpleShowLayout>`), to which they pass the `record` as prop.
 
 Here are all the props accepted by the `<Show>` component:
 
