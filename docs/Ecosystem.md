@@ -18,21 +18,7 @@ title: "Ecosystem"
 
 ## Translations
 
-- Chinese (`cn`): [downup2u/aor-language-chinese](https://github.com/downup2u/aor-language-chinese)
-- Chinese (Traditional) (`cht`): [leesei/aor-language-chinese-traditional](https://github.com/leesei/aor-language-chinese-traditional)
-- Czech (`cs`): [magikMaker/aor-language-czech](https://github.com/magikMaker/aor-language-czech)
-- Dutch (`nl`): [pimschaaf/aor-language-dutch](https://github.com/pimschaaf/aor-language-dutch)
-- French (`fr`): [marmelab/aor-language-french](https://github.com/marmelab/aor-language-french)
-- German (`de`): [der-On/aor-language-german](https://github.com/der-On/aor-language-german)
-- Hebrew (`he`): [mstmustisnt/aor-language-hebrew](https://github.com/mstmustisnt/aor-language-hebrew)
-- Hungarian (`hu`): [s33m4nn/aor-language-hungarian](https://github.com/s33m4nn/aor-language-hungarian)
-- Italian (`it`): [stefsava/aor-language-italian](https://github.com/stefsava/aor-language-italian)
-- Japanese (`ja`): [kuma-guy/aor-language-japanese](https://github.com/kuma-guy/aor-language-japanese)
-- Portuguese (`pt`): [movibe/aor-language-portugues](https://github.com/movibe/aor-language-portugues)
-- Russian (`ru`): [cytomich/aor-language-russian](https://github.com/cytomich/aor-language-russian)
-- Spanish (`es`): [blackboxvision/aor-language-spanish](https://github.com/BlackBoxVision/aor-language-spanish)
-- Swedish (`sv`): [StefanWallin/aor-language-swedish](https://github.com/StefanWallin/aor-language-swedish)
-- Vietnamese (`vi`): [kimkha/aor-language-vietnamese](https://github.com/kimkha/aor-language-vietnamese)
+See the [translation](./Translation.html#available-locales) page.
 
 ## Rest clients
 

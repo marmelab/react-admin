@@ -20,12 +20,12 @@ class DateInput extends Component {
     onChange = (_, date) => this.props.input.onChange(date);
 
     render() {
-        const { input, label, meta: { touched, error }, options, source, elStyle, resource } = this.props;
+        const { input, isRequired, label, meta: { touched, error }, options, source, elStyle, resource } = this.props;
 
         return (<DatePicker
             {...input}
             errorText={touched && error}
-            floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
+            floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
             DateTimeFormat={Intl.DateTimeFormat}
             container="inline"
             autoOk
@@ -41,6 +41,7 @@ DateInput.propTypes = {
     addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
     input: PropTypes.object,
+    isRequired: PropTypes.bool,
     label: PropTypes.string,
     meta: PropTypes.object,
     options: PropTypes.object,

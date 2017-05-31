@@ -7,7 +7,7 @@ import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
-import { fork } from 'redux-saga/effects';
+import { all, fork } from 'redux-saga/effects';
 
 import { USER_LOGOUT } from './actions/authActions';
 import adminReducer from './reducer';
@@ -47,10 +47,10 @@ const Admin = ({
     });
     const resettableAppReducer = (state, action) => appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
     const saga = function* rootSaga() {
-        yield [
+        yield all([
             crudSaga(restClient, authClient),
             ...customSagas,
-        ].map(fork);
+        ].map(fork));
     };
     const sagaMiddleware = createSagaMiddleware();
     const history = createHistory();

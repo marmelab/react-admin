@@ -140,7 +140,7 @@ export class CheckboxGroupInputComponent extends Component {
     }
 
     render() {
-        const { choices, label, muiTheme, resource, source } = this.props;
+        const { choices, isRequired, label, muiTheme, resource, source } = this.props;
         const styles = getStyles(muiTheme);
         const { prepareStyles } = muiTheme;
 
@@ -148,7 +148,7 @@ export class CheckboxGroupInputComponent extends Component {
             <div>
                 <div style={prepareStyles(styles.labelContainer)}>
                     <div style={prepareStyles(styles.label)}>
-                        <FieldTitle label={label} source={source} resource={resource} />
+                        <FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />
                     </div>
                 </div>
                 {choices.map(this.renderCheckbox)}
@@ -166,6 +166,7 @@ CheckboxGroupInputComponent.propTypes = {
     input: PropTypes.shape({
         onChange: PropTypes.func.isRequired,
     }),
+    isRequired: PropTypes.bool,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.func,

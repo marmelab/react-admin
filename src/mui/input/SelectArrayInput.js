@@ -134,6 +134,7 @@ export class SelectArrayInput extends Component {
         const {
             elStyle,
             input,
+            isRequired,
             choices,
             label,
             meta: { touched, error },
@@ -157,7 +158,7 @@ export class SelectArrayInput extends Component {
                 onRequestAdd={this.handleAdd}
                 onRequestDelete={this.handleDelete}
                 onUpdateInput={setFilter}
-                floatingLabelText={<FieldTitle label={label} source={source} resource={resource}/>}
+                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
                 errorText={touched && error}
                 style={elStyle}
                 dataSource={this.formatChoices(choices)}
@@ -174,6 +175,7 @@ SelectArrayInput.propTypes = {
     elStyle: PropTypes.object,
     choices: PropTypes.arrayOf(PropTypes.object),
     input: PropTypes.object,
+    isRequired: PropTypes.bool,
     label: PropTypes.string,
     meta: PropTypes.object,
     name: PropTypes.string,
