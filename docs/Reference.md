@@ -35,6 +35,8 @@ title: "Reference"
 * `<EditActions>`
 * `<EditButton>`
 * [`<EmailField>`](./Fields.html#emailfield)
+* [`<FileField>`](./Fields.html#filefield)
+* [`<FileInput>`](./Inputs.html#fileinput)
 * [`<Filter>`](./List.html#filters)
 * `<FilterButton>`
 * `<FilterForm>`
