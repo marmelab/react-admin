@@ -1,3 +1,4 @@
+import { all } from 'react-saga/effects';
 import auth from './auth';
 import crudFetch from './crudFetch';
 import crudResponse from './crudResponse';

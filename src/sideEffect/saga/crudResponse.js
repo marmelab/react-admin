@@ -1,4 +1,4 @@
-import { put, takeEvery } from 'redux-saga/effects';
+import { all, put, takeEvery } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import {
     CRUD_CREATE_FAILURE,

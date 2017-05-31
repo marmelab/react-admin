@@ -1,4 +1,4 @@
-import { put, call, cancelled, takeEvery, takeLatest } from 'redux-saga/effects';
+import { all, put, call, cancelled, takeEvery, takeLatest } from 'redux-saga/effects';
 import {
     FETCH_START,
     FETCH_END,
