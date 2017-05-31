@@ -35,7 +35,6 @@ describe('List Page', () => {
         });
 
         it('should filter directly while typing (with some debounce)', async () => {
-            await ListPagePosts.goToPage(1);
             await ListPagePosts.setFilterValue('q', 'quis culpa impedit');
             assert.equal(await ListPagePosts.getNbRows(), 1);
             const displayedPosts = await driver.findElements(ListPagePosts.elements.recordRows);
