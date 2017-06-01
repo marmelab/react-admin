@@ -21,7 +21,17 @@ class DateInput extends Component {
         this.props.input.onChange(date);
         this.props.input.onBlur();
     };
+
+    /**
+     * This aims to fix a bug created by the conjunction of
+     * redux-form, which expects onBlur to be triggered after onChange, and
+     * material-ui, which triggers onBlur on <DatePicker> when the user clicks
+     * on the input to bring the focus on the calendar rather than the input.
+     *
+     * @see https://github.com/erikras/redux-form/issues/1218#issuecomment-229072652
+     */
     onBlur = () => {};
+
     onDismiss = () => this.props.input.onBlur();
 
     render() {
