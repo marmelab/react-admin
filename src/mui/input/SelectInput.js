@@ -64,6 +64,10 @@ import FieldTitle from '../../util/FieldTitle';
  * The object passed as `options` props is passed to the material-ui <SelectField> component
  */
 export class SelectInput extends Component {
+    /*
+     * Using state to bypass a redux-form comparison but which prevents re-rendering
+     * @see https://github.com/erikras/redux-form/issues/2456
+     */
     state = {
         value: this.props.input.value,
     }
