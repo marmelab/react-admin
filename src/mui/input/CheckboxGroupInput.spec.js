@@ -1,7 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { CheckboxGroupInput } from './CheckboxGroupInput';
+import { CheckboxGroupInputComponent as CheckboxGroupInput } from './CheckboxGroupInput';
 
 describe('<CheckboxGroupInput />', () => {
     const defaultProps = {
@@ -15,7 +15,13 @@ describe('<CheckboxGroupInput />', () => {
             value: [],
         },
         translate: x => x,
+        muiTheme: {
+            baseTheme: {},
+            textField: {},
+            prepareStyles: () => {},
+        },
     };
+
 
     it('should use a mui Checkbox', () => {
         const wrapper = shallow(<CheckboxGroupInput {...defaultProps} />);

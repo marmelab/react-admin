@@ -94,6 +94,7 @@ export class SelectInput extends Component {
             choices,
             elStyle,
             input,
+            isRequired,
             label,
             meta: { touched, error },
             options,
@@ -103,7 +104,7 @@ export class SelectInput extends Component {
         return (
             <SelectField
                 value={input.value}
-                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
+                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
                 onChange={this.handleChange}
                 autoWidth
                 style={elStyle}
@@ -125,6 +126,7 @@ SelectInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     elStyle: PropTypes.object,
     input: PropTypes.object,
+    isRequired: PropTypes.bool,
     label: PropTypes.string,
     meta: PropTypes.object,
     options: PropTypes.object,

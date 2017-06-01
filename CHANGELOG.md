@@ -1,5 +1,49 @@
 # Changelog
 
+## v1.1.0
+
+* Add `<ReferenceArrayInput>` and `<SelectArrayInput>` ([kimkha](https://github.com/kimkha) and [fzaninotto](https://github.com/fzaninotto))
+* Add `<ReferenceArrayField>` ([leesei](https://github.com/leesei) and [fzaninotto](https://github.com/fzaninotto))
+* Add payload to `USER_LOGIN_SUCCESS` action, using the `AUTH_LOGIN` response from the authClient ([SidFerreira](https://github.com/SidFerreira))
+* Add reset state after logout ([bodo22](https://github.com/bodo22))
+* Add ability to disable submit on enter in `<SimpleForm>` and `<TabbedForm>` ([jkrnak](https://github.com/jkrnak))
+* Add integer casting to pagination params ([grahamlyus](https://github.com/grahamlyus))
+* Add `elStyle` prop to `<DisabledInput>` ([wesley6j](https://github.com/wesley6j))
+* Add Frequently Asked Questions (FAQ) to the documentation ([djhi](https://github.com/djhi))
+* Add Ecosystem to the documentation ([djhi](https://github.com/djhi))
+* Add Swedish translation ([StefanWallin](https://github.com/StefanWallin))
+* Fix filters with dot notation not properly cleared ([djhi](https://github.com/djhi))
+* Fix show (edit) button in Edit (Show) page on initial load ([wesley6j](https://github.com/wesley6j))
+* Fix defaultValue typo in blog example ([wesley6j](https://github.com/wesley6j))
+
+## v1.0.2
+
+* Fix typo in Login page instructions in tutorial ([DjLeChuck](https://github.com/DjLeChuck))
+* Fix clear filter breaks filters on subsequent refreshes ([djhi](https://github.com/djhi))
+* Add ability to customize sidebar width ([djhi](https://github.com/djhi))
+* Add example about using auth action creators ([djhi](https://github.com/djhi))
+* Fix `<ReferenceField>` should not fetch null values ([djhi](https://github.com/djhi))
+* Fix typo in `<FilterForm>` styles ([djhi](https://github.com/djhi))
+* Fix Edit View not being updated when fields get changed ([djhi](https://github.com/djhi))
+* Fix DateField tests on all timezones ([djhi](https://github.com/djhi))
+* Add instructions to run the example app in README ([juanda99](https://github.com/juanda99))
+* Fix edge case in `<RichTextField>` when string is falsey value ([faviouz](https://github.com/faviouz))
+
+## v1.0.1
+
+* Fix filters on refresh ([djhi](https://github.com/djhi))
+* Fix `<CheckboxGroupInput>` on IE ([djhi](https://github.com/djhi))
+* Fix warning when using non-string `title` prop in `<Admin>` ([JulienDemangeon](https://github.com/JulienDemangeon))
+* Fix id parameter not decoded in URL ([abarani](https://github.com/abarani))
+* Fix Auth error message not displayed ([tacoo](https://github.com/tacoo))
+* Fix `<Logout>` button not redrawn on theme change ([zyhou](https://github.com/zyhou))
+* Fix validation documentation (`validation` prop renamed to `validate`) ([tacoo](https://github.com/tacoo))
+* Fix JSX syntax highlighting in documentation ([fzaninotto](https://github.com/fzaninotto))
+* Add mention of obligation to declare a `Resource` for `ReferenceInput` to work ([fzaninotto](https://github.com/fzaninotto))
+* Add a missing link in the doc Table of Contents ([leesei](https://github.com/leesei))
+* Add link to Chinese (Traditional) (`cht`) translation ([leesei](https://github.com/leesei))
+* Add link to sandbox in the Contributing documentation ([fzaninotto](https://github.com/fzaninotto))
+
 ## v1.0.0
 
 * [BC Break] Switch validation system to redux-form native validation (breaks all input validation)

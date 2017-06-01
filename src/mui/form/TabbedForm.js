@@ -8,7 +8,8 @@ import Toolbar from './Toolbar';
 import getDefaultValues from './getDefaultValues';
 import translate from '../../i18n/translate';
 
-const divStyle = { padding: '0 1em 1em 1em' };
+const noop = () => {};
+
 export class TabbedForm extends Component {
     constructor(props) {
         super(props);
@@ -22,10 +23,10 @@ export class TabbedForm extends Component {
     };
 
     render() {
-        const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath, translate } = this.props;
+        const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath, translate, submitOnEnter } = this.props;
         return (
-            <form onSubmit={handleSubmit} className="tabbed-form">
-                <div style={divStyle}>
+            <form onSubmit={ submitOnEnter ? handleSubmit : noop } className="tabbed-form">
+                <div style={{ padding: '0 1em 1em 1em' }}>
                     <Tabs
                         value={this.state.value}
                         onChange={this.handleChange}
@@ -44,7 +45,7 @@ export class TabbedForm extends Component {
                         )}
                     </Tabs>
                 </div>
-                <Toolbar invalid={invalid} />
+                <Toolbar invalid={invalid} submitOnEnter={submitOnEnter} />
             </form>
         );
     }
@@ -64,10 +65,12 @@ TabbedForm.propTypes = {
     basePath: PropTypes.string,
     translate: PropTypes.func,
     validate: PropTypes.func,
+    submitOnEnter: PropTypes.bool,
 };
 
 TabbedForm.defaultProps = {
     contentContainerStyle: { borderTop: 'solid 1px #e0e0e0' },
+    submitOnEnter: true,
 };
 
 const enhance = compose(

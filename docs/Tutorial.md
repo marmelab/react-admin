@@ -426,7 +426,7 @@ The `authClient` is a simple function, which must return a `Promise`:
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest';
 
 export default (type, params) => {
-    // called when the user attempts to  log in
+    // called when the user attempts to log in
     if (type === AUTH_LOGIN) {
         const { username } = params;
         localStorage.setItem('username', username);
@@ -438,7 +438,7 @@ export default (type, params) => {
         localStorage.removeItem('username');
         return Promise.resolve();
     }
-    // called hen the API returns an error
+    // called when the API returns an error
     if (type === AUTH_ERROR) {
         const { status } = params;
         if (status === 401 || status === 403) {
@@ -655,9 +655,9 @@ const convertHTTPResponseToREST = (response, type, resource, params) => {
             total: parseInt(headers.get('content-range').split('/').pop(), 10),
         };
     case CREATE:
-        return { ...params.data, id: json.id };
+        return { data: { ...params.data, id: json.id } };
     default:
-        return json;
+        return { data: json };
     }
 };
 

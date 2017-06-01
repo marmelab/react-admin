@@ -61,4 +61,31 @@ describe('<ImageField />', () => {
         assert.equal(img.prop('alt'), 'Hello world!');
         assert.equal(img.prop('title'), 'Hello world!');
     });
+
+    it('should render a list of images with correct attributes based on `src` and `title`', () => {
+        const wrapper = shallow((
+            <ImageField
+                record={{
+                    pictures: [{
+                        url: 'http://foo.com/bar.jpg',
+                        title: 'Hello world!',
+                    }, {
+                        url: 'http://bar.com/foo.jpg',
+                        title: 'Bye world!',
+                    }],
+                }}
+                source="pictures"
+                src="url"
+                title="title"
+            />
+        ));
+
+        const imgs = wrapper.find('img');
+        assert.equal(imgs.at(0).prop('src'), 'http://foo.com/bar.jpg');
+        assert.equal(imgs.at(0).prop('alt'), 'Hello world!');
+        assert.equal(imgs.at(0).prop('title'), 'Hello world!');
+        assert.equal(imgs.at(1).prop('src'), 'http://bar.com/foo.jpg');
+        assert.equal(imgs.at(1).prop('alt'), 'Bye world!');
+        assert.equal(imgs.at(1).prop('title'), 'Bye world!');
+    });
 });

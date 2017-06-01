@@ -1,4 +1,4 @@
-import { put, call, takeEvery } from 'redux-saga/effects';
+import { all, put, call, takeEvery } from 'redux-saga/effects';
 import { push, replace } from 'react-router-redux';
 
 import { showNotification, hideNotification } from '../../actions/notificationActions';
@@ -21,13 +21,13 @@ export default (authClient) => {
         case USER_LOGIN: {
             try {
                 yield put({ type: USER_LOGIN_LOADING });
-                yield call(authClient, AUTH_LOGIN, payload);
-                yield put({ type: USER_LOGIN_SUCCESS });
+                const authPayload = yield call(authClient, AUTH_LOGIN, payload);
+                yield put({ type: USER_LOGIN_SUCCESS, payload: authPayload });
                 yield put(push(meta.pathName || '/'));
             } catch (e) {
                 yield put({ type: USER_LOGIN_FAILURE, error: e, meta: { auth: true } });
                 const errorMessage = typeof e === 'string'
-                    ? error
+                    ? e
                     : (typeof e === 'undefined' || !e.message ? 'aor.auth.sign_in_error' : e.message);
                 yield put(showNotification(errorMessage, 'warning'));
             }
@@ -62,9 +62,9 @@ export default (authClient) => {
         }
     }
     return function* watchAuthActions() {
-        yield [
+        yield all([
             takeEvery(action => action.meta && action.meta.auth, handleAuth),
             takeEvery(FETCH_ERROR, handleAuth),
-        ];
+        ]);
     };
 };

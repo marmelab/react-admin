@@ -184,6 +184,61 @@ The optional `title` prop points to the picture title property, used for both `a
 
 If passed value is an existing path within your JSON object, then it uses the object attribute. Otherwise, it considers its value as an hard-written title.
 
+
+If the record actually contains an array of images in its property defined by the `source` prop, the `src` prop will be needed to determine the `src` value of the images, for example:
+
+```js
+// This is the record
+{
+    pictures: [
+        { url: 'image1.jpg', desc: 'First image' },
+        { url: 'image2.jpg', desc: 'Second image' },
+    ],
+}
+
+<ImageField source="pictures" src="url" title="desc" />
+```
+
+## `<FileField>`
+
+If you need to display a file provided by your API, you can use the `<FileField />` component:
+
+```jsx
+import { FileField } from 'admin-on-rest';
+
+<FileField source="url" title="title" />
+```
+
+This field is also generally used within an [<FileInput />](http://marmelab.com/admin-on-rest/Inputs.html#fileinput) component to display preview.
+
+The optional `title` prop points to the file title property, used for `title` attributes. It can either be an hard-written string, or a path within your JSON object:
+
+```jsx
+// { file: { url: 'doc.pdf', title: 'Presentation' } }
+
+// Title would be "file.title", hence "Presentation"
+<FileField source="file.url" title="file.title" />
+
+// Title would be "File", as "File" is not a path in previous given object
+<FileField source="file.url" title="File" />
+```
+
+If passed value is an existing path within your JSON object, then it uses the object attribute. Otherwise, it considers its value as an hard-written title.
+
+If the record actually contains an array of files in its property defined by the `source` prop, the `src` prop will be needed to determine the `href` value of the links, for example:
+
+```js
+// This is the record
+{
+    files: [
+        { url: 'image1.jpg', desc: 'First image' },
+        { url: 'image2.jpg', desc: 'Second image' },
+    ],
+}
+
+<FileField source="files" src="url" title="desc" />
+```
+
 ## `<NumberField>`
 
 Displays a number formatted according to the browser locale, right aligned.
@@ -377,9 +432,9 @@ Then admin-on-rest renders the `<CommentList>` with a loader for the `<Reference
 
 ## `<ReferenceManyField>`
 
-This component fetches a list of referenced record (using the `GET_MANY_REFERENCE` REST method), and passes the result to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
+This component fetches a list of referenced records by reverse lookup of the current `record.id` in other resource (using the `GET_MANY_REFERENCE` REST method). The field name of the current record's id in the other resource is specified by the required `target` field. The result is then passed to an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
 
-For instance, here is how to fetch the `comments` related to a `post` record, and display the `author.name` for each, in a `<ChipField>`:
+For instance, here is how to fetch the `comments` related to a `post` record by matching `comment.post_id` to `post.id`, and then display the `author.name` for each, in a `<ChipField>`:
 
 ```jsx
 import React from 'react';
@@ -459,6 +514,89 @@ Also, you can filter the query used to populate the possible values. Use the `fi
 </ReferenceManyField>
 ```
 {% endraw %}
+
+## `<ReferenceArrayField>`
+
+Use `<ReferenceArrayField>` to display an list of reference values based on an array of foreign keys.
+
+For instance, if a post has many tags, a post resource may look like:
+
+```js
+{
+    id: 1234,
+    title: 'Lorem Ipsum',
+    tag_ids: [1, 23, 4]
+}
+```
+
+Where `[1, 23, 4]` refer to ids of `tag` resources.
+
+`<ReferenceArrayField>` can fetch the `tag` resources related to this `post` resource by matching `post.tag_ids` to `tag.id`. `<ReferenceArrayField source="tags_ids" reference="tags">` would issue an HTTP request looking like:
+
+```
+http://myapi.com/tags?id=[1,23,4]
+```
+
+**Tip**: `<ReferenceArrayField>` fetches the related resources using the `GET_MANY` REST method, so the actual HTTP request depends on your REST client.
+
+Once it receives the related resources, `<ReferenceArrayField>` passes them to its child component using the `ids` and `data` props, so the child must be an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
+
+Here is how to fetch the list of tags for each post in a `PostList`, and display the `name` for each `tag` in a `<ChipField>`:
+
+```jsx
+import React from 'react';
+import { List, Datagrid, ChipField, ReferenceArrayField, SingleFieldList, TextField } from 'admin-on-rest';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <ReferenceArrayField label="Tags" reference="tags" source="tag_ids">
+                <SingleFieldList>
+                    <ChipField source="name" />
+                </SingleFieldList>
+            </ReferenceArrayField>
+            <EditButton />
+        </Datagrid>
+    </List>
+);
+```
+
+**Note**: You **must** add a `<Resource>` component for the reference resource to your `<Admin>` component, because admin-on-rest needs it to fetch the reference data. You can omit the `list` prop in this Resource if you don't want to show an entry for it in the sidebar menu.
+
+```jsx
+export const App = () => (
+    <Admin restClient={simpleRestClient('http://path.to.my.api')}>
+        <Resource name="posts" list={PostList} />
+        <Resource name="tags" /> // <= this one is compulsory
+    </Admin>
+);
+```
+
+In an Edit of Show view, you can combine `<ReferenceArrayField>` with `<Datagrid>` to display a related resources in a table. For instance, to display more details about the tags related to a post in the `PostShow` view:
+
+```jsx
+import React from 'react';
+import { Show, SimpleShowLayout, TextField, ReferenceArrayField, Datagrid, ShowButton } from 'admin-on-rest';
+
+export const PostShow = (props) => (
+    <Show {...props}>
+        <SimpleShowLayout>
+            <TextField source="id" />
+            <TextField source="title" />
+            <ReferenceArrayField label="Tags" reference="tags" source="tag_ids">
+                <Datagrid>
+                    <TextField source="id" />
+                    <TextField source="name" />
+                    <ShowButton />
+                </SingleFieldList>
+            </ReferenceArrayField>
+            <EditButton />
+        </SimpleShowLayout>
+    </List>
+);
+```
 
 ## `<RichTextField>`
 

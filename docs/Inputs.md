@@ -345,9 +345,13 @@ Previews are enabled using `<ImageInput>` children, as following:
 </ImageInput>
 ```
 
-This component accepts all [react-dropzone properties](https://github.com/okonet/react-dropzone#features), in addition to those of admin-on-rest. For instance, if you need to upload several images at once, just add the `multiple` DropZone attribute to your `<ImageInput />` field.
+Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.html#writing_your_own_field_component).
 
-If the default Dropzone label don't fit with your need, you can pass a `placeholder` attribute to overwrite it. The attribute can be anything React can render (`PropTypes.node`):
+When receiving **new** files, `ImageInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display informations about size or mimetype inside a custom field.
+
+The `ImageInput` component accepts all [react-dropzone properties](https://github.com/okonet/react-dropzone#features), in addition to those of admin-on-rest. For instance, if you need to upload several images at once, just add the `multiple` DropZone attribute to your `<ImageInput />` field.
+
+If the default Dropzone label doesn't fit with your need, you can pass a `placeholder` attribute to overwrite it. The attribute can be anything React can render (`PropTypes.node`):
 
 ```jsx
 <ImageInput source="pictures" label="Related pictures" accept="image/*" placeholder={<p>Drop your file here</p>}>
@@ -356,6 +360,36 @@ If the default Dropzone label don't fit with your need, you can pass a `placehol
 ```
 
 Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./RestClients.html#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
+
+## `<FileInput>`
+
+`<FileInput>` allows to upload some files using [react-dropzone](https://github.com/okonet/react-dropzone).
+
+![FileInput](./img/file-input.png)
+
+Previews (actually a simple list of files names) are enabled using `<FileInput>` children, as following:
+
+```jsx
+<FileInput source="files" label="Related files" accept="application/pdf">
+    <FileField source="src" title="title" />
+</FileInput>
+```
+
+Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.html#writing_your_own_field_component).
+
+When receiving **new** files, `FileInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display informations about size or mimetype inside a custom field.
+
+The `FileInput` component accepts all [react-dropzone properties](https://github.com/okonet/react-dropzone#features), in addition to those of admin-on-rest. For instance, if you need to upload several files at once, just add the `multiple` DropZone attribute to your `<FileInput />` field.
+
+If the default Dropzone label doesn't fit with your need, you can pass a `placeholder` attribute to overwrite it. The attribute can be anything React can render (`PropTypes.node`):
+
+```jsx
+<FileInput source="files" label="Related files" accept="application/pdf" placeholder={<p>Drop your file here</p>}>
+    <ImageField source="src" title="title" />
+</FileInput>
+```
+
+Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./RestClients.html#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
 ## `<LongTextInput>`
 
@@ -488,6 +522,15 @@ import { ReferenceInput, SelectInput } from 'admin-on-rest'
 
 ![ReferenceInput](./img/reference-input.gif)
 
+**Note**: You **must** add a `<Resource>` for the reference resource - admin-on-rest needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
+
+```jsx
+<Admin restClient={myRestClient}>
+    <Resource name="comments" list={CommentList} />
+    <Resource name="posts" />
+</Admin>
+```
+
 Set the `allowEmpty` prop when the empty value is allowed.
 
 ```jsx
@@ -553,6 +596,111 @@ The enclosed component may further filter results (that's the case, for instance
      filterToQuery={searchText => ({ title: searchText })}>
     <SelectInput optionText="title" />
 </ReferenceInput>
+```
+
+## `<ReferenceArrayInput>`
+
+Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let users choose a list of values (usually foreign keys) from another REST endpoint.
+
+`<ReferenceArrayInput>` fetches the related resources (using the `CRUD_GET_MANY` REST method) as well as possible resources (using the 
+`CRUD_GET_MATCHING` REST method) in the reference endpoint.
+
+For instance, if the post object has many tags, a post resource may look like:
+
+```js
+{
+    id: 1234,
+    tag_ids: [1, 23, 4]
+}
+```
+
+Then `<ReferenceArrayInput>` would fetch a list of tag resources from these two calls:
+
+```
+http://myapi.com/tags?id=[1,23,4]
+http://myapi.com/tags?page=1&perPage=25
+```
+
+Once it receives the deduplicated reference resources, this component delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
+
+This means you can use `<ReferenceArrayInput>` with [`<SelectArrayInput>`](#selectarrayinput), or with the component of your choice, provided it supports the `choices` attribute.
+
+The component expects a `source` and a `reference` attributes. For instance, to make the `tag_ids` for a `post` editable:
+
+```js
+import { ReferenceArrayInput, SelectArrayInput } from 'admin-on-rest'
+
+<ReferenceArrayInput source="tag_ids" reference="tags">
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+```
+
+![SelectArrayInput](./img/select-array-input.gif)
+
+**Note**: You **must** add a `<Resource>` for the reference resource - admin-on-rest needs it to fetch the reference data. You can omit the list prop in this reference if you want to hide it in the sidebar menu.
+
+```js
+<Admin restClient={myRestClient}>
+    <Resource name="posts" list={PostList} edit={PostEdit} />
+    <Resource name="tags" />
+</Admin>
+```
+
+Set the `allowEmpty` prop when the empty value is allowed.
+
+```js
+import { ReferenceArrayInput, SelectArrayInput } from 'admin-on-rest'
+
+<ReferenceArrayInput source="tag_ids" reference="tags" allowEmpty>
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+```
+
+**Tip**: `allowEmpty` is set by default for all Input components children of the `<Filter>` component
+
+You can tweak how this component fetches the possible values using the `perPage`, `sort`, and `filter` props.
+
+{% raw %}
+```js
+// by default, fetches only the first 25 values. You can extend this limit
+// by setting the `perPage` prop.
+<ReferenceArrayInput
+     source="tag_ids"
+     reference="tags"
+     perPage={100}>
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+
+// by default, orders the possible values by id desc. You can change this order
+// by setting the `sort` prop (an object with `field` and `order` properties).
+<ReferenceArrayInput
+     source="tag_ids"
+     reference="tags"
+     sort={{ field: 'title', order: 'ASC' }}>
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+
+// you can filter the query used to populate the possible values. Use the
+// `filter` prop for that.
+<ReferenceArrayInput
+     source="tag_ids"
+     reference="tags"
+     filter={{ is_published: true }}>
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+```
+{% endraw %}
+
+The enclosed component may further filter results (that's the case, for instance, for `<SelectArrayInput>`). `ReferenceArrayInput` passes a `setFilter` function as prop to its child component. It uses the value to create a filter for the query - by default `{ q: [searchText] }`. You can customize the mapping
+`searchText => searchQuery` by setting a custom `filterToQuery` function prop:
+
+```js
+<ReferenceArrayInput
+     source="tag_ids"
+     reference="tags"
+     filterToQuery={searchText => ({ name: searchText })}>
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
 ```
 
 ## `<RichTextInput>`
@@ -649,11 +797,13 @@ const choices = [
 ];
 ```
 
-However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+However, in some cases, you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
 
 ```jsx
 <SelectInput source="gender" choices={choices} translateChoice={false}/>
 ```
+
+Note that `translateChoice` is set to false when `<SelectInput>` is a child of `<ReferenceInput>`.
 
 Lastly, use the `options` attribute if you want to override any of Material UI's `<SelectField>` attributes:
 
@@ -678,6 +828,85 @@ import { SelectInput, ReferenceInput } from 'admin-on-rest'
 ```
 
 If, instead of showing choices as a dropdown list, you prefer to display them as a list of radio buttons, try the [`<RadioButtonGroupInput>`](#radiobuttongroupinput). And if the list is too big, prefer the [`<AutocompleteInput>`](#autocompleteinput).
+
+## `<SelectArrayInput>`
+
+To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+
+```js
+import { SelectArrayInput } from 'admin-on-rest';
+
+<SelectArrayInput label="Tags" source="categories" choices={[
+    { id: 'music', name: 'Music' },
+    { id: 'photography', name: 'Photo' },
+    { id: 'programming', name: 'Code' },
+    { id: 'tech', name: 'Technology' },
+    { id: 'sport', name: 'Sport' },
+]} />
+```
+
+![SelectArrayInput](./img/select-array-input.gif)
+
+You can also customize the properties to use for the option name and value,
+thanks to the `optionText` and `optionValue` attributes.
+
+```js
+const choices = [
+   { _id: '1', name: 'Book', plural_name: 'Books' },
+   { _id: '2', name: 'Video', plural_name: 'Videos' },
+   { _id: '3', name: 'Audio', plural_name: 'Audios' },
+];
+<SelectArrayInput source="categories" choices={choices} optionText="plural_name" optionValue="_id" />
+```
+
+`optionText` also accepts a function, so you can shape the option text at will:
+
+```js
+const choices = [
+   { id: '1', name: 'Book', quantity: 23 },
+   { id: '2', name: 'Video', quantity: 56 },
+   { id: '3', name: 'Audio', quantity: 12 },
+];
+const optionRenderer = choice => `${choice.name} (${choice.quantity})`;
+<SelectArrayInput source="categories" choices={choices} optionText={optionRenderer} />
+```
+
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```js
+const choices = [
+   { id: 'books', name: 'myroot.category.books' },
+   { id: 'sport', name: 'myroot.category.sport' },
+];
+```
+
+However, in some cases, you may not want the choice to be translated. In that case, set the `translateChoice` prop to false.
+
+```js
+<SelectArrayInput source="gender" choices={choices} translateChoice={false}/>
+```
+
+Note that `translateChoice` is set to false when `<SelectArrayInput>` is a child of `<ReferenceArrayInput>`.
+
+Lastly, use the `options` attribute if you want to override any of the `<ChipInput>` attributes:
+
+{% raw %}
+```js
+<SelectArrayInput source="category" options={{ fullWidth: true }} />
+```
+{% endraw %}
+
+Refer to [the ChipInput documentation](https://github.com/TeamWertarbyte/material-ui-chip-input) for more details.
+
+**Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectArrayInput>` with [`<ReferenceArrayInput>`](#referencearrayinput), and leave the `choices` empty:
+
+```js
+import { SelectArrayInput, ReferenceArrayInput } from 'admin-on-rest'
+
+<ReferenceArrayInput source="tag_ids" reference="tags">
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+```
 
 ## `<TextInput>`
 

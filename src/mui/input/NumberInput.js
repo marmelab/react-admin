@@ -24,7 +24,8 @@ class NumberInput extends Component {
          * Necessary because of a React bug on <input type="number">
          * @see https://github.com/facebook/react/issues/1425
          */
-        this.handleChange(parseFloat(this.props.input.value));
+        const value = parseFloat(this.props.input.value);
+        this.handleChange(isNaN(value) ? undefined : value);
     }
 
     handleFocus = (event) => {
@@ -38,7 +39,7 @@ class NumberInput extends Component {
     }
 
     render() {
-        const { elStyle, input, label, meta: { touched, error }, options, source, step, resource } = this.props;
+        const { elStyle, input, isRequired, label, meta: { touched, error }, options, source, step, resource } = this.props;
         return (
             <TextField
                 {...input}
@@ -47,7 +48,7 @@ class NumberInput extends Component {
                 onChange={this.handleChange}
                 type="number"
                 step={step}
-                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
+                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
                 errorText={touched && error}
                 style={elStyle}
                 {...options}
@@ -60,6 +61,7 @@ NumberInput.propTypes = {
     addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
     input: PropTypes.object,
+    isRequired: PropTypes.bool,
     label: PropTypes.string,
     meta: PropTypes.object,
     name: PropTypes.string,
@@ -72,7 +74,7 @@ NumberInput.propTypes = {
     step: PropTypes.string.isRequired,
     validate: PropTypes.oneOfType([
         PropTypes.func,
-        PropTypes.arrayOf(PropTypes.func)
+        PropTypes.arrayOf(PropTypes.func),
     ]),
 };
 

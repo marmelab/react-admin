@@ -15,6 +15,7 @@ export const messages = {
                 pictures: 'Photos associées',
                 published_at: 'Publié le',
                 teaser: 'Description',
+                tags: 'Catégories',
                 title: 'Titre',
                 views: 'Vues',
             },

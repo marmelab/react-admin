@@ -1,6 +1,6 @@
 import { By, until } from 'selenium-webdriver';
 
-module.exports = (url) => (driver) => ({
+module.exports = url => driver => ({
     elements: {
         addFilterButton: By.css('.add-filter'),
         appLoader: By.css('.app-loader'),
@@ -27,10 +27,11 @@ module.exports = (url) => (driver) => ({
 
     waitUntilDataLoaded() {
         let continued = true;
-        return driver.wait(until.elementLocated(this.elements.appLoader), 400)
+        return driver.wait(until.elementLocated(this.elements.appLoader), 2000)
             .catch(() => continued = false) // no loader - we're on the same page !
             .then(() => continued ? driver.wait(until.stalenessOf(driver.findElement(this.elements.appLoader))) : true)
-            .then(() => driver.sleep(100)); // let some time to redraw
+            .catch(() => {}) // The element might have disapeared before the wait on the previous line
+            .then(() => driver.sleep(100)); // let some time to redraw;
     },
 
     getNbRows() {
@@ -63,7 +64,7 @@ module.exports = (url) => (driver) => ({
             filterField.clear();
         }
         filterField.sendKeys(value);
-        return driver.sleep(3000); // wait for debounce and reload
+        return this.waitUntilDataLoaded();
     },
 
     showFilter(name) {
@@ -72,12 +73,13 @@ module.exports = (url) => (driver) => ({
         driver.sleep(500); // wait until the dropdown animation ends
         driver.wait(until.elementLocated(this.elements.filterMenuItem(name)));
         driver.findElement(this.elements.filterMenuItem(name)).click();
-        return driver.sleep(400); // wait until the menu ClickAwayListener disappears
+        return this.waitUntilDataLoaded();
     },
 
     hideFilter(name) {
         const hideFilterButton = driver.findElement(this.elements.hideFilterButton(name));
-        return hideFilterButton.click();
+        hideFilterButton.click();
+        return this.waitUntilDataLoaded(); // wait for debounce and reload
     },
 
     logout() {

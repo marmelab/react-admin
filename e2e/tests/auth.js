@@ -1,4 +1,4 @@
-import assert from 'assert';
+import { until } from 'selenium-webdriver';
 import driver from '../chromeDriver';
 import listPageFactory from '../pages/ListPage';
 import loginPageFactory from '../pages/LoginPage';
@@ -9,24 +9,20 @@ describe('Authentication', () => {
     it('should go to login page after logout', async () => {
         await ListPage.navigate();
         await ListPage.logout();
-        await driver.sleep(300);
-        assert.equal(await driver.getCurrentUrl(), 'http://localhost:8083/#/login');
+        return driver.wait(until.urlIs('http://localhost:8083/#/login'), 2000, 'Redirection to login did not happen');
     });
     it('should redirect to login page when not logged in', async () => {
         await ListPage.navigate();
-        await driver.sleep(300);
-        assert.equal(await driver.getCurrentUrl(), 'http://localhost:8083/#/login');
-    })
+        return driver.wait(until.urlIs('http://localhost:8083/#/login'), 2000, 'Redirection to login did not happen');
+    });
     it('should not login with incorrect credentials', async () => {
         await LoginPage.navigate();
         await LoginPage.login('foo', 'bar');
-        await driver.sleep(300);
-        assert.equal(await driver.getCurrentUrl(), 'http://localhost:8083/#/login');
+        return driver.wait(until.urlIs('http://localhost:8083/#/login'), 2000, 'Redirection to login did not happen');
     });
     it('should login with correct credentials', async () => {
         await LoginPage.navigate();
         await LoginPage.login('login', 'password');
-        await driver.sleep(300);
-        assert.equal(await driver.getCurrentUrl(), 'http://localhost:8083/#/posts');
+        return driver.wait(until.urlIs('http://localhost:8083/#/posts'));
     });
 });
