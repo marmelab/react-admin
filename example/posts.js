@@ -170,34 +170,6 @@ export const PostEdit = ({ ...props }) => (
 
 export const PostShow = ({ ...props }) => (
     <Show title={<PostTitle />} {...props}>
-<<<<<<< HEAD
-        <TabbedShowLayout>
-            <Tab label="post.form.summary">
-                <TextField source="id" />
-                <TextField source="title" validation={{ required: true }} />
-                <TextField source="teaser" validation={{ required: true }} />
-            </Tab>
-            <Tab label="post.form.body">
-                <RichTextField source="body" label="" validation={{ required: true }} addLabel={false} />
-            </Tab>
-            <Tab label="post.form.miscellaneous">
-                <DateField source="published_at" />
-                <TextField source="average_note" validation={{ min: 0 }} />
-                <BooleanField source="commentable" defaultValue />
-                <TextField source="views" />
-            </Tab>
-            <Tab label="post.form.comments">
-                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
-                    <Datagrid>
-                        <DateField source="created_at" />
-                        <TextField source="author.name" />
-                        <TextField source="body" />
-                        <EditButton />
-                    </Datagrid>
-                </ReferenceManyField>
-            </Tab>
-        </TabbedShowLayout>
-=======
         <SimpleShowLayout>
             <TextField source="id" />
             <TextField source="title" />
@@ -224,6 +196,5 @@ export const PostShow = ({ ...props }) => (
             </ReferenceArrayField>
             <TextField source="views" />
         </SimpleShowLayout>
->>>>>>> c7dd9f7d01d073dc4a8a8078cdae1f830bdb5077
     </Show>
 );
