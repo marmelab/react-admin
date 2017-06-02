@@ -172,7 +172,7 @@ export const PostCreate = (props) => (
 
 ## The `<TabbedForm>` component
 
-Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<Tab>` components, which expect a `label` and an `icon` prop.
+Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop.
 
 By default the `<TabbedForm>` submits the form when the user presses `ENTER`, if you want
 to change this behaviour you can pass `false` for the `submitOnEnter` property.
@@ -185,32 +185,28 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * [`validation`](#validation)
 
 {% raw %}
-<<<<<<< HEAD
-```js
-import { TabbedForm, Tab } from 'admin-on-rest'
-=======
 ```jsx
 import { TabbedForm, FormTab } from 'admin-on-rest'
 
 export const PostEdit = (props) => (
     <Edit {...props}>
         <TabbedForm>
-            <Tab label="summary">
+            <FormTab label="summary">
                 <DisabledInput label="Id" source="id" />
-                <TextInput source="title" validation={required} />
-                <LongTextInput source="teaser" validation={required} />
-            </Tab>
-            <Tab label="body">
-                <RichTextInput source="body" validation={required} addLabel={false} />
-            </Tab>
-            <Tab label="Miscellaneous">
+                <TextInput source="title" validate={required} />
+                <LongTextInput source="teaser" validate={required} />
+            </FormTab>
+            <FormTab label="body">
+                <RichTextInput source="body" validate={required} addLabel={false} />
+            </FormTab>
+            <FormTab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
                 <DateInput label="Publication date" source="published_at" />
                 <NumberInput source="average_note" validate={[ number, minValue(0) ]} />
                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
                 <DisabledInput label="Nb views" source="views" />
-            </Tab>
-            <Tab label="comments">
+            </FormTab>
+            <FormTab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
                     <Datagrid>
                         <TextField source="body" />
@@ -218,7 +214,7 @@ export const PostEdit = (props) => (
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
-            </Tab>
+            </FormTab>
         </TabbedForm>
     </Edit>
 );
