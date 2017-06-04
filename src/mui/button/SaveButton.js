@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { submit } from 'redux-form';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import ContentSave from 'material-ui/svg-icons/content/save';
@@ -14,9 +13,11 @@ export class SaveButton extends Component {
         if (this.props.saving) {
             // prevent double submission
             e.preventDefault();
-        } else if (!this.props.submitOnEnter) {
-            // explicit submission of the form needed because button type is 'button', not 'submit'
-            this.props.submit();
+        } else {
+            // always submit form explicitly regardless of button type
+            const { handleSubmit, onSubmit, redirect } = this.props;
+            e && e.preventDefault();
+            handleSubmit(values => onSubmit(values, redirect))();
         }
     }
 
@@ -56,12 +57,18 @@ SaveButton.propTypes = {
     saving: PropTypes.bool,
     translate: PropTypes.func.isRequired,
     submitOnEnter: PropTypes.bool,
+    handleSubmit: PropTypes.func,
+    onSubmit: PropTypes.func,
+    redirect: PropTypes.string,
 };
+
+SaveButton.defaultProps = {
+    handleSubmit: submit => (values, redirect) => { submit(values, redirect); },
+    onSubmit: () => {},
+}
 
 const mapStateToProps = state => ({
     saving: state.admin.saving,
 });
 
-const mapDispatchToProps = ({ submit: () => submit('record-form') });
-
-export default connect(mapStateToProps, mapDispatchToProps)(translate(SaveButton));
+export default connect(mapStateToProps)(translate(SaveButton));
