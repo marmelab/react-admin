@@ -42,9 +42,11 @@ import {
     number,
     required,
     translate,
+    SaveButton,
 } from 'admin-on-rest';
 import RichTextInput from 'aor-rich-text-input';
 import Chip from 'material-ui/Chip';
+import Toolbar from 'admin-on-rest/mui/form/Toolbar';
 
 export PostIcon from 'material-ui/svg-icons/action/book';
 
@@ -93,9 +95,14 @@ const PostTitle = translate(({ record, translate }) => {
     return <span>{record ? translate('post.edit.title', { title: record.title }) : ''}</span>;
 });
 
+const PostCreateToolbar = props => <Toolbar {...props} >
+    <SaveButton label="Save and show" redirect="show" />
+    <SaveButton />
+</Toolbar>;
+
 export const PostCreate = ({ ...props }) => (
-    <Create {...props} afterSuccess="show">
-        <SimpleForm defaultValue={{ average_note: 0 }} validate={(values) => {
+    <Create {...props}>
+        <SimpleForm toolbar={<PostCreateToolbar />} defaultValue={{ average_note: 0 }} validate={(values) => {
             const errors = {};
             ['title', 'teaser'].forEach((field) => {
                 if (!values[field]) {
