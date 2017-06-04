@@ -24,7 +24,9 @@ class Create extends Component {
         return 'list';
     }
 
-    handleSubmit = (record) => this.props.crudCreate(this.props.resource, record, this.getBasePath(), this.getRedirectRoute());
+    handleSubmit = (record, redirect) => {
+        this.props.crudCreate(this.props.resource, record, this.getBasePath(), redirect || this.getRedirectRoute());
+    }
 
     render() {
         const { actions = <DefaultActions />, children, isLoading, resource, title, translate } = this.props;

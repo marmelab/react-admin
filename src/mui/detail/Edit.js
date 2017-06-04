@@ -59,8 +59,8 @@ export class Edit extends Component {
         this.updateData();
     }
 
-    handleSubmit(record) {
-        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath(), this.getRedirectRoute());
+    handleSubmit(record, redirect) {
+        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath(), redirect || this.getRedirectRoute());
     }
 
     render() {
