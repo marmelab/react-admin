@@ -139,7 +139,9 @@ export class ReferenceInput extends Component {
 
     render() {
         const { input, resource, label, source, reference, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children, meta } = this.props;
-        if (!referenceRecord && !allowEmpty) {
+        const input_empty = input.value === undefined || input.value === null || input.value === '';
+        
+        if ( (input_empty && matchingReferences.length === 0) || (!input_empty && !referenceRecord) ) {
             return <Labeled
                 label={typeof label === 'undefined' ? `resources.${resource}.fields.${source}` : label}
                 source={source}

@@ -12,12 +12,13 @@ describe('<ReferenceInput />', () => {
         reference: 'posts',
         resource: 'comments',
         source: 'post_id',
+        matchingReferences: [{}]
     };
     const MyComponent = () => <span id="mycomponent" />;
 
-    it('should not render anything if there is no referenceRecord and allowEmpty is false', () => {
+    it('should not render anything if input initial value is empty and choices are empty', () => {
         const wrapper = shallow((
-            <ReferenceInput {...defaultProps}>
+            <ReferenceInput {...defaultProps} matchingReferences={[]}>
                 <MyComponent />
             </ReferenceInput>
         ));
@@ -25,9 +26,29 @@ describe('<ReferenceInput />', () => {
         assert.equal(MyComponentElement.length, 0);
     });
 
-    it('should not render enclosed component if allowEmpty is true', () => {
+    it('should render enclosed component if input initial value is empty and choices are not empty', () => {
         const wrapper = shallow((
-            <ReferenceInput {...defaultProps} allowEmpty>
+            <ReferenceInput {...defaultProps} >
+                <MyComponent />
+            </ReferenceInput>
+        ));
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+    });
+
+    it('should not render anything if input initial value is not empty and related record is not loaded', () => {
+        const wrapper = shallow((
+            <ReferenceInput {...defaultProps} input={{value: 1}}>
+                <MyComponent />
+            </ReferenceInput>
+        ));
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 0);
+    });
+
+    it('should render enclosed component if input initial value is not empty and related record is loaded', () => {
+        const wrapper = shallow((
+            <ReferenceInput {...defaultProps} input={{value: 1}} referenceRecord={{id: 1}}>
                 <MyComponent />
             </ReferenceInput>
         ));
