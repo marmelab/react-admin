@@ -166,6 +166,18 @@ import { BooleanInput } from 'admin-on-rest';
 
 This input does not handle `null` values. You would need the `<NullableBooleanInput />` component if you have to handle non-set booleans.
 
+You can use the `options` prop to pass any option supported by the Material UI `Toggle` components.
+
+{% raw %}
+```jsx
+<BooleanInput source="finished" options={{
+    labelPosition: 'right'
+}} />
+```
+{% endraw %}
+
+Refer to [Material UI Toggle documentation](http://www.material-ui.com/#/components/toggle) for more details.
+
 `<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
 
 ```jsx
