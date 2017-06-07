@@ -17,17 +17,17 @@ import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
  * export const CommentEdit = (props) => (
  *     <Edit {...props}>
  *         <SimpleForm>
- *              <EmbeddedManyInput source="links">
+ *              <EmbedManyInput source="links">
  *                  <SimpleList>
  *                       <TextField source="url" />
  *                       <TextField source="context"/>
  *                   </SimpleList>
- *               </EmbeddedManyInput>
+ *               </EmbedManyInput>
  *         </SimpleForm>
  *     </Edit>
  * );
  */
-export class EmbeddedManyInput extends Component {
+export class EmbedManyInput extends Component {
     constructor(props) {
         super(props);
         // nothing to do for now
@@ -36,10 +36,10 @@ export class EmbeddedManyInput extends Component {
     renderList = ({ fields }) => {
         const { children, elStyle } = this.props;
         return (
-            <div style={{ margin: '1em' }}>
+            <div className="embedManyInputContainer" style={{ margin: '1em' }}>
                 <div>
                     {fields.map((member, index) =>
-                        <div key={index} style={elStyle}>
+                        <div key={index} style={elStyle} className="embedManyInputItemContainer">
                             <div style={{ padding: '0 1em 1em 1em' }}>
                                 {React.Children.map(children, input => input && (
                                     <div key={input.props.source} className={`aor-input-${input.props.source}`} style={input.props.style}>
@@ -71,7 +71,7 @@ export class EmbeddedManyInput extends Component {
     }
 }
 
-EmbeddedManyInput.propTypes = {
+EmbedManyInput.propTypes = {
     addField: PropTypes.bool.isRequired,
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string,
@@ -86,7 +86,7 @@ EmbeddedManyInput.propTypes = {
     cnStyle: PropTypes.object
 };
 
-EmbeddedManyInput.defaultProps = {
+EmbedManyInput.defaultProps = {
     addField: false,
     allowEmpty: false,
     elStyle: {
@@ -95,4 +95,4 @@ EmbeddedManyInput.defaultProps = {
     }
 };
 
-export default EmbeddedManyInput;
+export default EmbedManyInput;
