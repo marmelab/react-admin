@@ -15,4 +15,4 @@ export ReferenceInput from './ReferenceInput';
 export SelectArrayInput from './SelectArrayInput';
 export SelectInput from './SelectInput';
 export TextInput from './TextInput';
-export EmbeddedManyInput from './EmbeddedManyInput'
+export EmbeddedArrayInput from './EmbeddedArrayInput'
