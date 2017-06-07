@@ -46,7 +46,7 @@
     "full-icu": "~1.0.3",
     "ignore-styles": "~5.0.1",
     "mocha": "~3.2.0",
-    "react-test-renderer": "^15.5.4",
+    "react-addons-test-utils": "~15.5.1",
     "selenium-webdriver": "~3.3.0",
     "sinon": "~2.1.0",
     "style-loader": "~0.16.0",
@@ -75,8 +75,8 @@
     "react-tap-event-plugin": "~2.0.1",
     "recompose": "~0.23.1",
     "redux": "~3.6.0",
-    "redux-form": "~6.7.0",
-    "redux-saga": "~0.15.3",
+    "redux-form": "~6.6.3",
+    "redux-saga": "~0.15.0",
     "reselect": "~3.0.0"
   }
 }
