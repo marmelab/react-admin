@@ -17,17 +17,17 @@ import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
  * export const CommentEdit = (props) => (
  *     <Edit {...props}>
  *         <SimpleForm>
- *              <EmbedManyInput source="links">
+ *              <EmbeddedArrayInput source="links">
  *                  <SimpleList>
  *                       <TextField source="url" />
  *                       <TextField source="context"/>
  *                   </SimpleList>
- *               </EmbedManyInput>
+ *               </EmbeddedArrayInput>
  *         </SimpleForm>
  *     </Edit>
  * );
  */
-export class EmbedManyInput extends Component {
+export class EmbeddedArrayInput extends Component {
     constructor(props) {
         super(props);
         // nothing to do for now
@@ -36,10 +36,10 @@ export class EmbedManyInput extends Component {
     renderList = ({ fields }) => {
         const { children, elStyle } = this.props;
         return (
-            <div className="embedManyInputContainer" style={{ margin: '1em' }}>
+            <div className="EmbeddedArrayInputContainer" style={{ margin: '1em' }}>
                 <div>
                     {fields.map((member, index) =>
-                        <div key={index} style={elStyle} className="embedManyInputItemContainer">
+                        <div key={index} style={elStyle} className="EmbeddedArrayInputItemContainer">
                             <div style={{ padding: '0 1em 1em 1em' }}>
                                 {React.Children.map(children, input => input && (
                                     <div key={input.props.source} className={`aor-input-${input.props.source}`} style={input.props.style}>
@@ -71,7 +71,7 @@ export class EmbedManyInput extends Component {
     }
 }
 
-EmbedManyInput.propTypes = {
+EmbeddedArrayInput.propTypes = {
     addField: PropTypes.bool.isRequired,
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string,
@@ -86,7 +86,7 @@ EmbedManyInput.propTypes = {
     cnStyle: PropTypes.object
 };
 
-EmbedManyInput.defaultProps = {
+EmbeddedArrayInput.defaultProps = {
     addField: false,
     allowEmpty: false,
     elStyle: {
@@ -95,4 +95,4 @@ EmbedManyInput.defaultProps = {
     }
 };
 
-export default EmbedManyInput;
+export default EmbeddedArrayInput;

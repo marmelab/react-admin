@@ -21,7 +21,7 @@ import {
     NumberInput,
     ReferenceArrayField,
     ReferenceManyField,
-    EmbedManyInput,
+    EmbeddedArrayInput,
     ReferenceArrayInput,
     EmbeddedManyInput,
     Responsive,
@@ -166,10 +166,10 @@ export const PostEdit = ({ ...props }) => (
                 </ReferenceManyField>
             </FormTab>
             <FormTab label="post.form.links">
-                <EmbedManyInput source="links">
+                <EmbeddedArrayInput source="links">
                     <TextInput source="url" />
                     <TextInput source="context"/>
-                </EmbedManyInput>
+                </EmbeddedArrayInput>
             </FormTab>
         </TabbedForm>
     </Edit>
