@@ -5,6 +5,7 @@ import notification from './notification';
 import references from './references';
 import saving from './saving';
 import ui from './ui';
+import inlineForms from './inlineForms';
 
 export default (resources) => {
     const resourceReducers = {};
@@ -18,5 +19,6 @@ export default (resources) => {
         references,
         saving,
         ui,
+        inlineForms,
     });
 };

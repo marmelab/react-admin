@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
+import Dialog from 'material-ui/Dialog';
 import Labeled from '../input/Labeled';
 import {
     crudGetMany as crudGetManyAction,
     crudGetMatching as crudGetMatchingAction,
+    crudCreateInline as crudCreateInlineAction,
 } from '../../actions/dataActions';
 import { getPossibleReferences } from '../../reducer/references/possibleValues';
 
@@ -96,6 +98,11 @@ export class ReferenceArrayInput extends Component {
         // stored as a property rather than state because we don't want redraw of async updates
         this.params = { pagination: { page: 1, perPage }, sort, filter };
         this.debouncedSetFilter = debounce(this.setFilter.bind(this), 500);
+        this.state = {
+            showCreateDialog: false,
+            inlineRecord: null,
+            recordCreatedCB: null,
+        };
     }
 
     componentDidMount() {
@@ -105,6 +112,16 @@ export class ReferenceArrayInput extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.record.id !== nextProps.record.id) {
             this.fetchReferenceAndOptions(nextProps);
+        }
+
+        if (this.props.createdInlineRecord !== nextProps.createdInlineRecord) {
+            if (this.state.recordCreatedCB) {
+                this.state.recordCreatedCB(nextProps.createdInlineRecord);
+            }
+
+            this.setState({
+                showCreateDialog: false,
+            });
         }
     }
 
@@ -141,8 +158,24 @@ export class ReferenceArrayInput extends Component {
         this.props.crudGetMatching(reference, referenceSource(resource, source), pagination, sort, filter);
     }
 
+    handleCreateInline = (record, recordCreatedCB) => {
+        this.setState({
+            showCreateDialog: true,
+            inlineRecord: record,
+            recordCreatedCB,
+        });
+    }
+
+    handleInlineFormSubmit = (record) => {
+        const { resource, source, reference } = this.props;
+        this.props.crudCreateInline(
+            reference,
+            record,
+            referenceSource(resource, source));
+    }
+
     render() {
-        const { input, resource, label, source, referenceRecords, allowEmpty, matchingReferences, basePath, onChange, children, meta } = this.props;
+        const { input, resource, label, source, referenceRecords, allowEmpty, matchingReferences, basePath, onChange, children, meta, inlineForm, reference } = this.props;
 
         if (React.Children.count(children) !== 1) {
             throw new Error('<ReferenceArrayInput> only accepts a single child (like <Datagrid>)');
@@ -156,21 +189,44 @@ export class ReferenceArrayInput extends Component {
             />;
         }
 
-        return React.cloneElement(children, {
-            allowEmpty,
-            input,
-            label: typeof label === 'undefined' ? `resources.${resource}.fields.${source}` : label,
-            resource,
-            meta,
-            source,
-            choices: matchingReferences,
-            basePath,
-            onChange,
-            setFilter: this.debouncedSetFilter,
-            setPagination: this.setPagination,
-            setSort: this.setSort,
-            translateChoice: false,
-        });
+        return (
+            <div>
+                {React.cloneElement(children, {
+                    allowEmpty,
+                    input,
+                    label: typeof label === 'undefined' ? `resources.${resource}.fields.${source}` : label,
+                    resource,
+                    meta,
+                    source,
+                    choices: matchingReferences,
+                    basePath,
+                    onChange,
+                    onCreateInline: inlineForm ? this.handleCreateInline : null,
+                    setFilter: this.debouncedSetFilter,
+                    setPagination: this.setPagination,
+                    setSort: this.setSort,
+                    translateChoice: false,
+                })}
+
+                {inlineForm && (
+                    <Dialog
+                        open={this.state.showCreateDialog}
+                        modal={false}
+                        autoScrollBodyContent
+                        onRequestClose={() => {
+                            this.setState({ showCreateDialog: false });
+                        }}
+                    >
+                        {React.cloneElement(inlineForm, {
+                            form: referenceSource(resource, source),
+                            resource: reference,
+                            record: this.state.inlineRecord,
+                            onSubmit: this.handleInlineFormSubmit,
+                        })}
+                    </Dialog>
+                )}
+            </div>
+        );
     }
 }
 
@@ -181,6 +237,7 @@ ReferenceArrayInput.propTypes = {
     children: PropTypes.element.isRequired,
     crudGetMatching: PropTypes.func.isRequired,
     crudGetMany: PropTypes.func.isRequired,
+    crudCreateInline: PropTypes.func.isRequired,
     filter: PropTypes.object,
     filterToQuery: PropTypes.func.isRequired,
     input: PropTypes.object.isRequired,
@@ -197,6 +254,8 @@ ReferenceArrayInput.propTypes = {
         order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
     source: PropTypes.string,
+    createdInlineRecord: PropTypes.object,
+    inlineForm: PropTypes.element,
 };
 
 ReferenceArrayInput.defaultProps = {
@@ -207,11 +266,14 @@ ReferenceArrayInput.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecords: [],
+    inlineForm: null,
 };
 
 function mapStateToProps(state, props) {
     const referenceIds = props.input.value || [];
     const data = state.admin[props.reference].data;
+    const inlineForm = state.admin.inlineForms[referenceSource(props.resource, props.source)];
+
     return {
         referenceRecords: referenceIds.reduce((references, referenceId) => {
             if (data[referenceId]) {
@@ -225,12 +287,15 @@ function mapStateToProps(state, props) {
             props.reference,
             referenceIds,
         ),
+        createdInlineRecord: inlineForm ? inlineForm.createdRecord : null,
+
     };
 }
 
 const ConnectedReferenceInput = connect(mapStateToProps, {
     crudGetMany: crudGetManyAction,
     crudGetMatching: crudGetMatchingAction,
+    crudCreateInline: crudCreateInlineAction,
 })(ReferenceArrayInput);
 
 ConnectedReferenceInput.defaultProps = {

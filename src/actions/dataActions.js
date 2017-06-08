@@ -41,6 +41,12 @@ export const crudCreate = (resource, data, basePath, redirect = true) => ({
     meta: { resource, fetch: CREATE, cancelPrevious: false },
 });
 
+export const crudCreateInline = (resource, data, inlineFormId) => ({
+    type: CRUD_CREATE,
+    payload: { data, basePath: null, redirect: false },
+    meta: { resource, fetch: CREATE, cancelPrevious: false, inlineFormId },
+});
+
 export const CRUD_UPDATE = 'CRUD_UPDATE';
 export const CRUD_UPDATE_LOADING = 'CRUD_UPDATE_LOADING';
 export const CRUD_UPDATE_FAILURE = 'CRUD_UPDATE_FAILURE';

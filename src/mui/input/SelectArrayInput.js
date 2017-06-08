@@ -5,6 +5,10 @@ import ChipInput from 'material-ui-chip-input';
 import translate from '../../i18n/translate';
 import FieldTitle from '../../util/FieldTitle';
 
+import MenuItem from 'material-ui/MenuItem';
+import AddIcon from 'material-ui/svg-icons/content/add-circle';
+import { cyan500 } from 'material-ui/styles/colors';
+
 const dataSourceConfig = { text: 'text', value: 'value' };
 
 /**
@@ -57,6 +61,7 @@ export class SelectArrayInput extends Component {
     componentWillMount = () => {
         this.setState({
             values: this.getChoicesForValues(this.props.input.value || [], this.props.choices),
+            currentValue: '',
         });
     }
 
@@ -69,6 +74,26 @@ export class SelectArrayInput extends Component {
                 values: this.getChoicesForValues(nextProps.input.value || [], nextProps.choices),
             });
         }
+    };
+
+    existsInChoices(obj) {
+        const { optionText } = this.props;
+        const text = typeof obj === 'string' ? obj : obj.text;
+        return this.props.choices.find(choice => choice[optionText] === text);
+    };
+
+    handleCreatedRecord = (createdRecord) => {
+        const { optionText, optionValue } = this.props;
+        const values = [...this.state.values, {
+            text: createdRecord[optionText],
+            value: createdRecord[optionValue],
+        }];
+        this.setState({ values });
+        this.handleChange(values);
+
+        setTimeout(() => {
+            this.chipInput.focus();
+        }, 50);
     };
 
     handleBlur = () => {
@@ -84,9 +109,24 @@ export class SelectArrayInput extends Component {
     };
 
     handleAdd = (newValue) => {
-        const values = [...this.state.values, newValue];
-        this.setState({ values });
-        this.handleChange(values);
+        const { optionText, onCreateInline } = this.props;
+        const exists = this.existsInChoices(newValue);
+
+        if (onCreateInline && !exists) {
+            setTimeout(() => {
+                this.chipInput.autoComplete.blur();
+            }, 50);
+
+            onCreateInline({
+                [optionText]: this.state.currentValue,
+            }, this.handleCreatedRecord);
+
+            this.handleUpdateInput('');
+        } else if (exists) {
+            const values = [...this.state.values, newValue];
+            this.setState({ values });
+            this.handleChange(values);
+        }
     };
 
     handleDelete = (newValue) => {
@@ -99,6 +139,14 @@ export class SelectArrayInput extends Component {
         const extracted = this.extractIds(eventOrValue);
         this.props.onChange(extracted);
         this.props.input.onChange(extracted);
+    };
+
+    handleUpdateInput = (value) => {
+        this.setState({
+            currentValue: value,
+        });
+
+        return this.props.setFilter(value);
     };
 
     extractIds = (eventOrValue) => {
@@ -130,6 +178,32 @@ export class SelectArrayInput extends Component {
         };
     }
 
+    renderCreateButton = () => (
+        <MenuItem
+            style={{ fontWeight: 'bold' }}
+            rightIcon={<AddIcon color={cyan500} />}
+            primaryText={`Create "${this.state.currentValue}"`}
+        />
+    );
+
+    getChoices = () => {
+        const exists = this.existsInChoices(this.state.currentValue);
+        const showCreateButton = this.props.onCreateInline && !exists && this.state.currentValue.trim().length > 0;
+        let choices = this.formatChoices(this.props.choices);
+
+        if (showCreateButton) {
+            choices = [
+                {
+                    text: `${this.state.currentValue}_CREATE_`,
+                    value: this.renderCreateButton(),
+                },
+                ...choices,
+            ];
+        }
+
+        return choices;
+    }
+
     render() {
         const {
             elStyle,
@@ -151,17 +225,18 @@ export class SelectArrayInput extends Component {
         return (
             <ChipInput
                 {...input}
+                ref={(ref) => { this.chipInput = ref; }}
                 value={this.state.values}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
                 onTouchTap={this.handleFocus}
                 onRequestAdd={this.handleAdd}
                 onRequestDelete={this.handleDelete}
-                onUpdateInput={setFilter}
+                onUpdateInput={this.handleUpdateInput}
                 floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
                 errorText={touched && error}
                 style={elStyle}
-                dataSource={this.formatChoices(choices)}
+                dataSource={this.getChoices()}
                 dataSourceConfig={dataSourceConfig}
                 openOnFocus
                 {...options}
@@ -182,6 +257,7 @@ SelectArrayInput.propTypes = {
     onBlur: PropTypes.func,
     onChange: PropTypes.func,
     onFocus: PropTypes.func,
+    onCreateInline: PropTypes.func,
     setFilter: PropTypes.func,
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
