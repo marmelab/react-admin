@@ -41,7 +41,7 @@
     "eslint-plugin-jsx-a11y": "~4.0.0",
     "eslint-plugin-react": "~6.10.3",
     "express": "~4.15.2",
-    "extract-text-webpack-plugin": "~2.1.0",
+    "extract-text-webpack-plugin": "~1.0.1",
     "file-api": "~0.10.4",
     "full-icu": "~1.0.3",
     "ignore-styles": "~5.0.1",
