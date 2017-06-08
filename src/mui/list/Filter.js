@@ -26,7 +26,7 @@ class Filter extends Component {
         if (!shallowEqual(filters, this.filters)) { // fix for redux-form bug with onChange and enableReinitialize
             const filtersWithoutEmpty = filters;
             Object.keys(filtersWithoutEmpty).forEach((filterName) => {
-                if (filtersWithoutEmpty[filterName] === '') {
+                if (!filtersWithoutEmpty[filterName]) {
                     // remove empty filter from query
                     delete filtersWithoutEmpty[filterName];
                 }
