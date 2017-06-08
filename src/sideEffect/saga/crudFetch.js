@@ -31,7 +31,7 @@ const crudFetch = (restClient) => {
         } catch (error) {
             yield put({
                 type: `${type}_FAILURE`,
-                error: error.message ? error.message : error,
+                error: error,
                 requestPayload: payload,
                 meta: { ...meta, fetchResponse: restType, fetchStatus: FETCH_ERROR },
             });
