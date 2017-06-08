@@ -27,6 +27,7 @@ const Admin = ({
     customSagas = [],
     customRoutes,
     dashboard,
+    history,
     locale,
     messages = {},
     menu,
@@ -53,9 +54,9 @@ const Admin = ({
         ].map(fork));
     };
     const sagaMiddleware = createSagaMiddleware();
-    const history = createHistory();
+    const routerHistory = history || createHistory();
     const store = createStore(resettableAppReducer, initialState, compose(
-        applyMiddleware(sagaMiddleware, routerMiddleware(history)),
+        applyMiddleware(sagaMiddleware, routerMiddleware(routerHistory)),
         window.devToolsExtension ? window.devToolsExtension() : f => f,
     ));
     sagaMiddleware.run(saga);
@@ -65,7 +66,7 @@ const Admin = ({
     return (
         <Provider store={store}>
             <TranslationProvider messages={messages}>
-                <ConnectedRouter history={history}>
+                <ConnectedRouter history={routerHistory}>
                     <div>
                         <Switch>
                             <Route exact path="/login" render={({ location }) => createElement(loginPage || Login, {
@@ -103,6 +104,7 @@ Admin.propTypes = {
     customReducers: PropTypes.object,
     customRoutes: PropTypes.array,
     dashboard: componentPropType,
+    history: PropTypes.object,
     loginPage: componentPropType,
     logoutButton: componentPropType,
     menu: componentPropType,
