@@ -9,7 +9,7 @@ The `<Admin>` tag is a great shortcut got be up and running with admin-on-rest i
 
 Beware that you need to know about [redux](http://redux.js.org/), [react-router](https://github.com/reactjs/react-router), and [redux-saga](https://github.com/yelouafi/redux-saga) to go further.
 
-**Tip**: Before going for the Custom App route, explore all the options of [the `<Admin>` component](./AdminResource.html##the-admin-component). They allow you to add custom routes, custom reducers, custom sagas, and customize the layout.
+**Tip**: Before going for the Custom App route, explore all the options of [the `<Admin>` component](./Admin.html). They allow you to add custom routes, custom reducers, custom sagas, and customize the layout.
 
 Here is the main code for bootstrapping a barebones admin-on-rest application with 3 resources: `posts`, `comments`, and `users`:
 
