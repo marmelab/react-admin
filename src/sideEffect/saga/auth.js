@@ -56,7 +56,6 @@ export default (authClient) => {
             } catch (e) {
                 yield call(authClient, AUTH_LOGOUT);
                 yield put(push('/login'));
-                yield put(hideNotification());
             }
             break;
         }
