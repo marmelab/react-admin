@@ -43,9 +43,8 @@ export class Edit extends Component {
         return location.pathname.split('/').slice(0, -1).join('/');
     }
 
-    getRedirectRoute() {
-        const { afterSuccess } = this.props;
-        if (afterSuccess != null) return afterSuccess;
+    getRedirectRoute(redirect) {
+        if (redirect != null && redirect !== true) return redirect;
         return 'list';
     }
 
@@ -60,7 +59,7 @@ export class Edit extends Component {
     }
 
     handleSubmit(record, redirect) {
-        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath(), redirect || this.getRedirectRoute());
+        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath(), this.getRedirectRoute(redirect));
     }
 
     render() {
@@ -125,7 +124,6 @@ Edit.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
-    afterSuccess: PropTypes.string,
 };
 
 function mapStateToProps(state, props) {

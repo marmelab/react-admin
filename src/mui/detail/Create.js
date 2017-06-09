@@ -16,16 +16,16 @@ class Create extends Component {
         return location.pathname.split('/').slice(0, -1).join('/');
     }
 
-    getRedirectRoute() {
-        const { afterSuccess, hasShow, hasEdit } = this.props;
-        if (afterSuccess != null) return afterSuccess;
+    getRedirectRoute(redirect) {
+        if (redirect != null && redirect !== true) return redirect;
+        const { hasShow, hasEdit } = this.props;
         if (hasEdit) return 'edit';
         if (hasShow) return 'show';
         return 'list';
     }
 
     handleSubmit = (record, redirect) => {
-        this.props.crudCreate(this.props.resource, record, this.getBasePath(), redirect || this.getRedirectRoute());
+        this.props.crudCreate(this.props.resource, record, this.getBasePath(), this.getRedirectRoute(redirect));
     }
 
     render() {
@@ -71,7 +71,6 @@ Create.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func.isRequired,
-    afterSuccess: PropTypes.string,
 };
 
 Create.defaultProps = {

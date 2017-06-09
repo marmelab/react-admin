@@ -59,7 +59,10 @@ SaveButton.propTypes = {
     submitOnEnter: PropTypes.bool,
     handleSubmit: PropTypes.func,
     onSubmit: PropTypes.func,
-    redirect: PropTypes.string,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+    ]),
 };
 
 SaveButton.defaultProps = {
