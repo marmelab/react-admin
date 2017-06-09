@@ -109,7 +109,7 @@ export default {
             views: 559,
             average_note: 3,
             commentable: true,
-            published_at: new Date('2012-08-24'),
+            published_at: new Date('2012-08-05'),
             category: 'tech',
             notifications: [12, 31, 42],
         },

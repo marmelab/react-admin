@@ -40,6 +40,12 @@ module.exports = url => driver => ({
         return input.sendKeys(value);
     },
 
+    clickInput(name) {
+        const input = driver.findElement(this.elements.input(name));
+        input.click();
+        return driver.sleep(200);
+    },
+
     gotoTab(index) {
         const tab = driver.findElement(this.elements.tab(index));
         tab.click();

@@ -8,7 +8,7 @@ title: "Reference"
 <div style="column-count:3" markdown="1">
 
 * `<Actions>`
-* [`<Admin>`](./AdminResource.html#the-admin-component)
+* [`<Admin>`](./Admin.html)
 * `<AdminRoutes>`
 * `<AppBar>`
 * `<AppBarMobile>`
@@ -49,7 +49,7 @@ title: "Reference"
 * [`<ImageInputPreview>`](./Inputs.html#imageinput)
 * [`<FunctionField>`](./Fields.html#functionfield)
 * `<Labeled>`
-* [`<Layout>`](./AdminResource.html#applayout)
+* [`<Layout>`](./Admin.html#applayout)
 * [`<List>`](./List.html#the-list-component)
 * `<ListButton>`
 * [`<LongTextInput>`](./Inputs.html#longtextinput)
@@ -66,7 +66,7 @@ title: "Reference"
 * [`<ReferenceInput>`](./Inputs.html#referenceinput)
 * [`<ReferenceManyField>`](./Fields.html#referencemanyfield)
 * `<RefreshButton>`
-* [`<Resource>`](./AdminResource.html#the-resource-component)
+* [`<Resource>`](./Resource.html#the-resource-component)
 * [`<Responsive>`](./Theming.html#responsive-utility)
 * [`<Restricted>`](./Authentication.html#restricting-access-to-a-custom-page)
 * [`<RichTextField>`](./Fields.html#richtextfield)
@@ -78,11 +78,11 @@ title: "Reference"
 * `<Sidebar>`
 * `<SimpleList>`
 * `<SingleFieldList>`
-* `<Show>`
+* [`<Show>`](./Show.html#the-show-component)
 * `<ShowButton>`
 * [`<SimpleForm>`](./CreateEdit.html#the-simpleform-component)
 * [`<SimpleList>`](./List.html#the-simplelist-component)
-* `<SimpleShowLayout>`
+* [`<SimpleShowLayout>`](./Show.html#the-simpleshowlayout-component)
 * [`<SingleFieldList>`](./List.html#the-singlefieldlist-component)
 * `<Tab>`
 * [`<TabbedForm>`](./CreateEdit.html#the-tabbedform-component)

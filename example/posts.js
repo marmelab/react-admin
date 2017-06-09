@@ -146,7 +146,7 @@ export const PostEdit = ({ ...props }) => (
                 <ReferenceArrayInput source="tags" reference="tags" allowEmpty>
                     <SelectArrayInput optionText="name" options={{ fullWidth: true }} />
                 </ReferenceArrayInput>
-                <DateInput source="published_at" />
+                <DateInput source="published_at" options={{ locale: 'pt' }} />
                 <SelectInput source="category" choices={[
                     { name: 'Tech', id: 'tech' },
                     { name: 'Lifestyle', id: 'lifestyle' },

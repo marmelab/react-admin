@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.1.1
+
+* Add Show view documentation ((djhi)[https://github.com/djhi])
+* Split Admin and Resource docs for better readability ((fzaninotto)[https://github.com/fzaninotto])
+* Fix flaky end-to-end tests ((dervos)[https://github.com/dervos])
+* Fix `<DisabledInput>` not showing default value ((wesley6j)[https://github.com/wesley6j])
+* Fix `<SelectArrayInput>` prop types ((floo51)[https://github.com/floo51])
+* Fix `<DateInput>` for some locales ((wesley6j)[https://github.com/wesley6j])
+* Fix support for null and false value in `<SelectInput>` options ((wesley6j)[https://github.com/wesley6j])
+* Fix missing `<FileInput>` mention in documentation reference ((djhi)[https://github.com/djhi])
+* Fix duplicate documentation in Ecosystem ((djhi)[https://github.com/djhi])
+* Fix typos on Theming documentation ((martjanz)[https://github.com/martjanz])
+
 ## v1.1.0
 
 * Add `<ReferenceArrayInput>` and `<SelectArrayInput>` ([kimkha](https://github.com/kimkha) and [fzaninotto](https://github.com/fzaninotto))
