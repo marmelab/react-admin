@@ -37,6 +37,28 @@ describe('Create Page', () => {
         await driver.sleep(3000); // let the notification for deletion disappear (could block further submits)
     });
 
+    it('should stay at create page after create success with "Save and add"', async () => {
+        const values = [
+            {
+                type: 'input',
+                name: 'title',
+                value: 'Test title',
+            },
+            {
+                type: 'textarea',
+                name: 'teaser',
+                value: 'Test teaser',
+            },
+        ];
+        await CreatePage.setValues(values);
+        await CreatePage.submitAndAdd();
+        await driver.wait(until.urlIs('http://localhost:8083/#/posts/create'));
+        assert.equal(await CreatePage.getInputValue('title'), ''); // new empty form
+        await DeletePage.navigate();
+        await DeletePage.delete();
+        await driver.sleep(3000); // let the notification for deletion disappear (could block further submits)
+    });
+
     it('should not accept creation without required fields', async () => {
         const values = [{
             type: 'textarea',
