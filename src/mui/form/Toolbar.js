@@ -21,7 +21,7 @@ const Toolbar = ({ invalid, submitOnEnter, handleSubmit, onSubmit, children }) =
             <MuiToolbar style={styles.mobileToolbar} noGutter>
                 <ToolbarGroup>
                     {React.Children.map(children, button => (
-                            React.cloneElement(button, { invalid, submitOnEnter, handleSubmit, onSubmit, raised: false })
+                            React.cloneElement(button, { invalid, submitOnEnter, handleSubmit, onSubmit, raised: false, ...button.props })
                         ),
                     )}
                 </ToolbarGroup>
@@ -31,7 +31,7 @@ const Toolbar = ({ invalid, submitOnEnter, handleSubmit, onSubmit, children }) =
             <MuiToolbar>
                 <ToolbarGroup>
                     {React.Children.map(children, button => (
-                            React.cloneElement(button, { invalid, submitOnEnter, handleSubmit, onSubmit })
+                            React.cloneElement(button, { invalid, submitOnEnter, handleSubmit, onSubmit, ...button.props })
                         ),
                     )}
                 </ToolbarGroup>
