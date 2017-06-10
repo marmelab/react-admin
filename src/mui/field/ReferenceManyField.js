@@ -95,7 +95,10 @@ ReferenceManyField.propTypes = {
     crudGetManyReference: PropTypes.func.isRequired,
     filter: PropTypes.object,
     ids: PropTypes.array,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.element
+    ]),
     perPage: PropTypes.number,
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,

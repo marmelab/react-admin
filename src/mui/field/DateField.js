@@ -53,7 +53,10 @@ export const DateField = ({ elStyle, locales, options, record, showTime = false,
 DateField.propTypes = {
     addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.element
+    ]),
     locales: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.arrayOf(PropTypes.string),

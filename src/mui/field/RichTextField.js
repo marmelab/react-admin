@@ -17,7 +17,10 @@ const RichTextField = ({ source, record = {}, stripTags, elStyle }) => {
 RichTextField.propTypes = {
     addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.element
+    ]),
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
     stripTags: PropTypes.bool,

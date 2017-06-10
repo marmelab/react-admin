@@ -44,7 +44,10 @@ export const NumberField = ({ record, source, locales, options, elStyle }) => {
 NumberField.propTypes = {
     addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.element
+    ]),
     locales: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.arrayOf(PropTypes.string),

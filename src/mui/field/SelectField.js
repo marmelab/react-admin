@@ -85,7 +85,10 @@ SelectField.propTypes = {
     addLabel: PropTypes.bool,
     choices: PropTypes.arrayOf(PropTypes.object),
     elStyle: PropTypes.object,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.element
+    ]),
     optionText: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.func,

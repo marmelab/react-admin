@@ -13,7 +13,10 @@ const FunctionField = ({ record = {}, source, render, elStyle }) => record ?
 FunctionField.propTypes = {
     addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.element
+    ]),
     render: PropTypes.func.isRequired,
     record: PropTypes.object,
     source: PropTypes.string,

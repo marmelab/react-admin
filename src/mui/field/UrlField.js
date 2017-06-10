@@ -12,7 +12,10 @@ const UrlField = ({ source, record = {}, elStyle }) => (
 UrlField.propTypes = {
     addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.element
+    ]),
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
 };
