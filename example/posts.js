@@ -97,7 +97,7 @@ const PostTitle = translate(({ record, translate }) => {
 
 const PostCreateToolbar = props => <Toolbar {...props} >
     <SaveButton label="post.action.save_and_show" redirect="show" submitOnEnter={true} />
-    <SaveButton label="post.action.save_and_add" redirect={false} submitOnEnter={false} />
+    <SaveButton label="post.action.save_and_add" redirect={false} submitOnEnter={false} raised={false} />
 </Toolbar>;
 
 export const PostCreate = ({ ...props }) => (
