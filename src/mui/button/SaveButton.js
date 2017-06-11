@@ -22,13 +22,13 @@ export class SaveButton extends Component {
     }
 
     render() {
-        const { saving, label = 'aor.action.save', raised = true, translate, submitOnEnter } = this.props;
+        const { saving, label = 'aor.action.save', raised = true, translate, submitOnEnter, redirect } = this.props;
         const type = submitOnEnter ? 'submit' : 'button';
         return raised
             ? <RaisedButton
                 type={type}
                 label={label && translate(label)}
-                icon={saving ? <CircularProgress size={25} thickness={2} /> : <ContentSave />}
+                icon={saving && saving.redirect === redirect ? <CircularProgress size={25} thickness={2} /> : <ContentSave />}
                 onClick={this.handleClick}
                 primary={!saving}
                 style={{
@@ -39,7 +39,7 @@ export class SaveButton extends Component {
             : <FlatButton
                 type={type}
                 label={label && translate(label)}
-                icon={saving ? <CircularProgress size={25} thickness={2} /> : <ContentSave />}
+                icon={saving && saving.redirect === redirect ? <CircularProgress size={25} thickness={2} /> : <ContentSave />}
                 onClick={this.handleClick}
                 primary={!saving}
                 style={{
@@ -54,7 +54,10 @@ export class SaveButton extends Component {
 SaveButton.propTypes = {
     label: PropTypes.string,
     raised: PropTypes.bool,
-    saving: PropTypes.bool,
+    saving: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+    ]),
     translate: PropTypes.func.isRequired,
     submitOnEnter: PropTypes.bool,
     handleSubmit: PropTypes.func,
@@ -68,6 +71,7 @@ SaveButton.propTypes = {
 SaveButton.defaultProps = {
     handleSubmit: submit => (values, redirect) => { submit(values, redirect); },
     onSubmit: () => {},
+    redirect: false,
 }
 
 const mapStateToProps = state => ({

@@ -43,8 +43,7 @@ export class Edit extends Component {
         return location.pathname.split('/').slice(0, -1).join('/');
     }
 
-    getRedirectRoute(redirect) {
-        if (redirect != null && redirect !== true) return redirect;
+    defaultRedirectRoute() {
         return 'list';
     }
 
@@ -59,7 +58,7 @@ export class Edit extends Component {
     }
 
     handleSubmit(record, redirect) {
-        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath(), this.getRedirectRoute(redirect));
+        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath(), redirect);
     }
 
     render() {
@@ -101,6 +100,7 @@ export class Edit extends Component {
                         basePath,
                         record: data,
                         translate,
+                        redirect: this.defaultRedirectRoute(),
                     })}
                     {!data && <CardText>&nbsp;</CardText>}
                 </Card>

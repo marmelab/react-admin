@@ -9,7 +9,7 @@ import Toolbar from './Toolbar';
 
 const noop = () => {};
 
-export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, basePath, submitOnEnter, onSubmit, toolbar }) => {
+export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, basePath, submitOnEnter, onSubmit, toolbar, redirect }) => {
     return (
         <form onSubmit={ submitOnEnter ? handleSubmit : noop } className="simple-form">
             <div style={{ padding: '0 1em 1em 1em' }}>
@@ -19,7 +19,7 @@ export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, 
                     </div>
                 ))}
             </div>
-            {toolbar && React.cloneElement(toolbar, { invalid, submitOnEnter, handleSubmit, onSubmit })}
+            {toolbar && React.cloneElement(toolbar, { invalid, submitOnEnter, handleSubmit, onSubmit, redirect })}
         </form>
     );
 };
@@ -39,6 +39,10 @@ SimpleForm.propTypes = {
     basePath: PropTypes.string,
     validate: PropTypes.func,
     submitOnEnter: PropTypes.bool,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+    ]),
 };
 
 SimpleForm.defaultProps = {

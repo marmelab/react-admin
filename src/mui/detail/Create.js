@@ -16,8 +16,7 @@ class Create extends Component {
         return location.pathname.split('/').slice(0, -1).join('/');
     }
 
-    getRedirectRoute(redirect) {
-        if (redirect != null && redirect !== true) return redirect;
+    defaultRedirectRoute() {
         const { hasShow, hasEdit } = this.props;
         if (hasEdit) return 'edit';
         if (hasShow) return 'show';
@@ -25,7 +24,7 @@ class Create extends Component {
     }
 
     handleSubmit = (record, redirect) => {
-        this.props.crudCreate(this.props.resource, record, this.getBasePath(), this.getRedirectRoute(redirect));
+        this.props.crudCreate(this.props.resource, record, this.getBasePath(), redirect);
     }
 
     render() {
@@ -55,6 +54,7 @@ class Create extends Component {
                         basePath,
                         record: {},
                         translate,
+                        redirect: this.defaultRedirectRoute(),
                     })}
                 </Card>
             </div>
