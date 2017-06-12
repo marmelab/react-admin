@@ -159,7 +159,7 @@ export class List extends Component {
     }
 
     render() {
-        const { filters, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading, translate } = this.props;
+        const { filters, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading, translate, version } = this.props;
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
@@ -173,7 +173,7 @@ export class List extends Component {
 
         return (
             <div className="list-page">
-                <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={this.props.version}>
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }} >
                     {actions && React.cloneElement(actions, {
                         resource,
                         filters,
@@ -193,7 +193,7 @@ export class List extends Component {
                         context: 'form',
                     })}
                     { isLoading || total > 0 ?
-                        <div key={key}>
+                        <div key={version}>
                             {children && React.cloneElement(children, {
                                 resource,
                                 ids,

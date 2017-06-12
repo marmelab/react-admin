@@ -28,12 +28,9 @@ export class Edit extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.data !== nextProps.data) {
             this.setState({ record: nextProps.data }); // FIXME: erases user entry when fetch response arrives late
-            if (this.fullRefresh) {
-                this.fullRefresh = false;
-                this.setState({ key: this.state.key + 1 });
-            }
+            this.setState({ key: this.state.key + 1 });
         }
-        if (this.props.id !== nextProps.id) {
+        if (this.props.id !== nextProps.id || nextProps.version !== this.props.version) {
             this.updateData(nextProps.resource, nextProps.id);
         }
     }
@@ -45,12 +42,6 @@ export class Edit extends Component {
 
     updateData(resource = this.props.resource, id = this.props.id) {
         this.props.crudGetOne(resource, id, this.getBasePath());
-    }
-
-    refresh = (event) => {
-        event.stopPropagation();
-        this.fullRefresh = true;
-        this.updateData();
     }
 
     handleSubmit(record) {
@@ -86,7 +77,6 @@ export class Edit extends Component {
                         data,
                         hasDelete,
                         hasShow,
-                        refresh: this.refresh,
                         resource,
                     })}
                     <ViewTitle title={titleElement} />
@@ -119,12 +109,15 @@ Edit.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
+    version: PropTypes.number.isRequired,
 };
 
 function mapStateToProps(state, props) {
+    const resourceState = state.admin[props.resource];
     return {
         id: decodeURIComponent(props.match.params.id),
         data: state.admin[props.resource].data[decodeURIComponent(props.match.params.id)],
+        version: resourceState.list.version,
         isLoading: state.admin.loading > 0,
     };
 }
