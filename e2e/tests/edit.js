@@ -4,7 +4,7 @@ import driver from '../chromeDriver';
 import editPageFactory from '../pages/EditPage';
 
 describe('Edit Page', () => {
-    const EditPage = editPageFactory('http://localhost:8083/#posts/5')(driver);
+    const EditPage = editPageFactory('http://localhost:8083/#/posts/5')(driver);
 
     beforeEach(async () => await EditPage.navigate());
 
@@ -23,6 +23,13 @@ describe('Edit Page', () => {
         it('should allow to switch tabs', async () => {
             await EditPage.gotoTab(2);
             assert.equal(await EditPage.getInputValue('average_note'), '3');
-        })
+        });
+
+        it('should keep DateInput value after opening datapicker', async () => {
+            await EditPage.gotoTab(3);
+            const valueBeforeClick = (await EditPage.getInputValue('published_at'));
+            await EditPage.clickInput('published_at');
+            assert.equal(await EditPage.getInputValue('published_at'), valueBeforeClick);
+        });
     });
 });

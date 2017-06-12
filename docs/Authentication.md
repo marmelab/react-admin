@@ -21,7 +21,7 @@ What this form does upon submission depends on the `authClient` prop of the `<Ad
 
 For instance, to query an authentication route via HTTPS and store the credentials (a token) in local storage, configure `authClient` as follows:
 
-```js
+```jsx
 // in src/authClient.js
 import { AUTH_LOGIN } from 'admin-on-rest';
 
@@ -41,7 +41,7 @@ export default (type, params) => {
                 return response.json();
             })
             .then(({ token }) => {
-                localStorage.setItem('token', token)
+                localStorage.setItem('token', token);
             });
     }
     return Promise.resolve();
@@ -52,7 +52,7 @@ export default (type, params) => {
 
 Then, pass this client to the `<Admin>` component:
 
-```js
+```jsx
 // in src/App.js
 import authClient from './authClient';
 
@@ -71,13 +71,13 @@ To use the credentials when calling REST API routes, you have to tweak, this tim
 
 For instance, to pass the token obtained during login as an `Authorization` header, configure the REST client as follows:
 
-```js
+```jsx
 import { simpleRestClient, fetchUtils, Admin, Resource } from 'admin-on-rest';
-const httpClient = (url, options) => {
+const httpClient = (url, options = {}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
     }
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     options.headers.set('Authorization', `Bearer ${token}`);
     return fetchUtils.fetchJson(url, options);
 }
@@ -94,11 +94,11 @@ If you have a custom REST client, don't forget to add credentials yourself.
 
 ## Adding a Logout Button
 
-If you provide an `authClient` prop to `<Admin>`, admin-on-rest displays a logout button in the sidebar. When the user clicks on the logout button, this calls the `authClient` with the `AUTH_LOGOUT` type. When resolved, the user gets redirected to the login page.
+If you provide an `authClient` prop to `<Admin>`, admin-on-rest displays a logout button in the sidebar. When the user clicks on the logout button, this calls the `authClient` with the `AUTH_LOGOUT` type and removes potentially sensitive data from the redux store. When resolved, the user gets redirected to the login page.
 
 For instance, to remove the token from local storage upon logout:
 
-```js
+```jsx
 // in src/authClient.js
 import { AUTH_LOGIN, AUTH_LOGOUT } from 'admin-on-rest';
 
@@ -126,7 +126,7 @@ Fortunately, each time the API returns an error, the `authClient` is called with
 
 For instance, to redirect the user to the login page for both 401 and 403 codes:
 
-```js
+```jsx
 // in src/authClient.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR } from 'admin-on-rest';
 
@@ -157,7 +157,7 @@ Fortunately, each time the user navigates, admin-on-rest calls the `authClient` 
 
 For instance, to check for the existence of the token in local storage:
 
-```js
+```jsx
 // in src/authClient.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest';
 
@@ -172,7 +172,7 @@ export default (type, params) => {
         // ...
     }
     if (type === AUTH_CHECK) {
-        return localStorage.getItem('username') ? Promise.resolve() : Promise.reject();
+        return localStorage.getItem('token') ? Promise.resolve() : Promise.reject();
     }
     return Promise.reject('Unkown method');
 };
@@ -180,7 +180,7 @@ export default (type, params) => {
 
 If the promise is rejected, admin-on-rest redirects by default to the `/login` page. You can override where to redirect the user by passing an argument with a `redirectTo` property to the rejected promise:
 
-```js
+```jsx
 // in src/authClient.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest';
 
@@ -195,7 +195,7 @@ export default (type, params) => {
         // ...
     }
     if (type === AUTH_CHECK) {
-        return localStorage.getItem('username') ? Promise.resolve() : Promise.reject({ redirectTo: '/no-access' });
+        return localStorage.getItem('token') ? Promise.resolve() : Promise.reject({ redirectTo: '/no-access' });
     }
     return Promise.reject('Unkown method');
 };
@@ -203,7 +203,7 @@ export default (type, params) => {
 
 **Tip**: For the `AUTH_CHECK` call, the `params` argument contains the `resource` name, so you can implement different checks for different resources:
 
-```js
+```jsx
 // in src/authClient.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest';
 
@@ -240,7 +240,45 @@ But what if you want to use an email instead of a username? What if you want to 
 
 For all these cases, it's up to you to implement your own `LoginPage` component, which will be displayed under the `/login` route instead of the default username/password form, and your own `LogoutButton` component, which will be displayed in the sidebar. Pass both these components to the `<Admin>` component:
 
-```js
+**Tip**: Use the `userLogin` and `userLogout` actions in your custom `Login` and `Logout` components.
+
+```jsx
+// in src/MyLoginPage.js
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { userLogin } from '../../actions/authActions';
+
+class MyLoginPage extends Component {
+    submit = (e) => {
+        e.preventDefault();
+        // gather your data/credentials here
+        const credentials = { };
+
+        // Dispatch the userLogin action (injected by connect)
+        this.props.userLogin(credentials);
+    }
+
+    render() {
+        return (
+            <form onSubmit={this.submit}>
+            ...
+            </form>
+        );
+    }
+};
+
+export default connect(undefined, { userLogin })(MyLoginPage);
+
+// in src/MyLogoutButton.js
+import { connect } from 'react-redux';
+import { userLogout } from '../../actions/authActions';
+
+const MyLogoutButton = ({ userLogout }) => (
+    <button onClick={userLogout}>Logout</button>
+);
+
+export default connect(undefined, { userLogout })(MyLogoutButton);
+
 // in src/App.js
 import MyLoginPage from './MyLoginPage';
 import MyLogoutButton from './MyLogoutButton';
@@ -252,14 +290,12 @@ const App = () => (
 );
 ```
 
-
-**Tip**: Use the `userLogin` and `userLogout` actions in your custom `Login` and `Logout` components.
-
 ## Restricting Access To A Custom Page
 
 If you add [custom pages](./Actions.html), of if you [create an admin app from scratch](./CustomApp.html), you may need to secure access to pages manually. That's the purpose of the `<Restricted>` component, that you can use as a decorator for your own components.
 
-```js
+{% raw %}
+```jsx
 // in src/MyPage.js
 import { withRouter } from 'react-router-dom';
 import { Restricted } from 'admin-on-rest';
@@ -274,5 +310,6 @@ const MyPage = ({ location }) =>
 
 export default withRouter(MyPage);
 ```
+{% endraw %}
 
-The `<Restricted>` component calls the `authClient` function with `AUTH_CHECK` and `authParams`. If the response is a fulfilled promise, the child component is rendered. If the response is a rejected priomise, `<Restricted>` redirects to the login form. Upon successful login, the user is redirected to the initial location (that's why it's necessary to get the location from the router). 
+The `<Restricted>` component calls the `authClient` function with `AUTH_CHECK` and `authParams`. If the response is a fulfilled promise, the child component is rendered. If the response is a rejected promise, `<Restricted>` redirects to the login form. Upon successful login, the user is redirected to the initial location (that's why it's necessary to get the location from the router). 

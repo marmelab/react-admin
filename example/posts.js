@@ -3,6 +3,7 @@ import {
     BooleanField,
     BooleanInput,
     CheckboxGroupInput,
+    ChipField,
     Create,
     Datagrid,
     DateField,
@@ -18,9 +19,12 @@ import {
     LongTextInput,
     NumberField,
     NumberInput,
+    ReferenceArrayField,
     ReferenceManyField,
+    ReferenceArrayInput,
     Responsive,
     RichTextField,
+    SelectArrayInput,
     SelectField,
     SelectInput,
     Show,
@@ -28,7 +32,10 @@ import {
     SimpleForm,
     SimpleList,
     SimpleShowLayout,
+    SingleFieldList,
+    Tab,
     TabbedForm,
+    TabbedShowLayout,
     TextField,
     TextInput,
     minValue,
@@ -67,8 +74,13 @@ export const PostList = ({ ...props }) => (
                     <TextField source="id" />
                     <TextField source="title" style={titleFieldStyle} />
                     <DateField source="published_at" style={{ fontStyle: 'italic' }} />
-                    <BooleanField source="commentable" />
+                    <BooleanField source="commentable" label="resources.posts.fields.commentable_short" />
                     <NumberField source="views" />
+                    <ReferenceArrayField label="Tags" reference="tags" source="tags">
+                        <SingleFieldList>
+                            <ChipField source="name" />
+                        </SingleFieldList>
+                     </ReferenceArrayField>
                     <EditButton />
                     <ShowButton />
                 </Datagrid>
@@ -131,8 +143,10 @@ export const PostEdit = ({ ...props }) => (
                 <RichTextInput source="body" label="" validate={required} addLabel={false} />
             </FormTab>
             <FormTab label="post.form.miscellaneous">
-                <TextInput source="password" type="password" />
-                <DateInput source="published_at" />
+                <ReferenceArrayInput source="tags" reference="tags" allowEmpty>
+                    <SelectArrayInput optionText="name" options={{ fullWidth: true }} />
+                </ReferenceArrayInput>
+                <DateInput source="published_at" options={{ locale: 'pt' }} />
                 <SelectInput source="category" choices={[
                     { name: 'Tech', id: 'tech' },
                     { name: 'Lifestyle', id: 'lifestyle' },
@@ -157,26 +171,37 @@ export const PostEdit = ({ ...props }) => (
 
 export const PostShow = ({ ...props }) => (
     <Show title={<PostTitle />} {...props}>
-        <SimpleShowLayout>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="teaser" />
-            <RichTextField source="body" stripTags={false} />
-            <DateField source="published_at" style={{ fontStyle: 'italic' }} />
-            <TextField source="average_note" />
-            <SelectField source="category" choices={[
-                { name: 'Tech', id: 'tech' },
-                { name: 'Lifestyle', id: 'lifestyle' },
-            ]} />
-            <ReferenceManyField label="resources.posts.fields.comments" reference="comments" target="post_id" sort={{ field: 'created_at', order: 'DESC' }}>
-                <Datagrid selectable={false}>
-                    <DateField source="created_at" />
-                    <TextField source="author.name" />
-                    <TextField source="body" />
-                    <EditButton />
-                </Datagrid>
-            </ReferenceManyField>
-            <TextField source="views" />
-        </SimpleShowLayout>
+        <TabbedShowLayout>
+            <Tab label="post.form.summary">
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="teaser" stripTags={false} />
+            </Tab>
+            <Tab label="post.form.body">
+                <RichTextField source="body" label="" addLabel={false} />
+            </Tab>
+            <Tab label="post.form.miscellaneous">
+                <ReferenceArrayField reference="tags" source="tags">
+                    <SingleFieldList>
+                        <ChipField source="name" />
+                    </SingleFieldList>
+                </ReferenceArrayField>
+                <DateField source="published_at" />
+                <TextField source="category" />
+                <NumberField source="average_note" validate={[number, minValue(0)]} />
+                <BooleanField source="commentable" defaultValue />
+                <TextField source="views" />
+            </Tab>
+            <Tab label="post.form.comments">
+                <ReferenceManyField label="resources.posts.fields.comments" reference="comments" target="post_id" sort={{ field: 'created_at', order: 'DESC' }}>
+                    <Datagrid selectable={false}>
+                        <DateField source="created_at" />
+                        <TextField source="author.name" />
+                        <TextField source="body" />
+                        <EditButton />
+                    </Datagrid>
+                </ReferenceManyField>
+            </Tab>
+        </TabbedShowLayout>
     </Show>
 );

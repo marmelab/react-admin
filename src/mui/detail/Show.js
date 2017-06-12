@@ -1,21 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card, CardTitle, CardActions } from 'material-ui/Card';
+import { Card } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
 import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
-import { DeleteButton, EditButton, ListButton } from '../button';
 import { crudGetOne as crudGetOneAction } from '../../actions/dataActions';
 import DefaultActions from './ShowActions';
 import translate from '../../i18n/translate';
-
-/**
- * Turns a children data structure (either single child or array of children) into an array.
- * We can't use React.Children.toArray as it loses references.
- */
-const arrayizeChildren = children => (Array.isArray(children) ? children : [children]);
 
 export class Show extends Component {
     componentDidMount() {
@@ -26,18 +19,6 @@ export class Show extends Component {
         if (this.props.id !== nextProps.id) {
             this.props.crudGetOne(nextProps.resource, nextProps.id, this.getBasePath());
         }
-    }
-
-    // FIXME Seems that the cloneElement in CrudRoute slices the children array, which makes this necessary to avoid rerenders
-    shouldComponentUpdate(nextProps) {
-        if (nextProps.isLoading !== this.props.isLoading) {
-            return true;
-        }
-
-        const currentChildren = arrayizeChildren(this.props.children);
-        const newChildren = arrayizeChildren(nextProps.children);
-
-        return newChildren.every((child, index) => child === currentChildren[index]);
     }
 
     getBasePath() {
@@ -101,8 +82,8 @@ Show.propTypes = {
 
 function mapStateToProps(state, props) {
     return {
-        id: props.match.params.id,
-        data: state.admin[props.resource].data[props.match.params.id],
+        id: decodeURIComponent(props.match.params.id),
+        data: state.admin[props.resource].data[decodeURIComponent(props.match.params.id)],
         isLoading: state.admin.loading > 0,
     };
 }

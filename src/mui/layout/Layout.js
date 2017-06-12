@@ -129,7 +129,7 @@ Layout.propTypes = {
     menu: PropTypes.element,
     resources: PropTypes.array,
     setSidebarVisibility: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.node.isRequired,
     theme: PropTypes.object.isRequired,
     width: PropTypes.number,
 };

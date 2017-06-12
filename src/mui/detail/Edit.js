@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card, CardTitle, CardText } from 'material-ui/Card';
+import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
 import ViewTitle from '../layout/ViewTitle';
@@ -10,12 +10,6 @@ import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '
 import DefaultActions from './EditActions';
 import translate from '../../i18n/translate';
 
-/**
- * Turns a children data structure (either single child or array of children) into an array.
- * We can't use React.Children.toArray as it loses references.
- */
-const arrayizeChildren = children => (Array.isArray(children) ? children : [children]);
-
 export class Edit extends Component {
     constructor(props) {
         super(props);
@@ -23,6 +17,7 @@ export class Edit extends Component {
             key: 0,
             record: props.data,
         };
+        this.previousKey = 0;
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -41,18 +36,6 @@ export class Edit extends Component {
         if (this.props.id !== nextProps.id) {
             this.updateData(nextProps.resource, nextProps.id);
         }
-    }
-
-    // FIXME Seems that the cloneElement in CrudRoute slices the children array, which makes this necessary to avoid rerenders
-    shouldComponentUpdate(nextProps) {
-        if (nextProps.isLoading !== this.props.isLoading) {
-            return true;
-        }
-
-        const currentChildren = arrayizeChildren(this.props.children);
-        const newChildren = arrayizeChildren(nextProps.children);
-
-        return newChildren.every((child, index) => child === currentChildren[index]);
     }
 
     getBasePath() {
@@ -89,6 +72,11 @@ export class Edit extends Component {
             data,
         });
         const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
+        // using this.previousKey instead of this.fullRefresh makes
+        // the new form mount, the old form unmount, and the new form update appear in the same frame
+        // so the form doesn't disappear while refreshing
+        const isRefreshing = key !== this.previousKey;
+        this.previousKey = key;
 
         return (
             <div className="edit-page">
@@ -102,7 +90,7 @@ export class Edit extends Component {
                         resource,
                     })}
                     <ViewTitle title={titleElement} />
-                    {data && React.cloneElement(children, {
+                    {data && !isRefreshing && React.cloneElement(children, {
                         onSubmit: this.handleSubmit,
                         resource,
                         basePath,
@@ -135,8 +123,8 @@ Edit.propTypes = {
 
 function mapStateToProps(state, props) {
     return {
-        id: props.match.params.id,
-        data: state.admin[props.resource].data[props.match.params.id],
+        id: decodeURIComponent(props.match.params.id),
+        data: state.admin[props.resource].data[decodeURIComponent(props.match.params.id)],
         isLoading: state.admin.loading > 0,
     };
 }

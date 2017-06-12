@@ -5,37 +5,51 @@ title: "Reference"
 
 # Reference
 
-## Components
-
 <div style="column-count:3" markdown="1">
 
-* [`<Admin>`](./AdminResource.html#the-admin-component)
+* `<Actions>`
+* [`<Admin>`](./Admin.html)
+* `<AdminRoutes>`
+* `<AppBar>`
+* `<AppBarMobile>`
 * [`<AutocompleteInput>`](./Inputs.html#autocompleteinput)
 * [`<BooleanField>`](./Fields.html#booleanfield)
 * [`<BooleanInput>`](./Inputs.html#booleaninput-and-nullablebooleaninput)
 * [`<CheckboxGroupInput>`](./Inputs.html#checkboxgroupinput)
 * [`<ChipField>`](./Fields.html#chipfield)
 * [`<Create>`](./CreateEdit.html#the-create-and-edit-components)
+* `<CreateActions>`
 * `<CreateButton>`
 * `<CrudRoute>`
+* `<DashboardMenuItem>`
 * [`<Datagrid>`](./List.html#the-datagrid-component)
+* `<DatagridBody>`
+* `<DatagridCell>`
+* `<DatagridHeaderCell>`
 * [`<DateField>`](./Fields.html#datefield)
 * [`<DateInput>`](./Inputs.html#dateinput)
 * `<Delete>`
 * `<DeleteButton>`
 * [`<DisabledInput>`](./Inputs.html#disabledinput)
 * [`<Edit>`](./CreateEdit.html#the-create-and-edit-components)
+* `<EditActions>`
 * `<EditButton>`
 * [`<EmailField>`](./Fields.html#emailfield)
+* [`<FileField>`](./Fields.html#filefield)
+* [`<FileInput>`](./Inputs.html#fileinput)
 * [`<Filter>`](./List.html#filters)
+* `<FilterButton>`
+* `<FilterForm>`
 * `<FormField>`
 * [`<FormTab>`](./CreateEdit.html#the-tabbedform-component)
+* [`<FunctionField>`](./Fields.html#functionfield)
 * `<EditButton>`
 * [`<ImageField>`](./Fields.html#imagefield)
 * [`<ImageInput>`](./Inputs.html#imageinput)
+* [`<ImageInputPreview>`](./Inputs.html#imageinput)
 * [`<FunctionField>`](./Fields.html#functionfield)
 * `<Labeled>`
-* [`<Layout>`](./AdminResource.html#applayout)
+* [`<Layout>`](./Admin.html#applayout)
 * [`<List>`](./List.html#the-list-component)
 * `<ListButton>`
 * [`<LongTextInput>`](./Inputs.html#longtextinput)
@@ -46,26 +60,38 @@ title: "Reference"
 * [`<NumberInput>`](./Inputs.html#numberinput)
 * [`<Pagination>`](./List.html#pagination)
 * [`<RadioButtonGroupInput>`](./Inputs.html#radiobuttongroupinput)
+* [`<ReferenceArrayField>`](./Fields.html#referencearrayfield)
+* [`<ReferenceArrayInput>`](./Inputs.html#referencearrayinput)
 * [`<ReferenceField>`](./Fields.html#referencefield)
 * [`<ReferenceInput>`](./Inputs.html#referenceinput)
 * [`<ReferenceManyField>`](./Fields.html#referencemanyfield)
-* [`<Resource>`](./AdminResource.html#the-resource-component)
+* `<RefreshButton>`
+* [`<Resource>`](./Resource.html#the-resource-component)
 * [`<Responsive>`](./Theming.html#responsive-utility)
 * [`<Restricted>`](./Authentication.html#restricting-access-to-a-custom-page)
 * [`<RichTextField>`](./Fields.html#richtextfield)
 * [`<RichTextInput>`](./Inputs.html#richtextinput)
 * `<SaveButton>`
+* [`<SelectArrayInput>`](./Inputs.html#selectarrayinput)
+* [`<SelectField>`](./Fields.html#selectfield)
 * [`<SelectInput>`](./Inputs.html#selectinput)
-* `<Show>`
+* `<Sidebar>`
+* `<SimpleList>`
+* `<SingleFieldList>`
+* [`<Show>`](./Show.html#the-show-component)
 * `<ShowButton>`
 * [`<SimpleForm>`](./CreateEdit.html#the-simpleform-component)
 * [`<SimpleList>`](./List.html#the-simplelist-component)
-* `<SimpleShowLayout>`
+* [`<SimpleShowLayout>`](./Show.html#the-simpleshowlayout-component)
 * [`<SingleFieldList>`](./List.html#the-singlefieldlist-component)
+* `<Tab>`
 * [`<TabbedForm>`](./CreateEdit.html#the-tabbedform-component)
+* `<TabbedShowLayout>`
 * [`<TextField>`](./Fields.html#textfield)
 * [`<TextInput>`](./Inputs.html#textinput)
 * `<Title>`
+* `<Toolbar>`
 * [`<UrlField>`](./Fields.html#urlfield)
+* `<ViewTitle>`
 
 </div>

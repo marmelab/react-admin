@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import FieldTitle from '../../util/FieldTitle';
 
-const LongTextInput = ({ input, label, meta: { touched, error }, options, source, elStyle, resource }) => (
+const LongTextInput = ({ input, isRequired, label, meta: { touched, error }, options, source, elStyle, resource }) => (
     <TextField
         {...input}
         multiLine
         fullWidth
-        floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
+        floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
         errorText={touched && error}
         style={elStyle}
         {...options}
@@ -19,13 +19,17 @@ LongTextInput.propTypes = {
     addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
     input: PropTypes.object,
+    isRequired: PropTypes.bool,
     label: PropTypes.string,
     meta: PropTypes.object,
     name: PropTypes.string,
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-    validation: PropTypes.object,
+    validate: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.arrayOf(PropTypes.func)
+    ]),
 };
 
 LongTextInput.defaultProps = {

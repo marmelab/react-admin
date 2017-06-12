@@ -90,9 +90,9 @@ export class RadioButtonGroupInput extends Component {
     }
 
     render() {
-        const { label, source, input, choices, options, elStyle } = this.props;
+        const { label, source, input, isRequired, choices, options, elStyle } = this.props;
         return (
-            <Labeled label={label} onChange={this.handleChange} source={source}>
+            <Labeled label={label} onChange={this.handleChange} source={source} isRequired={isRequired}>
                 <RadioButtonGroup
                     name={source}
                     defaultSelected={input.value}
@@ -109,6 +109,8 @@ export class RadioButtonGroupInput extends Component {
 RadioButtonGroupInput.propTypes = {
     addField: PropTypes.bool.isRequired,
     choices: PropTypes.arrayOf(PropTypes.object),
+    input: PropTypes.object,
+    isRequired: PropTypes.bool,
     label: PropTypes.string,
     onChange: PropTypes.func,
     options: PropTypes.object,

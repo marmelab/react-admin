@@ -193,7 +193,7 @@ describe('<ImageInput />', () => {
         });
     });
 
-    it('should allow to remove an image from the input with `ImageInputPreview.onRemove`', () => {
+    it('should allow to remove an image from the input with `FileInputPreview.onRemove`', () => {
         const wrapper = shallow(
             <ImageInput
                 source="picture"
@@ -211,7 +211,7 @@ describe('<ImageInput />', () => {
             </ImageInput>,
         );
 
-        const inputPreview = wrapper.find('ImageInputPreview');
+        const inputPreview = wrapper.find('FileInputPreview');
         inputPreview.at(1).prop('onRemove')();
         wrapper.update();
 

@@ -25,13 +25,13 @@ const defaultLabelStyle = {
  */
 class Labeled extends Component {
     render() {
-        const { input, label, resource, record, onChange, basePath, children, source, disabled = true, labelStyle = defaultLabelStyle } = this.props;
+        const { input, isRequired, label, resource, record, onChange, basePath, children, source, disabled = true, labelStyle = defaultLabelStyle } = this.props;
         if (!label && !source) {
             throw new Error(`Cannot create label for component <${children && children.type && children.type.name}>: You must set either the label or source props. You can also disable automated label insertion by setting 'addLabel: false' in the component default props`);
         }
         return (
             <TextField
-                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} />}
+                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
                 floatingLabelFixed
                 fullWidth
                 disabled={disabled}
@@ -52,6 +52,7 @@ Labeled.propTypes = {
     children: PropTypes.element,
     disabled: PropTypes.bool,
     input: PropTypes.object,
+    isRequired: PropTypes.bool,
     label: PropTypes.string,
     onChange: PropTypes.func,
     record: PropTypes.object,

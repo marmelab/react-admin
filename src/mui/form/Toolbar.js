@@ -14,19 +14,19 @@ const styles = {
     },
 };
 
-const Toolbar = ({ invalid }) => (
+const Toolbar = ({ invalid, submitOnEnter = true }) => (
     <Responsive
         small={
             <MuiToolbar style={styles.mobileToolbar} noGutter>
                 <ToolbarGroup>
-                    <SaveButton invalid={invalid} raised={false} />
+                    <SaveButton invalid={invalid} submitOnEnter={submitOnEnter} raised={false} />
                 </ToolbarGroup>
             </MuiToolbar>
         }
         medium={
             <MuiToolbar>
                 <ToolbarGroup>
-                    <SaveButton invalid={invalid} />
+                    <SaveButton invalid={invalid} submitOnEnter={submitOnEnter} />
                 </ToolbarGroup>
             </MuiToolbar>
         }

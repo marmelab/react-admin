@@ -16,7 +16,7 @@ For code issues please include:
 * Admin-on-rest version
 * React version
 * Browser version
-* A code example or link to a repo, gist or running site.
+* A code example or link to a repo, gist or running site. (hint: fork [this sandbox](https://codesandbox.io/s/ElxGNxBY0) to create a reproducible version of your bug)
 
 For visual or layout problems, images or animated gifs can help explain your issue.
 It's even better with a live reproduction test case.

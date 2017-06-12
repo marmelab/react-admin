@@ -7,8 +7,9 @@ import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
-import { fork } from 'redux-saga/effects';
+import { all, fork } from 'redux-saga/effects';
 
+import { USER_LOGOUT } from './actions/authActions';
 import adminReducer from './reducer';
 import localeReducer from './reducer/locale';
 import { crudSaga } from './sideEffect/saga';
@@ -26,6 +27,7 @@ const Admin = ({
     customSagas = [],
     customRoutes,
     dashboard,
+    history,
     locale,
     messages = {},
     menu,
@@ -36,24 +38,25 @@ const Admin = ({
     logoutButton,
     initialState,
 }) => {
-    const resources = React.Children.map(children, ({ props }) => props);
-    const reducer = combineReducers({
+    const resources = React.Children.map(children, ({ props }) => props) || [];
+    const appReducer = combineReducers({
         admin: adminReducer(resources),
         locale: localeReducer(locale),
         form: formReducer,
         routing: routerReducer,
         ...customReducers,
     });
+    const resettableAppReducer = (state, action) => appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
     const saga = function* rootSaga() {
-        yield [
+        yield all([
             crudSaga(restClient, authClient),
             ...customSagas,
-        ].map(fork);
+        ].map(fork));
     };
     const sagaMiddleware = createSagaMiddleware();
-    const history = createHistory();
-    const store = createStore(reducer, initialState, compose(
-        applyMiddleware(sagaMiddleware, routerMiddleware(history)),
+    const routerHistory = history || createHistory();
+    const store = createStore(resettableAppReducer, initialState, compose(
+        applyMiddleware(sagaMiddleware, routerMiddleware(routerHistory)),
         window.devToolsExtension ? window.devToolsExtension() : f => f,
     ));
     sagaMiddleware.run(saga);
@@ -63,7 +66,7 @@ const Admin = ({
     return (
         <Provider store={store}>
             <TranslationProvider messages={messages}>
-                <ConnectedRouter history={history}>
+                <ConnectedRouter history={routerHistory}>
                     <div>
                         <Switch>
                             <Route exact path="/login" render={({ location }) => createElement(loginPage || Login, {
@@ -101,12 +104,13 @@ Admin.propTypes = {
     customReducers: PropTypes.object,
     customRoutes: PropTypes.array,
     dashboard: componentPropType,
+    history: PropTypes.object,
     loginPage: componentPropType,
     logoutButton: componentPropType,
     menu: componentPropType,
     restClient: PropTypes.func,
     theme: PropTypes.object,
-    title: PropTypes.string,
+    title: PropTypes.node,
     locale: PropTypes.string,
     messages: PropTypes.object,
     initialState: PropTypes.object,

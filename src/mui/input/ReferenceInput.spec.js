@@ -3,7 +3,6 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import { ReferenceInput } from './ReferenceInput';
-import { SelectInput } from './SelectInput';
 
 describe('<ReferenceInput />', () => {
     const defaultProps = {

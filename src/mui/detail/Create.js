@@ -32,7 +32,7 @@ class Create extends Component {
         const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
 
         return (
-            <div>
+            <div className="create-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     {actions && React.cloneElement(actions, {
                         basePath,

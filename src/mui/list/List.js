@@ -18,6 +18,7 @@ import {
     refreshList as refreshListAction,
 } from '../../actions/listActions';
 import translate from '../../i18n/translate';
+import removeKey from '../../util/removeKey';
 
 const styles = {
     noResults: { padding: 20 },
@@ -73,7 +74,7 @@ export class List extends Component {
     componentDidMount() {
         this.updateData();
         if (Object.keys(this.props.query).length > 0) {
-             this.props.changeListParams(this.props.resource, this.props.query);
+            this.props.changeListParams(this.props.resource, this.props.query);
         }
     }
 
@@ -127,8 +128,9 @@ export class List extends Component {
     updateData(query) {
         const params = query || this.getQuery();
         const { sort, order, page, perPage, filter } = params;
+        const pagination = { page: parseInt(page, 10), perPage: parseInt(perPage, 10) };
         const permanentFilter = this.props.filter;
-        this.props.crudGetList(this.props.resource, { page, perPage }, { field: sort, order }, { ...filter, ...permanentFilter });
+        this.props.crudGetList(this.props.resource, pagination, { field: sort, order }, { ...filter, ...permanentFilter });
     }
 
     setSort = sort => this.changeParams({ type: SET_SORT, payload: sort });
@@ -146,12 +148,13 @@ export class List extends Component {
 
     hideFilter = (filterName) => {
         this.setState({ [filterName]: false });
-        this.setFilters({ ...this.props.filterValues, [filterName]: undefined });
+        const newFilters = removeKey(this.props.filterValues, filterName);
+        this.setFilters(newFilters);
     }
 
     changeParams(action) {
         const newParams = queryReducer(this.getQuery(), action);
-        this.props.push({ ...this.props.location, search: '?' + stringify({ ...newParams, filter: JSON.stringify(newParams.filter) }) });
+        this.props.push({ ...this.props.location, search: `?${stringify({ ...newParams, filter: JSON.stringify(newParams.filter) })}` });
         this.props.changeListParams(this.props.resource, newParams);
     }
 
@@ -190,7 +193,7 @@ export class List extends Component {
                         context: 'form',
                     })}
                     { isLoading || total > 0 ?
-                        <div>
+                        <div key={key}>
                             {children && React.cloneElement(children, {
                                 resource,
                                 ids,

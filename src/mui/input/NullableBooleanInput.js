@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SelectInput from './SelectInput';
+import translate from '../../i18n/translate';
 
-const NullableBooleanInput = ({ input, meta: { touched, error }, label, source, elStyle, resource }) => (
+export const NullableBooleanInput = ({ input, meta, label, source, elStyle, resource, translate }) => (
     <SelectInput
         input={input}
         label={label}
@@ -10,10 +11,10 @@ const NullableBooleanInput = ({ input, meta: { touched, error }, label, source, 
         resource={resource}
         choices={[
             { id: null, name: '' },
-            { id: false, name: 'aor.boolean.false' },
-            { id: true, name: 'aor.boolean.true' },
+            { id: false, name: translate('aor.boolean.false') },
+            { id: true, name: translate('aor.boolean.true') },
         ]}
-        errorText={touched && error}
+        meta={meta}
         style={elStyle}
     />
 );
@@ -32,4 +33,4 @@ NullableBooleanInput.defaultProps = {
     addField: true,
 };
 
-export default NullableBooleanInput;
+export default translate(NullableBooleanInput);
