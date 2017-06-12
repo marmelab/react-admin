@@ -1,4 +1,4 @@
-import React, { createElement } from 'react';
+import React, { createElement, PropTypes } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import Restricted from './auth/Restricted';
@@ -26,6 +26,18 @@ const CrudRoute = ({ resource, list, create, edit, show, remove, options }) => {
             {remove && <Route exact path={`/${resource}/:id/delete`} render={RestrictedPage(remove, 'delete')} />}
         </Switch>
     );
+};
+
+const componentPropType = PropTypes.node;
+
+CrudRoute.propTypes = {
+    resource: PropTypes.string.isRequired,
+    list: componentPropType,
+    create: componentPropType,
+    edit: componentPropType,
+    show: componentPropType,
+    remove: componentPropType,
+    options: PropTypes.object,
 };
 
 export default CrudRoute;

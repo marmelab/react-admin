@@ -94,7 +94,7 @@ const Admin = ({
     );
 };
 
-const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
+const componentPropType = PropTypes.node;
 
 Admin.propTypes = {
     appLayout: componentPropType,
