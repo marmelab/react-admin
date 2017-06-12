@@ -91,4 +91,20 @@ describe('<ReferenceField />', () => {
         const linkElement = wrapper.find('Link');
         assert.equal(linkElement.length, 0);
     });
+    it('should not call crudGetManyAccumulate on componentDidMount if reference source is an embedded resource', () => {
+        const crudGetManyAccumulate = sinon.spy();
+        shallow(
+            <ReferenceField
+                record={{ foo: { id: 123, title: 'foo' } }}
+                source="foo"
+                reference="bar"
+                basePath=""
+              crudGetManyAccumulate={crudGetManyAccumulate}
+            >
+                <TextField source="title" />
+            </ReferenceField>,
+            { lifecycleExperimental: true },
+        );
+        assert(crudGetManyAccumulate.notCalled);
+    });
 });
