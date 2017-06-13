@@ -34,12 +34,12 @@ export class EmbeddedArrayInput extends Component {
     }
 
     renderList = ({ fields }) => {
-        const { children, elStyle } = this.props;
+        const { children, groupStyle } = this.props;
         return (
             <div className="EmbeddedArrayInputContainer" style={{ margin: '1em' }}>
                 <div>
                     {fields.map((member, index) =>
-                        <div key={index} style={elStyle} className="EmbeddedArrayInputItemContainer">
+                        <div key={index} style={groupStyle} className="EmbeddedArrayInputItemContainer">
                             <div style={{ padding: '0 1em 1em 1em' }}>
                                 {React.Children.map(children, input => input && (
                                     <div key={input.props.source} className={`aor-input-${input.props.source}`} style={input.props.style}>
@@ -82,14 +82,13 @@ EmbeddedArrayInput.propTypes = {
     input: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-    elStyle: PropTypes.object,
-    cnStyle: PropTypes.object
+    groupStyle: PropTypes.object
 };
 
 EmbeddedArrayInput.defaultProps = {
     addField: false,
     allowEmpty: false,
-    elStyle: {
+    groupStyle: {
         display: 'block',
         verticalAlign: 'bottom'
     }
