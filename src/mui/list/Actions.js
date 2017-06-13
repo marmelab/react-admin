@@ -6,8 +6,9 @@ import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 
 const cardActionStyle = {
     zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    flexWrap: 'wrap',
 };
 
 const Actions = ({ resource, filters, displayedFilters, filterValues, hasCreate, basePath, showFilter, refresh }) => (

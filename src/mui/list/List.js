@@ -19,6 +19,10 @@ import removeKey from '../../util/removeKey';
 
 const styles = {
     noResults: { padding: 20 },
+    header: {
+        display: 'flex',
+        justifyContent: 'space-between',
+    },
 };
 
 /**
@@ -177,17 +181,19 @@ export class List extends Component {
         return (
             <div className="list-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    {actions && React.cloneElement(actions, {
-                        resource,
-                        filters,
-                        filterValues,
-                        basePath,
-                        hasCreate,
-                        displayedFilters: this.state,
-                        showFilter: this.showFilter,
-                        refresh: this.refresh,
-                    })}
-                    <ViewTitle title={titleElement} />
+		   <div style={styles.header} >
+                      <ViewTitle title={titleElement} />
+                      {actions && React.cloneElement(actions, {
+                          resource,
+                          filters,
+                          filterValues,
+                          basePath,
+                          hasCreate,
+                          displayedFilters: this.state,
+                          showFilter: this.showFilter,
+                          refresh: this.refresh,
+                      })}
+		    </div>
                     {filters && React.cloneElement(filters, {
                         resource,
                         hideFilter: this.hideFilter,
