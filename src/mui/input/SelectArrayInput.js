@@ -180,10 +180,19 @@ export class SelectArrayInput extends Component {
 
     renderCreateButton = () => (
         <MenuItem
-            style={{ fontWeight: 'bold' }}
             rightIcon={<AddIcon color={cyan500} />}
-            primaryText={`Create "${this.state.currentValue}"`}
-        />
+        >
+            <span
+                style={{
+                    fontWeight: 'bold',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    display: 'block',
+                }}
+            >
+                Create: {this.state.currentValue}
+            </span>
+        </MenuItem>
     );
 
     getChoices = () => {
@@ -206,7 +215,7 @@ export class SelectArrayInput extends Component {
 
     render() {
         const {
-            elStyle,
+                elStyle,
             input,
             isRequired,
             choices,
