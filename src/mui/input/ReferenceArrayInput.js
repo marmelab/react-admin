@@ -9,9 +9,17 @@ import {
     crudGetMatching as crudGetMatchingAction,
     crudCreateInline as crudCreateInlineAction,
 } from '../../actions/dataActions';
+import {
+    incrementOpenedForms as incrementOpenedFormsAction,
+    decrementOpenedForms as decrementOpenedFormsAction,
+} from '../../actions/inlineFormsActions';
 import { getPossibleReferences } from '../../reducer/references/possibleValues';
 
-const referenceSource = (resource, source) => `${resource}@${source}`;
+const referenceSource = (resource, source, suffix) => {
+    let res = `${resource}@${source}`;
+    res = suffix ? `${res}@${suffix}` : res;
+    return res;
+};
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -98,10 +106,16 @@ export class ReferenceArrayInput extends Component {
         // stored as a property rather than state because we don't want redraw of async updates
         this.params = { pagination: { page: 1, perPage }, sort, filter };
         this.debouncedSetFilter = debounce(this.setFilter.bind(this), 500);
+        this.formId = referenceSource(
+            props.resource,
+            props.source,
+            props.openedFormsCount);
+        this.currentFormCount = props.openedFormsCount;
+        this.recordCreatedCB = null;
+
         this.state = {
             showCreateDialog: false,
             inlineRecord: null,
-            recordCreatedCB: null,
         };
     }
 
@@ -110,18 +124,19 @@ export class ReferenceArrayInput extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        const currentInlineRecord = this.props.inlineFormsData[this.formId];
+        const createdInlineRecord = nextProps.inlineFormsData[this.formId];
+
         if (this.props.record.id !== nextProps.record.id) {
             this.fetchReferenceAndOptions(nextProps);
         }
 
-        if (this.props.createdInlineRecord !== nextProps.createdInlineRecord) {
-            if (this.state.recordCreatedCB) {
-                this.state.recordCreatedCB(nextProps.createdInlineRecord);
+        if (currentInlineRecord !== createdInlineRecord) {
+            if (this.recordCreatedCB) {
+                this.recordCreatedCB(createdInlineRecord);
             }
 
-            this.setState({
-                showCreateDialog: false,
-            });
+            this.closeDialog();
         }
     }
 
@@ -159,19 +174,30 @@ export class ReferenceArrayInput extends Component {
     }
 
     handleCreateInline = (record, recordCreatedCB) => {
+        this.props.incrementOpenedForms();
+        this.recordCreatedCB = recordCreatedCB;
         this.setState({
             showCreateDialog: true,
             inlineRecord: record,
-            recordCreatedCB,
         });
     }
 
     handleInlineFormSubmit = (record) => {
-        const { resource, source, reference } = this.props;
         this.props.crudCreateInline(
-            reference,
+            this.props.reference,
             record,
-            referenceSource(resource, source));
+            this.formId);
+    }
+
+    handleRequestCloseDialog = () => {
+        if (this.currentFormCount === this.props.openedFormsCount - 1) {
+            this.closeDialog();
+        }
+    }
+
+    closeDialog = () => {
+        this.props.decrementOpenedForms();
+        this.setState({ showCreateDialog: false });
     }
 
     render() {
@@ -213,12 +239,10 @@ export class ReferenceArrayInput extends Component {
                         open={this.state.showCreateDialog}
                         modal={false}
                         autoScrollBodyContent
-                        onRequestClose={() => {
-                            this.setState({ showCreateDialog: false });
-                        }}
+                        onRequestClose={this.handleRequestCloseDialog}
                     >
                         {React.cloneElement(inlineForm, {
-                            form: referenceSource(resource, source),
+                            form: this.formId,
                             resource: reference,
                             record: this.state.inlineRecord,
                             onSubmit: this.handleInlineFormSubmit,
@@ -238,6 +262,8 @@ ReferenceArrayInput.propTypes = {
     crudGetMatching: PropTypes.func.isRequired,
     crudGetMany: PropTypes.func.isRequired,
     crudCreateInline: PropTypes.func.isRequired,
+    incrementOpenedForms: PropTypes.func.isRequired,
+    decrementOpenedForms: PropTypes.func.isRequired,
     filter: PropTypes.object,
     filterToQuery: PropTypes.func.isRequired,
     input: PropTypes.object.isRequired,
@@ -254,8 +280,9 @@ ReferenceArrayInput.propTypes = {
         order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
     source: PropTypes.string,
-    createdInlineRecord: PropTypes.object,
     inlineForm: PropTypes.element,
+    openedFormsCount: PropTypes.number.isRequired,
+    inlineFormsData: PropTypes.object.isRequired,
 };
 
 ReferenceArrayInput.defaultProps = {
@@ -272,7 +299,8 @@ ReferenceArrayInput.defaultProps = {
 function mapStateToProps(state, props) {
     const referenceIds = props.input.value || [];
     const data = state.admin[props.reference].data;
-    const inlineForm = state.admin.inlineForms[referenceSource(props.resource, props.source)];
+    const openedFormsCount = state.admin.inlineForms.openedFormsCount;
+    const inlineFormsData = state.admin.inlineForms.data;
 
     return {
         referenceRecords: referenceIds.reduce((references, referenceId) => {
@@ -287,8 +315,8 @@ function mapStateToProps(state, props) {
             props.reference,
             referenceIds,
         ),
-        createdInlineRecord: inlineForm ? inlineForm.createdRecord : null,
-
+        inlineFormsData,
+        openedFormsCount,
     };
 }
 
@@ -296,6 +324,8 @@ const ConnectedReferenceInput = connect(mapStateToProps, {
     crudGetMany: crudGetManyAction,
     crudGetMatching: crudGetMatchingAction,
     crudCreateInline: crudCreateInlineAction,
+    incrementOpenedForms: incrementOpenedFormsAction,
+    decrementOpenedForms: decrementOpenedFormsAction,
 })(ReferenceArrayInput);
 
 ConnectedReferenceInput.defaultProps = {

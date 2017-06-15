@@ -7,3 +7,4 @@ export * from './listActions';
 export * from './localeActions';
 export * from './notificationActions';
 export * from './uiActions';
+export * from './inlineFormsActions';
