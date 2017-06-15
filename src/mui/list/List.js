@@ -7,6 +7,8 @@ import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import inflection from 'inflection';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import autoprefixer from 'material-ui/utils/autoprefixer';
 import queryReducer, { SET_SORT, SET_PAGE, SET_FILTER, SORT_DESC } from '../../reducer/resource/list/queryReducer';
 import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
@@ -16,6 +18,7 @@ import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
 import translate from '../../i18n/translate';
 import removeKey from '../../util/removeKey';
+import defaultTheme from '../defaultTheme';
 
 const styles = {
     noResults: { padding: 20 },
@@ -165,7 +168,7 @@ export class List extends Component {
     }
 
     render() {
-        const { filters, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading, translate } = this.props;
+        const { filters, pagination = <DefaultPagination />, actions = <DefaultActions />, resource, hasCreate, title, data, ids, total, children, isLoading, translate, theme } = this.props;
         const { key } = this.state;
         const query = this.getQuery();
         const filterValues = query.filter;
@@ -177,23 +180,26 @@ export class List extends Component {
         });
         const defaultTitle = translate('aor.page.list', { name: `${resourceName}` });
         const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
+        const muiTheme = getMuiTheme(theme);
+        const prefix = autoprefixer(muiTheme);
 
         return (
             <div className="list-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-		   <div style={styles.header} >
-                      <ViewTitle title={titleElement} />
-                      {actions && React.cloneElement(actions, {
-                          resource,
-                          filters,
-                          filterValues,
-                          basePath,
-                          hasCreate,
-                          displayedFilters: this.state,
-                          showFilter: this.showFilter,
-                          refresh: this.refresh,
-                      })}
-		    </div>
+                    <div style={prefix(styles.header)} >
+                        <ViewTitle title={titleElement} />
+                        {actions && React.cloneElement(actions, {
+                            resource,
+                            filters,
+                            filterValues,
+                            basePath,
+                            hasCreate,
+                            displayedFilters: this.state,
+                            showFilter: this.showFilter,
+                            refresh: this.refresh,
+                            theme,
+                        })}
+                    </div>
                     {filters && React.cloneElement(filters, {
                         resource,
                         hideFilter: this.hideFilter,
@@ -258,6 +264,7 @@ List.propTypes = {
     resource: PropTypes.string.isRequired,
     total: PropTypes.number.isRequired,
     translate: PropTypes.func.isRequired,
+    theme: PropTypes.object.isRequired,
 };
 
 List.defaultProps = {
@@ -268,6 +275,7 @@ List.defaultProps = {
         field: 'id',
         order: SORT_DESC,
     },
+    theme: defaultTheme,
 };
 
 const getLocationSearch = props => props.location.search;
