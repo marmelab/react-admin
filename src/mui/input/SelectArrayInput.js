@@ -10,6 +10,14 @@ import AddIcon from 'material-ui/svg-icons/content/add-circle';
 import { cyan500 } from 'material-ui/styles/colors';
 
 const dataSourceConfig = { text: 'text', value: 'value' };
+const styles = {
+    createMenuItem: {
+        fontWeight: 'bold',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        display: 'block',
+    },
+};
 
 /**
  * An Input component for an array
@@ -182,17 +190,8 @@ export class SelectArrayInput extends Component {
         const createLabel = 'aor.action.create';
         const createText = this.props.translate(createLabel);
         return (
-            <MenuItem
-                rightIcon={<AddIcon color={cyan500} />}
-            >
-                <span
-                    style={{
-                        fontWeight: 'bold',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        display: 'block',
-                    }}
-                >
+            <MenuItem rightIcon={<AddIcon color={cyan500} />}>
+                <span style={styles.createMenuItem}>
                     {createText}: {this.state.currentValue}
                 </span>
             </MenuItem>
