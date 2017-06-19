@@ -96,7 +96,6 @@ FilterButton.propTypes = {
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
     displayedFilters: PropTypes.object.isRequired,
     filterValues: PropTypes.object.isRequired,
-    resource: PropTypes.string,
     showFilter: PropTypes.func.isRequired,
     translate: PropTypes.func.isRequired,
 };
