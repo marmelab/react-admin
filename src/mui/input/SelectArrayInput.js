@@ -76,7 +76,7 @@ export class SelectArrayInput extends Component {
         }
     };
 
-    existsInChoices(obj) {
+    existsInChoices = (obj) => {
         const { optionText } = this.props;
         const text = typeof obj === 'string' ? obj : obj.text;
         return this.props.choices.find(choice => choice[optionText] === text);
@@ -87,7 +87,7 @@ export class SelectArrayInput extends Component {
         const values = [...this.state.values, {
             text: createdRecord[optionText],
             value: createdRecord[optionValue],
-        }];      
+        }];
         this.setState({ values });
         this.handleChange(values);
 
