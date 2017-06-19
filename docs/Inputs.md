@@ -715,6 +715,41 @@ The enclosed component may further filter results (that's the case, for instance
 </ReferenceArrayInput>
 ```
 
+ You can allow creating records of the referenced resource directly if they don't exist by passing an `inlineForm` prop, it should contain a form element like `SimpleForm`.
+ 
+ When used with `SelectArrayInput` it adds a choice for creating a new item if the choices don't contain the current input text.
+
+```js
+const TagsInlineForm = (props) => (
+    <SimpleForm {...props}>
+        <TextInput source="name" label="Tag Name" />
+    </SimpleForm>
+);
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <ReferenceArrayInput
+                source="tag_ids"
+                reference="tags"
+                inlineForm={<TagsInlineForm />}
+            >
+                <SelectArrayInput optionText="name" />
+            </ReferenceArrayInput>
+        </SimpleForm>
+    </Edit>
+);
+```
+
+![Inline Forms](./img/inline-forms.gif)
+
+If you need to support creating items using inline forms with your custom components other than `SelectArrayInput` then you have to:
+
+- Provide a UI element for the user to choose creating a new item.
+- Call `onCreateInline` (received as a prop from `ReferenceArrayInput`) when the user chooses to create a new item with the following arguments:
+  - a partial record: containing any text typed by the user so far, used for giving the inline form fields initial values.
+  - a callback function: it receives  the created record (returned by the rest client) as its argument, this should be used to insert the record to the list of selected values (a chip in `SelectArrayInput`'s case).
+
 ## `<RichTextInput>`
 
 `<RichTextInput>` is the ideal component if you want to allow your users to edit some HTML contents. It

@@ -80,7 +80,7 @@ export const PostList = ({ ...props }) => (
                         <SingleFieldList>
                             <ChipField source="name" />
                         </SingleFieldList>
-                     </ReferenceArrayField>
+                    </ReferenceArrayField>
                     <EditButton />
                     <ShowButton />
                 </Datagrid>
@@ -120,6 +120,12 @@ export const PostCreate = ({ ...props }) => (
     </Create>
 );
 
+const TagsInlineForm = props => (
+    <SimpleForm {...props}>
+        <TextInput source="name" label="Tag Name" />
+    </SimpleForm>
+);
+
 export const PostEdit = ({ ...props }) => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
@@ -143,7 +149,12 @@ export const PostEdit = ({ ...props }) => (
                 <RichTextInput source="body" label="" validate={required} addLabel={false} />
             </FormTab>
             <FormTab label="post.form.miscellaneous">
-                <ReferenceArrayInput source="tags" reference="tags" allowEmpty>
+                <ReferenceArrayInput
+                    source="tags"
+                    reference="tags"
+                    inlineForm={<TagsInlineForm />}
+                    allowEmpty
+                >
                     <SelectArrayInput optionText="name" options={{ fullWidth: true }} />
                 </ReferenceArrayInput>
                 <DateInput source="published_at" options={{ locale: 'pt' }} />

@@ -98,6 +98,30 @@ const referenceSource = (resource, source, suffix) => {
  *      filterToQuery={searchText => ({ name: searchText })}>
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
+ *
+ * You can allow creating records of the referenced resource directly if
+ * they don't exist by passing an `inlineForm` prop, it should contain a
+ * form element like `SimpleForm`:
+ *
+ * @example
+ * const TagsInlineForm = (props) => (
+ *     <SimpleForm {...props}>
+ *         <TextInput source="name" label="Tag Name" />
+ *     </SimpleForm>
+ * );
+ * export const PostEdit = (props) => (
+ *     <Edit {...props}>
+ *         <SimpleForm>
+ *             <ReferenceArrayInput
+ *                 source="tag_ids"
+ *                 reference="tags"
+ *                 inlineForm={<TagsInlineForm />}
+ *             >
+ *                 <SelectArrayInput optionText="name" />
+ *             </ReferenceArrayInput>
+ *         </SimpleForm>
+ *     </Edit>
+ * );
  */
 export class ReferenceArrayInput extends Component {
     constructor(props) {
