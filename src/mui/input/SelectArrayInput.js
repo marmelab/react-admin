@@ -178,22 +178,26 @@ export class SelectArrayInput extends Component {
         };
     }
 
-    renderCreateButton = () => (
-        <MenuItem
-            rightIcon={<AddIcon color={cyan500} />}
-        >
-            <span
-                style={{
-                    fontWeight: 'bold',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    display: 'block',
-                }}
+    renderCreateButton = () => {
+        const createLabel = 'aor.action.create';
+        const createText = this.props.translate(createLabel);
+        return (
+            <MenuItem
+                rightIcon={<AddIcon color={cyan500} />}
             >
-                Create: {this.state.currentValue}
-            </span>
-        </MenuItem>
-    );
+                <span
+                    style={{
+                        fontWeight: 'bold',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: 'block',
+                    }}
+                >
+                    {createText}: {this.state.currentValue}
+                </span>
+            </MenuItem>
+        );
+    };
 
     getChoices = () => {
         const exists = this.existsInChoices(this.state.currentValue);
