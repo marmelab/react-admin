@@ -87,7 +87,7 @@ export class SelectArrayInput extends Component {
         const values = [...this.state.values, {
             text: createdRecord[optionText],
             value: createdRecord[optionValue],
-        }];
+        }];      
         this.setState({ values });
         this.handleChange(values);
 
@@ -118,7 +118,7 @@ export class SelectArrayInput extends Component {
             }, 50);
 
             onCreateInline({
-                [optionText]: this.state.currentValue,
+                [optionText]: newValue.text,
             }, this.handleCreatedRecord);
 
             this.handleUpdateInput('');
@@ -203,7 +203,7 @@ export class SelectArrayInput extends Component {
         if (showCreateButton) {
             choices = [
                 {
-                    text: `${this.state.currentValue}_CREATE_`,
+                    text: `${this.state.currentValue}`,
                     value: this.renderCreateButton(),
                 },
                 ...choices,
