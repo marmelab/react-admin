@@ -55,7 +55,7 @@ SaveButton.propTypes = {
     label: PropTypes.string,
     raised: PropTypes.bool,
     saving: PropTypes.oneOfType([
-        PropTypes.string,
+        PropTypes.object,
         PropTypes.bool,
     ]),
     translate: PropTypes.func.isRequired,
