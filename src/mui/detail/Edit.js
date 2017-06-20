@@ -14,10 +14,9 @@ export class Edit extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            key: 0,
             record: props.data,
         };
-        this.previousKey = 0;
+        this.previousVersion = 0;
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -28,7 +27,6 @@ export class Edit extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.data !== nextProps.data) {
             this.setState({ record: nextProps.data }); // FIXME: erases user entry when fetch response arrives late
-            this.setState({ key: this.state.key + 1 });
         }
         if (this.props.id !== nextProps.id || nextProps.version !== this.props.version) {
             this.updateData(nextProps.resource, nextProps.id);
@@ -49,8 +47,19 @@ export class Edit extends Component {
     }
 
     render() {
-        const { actions = <DefaultActions />, children, data, hasDelete, hasShow, id, isLoading, resource, title, translate } = this.props;
-        const { key } = this.state;
+        const {
+            actions = <DefaultActions />,
+            children,
+            data,
+            hasDelete,
+            hasShow,
+            id,
+            isLoading,
+            resource,
+            title,
+            translate,
+            version,
+        } = this.props;
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
@@ -63,15 +72,15 @@ export class Edit extends Component {
             data,
         });
         const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
-        // using this.previousKey instead of this.fullRefresh makes
+        // using this.previousVersion instead of this.fullRefresh makes
         // the new form mount, the old form unmount, and the new form update appear in the same frame
         // so the form doesn't disappear while refreshing
-        const isRefreshing = key !== this.previousKey;
-        this.previousKey = key;
+        const isRefreshing = version !== this.previousVersion;
+        this.previousVersion = version;
 
         return (
             <div className="edit-page">
-                <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={version}>
                     {actions && React.cloneElement(actions, {
                         basePath,
                         data,
