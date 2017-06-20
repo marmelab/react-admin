@@ -11,4 +11,5 @@ export ReferenceManyField from './ReferenceManyField';
 export RichTextField from './RichTextField';
 export SelectField from './SelectField';
 export TextField from './TextField';
+export TimeField from './TimeField';
 export UrlField from './UrlField';
