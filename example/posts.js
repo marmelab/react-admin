@@ -118,6 +118,8 @@ export const PostCreate = ({ ...props }) => (
     </Create>
 );
 
+const emptyKeycode = [];
+
 export const PostEdit = ({ ...props }) => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
@@ -142,7 +144,7 @@ export const PostEdit = ({ ...props }) => (
             </FormTab>
             <FormTab label="post.form.miscellaneous">
                 <ReferenceArrayInput source="tags" reference="tags" allowEmpty>
-                    <SelectArrayInput optionText="name" options={{ fullWidth: true }} />
+                    <SelectArrayInput optionText="name" options={{ fullWidth: true, newChipKeyCodes: emptyKeycode }} />
                 </ReferenceArrayInput>
                 <DateInput source="published_at" options={{ locale: 'pt' }} />
                 <SelectInput source="category" choices={[
