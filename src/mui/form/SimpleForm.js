@@ -10,7 +10,7 @@ import Toolbar from './Toolbar';
 const noop = () => {};
 
 export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, basePath, submitOnEnter, onSubmit, toolbar, redirect }) => {
-    const submitWithRedirect = redirectTo => handleSubmit(values => onSubmit(values, redirectTo))();
+    const onSubmitWithRedirect = redirectTo => handleSubmit(values => onSubmit(values, redirectTo))();
     return (
         <form onSubmit={ submitOnEnter ? handleSubmit : noop } className="simple-form">
             <div style={{ padding: '0 1em 1em 1em' }}>
@@ -20,7 +20,7 @@ export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, 
                     </div>
                 ))}
             </div>
-            {toolbar && React.cloneElement(toolbar, { invalid, submitOnEnter, submitWithRedirect, redirect })}
+            {toolbar && React.cloneElement(toolbar, { invalid, submitOnEnter, onSubmitWithRedirect, redirect })}
         </form>
     );
 };

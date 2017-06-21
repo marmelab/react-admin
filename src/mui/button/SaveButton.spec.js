@@ -39,10 +39,10 @@ describe('<SaveButton />', () => {
     it('should trigger submit action when clicked while submitOnEnter is true and no saving in in progress', () => {
         const onSubmit = sinon.spy();
         const raisedButtonWrapper = shallow(
-            <SaveButton raised={true} submitOnEnter={true} translate={translate} submitWithRedirect={onSubmit} saving={false} />
+            <SaveButton raised={true} submitOnEnter={true} translate={translate} onSubmitWithRedirect={onSubmit} saving={false} />
         );
         const flatButtonWrapper = shallow(
-            <SaveButton raised={false} submitOnEnter={true} translate={translate} submitWithRedirect={onSubmit} saving={false} />
+            <SaveButton raised={false} submitOnEnter={true} translate={translate} onSubmitWithRedirect={onSubmit} saving={false} />
         );
 
         raisedButtonWrapper.simulate('click');
@@ -54,10 +54,10 @@ describe('<SaveButton />', () => {
     it('should trigger submit action when clicked while submitOnEnter is false and no saving is in progress', () => {
         const onSubmit = sinon.spy();
         const raisedButtonWrapper = shallow(
-            <SaveButton raised={true} submitOnEnter={false} translate={translate} submitWithRedirect={onSubmit} saving={false} />
+            <SaveButton raised={true} submitOnEnter={false} translate={translate} onSubmitWithRedirect={onSubmit} saving={false} />
         );
         const flatButtonWrapper = shallow(
-            <SaveButton raised={false} submitOnEnter={false} translate={translate} submitWithRedirect={onSubmit} saving={false} />
+            <SaveButton raised={false} submitOnEnter={false} translate={translate} onSubmitWithRedirect={onSubmit} saving={false} />
         );
 
         raisedButtonWrapper.simulate('click');
