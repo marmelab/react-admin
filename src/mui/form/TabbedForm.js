@@ -23,6 +23,7 @@ export class TabbedForm extends Component {
 
     render() {
         const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath, translate, submitOnEnter, onSubmit, toolbar, redirect } = this.props;
+        const submitWithRedirect = redirectTo => handleSubmit(values => onSubmit(values, redirectTo))();
         return (
             <form onSubmit={submitOnEnter ? handleSubmit : noop} className="tabbed-form">
                 <div style={{ padding: '0 1em 1em 1em' }}>
@@ -44,7 +45,7 @@ export class TabbedForm extends Component {
                         )}
                     </Tabs>
                 </div>
-                {toolbar && React.cloneElement(toolbar, { invalid, submitOnEnter, handleSubmit, onSubmit, redirect })}
+                {toolbar && React.cloneElement(toolbar, { invalid, submitOnEnter, submitWithRedirect, redirect })}
             </form>
         );
     }

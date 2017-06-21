@@ -15,13 +15,13 @@ const styles = {
     },
 };
 
-const Toolbar = ({ invalid, submitOnEnter, handleSubmit, onSubmit, redirect, children }) => (
+const Toolbar = ({ invalid, submitOnEnter, submitWithRedirect, redirect, children }) => (
     <Responsive
         small={
             <MuiToolbar style={styles.mobileToolbar} noGutter>
                 <ToolbarGroup>
                     {React.Children.map(children, button => (
-                            React.cloneElement(button, { invalid, submitOnEnter, handleSubmit, onSubmit, redirect, raised: false, ...button.props })
+                            React.cloneElement(button, { invalid, submitOnEnter, submitWithRedirect, redirect, raised: false, ...button.props })
                         ),
                     )}
                 </ToolbarGroup>
@@ -31,7 +31,7 @@ const Toolbar = ({ invalid, submitOnEnter, handleSubmit, onSubmit, redirect, chi
             <MuiToolbar>
                 <ToolbarGroup>
                     {React.Children.map(children, button => (
-                            React.cloneElement(button, { invalid, submitOnEnter, handleSubmit, onSubmit, redirect, ...button.props })
+                            React.cloneElement(button, { invalid, submitOnEnter, submitWithRedirect, redirect, ...button.props })
                         ),
                     )}
                 </ToolbarGroup>
@@ -42,8 +42,7 @@ const Toolbar = ({ invalid, submitOnEnter, handleSubmit, onSubmit, redirect, chi
 
 Toolbar.propTypes = {
     invalid: PropTypes.bool,
-    handleSubmit: PropTypes.func,
-    onSubmit: PropTypes.func,
+    submitWithRedirect: PropTypes.func,
     children: PropTypes.node,
     submitOnEnter: PropTypes.bool,
     redirect: PropTypes.oneOfType([

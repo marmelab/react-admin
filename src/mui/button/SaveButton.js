@@ -15,9 +15,9 @@ export class SaveButton extends Component {
             e.preventDefault();
         } else {
             // always submit form explicitly regardless of button type
-            const { handleSubmit, onSubmit, redirect } = this.props;
+            const { submitWithRedirect, redirect } = this.props;
             e && e.preventDefault();
-            handleSubmit(values => onSubmit(values, redirect))();
+            submitWithRedirect(redirect);
         }
     }
 
@@ -60,8 +60,7 @@ SaveButton.propTypes = {
     ]),
     translate: PropTypes.func.isRequired,
     submitOnEnter: PropTypes.bool,
-    handleSubmit: PropTypes.func,
-    onSubmit: PropTypes.func,
+    submitWithRedirect: PropTypes.func,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
@@ -69,10 +68,9 @@ SaveButton.propTypes = {
 };
 
 SaveButton.defaultProps = {
-    handleSubmit: submit => (values, redirect) => { submit(values, redirect); },
-    onSubmit: () => {},
+    submitWithRedirect: () => {},
     redirect: false,
-}
+};
 
 const mapStateToProps = state => ({
     saving: state.admin.saving,
