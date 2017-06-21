@@ -16,7 +16,6 @@ export class Edit extends Component {
         this.state = {
             record: props.data,
         };
-        this.previousVersion = 0;
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -58,7 +57,6 @@ export class Edit extends Component {
             resource,
             title,
             translate,
-            version,
         } = this.props;
         const basePath = this.getBasePath();
 
@@ -72,15 +70,9 @@ export class Edit extends Component {
             data,
         });
         const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
-        // using this.previousVersion instead of this.fullRefresh makes
-        // the new form mount, the old form unmount, and the new form update appear in the same frame
-        // so the form doesn't disappear while refreshing
-        const isRefreshing = version !== this.previousVersion;
-        this.previousVersion = version;
-
         return (
             <div className="edit-page">
-                <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={version}>
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     {actions && React.cloneElement(actions, {
                         basePath,
                         data,
@@ -89,7 +81,7 @@ export class Edit extends Component {
                         resource,
                     })}
                     <ViewTitle title={titleElement} />
-                    {data && !isRefreshing && React.cloneElement(children, {
+                    {data && React.cloneElement(children, {
                         onSubmit: this.handleSubmit,
                         resource,
                         basePath,
