@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import getDefaultValues from '../form/getDefaultValues';
-import translate from '../../i18n/translate';
 
 const divStyle = { padding: '0 1em 1em 1em' };
 export class TabbedShowLayout extends Component {
@@ -52,7 +51,6 @@ const enhance = compose(
     connect((state, props) => ({
         initialValues: getDefaultValues(state, props),
     })),
-    translate,
 );
 
 export default enhance(TabbedShowLayout);
