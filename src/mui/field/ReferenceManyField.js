@@ -70,8 +70,10 @@ export class ReferenceManyField extends Component {
 
     setSort = (field) => {
         const order = this.state.sort.field === field && this.state.sort.order === SORT_ASC ? SORT_DESC : SORT_ASC;
-        this.setState({ sort: { field, order } });
-        this.fetchReferences();
+        this.setState(
+            { sort: { field, order } },
+            this.fetchReferences,
+        );
     }
 
     fetchReferences({ reference, record, resource, target, perPage, filter } = this.props) {
