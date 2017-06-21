@@ -6,7 +6,6 @@ import compose from 'recompose/compose';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import Toolbar from './Toolbar';
 import getDefaultValues from './getDefaultValues';
-import translate from '../../i18n/translate';
 
 const noop = () => {};
 
@@ -25,7 +24,7 @@ export class TabbedForm extends Component {
     render() {
         const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath, translate, submitOnEnter } = this.props;
         return (
-            <form onSubmit={ submitOnEnter ? handleSubmit : noop } className="tabbed-form">
+            <form onSubmit={submitOnEnter ? handleSubmit : noop} className="tabbed-form">
                 <div style={{ padding: '0 1em 1em 1em' }}>
                     <Tabs
                         value={this.state.value}
@@ -41,7 +40,7 @@ export class TabbedForm extends Component {
                                 icon={tab.props.icon}
                             >
                                 {React.cloneElement(tab, { resource, record, basePath })}
-                            </Tab>
+                            </Tab>,
                         )}
                     </Tabs>
                 </div>
@@ -81,7 +80,6 @@ const enhance = compose(
         form: 'record-form',
         enableReinitialize: true,
     }),
-    translate,
 );
 
 export default enhance(TabbedForm);
