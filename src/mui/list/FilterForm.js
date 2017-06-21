@@ -5,8 +5,11 @@ import { CardText } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import ActionHide from 'material-ui/svg-icons/action/highlight-off';
 import compose from 'recompose/compose';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import autoprefixer from 'material-ui/utils/autoprefixer';
 
 import translate from '../../i18n/translate';
+import defaultTheme from '../defaultTheme';
 
 const styles = {
     card: { marginTop: '-14px', paddingTop: 0, display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', flexWrap: 'wrap' },
@@ -32,20 +35,22 @@ export class FilterForm extends Component {
     handleHide = event => this.props.hideFilter(event.currentTarget.dataset.key);
 
     render() {
-        const { resource, translate } = this.props;
+        const { resource, translate, theme } = this.props;
+        const muiTheme = getMuiTheme(theme);
+        const prefix = autoprefixer(muiTheme);
         return (<div>
-            <CardText style={styles.card}>
+            <CardText style={prefix(styles.card)}>
                 {this.getShownFilters().reverse().map(filterElement =>
                     <div
                         key={filterElement.props.source}
                         data-source={filterElement.props.source}
                         className="filter-field"
-                        style={filterElement.props.style || styles.body}
+                        style={filterElement.props.style || prefix(styles.body)}
                     >
                         {filterElement.props.alwaysOn ?
-                            <div style={styles.spacer}>&nbsp;</div> :
+                            <div style={prefix(styles.spacer)}>&nbsp;</div> :
                             <IconButton
-                                iconStyle={styles.icon}
+                                iconStyle={prefix(styles.icon)}
                                 className="hide-filter"
                                 onTouchTap={this.handleHide}
                                 data-key={filterElement.props.source}
@@ -67,7 +72,7 @@ export class FilterForm extends Component {
                     </div>,
                 )}
             </CardText>
-            <div style={styles.clearFix} />
+            <div style={prefix(styles.clearFix)} />
         </div>);
     }
 }
@@ -79,6 +84,11 @@ FilterForm.propTypes = {
     hideFilter: PropTypes.func.isRequired,
     initialValues: PropTypes.object,
     translate: PropTypes.func.isRequired,
+    theme: PropTypes.object.isRequired,
+};
+
+FilterForm.defaultProps = {
+    theme: defaultTheme,
 };
 
 const enhance = compose(
