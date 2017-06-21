@@ -57,6 +57,7 @@ export class Show extends Component {
                         resource,
                         basePath,
                         record: data,
+                        translate,
                     })}
                 </Card>
             </div>
