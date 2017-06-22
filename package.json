@@ -1,5 +1,6 @@
 {
-  "name": "admin-on-rest",
+  "name": "@sebastien-cleany/admin-on-rest",
+  "private": false,
   "version": "1.1.1",
   "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
   "files": [
@@ -15,9 +16,9 @@
   "authors": [
     "François Zaninotto"
   ],
-  "repository": "marmelab/admin-on-rest",
-  "homepage": "https://github.com/marmelab/admin-on-rest#readme",
-  "bugs": "https://github.com/marmelab/admin-on-rest/issues",
+  "repository": "cleany/admin-on-rest",
+  "homepage": "https://github.com/cleany/admin-on-rest#readme",
+  "bugs": "https://github.com/cleany/admin-on-rest/issues",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "~6.24.1",
