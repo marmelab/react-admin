@@ -108,10 +108,8 @@ export class ReferenceInput extends Component {
     }
 
     setFilter = (filter) => {
-        if (filter !== this.params.filter) {
-            this.params.filter = this.props.filterToQuery(filter);
-            this.fetchReferenceAndOptions();
-        }
+        this.params.filter = this.props.filterToQuery(this.params.filter, filter);
+        this.fetchReferenceAndOptions();
     }
 
     setPagination = (pagination) => {
@@ -195,7 +193,10 @@ ReferenceInput.defaultProps = {
     addField: true,
     allowEmpty: false,
     filter: {},
-    filterToQuery: searchText => ({ q: searchText }),
+    filterToQuery: (filter, searchText) => {
+        if (filter) return Object.assign({ q: searchText }, filter);
+        return ({ q: searchText });
+    },
     matchingReferences: [],
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
