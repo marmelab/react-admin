@@ -69,7 +69,7 @@ const ArrayElement = ({ fields, inputs, member, index, elStyle }) => {
                 {
                     React.Children.map(inputs, input => input && (
                         <div key={input.props.source} className={`aor-input-${input.props.source}`} style={input.props.style}>
-                            <Field {...input.props} name={`${member}.${input.props.source}`} component={input.type} />
+                            <ArrayElementFormField input={input} prefix={member} />
                         </div>
                     ))
                 }
@@ -82,6 +82,58 @@ const ArrayElement = ({ fields, inputs, member, index, elStyle }) => {
         </div>
     )
 }
+
+import Labeled from './Labeled';
+import { required } from '../form/validate';
+
+const isRequired = (validate) => {
+    if (validate === required) return true;
+    if (Array.isArray(validate)) {
+        return validate.includes(required);
+    }
+    return false;
+};
+
+const ArrayElementFormField = ({ input, prefix, ...rest }) => {
+    if (input.props.addField) {
+        if (input.props.addLabel) {
+            return (
+                <Field
+                    {...rest}
+                    {...input.props}
+                    name={`${prefix}.${input.props.source}`}
+                    component={Labeled}
+                    label={input.props.label}
+                    isRequired={isRequired(input.props.validate)}
+                >
+                    { input }
+                </Field>
+            );
+        }
+        return (
+            <Field
+                {...rest}
+                {...input.props}
+                name={input.props.source}
+                component={input.type}
+                isRequired={isRequired(input.props.validate)}
+            />
+        );
+    }
+    if (input.props.addLabel) {
+        return (
+            <Labeled
+                {...rest}
+                label={input.props.label}
+                source={input.props.source}
+                isRequired={isRequired(input.props.validate)}
+            >
+                {input}
+            </Labeled>
+        );
+    }
+    return (typeof input.type === 'string') ? input : React.cloneElement(input, rest);
+};
 
 EmbeddedArrayInput.propTypes = {
     addField: PropTypes.bool.isRequired,
