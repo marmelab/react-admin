@@ -128,8 +128,8 @@ export const CommentEdit = ({ ...props }) => (
 export const CommentCreate = ({ ...props }) => (
     <Create {...props}>
         <SimpleForm defaultValue={{ created_at: new Date() }} >
-            <ReferenceInput source="post_id" reference="posts" allowEmpty validation={{ required: true }}>
-                <SelectInput optionText="title" />
+            <ReferenceInput source="post_id" reference="posts" filter={{commentable: true}} allowEmpty validation={{ required: true }}>
+                <AutocompleteInput optionText="title" />
             </ReferenceInput>
             <DateInput source="created_at" />
             <LongTextInput source="body" />
