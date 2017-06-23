@@ -34,26 +34,15 @@ export class EmbeddedArrayInput extends Component {
     }
 
     renderList = ({ fields }) => {
-        const { children, groupStyle } = this.props;
+        const { children, arrayElStyle } = this.props;
         return (
             <div className="EmbeddedArrayInputContainer" style={{ margin: '1em' }}>
                 <div>
-                    {fields.map((member, index) =>
-                        <div key={index} style={groupStyle} className="EmbeddedArrayInputItemContainer">
-                            <div style={{ padding: '0 1em 1em 1em' }}>
-                                {React.Children.map(children, input => input && (
-                                    <div key={input.props.source} className={`aor-input-${input.props.source}`} style={input.props.style}>
-                                        <Field {...input.props} name={`${member}.${input.props.source}`} component={input.type} />
-                                    </div>
-                                ))}
-                            </div>
-                            <FlatButton
-                                primary
-                                label="Remove"
-                                icon={<ActionDeleteIcon />}
-                                onClick={() => fields.remove(index)} />
-                        </div>
-                    )}
+                    {
+                        fields.map((member, index) =>
+                            <ArrayElement key={index} fields={fields} inputs={children} elStyle={arrayElStyle} member={member} index={index} />
+                        )
+                    }
                 </div>
                 <FlatButton primary style={{ float: 'right' }} icon={<ContentCreateIcon />} label="Add" onClick={() => fields.push({})} />
                 <div style={{ clear: 'both' }} />
@@ -71,6 +60,29 @@ export class EmbeddedArrayInput extends Component {
     }
 }
 
+const ArrayElement = ({ fields, inputs, member, index, elStyle }) => {
+    const removeElement = () => fields.remove(index);
+    const containerStyle = { padding: '0 1em 1em 1em' };
+    return (
+        <div style={elStyle} className="EmbeddedArrayInputItemContainer">
+            <div style={containerStyle}>
+                {
+                    React.Children.map(inputs, input => input && (
+                        <div key={input.props.source} className={`aor-input-${input.props.source}`} style={input.props.style}>
+                            <Field {...input.props} name={`${member}.${input.props.source}`} component={input.type} />
+                        </div>
+                    ))
+                }
+            </div>
+            <FlatButton
+                primary
+                label="Remove"
+                icon={<ActionDeleteIcon />}
+                onClick={removeElement} />
+        </div>
+    )
+}
+
 EmbeddedArrayInput.propTypes = {
     addField: PropTypes.bool.isRequired,
     allowEmpty: PropTypes.bool.isRequired,
@@ -82,13 +94,13 @@ EmbeddedArrayInput.propTypes = {
     input: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-    groupStyle: PropTypes.object
+    arrayElStyle: PropTypes.object
 };
 
 EmbeddedArrayInput.defaultProps = {
     addField: false,
     allowEmpty: false,
-    groupStyle: {
+    arrayElStyle: {
         display: 'block',
         verticalAlign: 'bottom'
     }
