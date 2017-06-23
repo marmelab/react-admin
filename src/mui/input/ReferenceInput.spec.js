@@ -88,6 +88,41 @@ describe('<ReferenceInput />', () => {
         ]);
     });
 
+    it('should allow to customize crudGetMatching arguments with perPage, sort, and filter props without loosing original default filter', () => {
+        const crudGetMatching = sinon.spy();
+        const wrapper = shallow((
+            <ReferenceInput
+                {...defaultProps}
+                allowEmpty
+                crudGetMatching={crudGetMatching}
+                sort={{ field: 'foo', order: 'ASC' }}
+                perPage={5}
+                filter={{ foo: 'bar' }}
+            >
+                <MyComponent />
+            </ReferenceInput>
+        ), { lifecycleExperimental: true });
+
+        wrapper.instance().setFilter('search_me');
+
+        assert(crudGetMatching.calledWith(
+            'posts',
+            'comments@post_id',
+            {
+                page: 1,
+                perPage: 5,
+            },
+            {
+                field: 'foo',
+                order: 'ASC',
+            },
+            {
+                foo: 'bar',
+                q: 'search_me',
+            },
+        ));
+    });
+
     it('should call crudGetMatching when setFilter is called', () => {
         const crudGetMatching = sinon.spy();
         const wrapper = shallow((
