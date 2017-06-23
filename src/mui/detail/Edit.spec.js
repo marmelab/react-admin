@@ -21,8 +21,8 @@ describe('<Edit />', () => {
     };
 
     it('should display correctly when called with a child', () => {
-        const Foo = () => <div/>;
-        const wrapper = shallow(<Edit {...defaultProps}><Foo/></Edit>);
+        const Foo = () => <div />;
+        const wrapper = shallow(<Edit {...defaultProps}><Foo /></Edit>);
 
         const inner = wrapper.find('Foo');
         assert.equal(inner.length, 1);
