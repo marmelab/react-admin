@@ -184,7 +184,10 @@ SelectArrayInput.propTypes = {
     onFocus: PropTypes.func,
     setFilter: PropTypes.func,
     options: PropTypes.object,
-    optionText: PropTypes.string.isRequired,
+    optionText: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.func,
+    ]).isRequired,
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     source: PropTypes.string,

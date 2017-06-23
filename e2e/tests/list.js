@@ -4,8 +4,8 @@ import driver from '../chromeDriver';
 import listPageFactory from '../pages/ListPage';
 
 describe('List Page', () => {
-    const ListPagePosts = listPageFactory('http://localhost:8083/#posts')(driver);
-    const ListPageComments = listPageFactory('http://localhost:8083/#comments')(driver);
+    const ListPagePosts = listPageFactory('http://localhost:8083/#/posts')(driver);
+    const ListPageComments = listPageFactory('http://localhost:8083/#/comments')(driver);
 
     before(async () => await ListPagePosts.navigate());
 

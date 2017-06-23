@@ -98,25 +98,81 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="chapter {% if page.path == 'AdminResource.md' %}active{% endif %}">
-                            <a href="./AdminResource.html">
-                                <b>4.</b> Admin and Resource Components
+                        <li class="chapter {% if page.path == 'Admin.md' %}active{% endif %}">
+                            <a href="./Admin.html">
+                                <b>4.</b> <code>&lt;Admin&gt;</code>
                             </a>
-                            <ul class="articles" {% if page.path != 'AdminResource.md' %}style="display:none"{% endif %}>
+                            <ul class="articles" {% if page.path != 'Admin.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
-                                    <a href="#the-admin-component"><code>&lt;Admin&gt;</code></a>
+                                    <a href="#applayout"><code>applayout</code></a>
                                 </li>
                                 <li class="chapter">
-                                    <a href="#the-resource-component"><code>&lt;Resource&gt;</code></a>
+                                    <a href="#authclient"><code>authclient</code></a>
                                 </li>
+                                <li class="chapter">
+                                    <a href="#dashboard"><code>dashboard</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#customreducers"><code>customReducers</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#customroutes"><code>customRoutes</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#customsagas"><code>customSagas</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#initialstate"><code>initialState</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#internationalization"><code>locale</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#loginpage"><code>loginPage</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#logoutbutton"><code>logoutButton</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#menu"><code>menu</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#internationalization"><code>messages</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#restclient"><code>restClient</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#theme"><code>theme</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#title"><code>title</code></a>
+                                </li>
+
                                 <li class="chapter">
                                     <a href="#using-admin-on-rest-without-admin-and-resource">Not using <code>&lt;Admin&gt;</code> and <code>&lt;Resource&gt;</code></a>
                                 </li>
                             </ul>
                         </li>
+                        <li class="chapter {% if page.path == 'Resource.md' %}active{% endif %}">
+                            <a href="./Resource.html">
+                                <b>5.</b> <code>&lt;Resource&gt;</code>
+                            </a>
+                            <ul class="articles" {% if page.path != 'Resource.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#name"><code>name</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#icon"><code>icon</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#options"><code>options</code></a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="chapter {% if page.path == 'List.md' %}active{% endif %}">
                             <a href="./List.html">
-                                <b>5.</b> The <code>&lt;List&gt;</code> View
+                                <b>6.</b> <code>&lt;List&gt;</code> View
                             </a>
                             <ul class="articles" {% if page.path != 'List.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -136,9 +192,28 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="chapter {% if page.path == 'Show.md' %}active{% endif %}">
+                            <a href="./Show.html">
+                                <b>7.</b> <code>&lt;Show&gt;</code> View
+                            </a>
+                            <ul class="articles" {% if page.path != 'Show.md' %}style="display:none"{% endif %}>
+                                <li class="chapter">
+                                    <a href="#the-show-component"><code>&lt;Show&gt;</code></a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#page-title">Page Title</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#actions">Actions</a>
+                                </li>
+                                <li class="chapter">
+                                    <a href="#the-simpleshowlayout-component"><code>&lt;SimpleShowLayout&gt;</code></a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="chapter {% if page.path == 'Fields.md' %}active{% endif %}">
                             <a href="./Fields.html">
-                                <b>6.</b> Field Components
+                                <b>8.</b> <code>&lt;Field&gt;</code> Components
                             </a>
                             <ul class="articles" {% if page.path != 'Fields.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -196,7 +271,7 @@
                         </li>
                         <li class="chapter {% if page.path == 'CreateEdit.md' %}active{% endif %}">
                             <a href="./CreateEdit.html">
-                                <b>7.</b> The <code>&lt;Create&gt;</code> and <code>&lt;Edit&gt;</code> Views
+                                <b>9.</b> <code>&lt;Create&gt;</code> and <code>&lt;Edit&gt;</code> Views
                             </a>
                             <ul class="articles" {% if page.path != 'CreateEdit.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -224,7 +299,7 @@
                         </li>
                         <li class="chapter {% if page.path == 'Inputs.md' %}active{% endif %}">
                             <a href="./Inputs.html">
-                                <b>8.</b> Input Components
+                                <b>10.</b> <code>&lt;Input&gt;</code> Components
                             </a>
                             <ul class="articles" {% if page.path != 'Inputs.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -288,7 +363,7 @@
                         </li>
                         <li class="chapter {% if page.path == 'Authentication.md' %}active{% endif %}">
                             <a href="./Authentication.html">
-                                <b>9.</b> Authentication
+                                <b>11.</b> Authentication
                             </a>
                             <ul class="articles" {% if page.path != 'Authentication.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -316,7 +391,7 @@
                         </li>
                         <li class="chapter {% if page.path == 'Theming.md' %}active{% endif %}">
                             <a href="./Theming.html">
-                                <b>10.</b> Theming
+                                <b>12.</b> Theming
                             </a>
                             <ul class="articles" {% if page.path != 'Theming.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -342,7 +417,7 @@
 
                         <li class="chapter {% if page.path == 'Actions.md' %}active{% endif %}">
                             <a href="./Actions.html">
-                                <b>11.</b> Writing Actions
+                                <b>13.</b> Writing Actions
                             </a>
                             <ul class="articles" {% if page.path != 'Actions.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -368,7 +443,7 @@
 
                         <li class="chapter {% if page.path == 'Translation.md' %}active{% endif %}">
                             <a href="./Translation.html">
-                                <b>12.</b> Translation
+                                <b>14.</b> Translation
                             </a>
                             <ul class="articles" {% if page.path != 'Translation.md' %}style="display:none"{% endif %}>
                                 <li class="chapter">
@@ -403,25 +478,25 @@
 
                         <li class="chapter {% if page.path == 'CustomApp.md' %}active{% endif %}">
                             <a href="./CustomApp.html">
-                                <b>13.</b> Including in Another App
+                                <b>15.</b> Including in Another App
                             </a>
                         </li>
 
                         <li class="chapter {% if page.path == 'Reference.md' %}active{% endif %}">
                             <a href="./Reference.html">
-                                <b>14.</b> Reference
+                                <b>16.</b> Reference
                             </a>
                         </li>
 
                         <li class="chapter {% if page.path == 'FAQ.md' %}active{% endif %}">
                             <a href="./FAQ.html">
-                                <b>15.</b> FAQ
+                                <b>17.</b> FAQ
                             </a>
                         </li>
 
                         <li class="chapter {% if page.path == 'Ecosystem.md' %}active{% endif %}">
                             <a href="./Ecosystem.html">
-                                <b>16.</b> Ecosystem
+                                <b>18.</b> Ecosystem
                             </a>
                         </li>
                     </ul>

@@ -64,6 +64,7 @@ module.exports = url => driver => ({
             filterField.clear();
         }
         filterField.sendKeys(value);
+        driver.sleep(500);
         return this.waitUntilDataLoaded();
     },
 
