@@ -47,6 +47,7 @@ You can find more REST clients for admin-on-rest in third-party repositories:
 * [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback): a REST client works with [Loopback](http://loopback.io/)
 * [leperone/aor-parseserver-client](https://github.com/leperone/aor-parseserver-client): a REST client for [Parse Server](https://github.com/ParsePlatform/parse-server)
 * [moonlight-labs/aor-jsonapi-client](https://github.com/moonlight-labs/aor-jsonapi-client): a REST client for [JSON API](http://jsonapi.org/)
+* [sidferreira/aor-firebase-client](https://github.com/sidferreira/aor-firebase-client): a REST client for [Firebase](https://firebase.google.com/)
 
 ### Simple REST
 
