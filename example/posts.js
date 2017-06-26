@@ -24,6 +24,7 @@ import {
     ReferenceArrayInput,
     Responsive,
     RichTextField,
+    SaveButton,
     SelectArrayInput,
     SelectField,
     SelectInput,
@@ -38,15 +39,14 @@ import {
     TabbedShowLayout,
     TextField,
     TextInput,
+    Toolbar,
     minValue,
     number,
     required,
     translate,
-    SaveButton,
 } from 'admin-on-rest';
 import RichTextInput from 'aor-rich-text-input';
 import Chip from 'material-ui/Chip';
-import Toolbar from 'admin-on-rest/mui/form/Toolbar';
 
 export PostIcon from 'material-ui/svg-icons/action/book';
 
