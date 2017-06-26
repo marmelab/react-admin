@@ -77,7 +77,7 @@ export class ReferenceManyField extends Component {
         if (typeof ids === 'undefined') {
             return <LinearProgress style={{ marginTop: '1em' }} />;
         }
-        const referenceBasePath = basePath !== '' ? basePath.replace(resource, reference) : reference; // FIXME obviously very weak
+        const referenceBasePath = basePath !== '' ? basePath.replace(resource, reference) : `/${reference}`; // FIXME obviously very weak
         return React.cloneElement(children, {
             resource: reference,
             ids,
