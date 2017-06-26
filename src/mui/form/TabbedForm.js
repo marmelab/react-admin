@@ -23,9 +23,9 @@ export class TabbedForm extends Component {
 
     render() {
         const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath, translate, submitOnEnter, onSubmit, toolbar, redirect } = this.props;
-        const onSubmitWithRedirect = redirectTo => handleSubmit(values => onSubmit(values, redirectTo))();
+        const onSubmitWithRedirect = redirectTo => handleSubmit(values => onSubmit(values, redirectTo));
         return (
-            <form onSubmit={submitOnEnter ? handleSubmit : noop} className="tabbed-form">
+            <form onSubmit={submitOnEnter ? onSubmitWithRedirect(redirect) : noop} className="tabbed-form">
                 <div style={{ padding: '0 1em 1em 1em' }}>
                     <Tabs
                         value={this.state.value}
@@ -59,19 +59,19 @@ TabbedForm.propTypes = {
         PropTypes.object,
         PropTypes.func,
     ]),
-    handleSubmit: PropTypes.func,
-    onSubmit: PropTypes.func,
+    handleSubmit: PropTypes.func, // passed by redux-form
+    onSubmit: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     invalid: PropTypes.bool,
     record: PropTypes.object,
     resource: PropTypes.string,
     basePath: PropTypes.string,
     translate: PropTypes.func,
     validate: PropTypes.func,
-    submitOnEnter: PropTypes.bool,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
     ]),
+    submitOnEnter: PropTypes.bool,
 };
 
 TabbedForm.defaultProps = {

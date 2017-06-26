@@ -16,16 +16,19 @@ export class SaveButton extends Component {
         } else {
             // always submit form explicitly regardless of button type
             const { onSubmitWithRedirect, redirect } = this.props;
-            e && e.preventDefault();
-            onSubmitWithRedirect(redirect);
+            if (e) {
+                e.preventDefault();
+            }
+            onSubmitWithRedirect(redirect)();
         }
     }
 
     render() {
         const { saving, label = 'aor.action.save', raised = true, translate, submitOnEnter, redirect } = this.props;
         const type = submitOnEnter ? 'submit' : 'button';
-        return raised
-            ? <RaisedButton
+        const ButtonComponent = raised ? RaisedButton : FlatButton;
+        return (
+            <ButtonComponent
                 type={type}
                 label={label && translate(label)}
                 icon={saving && saving.redirect === redirect ? <CircularProgress size={25} thickness={2} /> : <ContentSave />}
@@ -36,18 +39,7 @@ export class SaveButton extends Component {
                     position: 'relative',
                 }}
             />
-            : <FlatButton
-                type={type}
-                label={label && translate(label)}
-                icon={saving && saving.redirect === redirect ? <CircularProgress size={25} thickness={2} /> : <ContentSave />}
-                onClick={this.handleClick}
-                primary={!saving}
-                style={{
-                    margin: '10px 24px',
-                    position: 'relative',
-                }}
-            />
-        ;
+        );
     }
 }
 
@@ -68,8 +60,7 @@ SaveButton.propTypes = {
 };
 
 SaveButton.defaultProps = {
-    submitWithRedirect: () => {},
-    redirect: false,
+    onSubmitWithRedirect: () => () => {},
 };
 
 const mapStateToProps = state => ({

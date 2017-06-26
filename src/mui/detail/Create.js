@@ -54,7 +54,7 @@ class Create extends Component {
                         basePath,
                         record: {},
                         translate,
-                        redirect: this.defaultRedirectRoute(),
+                        redirect: children.props.redirect || this.defaultRedirectRoute(),
                     })}
                 </Card>
             </div>
