@@ -17,8 +17,8 @@ Admin-on-REST uses React. We'll use Facebook's [create-react-app](https://github
 npm install -g create-react-app
 create-react-app test-admin
 cd test-admin/
-yarnpkg add admin-on-rest
-yarnpkg start
+yarn add admin-on-rest
+yarn start
 ```
 
 You should be up and running with an empty React application on port 3000.
