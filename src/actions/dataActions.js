@@ -35,9 +35,9 @@ export const CRUD_CREATE_LOADING = 'AOR/CRUD_CREATE_LOADING';
 export const CRUD_CREATE_FAILURE = 'AOR/CRUD_CREATE_FAILURE';
 export const CRUD_CREATE_SUCCESS = 'AOR/CRUD_CREATE_SUCCESS';
 
-export const crudCreate = (resource, data, basePath, redirect = true) => ({
+export const crudCreate = (resource, data, basePath, redirectTo = 'edit') => ({
     type: CRUD_CREATE,
-    payload: { data, basePath, redirect },
+    payload: { data, basePath, redirectTo },
     meta: { resource, fetch: CREATE, cancelPrevious: false },
 });
 
@@ -46,9 +46,9 @@ export const CRUD_UPDATE_LOADING = 'AOR/CRUD_UPDATE_LOADING';
 export const CRUD_UPDATE_FAILURE = 'AOR/CRUD_UPDATE_FAILURE';
 export const CRUD_UPDATE_SUCCESS = 'AOR/CRUD_UPDATE_SUCCESS';
 
-export const crudUpdate = (resource, id, data, previousData, basePath, redirect = true) => ({
+export const crudUpdate = (resource, id, data, previousData, basePath, redirectTo = 'show') => ({
     type: CRUD_UPDATE,
-    payload: { id, data, previousData, basePath, redirect },
+    payload: { id, data, previousData, basePath, redirectTo },
     meta: { resource, fetch: UPDATE, cancelPrevious: false },
 });
 
@@ -57,9 +57,9 @@ export const CRUD_DELETE_LOADING = 'AOR/CRUD_DELETE_LOADING';
 export const CRUD_DELETE_FAILURE = 'AOR/CRUD_DELETE_FAILURE';
 export const CRUD_DELETE_SUCCESS = 'AOR/CRUD_DELETE_SUCCESS';
 
-export const crudDelete = (resource, id, basePath, redirect = true) => ({
+export const crudDelete = (resource, id, basePath, redirectTo = 'list') => ({
     type: CRUD_DELETE,
-    payload: { id, basePath, redirect },
+    payload: { id, basePath, redirectTo },
     meta: { resource, fetch: DELETE, cancelPrevious: false },
 });
 

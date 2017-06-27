@@ -24,6 +24,7 @@ import {
     ReferenceArrayInput,
     Responsive,
     RichTextField,
+    SaveButton,
     SelectArrayInput,
     SelectField,
     SelectInput,
@@ -38,6 +39,7 @@ import {
     TabbedShowLayout,
     TextField,
     TextInput,
+    Toolbar,
     minValue,
     number,
     required,
@@ -93,9 +95,14 @@ const PostTitle = translate(({ record, translate }) => {
     return <span>{record ? translate('post.edit.title', { title: record.title }) : ''}</span>;
 });
 
+const PostCreateToolbar = props => <Toolbar {...props} >
+    <SaveButton label="post.action.save_and_show" redirect="show" submitOnEnter={true} />
+    <SaveButton label="post.action.save_and_add" redirect={false} submitOnEnter={false} raised={false} />
+</Toolbar>;
+
 export const PostCreate = ({ ...props }) => (
     <Create {...props}>
-        <SimpleForm defaultValue={{ average_note: 0 }} validate={(values) => {
+        <SimpleForm toolbar={<PostCreateToolbar />} defaultValue={{ average_note: 0 }} validate={(values) => {
             const errors = {};
             ['title', 'teaser'].forEach((field) => {
                 if (!values[field]) {

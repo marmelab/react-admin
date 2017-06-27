@@ -5,6 +5,7 @@ module.exports = url => driver => ({
         appLoader: By.css('.app-loader'),
         input: (name, type = 'input') => By.css(`.create-page ${type}[name='${name}']`),
         submitButton: By.css(".create-page button[type='submit']"),
+        submitAndAddButton: By.css(".create-page form>div:last-child button[type='button']"),
         descInput: By.css('.ql-editor'),
     },
 
@@ -53,6 +54,11 @@ module.exports = url => driver => ({
 
     submit() {
         driver.findElement(this.elements.submitButton).click();
+        return this.waitUntilDataLoaded();
+    },
+
+    submitAndAdd() {
+        driver.findElement(this.elements.submitAndAddButton).click();
         return this.waitUntilDataLoaded();
     },
 });
