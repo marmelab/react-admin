@@ -23,7 +23,7 @@ class Create extends Component {
         return 'list';
     }
 
-    handleSubmit = (record, redirect) => {
+    save = (record, redirect) => {
         this.props.crudCreate(this.props.resource, record, this.getBasePath(), redirect);
     }
 
@@ -49,7 +49,7 @@ class Create extends Component {
                     })}
                     <ViewTitle title={titleElement} />
                     {React.cloneElement(children, {
-                        onSubmit: this.handleSubmit,
+                        save: this.save,
                         resource,
                         basePath,
                         record: {},

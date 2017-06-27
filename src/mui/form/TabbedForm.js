@@ -20,8 +20,7 @@ export class TabbedForm extends Component {
     };
 
     render() {
-        const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath, translate, submitOnEnter, onSubmit, toolbar, redirect } = this.props;
-        const onSubmitWithRedirect = redirectTo => handleSubmit(values => onSubmit(values, redirectTo));
+        const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath, translate, submitOnEnter, save, toolbar, redirect } = this.props;
         return (
             <form className="tabbed-form">
                 <div style={{ padding: '0 1em 1em 1em' }}>
@@ -43,7 +42,12 @@ export class TabbedForm extends Component {
                         )}
                     </Tabs>
                 </div>
-                {toolbar && React.cloneElement(toolbar, { invalid, submitOnEnter, onSubmitWithRedirect, redirect })}
+                {toolbar && React.cloneElement(toolbar, {
+                    invalid,
+                    submitOnEnter,
+                    handleSubmitWithRedirect: redirectTo => handleSubmit(values => save(values, redirectTo)),
+                    redirect,
+                })}
             </form>
         );
     }
@@ -58,7 +62,7 @@ TabbedForm.propTypes = {
         PropTypes.func,
     ]),
     handleSubmit: PropTypes.func, // passed by redux-form
-    onSubmit: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
+    save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     invalid: PropTypes.bool,
     record: PropTypes.object,
     resource: PropTypes.string,

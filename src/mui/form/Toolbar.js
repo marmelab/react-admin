@@ -17,7 +17,7 @@ const styles = {
 
 const valueOrDefault = (value, defaultValue) => typeof value === 'undefined' ? defaultValue : value;
 
-const Toolbar = ({ invalid, submitOnEnter, onSubmitWithRedirect, redirect, children }) => (
+const Toolbar = ({ invalid, submitOnEnter, handleSubmitWithRedirect, redirect, children }) => (
     <Responsive
         small={
             <MuiToolbar style={styles.mobileToolbar} noGutter>
@@ -26,13 +26,13 @@ const Toolbar = ({ invalid, submitOnEnter, onSubmitWithRedirect, redirect, child
                         ? <SaveButton
                             invalid={invalid}
                             submitOnEnter={submitOnEnter}
-                            onSubmitWithRedirect={onSubmitWithRedirect}
+                            handleSubmitWithRedirect={handleSubmitWithRedirect}
                             redirect={redirect}
                             raised={false}
                         />
                         : Children.map(children, button => React.cloneElement(button, {
                             invalid,
-                            onSubmitWithRedirect,
+                            handleSubmitWithRedirect,
                             raised: false,
                             redirect: valueOrDefault(button.props.redirect, redirect),
                             submitOnEnter: valueOrDefault(button.props.submitOnEnter, submitOnEnter),
@@ -48,12 +48,12 @@ const Toolbar = ({ invalid, submitOnEnter, onSubmitWithRedirect, redirect, child
                         ? <SaveButton
                             invalid={invalid}
                             submitOnEnter={submitOnEnter}
-                            onSubmitWithRedirect={onSubmitWithRedirect}
+                            handleSubmitWithRedirect={handleSubmitWithRedirect}
                             redirect={redirect}
                         />
                         : Children.map(children, button => React.cloneElement(button, {
                             invalid,
-                            onSubmitWithRedirect,
+                            handleSubmitWithRedirect,
                             redirect: valueOrDefault(button.props.redirect, redirect),
                             submitOnEnter: valueOrDefault(button.props.submitOnEnter, submitOnEnter),
                         }))
@@ -65,9 +65,9 @@ const Toolbar = ({ invalid, submitOnEnter, onSubmitWithRedirect, redirect, child
 );
 
 Toolbar.propTypes = {
-    invalid: PropTypes.bool,
-    onSubmitWithRedirect: PropTypes.func,
     children: PropTypes.node,
+    handleSubmitWithRedirect: PropTypes.func,
+    invalid: PropTypes.bool,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,

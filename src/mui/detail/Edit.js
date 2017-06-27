@@ -18,7 +18,6 @@ export class Edit extends Component {
             record: props.data,
         };
         this.previousKey = 0;
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -57,7 +56,7 @@ export class Edit extends Component {
         this.updateData();
     }
 
-    handleSubmit(record, redirect) {
+    save = (record, redirect) => {
         this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath(), redirect);
     }
 
@@ -95,7 +94,7 @@ export class Edit extends Component {
                     })}
                     <ViewTitle title={titleElement} />
                     {data && !isRefreshing && React.cloneElement(children, {
-                        onSubmit: this.handleSubmit,
+                        save: this.save,
                         resource,
                         basePath,
                         record: data,

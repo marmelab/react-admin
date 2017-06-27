@@ -15,11 +15,11 @@ export class SaveButton extends Component {
             e.preventDefault();
         } else {
             // always submit form explicitly regardless of button type
-            const { onSubmitWithRedirect, redirect } = this.props;
+            const { handleSubmitWithRedirect, redirect } = this.props;
             if (e) {
                 e.preventDefault();
             }
-            onSubmitWithRedirect(redirect)();
+            handleSubmitWithRedirect(redirect)();
         }
     }
 
@@ -52,7 +52,7 @@ SaveButton.propTypes = {
     ]),
     translate: PropTypes.func.isRequired,
     submitOnEnter: PropTypes.bool,
-    onSubmitWithRedirect: PropTypes.func,
+    handleSubmitWithRedirect: PropTypes.func,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
@@ -60,7 +60,7 @@ SaveButton.propTypes = {
 };
 
 SaveButton.defaultProps = {
-    onSubmitWithRedirect: () => () => {},
+    handleSubmitWithRedirect: () => () => {},
 };
 
 const mapStateToProps = state => ({
