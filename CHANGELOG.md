@@ -1,17 +1,28 @@
 # Changelog
 
+## v1.1.2
+
+* Fix a typo in tutorial ([calebhaye](https://github.com/calebhaye))
+* Add Polish translation ([KamilDzierbicki](https://github.com/KamilDzierbicki))
+* Fix a typo in tutorial ([ferhatelmas](https://github.com/ferhatelmas))
+* Fix `<SelectArrayInput>` default value for filters ([djhi](https://github.com/djhi))
+* Add Thai translation ([liverbool](https://github.com/liverbool))
+* Fix duplicate `resource` propType in `<FilterButton>` ([thiagoterleski](https://github.com/thiagoterleski))
+* Fix `<SelectArrayInput>` example usage in tags for post ([wesley6j](https://github.com/wesley6j))
+* Fix `<List>` layout on mobile ([sebastien-cleany](https://github.com/sebastien-cleany))
+
 ## v1.1.1
 
-* Add Show view documentation ((djhi)[https://github.com/djhi])
-* Split Admin and Resource docs for better readability ((fzaninotto)[https://github.com/fzaninotto])
-* Fix flaky end-to-end tests ((dervos)[https://github.com/dervos])
-* Fix `<DisabledInput>` not showing default value ((wesley6j)[https://github.com/wesley6j])
-* Fix `<SelectArrayInput>` prop types ((floo51)[https://github.com/floo51])
-* Fix `<DateInput>` for some locales ((wesley6j)[https://github.com/wesley6j])
-* Fix support for null and false value in `<SelectInput>` options ((wesley6j)[https://github.com/wesley6j])
-* Fix missing `<FileInput>` mention in documentation reference ((djhi)[https://github.com/djhi])
-* Fix duplicate documentation in Ecosystem ((djhi)[https://github.com/djhi])
-* Fix typos on Theming documentation ((martjanz)[https://github.com/martjanz])
+* Add Show view documentation ([djhi](https://github.com/djhi))
+* Split Admin and Resource docs for better readability ([fzaninotto](https://github.com/fzaninotto))
+* Fix flaky end-to-end tests ([dervos](https://github.com/dervos))
+* Fix `<DisabledInput>` not showing default value ([wesley6j](https://github.com/wesley6j))
+* Fix `<SelectArrayInput>` prop types ([floo51](https://github.com/floo51))
+* Fix `<DateInput>` for some locales ([wesley6j](https://github.com/wesley6j))
+* Fix support for null and false value in `<SelectInput>` options ([wesley6j](https://github.com/wesley6j))
+* Fix missing `<FileInput>` mention in documentation reference ([djhi](https://github.com/djhi))
+* Fix duplicate documentation in Ecosystem ([djhi](https://github.com/djhi))
+* Fix typos on Theming documentation ([martjanz](https://github.com/martjanz))
 
 ## v1.1.0
 
