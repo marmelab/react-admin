@@ -17,7 +17,7 @@ const styles = {
 
 const valueOrDefault = (value, defaultValue) => typeof value === 'undefined' ? defaultValue : value;
 
-const Toolbar = ({ invalid, submitOnEnter, handleSubmitWithRedirect, redirect, children }) => (
+const Toolbar = ({ invalid, submitOnEnter, handleSubmitWithRedirect, children }) => (
     <Responsive
         small={
             <MuiToolbar style={styles.mobileToolbar} noGutter>
