@@ -10,10 +10,10 @@ import Toolbar from './Toolbar';
 const formStyle = { padding: '0 1em 1em 1em' };
 
 export class SimpleForm extends Component {
-    handleSubmitWithRedirect = redirect => this.props.handleSubmit(values => this.props.save(values, redirect));
+    handleSubmitWithRedirect = (redirect = this.props.redirect) => this.props.handleSubmit(values => this.props.save(values, redirect));
 
     render() {
-        const { children, invalid, record, resource, basePath, submitOnEnter, toolbar, redirect } = this.props;
+        const { children, invalid, record, resource, basePath, submitOnEnter, toolbar } = this.props;
         return (
             <form className="simple-form">
                 <div style={formStyle}>
@@ -26,7 +26,6 @@ export class SimpleForm extends Component {
                 {toolbar && React.cloneElement(toolbar, {
                     handleSubmitWithRedirect: this.handleSubmitWithRedirect,
                     invalid,
-                    redirect,
                     submitOnEnter,
                 })}
             </form>

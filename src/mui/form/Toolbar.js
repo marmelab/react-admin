@@ -24,17 +24,15 @@ const Toolbar = ({ invalid, submitOnEnter, handleSubmitWithRedirect, redirect, c
                 <ToolbarGroup>
                     {Children.count(children) === 0
                         ? <SaveButton
-                            invalid={invalid}
-                            submitOnEnter={submitOnEnter}
                             handleSubmitWithRedirect={handleSubmitWithRedirect}
-                            redirect={redirect}
+                            invalid={invalid}
                             raised={false}
+                            submitOnEnter={submitOnEnter}
                         />
                         : Children.map(children, button => React.cloneElement(button, {
                             invalid,
                             handleSubmitWithRedirect,
                             raised: false,
-                            redirect: valueOrDefault(button.props.redirect, redirect),
                             submitOnEnter: valueOrDefault(button.props.submitOnEnter, submitOnEnter),
                         }))
                     }
@@ -46,15 +44,13 @@ const Toolbar = ({ invalid, submitOnEnter, handleSubmitWithRedirect, redirect, c
                 <ToolbarGroup>
                     {Children.count(children) === 0
                         ? <SaveButton
+                            handleSubmitWithRedirect={handleSubmitWithRedirect}
                             invalid={invalid}
                             submitOnEnter={submitOnEnter}
-                            handleSubmitWithRedirect={handleSubmitWithRedirect}
-                            redirect={redirect}
                         />
                         : Children.map(children, button => React.cloneElement(button, {
-                            invalid,
                             handleSubmitWithRedirect,
-                            redirect: valueOrDefault(button.props.redirect, redirect),
+                            invalid,
                             submitOnEnter: valueOrDefault(button.props.submitOnEnter, submitOnEnter),
                         }))
                     }
@@ -68,10 +64,6 @@ Toolbar.propTypes = {
     children: PropTypes.node,
     handleSubmitWithRedirect: PropTypes.func,
     invalid: PropTypes.bool,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-    ]),
     submitOnEnter: PropTypes.bool,
 };
 

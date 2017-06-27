@@ -21,10 +21,10 @@ export class TabbedForm extends Component {
         this.setState({ value });
     };
 
-    handleSubmitWithRedirect = redirect => this.props.handleSubmit(values => this.props.save(values, redirect));
+    handleSubmitWithRedirect = (redirect = this.props.redirect) => this.props.handleSubmit(values => this.props.save(values, redirect));
 
     render() {
-        const { children, contentContainerStyle, invalid, record, resource, basePath, translate, submitOnEnter, toolbar, redirect } = this.props;
+        const { children, contentContainerStyle, invalid, record, resource, basePath, translate, submitOnEnter, toolbar } = this.props;
         return (
             <form className="tabbed-form">
                 <div style={formStyle}>
@@ -49,7 +49,6 @@ export class TabbedForm extends Component {
                 {toolbar && React.cloneElement(toolbar, {
                     handleSubmitWithRedirect: this.handleSubmitWithRedirect,
                     invalid,
-                    redirect,
                     submitOnEnter,
                 })}
             </form>
