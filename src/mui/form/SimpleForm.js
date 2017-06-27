@@ -7,12 +7,10 @@ import getDefaultValues from './getDefaultValues';
 import FormField from './FormField';
 import Toolbar from './Toolbar';
 
-const noop = () => {};
-
 export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, basePath, submitOnEnter, onSubmit, toolbar, redirect }) => {
     const onSubmitWithRedirect = redirectTo => handleSubmit(values => onSubmit(values, redirectTo));
     return (
-        <form onSubmit={ submitOnEnter ? onSubmitWithRedirect(redirect) : noop } className="simple-form">
+        <form className="simple-form">
             <div style={{ padding: '0 1em 1em 1em' }}>
                 {React.Children.map(children, input => input && (
                     <div key={input.props.source} className={`aor-input-${input.props.source}`} style={input.props.style}>

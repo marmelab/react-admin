@@ -7,8 +7,6 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import Toolbar from './Toolbar';
 import getDefaultValues from './getDefaultValues';
 
-const noop = () => {};
-
 export class TabbedForm extends Component {
     constructor(props) {
         super(props);
@@ -25,7 +23,7 @@ export class TabbedForm extends Component {
         const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath, translate, submitOnEnter, onSubmit, toolbar, redirect } = this.props;
         const onSubmitWithRedirect = redirectTo => handleSubmit(values => onSubmit(values, redirectTo));
         return (
-            <form onSubmit={submitOnEnter ? onSubmitWithRedirect(redirect) : noop} className="tabbed-form">
+            <form className="tabbed-form">
                 <div style={{ padding: '0 1em 1em 1em' }}>
                     <Tabs
                         value={this.state.value}
