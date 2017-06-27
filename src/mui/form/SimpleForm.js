@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React, { Children, Component } from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
@@ -7,23 +7,32 @@ import getDefaultValues from './getDefaultValues';
 import FormField from './FormField';
 import Toolbar from './Toolbar';
 
-export const SimpleForm = ({ children, handleSubmit, invalid, record, resource, basePath, submitOnEnter, save, toolbar, redirect }) => (
-    <form className="simple-form">
-        <div style={{ padding: '0 1em 1em 1em' }}>
-            {Children.map(children, input => input && (
-                <div key={input.props.source} className={`aor-input-${input.props.source}`} style={input.props.style}>
-                    <FormField input={input} resource={resource} record={record} basePath={basePath} />
+const formStyle = { padding: '0 1em 1em 1em' };
+
+export class SimpleForm extends Component {
+    handleSubmitWithRedirect = redirect => this.props.handleSubmit(values => this.props.save(values, redirect));
+
+    render() {
+        const { children, invalid, record, resource, basePath, submitOnEnter, toolbar, redirect } = this.props;
+        return (
+            <form className="simple-form">
+                <div style={formStyle}>
+                    {Children.map(children, input => input && (
+                        <div key={input.props.source} className={`aor-input-${input.props.source}`} style={input.props.style}>
+                            <FormField input={input} resource={resource} record={record} basePath={basePath} />
+                        </div>
+                    ))}
                 </div>
-            ))}
-        </div>
-        {toolbar && React.cloneElement(toolbar, {
-            invalid,
-            submitOnEnter,
-            handleSubmitWithRedirect: redirectTo => handleSubmit(values => save(values, redirectTo)),
-            redirect,
-        })}
-    </form>
-);
+                {toolbar && React.cloneElement(toolbar, {
+                    handleSubmitWithRedirect: this.handleSubmitWithRedirect,
+                    invalid,
+                    redirect,
+                    submitOnEnter,
+                })}
+            </form>
+        );
+    }
+}
 
 SimpleForm.propTypes = {
     basePath: PropTypes.string,
