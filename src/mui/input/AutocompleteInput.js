@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import get from 'lodash.get';
 import AutoComplete from 'material-ui/AutoComplete';
 
 import FieldTitle from '../../util/FieldTitle';
@@ -81,7 +82,7 @@ export class AutocompleteInput extends Component {
 
     getSuggestion(choice) {
         const { optionText, optionValue, translate, translateChoice } = this.props;
-        const choiceName = typeof optionText === 'function' ? optionText(choice) : choice[optionText];
+        const choiceName = typeof optionText === 'function' ? optionText(choice) : get(choice, optionText);
         return translateChoice ? translate(choiceName, { _: choiceName }) : choiceName;
     }
 
@@ -101,9 +102,9 @@ export class AutocompleteInput extends Component {
             source,
         } = this.props;
 
-        const selectedSource = choices.find(choice => choice[optionValue] === input.value);
+        const selectedSource = choices.find(choice => get(choice, optionValue) === input.value);
         const dataSource = choices.map(choice => ({
-            value: choice[optionValue],
+            value: get(choice, optionValue),
             text: this.getSuggestion(choice),
         }));
         return (

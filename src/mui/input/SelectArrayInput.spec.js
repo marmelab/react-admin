@@ -93,12 +93,40 @@ describe('<SelectArrayInput />', () => {
         ]);
     });
 
+    it('should use optionValue including as value identifier', () => {
+        const wrapper = shallow(<SelectArrayInput
+            {...defaultProps}
+            optionValue="foobar.id"
+            choices={[
+                { foobar: { id: 'B' }, name: 'Book' },
+            ]}
+        />);
+        const ChipInputElement = wrapper.find('ChipInput').first();
+        assert.deepEqual(ChipInputElement.prop('dataSource'), [
+            { value: 'B', text: 'Book' },
+        ]);
+    });
+
     it('should use optionText with a string value as text identifier', () => {
         const wrapper = shallow(<SelectArrayInput
             {...defaultProps}
             optionText="foobar"
             choices={[
                 { id: 'B', foobar: 'Book' },
+            ]}
+        />);
+        const ChipInputElement = wrapper.find('ChipInput').first();
+        assert.deepEqual(ChipInputElement.prop('dataSource'), [
+            { value: 'B', text: 'Book' },
+        ]);
+    });
+
+    it('should use optionText with a string value including "." as text identifier', () => {
+        const wrapper = shallow(<SelectArrayInput
+            {...defaultProps}
+            optionText="foobar.name"
+            choices={[
+                { id: 'B', foobar: { name: 'Book' } },
             ]}
         />);
         const ChipInputElement = wrapper.find('ChipInput').first();

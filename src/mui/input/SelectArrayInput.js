@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import get from 'lodash.get';
 import ChipInput from 'material-ui-chip-input';
 
 import translate from '../../i18n/translate';
@@ -123,9 +124,9 @@ export class SelectArrayInput extends Component {
 
     formatChoice = (choice) => {
         const { optionText, optionValue, translateChoice, translate } = this.props;
-        const choiceText = typeof optionText === 'function' ? optionText(choice) : choice[optionText];
+        const choiceText = typeof optionText === 'function' ? optionText(choice) : get(choice, optionText);
         return {
-            value: choice[optionValue],
+            value: get(choice, optionValue),
             text: translateChoice ? translate(choiceText, { _: choiceText }) : choiceText,
         };
     }
