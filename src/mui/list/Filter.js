@@ -5,6 +5,7 @@ import shallowEqual from 'recompose/shallowEqual';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
+import defaultTheme from '../defaultTheme';
 
 class Filter extends Component {
     constructor(props) {
@@ -50,7 +51,7 @@ class Filter extends Component {
     }
 
     renderForm() {
-        const { resource, children, hideFilter, displayedFilters, filterValues } = this.props;
+        const { resource, children, hideFilter, displayedFilters, filterValues, theme } = this.props;
         return (
             <FilterForm
                 resource={resource}
@@ -59,6 +60,7 @@ class Filter extends Component {
                 displayedFilters={displayedFilters}
                 initialValues={filterValues}
                 setFilters={this.setFilters}
+                theme={theme}
             />
         );
     }
@@ -78,10 +80,12 @@ Filter.propTypes = {
     setFilters: PropTypes.func,
     showFilter: PropTypes.func,
     resource: PropTypes.string.isRequired,
+    theme: PropTypes.object,
 };
 
 Filter.defaultProps = {
     debounce: 500,
+    theme: defaultTheme,
 };
 
 export default Filter;

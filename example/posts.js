@@ -56,7 +56,10 @@ const PostFilter = ({ ...props }) => (
     <Filter {...props}>
         <TextInput label="post.list.search" source="q" alwaysOn />
         <TextInput source="title" defaultValue="Qui tempore rerum et voluptates" />
-        <QuickFilter label="resources.posts.fields.commentable" source="commentable" defaultValue={true} />
+        <ReferenceArrayInput source="tags" reference="tags" defaultValue={[3]}>
+            <SelectArrayInput optionText="name" />
+        </ReferenceArrayInput>
+        <QuickFilter label="resources.posts.fields.commentable" source="commentable" defaultValue />
     </Filter>
 );
 
@@ -82,7 +85,7 @@ export const PostList = ({ ...props }) => (
                         <SingleFieldList>
                             <ChipField source="name" />
                         </SingleFieldList>
-                     </ReferenceArrayField>
+                    </ReferenceArrayField>
                     <EditButton />
                     <ShowButton />
                 </Datagrid>
@@ -91,9 +94,7 @@ export const PostList = ({ ...props }) => (
     </List>
 );
 
-const PostTitle = translate(({ record, translate }) => {
-    return <span>{record ? translate('post.edit.title', { title: record.title }) : ''}</span>;
-});
+const PostTitle = translate(({ record, translate }) => <span>{record ? translate('post.edit.title', { title: record.title }) : ''}</span>);
 
 const PostCreateToolbar = props => <Toolbar {...props} >
     <SaveButton label="post.action.save_and_show" redirect="show" submitOnEnter={true} />
@@ -103,29 +104,32 @@ const PostCreateToolbar = props => <Toolbar {...props} >
 export const PostCreate = ({ ...props }) => (
     <Create {...props}>
         <SimpleForm toolbar={<PostCreateToolbar />} defaultValue={{ average_note: 0 }} validate={(values) => {
-            const errors = {};
-            ['title', 'teaser'].forEach((field) => {
-                if (!values[field]) {
-                    errors[field] = ['Required field'];
+                const errors = {};
+                ['title', 'teaser'].forEach((field) => {
+                    if (!values[field]) {
+                        errors[field] = ['Required field'];
+                    }
+                });
+
+                if (values.average_note < 0 || values.average_note > 5) {
+                    errors.average_note = ['Should be between 0 and 5'];
                 }
-            });
 
-            if (values.average_note < 0 || values.average_note > 5) {
-                errors.average_note = ['Should be between 0 and 5'];
-            }
-
-            return errors;
-        }}>
+                return errors;
+            }}
+        >
             <TextInput source="title" />
             <TextInput source="password" type="password" />
             <TextInput source="teaser" options={{ multiLine: true }} />
             <RichTextInput source="body" />
             <DateInput source="published_at" defaultValue={() => new Date()} />
             <NumberInput source="average_note" />
-            <BooleanInput source="commentable" defaultValue={true} />
+            <BooleanInput source="commentable" defaultValue />
         </SimpleForm>
     </Create>
 );
+
+const emptyKeycode = [];
 
 export const PostEdit = ({ ...props }) => (
     <Edit title={<PostTitle />} {...props}>
@@ -151,13 +155,15 @@ export const PostEdit = ({ ...props }) => (
             </FormTab>
             <FormTab label="post.form.miscellaneous">
                 <ReferenceArrayInput source="tags" reference="tags" allowEmpty>
-                    <SelectArrayInput optionText="name" options={{ fullWidth: true }} />
+                    <SelectArrayInput optionText="name" options={{ fullWidth: true, newChipKeyCodes: emptyKeycode }} />
                 </ReferenceArrayInput>
                 <DateInput source="published_at" options={{ locale: 'pt' }} />
-                <SelectInput source="category" choices={[
+                <SelectInput
+                    source="category" choices={[
                     { name: 'Tech', id: 'tech' },
                     { name: 'Lifestyle', id: 'lifestyle' },
-                ]} />
+                    ]}
+                />
                 <NumberInput source="average_note" validate={[number, minValue(0)]} />
                 <BooleanInput source="commentable" defaultValue />
                 <DisabledInput source="views" />
@@ -182,10 +188,10 @@ export const PostShow = ({ ...props }) => (
             <Tab label="post.form.summary">
                 <TextField source="id" />
                 <TextField source="title" />
-                <TextField source="teaser" stripTags={false} />
+                <TextField source="teaser" />
             </Tab>
             <Tab label="post.form.body">
-                <RichTextField source="body" label="" addLabel={false} />
+                <RichTextField source="body" stripTags={false} label="" addLabel={false} />
             </Tab>
             <Tab label="post.form.miscellaneous">
                 <ReferenceArrayField reference="tags" source="tags">
@@ -194,9 +200,12 @@ export const PostShow = ({ ...props }) => (
                     </SingleFieldList>
                 </ReferenceArrayField>
                 <DateField source="published_at" />
-                <TextField source="category" />
-                <NumberField source="average_note" validate={[number, minValue(0)]} />
-                <BooleanField source="commentable" defaultValue />
+                <SelectField source="category" choices={[
+                    { name: 'Tech', id: 'tech' },
+                    { name: 'Lifestyle', id: 'lifestyle' },
+                ]} />
+                <NumberField source="average_note" />
+                <BooleanField source="commentable" />
                 <TextField source="views" />
             </Tab>
             <Tab label="post.form.comments">
