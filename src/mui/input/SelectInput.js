@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import get from 'lodash.get';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
@@ -88,13 +89,13 @@ export class SelectInput extends Component {
             React.cloneElement(optionText, { record: choice }) :
             (typeof optionText === 'function' ?
                 optionText(choice) :
-                choice[optionText]
+                get(choice, optionText)
             );
         return (
             <MenuItem
-                key={choice[optionValue]}
+                key={get(choice, optionValue)}
                 primaryText={translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
-                value={choice[optionValue]}
+                value={get(choice, optionValue)}
             />
         );
     }

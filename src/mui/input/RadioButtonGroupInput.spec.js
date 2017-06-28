@@ -55,12 +55,40 @@ describe('<RadioButtonGroupInput />', () => {
         assert.equal(RadioButtonElement1.prop('label'), 'Male');
     });
 
+    it('should use optionValue including "." as value identifier', () => {
+        const wrapper = shallow(<RadioButtonGroupInput
+            {...defaultProps}
+            optionValue="foobar.id"
+            choices={[
+                { foobar: { id: 'M' }, name: 'Male' },
+            ]}
+        />);
+        const RadioButtonElements = wrapper.find('RadioButton');
+        const RadioButtonElement1 = RadioButtonElements.first();
+        assert.equal(RadioButtonElement1.prop('value'), 'M');
+        assert.equal(RadioButtonElement1.prop('label'), 'Male');
+    });
+
     it('should use optionText with a string value as text identifier', () => {
         const wrapper = shallow(<RadioButtonGroupInput
             {...defaultProps}
             optionText="foobar"
             choices={[
                 { id: 'M', foobar: 'Male' },
+            ]}
+        />);
+        const RadioButtonElements = wrapper.find('RadioButton');
+        const RadioButtonElement1 = RadioButtonElements.first();
+        assert.equal(RadioButtonElement1.prop('value'), 'M');
+        assert.equal(RadioButtonElement1.prop('label'), 'Male');
+    });
+
+    it('should use optionText with a string value including "." as text identifier', () => {
+        const wrapper = shallow(<RadioButtonGroupInput
+            {...defaultProps}
+            optionText="foobar.name"
+            choices={[
+                { id: 'M', foobar: { name: 'Male' } },
             ]}
         />);
         const RadioButtonElements = wrapper.find('RadioButton');
