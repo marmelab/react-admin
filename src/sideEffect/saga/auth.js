@@ -1,4 +1,4 @@
-import { put, call, takeEvery } from 'redux-saga/effects';
+import { all, put, call, takeEvery } from 'redux-saga/effects';
 import { push, replace } from 'react-router-redux';
 
 import { showNotification, hideNotification } from '../../actions/notificationActions';
@@ -62,9 +62,9 @@ export default (authClient) => {
         }
     }
     return function* watchAuthActions() {
-        yield [
+        yield all([
             takeEvery(action => action.meta && action.meta.auth, handleAuth),
             takeEvery(FETCH_ERROR, handleAuth),
-        ];
+        ]);
     };
 };

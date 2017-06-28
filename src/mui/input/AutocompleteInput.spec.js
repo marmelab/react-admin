@@ -58,12 +58,40 @@ describe('<AutocompleteInput />', () => {
         ]);
     });
 
+    it('should use optionValue including "." as value identifier', () => {
+        const wrapper = shallow(<AutocompleteInput
+            {...defaultProps}
+            optionValue="foobar.id"
+            choices={[
+                { foobar: { id: 'M' }, name: 'Male' },
+            ]}
+        />);
+        const AutoCompleteElement = wrapper.find('AutoComplete').first();
+        assert.deepEqual(AutoCompleteElement.prop('dataSource'), [
+            { value: 'M', text: 'Male' },
+        ]);
+    });
+
     it('should use optionText with a string value as text identifier', () => {
         const wrapper = shallow(<AutocompleteInput
             {...defaultProps}
             optionText="foobar"
             choices={[
                 { id: 'M', foobar: 'Male' },
+            ]}
+        />);
+        const AutoCompleteElement = wrapper.find('AutoComplete').first();
+        assert.deepEqual(AutoCompleteElement.prop('dataSource'), [
+            { value: 'M', text: 'Male' },
+        ]);
+    });
+
+    it('should use optionText with a string value including "." as text identifier', () => {
+        const wrapper = shallow(<AutocompleteInput
+            {...defaultProps}
+            optionText="foobar.name"
+            choices={[
+                { id: 'M', foobar: { name: 'Male' } },
             ]}
         />);
         const AutoCompleteElement = wrapper.find('AutoComplete').first();

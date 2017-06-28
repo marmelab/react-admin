@@ -35,6 +35,8 @@ title: "Reference"
 * `<EditActions>`
 * `<EditButton>`
 * [`<EmailField>`](./Fields.html#emailfield)
+* [`<FileField>`](./Fields.html#filefield)
+* [`<FileInput>`](./Inputs.html#fileinput)
 * [`<Filter>`](./List.html#filters)
 * `<FilterButton>`
 * `<FilterForm>`
@@ -82,7 +84,9 @@ title: "Reference"
 * [`<SimpleList>`](./List.html#the-simplelist-component)
 * [`<SimpleShowLayout>`](./Show.html#the-simpleshowlayout-component)
 * [`<SingleFieldList>`](./List.html#the-singlefieldlist-component)
+* `<Tab>`
 * [`<TabbedForm>`](./CreateEdit.html#the-tabbedform-component)
+* `<TabbedShowLayout>`
 * [`<TextField>`](./Fields.html#textfield)
 * [`<TextInput>`](./Inputs.html#textinput)
 * `<Title>`

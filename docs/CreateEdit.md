@@ -157,6 +157,9 @@ Here are all the props accepted by the `<SimpleForm>` component:
 
 * [`defautValue`](#default-values)
 * [`validation`](#validation)
+* [`submitOnEnter`](#submit-on-enter)
+* [`redirect`](#redirection-after-submission)
+* [`toolbar`](#toolbar)
 
 ```jsx
 export const PostCreate = (props) => (
@@ -183,6 +186,9 @@ Here are all the props accepted by the `<TabbedForm>` component:
 
 * [`defautValue`](#default-values)
 * [`validation`](#validation)
+* [`submitOnEnter`](#submit-on-enter)
+* [`redirect`](#redirection-after-submission)
+* [`toolbar`](#toolbar)
 
 {% raw %}
 ```jsx
@@ -336,7 +342,7 @@ Input validation functions receive the current field value, and the values of al
 **Tip**: Validator functions receive the form `props` as third parameter, including the `translate` function. This lets you build internationalized validators:
 
 ```jsx
-const required = (value, _, props) => value ? undefined : props.translate('myroot.validation.required');
+const required = (value, allValues, props) => value ? undefined : props.translate('myroot.validation.required');
 ```
 
 **Tip**: The props of your Input components are passed to a redux-form `<Field>` component. So in addition to `validate`, you can also use `warn`.
@@ -348,13 +354,13 @@ const required = (value, _, props) => value ? undefined : props.translate('myroo
 Admin-on-rest already bundles a few validator functions, that you can just require and use as field validators:
 
 * `required` if the field is mandatory,
-* `minValue` to specify a minimum value for integers,
-* `maxValue` to specify a maximum value for integers,
-* `minLength` to specify a minimum length for strings,
-* `maxLength` to specify a maximum length for strings,
+* `minValue(min, message)` to specify a minimum value for integers,
+* `maxValue(max, message)` to specify a maximum value for integers,
+* `minLength(min, message)` to specify a minimum length for strings,
+* `maxLength(max, message)` to specify a maximum length for strings,
 * `email` to check that the input is a valid email address,
-* `regex` to validate that the input matches a regex,
-* `choices` to validate that the input is within a given list,
+* `regex(pattern, message)` to validate that the input matches a regex,
+* `choices(list, message)` to validate that the input is within a given list,
 
 Example usage:
 
@@ -376,3 +382,72 @@ export const UserCreate = (props) => (
     </Create>
 );
 ```
+
+## Submit On Enter
+
+By default, pressing `ENTER` in any of the form fields submits the form - this is the expected behavior in most cases. However, some of your custom input components (e.g. Google Maps widget) may have special handlers for the `ENTER` key. In that case, to disable the automated form submission on enter, set the `submitOnEnter` prop of the form component to `false`:
+
+```jsx
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm submitOnEnter={false}>
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+## Redirection After Submission
+
+By default:
+
+- Submitting the form in the `<Create>` view redirects to the `<Edit>` view
+- Submitting the form in the `<Edit>` view redirects to the `<List>` view
+
+You can customize the redirection by setting the `redirect` prop of the form component. Possible values are "edit", "show", "list", and `false` to disable redirection. For instance, to redirect to the `<Show>` view after edition:
+
+```jsx
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm redirect="show">
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+This affects both the submit button, and the form submission when the user presses `ENTER` in one of the form fields.
+
+## Toolbar
+
+At the bottom of the form, the toolbar displays the submit button. You can override this component by setting the `toolbar` prop, to display the buttons of your choice.
+
+The most common use case is to display two submit buttons in the `<Create>` view:
+
+- one that creates and redirects to the `<Show>` view of the new resource, and
+- one that redirects to a blank `<Create>` view after creation (allowing bulk creation)
+
+![Form toolbar](./img/form-toolbar.png)
+
+For that use case, use the `<SaveButton>` component with a custom `redirect` prop:
+
+```jsx
+impot { SaveButton, Toolbar } from 'admin-on-rest';
+
+const PostCreateToolbar = props => <Toolbar {...props} >
+    <SaveButton label="post.action.save_and_show" redirect="show" submitOnEnter={true} />
+    <SaveButton label="post.action.save_and_add" redirect={false} submitOnEnter={false} raised={false} />
+</Toolbar>;
+
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm toolbar={<PostCreateToolbar />} redirect="show">
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+**Tip**: Use admin-on-rest's `<Toolbar>` component instead of material-ui's `<Toolbar>` component. The former builds up on the latter, and adds support for an alternative mobile layout (and is therefore responsive).
+
+**Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.

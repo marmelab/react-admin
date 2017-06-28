@@ -234,10 +234,10 @@ function* commentApproveFailure({ error }) {
 }
 
 export default function* commentSaga() {
-    yield [
+    yield all([
         takeEvery('COMMENT_APPROVE_SUCCESS', commentApproveSuccess),
         takeEvery('COMMENT_APPROVE_FAILURE', commentApproveFailure),
-    ];
+    ]);
 }
 ```
 

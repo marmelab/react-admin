@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import get from 'lodash.get';
 import Checkbox from 'material-ui/Checkbox';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import compose from 'recompose/compose';
@@ -125,14 +126,14 @@ export class CheckboxGroupInputComponent extends Component {
             React.cloneElement(optionText, { record: choice }) :
             (typeof optionText === 'function' ?
                 optionText(choice) :
-                choice[optionText]
+                get(choice, optionText)
             );
         return (
             <Checkbox
-                key={choice[optionValue]}
-                checked={value ? value.find(v => (v == choice[optionValue])) !== undefined : false}
+                key={get(choice, optionValue)}
+                checked={value ? value.find(v => (v == get(choice, optionValue))) !== undefined : false}
                 onCheck={this.handleCheck}
-                value={choice[optionValue]}
+                value={get(choice, optionValue)}
                 label={translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
                 {...options}
             />

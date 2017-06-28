@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import get from 'lodash.get';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 
 import Labeled from './Labeled';
@@ -78,13 +79,13 @@ export class RadioButtonGroupInput extends Component {
             React.cloneElement(optionText, { record: choice }) :
             (typeof optionText === 'function' ?
                 optionText(choice) :
-                choice[optionText]
+                get(choice, optionText)
             );
         return (
             <RadioButton
-                key={choice[optionValue]}
+                key={get(choice, optionValue)}
                 label={translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
-                value={choice[optionValue]}
+                value={get(choice, optionValue)}
             />
         );
     }

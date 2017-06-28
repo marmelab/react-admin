@@ -67,12 +67,40 @@ describe('<CheckboxGroupInput />', () => {
         assert.equal(CheckboxElement1.prop('label'), 'Bar');
     });
 
+    it('should use optionValue including "." as value identifier', () => {
+        const wrapper = shallow(<CheckboxGroupInput
+            {...defaultProps}
+            optionValue="foobar.id"
+            choices={[
+                { foobar: { id: 'foo' }, name: 'Bar' },
+            ]}
+        />);
+        const CheckboxElements = wrapper.find('Checkbox');
+        const CheckboxElement1 = CheckboxElements.first();
+        assert.equal(CheckboxElement1.prop('value'), 'foo');
+        assert.equal(CheckboxElement1.prop('label'), 'Bar');
+    });
+
     it('should use optionText with a string value as text identifier', () => {
         const wrapper = shallow(<CheckboxGroupInput
             {...defaultProps}
             optionText="foobar"
             choices={[
                 { id: 'foo', foobar: 'Bar' },
+            ]}
+        />);
+        const CheckboxElements = wrapper.find('Checkbox');
+        const CheckboxElement1 = CheckboxElements.first();
+        assert.equal(CheckboxElement1.prop('value'), 'foo');
+        assert.equal(CheckboxElement1.prop('label'), 'Bar');
+    });
+
+    it('should use optionText with a string value including "." as text identifier', () => {
+        const wrapper = shallow(<CheckboxGroupInput
+            {...defaultProps}
+            optionText="foobar.name"
+            choices={[
+                { id: 'foo', foobar: { name: 'Bar' } },
             ]}
         />);
         const CheckboxElements = wrapper.find('Checkbox');
