@@ -342,7 +342,7 @@ Input validation functions receive the current field value, and the values of al
 **Tip**: Validator functions receive the form `props` as third parameter, including the `translate` function. This lets you build internationalized validators:
 
 ```jsx
-const required = (value, _, props) => value ? undefined : props.translate('myroot.validation.required');
+const required = (value, allValues, props) => value ? undefined : props.translate('myroot.validation.required');
 ```
 
 **Tip**: The props of your Input components are passed to a redux-form `<Field>` component. So in addition to `validate`, you can also use `warn`.
@@ -354,13 +354,13 @@ const required = (value, _, props) => value ? undefined : props.translate('myroo
 Admin-on-rest already bundles a few validator functions, that you can just require and use as field validators:
 
 * `required` if the field is mandatory,
-* `minValue` to specify a minimum value for integers,
-* `maxValue` to specify a maximum value for integers,
-* `minLength` to specify a minimum length for strings,
-* `maxLength` to specify a maximum length for strings,
+* `minValue(min, message)` to specify a minimum value for integers,
+* `maxValue(max, message)` to specify a maximum value for integers,
+* `minLength(min, message)` to specify a minimum length for strings,
+* `maxLength(max, message)` to specify a maximum length for strings,
 * `email` to check that the input is a valid email address,
-* `regex` to validate that the input matches a regex,
-* `choices` to validate that the input is within a given list,
+* `regex(pattern, message)` to validate that the input matches a regex,
+* `choices(list, message)` to validate that the input is within a given list,
 
 Example usage:
 
