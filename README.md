@@ -195,4 +195,4 @@ Admin-on-rest is licensed under the [MIT Licence](https://github.com/marmelab/ad
 
 ## Donate
 
-This library is free to use, even for commercial purpose. If you want to give back, please talk about it, help newcomers, or contribute code. But the best way to give back is to **donate to a charity**. We recommend [Doctors Without Borders](http://www.doctorswithoutborders.org/).
+This library is free to use, even for commercial purpose. If you want to give back, please [talk about it](https://stackoverflow.com/questions/tagged/admin-on-rest), help newcomers, or contribute code. But the best way to give back is to **donate to a charity**. We recommend [Doctors Without Borders](http://www.doctorswithoutborders.org/).
