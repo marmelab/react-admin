@@ -54,7 +54,7 @@ Read the [Tutorial](http://marmelab.com/admin-on-rest//Tutorial.html) for a 15 m
 
 ## At a Glance
 
-```js
+```jsx
 // in app.js
 import React from 'react';
 import { render } from 'react-dom';
@@ -72,7 +72,7 @@ render(
 
 The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use Material UI and custom components from admin-on-rest:
 
-```js
+```jsx
 // in posts.js
 import React from 'react';
 import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'admin-on-rest';
