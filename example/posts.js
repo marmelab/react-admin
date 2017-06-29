@@ -169,8 +169,8 @@ export const PostEdit = ({ ...props }) => (
             </FormTab>
             <FormTab label="post.form.links">
                 <EmbeddedArrayInput source="links">
-                    <TextInput source="url" />
-                    <TextInput source="context"/>
+                    <LongTextInput source="url" />
+                    <LongTextInput source="context" />
                 </EmbeddedArrayInput>
             </FormTab>
         </TabbedForm>

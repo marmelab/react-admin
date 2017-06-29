@@ -42,6 +42,7 @@ export const messages = {
             body: 'Body',
             miscellaneous: 'Miscellaneous',
             comments: 'Comments',
+            links: 'Links',
         },
         edit: {
             title: 'Post "%{title}"',
