@@ -13,14 +13,14 @@ const isRequired = (validate) => {
 };
 
 /**
- * A helper Input component for EmbeddedArrayInpit
+ * A helper Input component for EmbeddedArrayInput
  *
  * It's an alternative to FormField that provides the ability to prefix the source/name
  * with a string you provide
  *
  * @example
  *
- * <PrefixedFormField input={input} prefix={member} />
+ * <PrefixedFormField input={input} prefix={my_prefix} />
  *
  */
 const EmbeddedArrayInputFormField = ({ input, prefix, ...rest }) => {
