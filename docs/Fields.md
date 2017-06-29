@@ -590,11 +590,11 @@ export const PostShow = (props) => (
                     <TextField source="id" />
                     <TextField source="name" />
                     <ShowButton />
-                </SingleFieldList>
+                </Datagrid>
             </ReferenceArrayField>
             <EditButton />
         </SimpleShowLayout>
-    </List>
+    </Show>
 );
 ```
 
