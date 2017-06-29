@@ -1,4 +1,5 @@
 import HttpError from './HttpError';
+import { stringify } from 'query-string';
 
 export const fetchJson = (url, options = {}) => {
     const requestHeaders = options.headers || new Headers({
@@ -32,6 +33,4 @@ export const fetchJson = (url, options = {}) => {
         });
 };
 
-export const queryParameters = data => Object.keys(data)
-    .map(key => [key, data[key]].map(encodeURIComponent).join('='))
-    .join('&');
+export const queryParameters = stringify;

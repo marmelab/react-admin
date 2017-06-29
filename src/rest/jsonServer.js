@@ -1,4 +1,5 @@
-import { queryParameters, fetchJson } from '../util/fetch';
+import { stringify } from 'query-string';
+import { fetchJson } from '../util/fetch';
 import {
     GET_LIST,
     GET_ONE,
@@ -42,7 +43,7 @@ export default (apiUrl, httpClient = fetchJson) => {
                 _start: (page - 1) * perPage,
                 _end: page * perPage,
             };
-            url = `${apiUrl}/${resource}?${queryParameters(query)}`;
+            url = `${apiUrl}/${resource}?${stringify(query)}`;
             break;
         }
         case GET_ONE:
@@ -59,7 +60,7 @@ export default (apiUrl, httpClient = fetchJson) => {
                 _start: (page - 1) * perPage,
                 _end: page * perPage,
             };
-            url = `${apiUrl}/${resource}?${queryParameters(query)}`;
+            url = `${apiUrl}/${resource}?${stringify(query)}`;
             break;
         }
         case UPDATE:
