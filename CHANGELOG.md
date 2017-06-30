@@ -2,6 +2,8 @@
 
 ## v1.2.0
 
+Read the [v1.1 and v1.2 announcement on the marmelab blog](https://marmelab.com/blog/2017/06/29/admin-on-rest-1-2.html).
+
 * Add ability to override redirect behavior on save for `<Create>` and `<Edit>` views ([wesley6j](https://github.com/wesley6j))
 * Add refresh button to `<Show>` view ([djhi](https://github.com/djhi))
 * Add asterisk to label on required `Input` ([djhi](https://github.com/djhi))
@@ -92,6 +94,8 @@
 
 ## v1.0.0
 
+Read the [v1.0 announcement on the marmelab blog](https://marmelab.com/blog/2017/04/26/admin-on-rest-1-0.html).
+
 * [BC Break] Switch validation system to redux-form native validation (breaks all input validation)
 * [BC Break] Move error mapping (HTTP to REST) to `authClient` (breaks HTTP 401 and 403 error handling)
 * [BC Break] Upgrade react-router to v4 (breaks custom routes)
@@ -164,6 +168,8 @@
 * Update Webpack example config ([velociwabbit](https://github.com/velociwabbit))
 
 ## v0.9.0
+
+Read the [v0.9 announcement on the marmelab blog](https://marmelab.com/blog/2017/03/10/admin-on-rest-0-9.html)
 
 * [BC Break] Update REST response format to always expect a `data` key
 * Add mobile UI (Sidebar, AppBar, Datagrid, actions, form action)
