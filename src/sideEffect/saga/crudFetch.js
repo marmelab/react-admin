@@ -1,4 +1,4 @@
-import { put, call, cancelled, takeEvery, takeLatest } from 'redux-saga/effects';
+import { all, put, call, cancelled, takeEvery, takeLatest } from 'redux-saga/effects';
 import {
     FETCH_START,
     FETCH_END,
@@ -11,10 +11,10 @@ const crudFetch = (restClient) => {
         const { type, payload, meta: { fetch: fetchMeta, ...meta } } = action;
         const restType = fetchMeta;
 
-        yield [
+        yield all([
             put({ type: `${type}_LOADING`, payload, meta }),
             put({ type: FETCH_START }),
-        ];
+        ]);
         let response;
         try {
             response = yield call(restClient, restType, meta.resource, payload);
@@ -45,10 +45,10 @@ const crudFetch = (restClient) => {
     }
 
     return function* watchCrudFetch() {
-        yield [
+        yield all([
             takeLatest(action => action.meta && action.meta.fetch && action.meta.cancelPrevious, handleFetch),
             takeEvery(action => action.meta && action.meta.fetch && !action.meta.cancelPrevious, handleFetch),
-        ];
+        ]);
     };
 };
 

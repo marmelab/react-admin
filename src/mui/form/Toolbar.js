@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Children } from 'react';
+import PropTypes from 'prop-types';
 import { Toolbar as MuiToolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import Responsive from '../layout/Responsive';
 import { SaveButton } from '../button';
+import Responsive from '../layout/Responsive';
 
 const styles = {
     mobileToolbar: {
@@ -14,23 +15,60 @@ const styles = {
     },
 };
 
-const Toolbar = ({ invalid, submitOnEnter = true }) => (
+const valueOrDefault = (value, defaultValue) => typeof value === 'undefined' ? defaultValue : value;
+
+const Toolbar = ({ invalid, submitOnEnter, handleSubmitWithRedirect, children }) => (
     <Responsive
         small={
             <MuiToolbar style={styles.mobileToolbar} noGutter>
                 <ToolbarGroup>
-                    <SaveButton invalid={invalid} submitOnEnter={submitOnEnter} raised={false} />
+                    {Children.count(children) === 0
+                        ? <SaveButton
+                            handleSubmitWithRedirect={handleSubmitWithRedirect}
+                            invalid={invalid}
+                            raised={false}
+                            submitOnEnter={submitOnEnter}
+                        />
+                        : Children.map(children, button => React.cloneElement(button, {
+                            invalid,
+                            handleSubmitWithRedirect,
+                            raised: false,
+                            submitOnEnter: valueOrDefault(button.props.submitOnEnter, submitOnEnter),
+                        }))
+                    }
                 </ToolbarGroup>
             </MuiToolbar>
         }
         medium={
             <MuiToolbar>
                 <ToolbarGroup>
-                    <SaveButton invalid={invalid} submitOnEnter={submitOnEnter} />
+                    {Children.count(children) === 0
+                        ? <SaveButton
+                            handleSubmitWithRedirect={handleSubmitWithRedirect}
+                            invalid={invalid}
+                            submitOnEnter={submitOnEnter}
+                        />
+                        : Children.map(children, button => React.cloneElement(button, {
+                            handleSubmitWithRedirect,
+                            invalid,
+                            submitOnEnter: valueOrDefault(button.props.submitOnEnter, submitOnEnter),
+                        }))
+                    }
                 </ToolbarGroup>
             </MuiToolbar>
         }
     />
 );
+
+Toolbar.propTypes = {
+    children: PropTypes.node,
+    handleSubmitWithRedirect: PropTypes.func,
+    invalid: PropTypes.bool,
+    submitOnEnter: PropTypes.bool,
+};
+
+Toolbar.defaultProps = {
+    submitOnEnter: true,
+};
 
 export default Toolbar;

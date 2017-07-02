@@ -118,18 +118,19 @@ If you want to add or remove menu items, for instance to link to non-resources p
 ```jsx
 // in src/Menu.js
 import React from 'react';
-import MenuItem from 'material-ui/MenuItem';
-import { Link } from 'react-router-dom';
+import { MenuItemLink } from 'admin-on-rest';
 
 export default ({ resources, onMenuTap, logout }) => (
     <div>
-        <MenuItem containerElement={<Link to="/posts" />} primaryText="Posts" onTouchTap={onMenuTap} />
-        <MenuItem containerElement={<Link to="/comments" />} primaryText="Comments" onTouchTap={onMenuTap} />
-        <MenuItem containerElement={<Link to="/custom-route" />} primaryText="Miscellaneous" onTouchTap={onMenuTap} />
+        <MenuItemLink to="/posts" primaryText="Posts" onTouchTap={onMenuTap} />
+        <MenuItemLink to="/comments" primaryText="Comments" onTouchTap={onMenuTap} />
+        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onTouchTap={onMenuTap} />
         {logout}
     </div>
 );
 ```
+
+**Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
 
 Then, pass it to the `<Admin>` component as the `menu` prop:
 

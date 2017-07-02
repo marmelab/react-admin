@@ -2,42 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 
-const styles = {
-    list: {
-        display: 'flex',
-        listStyleType: 'none',
-    },
-    image: {
-        margin: '0.5rem',
-        maxHeight: '10rem',
-    },
-};
-
-export const ImageField = ({ elStyle = {}, record, source, src, title }) => {
+export const FileField = ({ elStyle, record, source, title, src }) => {
     const sourceValue = get(record, source);
+
     if (!sourceValue) {
         return <div />;
     }
 
     if (Array.isArray(sourceValue)) {
-        const style = {
-            ...styles.list,
-            ...elStyle,
-        };
         return (
-            <ul style={style}>
+            <ul style={elStyle}>
                 {sourceValue.map((file, index) => {
                     const titleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
 
                     return (
                         <li key={index}>
-                            <img
-                                alt={titleValue}
+                            <a
+                                href={srcValue}
                                 title={titleValue}
-                                src={srcValue}
-                                style={styles.image}
-                            />
+                            >
+                                {titleValue}
+                            </a>
                         </li>
                     );
                 })}
@@ -47,23 +33,29 @@ export const ImageField = ({ elStyle = {}, record, source, src, title }) => {
 
     const titleValue = get(record, title) || title;
 
+
     return (
         <div style={elStyle}>
-            <img
+            <a
+                href={sourceValue}
                 title={titleValue}
-                alt={titleValue}
-                src={sourceValue}
-                style={styles.image}
-            />
+            >
+                {titleValue}
+            </a>
         </div>
     );
 };
 
-ImageField.propTypes = {
+FileField.propTypes = {
     elStyle: PropTypes.object,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
+    src: PropTypes.string,
     title: PropTypes.string,
 };
 
-export default ImageField;
+FileField.defaultProps = {
+    elStyle: { display: 'inline-block' },
+};
+
+export default FileField;

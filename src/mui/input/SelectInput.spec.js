@@ -72,12 +72,40 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElement1.prop('primaryText'), 'Male');
     });
 
+    it('should use optionValue including "." as value identifier', () => {
+        const wrapper = shallow(<SelectInput
+            {...defaultProps}
+            optionValue="foobar.id"
+            choices={[
+                { foobar: { id: 'M' }, name: 'Male' },
+            ]}
+        />);
+        const MenuItemElements = wrapper.find('MenuItem');
+        const MenuItemElement1 = MenuItemElements.first();
+        assert.equal(MenuItemElement1.prop('value'), 'M');
+        assert.equal(MenuItemElement1.prop('primaryText'), 'Male');
+    });
+
     it('should use optionText with a string value as text identifier', () => {
         const wrapper = shallow(<SelectInput
             {...defaultProps}
             optionText="foobar"
             choices={[
                 { id: 'M', foobar: 'Male' },
+            ]}
+        />);
+        const MenuItemElements = wrapper.find('MenuItem');
+        const MenuItemElement1 = MenuItemElements.first();
+        assert.equal(MenuItemElement1.prop('value'), 'M');
+        assert.equal(MenuItemElement1.prop('primaryText'), 'Male');
+    });
+
+    it('should use optionText with a string value including "." as text identifier', () => {
+        const wrapper = shallow(<SelectInput
+            {...defaultProps}
+            optionText="foobar.name"
+            choices={[
+                { id: 'M', foobar: { name: 'Male' } },
             ]}
         />);
         const MenuItemElements = wrapper.find('MenuItem');

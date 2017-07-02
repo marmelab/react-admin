@@ -135,3 +135,26 @@ export const PostShow = (props) => (
     </Show>
 );
 ```
+
+It is possible to override its style by specifying the `style` prop, for example:
+
+```jsx
+const styles = {
+    container: {
+        display: 'flex',
+    },
+    item: {
+        marginRight: '1rem',
+    },
+};
+
+export const PostShow = (props) => (
+    <Show {...props}>
+        <SimpleShowLayout style={styles.container}>
+            <TextField source="title" style={styles.item} />
+            <RichTextField source="body" style={styles.item} />
+            <NumberField source="nb_views" style={styles.item} />
+        </SimpleShowLayout>
+    </Show>
+);
+```

@@ -6,9 +6,8 @@ import compose from 'recompose/compose';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import Toolbar from './Toolbar';
 import getDefaultValues from './getDefaultValues';
-import translate from '../../i18n/translate';
 
-const noop = () => {};
+const formStyle = { padding: '0 1em 1em 1em' };
 
 export class TabbedForm extends Component {
     constructor(props) {
@@ -22,11 +21,13 @@ export class TabbedForm extends Component {
         this.setState({ value });
     };
 
+    handleSubmitWithRedirect = (redirect = this.props.redirect) => this.props.handleSubmit(values => this.props.save(values, redirect));
+
     render() {
-        const { children, contentContainerStyle, handleSubmit, invalid, record, resource, basePath, translate, submitOnEnter } = this.props;
+        const { children, contentContainerStyle, invalid, record, resource, basePath, translate, submitOnEnter, toolbar } = this.props;
         return (
-            <form onSubmit={ submitOnEnter ? handleSubmit : noop } className="tabbed-form">
-                <div style={{ padding: '0 1em 1em 1em' }}>
+            <form className="tabbed-form">
+                <div style={formStyle}>
                     <Tabs
                         value={this.state.value}
                         onChange={this.handleChange}
@@ -41,36 +42,47 @@ export class TabbedForm extends Component {
                                 icon={tab.props.icon}
                             >
                                 {React.cloneElement(tab, { resource, record, basePath })}
-                            </Tab>
+                            </Tab>,
                         )}
                     </Tabs>
                 </div>
-                <Toolbar invalid={invalid} submitOnEnter={submitOnEnter} />
+                {toolbar && React.cloneElement(toolbar, {
+                    handleSubmitWithRedirect: this.handleSubmitWithRedirect,
+                    invalid,
+                    submitOnEnter,
+                })}
             </form>
         );
     }
 }
 
 TabbedForm.propTypes = {
+    basePath: PropTypes.string,
     children: PropTypes.node,
     contentContainerStyle: PropTypes.object,
     defaultValue: PropTypes.oneOfType([
         PropTypes.object,
         PropTypes.func,
     ]),
-    handleSubmit: PropTypes.func,
+    handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
     record: PropTypes.object,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+    ]),
     resource: PropTypes.string,
-    basePath: PropTypes.string,
+    save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
+    submitOnEnter: PropTypes.bool,
+    toolbar: PropTypes.element,
     translate: PropTypes.func,
     validate: PropTypes.func,
-    submitOnEnter: PropTypes.bool,
 };
 
 TabbedForm.defaultProps = {
     contentContainerStyle: { borderTop: 'solid 1px #e0e0e0' },
     submitOnEnter: true,
+    toolbar: <Toolbar />,
 };
 
 const enhance = compose(
@@ -81,7 +93,6 @@ const enhance = compose(
         form: 'record-form',
         enableReinitialize: true,
     }),
-    translate,
 );
 
 export default enhance(TabbedForm);

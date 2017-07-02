@@ -12,18 +12,28 @@ import translate from '../../i18n/translate';
 
 export class Show extends Component {
     componentDidMount() {
-        this.props.crudGetOne(this.props.resource, this.props.id, this.getBasePath());
+        this.updateData();
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.id !== nextProps.id) {
-            this.props.crudGetOne(nextProps.resource, nextProps.id, this.getBasePath());
+            this.updateData(nextProps.resource, nextProps.id);
         }
     }
 
     getBasePath() {
         const { location } = this.props;
         return location.pathname.split('/').slice(0, -2).join('/');
+    }
+
+    updateData(resource = this.props.resource, id = this.props.id) {
+        this.props.crudGetOne(resource, id, this.getBasePath());
+    }
+
+    refresh = (event) => {
+        event.stopPropagation();
+        this.fullRefresh = true;
+        this.updateData();
     }
 
     render() {
@@ -57,6 +67,7 @@ export class Show extends Component {
                         resource,
                         basePath,
                         record: data,
+                        translate,
                     })}
                 </Card>
             </div>
