@@ -34,8 +34,8 @@ const styles = {
  *         <SimpleForm>
  *              <EmbeddedArrayInput source="links">
  *                  <SimpleList>
- *                       <TextField source="url" />
- *                       <TextField source="context"/>
+ *                       <TextInput source="url" />
+ *                       <TextInput source="context"/>
  *                   </SimpleList>
  *               </EmbeddedArrayInput>
  *         </SimpleForm>
