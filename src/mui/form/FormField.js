@@ -16,7 +16,7 @@ const FormField = ({ input, ...rest }) => {
                     label={input.props.label}
                     isRequired={isRequired(input.props.validate)}
                 >
-                    { input }
+                    {input}
                 </Field>
             );
         }
@@ -42,7 +42,9 @@ const FormField = ({ input, ...rest }) => {
             </Labeled>
         );
     }
-    return (typeof input.type === 'string') ? input : React.cloneElement(input, rest);
+    return typeof input.type === 'string'
+        ? input
+        : React.cloneElement(input, rest);
 };
 
 export default FormField;

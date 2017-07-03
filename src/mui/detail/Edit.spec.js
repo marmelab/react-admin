@@ -21,20 +21,26 @@ describe('<Edit />', () => {
     };
 
     it('should display correctly when called with a child', () => {
-        const Foo = () => <div/>;
-        const wrapper = shallow(<Edit {...defaultProps}><Foo/></Edit>);
+        const Foo = () => <div />;
+        const wrapper = shallow(
+            <Edit {...defaultProps}>
+                <Foo />
+            </Edit>
+        );
 
         const inner = wrapper.find('Foo');
         assert.equal(inner.length, 1);
     });
 
     it('should display children inputs of SimpleForm', () => {
-        const wrapper = shallow(<Edit {...defaultProps}>
-            <SimpleForm>
-                <TextInput source="foo" />
-                <TextInput source="bar" />
-            </SimpleForm>
-        </Edit>);
+        const wrapper = shallow(
+            <Edit {...defaultProps}>
+                <SimpleForm>
+                    <TextInput source="foo" />
+                    <TextInput source="bar" />
+                </SimpleForm>
+            </Edit>
+        );
         const inputs = wrapper.find('TextInput');
         assert.deepEqual(inputs.map(i => i.prop('source')), ['foo', 'bar']);
     });

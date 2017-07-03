@@ -4,12 +4,13 @@ import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import translate from '../../i18n/translate';
 
-const RefreshButton = ({ label = 'aor.action.refresh', translate, refresh }) => <FlatButton
-    primary
-    label={label && translate(label)}
-    onClick={refresh}
-    icon={<NavigationRefresh />}
-/>;
+const RefreshButton = ({ label = 'aor.action.refresh', translate, refresh }) =>
+    <FlatButton
+        primary
+        label={label && translate(label)}
+        onClick={refresh}
+        icon={<NavigationRefresh />}
+    />;
 
 RefreshButton.propTypes = {
     label: PropTypes.string,

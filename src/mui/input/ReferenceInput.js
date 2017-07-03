@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
 import Labeled from './Labeled';
-import { crudGetOne as crudGetOneAction, crudGetMatching as crudGetMatchingAction } from '../../actions/dataActions';
+import {
+    crudGetOne as crudGetOneAction,
+    crudGetMatching as crudGetMatchingAction,
+} from '../../actions/dataActions';
 import { getPossibleReferences } from '../../reducer/references/possibleValues';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
@@ -107,50 +110,83 @@ export class ReferenceInput extends Component {
         }
     }
 
-    setFilter = (filter) => {
+    setFilter = filter => {
         if (filter !== this.params.filter) {
             this.params.filter = this.props.filterToQuery(filter);
             this.fetchReferenceAndOptions();
         }
-    }
+    };
 
-    setPagination = (pagination) => {
+    setPagination = pagination => {
         if (pagination !== this.param.pagination) {
             this.param.pagination = pagination;
             this.fetchReferenceAndOptions();
         }
-    }
+    };
 
-    setSort = (sort) => {
+    setSort = sort => {
         if (sort !== this.params.sort) {
             this.params.sort = sort;
             this.fetchReferenceAndOptions();
         }
-    }
+    };
 
-    fetchReferenceAndOptions({ input, reference, source, resource } = this.props) {
+    fetchReferenceAndOptions(
+        { input, reference, source, resource } = this.props
+    ) {
+        const { filter: filterFromProps } = this.props;
         const { pagination, sort, filter } = this.params;
+
         const id = input.value;
         if (id) {
             this.props.crudGetOne(reference, id, null, false);
         }
-        this.props.crudGetMatching(reference, referenceSource(resource, source), pagination, sort, filter);
+        const finalFilter = { ...filterFromProps, ...filter };
+        this.props.crudGetMatching(
+            reference,
+            referenceSource(resource, source),
+            pagination,
+            sort,
+            finalFilter
+        );
     }
 
     render() {
-        const { input, resource, label, source, reference, referenceRecord, allowEmpty, matchingReferences, basePath, onChange, children, meta } = this.props;
+        const {
+            input,
+            resource,
+            label,
+            source,
+            reference,
+            referenceRecord,
+            allowEmpty,
+            matchingReferences,
+            basePath,
+            onChange,
+            children,
+            meta,
+        } = this.props;
         if (!referenceRecord && !allowEmpty) {
-            return <Labeled
-                label={typeof label === 'undefined' ? `resources.${resource}.fields.${source}` : label}
-                source={source}
-                resource={resource}
-            />;
+            return (
+                <Labeled
+                    label={
+                        typeof label === 'undefined'
+                            ? `resources.${resource}.fields.${source}`
+                            : label
+                    }
+                    source={source}
+                    resource={resource}
+                />
+            );
         }
 
         return React.cloneElement(children, {
             allowEmpty,
             input,
-            label: typeof label === 'undefined' ? `resources.${resource}.fields.${source}` : label,
+            label:
+                typeof label === 'undefined'
+                    ? `resources.${resource}.fields.${source}`
+                    : label,
             resource,
             meta,
             source,
@@ -206,7 +242,12 @@ function mapStateToProps(state, props) {
     const referenceId = props.input.value;
     return {
         referenceRecord: state.admin[props.reference].data[referenceId],
-        matchingReferences: getPossibleReferences(state, referenceSource(props.resource, props.source), props.reference, [referenceId]),
+        matchingReferences: getPossibleReferences(
+            state,
+            referenceSource(props.resource, props.source),
+            props.reference,
+            [referenceId]
+        ),
     };
 }
 

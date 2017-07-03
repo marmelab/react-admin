@@ -9,11 +9,11 @@ describe('<FileInputPreview />', () => {
     it('should call `onRemove` prop when clicking on remove button', () => {
         const onRemoveSpy = sinon.spy();
 
-        const wrapper = shallow((
+        const wrapper = shallow(
             <FileInputPreview onRemove={onRemoveSpy}>
                 <div>Child</div>
             </FileInputPreview>
-        ));
+        );
 
         const removeButton = wrapper.find('IconButton');
         removeButton.simulate('click');
@@ -22,11 +22,11 @@ describe('<FileInputPreview />', () => {
     });
 
     it('should render passed children', () => {
-        const wrapper = shallow((
+        const wrapper = shallow(
             <FileInputPreview>
                 <div id="child">Child</div>
             </FileInputPreview>
-        ));
+        );
 
         const child = wrapper.find('#child');
         assert.equal(child.length, 1);
@@ -41,11 +41,12 @@ describe('<FileInputPreview />', () => {
                 revokeObjectURL,
             },
         };
-        const wrapper = shallow((
+        const wrapper = shallow(
             <FileInputPreview file={file}>
                 <div id="child">Child</div>
-            </FileInputPreview>
-        ), { lifecycleExperimental: true });
+            </FileInputPreview>,
+            { lifecycleExperimental: true }
+        );
 
         wrapper.unmount();
         assert(revokeObjectURL.calledWith('previewUrl'));
@@ -60,11 +61,12 @@ describe('<FileInputPreview />', () => {
                 revokeObjectURL,
             },
         };
-        const wrapper = shallow((
+        const wrapper = shallow(
             <FileInputPreview file={file}>
                 <div id="child">Child</div>
-            </FileInputPreview>
-        ), { lifecycleExperimental: true });
+            </FileInputPreview>,
+            { lifecycleExperimental: true }
+        );
 
         wrapper.unmount();
         assert(revokeObjectURL.notCalled);

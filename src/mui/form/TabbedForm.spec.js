@@ -5,14 +5,14 @@ import React from 'react';
 import { TabbedForm } from './TabbedForm';
 import FormTab from './FormTab';
 
-const translate = (label) => label;
+const translate = label => label;
 
 describe('<TabbedForm />', () => {
     it('should render tabs', () => {
         const wrapper = shallow(
             <TabbedForm translate={translate}>
-              <FormTab />
-              <FormTab />
+                <FormTab />
+                <FormTab />
             </TabbedForm>
         );
         const tabsContainer = wrapper.find('Tabs');
@@ -22,37 +22,31 @@ describe('<TabbedForm />', () => {
     });
 
     it('should display <Toolbar />', () => {
-        const wrapper = shallow(
-            <TabbedForm translate={translate}>
-            </TabbedForm>
-        );
+        const wrapper = shallow(<TabbedForm translate={translate} />);
         const button = wrapper.find('Toolbar');
         assert.equal(button.length, 1);
     });
 
-    it('should not pass handleSubmit to the form and pass submitOnEnter to <Toolbar /> when submitOnEnter is false', () => {
+    it('should pass submitOnEnter to <Toolbar />', () => {
         const handleSubmit = () => {};
-        const wrapper = shallow(
-            <TabbedForm translate={translate} submitOnEnter={false} handleSubmit={handleSubmit}>
-            </TabbedForm>
+        const wrapper1 = shallow(
+            <TabbedForm
+                translate={translate}
+                submitOnEnter={false}
+                handleSubmit={handleSubmit}
+            />
         );
-        const form = wrapper.find('form');
-        assert.notStrictEqual(form.prop('onSubmit'), handleSubmit);
+        const button1 = wrapper1.find('Toolbar');
+        assert.equal(button1.prop('submitOnEnter'), false);
 
-        const button = wrapper.find('Toolbar');
-        assert.equal(button.prop('submitOnEnter'), false);
-    });
-
-    it('should pass handleSubmit to the form and pass submitOnEnter to <Toolbar /> when submitOnEnter is true', () => {
-        const handleSubmit = () => {};
-        const wrapper = shallow(
-            <TabbedForm translate={translate} submitOnEnter={true} handleSubmit={handleSubmit}>
-            </TabbedForm>
+        const wrapper2 = shallow(
+            <TabbedForm
+                translate={translate}
+                submitOnEnter={true}
+                handleSubmit={handleSubmit}
+            />
         );
-        const form = wrapper.find('form');
-        assert.strictEqual(form.prop('onSubmit'), handleSubmit);
-
-        const button = wrapper.find('Toolbar');
-        assert.strictEqual(button.prop('submitOnEnter'), true);
+        const button2 = wrapper2.find('Toolbar');
+        assert.strictEqual(button2.prop('submitOnEnter'), true);
     });
 });

@@ -7,13 +7,31 @@ describe('ui reducer', () => {
         assert.deepEqual({ sidebarOpen: false }, reducer(undefined, {}));
     });
     it('should toggle sidebar visibility upon TOGGLE_SIDEBAR', () => {
-        assert.deepEqual({ sidebarOpen: false }, reducer({ sidebarOpen: true }, toggleSidebar()));
-        assert.deepEqual({ sidebarOpen: true }, reducer({ sidebarOpen: false }, toggleSidebar()));
+        assert.deepEqual(
+            { sidebarOpen: false },
+            reducer({ sidebarOpen: true }, toggleSidebar())
+        );
+        assert.deepEqual(
+            { sidebarOpen: true },
+            reducer({ sidebarOpen: false }, toggleSidebar())
+        );
     });
     it('should set sidebar visibility upon SET_SIDEBAR_VISIBILITY', () => {
-        assert.deepEqual({ sidebarOpen: false }, reducer({ sidebarOpen: true }, setSidebarVisibility(false)));
-        assert.deepEqual({ sidebarOpen: true }, reducer({ sidebarOpen: true }, setSidebarVisibility(true)));
-        assert.deepEqual({ sidebarOpen: false }, reducer({ sidebarOpen: false }, setSidebarVisibility(false)));
-        assert.deepEqual({ sidebarOpen: true }, reducer({ sidebarOpen: false }, setSidebarVisibility(true)));
+        assert.deepEqual(
+            { sidebarOpen: false },
+            reducer({ sidebarOpen: true }, setSidebarVisibility(false))
+        );
+        assert.deepEqual(
+            { sidebarOpen: true },
+            reducer({ sidebarOpen: true }, setSidebarVisibility(true))
+        );
+        assert.deepEqual(
+            { sidebarOpen: false },
+            reducer({ sidebarOpen: false }, setSidebarVisibility(false))
+        );
+        assert.deepEqual(
+            { sidebarOpen: true },
+            reducer({ sidebarOpen: false }, setSidebarVisibility(true))
+        );
     });
 });

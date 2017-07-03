@@ -25,23 +25,43 @@ const defaultLabelStyle = {
  */
 class Labeled extends Component {
     render() {
-        const { input, isRequired, label, resource, record, onChange, basePath, children, source, disabled = true, labelStyle = defaultLabelStyle } = this.props;
+        const {
+            input,
+            isRequired,
+            label,
+            resource,
+            children,
+            source,
+            disabled = true,
+            labelStyle = defaultLabelStyle,
+            ...rest
+        } = this.props;
         if (!label && !source) {
-            throw new Error(`Cannot create label for component <${children && children.type && children.type.name}>: You must set either the label or source props. You can also disable automated label insertion by setting 'addLabel: false' in the component default props`);
+            const componentName =
+                children && children.type && children.type.name;
+            throw new Error(
+                `Cannot create label for component <${componentName}>: You must set either the label or source props. You can also disable automated label insertion by setting 'addLabel: false' in the component default props`
+            );
         }
         return (
             <TextField
-                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
+                floatingLabelText={
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                }
                 floatingLabelFixed
                 fullWidth
                 disabled={disabled}
                 underlineShow={false}
                 style={labelStyle}
             >
-                {children && typeof children.type !== 'string' ?
-                    React.cloneElement(children, { input, record, resource, onChange, basePath }) :
-                    children
-                }
+                {children && typeof children.type !== 'string'
+                    ? React.cloneElement(children, { input, resource, ...rest })
+                    : children}
             </TextField>
         );
     }

@@ -32,10 +32,12 @@ export class FileInputPreview extends Component {
     render() {
         const { children, onRemove, itemStyle, removeStyle } = this.props;
 
-        const removeButtonStyle = this.state.hovered ? {
-            ...removeStyle,
-            ...styles.removeButtonHovered,
-        } : removeStyle;
+        const removeButtonStyle = this.state.hovered
+            ? {
+                  ...removeStyle,
+                  ...styles.removeButtonHovered,
+              }
+            : removeStyle;
 
         return (
             <div
@@ -43,10 +45,7 @@ export class FileInputPreview extends Component {
                 onMouseOut={this.handleMouseOut}
                 style={itemStyle}
             >
-                <IconButton
-                    style={removeButtonStyle}
-                    onClick={onRemove}
-                >
+                <IconButton style={removeButtonStyle} onClick={onRemove}>
                     <RemoveCircle color={pinkA200} />
                 </IconButton>
                 {children}

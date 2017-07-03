@@ -1,6 +1,6 @@
 import { required } from './validate';
 
-const isRequired = (validate) => {
+const isRequired = validate => {
     if (validate === required) return true;
     if (Array.isArray(validate)) {
         return validate.includes(required);

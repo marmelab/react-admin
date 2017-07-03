@@ -28,10 +28,10 @@ const style = {
 };
 
 class AppBarMobile extends Component {
-    handleLeftIconButtonTouchTap = (event) => {
+    handleLeftIconButtonTouchTap = event => {
         event.preventDefault();
         this.props.toggleSidebar();
-    }
+    };
 
     render() {
         const { title } = this.props;
@@ -48,10 +48,8 @@ class AppBarMobile extends Component {
 }
 
 AppBarMobile.propTypes = {
-    title: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.element,
-    ]).isRequired,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+        .isRequired,
     toggleSidebar: PropTypes.func.isRequired,
 };
 
@@ -59,7 +57,7 @@ const enhance = compose(
     muiThemeable(), // force redraw on theme change
     connect(null, {
         toggleSidebar: toggleSidebarAction,
-    }),
+    })
 );
 
 export default enhance(AppBarMobile);

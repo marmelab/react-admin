@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import get from 'lodash.get';
 import Checkbox from 'material-ui/Checkbox';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import compose from 'recompose/compose';
@@ -7,13 +8,10 @@ import compose from 'recompose/compose';
 import FieldTitle from '../../util/FieldTitle';
 import translate from '../../i18n/translate';
 
-const getStyles = (muiTheme) => {
+const getStyles = muiTheme => {
     const {
         baseTheme,
-        textField: {
-            floatingLabelColor,
-            backgroundColor,
-        },
+        textField: { floatingLabelColor, backgroundColor },
     } = muiTheme;
 
     return {
@@ -108,11 +106,11 @@ export class CheckboxGroupInputComponent extends Component {
         if (isChecked) {
             onChange([...value, ...[event.target.value]]);
         } else {
-            onChange(value.filter(v => (v != event.target.value)));
+            onChange(value.filter(v => v != event.target.value));
         }
     };
 
-    renderCheckbox = (choice) => {
+    renderCheckbox = choice => {
         const {
             input: { value },
             optionText,
@@ -121,26 +119,41 @@ export class CheckboxGroupInputComponent extends Component {
             translate,
             translateChoice,
         } = this.props;
-        const choiceName = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
-            React.cloneElement(optionText, { record: choice }) :
-            (typeof optionText === 'function' ?
-                optionText(choice) :
-                choice[optionText]
-            );
+        const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
+            ? React.cloneElement(optionText, { record: choice })
+            : typeof optionText === 'function'
+              ? optionText(choice)
+              : get(choice, optionText);
         return (
             <Checkbox
-                key={choice[optionValue]}
-                checked={value ? value.find(v => (v == choice[optionValue])) !== undefined : false}
+                key={get(choice, optionValue)}
+                checked={
+                    value
+                        ? value.find(v => v == get(choice, optionValue)) !==
+                          undefined
+                        : false
+                }
                 onCheck={this.handleCheck}
-                value={choice[optionValue]}
-                label={translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
+                value={get(choice, optionValue)}
+                label={
+                    translateChoice
+                        ? translate(choiceName, { _: choiceName })
+                        : choiceName
+                }
                 {...options}
             />
         );
-    }
+    };
 
     render() {
-        const { choices, isRequired, label, muiTheme, resource, source } = this.props;
+        const {
+            choices,
+            isRequired,
+            label,
+            muiTheme,
+            resource,
+            source,
+        } = this.props;
         const styles = getStyles(muiTheme);
         const { prepareStyles } = muiTheme;
 
@@ -148,7 +161,12 @@ export class CheckboxGroupInputComponent extends Component {
             <div>
                 <div style={prepareStyles(styles.labelContainer)}>
                     <div style={prepareStyles(styles.label)}>
-                        <FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />
+                        <FieldTitle
+                            label={label}
+                            source={source}
+                            resource={resource}
+                            isRequired={isRequired}
+                        />
                     </div>
                 </div>
                 {choices.map(this.renderCheckbox)}

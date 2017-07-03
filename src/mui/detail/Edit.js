@@ -6,7 +6,10 @@ import compose from 'recompose/compose';
 import inflection from 'inflection';
 import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
-import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
+import {
+    crudGetOne as crudGetOneAction,
+    crudUpdate as crudUpdateAction,
+} from '../../actions/dataActions';
 import DefaultActions from './EditActions';
 import translate from '../../i18n/translate';
 
@@ -18,7 +21,6 @@ export class Edit extends Component {
             record: props.data,
         };
         this.previousKey = 0;
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -43,22 +45,44 @@ export class Edit extends Component {
         return location.pathname.split('/').slice(0, -1).join('/');
     }
 
+    defaultRedirectRoute() {
+        return 'list';
+    }
+
     updateData(resource = this.props.resource, id = this.props.id) {
         this.props.crudGetOne(resource, id, this.getBasePath());
     }
 
-    refresh = (event) => {
+    refresh = event => {
         event.stopPropagation();
         this.fullRefresh = true;
         this.updateData();
-    }
+    };
 
-    handleSubmit(record) {
-        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath());
-    }
+    save = (record, redirect) => {
+        this.props.crudUpdate(
+            this.props.resource,
+            this.props.id,
+            record,
+            this.props.data,
+            this.getBasePath(),
+            redirect
+        );
+    };
 
     render() {
-        const { actions = <DefaultActions />, children, data, hasDelete, hasShow, id, isLoading, resource, title, translate } = this.props;
+        const {
+            actions = <DefaultActions />,
+            children,
+            data,
+            hasDelete,
+            hasShow,
+            id,
+            isLoading,
+            resource,
+            title,
+            translate,
+        } = this.props;
         const { key } = this.state;
         const basePath = this.getBasePath();
 
@@ -71,7 +95,9 @@ export class Edit extends Component {
             id,
             data,
         });
-        const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
+        const titleElement = data
+            ? <Title title={title} record={data} defaultTitle={defaultTitle} />
+            : '';
         // using this.previousKey instead of this.fullRefresh makes
         // the new form mount, the old form unmount, and the new form update appear in the same frame
         // so the form doesn't disappear while refreshing
@@ -81,22 +107,29 @@ export class Edit extends Component {
         return (
             <div className="edit-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
-                    {actions && React.cloneElement(actions, {
-                        basePath,
-                        data,
-                        hasDelete,
-                        hasShow,
-                        refresh: this.refresh,
-                        resource,
-                    })}
+                    {actions &&
+                        React.cloneElement(actions, {
+                            basePath,
+                            data,
+                            hasDelete,
+                            hasShow,
+                            refresh: this.refresh,
+                            resource,
+                        })}
                     <ViewTitle title={titleElement} />
-                    {data && !isRefreshing && React.cloneElement(children, {
-                        onSubmit: this.handleSubmit,
-                        resource,
-                        basePath,
-                        record: data,
-                        translate,
-                    })}
+                    {data &&
+                        !isRefreshing &&
+                        React.cloneElement(children, {
+                            save: this.save,
+                            resource,
+                            basePath,
+                            record: data,
+                            translate,
+                            redirect:
+                                typeof children.props.redirect === 'undefined'
+                                    ? this.defaultRedirectRoute()
+                                    : children.props.redirect,
+                        })}
                     {!data && <CardText>&nbsp;</CardText>}
                 </Card>
             </div>
@@ -124,17 +157,20 @@ Edit.propTypes = {
 function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
-        data: state.admin[props.resource].data[decodeURIComponent(props.match.params.id)],
+        data:
+            state.admin[props.resource].data[
+                decodeURIComponent(props.match.params.id)
+            ],
         isLoading: state.admin.loading > 0,
     };
 }
 
 const enhance = compose(
-    connect(
-        mapStateToProps,
-        { crudGetOne: crudGetOneAction, crudUpdate: crudUpdateAction },
-    ),
-    translate,
+    connect(mapStateToProps, {
+        crudGetOne: crudGetOneAction,
+        crudUpdate: crudUpdateAction,
+    }),
+    translate
 );
 
 export default enhance(Edit);

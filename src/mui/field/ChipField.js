@@ -5,7 +5,9 @@ import pure from 'recompose/pure';
 import Chip from 'material-ui/Chip';
 
 const ChipField = ({ source, record = {}, elStyle = { margin: 4 } }) =>
-    <Chip style={elStyle}>{get(record, source)}</Chip>;
+    <Chip style={elStyle}>
+        {get(record, source)}
+    </Chip>;
 
 ChipField.propTypes = {
     addLabel: PropTypes.bool,
