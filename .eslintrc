@@ -4,16 +4,46 @@
         "mocha": true,
         "node": true,
         "phantomjs": true,
-        "protractor": true,
+        "protractor": true
     },
-    "extends": "airbnb",
+    "plugins": [
+        "prettier",
+        "react"
+    ],
+    "extends": [
+        "prettier",
+        "plugin:react/recommended"
+    ],
     "parser": "babel-eslint",
     "rules": {
-        "indent": ["warn", 4],
-        "max-len": ["off"],
-        "react/forbid-prop-types": ["warn", { "forbid": ["any", "array"] }],
-        "react/jsx-indent": ["warn", 4],
-        "react/jsx-indent-props": ["warn", 4],
-        "react/jsx-filename-extension": ["off"]
-    },
+        "prettier/prettier": [
+            "error",
+            {
+                "singleQuote": true,
+                "tabWidth": 4,
+                "trailingComma": "es5"
+            }
+        ],
+        "react/forbid-prop-types": [
+            "warn",
+            {
+                "forbid": [
+                    "any",
+                    "array"
+                ]
+            }
+        ],
+        "react/prop-types": [
+            "warn"
+        ],
+        "react/jsx-indent": [
+            "off"
+        ],
+        "react/jsx-indent-props": [
+            "off"
+        ],
+        "react/jsx-filename-extension": [
+            "off"
+        ]
+    }
 }

@@ -2,9 +2,11 @@ import HttpError from './HttpError';
 import { stringify } from 'query-string';
 
 export const fetchJson = (url, options = {}) => {
-    const requestHeaders = options.headers || new Headers({
-        Accept: 'application/json',
-    });
+    const requestHeaders =
+        options.headers ||
+        new Headers({
+            Accept: 'application/json',
+        });
     if (!(options && options.body && options.body instanceof FormData)) {
         requestHeaders.set('Content-Type', 'application/json');
     }
@@ -13,12 +15,14 @@ export const fetchJson = (url, options = {}) => {
     }
 
     return fetch(url, { ...options, headers: requestHeaders })
-        .then(response => response.text().then(text => ({
-            status: response.status,
-            statusText: response.statusText,
-            headers: response.headers,
-            body: text,
-        })))
+        .then(response =>
+            response.text().then(text => ({
+                status: response.status,
+                statusText: response.statusText,
+                headers: response.headers,
+                body: text,
+            }))
+        )
         .then(({ status, statusText, headers, body }) => {
             let json;
             try {
@@ -27,7 +31,9 @@ export const fetchJson = (url, options = {}) => {
                 // not json, no big deal
             }
             if (status < 200 || status >= 300) {
-                return Promise.reject(new HttpError((json && json.message) || statusText, status));
+                return Promise.reject(
+                    new HttpError((json && json.message) || statusText, status)
+                );
             }
             return { status, headers, body, json };
         });

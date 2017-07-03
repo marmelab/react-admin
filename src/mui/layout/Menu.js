@@ -19,12 +19,16 @@ const styles = {
 const translatedResourceName = (resource, translate) =>
     translate(`resources.${resource.name}.name`, {
         smart_count: 2,
-        _: resource.options && resource.options.label ?
-            translate(resource.options.label, { smart_count: 2, _: resource.options.label }) :
-            inflection.humanize(inflection.pluralize(resource.name)),
+        _:
+            resource.options && resource.options.label
+                ? translate(resource.options.label, {
+                      smart_count: 2,
+                      _: resource.options.label,
+                  })
+                : inflection.humanize(inflection.pluralize(resource.name)),
     });
 
-const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) => (
+const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) =>
     <div style={styles.main}>
         {hasDashboard && <DashboardMenuItem onTouchTap={onMenuTap} />}
         {resources
@@ -36,12 +40,10 @@ const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) => (
                     primaryText={translatedResourceName(resource, translate)}
                     leftIcon={<resource.icon />}
                     onTouchTap={onMenuTap}
-                />,
-            )
-        }
+                />
+            )}
         {logout}
-    </div>
-);
+    </div>;
 
 Menu.propTypes = {
     hasDashboard: PropTypes.bool,
@@ -55,9 +57,6 @@ Menu.defaultProps = {
     onMenuTap: () => null,
 };
 
-const enhance = compose(
-    pure,
-    translate,
-);
+const enhance = compose(pure, translate);
 
 export default enhance(Menu);

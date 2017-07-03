@@ -23,7 +23,7 @@ export class Restricted extends Component {
         authParams: PropTypes.object,
         location: PropTypes.object,
         userCheck: PropTypes.func,
-    }
+    };
 
     componentWillMount() {
         this.checkAuthentication(this.props);

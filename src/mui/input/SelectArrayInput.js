@@ -57,17 +57,23 @@ export class SelectArrayInput extends Component {
 
     componentWillMount = () => {
         this.setState({
-            values: this.getChoicesForValues(this.props.input.value || [], this.props.choices),
+            values: this.getChoicesForValues(
+                this.props.input.value || [],
+                this.props.choices
+            ),
         });
-    }
+    };
 
-    componentWillReceiveProps = (nextProps) => {
+    componentWillReceiveProps = nextProps => {
         if (
             this.props.choices !== nextProps.choices ||
             this.props.input.value !== nextProps.input.value
         ) {
             this.setState({
-                values: this.getChoicesForValues(nextProps.input.value || [], nextProps.choices),
+                values: this.getChoicesForValues(
+                    nextProps.input.value || [],
+                    nextProps.choices
+                ),
             });
         }
     };
@@ -84,26 +90,29 @@ export class SelectArrayInput extends Component {
         this.props.input.onFocus(extracted);
     };
 
-    handleAdd = (newValue) => {
+    handleAdd = newValue => {
         const values = [...this.state.values, newValue];
         this.setState({ values });
         this.handleChange(values);
     };
 
-    handleDelete = (newValue) => {
-        const values = this.state.values.filter(v => (v.value !== newValue));
+    handleDelete = newValue => {
+        const values = this.state.values.filter(v => v.value !== newValue);
         this.setState({ values });
         this.handleChange(values);
     };
 
-    handleChange = (eventOrValue) => {
+    handleChange = eventOrValue => {
         const extracted = this.extractIds(eventOrValue);
         this.props.onChange(extracted);
         this.props.input.onChange(extracted);
     };
 
-    extractIds = (eventOrValue) => {
-        const value = (eventOrValue.target && eventOrValue.target.value) ? eventOrValue.target.value : eventOrValue;
+    extractIds = eventOrValue => {
+        const value =
+            eventOrValue.target && eventOrValue.target.value
+                ? eventOrValue.target.value
+                : eventOrValue;
         if (Array.isArray(value)) {
             return value.map(o => o.value);
         }
@@ -116,20 +125,36 @@ export class SelectArrayInput extends Component {
             throw Error('Value of SelectArrayInput should be an array');
         }
         return values
-            .map(value => choices.find(c => c[optionValue] === value) || { [optionValue]: value, [optionText]: value })
+            .map(
+                value =>
+                    choices.find(c => c[optionValue] === value) || {
+                        [optionValue]: value,
+                        [optionText]: value,
+                    }
+            )
             .map(this.formatChoice);
     };
 
     formatChoices = choices => choices.map(this.formatChoice);
 
-    formatChoice = (choice) => {
-        const { optionText, optionValue, translateChoice, translate } = this.props;
-        const choiceText = typeof optionText === 'function' ? optionText(choice) : get(choice, optionText);
+    formatChoice = choice => {
+        const {
+            optionText,
+            optionValue,
+            translateChoice,
+            translate,
+        } = this.props;
+        const choiceText =
+            typeof optionText === 'function'
+                ? optionText(choice)
+                : get(choice, optionText);
         return {
             value: get(choice, optionValue),
-            text: translateChoice ? translate(choiceText, { _: choiceText }) : choiceText,
+            text: translateChoice
+                ? translate(choiceText, { _: choiceText })
+                : choiceText,
         };
-    }
+    };
 
     render() {
         const {
@@ -163,7 +188,14 @@ export class SelectArrayInput extends Component {
                 onRequestAdd={this.handleAdd}
                 onRequestDelete={this.handleDelete}
                 onUpdateInput={setFilter}
-                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
+                floatingLabelText={
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                }
                 errorText={touched && error}
                 style={elStyle}
                 dataSource={this.formatChoices(choices)}
@@ -189,10 +221,8 @@ SelectArrayInput.propTypes = {
     onFocus: PropTypes.func,
     setFilter: PropTypes.func,
     options: PropTypes.object,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-    ]).isRequired,
+    optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
+        .isRequired,
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     source: PropTypes.string,

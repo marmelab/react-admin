@@ -23,22 +23,29 @@ class Filter extends Component {
         }
     }
 
-    setFilters = debounce((filters) => {
-        if (!shallowEqual(filters, this.filters)) { // fix for redux-form bug with onChange and enableReinitialize
+    setFilters = debounce(filters => {
+        if (!shallowEqual(filters, this.filters)) {
+            // fix for redux-form bug with onChange and enableReinitialize
             const filtersWithoutEmpty = filters;
-            Object.keys(filtersWithoutEmpty).forEach((filterName) => {
+            Object.keys(filtersWithoutEmpty).forEach(filterName => {
                 if (filtersWithoutEmpty[filterName] === '') {
                     // remove empty filter from query
                     delete filtersWithoutEmpty[filterName];
                 }
-            })
+            });
             this.props.setFilters(filtersWithoutEmpty);
             this.filters = filtersWithoutEmpty;
         }
-    }, this.props.debounce)
+    }, this.props.debounce);
 
     renderButton() {
-        const { resource, children, showFilter, displayedFilters, filterValues } = this.props;
+        const {
+            resource,
+            children,
+            showFilter,
+            displayedFilters,
+            filterValues,
+        } = this.props;
         return (
             <FilterButton
                 resource={resource}
@@ -51,7 +58,14 @@ class Filter extends Component {
     }
 
     renderForm() {
-        const { resource, children, hideFilter, displayedFilters, filterValues, theme } = this.props;
+        const {
+            resource,
+            children,
+            hideFilter,
+            displayedFilters,
+            filterValues,
+            theme,
+        } = this.props;
         return (
             <FilterForm
                 resource={resource}
@@ -66,7 +80,9 @@ class Filter extends Component {
     }
 
     render() {
-        return this.props.context === 'button' ? this.renderButton() : this.renderForm();
+        return this.props.context === 'button'
+            ? this.renderButton()
+            : this.renderForm();
     }
 }
 

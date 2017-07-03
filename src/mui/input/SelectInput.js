@@ -71,34 +71,37 @@ export class SelectInput extends Component {
      */
     state = {
         value: this.props.input.value,
-    }
+    };
 
     handleChange = (event, index, value) => {
         this.props.input.onChange(value);
         this.setState({ value });
-    }
+    };
 
-    renderMenuItem = (choice) => {
+    renderMenuItem = choice => {
         const {
             optionText,
             optionValue,
             translate,
             translateChoice,
         } = this.props;
-        const choiceName = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
-            React.cloneElement(optionText, { record: choice }) :
-            (typeof optionText === 'function' ?
-                optionText(choice) :
-                get(choice, optionText)
-            );
+        const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
+            ? React.cloneElement(optionText, { record: choice })
+            : typeof optionText === 'function'
+              ? optionText(choice)
+              : get(choice, optionText);
         return (
             <MenuItem
                 key={get(choice, optionValue)}
-                primaryText={translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
+                primaryText={
+                    translateChoice
+                        ? translate(choiceName, { _: choiceName })
+                        : choiceName
+                }
                 value={get(choice, optionValue)}
             />
         );
-    }
+    };
 
     render() {
         const {
@@ -121,16 +124,21 @@ export class SelectInput extends Component {
         return (
             <SelectField
                 value={this.state.value}
-                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
+                floatingLabelText={
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                }
                 onChange={this.handleChange}
                 autoWidth
                 style={elStyle}
                 errorText={touched && error}
                 {...options}
             >
-                {allowEmpty &&
-                    <MenuItem value={null} primaryText="" />
-                }
+                {allowEmpty && <MenuItem value={null} primaryText="" />}
                 {choices.map(this.renderMenuItem)}
             </SelectField>
         );

@@ -11,7 +11,7 @@ import TextInput from '../input/TextInput';
 
 try {
     require('react-tap-event-plugin')();
-} catch(e) {
+} catch (e) {
     // already loaded, probably in watch mode
     // do nothing
 }

@@ -8,12 +8,12 @@ class FilterButtonMenuItem extends Component {
         filter: PropTypes.object.isRequired,
         onShow: PropTypes.func.isRequired,
         resource: PropTypes.string.isRequired,
-    }
+    };
 
     handleShow = () => {
         const { filter, onShow } = this.props;
         onShow({ source: filter.source, defaultValue: filter.defaultValue });
-    }
+    };
 
     render() {
         const { filter, resource } = this.props;
@@ -24,7 +24,13 @@ class FilterButtonMenuItem extends Component {
                 data-key={filter.source}
                 data-default-value={filter.defaultValue}
                 key={filter.source}
-                primaryText={<FieldTitle label={filter.label} source={filter.source} resource={resource} />}
+                primaryText={
+                    <FieldTitle
+                        label={filter.label}
+                        source={filter.source}
+                        resource={resource}
+                    />
+                }
                 onTouchTap={this.handleShow}
             />
         );
