@@ -138,7 +138,7 @@ export class SelectArrayInput extends Component {
             isRequired,
             choices,
             label,
-            meta: { touched, error },
+            meta,
             options,
             optionText,
             optionValue,
@@ -148,6 +148,10 @@ export class SelectArrayInput extends Component {
             translate,
             translateChoice,
         } = this.props;
+        if (typeof meta === 'undefined') {
+            throw new Error('The SelectArrayInput component wasn\'t called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/admin-on-rest/Inputs.html#writing-your-own-input-component for details.');
+        }
+        const { touched, error } = meta;
 
         return (
             <ChipInput

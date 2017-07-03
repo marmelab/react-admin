@@ -94,13 +94,17 @@ export class AutocompleteInput extends Component {
             input,
             isRequired,
             label,
-            meta: { touched, error },
+            meta,
             options,
             optionValue,
             resource,
             setFilter,
             source,
         } = this.props;
+        if (typeof meta === 'undefined') {
+            throw new Error('The AutocompleteInput component wasn\'t called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/admin-on-rest/Inputs.html#writing-your-own-input-component for details.');
+        }
+        const { touched, error } = meta;
 
         const selectedSource = choices.find(choice => get(choice, optionValue) === input.value);
         const dataSource = choices.map(choice => ({
