@@ -1,4 +1,5 @@
-import { queryParameters, fetchJson } from '../util/fetch';
+import { stringify } from 'query-string';
+import { fetchJson } from '../util/fetch';
 import {
     GET_LIST,
     GET_ONE,
@@ -41,7 +42,7 @@ export default (apiUrl, httpClient = fetchJson) => {
                 range: JSON.stringify([(page - 1) * perPage, (page * perPage) - 1]),
                 filter: JSON.stringify(params.filter),
             };
-            url = `${apiUrl}/${resource}?${queryParameters(query)}`;
+            url = `${apiUrl}/${resource}?${stringify(query)}`;
             break;
         }
         case GET_ONE:
@@ -51,7 +52,7 @@ export default (apiUrl, httpClient = fetchJson) => {
             const query = {
                 filter: JSON.stringify({ id: params.ids }),
             };
-            url = `${apiUrl}/${resource}?${queryParameters(query)}`;
+            url = `${apiUrl}/${resource}?${stringify(query)}`;
             break;
         }
         case GET_MANY_REFERENCE: {
@@ -62,7 +63,7 @@ export default (apiUrl, httpClient = fetchJson) => {
                 range: JSON.stringify([(page - 1) * perPage, (page * perPage) - 1]),
                 filter: JSON.stringify({ ...params.filter, [params.target]: params.id }),
             };
-            url = `${apiUrl}/${resource}?${queryParameters(query)}`;
+            url = `${apiUrl}/${resource}?${stringify(query)}`;
             break;
         }
         case UPDATE:
