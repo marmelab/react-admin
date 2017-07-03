@@ -71,7 +71,7 @@ export class SelectInput extends Component {
      */
     state = {
         value: this.props.input.value,
-    }
+    };
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.input.value !== this.props.input.value) {
@@ -82,9 +82,9 @@ export class SelectInput extends Component {
     handleChange = (event, index, value) => {
         this.props.input.onChange(value);
         this.setState({ value });
-    }
+    };
 
-    addAllowEmpty = (choices) => {
+    addAllowEmpty = choices => {
         if (this.props.allowEmpty) {
             return [
                 <MenuItem value={null} key="null" primaryText="" />,
@@ -93,29 +93,34 @@ export class SelectInput extends Component {
         }
 
         return choices;
-    }
+    };
 
-    renderMenuItem = (choice) => {
+    renderMenuItem = choice => {
         const {
             optionText,
             optionValue,
             translate,
             translateChoice,
         } = this.props;
-        const choiceName = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
-            React.cloneElement(optionText, { record: choice }) :
-            (typeof optionText === 'function' ?
-                optionText(choice) :
-                get(choice, optionText)
-            );
+        const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
+            ? React.cloneElement(optionText, { record: choice })
+            : typeof optionText === 'function'
+              ? optionText(choice)
+              : get(choice, optionText);
         return (
             <MenuItem
                 key={get(choice, optionValue)}
-                primaryText={translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
+                primaryText={
+                    translateChoice ? (
+                        translate(choiceName, { _: choiceName })
+                    ) : (
+                        choiceName
+                    )
+                }
                 value={get(choice, optionValue)}
             />
         );
-    }
+    };
 
     render() {
         const {
@@ -130,14 +135,23 @@ export class SelectInput extends Component {
             source,
         } = this.props;
         if (typeof meta === 'undefined') {
-            throw new Error('The SelectInput component wasn\'t called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/admin-on-rest/Inputs.html#writing-your-own-input-component for details.');
+            throw new Error(
+                "The SelectInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/admin-on-rest/Inputs.html#writing-your-own-input-component for details."
+            );
         }
         const { touched, error } = meta;
 
         return (
             <SelectField
                 value={this.state.value}
-                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
+                floatingLabelText={
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                }
                 onChange={this.handleChange}
                 autoWidth
                 style={elStyle}

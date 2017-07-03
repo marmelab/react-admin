@@ -44,27 +44,32 @@ const styles = {
 
 function getColorsFromTheme(theme) {
     if (!theme) return { primary1Color: cyan500, accent1Color: pinkA200 };
-    const {
-        palette: {
-            primary1Color,
-            accent1Color,
-        },
-      } = theme;
+    const { palette: { primary1Color, accent1Color } } = theme;
     return { primary1Color, accent1Color };
 }
 
 // see http://redux-form.com/6.4.3/examples/material-ui/
-const renderInput = ({ meta: { touched, error } = {}, input: { ...inputProps }, ...props }) =>
+const renderInput = ({
+    meta: { touched, error } = {},
+    input: { ...inputProps },
+    ...props
+}) => (
     <TextField
         errorText={touched && error}
         {...inputProps}
         {...props}
         fullWidth
-    />;
+    />
+);
 
 class Login extends Component {
-
-    login = (auth) => this.props.userLogin(auth, this.props.location.state ? this.props.location.state.nextPathname : '/');
+    login = auth =>
+        this.props.userLogin(
+            auth,
+            this.props.location.state
+                ? this.props.location.state.nextPathname
+                : '/'
+        );
 
     render() {
         const { handleSubmit, isLoading, theme, translate } = this.props;
@@ -75,23 +80,31 @@ class Login extends Component {
                 <div style={{ ...styles.main, backgroundColor: primary1Color }}>
                     <Card style={styles.card}>
                         <div style={styles.avatar}>
-                            <Avatar backgroundColor={accent1Color} icon={<LockIcon />} size={60} />
+                            <Avatar
+                                backgroundColor={accent1Color}
+                                icon={<LockIcon />}
+                                size={60}
+                            />
                         </div>
                         <form onSubmit={handleSubmit(this.login)}>
                             <div style={styles.form}>
-                                <div style={styles.input} >
+                                <div style={styles.input}>
                                     <Field
                                         name="username"
                                         component={renderInput}
-                                        floatingLabelText={translate('aor.auth.username')}
-                                        disabled={isLoading}
+                                        floatingLabelText={translate(
+                                            'aor.auth.username'
+                                        )}
+                                        disabled={submitting}
                                     />
                                 </div>
                                 <div style={styles.input}>
                                     <Field
                                         name="password"
                                         component={renderInput}
-                                        floatingLabelText={translate('aor.auth.password')}
+                                        floatingLabelText={translate(
+                                            'aor.auth.password'
+                                        )}
                                         type="password"
                                         disabled={isLoading}
                                     />
@@ -101,8 +114,15 @@ class Login extends Component {
                                 <RaisedButton
                                     type="submit"
                                     primary
-                                    disabled={isLoading}
-                                    icon={isLoading && <CircularProgress size={25} thickness={2} />}
+                                    disabled={submitting}
+                                    icon={
+                                        submitting && (
+                                            <CircularProgress
+                                                size={25}
+                                                thickness={2}
+                                            />
+                                        )
+                                    }
                                     label={translate('aor.auth.sign_in')}
                                     fullWidth
                                 />
@@ -129,7 +149,7 @@ Login.defaultProps = {
     theme: defaultTheme,
 };
 
-const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 })
+const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
 
 const enhance = compose(
     translate,
@@ -138,12 +158,14 @@ const enhance = compose(
         validate: (values, props) => {
             const errors = {};
             const { translate } = props;
-            if (!values.username) errors.username = translate('aor.validation.required');
-            if (!values.password) errors.password = translate('aor.validation.required');
+            if (!values.username)
+                errors.username = translate('aor.validation.required');
+            if (!values.password)
+                errors.password = translate('aor.validation.required');
             return errors;
         },
     }),
-    connect(mapStateToProps, { userLogin: userLoginAction }),
+    connect(mapStateToProps, { userLogin: userLoginAction })
 );
 
 export default enhance(Login);

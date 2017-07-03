@@ -24,11 +24,23 @@ class Create extends Component {
     }
 
     save = (record, redirect) => {
-        this.props.crudCreate(this.props.resource, record, this.getBasePath(), redirect);
-    }
+        this.props.crudCreate(
+            this.props.resource,
+            record,
+            this.getBasePath(),
+            redirect
+        );
+    };
 
     render() {
-        const { actions = <DefaultActions />, children, isLoading, resource, title, translate } = this.props;
+        const {
+            actions = <DefaultActions />,
+            children,
+            isLoading,
+            resource,
+            title,
+            translate,
+        } = this.props;
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
@@ -38,15 +50,18 @@ class Create extends Component {
         const defaultTitle = translate('aor.page.create', {
             name: `${resourceName}`,
         });
-        const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
+        const titleElement = (
+            <Title title={title} defaultTitle={defaultTitle} />
+        );
 
         return (
             <div className="create-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    {actions && React.cloneElement(actions, {
-                        basePath,
-                        resource,
-                    })}
+                    {actions &&
+                        React.cloneElement(actions, {
+                            basePath,
+                            resource,
+                        })}
                     <ViewTitle title={titleElement} />
                     {React.cloneElement(children, {
                         save: this.save,
@@ -54,7 +69,10 @@ class Create extends Component {
                         basePath,
                         record: {},
                         translate,
-                        redirect: typeof children.props.redirect === 'undefined' ? this.defaultRedirectRoute() : children.props.redirect,
+                        redirect:
+                            typeof children.props.redirect === 'undefined'
+                                ? this.defaultRedirectRoute()
+                                : children.props.redirect,
                     })}
                 </Card>
             </div>
@@ -84,11 +102,8 @@ function mapStateToProps(state) {
 }
 
 const enhance = compose(
-    connect(
-        mapStateToProps,
-        { crudCreate: crudCreateAction },
-    ),
-    translate,
+    connect(mapStateToProps, { crudCreate: crudCreateAction }),
+    translate
 );
 
 export default enhance(Create);

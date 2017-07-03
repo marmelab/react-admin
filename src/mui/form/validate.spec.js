@@ -1,14 +1,23 @@
 import assert from 'assert';
-import { required, minLength, maxLength, minValue, maxValue, number, regex, email, choices } from './validate';
+import {
+    required,
+    minLength,
+    maxLength,
+    minValue,
+    maxValue,
+    number,
+    regex,
+    email,
+    choices,
+} from './validate';
 
 describe('Validators', () => {
     const test = (validator, inputs, message) =>
         assert.deepEqual(
             inputs
                 .map(input => validator(input, null, { translate: x => x }))
-                .filter(m => m === message)
-            ,
-            Array(...Array(inputs.length)).map(() => message),
+                .filter(m => m === message),
+            Array(...Array(inputs.length)).map(() => message)
         );
 
     describe('required', () => {
@@ -94,10 +103,18 @@ describe('Validators', () => {
             test(regex(/foo/, 'not foo'), [1234, new Date()], undefined);
         });
         it('should return undefined if the value matches the pattern', () => {
-            test(regex(/foo/, 'not foo'), ['foobar', 'barfoo', 'barfoobar', 'foofoo'], undefined);
+            test(
+                regex(/foo/, 'not foo'),
+                ['foobar', 'barfoo', 'barfoobar', 'foofoo'],
+                undefined
+            );
         });
         it('should return an error message if the value does not match the pattern', () => {
-            test(regex(/foo/, 'not foo'), ['bar', 'barfo', 'hello, world'], 'not foo');
+            test(
+                regex(/foo/, 'not foo'),
+                ['bar', 'barfo', 'hello, world'],
+                'not foo'
+            );
         });
     });
     describe('email', () => {

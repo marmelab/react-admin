@@ -14,7 +14,10 @@ describe('<SimpleForm />', () => {
             </SimpleForm>
         );
         const inputs = wrapper.find('FormField');
-        assert.deepEqual(inputs.map(i => i.prop('input').props.source), ['name', 'city']);
+        assert.deepEqual(inputs.map(i => i.prop('input').props.source), [
+            'name',
+            'city',
+        ]);
     });
 
     it('should display <Toolbar />', () => {

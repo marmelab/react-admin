@@ -41,22 +41,38 @@ const CommentFilter = ({ ...props }) => (
     </Filter>
 );
 
-const CommentPagination = translate(({ page, perPage, total, setPage, translate }) => {
-    const nbPages = Math.ceil(total / perPage) || 1;
-    return (
-        nbPages > 1 &&
-            <Toolbar>
-                <ToolbarGroup>
-                {page > 1 &&
-                    <FlatButton primary key="prev" label={translate('aor.navigation.prev')} icon={<ChevronLeft />} onClick={() => setPage(page - 1)} />
-                }
-                {page !== nbPages &&
-                    <FlatButton primary key="next" label={translate('aor.navigation.next')} icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before" />
-                }
-                </ToolbarGroup>
-            </Toolbar>
-    );
-});
+const CommentPagination = translate(
+    ({ page, perPage, total, setPage, translate }) => {
+        const nbPages = Math.ceil(total / perPage) || 1;
+        return (
+            nbPages > 1 && (
+                <Toolbar>
+                    <ToolbarGroup>
+                        {page > 1 && (
+                            <FlatButton
+                                primary
+                                key="prev"
+                                label={translate('aor.navigation.prev')}
+                                icon={<ChevronLeft />}
+                                onClick={() => setPage(page - 1)}
+                            />
+                        )}
+                        {page !== nbPages && (
+                            <FlatButton
+                                primary
+                                key="next"
+                                label={translate('aor.navigation.next')}
+                                icon={<ChevronRight />}
+                                onClick={() => setPage(page + 1)}
+                                labelPosition="before"
+                            />
+                        )}
+                    </ToolbarGroup>
+                </Toolbar>
+            )
+        );
+    }
+);
 
 const cardStyle = {
     width: 300,
@@ -68,28 +84,44 @@ const cardStyle = {
 
 const CommentGrid = translate(({ ids, data, basePath, translate }) => (
     <div style={{ margin: '1em' }}>
-    {ids.map(id =>
-        <Card key={id} style={cardStyle}>
-            <CardHeader
-                title={<TextField record={data[id]} source="author.name" />}
-                subtitle={<DateField record={data[id]} source="created_at" />}
-                avatar={<Avatar icon={<PersonIcon />} />}
-            />
-            <CardText>
-                <TextField record={data[id]} source="body" />
-            </CardText>
-            <CardText>
-                {translate('comment.list.about')}&nbsp;
-                <ReferenceField resource="comments" record={data[id]} source="post_id" reference="posts" basePath={basePath}>
-                    <TextField source="title" />
-                </ReferenceField>
-            </CardText>
-            <CardActions style={{ textAlign: 'right' }}>
-                <EditButton resource="posts" basePath={basePath} record={data[id]} />
-                <ShowButton resource="posts" basePath={basePath} record={data[id]}/>
-            </CardActions>
-        </Card>,
-    )}
+        {ids.map(id => (
+            <Card key={id} style={cardStyle}>
+                <CardHeader
+                    title={<TextField record={data[id]} source="author.name" />}
+                    subtitle={
+                        <DateField record={data[id]} source="created_at" />
+                    }
+                    avatar={<Avatar icon={<PersonIcon />} />}
+                />
+                <CardText>
+                    <TextField record={data[id]} source="body" />
+                </CardText>
+                <CardText>
+                    {translate('comment.list.about')}&nbsp;
+                    <ReferenceField
+                        resource="comments"
+                        record={data[id]}
+                        source="post_id"
+                        reference="posts"
+                        basePath={basePath}
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </CardText>
+                <CardActions style={{ textAlign: 'right' }}>
+                    <EditButton
+                        resource="posts"
+                        basePath={basePath}
+                        record={data[id]}
+                    />
+                    <ShowButton
+                        resource="posts"
+                        basePath={basePath}
+                        record={data[id]}
+                    />
+                </CardActions>
+            </Card>
+        ))}
     </div>
 ));
 
@@ -98,19 +130,25 @@ CommentGrid.defaultProps = {
     ids: [],
 };
 
-const CommentMobileList = (props) => (
+const CommentMobileList = props => (
     <SimpleList
         primaryText={record => record.author.name}
         secondaryText={record => record.body}
         secondaryTextLines={2}
-        tertiaryText={record => new Date(record.created_at).toLocaleDateString()}
+        tertiaryText={record =>
+            new Date(record.created_at).toLocaleDateString()}
         leftAvatar={() => <Avatar icon={<PersonIcon />} />}
         {...props}
     />
 );
 
 export const CommentList = ({ ...props }) => (
-    <List {...props} perPage={6} filters={<CommentFilter />} pagination={<CommentPagination />}>
+    <List
+        {...props}
+        perPage={6}
+        filters={<CommentFilter />}
+        pagination={<CommentPagination />}
+    >
         <Responsive small={<CommentMobileList />} medium={<CommentGrid />} />
     </List>
 );
@@ -119,7 +157,12 @@ export const CommentEdit = ({ ...props }) => (
     <Edit {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
-            <ReferenceInput source="post_id" reference="posts" perPage={5} sort={{ field: 'title', order: 'ASC' }}>
+            <ReferenceInput
+                source="post_id"
+                reference="posts"
+                perPage={5}
+                sort={{ field: 'title', order: 'ASC' }}
+            >
                 <AutocompleteInput optionText="title" />
             </ReferenceInput>
             <TextInput source="author.name" validate={minLength(10)} />
@@ -131,8 +174,13 @@ export const CommentEdit = ({ ...props }) => (
 
 export const CommentCreate = ({ ...props }) => (
     <Create {...props}>
-        <SimpleForm defaultValue={{ created_at: new Date() }} >
-            <ReferenceInput source="post_id" reference="posts" allowEmpty validation={{ required: true }}>
+        <SimpleForm defaultValue={{ created_at: new Date() }}>
+            <ReferenceInput
+                source="post_id"
+                reference="posts"
+                allowEmpty
+                validation={{ required: true }}
+            >
                 <SelectInput optionText="title" />
             </ReferenceInput>
             <DateInput source="created_at" />
@@ -141,12 +189,12 @@ export const CommentCreate = ({ ...props }) => (
     </Create>
 );
 
-export const CommentShow = ({...props}) => (
+export const CommentShow = ({ ...props }) => (
     <Show {...props}>
         <SimpleShowLayout>
             <TextField source="id" />
             <ReferenceField source="post_id" reference="posts">
-                <TextField source="title"/>
+                <TextField source="title" />
             </ReferenceField>
             <TextField source="author.name" />
             <DateField source="created_at" />

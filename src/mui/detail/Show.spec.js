@@ -20,20 +20,26 @@ describe('<Show />', () => {
     };
 
     it('should display correctly when called with a child', () => {
-        const Foo = () => <div/>;
-        const wrapper = shallow(<Show {...defaultProps}><Foo/></Show>);
+        const Foo = () => <div />;
+        const wrapper = shallow(
+            <Show {...defaultProps}>
+                <Foo />
+            </Show>
+        );
 
         const inner = wrapper.find('Foo');
         assert.equal(inner.length, 1);
     });
 
     it('should display children inputs of SimpleShowLayout', () => {
-        const wrapper = shallow(<Show {...defaultProps}>
-            <SimpleShowLayout>
-                <TextField source="foo" />
-                <TextField source="bar" />
-            </SimpleShowLayout>
-        </Show>);
+        const wrapper = shallow(
+            <Show {...defaultProps}>
+                <SimpleShowLayout>
+                    <TextField source="foo" />
+                    <TextField source="bar" />
+                </SimpleShowLayout>
+            </Show>
+        );
         const inputs = wrapper.find('pure(TextField)');
         assert.deepEqual(inputs.map(i => i.prop('source')), ['foo', 'bar']);
     });

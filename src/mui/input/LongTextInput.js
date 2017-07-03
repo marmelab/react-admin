@@ -3,9 +3,20 @@ import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import FieldTitle from '../../util/FieldTitle';
 
-const LongTextInput = ({ input, isRequired, label, meta, options, source, elStyle, resource }) => {
+const LongTextInput = ({
+    input,
+    isRequired,
+    label,
+    meta,
+    options,
+    source,
+    elStyle,
+    resource,
+}) => {
     if (typeof meta === 'undefined') {
-        throw new Error('The LongTextInput component wasn\'t called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/admin-on-rest/Inputs.html#writing-your-own-input-component for details.');
+        throw new Error(
+            "The LongTextInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/admin-on-rest/Inputs.html#writing-your-own-input-component for details."
+        );
     }
     const { touched, error } = meta;
 
@@ -14,13 +25,20 @@ const LongTextInput = ({ input, isRequired, label, meta, options, source, elStyl
             {...input}
             multiLine
             fullWidth
-            floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
+            floatingLabelText={
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
+            }
             errorText={touched && error}
             style={elStyle}
             {...options}
         />
     );
-}
+};
 
 LongTextInput.propTypes = {
     addField: PropTypes.bool.isRequired,
@@ -35,7 +53,7 @@ LongTextInput.propTypes = {
     source: PropTypes.string,
     validate: PropTypes.oneOfType([
         PropTypes.func,
-        PropTypes.arrayOf(PropTypes.func)
+        PropTypes.arrayOf(PropTypes.func),
     ]),
 };
 

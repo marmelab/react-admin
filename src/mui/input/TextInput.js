@@ -18,20 +18,20 @@ import FieldTitle from '../../util/FieldTitle';
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
 export class TextInput extends Component {
-    handleBlur = (eventOrValue) => {
+    handleBlur = eventOrValue => {
         this.props.onBlur(eventOrValue);
         this.props.input.onBlur(eventOrValue);
-    }
+    };
 
-    handleFocus = (event) => {
+    handleFocus = event => {
         this.props.onFocus(event);
         this.props.input.onFocus(event);
-    }
+    };
 
-    handleChange = (eventOrValue) => {
+    handleChange = eventOrValue => {
         this.props.onChange(eventOrValue);
         this.props.input.onChange(eventOrValue);
-    }
+    };
 
     render() {
         const {
@@ -57,7 +57,14 @@ export class TextInput extends Component {
                 onFocus={this.handleFocus}
                 onChange={this.handleChange}
                 type={type}
-                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
+                floatingLabelText={
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                }
                 errorText={touched && error}
                 style={elStyle}
                 {...options}

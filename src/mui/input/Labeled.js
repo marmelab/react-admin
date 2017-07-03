@@ -24,28 +24,46 @@ const defaultLabelStyle = {
  * </Labeled>
  */
 const Labeled = () => {
-    const { input, isRequired, label, meta, resource, children, source, disabled = true, labelStyle = defaultLabelStyle, ...rest } = this.props;
+    const {
+        input,
+        isRequired,
+        label,
+        meta,
+        resource,
+        children,
+        source,
+        disabled = true,
+        labelStyle = defaultLabelStyle,
+        ...rest,
+    } = this.props;
 
     if (!label && !source) {
         throw new Error(`Cannot create label for component <${children && children.type && children.type.name}>: You must set either the label or source props. You can also disable automated label insertion by setting 'addLabel: false' in the component default props`);
     }
+
     return (
         <TextField
-            floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
+            floatingLabelText={
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
+            }
             floatingLabelFixed
             fullWidth
             disabled={disabled}
             underlineShow={false}
             style={labelStyle}
-            errorText={meta && meta.touched && meta.error}
         >
             {children && typeof children.type !== 'string' ?
-                React.cloneElement(children, { input, meta, resource, ...rest }) :
+                React.cloneElement(children, { input, resource, ...rest }) :
                 children
             }
         </TextField>
     );
-};
+}
 
 Labeled.propTypes = {
     basePath: PropTypes.string,

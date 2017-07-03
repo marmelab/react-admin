@@ -5,7 +5,7 @@ import sinon from 'sinon';
 
 import { SaveButton } from './SaveButton';
 
-const translate = (label) => label;
+const translate = label => label;
 
 describe('<SaveButton />', () => {
     it('should render <RaisedButton /> when raised is true', () => {
@@ -26,10 +26,18 @@ describe('<SaveButton />', () => {
 
     it('should render as submit type when submitOnEnter is true', () => {
         const raisedButtonWrapper = shallow(
-            <SaveButton raised={true} submitOnEnter={true} translate={translate} />
+            <SaveButton
+                raised={true}
+                submitOnEnter={true}
+                translate={translate}
+            />
         );
         const flatButtonWrapper = shallow(
-            <SaveButton raised={false} submitOnEnter={true} translate={translate} />
+            <SaveButton
+                raised={false}
+                submitOnEnter={true}
+                translate={translate}
+            />
         );
 
         assert.equal(raisedButtonWrapper.prop('type'), 'submit');
@@ -38,10 +46,18 @@ describe('<SaveButton />', () => {
 
     it('should render as button type when submitOnEnter is false', () => {
         const raisedButtonWrapper = shallow(
-            <SaveButton raised={true} submitOnEnter={false} translate={translate} />
+            <SaveButton
+                raised={true}
+                submitOnEnter={false}
+                translate={translate}
+            />
         );
         const flatButtonWrapper = shallow(
-            <SaveButton raised={false} submitOnEnter={false} translate={translate} />
+            <SaveButton
+                raised={false}
+                submitOnEnter={false}
+                translate={translate}
+            />
         );
 
         assert.equal(raisedButtonWrapper.prop('type'), 'button');
@@ -51,10 +67,20 @@ describe('<SaveButton />', () => {
     it('should trigger submit action when clicked if no saving is in progress', () => {
         const onSubmit = sinon.spy();
         const raisedButtonWrapper = shallow(
-            <SaveButton raised={true} translate={translate} handleSubmitWithRedirect={() => onSubmit} saving={false} />
+            <SaveButton
+                raised={true}
+                translate={translate}
+                handleSubmitWithRedirect={() => onSubmit}
+                saving={false}
+            />
         );
         const flatButtonWrapper = shallow(
-            <SaveButton raised={false} translate={translate} handleSubmitWithRedirect={() => onSubmit} saving={false} />
+            <SaveButton
+                raised={false}
+                translate={translate}
+                handleSubmitWithRedirect={() => onSubmit}
+                saving={false}
+            />
         );
 
         raisedButtonWrapper.simulate('click');
@@ -68,10 +94,20 @@ describe('<SaveButton />', () => {
         const event = { preventDefault: sinon.spy() };
 
         const raisedButtonWrapper = shallow(
-            <SaveButton raised={true} translate={translate} handleSubmitWithRedirect={() => onSubmit} saving={true} />
+            <SaveButton
+                raised={true}
+                translate={translate}
+                handleSubmitWithRedirect={() => onSubmit}
+                saving={true}
+            />
         );
         const flatButtonWrapper = shallow(
-            <SaveButton raised={false} translate={translate} handleSubmitWithRedirect={() => onSubmit} saving={true} />
+            <SaveButton
+                raised={false}
+                translate={translate}
+                handleSubmitWithRedirect={() => onSubmit}
+                saving={true}
+            />
         );
 
         raisedButtonWrapper.simulate('click', event);

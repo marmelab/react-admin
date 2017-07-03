@@ -55,9 +55,20 @@ export class ReferenceArrayField extends Component {
     }
 
     render() {
-        const { resource, reference, data, ids, children, basePath, isLoading } = this.props;
+        const {
+            resource,
+            reference,
+            data,
+            ids,
+            children,
+            basePath,
+            isLoading,
+        } = this.props;
+
         if (React.Children.count(children) !== 1) {
-            throw new Error('<ReferenceArrayField> only accepts a single child (like <Datagrid>)');
+            throw new Error(
+                '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
+            );
         }
 
         if (ids.length !== 0 && Object.keys(data).length !== ids.length) {
@@ -100,6 +111,7 @@ const mapStateToProps = (state, props) => {
         data: getReferencesByIds(state, reference, ids),
         ids,
         isLoading: state.admin.loading > 0,
+        data: getReferencesByIds(state, reference, ids),
     };
 };
 

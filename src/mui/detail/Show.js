@@ -30,14 +30,25 @@ export class Show extends Component {
         this.props.crudGetOne(resource, id, this.getBasePath());
     }
 
-    refresh = (event) => {
+    refresh = event => {
         event.stopPropagation();
         this.fullRefresh = true;
         this.updateData();
-    }
+    };
 
     render() {
-        const { actions = <DefaultActions />, title, children, id, data, isLoading, resource, hasDelete, hasEdit, translate } = this.props;
+        const {
+            actions = <DefaultActions />,
+            title,
+            children,
+            id,
+            data,
+            isLoading,
+            resource,
+            hasDelete,
+            hasEdit,
+            translate,
+        } = this.props;
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
@@ -49,26 +60,30 @@ export class Show extends Component {
             id,
             data,
         });
-        const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
+        const titleElement = data
+            ? <Title title={title} record={data} defaultTitle={defaultTitle} />
+            : '';
 
         return (
             <div>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    {actions && React.cloneElement(actions, {
-                        basePath,
-                        data,
-                        hasDelete,
-                        hasEdit,
-                        refresh: this.refresh,
-                        resource,
-                    })}
+                    {actions &&
+                        React.cloneElement(actions, {
+                            basePath,
+                            data,
+                            hasDelete,
+                            hasEdit,
+                            refresh: this.refresh,
+                            resource,
+                        })}
                     <ViewTitle title={titleElement} />
-                    {data && React.cloneElement(children, {
-                        resource,
-                        basePath,
-                        record: data,
-                        translate,
-                    })}
+                    {data &&
+                        React.cloneElement(children, {
+                            resource,
+                            basePath,
+                            record: data,
+                            translate,
+                        })}
                 </Card>
             </div>
         );
@@ -94,17 +109,17 @@ Show.propTypes = {
 function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
-        data: state.admin[props.resource].data[decodeURIComponent(props.match.params.id)],
+        data:
+            state.admin[props.resource].data[
+                decodeURIComponent(props.match.params.id)
+            ],
         isLoading: state.admin.loading > 0,
     };
 }
 
 const enhance = compose(
-    connect(
-        mapStateToProps,
-        { crudGetOne: crudGetOneAction },
-    ),
-    translate,
+    connect(mapStateToProps, { crudGetOne: crudGetOneAction }),
+    translate
 );
 
 export default enhance(Show);
