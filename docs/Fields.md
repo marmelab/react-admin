@@ -406,12 +406,11 @@ You can also prevent `<ReferenceField>` from adding link to children by setting 
 </ReferenceField>
 ```
 
-If you are using the field in `<Edit>` or `<Show>` page, you might want to display the label associated with the field you are displaying.
-In that case, simply put the prop ```addLabel``` to `<ReferenceField>` to make the ```source``` prop visible on top of the field, or the optional ```label``` prop if you want to personalize it.
+If you are using the field in `<Edit>` or `<Show>` page, you might want to display the label associated with the field you are displaying. In that case, simply add the `addLabel` prop to `<ReferenceField>` to make the `source` prop visible on top of the field, or the optional `label` prop if you want to personalize it.
 
 ```jsx
-// 'User' Label on top of the TexField
-<ReferenceField label="User" source="userId" reference="users" addLabel>
+// Display 'User' Label on top of the TexField
+<ReferenceField addLabel label="User" source="userId" reference="users">
     <TextField source="name" />
 </ReferenceField>
 ```
