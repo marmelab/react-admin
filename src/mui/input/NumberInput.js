@@ -39,7 +39,12 @@ class NumberInput extends Component {
     }
 
     render() {
-        const { elStyle, input, isRequired, label, meta: { touched, error }, options, source, step, resource } = this.props;
+        const { elStyle, input, isRequired, label, meta, options, source, step, resource } = this.props;
+        if (typeof meta === 'undefined') {
+            throw new Error('The NumberInput component wasn\'t called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/admin-on-rest/Inputs.html#writing-your-own-input-component for details.');
+        }
+        const { touched, error } = meta;
+
         return (
             <TextField
                 {...input}
