@@ -81,7 +81,10 @@ ReferenceArrayField.propTypes = {
     crudGetManyAccumulate: PropTypes.func.isRequired,
     data: PropTypes.object,
     ids: PropTypes.array.isRequired,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.element
+    ]),
     record: PropTypes.object.isRequired,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string.isRequired,

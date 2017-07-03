@@ -8,7 +8,10 @@ import translate from '../i18n/translate';
 
 export const FieldTitle = ({ resource, source, label, isRequired, translate }) => (
     <span>
-        {typeof label !== 'undefined' ?
+        {
+          React.isValidElement(label) ? label :
+
+          typeof label !== 'undefined' ?
             translate(label, { _: label })
             :
             (typeof source !== 'undefined' ?
@@ -25,7 +28,10 @@ FieldTitle.propTypes = {
     isRequired: PropTypes.bool,
     resource: PropTypes.string,
     source: PropTypes.string,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.element
+    ]),
     translate: PropTypes.func.isRequired,
 };
 

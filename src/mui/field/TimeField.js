@@ -3,6 +3,29 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
 
+export const datify = value => {
+
+  if (!value) {
+    return null;
+  }
+
+  /* If input does not start with YYYY-MM-DD,
+     prepend the current date and parse as date
+     using the local timezone. */
+  const date = (value instanceof Date) ?
+    value :
+    (!value.match(/^\d{4}-\d{2}-\d{2}/)) ?
+      new Date(new Date().toISOString().substring(0, 10) + 'T' + value) :
+      new Date(value)
+
+    if (isNaN(date)) {
+      throw new Error(`Invalid date: ${value}`);
+    }
+
+    return date;
+
+}
+
 const toLocaleStringSupportsLocales = (() => {
     // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
     try {
@@ -21,36 +44,34 @@ const toLocaleStringSupportsLocales = (() => {
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
  * @example
- * <DateField source="published_at" />
+ * <TimeField source="published_at" />
  * // renders the record { id: 1234, published_at: new Date('2012-11-07') } as
  * <span>07/11/2012</span>
  *
- * <DateField source="published_at" elStyle={{ color: 'red' }} />
+ * <TimeField source="published_at" elStyle={{ color: 'red' }} />
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span style="color:red;">07/11/2012</span>
  *
- * <DateField source="share" options={{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }} />
+ * <TimeField source="share" options={{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }} />
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span>Wednesday, November 7, 2012</span>
  *
- * <DateField source="price" locales="fr-FR" options={{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }} />
+ * <TimeField source="price" locales="fr-FR" options={{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }} />
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span>mercredi 7 novembre 2012</span>
  */
 
-export const DateField = ({ elStyle, locales, options, record, showTime = false, source }) => {
+export const TimeField = ({ elStyle, locales, options, record, source }) => {
     if (!record) return null;
     const value = get(record, source);
     if (value == null) return null;
-    const date = value instanceof Date ? value : new Date(value);
-    const dateString = showTime ?
-        (toLocaleStringSupportsLocales ? date.toLocaleString(locales, options) : date.toLocaleString()) :
-        (toLocaleStringSupportsLocales ? date.toLocaleDateString(locales, options) : date.toLocaleDateString());
+    const date = datify(value);
+    const dateString = (toLocaleStringSupportsLocales ? date.toLocaleTimeString(locales, options) : date.toLocaleTimeString())
 
     return <span style={elStyle}>{dateString}</span>;
 };
 
-DateField.propTypes = {
+TimeField.propTypes = {
     addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.oneOfType([
@@ -67,10 +88,10 @@ DateField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const PureDateField = pure(DateField);
+const PureTimeField = pure(TimeField);
 
-PureDateField.defaultProps = {
+PureTimeField.defaultProps = {
     addLabel: true,
 };
 
-export default PureDateField;
+export default PureTimeField;

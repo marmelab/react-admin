@@ -10,7 +10,10 @@ const ChipField = ({ source, record = {}, elStyle = { margin: 4 } }) =>
 ChipField.propTypes = {
     addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.element
+    ]),
     source: PropTypes.string.isRequired,
     record: PropTypes.object,
 };
