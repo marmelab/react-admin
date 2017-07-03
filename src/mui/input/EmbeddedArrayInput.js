@@ -119,6 +119,7 @@ EmbeddedArrayInput.propTypes = {
 EmbeddedArrayInput.defaultProps = {
     addField: false,
     allowEmpty: true,
+    addLabel: false
 };
 
 export default EmbeddedArrayInput;
