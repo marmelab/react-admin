@@ -39,12 +39,16 @@ export class TextInput extends Component {
             input,
             isRequired,
             label,
-            meta: { touched, error },
+            meta,
             options,
             resource,
             source,
             type,
         } = this.props;
+        if (typeof meta === 'undefined') {
+            throw new Error('The TextInput component wasn\'t called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/admin-on-rest/Inputs.html#writing-your-own-input-component for details.');
+        }
+        const { touched, error } = meta;
 
         return (
             <TextField
