@@ -6,7 +6,7 @@ import IconButton from 'material-ui/IconButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import { cyan500 } from 'material-ui/styles/colors'
+import { cyan500 } from 'material-ui/styles/colors';
 import compose from 'recompose/compose';
 import withWidth from 'material-ui/utils/withWidth';
 import translate from '../../i18n/translate';
@@ -47,13 +47,13 @@ export class Pagination extends Component {
         if (page < nbPages) {
             input.push(page + 1);
         }
-        if (page === (nbPages - 3)) {
+        if (page === nbPages - 3) {
             input.push(nbPages - 1);
         }
-        if (page < (nbPages - 3)) {
+        if (page < nbPages - 3) {
             input.push('.');
         }
-        if (page < (nbPages - 1)) {
+        if (page < nbPages - 1) {
             input.push(nbPages);
         }
 
@@ -64,36 +64,58 @@ export class Pagination extends Component {
         return Math.ceil(this.props.total / this.props.perPage) || 1;
     }
 
-    prevPage = (event) => {
+    prevPage = event => {
         event.stopPropagation();
         if (this.props.page === 1) {
-            throw new Error(this.props.translate('aor.navigation.page_out_from_begin'));
+            throw new Error(
+                this.props.translate('aor.navigation.page_out_from_begin')
+            );
         }
         this.props.setPage(this.props.page - 1);
-    }
+    };
 
-    nextPage = (event) => {
+    nextPage = event => {
         event.stopPropagation();
         if (this.props.page > this.getNbPages()) {
-            throw new Error(this.props.translate('aor.navigation.page_out_from_end'));
+            throw new Error(
+                this.props.translate('aor.navigation.page_out_from_end')
+            );
         }
         this.props.setPage(this.props.page + 1);
-    }
+    };
 
-    gotoPage = (event) => {
+    gotoPage = event => {
         event.stopPropagation();
         const page = event.currentTarget.dataset.page;
         if (page < 1 || page > this.getNbPages()) {
-            throw new Error(this.props.translate('aor.navigation.page_out_of_boundaries', { page }));
+            throw new Error(
+                this.props.translate('aor.navigation.page_out_of_boundaries', {
+                    page,
+                })
+            );
         }
         this.props.setPage(page);
-    }
+    };
 
     renderPageNums() {
-        return this.range().map((pageNum, index) =>
-            (pageNum === '.') ?
-                <span key={`hyphen_${index}`} style={{ padding: '1.2em' }}>&hellip;</span> :
-                <FlatButton className="page-number" key={pageNum} label={pageNum} data-page={pageNum} onClick={this.gotoPage} primary={pageNum !== this.props.page} style={styles.button} />
+        return this.range().map(
+            (pageNum, index) =>
+                pageNum === '.'
+                    ? <span
+                          key={`hyphen_${index}`}
+                          style={{ padding: '1.2em' }}
+                      >
+                          &hellip;
+                      </span>
+                    : <FlatButton
+                          className="page-number"
+                          key={pageNum}
+                          label={pageNum}
+                          data-page={pageNum}
+                          onClick={this.gotoPage}
+                          primary={pageNum !== this.props.page}
+                          style={styles.button}
+                      />
         );
     }
 
@@ -104,40 +126,65 @@ export class Pagination extends Component {
         const offsetBegin = Math.min((page - 1) * perPage + 1, offsetEnd);
         const nbPages = this.getNbPages();
 
-        return width === 1 ? (
-            <Toolbar>
-                <ToolbarGroup style={styles.mobileToolbar}>
-                    {page > 1 &&
-                        <IconButton onClick={this.prevPage}>
-                            <ChevronLeft color={cyan500} />
-                        </IconButton>
-                    }
-                    <span style={styles.pageInfo}>{translate('aor.navigation.page_range_info', { offsetBegin, offsetEnd, total })}</span>
-                    {page !== nbPages &&
-                        <IconButton onClick={this.nextPage}>
-                            <ChevronRight color={cyan500} />
-                        </IconButton>
-                    }
-                </ToolbarGroup>
-            </Toolbar>
-        ) : (
-            <Toolbar>
-                <ToolbarGroup firstChild>
-                    <span className="displayed-records" style={styles.pageInfo}>{translate('aor.navigation.page_range_info', { offsetBegin, offsetEnd, total })}</span>
-                </ToolbarGroup>
-                {nbPages > 1 &&
-                    <ToolbarGroup>
-                    {page > 1 &&
-                        <FlatButton className="previous-page" primary key="prev" label={translate('aor.navigation.prev')} icon={<ChevronLeft />} onClick={this.prevPage} style={styles.button} />
-                    }
-                    {this.renderPageNums()}
-                    {page !== nbPages &&
-                        <FlatButton className="next-page" primary key="next" label={translate('aor.navigation.next')} icon={<ChevronRight />} labelPosition="before" onClick={this.nextPage} style={styles.button} />
-                    }
-                </ToolbarGroup>
-                }
-            </Toolbar>
-        );
+        return width === 1
+            ? <Toolbar>
+                  <ToolbarGroup style={styles.mobileToolbar}>
+                      {page > 1 &&
+                          <IconButton onClick={this.prevPage}>
+                              <ChevronLeft color={cyan500} />
+                          </IconButton>}
+                      <span style={styles.pageInfo}>
+                          {translate('aor.navigation.page_range_info', {
+                              offsetBegin,
+                              offsetEnd,
+                              total,
+                          })}
+                      </span>
+                      {page !== nbPages &&
+                          <IconButton onClick={this.nextPage}>
+                              <ChevronRight color={cyan500} />
+                          </IconButton>}
+                  </ToolbarGroup>
+              </Toolbar>
+            : <Toolbar>
+                  <ToolbarGroup firstChild>
+                      <span
+                          className="displayed-records"
+                          style={styles.pageInfo}
+                      >
+                          {translate('aor.navigation.page_range_info', {
+                              offsetBegin,
+                              offsetEnd,
+                              total,
+                          })}
+                      </span>
+                  </ToolbarGroup>
+                  {nbPages > 1 &&
+                      <ToolbarGroup>
+                          {page > 1 &&
+                              <FlatButton
+                                  className="previous-page"
+                                  primary
+                                  key="prev"
+                                  label={translate('aor.navigation.prev')}
+                                  icon={<ChevronLeft />}
+                                  onClick={this.prevPage}
+                                  style={styles.button}
+                              />}
+                          {this.renderPageNums()}
+                          {page !== nbPages &&
+                              <FlatButton
+                                  className="next-page"
+                                  primary
+                                  key="next"
+                                  label={translate('aor.navigation.next')}
+                                  icon={<ChevronRight />}
+                                  labelPosition="before"
+                                  onClick={this.nextPage}
+                                  style={styles.button}
+                              />}
+                      </ToolbarGroup>}
+              </Toolbar>;
     }
 }
 
@@ -150,10 +197,6 @@ Pagination.propTypes = {
     width: PropTypes.number,
 };
 
-const enhance = compose(
-    pure,
-    translate,
-    withWidth(),
-);
+const enhance = compose(pure, translate, withWidth());
 
 export default enhance(Pagination);

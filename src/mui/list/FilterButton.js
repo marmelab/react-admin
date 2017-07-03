@@ -21,12 +21,12 @@ export class FilterButton extends Component {
 
     getHiddenFilters() {
         const { filters, displayedFilters, filterValues } = this.props;
-        return filters
-            .filter(filterElement =>
+        return filters.filter(
+            filterElement =>
                 !filterElement.props.alwaysOn &&
                 !displayedFilters[filterElement.props.source] &&
-                !filterValues[filterElement.props.source],
-            );
+                !filterValues[filterElement.props.source]
+        );
     }
 
     handleTouchTap(event) {
@@ -57,33 +57,36 @@ export class FilterButton extends Component {
         const { resource } = this.props;
         const { open, anchorEl } = this.state;
 
-        return (hiddenFilters.length > 0 && <div style={{ display: 'inline-block' }}>
-            <FlatButton
-                className="add-filter"
-                primary
-                label={this.props.translate('aor.action.add_filter')}
-                icon={<ContentFilter />}
-                onTouchTap={this.handleTouchTap}
-            />
-            <Popover
-                open={open}
-                anchorEl={anchorEl}
-                anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-                targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-                onRequestClose={this.handleRequestClose}
-            >
-                <Menu>
-                    {hiddenFilters.map(filterElement =>
-                        <FilterButtonMenuItem
-                            key={filterElement.props.source}
-                            filter={filterElement.props}
-                            resource={resource}
-                            onShow={this.handleShow}
-                        />,
-                    )}
-                </Menu>
-            </Popover>
-        </div>);
+        return (
+            hiddenFilters.length > 0 &&
+            <div style={{ display: 'inline-block' }}>
+                <FlatButton
+                    className="add-filter"
+                    primary
+                    label={this.props.translate('aor.action.add_filter')}
+                    icon={<ContentFilter />}
+                    onTouchTap={this.handleTouchTap}
+                />
+                <Popover
+                    open={open}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                    targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+                    onRequestClose={this.handleRequestClose}
+                >
+                    <Menu>
+                        {hiddenFilters.map(filterElement =>
+                            <FilterButtonMenuItem
+                                key={filterElement.props.source}
+                                filter={filterElement.props}
+                                resource={resource}
+                                onShow={this.handleShow}
+                            />
+                        )}
+                    </Menu>
+                </Popover>
+            </div>
+        );
     }
 }
 

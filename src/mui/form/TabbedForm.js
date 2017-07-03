@@ -17,14 +17,25 @@ export class TabbedForm extends Component {
         };
     }
 
-    handleChange = (value) => {
+    handleChange = value => {
         this.setState({ value });
     };
 
-    handleSubmitWithRedirect = (redirect = this.props.redirect) => this.props.handleSubmit(values => this.props.save(values, redirect));
+    handleSubmitWithRedirect = (redirect = this.props.redirect) =>
+        this.props.handleSubmit(values => this.props.save(values, redirect));
 
     render() {
-        const { children, contentContainerStyle, invalid, record, resource, basePath, translate, submitOnEnter, toolbar } = this.props;
+        const {
+            children,
+            contentContainerStyle,
+            invalid,
+            record,
+            resource,
+            basePath,
+            translate,
+            submitOnEnter,
+            toolbar,
+        } = this.props;
         return (
             <form className="tabbed-form">
                 <div style={formStyle}>
@@ -37,20 +48,27 @@ export class TabbedForm extends Component {
                             <Tab
                                 key={tab.props.value}
                                 className="form-tab"
-                                label={translate(tab.props.label, { _: tab.props.label })}
+                                label={translate(tab.props.label, {
+                                    _: tab.props.label,
+                                })}
                                 value={index}
                                 icon={tab.props.icon}
                             >
-                                {React.cloneElement(tab, { resource, record, basePath })}
-                            </Tab>,
+                                {React.cloneElement(tab, {
+                                    resource,
+                                    record,
+                                    basePath,
+                                })}
+                            </Tab>
                         )}
                     </Tabs>
                 </div>
-                {toolbar && React.cloneElement(toolbar, {
-                    handleSubmitWithRedirect: this.handleSubmitWithRedirect,
-                    invalid,
-                    submitOnEnter,
-                })}
+                {toolbar &&
+                    React.cloneElement(toolbar, {
+                        handleSubmitWithRedirect: this.handleSubmitWithRedirect,
+                        invalid,
+                        submitOnEnter,
+                    })}
             </form>
         );
     }
@@ -60,17 +78,11 @@ TabbedForm.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
     contentContainerStyle: PropTypes.object,
-    defaultValue: PropTypes.oneOfType([
-        PropTypes.object,
-        PropTypes.func,
-    ]),
+    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
     record: PropTypes.object,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-    ]),
+    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     submitOnEnter: PropTypes.bool,
@@ -92,7 +104,7 @@ const enhance = compose(
     reduxForm({
         form: 'record-form',
         enableReinitialize: true,
-    }),
+    })
 );
 
 export default enhance(TabbedForm);

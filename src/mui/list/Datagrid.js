@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import {
+    Table,
+    TableBody,
+    TableHeader,
+    TableHeaderColumn,
+    TableRow,
+    TableRowColumn,
+} from 'material-ui/Table';
 import DatagridCell from './DatagridCell';
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridBody from './DatagridBody';
@@ -71,31 +78,70 @@ const defaultStyles = {
  * </ReferenceManyField>
  */
 class Datagrid extends Component {
-    updateSort = (event) => {
+    updateSort = event => {
         event.stopPropagation();
         this.props.setSort(event.currentTarget.dataset.sort);
-    }
+    };
 
     render() {
-        const { resource, children, ids, isLoading, data, currentSort, basePath, styles = defaultStyles, muiTheme, rowStyle, options, headerOptions, bodyOptions, rowOptions } = this.props;
+        const {
+            resource,
+            children,
+            ids,
+            isLoading,
+            data,
+            currentSort,
+            basePath,
+            styles = defaultStyles,
+            muiTheme,
+            rowStyle,
+            options,
+            headerOptions,
+            bodyOptions,
+            rowOptions,
+        } = this.props;
         return (
-            <Table style={options && options.fixedHeader ? null : styles.table} fixedHeader={false} {...options}>
-                <TableHeader displaySelectAll={false} adjustForCheckbox={false} {...headerOptions}>
+            <Table
+                style={options && options.fixedHeader ? null : styles.table}
+                fixedHeader={false}
+                {...options}
+            >
+                <TableHeader
+                    displaySelectAll={false}
+                    adjustForCheckbox={false}
+                    {...headerOptions}
+                >
                     <TableRow style={muiTheme.tableRow}>
-                        {React.Children.map(children, (field, index) => (
+                        {React.Children.map(children, (field, index) =>
                             <DatagridHeaderCell
                                 key={field.props.source || index}
                                 field={field}
-                                defaultStyle={index === 0 ? styles.header['th:first-child'] : styles.header.th}
+                                defaultStyle={
+                                    index === 0
+                                        ? styles.header['th:first-child']
+                                        : styles.header.th
+                                }
                                 currentSort={currentSort}
-                                isSorting={field.props.source === currentSort.field}
+                                isSorting={
+                                    field.props.source === currentSort.field
+                                }
                                 updateSort={this.updateSort}
                                 resource={resource}
                             />
-                        ))}
+                        )}
                     </TableRow>
                 </TableHeader>
-                <DatagridBody resource={resource} ids={ids} data={data} basePath={basePath} styles={styles} rowStyle={rowStyle} isLoading={isLoading} options={bodyOptions} rowOptions={rowOptions}>
+                <DatagridBody
+                    resource={resource}
+                    ids={ids}
+                    data={data}
+                    basePath={basePath}
+                    styles={styles}
+                    rowStyle={rowStyle}
+                    isLoading={isLoading}
+                    options={bodyOptions}
+                    rowOptions={rowOptions}
+                >
                     {children}
                 </DatagridBody>
             </Table>

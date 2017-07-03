@@ -18,7 +18,9 @@ describe('<Filter />', () => {
         });
 
         it('should pass `filterValues` as `initialValues` props', () => {
-            const wrapper = shallow(<Filter {...defaultProps} filterValues={{ q: 'Lorem' }} />);
+            const wrapper = shallow(
+                <Filter {...defaultProps} filterValues={{ q: 'Lorem' }} />
+            );
             const form = wrapper.find('getContext(ReduxForm)').first();
             assert.deepEqual(form.prop('initialValues'), { q: 'Lorem' });
         });

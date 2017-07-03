@@ -8,7 +8,7 @@ describe('TranslationUtils', () => {
             global.window = {};
         });
 
-        it('should return default locale if there\'s no available locale in browser', () => {
+        it("should return default locale if there's no available locale in browser", () => {
             window.navigator = {};
             assert(resolveBrowserLocale(), DEFAULT_LOCALE);
         });

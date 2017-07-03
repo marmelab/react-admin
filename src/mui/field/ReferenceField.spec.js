@@ -20,7 +20,7 @@ describe('<ReferenceField />', () => {
             >
                 <TextField source="title" />
             </ReferenceField>,
-            { lifecycleExperimental: true },
+            { lifecycleExperimental: true }
         );
         assert(crudGetManyAccumulate.calledOnce);
     });
@@ -37,7 +37,7 @@ describe('<ReferenceField />', () => {
             >
                 <TextField source="title" />
             </ReferenceField>,
-            { lifecycleExperimental: true },
+            { lifecycleExperimental: true }
         );
         assert(crudGetManyAccumulate.notCalled);
     });
@@ -52,7 +52,7 @@ describe('<ReferenceField />', () => {
                 crudGetManyAccumulate={() => {}}
             >
                 <TextField source="title" />
-            </ReferenceField>,
+            </ReferenceField>
         );
         const linkElement = wrapper.find('Link');
         assert.equal(linkElement.prop('to'), '/bar/123');
@@ -69,7 +69,7 @@ describe('<ReferenceField />', () => {
                 crudGetManyAccumulate={() => {}}
             >
                 <TextField source="title" />
-            </ReferenceField>,
+            </ReferenceField>
         );
         const linkElement = wrapper.find('Link');
         assert.equal(linkElement.prop('to'), '/bar/123/show');
@@ -86,7 +86,7 @@ describe('<ReferenceField />', () => {
                 crudGetManyAccumulate={() => {}}
             >
                 <TextField source="title" />
-            </ReferenceField>,
+            </ReferenceField>
         );
         const linkElement = wrapper.find('Link');
         assert.equal(linkElement.length, 0);

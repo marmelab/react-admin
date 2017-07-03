@@ -20,9 +20,19 @@ module.exports = url => driver => ({
 
     waitUntilDataLoaded() {
         let continued = true;
-        return driver.wait(until.elementLocated(this.elements.appLoader), 2000)
-            .catch(() => continued = false) // no loader - we're on the same page !
-            .then(() => continued ? driver.wait(until.stalenessOf(driver.findElement(this.elements.appLoader))) : true)
+        return driver
+            .wait(until.elementLocated(this.elements.appLoader), 2000)
+            .catch(() => (continued = false)) // no loader - we're on the same page !
+            .then(
+                () =>
+                    continued
+                        ? driver.wait(
+                              until.stalenessOf(
+                                  driver.findElement(this.elements.appLoader)
+                              )
+                          )
+                        : true
+            )
             .catch(() => {}) // The element might have disapeared before the wait on the previous line
             .then(() => driver.sleep(100)); // let some time to redraw
     },

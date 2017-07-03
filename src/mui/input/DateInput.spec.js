@@ -23,7 +23,10 @@ describe('DateInput .datify', () => {
     });
 
     it('should return a date Object whichever non-null input is given', () => {
-        assert.deepEqual(datify(new Date('2010-05-01')), new Date('2010-05-01'));
+        assert.deepEqual(
+            datify(new Date('2010-05-01')),
+            new Date('2010-05-01')
+        );
         assert.deepEqual(datify('2010-05-01'), new Date('2010-05-01'));
     });
 });
@@ -31,7 +34,14 @@ describe('DateInput .datify', () => {
 describe('<DateInput />', () => {
     it('should render a localized <DatePicker />', () => {
         const input = { value: null };
-        const wrapper = shallow(<DateInput source="foo" meta={{}} input={input} options={{ locale:'de-DE' }} />);
+        const wrapper = shallow(
+            <DateInput
+                source="foo"
+                meta={{}}
+                input={input}
+                options={{ locale: 'de-DE' }}
+            />
+        );
 
         const datePicker = wrapper.find('DatePicker');
         assert.equal(datePicker.length, 1);
@@ -50,19 +60,37 @@ describe('<DateInput />', () => {
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const wrapper = shallow(<DateInput source="foo" input={{ value: null }} meta={{ touched: false }} />);
+            const wrapper = shallow(
+                <DateInput
+                    source="foo"
+                    input={{ value: null }}
+                    meta={{ touched: false }}
+                />
+            );
             const DatePicker = wrapper.find('DatePicker');
             assert.equal(DatePicker.prop('errorText'), false);
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const wrapper = shallow(<DateInput source="foo" input={{ value: null }} meta={{ touched: true, error: false }} />);
+            const wrapper = shallow(
+                <DateInput
+                    source="foo"
+                    input={{ value: null }}
+                    meta={{ touched: true, error: false }}
+                />
+            );
             const DatePicker = wrapper.find('DatePicker');
             assert.equal(DatePicker.prop('errorText'), false);
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
-            const wrapper = shallow(<DateInput source="foo" input={{ value: null }} meta={{ touched: true, error: 'Required field.' }} />);
+            const wrapper = shallow(
+                <DateInput
+                    source="foo"
+                    input={{ value: null }}
+                    meta={{ touched: true, error: 'Required field.' }}
+                />
+            );
             const DatePicker = wrapper.find('DatePicker');
             assert.equal(DatePicker.prop('errorText'), 'Required field.');
         });

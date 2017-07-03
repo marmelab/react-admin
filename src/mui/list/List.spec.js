@@ -43,7 +43,7 @@ describe('<List />', () => {
             <List
                 {...defaultProps}
                 translate={x => x}
-                children={[ 'not_empty' ]}
+                children={['not_empty']}
                 total={1}
                 changeFormValue={() => true}
                 changeListParams={() => true}

@@ -7,8 +7,14 @@ describe('getDefaultValues', () => {
         const someTitle = 'some value';
         const formElements = {
             children: [
-                createElement('input', { defaultValue: someTitle, source: 'title' }),
-                createElement('input', { defaultValue: someTitle, source: 'nested.title' }),
+                createElement('input', {
+                    defaultValue: someTitle,
+                    source: 'title',
+                }),
+                createElement('input', {
+                    defaultValue: someTitle,
+                    source: 'nested.title',
+                }),
             ],
         };
         const expectedResult = {

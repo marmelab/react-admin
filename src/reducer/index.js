@@ -6,10 +6,13 @@ import references from './references';
 import saving from './saving';
 import ui from './ui';
 
-export default (resources) => {
+export default resources => {
     const resourceReducers = {};
-    resources.forEach((resource) => {
-        resourceReducers[resource.name] = resourceReducer(resource.name, resource.options);
+    resources.forEach(resource => {
+        resourceReducers[resource.name] = resourceReducer(
+            resource.name,
+            resource.options
+        );
     });
     return combineReducers({
         ...resourceReducers,

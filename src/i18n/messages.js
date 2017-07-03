@@ -26,12 +26,15 @@ export default {
         },
         input: {
             file: {
-                upload_several: 'Drop some files to upload, or click to select one.',
+                upload_several:
+                    'Drop some files to upload, or click to select one.',
                 upload_single: 'Drop a file to upload, or click to select it.',
             },
             image: {
-                upload_several: 'Drop some pictures to upload, or click to select one.',
-                upload_single: 'Drop a picture to upload, or click to select it.',
+                upload_several:
+                    'Drop some pictures to upload, or click to select one.',
+                upload_single:
+                    'Drop a picture to upload, or click to select it.',
             },
         },
         message: {

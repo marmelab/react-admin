@@ -69,7 +69,7 @@ export class FileInput extends Component {
         this.setState({ files: files.map(this.transformFile) });
     }
 
-    onDrop = (files) => {
+    onDrop = files => {
         const updatedFiles = [
             ...this.state.files,
             ...files.map(this.transformFile),
@@ -77,23 +77,26 @@ export class FileInput extends Component {
 
         this.setState({ files: updatedFiles });
         this.props.input.onChange(files);
-    }
+    };
 
     onRemove = file => () => {
-        const filteredFiles = this.state.files
-            .filter(stateFile => !shallowEqual(stateFile, file));
+        const filteredFiles = this.state.files.filter(
+            stateFile => !shallowEqual(stateFile, file)
+        );
 
         this.setState({ files: filteredFiles });
         this.props.input.onChange(filteredFiles);
-    }
+    };
 
     // turn a browser dropped file structure into expected structure
-    transformFile = (file) => {
+    transformFile = file => {
         if (!(file instanceof File)) {
             return file;
         }
 
-        const { source, title } = React.Children.toArray(this.props.children)[0].props;
+        const { source, title } = React.Children.toArray(
+            this.props.children
+        )[0].props;
 
         const transformedFile = {
             rawFile: file,
@@ -108,7 +111,12 @@ export class FileInput extends Component {
     };
 
     label() {
-        const { translate, placeholder, labelMultiple, labelSingle } = this.props;
+        const {
+            translate,
+            placeholder,
+            labelMultiple,
+            labelSingle,
+        } = this.props;
 
         if (placeholder) {
             return placeholder;
@@ -116,12 +124,16 @@ export class FileInput extends Component {
 
         if (this.props.multiple) {
             return (
-                <p>{translate(labelMultiple)}</p>
+                <p>
+                    {translate(labelMultiple)}
+                </p>
             );
         }
 
         return (
-            <p>{translate(labelSingle)}</p>
+            <p>
+                {translate(labelSingle)}
+            </p>
         );
     }
 
@@ -157,9 +169,9 @@ export class FileInput extends Component {
                 >
                     {this.label()}
                 </Dropzone>
-                { children && (
+                {children &&
                     <div className="previews">
-                        {this.state.files.map((file, index) => (
+                        {this.state.files.map((file, index) =>
                             <FileInputPreview
                                 key={index}
                                 file={file}
@@ -172,9 +184,8 @@ export class FileInput extends Component {
                                     style: defaultStyle.preview,
                                 })}
                             </FileInputPreview>
-                        ))}
-                    </div>
-                ) }
+                        )}
+                    </div>}
             </div>
         );
     }

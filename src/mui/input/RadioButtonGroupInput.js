@@ -66,34 +66,50 @@ import translate from '../../i18n/translate';
 export class RadioButtonGroupInput extends Component {
     handleChange = (event, value) => {
         this.props.input.onChange(value);
-    }
+    };
 
-    renderRadioButton = (choice) => {
+    renderRadioButton = choice => {
         const {
             optionText,
             optionValue,
             translate,
-            translateChoice
+            translateChoice,
         } = this.props;
-        const choiceName = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
-            React.cloneElement(optionText, { record: choice }) :
-            (typeof optionText === 'function' ?
-                optionText(choice) :
-                get(choice, optionText)
-            );
+        const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
+            ? React.cloneElement(optionText, { record: choice })
+            : typeof optionText === 'function'
+              ? optionText(choice)
+              : get(choice, optionText);
         return (
             <RadioButton
                 key={get(choice, optionValue)}
-                label={translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
+                label={
+                    translateChoice
+                        ? translate(choiceName, { _: choiceName })
+                        : choiceName
+                }
                 value={get(choice, optionValue)}
             />
         );
-    }
+    };
 
     render() {
-        const { label, source, input, isRequired, choices, options, elStyle } = this.props;
+        const {
+            label,
+            source,
+            input,
+            isRequired,
+            choices,
+            options,
+            elStyle,
+        } = this.props;
         return (
-            <Labeled label={label} onChange={this.handleChange} source={source} isRequired={isRequired}>
+            <Labeled
+                label={label}
+                onChange={this.handleChange}
+                source={source}
+                isRequired={isRequired}
+            >
                 <RadioButtonGroup
                     name={source}
                     defaultSelected={input.value}
