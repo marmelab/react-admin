@@ -22,7 +22,7 @@ export class MenuItemLinkComponent extends Component {
             location,
             staticContext,
             ...props
-        } = this.props; // eslint-disable-line
+        } = this.props;
 
         return <MenuItem {...props} onTouchTap={this.handleMenuTap} />;
     }
