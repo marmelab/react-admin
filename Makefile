@@ -22,14 +22,16 @@ doc: ## compile doc as html and launch doc web server
 	@cd docs && jekyll server . --watch
 
 lint: ## lint the code and check coding conventions
+	@echo "Running linter..."
 	@./node_modules/.bin/eslint .
 
 prettier: ## prettify the source code using prettier
 	@./node_modules/.bin/prettier-eslint --write --list-different  "src/**/*.js" "example/**/*.js"
 
-test: lint test-unit test-e2e ## launch all tests
+test: test-unit lint test-e2e ## launch all tests
 
 test-unit: ## launch unit tests
+	@echo "Running unit tests..."
 	@NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/mocha \
 		--require ignore-styles \
 		--compilers js:babel-register \
