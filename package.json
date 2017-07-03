@@ -48,6 +48,7 @@
     "ignore-styles": "~5.0.1",
     "mocha": "~3.2.0",
     "prettier": "^1.5.2",
+    "prettier-eslint-cli": "^4.1.1",
     "react-addons-test-utils": "~15.5.1",
     "selenium-webdriver": "~3.3.0",
     "sinon": "~2.1.0",

@@ -24,6 +24,9 @@ doc: ## compile doc as html and launch doc web server
 lint: ## lint the code and check coding conventions
 	@./node_modules/.bin/eslint .
 
+prettier: ## prettify the source code using prettier
+	@./node_modules/.bin/prettier-eslint --write --list-different  "src/**/*.js" "example/**/*.js"
+
 test: lint test-unit test-e2e ## launch all tests
 
 test-unit: ## launch unit tests
