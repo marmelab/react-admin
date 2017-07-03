@@ -9,16 +9,28 @@ describe('Authentication', () => {
     it('should go to login page after logout', async () => {
         await ListPage.navigate();
         await ListPage.logout();
-        return driver.wait(until.urlIs('http://localhost:8083/#/login'), 2000, 'Redirection to login did not happen');
+        return driver.wait(
+            until.urlIs('http://localhost:8083/#/login'),
+            2000,
+            'Redirection to login did not happen'
+        );
     });
     it('should redirect to login page when not logged in', async () => {
         await ListPage.navigate();
-        return driver.wait(until.urlIs('http://localhost:8083/#/login'), 2000, 'Redirection to login did not happen');
+        return driver.wait(
+            until.urlIs('http://localhost:8083/#/login'),
+            2000,
+            'Redirection to login did not happen'
+        );
     });
     it('should not login with incorrect credentials', async () => {
         await LoginPage.navigate();
         await LoginPage.login('foo', 'bar');
-        return driver.wait(until.urlIs('http://localhost:8083/#/login'), 2000, 'Redirection to login did not happen');
+        return driver.wait(
+            until.urlIs('http://localhost:8083/#/login'),
+            2000,
+            'Redirection to login did not happen'
+        );
     });
     it('should login with correct credentials', async () => {
         await LoginPage.navigate();

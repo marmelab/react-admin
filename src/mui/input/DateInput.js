@@ -35,26 +35,46 @@ class DateInput extends Component {
     onDismiss = () => this.props.input.onBlur();
 
     render() {
-        const { input, isRequired, label, meta, options, source, elStyle, resource } = this.props;
+        const {
+            input,
+            isRequired,
+            label,
+            meta,
+            options,
+            source,
+            elStyle,
+            resource,
+        } = this.props;
         if (typeof meta === 'undefined') {
-            throw new Error('The DateInput component wasn\'t called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/admin-on-rest/Inputs.html#writing-your-own-input-component for details.');
+            throw new Error(
+                "The DateInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/admin-on-rest/Inputs.html#writing-your-own-input-component for details."
+            );
         }
         const { touched, error } = meta;
 
-        return (<DatePicker
-            {...input}
-            errorText={touched && error}
-            floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
-            DateTimeFormat={Intl.DateTimeFormat}
-            container="inline"
-            autoOk
-            value={datify(input.value)}
-            onChange={this.onChange}
-            onBlur={this.onBlur}
-            onDismiss={this.onDismiss}
-            style={elStyle}
-            {...options}
-        />);
+        return (
+            <DatePicker
+                {...input}
+                errorText={touched && error}
+                floatingLabelText={
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                }
+                DateTimeFormat={Intl.DateTimeFormat}
+                container="inline"
+                autoOk
+                value={datify(input.value)}
+                onChange={this.onChange}
+                onBlur={this.onBlur}
+                onDismiss={this.onDismiss}
+                style={elStyle}
+                {...options}
+            />
+        );
     }
 }
 
