@@ -43,19 +43,26 @@ const styles = {
  * );
  */
 export class EmbeddedArrayInput extends Component {
-
     renderListItem = ({ items, inputs, member, index }) => {
         const removeItem = () => items.remove(index);
         return (
             <div className="EmbeddedArrayInputItemContainer">
                 <div style={styles.container}>
-                    {
-                        React.Children.map(inputs, input => input && (
-                            <div key={input.props.source} className={`aor-input-${input.props.source}`} style={input.props.style}>
-                                <EmbeddedArrayInputFormField input={input} prefix={member} />
+                    {React.Children.map(
+                        inputs,
+                        input =>
+                            input &&
+                            <div
+                                key={input.props.source}
+                                className={`aor-input-${input.props.source}`}
+                                style={input.props.style}
+                            >
+                                <EmbeddedArrayInputFormField
+                                    input={input}
+                                    prefix={member}
+                                />
                             </div>
-                        ))
-                    }
+                    )}
                 </div>
                 <FlatButton
                     primary
@@ -68,21 +75,23 @@ export class EmbeddedArrayInput extends Component {
         );
     };
 
-
     renderList = ({ fields: items }) => {
         const { children, elStyle } = this.props;
         const createItem = () => items.push();
         return (
             <div className="EmbeddedArrayInputContainer" style={elStyle}>
                 <div>
-                    {
-                        items.map((member, index) => (
-                            <div key={index}>
-                                { this.renderListItem({ items, inputs: children, member, index }) }
-                                { index < items.length - 1 && <Divider /> }
-                            </div>
-                        ))
-                    }
+                    {items.map((member, index) =>
+                        <div key={index}>
+                            {this.renderListItem({
+                                items,
+                                inputs: children,
+                                member,
+                                index,
+                            })}
+                            {index < items.length - 1 && <Divider />}
+                        </div>
+                    )}
                 </div>
                 <br />
                 <FlatButton
@@ -120,7 +129,7 @@ EmbeddedArrayInput.propTypes = {
 EmbeddedArrayInput.defaultProps = {
     addField: false,
     allowEmpty: true,
-    addLabel: false
+    addLabel: false,
 };
 
 export default EmbeddedArrayInput;

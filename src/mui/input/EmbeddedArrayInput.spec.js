@@ -12,7 +12,7 @@ describe('<EmbeddedArrayInput />', () => {
 
     it('should contain 2 divs', () => {
         const wrapper = shallow(
-            <EmbeddedArrayInput {...defaultProps} input={{ value: [{}, {}] }} />,
+            <EmbeddedArrayInput {...defaultProps} input={{ value: [{}, {}] }} />
         );
         const fieldArrayElement = wrapper.find('FieldArray');
         assert.equal(fieldArrayElement.prop('name'), 'sub_items');

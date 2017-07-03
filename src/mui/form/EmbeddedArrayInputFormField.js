@@ -27,7 +27,7 @@ const EmbeddedArrayInputFormField = ({ input, prefix, ...rest }) => {
                     label={input.props.label}
                     isRequired={isRequired(input.props.validate)}
                 >
-                    { input }
+                    {input}
                 </Field>
             );
         }
@@ -53,7 +53,9 @@ const EmbeddedArrayInputFormField = ({ input, prefix, ...rest }) => {
             </Labeled>
         );
     }
-    return (typeof input.type === 'string') ? input : React.cloneElement(input, rest);
+    return typeof input.type === 'string'
+        ? input
+        : React.cloneElement(input, rest);
 };
 
 export default EmbeddedArrayInputFormField;
