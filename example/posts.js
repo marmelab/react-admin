@@ -23,7 +23,6 @@ import {
     ReferenceManyField,
     EmbeddedArrayInput,
     ReferenceArrayInput,
-    EmbeddedManyInput,
     Responsive,
     RichTextField,
     SelectArrayInput,

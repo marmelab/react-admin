@@ -7,7 +7,7 @@ import ContentCreateIcon from 'material-ui/svg-icons/content/create';
 import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
 import Divider from 'material-ui/Divider';
 
-import EmbeddedArrayInputFormField from './EmbeddedArrayInputFormField';
+import EmbeddedArrayInputFormField from '../form/EmbeddedArrayInputFormField';
 
 const styles = {
     container: {
@@ -44,8 +44,8 @@ const styles = {
  */
 export class EmbeddedArrayInput extends Component {
 
-    renderListItem = ({ fields, inputs, member, index }) => {
-        const removeElement = () => fields.remove(index);
+    renderListItem = ({ items, inputs, member, index }) => {
+        const removeItem = () => items.remove(index);
         return (
             <div className="EmbeddedArrayInputItemContainer">
                 <div style={styles.container}>
@@ -62,23 +62,24 @@ export class EmbeddedArrayInput extends Component {
                     label="Remove"
                     style={styles.removeButton}
                     icon={<ActionDeleteIcon />}
-                    onClick={removeElement}
+                    onClick={removeItem}
                 />
             </div>
         );
     };
 
 
-    renderList = ({ fields }) => {
+    renderList = ({ fields: items }) => {
         const { children, elStyle } = this.props;
+        const createItem = () => items.push();
         return (
             <div className="EmbeddedArrayInputContainer" style={elStyle}>
                 <div>
                     {
-                        fields.map((member, index) => (
+                        items.map((member, index) => (
                             <div key={index}>
-                                { this.renderListItem({ fields, inputs: children, member, index }) }
-                                { index < fields.length - 1 && <Divider /> }
+                                { this.renderListItem({ items, inputs: children, member, index }) }
+                                { index < items.length - 1 && <Divider /> }
                             </div>
                         ))
                     }
@@ -88,7 +89,7 @@ export class EmbeddedArrayInput extends Component {
                     primary
                     icon={<ContentCreateIcon />}
                     label="Add"
-                    onClick={() => fields.push({})}
+                    onClick={createItem}
                 />
             </div>
         );

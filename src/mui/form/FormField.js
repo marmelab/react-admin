@@ -2,15 +2,7 @@ import React from 'react';
 import { Field } from 'redux-form';
 
 import Labeled from '../input/Labeled';
-import { required } from './validate';
-
-const isRequired = (validate) => {
-    if (validate === required) return true;
-    if (Array.isArray(validate)) {
-        return validate.includes(required);
-    }
-    return false;
-};
+import isRequired from './isRequired';
 
 const FormField = ({ input, ...rest }) => {
     if (input.props.addField) {

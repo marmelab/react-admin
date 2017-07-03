@@ -1,16 +1,8 @@
 import React from 'react';
 import { Field } from 'redux-form';
 
-import Labeled from './Labeled';
-import { required } from '../form/validate';
-
-const isRequired = (validate) => {
-    if (validate === required) return true;
-    if (Array.isArray(validate)) {
-        return validate.includes(required);
-    }
-    return false;
-};
+import Labeled from '../input/Labeled';
+import isRequired from './isRequired';
 
 /**
  * A helper Input component for EmbeddedArrayInput
@@ -20,7 +12,7 @@ const isRequired = (validate) => {
  *
  * @example
  *
- * <PrefixedFormField input={input} prefix={my_prefix} />
+ * <EmbeddedArrayInputFormField input={input} prefix={my_prefix} />
  *
  */
 const EmbeddedArrayInputFormField = ({ input, prefix, ...rest }) => {
