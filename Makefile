@@ -21,7 +21,10 @@ watch: ## continuously compile ES6 files to JS
 doc: ## compile doc as html and launch doc web server
 	@cd docs && jekyll server . --watch
 
-test: test-unit test-e2e ## launch all tests
+lint: ## lint the code and check coding conventions
+	@./node_modules/.bin/eslint .
+
+test: lint test-unit test-e2e ## launch all tests
 
 test-unit: ## launch unit tests
 	@NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/mocha \
