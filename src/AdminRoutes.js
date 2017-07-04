@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import CrudRoute from './CrudRoute';
+import NotFound from './mui/layout/NotFound';
 import Restricted from './auth/Restricted';
 
 const AdminRoutes = ({ customRoutes, resources = [], dashboard }) =>
@@ -51,6 +52,7 @@ const AdminRoutes = ({ customRoutes, resources = [], dashboard }) =>
                   path="/"
                   render={() => <Redirect to={`/${resources[0].name}`} />}
               />}
+        <Route component={NotFound} />
     </Switch>;
 
 export default AdminRoutes;
