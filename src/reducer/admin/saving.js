@@ -7,7 +7,7 @@ import {
     CRUD_UPDATE,
     CRUD_UPDATE_SUCCESS,
     CRUD_UPDATE_FAILURE,
-} from '../actions';
+} from '../../actions';
 
 export default (previousState = false, { type, payload }) => {
     switch (type) {

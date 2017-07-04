@@ -14,7 +14,7 @@ import queryReducer, {
     SET_PAGE,
     SET_FILTER,
     SORT_DESC,
-} from '../../reducer/resource/list/queryReducer';
+} from '../../reducer/admin/resource/list/queryReducer';
 import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
@@ -346,7 +346,7 @@ const getQuery = createSelector(getLocationSearch, locationSearch => {
 });
 
 function mapStateToProps(state, props) {
-    const resourceState = state.admin[props.resource];
+    const resourceState = state.admin.resources[props.resource];
     return {
         query: getQuery(props),
         params: resourceState.list.params,

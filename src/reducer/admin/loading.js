@@ -3,7 +3,7 @@ import {
     FETCH_END,
     FETCH_ERROR,
     FETCH_CANCEL,
-} from '../actions/fetchActions';
+} from '../../actions/fetchActions';
 
 export default (previousState = 0, { type }) => {
     switch (type) {

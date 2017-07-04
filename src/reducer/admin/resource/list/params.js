@@ -1,4 +1,4 @@
-import { CRUD_CHANGE_LIST_PARAMS } from '../../../actions/listActions';
+import { CRUD_CHANGE_LIST_PARAMS } from '../../../../actions/listActions';
 
 const defaultState = {
     sort: null,

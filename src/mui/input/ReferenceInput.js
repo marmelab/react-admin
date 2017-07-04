@@ -7,7 +7,7 @@ import {
     crudGetOne as crudGetOneAction,
     crudGetMatching as crudGetMatchingAction,
 } from '../../actions/dataActions';
-import { getPossibleReferences } from '../../reducer/references/possibleValues';
+import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 const noFilter = () => true;
@@ -241,7 +241,8 @@ ReferenceInput.defaultProps = {
 function mapStateToProps(state, props) {
     const referenceId = props.input.value;
     return {
-        referenceRecord: state.admin[props.reference].data[referenceId],
+        referenceRecord:
+            state.admin.resources[props.reference].data[referenceId],
         matchingReferences: getPossibleReferences(
             state,
             referenceSource(props.resource, props.source),

@@ -1,4 +1,4 @@
-import { CRUD_GET_MATCHING_SUCCESS } from '../../actions/dataActions';
+import { CRUD_GET_MATCHING_SUCCESS } from '../../../actions/dataActions';
 
 const initialState = {};
 
@@ -29,6 +29,6 @@ export const getPossibleReferences = (
         id => possibleValues.includes(id) || possibleValues.unshift(id)
     );
     return possibleValues
-        .map(id => state.admin[reference].data[id])
+        .map(id => state.admin.resources[reference].data[id])
         .filter(r => typeof r !== 'undefined');
 };
