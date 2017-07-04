@@ -128,7 +128,9 @@ ReferenceField.defaultProps = {
 function mapStateToProps(state, props) {
     return {
         referenceRecord:
-            state.admin[props.reference].data[get(props.record, props.source)],
+            state.admin.resources[props.reference].data[
+                get(props.record, props.source)
+            ],
     };
 }
 

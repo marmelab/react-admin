@@ -110,7 +110,7 @@ function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
         data:
-            state.admin[props.resource].data[
+            state.admin.resources[props.resource].data[
                 decodeURIComponent(props.match.params.id)
             ],
         isLoading: state.admin.loading > 0,

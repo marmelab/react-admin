@@ -1,7 +1,7 @@
 import {
     SHOW_NOTIFICATION,
     HIDE_NOTIFICATION,
-} from '../actions/notificationActions';
+} from '../../actions/notificationActions';
 
 const defaultState = {
     text: '',

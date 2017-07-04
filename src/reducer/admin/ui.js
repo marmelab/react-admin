@@ -1,4 +1,4 @@
-import { TOGGLE_SIDEBAR, SET_SIDEBAR_VISIBILITY } from '../actions';
+import { TOGGLE_SIDEBAR, SET_SIDEBAR_VISIBILITY } from '../../actions';
 
 const defaultState = {
     sidebarOpen: false,

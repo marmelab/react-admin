@@ -3,12 +3,13 @@ import {
     FETCH_END,
     FETCH_ERROR,
     FETCH_CANCEL,
-} from '../actions/fetchActions';
+} from '../../actions/fetchActions';
+
 import {
     USER_LOGIN_LOADING,
     USER_LOGIN_SUCCESS,
     USER_LOGIN_FAILURE,
-} from '../actions/authActions';
+} from '../../actions/authActions';
 
 export default (previousState = 0, { type }) => {
     switch (type) {
