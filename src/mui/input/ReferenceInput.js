@@ -157,7 +157,6 @@ export class ReferenceInput extends Component {
             resource,
             label,
             source,
-            reference,
             referenceRecord,
             allowEmpty,
             matchingReferences,

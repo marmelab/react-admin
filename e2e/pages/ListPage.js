@@ -1,6 +1,6 @@
 import { By, until } from 'selenium-webdriver';
 
-module.exports = url => driver => ({
+export default url => driver => ({
     elements: {
         addFilterButton: By.css('.add-filter'),
         appLoader: By.css('.app-loader'),

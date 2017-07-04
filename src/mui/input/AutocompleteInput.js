@@ -81,12 +81,7 @@ export class AutocompleteInput extends Component {
     };
 
     getSuggestion(choice) {
-        const {
-            optionText,
-            optionValue,
-            translate,
-            translateChoice,
-        } = this.props;
+        const { optionText, translate, translateChoice } = this.props;
         const choiceName =
             typeof optionText === 'function'
                 ? optionText(choice)

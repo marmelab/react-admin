@@ -32,7 +32,6 @@ import {
     ShowButton,
     SimpleForm,
     SimpleList,
-    SimpleShowLayout,
     SingleFieldList,
     Tab,
     TabbedForm,
@@ -44,7 +43,7 @@ import {
     number,
     required,
     translate,
-} from 'admin-on-rest';
+} from 'admin-on-rest'; // eslint-disable-line import/no-unresolved
 import RichTextInput from 'aor-rich-text-input';
 import Chip from 'material-ui/Chip';
 

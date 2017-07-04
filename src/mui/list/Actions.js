@@ -43,6 +43,18 @@ const Actions = ({
     );
 };
 
+Actions.propTypes = {
+    basePath: PropTypes.string,
+    displayedFilters: PropTypes.object,
+    filters: PropTypes.element,
+    filterValues: PropTypes.object,
+    hasCreate: PropTypes.bool,
+    refresh: PropTypes.func,
+    resource: PropTypes.string,
+    showFilter: PropTypes.func,
+    theme: PropTypes.object,
+};
+
 export default onlyUpdateForKeys([
     'resource',
     'filters',

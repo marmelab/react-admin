@@ -108,7 +108,6 @@ export class SelectInput extends Component {
             allowEmpty,
             choices,
             elStyle,
-            input,
             isRequired,
             label,
             meta,

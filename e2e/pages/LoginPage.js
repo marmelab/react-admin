@@ -1,6 +1,6 @@
 import { By, until } from 'selenium-webdriver';
 
-module.exports = url => driver => ({
+export default url => driver => ({
     elements: {
         username: By.css("input[name='username']"),
         password: By.css("input[name='password']"),

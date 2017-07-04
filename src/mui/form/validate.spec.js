@@ -17,7 +17,7 @@ describe('Validators', () => {
             inputs
                 .map(input => validator(input, null, { translate: x => x }))
                 .filter(m => m === message),
-            Array.apply(null, Array(inputs.length)).map(x => message)
+            Array.apply(null, Array(inputs.length)).map(() => message)
         );
 
     describe('required', () => {

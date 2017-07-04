@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card';
+import { Card, CardText, CardActions } from 'material-ui/Card';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import ActionCheck from 'material-ui/svg-icons/action/check-circle';
