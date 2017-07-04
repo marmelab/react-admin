@@ -33,10 +33,8 @@ const styles = {
  *     <Edit {...props}>
  *         <SimpleForm>
  *              <EmbeddedArrayInput source="links">
- *                  <SimpleList>
- *                       <TextInput source="url" />
- *                       <TextInput source="context"/>
- *                   </SimpleList>
+ *                   <TextInput source="url" />
+ *                   <TextInput source="context"/>
  *               </EmbeddedArrayInput>
  *         </SimpleForm>
  *     </Edit>
