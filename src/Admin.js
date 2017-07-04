@@ -19,7 +19,6 @@ import localeReducer from './reducer/locale';
 import { crudSaga } from './sideEffect/saga';
 import DefaultLayout from './mui/layout/Layout';
 import Menu from './mui/layout/Menu';
-import NotFound from './mui/layout/NotFound';
 import Login from './mui/auth/Login';
 import Logout from './mui/auth/Logout';
 import TranslationProvider from './i18n/TranslationProvider';
