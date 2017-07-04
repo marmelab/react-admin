@@ -1,5 +1,6 @@
 {
     "env": {
+        "es6": true,
         "browser": true,
         "mocha": true,
         "node": true,
@@ -11,8 +12,12 @@
         "react"
     ],
     "extends": [
+        "eslint:recommended",
         "prettier",
-        "plugin:react/recommended"
+        "prettier/react",
+        "plugin:react/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings"
     ],
     "parser": "babel-eslint",
     "rules": {
@@ -37,6 +42,9 @@
             "off"
         ],
         "react/jsx-filename-extension": [
+            "off"
+        ],
+        "import/no-named-as-default": [
             "off"
         ]
     }

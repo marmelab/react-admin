@@ -1,7 +1,9 @@
 import React from 'react';
 import Labeled from '../input/Labeled';
 
-const Tab = ({ label, icon, children, ...rest }) =>
+const Tab = (
+    { label, icon, children, ...rest } // eslint-disable-line no-unused-vars
+) =>
     <span>
         {React.Children.map(
             children,

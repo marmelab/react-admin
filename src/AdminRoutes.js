@@ -16,7 +16,7 @@ const AdminRoutes = ({ customRoutes, resources = [], dashboard, catchAll }) =>
                     path={route.props.path}
                     component={route.props.component}
                     render={route.props.render}
-                    children={route.props.children}
+                    children={route.props.children} // eslint-disable-line react/no-children-prop
                 />
             )}
         {resources.map(resource =>

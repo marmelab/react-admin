@@ -23,7 +23,8 @@ import {
     Show,
     ShowButton,
     SimpleShowLayout,
-} from 'admin-on-rest';
+} from 'admin-on-rest'; // eslint-disable-line import/no-unresolved
+
 import PersonIcon from 'material-ui/svg-icons/social/person';
 import Avatar from 'material-ui/Avatar';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';

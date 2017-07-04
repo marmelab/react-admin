@@ -1,7 +1,9 @@
 import React from 'react';
 import FormField from './FormField';
 
-const FormTab = ({ label, icon, children, ...rest }) =>
+const FormTab = (
+    { label, icon, children, ...rest } // eslint-disable-line no-unused-vars
+) =>
     <span>
         {React.Children.map(
             children,
