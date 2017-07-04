@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { toggleSidebar, setSidebarVisibility } from '../actions/uiActions';
+import { toggleSidebar, setSidebarVisibility } from '../../actions/uiActions';
 import reducer from './ui';
 
 describe('ui reducer', () => {

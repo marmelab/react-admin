@@ -15,7 +15,7 @@ export default resources => {
         );
     });
     return combineReducers({
-        ...resourceReducers,
+        resources: combineReducers(resourceReducers),
         loading,
         notification,
         references,

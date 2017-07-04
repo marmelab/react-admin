@@ -5,7 +5,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
 
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
-import { getReferencesByIds } from '../../reducer/references/oneToMany';
+import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
 
 /**
  * A container component that fetches records from another resource specified
