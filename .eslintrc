@@ -25,13 +25,7 @@
             }
         ],
         "react/forbid-prop-types": [
-            "warn",
-            {
-                "forbid": [
-                    "any",
-                    "array"
-                ]
-            }
+            "off"
         ],
         "react/prop-types": [
             "warn"
