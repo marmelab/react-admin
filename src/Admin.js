@@ -19,6 +19,7 @@ import localeReducer from './reducer/locale';
 import { crudSaga } from './sideEffect/saga';
 import DefaultLayout from './mui/layout/Layout';
 import Menu from './mui/layout/Menu';
+import NotFound from './mui/layout/NotFound';
 import Login from './mui/auth/Login';
 import Logout from './mui/auth/Logout';
 import TranslationProvider from './i18n/TranslationProvider';
@@ -35,6 +36,7 @@ const Admin = ({
     locale,
     messages = {},
     menu,
+    notFound,
     restClient,
     theme,
     title = 'Admin on REST',
@@ -96,6 +98,7 @@ const Admin = ({
                                             resources,
                                             hasDashboard: !!dashboard,
                                         }),
+                                        notFound,
                                         resources,
                                         title,
                                         theme,
@@ -126,6 +129,7 @@ Admin.propTypes = {
     loginPage: componentPropType,
     logoutButton: componentPropType,
     menu: componentPropType,
+    notFound: componentPropType,
     restClient: PropTypes.func,
     theme: PropTypes.object,
     title: PropTypes.node,
