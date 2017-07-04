@@ -6,7 +6,7 @@ import CrudRoute from './CrudRoute';
 import NotFound from './mui/layout/NotFound';
 import Restricted from './auth/Restricted';
 
-const AdminRoutes = ({ customRoutes, resources = [], dashboard, notFound }) =>
+const AdminRoutes = ({ customRoutes, resources = [], dashboard, catchAll }) =>
     <Switch>
         {customRoutes &&
             customRoutes.map((route, index) =>
@@ -53,7 +53,7 @@ const AdminRoutes = ({ customRoutes, resources = [], dashboard, notFound }) =>
                   path="/"
                   render={() => <Redirect to={`/${resources[0].name}`} />}
               />}
-        <Route component={notFound || NotFound} />
+        <Route component={catchAll || NotFound} />
     </Switch>;
 
 const componentPropType = PropTypes.oneOfType([
@@ -62,10 +62,10 @@ const componentPropType = PropTypes.oneOfType([
 ]);
 
 AdminRoutes.propTypes = {
+    catchAll: componentPropType,
     customRoutes: PropTypes.array,
     resources: PropTypes.array,
     dashboard: componentPropType,
-    notFound: componentPropType,
 };
 
 export default AdminRoutes;

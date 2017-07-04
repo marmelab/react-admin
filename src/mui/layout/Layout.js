@@ -72,7 +72,7 @@ class Layout extends Component {
             dashboard,
             isLoading,
             menu,
-            notFound,
+            catchAll,
             resources,
             theme,
             title,
@@ -114,7 +114,7 @@ class Layout extends Component {
                                     resources={resources}
                                     authClient={authClient}
                                     dashboard={dashboard}
-                                    notFound={notFound}
+                                    catchAll={catchAll}
                                 />
                             </div>
                             <Sidebar theme={theme}>
@@ -144,11 +144,11 @@ const componentPropType = PropTypes.oneOfType([
 
 Layout.propTypes = {
     authClient: PropTypes.func,
+    catchAll: componentPropType,
     customRoutes: PropTypes.array,
     dashboard: componentPropType,
     isLoading: PropTypes.bool.isRequired,
     menu: PropTypes.element,
-    notFound: componentPropType,
     resources: PropTypes.array,
     setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.node.isRequired,

@@ -36,7 +36,7 @@ const styles = {
     },
     toolbar: {
         textAlign: 'center',
-        marginTop: '1em',
+        marginTop: '2em',
     },
 };
 
