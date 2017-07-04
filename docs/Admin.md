@@ -29,7 +29,7 @@ Here are all the props accepted by the component:
 * [`restClient`](#restclient)
 * [`title`](#title)
 * [`dashboard`](#dashboard)
-* [`notFound](#notfound)
+* [`catchAll](#catchall)
 * [`menu`](#menu)
 * [`theme`](#theme)
 * [`appLayout`](#applayout)
@@ -109,13 +109,13 @@ const App = () => (
 
 ![Custom home page](http://static.marmelab.com/admin-on-rest/dashboard.png)
 
-## `notFound`
+## `catchAll`
 
 When users type URLs that don't match any of the children `<Resource>` components, they see a default "Not Found" page. 
 
 ![Not Found](./img/not-found.png)
 
-You can customize this page to use the component of your choice by passing it as the `notFound` prop. To fit in the general design, use Material UI's `<Card>` component, and admin-on-rest's `<ViewTitle>` component:
+You can customize this page to use the component of your choice by passing it as the `catchAll` prop. To fit in the general design, use Material UI's `<Card>` component, and admin-on-rest's `<ViewTitle>` component:
 
 ```jsx
 // in src/NotFound.js
@@ -138,13 +138,13 @@ export default () => (
 import NotFound from './NotFound';
 
 const App = () => (
-    <Admin notFound={NotFound} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin catchAll={NotFound} restClient={simpleRestClient('http://path.to.my.api')}>
         // ...
     </Admin>
 );
 ```
 
-**Tip**: If your custom `notFound` component contains react-router `<Route>` components, this allows you to register new routes displayed within the admin-on-rest layout easily. Note that these routes will match *after* all the admin-on-rest resource routes have been tested. To add custom routes *before* the admin-on-rest ones, and therefore override the default resource routes, use the [`customRoutes` prop](#customroutes) instead.
+**Tip**: If your custom `catchAll` component contains react-router `<Route>` components, this allows you to register new routes displayed within the admin-on-rest layout easily. Note that these routes will match *after* all the admin-on-rest resource routes have been tested. To add custom routes *before* the admin-on-rest ones, and therefore override the default resource routes, use the [`customRoutes` prop](#customroutes) instead.
 
 ## `menu`
 
@@ -350,7 +350,7 @@ Now, when a user browses to `/foo` or `/bar`, the components you defined will ap
 
 **Tip**: It's up to you to create a [custom menu](#applayout) entry, or custom buttons, to lead to your custom pages.
 
-**Tip**: Your custom pages take precedence over admin-on-rest's own routes. That means that `customRoutes` lets you override any route you want! If you want to add routes *after* all the admin-on-rest routes, use the [`notFound` prop](#notfound) instead.
+**Tip**: Your custom pages take precedence over admin-on-rest's own routes. That means that `customRoutes` lets you override any route you want! If you want to add routes *after* all the admin-on-rest routes, use the [`catchAll` prop](#catchall) instead.
 
 **Tip**: To look like other admin-on-rest pages, your custom pages should have the following structure:
 
