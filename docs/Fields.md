@@ -406,6 +406,15 @@ You can also prevent `<ReferenceField>` from adding link to children by setting 
 </ReferenceField>
 ```
 
+If you are using the field in `<Edit>` or `<Show>` page, you might want to display the label associated with the field you are displaying. In that case, simply add the `addLabel` prop to `<ReferenceField>` to make the `source` prop visible on top of the field, or the optional `label` prop if you want to personalize it.
+
+```jsx
+// Display 'User' Label on top of the TexField
+<ReferenceField addLabel label="User" source="userId" reference="users">
+    <TextField source="name" />
+</ReferenceField>
+```
+
 **Tip**: Admin-on-rest uses `CRUD_GET_ONE_REFERENCE` action to accumulate and deduplicate the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
 
 ```jsx

@@ -219,7 +219,7 @@ In admin-on-rest, side effects are handled by Sagas. [Redux-saga](https://redux-
 
 ```jsx
 // in src/comments/commentSaga.js
-import { put, takeEvery } from 'redux-saga/effects';
+import { put, takeEvery, all } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { showNotification } from 'admin-on-rest';
 
