@@ -6,17 +6,17 @@ const isEmpty = value => (typeof value === 'undefined' || value === null || valu
 
 export const required = (value, _, props) => isEmpty(value) ? props.translate('aor.validation.required') : undefined;
 
-export const minLength = min => (value, _, props) =>
-    value && value.length < min ? props.translate('aor.validation.minLength', { min }) : undefined;
+export const minLength = (min, message) => (value, _, props) =>
+    value && value.length < min ? props.translate(message || 'aor.validation.minLength', { min }) : undefined;
 
-export const maxLength = max => (value, _, props) =>
-    value && value.length > max ? props.translate('aor.validation.maxLength', { max }) : undefined;
+export const maxLength = (max, message) => (value, _, props) =>
+    value && value.length > max ? props.translate(message || 'aor.validation.maxLength', { max }) : undefined;
 
-export const minValue = min => (value, _, props) =>
-    value && value < min ? props.translate('aor.validation.minValue', { min }) : undefined;
+export const minValue = (min, message) => (value, _, props) =>
+    value && value < min ? props.translate(message || 'aor.validation.minValue', { min }) : undefined;
 
-export const maxValue = max => (value, _, props) =>
-    value && value > max ? props.translate('aor.validation.maxValue', { max }) : undefined;
+export const maxValue = (max, message) => (value, _, props) =>
+    value && value > max ? props.translate(message || 'aor.validation.maxValue', { max }) : undefined;
 
 export const number = (value, _, props) => value && isNaN(Number(value)) ? props.translate('aor.validation.number') : undefined;
 

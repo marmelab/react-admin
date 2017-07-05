@@ -88,9 +88,11 @@ ReferenceArrayField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
+const emptyIds = [];
+
 const mapStateToProps = (state, props) => {
     const { record, source, reference } = props;
-    const ids = get(record, source);
+    const ids = get(record, source) || emptyIds;
     return {
         ids,
         data: getReferencesByIds(state, reference, ids)

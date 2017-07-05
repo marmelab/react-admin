@@ -24,6 +24,7 @@ import {
     ReferenceArrayInput,
     Responsive,
     RichTextField,
+    SaveButton,
     SelectArrayInput,
     SelectField,
     SelectInput,
@@ -33,9 +34,12 @@ import {
     SimpleList,
     SimpleShowLayout,
     SingleFieldList,
+    Tab,
     TabbedForm,
+    TabbedShowLayout,
     TextField,
     TextInput,
+    Toolbar,
     minValue,
     number,
     required,
@@ -92,10 +96,14 @@ export const PostList = ({ ...props }) => (
 
 const PostTitle = translate(({ record, translate }) => <span>{record ? translate('post.edit.title', { title: record.title }) : ''}</span>);
 
+const PostCreateToolbar = props => <Toolbar {...props} >
+    <SaveButton label="post.action.save_and_show" redirect="show" submitOnEnter={true} />
+    <SaveButton label="post.action.save_and_add" redirect={false} submitOnEnter={false} raised={false} />
+</Toolbar>;
+
 export const PostCreate = ({ ...props }) => (
     <Create {...props}>
-        <SimpleForm
-            defaultValue={{ average_note: 0 }} validate={(values) => {
+        <SimpleForm toolbar={<PostCreateToolbar />} defaultValue={{ average_note: 0 }} validate={(values) => {
                 const errors = {};
                 ['title', 'teaser'].forEach((field) => {
                     if (!values[field]) {
@@ -176,33 +184,40 @@ export const PostEdit = ({ ...props }) => (
 
 export const PostShow = ({ ...props }) => (
     <Show title={<PostTitle />} {...props}>
-        <SimpleShowLayout>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="teaser" />
-            <RichTextField source="body" stripTags={false} />
-            <DateField source="published_at" style={{ fontStyle: 'italic' }} />
-            <TextField source="average_note" />
-            <SelectField
-                source="category" choices={[
-                { name: 'Tech', id: 'tech' },
-                { name: 'Lifestyle', id: 'lifestyle' },
-                ]}
-            />
-            <ReferenceManyField label="resources.posts.fields.comments" reference="comments" target="post_id" sort={{ field: 'created_at', order: 'DESC' }}>
-                <Datagrid selectable={false}>
-                    <DateField source="created_at" />
-                    <TextField source="author.name" />
-                    <TextField source="body" />
-                    <EditButton />
-                </Datagrid>
-            </ReferenceManyField>
-            <ReferenceArrayField reference="tags" source="tags">
-                <SingleFieldList>
-                    <ChipField source="name" />
-                </SingleFieldList>
-            </ReferenceArrayField>
-            <TextField source="views" />
-        </SimpleShowLayout>
+        <TabbedShowLayout>
+            <Tab label="post.form.summary">
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="teaser" />
+            </Tab>
+            <Tab label="post.form.body">
+                <RichTextField source="body" stripTags={false} label="" addLabel={false} />
+            </Tab>
+            <Tab label="post.form.miscellaneous">
+                <ReferenceArrayField reference="tags" source="tags">
+                    <SingleFieldList>
+                        <ChipField source="name" />
+                    </SingleFieldList>
+                </ReferenceArrayField>
+                <DateField source="published_at" />
+                <SelectField source="category" choices={[
+                    { name: 'Tech', id: 'tech' },
+                    { name: 'Lifestyle', id: 'lifestyle' },
+                ]} />
+                <NumberField source="average_note" />
+                <BooleanField source="commentable" />
+                <TextField source="views" />
+            </Tab>
+            <Tab label="post.form.comments">
+                <ReferenceManyField label="resources.posts.fields.comments" reference="comments" target="post_id" sort={{ field: 'created_at', order: 'DESC' }}>
+                    <Datagrid selectable={false}>
+                        <DateField source="created_at" />
+                        <TextField source="author.name" />
+                        <TextField source="body" />
+                        <EditButton />
+                    </Datagrid>
+                </ReferenceManyField>
+            </Tab>
+        </TabbedShowLayout>
     </Show>
 );

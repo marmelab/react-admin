@@ -18,7 +18,6 @@ export class Edit extends Component {
             record: props.data,
         };
         this.previousKey = 0;
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -43,6 +42,10 @@ export class Edit extends Component {
         return location.pathname.split('/').slice(0, -1).join('/');
     }
 
+    defaultRedirectRoute() {
+        return 'list';
+    }
+
     updateData(resource = this.props.resource, id = this.props.id) {
         this.props.crudGetOne(resource, id, this.getBasePath());
     }
@@ -53,8 +56,8 @@ export class Edit extends Component {
         this.updateData();
     }
 
-    handleSubmit(record) {
-        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath());
+    save = (record, redirect) => {
+        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath(), redirect);
     }
 
     render() {
@@ -91,11 +94,12 @@ export class Edit extends Component {
                     })}
                     <ViewTitle title={titleElement} />
                     {data && !isRefreshing && React.cloneElement(children, {
-                        onSubmit: this.handleSubmit,
+                        save: this.save,
                         resource,
                         basePath,
                         record: data,
                         translate,
+                        redirect: typeof children.props.redirect === 'undefined' ? this.defaultRedirectRoute() : children.props.redirect,
                     })}
                     {!data && <CardText>&nbsp;</CardText>}
                 </Card>

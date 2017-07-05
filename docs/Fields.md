@@ -184,6 +184,61 @@ The optional `title` prop points to the picture title property, used for both `a
 
 If passed value is an existing path within your JSON object, then it uses the object attribute. Otherwise, it considers its value as an hard-written title.
 
+
+If the record actually contains an array of images in its property defined by the `source` prop, the `src` prop will be needed to determine the `src` value of the images, for example:
+
+```js
+// This is the record
+{
+    pictures: [
+        { url: 'image1.jpg', desc: 'First image' },
+        { url: 'image2.jpg', desc: 'Second image' },
+    ],
+}
+
+<ImageField source="pictures" src="url" title="desc" />
+```
+
+## `<FileField>`
+
+If you need to display a file provided by your API, you can use the `<FileField />` component:
+
+```jsx
+import { FileField } from 'admin-on-rest';
+
+<FileField source="url" title="title" />
+```
+
+This field is also generally used within an [<FileInput />](http://marmelab.com/admin-on-rest/Inputs.html#fileinput) component to display preview.
+
+The optional `title` prop points to the file title property, used for `title` attributes. It can either be an hard-written string, or a path within your JSON object:
+
+```jsx
+// { file: { url: 'doc.pdf', title: 'Presentation' } }
+
+// Title would be "file.title", hence "Presentation"
+<FileField source="file.url" title="file.title" />
+
+// Title would be "File", as "File" is not a path in previous given object
+<FileField source="file.url" title="File" />
+```
+
+If passed value is an existing path within your JSON object, then it uses the object attribute. Otherwise, it considers its value as an hard-written title.
+
+If the record actually contains an array of files in its property defined by the `source` prop, the `src` prop will be needed to determine the `href` value of the links, for example:
+
+```js
+// This is the record
+{
+    files: [
+        { url: 'image1.jpg', desc: 'First image' },
+        { url: 'image2.jpg', desc: 'Second image' },
+    ],
+}
+
+<FileField source="files" src="url" title="desc" />
+```
+
 ## `<NumberField>`
 
 Displays a number formatted according to the browser locale, right aligned.
@@ -347,6 +402,15 @@ You can also prevent `<ReferenceField>` from adding link to children by setting 
 ```jsx
 // No link
 <ReferenceField label="User" source="userId" reference="users" linkType={false}>
+    <TextField source="name" />
+</ReferenceField>
+```
+
+If you are using the field in `<Edit>` or `<Show>` page, you might want to display the label associated with the field you are displaying. In that case, simply add the `addLabel` prop to `<ReferenceField>` to make the `source` prop visible on top of the field, or the optional `label` prop if you want to personalize it.
+
+```jsx
+// Display 'User' Label on top of the TexField
+<ReferenceField addLabel label="User" source="userId" reference="users">
     <TextField source="name" />
 </ReferenceField>
 ```
@@ -535,11 +599,11 @@ export const PostShow = (props) => (
                     <TextField source="id" />
                     <TextField source="name" />
                     <ShowButton />
-                </SingleFieldList>
+                </Datagrid>
             </ReferenceArrayField>
             <EditButton />
         </SimpleShowLayout>
-    </List>
+    </Show>
 );
 ```
 

@@ -16,7 +16,16 @@ class Create extends Component {
         return location.pathname.split('/').slice(0, -1).join('/');
     }
 
-    handleSubmit = (record) => this.props.crudCreate(this.props.resource, record, this.getBasePath());
+    defaultRedirectRoute() {
+        const { hasShow, hasEdit } = this.props;
+        if (hasEdit) return 'edit';
+        if (hasShow) return 'show';
+        return 'list';
+    }
+
+    save = (record, redirect) => {
+        this.props.crudCreate(this.props.resource, record, this.getBasePath(), redirect);
+    }
 
     render() {
         const { actions = <DefaultActions />, children, isLoading, resource, title, translate } = this.props;
@@ -40,11 +49,12 @@ class Create extends Component {
                     })}
                     <ViewTitle title={titleElement} />
                     {React.cloneElement(children, {
-                        onSubmit: this.handleSubmit,
+                        save: this.save,
                         resource,
                         basePath,
                         record: {},
                         translate,
+                        redirect: typeof children.props.redirect === 'undefined' ? this.defaultRedirectRoute() : children.props.redirect,
                     })}
                 </Card>
             </div>

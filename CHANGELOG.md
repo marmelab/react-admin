@@ -1,17 +1,52 @@
 # Changelog
 
+## v1.2.0
+
+Read the [v1.1 and v1.2 announcement on the marmelab blog](https://marmelab.com/blog/2017/06/29/admin-on-rest-1-2.html).
+
+* Add ability to override redirect behavior on save for `<Create>` and `<Edit>` views ([wesley6j](https://github.com/wesley6j))
+* Add refresh button to `<Show>` view ([djhi](https://github.com/djhi))
+* Add asterisk to label on required `Input` ([djhi](https://github.com/djhi))
+* Add `<FileInput>` ([djhi](https://github.com/djhi))
+* Add sort feature to `<ReferenceManyField>` ([wesley6j](https://github.com/wesley6j))
+* Add ability to use custom history in `<Admin>` ([fzaninotto](https://github.com/fzaninotto))
+* Add `<TabbedShowLayout>` to mirror `<TabbedForm>` ([remi13131](https://github.com/remi13131))
+* Add `options` prop to `<BooleanInput>` and pass them to mui `<Toggle>` ([djhi](https://github.com/djhi))
+* Add `AOR/` prefix to Redux actions ([ThieryMichel](https://github.com/ThieryMichel))
+* Add deep path support for `optionText` and `optionValue` props the `Input` components used as `Reference` children ([mtakayuki](https://github.com/mtakayuki))
+* Add ability to override `<SimpleShowLayout>` container styles ([djhi](https://github.com/djhi))
+* Add `<MenuItemLink>` to fix bad click handling of menu on mobile ([djhi](https://github.com/djhi))
+* Add `aor-firebase-client` to the list of REST clients ([sidferreira](https://github.com/sidferreira))
+* Update redux-saga to 0.15.3 ([dervos](https://github.com/dervos))
+* Fix filter in `<ReferenceInput>` not taken into account when `<AutocompleteInput>` is filled ([djhi](https://github.com/djhi))
+* Fix `<ReferenceArrayField>` when ids is null ([wesley6j](https://github.com/wesley6j))
+* Fix missing translation helper in `<Show>` view ([djhi](https://github.com/djhi))
+* Fix code highlighting on REAMDE ([diegohaz](https://github.com/diegohaz))
+* Fix custom REST client list format for better readability ([fzaninotto](https://github.com/fzaninotto))
+
+## v1.1.2
+
+* Fix a typo in tutorial ([calebhaye](https://github.com/calebhaye))
+* Add Polish translation ([KamilDzierbicki](https://github.com/KamilDzierbicki))
+* Fix a typo in tutorial ([ferhatelmas](https://github.com/ferhatelmas))
+* Fix `<SelectArrayInput>` default value for filters ([djhi](https://github.com/djhi))
+* Add Thai translation ([liverbool](https://github.com/liverbool))
+* Fix duplicate `resource` propType in `<FilterButton>` ([thiagoterleski](https://github.com/thiagoterleski))
+* Fix `<SelectArrayInput>` example usage in tags for post ([wesley6j](https://github.com/wesley6j))
+* Fix `<List>` layout on mobile ([sebastien-cleany](https://github.com/sebastien-cleany))
+
 ## v1.1.1
 
-* Add Show view documentation ((djhi)[https://github.com/djhi])
-* Split Admin and Resource docs for better readability ((fzaninotto)[https://github.com/fzaninotto])
-* Fix flaky end-to-end tests ((dervos)[https://github.com/dervos])
-* Fix `<DisabledInput>` not showing default value ((wesley6j)[https://github.com/wesley6j])
-* Fix `<SelectArrayInput>` prop types ((floo51)[https://github.com/floo51])
-* Fix `<DateInput>` for some locales ((wesley6j)[https://github.com/wesley6j])
-* Fix support for null and false value in `<SelectInput>` options ((wesley6j)[https://github.com/wesley6j])
-* Fix missing `<FileInput>` mention in documentation reference ((djhi)[https://github.com/djhi])
-* Fix duplicate documentation in Ecosystem ((djhi)[https://github.com/djhi])
-* Fix typos on Theming documentation ((martjanz)[https://github.com/martjanz])
+* Add Show view documentation ([djhi](https://github.com/djhi))
+* Split Admin and Resource docs for better readability ([fzaninotto](https://github.com/fzaninotto))
+* Fix flaky end-to-end tests ([dervos](https://github.com/dervos))
+* Fix `<DisabledInput>` not showing default value ([wesley6j](https://github.com/wesley6j))
+* Fix `<SelectArrayInput>` prop types ([floo51](https://github.com/floo51))
+* Fix `<DateInput>` for some locales ([wesley6j](https://github.com/wesley6j))
+* Fix support for null and false value in `<SelectInput>` options ([wesley6j](https://github.com/wesley6j))
+* Fix missing `<FileInput>` mention in documentation reference ([djhi](https://github.com/djhi))
+* Fix duplicate documentation in Ecosystem ([djhi](https://github.com/djhi))
+* Fix typos on Theming documentation ([martjanz](https://github.com/martjanz))
 
 ## v1.1.0
 
@@ -58,6 +93,8 @@
 * Add link to sandbox in the Contributing documentation ([fzaninotto](https://github.com/fzaninotto))
 
 ## v1.0.0
+
+Read the [v1.0 announcement on the marmelab blog](https://marmelab.com/blog/2017/04/26/admin-on-rest-1-0.html).
 
 * [BC Break] Switch validation system to redux-form native validation (breaks all input validation)
 * [BC Break] Move error mapping (HTTP to REST) to `authClient` (breaks HTTP 401 and 403 error handling)
@@ -131,6 +168,8 @@
 * Update Webpack example config ([velociwabbit](https://github.com/velociwabbit))
 
 ## v0.9.0
+
+Read the [v0.9 announcement on the marmelab blog](https://marmelab.com/blog/2017/03/10/admin-on-rest-0-9.html)
 
 * [BC Break] Update REST response format to always expect a `data` key
 * Add mobile UI (Sidebar, AppBar, Datagrid, actions, form action)
