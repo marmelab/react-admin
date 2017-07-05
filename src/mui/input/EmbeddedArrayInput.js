@@ -33,15 +33,18 @@ const styles = {
  *     <Edit {...props}>
  *         <SimpleForm>
  *              <EmbeddedArrayInput source="links">
- *                   <TextInput source="url" />
- *                   <TextInput source="context"/>
+ *                  <TextInput source="url" />
+ *                  <TextInput source="context"/>
+ *                  <ReferenceInput resource="tags" reference="tags" source="tag_id" >
+ *                      <SelectInput optionText="name" />
+ *                  </ReferenceInput>
  *               </EmbeddedArrayInput>
  *         </SimpleForm>
  *     </Edit>
  * );
  */
 export class EmbeddedArrayInput extends Component {
-    renderListItem = ({ items, inputs, member, index }) => {
+    renderListItem = ({ items, inputs, member, index, ...rest }) => {
         const removeItem = () => items.remove(index);
         return (
             <div className="EmbeddedArrayInputItemContainer">
@@ -58,6 +61,7 @@ export class EmbeddedArrayInput extends Component {
                                 <EmbeddedArrayInputFormField
                                     input={input}
                                     prefix={member}
+                                    {...rest}
                                 />
                             </div>
                     )}
@@ -74,7 +78,7 @@ export class EmbeddedArrayInput extends Component {
     };
 
     renderList = ({ fields: items }) => {
-        const { children, elStyle } = this.props;
+        const { children, elStyle, ...rest } = this.props;
         const createItem = () => items.push();
         return (
             <div className="EmbeddedArrayInputContainer" style={elStyle}>
@@ -86,6 +90,7 @@ export class EmbeddedArrayInput extends Component {
                                 inputs: children,
                                 member,
                                 index,
+                                ...rest,
                             })}
                             {index < items.length - 1 && <Divider />}
                         </div>
