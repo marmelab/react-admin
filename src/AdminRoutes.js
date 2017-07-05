@@ -1,10 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import CrudRoute from './CrudRoute';
+import NotFound from './mui/layout/NotFound';
 import Restricted from './auth/Restricted';
 
-const AdminRoutes = ({ customRoutes, resources = [], dashboard }) =>
+const AdminRoutes = ({ customRoutes, resources = [], dashboard, catchAll }) =>
     <Switch>
         {customRoutes &&
             customRoutes.map((route, index) =>
@@ -51,6 +53,19 @@ const AdminRoutes = ({ customRoutes, resources = [], dashboard }) =>
                   path="/"
                   render={() => <Redirect to={`/${resources[0].name}`} />}
               />}
+        <Route component={catchAll || NotFound} />
     </Switch>;
+
+const componentPropType = PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.string,
+]);
+
+AdminRoutes.propTypes = {
+    catchAll: componentPropType,
+    customRoutes: PropTypes.array,
+    resources: PropTypes.array,
+    dashboard: componentPropType,
+};
 
 export default AdminRoutes;

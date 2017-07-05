@@ -11,6 +11,7 @@ export default {
             refresh: 'Refresh',
             add_filter: 'Add filter',
             remove_filter: 'Remove this filter',
+            back: 'Go Back',
         },
         boolean: {
             true: 'Yes',
@@ -23,6 +24,7 @@ export default {
             create: 'Create %{name}',
             delete: 'Delete %{name} #%{id}',
             dashboard: 'Dashboard',
+            not_found: 'Not Found',
         },
         input: {
             file: {
@@ -42,6 +44,8 @@ export default {
             no: 'No',
             are_you_sure: 'Are you sure ?',
             about: 'About',
+            not_found:
+                'Either you typed a wrong URL, or you followed a bad link',
         },
         navigation: {
             no_results: 'No results found',
