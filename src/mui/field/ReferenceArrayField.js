@@ -55,7 +55,7 @@ export class ReferenceArrayField extends Component {
     }
 
     render() {
-        const { resource, reference, data, ids, children, basePath } = this.props;
+        const { resource, reference, data, ids, children, basePath, isLoading } = this.props;
         if (React.Children.count(children) !== 1) {
             throw new Error('<ReferenceArrayField> only accepts a single child (like <Datagrid>)');
         }
@@ -69,7 +69,9 @@ export class ReferenceArrayField extends Component {
             resource: reference,
             ids,
             data,
+            isLoading,
             basePath: referenceBasePath,
+            currentSort: {},
         });
     }
 }
@@ -81,6 +83,7 @@ ReferenceArrayField.propTypes = {
     crudGetManyAccumulate: PropTypes.func.isRequired,
     data: PropTypes.object,
     ids: PropTypes.array.isRequired,
+    isLoading: PropTypes.bool,
     label: PropTypes.string,
     record: PropTypes.object.isRequired,
     reference: PropTypes.string.isRequired,
@@ -94,17 +97,18 @@ const mapStateToProps = (state, props) => {
     const { record, source, reference } = props;
     const ids = get(record, source) || emptyIds;
     return {
+        data: getReferencesByIds(state, reference, ids),
         ids,
-        data: getReferencesByIds(state, reference, ids)
+        isLoading: state.admin.loading > 0,
     };
 };
 
 const ConnectedReferenceArrayField = connect(mapStateToProps, {
-    crudGetManyAccumulate: crudGetManyAccumulateAction
+    crudGetManyAccumulate: crudGetManyAccumulateAction,
 })(ReferenceArrayField);
 
 ConnectedReferenceArrayField.defaultProps = {
-    addLabel: true
+    addLabel: true,
 };
 
 export default ConnectedReferenceArrayField;
