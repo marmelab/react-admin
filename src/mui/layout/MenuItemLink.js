@@ -17,10 +17,10 @@ export class MenuItemLinkComponent extends Component {
     };
     render() {
         const {
-            history, // eslint-disable-line no-unused-vars
-            match, // eslint-disable-line no-unused-vars
-            location, // eslint-disable-line no-unused-vars
-            staticContext, // eslint-disable-line no-unused-vars
+            history,
+            match,
+            location,
+            staticContext,
             ...props
         } = this.props;
 

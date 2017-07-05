@@ -46,6 +46,12 @@
         ],
         "import/no-named-as-default": [
             "off"
+        ],
+        "no-unused-vars": [
+            "error",
+            {
+                "ignoreRestSiblings": true
+            }
         ]
     }
 }
