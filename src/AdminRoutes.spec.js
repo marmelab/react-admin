@@ -78,7 +78,7 @@ describe('<AdminRoutes>', () => {
         assert.equal(wrapper.html(), '<div>PostDelete</div>');
     });
     it('should accept custom routes', () => {
-        const customRoutes = [<Route path="/custom" component={Custom} />];
+        const customRoutes = [<Route path="/custom" component={Custom} />]; // eslint-disable-line react/jsx-key
         const wrapper = render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/custom']}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import assert from 'assert';
-import { shallow, render } from 'enzyme';
+import { shallow } from 'enzyme';
 import LongTextInput from './LongTextInput';
 
 describe('<LongTextInput />', () => {

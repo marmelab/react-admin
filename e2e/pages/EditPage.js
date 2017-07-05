@@ -1,6 +1,6 @@
 import { By, until } from 'selenium-webdriver';
 
-module.exports = url => driver => ({
+export default url => driver => ({
     elements: {
         appLoader: By.css('.app-loader'),
         input: name => By.css(`.edit-page input[name='${name}']`),

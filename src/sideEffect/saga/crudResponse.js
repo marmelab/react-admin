@@ -85,7 +85,7 @@ function* handleResponse({ type, requestPayload, error, payload }) {
         case CRUD_CREATE_FAILURE:
         case CRUD_UPDATE_FAILURE:
         case CRUD_DELETE_FAILURE: {
-            console.error(error);
+            console.error(error); // eslint-disable-line no-console
             const errorMessage =
                 typeof error === 'string'
                     ? error
