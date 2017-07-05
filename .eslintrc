@@ -20,6 +20,13 @@
         "plugin:import/warnings"
     ],
     "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "modules": true
+        }
+    },
     "rules": {
         "prettier/prettier": [
             "error",
@@ -33,6 +40,9 @@
             "off"
         ],
         "react/prop-types": [
+            "warn"
+        ],
+        "react/jsx-no-bind": [
             "warn"
         ],
         "react/jsx-indent": [
@@ -53,5 +63,20 @@
                 "ignoreRestSiblings": true
             }
         ]
-    }
+    },
+    "overrides": [
+        {
+            "files": [
+                "**/*.spec.js"
+            ],
+            "rules": {
+                "react/jsx-no-bind": [
+                    "off"
+                ],
+                "react/prop-types": [
+                    "off"
+                ]
+            }
+        }
+    ]
 }
