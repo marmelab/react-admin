@@ -37,6 +37,13 @@ import linkToRecord from '../../util/linkToRecord';
  * </ReferenceField>
  */
 export class ReferenceField extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showWaitBar: !this.props.allowEmpty,
+        }
+    }
+
     componentDidMount() {
         this.fetchReference(this.props);
     }
@@ -51,6 +58,7 @@ export class ReferenceField extends Component {
         const source = get(props.record, props.source);
         if (source !== null && typeof source !== 'undefined') {
             this.props.crudGetManyAccumulate(props.reference, [source]);
+            this.setState({showWaitBar: true});
         }
     }
 
@@ -59,7 +67,7 @@ export class ReferenceField extends Component {
         if (React.Children.count(children) !== 1) {
             throw new Error('<ReferenceField> only accepts a single child');
         }
-        if (!referenceRecord && !allowEmpty) {
+        if (this.state.showWaitBar && !referenceRecord) {
             return <LinearProgress />;
         }
         const rootPath = basePath.split('/').slice(0, -1).join('/');
