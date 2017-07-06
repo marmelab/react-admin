@@ -100,6 +100,8 @@ ReferenceField.propTypes = {
 };
 
 ReferenceField.defaultProps = {
+    referenceRecord: null,
+    record: {},
     allowEmpty: false,
     linkType: 'edit',
 };
@@ -116,8 +118,6 @@ const ConnectedReferenceField = connect(mapStateToProps, {
 
 ConnectedReferenceField.defaultProps = {
     addLabel: true,
-    referenceRecord: null,
-    record: {},
 };
 
 export default ConnectedReferenceField;
