@@ -108,7 +108,7 @@ ReferenceField.propTypes = {
 };
 
 ReferenceField.defaultProps = {
-    allowEmpty: false,
+    allowEmpty: true,
     linkType: 'edit',
 };
 
