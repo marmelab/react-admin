@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Children, Component } from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
@@ -86,9 +86,16 @@ TabbedForm.defaultProps = {
 };
 
 const enhance = compose(
-    connect((state, props) => ({
-        initialValues: getDefaultValues(state, props),
-    })),
+    connect((state, props) => {
+        const children = Children.toArray(props.children).reduce((acc, child) => [
+            ...acc,
+            ...Children.toArray(child.props.children),
+        ], []);
+
+        return {
+            initialValues: getDefaultValues(state, { ...props, children }),
+        };
+    }),
     reduxForm({
         form: 'record-form',
         enableReinitialize: true,
