@@ -1,5 +1,6 @@
 {
     "env": {
+        "es6": true,
         "browser": true,
         "mocha": true,
         "node": true,
@@ -11,10 +12,21 @@
         "react"
     ],
     "extends": [
+        "eslint:recommended",
         "prettier",
-        "plugin:react/recommended"
+        "prettier/react",
+        "plugin:react/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings"
     ],
     "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "modules": true
+        }
+    },
     "rules": {
         "prettier/prettier": [
             "error",
@@ -25,15 +37,12 @@
             }
         ],
         "react/forbid-prop-types": [
-            "warn",
-            {
-                "forbid": [
-                    "any",
-                    "array"
-                ]
-            }
+            "off"
         ],
         "react/prop-types": [
+            "warn"
+        ],
+        "react/jsx-no-bind": [
             "warn"
         ],
         "react/jsx-indent": [
@@ -44,6 +53,30 @@
         ],
         "react/jsx-filename-extension": [
             "off"
+        ],
+        "import/no-named-as-default": [
+            "off"
+        ],
+        "no-unused-vars": [
+            "error",
+            {
+                "ignoreRestSiblings": true
+            }
         ]
-    }
+    },
+    "overrides": [
+        {
+            "files": [
+                "**/*.spec.js"
+            ],
+            "rules": {
+                "react/jsx-no-bind": [
+                    "off"
+                ],
+                "react/prop-types": [
+                    "off"
+                ]
+            }
+        }
+    ]
 }

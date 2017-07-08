@@ -7,7 +7,7 @@ import {
     crudGetMany as crudGetManyAction,
     crudGetMatching as crudGetMatchingAction,
 } from '../../actions/dataActions';
-import { getPossibleReferences } from '../../reducer/references/possibleValues';
+import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
@@ -244,7 +244,7 @@ ReferenceArrayInput.defaultProps = {
 
 function mapStateToProps(state, props) {
     const referenceIds = props.input.value || [];
-    const data = state.admin[props.reference].data;
+    const data = state.admin.resources[props.reference].data;
     return {
         referenceRecords: referenceIds.reduce((references, referenceId) => {
             if (data[referenceId]) {

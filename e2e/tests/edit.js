@@ -1,5 +1,4 @@
 import assert from 'assert';
-import { By, until } from 'selenium-webdriver';
 import driver from '../chromeDriver';
 import editPageFactory from '../pages/EditPage';
 

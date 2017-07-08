@@ -72,6 +72,7 @@ class Layout extends Component {
             dashboard,
             isLoading,
             menu,
+            catchAll,
             resources,
             theme,
             title,
@@ -113,6 +114,7 @@ class Layout extends Component {
                                     resources={resources}
                                     authClient={authClient}
                                     dashboard={dashboard}
+                                    catchAll={catchAll}
                                 />
                             </div>
                             <Sidebar theme={theme}>
@@ -135,10 +137,16 @@ class Layout extends Component {
     }
 }
 
+const componentPropType = PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.string,
+]);
+
 Layout.propTypes = {
     authClient: PropTypes.func,
+    catchAll: componentPropType,
     customRoutes: PropTypes.array,
-    dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+    dashboard: componentPropType,
     isLoading: PropTypes.bool.isRequired,
     menu: PropTypes.element,
     resources: PropTypes.array,

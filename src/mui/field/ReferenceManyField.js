@@ -7,8 +7,11 @@ import {
     getIds,
     getReferences,
     nameRelatedTo,
-} from '../../reducer/references/oneToMany';
-import { SORT_ASC, SORT_DESC } from '../../reducer/resource/list/queryReducer';
+} from '../../reducer/admin/references/oneToMany';
+import {
+    SORT_ASC,
+    SORT_DESC,
+} from '../../reducer/admin/resource/list/queryReducer';
 
 /**
  * Render related records to the current one.

@@ -9,7 +9,7 @@ import pure from 'recompose/pure';
 const FunctionField = ({ record = {}, source, render, elStyle }) =>
     record
         ? <span style={elStyle}>
-              {render(record)}
+              {render(record, source)}
           </span>
         : null;
 

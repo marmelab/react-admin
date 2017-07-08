@@ -1,4 +1,4 @@
-import { FETCH_END } from '../../actions/fetchActions';
+import { FETCH_END } from '../../../actions/fetchActions';
 import {
     GET_LIST,
     GET_ONE,
@@ -6,7 +6,7 @@ import {
     GET_MANY_REFERENCE,
     CREATE,
     UPDATE,
-} from '../../rest/types';
+} from '../../../rest/types';
 
 /**
  * The data state is an instance pool, which keeps track of the fetch date of each instance.

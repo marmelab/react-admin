@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card';
+import { Card, CardText, CardActions } from 'material-ui/Card';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import ActionCheck from 'material-ui/svg-icons/action/check-circle';
@@ -136,7 +136,7 @@ function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
         data:
-            state.admin[props.resource].data[
+            state.admin.resources[props.resource].data[
                 decodeURIComponent(props.match.params.id)
             ],
         isLoading: state.admin.loading > 0,

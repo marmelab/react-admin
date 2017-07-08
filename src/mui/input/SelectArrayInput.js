@@ -165,13 +165,9 @@ export class SelectArrayInput extends Component {
             label,
             meta,
             options,
-            optionText,
-            optionValue,
             resource,
             source,
             setFilter,
-            translate,
-            translateChoice,
         } = this.props;
         if (typeof meta === 'undefined') {
             throw new Error(
