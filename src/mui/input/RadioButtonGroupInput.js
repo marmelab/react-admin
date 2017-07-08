@@ -91,9 +91,9 @@ export class RadioButtonGroupInput extends Component {
     }
 
     render() {
-        const { label, source, input, isRequired, choices, options, elStyle } = this.props;
+        const { label, resource, source, input, isRequired, choices, options, elStyle } = this.props;
         return (
-            <Labeled label={label} onChange={this.handleChange} source={source} isRequired={isRequired}>
+            <Labeled label={label} onChange={this.handleChange} resource={resource} source={source} isRequired={isRequired}>
                 <RadioButtonGroup
                     name={source}
                     defaultSelected={input.value}
@@ -120,6 +120,7 @@ RadioButtonGroupInput.propTypes = {
         PropTypes.element,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     source: PropTypes.string,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
@@ -135,6 +136,7 @@ RadioButtonGroupInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
+    resource: undefined,
     source: undefined,
     translateChoice: true,
 };
