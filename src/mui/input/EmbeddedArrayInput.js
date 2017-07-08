@@ -55,7 +55,8 @@ export class EmbeddedArrayInput extends Component {
                             input &&
                             <div
                                 key={input.props.source}
-                                className={`aor-input-${input.props.source}`}
+                                className={`aor-input-${member}.${input.props
+                                    .source}`}
                                 style={input.props.style}
                             >
                                 <EmbeddedArrayInputFormField
