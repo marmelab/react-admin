@@ -129,15 +129,9 @@ RadioButtonGroupInput.propTypes = {
 RadioButtonGroupInput.defaultProps = {
     addField: true,
     choices: [],
-    elStyle: {},
-    input: {},
-    isRequired: false,
-    label: undefined,
     options: {},
     optionText: 'name',
     optionValue: 'id',
-    resource: undefined,
-    source: undefined,
     translateChoice: true,
 };
 
