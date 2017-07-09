@@ -1,9 +1,11 @@
 language: node_js
+addons:
+  chrome: stable
 node_js:
   - '7.8.0'
 env:
     global:
-        - CHROME_BIN="chromium-browser"
+        - CHROME_BIN="google-chrome-stable"
         - DISPLAY=:99.0
         - NODE_ENV=test
 dist: trusty
