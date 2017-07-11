@@ -76,7 +76,7 @@ export class FileInput extends Component {
         ];
 
         this.setState({ files: updatedFiles });
-        this.props.input.onChange(files);
+        this.props.input.onChange(updatedFiles);
     }
 
     onRemove = file => () => {
