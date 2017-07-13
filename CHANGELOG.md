@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.2.1
+
+* Fix multi select in `FileInput` ([doananh234](https://github.com/doananh234))
+* Fix `RadioButtonGroupInput` label translation ([lucasfevi](https://github.com/lucasfevi))
+* Fix `TabbedForm` `initialValues` gathering ([djhi](https://github.com/djhi))
+* Fix `ReferenceFields` label hidden on the top of field ([philippe-cleany](https://github.com/philippe-cleany))
+* Fix `ReferenceArrayField` used with `Datagrid` child ([fzaninotto](https://github.com/fzaninotto))
+* Fix custom saga documentation ([fzaninotto](https://github.com/fzaninotto))
+* Add Code of conduct ([fzaninotto](https://github.com/fzaninotto))
+* Fix documentation on `ReferenceArrayList` ([vmattos](https://github.com/vmattos))
+
 ## v1.2.0
 
 Read the [v1.1 and v1.2 announcement on the marmelab blog](https://marmelab.com/blog/2017/06/29/admin-on-rest-1-2.html).

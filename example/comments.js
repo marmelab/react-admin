@@ -20,6 +20,9 @@ import {
     TextInput,
     minLength,
     translate,
+    Show,
+    ShowButton,
+    SimpleShowLayout,
 } from 'admin-on-rest';
 import PersonIcon from 'material-ui/svg-icons/social/person';
 import Avatar from 'material-ui/Avatar';
@@ -83,6 +86,7 @@ const CommentGrid = translate(({ ids, data, basePath, translate }) => (
             </CardText>
             <CardActions style={{ textAlign: 'right' }}>
                 <EditButton resource="posts" basePath={basePath} record={data[id]} />
+                <ShowButton resource="posts" basePath={basePath} record={data[id]}/>
             </CardActions>
         </Card>,
     )}
@@ -135,4 +139,18 @@ export const CommentCreate = ({ ...props }) => (
             <LongTextInput source="body" />
         </SimpleForm>
     </Create>
+);
+
+export const CommentShow = ({...props}) => (
+    <Show {...props}>
+        <SimpleShowLayout>
+            <TextField source="id" />
+            <ReferenceField source="post_id" reference="posts">
+                <TextField source="title"/>
+            </ReferenceField>
+            <TextField source="author.name" />
+            <DateField source="created_at" />
+            <TextField source="body" />
+        </SimpleShowLayout>
+    </Show>
 );
