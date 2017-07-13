@@ -27,31 +27,22 @@ describe('<SimpleForm />', () => {
         assert.equal(button.length, 1);
     });
 
-    it('should not pass handleSubmit to the form and pass submitOnEnter to <Toolbar /> when submitOnEnter is false', () => {
+    it('should pass submitOnEnter to <Toolbar />', () => {
         const handleSubmit = () => {};
-        const wrapper = shallow(
+        const wrapper1 = shallow(
             <SimpleForm submitOnEnter={false} handleSubmit={handleSubmit}>
                 <TextInput source="name" />
             </SimpleForm>
         );
-        const form = wrapper.find('form');
-        assert.notStrictEqual(form.prop('onSubmit'), handleSubmit);
+        const button1 = wrapper1.find('Toolbar');
+        assert.equal(button1.prop('submitOnEnter'), false);
 
-        const button = wrapper.find('Toolbar');
-        assert.equal(button.prop('submitOnEnter'), false);
-    });
-
-    it('should pass handleSubmit to the form and pass submitOnEnter to <Toolbar /> when submitOnEnter is true', () => {
-        const handleSubmit = () => {};
-        const wrapper = shallow(
+        const wrapper2 = shallow(
             <SimpleForm submitOnEnter={true} handleSubmit={handleSubmit}>
                 <TextInput source="name" />
             </SimpleForm>
         );
-        const form = wrapper.find('form');
-        assert.strictEqual(form.prop('onSubmit'), handleSubmit);
-
-        const button = wrapper.find('Toolbar');
-        assert.strictEqual(button.prop('submitOnEnter'), true);
+        const button2 = wrapper2.find('Toolbar');
+        assert.equal(button2.prop('submitOnEnter'), true);
     });
 });

@@ -246,7 +246,7 @@ For all these cases, it's up to you to implement your own `LoginPage` component,
 // in src/MyLoginPage.js
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { userLogin } from '../../actions/authActions';
+import { userLogin } from 'admin-on-rest';
 
 class MyLoginPage extends Component {
     submit = (e) => {
@@ -271,7 +271,7 @@ export default connect(undefined, { userLogin })(MyLoginPage);
 
 // in src/MyLogoutButton.js
 import { connect } from 'react-redux';
-import { userLogout } from '../../actions/authActions';
+import { userLogout } from 'admin-on-rest';
 
 const MyLogoutButton = ({ userLogout }) => (
     <button onClick={userLogout}>Logout</button>

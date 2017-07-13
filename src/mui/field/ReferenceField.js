@@ -103,7 +103,6 @@ ReferenceField.propTypes = {
 };
 
 ReferenceField.defaultProps = {
-    addLabel: true,
     referenceRecord: null,
     record: {},
     allowEmpty: false,
@@ -116,6 +115,12 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default connect(mapStateToProps, {
+const ConnectedReferenceField = connect(mapStateToProps, {
     crudGetManyAccumulate: crudGetManyAccumulateAction,
 })(ReferenceField);
+
+ConnectedReferenceField.defaultProps = {
+    addLabel: true,
+};
+
+export default ConnectedReferenceField;

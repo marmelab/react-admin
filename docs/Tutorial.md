@@ -11,14 +11,14 @@ This 15 minutes tutorial will expose how to create a new admin app based on an e
 
 ## Installation
 
-Admin-on-REST uses React. We'll use Facebook's [react-create-app](https://github.com/facebookincubator/create-react-app) to create an empty React app, and install the `admin-on-rest` package:
+Admin-on-REST uses React. We'll use Facebook's [create-react-app](https://github.com/facebookincubator/create-react-app) to create an empty React app, and install the `admin-on-rest` package:
 
 ```sh
 npm install -g create-react-app
 create-react-app test-admin
 cd test-admin/
-yarnpkg add admin-on-rest
-yarnpkg start
+yarn add admin-on-rest
+yarn start
 ```
 
 You should be up and running with an empty React application on port 3000.
@@ -277,7 +277,7 @@ export const PostCreate = (props) => (
 
 Notice the additional `<EditButton>` field in the `<PostList>` children: that's what gives access to the post edition page. Also, the `<Edit>` component uses a custom `<PostTitle>` component as title, which shows the way to customize the title for a given page.
 
-If you've understood the `<List>` component, the `<Edit>` and `<Create>` components will be no surprise. They are responsible for fetching the record, and displaying the page title. They pass the record down to the `<SimpleForm>` component, which is responsible for the form layout, dfault values, and validation. Just like `<Datagrid>`, `<SimpleForm>` uses its children to determine the form inputs to display. It expects *input components* as children. `<DisabledInput>`, `<TextInput>`, `<LongTextInput>`, and `<ReferenceInput>` are such inputs.
+If you've understood the `<List>` component, the `<Edit>` and `<Create>` components will be no surprise. They are responsible for fetching the record, and displaying the page title. They pass the record down to the `<SimpleForm>` component, which is responsible for the form layout, default values, and validation. Just like `<Datagrid>`, `<SimpleForm>` uses its children to determine the form inputs to display. It expects *input components* as children. `<DisabledInput>`, `<TextInput>`, `<LongTextInput>`, and `<ReferenceInput>` are such inputs.
 
 As for the `<ReferenceInput>`, it takes the same props as the `<ReferenceField>` (used earlier in the list page). `<ReferenceInput>` uses these props to fetch the API for possible references related to the current record (in this case, possible `users` for the current `post`). It then passes these possible references to the child component (`<SelectInput>`), which is responsible for displaying them (via their `name` in that case), and letting the user select one. `<SelectInput>` renders as a `<select>` tag in HTML.
 

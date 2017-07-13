@@ -166,6 +166,18 @@ import { BooleanInput } from 'admin-on-rest';
 
 This input does not handle `null` values. You would need the `<NullableBooleanInput />` component if you have to handle non-set booleans.
 
+You can use the `options` prop to pass any option supported by the Material UI `Toggle` components.
+
+{% raw %}
+```jsx
+<BooleanInput source="finished" options={{
+    labelPosition: 'right'
+}} />
+```
+{% endraw %}
+
+Refer to [Material UI Toggle documentation](http://www.material-ui.com/#/components/toggle) for more details.
+
 `<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
 
 ```jsx
@@ -345,9 +357,13 @@ Previews are enabled using `<ImageInput>` children, as following:
 </ImageInput>
 ```
 
-This component accepts all [react-dropzone properties](https://github.com/okonet/react-dropzone#features), in addition to those of admin-on-rest. For instance, if you need to upload several images at once, just add the `multiple` DropZone attribute to your `<ImageInput />` field.
+Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.html#writing_your_own_field_component).
 
-If the default Dropzone label don't fit with your need, you can pass a `placeholder` attribute to overwrite it. The attribute can be anything React can render (`PropTypes.node`):
+When receiving **new** files, `ImageInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display informations about size or mimetype inside a custom field.
+
+The `ImageInput` component accepts all [react-dropzone properties](https://github.com/okonet/react-dropzone#features), in addition to those of admin-on-rest. For instance, if you need to upload several images at once, just add the `multiple` DropZone attribute to your `<ImageInput />` field.
+
+If the default Dropzone label doesn't fit with your need, you can pass a `placeholder` attribute to overwrite it. The attribute can be anything React can render (`PropTypes.node`):
 
 ```jsx
 <ImageInput source="pictures" label="Related pictures" accept="image/*" placeholder={<p>Drop your file here</p>}>
@@ -356,6 +372,36 @@ If the default Dropzone label don't fit with your need, you can pass a `placehol
 ```
 
 Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./RestClients.html#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
+
+## `<FileInput>`
+
+`<FileInput>` allows to upload some files using [react-dropzone](https://github.com/okonet/react-dropzone).
+
+![FileInput](./img/file-input.png)
+
+Previews (actually a simple list of files names) are enabled using `<FileInput>` children, as following:
+
+```jsx
+<FileInput source="files" label="Related files" accept="application/pdf">
+    <FileField source="src" title="title" />
+</FileInput>
+```
+
+Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.html#writing_your_own_field_component).
+
+When receiving **new** files, `FileInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display informations about size or mimetype inside a custom field.
+
+The `FileInput` component accepts all [react-dropzone properties](https://github.com/okonet/react-dropzone#features), in addition to those of admin-on-rest. For instance, if you need to upload several files at once, just add the `multiple` DropZone attribute to your `<FileInput />` field.
+
+If the default Dropzone label doesn't fit with your need, you can pass a `placeholder` attribute to overwrite it. The attribute can be anything React can render (`PropTypes.node`):
+
+```jsx
+<FileInput source="files" label="Related files" accept="application/pdf" placeholder={<p>Drop your file here</p>}>
+    <ImageField source="src" title="title" />
+</FileInput>
+```
+
+Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./RestClients.html#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
 ## `<LongTextInput>`
 

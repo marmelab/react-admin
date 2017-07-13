@@ -2,8 +2,9 @@ import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import Labeled from '../input/Labeled';
 
-export const SimpleShowLayout = ({ basePath, children, record, resource }) => (
-    <div style={{ padding: '0 1em 1em 1em' }}>
+const defaultStyle = { padding: '0 1em 1em 1em' };
+export const SimpleShowLayout = ({ basePath, children, record, resource, style = defaultStyle }) => (
+    <div style={style}>
         {Children.map(children, field => (
             <div key={field.props.source} style={field.props.style} className={`aor-field-${field.props.source}`}>
                 {field.props.addLabel ?
@@ -23,6 +24,7 @@ SimpleShowLayout.propTypes = {
     children: PropTypes.node,
     record: PropTypes.object,
     resource: PropTypes.string,
+    style: PropTypes.object,
 };
 
 export default SimpleShowLayout;

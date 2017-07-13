@@ -1,4 +1,4 @@
-export const CRUD_CHANGE_LIST_PARAMS = 'CRUD_CHANGE_LIST_PARAMS';
+export const CRUD_CHANGE_LIST_PARAMS = 'AOR/CRUD_CHANGE_LIST_PARAMS';
 
 export const changeListParams = (resource, params) => ({
     type: CRUD_CHANGE_LIST_PARAMS,

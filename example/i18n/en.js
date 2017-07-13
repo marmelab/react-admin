@@ -46,6 +46,10 @@ export const messages = {
         edit: {
             title: 'Post "%{title}"',
         },
+        action: {
+            save_and_add: 'Save and Add',
+            save_and_show: 'Save and Show',
+        },
     },
     comment: {
         list: {
