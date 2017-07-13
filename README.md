@@ -4,6 +4,8 @@ A frontend Framework for building admin applications running in the browser on t
 
 [Demo](https://marmelab.com/admin-on-rest-demo/) - [Documentation](https://marmelab.com/admin-on-rest/) - [Releases](https://github.com/marmelab/admin-on-rest/releases) - [Support](http://stackoverflow.com/questions/tagged/admin-on-rest)
 
+[中文文档](https://kirk-wang.gitbooks.io/admin-on-rest/)
+
 [![admin-on-rest-demo](https://marmelab.com/admin-on-rest/img/admin-on-rest-demo-still.png)](https://vimeo.com/205118063)
 
 ## Features
