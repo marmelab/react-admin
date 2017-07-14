@@ -44,8 +44,13 @@ const styles = {
  * );
  */
 export class EmbeddedArrayInput extends Component {
-    renderListItem = ({ items, inputs, member, index, ...rest }) => {
+    renderListItem = ({ items, inputs, member, index }) => {
         const removeItem = () => items.remove(index);
+        const passedProps = {
+            resource: this.props.resource,
+            basePath: this.props.basePath,
+            record: this.props.record,
+        };
         return (
             <div className="EmbeddedArrayInputItemContainer">
                 <div style={styles.container}>
@@ -62,7 +67,7 @@ export class EmbeddedArrayInput extends Component {
                                 <EmbeddedArrayInputFormField
                                     input={input}
                                     prefix={member}
-                                    {...rest}
+                                    {...passedProps}
                                 />
                             </div>
                     )}
@@ -79,7 +84,7 @@ export class EmbeddedArrayInput extends Component {
     };
 
     renderList = ({ fields: items }) => {
-        const { children, elStyle, ...rest } = this.props;
+        const { children, elStyle } = this.props;
         const createItem = () => items.push();
         return (
             <div className="EmbeddedArrayInputContainer" style={elStyle}>
@@ -91,7 +96,6 @@ export class EmbeddedArrayInput extends Component {
                                 inputs: children,
                                 member,
                                 index,
-                                ...rest,
                             })}
                             {index < items.length - 1 && <Divider />}
                         </div>
@@ -120,6 +124,8 @@ EmbeddedArrayInput.propTypes = {
     addLabel: PropTypes.bool.isRequired,
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string,
+    resource: PropTypes.string,
+    record: PropTypes.object,
     children: PropTypes.node.isRequired,
     label: PropTypes.string,
     meta: PropTypes.object,

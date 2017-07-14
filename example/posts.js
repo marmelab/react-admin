@@ -246,6 +246,19 @@ export const PostEdit = ({ ...props }) =>
                 <EmbeddedArrayInput source="links">
                     <LongTextInput source="url" />
                     <LongTextInput source="context" />
+                    <ReferenceArrayInput
+                        source="tags"
+                        reference="tags"
+                        allowEmpty
+                    >
+                        <SelectArrayInput
+                            optionText="name"
+                            options={{
+                                fullWidth: true,
+                                newChipKeyCodes: emptyKeycode,
+                            }}
+                        />
+                    </ReferenceArrayInput>
                 </EmbeddedArrayInput>
             </FormTab>
         </TabbedForm>
