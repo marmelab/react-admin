@@ -43,6 +43,7 @@ const crudFetch = restClient => {
             yield put({
                 type: `${type}_FAILURE`,
                 error: error.message ? error.message : error,
+                payload: error.body ? error.body : null,
                 requestPayload: payload,
                 meta: {
                     ...meta,
