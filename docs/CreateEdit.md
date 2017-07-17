@@ -432,7 +432,7 @@ The most common use case is to display two submit buttons in the `<Create>` view
 For that use case, use the `<SaveButton>` component with a custom `redirect` prop:
 
 ```jsx
-impot { SaveButton, Toolbar } from 'admin-on-rest';
+import { SaveButton, Toolbar } from 'admin-on-rest';
 
 const PostCreateToolbar = props => <Toolbar {...props} >
     <SaveButton label="post.action.save_and_show" redirect="show" submitOnEnter={true} />

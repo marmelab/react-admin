@@ -26,8 +26,7 @@ export const PostList = (props) => (
 All field components accept the following attributes:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
-* `label`: In a datagrid, used as a table header of an input label.
-Otherwise define the field label. Defaults to the `source` when omitted.
+* `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
 * `addLabel`: Defined the visibility of the label when the field is not in a datagrid, default value is ```true```.
 * `sortable`: Should the list be sortable using `source` attribute? Defaults to `true`.
 * `elStyle`: A style object to customize the look and feel of the field element itself

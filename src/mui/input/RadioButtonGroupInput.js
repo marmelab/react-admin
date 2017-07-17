@@ -73,7 +73,7 @@ export class RadioButtonGroupInput extends Component {
             optionText,
             optionValue,
             translate,
-            translateChoice
+            translateChoice,
         } = this.props;
         const choiceName = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
             React.cloneElement(optionText, { record: choice }) :
@@ -91,9 +91,9 @@ export class RadioButtonGroupInput extends Component {
     }
 
     render() {
-        const { label, source, input, isRequired, choices, options, elStyle } = this.props;
+        const { label, resource, source, input, isRequired, choices, options, elStyle } = this.props;
         return (
-            <Labeled label={label} onChange={this.handleChange} source={source} isRequired={isRequired}>
+            <Labeled label={label} onChange={this.handleChange} resource={resource} source={source} isRequired={isRequired}>
                 <RadioButtonGroup
                     name={source}
                     defaultSelected={input.value}
@@ -108,12 +108,11 @@ export class RadioButtonGroupInput extends Component {
 }
 
 RadioButtonGroupInput.propTypes = {
-    addField: PropTypes.bool.isRequired,
     choices: PropTypes.arrayOf(PropTypes.object),
+    elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
-    onChange: PropTypes.func,
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
@@ -121,8 +120,8 @@ RadioButtonGroupInput.propTypes = {
         PropTypes.element,
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
+    resource: PropTypes.string,
     source: PropTypes.string,
-    style: PropTypes.object,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
 };
