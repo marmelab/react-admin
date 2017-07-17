@@ -210,12 +210,22 @@ export const PostShow = ({ ...props }) => (
             </Tab>
             <Tab label="post.form.comments">
                 <ReferenceManyField label="resources.posts.fields.comments" reference="comments" target="post_id" sort={{ field: 'created_at', order: 'DESC' }}>
-                    <Datagrid selectable={false}>
-                        <DateField source="created_at" />
-                        <TextField source="author.name" />
-                        <TextField source="body" />
-                        <EditButton />
-                    </Datagrid>
+	            <Responsive
+	                small={
+	                    <SimpleList
+	                        primaryText={(record) => record.author.name}
+	                        primarySecondary={(record) => record.created_at}
+	                    />
+	                }
+	                medium={
+                            <Datagrid selectable={false}>
+                                <DateField source="created_at" />
+                                <TextField source="author.name" />
+                                <TextField source="body" />
+                                <EditButton />
+                            </Datagrid>
+	                }
+	            />
                 </ReferenceManyField>
             </Tab>
         </TabbedShowLayout>
