@@ -241,7 +241,9 @@ export default {
     comments: [
         {
             id: 1,
-            author: {},
+            author: {
+                phone: '+33654875421'
+            },
             post_id: 6,
             body: "Queen, tossing her head through the wood. 'If it had lost something; and she felt sure it.",
             created_at: new Date('2012-08-02'),
@@ -251,6 +253,7 @@ export default {
             author: {
                 name: 'Kiley Pouros',
                 email: 'kiley@gmail.com',
+                phone: '0694837321'
             },
             post_id: 9,
             body: "White Rabbit: it was indeed: she was out of the ground--and I should frighten them out of its right paw round, 'lives a March Hare. 'Sixteenth,'.",
@@ -260,6 +263,7 @@ export default {
             id: 3,
             author: {
                 name: 'Justina Hegmann',
+                phone: '0694837321'
             },
             post_id: 3,
             body: "I'm not Ada,' she said, 'and see whether it's marked \"poison\" or.",
@@ -269,6 +273,7 @@ export default {
             id: 4,
             author: {
                 name: 'Ms. Brionna Smitham MD',
+                phone: '0694837321'
             },
             post_id: 6,
             body: "Dormouse. 'Fourteenth of March, I think I can say.' This was such a noise inside, no one else seemed inclined.",
@@ -278,6 +283,7 @@ export default {
             id: 5,
             author: {
                 name: 'Edmond Schulist',
+                phone: '0694837321'
             },
             post_id: 1,
             body: "I ought to tell me your history, you know,' the Hatter and the happy summer days. THE.",
@@ -287,6 +293,7 @@ export default {
             id: 6,
             author: {
                 name: 'Danny Greenholt',
+                phone: '+33210 454 454'
             },
             post_id: 6,
             body: 'Duchess asked, with another hedgehog, which seemed to be lost: away went Alice after it, never once considering how in the other. In the very tones of.',
@@ -296,6 +303,7 @@ export default {
             id: 7,
             author: {
                 name: 'Luciano Berge',
+                phone: '+81 2 4567 1232'
             },
             post_id: 5,
             body: "While the Panther were sharing a pie--' [later editions continued as follows.",
@@ -305,6 +313,7 @@ export default {
             id: 8,
             author: {
                 name: 'Annamarie Mayer',
+                phone: ' +352 6 6548'
             },
             post_id: 5,
             body: "I tell you, you coward!' and at once and put it more clearly,' Alice.",
@@ -314,6 +323,7 @@ export default {
             id: 9,
             author: {
                 name: 'Breanna Gibson',
+                phone: '+7 495 234 22 44'
             },
             post_id: 2,
             body: "THAT. Then again--\"BEFORE SHE HAD THIS FIT--\" you never tasted an egg!' 'I HAVE tasted eggs, certainly,' said Alice, as she spoke. Alice did not like to have it.",
@@ -323,6 +333,7 @@ export default {
             id: 10,
             author: {
                 name: 'Logan Schowalter',
+                phone: '+12345436756'
             },
             post_id: 3,
             body: "I'd been the whiting,' said the Hatter, it woke up again with a T!' said the Gryphon. '--you advance twice--' 'Each with a growl, And concluded the banquet--] 'What IS the fun?' said.",
@@ -332,6 +343,7 @@ export default {
             id: 11,
             author: {
                 name: 'Logan Schowalter',
+                phone: '06-94-83-73-21'
             },
             post_id: 1,
             body: "I don't want to be?' it asked. 'Oh, I'm not Ada,' she said, 'and see whether it's marked \"poison\" or not'; for she had asked it aloud; and in despair she put her hand on the end of the.",

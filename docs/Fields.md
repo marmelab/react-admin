@@ -283,6 +283,37 @@ See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/W
 
 **Tip**: If you need more formatting options than what `Intl.Numberformat` can provide, build your own field component leveraging a third-party library like [numeral.js](http://numeraljs.com/).
 
+## `<PhoneField>`
+
+`<PhoneField>` displays a phone number as a `<a href="tel:" />` link.
+
+If the number is from the locale it'll be formatted like a national number, if not international formatting will be set.
+
+A locale can be passed as a prop, the default one is 'FR' (french).
+
+The component accepts local and international phone numbers as long the local
+number is from the locale set in the props.
+
+See (https://github.com/halt-hammerzeit/libphonenumber-js) for more informations about the formatting lib.
+
+**Tip** If one of your numbers is set without the international prefixe and it's not corresponding to a number from the locale it should render nothig.
+
+```jsx
+import { PhoneField } from 'admin-on-rest';
+
+<PhoneField source="personal_phone" />
+// renders a french number as national:
+<a href="tel:+33623456789">06 23 45 67 89</a>
+and an US number as international:
+<a href="tel:+12344565656">+1 234 456 5656</a>
+
+<PhoneField source="personal_phone" locale="US" />
+// renders a french number as international:
+<a href="tel:+33623456789">+336 23 45 67 89</a>
+and an US number as national:
+<a href="tel:+12344565656">(234) 456-5656</a>
+```
+
 ## `<SelectField>`
 
 When you need to display an enumerated field, `<SelectField>` maps the value to a string.
