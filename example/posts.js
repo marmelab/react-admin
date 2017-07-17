@@ -246,6 +246,10 @@ export const PostEdit = ({ ...props }) =>
                 <EmbeddedArrayInput source="links">
                     <LongTextInput source="url" />
                     <LongTextInput source="context" />
+                    <EmbeddedArrayInput source="metadata">
+                        <TextInput source="name" />
+                        <TextInput source="value" />
+                    </EmbeddedArrayInput>
                     <ReferenceArrayInput
                         source="tags"
                         reference="tags"

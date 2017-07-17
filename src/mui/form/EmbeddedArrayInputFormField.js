@@ -55,7 +55,10 @@ const EmbeddedArrayInputFormField = ({ input, prefix, ...rest }) => {
     }
     return typeof input.type === 'string'
         ? input
-        : React.cloneElement(input, rest);
+        : React.cloneElement(input, {
+              ...rest,
+              source: `${prefix}.${input.props.source}`,
+          });
 };
 
 export default EmbeddedArrayInputFormField;
