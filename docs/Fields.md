@@ -291,6 +291,9 @@ If the number is from the locale it'll be formatted like a national number, if n
 
 A locale can be passed as a prop, the default one is 'FR' (french).
 
+The component accepts local and international phone numbers as long the local
+number is from the locale set in the props.
+
 See (https://github.com/halt-hammerzeit/libphonenumber-js) for more informations about the formatting lib.
 
 **Tip** If one of your numbers is set without the international prefixe and it's not corresponding to a number from the locale it should render nothig.

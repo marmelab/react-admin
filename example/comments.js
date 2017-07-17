@@ -73,9 +73,7 @@ const CommentGrid = translate(({ ids, data, basePath, translate }) => (
         <Card key={id} style={cardStyle}>
             <CardHeader
                 title={<TextField record={data[id]} source="author.name" />}
-		subtitle={
-		    <PhoneField record={data[id]} source="author.phone" />
-		}
+                subtitle={<PhoneField record={data[id]} source="author.phone" />}
                 avatar={<Avatar icon={<PersonIcon />} />}
             />
             <CardText>
