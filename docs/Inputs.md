@@ -957,21 +957,23 @@ Say the user would like to input values of 0-100 to a percentage field but your 
 `<DateInput>` stores and returns a `Date` object. If you would like to store the ISO date `"YYYY-MM-DD"` in your store:
 
 ```jsx
+// store -> input
 const dateFormatter = v => {
   // v is a string of "YYYY-MM-DD" format
   const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
   if (match === null) return;
-  const d = new Date(match[1], parseInt(match[2])-1, match[3]);
+  const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
   if (isNaN(d)) return;
   return d;
 };
 
+// input -> store
 const dateParser = v => {
   // v is a `Date` object
   if (!(v instanceof Date) || isNaN(v)) return;
   const pad = '00';
   const yy = v.getFullYear().toString();
-  const mm = ((v.getMonth() + 1).toString();
+  const mm = (v.getMonth() + 1).toString();
   const dd = v.getDate().toString();
   return `${yy}-${(pad + mm).slice(-2)}-${(pad + dd).slice(-2)}`;
 };
