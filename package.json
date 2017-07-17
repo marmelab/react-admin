@@ -46,6 +46,7 @@
     "file-api": "~0.10.4",
     "full-icu": "~1.0.3",
     "ignore-styles": "~5.0.1",
+    "json-loader": "^0.5.4",
     "mocha": "~3.2.0",
     "react-addons-test-utils": "~15.5.1",
     "selenium-webdriver": "~3.3.0",
