@@ -110,7 +110,7 @@ ReferenceField.propTypes = {
 ReferenceField.defaultProps = {
     referenceRecord: null,
     record: {},
-    allowEmpty: false,
+    allowEmpty: true,
     linkType: 'edit',
 };
 
