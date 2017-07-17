@@ -10,6 +10,7 @@ import {
     Filter,
     List,
     LongTextInput,
+    PhoneField,
     ReferenceField,
     ReferenceInput,
     Responsive,
@@ -72,7 +73,9 @@ const CommentGrid = translate(({ ids, data, basePath, translate }) => (
         <Card key={id} style={cardStyle}>
             <CardHeader
                 title={<TextField record={data[id]} source="author.name" />}
-                subtitle={<DateField record={data[id]} source="created_at" />}
+		subtitle={
+		    <PhoneField record={data[id]} source="author.phone" />
+		}
                 avatar={<Avatar icon={<PersonIcon />} />}
             />
             <CardText>
@@ -85,6 +88,7 @@ const CommentGrid = translate(({ ids, data, basePath, translate }) => (
                 </ReferenceField>
             </CardText>
             <CardActions style={{ textAlign: 'right' }}>
+                <DateField record={data[id]} source="created_at" />
                 <EditButton resource="posts" basePath={basePath} record={data[id]} />
                 <ShowButton resource="posts" basePath={basePath} record={data[id]}/>
             </CardActions>
