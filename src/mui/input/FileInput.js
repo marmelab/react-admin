@@ -70,10 +70,10 @@ export class FileInput extends Component {
     }
 
     onDrop = (files) => {
-        const updatedFiles = [
+        const updatedFiles = this.props.multiple?[
             ...this.state.files,
-            ...files.map(this.transformFile),
-        ];
+            ...files.map(this.transformFile)
+        ]: [...files.map(this.transformFile)];
 
         this.setState({ files: updatedFiles });
         this.props.input.onChange(updatedFiles);
