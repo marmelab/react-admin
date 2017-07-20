@@ -24,7 +24,7 @@ export class TabbedShowLayout extends Component {
             <div style={divStyle}>
                 <Tabs value={this.state.value} onChange={this.handleChange} contentContainerStyle={contentContainerStyle}>
                     {React.Children.map(children, (tab, index) =>
-                        <Tab key={tab.props.value} label={translate(tab.props.label)} value={index} icon={tab.props.icon}>
+                        <Tab key={tab.props.value} label={translate(tab.props.label, { _: tab.props.label })} value={index} icon={tab.props.icon}>
                             {React.cloneElement(tab, { resource, record, basePath })}
                         </Tab>,
                     )}
