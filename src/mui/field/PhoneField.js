@@ -36,11 +36,27 @@ const PhoneField = ({ source, record, elStyle, locale }) => {
     );
 };
 
+export const phoneFormatToString = (num, locale='FR') => {
+    if (!num) {
+        return null;
+    }
+
+    const parsed_number = parse(num, {country: {default: locale}});
+
+    if (!parsed_number || !Object.keys(parsed_number).length) {
+        return null;
+    }
+    
+    const phone_num = localPhoneFormat(parsed_number, locale);
+    return phone_num;
+};
+
 PhoneField.propTypes = {
     addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     locale: PropTypes.string,
+    num: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
 };

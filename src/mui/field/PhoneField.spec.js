@@ -1,7 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import PhoneField, { localPhoneFormat } from './PhoneField';
+import PhoneField, { localPhoneFormat, phoneFormatToString } from './PhoneField';
 
 describe('localPhoneFormat', () => {
     it('should return a plain text international number (with no space)', () => {
@@ -23,6 +23,38 @@ describe('localPhoneFormat', () => {
     });
 });
 
+describe('phoneFormatToString', () => {
+    it('should return null when no number is set)', () => {
+        assert.equal(
+            phoneFormatToString(), null
+        );
+    });
+
+    it('should return null if text is parsed', () => {
+        assert.equal(
+            phoneFormatToString('toto'), null
+        );
+    });
+
+    it('should return null if invalid number is parsed', () => {
+        assert.equal(
+            phoneFormatToString('568989'), null
+        );
+    });
+
+    it('should return a national number', () => {
+        assert.equal(
+            phoneFormatToString('+33612121212'), '06 12 12 12 12'
+        );
+    });
+
+    it('should return a international number', () => {
+        assert.equal(
+            phoneFormatToString('+12344565656'), '+1 234 456 5656'
+        );
+    });
+});
+
 describe('<PhoneField />', () => {
     it('should return null when the record is not set', () => {
         const wrapper = shallow(<PhoneField source="phone" />);
@@ -34,7 +66,7 @@ describe('<PhoneField />', () => {
         assert.equal(wrapper.html(), '');
     });
 
-    it('should render an error message', () => {
+    it('should render null when number from the source is null ', () => {
         const record = { number: '' };
         const wrapper = shallow(<PhoneField record={record} source="number" />);
         assert.equal(wrapper.html(), '');
