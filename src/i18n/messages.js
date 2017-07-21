@@ -7,6 +7,7 @@ export default {
             save: 'Save',
             create: 'Create',
             edit: 'Edit',
+            submit: 'Submit',
             cancel: 'Cancel',
             refresh: 'Refresh',
             add_filter: 'Add filter',
@@ -22,6 +23,7 @@ export default {
             show: '%{name} #%{id}',
             create: 'Create %{name}',
             delete: 'Delete %{name} #%{id}',
+            confirm: 'Are you sure?',
             dashboard: 'Dashboard',
         },
         input: {
