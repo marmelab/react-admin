@@ -312,6 +312,24 @@ and an US number as international:
 and an US number as national:
 <a href="tel:+12344565656">(234) 456-5656</a>
 ```
+A function `phoneFormatToString` formats a phone number and returns a String.
+
+It's the same formatting function than `<PhoneField>`. So a locale can be passed
+as a props, the default one is 'FR', and the format depends on that locale.
+
+```jsx
+import { phoneFormatToString } from 'admin-on-rest';
+
+const phone_fr = phoneFormatToString(+33612121212);
+// phone_fr = '06 12 12 12 12'
+const phone_us = phoneFormatToString(+12344565656);
+// phone_us = +1 234 456 5656
+
+const phone_fr = phoneFormatToString(+33612121212, 'US');
+// phone_fr = +336 12 12 12 12
+const phone_us = phoneFormatToString(+12344565656, 'US');
+// phone_us = (234) 456-5656
+```
 
 ## `<SelectField>`
 
