@@ -13,4 +13,4 @@ export RichTextField from './RichTextField';
 export SelectField from './SelectField';
 export TextField from './TextField';
 export UrlField from './UrlField';
-export PhoneField from './PhoneField';
+export PhoneField, { phoneFormatToString } from './PhoneField';
