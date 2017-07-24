@@ -7,6 +7,8 @@ import ContentCreateIcon from 'material-ui/svg-icons/content/create';
 import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
 import Divider from 'material-ui/Divider';
 
+import translate from '../../i18n/translate';
+
 import EmbeddedArrayInputFormField from '../form/EmbeddedArrayInputFormField';
 
 const styles = {
@@ -44,7 +46,38 @@ const styles = {
  * );
  */
 export class EmbeddedArrayInput extends Component {
-    renderListItem = ({ items, inputs, member, index }) => {
+    static propTypes = {
+        addField: PropTypes.bool.isRequired,
+        allowEmpty: PropTypes.string.isRequired,
+        basePath: PropTypes.string,
+        resource: PropTypes.string,
+        record: PropTypes.object,
+        children: PropTypes.node.isRequired,
+        labelAdd: PropTypes.string.isRequired,
+        labelRemove: PropTypes.string.isRequired,
+        meta: PropTypes.object,
+        onChange: PropTypes.func,
+        input: PropTypes.object,
+        source: PropTypes.string,
+        arrayElStyle: PropTypes.object,
+        elStyle: PropTypes.object,
+    };
+
+    static defaultProps = {
+        addField: false,
+        allowEmpty: true,
+        labelAdd: 'aor.input.embedded_array.add',
+        labelRemove: 'aor.input.embedded_array.remove',
+    };
+
+    renderListItem = ({
+        items,
+        inputs,
+        member,
+        index,
+        translate,
+        labelRemove,
+    }) => {
         const removeItem = () => items.remove(index);
         const passedProps = {
             resource: this.props.resource,
@@ -74,7 +107,7 @@ export class EmbeddedArrayInput extends Component {
                 </div>
                 <FlatButton
                     primary
-                    label="Remove"
+                    label={translate(labelRemove)}
                     style={styles.removeButton}
                     icon={<ActionDeleteIcon />}
                     onClick={removeItem}
@@ -82,9 +115,15 @@ export class EmbeddedArrayInput extends Component {
             </div>
         );
     };
-
+    //{translate(labelRemove)}
     renderList = ({ fields: items }) => {
-        const { children, elStyle } = this.props;
+        const {
+            children,
+            elStyle,
+            translate,
+            labelRemove,
+            labelAdd,
+        } = this.props;
         const createItem = () => items.push();
         return (
             <div className="EmbeddedArrayInputContainer" style={elStyle}>
@@ -96,6 +135,8 @@ export class EmbeddedArrayInput extends Component {
                                 inputs: children,
                                 member,
                                 index,
+                                translate,
+                                labelRemove,
                             })}
                             {index < items.length - 1 && <Divider />}
                         </div>
@@ -105,7 +146,7 @@ export class EmbeddedArrayInput extends Component {
                 <FlatButton
                     primary
                     icon={<ContentCreateIcon />}
-                    label="Add"
+                    label={translate(labelAdd)}
                     onClick={createItem}
                 />
             </div>
@@ -113,33 +154,16 @@ export class EmbeddedArrayInput extends Component {
     };
 
     render() {
-        const { source } = this.props;
+        const { source, translate, labelAdd, labelRemove } = this.props;
 
-        return <FieldArray name={source} component={this.renderList} />;
+        return (
+            <FieldArray
+                name={source}
+                component={this.renderList}
+                props={{ translate, labelAdd, labelRemove }}
+            />
+        );
     }
 }
 
-EmbeddedArrayInput.propTypes = {
-    addField: PropTypes.bool.isRequired,
-    addLabel: PropTypes.bool.isRequired,
-    allowEmpty: PropTypes.bool.isRequired,
-    basePath: PropTypes.string,
-    resource: PropTypes.string,
-    record: PropTypes.object,
-    children: PropTypes.node.isRequired,
-    label: PropTypes.string,
-    meta: PropTypes.object,
-    onChange: PropTypes.func,
-    input: PropTypes.object,
-    source: PropTypes.string,
-    arrayElStyle: PropTypes.object,
-    elStyle: PropTypes.object,
-};
-
-EmbeddedArrayInput.defaultProps = {
-    addField: false,
-    allowEmpty: true,
-    addLabel: false,
-};
-
-export default EmbeddedArrayInput;
+export default translate(EmbeddedArrayInput);
