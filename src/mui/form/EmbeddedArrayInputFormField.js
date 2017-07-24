@@ -15,49 +15,66 @@ import isRequired from './isRequired';
  * <EmbeddedArrayInputFormField input={input} prefix={my_prefix} />
  *
  */
-const EmbeddedArrayInputFormField = ({ input, prefix, ...rest }) => {
-    if (input.props.addField) {
-        if (input.props.addLabel) {
+const EmbeddedArrayInputFormField = ({ input, prefix, resource, ...rest }) => {
+    const theLabel =
+        input.props.label ||
+        `resources.${resource}.fields.` +
+            `${prefix}.${input.props.source}`
+                .replace(/[^a-z.]/g, '')
+                .replace(/[.]/g, '_');
+
+    const theInput = input.props.resource
+        ? input.props.resource
+        : React.cloneElement(input, {
+              props: {
+                  ...input.props,
+                  resource: resource,
+              },
+          });
+
+    if (theInput.props.addField) {
+        if (theInput.props.addLabel) {
             return (
                 <Field
                     {...rest}
-                    {...input.props}
-                    name={`${prefix}.${input.props.source}`}
+                    {...theInput.props}
+                    name={`${prefix}.${theInput.props.source}`}
                     component={Labeled}
-                    label={input.props.label}
-                    isRequired={isRequired(input.props.validate)}
+                    label={theLabel}
+                    isRequired={isRequired(theInput.props.validate)}
                 >
-                    {input}
+                    {theInput}
                 </Field>
             );
         }
         return (
             <Field
                 {...rest}
-                {...input.props}
-                name={`${prefix}.${input.props.source}`}
-                component={input.type}
-                isRequired={isRequired(input.props.validate)}
+                {...theInput.props}
+                name={`${prefix}.${theInput.props.source}`}
+                label={theLabel}
+                component={theInput.type}
+                isRequired={isRequired(theInput.props.validate)}
             />
         );
     }
-    if (input.props.addLabel) {
+    if (theInput.props.addLabel) {
         return (
             <Labeled
                 {...rest}
-                label={input.props.label}
-                source={`${prefix}.${input.props.source}`}
-                isRequired={isRequired(input.props.validate)}
+                label={theInput.props.label}
+                source={`${prefix}.${theInput.props.source}`}
+                isRequired={isRequired(theInput.props.validate)}
             >
-                {input}
+                {theInput}
             </Labeled>
         );
     }
-    return typeof input.type === 'string'
-        ? input
-        : React.cloneElement(input, {
+    return typeof theInput.type === 'string'
+        ? theInput
+        : React.cloneElement(theInput, {
               ...rest,
-              source: `${prefix}.${input.props.source}`,
+              source: `${prefix}.${theInput.props.source}`,
           });
 };
 

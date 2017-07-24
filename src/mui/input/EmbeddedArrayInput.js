@@ -109,13 +109,15 @@ export class EmbeddedArrayInput extends Component {
         labelRemove,
         readOnly,
         disabled,
+        resource,
     }) => {
         const removeItem = () => items.remove(index);
         const passedProps = {
-            resource: this.props.resource,
+            resource: this.props.resource || resource,
             basePath: this.props.basePath,
             record: this.props.record,
         };
+
         return (
             <div className="EmbeddedArrayInputItemContainer">
                 <div style={styles.innerContainer}>
@@ -165,6 +167,8 @@ export class EmbeddedArrayInput extends Component {
         } = this.props;
         const createItem = () => items.push();
 
+        const resource = this.props.resource || this.props.props.resource;
+
         return (
             <div className="EmbeddedArrayInputContainer" style={style}>
                 <div>
@@ -180,6 +184,7 @@ export class EmbeddedArrayInput extends Component {
                                 allowRemove,
                                 readOnly,
                                 disabled,
+                                resource,
                             })}
                             {index < items.length - 1 && <Divider />}
                         </div>
@@ -214,7 +219,7 @@ export class EmbeddedArrayInput extends Component {
                     })}
                     shrink={false}
                 >
-                    {label || source}
+                    {label || source.split('.').pop()}
                 </TextFieldLabel>
             </div>;
 

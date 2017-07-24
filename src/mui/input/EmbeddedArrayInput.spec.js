@@ -13,6 +13,7 @@ describe('<EmbeddedArrayInput />', () => {
             <TextInput key={1} source="price" />,
             <TextInput key={2} source="qty" />,
         ],
+        resource: 'the_items',
         translate: x => x,
     };
 
