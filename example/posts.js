@@ -22,6 +22,7 @@ import {
     ReferenceArrayField,
     ReferenceManyField,
     EmbeddedArrayInput,
+    EmbeddedArrayField,
     ReferenceArrayInput,
     Responsive,
     RichTextField,
@@ -316,6 +317,21 @@ export const PostShow = ({ ...props }) =>
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
+            </Tab>
+            <Tab label="post.form.links">
+                <EmbeddedArrayField source="links">
+                    <TextField source="url" />
+                    <TextField source="context" />
+                    <EmbeddedArrayField source="metadata">
+                        <TextField source="name" />
+                        <TextField source="value" />
+                    </EmbeddedArrayField>
+                    <ReferenceArrayField source="tags" reference="tags">
+                        <SingleFieldList>
+                            <ChipField source="name" />
+                        </SingleFieldList>
+                    </ReferenceArrayField>
+                </EmbeddedArrayField>
             </Tab>
         </TabbedShowLayout>
     </Show>;
