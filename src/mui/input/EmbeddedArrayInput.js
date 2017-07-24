@@ -47,6 +47,7 @@ const styles = {
  */
 export class EmbeddedArrayInput extends Component {
     static propTypes = {
+        addLabel: PropTypes.bool.isRequired,
         addField: PropTypes.bool.isRequired,
         allowEmpty: PropTypes.string.isRequired,
         basePath: PropTypes.string,
@@ -64,6 +65,7 @@ export class EmbeddedArrayInput extends Component {
     };
 
     static defaultProps = {
+        addLabel: false,
         addField: false,
         allowEmpty: true,
         labelAdd: 'aor.input.embedded_array.add',
