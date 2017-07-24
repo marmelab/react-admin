@@ -940,24 +940,23 @@ You can choose a specific input type using the `type` attribute, for instance `t
 
 **Warning**: Do not use `type="number"`, or you'll receive a string as value (this is a [known React bug](https://github.com/facebook/react/issues/1425)). Instead, use [`<NumberInput>`](#numberinput).
 
-## Transforming Input Value to/from Store
+## Transforming Input Value to/from Record
 
-The data format returned by the input component may not be what your store desires. Since Admin-on-rest uses Redux Form, we can use its `parse()` and `format()` functions to transform the input value to and from the store. It's better to understand the [input value's lifecycle](http://redux-form.com/6.5.0/docs/ValueLifecycle.md/) before you start.
+The data format returned by the input component may not be what your API desires. Since Admin-on-rest uses Redux Form, we can use its `parse()` and `format()` functions to transform the input value when saving to and loading from the record. It's better to understand the [input value's lifecycle](http://redux-form.com/6.5.0/docs/ValueLifecycle.md/) before you start.
 
 Mnemonic for the two functions:
-- `parse()`: input -> store
-- `format()`: store -> input
+- `parse()`: input -> record
+- `format()`: record -> input
 
-Say the user would like to input values of 0-100 to a percentage field but your API (hence store) expects 0-1.0. You can use simple `parse()` and `format()` functions to archive the transform:
+Say the user would like to input values of 0-100 to a percentage field but your API (hence record) expects 0-1.0. You can use simple `parse()` and `format()` functions to archive the transform:
 
 ```jsx
 <NumberInput source="percent" format={v => v*100} parse={v => v/100} label="Formatted number" />
 ```
 
-`<DateInput>` stores and returns a `Date` object. If you would like to store the ISO date `"YYYY-MM-DD"` in your store:
+`<DateInput>` stores and returns a `Date` object. If you would like to store the ISO date `"YYYY-MM-DD"` in your record:
 
 ```jsx
-// store -> input
 const dateFormatter = v => {
   // v is a string of "YYYY-MM-DD" format
   const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
@@ -967,7 +966,6 @@ const dateFormatter = v => {
   return d;
 };
 
-// input -> store
 const dateParser = v => {
   // v is a `Date` object
   if (!(v instanceof Date) || isNaN(v)) return;
