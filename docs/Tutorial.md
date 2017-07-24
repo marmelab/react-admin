@@ -691,6 +691,6 @@ const App = () => (
 
 ## Conclusion
 
-Admin-on-rest was build with customization in mind. You can replace any admin-on-rest component with a component of your own, for instance to display a custom list layout, or a different edit form for a given resource.
+Admin-on-rest was built with customization in mind. You can replace any admin-on-rest component with a component of your own, for instance to display a custom list layout, or a different edit form for a given resource.
 
 Now that you've completed the tutorial, continue reading the [admin-on-rest documentation](http://marmelab.com/admin-on-rest/), and read the [Material UI components documentation](http://www.material-ui.com/#/).
