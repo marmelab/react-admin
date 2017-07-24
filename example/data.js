@@ -264,6 +264,33 @@ export default {
             category: 'lifestyle',
             backlinks: [],
             notifications: [],
+            links: [
+                {
+                    url: 'https://www.google.com/',
+                    context: 'Search engine',
+                },
+                {
+                    url: 'https://www.bing.com/',
+                    context: 'Search engine',
+                    metadata: [
+                        {
+                            name: 'company',
+                            value: 'Microsoft',
+                        },
+                    ],
+                },
+                {
+                    url: 'https://www.yahoo.com/',
+                    context: 'Search engine',
+                    metadata: [
+                        {
+                            name: 'company',
+                            value: 'Yahoo',
+                        },
+                    ],
+                    tags: [1],
+                },
+            ],
         },
     ],
     comments: [

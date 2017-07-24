@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FieldArray } from 'redux-form';
 
 import FlatButton from 'material-ui/FlatButton';
+import TextFieldLabel from 'material-ui/TextField/TextFieldLabel';
 import ContentCreateIcon from 'material-ui/svg-icons/content/create';
 import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
 import Divider from 'material-ui/Divider';
@@ -13,9 +14,24 @@ import EmbeddedArrayInputFormField from '../form/EmbeddedArrayInputFormField';
 
 const styles = {
     container: {
+        padding: '0 1em 1em 0em',
+        width: '90%',
+        display: 'inline-block',
+    },
+    innerContainer: {
         padding: '0 1em 1em 1em',
         width: '90%',
         display: 'inline-block',
+    },
+    labelContainer: {
+        padding: '1.2em 1em 0 0',
+        width: '90%',
+        display: 'inline-block',
+    },
+    label: {
+        top: 0,
+        position: 'relative',
+        textTransform: 'capitalize',
     },
     removeButton: {
         float: 'right',
@@ -49,36 +65,50 @@ export class EmbeddedArrayInput extends Component {
     static propTypes = {
         addLabel: PropTypes.bool.isRequired,
         addField: PropTypes.bool.isRequired,
-        allowEmpty: PropTypes.string.isRequired,
+        allowEmpty: PropTypes.bool.isRequired,
+        allowAdd: PropTypes.bool.isRequired,
+        allowRemove: PropTypes.bool.isRequired,
+        arrayElStyle: PropTypes.object,
         basePath: PropTypes.string,
-        resource: PropTypes.string,
-        record: PropTypes.object,
         children: PropTypes.node.isRequired,
+        disabled: PropTypes.bool,
+        elStyle: PropTypes.object,
+        input: PropTypes.object,
+        label: PropTypes.string,
         labelAdd: PropTypes.string.isRequired,
         labelRemove: PropTypes.string.isRequired,
         meta: PropTypes.object,
         onChange: PropTypes.func,
-        input: PropTypes.object,
+        resource: PropTypes.string,
+        readOnly: PropTypes.bool,
+        record: PropTypes.object,
         source: PropTypes.string,
-        arrayElStyle: PropTypes.object,
-        elStyle: PropTypes.object,
     };
 
     static defaultProps = {
         addLabel: false,
         addField: false,
         allowEmpty: true,
+        allowAdd: true,
+        allowRemove: true,
         labelAdd: 'aor.input.embedded_array.add',
         labelRemove: 'aor.input.embedded_array.remove',
     };
 
+    static contextTypes = {
+        muiTheme: PropTypes.object.isRequired,
+    };
+
     renderListItem = ({
+        allowRemove,
         items,
         inputs,
         member,
         index,
         translate,
         labelRemove,
+        readOnly,
+        disabled,
     }) => {
         const removeItem = () => items.remove(index);
         const passedProps = {
@@ -88,7 +118,7 @@ export class EmbeddedArrayInput extends Component {
         };
         return (
             <div className="EmbeddedArrayInputItemContainer">
-                <div style={styles.container}>
+                <div style={styles.innerContainer}>
                     {React.Children.map(
                         inputs,
                         input =>
@@ -107,28 +137,36 @@ export class EmbeddedArrayInput extends Component {
                             </div>
                     )}
                 </div>
-                <FlatButton
-                    primary
-                    label={translate(labelRemove)}
-                    style={styles.removeButton}
-                    icon={<ActionDeleteIcon />}
-                    onClick={removeItem}
-                />
+                {allowRemove &&
+                    !readOnly &&
+                    !disabled &&
+                    <FlatButton
+                        primary
+                        label={translate(labelRemove)}
+                        style={styles.removeButton}
+                        icon={<ActionDeleteIcon />}
+                        onClick={removeItem}
+                    />}
             </div>
         );
     };
-    //{translate(labelRemove)}
+
     renderList = ({ fields: items }) => {
         const {
             children,
-            elStyle,
+            style,
             translate,
             labelRemove,
             labelAdd,
+            allowAdd,
+            allowRemove,
+            readOnly,
+            disabled,
         } = this.props;
         const createItem = () => items.push();
+
         return (
-            <div className="EmbeddedArrayInputContainer" style={elStyle}>
+            <div className="EmbeddedArrayInputContainer" style={style}>
                 <div>
                     {items.map((member, index) =>
                         <div key={index}>
@@ -139,31 +177,56 @@ export class EmbeddedArrayInput extends Component {
                                 index,
                                 translate,
                                 labelRemove,
+                                allowRemove,
+                                readOnly,
+                                disabled,
                             })}
                             {index < items.length - 1 && <Divider />}
                         </div>
                     )}
                 </div>
                 <br />
-                <FlatButton
-                    primary
-                    icon={<ContentCreateIcon />}
-                    label={translate(labelAdd)}
-                    onClick={createItem}
-                />
+                {allowAdd &&
+                    !readOnly &&
+                    !disabled &&
+                    <FlatButton
+                        primary
+                        icon={<ContentCreateIcon />}
+                        label={translate(labelAdd)}
+                        onClick={createItem}
+                    />}
             </div>
         );
     };
 
     render() {
-        const { source, translate, labelAdd, labelRemove } = this.props;
+        const { source, label, addLabel } = this.props;
+
+        const labelElement =
+            !addLabel &&
+            <div style={styles.labelContainer}>
+                <TextFieldLabel
+                    muiTheme={this.context.muiTheme}
+                    style={Object.assign(styles.label, {
+                        color: this.context.muiTheme
+                            ? this.context.muiTheme.textField.focusColor
+                            : '',
+                    })}
+                    shrink={false}
+                >
+                    {label || source}
+                </TextFieldLabel>
+            </div>;
 
         return (
-            <FieldArray
-                name={source}
-                component={this.renderList}
-                props={{ translate, labelAdd, labelRemove }}
-            />
+            <div>
+                {labelElement}
+                <FieldArray
+                    name={source}
+                    component={this.renderList}
+                    props={this.props}
+                />
+            </div>
         );
     }
 }
