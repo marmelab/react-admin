@@ -417,7 +417,7 @@ import { LongTextInput } from 'admin-on-rest';
 
 ## `<NumberInput>`
 
-`<NumberInput>` translates to a HTMl `<input type="number">`. It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
+`<NumberInput>` translates to a HTML `<input type="number">`. It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
 
 ```jsx
 import { NumberInput } from 'admin-on-rest';
