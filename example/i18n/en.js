@@ -20,13 +20,14 @@ export const messages = {
                 title: 'Title',
                 views: 'Views',
                 links: {
-                    name: 'Links',
-                    fields: {
-                        metadata: {
-                            name: 'Metadata',
-                        },
-                        tags: 'Tags',
-                        url: 'Url',
+                    _label: 'Link List',
+                    tags: 'Tag List',
+                    url: 'Reference',
+                    context: 'What it is',
+                    metadata: {
+                        _label: 'Metadata List',
+                        name: 'Metadata Name',
+                        value: 'Metadata Value',
                     },
                 },
             },

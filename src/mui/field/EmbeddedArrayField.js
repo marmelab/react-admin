@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
-import SimpleShowLayout from '../detail/SimpleShowLayout';
+import EmbbededArrayShowLayout from '../detail/EmbbededArrayShowLayout';
 
 /**
  * A container component that shows embedded array elements as a list of input sets
@@ -31,14 +31,14 @@ export class EmbeddedArrayField extends Component {
             <div>
                 {elements.map(
                     (element, i) =>
-                        <SimpleShowLayout {...layoutProps} key={i}>
+                        <EmbbededArrayShowLayout {...layoutProps} key={i}>
                             {React.Children.map(children, child =>
                                 React.cloneElement(child, {
                                     source: `${source}[${i}].${child.props
                                         .source}`,
                                 })
                             )}
-                        </SimpleShowLayout>,
+                        </EmbbededArrayShowLayout>,
                     this
                 )}
             </div>

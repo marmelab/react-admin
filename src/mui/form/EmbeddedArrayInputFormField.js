@@ -16,8 +16,8 @@ import isRequired from './isRequired';
  *
  */
 const EmbeddedArrayInputFormField = ({ input, prefix, resource, ...rest }) => {
-    const alteredSource = `${prefix}.fields.${input.props.source}`.replace(
-        /[^a-z.]/g,
+    const alteredSource = `${prefix}.${input.props.source}`.replace(
+        /\[\d+\]/g,
         ''
     );
 

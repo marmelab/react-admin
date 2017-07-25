@@ -211,7 +211,7 @@ export class EmbeddedArrayInput extends Component {
         const minimizedLabel =
             typeof label !== 'undefined'
                 ? translate(label, { _: label })
-                : translate(`resources.${resource}.fields.${source}.name`, {
+                : translate(`resources.${resource}.fields.${source}._label`, {
                       _: inflection.humanize(source.split('.').pop()),
                   });
 
