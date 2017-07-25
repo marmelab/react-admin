@@ -8,6 +8,7 @@ env:
         - NODE_ENV=test
 dist: trusty
 cache:
+  yarn: true
   directories:
     - node_modules
 before_install:
