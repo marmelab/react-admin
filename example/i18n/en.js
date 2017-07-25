@@ -20,14 +20,18 @@ export const messages = {
                 title: 'Title',
                 views: 'Views',
                 links: {
-                    _label: 'Link List',
-                    tags: 'Tag List',
-                    url: 'Reference',
-                    context: 'What it is',
-                    metadata: {
-                        _label: 'Metadata List',
-                        name: 'Metadata Name',
-                        value: 'Metadata Value',
+                    name: 'Link List',
+                    fields: {
+                        tags: 'Tag List',
+                        url: 'Reference',
+                        context: 'What it is',
+                        metadata: {
+                            name: 'Metadata List',
+                            fields: {
+                                name: 'Metadata Name',
+                                value: 'Metadata Value',
+                            },
+                        },
                     },
                 },
             },

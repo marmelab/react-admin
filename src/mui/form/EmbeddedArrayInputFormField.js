@@ -21,6 +21,12 @@ const EmbeddedArrayInputFormField = ({ input, prefix, resource, ...rest }) => {
         ''
     );
 
+    const alteredLabel =
+        input.props.label ||
+        `resources.${resource}.fields.${prefix
+            .replace(/\[\d+\]/g, '')
+            .replace(/\./g, '.fields.')}.fields.${input.props.source}`;
+
     if (input.props.addField) {
         if (input.props.addLabel) {
             return (
@@ -31,6 +37,7 @@ const EmbeddedArrayInputFormField = ({ input, prefix, resource, ...rest }) => {
                     name={`${prefix}.${input.props.source}`}
                     component={Labeled}
                     source={alteredSource}
+                    label={alteredLabel}
                     isRequired={isRequired(input.props.validate)}
                 >
                     {input}
@@ -45,6 +52,7 @@ const EmbeddedArrayInputFormField = ({ input, prefix, resource, ...rest }) => {
                 name={`${prefix}.${input.props.source}`}
                 component={input.type}
                 source={alteredSource}
+                label={alteredLabel}
                 isRequired={isRequired(input.props.validate)}
             />
         );
@@ -55,6 +63,7 @@ const EmbeddedArrayInputFormField = ({ input, prefix, resource, ...rest }) => {
                 {...rest}
                 resource={resource}
                 source={alteredSource}
+                label={alteredLabel}
                 isRequired={isRequired(input.props.validate)}
             >
                 {input}

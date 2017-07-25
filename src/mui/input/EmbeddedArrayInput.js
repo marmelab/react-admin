@@ -208,12 +208,18 @@ export class EmbeddedArrayInput extends Component {
                 ? this.context.muiTheme.textField.focusColor
                 : '',
         });
+
         const minimizedLabel =
             typeof label !== 'undefined'
                 ? translate(label, { _: label })
-                : translate(`resources.${resource}.fields.${source}._label`, {
-                      _: inflection.humanize(source.split('.').pop()),
-                  });
+                : translate(
+                      `resources.${resource}.fields.${source
+                          .replace(/\./g, '.fields.')
+                          .replace(/\[\d+\]/g, '')}.name`,
+                      {
+                          _: inflection.humanize(source.split('.').pop()),
+                      }
+                  );
 
         const labelElement =
             !addLabel &&
