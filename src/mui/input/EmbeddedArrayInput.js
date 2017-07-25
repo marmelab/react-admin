@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FieldArray } from 'redux-form';
+import inflection from 'inflection';
 
 import FlatButton from 'material-ui/FlatButton';
 import TextFieldLabel from 'material-ui/TextField/TextFieldLabel';
@@ -109,11 +110,10 @@ export class EmbeddedArrayInput extends Component {
         labelRemove,
         readOnly,
         disabled,
-        resource,
     }) => {
         const removeItem = () => items.remove(index);
         const passedProps = {
-            resource: this.props.resource || resource,
+            resource: this.props.resource,
             basePath: this.props.basePath,
             record: this.props.record,
         };
@@ -167,8 +167,6 @@ export class EmbeddedArrayInput extends Component {
         } = this.props;
         const createItem = () => items.push();
 
-        const resource = this.props.resource || this.props.props.resource;
-
         return (
             <div className="EmbeddedArrayInputContainer" style={style}>
                 <div>
@@ -184,7 +182,6 @@ export class EmbeddedArrayInput extends Component {
                                 allowRemove,
                                 readOnly,
                                 disabled,
-                                resource,
                             })}
                             {index < items.length - 1 && <Divider />}
                         </div>
@@ -205,21 +202,28 @@ export class EmbeddedArrayInput extends Component {
     };
 
     render() {
-        const { source, label, addLabel } = this.props;
+        const { source, label, addLabel, translate, resource } = this.props;
+        const labelStyle = Object.assign(styles.label, {
+            color: this.context.muiTheme
+                ? this.context.muiTheme.textField.focusColor
+                : '',
+        });
+        const minimizedLabel =
+            typeof label !== 'undefined'
+                ? translate(label, { _: label })
+                : translate(`resources.${resource}.fields.${source}.name`, {
+                      _: inflection.humanize(source.split('.').pop()),
+                  });
 
         const labelElement =
             !addLabel &&
             <div style={styles.labelContainer}>
                 <TextFieldLabel
                     muiTheme={this.context.muiTheme}
-                    style={Object.assign(styles.label, {
-                        color: this.context.muiTheme
-                            ? this.context.muiTheme.textField.focusColor
-                            : '',
-                    })}
+                    style={labelStyle}
                     shrink={false}
                 >
-                    {label || source.split('.').pop()}
+                    {minimizedLabel}
                 </TextFieldLabel>
             </div>;
 

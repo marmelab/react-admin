@@ -19,9 +19,16 @@ export const messages = {
                 tags: 'Tags',
                 title: 'Title',
                 views: 'Views',
-                links: 'Links',
-                links_metadata: 'Metadata',
-                links_tags: 'Tagd',
+                links: {
+                    name: 'Links',
+                    fields: {
+                        metadata: {
+                            name: 'Metadata',
+                        },
+                        tags: 'Tags',
+                        url: 'Url',
+                    },
+                },
             },
         },
         comments: {
