@@ -41,6 +41,7 @@ Here are all the props accepted by the component:
 * [`locale`](#internationalization)
 * [`messages`](#internationalization)
 * [`initialState`](#initialstate)
+* [`history`](#history)
 
 ## `restClient`
 
@@ -388,6 +389,24 @@ const App = () => (
 
 ## `initialState`
 The `initialState` prop lets you pass preloaded state to Redux. See the [Redux Documentation](http://redux.js.org/docs/api/createStore.html#createstorereducer-preloadedstate-enhancer) for more details.
+
+## `history`
+
+By default, admin-on-rest creates URLs using a hash sign (e.g. "myadmin.acme.com/#/posts/123"). The hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. But you may want to use another routing strategy, e.g. to allow server-side rendering.
+
+You can create your own `history` function (compatible with [the `history` npm package](https://github.com/reacttraining/history)), and pass it to the `<Admin>` component to override the default history strategy. For instance, to use `browserHistory`:
+
+```js
+import createHistory from 'history/createBrowserHistory';
+
+const history = createHistory();
+
+const App = () => (
+    <Admin history={history}>
+        ...
+    </Admin>
+);
+```
 
 ## Internationalization
 
