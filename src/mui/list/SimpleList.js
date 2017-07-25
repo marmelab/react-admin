@@ -17,6 +17,7 @@ const SimpleList = ({
     leftIcon,
     rightAvatar,
     rightIcon,
+    itemStyle,
 }) => (
     <List>
         {ids.map(id => (
@@ -39,6 +40,7 @@ const SimpleList = ({
                 rightAvatar={rightAvatar && rightAvatar(data[id], id)}
                 rightIcon={rightIcon && rightIcon(data[id], id)}
                 containerElement={<Link to={`${basePath}/${id}`} />}
+                style={itemStyle}
             />
         ))}
     </List>
@@ -56,6 +58,7 @@ SimpleList.propTypes = {
     leftIcon: PropTypes.func,
     rightAvatar: PropTypes.func,
     rightIcon: PropTypes.func,
+    itemStyle: PropTypes.object,
 };
 
 export default SimpleList;
