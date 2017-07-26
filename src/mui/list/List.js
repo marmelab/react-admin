@@ -153,8 +153,8 @@ export class List extends Component {
         const params = query || this.getQuery();
         const { sort, order, page, perPage, filter } = params;
         const pagination = {
-            page: parseInt(page, 10),
-            perPage: parseInt(perPage, 10),
+            page: parseInt(page || 1, 10),
+            perPage: parseInt(perPage || 25, 10),
         };
         const permanentFilter = this.props.filter;
         this.props.crudGetList(
@@ -342,6 +342,11 @@ const getQuery = createSelector(getLocationSearch, locationSearch => {
     if (query.filter && typeof query.filter === 'string') {
         query.filter = JSON.parse(query.filter);
     }
+
+    if (!query.filter) {
+        query.filter = {};
+    }
+
     return query;
 });
 
@@ -349,12 +354,12 @@ function mapStateToProps(state, props) {
     const resourceState = state.admin.resources[props.resource];
     return {
         query: getQuery(props),
-        params: resourceState.list.params,
-        ids: resourceState.list.ids,
-        total: resourceState.list.total,
-        data: resourceState.data,
+        params: resourceState ? resourceState.list.params : {},
+        ids: resourceState ? resourceState.list.ids : [],
+        total: resourceState ? resourceState.list.total : 0,
+        data: resourceState ? resourceState.data : {},
         isLoading: state.admin.loading > 0,
-        filterValues: resourceState.list.params.filter,
+        filterValues: resourceState ? resourceState.list.params.filter : {},
     };
 }
 

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import ViewListIcon from 'material-ui/svg-icons/action/view-list';
 import { Route } from 'react-router-dom';
 import compose from 'recompose/compose';
-import { withRouter } from 'react-router';
 
 import CrudRoute from './CrudRoute';
 import { declareResource as declareResourceAction } from './actions';
@@ -60,7 +59,4 @@ Resource.defaultProps = {
     options: {},
 };
 
-export default compose(
-    withRouter,
-    connect(undefined, { declareResource: declareResourceAction })
-)(Resource);
+export default connect(undefined, { declareResource: declareResourceAction })(Resource);

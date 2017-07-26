@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -37,7 +37,7 @@ const AdminRoutes = ({ children, customRoutes, dashboard, catchAll }) =>
                   path="/"
                   render={() => <Redirect to={`/${children[0].props.name}`} />}
               />}
-        {children}
+        {Children.map(children, child => cloneElement(child, { path: `/${child.props.name}` }))}
         <Route component={catchAll || NotFound} />
     </Switch>;
 

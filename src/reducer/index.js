@@ -4,9 +4,9 @@ import { routerReducer } from 'react-router-redux';
 import adminReducer from './admin';
 import localeReducer from './locale';
 
-export default (resources, customReducers, locale) =>
+export default (customReducers, locale) =>
     combineReducers({
-        admin: adminReducer(resources),
+        admin: adminReducer,
         locale: localeReducer(locale),
         form: formReducer,
         routing: routerReducer,
