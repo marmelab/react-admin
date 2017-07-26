@@ -86,10 +86,9 @@ const Admin = ({
                                             hasDashboard: !!dashboard,
                                         }),
                                         catchAll,
-                                        resources,
                                         title,
                                         theme,
-                                    })}
+                                    }, children)}
                             />
                         </Switch>
                     </div>
