@@ -76,17 +76,21 @@ const Admin = ({
                             <Route
                                 path="/"
                                 render={() =>
-                                    createElement(appLayout || DefaultLayout, {
-                                        dashboard,
-                                        customRoutes,
-                                        menu: createElement(menu || Menu, {
-                                            logout,
-                                            hasDashboard: !!dashboard,
-                                        }),
-                                        catchAll,
-                                        title,
-                                        theme,
-                                    }, children)}
+                                    createElement(
+                                        appLayout || DefaultLayout,
+                                        {
+                                            dashboard,
+                                            customRoutes,
+                                            menu: createElement(menu || Menu, {
+                                                logout,
+                                                hasDashboard: !!dashboard,
+                                            }),
+                                            catchAll,
+                                            title,
+                                            theme,
+                                        },
+                                        children
+                                    )}
                             />
                         </Switch>
                     </div>

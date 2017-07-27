@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import data from './data';
 import list from './list';
-import { DECLARE_RESOURCE } from '../../../actions'
 
 const createResourceReducer = resource =>
     combineReducers({
@@ -9,24 +8,27 @@ const createResourceReducer = resource =>
         list: list(resource),
     });
 
-export default (state = {}, action) => {
-    if (action.type === DECLARE_RESOURCE) {
-        if (state[action.payload.name]) {
-            return state;
-        }
-
-        return {
-            ...state,
-            [action.payload.name]: createResourceReducer(action.payload.name)(undefined, {}),
-        };
+export default (previousState = {}, action) => {
+    if (!action.meta || !action.meta.resource) {
+        return previousState;
     }
 
-    if (!action.meta || !action.meta.resource || !state[action.meta.resource]) {
-        return state;
+    let state = previousState;
+    if (!previousState[action.meta.resource]) {
+        state = {
+            ...previousState,
+            [action.payload.name]: createResourceReducer(action.payload.name)(
+                undefined,
+                {}
+            ),
+        };
     }
 
     return {
         ...state,
-        [action.meta.resource]: createResourceReducer(action.meta.resource)(state[action.meta.resource], action),
+        [action.meta.resource]: createResourceReducer(action.meta.resource)(
+            state[action.meta.resource],
+            action
+        ),
     };
-}
+};

@@ -2,7 +2,6 @@ import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import CrudRoute from './CrudRoute';
 import NotFound from './mui/layout/NotFound';
 import Restricted from './auth/Restricted';
 
@@ -31,13 +30,16 @@ const AdminRoutes = ({ children, customRoutes, dashboard, catchAll }) =>
                           {React.createElement(dashboard)}
                       </Restricted>}
               />
-            : children[0] &&
+            : children &&
+              children[0] &&
               <Route
                   exact
                   path="/"
                   render={() => <Redirect to={`/${children[0].props.name}`} />}
               />}
-        {Children.map(children, child => cloneElement(child, { path: `/${child.props.name}` }))}
+        {Children.map(children, child =>
+            cloneElement(child, { path: `/${child.props.name}` })
+        )}
         <Route component={catchAll || NotFound} />
     </Switch>;
 

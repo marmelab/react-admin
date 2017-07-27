@@ -6,5 +6,4 @@ export * from './filterActions';
 export * from './listActions';
 export * from './localeActions';
 export * from './notificationActions';
-export * from './resourceActions';
 export * from './uiActions';
