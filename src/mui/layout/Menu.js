@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import inflection from 'inflection';
-import pure from 'recompose/pure';
+import { connect } from 'react-redux';
+
 import compose from 'recompose/compose';
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
@@ -32,7 +33,7 @@ const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) =>
     <div style={styles.main}>
         {hasDashboard && <DashboardMenuItem onTouchTap={onMenuTap} />}
         {resources
-            .filter(r => r.list)
+            .filter(r => r.showInMenu)
             .map(resource =>
                 <MenuItemLink
                     key={resource.name}
@@ -57,6 +58,13 @@ Menu.defaultProps = {
     onMenuTap: () => null,
 };
 
-const enhance = compose(pure, translate);
+const mapStateToProps = state => ({
+    resources: Object.keys(state.admin.resources).map(r => ({
+        name: r,
+        ...state.admin.resources[r].ui,
+    })),
+});
+
+const enhance = compose(connect(mapStateToProps), translate);
 
 export default enhance(Menu);

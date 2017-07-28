@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 import data from './data';
 import list from './list';
+import ui from './ui';
 
 const createResourceReducer = resource =>
     combineReducers({
         data: data(resource),
         list: list(resource),
+        ui: ui(resource),
     });
 
 export default (previousState = {}, action) => {
