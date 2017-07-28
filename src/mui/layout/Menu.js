@@ -1,11 +1,8 @@
-import React from 'react';
+import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
-import inflection from 'inflection';
+
 import pure from 'recompose/pure';
-import compose from 'recompose/compose';
 import DashboardMenuItem from './DashboardMenuItem';
-import MenuItemLink from './MenuItemLink';
-import translate from '../../i18n/translate';
 
 const styles = {
     main: {
@@ -16,32 +13,12 @@ const styles = {
     },
 };
 
-const translatedResourceName = (resource, translate) =>
-    translate(`resources.${resource.name}.name`, {
-        smart_count: 2,
-        _:
-            resource.options && resource.options.label
-                ? translate(resource.options.label, {
-                      smart_count: 2,
-                      _: resource.options.label,
-                  })
-                : inflection.humanize(inflection.pluralize(resource.name)),
-    });
-
-const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) =>
+const Menu = ({ children, hasDashboard, onMenuTap, logout }) =>
     <div style={styles.main}>
         {hasDashboard && <DashboardMenuItem onTouchTap={onMenuTap} />}
-        {resources
-            .filter(r => r.list)
-            .map(resource =>
-                <MenuItemLink
-                    key={resource.name}
-                    to={`/${resource.name}`}
-                    primaryText={translatedResourceName(resource, translate)}
-                    leftIcon={<resource.icon />}
-                    onTouchTap={onMenuTap}
-                />
-            )}
+        {Children.map(children, child =>
+            cloneElement(child, { context: 'menu', onMenuTap })
+        )}
         {logout}
     </div>;
 
@@ -49,14 +26,11 @@ Menu.propTypes = {
     hasDashboard: PropTypes.bool,
     logout: PropTypes.element,
     onMenuTap: PropTypes.func,
-    resources: PropTypes.array.isRequired,
-    translate: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 Menu.defaultProps = {
     onMenuTap: () => null,
 };
 
-const enhance = compose(pure, translate);
-
-export default enhance(Menu);
+export default pure(Menu);

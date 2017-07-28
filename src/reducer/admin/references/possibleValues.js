@@ -29,6 +29,11 @@ export const getPossibleReferences = (
         id => possibleValues.includes(id) || possibleValues.unshift(id)
     );
     return possibleValues
-        .map(id => state.admin.resources[reference].data[id])
+        .map(
+            id =>
+                state.admin.resources[reference]
+                    ? state.admin.resources[reference].data[id]
+                    : undefined
+        )
         .filter(r => typeof r !== 'undefined');
 };

@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { cloneElement, Children } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import CrudRoute from './CrudRoute';
 import NotFound from './mui/layout/NotFound';
 import Restricted from './auth/Restricted';
 
-const AdminRoutes = ({ customRoutes, resources = [], dashboard, catchAll }) =>
+const AdminRoutes = ({ children, customRoutes, dashboard, catchAll }) =>
     <Switch>
         {customRoutes &&
             customRoutes.map((route, index) =>
@@ -19,22 +18,6 @@ const AdminRoutes = ({ customRoutes, resources = [], dashboard, catchAll }) =>
                     children={route.props.children} // eslint-disable-line react/no-children-prop
                 />
             )}
-        {resources.map(resource =>
-            <Route
-                path={`/${resource.name}`}
-                key={resource.name}
-                render={() =>
-                    <CrudRoute
-                        resource={resource.name}
-                        list={resource.list}
-                        create={resource.create}
-                        edit={resource.edit}
-                        show={resource.show}
-                        remove={resource.remove}
-                        options={resource.options}
-                    />}
-            />
-        )}
         {dashboard
             ? <Route
                   exact
@@ -47,12 +30,16 @@ const AdminRoutes = ({ customRoutes, resources = [], dashboard, catchAll }) =>
                           {React.createElement(dashboard)}
                       </Restricted>}
               />
-            : resources[0] &&
+            : children &&
+              children[0] &&
               <Route
                   exact
                   path="/"
-                  render={() => <Redirect to={`/${resources[0].name}`} />}
+                  render={() => <Redirect to={`/${children[0].props.name}`} />}
               />}
+        {Children.map(children, child =>
+            cloneElement(child, { path: `/${child.props.name}` })
+        )}
         <Route component={catchAll || NotFound} />
     </Switch>;
 
@@ -63,8 +50,8 @@ const componentPropType = PropTypes.oneOfType([
 
 AdminRoutes.propTypes = {
     catchAll: componentPropType,
+    children: PropTypes.node.isRequired,
     customRoutes: PropTypes.array,
-    resources: PropTypes.array,
     dashboard: componentPropType,
 };
 

@@ -37,8 +37,7 @@ const Admin = ({
     logoutButton,
     initialState,
 }) => {
-    const resources = React.Children.map(children, ({ props }) => props) || [];
-    const appReducer = createAppReducer(resources, customReducers, locale);
+    const appReducer = createAppReducer(customReducers, locale);
     const resettableAppReducer = (state, action) =>
         appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
     const saga = function* rootSaga() {
@@ -77,19 +76,25 @@ const Admin = ({
                             <Route
                                 path="/"
                                 render={() =>
-                                    createElement(appLayout || DefaultLayout, {
-                                        dashboard,
-                                        customRoutes,
-                                        menu: createElement(menu || Menu, {
-                                            logout,
-                                            resources,
-                                            hasDashboard: !!dashboard,
-                                        }),
-                                        catchAll,
-                                        resources,
-                                        title,
-                                        theme,
-                                    })}
+                                    createElement(
+                                        appLayout || DefaultLayout,
+                                        {
+                                            dashboard,
+                                            customRoutes,
+                                            menu: createElement(
+                                                menu || Menu,
+                                                {
+                                                    logout,
+                                                    hasDashboard: !!dashboard,
+                                                },
+                                                children
+                                            ),
+                                            catchAll,
+                                            title,
+                                            theme,
+                                        },
+                                        children
+                                    )}
                             />
                         </Switch>
                     </div>

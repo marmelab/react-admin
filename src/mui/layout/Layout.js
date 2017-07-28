@@ -73,7 +73,7 @@ class Layout extends Component {
             isLoading,
             menu,
             catchAll,
-            resources,
+            children,
             theme,
             title,
             width,
@@ -111,11 +111,12 @@ class Layout extends Component {
                             >
                                 <AdminRoutes
                                     customRoutes={customRoutes}
-                                    resources={resources}
                                     authClient={authClient}
                                     dashboard={dashboard}
                                     catchAll={catchAll}
-                                />
+                                >
+                                    {children}
+                                </AdminRoutes>
                             </div>
                             <Sidebar theme={theme}>
                                 {menu}
@@ -149,7 +150,7 @@ Layout.propTypes = {
     dashboard: componentPropType,
     isLoading: PropTypes.bool.isRequired,
     menu: PropTypes.element,
-    resources: PropTypes.array,
+    children: PropTypes.node,
     setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.node.isRequired,
     theme: PropTypes.object.isRequired,

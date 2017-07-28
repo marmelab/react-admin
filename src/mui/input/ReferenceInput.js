@@ -240,8 +240,9 @@ ReferenceInput.defaultProps = {
 function mapStateToProps(state, props) {
     const referenceId = props.input.value;
     return {
-        referenceRecord:
-            state.admin.resources[props.reference].data[referenceId],
+        referenceRecord: state.admin.resources[props.reference]
+            ? state.admin.resources[props.reference].data[referenceId]
+            : null,
         matchingReferences: getPossibleReferences(
             state,
             referenceSource(props.resource, props.source),

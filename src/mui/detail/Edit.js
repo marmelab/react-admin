@@ -107,7 +107,8 @@ export class Edit extends Component {
         return (
             <div className="edit-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
-                    {actions &&
+                    {data &&
+                        actions &&
                         React.cloneElement(actions, {
                             basePath,
                             data,
@@ -157,10 +158,11 @@ Edit.propTypes = {
 function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
-        data:
-            state.admin.resources[props.resource].data[
-                decodeURIComponent(props.match.params.id)
-            ],
+        data: state.admin.resources[props.resource]
+            ? state.admin.resources[props.resource].data[
+                  decodeURIComponent(props.match.params.id)
+              ]
+            : null,
         isLoading: state.admin.loading > 0,
     };
 }

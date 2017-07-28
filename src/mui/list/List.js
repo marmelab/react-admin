@@ -329,6 +329,7 @@ List.defaultProps = {
     filter: {},
     filterValues: {},
     perPage: 10,
+    params: { page: 1 },
     sort: {
         field: 'id',
         order: SORT_DESC,
@@ -342,6 +343,7 @@ const getQuery = createSelector(getLocationSearch, locationSearch => {
     if (query.filter && typeof query.filter === 'string') {
         query.filter = JSON.parse(query.filter);
     }
+
     return query;
 });
 
@@ -349,12 +351,14 @@ function mapStateToProps(state, props) {
     const resourceState = state.admin.resources[props.resource];
     return {
         query: getQuery(props),
-        params: resourceState.list.params,
-        ids: resourceState.list.ids,
-        total: resourceState.list.total,
-        data: resourceState.data,
+        params: resourceState
+            ? resourceState.list.params
+            : { page: 1, filter: {} },
+        ids: resourceState ? resourceState.list.ids : [],
+        total: resourceState ? resourceState.list.total : 0,
+        data: resourceState ? resourceState.data : {},
         isLoading: state.admin.loading > 0,
-        filterValues: resourceState.list.params.filter,
+        filterValues: resourceState ? resourceState.list.params.filter : {},
     };
 }
 
