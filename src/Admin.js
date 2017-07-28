@@ -81,10 +81,14 @@ const Admin = ({
                                         {
                                             dashboard,
                                             customRoutes,
-                                            menu: createElement(menu || Menu, {
-                                                logout,
-                                                hasDashboard: !!dashboard,
-                                            }),
+                                            menu: createElement(
+                                                menu || Menu,
+                                                {
+                                                    logout,
+                                                    hasDashboard: !!dashboard,
+                                                },
+                                                children
+                                            ),
                                             catchAll,
                                             title,
                                             theme,

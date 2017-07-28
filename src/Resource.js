@@ -1,31 +1,65 @@
-import React, { Component } from 'react';
+import React, { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import ViewListIcon from 'material-ui/svg-icons/action/view-list';
 import { Route } from 'react-router-dom';
-import { connect } from 'react-redux';
+import inflection from 'inflection';
 
 import CrudRoute from './CrudRoute';
-import { declareResource as declareResourceAction } from './actions';
+import MenuItemLink from './mui/layout/MenuItemLink';
+import translate from './i18n/translate';
 
 const componentPropType = PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.string,
 ]);
 
-class Resource extends Component {
-    constructor(props) {
-        super(props);
+const translatedResourceName = (resource, translate) =>
+    translate(`resources.${resource.name}.name`, {
+        smart_count: 2,
+        _:
+            resource.options && resource.options.label
+                ? translate(resource.options.label, {
+                      smart_count: 2,
+                      _: resource.options.label,
+                  })
+                : inflection.humanize(inflection.pluralize(resource.name)),
+    });
 
-        props.declareResource({
-            name: props.name,
-            icon: props.icon,
-            showInMenu: !!props.list,
-            options: props.options,
-        });
+class Resource extends Component {
+    renderMenu() {
+        return;
     }
 
     render() {
-        const { name, list, create, edit, show, remove, options } = this.props;
+        const {
+            context,
+            create,
+            edit,
+            icon,
+            list,
+            name,
+            onMenuTap,
+            options,
+            remove,
+            show,
+            translate,
+        } = this.props;
+
+        if (context === 'menu') {
+            return (
+                <MenuItemLink
+                    key={name}
+                    to={`/${name}`}
+                    primaryText={translatedResourceName(
+                        { name, options },
+                        translate
+                    )}
+                    leftIcon={createElement(icon)}
+                    onTouchTap={onMenuTap}
+                />
+            );
+        }
+
         return (
             <Route
                 path={`/${name}`}
@@ -46,7 +80,9 @@ class Resource extends Component {
 }
 
 Resource.propTypes = {
-    declareResource: PropTypes.func.isRequired,
+    onMenuTap: PropTypes.func,
+    translate: PropTypes.func.isRequired,
+    context: PropTypes.string,
     name: PropTypes.string.isRequired,
     list: componentPropType,
     create: componentPropType,
@@ -63,6 +99,4 @@ Resource.defaultProps = {
     options: {},
 };
 
-export default connect(undefined, { declareResource: declareResourceAction })(
-    Resource
-);
+export default translate(Resource);
