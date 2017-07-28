@@ -49,7 +49,7 @@ You can find REST clients for various backends in third-party repositories:
 * **[Parse Server](https://github.com/ParsePlatform/parse-server)**: [leperone/aor-parseserver-client](https://github.com/leperone/aor-parseserver-client)
 * **[PostgREST](http://postgrest.com/en/v0.4/)**: [tomberek/aor-postgrest-client](https://github.com/tomberek/aor-postgrest-client)
 
-If you've written a REST client for anoter backend, and open-sourced it, please help complete this list with your package.
+If you've written a REST client for another backend, and open-sourced it, please help complete this list with your package.
 
 ### Simple REST
 

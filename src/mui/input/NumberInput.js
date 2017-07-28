@@ -71,7 +71,10 @@ NumberInput.propTypes = {
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-    step: PropTypes.string.isRequired,
+    step: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+    ]).isRequired,
     validate: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.arrayOf(PropTypes.func),
