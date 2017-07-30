@@ -321,10 +321,12 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import Foo from './Foo';
 import Bar from './Bar';
+import Baz from './Baz';
 
 export default [
     <Route exact path="/foo" component={Foo} />,
     <Route exact path="/bar" component={Bar} />,
+    <Route exact path="/baz" component={Baz} noLayout />,
 ];
 ```
 
@@ -347,6 +349,8 @@ export default App;
 ```
 
 Now, when a user browses to `/foo` or `/bar`, the components you defined will appear in the main part of the screen.
+When a user browses to `/baz`, the component will appear outside of the defined Layout, leaving you the freedom
+to design the screen the way you want.
 
 **Tip**: It's up to you to create a [custom menu](#applayout) entry, or custom buttons, to lead to your custom pages.
 
