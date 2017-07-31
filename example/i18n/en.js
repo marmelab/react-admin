@@ -28,8 +28,8 @@ export const messages = {
                         metadata: {
                             name: 'Metadata List',
                             fields: {
-                                name: 'Metadata Name',
-                                value: 'Metadata Value',
+                                name: 'Name Of Metadata',
+                                value: 'Value Of Metadata',
                             },
                         },
                     },

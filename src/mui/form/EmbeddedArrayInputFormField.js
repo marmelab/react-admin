@@ -15,17 +15,9 @@ import isRequired from './isRequired';
  * <EmbeddedArrayInputFormField input={input} prefix={my_prefix} />
  *
  */
-const EmbeddedArrayInputFormField = ({ input, prefix, resource, ...rest }) => {
-    const alteredSource = `${prefix}.${input.props.source}`.replace(
-        /\[\d+\]/g,
-        ''
-    );
-
-    const alteredLabel =
-        input.props.label ||
-        `resources.${resource}.fields.${prefix
-            .replace(/\[\d+\]/g, '')
-            .replace(/\./g, '.fields.')}.fields.${input.props.source}`;
+const EmbeddedArrayInputFormField = ({ input, prefix, ...rest }) => {
+    const name = `${prefix}.${input.props.source}`;
+    const source = name;
 
     if (input.props.addField) {
         if (input.props.addLabel) {
@@ -33,11 +25,9 @@ const EmbeddedArrayInputFormField = ({ input, prefix, resource, ...rest }) => {
                 <Field
                     {...rest}
                     {...input.props}
-                    resource={resource}
-                    name={`${prefix}.${input.props.source}`}
+                    name={name}
+                    source={source}
                     component={Labeled}
-                    source={alteredSource}
-                    label={alteredLabel}
                     isRequired={isRequired(input.props.validate)}
                 >
                     {input}
@@ -48,11 +38,9 @@ const EmbeddedArrayInputFormField = ({ input, prefix, resource, ...rest }) => {
             <Field
                 {...rest}
                 {...input.props}
-                resource={resource}
-                name={`${prefix}.${input.props.source}`}
+                name={name}
+                source={source}
                 component={input.type}
-                source={alteredSource}
-                label={alteredLabel}
                 isRequired={isRequired(input.props.validate)}
             />
         );
@@ -61,9 +49,7 @@ const EmbeddedArrayInputFormField = ({ input, prefix, resource, ...rest }) => {
         return (
             <Labeled
                 {...rest}
-                resource={resource}
-                source={alteredSource}
-                label={alteredLabel}
+                source={source}
                 isRequired={isRequired(input.props.validate)}
             >
                 {input}
@@ -74,8 +60,7 @@ const EmbeddedArrayInputFormField = ({ input, prefix, resource, ...rest }) => {
         ? input
         : React.cloneElement(input, {
               ...rest,
-              resource: resource,
-              source: `${prefix}.${input.props.source}`,
+              source: name,
           });
 };
 
