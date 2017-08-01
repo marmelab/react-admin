@@ -6,7 +6,6 @@ import IconButton from 'material-ui/IconButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import { cyan500 } from 'material-ui/styles/colors'
 import compose from 'recompose/compose';
 import withWidth from 'material-ui/utils/withWidth';
 import translate from '../../i18n/translate';
@@ -109,35 +108,35 @@ export class Pagination extends Component {
                 <ToolbarGroup style={styles.mobileToolbar}>
                     {page > 1 &&
                         <IconButton onClick={this.prevPage}>
-                            <ChevronLeft color={cyan500} />
+                            <ChevronLeft />
                         </IconButton>
                     }
                     <span style={styles.pageInfo}>{translate('aor.navigation.page_range_info', { offsetBegin, offsetEnd, total })}</span>
                     {page !== nbPages &&
                         <IconButton onClick={this.nextPage}>
-                            <ChevronRight color={cyan500} />
+                            <ChevronRight />
                         </IconButton>
                     }
                 </ToolbarGroup>
             </Toolbar>
         ) : (
-            <Toolbar>
-                <ToolbarGroup firstChild>
-                    <span className="displayed-records" style={styles.pageInfo}>{translate('aor.navigation.page_range_info', { offsetBegin, offsetEnd, total })}</span>
-                </ToolbarGroup>
-                {nbPages > 1 &&
-                    <ToolbarGroup>
-                    {page > 1 &&
-                        <FlatButton className="previous-page" primary key="prev" label={translate('aor.navigation.prev')} icon={<ChevronLeft />} onClick={this.prevPage} style={styles.button} />
+                <Toolbar>
+                    <ToolbarGroup firstChild>
+                        <span className="displayed-records" style={styles.pageInfo}>{translate('aor.navigation.page_range_info', { offsetBegin, offsetEnd, total })}</span>
+                    </ToolbarGroup>
+                    {nbPages > 1 &&
+                        <ToolbarGroup>
+                            {page > 1 &&
+                                <FlatButton className="previous-page" primary key="prev" label={translate('aor.navigation.prev')} icon={<ChevronLeft />} onClick={this.prevPage} style={styles.button} />
+                            }
+                            {this.renderPageNums()}
+                            {page !== nbPages &&
+                                <FlatButton className="next-page" primary key="next" label={translate('aor.navigation.next')} icon={<ChevronRight />} labelPosition="before" onClick={this.nextPage} style={styles.button} />
+                            }
+                        </ToolbarGroup>
                     }
-                    {this.renderPageNums()}
-                    {page !== nbPages &&
-                        <FlatButton className="next-page" primary key="next" label={translate('aor.navigation.next')} icon={<ChevronRight />} labelPosition="before" onClick={this.nextPage} style={styles.button} />
-                    }
-                </ToolbarGroup>
-                }
-            </Toolbar>
-        );
+                </Toolbar>
+            );
     }
 }
 
