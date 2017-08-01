@@ -23,7 +23,7 @@ const Admin = ({
     children,
     customReducers = {},
     customSagas = [],
-    customRoutes,
+    customRoutes = [],
     dashboard,
     history,
     locale,
@@ -74,12 +74,38 @@ const Admin = ({
                                         theme,
                                     })}
                             />
+                            {customRoutes
+                                .filter(route => route.props.noLayout)
+                                .map((route, index) =>
+                                    <Route
+                                        key={index}
+                                        exact={route.props.exact}
+                                        path={route.props.path}
+                                        render={({ location }) => {
+                                            if (route.props.render) {
+                                                return route.props.render({
+                                                    location,
+                                                    title,
+                                                    theme,
+                                                });
+                                            }
+                                            if (route.props.component) {
+                                                return createElement(
+                                                    route.props.component,
+                                                    { location, title, theme }
+                                                );
+                                            }
+                                        }}
+                                    />
+                                )}
                             <Route
                                 path="/"
                                 render={() =>
                                     createElement(appLayout || DefaultLayout, {
                                         dashboard,
-                                        customRoutes,
+                                        customRoutes: customRoutes.filter(
+                                            route => !route.props.noLayout
+                                        ),
                                         menu: createElement(menu || Menu, {
                                             logout,
                                             resources,
