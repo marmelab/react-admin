@@ -49,7 +49,7 @@ class Sidebar extends PureComponent {
                     </Drawer>
                 }
                 medium={
-                    <Paper style={open ? styles.sidebarOpen : styles.sidebarClosed}>
+                    <Paper className="aor-layout-sidebar" style={open ? styles.sidebarOpen : styles.sidebarClosed}>
                         {children}
                     </Paper>
                 }

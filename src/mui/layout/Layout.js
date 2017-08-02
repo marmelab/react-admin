@@ -94,7 +94,7 @@ class Layout extends Component {
                     <div style={prefixedStyles.main}>
                         { width !== 1 && <AppBar title={title} />}
                         <div className="body" style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}>
-                            <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>
+                            <div className="aor-layout-content" style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>
                                 <AdminRoutes
                                     customRoutes={customRoutes}
                                     resources={resources}

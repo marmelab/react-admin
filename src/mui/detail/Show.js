@@ -53,15 +53,17 @@ export class Show extends Component {
 
         return (
             <div>
-                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    {actions && React.cloneElement(actions, {
-                        basePath,
-                        data,
-                        hasDelete,
-                        hasEdit,
-                        refresh: this.refresh,
-                        resource,
-                    })}
+                <Card className="aor-show-layout" style={{ opacity: isLoading ? 0.8 : 1 }}>
+		    <div className="aor-show-actions">
+                        {actions && React.cloneElement(actions, {
+                            basePath,
+                            data,
+                            hasDelete,
+                            hasEdit,
+                            refresh: this.refresh,
+                            resource,
+                        })}
+		    </div>
                     <ViewTitle title={titleElement} />
                     {data && React.cloneElement(children, {
                         resource,
