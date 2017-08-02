@@ -67,7 +67,7 @@ class Login extends Component {
     login = (auth) => this.props.userLogin(auth, this.props.location.state ? this.props.location.state.nextPathname : '/');
 
     render() {
-        const { handleSubmit, submitting, theme, translate } = this.props;
+        const { handleSubmit, isLoading, theme, translate } = this.props;
         const muiTheme = getMuiTheme(theme);
         const { primary1Color, accent1Color } = getColorsFromTheme(muiTheme);
         return (
@@ -84,7 +84,7 @@ class Login extends Component {
                                         name="username"
                                         component={renderInput}
                                         floatingLabelText={translate('aor.auth.username')}
-                                        disabled={submitting}
+                                        disabled={isLoading}
                                     />
                                 </div>
                                 <div style={styles.input}>
@@ -93,7 +93,7 @@ class Login extends Component {
                                         component={renderInput}
                                         floatingLabelText={translate('aor.auth.password')}
                                         type="password"
-                                        disabled={submitting}
+                                        disabled={isLoading}
                                     />
                                 </div>
                             </div>
@@ -101,8 +101,8 @@ class Login extends Component {
                                 <RaisedButton
                                     type="submit"
                                     primary
-                                    disabled={submitting}
-                                    icon={submitting && <CircularProgress size={25} thickness={2} />}
+                                    disabled={isLoading}
+                                    icon={isLoading && <CircularProgress size={25} thickness={2} />}
                                     label={translate('aor.auth.sign_in')}
                                     fullWidth
                                 />
@@ -129,6 +129,8 @@ Login.defaultProps = {
     theme: defaultTheme,
 };
 
+const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 })
+
 const enhance = compose(
     translate,
     reduxForm({
@@ -141,7 +143,7 @@ const enhance = compose(
             return errors;
         },
     }),
-    connect(null, { userLogin: userLoginAction }),
+    connect(mapStateToProps, { userLogin: userLoginAction }),
 );
 
 export default enhance(Login);

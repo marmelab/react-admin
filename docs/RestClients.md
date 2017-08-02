@@ -172,7 +172,7 @@ Now all the requests to the REST API will contain the `X-Custom-Header: foobar` 
 **Tip**: The most common usage of custom headers is for authentication. `fetchJson` has built-on support for the `Authorization` token header:
 
 ```jsx
-const httpClient = (url, options) => {
+const httpClient = (url, options = {}) => {
     options.user = {
         authenticated: true,
         token: 'SRTRDFVESGNJYTUKTYTHRG'
