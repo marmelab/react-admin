@@ -1,5 +1,6 @@
 import { all, put, takeEvery } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
+import { reset } from 'redux-form';
 import {
     CRUD_CREATE_FAILURE,
     CRUD_CREATE_SUCCESS,
@@ -51,7 +52,10 @@ function* handleResponse({ type, requestPayload, error, payload }) {
                           )
                       ),
                   ])
-                : yield [put(showNotification('aor.notification.created'))];
+                : yield all([
+                      put(showNotification('aor.notification.created')),
+                      put(reset('record-form')),
+                  ]);
         case CRUD_DELETE_SUCCESS:
             return requestPayload.redirectTo
                 ? yield all([

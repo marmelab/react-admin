@@ -2,7 +2,7 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import FormField from './FormField';
+import { FormFieldComponent as FormField } from './FormField';
 
 describe('<FormField>', () => {
     const Foo = () => <div />;
