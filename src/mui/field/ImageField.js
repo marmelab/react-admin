@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import compose from 'recompose/compose';
-import withDatagridHeader from '../list/withDatagridHeader';
+import withDatagridSupport from '../list/withDatagridSupport';
 
 const styles = {
     list: {
@@ -68,4 +68,4 @@ ImageField.propTypes = {
     title: PropTypes.string,
 };
 
-export default compose(withDatagridHeader)(ImageField);
+export default compose(withDatagridSupport)(ImageField);

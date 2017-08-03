@@ -4,7 +4,7 @@ import get from 'lodash.get';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 
-import withDatagridHeader from '../list/withDatagridHeader';
+import withDatagridSupport from '../list/withDatagridSupport';
 
 const hasNumberFormat = !!(
     typeof Intl === 'object' &&
@@ -70,7 +70,7 @@ NumberField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const PureNumberField = compose(pure, withDatagridHeader)(NumberField);
+const PureNumberField = compose(pure, withDatagridSupport)(NumberField);
 
 PureNumberField.defaultProps = {
     addLabel: true,

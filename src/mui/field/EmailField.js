@@ -4,7 +4,7 @@ import get from 'lodash.get';
 import pure from 'recompose/pure';
 import compose from 'recompose/compose';
 
-import withDatagridHeader from '../list/withDatagridHeader';
+import withDatagridSupport from '../list/withDatagridSupport';
 
 const EmailField = ({ source, record = {}, elStyle }) =>
     <a style={elStyle} href={`mailto:${get(record, source)}`}>
@@ -19,7 +19,7 @@ EmailField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const PureEmailField = compose(pure, withDatagridHeader)(EmailField);
+const PureEmailField = compose(pure, withDatagridSupport)(EmailField);
 
 PureEmailField.defaultProps = {
     addLabel: true,

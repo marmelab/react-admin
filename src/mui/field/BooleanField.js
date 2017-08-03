@@ -4,7 +4,7 @@ import get from 'lodash.get';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 
-import withDatagridHeader from '../list/withDatagridHeader';
+import withDatagridSupport from '../list/withDatagridSupport';
 import FalseIcon from 'material-ui/svg-icons/content/clear';
 import TrueIcon from 'material-ui/svg-icons/action/done';
 
@@ -28,7 +28,7 @@ BooleanField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const PureBooleanField = compose(pure, withDatagridHeader)(BooleanField);
+const PureBooleanField = compose(pure, withDatagridSupport)(BooleanField);
 
 PureBooleanField.defaultProps = {
     addLabel: true,

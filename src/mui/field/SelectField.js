@@ -5,7 +5,7 @@ import pure from 'recompose/pure';
 import compose from 'recompose/compose';
 
 import translate from '../../i18n/translate';
-import withDatagridHeader from '../list/withDatagridHeader';
+import withDatagridSupport from '../list/withDatagridSupport';
 
 /**
  * Display a value in an enumeration
@@ -118,7 +118,7 @@ SelectField.defaultProps = {
     translateChoice: true,
 };
 
-const enhance = compose(pure, translate, withDatagridHeader);
+const enhance = compose(pure, translate, withDatagridSupport);
 
 const EnhancedSelectField = enhance(SelectField);
 

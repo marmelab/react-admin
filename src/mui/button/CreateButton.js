@@ -8,7 +8,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
-import withDatagridHeader from '../list/withDatagridHeader';
+import withDatagridSupport from '../list/withDatagridSupport';
 
 const styles = {
     floating: {
@@ -54,7 +54,7 @@ CreateButton.propTypes = {
 
 const enhance = compose(
     onlyUpdateForKeys(['basePath, label']),
-    withDatagridHeader,
+    withDatagridSupport,
     withWidth(),
     translate
 );

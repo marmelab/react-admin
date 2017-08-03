@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
 import compose from 'recompose/compose';
 
-import withDatagridHeader from '../list/withDatagridHeader';
+import withDatagridSupport from '../list/withDatagridSupport';
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions/dataActions';
 import {
     getIds,
@@ -182,7 +182,7 @@ const ConnectedReferenceManyField = compose(
     connect(mapStateToProps, {
         crudGetManyReference: crudGetManyReferenceAction,
     }),
-    withDatagridHeader
+    withDatagridSupport
 )(ReferenceManyField);
 
 ConnectedReferenceManyField.defaultProps = {

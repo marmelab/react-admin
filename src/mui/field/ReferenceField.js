@@ -6,7 +6,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
 import compose from 'recompose/compose';
 
-import withDatagridHeader from '../list/withDatagridHeader';
+import withDatagridSupport from '../list/withDatagridSupport';
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
 import linkToRecord from '../../util/linkToRecord';
 
@@ -142,5 +142,5 @@ export default compose(
     connect(mapStateToProps, {
         crudGetManyAccumulate: crudGetManyAccumulateAction,
     }),
-    withDatagridHeader
+    withDatagridSupport
 )(ReferenceField);

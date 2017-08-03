@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import compose from 'recompose/compose';
 
-import withDatagridHeader from '../list/withDatagridHeader';
+import withDatagridSupport from '../list/withDatagridSupport';
 
 export const FileField = ({ elStyle, record, source, title, src }) => {
     const sourceValue = get(record, source);
@@ -54,4 +54,4 @@ FileField.defaultProps = {
     elStyle: { display: 'inline-block' },
 };
 
-export default compose(withDatagridHeader)(FileField);
+export default compose(withDatagridSupport)(FileField);

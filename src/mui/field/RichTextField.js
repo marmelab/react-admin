@@ -4,7 +4,7 @@ import get from 'lodash.get';
 import pure from 'recompose/pure';
 import compose from 'recompose/compose';
 
-import withDatagridHeader from '../list/withDatagridHeader';
+import withDatagridSupport from '../list/withDatagridSupport';
 
 export const removeTags = input =>
     input ? input.replace(/<[^>]+>/gm, '') : '';
@@ -31,7 +31,7 @@ RichTextField.propTypes = {
     stripTags: PropTypes.bool,
 };
 
-const PureRichTextField = compose(pure, withDatagridHeader)(RichTextField);
+const PureRichTextField = compose(pure, withDatagridSupport)(RichTextField);
 
 PureRichTextField.defaultProps = {
     addLabel: true,

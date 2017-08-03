@@ -6,4 +6,4 @@ export List from './List';
 export Pagination from './Pagination';
 export SimpleList from './SimpleList';
 export SingleFieldList from './SingleFieldList';
-export withDatagridHeader from './withDatagridHeader';
+export withDatagridSupport from './withDatagridSupport';

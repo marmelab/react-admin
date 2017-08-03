@@ -4,7 +4,7 @@ import get from 'lodash.get';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 
-import withDatagridHeader from '../list/withDatagridHeader';
+import withDatagridSupport from '../list/withDatagridSupport';
 
 const TextField = ({ source, record = {}, elStyle }) => {
     return (
@@ -22,7 +22,7 @@ TextField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const PureTextField = compose(pure, withDatagridHeader)(TextField);
+const PureTextField = compose(pure, withDatagridSupport)(TextField);
 
 PureTextField.defaultProps = {
     addLabel: true,
