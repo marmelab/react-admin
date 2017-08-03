@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
+import compose from 'recompose/compose';
+
+import withDatagridHeader from '../list/withDatagridHeader';
 
 export const FileField = ({ elStyle, record, source, title, src }) => {
     const sourceValue = get(record, source);
@@ -51,4 +54,4 @@ FileField.defaultProps = {
     elStyle: { display: 'inline-block' },
 };
 
-export default FileField;
+export default compose(withDatagridHeader)(FileField);

@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
+import compose from 'recompose/compose';
 import pure from 'recompose/pure';
+
+import withDatagridHeader from '../list/withDatagridHeader';
 
 const toLocaleStringSupportsLocales = (() => {
     // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
@@ -79,7 +82,7 @@ DateField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const PureDateField = pure(DateField);
+const PureDateField = compose(pure, withDatagridHeader)(DateField);
 
 PureDateField.defaultProps = {
     addLabel: true,

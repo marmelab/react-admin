@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
+import compose from 'recompose/compose';
 import pure from 'recompose/pure';
+
+import withDatagridHeader from '../list/withDatagridHeader';
 
 const UrlField = ({ source, record = {}, elStyle }) =>
     <a href={get(record, source)} style={elStyle}>
@@ -16,7 +19,7 @@ UrlField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const PureUrlField = pure(UrlField);
+const PureUrlField = compose(pure, withDatagridHeader)(UrlField);
 
 PureUrlField.defaultProps = {
     addLabel: true,

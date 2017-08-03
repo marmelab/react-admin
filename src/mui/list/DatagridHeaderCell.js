@@ -24,34 +24,32 @@ const styles = {
 };
 
 export const DatagridHeaderCell = ({
-    field,
-    defaultStyle,
     currentSort,
-    updateSort,
+    defaultStyle,
+    headerStyle,
+    label,
     resource,
+    sortable,
+    source,
+    updateSort,
 }) => {
-    const style = defaultsDeep(
-        {},
-        field.props.headerStyle,
-        field.type.defaultProps ? field.type.defaultProps.headerStyle : {},
-        defaultStyle
-    );
+    const style = defaultsDeep({}, headerStyle, defaultStyle);
     return (
         <TableHeaderColumn style={style}>
-            {field.props.sortable !== false && field.props.source
+            {sortable !== false && source
                 ? <FlatButton
                       labelPosition="before"
                       onClick={updateSort}
-                      data-sort={field.props.source}
+                      data-sort={source}
                       label={
                           <FieldTitle
-                              label={field.props.label}
-                              source={field.props.source}
+                              label={label}
+                              source={source}
                               resource={resource}
                           />
                       }
                       icon={
-                          field.props.source === currentSort.field
+                          source === currentSort.field
                               ? <ContentSort
                                     style={
                                         currentSort.order === 'ASC'
@@ -66,8 +64,8 @@ export const DatagridHeaderCell = ({
                 : <span style={styles.nonSortableLabel}>
                       {
                           <FieldTitle
-                              label={field.props.label}
-                              source={field.props.source}
+                              label={label}
+                              source={source}
                               resource={resource}
                           />
                       }

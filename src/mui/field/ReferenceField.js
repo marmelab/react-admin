@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
+import compose from 'recompose/compose';
+
+import withDatagridHeader from '../list/withDatagridHeader';
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
 import linkToRecord from '../../util/linkToRecord';
 
@@ -135,6 +138,9 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default connect(mapStateToProps, {
-    crudGetManyAccumulate: crudGetManyAccumulateAction,
-})(ReferenceField);
+export default compose(
+    connect(mapStateToProps, {
+        crudGetManyAccumulate: crudGetManyAccumulateAction,
+    }),
+    withDatagridHeader
+)(ReferenceField);

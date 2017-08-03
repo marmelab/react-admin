@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import { TableBody, TableRow } from 'material-ui/Table';
-import DatagridCell from './DatagridCell';
 
 const DatagridBody = ({
     resource,
@@ -30,32 +29,34 @@ const DatagridBody = ({
                 {...rowOptions}
             >
                 {React.Children.map(children, (field, index) =>
-                    <DatagridCell
-                        key={`${id}-${field.props.source || index}`}
-                        className={`column-${field.props.source}`}
-                        record={data[id]}
-                        defaultStyle={
+                    React.cloneElement(field, {
+                        context: 'datagridCell',
+                        className: `column-${field.props.source}`,
+                        record: data[id],
+                        defaultStyle:
                             index === 0
                                 ? styles.cell['td:first-child']
-                                : styles.cell.td
-                        }
-                        {...{ field, basePath, resource }}
-                    />
+                                : styles.cell.td,
+                        field,
+                        basePath,
+                        resource,
+                    })
                 )}
             </TableRow>
         )}
     </TableBody>;
 
 DatagridBody.propTypes = {
+    basePath: PropTypes.string,
+    children: PropTypes.node.isRequired,
+    data: PropTypes.object.isRequired,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     isLoading: PropTypes.bool,
-    resource: PropTypes.string,
-    data: PropTypes.object.isRequired,
-    basePath: PropTypes.string,
     options: PropTypes.object,
+    resource: PropTypes.string,
     rowOptions: PropTypes.object,
-    styles: PropTypes.object,
     rowStyle: PropTypes.func,
+    styles: PropTypes.object,
 };
 
 DatagridBody.defaultProps = {
