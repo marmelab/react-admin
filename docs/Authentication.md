@@ -272,10 +272,17 @@ export default connect(undefined, { userLogin })(MyLoginPage);
 // in src/MyLogoutButton.js
 import { connect } from 'react-redux';
 import { userLogout } from 'admin-on-rest';
+import PropTypes from 'prop-types';
+import MenuItem from 'material-ui/MenuItem';
+import ExitIcon from 'material-ui/svg-icons/action/power-settings-new';
 
 const MyLogoutButton = ({ userLogout }) => (
-    <button onClick={userLogout}>Logout</button>
+    <MenuItem className="logout" leftIcon={<ExitIcon />} primaryText={translate('aor.auth.logout')} onClick={userLogout}/>
 );
+
+MyLogoutButton.contextTypes = {
+  translate: PropTypes.func
+};
 
 export default connect(undefined, { userLogout })(MyLogoutButton);
 
