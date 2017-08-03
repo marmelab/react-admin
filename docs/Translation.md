@@ -256,7 +256,7 @@ class MyHelloButton {
     }
 }
 MyHelloButton.contextTypes = {
-    translate: PropTypes.function,
+    translate: PropTypes.func,
 };
 
 // in src/App.js
