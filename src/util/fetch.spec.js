@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { queryParameters } from './fetch';
+import { queryParameters, flattenObject } from './fetch';
 
 describe('queryParameters', () => {
     it('should generate a query parameter', () => {
@@ -26,5 +26,34 @@ describe('queryParameters', () => {
             queryParameters({ [data[0]]: data[1] }),
             data.map(encodeURIComponent).join('=')
         );
+    });
+});
+
+describe('flattenObject', () => {
+    it('should return null with null', () => {
+        assert.strictEqual(flattenObject(null), null);
+    });
+
+    it('should return itself with a string', () => {
+        assert.equal(flattenObject('foo'), 'foo');
+    });
+
+    it('should return itself with an array', () => {
+        assert.deepEqual(flattenObject(['foo']), ['foo']);
+    });
+
+    it('should return a same object with an empty object', () => {
+        assert.deepEqual(flattenObject({}), {});
+    });
+
+    it('should return a same object with a non-nested object', () => {
+        const value = { foo: 'fooval', bar: 'barval' };
+        assert.deepEqual(flattenObject(value), value);
+    });
+
+    it('should return a same object with a nested object', () => {
+        const input = { foo: 'foo', bar: { baz: 'barbaz' } };
+        const expected = { foo: 'foo', 'bar.baz': 'barbaz' };
+        assert.deepEqual(flattenObject(input), expected);
     });
 });

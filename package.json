@@ -56,6 +56,7 @@
     "lodash.debounce": "~4.0.8",
     "lodash.defaultsdeep": "~4.6.0",
     "lodash.get": "~4.4.2",
+    "lodash.isequal": "~4.5.0",
     "lodash.set": "~4.3.2",
     "material-ui": "~0.17.4",
     "material-ui-chip-input": "~0.13.5",

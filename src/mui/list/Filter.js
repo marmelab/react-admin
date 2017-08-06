@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
-import shallowEqual from 'recompose/shallowEqual';
+import isEqual from 'lodash.isequal';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
 import defaultTheme from '../defaultTheme';
+import removeEmpty from '../../util/removeEmpty';
 
 class Filter extends Component {
     constructor(props) {
@@ -24,15 +25,9 @@ class Filter extends Component {
     }
 
     setFilters = debounce(filters => {
-        if (!shallowEqual(filters, this.filters)) {
+        if (!isEqual(filters, this.filters)) {
             // fix for redux-form bug with onChange and enableReinitialize
-            const filtersWithoutEmpty = filters;
-            Object.keys(filtersWithoutEmpty).forEach(filterName => {
-                if (filtersWithoutEmpty[filterName] === '') {
-                    // remove empty filter from query
-                    delete filtersWithoutEmpty[filterName];
-                }
-            });
+            const filtersWithoutEmpty = removeEmpty(filters);
             this.props.setFilters(filtersWithoutEmpty);
             this.filters = filtersWithoutEmpty;
         }
