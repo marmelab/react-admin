@@ -18,7 +18,7 @@ export const getPossibleReferences = (state, referenceSource, reference, selecte
     const possibleValues = state.admin.references.possibleValues[referenceSource]
         ? Array.from(state.admin.references.possibleValues[referenceSource])
         : [];
-    selectedIds.forEach(id => possibleValues.includes(id) || possibleValues.unshift(id));
+    selectedIds.forEach(id => possibleValues.some(value => value == id) || possibleValues.unshift(id));
     return possibleValues
         .map(id => state.admin[reference].data[id])
         .filter(r => typeof r !== 'undefined');
