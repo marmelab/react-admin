@@ -58,6 +58,7 @@ You can find translation packages for the following languages:
 - Thai (`th`): [liverbool/aor-language-thai](https://github.com/liverbool/aor-language-thai)
 - Turkish (`tr`): [ismailbaskin/aor-language-turkish](https://github.com/ismailbaskin/aor-language-turkish)
 - Vietnamese (`vi`): [kimkha/aor-language-vietnamese](https://github.com/kimkha/aor-language-vietnamese)
+- Norwegian (`nb`): [zeusbaba/aor-language-norwegian](https://github.com/zeusbaba/aor-language-norwegian)
 
 If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/admin-on-rest/blob/master/docs/Translation.md) with a link to your package.
 
