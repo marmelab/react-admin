@@ -65,13 +65,17 @@ import FieldTitle from '../../util/FieldTitle';
  * The object passed as `options` props is passed to the material-ui <SelectField> component
  */
 export class SelectInput extends Component {
-    /*
-     * Using state to bypass a redux-form comparison but which prevents re-rendering
-     * @see https://github.com/erikras/redux-form/issues/2456
-     */
-    state = {
-        value: this.props.input.value,
-    };
+    constructor(props) {
+        super(props);
+
+        /*
+         * Using state to bypass a redux-form comparison but which prevents re-rendering
+         * @see https://github.com/erikras/redux-form/issues/2456
+         */
+        this.state = {
+            value: props.transformValue(props.input.value),
+        };
+    }
 
     handleChange = (event, index, value) => {
         this.props.input.onChange(value);
@@ -166,6 +170,7 @@ SelectInput.propTypes = {
     source: PropTypes.string,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
+    transformValue: PropTypes.func.isRequired,
 };
 
 SelectInput.defaultProps = {
@@ -176,6 +181,7 @@ SelectInput.defaultProps = {
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
+    transformValue: value => value,
 };
 
 export default translate(SelectInput);
