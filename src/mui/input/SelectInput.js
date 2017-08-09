@@ -6,6 +6,7 @@ import MenuItem from 'material-ui/MenuItem';
 
 import translate from '../../i18n/translate';
 import FieldTitle from '../../util/FieldTitle';
+import isPlainObject from 'lodash.isplainobject';
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -65,13 +66,19 @@ import FieldTitle from '../../util/FieldTitle';
  * The object passed as `options` props is passed to the material-ui <SelectField> component
  */
 export class SelectInput extends Component {
-    /*
-     * Using state to bypass a redux-form comparison but which prevents re-rendering
-     * @see https://github.com/erikras/redux-form/issues/2456
-     */
-    state = {
-        value: this.props.input.value,
-    };
+    constructor(props) {
+        super(props);
+
+        /*
+         * Using state to bypass a redux-form comparison but which prevents re-rendering
+         * @see https://github.com/erikras/redux-form/issues/2456
+         */
+        this.state = {
+            value: isPlainObject(props.input.value)
+                ? get(props.input.value, props.optionValue)
+                : props.input.value,
+        };
+    }
 
     handleChange = (event, index, value) => {
         this.props.input.onChange(value);
