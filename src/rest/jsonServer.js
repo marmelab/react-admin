@@ -1,5 +1,5 @@
 import { stringify } from 'query-string';
-import { fetchJson } from '../util/fetch';
+import { fetchJson, flattenObject } from '../util/fetch';
 import {
     GET_LIST,
     GET_ONE,
@@ -37,7 +37,7 @@ export default (apiUrl, httpClient = fetchJson) => {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
-                    ...params.filter,
+                    ...flattenObject(params.filter),
                     _sort: field,
                     _order: order,
                     _start: (page - 1) * perPage,
@@ -53,7 +53,7 @@ export default (apiUrl, httpClient = fetchJson) => {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
-                    ...params.filter,
+                    ...flattenObject(params.filter),
                     [params.target]: params.id,
                     _sort: field,
                     _order: order,
