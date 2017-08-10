@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
+import compose from 'recompose/compose';
 
+import withDatagridSupport from '../list/withDatagridSupport';
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
 import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
 
@@ -108,9 +110,12 @@ const mapStateToProps = (state, props) => {
     };
 };
 
-const ConnectedReferenceArrayField = connect(mapStateToProps, {
-    crudGetManyAccumulate: crudGetManyAccumulateAction,
-})(ReferenceArrayField);
+const ConnectedReferenceArrayField = compose(
+    connect(mapStateToProps, {
+        crudGetManyAccumulate: crudGetManyAccumulateAction,
+    }),
+    withDatagridSupport
+)(ReferenceArrayField);
 
 ConnectedReferenceArrayField.defaultProps = {
     addLabel: true,

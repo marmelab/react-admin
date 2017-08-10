@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
+import compose from 'recompose/compose';
 import pure from 'recompose/pure';
+
+import withDatagridSupport from '../list/withDatagridSupport';
 
 const hasNumberFormat = !!(
     typeof Intl === 'object' &&
@@ -67,7 +70,7 @@ NumberField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const PureNumberField = pure(NumberField);
+const PureNumberField = compose(pure, withDatagridSupport)(NumberField);
 
 PureNumberField.defaultProps = {
     addLabel: true,

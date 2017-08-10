@@ -11,7 +11,6 @@ const DatagridCell = ({
     resource,
     style,
     defaultStyle,
-    ...rest
 }) => {
     const computedStyle = defaultsDeep(
         {},
@@ -21,13 +20,19 @@ const DatagridCell = ({
         defaultStyle
     );
     return (
-        <TableRowColumn className={className} style={computedStyle} {...rest}>
-            {React.cloneElement(field, { record, basePath, resource })}
+        <TableRowColumn className={className} style={computedStyle}>
+            {React.cloneElement(field, {
+                context: 'cell',
+                record,
+                basePath,
+                resource,
+            })}
         </TableRowColumn>
     );
 };
 
 DatagridCell.propTypes = {
+    className: PropTypes.string,
     field: PropTypes.element,
     record: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     basePath: PropTypes.string,

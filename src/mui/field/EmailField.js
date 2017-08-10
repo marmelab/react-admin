@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
+import compose from 'recompose/compose';
+
+import withDatagridSupport from '../list/withDatagridSupport';
 
 const EmailField = ({ source, record = {}, elStyle }) =>
     <a style={elStyle} href={`mailto:${get(record, source)}`}>
@@ -16,7 +19,7 @@ EmailField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const PureEmailField = pure(EmailField);
+const PureEmailField = compose(pure, withDatagridSupport)(EmailField);
 
 PureEmailField.defaultProps = {
     addLabel: true,

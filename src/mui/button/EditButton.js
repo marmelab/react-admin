@@ -7,6 +7,7 @@ import FlatButton from 'material-ui/FlatButton';
 import ContentCreate from 'material-ui/svg-icons/content/create';
 import linkToRecord from '../../util/linkToRecord';
 import translate from '../../i18n/translate';
+import withDatagridSupport from '../list/withDatagridSupport';
 
 const EditButton = ({
     basePath = '',
@@ -36,6 +37,7 @@ const enhance = compose(
             props.basePath !== nextProps.basePath ||
             (props.record == null && nextProps.record != null)
     ),
+    withDatagridSupport,
     translate
 );
 

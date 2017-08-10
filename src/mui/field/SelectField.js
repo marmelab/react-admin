@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
 import compose from 'recompose/compose';
+
 import translate from '../../i18n/translate';
+import withDatagridSupport from '../list/withDatagridSupport';
 
 /**
  * Display a value in an enumeration
@@ -116,7 +118,7 @@ SelectField.defaultProps = {
     translateChoice: true,
 };
 
-const enhance = compose(pure, translate);
+const enhance = compose(pure, translate, withDatagridSupport);
 
 const EnhancedSelectField = enhance(SelectField);
 

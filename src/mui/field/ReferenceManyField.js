@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
+import compose from 'recompose/compose';
+
+import withDatagridSupport from '../list/withDatagridSupport';
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions/dataActions';
 import {
     getIds,
@@ -175,9 +178,12 @@ function mapStateToProps(state, props) {
     };
 }
 
-const ConnectedReferenceManyField = connect(mapStateToProps, {
-    crudGetManyReference: crudGetManyReferenceAction,
-})(ReferenceManyField);
+const ConnectedReferenceManyField = compose(
+    connect(mapStateToProps, {
+        crudGetManyReference: crudGetManyReferenceAction,
+    }),
+    withDatagridSupport
+)(ReferenceManyField);
 
 ConnectedReferenceManyField.defaultProps = {
     addLabel: true,

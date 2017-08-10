@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
+import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 import Chip from 'material-ui/Chip';
+
+import withDatagridSupport from '../list/withDatagridSupport';
 
 const ChipField = ({ source, record = {}, elStyle = { margin: 4 } }) =>
     <Chip style={elStyle}>
@@ -17,7 +20,7 @@ ChipField.propTypes = {
     record: PropTypes.object,
 };
 
-const PureChipField = pure(ChipField);
+const PureChipField = compose(pure, withDatagridSupport)(ChipField);
 
 PureChipField.defaultProps = {
     addLabel: true,

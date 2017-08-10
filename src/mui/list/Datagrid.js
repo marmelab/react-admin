@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import { Table, TableHeader, TableRow } from 'material-ui/Table';
-import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridBody from './DatagridBody';
 
 const defaultStyles = {
@@ -105,21 +104,19 @@ class Datagrid extends Component {
                 >
                     <TableRow style={muiTheme.tableRow}>
                         {React.Children.map(children, (field, index) =>
-                            <DatagridHeaderCell
-                                key={field.props.source || index}
-                                field={field}
-                                defaultStyle={
+                            React.cloneElement(field, {
+                                context: 'datagridHeader',
+                                field,
+                                defaultStyle:
                                     index === 0
                                         ? styles.header['th:first-child']
-                                        : styles.header.th
-                                }
-                                currentSort={currentSort}
-                                isSorting={
-                                    field.props.source === currentSort.field
-                                }
-                                updateSort={this.updateSort}
-                                resource={resource}
-                            />
+                                        : styles.header.th,
+                                currentSort,
+                                isSorting:
+                                    field.props.source === currentSort.field,
+                                updateSort: this.updateSort,
+                                resource,
+                            })
                         )}
                     </TableRow>
                 </TableHeader>
@@ -144,6 +141,7 @@ class Datagrid extends Component {
 Datagrid.propTypes = {
     basePath: PropTypes.string,
     bodyOptions: PropTypes.object,
+    children: PropTypes.node.isRequired,
     currentSort: PropTypes.shape({
         sort: PropTypes.string,
         order: PropTypes.string,

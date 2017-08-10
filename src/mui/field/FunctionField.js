@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
 import pure from 'recompose/pure';
+
+import withDatagridSupport from '../list/withDatagridSupport';
 
 /**
  * @example
@@ -22,7 +25,7 @@ FunctionField.propTypes = {
     source: PropTypes.string,
 };
 
-const PureFunctionField = pure(FunctionField);
+const PureFunctionField = compose(pure, withDatagridSupport)(FunctionField);
 
 PureFunctionField.defaultProps = {
     addLabel: true,
