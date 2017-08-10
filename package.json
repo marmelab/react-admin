@@ -65,8 +65,6 @@
     "node-polyglot": "2.2.2",
     "prop-types": "~15.5.7",
     "query-string": "~4.3.2",
-    "react": "~15.5.4",
-    "react-dom": "~15.5.4",
     "react-dropzone": "~3.13.1",
     "react-redux": "~5.0.4",
     "react-router": "~4.1.0",
@@ -78,5 +76,9 @@
     "redux-form": "~6.6.3",
     "redux-saga": "~0.15.0",
     "reselect": "~3.0.0"
+  },
+  "peerDependencies": {
+    "react": "~15.5.4",
+    "react-dom": "~15.5.4"
   }
 }
