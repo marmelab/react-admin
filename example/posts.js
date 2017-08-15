@@ -19,6 +19,8 @@ import {
     LongTextInput,
     NumberField,
     NumberInput,
+    ReferenceInput,
+    AutocompleteInput,
     ReferenceArrayField,
     ReferenceManyField,
     EmbeddedArrayInput,
@@ -251,6 +253,13 @@ export const PostEdit = ({ ...props }) =>
                         <TextInput source="name" />
                         <TextInput source="value" />
                     </EmbeddedArrayInput>
+                    <ReferenceInput
+                        source="linked_post_id"
+                        reference="posts"
+                        allowEmpty
+                    >
+                        <AutocompleteInput optionText="title" optionValue="id" />
+                    </ReferenceInput>
                     <ReferenceArrayInput
                         source="tags"
                         reference="tags"
