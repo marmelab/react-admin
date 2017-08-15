@@ -42,6 +42,7 @@ You can find translation packages for the following languages:
 - Chinese (`cn`): [downup2u/aor-language-chinese](https://github.com/downup2u/aor-language-chinese)
 - Chinese (Traditional) (`cht`): [leesei/aor-language-chinese-traditional](https://github.com/leesei/aor-language-chinese-traditional)
 - Czech (`cs`): [magikMaker/aor-language-czech](https://github.com/magikMaker/aor-language-czech)
+- Danish (`da`): [SSA111/aor-language-danish](https://github.com/SSA111/aor-language-danish)
 - Dutch (`nl`): [pimschaaf/aor-language-dutch](https://github.com/pimschaaf/aor-language-dutch)
 - Farsi (`fa`): [hamidfzm/aor-language-farsi](https://github.com/hamidfzm/aor-language-farsi)
 - French (`fr`): [marmelab/aor-language-french](https://github.com/marmelab/aor-language-french)
