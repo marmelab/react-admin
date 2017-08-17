@@ -13,7 +13,6 @@ export const setSidebarVisibility = isOpen => ({
 
 export const REFRESH_VIEW = 'AOR/REFRESH_VIEW';
 
-export const refreshView = resource => ({
+export const refreshView = () => ({
     type: REFRESH_VIEW,
-    meta: { resource },
 });
