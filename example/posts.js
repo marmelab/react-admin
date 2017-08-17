@@ -258,7 +258,10 @@ export const PostEdit = ({ ...props }) =>
                         reference="posts"
                         allowEmpty
                     >
-                        <AutocompleteInput optionText="title" optionValue="id" />
+                        <AutocompleteInput
+                            optionText="title"
+                            optionValue="id"
+                        />
                     </ReferenceInput>
                     <ReferenceArrayInput
                         source="tags"
