@@ -77,7 +77,7 @@ const styles = {
 export class List extends Component {
     constructor(props) {
         super(props);
-        this.state = { key: 0 };
+        this.state = {};
     }
 
     componentDidMount() {
@@ -101,9 +101,8 @@ export class List extends Component {
                     : nextProps.params
             );
         }
-        if (nextProps.data !== this.props.data && this.fullRefresh) {
-            this.fullRefresh = false;
-            this.setState({ key: this.state.key + 1 });
+        if (nextProps.version !== this.props.version) {
+            this.updateData();
         }
     }
 
@@ -111,6 +110,7 @@ export class List extends Component {
         if (
             nextProps.isLoading === this.props.isLoading &&
             nextProps.width === this.props.width &&
+            nextProps.version === this.props.version &&
             nextState === this.state
         ) {
             return false;
@@ -121,12 +121,6 @@ export class List extends Component {
     getBasePath() {
         return this.props.location.pathname;
     }
-
-    refresh = event => {
-        event.stopPropagation();
-        this.fullRefresh = true;
-        this.updateData();
-    };
 
     /**
      * Merge list params from 3 different sources:
@@ -215,8 +209,8 @@ export class List extends Component {
             isLoading,
             translate,
             theme,
+            version,
         } = this.props;
-        const { key } = this.state;
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
@@ -248,7 +242,6 @@ export class List extends Component {
                                 hasCreate,
                                 displayedFilters: this.state,
                                 showFilter: this.showFilter,
-                                refresh: this.refresh,
                                 theme,
                             })}
                     </div>
@@ -262,7 +255,7 @@ export class List extends Component {
                             context: 'form',
                         })}
                     {isLoading || total > 0
-                        ? <div key={key}>
+                        ? <div key={version}>
                               {children &&
                                   React.cloneElement(children, {
                                       resource,
@@ -323,6 +316,7 @@ List.propTypes = {
     total: PropTypes.number.isRequired,
     translate: PropTypes.func.isRequired,
     theme: PropTypes.object.isRequired,
+    version: PropTypes.number.isRequired,
 };
 
 List.defaultProps = {
@@ -355,6 +349,7 @@ function mapStateToProps(state, props) {
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
         filterValues: resourceState.list.params.filter,
+        version: state.admin.ui.viewVersion,
     };
 }
 
