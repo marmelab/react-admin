@@ -30,7 +30,7 @@ const translatedResourceName = (resource, translate) =>
 
 const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) =>
     <div style={styles.main}>
-        {hasDashboard && <DashboardMenuItem onTouchTap={onMenuTap} />}
+        {hasDashboard && <DashboardMenuItem onClick={onMenuTap} />}
         {resources
             .filter(r => r.list)
             .map(resource =>
@@ -39,7 +39,7 @@ const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) =>
                     to={`/${resource.name}`}
                     primaryText={translatedResourceName(resource, translate)}
                     leftIcon={<resource.icon />}
-                    onTouchTap={onMenuTap}
+                    onClick={onMenuTap}
                 />
             )}
         {logout}

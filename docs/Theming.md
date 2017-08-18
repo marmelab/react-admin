@@ -225,7 +225,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import CircularProgress from 'material-ui/CircularProgress';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import {
     AdminRoutes,
     AppBar,
@@ -233,8 +232,6 @@ import {
     Notification,
     setSidebarVisibility as setSidebarVisibilityAction
 } from 'admin-on-rest';
-
-injectTapEventPlugin();
 
 const styles = {
     wrapper: {

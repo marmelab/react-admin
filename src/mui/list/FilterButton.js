@@ -65,7 +65,7 @@ export class FilterButton extends Component {
                     primary
                     label={this.props.translate('aor.action.add_filter')}
                     icon={<ContentFilter />}
-                    onTouchTap={this.handleTouchTap}
+                    onClick={this.handleTouchTap}
                 />
                 <Popover
                     open={open}

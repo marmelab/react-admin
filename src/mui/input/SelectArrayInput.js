@@ -182,7 +182,7 @@ export class SelectArrayInput extends Component {
                 value={this.state.values}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
-                onTouchTap={this.handleFocus}
+                onClick={this.handleFocus}
                 onRequestAdd={this.handleAdd}
                 onRequestDelete={this.handleDelete}
                 onUpdateInput={setFilter}
