@@ -16,7 +16,10 @@ export class Show extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.id !== nextProps.id) {
+        if (
+            this.props.id !== nextProps.id ||
+            nextProps.version !== this.props.version
+        ) {
             this.updateData(nextProps.resource, nextProps.id);
         }
     }
@@ -29,12 +32,6 @@ export class Show extends Component {
     updateData(resource = this.props.resource, id = this.props.id) {
         this.props.crudGetOne(resource, id, this.getBasePath());
     }
-
-    refresh = event => {
-        event.stopPropagation();
-        this.fullRefresh = true;
-        this.updateData();
-    };
 
     render() {
         const {
@@ -73,7 +70,6 @@ export class Show extends Component {
                             data,
                             hasDelete,
                             hasEdit,
-                            refresh: this.refresh,
                             resource,
                         })}
                     <ViewTitle title={titleElement} />
@@ -104,6 +100,7 @@ Show.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
+    version: PropTypes.number.isRequired,
 };
 
 function mapStateToProps(state, props) {
@@ -114,6 +111,7 @@ function mapStateToProps(state, props) {
                 decodeURIComponent(props.match.params.id)
             ],
         isLoading: state.admin.loading > 0,
+        version: state.admin.ui.viewVersion,
     };
 }
 

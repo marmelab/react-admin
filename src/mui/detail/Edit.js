@@ -35,7 +35,10 @@ export class Edit extends Component {
                 this.setState({ key: this.state.key + 1 });
             }
         }
-        if (this.props.id !== nextProps.id) {
+        if (
+            this.props.id !== nextProps.id ||
+            nextProps.version !== this.props.version
+        ) {
             this.updateData(nextProps.resource, nextProps.id);
         }
     }
@@ -52,12 +55,6 @@ export class Edit extends Component {
     updateData(resource = this.props.resource, id = this.props.id) {
         this.props.crudGetOne(resource, id, this.getBasePath());
     }
-
-    refresh = event => {
-        event.stopPropagation();
-        this.fullRefresh = true;
-        this.updateData();
-    };
 
     save = (record, redirect) => {
         this.props.crudUpdate(
@@ -83,7 +80,6 @@ export class Edit extends Component {
             title,
             translate,
         } = this.props;
-        const { key } = this.state;
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
@@ -98,27 +94,20 @@ export class Edit extends Component {
         const titleElement = data
             ? <Title title={title} record={data} defaultTitle={defaultTitle} />
             : '';
-        // using this.previousKey instead of this.fullRefresh makes
-        // the new form mount, the old form unmount, and the new form update appear in the same frame
-        // so the form doesn't disappear while refreshing
-        const isRefreshing = key !== this.previousKey;
-        this.previousKey = key;
 
         return (
             <div className="edit-page">
-                <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     {actions &&
                         React.cloneElement(actions, {
                             basePath,
                             data,
                             hasDelete,
                             hasShow,
-                            refresh: this.refresh,
                             resource,
                         })}
                     <ViewTitle title={titleElement} />
                     {data &&
-                        !isRefreshing &&
                         React.cloneElement(children, {
                             save: this.save,
                             resource,
@@ -152,6 +141,7 @@ Edit.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
+    version: PropTypes.number.isRequired,
 };
 
 function mapStateToProps(state, props) {
@@ -162,6 +152,7 @@ function mapStateToProps(state, props) {
                 decodeURIComponent(props.match.params.id)
             ],
         isLoading: state.admin.loading > 0,
+        version: state.admin.ui.viewVersion,
     };
 }
 
