@@ -37,7 +37,7 @@ class Labeled extends Component {
                 disabled={disabled}
                 underlineShow={false}
                 style={labelStyle}
-                errorText={meta.touched && meta.error}
+                errorText={meta && meta.touched && meta.error}
             >
                 {children && typeof children.type !== 'string' ?
                     React.cloneElement(children, { input, meta, record, resource, onChange, basePath }) :
