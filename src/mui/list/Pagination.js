@@ -128,12 +128,12 @@ export class Pagination extends Component {
                 {nbPages > 1 &&
                     <ToolbarGroup>
                         {page > 1 &&
-                        <FlatButton className="previous-page" primary key="prev" label={translate('aor.navigation.prev')} icon={<ChevronLeft />} onClick={this.prevPage} style={styles.button} />
-                    }
-                        {this.renderPageNums()}
+                            <FlatButton className="previous-page" primary key="prev" label={translate('aor.navigation.prev')} icon={<ChevronLeft />} onClick={this.prevPage} style={styles.button} />
+                        }
+                            {this.renderPageNums()}
                         {page !== nbPages &&
-                        <FlatButton className="next-page" primary key="next" label={translate('aor.navigation.next')} icon={<ChevronRight />} labelPosition="before" onClick={this.nextPage} style={styles.button} />
-                    }
+                            <FlatButton className="next-page" primary key="next" label={translate('aor.navigation.next')} icon={<ChevronRight />} labelPosition="before" onClick={this.nextPage} style={styles.button} />
+                        }
                     </ToolbarGroup>
                 }
             </Toolbar>
