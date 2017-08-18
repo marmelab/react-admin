@@ -9,13 +9,6 @@ import TranslationProvider from '../../i18n/TranslationProvider';
 import FilterForm from './FilterForm';
 import TextInput from '../input/TextInput';
 
-try {
-    require('react-tap-event-plugin')();
-} catch (e) {
-    // already loaded, probably in watch mode
-    // do nothing
-}
-
 describe('<FilterForm />', () => {
     const defaultProps = {
         resource: 'post',

@@ -7,13 +7,13 @@ import { withRouter } from 'react-router';
 export class MenuItemLinkComponent extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired,
-        onTouchTap: PropTypes.func.isRequired,
+        onClick: PropTypes.func.isRequired,
         to: PropTypes.string.isRequired,
     };
 
     handleMenuTap = () => {
         this.props.history.push(this.props.to);
-        this.props.onTouchTap();
+        this.props.onClick();
     };
     render() {
         const {
@@ -24,7 +24,7 @@ export class MenuItemLinkComponent extends Component {
             ...props
         } = this.props;
 
-        return <MenuItem {...props} onTouchTap={this.handleMenuTap} />;
+        return <MenuItem {...props} onClick={this.handleMenuTap} />;
     }
 }
 

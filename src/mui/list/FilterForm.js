@@ -65,7 +65,7 @@ export class FilterForm extends Component {
                                 : <IconButton
                                       iconStyle={prefix(styles.icon)}
                                       className="hide-filter"
-                                      onTouchTap={this.handleHide}
+                                      onClick={this.handleHide}
                                       data-key={filterElement.props.source}
                                       tooltip={translate(
                                           'aor.action.remove_filter'

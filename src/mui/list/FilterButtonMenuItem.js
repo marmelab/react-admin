@@ -31,7 +31,7 @@ class FilterButtonMenuItem extends Component {
                         resource={resource}
                     />
                 }
-                onTouchTap={this.handleShow}
+                onClick={this.handleShow}
             />
         );
     }
