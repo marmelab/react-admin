@@ -65,7 +65,7 @@
     "lodash.isequal": "~4.5.0",
     "lodash.set": "~4.3.2",
     "material-ui": "~0.19.0",
-    "material-ui-chip-input": "~0.16.1",
+    "material-ui-chip-input": "~0.17.0",
     "node-polyglot": "2.2.2",
     "prop-types": "~15.5.7",
     "query-string": "~5.0.0",
