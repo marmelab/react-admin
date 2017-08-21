@@ -61,6 +61,16 @@ Then you can display the author first name as follows:
 
 **Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.html#translating-resource-and-field-names) for details.
 
+## `<AddressField>`
+
+Displays an address as addresse link with the geo or Apple maps URI scheme
+according to the device.
+```jsx
+import { AddressField } from 'admin-on-rest'
+
+<AddressField source="addresse"/>
+```
+
 ## `<BooleanField>`
 
 Displays a boolean value as a check.
