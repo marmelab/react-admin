@@ -47,6 +47,8 @@ export class Show extends Component {
             hasEdit,
             translate,
         } = this.props;
+
+        if (!children) return null;
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
