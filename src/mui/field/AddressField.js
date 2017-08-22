@@ -5,15 +5,22 @@ import pure from 'recompose/pure';
 
 const AddressField = ({ source, record = {}, elStyle }) => {
     const address = get(record, source);
-    if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+    if (navigator.userAgent.match(/iPhone|iPad|iPod|Mac/i)) {
       return (
         <a href={`http://maps.apple.com/?q=${address}`}>
           <span style={elStyle}>{address}</span>
         </a>
       );
     }
+    if (navigator.userAgent.match(/Android/i)) {
+      return (
+        <a href={`geo:?q=${address}`}>
+          <span style={elStyle}>{address}</span>
+        </a>
+      )
+    }
     return (
-      <a href={`geo:?q=${address}`}>
+      <a target="_blank" href={`https://www.google.com/maps/search/?api=1&query=${address}`}>
         <span style={elStyle}>{address}</span>
       </a>
     );

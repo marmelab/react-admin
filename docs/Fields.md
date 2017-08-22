@@ -63,12 +63,11 @@ Then you can display the author first name as follows:
 
 ## `<AddressField>`
 
-Displays an address as addresse link with the geo or Apple maps URI scheme
-according to the device.
+Displays an address location as a clickable link. On a mobile phone, it will open the map application (plan for IOS, google maps, waze or whatever for Android), center on the location. On Desktop it will open google maps link with the address (plan for Mac OS users).
 ```jsx
 import { AddressField } from 'admin-on-rest'
 
-<AddressField source="addresse"/>
+<AddressField source="address"/>
 ```
 
 ## `<BooleanField>`
