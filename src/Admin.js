@@ -21,6 +21,7 @@ import TranslationProvider from './i18n/TranslationProvider';
 const Admin = ({
     appLayout,
     authClient,
+    children,
     customReducers = {},
     customSagas = [],
     customRoutes = [],
@@ -106,7 +107,7 @@ const Admin = ({
                                 render={() =>
                                     createElement(appLayout || DefaultLayout, {
                                         authClient,
-                                        children: this.props.children,
+                                        children,
                                         dashboard,
                                         customRoutes: customRoutes.filter(
                                             route => !route.props.noLayout
