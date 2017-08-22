@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -12,6 +12,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import AdminRoutes from '../../AdminRoutes';
 import AppBar from './AppBar';
 import Sidebar from './Sidebar';
+import Menu from './Menu';
 import Notification from './Notification';
 import defaultTheme from '../defaultTheme';
 import { setSidebarVisibility as setSidebarVisibilityAction } from '../../actions';
@@ -52,7 +53,7 @@ const styles = {
         top: 0,
         right: 0,
         margin: 16,
-        zIndex: 1200,
+        zInœdex: 1200,
     },
 };
 
@@ -68,16 +69,18 @@ class Layout extends Component {
     render() {
         const {
             authClient,
+            children,
             customRoutes,
             dashboard,
             isLoading,
+            logout,
             menu,
             catchAll,
-            resources,
             theme,
             title,
             width,
         } = this.props;
+
         const muiTheme = getMuiTheme(theme);
         if (!prefixedStyles.main) {
             // do this once because user agent never changes
@@ -111,14 +114,18 @@ class Layout extends Component {
                             >
                                 <AdminRoutes
                                     customRoutes={customRoutes}
-                                    resources={resources}
                                     authClient={authClient}
                                     dashboard={dashboard}
                                     catchAll={catchAll}
-                                />
+                                >
+                                    {children}
+                                </AdminRoutes>
                             </div>
                             <Sidebar theme={theme}>
-                                {menu}
+                                {createElement(menu || Menu, {
+                                    logout,
+                                    hasDashboard: !!dashboard,
+                                })}
                             </Sidebar>
                         </div>
                         <Notification />
@@ -144,12 +151,17 @@ const componentPropType = PropTypes.oneOfType([
 
 Layout.propTypes = {
     authClient: PropTypes.func,
+    children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     catchAll: componentPropType,
     customRoutes: PropTypes.array,
     dashboard: componentPropType,
     isLoading: PropTypes.bool.isRequired,
-    menu: PropTypes.element,
-    resources: PropTypes.array,
+    logout: PropTypes.oneOfType([
+        PropTypes.node,
+        PropTypes.func,
+        PropTypes.string,
+    ]),
+    menu: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.node.isRequired,
     theme: PropTypes.object.isRequired,

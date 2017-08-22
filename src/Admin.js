@@ -1,4 +1,4 @@
-import React, { createElement } from 'react';
+import React, { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import { createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -9,6 +9,7 @@ import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 
 import { USER_LOGOUT } from './actions/authActions';
+
 import createAppReducer from './reducer';
 import { crudSaga } from './sideEffect/saga';
 import DefaultLayout from './mui/layout/Layout';
@@ -17,113 +18,127 @@ import Login from './mui/auth/Login';
 import Logout from './mui/auth/Logout';
 import TranslationProvider from './i18n/TranslationProvider';
 
-const Admin = ({
-    appLayout,
-    authClient,
-    children,
-    customReducers = {},
-    customSagas = [],
-    customRoutes = [],
-    dashboard,
-    history,
-    locale,
-    messages = {},
-    menu,
-    catchAll,
-    restClient,
-    theme,
-    title = 'Admin on REST',
-    loginPage,
-    logoutButton,
-    initialState,
-}) => {
-    const resources = React.Children.map(children, ({ props }) => props) || [];
-    const appReducer = createAppReducer(resources, customReducers, locale);
-    const resettableAppReducer = (state, action) =>
-        appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
-    const saga = function* rootSaga() {
-        yield all([crudSaga(restClient, authClient), ...customSagas].map(fork));
-    };
-    const sagaMiddleware = createSagaMiddleware();
-    const routerHistory = history || createHistory();
-    const store = createStore(
-        resettableAppReducer,
-        initialState,
-        compose(
-            applyMiddleware(sagaMiddleware, routerMiddleware(routerHistory)),
-            window.devToolsExtension ? window.devToolsExtension() : f => f
-        )
-    );
-    sagaMiddleware.run(saga);
+class Admin extends Component {
+    render() {
+        const {
+            appLayout,
+            authClient,
+            customReducers = {},
+            customSagas = [],
+            customRoutes = [],
+            dashboard,
+            history,
+            locale,
+            messages = {},
+            menu = Menu,
+            catchAll,
+            restClient,
+            theme,
+            title = 'Admin on REST',
+            loginPage,
+            logoutButton,
+            initialState,
+        } = this.props;
+        const appReducer = createAppReducer(customReducers, locale);
+        const resettableAppReducer = (state, action) =>
+            appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
+        const saga = function* rootSaga() {
+            yield all(
+                [crudSaga(restClient, authClient), ...customSagas].map(fork)
+            );
+        };
+        const sagaMiddleware = createSagaMiddleware();
+        const routerHistory = history || createHistory();
+        const store = createStore(
+            resettableAppReducer,
+            initialState,
+            compose(
+                applyMiddleware(
+                    sagaMiddleware,
+                    routerMiddleware(routerHistory)
+                ),
+                window.devToolsExtension ? window.devToolsExtension() : f => f
+            )
+        );
+        sagaMiddleware.run(saga);
 
-    const logout = authClient ? createElement(logoutButton || Logout) : null;
+        const logout = authClient
+            ? createElement(logoutButton || Logout)
+            : null;
 
-    return (
-        <Provider store={store}>
-            <TranslationProvider messages={messages}>
-                <ConnectedRouter history={routerHistory}>
-                    <div>
-                        <Switch>
-                            <Route
-                                exact
-                                path="/login"
-                                render={({ location }) =>
-                                    createElement(loginPage || Login, {
-                                        location,
-                                        title,
-                                        theme,
-                                    })}
-                            />
-                            {customRoutes
-                                .filter(route => route.props.noLayout)
-                                .map((route, index) =>
-                                    <Route
-                                        key={index}
-                                        exact={route.props.exact}
-                                        path={route.props.path}
-                                        render={({ location }) => {
-                                            if (route.props.render) {
-                                                return route.props.render({
-                                                    location,
-                                                    title,
-                                                    theme,
-                                                });
+        return (
+            <Provider store={store}>
+                <TranslationProvider messages={messages}>
+                    <ConnectedRouter history={routerHistory}>
+                        <div>
+                            <Switch>
+                                <Route
+                                    exact
+                                    path="/login"
+                                    render={({ location }) =>
+                                        createElement(loginPage || Login, {
+                                            location,
+                                            title,
+                                            theme,
+                                        })}
+                                />
+                                {customRoutes
+                                    .filter(route => route.props.noLayout)
+                                    .map((route, index) =>
+                                        <Route
+                                            key={index}
+                                            exact={route.props.exact}
+                                            path={route.props.path}
+                                            render={({ location }) => {
+                                                if (route.props.render) {
+                                                    return route.props.render({
+                                                        location,
+                                                        title,
+                                                        theme,
+                                                    });
+                                                }
+                                                if (route.props.component) {
+                                                    return createElement(
+                                                        route.props.component,
+                                                        {
+                                                            location,
+                                                            title,
+                                                            theme,
+                                                        }
+                                                    );
+                                                }
+                                            }}
+                                        />
+                                    )}
+                                <Route
+                                    path="/"
+                                    render={() =>
+                                        createElement(
+                                            appLayout || DefaultLayout,
+                                            {
+                                                authClient,
+                                                children: this.props.children,
+                                                dashboard,
+                                                customRoutes: customRoutes.filter(
+                                                    route =>
+                                                        !route.props.noLayout
+                                                ),
+                                                logout,
+                                                menu,
+                                                catchAll,
+                                                title,
+                                                theme,
                                             }
-                                            if (route.props.component) {
-                                                return createElement(
-                                                    route.props.component,
-                                                    { location, title, theme }
-                                                );
-                                            }
-                                        }}
-                                    />
-                                )}
-                            <Route
-                                path="/"
-                                render={() =>
-                                    createElement(appLayout || DefaultLayout, {
-                                        dashboard,
-                                        customRoutes: customRoutes.filter(
-                                            route => !route.props.noLayout
-                                        ),
-                                        menu: createElement(menu || Menu, {
-                                            logout,
-                                            resources,
-                                            hasDashboard: !!dashboard,
-                                        }),
-                                        catchAll,
-                                        resources,
-                                        title,
-                                        theme,
-                                    })}
-                            />
-                        </Switch>
-                    </div>
-                </ConnectedRouter>
-            </TranslationProvider>
-        </Provider>
-    );
-};
+                                        )}
+                                />
+                            </Switch>
+                        </div>
+                    </ConnectedRouter>
+                </TranslationProvider>
+            </Provider>
+        );
+    }
+}
 
 const componentPropType = PropTypes.oneOfType([
     PropTypes.func,
@@ -133,7 +148,7 @@ const componentPropType = PropTypes.oneOfType([
 Admin.propTypes = {
     appLayout: componentPropType,
     authClient: PropTypes.func,
-    children: PropTypes.node,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     catchAll: componentPropType,
     customSagas: PropTypes.array,
     customReducers: PropTypes.object,

@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import inflection from 'inflection';
-import pure from 'recompose/pure';
 import compose from 'recompose/compose';
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 import translate from '../../i18n/translate';
+import withResources from './withResources';
 
 const styles = {
     main: {
@@ -57,6 +57,6 @@ Menu.defaultProps = {
     onMenuTap: () => null,
 };
 
-const enhance = compose(pure, translate);
+const enhance = compose(translate, withResources);
 
 export default enhance(Menu);
