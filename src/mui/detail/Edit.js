@@ -12,6 +12,7 @@ import {
 } from '../../actions/dataActions';
 import DefaultActions from './EditActions';
 import translate from '../../i18n/translate';
+import withPermissionsFilteredChildren from '../../auth/withPermissionsFilteredChildren';
 
 export class Edit extends Component {
     constructor(props) {
@@ -80,6 +81,9 @@ export class Edit extends Component {
             title,
             translate,
         } = this.props;
+
+        if (!children) return null;
+
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
@@ -128,7 +132,7 @@ export class Edit extends Component {
 
 Edit.propTypes = {
     actions: PropTypes.element,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node,
     crudGetOne: PropTypes.func.isRequired,
     crudUpdate: PropTypes.func.isRequired,
     data: PropTypes.object,
@@ -147,16 +151,18 @@ Edit.propTypes = {
 function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
-        data:
-            state.admin.resources[props.resource].data[
-                decodeURIComponent(props.match.params.id)
-            ],
+        data: state.admin.resources[props.resource]
+            ? state.admin.resources[props.resource].data[
+                  decodeURIComponent(props.match.params.id)
+              ]
+            : null,
         isLoading: state.admin.loading > 0,
         version: state.admin.ui.viewVersion,
     };
 }
 
 const enhance = compose(
+    withPermissionsFilteredChildren,
     connect(mapStateToProps, {
         crudGetOne: crudGetOneAction,
         crudUpdate: crudUpdateAction,

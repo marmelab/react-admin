@@ -44,22 +44,26 @@ export class TabbedForm extends Component {
                         onChange={this.handleChange}
                         contentContainerStyle={contentContainerStyle}
                     >
-                        {React.Children.map(children, (tab, index) =>
-                            <Tab
-                                key={tab.props.value}
-                                className="form-tab"
-                                label={translate(tab.props.label, {
-                                    _: tab.props.label,
-                                })}
-                                value={index}
-                                icon={tab.props.icon}
-                            >
-                                {React.cloneElement(tab, {
-                                    resource,
-                                    record,
-                                    basePath,
-                                })}
-                            </Tab>
+                        {React.Children.map(
+                            children,
+                            (tab, index) =>
+                                tab
+                                    ? <Tab
+                                          key={tab.props.value}
+                                          className="form-tab"
+                                          label={translate(tab.props.label, {
+                                              _: tab.props.label,
+                                          })}
+                                          value={index}
+                                          icon={tab.props.icon}
+                                      >
+                                          {React.cloneElement(tab, {
+                                              resource,
+                                              record,
+                                              basePath,
+                                          })}
+                                      </Tab>
+                                    : null
                         )}
                     </Tabs>
                 </div>
