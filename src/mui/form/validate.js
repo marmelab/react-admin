@@ -7,23 +7,24 @@ const isEmpty = value => (typeof value === 'undefined' || value === null || valu
 export const required = (value, _, props) => isEmpty(value) ? props.translate('aor.validation.required') : undefined;
 
 export const minLength = (min, message) => (value, _, props) =>
-    value && value.length < min ? props.translate(message || 'aor.validation.minLength', { min }) : undefined;
+    !isEmpty(value) && value.length < min ? props.translate(message || 'aor.validation.minLength', { min }) : undefined;
 
 export const maxLength = (max, message) => (value, _, props) =>
-    value && value.length > max ? props.translate(message || 'aor.validation.maxLength', { max }) : undefined;
+    !isEmpty(value) && value.length > max ? props.translate(message || 'aor.validation.maxLength', { max }) : undefined;
 
 export const minValue = (min, message) => (value, _, props) =>
-    value && value < min ? props.translate(message || 'aor.validation.minValue', { min }) : undefined;
+    !isEmpty(value) && value < min ? props.translate(message || 'aor.validation.minValue', { min }) : undefined;
 
 export const maxValue = (max, message) => (value, _, props) =>
-    value && value > max ? props.translate(message || 'aor.validation.maxValue', { max }) : undefined;
+    !isEmpty(value) && value > max ? props.translate(message || 'aor.validation.maxValue', { max }) : undefined;
 
-export const number = (value, _, props) => value && isNaN(Number(value)) ? props.translate('aor.validation.number') : undefined;
+export const number = (value, _, props) =>
+    !isEmpty(value) && isNaN(Number(value)) ? props.translate('aor.validation.number') : undefined;
 
 export const regex = (pattern, message) => (value, _, props) =>
-    value && typeof value === 'string' && !pattern.test(value) ? props.translate(message) : undefined;
+    !isEmpty(value) && typeof value === 'string' && !pattern.test(value) ? props.translate(message) : undefined;
 
 export const email = regex(EMAIL_REGEX, 'aor.validation.email');
 
 export const choices = (list, message) => (value, _, props) =>
-    value && list.indexOf(value) === -1 ? props.translate(message) : undefined;
+    !isEmpty(value) && list.indexOf(value) === -1 ? props.translate(message) : undefined;
