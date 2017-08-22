@@ -29,18 +29,22 @@ const DatagridBody = ({
                 selectable={false}
                 {...rowOptions}
             >
-                {React.Children.map(children, (field, index) =>
-                    <DatagridCell
-                        key={`${id}-${field.props.source || index}`}
-                        className={`column-${field.props.source}`}
-                        record={data[id]}
-                        defaultStyle={
-                            index === 0
-                                ? styles.cell['td:first-child']
-                                : styles.cell.td
-                        }
-                        {...{ field, basePath, resource }}
-                    />
+                {React.Children.map(
+                    children,
+                    (field, index) =>
+                        field
+                            ? <DatagridCell
+                                  key={`${id}-${field.props.source || index}`}
+                                  className={`column-${field.props.source}`}
+                                  record={data[id]}
+                                  defaultStyle={
+                                      index === 0
+                                          ? styles.cell['td:first-child']
+                                          : styles.cell.td
+                                  }
+                                  {...{ field, basePath, resource }}
+                              />
+                            : null
                 )}
             </TableRow>
         )}

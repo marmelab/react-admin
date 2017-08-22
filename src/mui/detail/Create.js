@@ -9,6 +9,7 @@ import Title from '../layout/Title';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import DefaultActions from './CreateActions';
 import translate from '../../i18n/translate';
+import withPermissionsFilteredChildren from '../../auth/withPermissionsFilteredChildren';
 
 class Create extends Component {
     getBasePath() {
@@ -41,6 +42,8 @@ class Create extends Component {
             title,
             translate,
         } = this.props;
+
+        if (!children) return null;
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
@@ -102,6 +105,7 @@ function mapStateToProps(state) {
 }
 
 const enhance = compose(
+    withPermissionsFilteredChildren,
     connect(mapStateToProps, { crudCreate: crudCreateAction }),
     translate
 );

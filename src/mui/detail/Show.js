@@ -9,6 +9,7 @@ import Title from '../layout/Title';
 import { crudGetOne as crudGetOneAction } from '../../actions/dataActions';
 import DefaultActions from './ShowActions';
 import translate from '../../i18n/translate';
+import withPermissionsFilteredChildren from '../../auth/withPermissionsFilteredChildren';
 
 export class Show extends Component {
     componentDidMount() {
@@ -106,16 +107,18 @@ Show.propTypes = {
 function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
-        data:
-            state.admin.resources[props.resource].data[
-                decodeURIComponent(props.match.params.id)
-            ],
+        data: state.admin.resources[props.resource]
+            ? state.admin.resources[props.resource].data[
+                  decodeURIComponent(props.match.params.id)
+              ]
+            : null,
         isLoading: state.admin.loading > 0,
         version: state.admin.ui.viewVersion,
     };
 }
 
 const enhance = compose(
+    withPermissionsFilteredChildren,
     connect(mapStateToProps, { crudGetOne: crudGetOneAction }),
     translate
 );

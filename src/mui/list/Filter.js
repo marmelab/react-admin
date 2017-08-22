@@ -7,8 +7,9 @@ import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
 import defaultTheme from '../defaultTheme';
 import removeEmpty from '../../util/removeEmpty';
+import withPermissionsFilteredChildren from '../../auth/withPermissionsFilteredChildren';
 
-class Filter extends Component {
+export class Filter extends Component {
     constructor(props) {
         super(props);
         this.filters = this.props.filterValues;
@@ -99,4 +100,4 @@ Filter.defaultProps = {
     theme: defaultTheme,
 };
 
-export default Filter;
+export default withPermissionsFilteredChildren(Filter);
