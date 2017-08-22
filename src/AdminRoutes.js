@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import getContext from 'recompose/getContext';
 
 import CrudRoute from './CrudRoute';
 import NotFound from './mui/layout/NotFound';
@@ -108,6 +110,11 @@ const mapStateToProps = state => ({
     ),
 });
 
-export default connect(mapStateToProps, {
-    declareResources: declareResourcesAction,
-})(AdminRoutes);
+export default compose(
+    getContext({
+        authClient: PropTypes.func,
+    }),
+    connect(mapStateToProps, {
+        declareResources: declareResourcesAction,
+    })
+)(AdminRoutes);

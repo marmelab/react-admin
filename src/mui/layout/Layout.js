@@ -65,7 +65,6 @@ class Layout extends Component {
 
     render() {
         const {
-            authClient,
             children,
             customRoutes,
             dashboard,
@@ -111,7 +110,6 @@ class Layout extends Component {
                             >
                                 <AdminRoutes
                                     customRoutes={customRoutes}
-                                    authClient={authClient}
                                     dashboard={dashboard}
                                     catchAll={catchAll}
                                 >
@@ -147,7 +145,6 @@ const componentPropType = PropTypes.oneOfType([
 ]);
 
 Layout.propTypes = {
-    authClient: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     catchAll: componentPropType,
     customRoutes: PropTypes.array,

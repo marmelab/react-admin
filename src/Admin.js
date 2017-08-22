@@ -7,6 +7,7 @@ import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
+import withContext from 'recompose/withContext';
 
 import { USER_LOGOUT } from './actions/authActions';
 
@@ -106,7 +107,6 @@ const Admin = ({
                                 path="/"
                                 render={() =>
                                     createElement(appLayout || DefaultLayout, {
-                                        authClient,
                                         children,
                                         dashboard,
                                         customRoutes: customRoutes.filter(
@@ -153,4 +153,9 @@ Admin.propTypes = {
     initialState: PropTypes.object,
 };
 
-export default Admin;
+export default withContext(
+    {
+        authClient: PropTypes.func,
+    },
+    ({ authClient }) => ({ authClient })
+)(Admin);
