@@ -204,25 +204,25 @@ Note that for the `Filter` component,  the function returns an array of React el
 
 ## Restricting Access To Content In Custom Pages or Menus
 
-What if you want to check the permissions inside a [Dashboard](./Admin.html#dashboard), a [custom page](http://127.0.0.1:4000/Admin.html#customroutes) or a [custom menu](./Admin.html#menu) ? Admin-on-rest provides two components for that: `WithPermissions` and `SwitchPermissions`.
+What if you want to check the permissions inside a [Dashboard](./Admin.html#dashboard), a [custom page](./Admin.html#customroutes) or a [custom menu](./Admin.html#menu) ? Admin-on-rest provides two components for that: `WithPermission` and `SwitchPermissions`.
 
-### WithPermissions
+### WithPermission
 
-The `WithPermissions` component will only display its content if the user has the required permissions. Let's see an example with a custom menu where a custom page link should only be presented to admins:
+The `WithPermission` component will only display its content if the user has the required permissions. Let's see an example with a custom menu where a custom page link should only be presented to admins:
 
 {% raw %}
 ```jsx
 // in src/Menu.js
 import React from 'react';
-import { MenuItemLink, WithPermissions } from 'admin-on-rest';
+import { MenuItemLink, WithPermission } from 'admin-on-rest';
 
 export default ({ resources, onMenuTap, logout }) => (
     <div>
         <MenuItemLink to="/posts" primaryText="Posts" onTouchTap={onMenuTap} />
         <MenuItemLink to="/comments" primaryText="Comments" onTouchTap={onMenuTap} />
-        <WithPermissions value="admin">
+        <WithPermission value="admin">
             <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onTouchTap={onMenuTap} />
-        </WithPermissions>
+        </WithPermission>
         {logout}
     </div>
 );
@@ -239,7 +239,9 @@ You may bypass the default logic by specifying a function as the `resolve` prop.
 - `value`: the value of the `value` prop if specified
 - `exact`: the value of the `exact` prop if specified
 
-An optional `loading` prop may be specified on the `WithPermissions` component to pass a component to display while checking for permissions. It defaults to `null`.
+An optional `loading` prop may be specified on the `WithPermission` component to pass a component to display while checking for permissions. It defaults to `null`.
+
+**Tip**: Do not use the `WithPermission` component inside the others admin-on-rest components. It is only meant to be used in custom pages or components.
 
 ### SwitchPermissions
 
@@ -284,3 +286,6 @@ export default () => (
     </Card>
 );
 ```
+
+**Tip**: Do not use the `SwitchPermissions` component inside the others admin-on-rest components. It is only meant to be used in custom pages or components.
+
