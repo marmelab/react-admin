@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import FormField from '../mui/form/FormField';
 import getContext from 'recompose/getContext';
 
-import DefaultLoading from './Loading';
 import { AUTH_GET_PERMISSIONS } from './types';
 import resolvePermissions from './resolvePermissions';
 
@@ -20,7 +19,7 @@ export class SwitchPermissionsComponent extends Component {
 
     static defaultProps = {
         notFound: null,
-        loading: DefaultLoading,
+        loading: null,
     };
 
     state = {
@@ -95,7 +94,7 @@ export class SwitchPermissionsComponent extends Component {
             return null;
         }
 
-        if (!match) {
+        if (!match && loading) {
             return createElement(loading);
         }
 

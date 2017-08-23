@@ -111,7 +111,7 @@ export const UserCreate = ({ ...props }) =>
 export const UserEdit = ({ ...props }) =>
     <Edit title={<UserTitle />} {...props}>
         {permissions =>
-            <TabbedForm defaultValue={{ average_note: 0 }}>
+            <TabbedForm defaultValue={{ role: 'user' }}>
                 <FormTab label="user.form.summary">
                     {permissions === 'admin' && <DisabledInput source="id" />}
                     <TextInput source="name" validate={required} />
