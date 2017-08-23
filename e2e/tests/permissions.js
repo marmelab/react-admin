@@ -20,7 +20,7 @@ describe('Permissions', () => {
         'name'
     )(driver);
 
-    it('Hide protected resources depending on permissions', async () => {
+    it('hides protected resources depending on permissions', async () => {
         await LoginPage.navigate();
         await LoginPage.login('login', 'password');
 
