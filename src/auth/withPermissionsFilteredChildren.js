@@ -1,4 +1,4 @@
-import React, { cloneElement, Children, Component } from 'react';
+import React, { cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import getContext from 'recompose/getContext';
 import { AUTH_GET_PERMISSIONS } from './types';

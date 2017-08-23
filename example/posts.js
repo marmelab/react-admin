@@ -222,7 +222,7 @@ export const PostEdit = ({ ...props }) =>
                 />
                 <NumberInput
                     source="average_note"
-                    validate={[number, minValue(0)]}
+                    validate={[required, number, minValue(0)]}
                 />
                 <BooleanInput source="commentable" defaultValue />
                 <DisabledInput source="views" />
