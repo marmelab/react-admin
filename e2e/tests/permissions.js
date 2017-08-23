@@ -87,7 +87,7 @@ describe('Permissions', () => {
         });
     });
 
-    describe('show protected data depending on permissions', () => {
+    describe('shows protected data depending on permissions', () => {
         before(async () => {
             await LoginPage.navigate();
             await LoginPage.login('admin', 'password');
