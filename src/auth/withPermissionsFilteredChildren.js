@@ -26,7 +26,7 @@ export default BaseComponent => {
                         this.setState({ children: allowedChildren });
                     });
             } else {
-                this.setState({ children: Children.toArray(children) });
+                this.setState({ children });
             }
         }
 
