@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { cloneElement, Children, Component } from 'react';
 import PropTypes from 'prop-types';
 import getContext from 'recompose/getContext';
 import { AUTH_GET_PERMISSIONS } from './types';
@@ -26,17 +26,28 @@ export default BaseComponent => {
                         this.setState({ children: allowedChildren });
                     });
             } else {
-                this.setState({ children });
+                this.setState({ children: Children.toArray(children) });
             }
         }
 
         render() {
             const { children } = this.state;
             const { authClient, ...props } = this.props;
-
             return (
                 <BaseComponent {...props}>
-                    {children}
+                    {children && Array.isArray(children)
+                        ? children.map(
+                              child =>
+                                  child
+                                      ? cloneElement(child, {
+                                            key:
+                                                child.props.key ||
+                                                child.props.source ||
+                                                child.props.label,
+                                        })
+                                      : null
+                          )
+                        : children}
                 </BaseComponent>
             );
         }
