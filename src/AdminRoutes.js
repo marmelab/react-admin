@@ -98,7 +98,8 @@ const componentPropType = PropTypes.oneOfType([
 ]);
 
 AdminRoutes.propTypes = {
-    authClient: PropTypes.func.isRequired,
+    authClient: PropTypes.func,
+    children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     catchAll: componentPropType,
     customRoutes: PropTypes.array,
     declareResources: PropTypes.func.isRequired,

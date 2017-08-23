@@ -162,12 +162,12 @@ function mapStateToProps(state, props) {
 }
 
 const enhance = compose(
-    withPermissionsFilteredChildren,
     connect(mapStateToProps, {
         crudGetOne: crudGetOneAction,
         crudUpdate: crudUpdateAction,
     }),
-    translate
+    translate,
+    withPermissionsFilteredChildren
 );
 
 export default enhance(Edit);
