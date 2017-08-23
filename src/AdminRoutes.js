@@ -19,7 +19,9 @@ export class AdminRoutes extends Component {
     initializeResources(children) {
         if (typeof children === 'function') {
             this.props.authClient(AUTH_GET_PERMISSIONS).then(permissions => {
-                const resources = children(permissions).map(node => node.props);
+                const resources = children(permissions)
+                    .filter(node => node)
+                    .map(node => node.props);
                 this.props.declareResources(resources);
             });
         } else {

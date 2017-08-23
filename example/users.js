@@ -36,7 +36,7 @@ const UserFilter = ({ ...props }) =>
                 alwaysOn
             />,
             <TextInput key="name" source="name" />,
-            permissions ? <TextInput source="role" /> : null,
+            permissions === 'admin' ? <TextInput source="role" /> : null,
         ]}
     </Filter>;
 
@@ -65,7 +65,7 @@ export const UserList = ({ ...props }) =>
                     <Datagrid>
                         <TextField source="id" />
                         <TextField source="name" style={titleFieldStyle} />
-                        {permissions && <TextField source="role" />}
+                        {permissions === 'admin' && <TextField source="role" />}
                         <EditButton />
                         <ShowButton />
                     </Datagrid>
@@ -113,12 +113,12 @@ export const UserEdit = ({ ...props }) =>
         {permissions =>
             <TabbedForm defaultValue={{ average_note: 0 }}>
                 <FormTab label="user.form.summary">
-                    <DisabledInput source="id" />
+                    {permissions === 'admin' && <DisabledInput source="id" />}
                     <TextInput source="name" validate={required} />
                 </FormTab>
                 {permissions === 'admin' &&
                     <FormTab label="user.form.security">
-                        <TextInput source="name" validate={required} />
+                        <TextInput source="role" validate={required} />
                     </FormTab>}
             </TabbedForm>}
     </Edit>;
@@ -131,7 +131,7 @@ export const UserShow = ({ ...props }) =>
                     <TextField source="id" />
                     <TextField source="name" />
                 </Tab>
-                {permissions &&
+                {permissions === 'admin' &&
                     <Tab label="user.form.security">
                         <TextField source="role" />
                     </Tab>}

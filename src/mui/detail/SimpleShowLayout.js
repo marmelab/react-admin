@@ -15,7 +15,7 @@ export const SimpleShowLayout = ({
             <div
                 key={field.props.source}
                 style={field.props.style}
-                className={`aor-field-${field.props.source}`}
+                className={`aor-field aor-field-${field.props.source}`}
             >
                 {field.props.addLabel
                     ? <Labeled

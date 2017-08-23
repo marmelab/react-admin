@@ -6,6 +6,8 @@ export default url => driver => ({
         appLoader: By.css('.app-loader'),
         displayedRecords: By.css('.displayed-records'),
         filter: name => By.css(`.filter-field[data-source='${name}'] input`),
+        filterMenuItems: By.css(`.new-filter-item`),
+        menuItems: By.css(`[role=menuitem`),
         filterMenuItem: source =>
             By.css(`.new-filter-item[data-key="${source}"]`),
         hideFilterButton: source =>
@@ -14,6 +16,7 @@ export default url => driver => ({
         pageNumber: n => By.css(`.page-number[data-page='${n}']`),
         previousPage: By.css('.previous-page'),
         recordRows: By.css('.datagrid-body tr'),
+        datagridHeaders: By.css('th'),
         title: By.css('.title'),
         logout: By.css('.logout'),
     },
@@ -50,6 +53,35 @@ export default url => driver => ({
         return driver
             .findElements(this.elements.recordRows)
             .then(rows => rows.length);
+    },
+
+    getColumns() {
+        return driver
+            .findElements(this.elements.datagridHeaders)
+            .then(ths => Promise.all(ths.map(th => th.getText())));
+    },
+
+    getResources() {
+        return driver
+            .findElements(this.elements.menuItems)
+            .then(menuItems =>
+                Promise.all(menuItems.map(menuItem => menuItem.getText()))
+            );
+    },
+
+    getAvailableFilters() {
+        const addFilterButton = driver.findElement(
+            this.elements.addFilterButton
+        );
+        addFilterButton.click();
+        driver.sleep(500); // wait until the dropdown animation ends
+        driver.wait(until.elementLocated(this.elements.filterMenuItems));
+
+        return driver
+            .findElements(this.elements.filterMenuItems)
+            .then(filters =>
+                Promise.all(filters.map(filter => filter.getText()))
+            );
     },
 
     getNbPagesText() {

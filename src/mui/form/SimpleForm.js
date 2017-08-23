@@ -32,7 +32,8 @@ export class SimpleForm extends Component {
                             input &&
                             <div
                                 key={input.props.source}
-                                className={`aor-input-${input.props.source}`}
+                                className={`aor-input aor-input-${input.props
+                                    .source}`}
                                 style={input.props.style}
                             >
                                 <FormField
