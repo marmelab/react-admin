@@ -153,7 +153,7 @@ export const UserEdit = ({ ...props }) =>
 ```
 {% endraw %}
 
-What about the `List` view, the `DataGrid`, `SimpleList` and `Filter` components ?
+What about the `List` view, the `DataGrid`, `SimpleList` and `Filter` components? It works there, too.
 
 {% raw %}
 ```jsx
