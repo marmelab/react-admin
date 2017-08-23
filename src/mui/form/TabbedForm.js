@@ -60,29 +60,34 @@ export class TabbedForm extends Component {
                         onChange={this.handleChange}
                         contentContainerStyle={contentContainerStyle}
                     >
-                        {React.Children.map(children, (tab, index) => (
-                            <Tab
-                                key={tab.props.label}
-                                className="form-tab"
-                                label={translate(tab.props.label, {
-                                    _: tab.props.label,
-                                })}
-                                value={index}
-                                icon={tab.props.icon}
-                                buttonStyle={
-                                    tabsWithErrors.includes(tab.props.label) &&
-                                    this.state.value !== index ? (
-                                        styles.errorTabButton
-                                    ) : null
-                                }
-                            >
-                                {React.cloneElement(tab, {
-                                    resource,
-                                    record,
-                                    basePath,
-                                })}
-                            </Tab>
-                        ))}
+                        {React.Children.map(
+                            children,
+                            (tab, index) =>
+                                tab ? (
+                                    <Tab
+                                        key={tab.props.label}
+                                        className="form-tab"
+                                        label={translate(tab.props.label, {
+                                            _: tab.props.label,
+                                        })}
+                                        value={index}
+                                        icon={tab.props.icon}
+                                        buttonStyle={
+                                            tabsWithErrors.includes(
+                                                tab.props.label
+                                            ) && this.state.value !== index ? (
+                                                styles.errorTabButton
+                                            ) : null
+                                        }
+                                    >
+                                        {React.cloneElement(tab, {
+                                            resource,
+                                            record,
+                                            basePath,
+                                        })}
+                                    </Tab>
+                                ) : null
+                        )}
                     </Tabs>
                 </div>
                 {toolbar &&

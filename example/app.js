@@ -16,6 +16,7 @@ import {
     CommentShow,
     CommentIcon,
 } from './comments';
+import { UserList, UserEdit, UserCreate, UserIcon, UserShow } from './users';
 
 import data from './data';
 import * as customMessages from './i18n';
@@ -61,6 +62,15 @@ render(
             show={CommentShow}
             remove={Delete}
             icon={CommentIcon}
+        />
+        <Resource
+            name="users"
+            list={UserList}
+            create={UserCreate}
+            edit={UserEdit}
+            remove={Delete}
+            icon={UserIcon}
+            show={UserShow}
         />
         <Resource name="tags" />
     </Admin>,

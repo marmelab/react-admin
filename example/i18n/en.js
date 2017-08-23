@@ -32,6 +32,13 @@ export const messages = {
                 },
             },
         },
+        users: {
+            name: 'User |||| Users',
+            fields: {
+                name: 'Name',
+                role: 'Role',
+            },
+        },
     },
     post: {
         list: {
@@ -54,6 +61,22 @@ export const messages = {
     comment: {
         list: {
             about: 'About',
+        },
+    },
+    user: {
+        list: {
+            search: 'Search',
+        },
+        form: {
+            summary: 'Summary',
+            security: 'Security',
+        },
+        edit: {
+            title: 'User "%{title}"',
+        },
+        action: {
+            save_and_add: 'Save and Add',
+            save_and_show: 'Save and Show',
         },
     },
 };
