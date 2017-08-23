@@ -91,7 +91,7 @@ It's possible to restrict access to resources or their views inside the `Admin` 
 
 Note that the function returns an array of React elements. This is required to avoid having to wrap them in a container element which would prevent the `Admin` from working.
 
-**Tip** Even if that's possible, be careful when completely excluding a resource (like we did with the `categories` in this example) as it will prevent you to reference them in the other resources views too.
+**Tip** Even if that's possible, be careful when completely excluding a resource (like with the `categories` resource in this example) as it will prevent you to reference them in the other resources views too.
 
 ## Restricting Access To Fields And Inputs
 
