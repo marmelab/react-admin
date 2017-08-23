@@ -9,7 +9,6 @@ import { resolvePermission } from './resolvePermissions';
 export class WithPermissionComponent extends Component {
     static propTypes = {
         authClient: PropTypes.func,
-        authClientFromContext: PropTypes.func,
         children: PropTypes.node.isRequired,
         exact: PropTypes.bool,
         loading: PropTypes.func,

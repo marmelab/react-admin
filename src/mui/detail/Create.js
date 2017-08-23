@@ -105,9 +105,9 @@ function mapStateToProps(state) {
 }
 
 const enhance = compose(
-    withPermissionsFilteredChildren,
     connect(mapStateToProps, { crudCreate: crudCreateAction }),
-    translate
+    translate,
+    withPermissionsFilteredChildren
 );
 
 export default enhance(Create);

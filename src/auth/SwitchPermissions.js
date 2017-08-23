@@ -9,7 +9,6 @@ import resolvePermissions from './resolvePermissions';
 export class SwitchPermissionsComponent extends Component {
     static propTypes = {
         authClient: PropTypes.func,
-        authClientFromContext: PropTypes.func,
         children: PropTypes.node.isRequired,
         notFound: PropTypes.func,
         loading: PropTypes.func,
@@ -29,13 +28,7 @@ export class SwitchPermissionsComponent extends Component {
     };
 
     async componentWillMount() {
-        const {
-            authClient,
-            authClientFromContext,
-            children,
-            record,
-            resource,
-        } = this.props;
+        const { authClient, children, record, resource } = this.props;
         const mappings =
             React.Children.map(
                 children,
@@ -47,9 +40,7 @@ export class SwitchPermissionsComponent extends Component {
                 })
             ) || [];
 
-        const finalAuthClient = authClient || authClientFromContext;
-
-        const permissions = await finalAuthClient(AUTH_GET_PERMISSIONS, {
+        const permissions = await authClient(AUTH_GET_PERMISSIONS, {
             record,
             resource,
         });
@@ -80,7 +71,6 @@ export class SwitchPermissionsComponent extends Component {
         const { isNotFound, match, role } = this.state;
         const {
             authClient,
-            authClientFromContext,
             children,
             notFound,
             loading,
@@ -119,5 +109,5 @@ export class SwitchPermissionsComponent extends Component {
 }
 
 export default getContext({
-    authClientFromContext: PropTypes.func,
+    authClient: PropTypes.func,
 })(SwitchPermissionsComponent);
