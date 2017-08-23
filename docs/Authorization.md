@@ -7,7 +7,7 @@ title: "Authorization"
 
 Some applications may require to determine what level of access a particular authenticated user should have to secured resources. Since there are many different possible strategies (single role, multiple roles or rights, etc.), admin-on-rest simply provides hooks to execute your own authorization code.
 
-By default, an admin-on-rest app doesn't require authorization. However, if needed, it will relies on the `authClient` introduced in the [Authentication](./Authentication.html) section.
+By default, an admin-on-rest app doesn't require authorization. However, if needed, it will rely on the `authClient` introduced in the [Authentication](./Authentication.html) section.
 
 ## Configuring the Auth Client
 
