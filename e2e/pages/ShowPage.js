@@ -1,9 +1,10 @@
 import { By, until } from 'selenium-webdriver';
 
-export default url => driver => ({
+export default (url, initialField = 'title') => driver => ({
     elements: {
         appLoader: By.css('.app-loader'),
         field: name => By.css(`.aor-field-${name} > div > span`),
+        fields: By.css(`.aor-field`),
     },
 
     navigate() {
@@ -12,7 +13,9 @@ export default url => driver => ({
     },
 
     waitUntilVisible() {
-        return driver.wait(until.elementLocated(this.elements.field('title')));
+        return driver.wait(
+            until.elementLocated(this.elements.field(initialField))
+        );
     },
 
     waitUntilDataLoaded() {
@@ -36,5 +39,24 @@ export default url => driver => ({
 
     getValue(name) {
         return driver.findElement(this.elements.field(name)).getText();
+    },
+
+    getFields() {
+        return driver
+            .findElements(this.elements.fields)
+            .then(fields =>
+                Promise.all(
+                    fields.map(field =>
+                        field
+                            .getAttribute('class')
+                            .then(classes =>
+                                classes
+                                    .replace('aor-field-', '')
+                                    .replace('aor-field', '')
+                                    .trim()
+                            )
+                    )
+                )
+            );
     },
 });

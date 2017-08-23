@@ -11,6 +11,11 @@ export default (type, params) => {
     if (type === AUTH_LOGIN) {
         const { username, password } = params;
         if (username === 'login' && password === 'password') {
+            localStorage.removeItem('not_authenticated');
+            localStorage.removeItem('role');
+            return Promise.resolve();
+        }
+        if (username === 'user' && password === 'password') {
             localStorage.setItem('role', 'user');
             localStorage.removeItem('not_authenticated');
             return Promise.resolve();
@@ -25,6 +30,7 @@ export default (type, params) => {
     }
     if (type === AUTH_LOGOUT) {
         localStorage.setItem('not_authenticated', true);
+        localStorage.removeItem('role');
         return Promise.resolve();
     }
     if (type === AUTH_ERROR) {

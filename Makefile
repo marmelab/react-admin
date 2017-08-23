@@ -44,7 +44,7 @@ test-unit-watch: ## launch unit tests and watch for changes
 		--watch \
 		'./src/**/*.spec.js'
 
-test-e2e: example_install ## launch end-to-end tests
+test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \
 		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
 		cd example && ./node_modules/.bin/webpack; \

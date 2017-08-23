@@ -10,7 +10,7 @@ const FormTab = ({ label, icon, children, ...rest }) =>
                 <div
                     key={input.props.source}
                     style={input.props.style}
-                    className={`aor-input-${input.props.source}`}
+                    className={`aor-input aor-input-${input.props.source}`}
                 >
                     <FormField input={input} {...rest} />
                 </div>

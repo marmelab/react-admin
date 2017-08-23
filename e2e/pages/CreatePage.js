@@ -5,6 +5,7 @@ export default url => driver => ({
         appLoader: By.css('.app-loader'),
         input: (name, type = 'input') =>
             By.css(`.create-page ${type}[name='${name}']`),
+        inputs: By.css(`.aor-input`),
         submitButton: By.css(".create-page button[type='submit']"),
         submitAndAddButton: By.css(
             ".create-page form>div:last-child button[type='button']"
@@ -65,6 +66,25 @@ export default url => driver => ({
         return driver
             .findElement(this.elements.input(name, type))
             .getAttribute('value');
+    },
+
+    getFields() {
+        return driver
+            .findElements(this.elements.inputs)
+            .then(fields =>
+                Promise.all(
+                    fields.map(field =>
+                        field
+                            .getAttribute('class')
+                            .then(classes =>
+                                classes
+                                    .replace('aor-input-', '')
+                                    .replace('aor-input', '')
+                                    .trim()
+                            )
+                    )
+                )
+            );
     },
 
     submit() {

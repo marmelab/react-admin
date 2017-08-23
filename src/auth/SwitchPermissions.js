@@ -72,7 +72,7 @@ export class SwitchPermissionsComponent extends Component {
         <div
             key={child.props.source}
             style={child.props.style}
-            className={`aor-input-${child.props.source}`}
+            className={`aor-input aor-input-${child.props.source}`}
         >
             <FormField input={child} {...props} />
         </div>;
