@@ -13,7 +13,7 @@ By default, an admin-on-rest app doesn't require authorization. However, if need
 
 A call to the `authClient` with the `AUTH_GET_PERMISSIONS` type will be made each time a component requires to check the user's permissions.
 
-Following is an example which store the user's role upon authentication and return it for the permissions check:
+Following is an example where the `authClient` stores the user's role upon authentication, and returns it when called for a permissions check:
 
 ```jsx
 // in src/authClient.js
