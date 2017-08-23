@@ -31,7 +31,7 @@ describe('Permissions', () => {
         ]);
     });
 
-    it('Show protected resources depending on permissions', async () => {
+    it('shows protected resources depending on permissions', async () => {
         await LoginPage.navigate();
         await LoginPage.login('user', 'password');
 
