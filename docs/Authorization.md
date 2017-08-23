@@ -95,7 +95,7 @@ Note that the function returns an array of React elements. This is required to a
 
 ## Restricting Access To Fields And Inputs
 
-You might want to display some fields, inputs or filters only to users with specific permissions. It's possible to do so the same way you can restrict access to resources.
+You might want to display some fields, inputs or filters only to users with specific permissions. Just like for resources, pass a function as only child of the component, instead of a set of Fields and Inputs.
 
 Here's an example inside a `Create` view with a `SimpleForm` and a custom `Toolbar`:
 
