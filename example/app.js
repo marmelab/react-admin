@@ -1,3 +1,4 @@
+/* eslint react/jsx-key: off */
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
@@ -47,7 +48,6 @@ render(
         {permissions => [
             <Resource
                 name="posts"
-                key="posts"
                 list={PostList}
                 create={PostCreate}
                 edit={PostEdit}
@@ -57,7 +57,6 @@ render(
             />,
             <Resource
                 name="comments"
-                key="comments"
                 list={CommentList}
                 create={CommentCreate}
                 edit={CommentEdit}
@@ -67,7 +66,6 @@ render(
             permissions
                 ? <Resource
                       name="users"
-                      key="users"
                       list={UserList}
                       create={UserCreate}
                       edit={UserEdit}
@@ -76,7 +74,7 @@ render(
                       show={UserShow}
                   />
                 : null,
-            <Resource name="tags" key="tags" />,
+            <Resource name="tags" />,
         ]}
     </Admin>,
     document.getElementById('root')
