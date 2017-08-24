@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import inflection from 'inflection';
 import compose from 'recompose/compose';
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 import translate from '../../i18n/translate';
-import withResources from './withResources';
+import { getResources } from '../../reducer';
 
 const styles = {
     main: {
@@ -57,6 +58,10 @@ Menu.defaultProps = {
     onMenuTap: () => null,
 };
 
-const enhance = compose(translate, withResources);
+const mapStateToProps = state => ({
+    resources: getResources(state),
+});
+
+const enhance = compose(translate, connect(mapStateToProps));
 
 export default enhance(Menu);
