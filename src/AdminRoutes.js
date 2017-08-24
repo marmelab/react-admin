@@ -10,6 +10,7 @@ import NotFound from './mui/layout/NotFound';
 import Restricted from './auth/Restricted';
 import { AUTH_GET_PERMISSIONS } from './auth';
 import { declareResources as declareResourcesAction } from './actions';
+import getMissingAuthClientError from './util/getMissingAuthClientError';
 
 export class AdminRoutes extends Component {
     componentDidMount() {
@@ -18,6 +19,10 @@ export class AdminRoutes extends Component {
 
     initializeResources(children) {
         if (typeof children === 'function') {
+            if (!this.props.authClient) {
+                throw new Error(getMissingAuthClientError('Admin'));
+            }
+
             this.props.authClient(AUTH_GET_PERMISSIONS).then(permissions => {
                 const resources = children(permissions)
                     .filter(node => node)

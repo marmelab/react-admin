@@ -1,3 +1,4 @@
+/* eslint react/jsx-key: off */
 import React from 'react';
 import {
     Create,
@@ -29,13 +30,8 @@ export UserIcon from 'material-ui/svg-icons/social/people';
 const UserFilter = ({ ...props }) =>
     <Filter {...props}>
         {permissions => [
-            <TextInput
-                key="user.list.search"
-                label="user.list.search"
-                source="q"
-                alwaysOn
-            />,
-            <TextInput key="name" source="name" />,
+            <TextInput label="user.list.search" source="q" alwaysOn />,
+            <TextInput source="name" />,
             permissions === 'admin' ? <TextInput source="role" /> : null,
         ]}
     </Filter>;
