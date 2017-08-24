@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import resources from './resource';
+import resources, { getResources as innerGetResources } from './resource';
 import loading from './loading';
 import notification from './notification';
 import record from './record';
@@ -16,3 +16,5 @@ export default combineReducers({
     saving,
     ui,
 });
+
+export const getResources = state => innerGetResources(state.resources);

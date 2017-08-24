@@ -35,3 +35,6 @@ export default (previousState = initialState, action) => {
 
     return newState;
 };
+
+export const getResources = state =>
+    Object.keys(state).map(key => state[key].props);
