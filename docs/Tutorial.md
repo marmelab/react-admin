@@ -80,7 +80,7 @@ export const PostList = (props) => (
 );
 ```
 
-The main component of the post list is a `<List>` component, responsible for grabbing the information from the API, displaying the page title, and handling pagination. This list then delegates the display of the actual list of posts to a `<Datagrid>`, responsible for displaying a table with one row for each post. The datagrid uses it child components (here, a list of `<TextField>`) to determine the columns to render. Each Field component maps a different field in the API response, specified by the `source` prop.
+The main component of the post list is a `<List>` component, responsible for grabbing the information from the API, displaying the page title, and handling pagination. This list then delegates the display of the actual list of posts to a `<Datagrid>`, responsible for displaying a table with one row for each post. The datagrid uses its child components (here, a list of `<TextField>`) to determine the columns to render. Each Field component maps a different field in the API response, specified by the `source` prop.
 
 That's enough to display the post list:
 
@@ -222,7 +222,8 @@ When displaying the posts list, the app now fetches related user records, and di
 
 **Tip**: Reference components always pass the data they fetch to a child component, which is responsible for displaying the data.
 
-## Creation and Edition
+## Creation and Editing
+
 
 An admin interface is about displaying remote data, but also about editing and creating. Admin-on-REST provides `<Create>` and `<Edit>` components for that purpose. Add them to the `posts` script:
 
@@ -275,7 +276,7 @@ export const PostCreate = (props) => (
 );
 ```
 
-Notice the additional `<EditButton>` field in the `<PostList>` children: that's what gives access to the post edition page. Also, the `<Edit>` component uses a custom `<PostTitle>` component as title, which shows the way to customize the title for a given page.
+Notice the additional `<EditButton>` field in the `<PostList>` children: that's what gives access to the post editing page. Also, the `<Edit>` component uses a custom `<PostTitle>` component as title, which shows the way to customize the title for a given page.
 
 If you've understood the `<List>` component, the `<Edit>` and `<Create>` components will be no surprise. They are responsible for fetching the record, and displaying the page title. They pass the record down to the `<SimpleForm>` component, which is responsible for the form layout, default values, and validation. Just like `<Datagrid>`, `<SimpleForm>` uses its children to determine the form inputs to display. It expects *input components* as children. `<DisabledInput>`, `<TextInput>`, `<LongTextInput>`, and `<ReferenceInput>` are such inputs.
 
@@ -306,7 +307,7 @@ The form rendered in the create and edit pages is already functional. It issues 
 
 ![post edition form](./img/post-edition.png)
 
-**Note**: JSONPlaceholder is a read-only API; although it seems to accept `POST` and `PUT` requests, it doesn't take into account the creations and editions - that's why, in this particular case, you will see errors after creation, and you won't see your editions after you save them. It's just an artifact of JSONPlaceholder.
+**Note**: JSONPlaceholder is a read-only API; although it seems to accept `POST` and `PUT` requests, it doesn't take into account the creations and edits - that's why, in this particular case, you will see errors after creation, and you won't see your edits after you save them. It's just an artifact of JSONPlaceholder.
 
 ## Deletion
 
@@ -324,7 +325,7 @@ const App = () => (
 );
 ```
 
-In the edition view, a new "delete" button appears. And you can also use the `<DeleteButton>` as a field in the list.
+In the edit view, a new "delete" button appears. And you can also use the `<DeleteButton>` as a field in the list.
 
 ![post deletion view](./img/post-deletion.png)
 
@@ -544,7 +545,7 @@ This works exactly the way you expect. The lesson here is that admin-on-rest tak
 
 Here is the elephant in the room of this tutorial. In real world projects, the REST dialect of your API won't match the JSONPLaceholder dialect. Writing a REST client is probably the first thing you'll have to do to make admin-on-rest work. Depending on your API, this can require a few hours of additional work.
 
-Admin-on-rest delegates every REST calls to a REST client function. This function must simply return a promise for the result. This gives extreme freedom to map any API dialect, add authentication headers, use endpoints from several domains, etc.
+Admin-on-rest delegates every REST call to a REST client function. This function must simply return a promise for the result. This gives extreme freedom to map any API dialect, add authentication headers, use endpoints from several domains, etc.
 
 For instance, let's imagine you have to use the my.api.url API, which expects the following parameters:
 
@@ -690,6 +691,6 @@ const App = () => (
 
 ## Conclusion
 
-Admin-on-rest was build with customization in mind. You can replace any admin-on-rest component with a component of your own, for instance to display a custom list layout, or a different edition form for a given resource.
+Admin-on-rest was built with customization in mind. You can replace any admin-on-rest component with a component of your own, for instance to display a custom list layout, or a different edit form for a given resource.
 
 Now that you've completed the tutorial, continue reading the [admin-on-rest documentation](http://marmelab.com/admin-on-rest/), and read the [Material UI components documentation](http://www.material-ui.com/#/).

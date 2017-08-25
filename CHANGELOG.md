@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.2.2
+
+* Add yarn support ([dervos](https://github.com/dervos))
+* Fix login form lock and loader ([teldosas](https://github.com/teldosas))
+* Fix custom headers documentation ([fzaninotto](https://github.com/fzaninotto))
+* Add support for numeric value in NumberInput step prop ([fzaninotto](https://github.com/fzaninotto))
+* Add documentation for admin history prop ([fzaninotto](https://github.com/fzaninotto))
+* Fix doc for ISO date input ([leesei](https://github.com/leesei))
+* Fix wrong use of the 'Edition' word across the documentation ([cornhundred](https://github.com/cornhundred))
+* Fix typo in tutorial ([cornhundred](https://github.com/cornhundred))
+* Fix typo in RestClients documentation ([arlair](https://github.com/arlair))
+* Add farsi translation package ([hamidfzm](https://github.com/hamidfzm))
+* Fix translation warning on `TabbedShowLayout`'s tab names ([freeznet](https://github.com/freeznet))
+* Fix typo in Authentication documentation ([RWOverdijk](https://github.com/RWOverdijk))
+* Fix typo in CreateEdit documentation ([RWOverdijk](https://github.com/RWOverdijk))
+* Add Turkish translation package ([ismailbaskin](https://github.com/ismailbaskin))
+
 ## v1.2.1
 
 * Fix multi select in `FileInput` ([doananh234](https://github.com/doananh234))

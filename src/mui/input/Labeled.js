@@ -25,7 +25,7 @@ const defaultLabelStyle = {
  */
 class Labeled extends Component {
     render() {
-        const { input, isRequired, label, resource, record, onChange, basePath, children, source, disabled = true, labelStyle = defaultLabelStyle } = this.props;
+        const { input, isRequired, meta, label, resource, record, onChange, basePath, children, source, disabled = true, labelStyle = defaultLabelStyle } = this.props;
         if (!label && !source) {
             throw new Error(`Cannot create label for component <${children && children.type && children.type.name}>: You must set either the label or source props. You can also disable automated label insertion by setting 'addLabel: false' in the component default props`);
         }
@@ -37,9 +37,10 @@ class Labeled extends Component {
                 disabled={disabled}
                 underlineShow={false}
                 style={labelStyle}
+                errorText={meta && meta.touched && meta.error}
             >
                 {children && typeof children.type !== 'string' ?
-                    React.cloneElement(children, { input, record, resource, onChange, basePath }) :
+                    React.cloneElement(children, { input, meta, record, resource, onChange, basePath }) :
                     children
                 }
             </TextField>
@@ -54,6 +55,7 @@ Labeled.propTypes = {
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
+    meta: PropTypes.object,
     onChange: PropTypes.func,
     record: PropTypes.object,
     resource: PropTypes.string,

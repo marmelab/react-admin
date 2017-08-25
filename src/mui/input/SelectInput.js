@@ -73,6 +73,12 @@ export class SelectInput extends Component {
         value: this.props.input.value,
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.input.value !== this.props.input.value) {
+            this.setState({ value: nextProps.input.value });
+        }
+    }
+
     handleChange = (event, index, value) => {
         this.props.input.onChange(value);
         this.setState({ value });
@@ -105,7 +111,6 @@ export class SelectInput extends Component {
             allowEmpty,
             choices,
             elStyle,
-            input,
             isRequired,
             label,
             meta: { touched, error },
