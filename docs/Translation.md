@@ -42,6 +42,7 @@ You can find translation packages for the following languages:
 - Chinese (`cn`): [downup2u/aor-language-chinese](https://github.com/downup2u/aor-language-chinese)
 - Chinese (Traditional) (`cht`): [leesei/aor-language-chinese-traditional](https://github.com/leesei/aor-language-chinese-traditional)
 - Czech (`cs`): [magikMaker/aor-language-czech](https://github.com/magikMaker/aor-language-czech)
+- Danish (`da`): [SSA111/aor-language-danish](https://github.com/SSA111/aor-language-danish)
 - Dutch (`nl`): [pimschaaf/aor-language-dutch](https://github.com/pimschaaf/aor-language-dutch)
 - Farsi (`fa`): [hamidfzm/aor-language-farsi](https://github.com/hamidfzm/aor-language-farsi)
 - French (`fr`): [marmelab/aor-language-french](https://github.com/marmelab/aor-language-french)
@@ -50,6 +51,7 @@ You can find translation packages for the following languages:
 - Hungarian (`hu`): [s33m4nn/aor-language-hungarian](https://github.com/s33m4nn/aor-language-hungarian)
 - Italian (`it`): [stefsava/aor-language-italian](https://github.com/stefsava/aor-language-italian)
 - Japanese (`ja`): [kuma-guy/aor-language-japanese](https://github.com/kuma-guy/aor-language-japanese)
+- Norwegian (`nb`): [zeusbaba/aor-language-norwegian](https://github.com/zeusbaba/aor-language-norwegian)
 - Polish (`pl`): [KamilDzierbicki/aor-language-polish](https://github.com/KamilDzierbicki/aor-language-polish)
 - Portuguese (`pt`): [movibe/aor-language-portugues](https://github.com/movibe/aor-language-portugues)
 - Russian (`ru`): [cytomich/aor-language-russian](https://github.com/cytomich/aor-language-russian)
@@ -256,7 +258,7 @@ class MyHelloButton {
     }
 }
 MyHelloButton.contextTypes = {
-    translate: PropTypes.function,
+    translate: PropTypes.func,
 };
 
 // in src/App.js
