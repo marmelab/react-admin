@@ -63,7 +63,7 @@ Then you can display the author first name as follows:
 
 ## `<AddressField>`
 
-Displays an address location as a clickable link. On a mobile phone, it will open the map application (plan for IOS, google maps, waze or whatever for Android), center on the location. On Desktop it will open a google maps link in a new tab (plan for Mac OS users).
+Displays an address location as a clickable link. On a mobile phone, it will open the map application (plan for IOS, google maps, waze or whatever for Android), centered on the location. On Desktop it will open a google maps link in a new tab (plan for Mac OS users).
 ```jsx
 import { AddressField } from 'admin-on-rest'
 
