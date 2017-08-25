@@ -84,6 +84,17 @@ export class SelectInput extends Component {
         this.setState({ value });
     }
 
+    addAllowEmpty = (choices) => {
+        if (this.props.allowEmpty) {
+            return [
+                <MenuItem value={null} primaryText="" />,
+                ...choices,
+            ];
+        }
+
+        return choices;
+    }
+
     renderMenuItem = (choice) => {
         const {
             optionText,
@@ -128,10 +139,7 @@ export class SelectInput extends Component {
                 errorText={touched && error}
                 {...options}
             >
-                {allowEmpty &&
-                    <MenuItem value={null} primaryText="" />
-                }
-                {choices.map(this.renderMenuItem)}
+                {this.addAllowEmpty(choices.map(this.renderMenuItem))}
             </SelectField>
         );
     }
