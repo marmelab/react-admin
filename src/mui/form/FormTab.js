@@ -1,19 +1,11 @@
 import React from 'react';
-import FormField from './FormField';
+import FormInput from './FormInput';
 
 const FormTab = ({ label, icon, children, ...rest }) =>
     <span>
         {React.Children.map(
             children,
-            input =>
-                input &&
-                <div
-                    key={input.props.source}
-                    style={input.props.style}
-                    className={`aor-input aor-input-${input.props.source}`}
-                >
-                    <FormField input={input} {...rest} />
-                </div>
+            input => input && <FormInput input={input} {...rest} />
         )}
     </span>;
 

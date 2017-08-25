@@ -4,7 +4,7 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import getDefaultValues from './getDefaultValues';
-import FormField from './FormField';
+import FormInput from './FormInput';
 import Toolbar from './Toolbar';
 
 const formStyle = { padding: '0 1em 1em 1em' };
@@ -15,34 +15,25 @@ export class SimpleForm extends Component {
 
     render() {
         const {
+            basePath,
             children,
             invalid,
             record,
             resource,
-            basePath,
             submitOnEnter,
             toolbar,
         } = this.props;
+
         return (
             <form className="simple-form">
                 <div style={formStyle}>
-                    {Children.map(
-                        children,
-                        input =>
-                            input &&
-                            <div
-                                key={input.props.source}
-                                className={`aor-input aor-input-${input.props
-                                    .source}`}
-                                style={input.props.style}
-                            >
-                                <FormField
-                                    input={input}
-                                    resource={resource}
-                                    record={record}
-                                    basePath={basePath}
-                                />
-                            </div>
+                    {Children.map(children, input =>
+                        <FormInput
+                            basePath={basePath}
+                            input={input}
+                            record={record}
+                            resource={resource}
+                        />
                     )}
                 </div>
                 {toolbar &&
