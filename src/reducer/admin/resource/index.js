@@ -4,15 +4,20 @@ import data from './data';
 import list from './list';
 
 const initialState = {};
-export default (previousState = initialState, action) => {
+export default (
+    previousState = initialState,
+    action,
+    dataReducer = data,
+    listReducer = list
+) => {
     if (action.type === DECLARE_RESOURCES) {
         const newState = action.payload.reduce(
             (acc, resource) => ({
                 ...acc,
                 [resource.name]: {
                     props: resource,
-                    data: data(resource.name)(undefined, action),
-                    list: list(resource.name)(undefined, action),
+                    data: dataReducer(resource.name)(undefined, action),
+                    list: listReducer(resource.name)(undefined, action),
                 },
             }),
             {}
@@ -20,15 +25,32 @@ export default (previousState = initialState, action) => {
         return newState;
     }
 
+    if (!action.meta || !action.meta.resource) {
+        return previousState;
+    }
+
     const resources = Object.keys(previousState);
     const newState = resources.reduce(
         (acc, resource) => ({
             ...acc,
-            [resource]: {
-                props: previousState[resource].props,
-                data: data(resource)(previousState[resource].data, action),
-                list: list(resource)(previousState[resource].list, action),
-            },
+            [resource]:
+                action.meta.resource === resource
+                    ? {
+                          props: previousState[resource].props,
+                          data: dataReducer(resource)(
+                              previousState[resource].data,
+                              action
+                          ),
+                          list: listReducer(resource)(
+                              previousState[resource].list,
+                              action
+                          ),
+                      }
+                    : {
+                          props: previousState[resource].props,
+                          data: previousState[resource].data,
+                          list: previousState[resource].list,
+                      },
         }),
         {}
     );
