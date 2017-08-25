@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
 
-const AddressField = ({ source, record = {}, elStyle }) => {
+export const AddressField = ({ source, record = {}, elStyle }) => {
     const address = get(record, source);
     if (navigator.userAgent.match(/iPhone|iPad|iPod|Mac/i)) {
       return (
