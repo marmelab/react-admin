@@ -270,8 +270,8 @@ Type                 | Params format
 `GET_LIST`           | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`
 `GET_ONE`            | `{ id: {mixed} }`
 `CREATE`             | `{ data: {Object} }`
-`UPDATE`             | `{ id: {mixed}, data: {Object} }`
-`DELETE`             | `{ id: {mixed} }`
+`UPDATE`             | `{ id: {mixed}, data: {Object}, previousData: {Object} }`
+`DELETE`             | `{ id: {mixed}, previousData: {Object} }`
 `GET_MANY`           | `{ ids: {mixed[]} }`
 `GET_MANY_REFERENCE` | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`
 
@@ -284,9 +284,16 @@ restClient(GET_LIST, 'posts', {
     filter: { author_id: 12 },
 });
 restClient(GET_ONE, 'posts', { id: 123 });
-restClient(CREATE, 'posts', { title: "hello, world" });
-restClient(UPDATE, 'posts', { id: 123, { title: "hello, world!" } });
-restClient(DELETE, 'posts', { id: 123 });
+restClient(CREATE, 'posts', { data: { title: "hello, world" } });
+restClient(UPDATE, 'posts', {
+    id: 123,
+    data: { title: "hello, world!" },
+    previousData: { title: "previous title" }
+});
+restClient(DELETE, 'posts', {
+    id: 123,
+    previousData: { title: "hello, world" }
+});
 restClient(GET_MANY, 'posts', { ids: [123, 124, 125] });
 restClient(GET_MANY_REFERENCE, 'comments', {
     target: 'post_id',
@@ -337,19 +344,26 @@ restClient(GET_ONE, 'posts', { id: 123 })
 //     data: { id: 123, title: "hello, world" }
 // }
 
-restClient(CREATE, 'posts', { title: "hello, world" })
+restClient(CREATE, 'posts', { data: { title: "hello, world" } })
 .then(response => console.log(response));
 // {
 //     data: { id: 450, title: "hello, world" }
 // }
 
-restClient(UPDATE, 'posts', { id: 123, { title: "hello, world!" } })
+restClient(UPDATE, 'posts', {
+    id: 123,
+    data: { title: "hello, world!" },
+    previousData: { title: "previous title" }
+})
 .then(response => console.log(response));
 // {
 //     data: { id: 123, title: "hello, world!" }
 // }
 
-restClient(DELETE, 'posts', { id: 123 })
+restClient(DELETE, 'posts', {
+    id: 123,
+    previousData: { title: "hello, world!" }
+})
 .then(response => console.log(response));
 // {
 //     data: { id: 123, title: "hello, world" }
