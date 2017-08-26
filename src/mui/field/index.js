@@ -1,3 +1,4 @@
+export AddressField from './AddressField';
 export BooleanField from './BooleanField';
 export ChipField from './ChipField';
 export DateField from './DateField';
