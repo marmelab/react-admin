@@ -70,9 +70,9 @@ export const CRUD_DELETE_LOADING = 'AOR/CRUD_DELETE_LOADING';
 export const CRUD_DELETE_FAILURE = 'AOR/CRUD_DELETE_FAILURE';
 export const CRUD_DELETE_SUCCESS = 'AOR/CRUD_DELETE_SUCCESS';
 
-export const crudDelete = (resource, id, basePath, redirectTo = 'list') => ({
+export const crudDelete = (resource, id, previousData, basePath, redirectTo = 'list') => ({
     type: CRUD_DELETE,
-    payload: { id, basePath, redirectTo },
+    payload: { id, previousData, basePath, redirectTo },
     meta: { resource, fetch: DELETE, cancelPrevious: false },
 });
 

@@ -58,6 +58,7 @@ class Delete extends Component {
         this.props.crudDelete(
             this.props.resource,
             this.props.id,
+            this.props.data,
             this.getBasePath()
         );
     }
