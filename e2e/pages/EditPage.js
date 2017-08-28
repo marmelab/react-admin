@@ -4,6 +4,8 @@ export default url => driver => ({
     elements: {
         appLoader: By.css('.app-loader'),
         input: name => By.css(`.edit-page input[name='${name}']`),
+        inputs: By.css(`.aor-input`),
+        tabs: By.css(`.form-tab`),
         submitButton: By.css(".edit-page button[type='submit']"),
         tab: index => By.css(`button.form-tab:nth-of-type(${index})`),
         title: By.css('.title'),
@@ -40,6 +42,31 @@ export default url => driver => ({
     getInputValue(name) {
         const input = driver.findElement(this.elements.input(name));
         return input.getAttribute('value');
+    },
+
+    getFields() {
+        return driver
+            .findElements(this.elements.inputs)
+            .then(fields =>
+                Promise.all(
+                    fields.map(field =>
+                        field
+                            .getAttribute('class')
+                            .then(classes =>
+                                classes
+                                    .replace('aor-input-', '')
+                                    .replace('aor-input', '')
+                                    .trim()
+                            )
+                    )
+                )
+            );
+    },
+
+    getTabs() {
+        return driver
+            .findElements(this.elements.tabs)
+            .then(tabs => Promise.all(tabs.map(tab => tab.getText())));
     },
 
     setInputValue(name, value, clearPreviousValue = true) {

@@ -84,6 +84,7 @@ title: "Reference"
 * [`<SimpleList>`](./List.html#the-simplelist-component)
 * [`<SimpleShowLayout>`](./Show.html#the-simpleshowlayout-component)
 * [`<SingleFieldList>`](./List.html#the-singlefieldlist-component)
+* [`<SwitchPermissions>`](./Authorization.html#switchpermissions)
 * `<Tab>`
 * [`<TabbedForm>`](./CreateEdit.html#the-tabbedform-component)
 * `<TabbedShowLayout>`
@@ -93,5 +94,6 @@ title: "Reference"
 * `<Toolbar>`
 * [`<UrlField>`](./Fields.html#urlfield)
 * `<ViewTitle>`
+* [`<WithPermission>`](./Authorization.html#withpermission)
 
 </div>

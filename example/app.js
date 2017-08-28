@@ -1,3 +1,4 @@
+/* eslint react/jsx-key: off */
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
@@ -15,6 +16,7 @@ import {
     CommentCreate,
     CommentIcon,
 } from './comments';
+import { UserList, UserEdit, UserCreate, UserIcon, UserShow } from './users';
 
 import data from './data';
 import * as customMessages from './i18n';
@@ -43,24 +45,37 @@ render(
         locale="en"
         messages={messages}
     >
-        <Resource
-            name="posts"
-            list={PostList}
-            create={PostCreate}
-            edit={PostEdit}
-            show={PostShow}
-            remove={Delete}
-            icon={PostIcon}
-        />
-        <Resource
-            name="comments"
-            list={CommentList}
-            create={CommentCreate}
-            edit={CommentEdit}
-            remove={Delete}
-            icon={CommentIcon}
-        />
-        <Resource name="tags" />
+        {permissions => [
+            <Resource
+                name="posts"
+                list={PostList}
+                create={PostCreate}
+                edit={PostEdit}
+                show={PostShow}
+                remove={Delete}
+                icon={PostIcon}
+            />,
+            <Resource
+                name="comments"
+                list={CommentList}
+                create={CommentCreate}
+                edit={CommentEdit}
+                remove={Delete}
+                icon={CommentIcon}
+            />,
+            permissions
+                ? <Resource
+                      name="users"
+                      list={UserList}
+                      create={UserCreate}
+                      edit={UserEdit}
+                      remove={Delete}
+                      icon={UserIcon}
+                      show={UserShow}
+                  />
+                : null,
+            <Resource name="tags" />,
+        ]}
     </Admin>,
     document.getElementById('root')
 );

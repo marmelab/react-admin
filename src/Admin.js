@@ -7,8 +7,10 @@ import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
+import withContext from 'recompose/withContext';
 
 import { USER_LOGOUT } from './actions/authActions';
+
 import createAppReducer from './reducer';
 import { crudSaga } from './sideEffect/saga';
 import DefaultLayout from './mui/layout/Layout';
@@ -28,7 +30,7 @@ const Admin = ({
     history,
     locale,
     messages = {},
-    menu,
+    menu = Menu,
     catchAll,
     restClient,
     theme,
@@ -37,8 +39,7 @@ const Admin = ({
     logoutButton,
     initialState,
 }) => {
-    const resources = React.Children.map(children, ({ props }) => props) || [];
-    const appReducer = createAppReducer(resources, customReducers, locale);
+    const appReducer = createAppReducer(customReducers, locale);
     const resettableAppReducer = (state, action) =>
         appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
     const saga = function* rootSaga() {
@@ -92,7 +93,11 @@ const Admin = ({
                                             if (route.props.component) {
                                                 return createElement(
                                                     route.props.component,
-                                                    { location, title, theme }
+                                                    {
+                                                        location,
+                                                        title,
+                                                        theme,
+                                                    }
                                                 );
                                             }
                                         }}
@@ -102,17 +107,14 @@ const Admin = ({
                                 path="/"
                                 render={() =>
                                     createElement(appLayout || DefaultLayout, {
+                                        children,
                                         dashboard,
                                         customRoutes: customRoutes.filter(
                                             route => !route.props.noLayout
                                         ),
-                                        menu: createElement(menu || Menu, {
-                                            logout,
-                                            resources,
-                                            hasDashboard: !!dashboard,
-                                        }),
+                                        logout,
+                                        menu,
                                         catchAll,
-                                        resources,
                                         title,
                                         theme,
                                     })}
@@ -133,7 +135,7 @@ const componentPropType = PropTypes.oneOfType([
 Admin.propTypes = {
     appLayout: componentPropType,
     authClient: PropTypes.func,
-    children: PropTypes.node,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     catchAll: componentPropType,
     customSagas: PropTypes.array,
     customReducers: PropTypes.object,
@@ -151,4 +153,9 @@ Admin.propTypes = {
     initialState: PropTypes.object,
 };
 
-export default Admin;
+export default withContext(
+    {
+        authClient: PropTypes.func,
+    },
+    ({ authClient }) => ({ authClient })
+)(Admin);
