@@ -37,16 +37,20 @@ const Toolbar = ({
                               raised={false}
                               submitOnEnter={submitOnEnter}
                           />
-                        : Children.map(children, button =>
-                              React.cloneElement(button, {
-                                  invalid,
-                                  handleSubmitWithRedirect,
-                                  raised: false,
-                                  submitOnEnter: valueOrDefault(
-                                      button.props.submitOnEnter,
-                                      submitOnEnter
-                                  ),
-                              })
+                        : Children.map(
+                              children,
+                              button =>
+                                  button
+                                      ? React.cloneElement(button, {
+                                            invalid,
+                                            handleSubmitWithRedirect,
+                                            raised: false,
+                                            submitOnEnter: valueOrDefault(
+                                                button.props.submitOnEnter,
+                                                submitOnEnter
+                                            ),
+                                        })
+                                      : null
                           )}
                 </ToolbarGroup>
             </MuiToolbar>
@@ -62,15 +66,19 @@ const Toolbar = ({
                               invalid={invalid}
                               submitOnEnter={submitOnEnter}
                           />
-                        : Children.map(children, button =>
-                              React.cloneElement(button, {
-                                  handleSubmitWithRedirect,
-                                  invalid,
-                                  submitOnEnter: valueOrDefault(
-                                      button.props.submitOnEnter,
-                                      submitOnEnter
-                                  ),
-                              })
+                        : Children.map(
+                              children,
+                              button =>
+                                  button
+                                      ? React.cloneElement(button, {
+                                            handleSubmitWithRedirect,
+                                            invalid,
+                                            submitOnEnter: valueOrDefault(
+                                                button.props.submitOnEnter,
+                                                submitOnEnter
+                                            ),
+                                        })
+                                      : null
                           )}
                 </ToolbarGroup>
             </MuiToolbar>

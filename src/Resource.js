@@ -22,7 +22,6 @@ Resource.propTypes = {
     remove: componentPropType,
     icon: componentPropType,
     options: PropTypes.object,
-    checkCredentials: PropTypes.func,
 };
 
 Resource.defaultProps = {

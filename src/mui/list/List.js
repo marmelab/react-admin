@@ -24,6 +24,7 @@ import { changeListParams as changeListParamsAction } from '../../actions/listAc
 import translate from '../../i18n/translate';
 import removeKey from '../../util/removeKey';
 import defaultTheme from '../defaultTheme';
+import withPermissionsFilteredChildren from '../../auth/withPermissionsFilteredChildren';
 
 const styles = {
     noResults: { padding: 20 },
@@ -75,10 +76,7 @@ const styles = {
  *     );
  */
 export class List extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+    state = {};
 
     componentDidMount() {
         this.updateData();
@@ -196,6 +194,7 @@ export class List extends Component {
 
     render() {
         const {
+            children,
             filters,
             pagination = <DefaultPagination />,
             actions = <DefaultActions />,
@@ -205,7 +204,6 @@ export class List extends Component {
             data,
             ids,
             total,
-            children,
             isLoading,
             translate,
             theme,
@@ -298,8 +296,9 @@ List.propTypes = {
         field: PropTypes.string,
         order: PropTypes.string,
     }),
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node,
     // the props managed by admin-on-rest
+    authClient: PropTypes.func,
     changeListParams: PropTypes.func.isRequired,
     crudGetList: PropTypes.func.isRequired,
     data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -359,7 +358,8 @@ const enhance = compose(
         changeListParams: changeListParamsAction,
         push: pushAction,
     }),
-    translate
+    translate,
+    withPermissionsFilteredChildren
 );
 
 export default enhance(List);

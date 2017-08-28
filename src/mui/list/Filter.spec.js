@@ -2,7 +2,7 @@ import assert from 'assert';
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Filter from './Filter';
+import { Filter } from './Filter';
 
 describe('<Filter />', () => {
     describe('With form context', () => {

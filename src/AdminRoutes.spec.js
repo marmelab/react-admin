@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { render } from 'enzyme';
 import assert from 'assert';
 
-import AdminRoutes from './AdminRoutes';
+import { AdminRoutes } from './AdminRoutes';
 
 describe('<AdminRoutes>', () => {
     const Dashboard = () => <div>Dashboard</div>;

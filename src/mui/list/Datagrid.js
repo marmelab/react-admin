@@ -104,22 +104,29 @@ class Datagrid extends Component {
                     {...headerOptions}
                 >
                     <TableRow style={muiTheme.tableRow}>
-                        {React.Children.map(children, (field, index) =>
-                            <DatagridHeaderCell
-                                key={field.props.source || index}
-                                field={field}
-                                defaultStyle={
-                                    index === 0
-                                        ? styles.header['th:first-child']
-                                        : styles.header.th
-                                }
-                                currentSort={currentSort}
-                                isSorting={
-                                    field.props.source === currentSort.field
-                                }
-                                updateSort={this.updateSort}
-                                resource={resource}
-                            />
+                        {React.Children.map(
+                            children,
+                            (field, index) =>
+                                field
+                                    ? <DatagridHeaderCell
+                                          key={field.props.source || index}
+                                          field={field}
+                                          defaultStyle={
+                                              index === 0
+                                                  ? styles.header[
+                                                        'th:first-child'
+                                                    ]
+                                                  : styles.header.th
+                                          }
+                                          currentSort={currentSort}
+                                          isSorting={
+                                              field.props.source ===
+                                              currentSort.field
+                                          }
+                                          updateSort={this.updateSort}
+                                          resource={resource}
+                                      />
+                                    : null
                         )}
                     </TableRow>
                 </TableHeader>
