@@ -99,7 +99,7 @@ export class Pagination extends Component {
 
     render() {
         const { page, perPage, total, translate, width } = this.props;
-        if (total === 0) return null;
+        if (total === 0 || isNaN(total)) return null;
         const offsetEnd = Math.min(page * perPage, total);
         const offsetBegin = Math.min((page - 1) * perPage + 1, offsetEnd);
         const nbPages = this.getNbPages();
