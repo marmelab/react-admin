@@ -5,6 +5,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions/dataActions';
 import { getIds, getReferences, nameRelatedTo } from '../../reducer/references/oneToMany';
 import { SORT_ASC, SORT_DESC } from '../../reducer/resource/list/queryReducer';
+import get from 'lodash.get';
 
 /**
  * Render related records to the current one.
@@ -76,11 +77,11 @@ export class ReferenceManyField extends Component {
         );
     }
 
-    fetchReferences({ reference, record, resource, target, perPage, filter } = this.props) {
+    fetchReferences({ reference, record, resource, source, target, perPage, filter } = this.props) {
         const { crudGetManyReference } = this.props;
         const pagination = { page: 1, perPage };
-        const relatedTo = nameRelatedTo(reference, record.id, resource, target);
-        crudGetManyReference(reference, target, record.id, relatedTo, pagination, this.state.sort, filter);
+        const relatedTo = nameRelatedTo(reference, get(record, source), resource, target);
+        crudGetManyReference(reference, target, get(record, source), relatedTo, pagination, this.state.sort, filter);
     }
 
     render() {
@@ -134,7 +135,7 @@ ReferenceManyField.defaultProps = {
 };
 
 function mapStateToProps(state, props) {
-    const relatedTo = nameRelatedTo(props.reference, props.record.id, props.resource, props.target);
+    const relatedTo = nameRelatedTo(props.reference, get(props.record, props.source), props.resource, props.target);
     return {
         data: getReferences(state, props.reference, relatedTo),
         ids: getIds(state, relatedTo),
