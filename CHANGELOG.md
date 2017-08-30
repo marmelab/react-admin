@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.2.3
+
+* Add Epilogue REST client ([dunghuynh](https://github.com/dunghuynh))
+* Fix `SelectInput` selection via keyboard ([djhi](https://github.com/djhi))
+* Fix `fetchJson` to allow custom content type ([sGy1980de](https://github.com/sGy1980de))
+* Fix `TabbedForm` errors being hidden for inactive tabs ([djhi](https://github.com/djhi))
+* Fix `FileInput` handling when allowing only a single file ([djhi](https://github.com/djhi))
+* Fix numeric validators for sero value ([djhi](https://github.com/djhi))
+* Fix colors used for pagination chevrons ([djhi](https://github.com/djhi))
+* Fix `SelectInput` Bidirectional binding ([djhi](https://github.com/djhi))
+* Fix `FileInput` does not display error on validation error ([djhi](https://github.com/djhi))
+* Add Danish translation ([SSA111](https://github.com/SSA111))
+* Fix typo in tutorial ([melaniedavila](https://github.com/melaniedavila))
+* Add Norwegian translation ([zeusbaba](https://github.com/zeusbaba))
+* Fix checkboxes getting reordered when used with `ReferenceArrayInput` ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo in Translation documentation ([dimitrovs](https://github.com/dimitrovs))
+
 ## v1.2.2
 
 * Add yarn support ([dervos](https://github.com/dervos))
