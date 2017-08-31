@@ -87,7 +87,7 @@ export class SelectInput extends Component {
     addAllowEmpty = (choices) => {
         if (this.props.allowEmpty) {
             return [
-                <MenuItem value={null} primaryText="" />,
+                <MenuItem value={null} key="null" primaryText="" />,
                 ...choices,
             ];
         }
