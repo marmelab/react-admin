@@ -50,7 +50,7 @@ class Sidebar extends PureComponent {
                 }
                 medium={
                     <Paper style={open ? styles.sidebarOpen : styles.sidebarClosed}>
-                        {children}
+												{React.cloneElement(children, { onMenuTap: () => null })}
                     </Paper>
                 }
             />
