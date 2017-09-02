@@ -121,14 +121,17 @@ If you want to add or remove menu items, for instance to link to non-resources p
 import React from 'react';
 import { MenuItemLink } from 'admin-on-rest';
 
-export default ({ resources, onMenuTap, logout }) => (
-    <div>
-        <MenuItemLink to="/posts" primaryText="Posts" onTouchTap={onMenuTap} />
-        <MenuItemLink to="/comments" primaryText="Comments" onTouchTap={onMenuTap} />
-        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onTouchTap={onMenuTap} />
-        {logout}
-    </div>
-);
+export default ({ resources, onMenuTap, logout }) => {
+    onMenuTap = onMenuTap || (() => null);
+    return (
+        <div>
+            <MenuItemLink to="/posts" primaryText="Posts" onTouchTap={onMenuTap} />
+            <MenuItemLink to="/comments" primaryText="Comments" onTouchTap={onMenuTap} />
+            <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onTouchTap={onMenuTap} />
+            {logout}
+        </div>
+    );
+};
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
