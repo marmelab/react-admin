@@ -21,9 +21,9 @@ const CrudRoute = ({ resource, list, create, edit, show, remove, options }) => {
         <Switch>
             {list && <Route exact path={`/${resource}`} render={RestrictedPage(list, 'list')} />}
             {create &&  <Route exact path={`/${resource}/create`} render={RestrictedPage(create, 'create')} />}
-            {edit && <Route exact path={`/${resource}/:id`} render={RestrictedPage(edit, 'edit')} />}
-            {!edit && show && <Route exact path={`/${resource}/:id`} render={RestrictedPage(show, 'show')} />}
-            {show && <Route exact path={`/${resource}/:id/show`} render={RestrictedPage(show, 'show')} />}
+            {edit && <Route exact path={`/${resource}/:id/edit`} render={RestrictedPage(edit, 'edit')} />}
+            {show && <Route exact path={`/${resource}/:id`} render={RestrictedPage(show, 'show')} />}
+            {!show && edit && <Route exact path={`/${resource}/:id`} render={RestrictedPage(show, 'show')} />}
             {remove && <Route exact path={`/${resource}/:id/delete`} render={RestrictedPage(remove, 'delete')} />}
         </Switch>
     );

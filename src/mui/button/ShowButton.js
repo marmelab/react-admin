@@ -12,7 +12,7 @@ const ShowButton = ({ basePath = '', label = 'aor.action.show', record = {}, tra
     primary
     label={label && translate(label)}
     icon={<ImageEye />}
-    containerElement={<Link to={`${linkToRecord(basePath, record.id)}/show`} />}
+    containerElement={<Link to={linkToRecord(basePath, record.id)} />}
     style={{ overflow: 'inherit' }}
 />;
 

@@ -23,7 +23,7 @@ export class Show extends Component {
 
     getBasePath() {
         const { location } = this.props;
-        return location.pathname.split('/').slice(0, -2).join('/');
+        return location.pathname.split('/').slice(0, -1).join('/');
     }
 
     updateData(resource = this.props.resource, id = this.props.id) {

@@ -39,7 +39,7 @@ export class Edit extends Component {
 
     getBasePath() {
         const { location } = this.props;
-        return location.pathname.split('/').slice(0, -1).join('/');
+        return location.pathname.split('/').slice(0, -2).join('/');
     }
 
     defaultRedirectRoute() {
