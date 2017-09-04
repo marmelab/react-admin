@@ -131,7 +131,7 @@ export default ({ resources, onMenuTap, logout }) => {
             {logout}
         </div>
     );
-};
+});
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
