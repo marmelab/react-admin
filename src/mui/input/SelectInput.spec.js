@@ -58,6 +58,19 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElement1.prop('primaryText'), '');
     });
 
+    it('should not add a falsy (null or false) element when allowEmpty is false', () => {
+        const wrapper = shallow(<SelectInput
+            {...defaultProps}
+            choices={[
+                { id: 'M', name: 'Male' },
+                { id: 'F', name: 'Female' },
+            ]}
+        />);
+        const SelectFieldElement = wrapper.find('SelectField').at(0);
+        assert.equal(SelectFieldElement.prop('children').includes(false), false);
+        assert.equal(SelectFieldElement.prop('children').includes(null), false);
+    });
+
     it('should use optionValue as value identifier', () => {
         const wrapper = shallow(<SelectInput
             {...defaultProps}

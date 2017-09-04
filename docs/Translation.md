@@ -47,6 +47,7 @@ You can find translation packages for the following languages:
 - Farsi (`fa`): [hamidfzm/aor-language-farsi](https://github.com/hamidfzm/aor-language-farsi)
 - French (`fr`): [marmelab/aor-language-french](https://github.com/marmelab/aor-language-french)
 - German (`de`): [der-On/aor-language-german](https://github.com/der-On/aor-language-german)
+- Greek (`el`): [zifnab87/aor-language-greek](https://github.com/zifnab87/aor-language-greek)
 - Hebrew (`he`): [mstmustisnt/aor-language-hebrew](https://github.com/mstmustisnt/aor-language-hebrew)
 - Hungarian (`hu`): [s33m4nn/aor-language-hungarian](https://github.com/s33m4nn/aor-language-hungarian)
 - Italian (`it`): [stefsava/aor-language-italian](https://github.com/stefsava/aor-language-italian)
