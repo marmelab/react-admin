@@ -1,7 +1,7 @@
 {
   "name": "@sebastien-cleany/admin-on-rest",
   "private": false,
-  "version": "1.2.11",
+  "version": "1.2.12",
   "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
   "files": [
     "*.md",
