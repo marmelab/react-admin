@@ -4,15 +4,7 @@ import { Field } from 'redux-form';
 
 import { initializeForm as initializeFormAction } from '../../actions';
 import Labeled from '../input/Labeled';
-import { required } from './validate';
-
-const isRequired = validate => {
-    if (validate === required) return true;
-    if (Array.isArray(validate)) {
-        return validate.includes(required);
-    }
-    return false;
-};
+import isRequired from './isRequired';
 
 export class FormFieldComponent extends Component {
     componentDidMount() {

@@ -4,3 +4,5 @@ lib
 es6
 example/static
 docs/_site/
+example/package-lock.json
+package-lock.json

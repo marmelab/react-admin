@@ -19,8 +19,12 @@ import {
     LongTextInput,
     NumberField,
     NumberInput,
+    ReferenceInput,
+    AutocompleteInput,
     ReferenceArrayField,
     ReferenceManyField,
+    EmbeddedArrayInput,
+    EmbeddedArrayField,
     ReferenceArrayInput,
     Responsive,
     RichTextField,
@@ -241,6 +245,39 @@ export const PostEdit = ({ ...props }) =>
                     </Datagrid>
                 </ReferenceManyField>
             </FormTab>
+            <FormTab label="post.form.links">
+                <EmbeddedArrayInput source="links">
+                    <LongTextInput source="url" />
+                    <LongTextInput source="context" />
+                    <EmbeddedArrayInput source="metadata">
+                        <TextInput source="name" />
+                        <TextInput source="value" />
+                    </EmbeddedArrayInput>
+                    <ReferenceInput
+                        source="linked_post_id"
+                        reference="posts"
+                        allowEmpty
+                    >
+                        <AutocompleteInput
+                            optionText="title"
+                            optionValue="id"
+                        />
+                    </ReferenceInput>
+                    <ReferenceArrayInput
+                        source="tags"
+                        reference="tags"
+                        allowEmpty
+                    >
+                        <SelectArrayInput
+                            optionText="name"
+                            options={{
+                                fullWidth: true,
+                                newChipKeyCodes: emptyKeycode,
+                            }}
+                        />
+                    </ReferenceArrayInput>
+                </EmbeddedArrayInput>
+            </FormTab>
         </TabbedForm>
     </Edit>;
 
@@ -292,6 +329,21 @@ export const PostShow = ({ ...props }) =>
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
+            </Tab>
+            <Tab label="post.form.links">
+                <EmbeddedArrayField source="links">
+                    <TextField source="url" />
+                    <TextField source="context" />
+                    <EmbeddedArrayField source="metadata">
+                        <TextField source="name" />
+                        <TextField source="value" />
+                    </EmbeddedArrayField>
+                    <ReferenceArrayField source="tags" reference="tags">
+                        <SingleFieldList>
+                            <ChipField source="name" />
+                        </SingleFieldList>
+                    </ReferenceArrayField>
+                </EmbeddedArrayField>
             </Tab>
         </TabbedShowLayout>
     </Show>;

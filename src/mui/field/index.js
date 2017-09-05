@@ -9,6 +9,7 @@ export NumberField from './NumberField';
 export ReferenceField from './ReferenceField';
 export ReferenceArrayField from './ReferenceArrayField';
 export ReferenceManyField from './ReferenceManyField';
+export EmbeddedArrayField from './EmbeddedArrayField';
 export RichTextField from './RichTextField';
 export SelectField from './SelectField';
 export TextField from './TextField';

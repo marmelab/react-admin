@@ -38,6 +38,10 @@ export default {
                 upload_single:
                     'Drop a picture to upload, or click to select it.',
             },
+            embedded_array: {
+                add: 'Add',
+                remove: 'Remove',
+            },
         },
         message: {
             yes: 'Yes',

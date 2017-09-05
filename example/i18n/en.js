@@ -19,6 +19,21 @@ export const messages = {
                 tags: 'Tags',
                 title: 'Title',
                 views: 'Views',
+                links: {
+                    name: 'Link List',
+                    fields: {
+                        tags: 'Tag List',
+                        url: 'Reference',
+                        context: 'What it is',
+                        metadata: {
+                            name: 'Metadata List',
+                            fields: {
+                                name: 'Name Of Metadata',
+                                value: 'Value Of Metadata',
+                            },
+                        },
+                    },
+                },
             },
         },
         comments: {
@@ -49,6 +64,7 @@ export const messages = {
             body: 'Body',
             miscellaneous: 'Miscellaneous',
             comments: 'Comments',
+            links: 'Links',
         },
         edit: {
             title: 'Post "%{title}"',

@@ -6,6 +6,9 @@ import compose from 'recompose/compose';
 
 import translate from '../i18n/translate';
 
+const expand = path => path.replace(/\[\d+\]\./g, '.fields.');
+const humanize = path => inflection.humanize(path.split('.').pop());
+
 export const FieldTitle = ({
     resource,
     source,
@@ -15,10 +18,10 @@ export const FieldTitle = ({
 }) =>
     <span>
         {typeof label !== 'undefined'
-            ? translate(label, { _: label })
+            ? translate(expand(label), { _: humanize(label) })
             : typeof source !== 'undefined'
-              ? translate(`resources.${resource}.fields.${source}`, {
-                    _: inflection.humanize(source),
+              ? translate(`resources.${resource}.fields.${expand(source)}`, {
+                    _: humanize(source),
                 })
               : ''}
         {isRequired && ' *'}
