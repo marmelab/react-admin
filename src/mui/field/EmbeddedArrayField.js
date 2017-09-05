@@ -49,7 +49,7 @@ export class EmbeddedArrayField extends Component {
 EmbeddedArrayField.propTypes = {
     addLabel: PropTypes.bool,
     basePath: PropTypes.string,
-    children: PropTypes.arrayOf(PropTypes.element).isRequired,
+    children: PropTypes.node.isRequired,
     data: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
