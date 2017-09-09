@@ -3,10 +3,7 @@ import { SET_RESOURCE_SELECTION } from '../../../../actions/bulkActions';
 const pull = require('lodash.pull');
 const concat = require('lodash.concat');
 
-export default () => (
-    previousState = [],
-    { type, payload, requestPayload }
-) => {
+export default () => (previousState = [], { type, payload }) => {
     switch (type) {
         case SET_RESOURCE_SELECTION:
             if (payload.isSelected) {
