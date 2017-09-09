@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import { TableBody, TableRow } from 'material-ui/Table';
+import Checkbox from 'material-ui/Checkbox';
 import DatagridCell from './DatagridCell';
 
 const DatagridBody = ({
@@ -14,6 +15,7 @@ const DatagridBody = ({
     rowStyle,
     options,
     rowOptions,
+    onSelectionChange,
     ...rest
 }) =>
     <TableBody
@@ -29,6 +31,7 @@ const DatagridBody = ({
                 selectable={false}
                 {...rowOptions}
             >
+                {<Checkbox onCheck={(event, isInputChecked) => onSelectionChange(resource, id, isInputChecked)} />} {/* (event, isInputChecked) => true onSelectionChange */}
                 {React.Children.map(
                     children,
                     (field, index) =>

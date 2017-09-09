@@ -91,6 +91,7 @@ class Datagrid extends Component {
             headerOptions,
             bodyOptions,
             rowOptions,
+            onSelectionChange,
         } = this.props;
         return (
             <Table
@@ -140,6 +141,7 @@ class Datagrid extends Component {
                     isLoading={isLoading}
                     options={bodyOptions}
                     rowOptions={rowOptions}
+                    onSelectionChange={onSelectionChange}
                 >
                     {children}
                 </DatagridBody>
