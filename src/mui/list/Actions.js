@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import autoprefixer from 'material-ui/utils/autoprefixer';
-import { CreateButton, RefreshButton } from '../button';
+import { CreateButton, RefreshButton, BulkDeleteButton } from '../button';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 
 const cardActionStyle = {
@@ -41,7 +39,7 @@ const Actions = ({
                 })}
             {hasCreate && <CreateButton basePath={basePath} />}
             <RefreshButton refresh={refresh} />
-            <FlatButton label="Delete" secondary={true} icon={<DeleteIcon />} /> {/* TODO: move to external component */}
+            <BulkDeleteButton resource={resource} />
         </CardActions>
     );
 };

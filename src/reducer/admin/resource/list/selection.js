@@ -12,7 +12,7 @@ export default () => (
             if (payload.isSelected) {
                 return concat(previousState, payload.resourceId);
             } else {
-                return pull(previousState, payload.resourceId);
+                return [...pull(previousState, payload.resourceId)];
             }
         default:
             return previousState;

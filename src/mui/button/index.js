@@ -1,5 +1,6 @@
 export CreateButton from './CreateButton';
 export DeleteButton from './DeleteButton';
+export BulkDeleteButton from './BulkDeleteButton';
 export EditButton from './EditButton';
 export ListButton from './ListButton';
 export SaveButton from './SaveButton';
