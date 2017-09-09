@@ -31,7 +31,7 @@ const DatagridBody = ({
                 selectable={false}
                 {...rowOptions}
             >
-                {<Checkbox onCheck={(event, isInputChecked) => onSelectionChange(resource, id, isInputChecked)} />} {/* (event, isInputChecked) => true onSelectionChange */}
+                {<Checkbox onCheck={(event, isInputChecked) => onSelectionChange(resource, id, isInputChecked)} />}
                 {React.Children.map(
                     children,
                     (field, index) =>

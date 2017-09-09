@@ -10,7 +10,7 @@ export const SET_RESOURCE_SELECTION = 'AOR/SET_RESOURCE_SELECTION';
 export const setResourceSelection = (resource, resourceId, isSelected) => ({
     type: SET_RESOURCE_SELECTION,
     payload: { resourceId, isSelected },
-    meta: { resource }
+    meta: { resource },
 });
 
 // TODO: add reset selection
