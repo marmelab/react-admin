@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import muiThemeable from 'material-ui/styles/muiThemeable';
-import { Table, TableHeader, TableRow } from 'material-ui/Table';
+import { Table, TableHeader, TableRow, TableRowColumn } from 'material-ui/Table';
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridBody from './DatagridBody';
 
@@ -105,6 +105,9 @@ class Datagrid extends Component {
                     {...headerOptions}
                 >
                     <TableRow style={muiTheme.tableRow}>
+                        <TableRowColumn
+                          style={styles.header['th:first-child']}
+                        />
                         {React.Children.map(
                             children,
                             (field, index) =>
@@ -112,13 +115,7 @@ class Datagrid extends Component {
                                     ? <DatagridHeaderCell
                                           key={field.props.source || index}
                                           field={field}
-                                          defaultStyle={
-                                              index === 0
-                                                  ? styles.header[
-                                                        'th:first-child'
-                                                    ]
-                                                  : styles.header.th
-                                          }
+                                          defaultStyle={styles.header.th}
                                           currentSort={currentSort}
                                           isSorting={
                                               field.props.source ===

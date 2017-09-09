@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
-import { TableBody, TableRow } from 'material-ui/Table';
+import { TableBody, TableRow, TableRowColumn } from 'material-ui/Table';
 import Checkbox from 'material-ui/Checkbox';
 import DatagridCell from './DatagridCell';
 
@@ -31,7 +31,9 @@ const DatagridBody = ({
                 selectable={false}
                 {...rowOptions}
             >
-                {<Checkbox onCheck={(event, isInputChecked) => onSelectionChange(resource, id, isInputChecked)} />}
+                <TableRowColumn style={styles.cell['td:first-child']}>
+                    <Checkbox onCheck={(event, isInputChecked) => onSelectionChange(resource, id, isInputChecked)} />
+                </TableRowColumn>
                 {React.Children.map(
                     children,
                     (field, index) =>
@@ -40,11 +42,7 @@ const DatagridBody = ({
                                   key={`${id}-${field.props.source || index}`}
                                   className={`column-${field.props.source}`}
                                   record={data[id]}
-                                  defaultStyle={
-                                      index === 0
-                                          ? styles.cell['td:first-child']
-                                          : styles.cell.td
-                                  }
+                                  defaultStyle={styles.cell.td}
                                   {...{ field, basePath, resource }}
                               />
                             : null
