@@ -11,10 +11,8 @@ import { unsetResourcesSelection } from '../../actions/bulkActions';
 const BulkDeleteButton = ({
     label = 'aor.action.delete',
     translate,
-    resource,
     selection,
-    crudDelete,
-    unsetResourcesSelection,
+    onDelete,
 }) => (
     <FlatButton
         secondary
@@ -22,10 +20,7 @@ const BulkDeleteButton = ({
         icon={<DeleteIcon />}
         style={{ overflow: 'inherit' }}
         disabled={!selection.length}
-        onClick={() => {
-            selection.map(resourceId => crudDelete(resource, resourceId));
-            unsetResourcesSelection(resource);
-        }}
+        onClick={onDelete}
     />
 );
 
@@ -34,8 +29,7 @@ BulkDeleteButton.propTypes = {
     translate: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
     selection: PropTypes.array.isRequired,
-    crudDelete: PropTypes.func.isRequired,
-    unsetResourcesSelection: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, props) => {
@@ -45,8 +39,27 @@ const mapStateToProps = (state, props) => {
     };
 };
 
+const mapDispatchToProps = dispatch => {
+    return {
+        onDelete(resource, selection) {
+            selection.map(resourceId =>
+                dispatch(crudDelete(resource, resourceId))
+            );
+            dispatch(unsetResourcesSelection(resource));
+        },
+    };
+};
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+    const { selection } = stateProps;
+    const { resource } = ownProps;
+    return Object.assign({}, ownProps, stateProps, {
+        onDelete: dispatchProps.onDelete.bind(null, resource, selection),
+    });
+};
+
 const enhance = compose(
-    connect(mapStateToProps, { crudDelete, unsetResourcesSelection }),
+    connect(mapStateToProps, mapDispatchToProps, mergeProps),
     translate
 );
 
