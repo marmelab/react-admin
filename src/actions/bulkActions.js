@@ -1,11 +1,12 @@
 /**
- * Actions related with bulk actions (only deletion for now)
+ * Action creators related with bulk resource management
  */
 
 export const SET_RESOURCE_SELECTION = 'AOR/SET_RESOURCE_SELECTION';
+export const UNSET_RESOURCES_SELECTION = 'AOR/UNSET_RESOURCES_SELECTION';
 
 /**
- * Mark resource as selected (or not selected)
+ * Set or unset resource (row) selection
  */
 export const setResourceSelection = (resource, resourceId, isSelected) => ({
     type: SET_RESOURCE_SELECTION,
@@ -13,4 +14,11 @@ export const setResourceSelection = (resource, resourceId, isSelected) => ({
     meta: { resource },
 });
 
-// TODO: add reset selection
+/**
+ * Unset selection for all resources (rows)
+ */
+export const unsetResourcesSelection = resource => ({
+    type: UNSET_RESOURCES_SELECTION,
+    payload: { resource },
+    meta: { resource },
+});

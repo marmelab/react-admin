@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import translate from '../../i18n/translate';
 import { crudDelete } from '../../actions/dataActions';
+import { unsetResourcesSelection } from '../../actions/bulkActions';
 
 const BulkDeleteButton = ({
     label = 'aor.action.delete',
@@ -13,6 +14,7 @@ const BulkDeleteButton = ({
     resource,
     selection,
     crudDelete,
+    afterDelete,
 }) =>
     <FlatButton
         secondary
@@ -20,7 +22,10 @@ const BulkDeleteButton = ({
         icon={<DeleteIcon />}
         style={{ overflow: 'inherit' }}
         disabled={!selection.length}
-        onClick={() => selection.map(resourceId => crudDelete(resource, resourceId))}
+        onClick={() => {
+          selection.map(resourceId => crudDelete(resource, resourceId));
+          afterDelete(resource);
+        }}
     />;
 
 BulkDeleteButton.propTypes = {
@@ -37,7 +42,7 @@ const mapStateToProps = (state, props) => {
 }
 
 const enhance = compose(
-    connect(mapStateToProps, { crudDelete }),
+    connect(mapStateToProps, { crudDelete, afterDelete: unsetResourcesSelection }),
     translate
 );
 
