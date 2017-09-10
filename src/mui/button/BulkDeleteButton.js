@@ -14,8 +14,8 @@ const BulkDeleteButton = ({
     resource,
     selection,
     crudDelete,
-    afterDelete,
-}) =>
+    unsetResourcesSelection,
+}) => (
     <FlatButton
         secondary
         label={label && translate(label)}
@@ -23,26 +23,30 @@ const BulkDeleteButton = ({
         style={{ overflow: 'inherit' }}
         disabled={!selection.length}
         onClick={() => {
-          selection.map(resourceId => crudDelete(resource, resourceId));
-          afterDelete(resource);
+            selection.map(resourceId => crudDelete(resource, resourceId));
+            unsetResourcesSelection(resource);
         }}
-    />;
+    />
+);
 
 BulkDeleteButton.propTypes = {
     label: PropTypes.string,
     translate: PropTypes.func.isRequired,
+    resource: PropTypes.string.isRequired,
+    selection: PropTypes.array.isRequired,
+    crudDelete: PropTypes.func.isRequired,
+    unsetResourcesSelection: PropTypes.func.isRequired,
 };
 
-
 const mapStateToProps = (state, props) => {
-  const resourceState = state.admin.resources[props.resource];
-  return {
-    selection: resourceState.list.selection,
-  };
-}
+    const resourceState = state.admin.resources[props.resource];
+    return {
+        selection: resourceState.list.selection,
+    };
+};
 
 const enhance = compose(
-    connect(mapStateToProps, { crudDelete, afterDelete: unsetResourcesSelection }),
+    connect(mapStateToProps, { crudDelete, unsetResourcesSelection }),
     translate
 );
 
