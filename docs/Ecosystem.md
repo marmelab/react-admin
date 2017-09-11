@@ -18,7 +18,7 @@ title: "Ecosystem"
 
 ## Translations
 
-See the [translation](./Translation.html#available-locales) page.
+See the [translation](./Translation.md#available-locales) page.
 
 ## Rest clients
 
