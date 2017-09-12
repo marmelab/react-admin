@@ -51,7 +51,7 @@ npm install --save-dev admin-on-rest
 
 ## Usage
 
-Read the [Tutorial](./Tutorial.html) for a 15 minutes introduction. After that, head to the [Documentation](./index.html), or checkout the [source code of the demo](https://github.com/marmelab/admin-on-rest-demo) for an example usage.
+Read the [Tutorial](./Tutorial.md) for a 15 minutes introduction. After that, head to the [Documentation](./index.md), or checkout the [source code of the demo](https://github.com/marmelab/admin-on-rest-demo) for an example usage.
 
 ## At a Glance
 
@@ -133,7 +133,7 @@ Admin-on-rest uses an adapter approach, with a concept called *REST client*. Exi
 
 ![REST client architecture](./img/rest-client.png)
 
-See the [REST clients documentation](./RestClients.html) for details.
+See the [REST clients documentation](./RestClients.md) for details.
 
 ## Batteries Included But Removable
 
