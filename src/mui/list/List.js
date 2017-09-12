@@ -21,6 +21,7 @@ import DefaultPagination from './Pagination';
 import DefaultActions from './Actions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
+import { setResourceSelection as setResourceSelectionAction } from '../../actions/bulkActions';
 import translate from '../../i18n/translate';
 import removeKey from '../../util/removeKey';
 import defaultTheme from '../defaultTheme';
@@ -208,6 +209,7 @@ export class List extends Component {
             translate,
             theme,
             version,
+            setResourceSelection,
         } = this.props;
         const query = this.getQuery();
         const filterValues = query.filter;
@@ -266,6 +268,7 @@ export class List extends Component {
                                       basePath,
                                       isLoading,
                                       setSort: this.setSort,
+                                      onSelectionChange: setResourceSelection,
                                   })}
                               {pagination &&
                                   React.cloneElement(pagination, {
@@ -357,6 +360,7 @@ const enhance = compose(
         crudGetList: crudGetListAction,
         changeListParams: changeListParamsAction,
         push: pushAction,
+        setResourceSelection: setResourceSelectionAction,
     }),
     translate,
     withPermissionsFilteredChildren
