@@ -41,9 +41,16 @@ export const NumberField = ({ record, source, locales, options, elStyle }) => {
     if (!record) return null;
     const value = get(record, source);
     if (value == null) return null;
-    if (!hasNumberFormat) return <span style={elStyle}>{value}</span>;
+    if (!hasNumberFormat)
+        return (
+            <span style={elStyle}>
+                {value}
+            </span>
+        );
     return (
-        <span style={elStyle}>{value.toLocaleString(locales, options)}</span>
+        <span style={elStyle}>
+            {value.toLocaleString(locales, options)}
+        </span>
     );
 };
 
