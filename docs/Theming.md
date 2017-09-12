@@ -52,7 +52,7 @@ export const ProductList = (props) => (
 
 Refer to each component documentation for a list of supported style props.
 
-If you need more control over the HTML code, you can also create your own [Field](./Fields.html#writing-your-own-field-component) and [Input](./Inputs.html#writing-your-own-input-component) components.
+If you need more control over the HTML code, you can also create your own [Field](./Fields.md#writing-your-own-field-component) and [Input](./Inputs.md#writing-your-own-input-component) components.
 
 ## Conditional Formatting
 
