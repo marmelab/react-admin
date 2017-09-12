@@ -36,7 +36,10 @@ export class FilterForm extends Component {
     render() {
         const { resource, translate, muiTheme } = this.props;
         const styles = getStyles(muiTheme);
-        const prefix = autoprefixer(muiTheme);
+        let prefix = autoprefixer(muiTheme);
+        if (!prefix) {
+            prefix = style => style;
+        }
         return (<div>
             <CardText style={prefix(styles.card)}>
                 {this.getShownFilters().reverse().map(filterElement =>
