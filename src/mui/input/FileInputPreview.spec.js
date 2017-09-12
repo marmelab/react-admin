@@ -5,12 +5,14 @@ import sinon from 'sinon';
 
 import { FileInputPreview } from './FileInputPreview';
 
+const muiTheme = { palette: {} };
+
 describe('<FileInputPreview />', () => {
     it('should call `onRemove` prop when clicking on remove button', () => {
         const onRemoveSpy = sinon.spy();
 
         const wrapper = shallow((
-            <FileInputPreview onRemove={onRemoveSpy}>
+            <FileInputPreview onRemove={onRemoveSpy} muiTheme={muiTheme}>
                 <div>Child</div>
             </FileInputPreview>
         ));
@@ -23,7 +25,7 @@ describe('<FileInputPreview />', () => {
 
     it('should render passed children', () => {
         const wrapper = shallow((
-            <FileInputPreview>
+            <FileInputPreview muiTheme={muiTheme}>
                 <div id="child">Child</div>
             </FileInputPreview>
         ));
@@ -42,7 +44,7 @@ describe('<FileInputPreview />', () => {
             },
         };
         const wrapper = shallow((
-            <FileInputPreview file={file}>
+            <FileInputPreview file={file} muiTheme={muiTheme}>
                 <div id="child">Child</div>
             </FileInputPreview>
         ), { lifecycleExperimental: true });
@@ -61,7 +63,7 @@ describe('<FileInputPreview />', () => {
             },
         };
         const wrapper = shallow((
-            <FileInputPreview file={file}>
+            <FileInputPreview file={file} muiTheme={muiTheme}>
                 <div id="child">Child</div>
             </FileInputPreview>
         ), { lifecycleExperimental: true });
