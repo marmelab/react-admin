@@ -67,7 +67,7 @@ Upon receiving a 403 response, the admin app shows the Login page. `authClient` 
 
 ## Sending Credentials to the REST API
 
-To use the credentials when calling REST API routes, you have to tweak, this time, the `restClient`. As explained in the [REST client documentation](RestClients.html#adding-custom-headers), `simpleRestClient` and `jsonServerRestClient` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
+To use the credentials when calling REST API routes, you have to tweak, this time, the `restClient`. As explained in the [REST client documentation](RestClients.md#adding-custom-headers), `simpleRestClient` and `jsonServerRestClient` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
 
 For instance, to pass the token obtained during login as an `Authorization` header, configure the REST client as follows:
 
@@ -292,7 +292,7 @@ const App = () => (
 
 ## Restricting Access To A Custom Page
 
-If you add [custom pages](./Actions.html), of if you [create an admin app from scratch](./CustomApp.html), you may need to secure access to pages manually. That's the purpose of the `<Restricted>` component, that you can use as a decorator for your own components.
+If you add [custom pages](./Actions.md), of if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `<Restricted>` component, that you can use as a decorator for your own components.
 
 {% raw %}
 ```jsx
