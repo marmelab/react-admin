@@ -5,7 +5,7 @@ title: "The Show View"
 
 # The Show View
 
-The Show view displays a record fetched from the API in a readonly fashion. It delegates the actual rendering of the record to a layout component - usually `<SimpleShowLayout>`. This layout component uses its children ([`<Fields>`](./Fields.html) components) to render each record field.
+The Show view displays a record fetched from the API in a readonly fashion. It delegates the actual rendering of the record to a layout component - usually `<SimpleShowLayout>`. This layout component uses its children ([`<Fields>`](./Fields.md) components) to render each record field.
 
 ![post show view](./img/show-view.png)
 

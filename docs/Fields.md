@@ -57,9 +57,9 @@ Then you can display the author first name as follows:
 <TextField source="author.firstName" />
 ```
 
-**Tip**: If you want to format a field according to the value, use a higher-order component to do conditional formatting, as described in the [Theming documentation](./Theming.html#conditional-formatting).
+**Tip**: If you want to format a field according to the value, use a higher-order component to do conditional formatting, as described in the [Theming documentation](./Theming.md#conditional-formatting).
 
-**Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.html#translating-resource-and-field-names) for details.
+**Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
 
 ## `<BooleanField>`
 
@@ -169,7 +169,7 @@ import { ImageField } from 'admin-on-rest';
 <ImageField source="url" title="title" />
 ```
 
-This field is also generally used within an [<ImageInput />](http://marmelab.com/admin-on-rest/Inputs.html#imageinput) component to display preview.
+This field is also generally used within an [<ImageInput />](http://marmelab.com/admin-on-rest/Inputs.md#imageinput) component to display preview.
 
 The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. It can either be an hard-written string, or a path within your JSON object:
 
@@ -210,7 +210,7 @@ import { FileField } from 'admin-on-rest';
 <FileField source="url" title="title" />
 ```
 
-This field is also generally used within an [<FileInput />](http://marmelab.com/admin-on-rest/Inputs.html#fileinput) component to display preview.
+This field is also generally used within an [<FileInput />](http://marmelab.com/admin-on-rest/Inputs.md#fileinput) component to display preview.
 
 The optional `title` prop points to the file title property, used for `title` attributes. It can either be an hard-written string, or a path within your JSON object:
 

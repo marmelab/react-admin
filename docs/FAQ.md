@@ -11,7 +11,7 @@ title: "FAQ"
 
 ## Can I have custom identifiers/primary keys for my resources?
 
-Admin-on-rest requires that each resource has an `id` field to identify it. If your REST API uses a different name for the primary key, you have to map that name to `id` in a custom [restClient](https://marmelab.com/admin-on-rest/RestClients.html). For instance, to use a field named `_id` as identifier:
+Admin-on-rest requires that each resource has an `id` field to identify it. If your REST API uses a different name for the primary key, you have to map that name to `id` in a custom [restClient](https://marmelab.com/admin-on-rest/RestClients.md). For instance, to use a field named `_id` as identifier:
 
 ```js
 const convertHTTPResponseToREST = (response, type, resource, params) => {
