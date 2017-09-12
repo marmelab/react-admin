@@ -50,7 +50,7 @@ const styles = {
         top: 0,
         right: 0,
         margin: 16,
-        zInœdex: 1200,
+        zIndex: 1200,
     },
 };
 
