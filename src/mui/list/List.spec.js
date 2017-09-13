@@ -1,7 +1,6 @@
 import assert from 'assert';
 import React from 'react';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 
 import { List } from './List';
 
@@ -26,7 +25,6 @@ describe('<List />', () => {
             <List
                 {...defaultProps}
                 translate={x => x}
-                children={[]}
                 total={0}
                 changeFormValue={() => true}
                 changeListParams={() => true}
@@ -43,7 +41,6 @@ describe('<List />', () => {
             <List
                 {...defaultProps}
                 translate={x => x}
-                children={[ 'not_empty' ]}
                 total={1}
                 changeFormValue={() => true}
                 changeListParams={() => true}

@@ -574,6 +574,7 @@ import {
     DELETE,
     fetchUtils,
 } from 'admin-on-rest';
+import { stringify } from 'query-string';
 
 const API_URL = 'my.api.url';
 
@@ -585,7 +586,6 @@ const API_URL = 'my.api.url';
  */
 const convertRESTRequestToHTTP = (type, resource, params) => {
     let url = '';
-    const { queryParameters } = fetchUtils;
     const options = {};
     switch (type) {
     case GET_LIST: {
@@ -596,7 +596,7 @@ const convertRESTRequestToHTTP = (type, resource, params) => {
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             filter: JSON.stringify(params.filter),
         };
-        url = `${API_URL}/${resource}?${queryParameters(query)}`;
+        url = `${API_URL}/${resource}?${stringify(query)}`;
         break;
     }
     case GET_ONE:
@@ -606,7 +606,7 @@ const convertRESTRequestToHTTP = (type, resource, params) => {
         const query = {
             filter: JSON.stringify({ id: params.ids }),
         };
-        url = `${API_URL}/${resource}?${queryParameters(query)}`;
+        url = `${API_URL}/${resource}?${stringify(query)}`;
         break;
     }
     case GET_MANY_REFERENCE: {
@@ -617,7 +617,7 @@ const convertRESTRequestToHTTP = (type, resource, params) => {
             range: JSON.stringify([(page - 1) * perPage, (page * perPage) - 1]),
             filter: JSON.stringify({ ...params.filter, [params.target]: params.id }),
         };
-        url = `${API_URL}/${resource}?${queryParameters(query)}`;
+        url = `${API_URL}/${resource}?${stringify(query)}`;
         break;
     }
     case UPDATE:

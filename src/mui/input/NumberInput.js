@@ -16,7 +16,7 @@ import FieldTitle from '../../util/FieldTitle';
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
 class NumberInput extends Component {
-    handleBlur = (eventOrValue) => {
+    handleBlur = eventOrValue => {
         this.props.onBlur(eventOrValue);
         this.props.input.onBlur(eventOrValue);
 
@@ -26,20 +26,37 @@ class NumberInput extends Component {
          */
         const value = parseFloat(this.props.input.value);
         this.handleChange(isNaN(value) ? undefined : value);
-    }
+    };
 
-    handleFocus = (event) => {
+    handleFocus = event => {
         this.props.onFocus(event);
         this.props.input.onFocus(event);
-    }
+    };
 
-    handleChange = (eventOrValue) => {
+    handleChange = eventOrValue => {
         this.props.onChange(eventOrValue);
         this.props.input.onChange(eventOrValue);
-    }
+    };
 
     render() {
-        const { elStyle, input, isRequired, label, meta: { touched, error }, options, source, step, resource } = this.props;
+        const {
+            elStyle,
+            input,
+            isRequired,
+            label,
+            meta,
+            options,
+            source,
+            step,
+            resource,
+        } = this.props;
+        if (typeof meta === 'undefined') {
+            throw new Error(
+                "The NumberInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/admin-on-rest/Inputs.html#writing-your-own-input-component for details."
+            );
+        }
+        const { touched, error } = meta;
+
         return (
             <TextField
                 {...input}
@@ -48,7 +65,14 @@ class NumberInput extends Component {
                 onChange={this.handleChange}
                 type="number"
                 step={step}
-                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
+                floatingLabelText={
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                }
                 errorText={touched && error}
                 style={elStyle}
                 {...options}
@@ -71,10 +95,7 @@ NumberInput.propTypes = {
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-    step: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-    ]).isRequired,
+    step: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     validate: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.arrayOf(PropTypes.func),

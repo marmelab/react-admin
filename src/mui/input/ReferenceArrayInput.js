@@ -7,7 +7,7 @@ import {
     crudGetMany as crudGetManyAction,
     crudGetMatching as crudGetMatchingAction,
 } from '../../actions/dataActions';
-import { getPossibleReferences } from '../../reducer/references/possibleValues';
+import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
@@ -108,58 +108,93 @@ export class ReferenceArrayInput extends Component {
         }
     }
 
-    setFilter = (filter) => {
+    setFilter = filter => {
         if (filter !== this.params.filter) {
             this.params.filter = this.props.filterToQuery(filter);
             this.fetchReferenceAndOptions();
         }
-    }
+    };
 
-    setPagination = (pagination) => {
+    setPagination = pagination => {
         if (pagination !== this.param.pagination) {
             this.param.pagination = pagination;
             this.fetchReferenceAndOptions();
         }
-    }
+    };
 
-    setSort = (sort) => {
+    setSort = sort => {
         if (sort !== this.params.sort) {
             this.params.sort = sort;
             this.fetchReferenceAndOptions();
         }
-    }
+    };
 
-    fetchReferenceAndOptions({ input, reference, source, resource } = this.props) {
+    fetchReferenceAndOptions(
+        { input, reference, source, resource } = this.props
+    ) {
         const { pagination, sort, filter } = this.params;
         const ids = input.value;
         if (ids) {
             if (!Array.isArray(ids)) {
-                throw Error('The value of ReferenceArrayInput should be an array');
+                throw Error(
+                    'The value of ReferenceArrayInput should be an array'
+                );
             }
             this.props.crudGetMany(reference, ids);
         }
-        this.props.crudGetMatching(reference, referenceSource(resource, source), pagination, sort, filter);
+        this.props.crudGetMatching(
+            reference,
+            referenceSource(resource, source),
+            pagination,
+            sort,
+            filter
+        );
     }
 
     render() {
-        const { input, resource, label, source, referenceRecords, allowEmpty, matchingReferences, basePath, onChange, children, meta } = this.props;
+        const {
+            input,
+            resource,
+            label,
+            source,
+            referenceRecords,
+            allowEmpty,
+            matchingReferences,
+            basePath,
+            onChange,
+            children,
+            meta,
+        } = this.props;
 
         if (React.Children.count(children) !== 1) {
-            throw new Error('<ReferenceArrayInput> only accepts a single child (like <Datagrid>)');
+            throw new Error(
+                '<ReferenceArrayInput> only accepts a single child (like <Datagrid>)'
+            );
         }
 
         if (!(referenceRecords && referenceRecords.length > 0) && !allowEmpty) {
-            return <Labeled
-                label={typeof label === 'undefined' ? `resources.${resource}.fields.${source}` : label}
-                source={source}
-                resource={resource}
-            />;
+            return (
+                <Labeled
+                    label={
+                        typeof label === 'undefined' ? (
+                            `resources.${resource}.fields.${source}`
+                        ) : (
+                            label
+                        )
+                    }
+                    source={source}
+                    resource={resource}
+                />
+            );
         }
 
         return React.cloneElement(children, {
             allowEmpty,
             input,
-            label: typeof label === 'undefined' ? `resources.${resource}.fields.${source}` : label,
+            label:
+                typeof label === 'undefined'
+                    ? `resources.${resource}.fields.${source}`
+                    : label,
             resource,
             meta,
             source,
@@ -211,7 +246,7 @@ ReferenceArrayInput.defaultProps = {
 
 function mapStateToProps(state, props) {
     const referenceIds = props.input.value || [];
-    const data = state.admin[props.reference].data;
+    const data = state.admin.resources[props.reference].data;
     return {
         referenceRecords: referenceIds.reduce((references, referenceId) => {
             if (data[referenceId]) {
@@ -223,7 +258,7 @@ function mapStateToProps(state, props) {
             state,
             referenceSource(props.resource, props.source),
             props.reference,
-            referenceIds,
+            referenceIds
         ),
     };
 }

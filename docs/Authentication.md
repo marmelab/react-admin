@@ -312,4 +312,4 @@ export default withRouter(MyPage);
 ```
 {% endraw %}
 
-The `<Restricted>` component calls the `authClient` function with `AUTH_CHECK` and `authParams`. If the response is a fulfilled promise, the child component is rendered. If the response is a rejected promise, `<Restricted>` redirects to the login form. Upon successful login, the user is redirected to the initial location (that's why it's necessary to get the location from the router). 
+The `<Restricted>` component calls the `authClient` function with `AUTH_CHECK` and `authParams`. If the response is a fulfilled promise, the child component is rendered. If the response is a rejected promise, `<Restricted>` redirects to the login form. Upon successful login, the user is redirected to the initial location (that's why it's necessary to get the location from the router).

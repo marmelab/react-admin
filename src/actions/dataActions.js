@@ -13,7 +13,13 @@ export const CRUD_GET_LIST_LOADING = 'AOR/CRUD_GET_LIST_LOADING';
 export const CRUD_GET_LIST_FAILURE = 'AOR/CRUD_GET_LIST_FAILURE';
 export const CRUD_GET_LIST_SUCCESS = 'AOR/CRUD_GET_LIST_SUCCESS';
 
-export const crudGetList = (resource, pagination, sort, filter, cancelPrevious = true) => ({
+export const crudGetList = (
+    resource,
+    pagination,
+    sort,
+    filter,
+    cancelPrevious = true
+) => ({
     type: CRUD_GET_LIST,
     payload: { pagination, sort, filter },
     meta: { resource, fetch: GET_LIST, cancelPrevious },
@@ -46,7 +52,14 @@ export const CRUD_UPDATE_LOADING = 'AOR/CRUD_UPDATE_LOADING';
 export const CRUD_UPDATE_FAILURE = 'AOR/CRUD_UPDATE_FAILURE';
 export const CRUD_UPDATE_SUCCESS = 'AOR/CRUD_UPDATE_SUCCESS';
 
-export const crudUpdate = (resource, id, data, previousData, basePath, redirectTo = 'show') => ({
+export const crudUpdate = (
+    resource,
+    id,
+    data,
+    previousData,
+    basePath,
+    redirectTo = 'show'
+) => ({
     type: CRUD_UPDATE,
     payload: { id, data, previousData, basePath, redirectTo },
     meta: { resource, fetch: UPDATE, cancelPrevious: false },
@@ -57,9 +70,15 @@ export const CRUD_DELETE_LOADING = 'AOR/CRUD_DELETE_LOADING';
 export const CRUD_DELETE_FAILURE = 'AOR/CRUD_DELETE_FAILURE';
 export const CRUD_DELETE_SUCCESS = 'AOR/CRUD_DELETE_SUCCESS';
 
-export const crudDelete = (resource, id, basePath, redirectTo = 'list') => ({
+export const crudDelete = (
+    resource,
+    id,
+    previousData,
+    basePath,
+    redirectTo = 'list'
+) => ({
     type: CRUD_DELETE,
-    payload: { id, basePath, redirectTo },
+    payload: { id, previousData, basePath, redirectTo },
     meta: { resource, fetch: DELETE, cancelPrevious: false },
 });
 
@@ -81,19 +100,46 @@ export const CRUD_GET_MATCHING_LOADING = 'AOR/CRUD_GET_MATCHING_LOADING';
 export const CRUD_GET_MATCHING_FAILURE = 'AOR/CRUD_GET_MATCHING_FAILURE';
 export const CRUD_GET_MATCHING_SUCCESS = 'AOR/CRUD_GET_MATCHING_SUCCESS';
 
-export const crudGetMatching = (reference, relatedTo, pagination, sort, filter) => ({
+export const crudGetMatching = (
+    reference,
+    relatedTo,
+    pagination,
+    sort,
+    filter
+) => ({
     type: CRUD_GET_MATCHING,
     payload: { pagination, sort, filter },
-    meta: { resource: reference, relatedTo, fetch: GET_LIST, cancelPrevious: false },
+    meta: {
+        resource: reference,
+        relatedTo,
+        fetch: GET_LIST,
+        cancelPrevious: false,
+    },
 });
 
 export const CRUD_GET_MANY_REFERENCE = 'AOR/CRUD_GET_MANY_REFERENCE';
-export const CRUD_GET_MANY_REFERENCE_LOADING = 'AOR/CRUD_GET_MANY_REFERENCE_LOADING';
-export const CRUD_GET_MANY_REFERENCE_FAILURE = 'AOR/CRUD_GET_MANY_REFERENCE_FAILURE';
-export const CRUD_GET_MANY_REFERENCE_SUCCESS = 'AOR/CRUD_GET_MANY_REFERENCE_SUCCESS';
+export const CRUD_GET_MANY_REFERENCE_LOADING =
+    'AOR/CRUD_GET_MANY_REFERENCE_LOADING';
+export const CRUD_GET_MANY_REFERENCE_FAILURE =
+    'AOR/CRUD_GET_MANY_REFERENCE_FAILURE';
+export const CRUD_GET_MANY_REFERENCE_SUCCESS =
+    'AOR/CRUD_GET_MANY_REFERENCE_SUCCESS';
 
-export const crudGetManyReference = (reference, target, id, relatedTo, pagination, sort, filter) => ({
+export const crudGetManyReference = (
+    reference,
+    target,
+    id,
+    relatedTo,
+    pagination,
+    sort,
+    filter
+) => ({
     type: CRUD_GET_MANY_REFERENCE,
     payload: { target, id, pagination, sort, filter },
-    meta: { resource: reference, relatedTo, fetch: GET_MANY_REFERENCE, cancelPrevious: false },
+    meta: {
+        resource: reference,
+        relatedTo,
+        fetch: GET_MANY_REFERENCE,
+        cancelPrevious: false,
+    },
 });

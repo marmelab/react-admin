@@ -5,7 +5,7 @@ import pure from 'recompose/pure';
 
 const TextField = ({ source, record = {}, elStyle }) => {
     return <span style={elStyle}>{get(record, source)}</span>;
-}
+};
 
 TextField.propTypes = {
     addLabel: PropTypes.bool,

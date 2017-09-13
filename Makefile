@@ -7,7 +7,7 @@ install: package.json ## install dependencies
 	@npm install
 
 run: example_install ## run the example
-	@cd example && ../node_modules/.bin/webpack-dev-server --hot --inline --config ./webpack.config.js
+	@cd example && ./node_modules/.bin/webpack-dev-server --hot --inline --config ./webpack.config.js
 
 example_install: example/package.json
 	@cd example && npm install
@@ -21,9 +21,17 @@ watch: ## continuously compile ES6 files to JS
 doc: ## compile doc as html and launch doc web server
 	@cd docs && jekyll server . --watch
 
-test: test-unit test-e2e ## launch all tests
+lint: ## lint the code and check coding conventions
+	@echo "Running linter..."
+	@./node_modules/.bin/eslint .
+
+prettier: ## prettify the source code using prettier
+	@./node_modules/.bin/prettier-eslint --write --list-different  "src/**/*.js" "example/**/*.js"
+
+test: test-unit lint test-e2e ## launch all tests
 
 test-unit: ## launch unit tests
+	@echo "Running unit tests..."
 	@NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/mocha \
 		--require ignore-styles \
 		--compilers js:babel-register \
@@ -39,7 +47,7 @@ test-unit-watch: ## launch unit tests and watch for changes
 test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \
 		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
-		cd example && ../node_modules/.bin/webpack; \
+		cd example && ./node_modules/.bin/webpack; \
 	fi
 	@echo 'Launching e2e tests...'
 	@NODE_ENV=test node_modules/.bin/mocha \

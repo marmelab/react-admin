@@ -64,19 +64,31 @@ import translate from '../../i18n/translate';
  *
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
-export const SelectField = ({ source, record, choices, elStyle, optionValue, optionText, translate, translateChoice }) => {
+export const SelectField = ({
+    source,
+    record,
+    choices,
+    elStyle,
+    optionValue,
+    optionText,
+    translate,
+    translateChoice,
+}) => {
     const value = get(record, source);
     const choice = choices.find(c => c[optionValue] === value);
     if (!choice) return null;
-    const choiceName = React.isValidElement(optionText) ? // eslint-disable-line no-nested-ternary
-        React.cloneElement(optionText, { record: choice }) :
-        (typeof optionText === 'function' ?
-            optionText(choice) :
-            choice[optionText]
-        );
+    const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
+        ? React.cloneElement(optionText, { record: choice })
+        : typeof optionText === 'function'
+          ? optionText(choice)
+          : choice[optionText];
     return (
         <span style={elStyle}>
-            {translateChoice ? translate(choiceName, { _: choiceName }) : choiceName}
+            {translateChoice ? (
+                translate(choiceName, { _: choiceName })
+            ) : (
+                choiceName
+            )}
         </span>
     );
 };
@@ -106,10 +118,7 @@ SelectField.defaultProps = {
     translateChoice: true,
 };
 
-const enhance = compose(
-    pure,
-    translate,
-);
+const enhance = compose(pure, translate);
 
 const EnhancedSelectField = enhance(SelectField);
 

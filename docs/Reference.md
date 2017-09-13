@@ -75,15 +75,16 @@ title: "Reference"
 * [`<SelectArrayInput>`](./Inputs.md#selectarrayinput)
 * [`<SelectField>`](./Fields.md#selectfield)
 * [`<SelectInput>`](./Inputs.md#selectinput)
+* [`<Show>`](./Show.md#the-show-component)
+* `<ShowButton>`
 * `<Sidebar>`
 * `<SimpleList>`
 * `<SingleFieldList>`
-* [`<Show>`](./Show.md#the-show-component)
-* `<ShowButton>`
-* [`<SimpleForm>`](./CreateEdit.md#the-simpleform-component)
-* [`<SimpleList>`](./List.md#the-simplelist-component)
-* [`<SimpleShowLayout>`](./Show.md#the-simpleshowlayout-component)
-* [`<SingleFieldList>`](./List.md#the-singlefieldlist-component)
+* [`<SimpleForm>`](./CreateEdit.html#the-simpleform-component)
+* [`<SimpleList>`](./List.html#the-simplelist-component)
+* [`<SimpleShowLayout>`](./Show.html#the-simpleshowlayout-component)
+* [`<SingleFieldList>`](./List.html#the-singlefieldlist-component)
+* [`<SwitchPermissions>`](./Authorization.html#switchpermissions)
 * `<Tab>`
 * [`<TabbedForm>`](./CreateEdit.md#the-tabbedform-component)
 * `<TabbedShowLayout>`
@@ -93,5 +94,6 @@ title: "Reference"
 * `<Toolbar>`
 * [`<UrlField>`](./Fields.md#urlfield)
 * `<ViewTitle>`
+* [`<WithPermission>`](./Authorization.html#withpermission)
 
 </div>

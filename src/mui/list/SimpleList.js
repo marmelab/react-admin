@@ -25,11 +25,11 @@ const SimpleList = ({
                 primaryText={
                     <div>
                         {primaryText(data[id], id)}
-                        {tertiaryText &&
+                        {tertiaryText && (
                             <span style={tertiaryStyle}>
                                 {tertiaryText(data[id], id)}
                             </span>
-                        }
+                        )}
                     </div>
                 }
                 secondaryText={secondaryText && secondaryText(data[id], id)}

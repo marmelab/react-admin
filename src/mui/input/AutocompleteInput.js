@@ -78,12 +78,17 @@ export class AutocompleteInput extends Component {
             const { choices, input, optionValue } = this.props;
             input.onChange(choices[index][optionValue]);
         }
-    }
+    };
 
     getSuggestion(choice) {
-        const { optionText, optionValue, translate, translateChoice } = this.props;
-        const choiceName = typeof optionText === 'function' ? optionText(choice) : get(choice, optionText);
-        return translateChoice ? translate(choiceName, { _: choiceName }) : choiceName;
+        const { optionText, translate, translateChoice } = this.props;
+        const choiceName =
+            typeof optionText === 'function'
+                ? optionText(choice)
+                : get(choice, optionText);
+        return translateChoice
+            ? translate(choiceName, { _: choiceName })
+            : choiceName;
     }
 
     render() {
@@ -94,24 +99,41 @@ export class AutocompleteInput extends Component {
             input,
             isRequired,
             label,
-            meta: { touched, error },
+            meta,
             options,
             optionValue,
             resource,
             setFilter,
             source,
         } = this.props;
+        if (typeof meta === 'undefined') {
+            throw new Error(
+                "The AutocompleteInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/admin-on-rest/Inputs.html#writing-your-own-input-component for details."
+            );
+        }
+        const { touched, error } = meta;
 
-        const selectedSource = choices.find(choice => get(choice, optionValue) === input.value);
+        const selectedSource = choices.find(
+            choice => get(choice, optionValue) === input.value
+        );
         const dataSource = choices.map(choice => ({
             value: get(choice, optionValue),
             text: this.getSuggestion(choice),
         }));
         return (
             <AutoComplete
-                searchText={selectedSource && this.getSuggestion(selectedSource)}
+                searchText={
+                    selectedSource && this.getSuggestion(selectedSource)
+                }
                 dataSource={dataSource}
-                floatingLabelText={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
+                floatingLabelText={
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                }
                 filter={filter}
                 onNewRequest={this.handleNewRequest}
                 onUpdateInput={setFilter}
@@ -135,10 +157,8 @@ AutocompleteInput.propTypes = {
     meta: PropTypes.object,
     options: PropTypes.object,
     optionElement: PropTypes.element,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-    ]).isRequired,
+    optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
+        .isRequired,
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     setFilter: PropTypes.func,

@@ -1,5 +1,27 @@
 # Changelog
 
+## v.1.3.0
+
+* Add permissions handling ([djhi](https://github.com/djhi))
+* Add Not Found page ([fzaninotto](https://github.com/fzaninotto))
+* Add support for layoutless custom routes ([marcw](https://github.com/marcw))
+* Add support for custom validator messages ([fzaninotto](https://github.com/fzaninotto))
+* Add support for nested filter object ([mtakayuki](https://github.com/mtakayuki))
+* Add response body to HttpError ([marcw](https://github.com/marcw))
+* Add ability to refresh views using a redux action ([djhi](https://github.com/djhi))
+* Add `previousData` to `crudDelete` payload ([grahamlyus](https://github.com/grahamlyus))
+* Add greek translation ([zifnab87](https://github.com/zifnab87))
+* Add Ukrainian translation ([vitivs](https://github.com/vitivs))
+* Upgrade dependencies (MUI 0.19, react in peer dependencies) ([djhi](https://github.com/djhi))
+* Update the redux state structure to avoid name conflicts ([lutangar](https://github.com/lutangar))
+* Update code formatting standard (prettier) ([fzaninotto](https://github.com/fzaninotto))
+* Fix query string builder in REST clients ([mtakayuki](https://github.com/mtakayuki))
+* Fix webpack file present in root directory ([fzaninotto](https://github.com/fzaninotto))
+* Fix forms default values handling ([djhi](https://github.com/djhi))
+* Fix `<SelectInput>` with `allowEmpty` throws key-warning ([fab1an](https://github.com/fab1an))
+* Fix `onMenuTap` warning on medium and larger devices ([jf248](https://github.com/jf248))
+* Fix links in documentation ([Phocea](https://github.com/Phocea))
+
 ## v1.2.3
 
 * Add Epilogue REST client ([dunghuynh](https://github.com/dunghuynh))

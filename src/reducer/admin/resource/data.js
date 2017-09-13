@@ -1,4 +1,4 @@
-import { FETCH_END } from '../../actions/fetchActions';
+import { FETCH_END } from '../../../actions/fetchActions';
 import {
     GET_LIST,
     GET_ONE,
@@ -6,7 +6,7 @@ import {
     GET_MANY_REFERENCE,
     CREATE,
     UPDATE,
-} from '../../rest/types';
+} from '../../../rest/types';
 
 /**
  * The data state is an instance pool, which keeps track of the fetch date of each instance.
@@ -46,8 +46,9 @@ const addRecords = (newRecords = [], oldRecords) => {
     const latestValidDate = new Date();
     latestValidDate.setTime(latestValidDate.getTime() - cacheDuration);
     const oldValidRecordIds = oldRecords.fetchedAt
-        ? Object.keys(oldRecords.fetchedAt)
-            .filter(id => oldRecords.fetchedAt[id] > latestValidDate)
+        ? Object.keys(oldRecords.fetchedAt).filter(
+              id => oldRecords.fetchedAt[id] > latestValidDate
+          )
         : [];
     const oldValidRecords = oldValidRecordIds.reduce((prev, id) => {
         prev[id] = oldRecords[id]; // eslint-disable-line no-param-reassign
@@ -62,17 +63,22 @@ const addRecords = (newRecords = [], oldRecords) => {
         ...oldValidRecords,
         ...newRecordsById,
     };
-    Object.defineProperty(records, 'fetchedAt', { value: {
-        ...oldValidRecordsFetchedAt,
-        ...newRecordsFetchedAt,
-    } }); // non enumerable by default
+    Object.defineProperty(records, 'fetchedAt', {
+        value: {
+            ...oldValidRecordsFetchedAt,
+            ...newRecordsFetchedAt,
+        },
+    }); // non enumerable by default
     return records;
 };
 
 const initialState = {};
 Object.defineProperty(initialState, 'fetchedAt', { value: {} }); // non enumerable by default
 
-export default resource => (previousState = initialState, { payload, meta }) => {
+export default resource => (
+    previousState = initialState,
+    { payload, meta }
+) => {
     if (!meta || meta.resource !== resource) {
         return previousState;
     }
@@ -80,16 +86,16 @@ export default resource => (previousState = initialState, { payload, meta }) => 
         return previousState;
     }
     switch (meta.fetchResponse) {
-    case GET_LIST:
-    case GET_MANY:
-    case GET_MANY_REFERENCE:
-        return addRecords(payload.data, previousState);
-    case GET_ONE:
-    case UPDATE:
-    case CREATE:
-        return addRecords([payload.data], previousState);
-    default:
-        return previousState;
+        case GET_LIST:
+        case GET_MANY:
+        case GET_MANY_REFERENCE:
+            return addRecords(payload.data, previousState);
+        case GET_ONE:
+        case UPDATE:
+        case CREATE:
+            return addRecords([payload.data], previousState);
+        default:
+            return previousState;
     }
 };
 

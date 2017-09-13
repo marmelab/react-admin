@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { render } from 'enzyme';
 import assert from 'assert';
 
-import AdminRoutes from './AdminRoutes';
+import { AdminRoutes } from './AdminRoutes';
 
 describe('<AdminRoutes>', () => {
     const Dashboard = () => <div>Dashboard</div>;
@@ -18,12 +18,19 @@ describe('<AdminRoutes>', () => {
     // the Provider is required because the dashboard is wrapped by <Restricted>, which is a connected component
     const store = createStore(x => x);
     const resources = [
-        { name: 'posts', list: PostList, edit: PostEdit, create: PostCreate, show: PostShow, remove: PostDelete },
+        {
+            name: 'posts',
+            list: PostList,
+            edit: PostEdit,
+            create: PostCreate,
+            show: PostShow,
+            remove: PostDelete,
+        },
     ];
     it('should show dashboard on / when provided', () => {
         const wrapper = render(
             <Provider store={store}>
-                <MemoryRouter initialEntries={[ '/' ]}>
+                <MemoryRouter initialEntries={['/']}>
                     <AdminRoutes dashboard={Dashboard} resources={resources} />
                 </MemoryRouter>
             </Provider>
@@ -33,7 +40,7 @@ describe('<AdminRoutes>', () => {
     it('should show resource list on /[resourcename]', () => {
         const wrapper = render(
             <Provider store={store}>
-                <MemoryRouter initialEntries={[ '/posts' ]}>
+                <MemoryRouter initialEntries={['/posts']}>
                     <AdminRoutes resources={resources} />
                 </MemoryRouter>
             </Provider>
@@ -43,7 +50,7 @@ describe('<AdminRoutes>', () => {
     it('should show resource edit on /[resourcename]/:id', () => {
         const wrapper = render(
             <Provider store={store}>
-                <MemoryRouter initialEntries={[ '/posts/12' ]}>
+                <MemoryRouter initialEntries={['/posts/12']}>
                     <AdminRoutes resources={resources} />
                 </MemoryRouter>
             </Provider>
@@ -53,7 +60,7 @@ describe('<AdminRoutes>', () => {
     it('should show resource show on /[resourcename]/:id/show', () => {
         const wrapper = render(
             <Provider store={store}>
-                <MemoryRouter initialEntries={[ '/posts/12/show' ]}>
+                <MemoryRouter initialEntries={['/posts/12/show']}>
                     <AdminRoutes resources={resources} />
                 </MemoryRouter>
             </Provider>
@@ -63,7 +70,7 @@ describe('<AdminRoutes>', () => {
     it('should show resource delete on /[resourcename]/:id/delete', () => {
         const wrapper = render(
             <Provider store={store}>
-                <MemoryRouter initialEntries={[ '/posts/12/delete' ]}>
+                <MemoryRouter initialEntries={['/posts/12/delete']}>
                     <AdminRoutes resources={resources} />
                 </MemoryRouter>
             </Provider>
@@ -71,13 +78,14 @@ describe('<AdminRoutes>', () => {
         assert.equal(wrapper.html(), '<div>PostDelete</div>');
     });
     it('should accept custom routes', () => {
-        const customRoutes = [
-            <Route path="/custom" component={Custom} />,
-        ];
+        const customRoutes = [<Route path="/custom" component={Custom} />]; // eslint-disable-line react/jsx-key
         const wrapper = render(
             <Provider store={store}>
-                <MemoryRouter initialEntries={[ '/custom' ]}>
-                    <AdminRoutes resources={resources} customRoutes={customRoutes} />
+                <MemoryRouter initialEntries={['/custom']}>
+                    <AdminRoutes
+                        resources={resources}
+                        customRoutes={customRoutes}
+                    />
                 </MemoryRouter>
             </Provider>
         );

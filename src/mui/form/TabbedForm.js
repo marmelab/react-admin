@@ -1,6 +1,11 @@
 import React, { Children, Component } from 'react';
 import PropTypes from 'prop-types';
-import { reduxForm, getFormAsyncErrors, getFormSyncErrors, getFormSubmitErrors } from 'redux-form';
+import {
+    reduxForm,
+    getFormAsyncErrors,
+    getFormSyncErrors,
+    getFormSubmitErrors,
+} from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { Tabs, Tab } from 'material-ui/Tabs';
@@ -23,15 +28,30 @@ export class TabbedForm extends Component {
         };
     }
 
-    handleChange = (value) => {
+    handleChange = value => {
         this.setState({ value });
     };
 
-    handleSubmitWithRedirect = (redirect = this.props.redirect) => this.props.handleSubmit(values => this.props.save(values, redirect));
+    handleSubmitWithRedirect = (redirect = this.props.redirect) =>
+        this.props.handleSubmit(values => this.props.save(values, redirect));
 
     render() {
-        const { basePath, children, contentContainerStyle, invalid, muiTheme, record, resource, submitOnEnter, tabsWithErrors, toolbar, translate } = this.props;
+        const {
+            basePath,
+            children,
+            contentContainerStyle,
+            invalid,
+            muiTheme,
+            record,
+            resource,
+            submitOnEnter,
+            tabsWithErrors,
+            toolbar,
+            translate,
+        } = this.props;
+
         const styles = getStyles(muiTheme);
+
         return (
             <form className="tabbed-form">
                 <div style={styles.form}>
@@ -40,25 +60,42 @@ export class TabbedForm extends Component {
                         onChange={this.handleChange}
                         contentContainerStyle={contentContainerStyle}
                     >
-                        {React.Children.map(children, (tab, index) =>
-                            <Tab
-                                key={tab.props.label}
-                                className="form-tab"
-                                label={translate(tab.props.label, { _: tab.props.label })}
-                                value={index}
-                                icon={tab.props.icon}
-                                buttonStyle={tabsWithErrors.includes(tab.props.label) && this.state.value !== index ? styles.errorTabButton : null}
-                            >
-                                {React.cloneElement(tab, { resource, record, basePath })}
-                            </Tab>,
+                        {React.Children.map(
+                            children,
+                            (tab, index) =>
+                                tab ? (
+                                    <Tab
+                                        key={tab.props.label}
+                                        className="form-tab"
+                                        label={translate(tab.props.label, {
+                                            _: tab.props.label,
+                                        })}
+                                        value={index}
+                                        icon={tab.props.icon}
+                                        buttonStyle={
+                                            tabsWithErrors.includes(
+                                                tab.props.label
+                                            ) && this.state.value !== index ? (
+                                                styles.errorTabButton
+                                            ) : null
+                                        }
+                                    >
+                                        {React.cloneElement(tab, {
+                                            resource,
+                                            record,
+                                            basePath,
+                                        })}
+                                    </Tab>
+                                ) : null
                         )}
                     </Tabs>
                 </div>
-                {toolbar && React.cloneElement(toolbar, {
-                    handleSubmitWithRedirect: this.handleSubmitWithRedirect,
-                    invalid,
-                    submitOnEnter,
-                })}
+                {toolbar &&
+                    React.cloneElement(toolbar, {
+                        handleSubmitWithRedirect: this.handleSubmitWithRedirect,
+                        invalid,
+                        submitOnEnter,
+                    })}
             </form>
         );
     }
@@ -68,18 +105,12 @@ TabbedForm.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
     contentContainerStyle: PropTypes.object,
-    defaultValue: PropTypes.oneOfType([
-        PropTypes.object,
-        PropTypes.func,
-    ]),
+    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
     muiTheme: PropTypes.object.isRequired,
     record: PropTypes.object,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-    ]),
+    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     submitOnEnter: PropTypes.bool,
@@ -95,7 +126,7 @@ TabbedForm.defaultProps = {
     toolbar: <Toolbar />,
 };
 
-const collectErrors = (state) => {
+const collectErrors = state => {
     const syncErrors = getFormSyncErrors('record-form')(state);
     const asyncErrors = getFormAsyncErrors('record-form')(state);
     const submitErrors = getFormSubmitErrors('record-form')(state);
@@ -107,7 +138,11 @@ const collectErrors = (state) => {
     };
 };
 
-export const findTabsWithErrors = (state, props, collectErrorsImpl = collectErrors) => {
+export const findTabsWithErrors = (
+    state,
+    props,
+    collectErrorsImpl = collectErrors
+) => {
     const errors = collectErrorsImpl(state);
 
     return Children.toArray(props.children).reduce((acc, child) => {
@@ -123,10 +158,10 @@ export const findTabsWithErrors = (state, props, collectErrorsImpl = collectErro
 
 const enhance = compose(
     connect((state, props) => {
-        const children = Children.toArray(props.children).reduce((acc, child) => [
-            ...acc,
-            ...Children.toArray(child.props.children),
-        ], []);
+        const children = Children.toArray(props.children).reduce(
+            (acc, child) => [...acc, ...Children.toArray(child.props.children)],
+            []
+        );
 
         return {
             tabsWithErrors: findTabsWithErrors(state, props),
@@ -137,7 +172,7 @@ const enhance = compose(
         form: 'record-form',
         enableReinitialize: true,
     }),
-    muiThemeable(),
+    muiThemeable()
 );
 
 export default enhance(TabbedForm);

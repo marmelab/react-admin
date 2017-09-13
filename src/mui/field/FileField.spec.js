@@ -9,7 +9,7 @@ describe('<FileField />', () => {
     });
 
     it('should render a link with correct attributes based on `source` and `title`', () => {
-        const wrapper = shallow((
+        const wrapper = shallow(
             <FileField
                 record={{
                     url: 'http://foo.com/bar.jpg',
@@ -18,7 +18,7 @@ describe('<FileField />', () => {
                 source="url"
                 title="title"
             />
-        ));
+        );
 
         const link = wrapper.find('a');
         assert.equal(link.prop('href'), 'http://foo.com/bar.jpg');
@@ -26,7 +26,7 @@ describe('<FileField />', () => {
     });
 
     it('should support deep linking', () => {
-        const wrapper = shallow((
+        const wrapper = shallow(
             <FileField
                 record={{
                     file: {
@@ -37,7 +37,7 @@ describe('<FileField />', () => {
                 source="file.url"
                 title="file.title"
             />
-        ));
+        );
 
         const link = wrapper.find('a');
         assert.equal(link.prop('href'), 'http://foo.com/bar.jpg');
@@ -45,7 +45,7 @@ describe('<FileField />', () => {
     });
 
     it('should allow setting static string as title', () => {
-        const wrapper = shallow((
+        const wrapper = shallow(
             <FileField
                 record={{
                     url: 'http://foo.com/bar.jpg',
@@ -53,29 +53,32 @@ describe('<FileField />', () => {
                 source="url"
                 title="Hello world!"
             />
-        ));
+        );
 
         const link = wrapper.find('a');
         assert.equal(link.prop('title'), 'Hello world!');
     });
 
     it('should render a list of links with correct attributes based on `src` and `title`', () => {
-        const wrapper = shallow((
+        const wrapper = shallow(
             <FileField
                 record={{
-                    files: [{
-                        url: 'http://foo.com/bar.jpg',
-                        title: 'Hello world!',
-                    }, {
-                        url: 'http://bar.com/foo.jpg',
-                        title: 'Bye world!',
-                    }],
+                    files: [
+                        {
+                            url: 'http://foo.com/bar.jpg',
+                            title: 'Hello world!',
+                        },
+                        {
+                            url: 'http://bar.com/foo.jpg',
+                            title: 'Bye world!',
+                        },
+                    ],
                 }}
                 source="files"
                 src="url"
                 title="title"
             />
-        ));
+        );
 
         const links = wrapper.find('a');
         assert.equal(links.at(0).prop('href'), 'http://foo.com/bar.jpg');

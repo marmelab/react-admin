@@ -49,7 +49,13 @@ At any given time, `next` represents the latest development version of the libra
 
 ### Coding style
 
-Please follow the coding style of the current code base. Admin-on-rest uses eslint, so if possible, enable linting in your editor to get realtime feedback.
+You must follow the coding style of the existing files. Admin-on-rest uses eslint and [prettier](https://github.com/prettier/prettier). You can reformat all the project files automatically by calling
+
+```sh
+make prettier
+```
+
+**Tip**: If possible, enable linting in your editor to get realtime feedback and/or fixes.
 
 ## License
 

@@ -1,22 +1,16 @@
 import { combineReducers } from 'redux';
-import resourceReducer from './resource';
-import loading from './loading';
-import notification from './notification';
-import references from './references';
-import saving from './saving';
-import ui from './ui';
+import { reducer as formReducer } from 'redux-form';
+import { routerReducer } from 'react-router-redux';
+import admin, { getResources as getAdminResources } from './admin';
+import localeReducer from './locale';
 
-export default (resources) => {
-    const resourceReducers = {};
-    resources.forEach((resource) => {
-        resourceReducers[resource.name] = resourceReducer(resource.name, resource.options);
+export default (customReducers, locale) =>
+    combineReducers({
+        admin,
+        locale: localeReducer(locale),
+        form: formReducer,
+        routing: routerReducer,
+        ...customReducers,
     });
-    return combineReducers({
-        ...resourceReducers,
-        loading,
-        notification,
-        references,
-        saving,
-        ui,
-    });
-};
+
+export const getResources = state => getAdminResources(state.admin);

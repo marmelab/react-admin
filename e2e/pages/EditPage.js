@@ -1,9 +1,11 @@
 import { By, until } from 'selenium-webdriver';
 
-module.exports = url => driver => ({
+export default url => driver => ({
     elements: {
         appLoader: By.css('.app-loader'),
         input: name => By.css(`.edit-page input[name='${name}']`),
+        inputs: By.css(`.aor-input`),
+        tabs: By.css(`.form-tab`),
         submitButton: By.css(".edit-page button[type='submit']"),
         tab: index => By.css(`button.form-tab:nth-of-type(${index})`),
         title: By.css('.title'),
@@ -20,9 +22,19 @@ module.exports = url => driver => ({
 
     waitUntilDataLoaded() {
         let continued = true;
-        return driver.wait(until.elementLocated(this.elements.appLoader), 2000)
-            .catch(() => continued = false) // no loader - we're on the same page !
-            .then(() => continued ? driver.wait(until.stalenessOf(driver.findElement(this.elements.appLoader))) : true)
+        return driver
+            .wait(until.elementLocated(this.elements.appLoader), 2000)
+            .catch(() => (continued = false)) // no loader - we're on the same page !
+            .then(
+                () =>
+                    continued
+                        ? driver.wait(
+                              until.stalenessOf(
+                                  driver.findElement(this.elements.appLoader)
+                              )
+                          )
+                        : true
+            )
             .catch(() => {}) // The element might have disapeared before the wait on the previous line
             .then(() => driver.sleep(100)); // let some time to redraw
     },
@@ -30,6 +42,27 @@ module.exports = url => driver => ({
     getInputValue(name) {
         const input = driver.findElement(this.elements.input(name));
         return input.getAttribute('value');
+    },
+
+    getFields() {
+        return driver.findElements(this.elements.inputs).then(fields =>
+            Promise.all(
+                fields.map(field =>
+                    field.getAttribute('class').then(classes =>
+                        classes
+                            .replace('aor-input-', '')
+                            .replace('aor-input', '')
+                            .trim()
+                    )
+                )
+            )
+        );
+    },
+
+    getTabs() {
+        return driver
+            .findElements(this.elements.tabs)
+            .then(tabs => Promise.all(tabs.map(tab => tab.getText())));
     },
 
     setInputValue(name, value, clearPreviousValue = true) {

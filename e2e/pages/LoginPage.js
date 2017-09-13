@@ -1,6 +1,6 @@
 import { By, until } from 'selenium-webdriver';
 
-module.exports = (url) => (driver) => ({
+export default url => driver => ({
     elements: {
         username: By.css("input[name='username']"),
         password: By.css("input[name='password']"),
@@ -9,11 +9,14 @@ module.exports = (url) => (driver) => ({
 
     navigate() {
         driver.navigate().to(url);
-        return this.waitUntilVisible();
+        this.waitUntilVisible();
+        return driver.sleep(250);
     },
 
     waitUntilVisible() {
-        return driver.wait(until.elementLocated(this.elements.username));
+        driver
+            .wait(until.elementLocated(this.elements.username))
+            .then(element => driver.wait(until.elementIsEnabled(element)));
     },
 
     login(username = 'login', password = 'password') {

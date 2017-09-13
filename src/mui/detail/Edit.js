@@ -6,9 +6,13 @@ import compose from 'recompose/compose';
 import inflection from 'inflection';
 import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
-import { crudGetOne as crudGetOneAction, crudUpdate as crudUpdateAction } from '../../actions/dataActions';
+import {
+    crudGetOne as crudGetOneAction,
+    crudUpdate as crudUpdateAction,
+} from '../../actions/dataActions';
 import DefaultActions from './EditActions';
 import translate from '../../i18n/translate';
+import withPermissionsFilteredChildren from '../../auth/withPermissionsFilteredChildren';
 
 export class Edit extends Component {
     constructor(props) {
@@ -32,14 +36,20 @@ export class Edit extends Component {
                 this.setState({ key: this.state.key + 1 });
             }
         }
-        if (this.props.id !== nextProps.id) {
+        if (
+            this.props.id !== nextProps.id ||
+            nextProps.version !== this.props.version
+        ) {
             this.updateData(nextProps.resource, nextProps.id);
         }
     }
 
     getBasePath() {
         const { location } = this.props;
-        return location.pathname.split('/').slice(0, -1).join('/');
+        return location.pathname
+            .split('/')
+            .slice(0, -1)
+            .join('/');
     }
 
     defaultRedirectRoute() {
@@ -50,19 +60,33 @@ export class Edit extends Component {
         this.props.crudGetOne(resource, id, this.getBasePath());
     }
 
-    refresh = (event) => {
-        event.stopPropagation();
-        this.fullRefresh = true;
-        this.updateData();
-    }
-
     save = (record, redirect) => {
-        this.props.crudUpdate(this.props.resource, this.props.id, record, this.props.data, this.getBasePath(), redirect);
-    }
+        this.props.crudUpdate(
+            this.props.resource,
+            this.props.id,
+            record,
+            this.props.data,
+            this.getBasePath(),
+            redirect
+        );
+    };
 
     render() {
-        const { actions = <DefaultActions />, children, data, hasDelete, hasShow, id, isLoading, resource, title, translate } = this.props;
-        const { key } = this.state;
+        const {
+            actions = <DefaultActions />,
+            children,
+            data,
+            hasDelete,
+            hasShow,
+            id,
+            isLoading,
+            resource,
+            title,
+            translate,
+        } = this.props;
+
+        if (!children) return null;
+
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
@@ -74,33 +98,36 @@ export class Edit extends Component {
             id,
             data,
         });
-        const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
-        // using this.previousKey instead of this.fullRefresh makes
-        // the new form mount, the old form unmount, and the new form update appear in the same frame
-        // so the form doesn't disappear while refreshing
-        const isRefreshing = key !== this.previousKey;
-        this.previousKey = key;
+        const titleElement = data ? (
+            <Title title={title} record={data} defaultTitle={defaultTitle} />
+        ) : (
+            ''
+        );
 
         return (
             <div className="edit-page">
-                <Card style={{ opacity: isLoading ? 0.8 : 1 }} key={key}>
-                    {actions && React.cloneElement(actions, {
-                        basePath,
-                        data,
-                        hasDelete,
-                        hasShow,
-                        refresh: this.refresh,
-                        resource,
-                    })}
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                    {actions &&
+                        React.cloneElement(actions, {
+                            basePath,
+                            data,
+                            hasDelete,
+                            hasShow,
+                            resource,
+                        })}
                     <ViewTitle title={titleElement} />
-                    {data && !isRefreshing && React.cloneElement(children, {
-                        save: this.save,
-                        resource,
-                        basePath,
-                        record: data,
-                        translate,
-                        redirect: typeof children.props.redirect === 'undefined' ? this.defaultRedirectRoute() : children.props.redirect,
-                    })}
+                    {data &&
+                        React.cloneElement(children, {
+                            save: this.save,
+                            resource,
+                            basePath,
+                            record: data,
+                            translate,
+                            redirect:
+                                typeof children.props.redirect === 'undefined'
+                                    ? this.defaultRedirectRoute()
+                                    : children.props.redirect,
+                        })}
                     {!data && <CardText>&nbsp;</CardText>}
                 </Card>
             </div>
@@ -110,7 +137,7 @@ export class Edit extends Component {
 
 Edit.propTypes = {
     actions: PropTypes.element,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node,
     crudGetOne: PropTypes.func.isRequired,
     crudUpdate: PropTypes.func.isRequired,
     data: PropTypes.object,
@@ -123,22 +150,29 @@ Edit.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
+    version: PropTypes.number.isRequired,
 };
 
 function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
-        data: state.admin[props.resource].data[decodeURIComponent(props.match.params.id)],
+        data: state.admin.resources[props.resource]
+            ? state.admin.resources[props.resource].data[
+                  decodeURIComponent(props.match.params.id)
+              ]
+            : null,
         isLoading: state.admin.loading > 0,
+        version: state.admin.ui.viewVersion,
     };
 }
 
 const enhance = compose(
-    connect(
-        mapStateToProps,
-        { crudGetOne: crudGetOneAction, crudUpdate: crudUpdateAction },
-    ),
+    connect(mapStateToProps, {
+        crudGetOne: crudGetOneAction,
+        crudUpdate: crudUpdateAction,
+    }),
     translate,
+    withPermissionsFilteredChildren
 );
 
 export default enhance(Edit);

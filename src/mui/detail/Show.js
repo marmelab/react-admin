@@ -9,6 +9,7 @@ import Title from '../layout/Title';
 import { crudGetOne as crudGetOneAction } from '../../actions/dataActions';
 import DefaultActions from './ShowActions';
 import translate from '../../i18n/translate';
+import withPermissionsFilteredChildren from '../../auth/withPermissionsFilteredChildren';
 
 export class Show extends Component {
     componentDidMount() {
@@ -16,28 +17,41 @@ export class Show extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.id !== nextProps.id) {
+        if (
+            this.props.id !== nextProps.id ||
+            nextProps.version !== this.props.version
+        ) {
             this.updateData(nextProps.resource, nextProps.id);
         }
     }
 
     getBasePath() {
         const { location } = this.props;
-        return location.pathname.split('/').slice(0, -2).join('/');
+        return location.pathname
+            .split('/')
+            .slice(0, -2)
+            .join('/');
     }
 
     updateData(resource = this.props.resource, id = this.props.id) {
         this.props.crudGetOne(resource, id, this.getBasePath());
     }
 
-    refresh = (event) => {
-        event.stopPropagation();
-        this.fullRefresh = true;
-        this.updateData();
-    }
-
     render() {
-        const { actions = <DefaultActions />, title, children, id, data, isLoading, resource, hasDelete, hasEdit, translate } = this.props;
+        const {
+            actions = <DefaultActions />,
+            title,
+            children,
+            id,
+            data,
+            isLoading,
+            resource,
+            hasDelete,
+            hasEdit,
+            translate,
+        } = this.props;
+
+        if (!children) return null;
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
@@ -49,26 +63,31 @@ export class Show extends Component {
             id,
             data,
         });
-        const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
+        const titleElement = data ? (
+            <Title title={title} record={data} defaultTitle={defaultTitle} />
+        ) : (
+            ''
+        );
 
         return (
             <div>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    {actions && React.cloneElement(actions, {
-                        basePath,
-                        data,
-                        hasDelete,
-                        hasEdit,
-                        refresh: this.refresh,
-                        resource,
-                    })}
+                    {actions &&
+                        React.cloneElement(actions, {
+                            basePath,
+                            data,
+                            hasDelete,
+                            hasEdit,
+                            resource,
+                        })}
                     <ViewTitle title={titleElement} />
-                    {data && React.cloneElement(children, {
-                        resource,
-                        basePath,
-                        record: data,
-                        translate,
-                    })}
+                    {data &&
+                        React.cloneElement(children, {
+                            resource,
+                            basePath,
+                            record: data,
+                            translate,
+                        })}
                 </Card>
             </div>
         );
@@ -89,22 +108,26 @@ Show.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
+    version: PropTypes.number.isRequired,
 };
 
 function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
-        data: state.admin[props.resource].data[decodeURIComponent(props.match.params.id)],
+        data: state.admin.resources[props.resource]
+            ? state.admin.resources[props.resource].data[
+                  decodeURIComponent(props.match.params.id)
+              ]
+            : null,
         isLoading: state.admin.loading > 0,
+        version: state.admin.ui.viewVersion,
     };
 }
 
 const enhance = compose(
-    connect(
-        mapStateToProps,
-        { crudGetOne: crudGetOneAction },
-    ),
+    connect(mapStateToProps, { crudGetOne: crudGetOneAction }),
     translate,
+    withPermissionsFilteredChildren
 );
 
 export default enhance(Show);

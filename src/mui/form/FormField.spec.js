@@ -2,7 +2,7 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import FormField from './FormField';
+import { FormFieldComponent as FormField } from './FormField';
 
 describe('<FormField>', () => {
     const Foo = () => <div />;
@@ -12,7 +12,7 @@ describe('<FormField>', () => {
         const component = wrapper.find('Foo');
         assert.equal(component.length, 1);
     });
-    it('should render the input component even if it\'s an html element', () => {
+    it("should render the input component even if it's an html element", () => {
         const wrapper = shallow(<FormField input={<div />} />);
         const component = wrapper.find('div');
         assert.equal(component.length, 1);
@@ -33,7 +33,9 @@ describe('<FormField>', () => {
         assert.equal(component, 'Foo');
     });
     it('should render a <Labeled /> component when addField is true and addLabel is true', () => {
-        const wrapper = shallow(<FormField input={<Foo addField addLabel />} />);
+        const wrapper = shallow(
+            <FormField input={<Foo addField addLabel />} />
+        );
         const component = wrapper.find('Field').prop('component').name;
         assert.equal(component, 'Labeled');
     });

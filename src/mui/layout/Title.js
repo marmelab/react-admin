@@ -18,15 +18,12 @@ Title.propTypes = {
     defaultTitle: PropTypes.string.isRequired,
     record: PropTypes.object,
     translate: PropTypes.func.isRequired,
-    title: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.element,
-    ]),
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
 
 const enhance = compose(
     translate,
-    onlyUpdateForKeys('defaultTitle', 'record', 'title'),
+    onlyUpdateForKeys('defaultTitle', 'record', 'title')
 );
 
 export default enhance(Title);

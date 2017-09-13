@@ -23,26 +23,61 @@ const styles = {
     },
 };
 
-export const DatagridHeaderCell = ({ field, defaultStyle, currentSort, updateSort, resource }) => {
-    const style = defaultsDeep({}, field.props.headerStyle, field.type.defaultProps ? field.type.defaultProps.headerStyle : {}, defaultStyle);
+export const DatagridHeaderCell = ({
+    field,
+    defaultStyle,
+    currentSort,
+    updateSort,
+    resource,
+}) => {
+    const style = defaultsDeep(
+        {},
+        field.props.headerStyle,
+        field.type.defaultProps ? field.type.defaultProps.headerStyle : {},
+        defaultStyle
+    );
     return (
         <TableHeaderColumn style={style}>
-            {field.props.sortable !== false && field.props.source ?
+            {field.props.sortable !== false && field.props.source ? (
                 <FlatButton
                     labelPosition="before"
                     onClick={updateSort}
                     data-sort={field.props.source}
-                    label={<FieldTitle label={field.props.label} source={field.props.source} resource={resource} />}
-                    icon={field.props.source === currentSort.field ?
-                        <ContentSort style={currentSort.order === 'ASC' ? { transform: 'rotate(180deg)' } : {}} /> : false
+                    label={
+                        <FieldTitle
+                            label={field.props.label}
+                            source={field.props.source}
+                            resource={resource}
+                        />
+                    }
+                    icon={
+                        field.props.source === currentSort.field ? (
+                            <ContentSort
+                                style={
+                                    currentSort.order === 'ASC' ? (
+                                        { transform: 'rotate(180deg)' }
+                                    ) : (
+                                        {}
+                                    )
+                                }
+                            />
+                        ) : (
+                            false
+                        )
                     }
                     style={styles.sortButton}
                 />
-            :
+            ) : (
                 <span style={styles.nonSortableLabel}>
-                    {<FieldTitle label={field.props.label} source={field.props.source} resource={resource} />}
+                    {
+                        <FieldTitle
+                            label={field.props.label}
+                            source={field.props.source}
+                            resource={resource}
+                        />
+                    }
                 </span>
-            }
+            )}
         </TableHeaderColumn>
     );
 };
@@ -65,7 +100,9 @@ DatagridHeaderCell.propTypes = {
     updateSort: PropTypes.func.isRequired,
 };
 
-export default shouldUpdate((props, nextProps) =>
-    props.isSorting !== nextProps.isSorting
-    || (nextProps.isSorting && props.currentSort.order !== nextProps.currentSort.order),
+export default shouldUpdate(
+    (props, nextProps) =>
+        props.isSorting !== nextProps.isSorting ||
+        (nextProps.isSorting &&
+            props.currentSort.order !== nextProps.currentSort.order)
 )(DatagridHeaderCell);
