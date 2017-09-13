@@ -42,21 +42,17 @@ export default (url, initialField = 'title') => driver => ({
     },
 
     getFields() {
-        return driver
-            .findElements(this.elements.fields)
-            .then(fields =>
-                Promise.all(
-                    fields.map(field =>
-                        field
-                            .getAttribute('class')
-                            .then(classes =>
-                                classes
-                                    .replace('aor-field-', '')
-                                    .replace('aor-field', '')
-                                    .trim()
-                            )
+        return driver.findElements(this.elements.fields).then(fields =>
+            Promise.all(
+                fields.map(field =>
+                    field.getAttribute('class').then(classes =>
+                        classes
+                            .replace('aor-field-', '')
+                            .replace('aor-field', '')
+                            .trim()
                     )
                 )
-            );
+            )
+        );
     },
 });

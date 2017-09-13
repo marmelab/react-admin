@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
 
-const EmailField = ({ source, record = {}, elStyle }) =>
+const EmailField = ({ source, record = {}, elStyle }) => (
     <a style={elStyle} href={`mailto:${get(record, source)}`}>
         {get(record, source)}
-    </a>;
+    </a>
+);
 
 EmailField.propTypes = {
     addLabel: PropTypes.bool,

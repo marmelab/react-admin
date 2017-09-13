@@ -7,11 +7,7 @@ import pure from 'recompose/pure';
  * <FunctionField source="last_name" label="Name" render={record => `${record.first_name} ${record.last_name}`} />
  */
 const FunctionField = ({ record = {}, source, render, elStyle }) =>
-    record
-        ? <span style={elStyle}>
-              {render(record, source)}
-          </span>
-        : null;
+    record ? <span style={elStyle}>{render(record, source)}</span> : null;
 
 FunctionField.propTypes = {
     addLabel: PropTypes.bool,

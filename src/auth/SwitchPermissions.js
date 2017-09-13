@@ -58,14 +58,15 @@ export class SwitchPermissionsComponent extends Component {
         }
     }
 
-    renderSourceChild = (child, props) =>
+    renderSourceChild = (child, props) => (
         <div
             key={child.props.source}
             style={child.props.style}
             className={`aor-input aor-input-${child.props.source}`}
         >
             <FormField input={child} {...props} />
-        </div>;
+        </div>
+    );
 
     render() {
         const { isNotFound, match, role } = this.state;
@@ -94,17 +95,21 @@ export class SwitchPermissionsComponent extends Component {
                     {React.Children.map(
                         match,
                         child =>
-                            child.props.source
-                                ? this.renderSourceChild(child)
-                                : <FormField input={child} {...props} />
+                            child.props.source ? (
+                                this.renderSourceChild(child)
+                            ) : (
+                                <FormField input={child} {...props} />
+                            )
                     )}
                 </div>
             );
         }
 
-        return match.props.source
-            ? this.renderSourceChild(match)
-            : <FormField input={match} {...props} />;
+        return match.props.source ? (
+            this.renderSourceChild(match)
+        ) : (
+            <FormField input={match} {...props} />
+        );
     }
 }
 

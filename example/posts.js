@@ -49,13 +49,11 @@ import Chip from 'material-ui/Chip';
 
 export PostIcon from 'material-ui/svg-icons/action/book';
 
-const QuickFilter = translate(({ label, translate }) =>
-    <Chip style={{ marginBottom: 8 }}>
-        {translate(label)}
-    </Chip>
-);
+const QuickFilter = translate(({ label, translate }) => (
+    <Chip style={{ marginBottom: 8 }}>{translate(label)}</Chip>
+));
 
-const PostFilter = ({ ...props }) =>
+const PostFilter = ({ ...props }) => (
     <Filter {...props}>
         <TextInput label="post.list.search" source="q" alwaysOn />
         <TextInput
@@ -70,7 +68,8 @@ const PostFilter = ({ ...props }) =>
             source="commentable"
             defaultValue
         />
-    </Filter>;
+    </Filter>
+);
 
 const titleFieldStyle = {
     maxWidth: '20em',
@@ -78,7 +77,7 @@ const titleFieldStyle = {
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
 };
-export const PostList = ({ ...props }) =>
+export const PostList = ({ ...props }) => (
     <List
         {...props}
         filters={<PostFilter />}
@@ -120,15 +119,16 @@ export const PostList = ({ ...props }) =>
                 </Datagrid>
             }
         />
-    </List>;
+    </List>
+);
 
-const PostTitle = translate(({ record, translate }) =>
+const PostTitle = translate(({ record, translate }) => (
     <span>
         {record ? translate('post.edit.title', { title: record.title }) : ''}
     </span>
-);
+));
 
-const PostCreateToolbar = props =>
+const PostCreateToolbar = props => (
     <Toolbar {...props}>
         <SaveButton
             label="post.action.save_and_show"
@@ -141,9 +141,10 @@ const PostCreateToolbar = props =>
             submitOnEnter={false}
             raised={false}
         />
-    </Toolbar>;
+    </Toolbar>
+);
 
-export const PostCreate = ({ ...props }) =>
+export const PostCreate = ({ ...props }) => (
     <Create {...props}>
         <SimpleForm
             toolbar={<PostCreateToolbar />}
@@ -171,11 +172,12 @@ export const PostCreate = ({ ...props }) =>
             <NumberInput source="average_note" />
             <BooleanInput source="commentable" defaultValue />
         </SimpleForm>
-    </Create>;
+    </Create>
+);
 
 const emptyKeycode = [];
 
-export const PostEdit = ({ ...props }) =>
+export const PostEdit = ({ ...props }) => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label="post.form.summary">
@@ -242,9 +244,10 @@ export const PostEdit = ({ ...props }) =>
                 </ReferenceManyField>
             </FormTab>
         </TabbedForm>
-    </Edit>;
+    </Edit>
+);
 
-export const PostShow = ({ ...props }) =>
+export const PostShow = ({ ...props }) => (
     <Show title={<PostTitle />} {...props}>
         <TabbedShowLayout>
             <Tab label="post.form.summary">
@@ -294,4 +297,5 @@ export const PostShow = ({ ...props }) =>
                 </ReferenceManyField>
             </Tab>
         </TabbedShowLayout>
-    </Show>;
+    </Show>
+);

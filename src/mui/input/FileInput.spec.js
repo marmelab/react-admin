@@ -88,7 +88,7 @@ describe('<FileInput />', () => {
                 }}
                 translate={x => x}
                 source="src"
-            />,
+            />
         );
 
         wrapper.instance().onDrop([{ preview: 'new_b64_picture' }]);
@@ -109,7 +109,7 @@ describe('<FileInput />', () => {
                 }}
                 translate={x => x}
                 source="src"
-            />,
+            />
         );
 
         wrapper.instance().onRemove({ src: 'b64_picture' })();
@@ -131,7 +131,7 @@ describe('<FileInput />', () => {
                 translate={x => x}
                 source="pictures"
                 multiple
-            />,
+            />
         );
 
         wrapper.instance().onDrop([{ preview: 'new_b64_picture' }]);
@@ -158,7 +158,7 @@ describe('<FileInput />', () => {
                 translate={x => x}
                 source="pictures"
                 multiple
-            />,
+            />
         );
 
         wrapper.instance().onRemove({ src: 'another_b64_picture' })();

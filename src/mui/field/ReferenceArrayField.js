@@ -111,7 +111,6 @@ const mapStateToProps = (state, props) => {
         data: getReferencesByIds(state, reference, ids),
         ids,
         isLoading: state.admin.loading > 0,
-        data: getReferencesByIds(state, reference, ids),
     };
 };
 

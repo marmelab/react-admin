@@ -45,22 +45,18 @@ export default url => driver => ({
     },
 
     getFields() {
-        return driver
-            .findElements(this.elements.inputs)
-            .then(fields =>
-                Promise.all(
-                    fields.map(field =>
-                        field
-                            .getAttribute('class')
-                            .then(classes =>
-                                classes
-                                    .replace('aor-input-', '')
-                                    .replace('aor-input', '')
-                                    .trim()
-                            )
+        return driver.findElements(this.elements.inputs).then(fields =>
+            Promise.all(
+                fields.map(field =>
+                    field.getAttribute('class').then(classes =>
+                        classes
+                            .replace('aor-input-', '')
+                            .replace('aor-input', '')
+                            .trim()
                     )
                 )
-            );
+            )
+        );
     },
 
     getTabs() {

@@ -50,7 +50,10 @@ class Delete extends Component {
 
     getBasePath() {
         const { location } = this.props;
-        return location.pathname.split('/').slice(0, -2).join('/');
+        return location.pathname
+            .split('/')
+            .slice(0, -2)
+            .join('/');
     }
 
     handleSubmit(event) {
@@ -80,9 +83,11 @@ class Delete extends Component {
             id,
             data,
         });
-        const titleElement = data
-            ? <Title title={title} record={data} defaultTitle={defaultTitle} />
-            : '';
+        const titleElement = data ? (
+            <Title title={title} record={data} defaultTitle={defaultTitle} />
+        ) : (
+            ''
+        );
 
         return (
             <div>

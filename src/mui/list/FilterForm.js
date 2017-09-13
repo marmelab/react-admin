@@ -49,42 +49,47 @@ export class FilterForm extends Component {
         return (
             <div>
                 <CardText style={prefix(styles.card)}>
-                    {this.getShownFilters().reverse().map(filterElement =>
-                        <div
-                            key={filterElement.props.source}
-                            data-source={filterElement.props.source}
-                            className="filter-field"
-                            style={
-                                filterElement.props.style || prefix(styles.body)
-                            }
-                        >
-                            {filterElement.props.alwaysOn
-                                ? <div style={prefix(styles.spacer)}>
-                                      &nbsp;
-                                  </div>
-                                : <IconButton
-                                      iconStyle={prefix(styles.icon)}
-                                      className="hide-filter"
-                                      onClick={this.handleHide}
-                                      data-key={filterElement.props.source}
-                                      tooltip={translate(
-                                          'aor.action.remove_filter'
-                                      )}
-                                  >
-                                      <ActionHide />
-                                  </IconButton>}
-                            <div>
-                                <Field
-                                    allowEmpty
-                                    {...filterElement.props}
-                                    name={filterElement.props.source}
-                                    component={filterElement.type}
-                                    resource={resource}
-                                    record={emptyRecord}
-                                />
+                    {this.getShownFilters()
+                        .reverse()
+                        .map(filterElement => (
+                            <div
+                                key={filterElement.props.source}
+                                data-source={filterElement.props.source}
+                                className="filter-field"
+                                style={
+                                    filterElement.props.style ||
+                                    prefix(styles.body)
+                                }
+                            >
+                                {filterElement.props.alwaysOn ? (
+                                    <div style={prefix(styles.spacer)}>
+                                        &nbsp;
+                                    </div>
+                                ) : (
+                                    <IconButton
+                                        iconStyle={prefix(styles.icon)}
+                                        className="hide-filter"
+                                        onClick={this.handleHide}
+                                        data-key={filterElement.props.source}
+                                        tooltip={translate(
+                                            'aor.action.remove_filter'
+                                        )}
+                                    >
+                                        <ActionHide />
+                                    </IconButton>
+                                )}
+                                <div>
+                                    <Field
+                                        allowEmpty
+                                        {...filterElement.props}
+                                        name={filterElement.props.source}
+                                        component={filterElement.type}
+                                        resource={resource}
+                                        record={emptyRecord}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        ))}
                 </CardText>
                 <div style={prefix(styles.clearFix)} />
             </div>

@@ -9,11 +9,14 @@ export default url => driver => ({
 
     navigate() {
         driver.navigate().to(url);
-        return this.waitUntilVisible();
+        this.waitUntilVisible();
+        return driver.sleep(250);
     },
 
     waitUntilVisible() {
-        return driver.wait(until.elementLocated(this.elements.username));
+        driver
+            .wait(until.elementLocated(this.elements.username))
+            .then(element => driver.wait(until.elementIsEnabled(element)));
     },
 
     login(username = 'login', password = 'password') {

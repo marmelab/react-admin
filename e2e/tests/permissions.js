@@ -20,27 +20,29 @@ describe('Permissions', () => {
         'name'
     )(driver);
 
-    it('hides protected resources depending on permissions', async () => {
-        await LoginPage.navigate();
-        await LoginPage.login('login', 'password');
+    describe('Resources', () => {
+        it('hides protected resources depending on permissions', async () => {
+            await LoginPage.navigate();
+            await LoginPage.login('login', 'password');
 
-        assert.deepEqual(await ListPage.getResources(), [
-            'Posts',
-            'Comments',
-            'Logout',
-        ]);
-    });
+            assert.deepEqual(await ListPage.getResources(), [
+                'Posts',
+                'Comments',
+                'Logout',
+            ]);
+        });
 
-    it('shows protected resources depending on permissions', async () => {
-        await LoginPage.navigate();
-        await LoginPage.login('user', 'password');
+        it('shows protected resources depending on permissions', async () => {
+            await LoginPage.navigate();
+            await LoginPage.login('user', 'password');
 
-        assert.deepEqual(await ListPage.getResources(), [
-            'Posts',
-            'Comments',
-            'Users',
-            'Logout',
-        ]);
+            assert.deepEqual(await ListPage.getResources(), [
+                'Posts',
+                'Comments',
+                'Users',
+                'Logout',
+            ]);
+        });
     });
 
     describe('hides protected data depending on permissions', () => {

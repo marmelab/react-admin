@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Permission = () =>
+const Permission = () => (
     <span>
         &lt;Permission&gt; elements are for configuration only and should not be
         rendered
-    </span>;
+    </span>
+);
 
 Permission.propTypes = {
     children: PropTypes.node.isRequired,

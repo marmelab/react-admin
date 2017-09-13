@@ -58,34 +58,38 @@ export class FilterButton extends Component {
         const { open, anchorEl } = this.state;
 
         return (
-            hiddenFilters.length > 0 &&
-            <div style={{ display: 'inline-block' }}>
-                <FlatButton
-                    className="add-filter"
-                    primary
-                    label={this.props.translate('aor.action.add_filter')}
-                    icon={<ContentFilter />}
-                    onClick={this.handleTouchTap}
-                />
-                <Popover
-                    open={open}
-                    anchorEl={anchorEl}
-                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-                    targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-                    onRequestClose={this.handleRequestClose}
-                >
-                    <Menu>
-                        {hiddenFilters.map(filterElement =>
-                            <FilterButtonMenuItem
-                                key={filterElement.props.source}
-                                filter={filterElement.props}
-                                resource={resource}
-                                onShow={this.handleShow}
-                            />
-                        )}
-                    </Menu>
-                </Popover>
-            </div>
+            hiddenFilters.length > 0 && (
+                <div style={{ display: 'inline-block' }}>
+                    <FlatButton
+                        className="add-filter"
+                        primary
+                        label={this.props.translate('aor.action.add_filter')}
+                        icon={<ContentFilter />}
+                        onClick={this.handleTouchTap}
+                    />
+                    <Popover
+                        open={open}
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                            horizontal: 'left',
+                            vertical: 'bottom',
+                        }}
+                        targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+                        onRequestClose={this.handleRequestClose}
+                    >
+                        <Menu>
+                            {hiddenFilters.map(filterElement => (
+                                <FilterButtonMenuItem
+                                    key={filterElement.props.source}
+                                    filter={filterElement.props}
+                                    resource={resource}
+                                    onShow={this.handleShow}
+                                />
+                            ))}
+                        </Menu>
+                    </Popover>
+                </div>
+            )
         );
     }
 }

@@ -128,17 +128,21 @@ export class CheckboxGroupInputComponent extends Component {
             <Checkbox
                 key={get(choice, optionValue)}
                 checked={
-                    value
-                        ? value.find(v => v == get(choice, optionValue)) !==
-                          undefined
-                        : false
+                    value ? (
+                        value.find(v => v == get(choice, optionValue)) !==
+                        undefined
+                    ) : (
+                        false
+                    )
                 }
                 onCheck={this.handleCheck}
                 value={get(choice, optionValue)}
                 label={
-                    translateChoice
-                        ? translate(choiceName, { _: choiceName })
-                        : choiceName
+                    translateChoice ? (
+                        translate(choiceName, { _: choiceName })
+                    ) : (
+                        choiceName
+                    )
                 }
                 {...options}
             />

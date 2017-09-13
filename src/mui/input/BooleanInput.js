@@ -24,7 +24,7 @@ const BooleanInput = ({
     elStyle,
     resource,
     options,
-}) =>
+}) => (
     <div style={elStyle || styles.block}>
         <Toggle
             defaultToggled={!!input.value}
@@ -41,7 +41,8 @@ const BooleanInput = ({
             }
             {...options}
         />
-    </div>;
+    </div>
+);
 
 BooleanInput.propTypes = {
     addField: PropTypes.bool.isRequired,

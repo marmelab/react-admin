@@ -7,11 +7,12 @@ const componentPropType = PropTypes.oneOfType([
     PropTypes.string,
 ]);
 
-const Resource = () =>
+const Resource = () => (
     <span>
         &lt;Resource&gt; elements are for configuration only and should not be
         rendered
-    </span>;
+    </span>
+);
 
 Resource.propTypes = {
     name: PropTypes.string.isRequired,

@@ -124,7 +124,6 @@ export class SelectInput extends Component {
 
     render() {
         const {
-            allowEmpty,
             choices,
             elStyle,
             isRequired,

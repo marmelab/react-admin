@@ -61,14 +61,15 @@ export class WithPermissionComponent extends Component {
         }
     }
 
-    renderSourceChild = (child, props) =>
+    renderSourceChild = (child, props) => (
         <div
             key={child.props.source}
             style={child.props.style}
             className={`aor-input aor-input-${child.props.source}`}
         >
             <FormField input={child} {...props} />
-        </div>;
+        </div>
+    );
 
     render() {
         const { isNotFound, match, role } = this.state;
@@ -103,17 +104,21 @@ export class WithPermissionComponent extends Component {
                     {React.Children.map(
                         children,
                         child =>
-                            child.props.source
-                                ? this.renderSourceChild(child, props)
-                                : <FormField input={child} {...props} />
+                            child.props.source ? (
+                                this.renderSourceChild(child, props)
+                            ) : (
+                                <FormField input={child} {...props} />
+                            )
                     )}
                 </div>
             );
         }
 
-        return children.props.source
-            ? this.renderSourceChild(children, props)
-            : <FormField input={children} {...props} />;
+        return children.props.source ? (
+            this.renderSourceChild(children, props)
+        ) : (
+            <FormField input={children} {...props} />
+        );
     }
 }
 

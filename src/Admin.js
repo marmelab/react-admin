@@ -77,7 +77,7 @@ const Admin = ({
                             />
                             {customRoutes
                                 .filter(route => route.props.noLayout)
-                                .map((route, index) =>
+                                .map((route, index) => (
                                     <Route
                                         key={index}
                                         exact={route.props.exact}
@@ -102,7 +102,7 @@ const Admin = ({
                                             }
                                         }}
                                     />
-                                )}
+                                ))}
                             <Route
                                 path="/"
                                 render={() =>

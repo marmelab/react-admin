@@ -11,7 +11,7 @@ export const NullableBooleanInput = ({
     elStyle,
     resource,
     translate,
-}) =>
+}) => (
     <SelectInput
         input={input}
         label={label}
@@ -24,7 +24,8 @@ export const NullableBooleanInput = ({
         ]}
         meta={meta}
         style={elStyle}
-    />;
+    />
+);
 
 NullableBooleanInput.propTypes = {
     addField: PropTypes.bool.isRequired,

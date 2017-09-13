@@ -89,18 +89,51 @@ export default url => driver => ({
     },
 
     nextPage() {
-        driver.findElement(this.elements.nextPage).click();
-        return this.waitUntilDataLoaded();
+        return driver
+            .findElement(this.elements.nextPage)
+            .then(element =>
+                driver
+                    .executeScript(
+                        'arguments[0].scrollIntoView(true);',
+                        element
+                    )
+                    .then(() => element)
+            )
+            .then(element => driver.sleep(250).then(() => element))
+            .then(element => element.click())
+            .then(() => this.waitUntilDataLoaded());
     },
 
     previousPage() {
-        driver.findElement(this.elements.previousPage).click();
-        return this.waitUntilDataLoaded();
+        return driver
+            .findElement(this.elements.previousPage)
+            .then(element =>
+                driver
+                    .executeScript(
+                        'arguments[0].scrollIntoView(true);',
+                        element
+                    )
+                    .then(() => element)
+            )
+            .then(element => driver.sleep(250).then(() => element))
+            .then(element => element.click())
+            .then(() => this.waitUntilDataLoaded());
     },
 
     goToPage(n) {
-        driver.findElement(this.elements.pageNumber(n)).click();
-        return this.waitUntilDataLoaded();
+        return driver
+            .findElement(this.elements.pageNumber(n))
+            .then(element =>
+                driver
+                    .executeScript(
+                        'arguments[0].scrollIntoView(true);',
+                        element
+                    )
+                    .then(() => element)
+            )
+            .then(element => driver.sleep(250).then(() => element))
+            .then(element => element.click())
+            .then(() => this.waitUntilDataLoaded());
     },
 
     setFilterValue(name, value, clearPreviousValue = true) {

@@ -84,9 +84,11 @@ export const SelectField = ({
           : choice[optionText];
     return (
         <span style={elStyle}>
-            {translateChoice
-                ? translate(choiceName, { _: choiceName })
-                : choiceName}
+            {translateChoice ? (
+                translate(choiceName, { _: choiceName })
+            ) : (
+                choiceName
+            )}
         </span>
     );
 };

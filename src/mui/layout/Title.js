@@ -6,18 +6,10 @@ import translate from '../../i18n/translate';
 
 const Title = ({ defaultTitle, record, title, translate }) => {
     if (!title) {
-        return (
-            <span>
-                {defaultTitle}
-            </span>
-        );
+        return <span>{defaultTitle}</span>;
     }
     if (typeof title === 'string') {
-        return (
-            <span>
-                {translate(title, { _: title })}
-            </span>
-        );
+        return <span>{translate(title, { _: title })}</span>;
     }
     return React.cloneElement(title, { record });
 };

@@ -67,15 +67,20 @@ describe('<SelectInput />', () => {
     });
 
     it('should not add a falsy (null or false) element when allowEmpty is false', () => {
-        const wrapper = shallow(<SelectInput
-            {...defaultProps}
-            choices={[
-                { id: 'M', name: 'Male' },
-                { id: 'F', name: 'Female' },
-            ]}
-        />);
+        const wrapper = shallow(
+            <SelectInput
+                {...defaultProps}
+                choices={[
+                    { id: 'M', name: 'Male' },
+                    { id: 'F', name: 'Female' },
+                ]}
+            />
+        );
         const SelectFieldElement = wrapper.find('SelectField').at(0);
-        assert.equal(SelectFieldElement.prop('children').includes(false), false);
+        assert.equal(
+            SelectFieldElement.prop('children').includes(false),
+            false
+        );
         assert.equal(SelectFieldElement.prop('children').includes(null), false);
     });
 
@@ -150,10 +155,7 @@ describe('<SelectInput />', () => {
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }) =>
-            <span>
-                {record.foobar}
-            </span>;
+        const Foobar = ({ record }) => <span>{record.foobar}</span>;
         const wrapper = shallow(
             <SelectInput
                 {...defaultProps}

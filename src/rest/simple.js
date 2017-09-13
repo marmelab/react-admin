@@ -115,7 +115,10 @@ export default (apiUrl, httpClient = fetchJson) => {
                 return {
                     data: json,
                     total: parseInt(
-                        headers.get('content-range').split('/').pop(),
+                        headers
+                            .get('content-range')
+                            .split('/')
+                            .pop(),
                         10
                     ),
                 };

@@ -8,6 +8,7 @@ const DatagridBody = ({
     resource,
     children,
     ids,
+    isLoading,
     data,
     basePath,
     styles,
@@ -15,14 +16,14 @@ const DatagridBody = ({
     options,
     rowOptions,
     ...rest
-}) =>
+}) => (
     <TableBody
         displayRowCheckbox={false}
         className="datagrid-body"
         {...rest}
         {...options}
     >
-        {ids.map((id, rowIndex) =>
+        {ids.map((id, rowIndex) => (
             <TableRow
                 style={rowStyle ? rowStyle(data[id], rowIndex) : styles.tr}
                 key={id}
@@ -32,23 +33,26 @@ const DatagridBody = ({
                 {React.Children.map(
                     children,
                     (field, index) =>
-                        field
-                            ? <DatagridCell
-                                  key={`${id}-${field.props.source || index}`}
-                                  className={`column-${field.props.source}`}
-                                  record={data[id]}
-                                  defaultStyle={
-                                      index === 0
-                                          ? styles.cell['td:first-child']
-                                          : styles.cell.td
-                                  }
-                                  {...{ field, basePath, resource }}
-                              />
-                            : null
+                        field ? (
+                            <DatagridCell
+                                key={`${id}-${field.props.source || index}`}
+                                className={`column-${field.props.source}`}
+                                record={data[id]}
+                                defaultStyle={
+                                    index === 0 ? (
+                                        styles.cell['td:first-child']
+                                    ) : (
+                                        styles.cell.td
+                                    )
+                                }
+                                {...{ field, basePath, resource }}
+                            />
+                        ) : null
                 )}
             </TableRow>
-        )}
-    </TableBody>;
+        ))}
+    </TableBody>
+);
 
 DatagridBody.propTypes = {
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,

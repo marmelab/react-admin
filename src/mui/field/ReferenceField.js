@@ -72,7 +72,10 @@ export class ReferenceField extends Component {
         if (!referenceRecord && !allowEmpty) {
             return <LinearProgress />;
         }
-        const rootPath = basePath.split('/').slice(0, -1).join('/');
+        const rootPath = basePath
+            .split('/')
+            .slice(0, -1)
+            .join('/');
         const href = linkToRecord(
             `${rootPath}/${reference}`,
             get(record, source)

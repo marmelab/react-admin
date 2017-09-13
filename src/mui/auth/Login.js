@@ -95,7 +95,7 @@ class Login extends Component {
                                         floatingLabelText={translate(
                                             'aor.auth.username'
                                         )}
-                                        disabled={submitting}
+                                        disabled={isLoading}
                                     />
                                 </div>
                                 <div style={styles.input}>
@@ -114,9 +114,9 @@ class Login extends Component {
                                 <RaisedButton
                                     type="submit"
                                     primary
-                                    disabled={submitting}
+                                    disabled={isLoading}
                                     icon={
-                                        submitting && (
+                                        isLoading && (
                                             <CircularProgress
                                                 size={25}
                                                 thickness={2}

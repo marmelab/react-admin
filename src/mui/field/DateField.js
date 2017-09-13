@@ -58,11 +58,7 @@ export const DateField = ({
           ? date.toLocaleDateString(locales, options)
           : date.toLocaleDateString();
 
-    return (
-        <span style={elStyle}>
-            {dateString}
-        </span>
-    );
+    return <span style={elStyle}>{dateString}</span>;
 };
 
 DateField.propTypes = {
