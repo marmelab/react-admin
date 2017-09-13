@@ -1,5 +1,27 @@
 # Changelog
 
+## v.1.3.0
+
+* Custom validator messages ([fzaninotto](https://github.com/fzaninotto))
+* Use stringify to generate query strings ([mtakayuki](https://github.com/mtakayuki))
+* Refactoring of the redux state ([lutangar](https://github.com/lutangar))
+* Use prettier for code formatting ([fzaninotto](https://github.com/fzaninotto))
+* Add Not found page ([fzaninotto](https://github.com/fzaninotto))
+* Webpack dependency moved to example ([fzaninotto](https://github.com/fzaninotto))
+* Support nested filter object ([mtakayuki](https://github.com/mtakayuki))
+* Add response body to HttpError ([marcw](https://github.com/marcw))
+* Layoutless custom routes ([marcw](https://github.com/marcw))
+* Refactor forms default values handling ([djhi](https://github.com/djhi))
+* Ability to refresh views using a redux action ([djhi](https://github.com/djhi))
+* Upgrade dependencies (MUI 0.19, react in peer dependencies) ([djhi](https://github.com/djhi))
+* Integrate aor-permissions ([djhi](https://github.com/djhi))
+* Add `previousData` to `crudDelete` payload ([grahamlyus](https://github.com/grahamlyus))
+* Fixed SelectInput with allowEmpty throws key-warning in React ([fab1an](https://github.com/fab1an))
+* Add greek translation ([zifnab87](https://github.com/zifnab87))
+* Fixed `onMenuTap` warning on medium and larger devices ([jf248](https://github.com/jf248))
+* add Ukrainian translation ([vitivs](https://github.com/vitivs))
+* Several documentation link fixes ([Phocea](https://github.com/Phocea))
+
 ## v1.2.3
 
 * Add Epilogue REST client ([dunghuynh](https://github.com/dunghuynh))
