@@ -268,7 +268,7 @@ With this code, approving a review now displays the correct notification, and re
 
 ## Bonus: Optimistic Rendering
 
-In this example, after clicking on the "Approve" button, users are redirected to the comments list. Admin-on-rest then fetches the `/comments` resource to grab the list of updated comments from the server. But admin-on-rest doesn't wait for the response to this call to display the list of comments. In fact, it has an internal instance pool (in `state.admin[resource]`) that is kept during navigation, and uses it to render the screen before the API calls are over - it's called *optimistic rendering*.
+In this example, after clicking on the "Approve" button, users are redirected to the comments list. Admin-on-rest then fetches the `/comments` resource to grab the list of updated comments from the server. But admin-on-rest doesn't wait for the response to this call to display the list of comments. In fact, it has an internal instance pool (in `state.admin.resources[resource]`) that is kept during navigation, and uses it to render the screen before the API calls are over - it's called *optimistic rendering*.
 
 As the custom `COMMENT_APPROVE` action contains the `fetch: UPDATE` meta, admin-on-rest will automatically update its instance pool with the response. That means that the initial rendering (before the `GET /comments` response arrives) will show the approved comment!
 
