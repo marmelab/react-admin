@@ -22,7 +22,6 @@ const Actions = ({
     hasCreate,
     basePath,
     showFilter,
-    refresh,
 }) => {
     const muiTheme = getMuiTheme(theme);
     const prefix = autoprefixer(muiTheme);
@@ -38,7 +37,7 @@ const Actions = ({
                     context: 'button',
                 })}
             {hasCreate && <CreateButton basePath={basePath} />}
-            <RefreshButton refresh={refresh} />
+            <RefreshButton />
         </CardActions>
     );
 };
@@ -49,7 +48,6 @@ Actions.propTypes = {
     filters: PropTypes.element,
     filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,
-    refresh: PropTypes.func,
     resource: PropTypes.string,
     showFilter: PropTypes.func,
     theme: PropTypes.object,

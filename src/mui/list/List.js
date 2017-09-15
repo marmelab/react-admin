@@ -21,6 +21,7 @@ import DefaultPagination from './Pagination';
 import DefaultActions from './Actions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
+import { refreshView as refreshViewAction } from '../../actions/uiActions';
 import translate from '../../i18n/translate';
 import removeKey from '../../util/removeKey';
 import defaultTheme from '../defaultTheme';
@@ -192,6 +193,16 @@ export class List extends Component {
         this.props.changeListParams(this.props.resource, newParams);
     }
 
+    refresh() {
+        if (process.env !== 'production') {
+            console.warn( // eslint-disable-line
+                'Deprecation warning: The preferred way to refresh the List view is to connect your custom button with redux and dispatch the `refreshView` action.'
+            );
+        }
+
+        this.props.refreshView();
+    }
+
     render() {
         const {
             children,
@@ -241,6 +252,7 @@ export class List extends Component {
                                 displayedFilters: this.state,
                                 showFilter: this.showFilter,
                                 theme,
+                                refresh: this.refresh,
                             })}
                     </div>
                     {filters &&
@@ -314,6 +326,7 @@ List.propTypes = {
     push: PropTypes.func.isRequired,
     query: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
+    refreshView: PropTypes.func.isRequired,
     total: PropTypes.number.isRequired,
     translate: PropTypes.func.isRequired,
     theme: PropTypes.object.isRequired,
@@ -359,6 +372,7 @@ const enhance = compose(
         crudGetList: crudGetListAction,
         changeListParams: changeListParamsAction,
         push: pushAction,
+        refreshView: refreshViewAction,
     }),
     translate,
     withPermissionsFilteredChildren
