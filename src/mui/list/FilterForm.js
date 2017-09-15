@@ -128,8 +128,9 @@ const enhance = compose(
                         [filterElement.props.source]:
                             filterElement.props.defaultValue,
                     }),
-                    initialValues
+                    {}
                 ),
+            ...initialValues,
         },
     })),
     reduxForm({
