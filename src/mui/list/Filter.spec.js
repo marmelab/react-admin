@@ -13,7 +13,7 @@ describe('<Filter />', () => {
 
         it('should render a redux <FilterForm /> component', () => {
             const wrapper = shallow(<Filter {...defaultProps} />);
-            const form = wrapper.find('getContext(ReduxForm)');
+            const form = wrapper.find('getContext(withProps(ReduxForm))');
             assert.equal(form.length, 1);
         });
 
@@ -21,7 +21,9 @@ describe('<Filter />', () => {
             const wrapper = shallow(
                 <Filter {...defaultProps} filterValues={{ q: 'Lorem' }} />
             );
-            const form = wrapper.find('getContext(ReduxForm)').first();
+            const form = wrapper
+                .find('getContext(withProps(ReduxForm))')
+                .first();
             assert.deepEqual(form.prop('initialValues'), { q: 'Lorem' });
         });
     });
