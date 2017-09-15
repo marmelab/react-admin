@@ -16,4 +16,10 @@ describe('removeEmpty', () => {
         const input = { foo: 'val', bar: { baz: '' } };
         assert.deepEqual(removeEmpty(input), { foo: 'val' });
     });
+
+    it('should preserve dates', () => {
+        const date = new Date();
+        const input = { foo: 'val', bar: { baz: '' }, date };
+        assert.deepEqual(removeEmpty(input), { foo: 'val', date });
+    });
 });
