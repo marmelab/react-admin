@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Toggle from 'material-ui/Toggle';
 import FieldTitle from '../../util/FieldTitle';
@@ -16,33 +16,43 @@ const styles = {
     },
 };
 
-const BooleanInput = ({
-    input,
-    isRequired,
-    label,
-    source,
-    elStyle,
-    resource,
-    options,
-}) => (
-    <div style={elStyle || styles.block}>
-        <Toggle
-            defaultToggled={!!input.value}
-            onToggle={input.onChange}
-            labelStyle={styles.label}
-            style={styles.toggle}
-            label={
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
+class BooleanInput extends Component {
+    handleToggle = (event, value) => {
+        this.props.input.onChange(value);
+    };
+
+    render() {
+        const {
+            input,
+            isRequired,
+            label,
+            source,
+            elStyle,
+            resource,
+            options,
+        } = this.props;
+
+        return (
+            <div style={elStyle || styles.block}>
+                <Toggle
+                    defaultToggled={!!input.value}
+                    onToggle={this.handleToggle}
+                    labelStyle={styles.label}
+                    style={styles.toggle}
+                    label={
+                        <FieldTitle
+                            label={label}
+                            source={source}
+                            resource={resource}
+                            isRequired={isRequired}
+                        />
+                    }
+                    {...options}
                 />
-            }
-            {...options}
-        />
-    </div>
-);
+            </div>
+        );
+    }
+}
 
 BooleanInput.propTypes = {
     addField: PropTypes.bool.isRequired,
