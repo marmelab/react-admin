@@ -112,27 +112,32 @@ FilterForm.defaultProps = {
     theme: defaultTheme,
 };
 
+export const mergeInitialValuesWithDefaultValues = ({
+    initialValues,
+    filters,
+}) => ({
+    initialValues: {
+        ...filters
+            .filter(
+                filterElement =>
+                    filterElement.props.alwaysOn &&
+                    filterElement.props.defaultValue
+            )
+            .reduce(
+                (acc, filterElement) => ({
+                    ...acc,
+                    [filterElement.props.source]:
+                        filterElement.props.defaultValue,
+                }),
+                {}
+            ),
+        ...initialValues,
+    },
+});
+
 const enhance = compose(
     translate,
-    withProps(({ initialValues, filters }) => ({
-        initialValues: {
-            ...filters
-                .filter(
-                    filterElement =>
-                        filterElement.props.alwaysOn &&
-                        filterElement.props.defaultValue
-                )
-                .reduce(
-                    (acc, filterElement) => ({
-                        ...acc,
-                        [filterElement.props.source]:
-                            filterElement.props.defaultValue,
-                    }),
-                    {}
-                ),
-            ...initialValues,
-        },
-    })),
+    withProps(mergeInitialValuesWithDefaultValues),
     reduxForm({
         form: 'filterForm',
         enableReinitialize: true,

@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TranslationProvider from '../../i18n/TranslationProvider';
-import FilterForm from './FilterForm';
+import FilterForm, { mergeInitialValuesWithDefaultValues } from './FilterForm';
 import TextInput from '../input/TextInput';
 
 describe('<FilterForm />', () => {
@@ -46,5 +46,41 @@ describe('<FilterForm />', () => {
 
         const titleFilter = wrapper.find('input[type="text"]');
         assert.equal(titleFilter.length, 1);
+    });
+
+    describe('mergeInitialValuesWithDefaultValues', () => {
+        it('should correctly merge initial values with the default values of the alwayson filters', () => {
+            const initialValues = {
+                title: 'initial title',
+            };
+            const filters = [
+                {
+                    props: {
+                        source: 'title',
+                        alwaysOn: true,
+                        defaultValue: 'default title',
+                    },
+                },
+                {
+                    props: {
+                        source: 'url',
+                        alwaysOn: true,
+                        defaultValue: 'default url',
+                    },
+                },
+                { props: { source: 'notMe', defaultValue: 'default url' } },
+                { props: { source: 'notMeEither' } },
+            ];
+
+            assert.deepEqual(
+                mergeInitialValuesWithDefaultValues({ initialValues, filters }),
+                {
+                    initialValues: {
+                        title: 'initial title',
+                        url: 'default url',
+                    },
+                }
+            );
+        });
     });
 });
