@@ -14,9 +14,9 @@ export default resource => (
         case CRUD_GET_LIST_SUCCESS:
             return payload.data.map(record => record.id);
         case CRUD_DELETE_SUCCESS: {
-            const index = previousState.findIndex(
-                el => el == requestPayload.id
-            ); // eslint-disable-line eqeqeq
+            const index = previousState
+                .map(el => el == requestPayload.id) // eslint-disable-line eqeqeq
+                .indexOf(true);
             if (index === -1) {
                 return previousState;
             }
