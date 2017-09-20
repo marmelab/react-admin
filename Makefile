@@ -12,7 +12,10 @@ run: example_install ## run the example
 example_install: example/package.json
 	@cd example && npm install
 
-build: ## compile ES6 files to JS
+clean:
+	@rm -rf lib
+
+build: clean ## compile ES6 files to JS
 	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore '*.spec.js'
 
 watch: ## continuously compile ES6 files to JS
