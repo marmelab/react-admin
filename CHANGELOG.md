@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.3.1
+
+* Fix Delete actions fails on IE11 ([fzaninotto](https://github.com/fzaninotto))
+* Fix npm package contains files from previous builds ([ArnaudD](https://github.com/ArnaudD))
+* Fix default values handling for deep paths with dot notation ([djhi](https://github.com/djhi))
+* Fix alwaysOn filters defaultValue being ignored ([djhi](https://github.com/djhi))
+* Fix missing import in Authorization documentation ([Phocea](https://github.com/Phocea))
+* Fix `<BooleanInput>` `onChange` with false value ([djhi](https://github.com/djhi))
+* Fix missing `refresh` prop in `<List>` component ([djhi](https://github.com/djhi))
+* Fix date filters ([djhi](https://github.com/djhi))
+* Fix typo in custom actions documentation ([RWOverdijk](https://github.com/RWOverdijk))
+
 ## v.1.3.0
 
 * Add permissions handling ([djhi](https://github.com/djhi))
