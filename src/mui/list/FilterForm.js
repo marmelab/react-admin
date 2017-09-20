@@ -5,6 +5,7 @@ import { CardText } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import ActionHide from 'material-ui/svg-icons/action/highlight-off';
 import compose from 'recompose/compose';
+import withProps from 'recompose/withProps';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import autoprefixer from 'material-ui/utils/autoprefixer';
 
@@ -111,8 +112,32 @@ FilterForm.defaultProps = {
     theme: defaultTheme,
 };
 
+export const mergeInitialValuesWithDefaultValues = ({
+    initialValues,
+    filters,
+}) => ({
+    initialValues: {
+        ...filters
+            .filter(
+                filterElement =>
+                    filterElement.props.alwaysOn &&
+                    filterElement.props.defaultValue
+            )
+            .reduce(
+                (acc, filterElement) => ({
+                    ...acc,
+                    [filterElement.props.source]:
+                        filterElement.props.defaultValue,
+                }),
+                {}
+            ),
+        ...initialValues,
+    },
+});
+
 const enhance = compose(
     translate,
+    withProps(mergeInitialValuesWithDefaultValues),
     reduxForm({
         form: 'filterForm',
         enableReinitialize: true,
