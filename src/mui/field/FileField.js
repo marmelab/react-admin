@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 
-export const FileField = ({ elStyle, record, source, title, src }) => {
+export const FileField = ({ elStyle, record, source, title, src, target }) => {
     const sourceValue = get(record, source);
 
     if (!sourceValue) {
@@ -18,7 +18,11 @@ export const FileField = ({ elStyle, record, source, title, src }) => {
 
                     return (
                         <li key={index}>
-                            <a href={srcValue} title={titleValue}>
+                            <a
+                                href={srcValue}
+                                title={titleValue}
+                                target={target}
+                            >
                                 {titleValue}
                             </a>
                         </li>
@@ -32,7 +36,7 @@ export const FileField = ({ elStyle, record, source, title, src }) => {
 
     return (
         <div style={elStyle}>
-            <a href={sourceValue} title={titleValue}>
+            <a href={sourceValue} title={titleValue} target={target}>
                 {titleValue}
             </a>
         </div>
@@ -45,6 +49,7 @@ FileField.propTypes = {
     source: PropTypes.string.isRequired,
     src: PropTypes.string,
     title: PropTypes.string,
+    target: PropTypes.string,
 };
 
 FileField.defaultProps = {

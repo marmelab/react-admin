@@ -59,6 +59,21 @@ describe('<FileField />', () => {
         assert.equal(link.prop('title'), 'Hello world!');
     });
 
+    it('should allow setting target string', () => {
+        const wrapper = shallow(
+            <FileField
+                record={{
+                    url: 'http://foo.com/bar.jpg',
+                }}
+                source="url"
+                target="_blank"
+            />
+        );
+
+        const link = wrapper.find('a');
+        assert.equal(link.prop('target'), '_blank');
+    });
+
     it('should render a list of links with correct attributes based on `src` and `title`', () => {
         const wrapper = shallow(
             <FileField
