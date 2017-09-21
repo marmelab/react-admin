@@ -11,7 +11,7 @@ export default (redirectTo, basePath, id) => {
         case 'show':
             return `${linkToRecord(basePath, id)}/show`;
         default:
-            if (typeof redirectTo === "function") {
+            if (typeof redirectTo === 'function') {
                 return redirectTo(basePath, id);
             }
             return redirectTo;

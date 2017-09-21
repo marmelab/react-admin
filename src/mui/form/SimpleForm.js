@@ -55,7 +55,11 @@ SimpleForm.propTypes = {
     invalid: PropTypes.bool,
     record: PropTypes.object,
     resource: PropTypes.string,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.func]),
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func
+    ]),
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.element,
