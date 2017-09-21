@@ -15,6 +15,7 @@ title: "Ecosystem"
 - [dreinke/aor-color-input](https://github.com/dreinke/aor-color-input): a color input using [React Color](http://casesandberg.github.io/react-color/), a collection of color pickers.
 - [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
 - [marmelab/aor-dependent-input](https://github.com/marmelab/aor-dependent-input): conditionnaly display inputs depending on other inputs values
+- [mhdsyrwan/aor-embedded-array](https://github.com/MhdSyrwan/aor-embedded-array): Field and Input for embedded arrays.
 
 ## Translations
 
@@ -29,6 +30,7 @@ See the [translation](./Translation.md#available-locales) page.
 - [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback): a REST client works with [Loopback](http://loopback.io/)
 - [leperone/aor-parseserver-client](https://github.com/leperone/aor-parseserver-client): a REST client for [Parse Server](https://github.com/ParsePlatform/parse-server)
 - [moonlight-labs/aor-jsonapi-client](https://github.com/moonlight-labs/aor-jsonapi-client): a REST client for [JSON API](http://jsonapi.org/)
+- [mhdsyrwan/aor-rest-client-router](https://github.com/MhdSyrwan/aor-rest-client-router): a REST client that enables routing to many REST clients based on resource name.
 
 ## Miscellaneous
 
