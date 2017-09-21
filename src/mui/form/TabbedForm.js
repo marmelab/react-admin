@@ -113,7 +113,7 @@ TabbedForm.propTypes = {
     redirect: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
-        PropTypes.func
+        PropTypes.func,
     ]),
     resource: PropTypes.string,
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission

@@ -416,7 +416,7 @@ export const PostEdit = (props) => (
 );
 ```
 In case when this is not enough you can also use a function. For example if you want set the recently added object as value of reference field in the another object:
-
+Unfortunately I do not know how to write test for that.
 ```jsx
 import { stringify } from 'query-string';
 

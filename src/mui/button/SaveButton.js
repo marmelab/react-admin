@@ -65,7 +65,7 @@ SaveButton.propTypes = {
     redirect: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
-        PropTypes.func
+        PropTypes.func,
     ]),
 };
 
