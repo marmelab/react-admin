@@ -1,8 +1,7 @@
 import React, { cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import getContext from 'recompose/getContext';
-import { AUTH_GET_PERMISSIONS } from './types';
-import getMissingAuthClientError from '../util/getMissingAuthClientError';
+import { AUTH_GET_PERMISSIONS } from '../auth/types';
 
 export default BaseComponent => {
     class WithPermissionsFilteredChildren extends Component {
@@ -15,23 +14,21 @@ export default BaseComponent => {
         };
 
         componentDidMount() {
-            this.initializeChildren(this.props.children);
+            return this.initializeChildren(this.props.children);
         }
 
-        initializeChildren(children) {
+        async initializeChildren(children) {
             if (typeof children === 'function') {
-                if (!this.props.authClient) {
-                    throw new Error(
-                        getMissingAuthClientError(BaseComponent.name)
+                let permissions;
+
+                if (this.props.authClient) {
+                    permissions = await this.props.authClient(
+                        AUTH_GET_PERMISSIONS
                     );
                 }
 
-                this.props
-                    .authClient(AUTH_GET_PERMISSIONS)
-                    .then(permissions => {
-                        const allowedChildren = children(permissions);
-                        this.setState({ children: allowedChildren });
-                    });
+                const allowedChildren = children(permissions);
+                this.setState({ children: allowedChildren });
             } else {
                 this.setState({ children });
             }
