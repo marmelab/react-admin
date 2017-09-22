@@ -4,7 +4,7 @@ import getContext from 'recompose/getContext';
 import { AUTH_GET_PERMISSIONS } from '../auth/types';
 
 export default BaseComponent => {
-    class WithPermissionsFilteredChildren extends Component {
+    class WithChildrenAsFunction extends Component {
         state = { children: null };
 
         static propTypes = {
@@ -27,8 +27,14 @@ export default BaseComponent => {
                     );
                 }
 
-                const allowedChildren = children(permissions);
-                this.setState({ children: allowedChildren });
+                const childrenResult = children(permissions);
+                let finalChildren = childrenResult;
+
+                if (typeof childrenResult.then === 'function') {
+                    finalChildren = await childrenResult;
+                }
+
+                this.setState({ children: finalChildren });
             } else {
                 this.setState({ children });
             }
@@ -61,5 +67,5 @@ export default BaseComponent => {
 
     return getContext({
         authClient: PropTypes.func,
-    })(WithPermissionsFilteredChildren);
+    })(WithChildrenAsFunction);
 };

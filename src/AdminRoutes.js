@@ -23,11 +23,18 @@ export class AdminRoutes extends Component {
                 permissions = await this.props.authClient(AUTH_GET_PERMISSIONS);
             }
 
-            const resources = children(permissions)
+            const childrenResult = children(permissions);
+            let resources = childrenResult;
+
+            if (typeof childrenResult.then === 'function') {
+                resources = await childrenResult;
+            }
+
+            const finalResources = resources
                 .filter(node => node)
                 .map(node => node.props);
 
-            this.props.declareResources(resources);
+            this.props.declareResources(finalResources);
         } else {
             const resources =
                 React.Children.map(children, ({ props }) => props) || [];
