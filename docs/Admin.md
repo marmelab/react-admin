@@ -428,6 +428,7 @@ const App = () => (
 ```
 
 ## `initialState`
+
 The `initialState` prop lets you pass preloaded state to Redux. See the [Redux Documentation](http://redux.js.org/docs/api/createStore.html#createstorereducer-preloadedstate-enhancer) for more details.
 
 ## `history`
@@ -451,6 +452,43 @@ const App = () => (
 ## Internationalization
 
 The `locale` and `messages` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
+
+## Declaring resources at runtime
+
+You might want to dynamically define the resources when the app starts. The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authClient`, the function will receive the result of a call to `authClient` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
+
+For instance, getting the resource from an API might look like:
+
+```js
+import React from 'react';
+
+import { simpleRestClient, Admin, Resource } from 'admin-on-rest';
+
+import { PostList } from './posts';
+import { CommentList } from './comments';
+
+const knownResources = [
+    <Resource name="posts" list={PostList} />,
+    <Resource name="comments" list={CommentList} />,
+];
+
+const fetchResources = permissions =>
+    fetch('https://myapi/resources', {
+        method: 'POST,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(permissions),
+    })
+    .then(response => response.json())
+    .then(json => knownResources.filter(resource => json.resources.includes(resource.props.name)));
+
+const App = () => (
+    <Admin restClient={simpleRestClient('http://path.to.my.api')}>
+        {fetchResources}
+    </Admin>
+);
+```
 
 ## Using admin-on-rest without `<Admin>` and `<Resource>`
 
