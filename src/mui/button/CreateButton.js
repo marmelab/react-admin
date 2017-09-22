@@ -54,7 +54,7 @@ CreateButton.propTypes = {
 };
 
 const enhance = compose(
-    onlyUpdateForKeys(['basePath, label']),
+    onlyUpdateForKeys(['basePath', 'label']),
     withWidth(),
     translate
 );
