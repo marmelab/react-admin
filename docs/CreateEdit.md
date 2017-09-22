@@ -466,7 +466,7 @@ import RichTextInput from 'aor-rich-text-input';
 const knownInputs = [
     <TextInput source="title" />,
     <TextInput source="teaser" options={{ multiLine: true }} />,
-    <RichTextInput source="body,
+    <RichTextInput source="body" />,
     <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />,
 ];
 
