@@ -472,7 +472,7 @@ const knownInputs = [
 
 const fetchInputs = permissions =>
     fetch('https://myapi/inputs', {
-        method: 'POST,
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },

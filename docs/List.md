@@ -526,7 +526,7 @@ const knownFields = [
 
 const fetchFields = permissions =>
     fetch('https://myapi/fields', {
-        method: 'POST,
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },

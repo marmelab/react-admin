@@ -474,7 +474,7 @@ const knownResources = [
 
 const fetchResources = permissions =>
     fetch('https://myapi/resources', {
-        method: 'POST,
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
