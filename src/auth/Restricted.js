@@ -47,7 +47,7 @@ export class Restricted extends Component {
             userCheck,
             authParams,
             location,
-            ...rest,
+            ...rest
         } = this.props;
         return React.cloneElement(children, rest);
     }
