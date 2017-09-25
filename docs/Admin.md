@@ -29,7 +29,7 @@ Here are all the props accepted by the component:
 * [`restClient`](#restclient)
 * [`title`](#title)
 * [`dashboard`](#dashboard)
-* [`catchAll](#catchall)
+* [`catchAll`](#catchall)
 * [`menu`](#menu)
 * [`theme`](#theme)
 * [`appLayout`](#applayout)
