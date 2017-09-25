@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import IconButton from 'material-ui/IconButton';
-import { pinkA200 } from 'material-ui/styles/colors';
 import RemoveCircle from 'material-ui/svg-icons/content/remove-circle';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 
-const styles = {
+const getStyles = ({ palette: { accent1Color } }) => ({
     removeButtonHovered: {
         opacity: 1,
     },
-};
+    removeIcon: {
+        color: accent1Color,
+    },
+});
 
 export class FileInputPreview extends Component {
     constructor(props) {
@@ -30,8 +33,14 @@ export class FileInputPreview extends Component {
     handleMouseOver = () => this.setState({ hovered: true });
 
     render() {
-        const { children, onRemove, itemStyle, removeStyle } = this.props;
-
+        const {
+            children,
+            onRemove,
+            itemStyle,
+            removeStyle,
+            muiTheme,
+        } = this.props;
+        const styles = getStyles(muiTheme);
         const removeButtonStyle = this.state.hovered
             ? {
                   ...removeStyle,
@@ -46,7 +55,10 @@ export class FileInputPreview extends Component {
                 style={itemStyle}
             >
                 <IconButton style={removeButtonStyle} onClick={onRemove}>
-                    <RemoveCircle color={pinkA200} />
+                    <RemoveCircle
+                        style={styles.removeIcon}
+                        color={muiTheme.palette.accent1Color}
+                    />
                 </IconButton>
                 {children}
             </div>
@@ -60,6 +72,7 @@ FileInputPreview.propTypes = {
     onRemove: PropTypes.func.isRequired,
     itemStyle: PropTypes.object,
     removeStyle: PropTypes.object,
+    muiTheme: PropTypes.object.isRequired,
 };
 
 FileInputPreview.defaultProps = {
@@ -68,4 +81,4 @@ FileInputPreview.defaultProps = {
     removeStyle: { display: 'inline-block' },
 };
 
-export default FileInputPreview;
+export default muiThemeable()(FileInputPreview);

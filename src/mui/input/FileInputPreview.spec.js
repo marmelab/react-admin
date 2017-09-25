@@ -2,15 +2,18 @@ import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
 import sinon from 'sinon';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import { FileInputPreview } from './FileInputPreview';
 
 describe('<FileInputPreview />', () => {
+    const muiTheme = getMuiTheme({ userAgent: false });
+
     it('should call `onRemove` prop when clicking on remove button', () => {
         const onRemoveSpy = sinon.spy();
 
         const wrapper = shallow(
-            <FileInputPreview onRemove={onRemoveSpy}>
+            <FileInputPreview onRemove={onRemoveSpy} muiTheme={muiTheme}>
                 <div>Child</div>
             </FileInputPreview>
         );
@@ -23,7 +26,7 @@ describe('<FileInputPreview />', () => {
 
     it('should render passed children', () => {
         const wrapper = shallow(
-            <FileInputPreview>
+            <FileInputPreview muiTheme={muiTheme}>
                 <div id="child">Child</div>
             </FileInputPreview>
         );
@@ -42,7 +45,7 @@ describe('<FileInputPreview />', () => {
             },
         };
         const wrapper = shallow(
-            <FileInputPreview file={file}>
+            <FileInputPreview file={file} muiTheme={muiTheme}>
                 <div id="child">Child</div>
             </FileInputPreview>,
             { lifecycleExperimental: true }
@@ -62,7 +65,7 @@ describe('<FileInputPreview />', () => {
             },
         };
         const wrapper = shallow(
-            <FileInputPreview file={file}>
+            <FileInputPreview file={file} muiTheme={muiTheme}>
                 <div id="child">Child</div>
             </FileInputPreview>,
             { lifecycleExperimental: true }
