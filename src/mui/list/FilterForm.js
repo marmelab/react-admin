@@ -6,13 +6,12 @@ import IconButton from 'material-ui/IconButton';
 import ActionHide from 'material-ui/svg-icons/action/highlight-off';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import autoprefixer from 'material-ui/utils/autoprefixer';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 
 import translate from '../../i18n/translate';
-import defaultTheme from '../defaultTheme';
 
-const styles = {
+const getStyles = ({ palette: { primary1Color } }) => ({
     card: {
         marginTop: '-14px',
         paddingTop: 0,
@@ -23,9 +22,9 @@ const styles = {
     },
     body: { display: 'flex', alignItems: 'flex-end' },
     spacer: { width: 48 },
-    icon: { color: '#00bcd4', paddingBottom: 0 },
+    icon: { color: primary1Color || '#00bcd4', paddingBottom: 0 },
     clearFix: { clear: 'right' },
-};
+});
 
 const emptyRecord = {};
 
@@ -44,9 +43,12 @@ export class FilterForm extends Component {
         this.props.hideFilter(event.currentTarget.dataset.key);
 
     render() {
-        const { resource, translate, theme } = this.props;
-        const muiTheme = getMuiTheme(theme);
-        const prefix = autoprefixer(muiTheme);
+        const { resource, translate, muiTheme } = this.props;
+
+        // Use a fake prefixer when none is returned. Useful for tests
+        const prefix = autoprefixer(muiTheme) || (style => style);
+        const styles = getStyles(muiTheme);
+
         return (
             <div>
                 <CardText style={prefix(styles.card)}>
@@ -105,11 +107,7 @@ FilterForm.propTypes = {
     hideFilter: PropTypes.func.isRequired,
     initialValues: PropTypes.object,
     translate: PropTypes.func.isRequired,
-    theme: PropTypes.object.isRequired,
-};
-
-FilterForm.defaultProps = {
-    theme: defaultTheme,
+    muiTheme: PropTypes.object.isRequired,
 };
 
 export const mergeInitialValuesWithDefaultValues = ({
@@ -136,6 +134,7 @@ export const mergeInitialValuesWithDefaultValues = ({
 });
 
 const enhance = compose(
+    muiThemeable(),
     translate,
     withProps(mergeInitialValuesWithDefaultValues),
     reduxForm({
