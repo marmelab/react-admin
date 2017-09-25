@@ -8,21 +8,7 @@ import {
     UPDATE,
 } from '../../../rest/types';
 
-/**
- * The data state is an instance pool, which keeps track of the fetch date of each instance.
- *
- * @example
- * {
- *   23: { id: 23, title: 'War and Peace' },
- *   67: { id: 67, title: 'Anna Karenina' },
- *   fetchedAt: { // non enumerable
- *     23: new Date('2016-08-05T19:33:15.012Z'),
- *     67: new Date('2016-08-05T19:33:43.449Z'),
- *   },
- * }
- */
-
-const cacheDuration = 10 * 60 * 1000; // ten minutes
+import getFetchedAt from '../../../util/getFetchedAt';
 
 /**
  * Add new records to the pool, and remove outdated ones.
@@ -31,44 +17,32 @@ const cacheDuration = 10 * 60 * 1000; // ten minutes
  * The cached data is displayed before fetching, and stale data is removed
  * only once fresh data is fetched.
  */
-const addRecords = (newRecords = [], oldRecords) => {
-    // prepare new records and timestamp them
-    const newRecordsById = newRecords.reduce((prev, record) => {
-        prev[record.id] = record; // eslint-disable-line no-param-reassign
-        return prev;
-    }, {});
-    const now = new Date();
-    const newRecordsFetchedAt = newRecords.reduce((prev, record) => {
-        prev[record.id] = now; // eslint-disable-line no-param-reassign
-        return prev;
-    }, {});
-    // remove outdated old records
-    const latestValidDate = new Date();
-    latestValidDate.setTime(latestValidDate.getTime() - cacheDuration);
-    const oldValidRecordIds = oldRecords.fetchedAt
-        ? Object.keys(oldRecords.fetchedAt).filter(
-              id => oldRecords.fetchedAt[id] > latestValidDate
-          )
-        : [];
-    const oldValidRecords = oldValidRecordIds.reduce((prev, id) => {
-        prev[id] = oldRecords[id]; // eslint-disable-line no-param-reassign
-        return prev;
-    }, {});
-    const oldValidRecordsFetchedAt = oldValidRecordIds.reduce((prev, id) => {
-        prev[id] = oldRecords.fetchedAt[id]; // eslint-disable-line no-param-reassign
-        return prev;
-    }, {});
-    // combine old records and new records
-    const records = {
-        ...oldValidRecords,
-        ...newRecordsById,
-    };
+export const addRecords = (newRecords = [], oldRecords) => {
+    const newFetchedAt = getFetchedAt(
+        newRecords.map(({ id }) => id),
+        oldRecords.fetchedAt
+    );
+
+    const newRecordsById = newRecords.reduce(
+        (acc, record) => ({
+            ...acc,
+            [record.id]: record,
+        }),
+        {}
+    );
+
+    const records = Object.keys(newFetchedAt).reduce(
+        (acc, id) => ({
+            ...acc,
+            [id]: newRecordsById[id] || oldRecords[id],
+        }),
+        {}
+    );
+
     Object.defineProperty(records, 'fetchedAt', {
-        value: {
-            ...oldValidRecordsFetchedAt,
-            ...newRecordsFetchedAt,
-        },
+        value: newFetchedAt,
     }); // non enumerable by default
+
     return records;
 };
 
