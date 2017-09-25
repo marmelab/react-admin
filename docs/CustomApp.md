@@ -51,7 +51,7 @@ import messages from './i18n';
 
 // create a Redux app
 const reducer = combineReducers({
-    admin: adminReducer([{ name: 'posts' }, { name: 'comments' }, { name: 'users' }]),
+    admin: adminReducer,
     locale: localeReducer(),
     form: formReducer,
     routing: routerReducer,
