@@ -20,7 +20,6 @@ const addRecordIds = (newRecordIds = [], oldRecordIds) => {
     Object.defineProperty(recordIds, 'fetchedAt', {
         value: newFetchedAt,
     }); // non enumerable by default
-
     return recordIds;
 };
 
@@ -33,10 +32,13 @@ export default resource => (
     }
     switch (type) {
         case CRUD_GET_LIST_SUCCESS:
+            return addRecordIds(payload.data.map(({ id }) => id), []);
         case CRUD_GET_MANY_SUCCESS:
         case CRUD_GET_MANY_REFERENCE_SUCCESS:
             return addRecordIds(
-                payload.data.map(({ id }) => id),
+                payload.data
+                    .map(({ id }) => id)
+                    .filter(id => previousState.indexOf(id) !== -1),
                 previousState
             );
         case CRUD_GET_ONE_SUCCESS:
@@ -50,10 +52,18 @@ export default resource => (
             if (index === -1) {
                 return previousState;
             }
-            return [
+            const newState = [
                 ...previousState.slice(0, index),
                 ...previousState.slice(index + 1),
             ];
+
+            Object.defineProperty(
+                newState,
+                'fetchedAt',
+                previousState.fetchedAt
+            );
+
+            return newState;
         }
         default:
             return previousState;
