@@ -56,13 +56,20 @@ class Delete extends Component {
             .join('/');
     }
 
+    defaultRedirectRoute() {
+        return 'list';
+    }
+
     handleSubmit(event) {
         event.preventDefault();
         this.props.crudDelete(
             this.props.resource,
             this.props.id,
             this.props.data,
-            this.getBasePath()
+            this.getBasePath(),
+            this.props.redirect
+                ? this.props.redirect
+                : this.defaultRedirectRoute()
         );
     }
 
@@ -136,6 +143,7 @@ Delete.propTypes = {
     crudGetOne: PropTypes.func.isRequired,
     crudDelete: PropTypes.func.isRequired,
     translate: PropTypes.func.isRequired,
+    redirect: PropTypes.string,
 };
 
 function mapStateToProps(state, props) {
