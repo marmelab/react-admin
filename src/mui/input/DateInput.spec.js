@@ -54,8 +54,10 @@ describe('<DateInput />', () => {
             <DateInput source="foo" input={input} meta={{}} locale="de-DE" />
         );
 
-        wrapper.find('DatePicker').simulate('change', null, '2010-01-04');
-        assert.deepEqual(input.onChange.args, [['2010-01-04']]);
+        wrapper
+            .find('DatePicker')
+            .simulate('change', null, new Date('2010-01-04'));
+        assert.deepEqual(input.onChange.args, [['2010-01-04T00:00:00.000Z']]);
     });
 
     describe('error message', () => {
