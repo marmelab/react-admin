@@ -34,5 +34,4 @@ See the [translation](./Translation.md#available-locales) page.
 
 ## Miscellaneous
 
-- [marmelab/aor-permissions](https://github.com/marmelab/aor-permissions): customize UI depending on user's persmissions
 - [marmelab/aor-realtime](https://github.com/marmelab/aor-realtime): enable realtime updates
