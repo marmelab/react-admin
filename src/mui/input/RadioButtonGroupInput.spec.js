@@ -29,6 +29,16 @@ describe('<RadioButtonGroupInput />', () => {
         assert.equal(RadioButtonGroupElement.prop('defaultSelected'), '2');
     });
 
+    it('should use the input parameter value as the selected value', () => {
+        const wrapper = shallow(
+            <RadioButtonGroupInput {...defaultProps} input={{ value: 2 }} />
+        );
+        const RadioButtonGroupElement = wrapper
+            .find('RadioButtonGroup')
+            .first();
+        assert.equal(RadioButtonGroupElement.prop('valueSelected'), '2');
+    });
+
     it('should render choices as mui RadioButton components', () => {
         const wrapper = shallow(
             <RadioButtonGroupInput

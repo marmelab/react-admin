@@ -118,6 +118,7 @@ export class RadioButtonGroupInput extends Component {
                 <RadioButtonGroup
                     name={source}
                     defaultSelected={input.value}
+                    valueSelected={input.value}
                     style={elStyle}
                     {...options}
                 >
