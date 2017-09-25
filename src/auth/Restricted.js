@@ -42,7 +42,13 @@ export class Restricted extends Component {
 
     // render the child even though the AUTH_CHECK isn't finished (optimistic rendering)
     render() {
-        const { children, ...rest } = this.props;
+        const {
+            children,
+            userCheck,
+            authParams,
+            location,
+            ...rest
+        } = this.props;
         return React.cloneElement(children, rest);
     }
 }
