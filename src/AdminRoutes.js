@@ -10,31 +10,25 @@ import NotFound from './mui/layout/NotFound';
 import Restricted from './auth/Restricted';
 import { AUTH_GET_PERMISSIONS } from './auth';
 import { declareResources as declareResourcesAction } from './actions';
+import getMissingAuthClientError from './util/getMissingAuthClientError';
 
 export class AdminRoutes extends Component {
     componentDidMount() {
-        return this.initializeResources(this.props.children);
+        this.initializeResources(this.props.children);
     }
 
-    async initializeResources(children) {
+    initializeResources(children) {
         if (typeof children === 'function') {
-            let permissions;
-            if (this.props.authClient) {
-                permissions = await this.props.authClient(AUTH_GET_PERMISSIONS);
+            if (!this.props.authClient) {
+                throw new Error(getMissingAuthClientError('Admin'));
             }
 
-            const childrenResult = children(permissions);
-            let resources = childrenResult;
-
-            if (typeof childrenResult.then === 'function') {
-                resources = await childrenResult;
-            }
-
-            const finalResources = resources
-                .filter(node => node)
-                .map(node => node.props);
-
-            this.props.declareResources(finalResources);
+            this.props.authClient(AUTH_GET_PERMISSIONS).then(permissions => {
+                const resources = children(permissions)
+                    .filter(node => node)
+                    .map(node => node.props);
+                this.props.declareResources(resources);
+            });
         } else {
             const resources =
                 React.Children.map(children, ({ props }) => props) || [];

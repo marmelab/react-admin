@@ -1,10 +1,11 @@
 import React, { cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import getContext from 'recompose/getContext';
-import { AUTH_GET_PERMISSIONS } from '../auth/types';
+import { AUTH_GET_PERMISSIONS } from './types';
+import getMissingAuthClientError from '../util/getMissingAuthClientError';
 
 export default BaseComponent => {
-    class WithChildrenAsFunction extends Component {
+    class WithPermissionsFilteredChildren extends Component {
         state = { children: null };
 
         static propTypes = {
@@ -14,27 +15,23 @@ export default BaseComponent => {
         };
 
         componentDidMount() {
-            return this.initializeChildren(this.props.children);
+            this.initializeChildren(this.props.children);
         }
 
-        async initializeChildren(children) {
+        initializeChildren(children) {
             if (typeof children === 'function') {
-                let permissions;
-
-                if (this.props.authClient) {
-                    permissions = await this.props.authClient(
-                        AUTH_GET_PERMISSIONS
+                if (!this.props.authClient) {
+                    throw new Error(
+                        getMissingAuthClientError(BaseComponent.name)
                     );
                 }
 
-                const childrenResult = children(permissions);
-                let finalChildren = childrenResult;
-
-                if (typeof childrenResult.then === 'function') {
-                    finalChildren = await childrenResult;
-                }
-
-                this.setState({ children: finalChildren });
+                this.props
+                    .authClient(AUTH_GET_PERMISSIONS)
+                    .then(permissions => {
+                        const allowedChildren = children(permissions);
+                        this.setState({ children: allowedChildren });
+                    });
             } else {
                 this.setState({ children });
             }
@@ -67,5 +64,5 @@ export default BaseComponent => {
 
     return getContext({
         authClient: PropTypes.func,
-    })(WithChildrenAsFunction);
+    })(WithPermissionsFilteredChildren);
 };

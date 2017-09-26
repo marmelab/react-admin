@@ -12,7 +12,7 @@ import {
 } from '../../actions/dataActions';
 import DefaultActions from './EditActions';
 import translate from '../../i18n/translate';
-import withChildrenAsFunction from '../withChildrenAsFunction';
+import withPermissionsFilteredChildren from '../../auth/withPermissionsFilteredChildren';
 
 export class Edit extends Component {
     constructor(props) {
@@ -172,7 +172,7 @@ const enhance = compose(
         crudUpdate: crudUpdateAction,
     }),
     translate,
-    withChildrenAsFunction
+    withPermissionsFilteredChildren
 );
 
 export default enhance(Edit);
