@@ -9,7 +9,7 @@ import Title from '../layout/Title';
 import { crudGetOne as crudGetOneAction } from '../../actions/dataActions';
 import DefaultActions from './ShowActions';
 import translate from '../../i18n/translate';
-import withPermissionsFilteredChildren from '../../auth/withPermissionsFilteredChildren';
+import withChildrenAsFunction from '../withChildrenAsFunction';
 
 export class Show extends Component {
     componentDidMount() {
@@ -127,7 +127,7 @@ function mapStateToProps(state, props) {
 const enhance = compose(
     connect(mapStateToProps, { crudGetOne: crudGetOneAction }),
     translate,
-    withPermissionsFilteredChildren
+    withChildrenAsFunction
 );
 
 export default enhance(Show);

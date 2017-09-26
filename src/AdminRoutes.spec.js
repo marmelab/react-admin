@@ -2,8 +2,9 @@ import React from 'react';
 import { Route, MemoryRouter } from 'react-router-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { render } from 'enzyme';
+import { render, shallow } from 'enzyme';
 import assert from 'assert';
+import sinon from 'sinon';
 
 import { AdminRoutes } from './AdminRoutes';
 
@@ -90,5 +91,45 @@ describe('<AdminRoutes>', () => {
             </Provider>
         );
         assert.equal(wrapper.html(), '<div>Custom</div>');
+    });
+
+    it('should accept a function as children and declare the returned resources', () => {
+        const declareResources = sinon.stub();
+
+        shallow(
+            <AdminRoutes declareResources={declareResources}>
+                {() => resources}
+            </AdminRoutes>,
+            { lifecycleExperimental: true }
+        );
+
+        return new Promise(resolve => {
+            setTimeout(() => {
+                assert(
+                    declareResources.calledWith(resources.map(r => r.props))
+                );
+                resolve();
+            }, 0);
+        });
+    });
+
+    it('should accept a promise as children and declare the returned resources', () => {
+        const declareResources = sinon.stub();
+
+        shallow(
+            <AdminRoutes declareResources={declareResources}>
+                {() => Promise.resolve(resources)}
+            </AdminRoutes>,
+            { lifecycleExperimental: true }
+        );
+
+        return new Promise(resolve => {
+            setTimeout(() => {
+                assert(
+                    declareResources.calledWith(resources.map(r => r.props))
+                );
+                resolve();
+            }, 0);
+        });
     });
 });

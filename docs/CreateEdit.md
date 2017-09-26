@@ -432,7 +432,7 @@ The most common use case is to display two submit buttons in the `<Create>` view
 For that use case, use the `<SaveButton>` component with a custom `redirect` prop:
 
 ```jsx
-import { SaveButton, Toolbar } from 'admin-on-rest';
+import { Edit, SimpleForm, SaveButton, Toolbar } from 'admin-on-rest';
 
 const PostCreateToolbar = props => <Toolbar {...props} >
     <SaveButton label="post.action.save_and_show" redirect="show" submitOnEnter={true} />
@@ -451,3 +451,47 @@ export const PostEdit = (props) => (
 **Tip**: Use admin-on-rest's `<Toolbar>` component instead of material-ui's `<Toolbar>` component. The former builds up on the latter, and adds support for an alternative mobile layout (and is therefore responsive).
 
 **Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.
+
+## Declaring inputs at runtime
+
+You might want to dynamically define the inputs when the `<Create>` or `<Edit>` components are rendered. They both accepts a function as their child and this function can return a Promise. If you also defined an `authClient` on the `<Admin>` component, the function will receive the result of a call to `authClient` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
+
+For instance, getting the inputs from an API might look like:
+
+```js
+import React from 'react';
+import { Create, Edit, SimpleForm, TextInput, DateInput } from 'admin-on-rest';
+import RichTextInput from 'aor-rich-text-input';
+
+const knownInputs = [
+    <TextInput source="title" />,
+    <TextInput source="teaser" options={{ multiLine: true }} />,
+    <RichTextInput source="body" />,
+    <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />,
+];
+
+const fetchInputs = permissions =>
+    fetch('https://myapi/inputs', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            permissions,
+            resource: 'posts',
+        }),
+    })
+    .then(response => response.json())
+    .then(json => knownInputs.filter(input => json.fields.includes(input.props.source)))
+    .then(inputs => (
+        <SimpleForm>
+            {inputs}
+        </SimpleForm>
+    ));
+
+export const PostCreate = (props) => (
+    <Create {...props}>
+        {fetchInputs}
+    </Create>
+);
+```
