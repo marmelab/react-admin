@@ -5,7 +5,6 @@ import isEqual from 'lodash.isequal';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
-import defaultTheme from '../defaultTheme';
 import removeEmpty from '../../util/removeEmpty';
 import withPermissionsFilteredChildren from '../../auth/withPermissionsFilteredChildren';
 
@@ -60,7 +59,6 @@ export class Filter extends Component {
             hideFilter,
             displayedFilters,
             filterValues,
-            theme,
         } = this.props;
         return (
             <FilterForm
@@ -70,7 +68,6 @@ export class Filter extends Component {
                 displayedFilters={displayedFilters}
                 initialValues={filterValues}
                 setFilters={this.setFilters}
-                theme={theme}
             />
         );
     }
@@ -92,12 +89,10 @@ Filter.propTypes = {
     setFilters: PropTypes.func,
     showFilter: PropTypes.func,
     resource: PropTypes.string.isRequired,
-    theme: PropTypes.object,
 };
 
 Filter.defaultProps = {
     debounce: 500,
-    theme: defaultTheme,
 };
 
 export default withPermissionsFilteredChildren(Filter);
