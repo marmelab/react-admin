@@ -6,7 +6,9 @@ import { addRecordsFactory } from './data';
 describe('data addRecordsFactory', () => {
     it('should call getFetchedAt with newRecords ids and oldRecordFetchedAt and return records returned by getFetchedAt', () => {
         const newRecords = [{ id: 'record1' }, { id: 'record2' }];
-        const oldRecords = {};
+        const oldRecords = {
+            fetchedAt: 'previousFetchedAt',
+        };
         const getFetchedAt = stub().returns({
             record1: 'date',
             record2: 'date',
@@ -22,7 +24,9 @@ describe('data addRecordsFactory', () => {
             record2: { id: 'record2' },
         });
 
-        assert(getFetchedAt.calledWith(['record1', 'record2'], undefined));
+        assert(
+            getFetchedAt.calledWith(['record1', 'record2'], 'previousFetchedAt')
+        );
 
         assert.deepEqual(newState.fetchedAt, {
             record1: 'date',

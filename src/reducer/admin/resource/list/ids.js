@@ -11,7 +11,10 @@ import {
 
 import getFetchedAt from '../../../../util/getFetchedAt';
 
-const addRecordIds = (newRecordIds = [], oldRecordIds) => {
+export const addRecordIdsFactory = getFetchedAt => (
+    newRecordIds = [],
+    oldRecordIds
+) => {
     const newFetchedAt = getFetchedAt(newRecordIds, oldRecordIds.fetchedAt);
     const recordIds = uniq(
         oldRecordIds.filter(id => !!newFetchedAt[id]).concat(newRecordIds)
@@ -22,6 +25,8 @@ const addRecordIds = (newRecordIds = [], oldRecordIds) => {
     }); // non enumerable by default
     return recordIds;
 };
+
+const addRecordIds = addRecordIdsFactory(getFetchedAt);
 
 export default resource => (
     previousState = [],
