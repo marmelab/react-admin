@@ -1,10 +1,14 @@
 import pickBy from 'lodash.pickby';
 
-const cacheDuration = 10 * 60 * 1000; // ten minutes
+const defaultCacheDuration = 10 * 60 * 1000; // ten minutes
 
-export default (newRecordIds = [], oldRecordFetchedAt = {}) => {
+export default (
+    newRecordIds = [],
+    oldRecordFetchedAt = {},
+    now = new Date(),
+    cacheDuration = defaultCacheDuration
+) => {
     // prepare new records and timestamp them
-    const now = new Date();
     const newFetchedAt = newRecordIds.reduce(
         (prev, recordId) => ({
             ...prev,
