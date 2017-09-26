@@ -25,7 +25,7 @@ import { refreshView as refreshViewAction } from '../../actions/uiActions';
 import translate from '../../i18n/translate';
 import removeKey from '../../util/removeKey';
 import defaultTheme from '../defaultTheme';
-import withChildrenAsFunction from '../withChildrenAsFunction';
+import withPermissionsFilteredChildren from '../../auth/withPermissionsFilteredChildren';
 
 const styles = {
     noResults: { padding: 20 },
@@ -375,7 +375,7 @@ const enhance = compose(
         refreshView: refreshViewAction,
     }),
     translate,
-    withChildrenAsFunction
+    withPermissionsFilteredChildren
 );
 
 export default enhance(List);
