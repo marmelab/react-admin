@@ -86,8 +86,10 @@ export class AutocompleteInput extends Component {
     }
 
     setSearchText(props) {
-        const selectedSource = props.choices.find(
-            choice => get(choice, props.optionValue) === props.input.value
+        const { choices, input, optionValue } = props;
+
+        const selectedSource = choices.find(
+            choice => get(choice, optionValue) === input.value
         );
         const searchText = selectedSource && this.getSuggestion(selectedSource);
         this.setState({ searchText });
