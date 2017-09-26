@@ -18,7 +18,7 @@ export const datify = input => {
 
 class DateInput extends Component {
     onChange = (_, date) => {
-        this.props.input.onChange(date);
+        this.props.input.onChange(date.toISOString());
         this.props.input.onBlur();
     };
 
