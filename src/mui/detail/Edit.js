@@ -78,6 +78,7 @@ export class Edit extends Component {
             data,
             hasDelete,
             hasShow,
+            hasList,
             id,
             isLoading,
             resource,
@@ -113,6 +114,7 @@ export class Edit extends Component {
                             data,
                             hasDelete,
                             hasShow,
+                            hasList,
                             resource,
                         })}
                     <ViewTitle title={titleElement} />
@@ -143,6 +145,7 @@ Edit.propTypes = {
     data: PropTypes.object,
     hasDelete: PropTypes.bool,
     hasShow: PropTypes.bool,
+    hasList: PropTypes.bool,
     id: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,

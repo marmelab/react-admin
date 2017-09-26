@@ -101,6 +101,7 @@ Show.propTypes = {
     children: PropTypes.element,
     crudGetOne: PropTypes.func.isRequired,
     data: PropTypes.object,
+    hasList: PropTypes.bool,
     hasDelete: PropTypes.bool,
     hasEdit: PropTypes.bool,
     id: PropTypes.string.isRequired,
