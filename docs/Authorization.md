@@ -218,10 +218,10 @@ import { MenuItemLink, WithPermission } from 'admin-on-rest';
 
 export default ({ resources, onMenuTap, logout }) => (
     <div>
-        <MenuItemLink to="/posts" primaryText="Posts" onTouchTap={onMenuTap} />
-        <MenuItemLink to="/comments" primaryText="Comments" onTouchTap={onMenuTap} />
+        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
+        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
         <WithPermission value="admin">
-            <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onTouchTap={onMenuTap} />
+            <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
         </WithPermission>
         {logout}
     </div>
