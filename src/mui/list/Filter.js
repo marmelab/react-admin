@@ -6,7 +6,7 @@ import isEqual from 'lodash.isequal';
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
 import removeEmpty from '../../util/removeEmpty';
-import withPermissionsFilteredChildren from '../../auth/withPermissionsFilteredChildren';
+import withChildrenAsFunction from '../withChildrenAsFunction';
 
 export class Filter extends Component {
     constructor(props) {
@@ -95,4 +95,4 @@ Filter.defaultProps = {
     debounce: 500,
 };
 
-export default withPermissionsFilteredChildren(Filter);
+export default withChildrenAsFunction(Filter);
