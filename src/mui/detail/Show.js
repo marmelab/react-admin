@@ -46,6 +46,7 @@ export class Show extends Component {
             data,
             isLoading,
             resource,
+            hasList,
             hasDelete,
             hasEdit,
             translate,
@@ -76,6 +77,7 @@ export class Show extends Component {
                         React.cloneElement(actions, {
                             basePath,
                             data,
+                            hasList,
                             hasDelete,
                             hasEdit,
                             resource,
