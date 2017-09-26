@@ -17,7 +17,10 @@ import getFetchedAt from '../../../util/getFetchedAt';
  * The cached data is displayed before fetching, and stale data is removed
  * only once fresh data is fetched.
  */
-export const addRecords = (newRecords = [], oldRecords) => {
+export const addRecordsFactory = getFetchedAt => (
+    newRecords = [],
+    oldRecords
+) => {
     const newFetchedAt = getFetchedAt(
         newRecords.map(({ id }) => id),
         oldRecords.fetchedAt
@@ -45,6 +48,8 @@ export const addRecords = (newRecords = [], oldRecords) => {
 
     return records;
 };
+
+const addRecords = addRecordsFactory(getFetchedAt);
 
 const initialState = {};
 Object.defineProperty(initialState, 'fetchedAt', { value: {} }); // non enumerable by default
