@@ -1,8 +1,12 @@
 export const SHOW_NOTIFICATION = 'AOR/SHOW_NOTIFICATION';
 
-export const showNotification = (text, type = 'info') => ({
+export const showNotification = (
+    text,
+    type = 'info',
+    autoHideDuration = undefined
+) => ({
     type: SHOW_NOTIFICATION,
-    payload: { text, type },
+    payload: { text, type, autoHideDuration },
 });
 
 export const HIDE_NOTIFICATION = 'AOR/HIDE_NOTIFICATION';

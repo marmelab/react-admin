@@ -6,12 +6,17 @@ import {
 const defaultState = {
     text: '',
     type: 'info', // one of 'info', 'confirm', 'warning'
+    autoHideDuration: undefined, // undefined means use global duration
 };
 
 export default (previousState = defaultState, { type, payload }) => {
     switch (type) {
         case SHOW_NOTIFICATION:
-            return { text: payload.text, type: payload.type };
+            return {
+                text: payload.text,
+                type: payload.type,
+                autoHideDuration: payload.autoHideDuration,
+            };
         case HIDE_NOTIFICATION:
             return { ...previousState, text: '' };
         default:
