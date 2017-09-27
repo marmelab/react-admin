@@ -81,5 +81,4 @@ describe('getFetchedAt', () => {
             }
         );
     });
-
 });
