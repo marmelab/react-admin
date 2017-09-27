@@ -44,6 +44,7 @@ class Create extends Component {
             resource,
             title,
             translate,
+            hasList,
         } = this.props;
 
         if (!children) return null;
@@ -67,6 +68,7 @@ class Create extends Component {
                         React.cloneElement(actions, {
                             basePath,
                             resource,
+                            hasList,
                         })}
                     <ViewTitle title={titleElement} />
                     {React.cloneElement(children, {
@@ -95,6 +97,7 @@ Create.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func.isRequired,
+    hasList: PropTypes.bool,
 };
 
 Create.defaultProps = {
