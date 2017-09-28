@@ -40,5 +40,13 @@ export const getReferencesByIds = (state, reference, ids) => {
         }, {});
 };
 
-export const nameRelatedTo = (reference, id, resource, target) =>
-    `${resource}_${reference}@${target}_${id}`;
+export const nameRelatedTo = (reference, id, resource, target, filter = {}) => {
+    const keys = Object.keys(filter);
+    if (!keys.length) {
+        return `${resource}_${reference}@${target}_${id}`;
+    }
+
+    return `${resource}_${reference}@${target}_${id}?${keys
+        .map(key => `${key}=${JSON.stringify(filter[key])}`)
+        .join('&')}`;
+};
