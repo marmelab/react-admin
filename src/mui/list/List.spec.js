@@ -9,7 +9,7 @@ describe('<List />', () => {
         resource: 'post',
         hasCreate: false,
         hasEdit: false,
-        location: {},
+        location: { pathname: '' },
         params: {},
         query: {},
         filterValues: {},
