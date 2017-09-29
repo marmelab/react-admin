@@ -24,8 +24,8 @@ export class MenuItemLinkComponent extends Component {
         return (
             <MenuItem
                 {...props}
-                onTouchTap={this.handleMenuTap}
                 style={customStyle}
+                onClick={this.handleMenuTap}
             />
         );
     }
