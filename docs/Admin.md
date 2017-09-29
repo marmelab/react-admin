@@ -29,6 +29,7 @@ Here are all the props accepted by the component:
 * [`restClient`](#restclient)
 * [`title`](#title)
 * [`dashboard`](#dashboard)
+* [`catchAll`](#catchall)
 * [`menu`](#menu)
 * [`theme`](#theme)
 * [`appLayout`](#applayout)
@@ -63,7 +64,7 @@ The only required prop, it must be a function returning a promise, with the foll
 const restClient = (type, resource, params) => new Promise();
 ```
 
-The `restClient` is also the ideal place to add custom HTTP headers, authentication, etc. The [Rest Clients Chapter](./RestClients.html) of the documentation lists available REST clients, and how to build your own.
+The `restClient` is also the ideal place to add custom HTTP headers, authentication, etc. The [Rest Clients Chapter](./RestClients.md) of the documentation lists available REST clients, and how to build your own.
 
 ## `title`
 
@@ -81,7 +82,6 @@ const App = () => (
 
 By default, the homepage of an an admin app is the `list` of the first child `<Resource>`. But you can also specify a custom component instead. To fit in the general design, use Material UI's `<Card>` component, and admin-on-rest's `<ViewTitle>` component:
 
-{% raw %}
 ```jsx
 // in src/Dashboard.js
 import React from 'react';
@@ -95,7 +95,6 @@ export default () => (
     </Card>
 );
 ```
-{% endraw %}
 
 ```jsx
 // in src/App.js
@@ -110,6 +109,43 @@ const App = () => (
 
 ![Custom home page](http://static.marmelab.com/admin-on-rest/dashboard.png)
 
+## `catchAll`
+
+When users type URLs that don't match any of the children `<Resource>` components, they see a default "Not Found" page. 
+
+![Not Found](./img/not-found.png)
+
+You can customize this page to use the component of your choice by passing it as the `catchAll` prop. To fit in the general design, use Material UI's `<Card>` component, and admin-on-rest's `<ViewTitle>` component:
+
+```jsx
+// in src/NotFound.js
+import React from 'react';
+import { Card, CardText } from 'material-ui/Card';
+import { ViewTitle } from 'admin-on-rest/lib/mui';
+
+export default () => (
+    <Card>
+        <ViewTitle title="Not Found" />
+        <CardText>
+            <h1>404: Page not found</h1>
+        </CardText>
+    </Card>
+);
+```
+
+```jsx
+// in src/App.js
+import NotFound from './NotFound';
+
+const App = () => (
+    <Admin catchAll={NotFound} restClient={simpleRestClient('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
+**Tip**: If your custom `catchAll` component contains react-router `<Route>` components, this allows you to register new routes displayed within the admin-on-rest layout easily. Note that these routes will match *after* all the admin-on-rest resource routes have been tested. To add custom routes *before* the admin-on-rest ones, and therefore override the default resource routes, use the [`customRoutes` prop](#customroutes) instead.
+
 ## `menu`
 
 Admin-on-rest uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component.
@@ -123,9 +159,9 @@ import { MenuItemLink } from 'admin-on-rest';
 
 export default ({ resources, onMenuTap, logout }) => (
     <div>
-        <MenuItemLink to="/posts" primaryText="Posts" onTouchTap={onMenuTap} />
-        <MenuItemLink to="/comments" primaryText="Comments" onTouchTap={onMenuTap} />
-        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onTouchTap={onMenuTap} />
+        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
+        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
+        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
         {logout}
     </div>
 );
@@ -171,7 +207,7 @@ For more details on predefined themes and custom themes, refer to the [Material 
 
 If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where admin-on-rest will render the resources. If you use material UI fields and inputs, it *must* contain a `<MuiThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
 
-Use the [default layout](https://github.com/marmelab/admin-on-rest/blob/master/src/mui/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.html#using-a-custom-layout) for examples.
+Use the [default layout](https://github.com/marmelab/admin-on-rest/blob/master/src/mui/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
 
 ```jsx
 // in src/App.js
@@ -285,10 +321,12 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import Foo from './Foo';
 import Bar from './Bar';
+import Baz from './Baz';
 
 export default [
     <Route exact path="/foo" component={Foo} />,
     <Route exact path="/bar" component={Bar} />,
+    <Route exact path="/baz" component={Baz} noLayout />,
 ];
 ```
 
@@ -311,10 +349,12 @@ export default App;
 ```
 
 Now, when a user browses to `/foo` or `/bar`, the components you defined will appear in the main part of the screen.
+When a user browses to `/baz`, the component will appear outside of the defined Layout, leaving you the freedom
+to design the screen the way you want.
 
 **Tip**: It's up to you to create a [custom menu](#applayout) entry, or custom buttons, to lead to your custom pages.
 
-**Tip**: Your custom pages take precedence over admin-on-rest's own routes. That means that `customRoutes` lets you override any route you want!
+**Tip**: Your custom pages take precedence over admin-on-rest's own routes. That means that `customRoutes` lets you override any route you want! If you want to add routes *after* all the admin-on-rest routes, use the [`catchAll` prop](#catchall) instead.
 
 **Tip**: To look like other admin-on-rest pages, your custom pages should have the following structure:
 
@@ -354,7 +394,7 @@ const App = () => (
 );
 ```
 
-The [Authentication documentation](./Authentication.html) explains how to implement these functions in detail.
+The [Authentication documentation](./Authentication.md) explains how to implement these functions in detail.
 
 ## `loginPage`
 
@@ -370,7 +410,7 @@ const App = () => (
 );
 ```
 
-See The [Authentication documentation](./Authentication.html#customizing-the-login-and-logout-components) for more explanations.
+See The [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more explanations.
 
 ## `logoutButton`
 
@@ -410,8 +450,8 @@ const App = () => (
 
 ## Internationalization
 
-The `locale` and `messages` props let you translate the GUI. The [Translation Documentation](./Translation.html) details this process.
+The `locale` and `messages` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
 
 ## Using admin-on-rest without `<Admin>` and `<Resource>`
 
-Using `<Admin>` and `<Resource>` is completely optional. If you feel like bootstrapping a redux app yourself, it's totally possible. Head to [Including in another app](./CustomApp.html) for a detailed how-to.
+Using `<Admin>` and `<Resource>` is completely optional. If you feel like bootstrapping a redux app yourself, it's totally possible. Head to [Including in another app](./CustomApp.md) for a detailed how-to.

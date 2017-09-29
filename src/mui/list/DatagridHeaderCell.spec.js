@@ -13,7 +13,7 @@ describe('<DatagridHeaderCell />', () => {
         };
 
         it('should be enabled when field has a source', () => {
-            const wrapper = shallow((
+            const wrapper = shallow(
                 <DatagridHeaderCell
                     currentSort={{}}
                     field={{
@@ -23,24 +23,24 @@ describe('<DatagridHeaderCell />', () => {
                         },
                     }}
                 />
-            ));
+            );
 
             assert.equal(wrapper.find('FlatButton').length, 1);
         });
 
         it('should be disabled when field has no source', () => {
-            const wrapper = shallow((
+            const wrapper = shallow(
                 <DatagridHeaderCell
                     currentSort={{}}
                     field={{ ...defaultField }}
                 />
-            ));
+            );
 
             assert.equal(wrapper.find('FlatButton').length, 0);
         });
 
         it('should be disabled when sortable prop is explicitly set to false', () => {
-            const wrapper = shallow((
+            const wrapper = shallow(
                 <DatagridHeaderCell
                     currentSort={{}}
                     field={{
@@ -51,7 +51,7 @@ describe('<DatagridHeaderCell />', () => {
                         },
                     }}
                 />
-            ));
+            );
 
             assert.equal(wrapper.find('FlatButton').length, 0);
         });

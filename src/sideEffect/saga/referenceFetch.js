@@ -14,11 +14,11 @@ const addIds = (resource, ids) => {
     if (!debouncedIds[resource]) {
         debouncedIds[resource] = {};
     }
-    ids.forEach((id) => {
+    ids.forEach(id => {
         debouncedIds[resource][id] = true;
     }); // fast UNIQUE
 };
-const getIds = (resource) => {
+const getIds = resource => {
     const ids = Object.keys(debouncedIds[resource]);
     delete debouncedIds[resource];
     return ids;
@@ -57,6 +57,9 @@ function* accumulate({ payload, meta }) {
     tasks[resource] = yield fork(finalize, resource, meta.accumulate);
 }
 
-export default function* () {
-    yield takeEvery(action => action.meta && action.meta.accumulate, accumulate);
+export default function*() {
+    yield takeEvery(
+        action => action.meta && action.meta.accumulate,
+        accumulate
+    );
 }

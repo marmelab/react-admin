@@ -2,20 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
-import { hideNotification as hideNotificationAction } from '../../actions/notificationActions' ;
+import { hideNotification as hideNotificationAction } from '../../actions/notificationActions';
 import translate from '../../i18n/translate';
 
 function getStyles(context) {
     if (!context) return { primary1Color: '#00bcd4', accent1Color: '#ff4081' };
     const {
-      muiTheme: {
-        baseTheme: {
-          palette: {
-              primary1Color,
-              accent1Color,
-          },
-        },
-      },
+        muiTheme: { baseTheme: { palette: { primary1Color, accent1Color } } },
     } = context;
     return { primary1Color, accent1Color };
 }
@@ -35,13 +28,15 @@ class Notification extends React.Component {
         if (type === 'confirm') {
             style.backgroundColor = primary1Color;
         }
-        return (<Snackbar
-            open={!!message}
-            message={!!message && translate(message)}
-            autoHideDuration={4000}
-            onRequestClose={this.handleRequestClose}
-            bodyStyle={style}
-        />);
+        return (
+            <Snackbar
+                open={!!message}
+                message={!!message && translate(message)}
+                autoHideDuration={4000}
+                onRequestClose={this.handleRequestClose}
+                bodyStyle={style}
+            />
+        );
     }
 }
 
@@ -65,7 +60,8 @@ const mapStateToProps = state => ({
     type: state.admin.notification.type,
 });
 
-export default translate(connect(
-  mapStateToProps,
-  { hideNotification: hideNotificationAction },
-)(Notification));
+export default translate(
+    connect(mapStateToProps, { hideNotification: hideNotificationAction })(
+        Notification
+    )
+);

@@ -2,7 +2,7 @@ import assert from 'assert';
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Filter from './Filter';
+import { Filter } from './Filter';
 
 describe('<Filter />', () => {
     describe('With form context', () => {
@@ -13,13 +13,15 @@ describe('<Filter />', () => {
 
         it('should render a redux <FilterForm /> component', () => {
             const wrapper = shallow(<Filter {...defaultProps} />);
-            const form = wrapper.find('getContext(ReduxForm)');
+            const form = wrapper.find('MuiComponent'); // FilterForm is an muiThemable component
             assert.equal(form.length, 1);
         });
 
         it('should pass `filterValues` as `initialValues` props', () => {
-            const wrapper = shallow(<Filter {...defaultProps} filterValues={{ q: 'Lorem' }} />);
-            const form = wrapper.find('getContext(ReduxForm)').first();
+            const wrapper = shallow(
+                <Filter {...defaultProps} filterValues={{ q: 'Lorem' }} />
+            );
+            const form = wrapper.find('MuiComponent').first(); // FilterForm is an muiThemable component
             assert.deepEqual(form.prop('initialValues'), { q: 'Lorem' });
         });
     });

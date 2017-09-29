@@ -76,7 +76,7 @@ export const CommentList = (props) =>
     </List>;
 ```
 
-Or, in the `<Edit>` page, as a [custom action](./CreateEdit.html#actions):
+Or, in the `<Edit>` page, as a [custom action](./CreateEdit.md#actions):
 
 {% raw %}
 ```jsx
@@ -108,7 +108,7 @@ export const CommentEdit = (props) =>
 
 ## Using The REST Client Instead of Fetch
 
-The previous code uses `fetch()`, which means it has to make raw HTTP requests. The REST logic often requires a bit of HTTP plumbing to deal with query parameters, encoding, headers, body formatting, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: the [REST Client](./RestClients.html). So it's a good idea to use this function instead of `fetch` - provided you have exported it:
+The previous code uses `fetch()`, which means it has to make raw HTTP requests. The REST logic often requires a bit of HTTP plumbing to deal with query parameters, encoding, headers, body formatting, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: the [REST Client](./RestClients.md). So it's a good idea to use this function instead of `fetch` - provided you have exported it:
 
 ```jsx
 // in src/restClient.js
@@ -158,7 +158,7 @@ There you go: no more `fetch`. Just like `fetch`, the `restClient` returns a `Pr
 const restClient = (type, resource, params) => new Promise();
 ```
 
-As for the syntax of the various request types (`GET_LIST`, `GET_ONE`, `UPDATE`, etc.), head to the [REST Client documentation](./RestClients.html#request-format) for more details.
+As for the syntax of the various request types (`GET_LIST`, `GET_ONE`, `UPDATE`, etc.), head to the [REST Client documentation](./RestClients.md#request-format) for more details.
 
 ## Using a Custom Action Creator
 
@@ -268,7 +268,7 @@ With this code, approving a review now displays the correct notification, and re
 
 ## Bonus: Optimistic Rendering
 
-In this example, after clicking on the "Approve" button, users are redirected to the comments list. Admin-on-rest then fetches the `/comments` resource to grab the list of updated comments from the server. But admin-on-rest doesn't wait for the response to this call to display the list of comments. In fact, it has an internal instance pool (in `state.admin[resource]`) that is kept during navigation, and uses it to render the screen before the API calls are over - it's called *optimistic rendering*.
+In this example, after clicking on the "Approve" button, users are redirected to the comments list. Admin-on-rest then fetches the `/comments` resource to grab the list of updated comments from the server. But admin-on-rest doesn't wait for the response to this call to display the list of comments. In fact, it has an internal instance pool (in `state.admin.resources[resource]`) that is kept during navigation, and uses it to render the screen before the API calls are over - it's called *optimistic rendering*.
 
 As the custom `COMMENT_APPROVE` action contains the `fetch: UPDATE` meta, admin-on-rest will automatically update its instance pool with the response. That means that the initial rendering (before the `GET /comments` response arrives) will show the approved comment!
 

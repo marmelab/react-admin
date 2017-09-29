@@ -15,7 +15,7 @@ const getStyles = ({ drawer }) => {
     const width = drawer && drawer.width ? getWidth(drawer.width) : '16em';
     const color = drawer && drawer.color ? drawer.color : '';
 
-    return ({
+    return {
         sidebarOpen: {
             flex: `0 0 ${width}`,
             marginLeft: 0,
@@ -30,7 +30,7 @@ const getStyles = ({ drawer }) => {
             transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
             backgroundColor: color,
         },
-    });
+    };
 };
 
 // We shouldn't need PureComponent here as it's connected
@@ -38,7 +38,7 @@ const getStyles = ({ drawer }) => {
 class Sidebar extends PureComponent {
     handleClose = () => {
         this.props.setSidebarVisibility(false);
-    }
+    };
 
     render() {
         const { open, setSidebarVisibility, children, muiTheme } = this.props;
@@ -47,12 +47,21 @@ class Sidebar extends PureComponent {
         return (
             <Responsive
                 small={
-                    <Drawer docked={false} open={open} onRequestChange={setSidebarVisibility}>
-                        {React.cloneElement(children, { onMenuTap: this.handleClose })}
+                    <Drawer
+                        docked={false}
+                        open={open}
+                        onRequestChange={setSidebarVisibility}
+                    >
+                        {React.cloneElement(children, {
+                            onMenuTap: this.handleClose,
+                        })}
                     </Drawer>
                 }
                 medium={
-                    <Paper className="aor-layout-sidebar" style={open ? styles.sidebarOpen : styles.sidebarClosed}>
+                    <Paper
+                        className="aor-layout-sidebar"
+                        style={open ? styles.sidebarOpen : styles.sidebarClosed}
+                    >
                         {children}
                     </Paper>
                 }
@@ -76,5 +85,7 @@ const mapStateToProps = (state, props) => ({
 
 export default compose(
     muiThemeable(),
-    connect(mapStateToProps, { setSidebarVisibility: setSidebarVisibilityAction }),
+    connect(mapStateToProps, {
+        setSidebarVisibility: setSidebarVisibilityAction,
+    })
 )(Sidebar);

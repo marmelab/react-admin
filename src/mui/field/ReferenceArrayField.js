@@ -5,7 +5,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
 
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
-import { getReferencesByIds } from '../../reducer/references/oneToMany';
+import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
 
 /**
  * A container component that fetches records from another resource specified
@@ -55,9 +55,20 @@ export class ReferenceArrayField extends Component {
     }
 
     render() {
-        const { resource, reference, data, ids, children, basePath, isLoading } = this.props;
+        const {
+            resource,
+            reference,
+            data,
+            ids,
+            children,
+            basePath,
+            isLoading,
+        } = this.props;
+
         if (React.Children.count(children) !== 1) {
-            throw new Error('<ReferenceArrayField> only accepts a single child (like <Datagrid>)');
+            throw new Error(
+                '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
+            );
         }
 
         if (ids.length !== 0 && Object.keys(data).length !== ids.length) {

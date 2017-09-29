@@ -29,7 +29,7 @@ const mapStateToProps = state => ({
 
 const enhance = compose(
     translate,
-    connect(mapStateToProps, { userLogout: userLogoutAction }),
+    connect(mapStateToProps, { userLogout: userLogoutAction })
 );
 
 export default enhance(Logout);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card';
+import { Card, CardText, CardActions } from 'material-ui/Card';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import ActionCheck from 'material-ui/svg-icons/action/check-circle';
@@ -11,7 +11,10 @@ import inflection from 'inflection';
 import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
 import { ListButton } from '../button';
-import { crudGetOne as crudGetOneAction, crudDelete as crudDeleteAction } from '../../actions/dataActions';
+import {
+    crudGetOne as crudGetOneAction,
+    crudDelete as crudDeleteAction,
+} from '../../actions/dataActions';
 import translate from '../../i18n/translate';
 
 const styles = {
@@ -28,23 +31,39 @@ class Delete extends Component {
     }
 
     componentDidMount() {
-        this.props.crudGetOne(this.props.resource, this.props.id, this.getBasePath());
+        this.props.crudGetOne(
+            this.props.resource,
+            this.props.id,
+            this.getBasePath()
+        );
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.id !== nextProps.id) {
-            this.props.crudGetOne(nextProps.resource, nextProps.id, this.getBasePath());
+            this.props.crudGetOne(
+                nextProps.resource,
+                nextProps.id,
+                this.getBasePath()
+            );
         }
     }
 
     getBasePath() {
         const { location } = this.props;
-        return location.pathname.split('/').slice(0, -2).join('/');
+        return location.pathname
+            .split('/')
+            .slice(0, -2)
+            .join('/');
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.crudDelete(this.props.resource, this.props.id, this.getBasePath());
+        this.props.crudDelete(
+            this.props.resource,
+            this.props.id,
+            this.props.data,
+            this.getBasePath()
+        );
     }
 
     goBack() {
@@ -64,17 +83,23 @@ class Delete extends Component {
             id,
             data,
         });
-        const titleElement = data ? <Title title={title} record={data} defaultTitle={defaultTitle} /> : '';
+        const titleElement = data ? (
+            <Title title={title} record={data} defaultTitle={defaultTitle} />
+        ) : (
+            ''
+        );
 
         return (
             <div>
-                <Card style={{ opacity: isLoading ? .8 : 1 }}>
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <CardActions style={styles.actions}>
                         <ListButton basePath={basePath} />
                     </CardActions>
                     <ViewTitle title={titleElement} />
                     <form onSubmit={this.handleSubmit}>
-                        <CardText>{translate('aor.message.are_you_sure')}</CardText>
+                        <CardText>
+                            {translate('aor.message.are_you_sure')}
+                        </CardText>
                         <Toolbar style={styles.toolbar}>
                             <ToolbarGroup>
                                 <RaisedButton
@@ -116,17 +141,20 @@ Delete.propTypes = {
 function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
-        data: state.admin[props.resource].data[decodeURIComponent(props.match.params.id)],
+        data:
+            state.admin.resources[props.resource].data[
+                decodeURIComponent(props.match.params.id)
+            ],
         isLoading: state.admin.loading > 0,
     };
 }
 
 const enhance = compose(
-    connect(
-        mapStateToProps,
-        { crudGetOne: crudGetOneAction, crudDelete: crudDeleteAction }
-    ),
-    translate,
+    connect(mapStateToProps, {
+        crudGetOne: crudGetOneAction,
+        crudDelete: crudDeleteAction,
+    }),
+    translate
 );
 
 export default enhance(Delete);

@@ -30,7 +30,7 @@ All input components accept the following attributes:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
 * `defaultValue`: Value to be set when the property is `null` or `undefined`.
-* `validate`: Validation rules for the current property (see the [Validation Documentation](./CreateEdit.html#validation))
+* `validate`: Validation rules for the current property (see the [Validation Documentation](./CreateEdit.md#validation))
 * `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
 * `style`: A style object to customize the look and feel of the field container (e.g. the `<div>` in a form).
 * `elStyle`: A style object to customize the look and feel of the field element itself
@@ -64,7 +64,7 @@ Then you can display a text input to edit the author first name as follows:
 <TextInput source="author.firstName" />
 ```
 
-**Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.html#translating-resource-and-field-names) for details.
+**Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
 
 ## `<AutocompleteInput>`
 
@@ -357,7 +357,7 @@ Previews are enabled using `<ImageInput>` children, as following:
 </ImageInput>
 ```
 
-Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.html#writing_your_own_field_component).
+Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.md#writing_your_own_field_component).
 
 When receiving **new** files, `ImageInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display informations about size or mimetype inside a custom field.
 
@@ -371,7 +371,7 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 </ImageInput>
 ```
 
-Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./RestClients.html#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
+Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./RestClients.md#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
 ## `<FileInput>`
 
@@ -387,7 +387,7 @@ Previews (actually a simple list of files names) are enabled using `<FileInput>`
 </FileInput>
 ```
 
-Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.html#writing_your_own_field_component).
+Writing a custom field component for displaying the current value(s) is easy:  it's a standard [field](./Fields.md#writing_your_own_field_component).
 
 When receiving **new** files, `FileInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display informations about size or mimetype inside a custom field.
 
@@ -401,7 +401,7 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 </FileInput>
 ```
 
-Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./RestClients.html#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
+Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./RestClients.md#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
 ## `<LongTextInput>`
 

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
-import shallowEqual from 'recompose/shallowEqual';
+import isEqual from 'lodash.isequal';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
-import defaultTheme from '../defaultTheme';
+import removeEmpty from '../../util/removeEmpty';
+import withPermissionsFilteredChildren from '../../auth/withPermissionsFilteredChildren';
 
-class Filter extends Component {
+export class Filter extends Component {
     constructor(props) {
         super(props);
         this.filters = this.props.filterValues;
@@ -23,22 +24,23 @@ class Filter extends Component {
         }
     }
 
-    setFilters = debounce((filters) => {
-        if (!shallowEqual(filters, this.filters)) { // fix for redux-form bug with onChange and enableReinitialize
-            const filtersWithoutEmpty = filters;
-            Object.keys(filtersWithoutEmpty).forEach((filterName) => {
-                if (filtersWithoutEmpty[filterName] === '') {
-                    // remove empty filter from query
-                    delete filtersWithoutEmpty[filterName];
-                }
-            })
+    setFilters = debounce(filters => {
+        if (!isEqual(filters, this.filters)) {
+            // fix for redux-form bug with onChange and enableReinitialize
+            const filtersWithoutEmpty = removeEmpty(filters);
             this.props.setFilters(filtersWithoutEmpty);
             this.filters = filtersWithoutEmpty;
         }
-    }, this.props.debounce)
+    }, this.props.debounce);
 
     renderButton() {
-        const { resource, children, showFilter, displayedFilters, filterValues } = this.props;
+        const {
+            resource,
+            children,
+            showFilter,
+            displayedFilters,
+            filterValues,
+        } = this.props;
         return (
             <FilterButton
                 resource={resource}
@@ -51,7 +53,13 @@ class Filter extends Component {
     }
 
     renderForm() {
-        const { resource, children, hideFilter, displayedFilters, filterValues, theme } = this.props;
+        const {
+            resource,
+            children,
+            hideFilter,
+            displayedFilters,
+            filterValues,
+        } = this.props;
         return (
             <FilterForm
                 resource={resource}
@@ -60,13 +68,14 @@ class Filter extends Component {
                 displayedFilters={displayedFilters}
                 initialValues={filterValues}
                 setFilters={this.setFilters}
-                theme={theme}
             />
         );
     }
 
     render() {
-        return this.props.context === 'button' ? this.renderButton() : this.renderForm();
+        return this.props.context === 'button'
+            ? this.renderButton()
+            : this.renderForm();
     }
 }
 
@@ -80,12 +89,10 @@ Filter.propTypes = {
     setFilters: PropTypes.func,
     showFilter: PropTypes.func,
     resource: PropTypes.string.isRequired,
-    theme: PropTypes.object,
 };
 
 Filter.defaultProps = {
     debounce: 500,
-    theme: defaultTheme,
 };
 
-export default Filter;
+export default withPermissionsFilteredChildren(Filter);

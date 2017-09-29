@@ -23,23 +23,28 @@ const styles = {
     },
 };
 
-const CreateButton = ({ basePath = '', translate, label = 'aor.action.create', width }) =>
-    width === 1
-    ?
+const CreateButton = ({
+    basePath = '',
+    translate,
+    label = 'aor.action.create',
+    width,
+}) =>
+    width === 1 ? (
         <FloatingActionButton
             style={styles.floating}
             containerElement={<Link to={`${basePath}/create`} />}
         >
             <ContentAdd />
         </FloatingActionButton>
-    :
+    ) : (
         <FlatButton
             primary
             label={label && translate(label)}
             icon={<ContentAdd />}
             containerElement={<Link to={`${basePath}/create`} />}
             style={styles.flat}
-        />;
+        />
+    );
 
 CreateButton.propTypes = {
     basePath: PropTypes.string,
@@ -49,9 +54,9 @@ CreateButton.propTypes = {
 };
 
 const enhance = compose(
-    onlyUpdateForKeys(['basePath, label']),
+    onlyUpdateForKeys(['basePath', 'label']),
     withWidth(),
-    translate,
+    translate
 );
 
 export default enhance(CreateButton);

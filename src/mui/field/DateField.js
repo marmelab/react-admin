@@ -6,9 +6,9 @@ import pure from 'recompose/pure';
 const toLocaleStringSupportsLocales = (() => {
     // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
     try {
-        new Date().toLocaleString("i");
+        new Date().toLocaleString('i');
     } catch (error) {
-        return (error instanceof RangeError);
+        return error instanceof RangeError;
     }
     return false;
 })();
@@ -38,14 +38,25 @@ const toLocaleStringSupportsLocales = (() => {
  * <span>mercredi 7 novembre 2012</span>
  */
 
-export const DateField = ({ elStyle, locales, options, record, showTime = false, source }) => {
+export const DateField = ({
+    elStyle,
+    locales,
+    options,
+    record,
+    showTime = false,
+    source,
+}) => {
     if (!record) return null;
     const value = get(record, source);
     if (value == null) return null;
     const date = value instanceof Date ? value : new Date(value);
-    const dateString = showTime ?
-        (toLocaleStringSupportsLocales ? date.toLocaleString(locales, options) : date.toLocaleString()) :
-        (toLocaleStringSupportsLocales ? date.toLocaleDateString(locales, options) : date.toLocaleDateString());
+    const dateString = showTime
+        ? toLocaleStringSupportsLocales
+          ? date.toLocaleString(locales, options)
+          : date.toLocaleString()
+        : toLocaleStringSupportsLocales
+          ? date.toLocaleDateString(locales, options)
+          : date.toLocaleDateString();
 
     return <span style={elStyle}>{dateString}</span>;
 };

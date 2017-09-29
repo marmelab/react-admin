@@ -13,17 +13,50 @@ const cardActionStyle = {
     flexWrap: 'wrap',
 };
 
-const Actions = ({ resource, filters, displayedFilters, filterValues, theme, hasCreate, basePath, showFilter, refresh }) => {
+const Actions = ({
+    resource,
+    filters,
+    displayedFilters,
+    filterValues,
+    theme,
+    hasCreate,
+    basePath,
+    showFilter,
+}) => {
     const muiTheme = getMuiTheme(theme);
     const prefix = autoprefixer(muiTheme);
 
     return (
         <CardActions style={prefix(cardActionStyle)}>
-            {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
+            {filters &&
+                React.cloneElement(filters, {
+                    resource,
+                    showFilter,
+                    displayedFilters,
+                    filterValues,
+                    context: 'button',
+                })}
             {hasCreate && <CreateButton basePath={basePath} />}
-            <RefreshButton refresh={refresh} />
+            <RefreshButton />
         </CardActions>
     );
 };
 
-export default onlyUpdateForKeys(['resource', 'filters', 'displayedFilters', 'filterValues', 'theme'])(Actions);
+Actions.propTypes = {
+    basePath: PropTypes.string,
+    displayedFilters: PropTypes.object,
+    filters: PropTypes.element,
+    filterValues: PropTypes.object,
+    hasCreate: PropTypes.bool,
+    resource: PropTypes.string,
+    showFilter: PropTypes.func,
+    theme: PropTypes.object,
+};
+
+export default onlyUpdateForKeys([
+    'resource',
+    'filters',
+    'displayedFilters',
+    'filterValues',
+    'theme',
+])(Actions);

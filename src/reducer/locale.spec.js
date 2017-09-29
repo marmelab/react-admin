@@ -9,6 +9,9 @@ describe('locale reducer', () => {
         assert.equal(DEFAULT_LOCALE, reducer()(undefined, {}));
     });
     it('should change with CHANGE_LOCALE actions', () => {
-        assert.equal('fr', reducer()('en', { type: CHANGE_LOCALE, payload: 'fr' }));
+        assert.equal(
+            'fr',
+            reducer()('en', { type: CHANGE_LOCALE, payload: 'fr' })
+        );
     });
 });
