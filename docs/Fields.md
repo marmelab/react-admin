@@ -240,6 +240,12 @@ If the record actually contains an array of files in its property defined by the
 <FileField source="files" src="url" title="desc" />
 ```
 
+You can optionally set the `target` prop to choose which window will the link try to open in.
+```jsx
+// Will make the file open in new window
+<FileField source="file.url" target="_blank" />
+```
+
 ## `<NumberField>`
 
 Displays a number formatted according to the browser locale, right aligned.
