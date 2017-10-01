@@ -39,7 +39,7 @@ import {
     simpleRestClient,
     Delete,
     TranslationProvider,
-    DECLARE_RESOURCES,
+    declareResourcesAction,
 } from 'admin-on-rest';
 
 // your app components
@@ -52,10 +52,7 @@ import messages from './i18n';
 
 // create a Redux app
 const reducer = combineReducers({
-    admin: adminReducer(undefined, { 
-        type: DECLARE_RESOURCES, 
-        payload: [{ name: 'posts' }, { name: 'comments' }, { name: 'users' }] 
-    }),
+    admin: adminReducer,
     locale: localeReducer(),
     form: formReducer,
     routing: routerReducer,
@@ -66,6 +63,7 @@ const store = createStore(reducer, undefined, compose(
     applyMiddleware(sagaMiddleware, routerMiddleware(history)),
     window.devToolsExtension ? window.devToolsExtension() : f => f,
 ));
+store.dispatch(declareResourcesAction([{ name: 'posts' }, { name: 'comments' }, { name: 'users' }]));
 const restClient = simpleRestClient('http://path.to.my.api/');
 sagaMiddleware.run(crudSaga(restClient));
 
