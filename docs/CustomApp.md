@@ -39,6 +39,7 @@ import {
     simpleRestClient,
     Delete,
     TranslationProvider,
+    DECLARE_RESOURCES,
 } from 'admin-on-rest';
 
 // your app components
@@ -51,7 +52,10 @@ import messages from './i18n';
 
 // create a Redux app
 const reducer = combineReducers({
-    admin: adminReducer,
+    admin: adminReducer(undefined, { 
+        type: DECLARE_RESOURCES, 
+        payload: [{ name: 'posts' }, { name: 'comments' }, { name: 'users' }] 
+    }),
     locale: localeReducer(),
     form: formReducer,
     routing: routerReducer,
