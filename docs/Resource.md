@@ -59,7 +59,7 @@ const App = () => (
 * `/:id/show` maps to the `show` component
 * `/:id/delete` maps to the `remove` component
 
-**Tip**: You must add a `<Resource>` when you declare a reference (via `<ReferenceField>`, `<ReferenceArrayField>`, `<ReferenceManyField>`, `<ReferenceInput>`, `<ReferenceArrayInput>`, or `<ReferenceManyInput>`), because admin-on-rest uses resources to define the data store structure. That's why there is an empty `tag` resource in the example above.
+**Tip**: You must add a `<Resource>` when you declare a reference (via `<ReferenceField>`, `<ReferenceArrayField>`, `<ReferenceManyField>`, `<ReferenceInput>` or `<ReferenceArrayInput>`), because admin-on-rest uses resources to define the data store structure. That's why there is an empty `tag` resource in the example above.
 
 `<Resource>` also accepts additional props:
 
