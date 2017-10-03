@@ -23,7 +23,7 @@ It's even better with a live reproduction test case.
 
 ### Issue Guidelines
 
-Please use a succint description. "doesn't work" doesn't help others find similar issues.
+Please use a succinct description. "doesn't work" doesn't help others find similar issues.
 
 Please don't group multiple topics into one issue, but instead each should be its own issue.
 
