@@ -334,3 +334,14 @@ export default connect(mapStateToProps, {
     setSidebarVisibility: setSidebarVisibilityAction,
 })(MyLayout);
 ```
+
+
+## Notification's
+
+If you use your own layout (or custom login page), then you have access to the `Notification` component.
+
+Here you can set the `autoHideDuration` prop (defaults to 4000, aka 4 seconds).
+
+Using the `autoHideDuration` you can set the delay after which the notification closes.
+
+*TIP*: if you use the `redux` `showNotification` action, then you can define `autoHideDuration` per message as the third parameter to `showNotification` action.
