@@ -430,6 +430,27 @@ export const PostList = (props) => (
 );
 ```
 
+**Tip**: The `<SimpleList>` items link to the edition page by default. You can set the `linkType` prop to `show` to link to the `<Show>` page instead.
+
+```jsx
+// in src/posts.js
+import React from 'react';
+import { List, SimpleList } from 'admin-on-rest';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => `${record.views} views`}
+            tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+            linkType="show"
+        />
+    </List>
+);
+```
+
+Setting the `linkType` prop to `false` (boolean, not string) removes the link in all list items.
+
 ## The `<SingleFieldList>` component
 
 When you want to display only one property of a list of records, instead of using a `<Datagrid>`, use the `<SingleFieldList>`. It expects a single `<Field>` as child. It's especially useful for `<ReferenceManyField>` components:
