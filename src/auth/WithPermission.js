@@ -1,6 +1,5 @@
-import React, { createElement, Component } from 'react';
+import React, { createElement, cloneElement, Children, Component } from 'react';
 import PropTypes from 'prop-types';
-import FormField from '../mui/form/FormField';
 import getContext from 'recompose/getContext';
 
 import { AUTH_GET_PERMISSIONS } from './types';
@@ -61,16 +60,6 @@ export class WithPermissionComponent extends Component {
         }
     }
 
-    renderSourceChild = (child, props) => (
-        <div
-            key={child.props.source}
-            style={child.props.style}
-            className={`aor-input aor-input-${child.props.source}`}
-        >
-            <FormField input={child} {...props} />
-        </div>
-    );
-
     render() {
         const { isNotFound, match, role } = this.state;
         const {
@@ -98,27 +87,17 @@ export class WithPermissionComponent extends Component {
             return createElement(loading);
         }
 
-        if (Array.isArray(children)) {
+        if (Children.count(children) > 1) {
             return (
-                <div>
-                    {React.Children.map(
-                        children,
-                        child =>
-                            child.props.source ? (
-                                this.renderSourceChild(child, props)
-                            ) : (
-                                <FormField input={child} {...props} />
-                            )
+                <span>
+                    {Children.map(children, child =>
+                        cloneElement(child, props)
                     )}
-                </div>
+                </span>
             );
         }
 
-        return children.props.source ? (
-            this.renderSourceChild(children, props)
-        ) : (
-            <FormField input={children} {...props} />
-        );
+        return cloneElement(children, props);
     }
 }
 

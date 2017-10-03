@@ -216,7 +216,7 @@ The `WithPermission` component will only display its content if the user has the
 import React from 'react';
 import { MenuItemLink, WithPermission } from 'admin-on-rest';
 
-export default ({ resources, onMenuTap, logout }) => (
+export default ({ onMenuTap, logout }) => (
     <div>
         <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
         <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
