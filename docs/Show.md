@@ -158,3 +158,46 @@ export const PostShow = (props) => (
     </Show>
 );
 ```
+
+## Declaring fields at runtime
+
+You might want to dynamically define the fields when the `<Show>` component is rendered. It accepts a function as its child and this function can return a Promise. If you also defined an `authClient` on the `<Admin>` component, the function will receive the result of a call to `authClient` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
+
+For instance, getting the fields from an API might look like:
+
+```js
+import React from 'react';
+import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'admin-on-rest';
+
+const knownFields = [
+    <TextField source="title" />,
+    <TextField source="teaser" />,
+    <RichTextField source="body" />,
+    <DateField label="Publication date" source="created_at" />,
+];
+
+const fetchFields = permissions =>
+    fetch('https://myapi/fields', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            permissions,
+            resource: 'posts',
+        }),
+    })
+    .then(response => response.json())
+    .then(json => knownFields.filter(field => json.fields.includes(field.props.source)))
+    .then(fields => (
+        <SimpleShowLayout>
+            {fields}
+        </SimpleShowLayout>
+    ));
+
+export const PostShow = (props) => (
+    <Show {...props}>
+        {fetchFields}
+    </Show>
+);
+```
