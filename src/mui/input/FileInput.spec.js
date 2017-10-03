@@ -29,52 +29,6 @@ describe('<FileInput />', () => {
         assert.equal(wrapper.find('Dropzone').length, 1);
     });
 
-    it('should display correct label depending multiple property', () => {
-        const test = (multiple, expectedLabel) => {
-            const wrapper = shallow(
-                <FileInput
-                    multiple={multiple}
-                    input={{
-                        value: {
-                            picture: null,
-                        },
-                    }}
-                    translate={x => x}
-                    source="picture"
-                />
-            );
-
-            assert.equal(wrapper.find('Dropzone p').text(), expectedLabel);
-        };
-
-        test(false, 'aor.input.file.upload_single');
-        test(true, 'aor.input.file.upload_several');
-    });
-
-    it('should display correct custom label', () => {
-        const test = expectedLabel => {
-            const wrapper = shallow(
-                <FileInput
-                    placeholder={expectedLabel}
-                    input={{
-                        value: {
-                            picture: null,
-                        },
-                    }}
-                    translate={x => x}
-                    source="picture"
-                />
-            );
-
-            assert.ok(wrapper.find('Dropzone').contains(expectedLabel));
-        };
-        const CustomLabel = () => <div>Custom label</div>;
-
-        test('custom label');
-        test(<h1>Custom label</h1>);
-        test(<CustomLabel />);
-    });
-
     it('should correctly update upon drop when allowing a single file', () => {
         const onChange = spy();
 
@@ -93,7 +47,9 @@ describe('<FileInput />', () => {
 
         wrapper.instance().onDrop([{ preview: 'new_b64_picture' }]);
 
-        assert.deepEqual(onChange.args[0][0], [{ preview: 'new_b64_picture' }]);
+        assert.deepEqual(onChange.args[0][0], {
+            preview: 'new_b64_picture',
+        });
     });
 
     it('should correctly update upon removal when allowing a single file', () => {
@@ -113,7 +69,7 @@ describe('<FileInput />', () => {
         );
 
         wrapper.instance().onRemove({ src: 'b64_picture' })();
-        assert.deepEqual(onChange.args[0][0], []);
+        assert.deepEqual(onChange.args[0][0], null);
     });
 
     it('should correctly update upon drop when allowing multiple files', () => {
@@ -164,6 +120,52 @@ describe('<FileInput />', () => {
         wrapper.instance().onRemove({ src: 'another_b64_picture' })();
 
         assert.deepEqual(onChange.args[0][0], [{ src: 'b64_picture' }]);
+    });
+
+    it('should display correct label depending multiple property', () => {
+        const test = (multiple, expectedLabel) => {
+            const wrapper = shallow(
+                <FileInput
+                    multiple={multiple}
+                    input={{
+                        value: {
+                            picture: null,
+                        },
+                    }}
+                    translate={x => x}
+                    source="picture"
+                />
+            );
+
+            assert.equal(wrapper.find('Dropzone p').text(), expectedLabel);
+        };
+
+        test(false, 'aor.input.file.upload_single');
+        test(true, 'aor.input.file.upload_several');
+    });
+
+    it('should display correct custom label', () => {
+        const test = expectedLabel => {
+            const wrapper = shallow(
+                <FileInput
+                    placeholder={expectedLabel}
+                    input={{
+                        value: {
+                            picture: null,
+                        },
+                    }}
+                    translate={x => x}
+                    source="picture"
+                />
+            );
+
+            assert.ok(wrapper.find('Dropzone').contains(expectedLabel));
+        };
+        const CustomLabel = () => <div>Custom label</div>;
+
+        test('custom label');
+        test(<h1>Custom label</h1>);
+        test(<CustomLabel />);
     });
 
     describe('Image Preview', () => {
