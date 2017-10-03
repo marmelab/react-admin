@@ -39,6 +39,7 @@ import {
     simpleRestClient,
     Delete,
     TranslationProvider,
+    declareResources,
 } from 'admin-on-rest';
 
 // your app components
@@ -62,6 +63,7 @@ const store = createStore(reducer, undefined, compose(
     applyMiddleware(sagaMiddleware, routerMiddleware(history)),
     window.devToolsExtension ? window.devToolsExtension() : f => f,
 ));
+store.dispatch(declareResources([{ name: 'posts' }, { name: 'comments' }, { name: 'users' }]));
 const restClient = simpleRestClient('http://path.to.my.api/');
 sagaMiddleware.run(crudSaga(restClient));
 
