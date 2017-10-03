@@ -8,9 +8,9 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const CreateActions = ({ basePath }) => (
+const CreateActions = ({ basePath, hasList }) => (
     <CardActions style={cardActionStyle}>
-        <ListButton basePath={basePath} />
+        {hasList && <ListButton basePath={basePath} />}
     </CardActions>
 );
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
+import { spy } from 'sinon';
+
 import { AutocompleteInput } from './AutocompleteInput';
 
 describe('<AutocompleteInput />', () => {
@@ -22,9 +24,14 @@ describe('<AutocompleteInput />', () => {
         const AutoCompleteElement = wrapper.find('AutoComplete');
         assert.equal(AutoCompleteElement.length, 1);
         assert.equal(AutoCompleteElement.prop('searchText'), 'hello');
+        assert.equal(
+            AutoCompleteElement.prop('onUpdateInput'),
+            wrapper.instance().handleUpdateInput
+        );
+        assert.equal(wrapper.state('searchText'), 'hello');
     });
 
-    it('should use the input parameter value as the initial input searchText', () => {
+    it('should use the input parameter value as the initial state and input searchText', () => {
         const wrapper = shallow(
             <AutocompleteInput
                 {...defaultProps}
@@ -34,6 +41,7 @@ describe('<AutocompleteInput />', () => {
         );
         const AutoCompleteElement = wrapper.find('AutoComplete').first();
         assert.equal(AutoCompleteElement.prop('searchText'), 'foo');
+        assert.equal(wrapper.state('searchText'), 'foo');
     });
 
     it('should pass choices as dataSource', () => {
@@ -159,6 +167,27 @@ describe('<AutocompleteInput />', () => {
             { value: 'M', text: 'Male' },
             { value: 'F', text: 'Female' },
         ]);
+    });
+
+    it('should change searchText state and call setFilter when calling handleUpdateInput', () => {
+        const setFilter = spy();
+        const wrapper = shallow(
+            <AutocompleteInput
+                {...defaultProps}
+                setFilter={setFilter}
+                input={{ value: 1 }}
+                choices={[
+                    { id: 1, name: 'foo' },
+                    { id: 2, name: 'bar' },
+                    { id: 3, name: 'baz' },
+                ]}
+            />
+        );
+
+        assert.equal(wrapper.state('searchText'), 'foo');
+        wrapper.instance().handleUpdateInput('bar');
+        assert.equal(wrapper.state('searchText'), 'bar');
+        assert(setFilter.calledWith('bar'));
     });
 
     describe('error message', () => {

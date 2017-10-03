@@ -9,7 +9,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "aor-json-rest-client": "~2.0.0",
+    "aor-json-rest-client": "~2.1.0",
     "aor-language-french": "~1.8.0",
     "aor-rich-text-input": "~1.0.0",
     "babel-core": "~6.25.0",

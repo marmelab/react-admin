@@ -1,5 +1,27 @@
 # Changelog
 
+## v1.3.2
+
+* Fix JS error on `<WithPermission>` ([fzaninotto](https://github.com/fzaninotto))
+* Fix tag filter in example post list ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix bad links to `Authorization` documentation sections ([djhi](https://github.com/djhi))
+* Fix mention about a `<ReferenceManyInput>` ([djhi](https://github.com/djhi))
+* Fix multiple `<ReferenceManyField>` on same resource with different filter ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix trailing slash in `<EditButton>` link ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix Optimistic rendering of List may create errors due to outdated data ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix documentation about `onTouchTap`, replaced by `onClick` ([djhi](https://github.com/djhi))
+* Fix List button displayed in show view even when no List component defined ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix `<AutocompleteInput>` can not be changed once a value is selected ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix `<DateInput>` Filter first passed as `String`, then as `Date` ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix `<FilterForm>` is not themable ([djhi](https://github.com/djhi))
+* Fix typo in `<Admin>` component documentation ([than](https://github.com/than))
+* Fix `<FileInputPreview>` is not themable ([djhi](https://github.com/djhi))
+* Fix Custom App documentation ([kopax](https://github.com/kopax))
+* Fix missing refresh of `<RadioButtonGroupInput>` ([michaelluk](https://github.com/michaelluk))
+* Remove mention of `aor-permissions` from documentation ([djhi](https://github.com/djhi))
+* Fix performance optimization in `<CreateButton>` ([natrim](https://github.com/natrim))
+* Add mentions of `aor-embedded-array` and `aor-rest-client-router` packages to the doc ([MhdSyrwan](https://github.com/MhdSyrwan))
+
 ## v1.3.1
 
 * Fix Delete actions fails on IE11 ([fzaninotto](https://github.com/fzaninotto))

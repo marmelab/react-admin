@@ -89,7 +89,13 @@ export class ReferenceManyField extends Component {
     ) {
         const { crudGetManyReference } = this.props;
         const pagination = { page: 1, perPage };
-        const relatedTo = nameRelatedTo(reference, record.id, resource, target);
+        const relatedTo = nameRelatedTo(
+            reference,
+            record.id,
+            resource,
+            target,
+            filter
+        );
         crudGetManyReference(
             reference,
             target,
@@ -166,7 +172,8 @@ function mapStateToProps(state, props) {
         props.reference,
         props.record.id,
         props.resource,
-        props.target
+        props.target,
+        props.filter
     );
     return {
         data: getReferences(state, props.reference, relatedTo),

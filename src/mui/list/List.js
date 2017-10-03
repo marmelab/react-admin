@@ -118,7 +118,7 @@ export class List extends Component {
     }
 
     getBasePath() {
-        return this.props.location.pathname;
+        return this.props.location.pathname.replace(/\/$/, '');
     }
 
     /**
