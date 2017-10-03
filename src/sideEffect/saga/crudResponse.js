@@ -9,6 +9,7 @@ import {
     CRUD_GET_LIST_FAILURE,
     CRUD_GET_MANY_FAILURE,
     CRUD_GET_MANY_REFERENCE_FAILURE,
+    CRUD_GET_ONE_SUCCESS,
     CRUD_GET_ONE_FAILURE,
     CRUD_UPDATE_FAILURE,
     CRUD_UPDATE_SUCCESS,
@@ -71,6 +72,16 @@ function* handleResponse({ type, requestPayload, error, payload }) {
                       ),
                   ])
                 : yield [put(showNotification('aor.notification.deleted'))];
+        case CRUD_GET_ONE_SUCCESS:
+            if (
+                !('id' in payload.data) ||
+                payload.data.id != requestPayload.id
+            ) {
+                return yield put(
+                    showNotification('aor.notification.bad_item', 'warning')
+                );
+            }
+            break;
         case CRUD_GET_ONE_FAILURE:
             return requestPayload.basePath
                 ? yield all([
