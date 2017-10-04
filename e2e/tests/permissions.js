@@ -12,11 +12,11 @@ describe('Permissions', () => {
     const CreatePage = createPageFactory(
         'http://localhost:8083/#/users/create'
     )(driver);
-    const EditPage = editPageFactory('http://localhost:8083/#/users/1/edit')(driver);
+    const EditPage = editPageFactory('http://localhost:8083/#/users/1')(driver);
     const ListPage = listPageFactory('http://localhost:8083/#/users')(driver);
     const LoginPage = loginPageFactory('http://localhost:8083/#/login')(driver);
     const ShowPage = showPageFactory(
-        'http://localhost:8083/#/users/1',
+        'http://localhost:8083/#/users/1/show',
         'name'
     )(driver);
 
