@@ -6,7 +6,7 @@ import {
 const defaultState = {
     text: '',
     type: 'info', // one of 'info', 'confirm', 'warning'
-    autoHideDuration: undefined, // undefined means use global duration
+    autoHideDuration: undefined, // use default duration from Notification
 };
 
 export default (previousState = defaultState, { type, payload }) => {
