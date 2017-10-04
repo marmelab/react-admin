@@ -16,9 +16,17 @@ const isRequired = validate => {
 
 export default BaseComponent => {
     class FormField extends Component {
+        static propTypes = {
+            defaultValue: PropTypes.any,
+            initializeForm: PropTypes.func.isRequired,
+            input: PropTypes.object,
+            source: PropTypes.string,
+            validate: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
+        };
+
         componentDidMount() {
-            const { defaultValue, initializeForm, source } = this.props;
-            if (!defaultValue) {
+            const { defaultValue, input, initializeForm, source } = this.props;
+            if (!defaultValue || input) {
                 return;
             }
             initializeForm({
@@ -30,8 +38,10 @@ export default BaseComponent => {
         }
 
         render() {
-            const { validate, ...props } = this.props;
-            return (
+            const { input, validate, ...props } = this.props;
+            return input ? ( // An ancestor is already decorated by Field
+                <BaseComponent {...this.props} />
+            ) : (
                 <Field
                     {...props}
                     name={props.source}
@@ -41,13 +51,6 @@ export default BaseComponent => {
             );
         }
     }
-
-    FormField.propTypes = {
-        defaultValue: PropTypes.any,
-        initializeForm: PropTypes.func.isRequired,
-        source: PropTypes.string,
-        validate: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
-    };
 
     return connect(undefined, { initializeForm })(FormField);
 };
