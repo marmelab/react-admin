@@ -3,7 +3,7 @@ export const SORT_ASC = 'ASC';
 export const SORT_DESC = 'DESC';
 
 export const SET_PAGE = 'SET_PAGE';
-
+export const INC_PAGE = 'INC_PAGE';
 export const SET_FILTER = 'SET_FILTER';
 
 const oppositeOrder = direction =>
@@ -32,6 +32,12 @@ export default (previousState, { type, payload }) => {
 
         case SET_PAGE:
             return { ...previousState, page: payload };
+
+        case INC_PAGE:
+            return {
+                ...previousState,
+                page: parseInt(previousState.page, 10) + 1,
+            };
 
         case SET_FILTER: {
             return { ...previousState, page: 1, filter: payload };
