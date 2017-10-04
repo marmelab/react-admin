@@ -41,7 +41,7 @@ describe('<Edit />', () => {
                 </SimpleForm>
             </Edit>
         );
-        const inputs = wrapper.find('Connect(FormFieldComponent)');
+        const inputs = wrapper.find('Connect(FormField)');
         assert.deepEqual(inputs.map(i => i.prop('source')), ['foo', 'bar']);
     });
 });

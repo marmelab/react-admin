@@ -1,14 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SelectInput from './SelectInput';
-import compose from 'recompose/compose';
 
-import addField from '../form/addField';
 import translate from '../../i18n/translate';
 
 export const NullableBooleanInput = ({
-    input,
-    meta,
     label,
     source,
     elStyle,
@@ -16,7 +12,6 @@ export const NullableBooleanInput = ({
     translate,
 }) => (
     <SelectInput
-        input={input}
         label={label}
         source={source}
         resource={resource}
@@ -25,7 +20,6 @@ export const NullableBooleanInput = ({
             { id: false, name: translate('aor.boolean.false') },
             { id: true, name: translate('aor.boolean.true') },
         ]}
-        meta={meta}
         style={elStyle}
     />
 );
@@ -34,9 +28,10 @@ NullableBooleanInput.propTypes = {
     elStyle: PropTypes.object,
     input: PropTypes.object,
     label: PropTypes.string,
-    meta: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
+    translate: PropTypes.func.isRequired,
 };
 
-export default compose(addField, translate)(NullableBooleanInput);
+// don't decorate with addField HOC as SelectInput is already decorated.
+export default translate(NullableBooleanInput);

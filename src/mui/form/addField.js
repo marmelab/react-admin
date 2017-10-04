@@ -15,7 +15,7 @@ const isRequired = validate => {
 };
 
 export default BaseComponent => {
-    class FormFieldComponent extends Component {
+    class FormField extends Component {
         componentDidMount() {
             const { defaultValue, initializeForm, source } = this.props;
             if (!defaultValue) {
@@ -42,12 +42,12 @@ export default BaseComponent => {
         }
     }
 
-    FormFieldComponent.propTypes = {
+    FormField.propTypes = {
         defaultValue: PropTypes.any,
         initializeForm: PropTypes.func.isRequired,
         source: PropTypes.string,
-        validate: PropTypes.func,
+        validate: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
     };
 
-    return connect(undefined, { initializeForm })(FormFieldComponent);
+    return connect(undefined, { initializeForm })(FormField);
 };
