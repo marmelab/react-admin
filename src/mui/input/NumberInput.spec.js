@@ -2,7 +2,8 @@ import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
-import NumberInput from './NumberInput';
+
+import { NumberInput } from './NumberInput';
 
 describe('<NumberInput />', () => {
     const defaultProps = {

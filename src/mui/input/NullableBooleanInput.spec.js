@@ -15,7 +15,9 @@ describe('<NullableBooleanInput />', () => {
         const wrapper = shallow(
             <NullableBooleanInput source="foo" {...defaultProps} />
         );
-        const choices = wrapper.find('getContext(SelectInput)').prop('choices');
+        const choices = wrapper
+            .find('Connect(FormFieldComponent)')
+            .prop('choices');
         assert.deepEqual(choices, [
             { id: null, name: '' },
             { id: false, name: 'aor.boolean.false' },
@@ -32,7 +34,9 @@ describe('<NullableBooleanInput />', () => {
                     meta={{ touched: false }}
                 />
             );
-            const SelectInputElement = wrapper.find('getContext(SelectInput)');
+            const SelectInputElement = wrapper.find(
+                'Connect(FormFieldComponent)'
+            );
             assert.equal(SelectInputElement.prop('errorText'), undefined);
         });
 
@@ -44,7 +48,9 @@ describe('<NullableBooleanInput />', () => {
                     meta={{ touched: true, error: false }}
                 />
             );
-            const SelectInputElement = wrapper.find('getContext(SelectInput)');
+            const SelectInputElement = wrapper.find(
+                'Connect(FormFieldComponent)'
+            );
             assert.equal(SelectInputElement.prop('errorText'), undefined);
         });
 
@@ -56,7 +62,9 @@ describe('<NullableBooleanInput />', () => {
                     meta={{ touched: true, error: 'Required field.' }}
                 />
             );
-            const SelectInputElement = wrapper.find('getContext(SelectInput)');
+            const SelectInputElement = wrapper.find(
+                'Connect(FormFieldComponent)'
+            );
             assert.deepEqual(SelectInputElement.prop('meta'), {
                 touched: true,
                 error: 'Required field.',

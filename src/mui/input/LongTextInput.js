@@ -5,7 +5,7 @@ import TextField from 'material-ui/TextField';
 import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 
-const LongTextInput = ({
+export const LongTextInput = ({
     input,
     isRequired,
     label,

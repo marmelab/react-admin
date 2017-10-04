@@ -1,7 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { CheckboxGroupInputComponent as CheckboxGroupInput } from './CheckboxGroupInput';
+import { CheckboxGroupInput } from './CheckboxGroupInput';
 
 describe('<CheckboxGroupInput />', () => {
     const defaultProps = {

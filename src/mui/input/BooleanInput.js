@@ -18,7 +18,7 @@ const styles = {
     },
 };
 
-class BooleanInput extends Component {
+export class BooleanInput extends Component {
     handleToggle = (event, value) => {
         this.props.input.onChange(value);
     };

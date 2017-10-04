@@ -16,7 +16,7 @@ import addField from '../form/addField';
  *
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
-class NumberInput extends Component {
+export class NumberInput extends Component {
     handleBlur = eventOrValue => {
         this.props.onBlur(eventOrValue);
         this.props.input.onBlur(eventOrValue);

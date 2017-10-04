@@ -1,4 +1,8 @@
-import FileInput from './FileInput';
+import compose from 'recompose/compose';
+
+import addField from '../form/addField';
+import translate from '../../i18n/translate';
+import { FileInput } from './FileInput';
 
 export class ImageInput extends FileInput {
     static defaultProps = {
@@ -19,4 +23,4 @@ export class ImageInput extends FileInput {
     };
 }
 
-export default ImageInput;
+export default compose(addField, translate)(ImageInput);

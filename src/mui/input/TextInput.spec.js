@@ -3,7 +3,7 @@ import assert from 'assert';
 import React from 'react';
 import sinon from 'sinon';
 
-import TextInput from './TextInput';
+import { TextInput } from './TextInput';
 
 describe('<TextInput />', () => {
     const defaultProps = {
