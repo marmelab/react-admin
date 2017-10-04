@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import FieldTitle from '../../util/FieldTitle';
+import addField from '../form/addField';
 
 /**
  * An Input component for a string
@@ -76,7 +77,6 @@ export class TextInput extends Component {
 }
 
 TextInput.propTypes = {
-    addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
@@ -93,7 +93,6 @@ TextInput.propTypes = {
 };
 
 TextInput.defaultProps = {
-    addField: true,
     onBlur: () => {},
     onChange: () => {},
     onFocus: () => {},
@@ -101,4 +100,4 @@ TextInput.defaultProps = {
     type: 'text',
 };
 
-export default TextInput;
+export default addField(TextInput);

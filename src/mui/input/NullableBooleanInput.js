@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SelectInput from './SelectInput';
+import compose from 'recompose/compose';
+
+import addField from '../form/addField';
 import translate from '../../i18n/translate';
 
 export const NullableBooleanInput = ({
@@ -28,7 +31,6 @@ export const NullableBooleanInput = ({
 );
 
 NullableBooleanInput.propTypes = {
-    addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
     input: PropTypes.object,
     label: PropTypes.string,
@@ -37,8 +39,4 @@ NullableBooleanInput.propTypes = {
     source: PropTypes.string,
 };
 
-NullableBooleanInput.defaultProps = {
-    addField: true,
-};
-
-export default translate(NullableBooleanInput);
+export default compose(addField, translate)(NullableBooleanInput);

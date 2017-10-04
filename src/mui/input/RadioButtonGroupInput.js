@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+import compose from 'recompose/compose';
 
+import addField from '../form/addField';
 import Labeled from './Labeled';
 import translate from '../../i18n/translate';
 
@@ -149,7 +151,6 @@ RadioButtonGroupInput.propTypes = {
 };
 
 RadioButtonGroupInput.defaultProps = {
-    addField: true,
     choices: [],
     options: {},
     optionText: 'name',
@@ -157,4 +158,4 @@ RadioButtonGroupInput.defaultProps = {
     translateChoice: true,
 };
 
-export default translate(RadioButtonGroupInput);
+export default compose(addField, translate)(RadioButtonGroupInput);

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
+
+import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 
 const LongTextInput = ({
@@ -41,7 +43,6 @@ const LongTextInput = ({
 };
 
 LongTextInput.propTypes = {
-    addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
@@ -58,8 +59,7 @@ LongTextInput.propTypes = {
 };
 
 LongTextInput.defaultProps = {
-    addField: true,
     options: {},
 };
 
-export default LongTextInput;
+export default addField(LongTextInput);

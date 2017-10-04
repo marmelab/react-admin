@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Toggle from 'material-ui/Toggle';
+
+import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 
 const styles = {
@@ -55,7 +57,6 @@ class BooleanInput extends Component {
 }
 
 BooleanInput.propTypes = {
-    addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
@@ -66,8 +67,7 @@ BooleanInput.propTypes = {
 };
 
 BooleanInput.defaultProps = {
-    addField: true,
     options: {},
 };
 
-export default BooleanInput;
+export default addField(BooleanInput);

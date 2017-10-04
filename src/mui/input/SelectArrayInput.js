@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import ChipInput from 'material-ui-chip-input';
+import compose from 'recompose/compose';
 
+import addField from '../form/addField';
 import translate from '../../i18n/translate';
 import FieldTitle from '../../util/FieldTitle';
 
@@ -206,7 +208,6 @@ export class SelectArrayInput extends Component {
 }
 
 SelectArrayInput.propTypes = {
-    addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
     choices: PropTypes.arrayOf(PropTypes.object),
     input: PropTypes.object,
@@ -229,7 +230,6 @@ SelectArrayInput.propTypes = {
 };
 
 SelectArrayInput.defaultProps = {
-    addField: true,
     choices: [],
     onBlur: () => true,
     onChange: () => true,
@@ -240,4 +240,4 @@ SelectArrayInput.defaultProps = {
     translateChoice: true,
 };
 
-export default translate(SelectArrayInput);
+export default compose(addField, translate)(SelectArrayInput);

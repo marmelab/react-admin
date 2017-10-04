@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { shallowEqual } from 'recompose';
 import Dropzone from 'react-dropzone';
+import compose from 'recompose/compose';
 
+import Labeled from './Labeled';
+import addField from '../form/addField';
 import FileInputPreview from './FileInputPreview';
 import translate from '../../i18n/translate';
 
@@ -26,6 +29,7 @@ export class FileInput extends Component {
         disableClick: PropTypes.bool,
         elStyle: PropTypes.object,
         input: PropTypes.object,
+        isRequired: PropTypes.bool,
         itemStyle: PropTypes.object,
         labelMultiple: PropTypes.string,
         labelSingle: PropTypes.string,
@@ -39,8 +43,6 @@ export class FileInput extends Component {
     };
 
     static defaultProps = {
-        addLabel: true,
-        addField: true,
         itemStyle: {},
         labelMultiple: 'aor.input.file.upload_several',
         labelSingle: 'aor.input.file.upload_single',
@@ -145,10 +147,14 @@ export class FileInput extends Component {
             children,
             disableClick,
             elStyle,
+            isRequired,
             itemStyle,
+            label,
             maxSize,
             minSize,
             multiple,
+            resource,
+            source,
             style,
             removeStyle,
         } = this.props;
@@ -159,39 +165,47 @@ export class FileInput extends Component {
         };
 
         return (
-            <div style={elStyle}>
-                <Dropzone
-                    onDrop={this.onDrop}
-                    accept={accept}
-                    disableClick={disableClick}
-                    maxSize={maxSize}
-                    minSize={minSize}
-                    multiple={multiple}
-                    style={finalStyle.dropZone}
-                >
-                    {this.label()}
-                </Dropzone>
-                {children && (
-                    <div className="previews">
-                        {this.state.files.map((file, index) => (
-                            <FileInputPreview
-                                key={index}
-                                file={file}
-                                itemStyle={itemStyle}
-                                onRemove={this.onRemove(file)}
-                                removeStyle={removeStyle}
-                            >
-                                {React.cloneElement(children, {
-                                    record: file,
-                                    style: defaultStyle.preview,
-                                })}
-                            </FileInputPreview>
-                        ))}
-                    </div>
-                )}
-            </div>
+            <Labeled
+                label={label}
+                source={source}
+                resource={resource}
+                isRequired={isRequired}
+                style={elStyle}
+            >
+                <span>
+                    <Dropzone
+                        onDrop={this.onDrop}
+                        accept={accept}
+                        disableClick={disableClick}
+                        maxSize={maxSize}
+                        minSize={minSize}
+                        multiple={multiple}
+                        style={finalStyle.dropZone}
+                    >
+                        {this.label()}
+                    </Dropzone>
+                    {children && (
+                        <div className="previews">
+                            {this.state.files.map((file, index) => (
+                                <FileInputPreview
+                                    key={index}
+                                    file={file}
+                                    itemStyle={itemStyle}
+                                    onRemove={this.onRemove(file)}
+                                    removeStyle={removeStyle}
+                                >
+                                    {React.cloneElement(children, {
+                                        record: file,
+                                        style: defaultStyle.preview,
+                                    })}
+                                </FileInputPreview>
+                            ))}
+                        </div>
+                    )}
+                </span>
+            </Labeled>
         );
     }
 }
 
-export default translate(FileInput);
+export default compose(addField, translate)(FileInput);

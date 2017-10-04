@@ -5,6 +5,7 @@ import Checkbox from 'material-ui/Checkbox';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import compose from 'recompose/compose';
 
+import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 import translate from '../../i18n/translate';
 
@@ -99,7 +100,7 @@ const getStyles = muiTheme => {
  *
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
-export class CheckboxGroupInputComponent extends Component {
+export class CheckboxGroupInput extends Component {
     handleCheck = (event, isChecked) => {
         const { input: { value, onChange } } = this.props;
 
@@ -179,8 +180,7 @@ export class CheckboxGroupInputComponent extends Component {
     }
 }
 
-CheckboxGroupInputComponent.propTypes = {
-    addField: PropTypes.bool.isRequired,
+CheckboxGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     label: PropTypes.string,
     source: PropTypes.string,
@@ -201,8 +201,7 @@ CheckboxGroupInputComponent.propTypes = {
     muiTheme: PropTypes.object.isRequired,
 };
 
-CheckboxGroupInputComponent.defaultProps = {
-    addField: true,
+CheckboxGroupInput.defaultProps = {
     choices: [],
     options: {},
     optionText: 'name',
@@ -210,16 +209,4 @@ CheckboxGroupInputComponent.defaultProps = {
     translateChoice: true,
 };
 
-const enhance = compose(translate, muiThemeable());
-
-const CheckboxGroupInput = enhance(CheckboxGroupInputComponent);
-
-CheckboxGroupInput.propTypes = {
-    addField: PropTypes.bool.isRequired,
-};
-
-CheckboxGroupInput.defaultProps = {
-    addField: true,
-};
-
-export default CheckboxGroupInput;
+export default compose(addField, translate, muiThemeable())(CheckboxGroupInput);

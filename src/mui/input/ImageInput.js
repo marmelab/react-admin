@@ -1,5 +1,4 @@
-import { FileInput } from './FileInput';
-import translate from '../../i18n/translate';
+import FileInput from './FileInput';
 
 export class ImageInput extends FileInput {
     static defaultProps = {
@@ -20,4 +19,4 @@ export class ImageInput extends FileInput {
     };
 }
 
-export default translate(ImageInput);
+export default ImageInput;
