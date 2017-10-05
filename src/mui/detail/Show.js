@@ -10,6 +10,11 @@ import { crudGetOne as crudGetOneAction } from '../../actions/dataActions';
 import DefaultActions from './ShowActions';
 import translate from '../../i18n/translate';
 import withChildrenAsFunction from '../withChildrenAsFunction';
+import {
+    getAdminResourceRecord,
+    isAdminLoading,
+    getViewVersion,
+} from '../../reducer';
 
 export class Show extends Component {
     componentDidMount() {
@@ -27,10 +32,7 @@ export class Show extends Component {
 
     getBasePath() {
         const { location } = this.props;
-        return location.pathname
-            .split('/')
-            .slice(0, -2)
-            .join('/');
+        return location.pathname.split('/').slice(0, -2).join('/');
     }
 
     updateData(resource = this.props.resource, id = this.props.id) {
@@ -64,11 +66,9 @@ export class Show extends Component {
             id,
             data,
         });
-        const titleElement = data ? (
-            <Title title={title} record={data} defaultTitle={defaultTitle} />
-        ) : (
-            ''
-        );
+        const titleElement = data
+            ? <Title title={title} record={data} defaultTitle={defaultTitle} />
+            : '';
 
         return (
             <div>
@@ -117,13 +117,12 @@ Show.propTypes = {
 function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
-        data: state.admin.resources[props.resource]
-            ? state.admin.resources[props.resource].data[
-                  decodeURIComponent(props.match.params.id)
-              ]
-            : null,
-        isLoading: state.admin.loading > 0,
-        version: state.admin.ui.viewVersion,
+        data: getAdminResourceRecord(state, {
+            ...props,
+            id: decodeURIComponent(props.match.params.id),
+        }),
+        isLoading: isAdminLoading(state),
+        version: getViewVersion(state),
     };
 }
 

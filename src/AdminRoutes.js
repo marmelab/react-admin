@@ -52,7 +52,7 @@ export class AdminRoutes extends Component {
         return (
             <Switch>
                 {customRoutes &&
-                    customRoutes.map((route, index) => (
+                    customRoutes.map((route, index) =>
                         <Route
                             key={index}
                             exact={route.props.exact}
@@ -61,12 +61,12 @@ export class AdminRoutes extends Component {
                             render={route.props.render}
                             children={route.props.children} // eslint-disable-line react/no-children-prop
                         />
-                    ))}
-                {resources.map(resource => (
+                    )}
+                {resources.map(resource =>
                     <Route
                         path={`/${resource.name}`}
                         key={resource.name}
-                        render={() => (
+                        render={() =>
                             <CrudRoute
                                 resource={resource.name}
                                 list={resource.list}
@@ -75,34 +75,28 @@ export class AdminRoutes extends Component {
                                 show={resource.show}
                                 remove={resource.remove}
                                 options={resource.options}
-                            />
-                        )}
+                            />}
                     />
-                ))}
-                {dashboard ? (
-                    <Route
-                        exact
-                        path="/"
-                        render={routeProps => (
-                            <Restricted
-                                authParams={{ route: 'dashboard' }}
-                                {...routeProps}
-                            >
-                                {React.createElement(dashboard)}
-                            </Restricted>
-                        )}
-                    />
-                ) : (
-                    resources[0] && (
-                        <Route
-                            exact
-                            path="/"
-                            render={() => (
-                                <Redirect to={`/${resources[0].name}`} />
-                            )}
-                        />
-                    )
                 )}
+                {dashboard
+                    ? <Route
+                          exact
+                          path="/"
+                          render={routeProps =>
+                              <Restricted
+                                  authParams={{ route: 'dashboard' }}
+                                  {...routeProps}
+                              >
+                                  {React.createElement(dashboard)}
+                              </Restricted>}
+                      />
+                    : resources[0] &&
+                      <Route
+                          exact
+                          path="/"
+                          render={() =>
+                              <Redirect to={`/${resources[0].name}`} />}
+                      />}
                 <Route component={catchAll || NotFound} />
             </Switch>
         );

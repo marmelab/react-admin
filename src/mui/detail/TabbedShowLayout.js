@@ -37,22 +37,22 @@ export class TabbedShowLayout extends Component {
                     {React.Children.map(
                         children,
                         (tab, index) =>
-                            tab ? (
-                                <Tab
-                                    key={tab.props.value}
-                                    label={translate(tab.props.label, {
-                                        _: tab.props.label,
-                                    })}
-                                    value={index}
-                                    icon={tab.props.icon}
-                                >
-                                    {React.cloneElement(tab, {
-                                        resource,
-                                        record,
-                                        basePath,
-                                    })}
-                                </Tab>
-                            ) : null
+                            tab
+                                ? <Tab
+                                      key={tab.props.value}
+                                      label={translate(tab.props.label, {
+                                          _: tab.props.label,
+                                      })}
+                                      value={index}
+                                      icon={tab.props.icon}
+                                  >
+                                      {React.cloneElement(tab, {
+                                          resource,
+                                          record,
+                                          basePath,
+                                      })}
+                                  </Tab>
+                                : null
                     )}
                 </Tabs>
             </div>

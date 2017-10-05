@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
  *     </SingleFieldList>
  * </ReferenceManyField>
  */
-const SingleFieldList = ({ ids, data, resource, basePath, children }) => (
+const SingleFieldList = ({ ids, data, resource, basePath, children }) =>
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {ids.map(id =>
             React.cloneElement(children, {
@@ -21,8 +21,7 @@ const SingleFieldList = ({ ids, data, resource, basePath, children }) => (
                 basePath,
             })
         )}
-    </div>
-);
+    </div>;
 
 SingleFieldList.propTypes = {
     children: PropTypes.element.isRequired,

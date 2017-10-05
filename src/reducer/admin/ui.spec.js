@@ -4,7 +4,7 @@ import {
     setSidebarVisibility,
     refreshView,
 } from '../../actions/uiActions';
-import reducer from './ui';
+import reducer, { isSidebarOpen, getViewVersion } from './ui';
 
 describe('ui reducer', () => {
     it('should return hidden sidebar by default', () => {
@@ -46,5 +46,19 @@ describe('ui reducer', () => {
             { sidebarOpen: false, viewVersion: 1 },
             reducer(undefined, refreshView())
         );
+    });
+});
+
+describe('ui selectors', () => {
+    describe('isSidebarOpen', () => {
+        it('should return false if sidebar is closed', () => {
+            assert.deepEqual(isSidebarOpen({ sidebarOpen: false }), false);
+        });
+    });
+
+    describe('getViewVersion', () => {
+        it('should return the view version number', () => {
+            assert.deepEqual(getViewVersion({ viewVersion: 0 }), 0);
+        });
     });
 });

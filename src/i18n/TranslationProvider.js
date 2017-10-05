@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Polyglot from 'node-polyglot';
 import { connect } from 'react-redux';
 import { compose, withContext } from 'recompose';
+import { getLocale } from '../reducer';
 
 import defaultMessages from './messages';
 
@@ -33,7 +34,7 @@ TranslationProvider.propTypes = {
     children: PropTypes.element,
 };
 
-const mapStateToProps = state => ({ locale: state.locale });
+const mapStateToProps = state => ({ locale: getLocale(state) });
 
 export default compose(connect(mapStateToProps), withI18nContext)(
     TranslationProvider

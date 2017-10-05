@@ -3,12 +3,12 @@ import {
     HIDE_NOTIFICATION,
 } from '../../actions/notificationActions';
 
-const defaultState = {
+export const initialState = {
     text: '',
     type: 'info', // one of 'info', 'confirm', 'warning'
 };
 
-export default (previousState = defaultState, { type, payload }) => {
+export default (previousState = initialState, { type, payload }) => {
     switch (type) {
         case SHOW_NOTIFICATION:
             return { text: payload.text, type: payload.type };

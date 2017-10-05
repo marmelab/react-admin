@@ -13,6 +13,11 @@ import {
 import DefaultActions from './EditActions';
 import translate from '../../i18n/translate';
 import withChildrenAsFunction from '../withChildrenAsFunction';
+import {
+    getAdminResourceRecord,
+    isAdminLoading,
+    getViewVersion,
+} from '../../reducer';
 
 export class Edit extends Component {
     constructor(props) {
@@ -46,10 +51,7 @@ export class Edit extends Component {
 
     getBasePath() {
         const { location } = this.props;
-        return location.pathname
-            .split('/')
-            .slice(0, -1)
-            .join('/');
+        return location.pathname.split('/').slice(0, -1).join('/');
     }
 
     defaultRedirectRoute() {
@@ -99,11 +101,9 @@ export class Edit extends Component {
             id,
             data,
         });
-        const titleElement = data ? (
-            <Title title={title} record={data} defaultTitle={defaultTitle} />
-        ) : (
-            ''
-        );
+        const titleElement = data
+            ? <Title title={title} record={data} defaultTitle={defaultTitle} />
+            : '';
 
         return (
             <div className="edit-page">
@@ -159,13 +159,12 @@ Edit.propTypes = {
 function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
-        data: state.admin.resources[props.resource]
-            ? state.admin.resources[props.resource].data[
-                  decodeURIComponent(props.match.params.id)
-              ]
-            : null,
-        isLoading: state.admin.loading > 0,
-        version: state.admin.ui.viewVersion,
+        data: getAdminResourceRecord(state, {
+            ...props,
+            id: decodeURIComponent(props.match.params.id),
+        }),
+        isLoading: isAdminLoading(state),
+        version: getViewVersion(state),
     };
 }
 

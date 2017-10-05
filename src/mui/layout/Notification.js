@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
 import { hideNotification as hideNotificationAction } from '../../actions/notificationActions';
 import translate from '../../i18n/translate';
+import { getAdminNotification } from '../../reducer';
 
 function getStyles(context) {
     if (!context) return { primary1Color: '#00bcd4', accent1Color: '#ff4081' };
@@ -55,10 +56,7 @@ Notification.contextTypes = {
     muiTheme: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-    message: state.admin.notification.text,
-    type: state.admin.notification.type,
-});
+const mapStateToProps = state => getAdminNotification(state);
 
 export default translate(
     connect(mapStateToProps, { hideNotification: hideNotificationAction })(

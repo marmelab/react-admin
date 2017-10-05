@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions/dataActions';
+import { nameRelatedTo } from '../../reducer/admin/references/oneToMany';
 import {
-    getIds,
-    getReferences,
-    nameRelatedTo,
-} from '../../reducer/admin/references/oneToMany';
+    getIdsRelatedTo,
+    getAdminResourceRecordsByIds,
+    isAdminLoading,
+} from '../../reducer';
 import {
     SORT_ASC,
     SORT_DESC,
@@ -175,10 +176,15 @@ function mapStateToProps(state, props) {
         props.target,
         props.filter
     );
+    const ids = getIdsRelatedTo(state, { relatedTo });
+
     return {
-        data: getReferences(state, props.reference, relatedTo),
-        ids: getIds(state, relatedTo),
-        isLoading: state.admin.loading > 0,
+        data: getAdminResourceRecordsByIds(state, {
+            resource: props.reference,
+            ids,
+        }),
+        ids,
+        isLoading: isAdminLoading(state),
     };
 }
 

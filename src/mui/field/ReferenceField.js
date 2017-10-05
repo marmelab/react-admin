@@ -6,6 +6,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
 import linkToRecord from '../../util/linkToRecord';
+import { getAdminResourceRecord } from '../../reducer';
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -72,10 +73,7 @@ export class ReferenceField extends Component {
         if (!referenceRecord && !allowEmpty) {
             return <LinearProgress />;
         }
-        const rootPath = basePath
-            .split('/')
-            .slice(0, -1)
-            .join('/');
+        const rootPath = basePath.split('/').slice(0, -1).join('/');
         const href = linkToRecord(
             `${rootPath}/${reference}`,
             get(record, source)
@@ -130,10 +128,10 @@ ReferenceField.defaultProps = {
 
 function mapStateToProps(state, props) {
     return {
-        referenceRecord:
-            state.admin.resources[props.reference].data[
-                get(props.record, props.source)
-            ],
+        referenceRecord: getAdminResourceRecord(state, {
+            resource: props.reference,
+            id: get(props.record, props.source),
+        }),
     };
 }
 

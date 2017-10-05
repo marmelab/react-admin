@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 import translate from '../../i18n/translate';
-import { getResources } from '../../reducer';
+import { getAdminResourcesProps } from '../../reducer';
 
 const styles = {
     main: {
@@ -29,12 +29,12 @@ const translatedResourceName = (resource, translate) =>
                 : inflection.humanize(inflection.pluralize(resource.name)),
     });
 
-const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) => (
+const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) =>
     <div style={styles.main}>
         {hasDashboard && <DashboardMenuItem onClick={onMenuTap} />}
         {resources
             .filter(r => r.list)
-            .map(resource => (
+            .map(resource =>
                 <MenuItemLink
                     key={resource.name}
                     to={`/${resource.name}`}
@@ -42,10 +42,9 @@ const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) => (
                     leftIcon={<resource.icon />}
                     onClick={onMenuTap}
                 />
-            ))}
+            )}
         {logout}
-    </div>
-);
+    </div>;
 
 Menu.propTypes = {
     hasDashboard: PropTypes.bool,
@@ -60,7 +59,7 @@ Menu.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-    resources: getResources(state),
+    resources: getAdminResourcesProps(state),
 });
 
 const enhance = compose(translate, connect(mapStateToProps));

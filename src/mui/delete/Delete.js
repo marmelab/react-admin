@@ -16,6 +16,7 @@ import {
     crudDelete as crudDeleteAction,
 } from '../../actions/dataActions';
 import translate from '../../i18n/translate';
+import { getAdminResourceRecord, isAdminLoading } from '../../reducer';
 
 const styles = {
     actions: { zIndex: 2, display: 'inline-block', float: 'right' },
@@ -50,10 +51,7 @@ class Delete extends Component {
 
     getBasePath() {
         const { location } = this.props;
-        return location.pathname
-            .split('/')
-            .slice(0, -2)
-            .join('/');
+        return location.pathname.split('/').slice(0, -2).join('/');
     }
 
     defaultRedirectRoute() {
@@ -90,11 +88,9 @@ class Delete extends Component {
             id,
             data,
         });
-        const titleElement = data ? (
-            <Title title={title} record={data} defaultTitle={defaultTitle} />
-        ) : (
-            ''
-        );
+        const titleElement = data
+            ? <Title title={title} record={data} defaultTitle={defaultTitle} />
+            : '';
 
         return (
             <div>
@@ -149,11 +145,11 @@ Delete.propTypes = {
 function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
-        data:
-            state.admin.resources[props.resource].data[
-                decodeURIComponent(props.match.params.id)
-            ],
-        isLoading: state.admin.loading > 0,
+        data: getAdminResourceRecord(state, {
+            ...props,
+            id: decodeURIComponent(props.match.params.id),
+        }),
+        isLoading: isAdminLoading(state),
     };
 }
 
