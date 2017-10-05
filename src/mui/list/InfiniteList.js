@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { parse } from 'query-string';
 import { push as pushAction } from 'react-router-redux';
 import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
-import { createSelector } from 'reselect';
 import inflection from 'inflection';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import autoprefixer from 'material-ui/utils/autoprefixer';
@@ -18,7 +16,7 @@ import translate from '../../i18n/translate';
 import withPermissionsFilteredChildren from '../../auth/withPermissionsFilteredChildren';
 import InfiniteScroll from 'react-infinite-scroller';
 import LinearProgress from 'material-ui/LinearProgress';
-import { List } from './List';
+import { List, mapStateToProps } from './List';
 
 const styles = {
     noResults: { padding: 20 },
@@ -176,30 +174,6 @@ export class InfiniteList extends List {
             </div>
         );
     }
-}
-
-const getLocationSearch = props => props.location.search;
-const getQuery = createSelector(getLocationSearch, locationSearch => {
-    const query = parse(locationSearch);
-    if (query.filter && typeof query.filter === 'string') {
-        query.filter = JSON.parse(query.filter);
-    }
-    return query;
-});
-
-function mapStateToProps(state, props) {
-    const resourceState = state.admin.resources[props.resource];
-    return {
-        query: getQuery(props),
-        params: resourceState.list.params,
-        ids: resourceState.list.ids,
-        total: resourceState.list.total,
-        data: resourceState.data,
-        isLoading: state.admin.loading > 0,
-        filterValues: resourceState.list.params.filter,
-        version: state.admin.ui.viewVersion,
-        hasMore: resourceState.list.ids.length < resourceState.list.total,
-    };
 }
 
 const enhance = compose(
