@@ -37,11 +37,11 @@ export default resource => (
     }
     switch (type) {
         case CRUD_GET_LIST_SUCCESS: {
-          if (!meta.infiniteList || requestPayload.pagination.page === 1) {
-              return addRecordIds(payload.data.map(({ id }) => id), []);
-          }
-          const dataId = payload.data.map(record => record.id);
-          return [...new Set([...previousState, ...dataId])];
+            if (!meta.infiniteList || requestPayload.pagination.page === 1) {
+                return addRecordIds(payload.data.map(({ id }) => id), []);
+            }
+            const dataId = payload.data.map(record => record.id);
+            return [...new Set([...previousState, ...dataId])];
         }
         case CRUD_GET_MANY_SUCCESS:
         case CRUD_GET_MANY_REFERENCE_SUCCESS:
