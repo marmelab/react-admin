@@ -3,6 +3,7 @@ export Filter from './Filter';
 export FilterButton from './FilterButton';
 export FilterForm from './FilterForm';
 export List from './List';
+export InfiniteList from './InfiniteList';
 export Pagination from './Pagination';
 export SimpleList from './SimpleList';
 export SingleFieldList from './SingleFieldList';

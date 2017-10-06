@@ -353,7 +353,7 @@ const getQuery = createSelector(getLocationSearch, locationSearch => {
     return query;
 });
 
-function mapStateToProps(state, props) {
+export function mapStateToProps(state, props) {
     const resourceState = state.admin.resources[props.resource];
     return {
         query: getQuery(props),
@@ -364,6 +364,7 @@ function mapStateToProps(state, props) {
         isLoading: state.admin.loading > 0,
         filterValues: resourceState.list.params.filter,
         version: state.admin.ui.viewVersion,
+        hasMore: resourceState.list.ids.length < resourceState.list.total,
     };
 }
 

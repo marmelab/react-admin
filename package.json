@@ -74,6 +74,7 @@
         "prop-types": "~15.5.7",
         "query-string": "~5.0.0",
         "react-dropzone": "~4.0.1",
+        "react-infinite-scroller": "^1.0.15",
         "react-redux": "~5.0.4",
         "react-router": "~4.1.0",
         "react-router-dom": "~4.1.0",
