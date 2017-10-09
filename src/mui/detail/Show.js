@@ -27,10 +27,7 @@ export class Show extends Component {
 
     getBasePath() {
         const { location } = this.props;
-        return location.pathname
-            .split('/')
-            .slice(0, -2)
-            .join('/');
+        return location.pathname.split('/').slice(0, -2).join('/');
     }
 
     updateData(resource = this.props.resource, id = this.props.id) {
@@ -64,11 +61,9 @@ export class Show extends Component {
             id,
             data,
         });
-        const titleElement = data ? (
-            <Title title={title} record={data} defaultTitle={defaultTitle} />
-        ) : (
-            ''
-        );
+        const titleElement = data
+            ? <Title title={title} record={data} defaultTitle={defaultTitle} />
+            : '';
 
         return (
             <div>

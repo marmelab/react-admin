@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import HotTub from 'material-ui/svg-icons/places/hot-tub';
 import History from 'material-ui/svg-icons/action/history';
-import withWidth from 'material-ui/utils/withWidth';
+import withWidth, { SMALL } from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 
 import AppBarMobile from './AppBarMobile';
@@ -44,13 +44,17 @@ function goBack() {
     history.go(-1);
 }
 
-const NotFound = ({ width, translate }) => (
-    <div style={width === 1 ? styles.containerMobile : styles.container}>
-        {width === 1 && <AppBarMobile />}
+const NotFound = ({ width, translate }) =>
+    <div style={width === SMALL ? styles.containerMobile : styles.container}>
+        {width === SMALL && <AppBarMobile />}
         <div style={styles.message}>
             <HotTub style={styles.icon} />
-            <h1>{translate('aor.page.not_found')}</h1>
-            <div>{translate('aor.message.not_found')}.</div>
+            <h1>
+                {translate('aor.page.not_found')}
+            </h1>
+            <div>
+                {translate('aor.message.not_found')}.
+            </div>
         </div>
         <div style={styles.toolbar}>
             <RaisedButton
@@ -59,8 +63,7 @@ const NotFound = ({ width, translate }) => (
                 onClick={goBack}
             />
         </div>
-    </div>
-);
+    </div>;
 
 NotFound.propTypes = {
     width: PropTypes.number,

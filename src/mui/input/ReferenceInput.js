@@ -169,11 +169,9 @@ export class ReferenceInput extends Component {
             return (
                 <Labeled
                     label={
-                        typeof label === 'undefined' ? (
-                            `resources.${resource}.fields.${source}`
-                        ) : (
-                            label
-                        )
+                        typeof label === 'undefined'
+                            ? `resources.${resource}.fields.${source}`
+                            : label
                     }
                     source={source}
                     resource={resource}

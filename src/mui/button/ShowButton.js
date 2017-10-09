@@ -13,7 +13,7 @@ const ShowButton = ({
     label = 'aor.action.show',
     record = {},
     translate,
-}) => (
+}) =>
     <FlatButton
         primary
         label={label && translate(label)}
@@ -22,8 +22,7 @@ const ShowButton = ({
             <Link to={`${linkToRecord(basePath, record.id)}/show`} />
         }
         style={{ overflow: 'inherit' }}
-    />
-);
+    />;
 
 ShowButton.propTypes = {
     basePath: PropTypes.string,

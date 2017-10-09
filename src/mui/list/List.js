@@ -195,7 +195,8 @@ export class List extends Component {
 
     refresh() {
         if (process.env !== 'production') {
-            console.warn( // eslint-disable-line
+            // eslint-disable-next-line
+            console.warn(
                 'Deprecation warning: The preferred way to refresh the List view is to connect your custom button with redux and dispatch the `refreshView` action.'
             );
         }
@@ -264,34 +265,32 @@ export class List extends Component {
                             setFilters: this.setFilters,
                             context: 'form',
                         })}
-                    {isLoading || total > 0 ? (
-                        <div key={version}>
-                            {children &&
-                                React.cloneElement(children, {
-                                    resource,
-                                    ids,
-                                    data,
-                                    currentSort: {
-                                        field: query.sort,
-                                        order: query.order,
-                                    },
-                                    basePath,
-                                    isLoading,
-                                    setSort: this.setSort,
-                                })}
-                            {pagination &&
-                                React.cloneElement(pagination, {
-                                    total,
-                                    page: parseInt(query.page, 10),
-                                    perPage: parseInt(query.perPage, 10),
-                                    setPage: this.setPage,
-                                })}
-                        </div>
-                    ) : (
-                        <CardText style={styles.noResults}>
-                            {translate('aor.navigation.no_results')}
-                        </CardText>
-                    )}
+                    {isLoading || total > 0
+                        ? <div key={version}>
+                              {children &&
+                                  React.cloneElement(children, {
+                                      resource,
+                                      ids,
+                                      data,
+                                      currentSort: {
+                                          field: query.sort,
+                                          order: query.order,
+                                      },
+                                      basePath,
+                                      isLoading,
+                                      setSort: this.setSort,
+                                  })}
+                              {pagination &&
+                                  React.cloneElement(pagination, {
+                                      total,
+                                      page: parseInt(query.page, 10),
+                                      perPage: parseInt(query.perPage, 10),
+                                      setPage: this.setPage,
+                                  })}
+                          </div>
+                        : <CardText style={styles.noResults}>
+                              {translate('aor.navigation.no_results')}
+                          </CardText>}
                 </Card>
             </div>
         );

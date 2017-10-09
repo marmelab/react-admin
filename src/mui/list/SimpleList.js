@@ -17,19 +17,18 @@ const SimpleList = ({
     leftIcon,
     rightAvatar,
     rightIcon,
-}) => (
+}) =>
     <List>
-        {ids.map(id => (
+        {ids.map(id =>
             <ListItem
                 key={id}
                 primaryText={
                     <div>
                         {primaryText(data[id], id)}
-                        {tertiaryText && (
+                        {tertiaryText &&
                             <span style={tertiaryStyle}>
                                 {tertiaryText(data[id], id)}
-                            </span>
-                        )}
+                            </span>}
                     </div>
                 }
                 secondaryText={secondaryText && secondaryText(data[id], id)}
@@ -40,9 +39,8 @@ const SimpleList = ({
                 rightIcon={rightIcon && rightIcon(data[id], id)}
                 containerElement={<Link to={`${basePath}/${id}`} />}
             />
-        ))}
-    </List>
-);
+        )}
+    </List>;
 
 SimpleList.propTypes = {
     ids: PropTypes.array,
