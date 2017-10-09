@@ -5,7 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import autoprefixer from 'material-ui/utils/autoprefixer';
 import CircularProgress from 'material-ui/CircularProgress';
-import withWidth from 'material-ui/utils/withWidth';
+import withWidth, { SMALL } from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 
 import AdminRoutes from '../../AdminRoutes';
@@ -58,7 +58,7 @@ const prefixedStyles = {};
 
 class Layout extends Component {
     componentWillMount() {
-        if (this.props.width !== 1) {
+        if (this.props.width !== SMALL) {
             this.props.setSidebarVisibility(true);
         }
     }
@@ -92,24 +92,20 @@ class Layout extends Component {
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div style={prefixedStyles.wrapper}>
                     <div style={prefixedStyles.main}>
-                        {width !== 1 && <AppBar title={title} />}
+                        {width !== SMALL && <AppBar title={title} />}
                         <div
                             className="body"
                             style={
-                                width === 1 ? (
-                                    prefixedStyles.bodySmall
-                                ) : (
-                                    prefixedStyles.body
-                                )
+                                width === SMALL
+                                    ? prefixedStyles.bodySmall
+                                    : prefixedStyles.body
                             }
                         >
                             <div
                                 style={
-                                    width === 1 ? (
-                                        prefixedStyles.contentSmall
-                                    ) : (
-                                        prefixedStyles.content
-                                    )
+                                    width === SMALL
+                                        ? prefixedStyles.contentSmall
+                                        : prefixedStyles.content
                                 }
                             >
                                 <AdminRoutes
@@ -132,7 +128,7 @@ class Layout extends Component {
                             <CircularProgress
                                 className="app-loader"
                                 color="#fff"
-                                size={width === 1 ? 20 : 30}
+                                size={width === SMALL ? 20 : 30}
                                 thickness={2}
                                 style={styles.loader}
                             />

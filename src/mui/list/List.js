@@ -195,7 +195,8 @@ export class List extends Component {
 
     refresh() {
         if (process.env !== 'production') {
-            console.warn( // eslint-disable-line
+            // eslint-disable-next-line
+            console.warn(
                 'Deprecation warning: The preferred way to refresh the List view is to connect your custom button with redux and dispatch the `refreshView` action.'
             );
         }

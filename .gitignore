@@ -1,4 +1,4 @@
-npm-debug.log
+*.log
 node_modules
 lib
 es6

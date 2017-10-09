@@ -6,7 +6,7 @@ import IconButton from 'material-ui/IconButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import withWidth from 'material-ui/utils/withWidth';
+import withWidth, { SMALL } from 'material-ui/utils/withWidth';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
@@ -125,7 +125,7 @@ export class Pagination extends Component {
         const offsetBegin = Math.min((page - 1) * perPage + 1, offsetEnd);
         const nbPages = this.getNbPages();
 
-        return width === 1 ? (
+        return width === SMALL ? (
             <Toolbar>
                 <ToolbarGroup style={styles.mobileToolbar}>
                     {page > 1 && (
