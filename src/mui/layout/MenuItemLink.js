@@ -9,6 +9,7 @@ export class MenuItemLinkComponent extends Component {
         history: PropTypes.object.isRequired,
         onClick: PropTypes.func.isRequired,
         to: PropTypes.string.isRequired,
+        style: PropTypes.object,
     };
 
     handleMenuTap = () => {
@@ -16,15 +17,17 @@ export class MenuItemLinkComponent extends Component {
         this.props.onClick();
     };
     render() {
-        const {
-            history,
-            match,
-            location,
-            staticContext,
-            ...props
-        } = this.props;
-
-        return <MenuItem {...props} onClick={this.handleMenuTap} />;
+    const { history, match, location, staticContext, ...props } = this.props; // eslint-disable-line
+        const customStyle = {
+            color: 'white',
+        };
+        return (
+            <MenuItem
+                {...props}
+                style={customStyle}
+                onClick={this.handleMenuTap}
+            />
+        );
     }
 }
 

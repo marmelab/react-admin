@@ -18,7 +18,9 @@ const EditButton = ({
         primary
         label={label && translate(label)}
         icon={<ContentCreate />}
-        containerElement={<Link to={linkToRecord(basePath, record.id)} />}
+        containerElement={
+            <Link to={`${linkToRecord(basePath, record.id)}/edit`} />
+        }
         style={{ overflow: 'inherit' }}
     />
 );

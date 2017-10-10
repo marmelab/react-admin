@@ -14,15 +14,13 @@ export const FieldTitle = ({
     translate,
 }) => (
     <span>
-        {typeof label !== 'undefined' ? (
-            translate(label, { _: label })
-        ) : typeof source !== 'undefined' ? (
-            translate(`resources.${resource}.fields.${source}`, {
-                _: inflection.humanize(source),
-            })
-        ) : (
-            ''
-        )}
+        {typeof label !== 'undefined'
+            ? translate(label, { _: label })
+            : typeof source !== 'undefined'
+              ? translate(`resources.${resource}.fields.${source}`, {
+                    _: inflection.humanize(source),
+                })
+              : ''}
         {isRequired && ' *'}
     </span>
 );

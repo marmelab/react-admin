@@ -61,6 +61,15 @@ Then you can display the author first name as follows:
 
 **Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
 
+## `<AddressField>`
+
+Displays an address location as a clickable link. On a mobile phone, it will open the map application (plan for IOS, google maps, waze or whatever for Android), centered on the location. On Desktop it will open a google maps link in a new tab (plan for Mac OS users).
+```jsx
+import { AddressField } from 'admin-on-rest'
+
+<AddressField source="address"/>
+```
+
 ## `<BooleanField>`
 
 Displays a boolean value as a check.
@@ -281,6 +290,55 @@ import { NumberField }  from 'admin-on-rest';
 See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) for the `options` prop syntax.
 
 **Tip**: If you need more formatting options than what `Intl.Numberformat` can provide, build your own field component leveraging a third-party library like [numeral.js](http://numeraljs.com/).
+
+## `<PhoneField>`
+
+`<PhoneField>` displays a phone number as a `<a href="tel:" />` link.
+
+If the number is from the locale it'll be formatted like a national number, if not international formatting will be set.
+
+A locale can be passed as a prop, the default one is 'FR' (french).
+
+The component accepts local and international phone numbers as long the local
+number is from the locale set in the props.
+
+See (https://github.com/halt-hammerzeit/libphonenumber-js) for more informations about the formatting lib.
+
+**Tip** If one of your numbers is set without the international prefixe and it's not corresponding to a number from the locale it should render nothig.
+
+```jsx
+import { PhoneField } from 'admin-on-rest';
+
+<PhoneField source="personal_phone" />
+// renders a french number as national:
+<a href="tel:+33623456789">06 23 45 67 89</a>
+and an US number as international:
+<a href="tel:+12344565656">+1 234 456 5656</a>
+
+<PhoneField source="personal_phone" locale="US" />
+// renders a french number as international:
+<a href="tel:+33623456789">+336 23 45 67 89</a>
+and an US number as national:
+<a href="tel:+12344565656">(234) 456-5656</a>
+```
+A function `phoneFormatToString` formats a phone number and returns a String.
+
+It's the same formatting function than `<PhoneField>`. So a locale can be passed
+as a props, the default one is 'FR', and the format depends on that locale.
+
+```jsx
+import { phoneFormatToString } from 'admin-on-rest';
+
+const phone_fr = phoneFormatToString(+33612121212);
+// phone_fr = '06 12 12 12 12'
+const phone_us = phoneFormatToString(+12344565656);
+// phone_us = +1 234 456 5656
+
+const phone_fr = phoneFormatToString(+33612121212, 'US');
+// phone_fr = +336 12 12 12 12
+const phone_us = phoneFormatToString(+12344565656, 'US');
+// phone_us = (234) 456-5656
+```
 
 ## `<SelectField>`
 

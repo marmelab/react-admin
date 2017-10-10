@@ -3,7 +3,9 @@ import driver from '../chromeDriver';
 import editPageFactory from '../pages/EditPage';
 
 describe('Edit Page', () => {
-    const EditPage = editPageFactory('http://localhost:8083/#/posts/5')(driver);
+    const EditPage = editPageFactory('http://localhost:8083/#/posts/5/edit')(
+        driver
+    );
 
     beforeEach(async () => await EditPage.navigate());
 

@@ -47,20 +47,20 @@ describe('<AdminRoutes>', () => {
         );
         assert.equal(wrapper.html(), '<div>PostList</div>');
     });
-    it('should show resource edit on /[resourcename]/:id', () => {
+    it('should show resource edit on /[resourcename]/:id/edit', () => {
         const wrapper = render(
             <Provider store={store}>
-                <MemoryRouter initialEntries={['/posts/12']}>
+                <MemoryRouter initialEntries={['/posts/12/edit']}>
                     <AdminRoutes resources={resources} />
                 </MemoryRouter>
             </Provider>
         );
         assert.equal(wrapper.html(), '<div>PostEdit</div>');
     });
-    it('should show resource show on /[resourcename]/:id/show', () => {
+    it('should show resource show on /[resourcename]/:id', () => {
         const wrapper = render(
             <Provider store={store}>
-                <MemoryRouter initialEntries={['/posts/12/show']}>
+                <MemoryRouter initialEntries={['/posts/12']}>
                     <AdminRoutes resources={resources} />
                 </MemoryRouter>
             </Provider>

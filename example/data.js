@@ -269,7 +269,9 @@ export default {
     comments: [
         {
             id: 1,
-            author: {},
+            author: {
+                phone: '+33654875421',
+            },
             post_id: 6,
             body:
                 "Queen, tossing her head through the wood. 'If it had lost something; and she felt sure it.",
@@ -280,6 +282,7 @@ export default {
             author: {
                 name: 'Kiley Pouros',
                 email: 'kiley@gmail.com',
+                phone: '0694837321',
             },
             post_id: 9,
             body:
@@ -290,6 +293,7 @@ export default {
             id: 3,
             author: {
                 name: 'Justina Hegmann',
+                phone: '0694837321',
             },
             post_id: 3,
             body:
@@ -300,6 +304,7 @@ export default {
             id: 4,
             author: {
                 name: 'Ms. Brionna Smitham MD',
+                phone: '0694837321',
             },
             post_id: 6,
             body:
@@ -310,6 +315,7 @@ export default {
             id: 5,
             author: {
                 name: 'Edmond Schulist',
+                phone: '0694837321',
             },
             post_id: 1,
             body:
@@ -320,6 +326,7 @@ export default {
             id: 6,
             author: {
                 name: 'Danny Greenholt',
+                phone: '+33210 454 454',
             },
             post_id: 6,
             body:
@@ -330,6 +337,7 @@ export default {
             id: 7,
             author: {
                 name: 'Luciano Berge',
+                phone: '+81 2 4567 1232',
             },
             post_id: 5,
             body:
@@ -340,6 +348,7 @@ export default {
             id: 8,
             author: {
                 name: 'Annamarie Mayer',
+                phone: ' +352 6 6548',
             },
             post_id: 5,
             body:
@@ -350,6 +359,7 @@ export default {
             id: 9,
             author: {
                 name: 'Breanna Gibson',
+                phone: '+7 495 234 22 44',
             },
             post_id: 2,
             body:
@@ -360,6 +370,7 @@ export default {
             id: 10,
             author: {
                 name: 'Logan Schowalter',
+                phone: '+12345436756',
             },
             post_id: 3,
             body:
@@ -370,6 +381,7 @@ export default {
             id: 11,
             author: {
                 name: 'Logan Schowalter',
+                phone: '06-94-83-73-21',
             },
             post_id: 1,
             body:

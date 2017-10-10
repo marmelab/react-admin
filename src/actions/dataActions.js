@@ -18,11 +18,12 @@ export const crudGetList = (
     pagination,
     sort,
     filter,
-    cancelPrevious = true
+    cancelPrevious = true,
+    infiniteList = false
 ) => ({
     type: CRUD_GET_LIST,
     payload: { pagination, sort, filter },
-    meta: { resource, fetch: GET_LIST, cancelPrevious },
+    meta: { resource, fetch: GET_LIST, cancelPrevious, infiniteList },
 });
 
 export const CRUD_GET_ONE = 'AOR/CRUD_GET_ONE';

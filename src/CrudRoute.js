@@ -43,17 +43,25 @@ const CrudRoute = ({ resource, list, create, edit, show, remove, options }) => {
             {edit && (
                 <Route
                     exact
-                    path={`/${resource}/:id`}
+                    path={`/${resource}/:id/edit`}
                     render={restrictPage(edit, 'edit')}
                 />
             )}
             {show && (
                 <Route
                     exact
-                    path={`/${resource}/:id/show`}
+                    path={`/${resource}/:id`}
                     render={restrictPage(show, 'show')}
                 />
             )}
+            {!show &&
+                edit && (
+                    <Route
+                        exact
+                        path={`/${resource}/:id`}
+                        render={restrictPage(show, 'show')}
+                    />
+                )}
             {remove && (
                 <Route
                     exact

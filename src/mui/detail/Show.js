@@ -29,7 +29,7 @@ export class Show extends Component {
         const { location } = this.props;
         return location.pathname
             .split('/')
-            .slice(0, -2)
+            .slice(0, -1)
             .join('/');
     }
 
@@ -46,7 +46,6 @@ export class Show extends Component {
             data,
             isLoading,
             resource,
-            hasList,
             hasDelete,
             hasEdit,
             translate,
@@ -72,16 +71,21 @@ export class Show extends Component {
 
         return (
             <div>
-                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    {actions &&
-                        React.cloneElement(actions, {
-                            basePath,
-                            data,
-                            hasList,
-                            hasDelete,
-                            hasEdit,
-                            resource,
-                        })}
+                <Card
+                    className="aor-show-layout"
+                    style={{ opacity: isLoading ? 0.8 : 1 }}
+                >
+                    <div className="aor-show-actions">
+                        {actions &&
+                            React.cloneElement(actions, {
+                                basePath,
+                                data,
+                                hasDelete,
+                                hasEdit,
+                                refresh: this.refresh,
+                                resource,
+                            })}
+                    </div>
                     <ViewTitle title={titleElement} />
                     {data &&
                         React.cloneElement(children, {

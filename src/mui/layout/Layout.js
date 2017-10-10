@@ -96,20 +96,17 @@ class Layout extends Component {
                         <div
                             className="body"
                             style={
-                                width === 1 ? (
-                                    prefixedStyles.bodySmall
-                                ) : (
-                                    prefixedStyles.body
-                                )
+                                width === 1
+                                    ? prefixedStyles.bodySmall
+                                    : prefixedStyles.body
                             }
                         >
                             <div
+                                className="aor-layout-content"
                                 style={
-                                    width === 1 ? (
-                                        prefixedStyles.contentSmall
-                                    ) : (
-                                        prefixedStyles.content
-                                    )
+                                    width === 1
+                                        ? prefixedStyles.contentSmall
+                                        : prefixedStyles.content
                                 }
                             >
                                 <AdminRoutes

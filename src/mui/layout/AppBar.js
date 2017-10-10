@@ -7,7 +7,11 @@ import compose from 'recompose/compose';
 import { toggleSidebar as toggleSidebarAction } from '../../actions';
 
 const AppBar = ({ title, toggleSidebar }) => (
-    <MuiAppBar title={title} onLeftIconButtonTouchTap={toggleSidebar} />
+    <MuiAppBar
+        className="aor-layout-appbar"
+        title={title}
+        onLeftIconButtonTouchTap={toggleSidebar}
+    />
 );
 
 AppBar.propTypes = {

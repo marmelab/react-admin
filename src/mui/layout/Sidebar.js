@@ -13,6 +13,7 @@ const getWidth = width => (typeof width === 'number' ? `${width}px` : width);
 
 const getStyles = ({ drawer }) => {
     const width = drawer && drawer.width ? getWidth(drawer.width) : '16em';
+    const color = drawer && drawer.color ? drawer.color : '';
 
     return {
         sidebarOpen: {
@@ -20,12 +21,14 @@ const getStyles = ({ drawer }) => {
             marginLeft: 0,
             order: -1,
             transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+            backgroundColor: color,
         },
         sidebarClosed: {
             flex: `0 0 ${width}`,
             marginLeft: `-${width}`,
             order: -1,
             transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+            backgroundColor: color,
         },
     };
 };
@@ -56,11 +59,10 @@ class Sidebar extends PureComponent {
                 }
                 medium={
                     <Paper
+                        className="aor-layout-sidebar"
                         style={open ? styles.sidebarOpen : styles.sidebarClosed}
                     >
-                        {React.cloneElement(children, {
-                            onMenuTap: () => null,
-                        })}
+                        {children}
                     </Paper>
                 }
             />

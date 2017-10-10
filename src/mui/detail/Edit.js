@@ -48,7 +48,7 @@ export class Edit extends Component {
         const { location } = this.props;
         return location.pathname
             .split('/')
-            .slice(0, -1)
+            .slice(0, -2)
             .join('/');
     }
 

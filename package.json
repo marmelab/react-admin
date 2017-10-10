@@ -1,6 +1,7 @@
 {
-    "name": "admin-on-rest",
-    "version": "1.3.2",
+    "name": "@sebastien-cleany/admin-on-rest",
+    "private": false,
+    "version": "1.3.3",
     "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
     "files": [
         "*.md",
@@ -59,6 +60,7 @@
     "dependencies": {
         "babel-runtime": "~6.26.0",
         "inflection": "~1.12.0",
+        "libphonenumber-js": "^0.4.22",
         "lodash.debounce": "~4.0.8",
         "lodash.defaultsdeep": "~4.6.0",
         "lodash.get": "~4.4.2",
@@ -72,6 +74,8 @@
         "prop-types": "~15.5.7",
         "query-string": "~5.0.0",
         "react-dropzone": "~4.0.1",
+        "react-ga": "^2.3.5",
+        "react-infinite-scroller": "^1.0.15",
         "react-redux": "~5.0.4",
         "react-router": "~4.1.0",
         "react-router-dom": "~4.1.0",

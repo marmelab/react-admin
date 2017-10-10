@@ -1,3 +1,4 @@
+export AddressField from './AddressField';
 export BooleanField from './BooleanField';
 export ChipField from './ChipField';
 export DateField from './DateField';
@@ -13,3 +14,4 @@ export RichTextField from './RichTextField';
 export SelectField from './SelectField';
 export TextField from './TextField';
 export UrlField from './UrlField';
+export PhoneField, { phoneFormatToString } from './PhoneField';

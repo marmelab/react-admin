@@ -15,7 +15,7 @@ import {
     FormTab,
     ImageField,
     ImageInput,
-    List,
+    InfiniteList,
     LongTextInput,
     NumberField,
     NumberInput,
@@ -78,7 +78,7 @@ const titleFieldStyle = {
     whiteSpace: 'nowrap',
 };
 export const PostList = ({ ...props }) => (
-    <List
+    <InfiniteList
         {...props}
         filters={<PostFilter />}
         sort={{ field: 'published_at', order: 'DESC' }}
@@ -119,7 +119,7 @@ export const PostList = ({ ...props }) => (
                 </Datagrid>
             }
         />
-    </List>
+    </InfiniteList>
 );
 
 const PostTitle = translate(({ record, translate }) => (

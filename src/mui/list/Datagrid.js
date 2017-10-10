@@ -112,11 +112,11 @@ class Datagrid extends Component {
                                         key={field.props.source || index}
                                         field={field}
                                         defaultStyle={
-                                            index === 0 ? (
-                                                styles.header['th:first-child']
-                                            ) : (
-                                                styles.header.th
-                                            )
+                                            index === 0
+                                                ? styles.header[
+                                                      'th:first-child'
+                                                  ]
+                                                : styles.header.th
                                         }
                                         currentSort={currentSort}
                                         isSorting={
