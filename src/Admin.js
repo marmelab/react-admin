@@ -8,6 +8,7 @@ import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import withContext from 'recompose/withContext';
+import ReactGA from 'react-ga';
 
 import { USER_LOGOUT } from './actions/authActions';
 
@@ -38,6 +39,7 @@ const Admin = ({
     loginPage,
     logoutButton,
     initialState,
+    idAnalytics,
 }) => {
     const appReducer = createAppReducer(customReducers, locale);
     const resettableAppReducer = (state, action) =>
@@ -59,6 +61,14 @@ const Admin = ({
 
     const logout = authClient ? createElement(logoutButton || Logout) : null;
 
+    ReactGA.initialize(idAnalytics);
+
+    const logPageView = () => {
+        ReactGA.set({ page: window.location.hash + window.location.search });
+        ReactGA.pageview(window.location.hash + window.location.search);
+        return null;
+    };
+
     return (
         <Provider store={store}>
             <TranslationProvider messages={messages}>
@@ -68,12 +78,14 @@ const Admin = ({
                             <Route
                                 exact
                                 path="/login"
-                                render={({ location }) =>
-                                    createElement(loginPage || Login, {
+                                render={({ location }) => {
+                                    logPageView();
+                                    return createElement(loginPage || Login, {
                                         location,
                                         title,
                                         theme,
-                                    })}
+                                    });
+                                }}
                             />
                             {customRoutes
                                 .filter(route => route.props.noLayout)
@@ -105,19 +117,24 @@ const Admin = ({
                                 ))}
                             <Route
                                 path="/"
-                                render={() =>
-                                    createElement(appLayout || DefaultLayout, {
-                                        children,
-                                        dashboard,
-                                        customRoutes: customRoutes.filter(
-                                            route => !route.props.noLayout
-                                        ),
-                                        logout,
-                                        menu,
-                                        catchAll,
-                                        title,
-                                        theme,
-                                    })}
+                                render={() => {
+                                    logPageView();
+                                    return createElement(
+                                        appLayout || DefaultLayout,
+                                        {
+                                            children,
+                                            dashboard,
+                                            customRoutes: customRoutes.filter(
+                                                route => !route.props.noLayout
+                                            ),
+                                            logout,
+                                            menu,
+                                            catchAll,
+                                            title,
+                                            theme,
+                                        }
+                                    );
+                                }}
                             />
                         </Switch>
                     </div>
@@ -151,6 +168,7 @@ Admin.propTypes = {
     locale: PropTypes.string,
     messages: PropTypes.object,
     initialState: PropTypes.object,
+    idAnalytics: PropTypes.string,
 };
 
 export default withContext(
