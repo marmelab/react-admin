@@ -61,13 +61,20 @@ const Admin = ({
 
     const logout = authClient ? createElement(logoutButton || Logout) : null;
 
-    ReactGA.initialize(idAnalytics);
+    if (idAnalytics) {
+      ReactGA.initialize(idAnalytics);
+    }
 
     const logPageView = () => {
-        ReactGA.set({ page: window.location.hash + window.location.search });
-        ReactGA.pageview(window.location.hash + window.location.search);
+        if (idAnalytics) {
+            ReactGA.set({ page: window.location.hash + window.location.search });
+            ReactGA.pageview(window.location.hash + window.location.search);
+            return null;
+        }
         return null;
     };
+
+
 
     return (
         <Provider store={store}>
