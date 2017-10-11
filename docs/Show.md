@@ -5,7 +5,7 @@ title: "The Show View"
 
 # The Show View
 
-The Show view displays a record fetched from the API in a readonly fashion. It delegates the actual rendering of the record to a layout component - usually `<SimpleShowLayout>`. This layout component uses its children ([`<Fields>`](./Fields.md) components) to render each record field.
+The Show view displays a record fetched from the API in a read-only fashion. It delegates the actual rendering of the record to a layout component - usually `<SimpleShowLayout>`. This layout component uses its children ([`<Fields>`](./Fields.md) components) to render each record field.
 
 ![post show view](./img/show-view.png)
 
@@ -43,10 +43,10 @@ import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField
 export const PostShow = (props) => (
     <Show {...props}>
         <SimpleShowLayout>
-            <TextField source="title" />
-            <TextField source="teaser" />
-            <RichTextField source="body" />
-            <DateField label="Publication date" source="created_at" />
+            <TextField source="title" addLabel />
+            <TextField source="teaser" addLabel />
+            <RichTextField source="body" addLabel />
+            <DateField label="Publication date" source="created_at" addLabel />
         </SimpleShowLayout>
     </Show>
 );
@@ -56,6 +56,8 @@ export const PostShow = (props) => (
 That's enough to display the post show view:
 
 ![post show view](./img/post-show.png)
+
+**Tip**: Field components, used primarily in datagrids, usually don't include labels. However, the `<SimpleShowLayout>` component inspects its children, and decorates them with a label if they set the `addLabel` prop.
 
 ### Page Title
 
@@ -128,9 +130,9 @@ The `<SimpleShowLayout>` renders its child components line by line (within `<div
 export const PostShow = (props) => (
     <Show {...props}>
         <SimpleShowLayout>
-            <TextField source="title" />
-            <RichTextField source="body" />
-            <NumberField source="nb_views" />
+            <TextField source="title" addLabel />
+            <RichTextField source="body" addLabel />
+            <NumberField source="nb_views" addLabel />
         </SimpleShowLayout>
     </Show>
 );
@@ -151,17 +153,17 @@ const styles = {
 export const PostShow = (props) => (
     <Show {...props}>
         <SimpleShowLayout style={styles.container}>
-            <TextField source="title" style={styles.item} />
-            <RichTextField source="body" style={styles.item} />
-            <NumberField source="nb_views" style={styles.item} />
+            <TextField source="title" addLabel style={styles.item} />
+            <RichTextField source="body" addLabel style={styles.item} />
+            <NumberField source="nb_views" addLabel style={styles.item} />
         </SimpleShowLayout>
     </Show>
 );
 ```
 
-## Declaring fields at runtime
+## Declaring Fields at Runtime
 
-You might want to dynamically define the fields when the `<Show>` component is rendered. It accepts a function as its child and this function can return a Promise. If you also defined an `authClient` on the `<Admin>` component, the function will receive the result of a call to `authClient` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
+You might want to dynamically define the fields when the `<Show>` component is rendered. It accepts a function as its child, and this function can return a Promise. If you defined an `authClient` on the `<Admin>` component, the function child of the `<Show>` component will receive the result of a call to `authClient` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
 
 For instance, getting the fields from an API might look like:
 
@@ -170,10 +172,10 @@ import React from 'react';
 import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'admin-on-rest';
 
 const knownFields = [
-    <TextField source="title" />,
-    <TextField source="teaser" />,
-    <RichTextField source="body" />,
-    <DateField label="Publication date" source="created_at" />,
+    <TextField source="title" addLabel />,
+    <TextField source="teaser" addLabel />,
+    <RichTextField source="body" addLabel />,
+    <DateField label="Publication date" source="created_at" addLabel />,
 ];
 
 const fetchFields = permissions =>

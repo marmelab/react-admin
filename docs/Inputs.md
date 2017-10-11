@@ -1023,12 +1023,25 @@ const ItemEdit = (props) => (
 </span>
 ```
 
+**Tip**: The `<Field>` component supports dot notation in the `name` prop, to edit nested props:
+
+```jsx
+const LatLongInput = () => (
+    <span>
+        <Field name="position.lat" component="input" type="number" placeholder="latitude" />
+        &nbsp;
+        <Field name="position.lng" component="input" type="number" placeholder="longitude" />
+    </span>
+);
+```
+
 This component lacks a label. Admin-on-rest provides the `<Labeled>` component for that:
 
 ```jsx
 // in LatLongInput.js
 import { Field } from 'redux-form';
 import { Labeled } from 'admin-on-rest';
+
 const LatLngInput = () => (
     <Labeled label="position">
         <span>
@@ -1051,100 +1064,12 @@ Now the component will render with a label:
 </span>
 ```
 
-Adding a label to an input component is such a common operation that admin-on-rest has the ability to do it automatically: just set the `addLabel` prop, and specify the label in the `label` prop:
+Instead of HTML `input` elements, you can use a material-ui component. To compose material-ui and `Field`, use a [field renderer function](http://redux-form.com/6.5.0/examples/material-ui/) to map the props:
 
 ```jsx
 // in LatLongInput.js
-import { Field } from 'redux-form';
-const LatLngInput = () => (
-    <span>
-        <Field name="lat" component="input" type="number" placeholder="latitude" />
-        &nbsp;
-        <Field name="lng" component="input" type="number" placeholder="longitude" />
-    </span>
-);
-export default LatLngInput;
-// in ItemEdit.js
-const ItemEdit = (props) => (
-    <Edit {...props}>
-        <SimpleForm>
-            <LatLngInput addLabel label="Position" />
-        </SimpleForm>
-    </Edit>
-);
-```
-
-**Tip**: To avoid repeating them each time you use the component, you should define `label` and `addLabel` as `defaultProps`:
-
-```jsx
-// in LatLongInput.js
-import { Field } from 'redux-form';
-const LatLngInput = () => (
-    <span>
-        <Field name="lat" component="input" type="number" placeholder="latitude" />
-        &nbsp;
-        <Field name="lng" component="input" type="number" placeholder="longitude" />
-    </span>
-);
-LatLngInput.defaultProps = {
-    addLabel: true,
-    label: 'Position',
-}
-export default LatLngInput;
-// in ItemEdit.js
-const ItemEdit = (props) => (
-    <Edit {...props}>
-        <SimpleForm>
-            <LatLngInput />
-        </SimpleForm>
-    </Edit>
-);
-```
-
-**Tip**: The `<Field>` component supports dot notation in the `name` prop, to edit nested props:
-
-```jsx
-const LatLongInput = () => (
-    <span>
-        <Field name="position.lat" component="input" type="number" placeholder="latitude" />
-        &nbsp;
-        <Field name="position.lng" component="input" type="number" placeholder="longitude" />
-    </span>
-);
-```
-
-Instead of HTML `input` elements, you can use admin-on-rest components in `<Field>`. For instance, `<NumberInput>`:
-
-```jsx
-// in LatLongInput.js
-import { Field } from 'redux-form';
-import { NumberInput } from 'admin-on-rest';
-const LatLngInput = () => (
-    <span>
-        <Field name="lat" component={NumberInput} label="latitude" />
-        &nbsp;
-        <Field name="lng" component={NumberInput} label="longitude" />
-    </span>
-);
-export default LatLngInput;
-
-// in ItemEdit.js
-const ItemEdit = (props) => (
-    <Edit {...props}>
-        <SimpleForm>
-            <DisabledInput source="id" />
-            <LatLngInput />
-        </SimpleForm>
-    </Edit>
-);
-```
-
-`<NumberInput>` receives the props passed to the `<Field>` component - `label` in the example. `<NumberInput>` is already labelled, so there is no need to also label the `<LanLngInput>` component - that's why `addLabel` isn't set as default prop this time.
-
-**Tip**: If you need to pass a material ui component to `Field`, use a [field renderer function](http://redux-form.com/6.5.0/examples/material-ui/) to map the props:
-
-```jsx
 import TextField from 'material-ui/TextField';
+import { Field } from 'redux-form';
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
     <TextField
         hintText={label}
@@ -1163,41 +1088,12 @@ const LatLngInput = () => (
 );
 ```
 
-For more details on how to use redux-form's `<Field>` component, please refer to [the redux-form doc](http://redux-form.com/6.5.0/docs/api/Field.md/).
+Material-ui's `<TextField>` component already includesa label, so you don't need to use `<Labeled>` in this case. `<Field>` injects two props to its child component: `input` and `meta`. To learn more about these props, please refer to [the `<Field>` component documentation](http://redux-form.com/6.5.0/docs/api/Field.md/#props) in the redux-form website.
 
-**Tip**: If you only need one `<Field>` component in a custom input, you can let admin-on-rest do the `<Field>` decoration for you by setting the `addField` default prop to `true`:
+Here is a second example with material-ui's `<SelectField>`:
 
 ```jsx
-// in PersonEdit.js
-import SexInput from './SexInput.js';
-const PersonEdit = (props) => (
-    <Edit {...props}>
-        <SimpleForm>
-            <SexInput source="sex" />
-        </SimpleForm>
-    </Edit>
-);
-
 // in SexInput.js
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-const SexInput = ({ input, meta: { touched, error } }) => (
-    <SelectField
-        floatingLabelText="Sex"
-        errorText={touched && error}
-        {...input}
-    >
-        <MenuItem value="M" primaryText="Male" />
-        <MenuItem value="F" primaryText="Female" />
-    </SelectField>
-);
-SexInput.defaultProps = {
-    addField: true, // require a <Field> decoration
-}
-export default SexInput;
-
-// equivalent of
-
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import { Field } from 'redux-form';
@@ -1213,8 +1109,42 @@ const renderSexInput = ({ input, meta: { touched, error } }) => (
 );
 const SexInput = ({ source }) => <Field name={source} component={renderSexInput} />
 export default SexInput;
+
+// in PersonEdit.js
+import SexInput from './SexInput.js';
+const PersonEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <SexInput source="sex" />
+        </SimpleForm>
+    </Edit>
+);
 ```
 
-Most admin-on-rest input components use `addField: true` in default props.
+For more details on how to use redux-form's `<Field>` component, please refer to [the redux-form doc](http://redux-form.com/6.5.0/docs/api/Field.md/).
 
-**Tip**: `<Field>` injects two props to its child component: `input` and `meta`. To learn more about these props, please refer to [the `<Field>` component documentation](http://redux-form.com/6.5.0/docs/api/Field.md/#props) in the redux-form website.
+Instead of HTML `input` elements or material-ui components, you can use admin-on-rest input components, like `<NumberInput>` for instance. Admin-on-rest components are already decorated by `<Field>`, and already include a label, so you don't need either `<Field>` or `<Labeled>` when using them:
+
+```jsx
+// in LatLongInput.js
+import { Field } from 'redux-form';
+import { NumberInput } from 'admin-on-rest';
+const LatLngInput = () => (
+    <span>
+        <NumberInput source="lat" label="latitude" />
+        &nbsp;
+        <NumberInput source="lng" label="longitude" />
+    </span>
+);
+export default LatLngInput;
+
+// in ItemEdit.js
+const ItemEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <DisabledInput source="id" />
+            <LatLngInput />
+        </SimpleForm>
+    </Edit>
+);
+```
