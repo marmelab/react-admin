@@ -8,17 +8,10 @@ const TextField = ({ source, record = {}, elStyle }) => {
 };
 
 TextField.propTypes = {
-    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
 };
 
-const PureTextField = pure(TextField);
-
-PureTextField.defaultProps = {
-    addLabel: true,
-};
-
-export default PureTextField;
+export default pure(TextField);

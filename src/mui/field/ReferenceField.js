@@ -106,7 +106,6 @@ export class ReferenceField extends Component {
 }
 
 ReferenceField.propTypes = {
-    addLabel: PropTypes.bool,
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
@@ -137,12 +136,6 @@ function mapStateToProps(state, props) {
     };
 }
 
-const ConnectedReferenceField = connect(mapStateToProps, {
+export default connect(mapStateToProps, {
     crudGetManyAccumulate: crudGetManyAccumulateAction,
 })(ReferenceField);
-
-ConnectedReferenceField.defaultProps = {
-    addLabel: true,
-};
-
-export default ConnectedReferenceField;

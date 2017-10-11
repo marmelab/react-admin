@@ -16,7 +16,6 @@ const RichTextField = ({ source, record = {}, stripTags, elStyle }) => {
 };
 
 RichTextField.propTypes = {
-    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
@@ -24,11 +23,8 @@ RichTextField.propTypes = {
     stripTags: PropTypes.bool,
 };
 
-const PureRichTextField = pure(RichTextField);
-
-PureRichTextField.defaultProps = {
-    addLabel: true,
+RichTextField.defaultProps = {
     stripTags: false,
 };
 
-export default PureRichTextField;
+export default pure(RichTextField);

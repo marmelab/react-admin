@@ -88,7 +88,6 @@ export class ReferenceArrayField extends Component {
 }
 
 ReferenceArrayField.propTypes = {
-    addLabel: PropTypes.bool,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
     crudGetManyAccumulate: PropTypes.func.isRequired,
@@ -114,12 +113,6 @@ const mapStateToProps = (state, props) => {
     };
 };
 
-const ConnectedReferenceArrayField = connect(mapStateToProps, {
+export default connect(mapStateToProps, {
     crudGetManyAccumulate: crudGetManyAccumulateAction,
 })(ReferenceArrayField);
-
-ConnectedReferenceArrayField.defaultProps = {
-    addLabel: true,
-};
-
-export default ConnectedReferenceArrayField;

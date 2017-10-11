@@ -94,7 +94,6 @@ export const SelectField = ({
 };
 
 SelectField.propTypes = {
-    addLabel: PropTypes.bool,
     choices: PropTypes.arrayOf(PropTypes.object),
     elStyle: PropTypes.object,
     label: PropTypes.string,
@@ -118,12 +117,4 @@ SelectField.defaultProps = {
     translateChoice: true,
 };
 
-const enhance = compose(pure, translate);
-
-const EnhancedSelectField = enhance(SelectField);
-
-EnhancedSelectField.defaultProps = {
-    addLabel: true,
-};
-
-export default EnhancedSelectField;
+export default compose(pure, translate)(SelectField);

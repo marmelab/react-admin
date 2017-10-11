@@ -10,7 +10,6 @@ const FunctionField = ({ record = {}, source, render, elStyle }) =>
     record ? <span style={elStyle}>{render(record, source)}</span> : null;
 
 FunctionField.propTypes = {
-    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     render: PropTypes.func.isRequired,
@@ -18,10 +17,4 @@ FunctionField.propTypes = {
     source: PropTypes.string,
 };
 
-const PureFunctionField = pure(FunctionField);
-
-PureFunctionField.defaultProps = {
-    addLabel: true,
-};
-
-export default PureFunctionField;
+export default pure(FunctionField);

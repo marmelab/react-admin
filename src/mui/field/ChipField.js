@@ -9,17 +9,10 @@ const ChipField = ({ source, record = {}, elStyle = { margin: 4 } }) => (
 );
 
 ChipField.propTypes = {
-    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     source: PropTypes.string.isRequired,
     record: PropTypes.object,
 };
 
-const PureChipField = pure(ChipField);
-
-PureChipField.defaultProps = {
-    addLabel: true,
-};
-
-export default PureChipField;
+export default pure(ChipField);
