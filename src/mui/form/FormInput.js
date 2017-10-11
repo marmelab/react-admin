@@ -1,5 +1,4 @@
 import React from 'react';
-import FormField from './FormField';
 
 const FormInput = ({ input, ...rest }) =>
     input ? (
@@ -7,7 +6,7 @@ const FormInput = ({ input, ...rest }) =>
             className={`aor-input aor-input-${input.props.source}`}
             style={input.props.style}
         >
-            <FormField input={input} {...rest} />
+            {React.cloneElement(input, rest)}
         </div>
     ) : null;
 

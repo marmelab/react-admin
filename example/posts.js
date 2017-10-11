@@ -197,12 +197,12 @@ export const PostEdit = ({ ...props }) => (
                 </ImageInput>
             </FormTab>
             <FormTab label="post.form.body">
-                <RichTextInput
+                {/* <RichTextInput
                     source="body"
                     label=""
                     validate={required}
                     addLabel={false}
-                />
+                /> */}
             </FormTab>
             <FormTab label="post.form.miscellaneous">
                 <ReferenceArrayInput source="tags" reference="tags" allowEmpty>
