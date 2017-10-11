@@ -38,7 +38,7 @@ All field components accept the following attributes:
 ```
 {% endraw %}
 
-If you use a field component inside a `Show` view, include the `addLabel` prop to add a label on top of the field:
+If you want to use a field component inside an `Edit` or `Show` view, include the `addLabel` prop to add a label on top of the field:
 
 ```jsx
 export const PostShow = ({ ...props }) => (
