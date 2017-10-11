@@ -44,7 +44,7 @@ import {
     required,
     translate,
 } from 'admin-on-rest'; // eslint-disable-line import/no-unresolved
-import RichTextInput from 'aor-rich-text-input';
+// import RichTextInput from 'aor-rich-text-input';
 import Chip from 'material-ui/Chip';
 
 export PostIcon from 'material-ui/svg-icons/action/book';
