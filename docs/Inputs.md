@@ -1090,13 +1090,31 @@ const LatLngInput = () => (
 
 Material-ui's `<TextField>` component already includesa label, so you don't need to use `<Labeled>` in this case. `<Field>` injects two props to its child component: `input` and `meta`. To learn more about these props, please refer to [the `<Field>` component documentation](http://redux-form.com/6.5.0/docs/api/Field.md/#props) in the redux-form website.
 
-Here is a second example with material-ui's `<SelectField>`:
+**Tip**: If you only need one `<Field>` component in a custom input, you can let admin-on-rest do the `<Field>` decoration for you by using the `addField` Higher-order component:
 
 ```jsx
 // in SexInput.js
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import { addField } from 'admin-on-rest';
+
+const SexInput = ({ input, meta: { touched, error } }) => (
+    <SelectField
+        floatingLabelText="Sex"
+        errorText={touched && error}
+        {...input}
+    >
+        <MenuItem value="M" primaryText="Male" />
+        <MenuItem value="F" primaryText="Female" />
+    </SelectField>
+);
+export default addField(SexInput); // decorate with redux-form's <Field>
+
+// equivalent of
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import { Field } from 'redux-form';
+
 const renderSexInput = ({ input, meta: { touched, error } }) => (
     <SelectField
         floatingLabelText="Sex"
@@ -1109,16 +1127,6 @@ const renderSexInput = ({ input, meta: { touched, error } }) => (
 );
 const SexInput = ({ source }) => <Field name={source} component={renderSexInput} />
 export default SexInput;
-
-// in PersonEdit.js
-import SexInput from './SexInput.js';
-const PersonEdit = (props) => (
-    <Edit {...props}>
-        <SimpleForm>
-            <SexInput source="sex" />
-        </SimpleForm>
-    </Edit>
-);
 ```
 
 For more details on how to use redux-form's `<Field>` component, please refer to [the redux-form doc](http://redux-form.com/6.5.0/docs/api/Field.md/).
