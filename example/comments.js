@@ -36,7 +36,7 @@ export CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
 
 const CommentFilter = ({ ...props }) => (
     <Filter {...props}>
-        <ReferenceInput source="post_id" reference="posts">
+        <ReferenceInput source="post.id" reference="posts">
             <SelectInput optionText="title" />
         </ReferenceInput>
     </Filter>
@@ -102,7 +102,7 @@ const CommentGrid = translate(({ ids, data, basePath, translate }) => (
                     <ReferenceField
                         resource="comments"
                         record={data[id]}
-                        source="post_id"
+                        source="post.id"
                         reference="posts"
                         basePath={basePath}
                     >
@@ -159,7 +159,7 @@ export const CommentEdit = ({ ...props }) => (
         <SimpleForm>
             <DisabledInput source="id" />
             <ReferenceInput
-                source="post_id"
+                source="post.id"
                 reference="posts"
                 perPage={5}
                 sort={{ field: 'title', order: 'ASC' }}
@@ -177,7 +177,7 @@ export const CommentCreate = ({ ...props }) => (
     <Create {...props}>
         <SimpleForm defaultValue={{ created_at: new Date() }}>
             <ReferenceInput
-                source="post_id"
+                source="post.id"
                 reference="posts"
                 allowEmpty
                 validation={{ required: true }}
@@ -194,7 +194,7 @@ export const CommentShow = ({ ...props }) => (
     <Show {...props}>
         <SimpleShowLayout>
             <TextField source="id" />
-            <ReferenceField source="post_id" reference="posts">
+            <ReferenceField source="post.id" reference="posts">
                 <TextField source="title" />
             </ReferenceField>
             <TextField source="author.name" />
