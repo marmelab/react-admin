@@ -1,97 +1,51 @@
 import assert from 'assert';
-import { stub } from 'sinon';
-import reducer from './index';
-import { DECLARE_RESOURCES } from '../../../actions';
+import { initialState as props } from './props';
+import { initialState as data } from './data';
+import { initialState as list } from './list/index.spec';
+import createReducer, * as resourceSelectors from './index';
 
-describe('Resources Reducer', () => {
-    it('should return previous state if the action has no resource meta and is not DECLARE_RESOURCES', () => {
-        const previousState = { previous: true };
-        assert.deepEqual(
-            reducer(previousState, { type: 'A_TYPE', meta: { foo: 'bar' } }),
-            previousState
-        );
+export const initialState = {
+    props,
+    data,
+    list,
+};
+
+describe('resource reducer', () => {
+    it('should return initial state by default', () => {
+        assert.deepEqual(initialState, createReducer()(undefined, {}));
+    });
+});
+
+describe('resource selectors', () => {
+    describe('getData', () => {
+        it('should return data state slice ', () => {
+            assert.deepEqual(resourceSelectors.getData(initialState), data);
+        });
     });
 
-    it('should initialize resources upon DECLARE_RESOURCES', () => {
-        const postsList = () => {};
-        const commentsCreate = () => {};
-        const usersEdit = () => {};
-        const resources = [
-            { name: 'posts', list: postsList },
-            { name: 'comments', create: commentsCreate },
-            { name: 'users', edit: usersEdit },
-        ];
-
-        const dataReducer = () => () => 'data_data';
-        const listReducer = () => () => 'list_data';
-
-        assert.deepEqual(
-            reducer(
-                { oldResource: {} },
-                { type: DECLARE_RESOURCES, payload: resources },
-                dataReducer,
-                listReducer
-            ),
-            {
-                posts: {
-                    data: 'data_data',
-                    list: 'list_data',
-                    props: { name: 'posts', list: postsList },
-                },
-                comments: {
-                    data: 'data_data',
-                    list: 'list_data',
-                    props: { name: 'comments', create: commentsCreate },
-                },
-                users: {
-                    data: 'data_data',
-                    list: 'list_data',
-                    props: { name: 'users', edit: usersEdit },
-                },
-            }
-        );
+    describe('getRecord', () => {
+        it('should return a single record of the data state slice', () => {
+            assert.deepEqual(
+                resourceSelectors.getRecord(initialState, { id: 1 }),
+                undefined
+            );
+        });
     });
 
-    it('should call inner reducers for each resource when action has a resource meta', () => {
-        const innerReducer = state => state;
-        const dataReducer = stub().callsFake(() => innerReducer);
-        const listReducer = stub().callsFake(() => innerReducer);
+    describe('getRecordsByIds', () => {
+        it('should return an object of records of the data state slice', () => {
+            assert.deepEqual(
+                resourceSelectors.getRecordsByIds(initialState, {
+                    ids: [1, 2],
+                }),
+                {}
+            );
+        });
+    });
 
-        assert.deepEqual(
-            reducer(
-                {
-                    posts: {
-                        data: 'data_data',
-                        list: 'list_data',
-                        props: { name: 'posts' },
-                    },
-                    comments: {
-                        data: 'data_data',
-                        list: 'list_data',
-                        props: { name: 'comments' },
-                    },
-                },
-                { type: 'A_RESOURCE_ACTION', meta: { resource: 'posts' } },
-                dataReducer,
-                listReducer
-            ),
-            {
-                posts: {
-                    data: 'data_data',
-                    list: 'list_data',
-                    props: { name: 'posts' },
-                },
-                comments: {
-                    data: 'data_data',
-                    list: 'list_data',
-                    props: { name: 'comments' },
-                },
-            }
-        );
-
-        assert(dataReducer.calledWith('posts'));
-        assert(listReducer.calledWith('posts'));
-        assert(dataReducer.neverCalledWith('comments'));
-        assert(listReducer.neverCalledWith('comments'));
+    describe('getList', () => {
+        it('should return list state slice', () => {
+            assert.deepEqual(resourceSelectors.getList(initialState), list);
+        });
     });
 });

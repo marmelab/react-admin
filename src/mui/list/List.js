@@ -26,6 +26,12 @@ import translate from '../../i18n/translate';
 import removeKey from '../../util/removeKey';
 import defaultTheme from '../defaultTheme';
 import withChildrenAsFunction from '../withChildrenAsFunction';
+import {
+    getAdminResource,
+    isAdminLoading,
+    getViewVersion,
+} from '../../reducer';
+import { getData, getList } from '../../reducer/admin/resource';
 
 const styles = {
     noResults: { padding: 20 },
@@ -169,7 +175,7 @@ export class List extends Component {
         this.setState({ [filterName]: true });
         if (typeof defaultValue !== 'undefined') {
             this.setFilters({
-                ...this.props.filterValues,
+                ...this.props.params.filter,
                 [filterName]: defaultValue,
             });
         }
@@ -177,7 +183,7 @@ export class List extends Component {
 
     hideFilter = filterName => {
         this.setState({ [filterName]: false });
-        const newFilters = removeKey(this.props.filterValues, filterName);
+        const newFilters = removeKey(this.props.params.filter, filterName);
         this.setFilters(newFilters);
     };
 
@@ -195,7 +201,8 @@ export class List extends Component {
 
     refresh() {
         if (process.env !== 'production') {
-            console.warn( // eslint-disable-line
+            console.warn(
+        // eslint-disable-line
                 'Deprecation warning: The preferred way to refresh the List view is to connect your custom button with redux and dispatch the `refreshView` action.'
             );
         }
@@ -316,7 +323,6 @@ List.propTypes = {
     changeListParams: PropTypes.func.isRequired,
     crudGetList: PropTypes.func.isRequired,
     data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     hasCreate: PropTypes.bool.isRequired,
     ids: PropTypes.array,
     isLoading: PropTypes.bool.isRequired,
@@ -335,7 +341,9 @@ List.propTypes = {
 
 List.defaultProps = {
     filter: {},
-    filterValues: {},
+    params: {
+        filter: {},
+    },
     perPage: 10,
     sort: {
         field: 'id',
@@ -354,16 +362,14 @@ const getQuery = createSelector(getLocationSearch, locationSearch => {
 });
 
 function mapStateToProps(state, props) {
-    const resourceState = state.admin.resources[props.resource];
+    const resource = getAdminResource(state, props);
+
     return {
         query: getQuery(props),
-        params: resourceState.list.params,
-        ids: resourceState.list.ids,
-        total: resourceState.list.total,
-        data: resourceState.data,
-        isLoading: state.admin.loading > 0,
-        filterValues: resourceState.list.params.filter,
-        version: state.admin.ui.viewVersion,
+        data: getData(resource),
+        isLoading: isAdminLoading(state),
+        ...getList(resource),
+        version: getViewVersion(state),
     };
 }
 

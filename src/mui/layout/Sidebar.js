@@ -5,6 +5,7 @@ import compose from 'recompose/compose';
 import Drawer from 'material-ui/Drawer';
 import Paper from 'material-ui/Paper';
 import muiThemeable from 'material-ui/styles/muiThemeable';
+import { isSidebarOpen, getLocale } from '../../reducer';
 
 import Responsive from './Responsive';
 import { setSidebarVisibility as setSidebarVisibilityAction } from '../../actions';
@@ -76,8 +77,8 @@ Sidebar.propTypes = {
 };
 
 const mapStateToProps = (state, props) => ({
-    open: state.admin.ui.sidebarOpen,
-    locale: state.locale, // force redraw on locale change
+    open: isSidebarOpen(state),
+    locale: getLocale(state), // force redraw on locale change
     theme: props.theme, // force redraw on theme changes
 });
 

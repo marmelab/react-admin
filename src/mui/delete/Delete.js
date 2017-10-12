@@ -16,6 +16,7 @@ import {
     crudDelete as crudDeleteAction,
 } from '../../actions/dataActions';
 import translate from '../../i18n/translate';
+import { getAdminResourceRecord, isAdminLoading } from '../../reducer';
 
 const styles = {
     actions: { zIndex: 2, display: 'inline-block', float: 'right' },
@@ -149,11 +150,11 @@ Delete.propTypes = {
 function mapStateToProps(state, props) {
     return {
         id: decodeURIComponent(props.match.params.id),
-        data:
-            state.admin.resources[props.resource].data[
-                decodeURIComponent(props.match.params.id)
-            ],
-        isLoading: state.admin.loading > 0,
+        data: getAdminResourceRecord(state, {
+            ...props,
+            id: decodeURIComponent(props.match.params.id),
+        }),
+        isLoading: isAdminLoading(state),
     };
 }
 

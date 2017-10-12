@@ -2,7 +2,7 @@ import { INITIALIZE_FORM } from '../../actions/formActions';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import set from 'lodash.set';
 
-const initialState = {};
+export const initialState = {};
 
 export default (previousState = initialState, { type, payload }) => {
     if (type === LOCATION_CHANGE) {

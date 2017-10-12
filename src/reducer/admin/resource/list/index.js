@@ -9,3 +9,5 @@ export default resource =>
         params: params(resource),
         total: total(resource),
     });
+
+export const getParams = state => state.params;

@@ -1,6 +1,6 @@
 import { CRUD_CHANGE_LIST_PARAMS } from '../../../../actions/listActions';
 
-const defaultState = {
+export const initialState = {
     sort: null,
     order: null,
     page: 1,
@@ -9,7 +9,7 @@ const defaultState = {
 };
 
 export default resource => (
-    previousState = defaultState,
+    previousState = initialState,
     { type, payload, meta }
 ) => {
     if (!meta || meta.resource !== resource) {

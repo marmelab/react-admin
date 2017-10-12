@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 import translate from '../../i18n/translate';
-import { getResources } from '../../reducer';
+import { getAdminResourcesProps } from '../../reducer';
 
 const styles = {
     main: {
@@ -60,7 +60,7 @@ Menu.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-    resources: getResources(state),
+    resources: getAdminResourcesProps(state),
 });
 
 const enhance = compose(translate, connect(mapStateToProps));

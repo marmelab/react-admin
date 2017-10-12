@@ -3,13 +3,13 @@ import {
     HIDE_NOTIFICATION,
 } from '../../actions/notificationActions';
 
-const defaultState = {
+export const initialState = {
     text: '',
     type: 'info', // one of 'info', 'confirm', 'warning'
     autoHideDuration: undefined, // use default duration from Notification
 };
 
-export default (previousState = defaultState, { type, payload }) => {
+export default (previousState = initialState, { type, payload }) => {
     switch (type) {
         case SHOW_NOTIFICATION:
             return {

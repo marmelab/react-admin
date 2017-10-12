@@ -7,9 +7,11 @@ import {
     crudGetMany as crudGetManyAction,
     crudGetMatching as crudGetMatchingAction,
 } from '../../actions/dataActions';
-import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
-
-const referenceSource = (resource, source) => `${resource}@${source}`;
+import {
+    makeGetAdminPossibleReferences,
+    getAdminResourceData,
+} from '../../reducer';
+import { referenceSource } from '../../reducer/admin/references/possibleValues';
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -176,11 +178,9 @@ export class ReferenceArrayInput extends Component {
             return (
                 <Labeled
                     label={
-                        typeof label === 'undefined' ? (
-                            `resources.${resource}.fields.${source}`
-                        ) : (
-                            label
-                        )
+                        typeof label === 'undefined'
+                            ? `resources.${resource}.fields.${source}`
+                            : label
                     }
                     source={source}
                     resource={resource}
@@ -246,7 +246,9 @@ ReferenceArrayInput.defaultProps = {
 
 function mapStateToProps(state, props) {
     const referenceIds = props.input.value || [];
-    const data = state.admin.resources[props.reference].data;
+    const data = getAdminResourceData(state, { resource: props.reference });
+    const getPossibleReferences = makeGetAdminPossibleReferences();
+
     return {
         referenceRecords: referenceIds.reduce((references, referenceId) => {
             if (data[referenceId]) {
@@ -254,12 +256,11 @@ function mapStateToProps(state, props) {
             }
             return references;
         }, []),
-        matchingReferences: getPossibleReferences(
-            state,
-            referenceSource(props.resource, props.source),
-            props.reference,
-            referenceIds
-        ),
+        matchingReferences: getPossibleReferences(state, {
+            reference: referenceSource(props.resource, props.source),
+            resource: props.reference,
+            ids: referenceIds,
+        }),
     };
 }
 
