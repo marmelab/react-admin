@@ -15,7 +15,7 @@ describe('<NullableBooleanInput />', () => {
         const wrapper = shallow(
             <NullableBooleanInput source="foo" {...defaultProps} />
         );
-        const choices = wrapper.find('Connect(FormField)').prop('choices');
+        const choices = wrapper.find('WithFormField').prop('choices');
         assert.deepEqual(choices, [
             { id: null, name: '' },
             { id: false, name: 'aor.boolean.false' },
