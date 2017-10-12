@@ -94,6 +94,7 @@ export class Show extends Component {
             hasDelete,
             hasEdit,
             translate,
+            version,
         } = this.props;
 
         if (!children) return null;
@@ -135,6 +136,7 @@ export class Show extends Component {
                             basePath,
                             record: data,
                             translate,
+                            version,
                         })}
                 </Card>
             </div>

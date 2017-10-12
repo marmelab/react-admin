@@ -48,9 +48,14 @@ export const SimpleShowLayout = ({
     classes,
     record,
     resource,
+    version,
     ...rest
 }) => (
-    <div className={classnames(classes.root, className)} {...rest}>
+    <div
+        className={classnames(classes.root, className)}
+        key={version}
+        {...rest}
+    >
         {Children.map(children, field => (
             <div
                 key={field.props.source}
@@ -91,6 +96,7 @@ SimpleShowLayout.propTypes = {
     classes: PropTypes.object,
     record: PropTypes.object,
     resource: PropTypes.string,
+    version: PropTypes.number,
 };
 
 export default withStyles(styles)(SimpleShowLayout);
