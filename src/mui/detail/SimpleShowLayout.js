@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import Labeled from '../input/Labeled';
 
 const defaultStyle = { padding: '0 1em 1em 1em' };
-export const SimpleShowLayout = ({
+const SimpleShowLayout = ({
     basePath,
     children,
     record,
     resource,
     style = defaultStyle,
+    version,
 }) => (
-    <div style={style}>
+    <div style={style} key={version}>
         {Children.map(children, field => (
             <div
                 key={field.props.source}
@@ -48,6 +49,7 @@ SimpleShowLayout.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     style: PropTypes.object,
+    version: PropTypes.number,
 };
 
 export default SimpleShowLayout;

@@ -48,13 +48,14 @@ export class TabbedForm extends Component {
             tabsWithErrors,
             toolbar,
             translate,
+            version,
         } = this.props;
 
         const styles = getStyles(muiTheme);
 
         return (
             <form className="tabbed-form">
-                <div style={styles.form}>
+                <div style={styles.form} key={version}>
                     <Tabs
                         value={this.state.value}
                         onChange={this.handleChange}
@@ -118,6 +119,7 @@ TabbedForm.propTypes = {
     toolbar: PropTypes.element,
     translate: PropTypes.func,
     validate: PropTypes.func,
+    version: PropTypes.number,
 };
 
 TabbedForm.defaultProps = {

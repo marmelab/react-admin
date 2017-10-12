@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import getDefaultValues from '../form/getDefaultValues';
 
 const divStyle = { padding: '0 1em 1em 1em' };
-export class TabbedShowLayout extends Component {
+class TabbedShowLayout extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -26,9 +23,10 @@ export class TabbedShowLayout extends Component {
             resource,
             basePath,
             translate,
+            version,
         } = this.props;
         return (
-            <div style={divStyle}>
+            <div style={divStyle} key={version}>
                 <Tabs
                     value={this.state.value}
                     onChange={this.handleChange}
@@ -67,16 +65,11 @@ TabbedShowLayout.propTypes = {
     resource: PropTypes.string,
     basePath: PropTypes.string,
     translate: PropTypes.func,
+    version: PropTypes.number,
 };
 
 TabbedShowLayout.defaultProps = {
     contentContainerStyle: { borderTop: 'solid 1px #e0e0e0' },
 };
 
-const enhance = compose(
-    connect((state, props) => ({
-        initialValues: getDefaultValues(state, props),
-    }))
-);
-
-export default enhance(TabbedShowLayout);
+export default TabbedShowLayout;
