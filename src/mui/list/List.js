@@ -193,7 +193,7 @@ export class List extends Component {
         this.props.changeListParams(this.props.resource, newParams);
     }
 
-   refresh = () => {
+    refresh = () => {
         if (process.env !== 'production') {
             console.warn( // eslint-disable-line
                 'Deprecation warning: The preferred way to refresh the List view is to connect your custom button with redux and dispatch the `refreshView` action.'
@@ -201,7 +201,7 @@ export class List extends Component {
         }
 
         this.props.refreshView();
-    }
+    };
 
     render() {
         const {
