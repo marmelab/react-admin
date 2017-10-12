@@ -331,3 +331,16 @@ MyLayout.propTypes = {
 const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
 export default connect(mapStateToProps, { setSidebarVisibility })(MyLayout);
 ```
+
+
+## Notifications
+
+If you use your own layout (or custom login page), then you probably use the `<Notification>` component.
+
+You can override the notification duration by setting the `autoHideDuration` prop. It defaults to 4000, i.e. 4 seconds.
+
+```jsx
+<Notification autoHideDuration={5000} />
+```
+
+**Tip**: if you use the `showNotification` action, then you can define `autoHideDuration` per message as the third parameter of the `showNotification` action creator.

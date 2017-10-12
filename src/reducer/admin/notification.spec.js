@@ -7,14 +7,33 @@ import reducer from './notification';
 
 describe('notification reducer', () => {
     it('should return empty notification by default', () => {
-        assert.deepEqual({ text: '', type: 'info' }, reducer(undefined, {}));
+        assert.deepEqual(
+            { text: '', type: 'info', autoHideDuration: undefined },
+            reducer(undefined, {})
+        );
+    });
+    it('should set autoHideDuration when passed in payload', () => {
+        assert.deepEqual(
+            { text: 'test', type: 'info', autoHideDuration: 1337 },
+            reducer(undefined, {
+                type: SHOW_NOTIFICATION,
+                payload: {
+                    text: 'test',
+                    type: 'info',
+                    autoHideDuration: 1337,
+                },
+            })
+        );
     });
     it('should set text and type upon SHOW_NOTIFICATION', () => {
         assert.deepEqual(
-            { text: 'foo', type: 'warning' },
+            { text: 'foo', type: 'warning', autoHideDuration: undefined },
             reducer(undefined, {
                 type: SHOW_NOTIFICATION,
-                payload: { text: 'foo', type: 'warning' },
+                payload: {
+                    text: 'foo',
+                    type: 'warning',
+                },
             })
         );
     });
