@@ -270,7 +270,7 @@ export default {
         {
             id: 1,
             author: {},
-            post: { id: 6},
+            post: { id: 6 },
             body:
                 "Queen, tossing her head through the wood. 'If it had lost something; and she felt sure it.",
             created_at: new Date('2012-08-02'),
