@@ -48,6 +48,7 @@ export const NumberField = ({ record, source, locales, options, elStyle }) => {
 };
 
 NumberField.propTypes = {
+    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     locales: PropTypes.oneOfType([
@@ -62,6 +63,7 @@ NumberField.propTypes = {
 const PureNumberField = pure(NumberField);
 
 PureNumberField.defaultProps = {
+    addLabel: true,
     style: { textAlign: 'right' },
     headerStyle: { textAlign: 'right' },
 };

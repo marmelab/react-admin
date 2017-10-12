@@ -139,6 +139,7 @@ export class ReferenceManyField extends Component {
 }
 
 ReferenceManyField.propTypes = {
+    addLabel: PropTypes.bool,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
     crudGetManyReference: PropTypes.func.isRequired,
@@ -181,6 +182,13 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default connect(mapStateToProps, {
+const ConnectedReferenceManyField = connect(mapStateToProps, {
     crudGetManyReference: crudGetManyReferenceAction,
 })(ReferenceManyField);
+
+ConnectedReferenceManyField.defaultProps = {
+    addLabel: true,
+    source: '',
+};
+
+export default ConnectedReferenceManyField;

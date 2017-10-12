@@ -193,13 +193,13 @@ export const CommentCreate = ({ ...props }) => (
 export const CommentShow = ({ ...props }) => (
     <Show {...props}>
         <SimpleShowLayout>
-            <TextField source="id" addLabel />
-            <ReferenceField source="post_id" reference="posts" addLabel>
+            <TextField source="id" />
+            <ReferenceField source="post_id" reference="posts">
                 <TextField source="title" />
             </ReferenceField>
-            <TextField source="author.name" addLabel />
-            <DateField source="created_at" addLabel />
-            <TextField source="body" addLabel />
+            <TextField source="author.name" />
+            <DateField source="created_at" />
+            <TextField source="body" />
         </SimpleShowLayout>
     </Show>
 );

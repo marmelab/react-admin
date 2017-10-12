@@ -10,10 +10,17 @@ const UrlField = ({ source, record = {}, elStyle }) => (
 );
 
 UrlField.propTypes = {
+    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
 };
 
-export default pure(UrlField);
+const PureUrlField = pure(UrlField);
+
+PureUrlField.defaultProps = {
+    addLabel: true,
+};
+
+export default PureUrlField;

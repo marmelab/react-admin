@@ -230,7 +230,11 @@ export const PostEdit = ({ ...props }) => (
                 <DisabledInput source="views" />
             </FormTab>
             <FormTab label="post.form.comments">
-                <ReferenceManyField reference="comments" target="post_id">
+                <ReferenceManyField
+                    reference="comments"
+                    target="post_id"
+                    addLabel={false}
+                >
                     <Datagrid>
                         <DateField source="created_at" />
                         <TextField source="author.name" />
@@ -247,31 +251,35 @@ export const PostShow = ({ ...props }) => (
     <Show title={<PostTitle />} {...props}>
         <TabbedShowLayout>
             <Tab label="post.form.summary">
-                <TextField source="id" addLabel />
-                <TextField source="title" addLabel />
-                <TextField source="teaser" addLabel />
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="teaser" />
             </Tab>
             <Tab label="post.form.body">
-                <RichTextField source="body" stripTags={false} label="" />
+                <RichTextField
+                    source="body"
+                    stripTags={false}
+                    label=""
+                    addLabel={false}
+                />
             </Tab>
             <Tab label="post.form.miscellaneous">
-                <ReferenceArrayField reference="tags" source="tags" addLabel>
+                <ReferenceArrayField reference="tags" source="tags">
                     <SingleFieldList>
                         <ChipField source="name" />
                     </SingleFieldList>
                 </ReferenceArrayField>
-                <DateField source="published_at" addLabel />
+                <DateField source="published_at" />
                 <SelectField
                     source="category"
                     choices={[
                         { name: 'Tech', id: 'tech' },
                         { name: 'Lifestyle', id: 'lifestyle' },
                     ]}
-                    addLabel
                 />
-                <NumberField source="average_note" addLabel style={{}} />
-                <BooleanField source="commentable" addLabel />
-                <TextField source="views" addLabel />
+                <NumberField source="average_note" />
+                <BooleanField source="commentable" />
+                <TextField source="views" />
             </Tab>
             <Tab label="post.form.comments">
                 <ReferenceManyField

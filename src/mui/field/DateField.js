@@ -62,6 +62,7 @@ export const DateField = ({
 };
 
 DateField.propTypes = {
+    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     locales: PropTypes.oneOfType([
@@ -74,4 +75,10 @@ DateField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-export default pure(DateField);
+const PureDateField = pure(DateField);
+
+PureDateField.defaultProps = {
+    addLabel: true,
+};
+
+export default PureDateField;

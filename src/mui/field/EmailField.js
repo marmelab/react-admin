@@ -10,10 +10,17 @@ const EmailField = ({ source, record = {}, elStyle }) => (
 );
 
 EmailField.propTypes = {
+    addLabel: PropTypes.bool,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
 };
 
-export default pure(EmailField);
+const PureEmailField = pure(EmailField);
+
+PureEmailField.defaultProps = {
+    addLabel: true,
+};
+
+export default PureEmailField;
