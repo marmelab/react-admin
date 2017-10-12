@@ -5,7 +5,7 @@ import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import FlatButton from 'material-ui/FlatButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import withWidth from 'material-ui/utils/withWidth';
+import withWidth, { SMALL } from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
 
@@ -29,7 +29,7 @@ const CreateButton = ({
     label = 'aor.action.create',
     width,
 }) =>
-    width === 1 ? (
+    width === SMALL ? (
         <FloatingActionButton
             style={styles.floating}
             containerElement={<Link to={`${basePath}/create`} />}
