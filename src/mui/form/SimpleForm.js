@@ -22,11 +22,12 @@ export class SimpleForm extends Component {
             resource,
             submitOnEnter,
             toolbar,
+            version,
         } = this.props;
 
         return (
             <form className="simple-form">
-                <div style={formStyle}>
+                <div style={formStyle} key={version}>
                     {Children.map(children, input => (
                         <FormInput
                             basePath={basePath}
@@ -60,6 +61,7 @@ SimpleForm.propTypes = {
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.element,
     validate: PropTypes.func,
+    version: PropTypes.number,
 };
 
 SimpleForm.defaultProps = {
