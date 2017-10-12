@@ -10,14 +10,12 @@ import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import DefaultActions from './CreateActions';
 import translate from '../../i18n/translate';
 import withChildrenAsFunction from '../withChildrenAsFunction';
+import { isAdminLoading } from '../../reducer';
 
 class Create extends Component {
     getBasePath() {
         const { location } = this.props;
-        return location.pathname
-            .split('/')
-            .slice(0, -1)
-            .join('/');
+        return location.pathname.split('/').slice(0, -1).join('/');
     }
 
     defaultRedirectRoute() {
@@ -106,7 +104,7 @@ Create.defaultProps = {
 
 function mapStateToProps(state) {
     return {
-        isLoading: state.admin.loading > 0,
+        isLoading: isAdminLoading(state),
     };
 }
 

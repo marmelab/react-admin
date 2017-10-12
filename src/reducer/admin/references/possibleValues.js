@@ -1,6 +1,6 @@
 import { CRUD_GET_MATCHING_SUCCESS } from '../../../actions/dataActions';
 
-const initialState = {};
+export const initialState = {};
 
 export default (previousState = initialState, { type, payload, meta }) => {
     switch (type) {
@@ -35,3 +35,5 @@ export const getPossibleReferences = (
         .map(id => state.admin.resources[reference].data[id])
         .filter(r => typeof r !== 'undefined');
 };
+
+export const referenceSource = (resource, source) => `${resource}@${source}`;

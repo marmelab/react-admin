@@ -100,21 +100,22 @@ export class Pagination extends Component {
     renderPageNums() {
         return this.range().map(
             (pageNum, index) =>
-                pageNum === '.' ? (
-                    <span key={`hyphen_${index}`} style={{ padding: '1.2em' }}>
-                        &hellip;
-                    </span>
-                ) : (
-                    <FlatButton
-                        className="page-number"
-                        key={pageNum}
-                        label={pageNum}
-                        data-page={pageNum}
-                        onClick={this.gotoPage}
-                        primary={pageNum !== this.props.page}
-                        style={styles.button}
-                    />
-                )
+                pageNum === '.'
+                    ? <span
+                          key={`hyphen_${index}`}
+                          style={{ padding: '1.2em' }}
+                      >
+                          &hellip;
+                      </span>
+                    : <FlatButton
+                          className="page-number"
+                          key={pageNum}
+                          label={pageNum}
+                          data-page={pageNum}
+                          onClick={this.gotoPage}
+                          primary={pageNum !== this.props.page}
+                          style={styles.button}
+                      />
         );
     }
 
@@ -125,73 +126,69 @@ export class Pagination extends Component {
         const offsetBegin = Math.min((page - 1) * perPage + 1, offsetEnd);
         const nbPages = this.getNbPages();
 
-        return width === 1 ? (
-            <Toolbar>
-                <ToolbarGroup style={styles.mobileToolbar}>
-                    {page > 1 && (
-                        <IconButton onClick={this.prevPage}>
-                            <ChevronLeft
-                                color={muiTheme.palette.primary1Color}
-                            />
-                        </IconButton>
-                    )}
-                    <span style={styles.pageInfo}>
-                        {translate('aor.navigation.page_range_info', {
-                            offsetBegin,
-                            offsetEnd,
-                            total,
-                        })}
-                    </span>
-                    {page !== nbPages && (
-                        <IconButton onClick={this.nextPage}>
-                            <ChevronRight
-                                color={muiTheme.palette.primary1Color}
-                            />
-                        </IconButton>
-                    )}
-                </ToolbarGroup>
-            </Toolbar>
-        ) : (
-            <Toolbar>
-                <ToolbarGroup firstChild>
-                    <span className="displayed-records" style={styles.pageInfo}>
-                        {translate('aor.navigation.page_range_info', {
-                            offsetBegin,
-                            offsetEnd,
-                            total,
-                        })}
-                    </span>
-                </ToolbarGroup>
-                {nbPages > 1 && (
-                    <ToolbarGroup>
-                        {page > 1 && (
-                            <FlatButton
-                                className="previous-page"
-                                primary
-                                key="prev"
-                                label={translate('aor.navigation.prev')}
-                                icon={<ChevronLeft />}
-                                onClick={this.prevPage}
-                                style={styles.button}
-                            />
-                        )}
-                        {this.renderPageNums()}
-                        {page !== nbPages && (
-                            <FlatButton
-                                className="next-page"
-                                primary
-                                key="next"
-                                label={translate('aor.navigation.next')}
-                                icon={<ChevronRight />}
-                                labelPosition="before"
-                                onClick={this.nextPage}
-                                style={styles.button}
-                            />
-                        )}
-                    </ToolbarGroup>
-                )}
-            </Toolbar>
-        );
+        return width === 1
+            ? <Toolbar>
+                  <ToolbarGroup style={styles.mobileToolbar}>
+                      {page > 1 &&
+                          <IconButton onClick={this.prevPage}>
+                              <ChevronLeft
+                                  color={muiTheme.palette.primary1Color}
+                              />
+                          </IconButton>}
+                      <span style={styles.pageInfo}>
+                          {translate('aor.navigation.page_range_info', {
+                              offsetBegin,
+                              offsetEnd,
+                              total,
+                          })}
+                      </span>
+                      {page !== nbPages &&
+                          <IconButton onClick={this.nextPage}>
+                              <ChevronRight
+                                  color={muiTheme.palette.primary1Color}
+                              />
+                          </IconButton>}
+                  </ToolbarGroup>
+              </Toolbar>
+            : <Toolbar>
+                  <ToolbarGroup firstChild>
+                      <span
+                          className="displayed-records"
+                          style={styles.pageInfo}
+                      >
+                          {translate('aor.navigation.page_range_info', {
+                              offsetBegin,
+                              offsetEnd,
+                              total,
+                          })}
+                      </span>
+                  </ToolbarGroup>
+                  {nbPages > 1 &&
+                      <ToolbarGroup>
+                          {page > 1 &&
+                              <FlatButton
+                                  className="previous-page"
+                                  primary
+                                  key="prev"
+                                  label={translate('aor.navigation.prev')}
+                                  icon={<ChevronLeft />}
+                                  onClick={this.prevPage}
+                                  style={styles.button}
+                              />}
+                          {this.renderPageNums()}
+                          {page !== nbPages &&
+                              <FlatButton
+                                  className="next-page"
+                                  primary
+                                  key="next"
+                                  label={translate('aor.navigation.next')}
+                                  icon={<ChevronRight />}
+                                  labelPosition="before"
+                                  onClick={this.nextPage}
+                                  style={styles.button}
+                              />}
+                      </ToolbarGroup>}
+              </Toolbar>;
     }
 }
 

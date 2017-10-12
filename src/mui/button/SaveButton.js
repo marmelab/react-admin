@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import ContentSave from 'material-ui/svg-icons/content/save';
 import CircularProgress from 'material-ui/CircularProgress';
 import translate from '../../i18n/translate';
+import { isAdminSaving } from '../../reducer';
 
 export class SaveButton extends Component {
     handleClick = e => {
@@ -38,11 +39,9 @@ export class SaveButton extends Component {
                 type={type}
                 label={label && translate(label)}
                 icon={
-                    saving && saving.redirect === redirect ? (
-                        <CircularProgress size={25} thickness={2} />
-                    ) : (
-                        <ContentSave />
-                    )
+                    saving && saving.redirect === redirect
+                        ? <CircularProgress size={25} thickness={2} />
+                        : <ContentSave />
                 }
                 onClick={this.handleClick}
                 primary={!saving}
@@ -70,7 +69,7 @@ SaveButton.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-    saving: state.admin.saving,
+    saving: isAdminSaving(state),
 });
 
 export default connect(mapStateToProps)(translate(SaveButton));

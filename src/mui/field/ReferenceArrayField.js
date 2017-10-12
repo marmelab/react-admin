@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
-
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
-import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
+import { isAdminLoading, getAdminResourceRecordsByIds } from '../../reducer';
 
 /**
  * A container component that fetches records from another resource specified
@@ -108,9 +107,9 @@ const mapStateToProps = (state, props) => {
     const { record, source, reference } = props;
     const ids = get(record, source) || emptyIds;
     return {
-        data: getReferencesByIds(state, reference, ids),
         ids,
-        isLoading: state.admin.loading > 0,
+        data: getAdminResourceRecordsByIds(state, { resource: reference, ids }),
+        isLoading: isAdminLoading(state),
     };
 };
 

@@ -111,11 +111,9 @@ export class SelectInput extends Component {
             <MenuItem
                 key={get(choice, optionValue)}
                 primaryText={
-                    translateChoice ? (
-                        translate(choiceName, { _: choiceName })
-                    ) : (
-                        choiceName
-                    )
+                    translateChoice
+                        ? translate(choiceName, { _: choiceName })
+                        : choiceName
                 }
                 value={get(choice, optionValue)}
             />

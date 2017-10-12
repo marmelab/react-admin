@@ -34,43 +34,39 @@ import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 export CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
 
-const CommentFilter = ({ ...props }) => (
+const CommentFilter = ({ ...props }) =>
     <Filter {...props}>
         <ReferenceInput source="post_id" reference="posts">
             <SelectInput optionText="title" />
         </ReferenceInput>
-    </Filter>
-);
+    </Filter>;
 
 const CommentPagination = translate(
     ({ page, perPage, total, setPage, translate }) => {
         const nbPages = Math.ceil(total / perPage) || 1;
         return (
-            nbPages > 1 && (
-                <Toolbar>
-                    <ToolbarGroup>
-                        {page > 1 && (
-                            <FlatButton
-                                primary
-                                key="prev"
-                                label={translate('aor.navigation.prev')}
-                                icon={<ChevronLeft />}
-                                onClick={() => setPage(page - 1)}
-                            />
-                        )}
-                        {page !== nbPages && (
-                            <FlatButton
-                                primary
-                                key="next"
-                                label={translate('aor.navigation.next')}
-                                icon={<ChevronRight />}
-                                onClick={() => setPage(page + 1)}
-                                labelPosition="before"
-                            />
-                        )}
-                    </ToolbarGroup>
-                </Toolbar>
-            )
+            nbPages > 1 &&
+            <Toolbar>
+                <ToolbarGroup>
+                    {page > 1 &&
+                        <FlatButton
+                            primary
+                            key="prev"
+                            label={translate('aor.navigation.prev')}
+                            icon={<ChevronLeft />}
+                            onClick={() => setPage(page - 1)}
+                        />}
+                    {page !== nbPages &&
+                        <FlatButton
+                            primary
+                            key="next"
+                            label={translate('aor.navigation.next')}
+                            icon={<ChevronRight />}
+                            onClick={() => setPage(page + 1)}
+                            labelPosition="before"
+                        />}
+                </ToolbarGroup>
+            </Toolbar>
         );
     }
 );
@@ -83,9 +79,9 @@ const cardStyle = {
     verticalAlign: 'top',
 };
 
-const CommentGrid = translate(({ ids, data, basePath, translate }) => (
+const CommentGrid = translate(({ ids, data, basePath, translate }) =>
     <div style={{ margin: '1em' }}>
-        {ids.map(id => (
+        {ids.map(id =>
             <Card key={id} style={cardStyle}>
                 <CardHeader
                     title={<TextField record={data[id]} source="author.name" />}
@@ -122,16 +118,16 @@ const CommentGrid = translate(({ ids, data, basePath, translate }) => (
                     />
                 </CardActions>
             </Card>
-        ))}
+        )}
     </div>
-));
+);
 
 CommentGrid.defaultProps = {
     data: {},
     ids: [],
 };
 
-const CommentMobileList = props => (
+const CommentMobileList = props =>
     <SimpleList
         primaryText={record => record.author.name}
         secondaryText={record => record.body}
@@ -140,10 +136,9 @@ const CommentMobileList = props => (
             new Date(record.created_at).toLocaleDateString()}
         leftAvatar={() => <Avatar icon={<PersonIcon />} />}
         {...props}
-    />
-);
+    />;
 
-export const CommentList = ({ ...props }) => (
+export const CommentList = ({ ...props }) =>
     <List
         {...props}
         perPage={6}
@@ -151,10 +146,9 @@ export const CommentList = ({ ...props }) => (
         pagination={<CommentPagination />}
     >
         <Responsive small={<CommentMobileList />} medium={<CommentGrid />} />
-    </List>
-);
+    </List>;
 
-export const CommentEdit = ({ ...props }) => (
+export const CommentEdit = ({ ...props }) =>
     <Edit {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
@@ -170,10 +164,9 @@ export const CommentEdit = ({ ...props }) => (
             <DateInput source="created_at" />
             <LongTextInput source="body" validate={minLength(10)} />
         </SimpleForm>
-    </Edit>
-);
+    </Edit>;
 
-export const CommentCreate = ({ ...props }) => (
+export const CommentCreate = ({ ...props }) =>
     <Create {...props}>
         <SimpleForm defaultValue={{ created_at: new Date() }}>
             <ReferenceInput
@@ -187,10 +180,9 @@ export const CommentCreate = ({ ...props }) => (
             <DateInput source="created_at" />
             <LongTextInput source="body" />
         </SimpleForm>
-    </Create>
-);
+    </Create>;
 
-export const CommentShow = ({ ...props }) => (
+export const CommentShow = ({ ...props }) =>
     <Show {...props}>
         <SimpleShowLayout>
             <TextField source="id" />
@@ -201,5 +193,4 @@ export const CommentShow = ({ ...props }) => (
             <DateField source="created_at" />
             <TextField source="body" />
         </SimpleShowLayout>
-    </Show>
-);
+    </Show>;

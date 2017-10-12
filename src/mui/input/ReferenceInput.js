@@ -7,9 +7,12 @@ import {
     crudGetOne as crudGetOneAction,
     crudGetMatching as crudGetMatchingAction,
 } from '../../actions/dataActions';
-import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
+import {
+    getAdminResourceData,
+    makeGetAdminPossibleReferences,
+} from '../../reducer';
+import { referenceSource } from '../../reducer/admin/references/possibleValues';
 
-const referenceSource = (resource, source) => `${resource}@${source}`;
 const noFilter = () => true;
 
 /**
@@ -169,11 +172,9 @@ export class ReferenceInput extends Component {
             return (
                 <Labeled
                     label={
-                        typeof label === 'undefined' ? (
-                            `resources.${resource}.fields.${source}`
-                        ) : (
-                            label
-                        )
+                        typeof label === 'undefined'
+                            ? `resources.${resource}.fields.${source}`
+                            : label
                     }
                     source={source}
                     resource={resource}
@@ -241,15 +242,18 @@ ReferenceInput.defaultProps = {
 
 function mapStateToProps(state, props) {
     const referenceId = props.input.value;
+    const getPossibleReferences = makeGetAdminPossibleReferences();
+
     return {
-        referenceRecord:
-            state.admin.resources[props.reference].data[referenceId],
-        matchingReferences: getPossibleReferences(
-            state,
-            referenceSource(props.resource, props.source),
-            props.reference,
-            [referenceId]
-        ),
+        referenceRecord: getAdminResourceData(state, {
+            resource: props.reference,
+            id: referenceId,
+        }),
+        matchingReferences: getPossibleReferences(state, {
+            reference: referenceSource(props.resource, props.source),
+            resource: props.reference,
+            ids: [referenceId],
+        }),
     };
 }
 

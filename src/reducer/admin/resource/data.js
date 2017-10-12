@@ -51,7 +51,7 @@ export const addRecordsFactory = getFetchedAt => (
 
 const addRecords = addRecordsFactory(getFetchedAt);
 
-const initialState = {};
+export const initialState = {};
 Object.defineProperty(initialState, 'fetchedAt', { value: {} }); // non enumerable by default
 
 export default resource => (
@@ -78,4 +78,12 @@ export default resource => (
     }
 };
 
-export const getRecord = (state, id) => state[id];
+export const get = (state, { id }) => state[id];
+export const getByIds = (state, { ids = [] }) =>
+    ids
+        .map(id => get(state, { id }))
+        .filter(r => typeof r !== 'undefined')
+        .reduce((prev, record) => {
+            prev[record.id] = record; // eslint-disable-line no-param-reassign
+            return prev;
+        }, {});

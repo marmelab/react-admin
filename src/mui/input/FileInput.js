@@ -133,10 +133,18 @@ export class FileInput extends Component {
         }
 
         if (this.props.multiple) {
-            return <p>{translate(labelMultiple)}</p>;
+            return (
+                <p>
+                    {translate(labelMultiple)}
+                </p>
+            );
         }
 
-        return <p>{translate(labelSingle)}</p>;
+        return (
+            <p>
+                {translate(labelSingle)}
+            </p>
+        );
     }
 
     render() {
@@ -171,9 +179,9 @@ export class FileInput extends Component {
                 >
                     {this.label()}
                 </Dropzone>
-                {children && (
+                {children &&
                     <div className="previews">
-                        {this.state.files.map((file, index) => (
+                        {this.state.files.map((file, index) =>
                             <FileInputPreview
                                 key={index}
                                 file={file}
@@ -186,9 +194,8 @@ export class FileInput extends Component {
                                     style: defaultStyle.preview,
                                 })}
                             </FileInputPreview>
-                        ))}
-                    </div>
-                )}
+                        )}
+                    </div>}
             </div>
         );
     }

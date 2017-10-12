@@ -4,12 +4,12 @@ import {
     REFRESH_VIEW,
 } from '../../actions';
 
-const defaultState = {
+export const initialState = {
     sidebarOpen: false,
     viewVersion: 0,
 };
 
-export default (previousState = defaultState, { type, payload }) => {
+export default (previousState = initialState, { type, payload }) => {
     switch (type) {
         case TOGGLE_SIDEBAR:
             return {
@@ -27,3 +27,6 @@ export default (previousState = defaultState, { type, payload }) => {
             return previousState;
     }
 };
+
+export const isSidebarOpen = state => state.sidebarOpen === true;
+export const getViewVersion = state => state.viewVersion;

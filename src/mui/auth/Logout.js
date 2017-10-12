@@ -9,14 +9,13 @@ import ExitIcon from 'material-ui/svg-icons/action/power-settings-new';
 import translate from '../../i18n/translate';
 import { userLogout as userLogoutAction } from '../../actions/authActions';
 
-const Logout = ({ translate, userLogout }) => (
+const Logout = ({ translate, userLogout }) =>
     <MenuItem
         className="logout"
         leftIcon={<ExitIcon />}
         primaryText={translate('aor.auth.logout')}
         onClick={userLogout}
-    />
-);
+    />;
 
 Logout.propTypes = {
     translate: PropTypes.func,
