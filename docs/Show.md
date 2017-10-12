@@ -43,10 +43,10 @@ import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField
 export const PostShow = (props) => (
     <Show {...props}>
         <SimpleShowLayout>
-            <TextField source="title" addLabel />
-            <TextField source="teaser" addLabel />
-            <RichTextField source="body" addLabel />
-            <DateField label="Publication date" source="created_at" addLabel />
+            <TextField source="title" />
+            <TextField source="teaser" />
+            <RichTextField source="body" />
+            <DateField label="Publication date" source="created_at" />
         </SimpleShowLayout>
     </Show>
 );
@@ -56,8 +56,6 @@ export const PostShow = (props) => (
 That's enough to display the post show view:
 
 ![post show view](./img/post-show.png)
-
-**Tip**: Field components, used primarily in datagrids, usually don't include labels. However, the `<SimpleShowLayout>` component inspects its children, and decorates them with a label if they set the `addLabel` prop.
 
 ### Page Title
 
@@ -130,9 +128,9 @@ The `<SimpleShowLayout>` renders its child components line by line (within `<div
 export const PostShow = (props) => (
     <Show {...props}>
         <SimpleShowLayout>
-            <TextField source="title" addLabel />
-            <RichTextField source="body" addLabel />
-            <NumberField source="nb_views" addLabel />
+            <TextField source="title" />
+            <RichTextField source="body" />
+            <NumberField source="nb_views" />
         </SimpleShowLayout>
     </Show>
 );
@@ -153,9 +151,9 @@ const styles = {
 export const PostShow = (props) => (
     <Show {...props}>
         <SimpleShowLayout style={styles.container}>
-            <TextField source="title" addLabel style={styles.item} />
-            <RichTextField source="body" addLabel style={styles.item} />
-            <NumberField source="nb_views" addLabel style={styles.item} />
+            <TextField source="title" style={styles.item} />
+            <RichTextField source="body" style={styles.item} />
+            <NumberField source="nb_views" style={styles.item} />
         </SimpleShowLayout>
     </Show>
 );
@@ -172,10 +170,10 @@ import React from 'react';
 import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'admin-on-rest';
 
 const knownFields = [
-    <TextField source="title" addLabel />,
-    <TextField source="teaser" addLabel />,
-    <RichTextField source="body" addLabel />,
-    <DateField label="Publication date" source="created_at" addLabel />,
+    <TextField source="title" />,
+    <TextField source="teaser" />,
+    <RichTextField source="body" />,
+    <DateField label="Publication date" source="created_at" />,
 ];
 
 const fetchFields = permissions =>

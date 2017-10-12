@@ -30,7 +30,7 @@ All field components accept the following attributes:
 * `sortable`: Should the list be sortable using `source` attribute? Defaults to `true`.
 * `elStyle`: A style object to customize the look and feel of the field element itself
 * `style`: A style object to customize the look and feel of the field container (e.g. the `<td>` in a datagrid).
-* `addLabel`: Defines the visibility of the label when the field is not in a datagrid. Default value is ```false```.
+* `addLabel`: Defines the visibility of the label when the field is not in a datagrid. Default value is ```true```.
 
 {% raw %}
 ```jsx
@@ -38,13 +38,13 @@ All field components accept the following attributes:
 ```
 {% endraw %}
 
-If you want to use a field component inside an `Edit` or `Show` view, include the `addLabel` prop to add a label on top of the field:
+**Tip**: You can use field components inside the `Edit` or `Show` views, too:
 
 ```jsx
 export const PostShow = ({ ...props }) => (
     <Show {...props}>
         <SimpleShowLayout>
-            <TextField source="title" addLabel />
+            <TextField source="title" />
         </SimpleShowLayout>
     </Show>
 );
@@ -305,7 +305,7 @@ See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/W
 ```jsx
 import { NumberField }  from 'admin-on-rest';
 
-<NumberField source="score" addLabel style={{}} />
+<NumberField source="score" style={{}} />
 ```
 
 ## `<SelectField>`
@@ -610,9 +610,9 @@ import { Show, SimpleShowLayout, TextField, ReferenceArrayField, Datagrid, ShowB
 export const PostShow = (props) => (
     <Show {...props}>
         <SimpleShowLayout>
-            <TextField source="id" addLabel />
-            <TextField source="title" addLabel />
-            <ReferenceArrayField label="Tags" addLabel reference="tags" source="tag_ids">
+            <TextField source="id" />
+            <TextField source="title" />
+            <ReferenceArrayField label="Tags" reference="tags" source="tag_ids">
                 <Datagrid>
                     <TextField source="id" />
                     <TextField source="name" />

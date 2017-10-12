@@ -326,12 +326,14 @@ export const PostEdit = (props) => (
 
 ```jsx
 // in src/posts.js
-import { Edit, LongTextInput, SimpleForm } from 'admin-on-rest';
+import { Edit, Labeled, LongTextInput, SimpleForm } from 'admin-on-rest';
+
 const titleStyle = { textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '20em' };
-const Title = ({ record }) => <span style={titleStyle}>{record.title}</span>;
-Title.defaultProps = {
-    addLabel: true,
-};
+const Title = ({ record, label }) => (
+    <Labeled label={label}>
+        <span style={titleStyle}>{record.title}</span>
+    </Labeled>
+);
 
 export const PostEdit = (props) => (
     <Edit {...props}>

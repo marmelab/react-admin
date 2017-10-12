@@ -277,8 +277,8 @@ export const PostShow = ({ ...props }) => (
                         { name: 'Lifestyle', id: 'lifestyle' },
                     ]}
                 />
-                <NumberField source="average_note" />
-                <BooleanField source="commentable" />
+                <NumberField source="average_note" style={{}} />
+                <BooleanField source="commentable" elStyle={{}} />
                 <TextField source="views" />
             </Tab>
             <Tab label="post.form.comments">
