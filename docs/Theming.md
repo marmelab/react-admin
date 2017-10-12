@@ -336,12 +336,14 @@ export default connect(mapStateToProps, {
 ```
 
 
-## Notification's
+## Notifications
 
-If you use your own layout (or custom login page), then you have access to the `Notification` component.
+If you use your own layout (or custom login page), then you probably use the `<Notification>` component.
 
-Here you can set the `autoHideDuration` prop (defaults to 4000, aka 4 seconds).
+You can override the notification duration by setting the `autoHideDuration` prop. It defaults to 4000, i.e. 4 seconds.
 
-Using the `autoHideDuration` you can set the delay after which the notification closes.
+```jsx
+<Notification autoHideDuration={5000} />
+```
 
-*TIP*: if you use the `redux` `showNotification` action, then you can define `autoHideDuration` per message as the third parameter to `showNotification` action.
+**Tip**: if you use the `showNotification` action, then you can define `autoHideDuration` per message as the third parameter of the `showNotification` action creator.
