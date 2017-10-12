@@ -128,6 +128,7 @@ export class Edit extends Component {
             resource,
             title,
             translate,
+            version,
         } = this.props;
 
         if (!children) return null;
@@ -164,19 +165,22 @@ export class Edit extends Component {
                             resource,
                         }}
                     />
-                    {data &&
+                    {data ? (
                         React.cloneElement(children, {
                             save: this.save,
                             resource,
                             basePath,
                             record: data,
                             translate,
+                            version,
                             redirect:
                                 typeof children.props.redirect === 'undefined'
                                     ? this.defaultRedirectRoute()
                                     : children.props.redirect,
-                        })}
-                    {!data && <CardContent>&nbsp;</CardContent>}
+                        })
+                    ) : (
+                        <CardContent>&nbsp;</CardContent>
+                    )}
                 </Card>
             </div>
         );

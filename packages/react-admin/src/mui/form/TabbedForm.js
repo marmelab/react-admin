@@ -49,10 +49,14 @@ export class TabbedForm extends Component {
             tabsWithErrors,
             toolbar,
             translate,
+            version,
         } = this.props;
 
         return (
-            <form className={classnames('tabbed-form', className)}>
+            <form
+                className={classnames('tabbed-form', className)}
+                key={version}
+            >
                 <Tabs value={this.state.value} onChange={this.handleChange}>
                     {Children.map(
                         children,
@@ -121,6 +125,7 @@ TabbedForm.propTypes = {
     toolbar: PropTypes.element,
     translate: PropTypes.func,
     validate: PropTypes.func,
+    version: PropTypes.number,
 };
 
 TabbedForm.defaultProps = {
