@@ -65,17 +65,17 @@ render(
                 remove={Delete}
                 icon={CommentIcon}
             />,
-            permissions
-                ? <Resource
-                      name="users"
-                      list={UserList}
-                      create={UserCreate}
-                      edit={UserEdit}
-                      remove={Delete}
-                      icon={UserIcon}
-                      show={UserShow}
-                  />
-                : null,
+            permissions ? (
+                <Resource
+                    name="users"
+                    list={UserList}
+                    create={UserCreate}
+                    edit={UserEdit}
+                    remove={Delete}
+                    icon={UserIcon}
+                    show={UserShow}
+                />
+            ) : null,
             <Resource name="tags" />,
         ]}
     </Admin>,

@@ -130,10 +130,7 @@ describe('<RadioButtonGroupInput />', () => {
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }) =>
-            <span>
-                {record.foobar}
-            </span>;
+        const Foobar = ({ record }) => <span>{record.foobar}</span>;
         const wrapper = shallow(
             <RadioButtonGroupInput
                 {...defaultProps}

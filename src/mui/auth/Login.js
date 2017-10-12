@@ -53,13 +53,14 @@ const renderInput = ({
     meta: { touched, error } = {},
     input: { ...inputProps },
     ...props
-}) =>
+}) => (
     <TextField
         errorText={touched && error}
         {...inputProps}
         {...props}
         fullWidth
-    />;
+    />
+);
 
 class Login extends Component {
     login = auth =>
@@ -115,11 +116,12 @@ class Login extends Component {
                                     primary
                                     disabled={isLoading}
                                     icon={
-                                        isLoading &&
-                                        <CircularProgress
-                                            size={25}
-                                            thickness={2}
-                                        />
+                                        isLoading && (
+                                            <CircularProgress
+                                                size={25}
+                                                thickness={2}
+                                            />
+                                        )
                                     }
                                     label={translate('aor.auth.sign_in')}
                                     fullWidth

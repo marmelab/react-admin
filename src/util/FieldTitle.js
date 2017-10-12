@@ -12,7 +12,7 @@ export const FieldTitle = ({
     label,
     isRequired,
     translate,
-}) =>
+}) => (
     <span>
         {typeof label !== 'undefined'
             ? translate(label, { _: label })
@@ -22,7 +22,8 @@ export const FieldTitle = ({
                 })
               : ''}
         {isRequired && ' *'}
-    </span>;
+    </span>
+);
 
 FieldTitle.propTypes = {
     isRequired: PropTypes.bool,

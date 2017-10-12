@@ -103,7 +103,10 @@ export default (apiUrl, httpClient = fetchJson) => {
                 return {
                     data: json,
                     total: parseInt(
-                        headers.get('x-total-count').split('/').pop(),
+                        headers
+                            .get('x-total-count')
+                            .split('/')
+                            .pop(),
                         10
                     ),
                 };

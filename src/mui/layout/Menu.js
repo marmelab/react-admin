@@ -29,12 +29,12 @@ const translatedResourceName = (resource, translate) =>
                 : inflection.humanize(inflection.pluralize(resource.name)),
     });
 
-const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) =>
+const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) => (
     <div style={styles.main}>
         {hasDashboard && <DashboardMenuItem onClick={onMenuTap} />}
         {resources
             .filter(r => r.list)
-            .map(resource =>
+            .map(resource => (
                 <MenuItemLink
                     key={resource.name}
                     to={`/${resource.name}`}
@@ -42,9 +42,10 @@ const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) =>
                     leftIcon={<resource.icon />}
                     onClick={onMenuTap}
                 />
-            )}
+            ))}
         {logout}
-    </div>;
+    </div>
+);
 
 Menu.propTypes = {
     hasDashboard: PropTypes.bool,

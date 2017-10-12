@@ -14,47 +14,53 @@ const CrudRoute = ({ resource, list, create, edit, show, remove, options }) => {
         hasDelete: !!remove,
     };
     const restrictPage = (component, route) => {
-        const RestrictedPage = routeProps =>
+        const RestrictedPage = routeProps => (
             <Restricted authParams={{ resource, route }} {...routeProps}>
                 {createElement(component, {
                     ...commonProps,
                     ...routeProps,
                 })}
-            </Restricted>;
+            </Restricted>
+        );
         return RestrictedPage;
     };
     return (
         <Switch>
-            {list &&
+            {list && (
                 <Route
                     exact
                     path={`/${resource}`}
                     render={restrictPage(list, 'list')}
-                />}
-            {create &&
+                />
+            )}
+            {create && (
                 <Route
                     exact
                     path={`/${resource}/create`}
                     render={restrictPage(create, 'create')}
-                />}
-            {edit &&
+                />
+            )}
+            {edit && (
                 <Route
                     exact
                     path={`/${resource}/:id`}
                     render={restrictPage(edit, 'edit')}
-                />}
-            {show &&
+                />
+            )}
+            {show && (
                 <Route
                     exact
                     path={`/${resource}/:id/show`}
                     render={restrictPage(show, 'show')}
-                />}
-            {remove &&
+                />
+            )}
+            {remove && (
                 <Route
                     exact
                     path={`/${resource}/:id/delete`}
                     render={restrictPage(remove, 'delete')}
-                />}
+                />
+            )}
         </Switch>
     );
 };

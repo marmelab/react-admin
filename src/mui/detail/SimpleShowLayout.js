@@ -9,35 +9,38 @@ export const SimpleShowLayout = ({
     record,
     resource,
     style = defaultStyle,
-}) =>
+}) => (
     <div style={style}>
-        {Children.map(children, field =>
+        {Children.map(children, field => (
             <div
                 key={field.props.source}
                 style={field.props.style}
                 className={`aor-field aor-field-${field.props.source}`}
             >
-                {field.props.addLabel
-                    ? <Labeled
-                          record={record}
-                          resource={resource}
-                          basePath={basePath}
-                          label={field.props.label}
-                          source={field.props.source}
-                          disabled={false}
-                      >
-                          {field}
-                      </Labeled>
-                    : typeof field.type === 'string'
-                      ? field
-                      : React.cloneElement(field, {
-                            record,
-                            resource,
-                            basePath,
-                        })}
+                {field.props.addLabel ? (
+                    <Labeled
+                        record={record}
+                        resource={resource}
+                        basePath={basePath}
+                        label={field.props.label}
+                        source={field.props.source}
+                        disabled={false}
+                    >
+                        {field}
+                    </Labeled>
+                ) : typeof field.type === 'string' ? (
+                    field
+                ) : (
+                    React.cloneElement(field, {
+                        record,
+                        resource,
+                        basePath,
+                    })
+                )}
             </div>
-        )}
-    </div>;
+        ))}
+    </div>
+);
 
 SimpleShowLayout.propTypes = {
     basePath: PropTypes.string,

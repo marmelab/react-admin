@@ -51,7 +51,10 @@ export class Edit extends Component {
 
     getBasePath() {
         const { location } = this.props;
-        return location.pathname.split('/').slice(0, -1).join('/');
+        return location.pathname
+            .split('/')
+            .slice(0, -1)
+            .join('/');
     }
 
     defaultRedirectRoute() {
@@ -101,9 +104,11 @@ export class Edit extends Component {
             id,
             data,
         });
-        const titleElement = data
-            ? <Title title={title} record={data} defaultTitle={defaultTitle} />
-            : '';
+        const titleElement = data ? (
+            <Title title={title} record={data} defaultTitle={defaultTitle} />
+        ) : (
+            ''
+        );
 
         return (
             <div className="edit-page">

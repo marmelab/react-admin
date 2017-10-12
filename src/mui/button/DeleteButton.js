@@ -11,7 +11,7 @@ const DeleteButton = ({
     label = 'aor.action.delete',
     record = {},
     translate,
-}) =>
+}) => (
     <FlatButton
         secondary
         label={label && translate(label)}
@@ -20,7 +20,8 @@ const DeleteButton = ({
             <Link to={`${linkToRecord(basePath, record.id)}/delete`} />
         }
         style={{ overflow: 'inherit' }}
-    />;
+    />
+);
 
 DeleteButton.propTypes = {
     basePath: PropTypes.string,

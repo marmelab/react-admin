@@ -27,14 +27,15 @@ import {
 
 export UserIcon from 'material-ui/svg-icons/social/people';
 
-const UserFilter = ({ ...props }) =>
+const UserFilter = ({ ...props }) => (
     <Filter {...props}>
         {permissions => [
             <TextInput label="user.list.search" source="q" alwaysOn />,
             <TextInput source="name" />,
             permissions === 'admin' ? <TextInput source="role" /> : null,
         ]}
-    </Filter>;
+    </Filter>
+);
 
 const titleFieldStyle = {
     maxWidth: '20em',
@@ -42,13 +43,13 @@ const titleFieldStyle = {
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
 };
-export const UserList = ({ ...props }) =>
+export const UserList = ({ ...props }) => (
     <List
         {...props}
         filters={<UserFilter />}
         sort={{ field: 'name', order: 'ASC' }}
     >
-        {permissions =>
+        {permissions => (
             <Responsive
                 small={
                     <SimpleList
@@ -66,70 +67,83 @@ export const UserList = ({ ...props }) =>
                         <ShowButton />
                     </Datagrid>
                 }
-            />}
-    </List>;
+            />
+        )}
+    </List>
+);
 
-const UserTitle = translate(({ record, translate }) =>
+const UserTitle = translate(({ record, translate }) => (
     <span>
         {record ? translate('user.edit.title', { title: record.name }) : ''}
     </span>
-);
+));
 
-const UserCreateToolbar = ({ permissions, ...props }) =>
+const UserCreateToolbar = ({ permissions, ...props }) => (
     <Toolbar {...props}>
         <SaveButton
             label="user.action.save_and_show"
             redirect="show"
             submitOnEnter={true}
         />
-        {permissions === 'admin' &&
+        {permissions === 'admin' && (
             <SaveButton
                 label="user.action.save_and_add"
                 redirect={false}
                 submitOnEnter={false}
                 raised={false}
-            />}
-    </Toolbar>;
+            />
+        )}
+    </Toolbar>
+);
 
-export const UserCreate = ({ ...props }) =>
+export const UserCreate = ({ ...props }) => (
     <Create {...props}>
-        {permissions =>
+        {permissions => (
             <SimpleForm
                 toolbar={<UserCreateToolbar permissions={permissions} />}
                 defaultValue={{ role: 'user' }}
             >
                 <TextInput source="name" validate={[required]} />
-                {permissions === 'admin' &&
-                    <TextInput source="role" validate={[required]} />}
-            </SimpleForm>}
-    </Create>;
+                {permissions === 'admin' && (
+                    <TextInput source="role" validate={[required]} />
+                )}
+            </SimpleForm>
+        )}
+    </Create>
+);
 
-export const UserEdit = ({ ...props }) =>
+export const UserEdit = ({ ...props }) => (
     <Edit title={<UserTitle />} {...props}>
-        {permissions =>
+        {permissions => (
             <TabbedForm defaultValue={{ role: 'user' }}>
                 <FormTab label="user.form.summary">
                     {permissions === 'admin' && <DisabledInput source="id" />}
                     <TextInput source="name" validate={required} />
                 </FormTab>
-                {permissions === 'admin' &&
+                {permissions === 'admin' && (
                     <FormTab label="user.form.security">
                         <TextInput source="role" validate={required} />
-                    </FormTab>}
-            </TabbedForm>}
-    </Edit>;
+                    </FormTab>
+                )}
+            </TabbedForm>
+        )}
+    </Edit>
+);
 
-export const UserShow = ({ ...props }) =>
+export const UserShow = ({ ...props }) => (
     <Show title={<UserTitle />} {...props}>
-        {permissions =>
+        {permissions => (
             <TabbedShowLayout>
                 <Tab label="user.form.summary">
                     <TextField source="id" />
                     <TextField source="name" />
                 </Tab>
-                {permissions === 'admin' &&
+                {permissions === 'admin' && (
                     <Tab label="user.form.security">
                         <TextField source="role" />
-                    </Tab>}
-            </TabbedShowLayout>}
-    </Show>;
+                    </Tab>
+                )}
+            </TabbedShowLayout>
+        )}
+    </Show>
+);

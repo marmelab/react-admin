@@ -29,20 +29,22 @@ const CreateButton = ({
     label = 'aor.action.create',
     width,
 }) =>
-    width === 1
-        ? <FloatingActionButton
-              style={styles.floating}
-              containerElement={<Link to={`${basePath}/create`} />}
-          >
-              <ContentAdd />
-          </FloatingActionButton>
-        : <FlatButton
-              primary
-              label={label && translate(label)}
-              icon={<ContentAdd />}
-              containerElement={<Link to={`${basePath}/create`} />}
-              style={styles.flat}
-          />;
+    width === 1 ? (
+        <FloatingActionButton
+            style={styles.floating}
+            containerElement={<Link to={`${basePath}/create`} />}
+        >
+            <ContentAdd />
+        </FloatingActionButton>
+    ) : (
+        <FlatButton
+            primary
+            label={label && translate(label)}
+            icon={<ContentAdd />}
+            containerElement={<Link to={`${basePath}/create`} />}
+            style={styles.flat}
+        />
+    );
 
 CreateButton.propTypes = {
     basePath: PropTypes.string,

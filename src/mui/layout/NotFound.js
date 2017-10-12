@@ -44,17 +44,13 @@ function goBack() {
     history.go(-1);
 }
 
-const NotFound = ({ width, translate }) =>
+const NotFound = ({ width, translate }) => (
     <div style={width === 1 ? styles.containerMobile : styles.container}>
         {width === 1 && <AppBarMobile />}
         <div style={styles.message}>
             <HotTub style={styles.icon} />
-            <h1>
-                {translate('aor.page.not_found')}
-            </h1>
-            <div>
-                {translate('aor.message.not_found')}.
-            </div>
+            <h1>{translate('aor.page.not_found')}</h1>
+            <div>{translate('aor.message.not_found')}.</div>
         </div>
         <div style={styles.toolbar}>
             <RaisedButton
@@ -63,7 +59,8 @@ const NotFound = ({ width, translate }) =>
                 onClick={goBack}
             />
         </div>
-    </div>;
+    </div>
+);
 
 NotFound.propTypes = {
     width: PropTypes.number,

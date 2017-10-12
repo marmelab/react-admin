@@ -13,14 +13,15 @@ const EditButton = ({
     label = 'aor.action.edit',
     record = {},
     translate,
-}) =>
+}) => (
     <FlatButton
         primary
         label={label && translate(label)}
         icon={<ContentCreate />}
         containerElement={<Link to={linkToRecord(basePath, record.id)} />}
         style={{ overflow: 'inherit' }}
-    />;
+    />
+);
 
 EditButton.propTypes = {
     basePath: PropTypes.string,

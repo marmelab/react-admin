@@ -125,14 +125,15 @@ class Layout extends Component {
                             </Sidebar>
                         </div>
                         <Notification />
-                        {isLoading &&
+                        {isLoading && (
                             <CircularProgress
                                 className="app-loader"
                                 color="#fff"
                                 size={width === 1 ? 20 : 30}
                                 thickness={2}
                                 style={styles.loader}
-                            />}
+                            />
+                        )}
                     </div>
                 </div>
             </MuiThemeProvider>

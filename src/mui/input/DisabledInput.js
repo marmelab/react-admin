@@ -9,7 +9,7 @@ const DisabledInput = ({
     resource,
     source,
     elStyle,
-}) =>
+}) => (
     <TextField
         value={value}
         floatingLabelText={
@@ -17,7 +17,8 @@ const DisabledInput = ({
         }
         style={elStyle}
         disabled
-    />;
+    />
+);
 
 DisabledInput.propTypes = {
     label: PropTypes.string,
