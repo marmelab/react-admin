@@ -25,7 +25,7 @@ export const messages = {
             fields: {
                 body: 'Contenu',
                 created_at: 'Créé le',
-                post: {id: 'Article'},
+                post: {id: 'Article' },
                 author: {
                     name: 'Auteur',
                 },
