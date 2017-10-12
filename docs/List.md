@@ -262,7 +262,7 @@ It renders as many columns as it receives `<Field>` children.
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest';
+import { List, Datagrid, TextField, EditButton } from 'admin-on-rest';
 
 export const PostList = (props) => (
     <List {...props}>
