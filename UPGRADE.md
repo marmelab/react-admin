@@ -1,5 +1,25 @@
 # Upgrade to 2.0
 
+## Admin-on-rest Renamed to React-Admin
+
+The main package name has changed, so you must update your dependencies:
+
+```sh
+npm uninstall -S admin-on-rest
+npm install -S react-admin
+```
+
+As well as all your files depending on the 'admin-on-rest' package:
+
+```js
+// before
+import { BooleanField, NumberField, Show } from 'admin-on-rest'; 
+// after
+import { BooleanField, NumberField, Show } from 'react-admin'; 
+```
+
+A global search and replace on the string "admin-on-rest" should do the trick in no time.
+
 ## Default (English) Messages Moved To Standalone Package
 
 The English messages are no longer bundled with the core package. To display the interface in English, you'll need to install the `ra-language-english` package.
