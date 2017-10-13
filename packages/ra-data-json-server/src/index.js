@@ -12,7 +12,7 @@ import {
  } from 'react-admin';
 
 /**
- * Maps admin-on-rest queries to a json-server powered REST API
+ * Maps react-admin queries to a json-server powered REST API
  *
  * @see https://github.com/typicode/json-server
  * @example

@@ -11,7 +11,7 @@ import {
 } from 'react-admin';
 
 /**
- * Maps admin-on-rest queries to a simple REST API
+ * Maps react-admin queries to a simple REST API
  *
  * The REST dialect is similar to the one of FakeRest
  * @see https://github.com/marmelab/FakeRest

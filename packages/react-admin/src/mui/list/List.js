@@ -311,7 +311,7 @@ List.propTypes = {
         order: PropTypes.string,
     }),
     children: PropTypes.node,
-    // the props managed by admin-on-rest
+    // the props managed by react-admin
     authClient: PropTypes.func,
     changeListParams: PropTypes.func.isRequired,
     crudGetList: PropTypes.func.isRequired,

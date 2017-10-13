@@ -5,7 +5,7 @@ title: "REST Clients"
 
 # REST Clients
 
-Admin-on-rest can communicate with any REST server, regardless of the REST dialect it uses. Whether it's [JSON API](http://jsonapi.org/), [HAL](http://stateless.co/hal_specification.html), [OData](http://www.odata.org/) or a custom dialect, the only thing admin-on-rest needs is a REST client function. This is the place to translate REST requests to HTTP requests, and HTTP responses to REST responses.
+Admin-on-rest can communicate with any REST server, regardless of the REST dialect it uses. Whether it's [JSON API](http://jsonapi.org/), [HAL](http://stateless.co/hal_specification.html), [OData](http://www.odata.org/) or a custom dialect, the only thing react-admin needs is a REST client function. This is the place to translate REST requests to HTTP requests, and HTTP responses to REST responses.
 
 ![REST client architecture](./img/rest-client.png)
 
@@ -27,7 +27,7 @@ The `restClient` parameter of the `<Admin>` component, must be a function with t
 const restClient = (type, resource, params) => new Promise();
 ```
 
-You can find a REST client example implementation in [`src/rest/simple.js`](https://github.com/marmelab/admin-on-rest/blob/master/src/rest/simple.js);
+You can find a REST client example implementation in [`src/rest/simple.js`](https://github.com/marmelab/react-admin/blob/master/src/rest/simple.js);
 
 The `restClient` is also the ideal place to add custom HTTP headers, authentication, etc.
 
@@ -66,7 +66,7 @@ This REST client fits APIs using simple GET parameters for filters and sorting. 
 | `GET_MANY`           | `GET http://my.api.url/posts?filter={ids:[123,456,789]}`
 | `GET_MANY_REFERENCE` | `GET http://my.api.url/posts?filter={author_id:345}`
 
-**Note**: The simple REST client expects the API to include a `Content-Range` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows admin-on-rest to know how many pages of resources there are in total, and build the pagination controls.
+**Note**: The simple REST client expects the API to include a `Content-Range` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
 
 ```
 Content-Range: posts 0-24/319
@@ -84,7 +84,7 @@ Here is how to use it in your admin:
 // in src/App.js
 import React from 'react';
 
-import { simpleRestClient, Admin, Resource } from 'admin-on-rest';
+import { simpleRestClient, Admin, Resource } from 'react-admin';
 
 import { PostList } from './posts';
 
@@ -111,7 +111,7 @@ This REST client fits APIs powered by [JSON Server](https://github.com/typicode/
 | `GET_MANY`           | `GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789`
 | `GET_MANY_REFERENCE` | `GET http://my.api.url/posts?author_id=345`
 
-**Note**: The jsonServer REST client expects the API to include a `X-Total-Count` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows admin-on-rest to know how many pages of resources there are in total, and build the pagination controls.
+**Note**: The jsonServer REST client expects the API to include a `X-Total-Count` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
 
 ```
 X-Total-Count: 319
@@ -129,7 +129,7 @@ Here is how to use it in your admin:
 // in src/App.js
 import React from 'react';
 
-import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
+import { jsonServerRestClient, Admin, Resource } from 'react-admin';
 
 import { PostList } from './posts';
 
@@ -144,12 +144,12 @@ export default App;
 
 ### Adding Custom Headers
 
-Both the `simpleRestClient` and the `jsonServerRestClient` functions accept an http client function as second argument. By default, they use admin-on-rest's `fetchUtils.fetchJson()` as http client. It's similar to HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
+Both the `simpleRestClient` and the `jsonServerRestClient` functions accept an http client function as second argument. By default, they use react-admin's `fetchUtils.fetchJson()` as http client. It's similar to HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
 
 That means that if you need to add custom headers to your requests, you just need to *wrap* the `fetchJson()` call inside your own function:
 
 ```jsx
-import { simpleRestClient, fetchUtils, Admin, Resource } from 'admin-on-rest';
+import { simpleRestClient, fetchUtils, Admin, Resource } from 'react-admin';
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
@@ -400,4 +400,4 @@ When the REST API returns an error, the rest client should `throw` an `Error` ob
 
 ### Example implementation
 
-Check the code from the [simple REST client](https://github.com/marmelab/admin-on-rest/blob/master/src/rest/simple.js): it's a good starting point for a custom rest client implementation.
+Check the code from the [simple REST client](https://github.com/marmelab/react-admin/blob/master/src/rest/simple.js): it's a good starting point for a custom rest client implementation.

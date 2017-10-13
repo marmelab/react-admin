@@ -2,15 +2,15 @@
 layout: default
 title: "Documentation"
 ---
-# admin-on-rest
+# react-admin
 
 A frontend Framework for building admin applications running in the browser on top of REST services, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Open sourced and maintained by [marmelab](https://marmelab.com/).
 
 <div style="text-align: center" markdown="1">
-<i class="octicon octicon-device-desktop"></i> [Demo](https://marmelab.com/admin-on-rest-demo/) -
-<i class="octicon octicon-mark-github"></i> [Source](https://github.com/marmelab/admin-on-rest) -
-<i class="octicon octicon-megaphone"></i> [Releases](https://github.com/marmelab/admin-on-rest/releases) -
-<i class="octicon octicon-comment-discussion"></i> [Support](http://stackoverflow.com/questions/tagged/admin-on-rest)
+<i class="octicon octicon-device-desktop"></i> [Demo](https://marmelab.com/react-admin-demo/) -
+<i class="octicon octicon-mark-github"></i> [Source](https://github.com/marmelab/react-admin) -
+<i class="octicon octicon-megaphone"></i> [Releases](https://github.com/marmelab/react-admin/releases) -
+<i class="octicon octicon-comment-discussion"></i> [Support](http://stackoverflow.com/questions/tagged/react-admin)
 </div>
 
 <iframe src="https://player.vimeo.com/video/205118063?byline=0&portrait=0" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="display:block;margin:0 auto"></iframe>
@@ -46,12 +46,12 @@ Admin-on-rest is available from npm. You can install it (and its required depend
 using:
 
 ```sh
-npm install --save-dev admin-on-rest
+npm install --save-dev react-admin
 ```
 
 ## Usage
 
-Read the [Tutorial](./Tutorial.md) for a 15 minutes introduction. After that, head to the [Documentation](./index.md), or checkout the [source code of the demo](https://github.com/marmelab/admin-on-rest-demo) for an example usage.
+Read the [Tutorial](./Tutorial.md) for a 15 minutes introduction. After that, head to the [Documentation](./index.md), or checkout the [source code of the demo](https://github.com/marmelab/react-admin-demo) for an example usage.
 
 ## At a Glance
 
@@ -59,7 +59,7 @@ Read the [Tutorial](./Tutorial.md) for a 15 minutes introduction. After that, he
 // in app.js
 import React from 'react';
 import { render } from 'react-dom';
-import { simpleRestClient, Admin, Resource } from 'admin-on-rest';
+import { simpleRestClient, Admin, Resource } from 'react-admin';
 
 import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
 
@@ -71,13 +71,13 @@ render(
 );
 ```
 
-The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use Material UI and custom components from admin-on-rest:
+The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use Material UI and custom components from react-admin:
 
 {% raw %}
 ```jsx
 // in posts.js
 import React from 'react';
-import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'admin-on-rest';
+import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'react-admin';
 export PostIcon from 'material-ui/svg-icons/action/book';
 
 export const PostList = (props) => (
@@ -137,11 +137,11 @@ See the [REST clients documentation](./RestClients.md) for details.
 
 ## Batteries Included But Removable
 
-Admin-on-rest is designed as a library of loosely coupled React components built on top of [material-ui](http://www.material-ui.com/#/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of admin-on-rest with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
+Admin-on-rest is designed as a library of loosely coupled React components built on top of [material-ui](http://www.material-ui.com/#/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
 
 ## Contributing
 
-Pull requests are welcome on the [GitHub repository](https://github.com/marmelab/admin-on-rest). Try to follow the coding style of the existing files, and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
+Pull requests are welcome on the [GitHub repository](https://github.com/marmelab/react-admin). Try to follow the coding style of the existing files, and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
 
 You can run the example app by calling:
 
@@ -165,18 +165,18 @@ You can run the unit tests by calling
 make test
 ```
 
-If you are using admin-on-rest as a dependency, and if you want to try and hack it, here is the advised process:
+If you are using react-admin as a dependency, and if you want to try and hack it, here is the advised process:
 
 ```sh
 # in myapp
-# install admin-on-rest from GitHub in another directory
+# install react-admin from GitHub in another directory
 $ cd ..
-$ git clone git@github.com:marmelab/admin-on-rest.git && cd admin-on-rest && make install
-# replace your node_modules/admin-on-rest by a symbolic link to the github checkout
+$ git clone git@github.com:marmelab/react-admin.git && cd react-admin && make install
+# replace your node_modules/react-admin by a symbolic link to the github checkout
 $ cd ../myapp
-$ npm link ../admin-on-rest
+$ npm link ../react-admin
 # go back to the checkout, and replace the version of react by the one in your app
-$ cd ../admin-on-rest
+$ cd ../react-admin
 $ npm link ../myapp/node_modules/react
 $ make watch
 # in another terminal, go back to your app, and start it as usual
@@ -186,7 +186,7 @@ $ npm run
 
 ## License
 
-Admin-on-rest is licensed under the [MIT Licence](https://github.com/marmelab/admin-on-rest/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
+Admin-on-rest is licensed under the [MIT Licence](https://github.com/marmelab/react-admin/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
 
 ## Donate
 

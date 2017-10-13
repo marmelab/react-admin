@@ -5,7 +5,7 @@ title: "Translation"
 
 # Translation
 
-The admin-on-rest interface uses English as the default language. But it also supports any other language, thanks to the [polyglot.js](http://airbnb.io/polyglot.js/) library.
+The react-admin interface uses English as the default language. But it also supports any other language, thanks to the [polyglot.js](http://airbnb.io/polyglot.js/) library.
 
 ## Changing Locale
 
@@ -18,7 +18,7 @@ Admin-on-rest only ships the English locale; if you want to use another locale, 
 
 ```jsx
 import React from 'react';
-import { Admin, Resource, resolveBrowserLocale } from 'admin-on-rest';
+import { Admin, Resource, resolveBrowserLocale } from 'react-admin';
 import frenchMessages from 'aor-language-french';
 
 const messages = {
@@ -63,7 +63,7 @@ You can find translation packages for the following languages:
 - Ukrainian (`uk`): [vitivs/aor-language-ukrainian](https://github.com/vitivs/aor-language-ukrainian)
 - Vietnamese (`vi`): [kimkha/aor-language-vietnamese](https://github.com/kimkha/aor-language-vietnamese)
 
-If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/admin-on-rest/blob/master/docs/Translation.md) with a link to your package.
+If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/react-admin/blob/master/docs/Translation.md) with a link to your package.
 
 ## Changing Locale At Runtime
 
@@ -71,7 +71,7 @@ If you want to offer the ability to change locale at runtime, you must provide t
 
 ```jsx
 import React from 'react';
-import { Admin, Resource, englishMessages } from 'admin-on-rest';
+import { Admin, Resource, englishMessages } from 'react-admin';
 import frenchMessages from 'aor-language-french';
 
 const messages = {
@@ -94,7 +94,7 @@ Then, dispatch the `CHANGE_LOCALE` action, by using the `changeLocale` action cr
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
-import { changeLocale as changeLocaleAction } from 'admin-on-rest';
+import { changeLocale as changeLocaleAction } from 'react-admin';
 
 class LocaleSwitcher extends Component {
     switchToFrench = () => this.changeLocale('fr');
@@ -121,7 +121,7 @@ Admin-on-rest provides a helper function named `resolveBrowserLocale()`, which h
 
 ```jsx
 import React from 'react';
-import { Admin, Resource, englishMessages, resolveBrowserLocale } from 'admin-on-rest';
+import { Admin, Resource, englishMessages, resolveBrowserLocale } from 'react-admin';
 import frenchMessages from 'aor-language-french';
 
 const messages = {
@@ -177,13 +177,13 @@ The `message` value should be a dictionary with one entry per language supported
 
 All core translations are in the `aor` namespace, in order to prevent collisions with your own custom translations. The root key used at runtime is determined by the value of the `locale` prop.
 
-The default messages are available [here](https://github.com/marmelab/admin-on-rest/blob/master/src/i18n/messages.js).
+The default messages are available [here](https://github.com/marmelab/react-admin/blob/master/src/i18n/messages.js).
 
 ## Translating Resource and Field Names
 
 By default, Admin-on-rest uses resource names ("post", "comment", etc) and field names ("title", "first_name", etc) everywhere in the interface. It simply "humanizes" the technical identifiers to make them look better (e.g. "first_name" becomes "First name").
 
-However, before humanizing names, admin-on-rest checks the `messages` dictionary for a possible translation, with the following keys:
+However, before humanizing names, react-admin checks the `messages` dictionary for a possible translation, with the following keys:
 
 - `${locale}.resources.${resourceName}.name` for resource names (used for the menu and page titles)
 - `${locale}.resources.${resourceName}.fields.${fieldName}` for field names (used for datagrid header and form input labels)
@@ -226,7 +226,7 @@ When translating an admin, interface messages (e.g. "List", "Page", etc.) usuall
 
 ```jsx
 // interface translations
-import { englishMessages } from 'admin-on-rest';
+import { englishMessages } from 'react-admin';
 import frenchMessages from 'aor-language-french';
 
 // domain translations
@@ -275,12 +275,12 @@ const messages = {
 };
 ```
 
-However, using the context makes components harder to test. That's why admin-on-rest provides a `translate` Higher-Order Component, which simply passes the `translate` function from context to props:
+However, using the context makes components harder to test. That's why react-admin provides a `translate` Higher-Order Component, which simply passes the `translate` function from context to props:
 
 ```jsx
 // in src/MyHelloButton.js
 import React from 'react';
-import { translate } from 'admin-on-rest';
+import { translate } from 'react-admin';
 
 const MyHelloButton = ({ translate }) => (
     <button>{translate('myroot.hello.world')}</button>
@@ -307,7 +307,7 @@ export default translate(MyHelloButton);
 
 ## Using Specific Polyglot Features
 
-Polyglot.js is a fantastic library: in addition to being small, fully maintained, and totally framework agnostic, it provides some nice features such as interpolation and pluralization, that you can use in admin-on-rest.
+Polyglot.js is a fantastic library: in addition to being small, fully maintained, and totally framework agnostic, it provides some nice features such as interpolation and pluralization, that you can use in react-admin.
 
 ```jsx
 const messages = {

@@ -10,7 +10,7 @@ A `Field` component displays a given property of a REST resource. Such component
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest';
+import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -78,7 +78,7 @@ Then you can display the author first name as follows:
 Displays a boolean value as a check.
 
 ```jsx
-import { BooleanField } from 'admin-on-rest';
+import { BooleanField } from 'react-admin';
 
 <BooleanField source="commentable" />
 ```
@@ -90,7 +90,7 @@ import { BooleanField } from 'admin-on-rest';
 Displays a value inside a ["Chip"](http://www.material-ui.com/#/components/chip), which is Material UI's term for a label.
 
 ```jsx
-import { ChipField } from 'admin-on-rest';
+import { ChipField } from 'react-admin';
 
 <ChipField source="category" />
 ```
@@ -100,7 +100,7 @@ import { ChipField } from 'admin-on-rest';
 This field type is especially useful for one to many relationships, e.g. to display a list of books for a given author:
 
 ```jsx
-import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest';
+import { ChipField, SingleFieldList, ReferenceManyField } from 'react-admin';
 
 <ReferenceManyField reference="books" target="author_id">
     <SingleFieldList>
@@ -114,7 +114,7 @@ import { ChipField, SingleFieldList, ReferenceManyField } from 'admin-on-rest';
 Displays a date or datetime using the browser locale (thanks to `Date.toLocaleDateString()` and `Date.toLocaleString()`).
 
 ```jsx
-import { DateField } from 'admin-on-rest';
+import { DateField } from 'react-admin';
 
 <DateField source="publication_date" />
 ```
@@ -154,7 +154,7 @@ See [Intl.DateTimeformat documentation](https://developer.mozilla.org/fr/docs/We
 `<EmailField>` displays an email as a `<a href="mailto:" />` link.
 
 ```jsx
-import { EmailField } from 'admin-on-rest';
+import { EmailField } from 'react-admin';
 
 <EmailField source="personal_email" />
 ```
@@ -164,7 +164,7 @@ import { EmailField } from 'admin-on-rest';
 If you need a special function to render a field, `<FunctionField>` is the perfect match. It passes the `record` to a `render` function supplied by the developer. For instance, to display the full name of a `user` record based on `first_name` and `last_name` properties:
 
 ```jsx
-import { FunctionField } from 'admin-on-rest'
+import { FunctionField } from 'react-admin'
 
 <FunctionField label="Name" render={record => `${record.first_name} ${record.last_name}`} />
 ```
@@ -176,12 +176,12 @@ import { FunctionField } from 'admin-on-rest'
 If you need to display an image provided by your API, you can use the `<ImageField />` component:
 
 ```jsx
-import { ImageField } from 'admin-on-rest';
+import { ImageField } from 'react-admin';
 
 <ImageField source="url" title="title" />
 ```
 
-This field is also generally used within an [<ImageInput />](http://marmelab.com/admin-on-rest/Inputs.md#imageinput) component to display preview.
+This field is also generally used within an [<ImageInput />](http://marmelab.com/react-admin/Inputs.md#imageinput) component to display preview.
 
 The optional `title` prop points to the picture title property, used for both `alt` and `title` attributes. It can either be an hard-written string, or a path within your JSON object:
 
@@ -217,12 +217,12 @@ If the record actually contains an array of images in its property defined by th
 If you need to display a file provided by your API, you can use the `<FileField />` component:
 
 ```jsx
-import { FileField } from 'admin-on-rest';
+import { FileField } from 'react-admin';
 
 <FileField source="url" title="title" />
 ```
 
-This field is also generally used within an [<FileInput />](http://marmelab.com/admin-on-rest/Inputs.md#fileinput) component to display preview.
+This field is also generally used within an [<FileInput />](http://marmelab.com/react-admin/Inputs.md#fileinput) component to display preview.
 
 The optional `title` prop points to the file title property, used for `title` attributes. It can either be an hard-written string, or a path within your JSON object:
 
@@ -268,7 +268,7 @@ If Intl is not available, it outputs number as is (and ignores the `locales` and
 
 {% raw %}
 ```jsx
-import { NumberField }  from 'admin-on-rest';
+import { NumberField }  from 'react-admin';
 
 <NumberField source="score" />
 // renders the record { id: 1234, score: 567 } as
@@ -303,7 +303,7 @@ See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/W
 **Tip**: When used in a `Show` view, the right alignment may look weird. Disable it by resetting the `style` attribute:
 
 ```jsx
-import { NumberField }  from 'admin-on-rest';
+import { NumberField }  from 'react-admin';
 
 <NumberField source="score" style={{}} />
 ```
@@ -315,7 +315,7 @@ When you need to display an enumerated field, `<SelectField>` maps the value to 
 For instance, if the `gender` field can take values "M" and "F", here is how to display it as "Male" or "Female":
 
 ```jsx
-import { SelectField } from 'admin-on-rest';
+import { SelectField } from 'react-admin';
 
 <SelectField source="gender" choices={[
    { id: 'M', name: 'Male' },
@@ -387,7 +387,7 @@ For instance, here is how to fetch the `post` related to `comment` records, and 
 
 ```jsx
 import React from 'react';
-import { List, Datagrid, ReferenceField, TextField } from 'admin-on-rest';
+import { List, Datagrid, ReferenceField, TextField } from 'react-admin';
 
 export const CommentList = (props) => (
     <List {...props}>
@@ -407,7 +407,7 @@ With this configuration, `<ReferenceField>` wraps the comment title in a link to
 
 `<ReferenceField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. Also, you can use any `Field` component as child.
 
-**Note**: You **must** add a `<Resource>` for the reference resource - admin-on-rest needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
+**Note**: You **must** add a `<Resource>` for the reference resource - react-admin needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
 
 ```jsx
 <Admin restClient={myRestClient}>
@@ -455,7 +455,7 @@ You can also prevent `<ReferenceField>` from adding link to children by setting 
 ]
 ```
 
-Then admin-on-rest renders the `<CommentList>` with a loader for the `<ReferenceField>`, fetches the API for the related posts in one call (`GET http://path.to.my.api/posts?ids=[789,735]`), and re-renders the list once the data arrives. This accelerates the rendering, and minimizes network load.
+Then react-admin renders the `<CommentList>` with a loader for the `<ReferenceField>`, fetches the API for the related posts in one call (`GET http://path.to.my.api/posts?ids=[789,735]`), and re-renders the list once the data arrives. This accelerates the rendering, and minimizes network load.
 
 ## `<ReferenceManyField>`
 
@@ -465,7 +465,7 @@ For instance, here is how to fetch the `comments` related to a `post` record by 
 
 ```jsx
 import React from 'react';
-import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'admin-on-rest';
+import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -487,13 +487,13 @@ export const PostList = (props) => (
 
 `<ReferenceManyField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record.
 
-**Note**: You **must** add a `<Resource>` for the reference resource - admin-on-rest needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
+**Note**: You **must** add a `<Resource>` for the reference resource - react-admin needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
 
 You can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside another `<Datagrid>`! This is useful if you want to display a read-only list of related records. For instance, if you want to show the `comments` related to a `post` in the post's `<Edit>` view:
 
 ```jsx
 import React from 'react';
-import { Edit, Datagrid, SimpleForm, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'admin-on-rest';
+import { Edit, Datagrid, SimpleForm, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'react-admin';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -514,7 +514,7 @@ export const PostEdit = (props) => (
 
 ![ReferenceManyFieldDatagrid](./img/reference-many-field-datagrid.png)
 
-By default, admin-on-rest restricts the possible values to 25. You can change this limit by setting the `perPage` prop.
+By default, react-admin restricts the possible values to 25. You can change this limit by setting the `perPage` prop.
 
 ```jsx
 <ReferenceManyField perPage={10} reference="comments" target="post_id">
@@ -572,7 +572,7 @@ Here is how to fetch the list of tags for each post in a `PostList`, and display
 
 ```jsx
 import React from 'react';
-import { List, Datagrid, ChipField, ReferenceArrayField, SingleFieldList, TextField } from 'admin-on-rest';
+import { List, Datagrid, ChipField, ReferenceArrayField, SingleFieldList, TextField } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -590,7 +590,7 @@ export const PostList = (props) => (
 );
 ```
 
-**Note**: You **must** add a `<Resource>` component for the reference resource to your `<Admin>` component, because admin-on-rest needs it to fetch the reference data. You can omit the `list` prop in this Resource if you don't want to show an entry for it in the sidebar menu.
+**Note**: You **must** add a `<Resource>` component for the reference resource to your `<Admin>` component, because react-admin needs it to fetch the reference data. You can omit the `list` prop in this Resource if you don't want to show an entry for it in the sidebar menu.
 
 ```jsx
 export const App = () => (
@@ -605,7 +605,7 @@ In an Edit of Show view, you can combine `<ReferenceArrayField>` with `<Datagrid
 
 ```jsx
 import React from 'react';
-import { Show, SimpleShowLayout, TextField, ReferenceArrayField, Datagrid, ShowButton } from 'admin-on-rest';
+import { Show, SimpleShowLayout, TextField, ReferenceArrayField, Datagrid, ShowButton } from 'react-admin';
 
 export const PostShow = (props) => (
     <Show {...props}>
@@ -630,7 +630,7 @@ export const PostShow = (props) => (
 This component displays some HTML content. The content is "rich" (i.e. unescaped) by default.
 
 ```jsx
-import { RichTextField } from 'admin-on-rest';
+import { RichTextField } from 'react-admin';
 
 <RichTextField source="body" />
 ```
@@ -640,7 +640,7 @@ import { RichTextField } from 'admin-on-rest';
 The `stripTags` attribute (`false` by default) allows you to remove any HTML markup, preventing some display glitches (which is especially useful in list views).
 
 ```jsx
-import { RichTextField } from 'admin-on-rest';
+import { RichTextField } from 'react-admin';
 
 <RichTextField source="body" stripTags />
 ```
@@ -650,7 +650,7 @@ import { RichTextField } from 'admin-on-rest';
 The most simple as all fields, `<TextField>` simply displays the record property as plain text.
 
 ```jsx
-import { TextField } from 'admin-on-rest';
+import { TextField } from 'react-admin';
 
 <TextField label="Author Name" source="name" />
 ```
@@ -660,7 +660,7 @@ import { TextField } from 'admin-on-rest';
 `<UrlField>` displays an url in an `< a href="">` tag.
 
 ```jsx
-import { UrlField } from 'admin-on-rest';
+import { UrlField } from 'react-admin';
 
 <UrlField source="site_url" />
 ```
@@ -716,7 +716,7 @@ export const ProductList = (props) => (
 
 If you don't find what you need in the list above, it's very easy to write your own Field component. It must be a regular React component, accepting not only a `source` attribute, but also a `record` attribute. Admin-on-rest will inject the `record` based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
 
-For instance, here is an equivalent of admin-on-rest's `<TextField>` component:
+For instance, here is an equivalent of react-admin's `<TextField>` component:
 
 ```jsx
 import React from 'react';
@@ -733,7 +733,7 @@ TextField.propTypes = {
 export default TextField;
 ```
 
-**Tip**: The `label` attribute isn't used in the `render()` method, but admin-on-rest uses it to display the table header.
+**Tip**: The `label` attribute isn't used in the `render()` method, but react-admin uses it to display the table header.
 
 **Tip**: If you want to support deep field sources (e.g. source values like `author.name`), use `lodash.get` to replace the simple object lookup:
 
@@ -756,7 +756,7 @@ It's as easy as writing:
 
 ```jsx
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest';
+import { List, Datagrid, TextField } from 'react-admin';
 
 const FullNameField = ({ record = {} }) => <span>{record.firstName} {record.lastName}</span>;
 FullNameField.defaultProps = { label: 'Name' };

@@ -1,4 +1,4 @@
-name: admin-on-rest documentation
+name: react-admin documentation
 markdown: kramdown
 kramdown:
   input: GFM

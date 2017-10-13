@@ -24,7 +24,7 @@ Here is the minimal code necessary to display a view to show a post:
 ```jsx
 // in src/App.js
 import React from 'react';
-import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
+import { jsonServerRestClient, Admin, Resource } from 'react-admin';
 
 import { PostCreate, PostEdit, PostShow } from './posts';
 
@@ -38,7 +38,7 @@ export default App;
 
 // in src/posts.js
 import React from 'react';
-import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'admin-on-rest';
+import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'react-admin';
 
 export const PostShow = (props) => (
     <Show {...props}>
@@ -92,7 +92,7 @@ You can replace the list of default actions by your own element using the `actio
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import { ListButton, EditButton, DeleteButton } from 'admin-on-rest';
+import { ListButton, EditButton, DeleteButton } from 'react-admin';
 
 const cardActionStyle = {
     zIndex: 2,
@@ -167,7 +167,7 @@ For instance, getting the fields from an API might look like:
 
 ```js
 import React from 'react';
-import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'admin-on-rest';
+import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'react-admin';
 
 const knownFields = [
     <TextField source="title" />,

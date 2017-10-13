@@ -10,7 +10,7 @@ A `<Resource>` component maps one API endpoint to a CRUD interface. For instance
 ```jsx
 // in src/App.js
 import React from 'react';
-import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
+import { jsonServerRestClient, Admin, Resource } from 'react-admin';
 
 import { PostList } from './posts';
 import { UserList } from './posts';
@@ -35,7 +35,7 @@ Here is a more complete admin, with components for all the CRUD operations:
 
 ```jsx
 import React from 'react';
-import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
+import { jsonServerRestClient, Admin, Resource } from 'react-admin';
 
 import { PostList, PostCreate, PostEdit, PostShow, PostIcon } from './posts';
 import { UserList } from './posts';
@@ -59,7 +59,7 @@ const App = () => (
 * `/:id/show` maps to the `show` component
 * `/:id/delete` maps to the `remove` component
 
-**Tip**: You must add a `<Resource>` when you declare a reference (via `<ReferenceField>`, `<ReferenceArrayField>`, `<ReferenceManyField>`, `<ReferenceInput>` or `<ReferenceArrayInput>`), because admin-on-rest uses resources to define the data store structure. That's why there is an empty `tag` resource in the example above.
+**Tip**: You must add a `<Resource>` when you declare a reference (via `<ReferenceField>`, `<ReferenceArrayField>`, `<ReferenceManyField>`, `<ReferenceInput>` or `<ReferenceArrayInput>`), because react-admin uses resources to define the data store structure. That's why there is an empty `tag` resource in the example above.
 
 `<Resource>` also accepts additional props:
 
@@ -75,7 +75,7 @@ Admin-on-rest uses the `name` prop both to determine the API endpoint (passed to
 <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={PostRemove} />
 ```
 
-For this resource admin-on-rest will fetch the `http://jsonplaceholder.typicode.com/posts` endpoint for data.
+For this resource react-admin will fetch the `http://jsonplaceholder.typicode.com/posts` endpoint for data.
 
 The routing will map the component as follows:
 
@@ -85,7 +85,7 @@ The routing will map the component as follows:
 * `/posts/:id/show` maps to `PostShow`
 * `/posts/:id/delete` maps to `PostRemove`
 
-**Tip**: If you want to use a special API endpoint (e.g. 'http://jsonplaceholder.typicode.com/my-custom-posts-endpoint') without altering the URL in the admin-on-rest application (so still use `/posts`), write the mapping from the resource `name` (`posts`) to the API endpoint (`my-custom-posts-endpoint`) in your own [`restClient`](./Admin.md#restclient)
+**Tip**: If you want to use a special API endpoint (e.g. 'http://jsonplaceholder.typicode.com/my-custom-posts-endpoint') without altering the URL in the react-admin application (so still use `/posts`), write the mapping from the resource `name` (`posts`) to the API endpoint (`my-custom-posts-endpoint`) in your own [`restClient`](./Admin.md#restclient)
 
 ## `icon`
 
@@ -96,7 +96,7 @@ Admin-on-rest will render the `icon` prop component in the menu:
 import React from 'react';
 import PostIcon from 'material-ui/svg-icons/action/book';
 import UserIcon from 'material-ui/svg-icons/social/group';
-import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
+import { jsonServerRestClient, Admin, Resource } from 'react-admin';
 
 import { PostList } from './posts';
 

@@ -26,7 +26,7 @@ Here is the minimal code necessary to display a form to create and edit comments
 ```jsx
 // in src/App.js
 import React from 'react';
-import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
+import { jsonServerRestClient, Admin, Resource } from 'react-admin';
 
 import { PostCreate, PostEdit } from './posts';
 
@@ -40,7 +40,7 @@ export default App;
 
 // in src/posts.js
 import React from 'react';
-import { Create, Edit, SimpleForm, DisabledInput, TextInput, DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'admin-on-rest';
+import { Create, Edit, SimpleForm, DisabledInput, TextInput, DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
 import RichTextInput from 'aor-rich-text-input';
 
 export const PostCreate = (props) => (
@@ -116,7 +116,7 @@ You can replace the list of default actions by your own element using the `actio
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import { ListButton, ShowButton, DeleteButton } from 'admin-on-rest';
+import { ListButton, ShowButton, DeleteButton } from 'react-admin';
 
 const cardActionStyle = {
     zIndex: 2,
@@ -192,7 +192,7 @@ Here are all the props accepted by the `<TabbedForm>` component:
 
 {% raw %}
 ```jsx
-import { TabbedForm, FormTab } from 'admin-on-rest'
+import { TabbedForm, FormTab } from 'react-admin'
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -365,7 +365,7 @@ Admin-on-rest already bundles a few validator functions, that you can just requi
 Example usage:
 
 ```jsx
-import { required, minLength, maxLength, minValue, maxValue, number, regex, email, choices } from 'admin-on-rest';
+import { required, minLength, maxLength, minValue, maxValue, number, regex, email, choices } from 'react-admin';
 
 export const UserCreate = (props) => (
     <Create {...props}>
@@ -432,7 +432,7 @@ The most common use case is to display two submit buttons in the `<Create>` view
 For that use case, use the `<SaveButton>` component with a custom `redirect` prop:
 
 ```jsx
-import { Edit, SimpleForm, SaveButton, Toolbar } from 'admin-on-rest';
+import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
 
 const PostCreateToolbar = props => <Toolbar {...props} >
     <SaveButton label="post.action.save_and_show" redirect="show" submitOnEnter={true} />
@@ -448,7 +448,7 @@ export const PostEdit = (props) => (
 );
 ```
 
-**Tip**: Use admin-on-rest's `<Toolbar>` component instead of material-ui's `<Toolbar>` component. The former builds up on the latter, and adds support for an alternative mobile layout (and is therefore responsive).
+**Tip**: Use react-admin's `<Toolbar>` component instead of material-ui's `<Toolbar>` component. The former builds up on the latter, and adds support for an alternative mobile layout (and is therefore responsive).
 
 **Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.
 
@@ -460,7 +460,7 @@ For instance, getting the inputs from an API might look like:
 
 ```js
 import React from 'react';
-import { Create, Edit, SimpleForm, TextInput, DateInput } from 'admin-on-rest';
+import { Create, Edit, SimpleForm, TextInput, DateInput } from 'react-admin';
 import RichTextInput from 'aor-rich-text-input';
 
 const knownInputs = [

@@ -46,7 +46,7 @@ import translate from '../../i18n/translate';
  * the functions provided by `AutoComplete`, or a function of your own
  * @see http://www.material-ui.com/#/components/auto-complete
  * @example
- * import { Edit, SimpleForm, AutocompleteInput } from 'admin-on-rest/mui';
+ * import { Edit, SimpleForm, AutocompleteInput } from 'react-admin/mui';
  * import AutoComplete from 'material-ui/AutoComplete';
  *
  * export const PostEdit = (props) => (
@@ -136,7 +136,7 @@ export class AutocompleteInput extends Component {
         } = this.props;
         if (typeof meta === 'undefined') {
             throw new Error(
-                "The AutocompleteInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/admin-on-rest/Inputs.html#writing-your-own-input-component for details."
+                "The AutocompleteInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
             );
         }
         const { touched, error } = meta;

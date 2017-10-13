@@ -7,17 +7,17 @@ title: "My First Project Tutorial"
 
 This 15 minutes tutorial will expose how to create a new admin app based on an existing REST API.
 
-![admin-on-rest blog demo](http://static.marmelab.com/admin-on-rest.gif)
+![react-admin blog demo](http://static.marmelab.com/react-admin.gif)
 
 ## Installation
 
-Admin-on-REST uses React. We'll use Facebook's [create-react-app](https://github.com/facebookincubator/create-react-app) to create an empty React app, and install the `admin-on-rest` package:
+Admin-on-REST uses React. We'll use Facebook's [create-react-app](https://github.com/facebookincubator/create-react-app) to create an empty React app, and install the `react-admin` package:
 
 ```sh
 npm install -g create-react-app
 create-react-app test-admin
 cd test-admin/
-yarn add admin-on-rest
+yarn add react-admin
 yarn start
 ```
 
@@ -47,7 +47,7 @@ Replace the `src/App.js` by the following code:
 ```jsx
 // in src/App.js
 import React from 'react';
-import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
+import { jsonServerRestClient, Admin, Resource } from 'react-admin';
 
 import { PostList } from './posts';
 
@@ -60,14 +60,14 @@ const App = () => (
 export default App;
 ```
 
-The `App` component now renders an `<Admin>` component, which is the main component of admin-on-rest. This component expects a REST client as a parameter - a function capable of translating REST commands into HTTP requests. Since REST isn't a standard, you will probably have to provide a custom client to connect to your own APIs. But we'll dive into REST clients later. For now, let's take advantage of the `jsonServerRestClient`, which speaks the same REST dialect as JSONPlaceholder.
+The `App` component now renders an `<Admin>` component, which is the main component of react-admin. This component expects a REST client as a parameter - a function capable of translating REST commands into HTTP requests. Since REST isn't a standard, you will probably have to provide a custom client to connect to your own APIs. But we'll dive into REST clients later. For now, let's take advantage of the `jsonServerRestClient`, which speaks the same REST dialect as JSONPlaceholder.
 
 The `<Admin>` component can contain one or more `<Resource>` components, each resource being mapped to an endpoint in the API. To begin with, we'll display the list of posts. Here is what the `<PostList>` component looks like:
 
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest';
+import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -90,7 +90,7 @@ The list is already functional: you can reorder it by clicking on column headers
 
 ## Field Types
 
-You've just met the `<TextField>` component, but admin-on-rest provides many Field components to map various content types. For instance, [the `/users` endpoint in JSONPlaceholder](http://jsonplaceholder.typicode.com/users) contains emails.
+You've just met the `<TextField>` component, but react-admin provides many Field components to map various content types. For instance, [the `/users` endpoint in JSONPlaceholder](http://jsonplaceholder.typicode.com/users) contains emails.
 
 ```
 curl http://jsonplaceholder.typicode.com/users/2
@@ -127,7 +127,7 @@ Let's create a new `UserList`, using `<EmailField>` to map the `email` field:
 ```jsx
 // in src/users.js
 import React from 'react';
-import { List, Datagrid, EmailField, TextField } from 'admin-on-rest';
+import { List, Datagrid, EmailField, TextField } from 'react-admin';
 
 export const UserList = (props) => (
     <List title="All users" {...props}>
@@ -160,12 +160,12 @@ const App = () => (
 
 The sidebar now gives access to the second resource, Users. The users list shows the email as a `<a href="mailto:">` tag.
 
-In admin-on-rest, fields are simple React components. At runtime, they receive the `record` fetched from the API on (e.g. `{ "id": 2, "name": "Ervin Howell", "username": "Antonette", "email": "Shanna@melissa.tv", ... }`), and the `source` field they should display (e.g. 'email').
+In react-admin, fields are simple React components. At runtime, they receive the `record` fetched from the API on (e.g. `{ "id": 2, "name": "Ervin Howell", "username": "Antonette", "email": "Shanna@melissa.tv", ... }`), and the `source` field they should display (e.g. 'email').
 
 That means that writing a custom Field component is really simple. For instance, to create an `UrlField`:
 
 ```jsx
-// in admin-on-rest/src/mui/field/UrlField.js
+// in react-admin/src/mui/field/UrlField.js
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -200,7 +200,7 @@ Admin-on-REST knows how to take advantage of these foreign keys to fetch referen
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField, EmailField, ReferenceField } from 'admin-on-rest';
+import { List, Datagrid, TextField, EmailField, ReferenceField } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -230,7 +230,7 @@ An admin interface is about displaying remote data, but also about editing and c
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest';
+import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -311,11 +311,11 @@ The form rendered in the create and edit pages is already functional. It issues 
 
 ## Deletion
 
-There is not much to configure in a deletion view. To add removal abilities to a `Resource`, simply use the bundled `<Delete>` component from admin-on-rest, and register it using the `remove` prop ('delete' is a reserved word in JavaScript):
+There is not much to configure in a deletion view. To add removal abilities to a `Resource`, simply use the bundled `<Delete>` component from react-admin, and register it using the `remove` prop ('delete' is a reserved word in JavaScript):
 
 ```jsx
 // in src/App.js
-import { Delete } from 'admin-on-rest';
+import { Delete } from 'react-admin';
 
 const App = () => (
     <Admin restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
@@ -337,7 +337,7 @@ Admin-on-rest can use input components to create a multi-criteria search engine 
 
 ```jsx
 // in src/posts.js
-import { Filter, ReferenceInput, SelectInput, TextInput } from 'admin-on-rest';
+import { Filter, ReferenceInput, SelectInput, TextInput } from 'react-admin';
 
 const PostFilter = (props) => (
     <Filter {...props}>
@@ -382,7 +382,7 @@ const App = () => (
 
 ## Using a Custom Home Page
 
-By default, admin-on-rest displays the list page of the first resource as home page. If you want to display a custom component instead, pass it in the `dashboard` prop of the `<Admin>` component.
+By default, react-admin displays the list page of the first resource as home page. If you want to display a custom component instead, pass it in the `dashboard` prop of the `<Admin>` component.
 
 {% raw %}
 ```jsx
@@ -424,7 +424,7 @@ The `authClient` is a simple function, which must return a `Promise`:
 
 ```jsx
 // in src/authClient.js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
 
 export default (type, params) => {
     // called when the user attempts to log in
@@ -478,7 +478,7 @@ Once the app reloads, it's now behind a login form that accepts everyone:
 
 ## Responsive List
 
-The admin-on-rest layout is already responsive. Try to resize your browser to see how the sidebar switches to a drawer on smaller screens.
+The react-admin layout is already responsive. Try to resize your browser to see how the sidebar switches to a drawer on smaller screens.
 
 But a responsive layout is not enough to make a responsive app. Datagrid components work well on desktop, but are absolutely not adapted to mobile devices. If your admin must be used on mobile devices, you'll have to provide an alternative component for small screens
 
@@ -487,7 +487,7 @@ First, you should know that you don't have to use the `<Datagrid>` component as 
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, SimpleList } from 'admin-on-rest';
+import { List, SimpleList } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -509,7 +509,7 @@ That works fine on mobile, but now the desktop user experience is worse. The bes
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -537,13 +537,13 @@ export const PostList = (props) => (
 );
 ```
 
-This works exactly the way you expect. The lesson here is that admin-on-rest takes care of responsive web design for the layout, but it's your job to use `<Responsive>` in pages.
+This works exactly the way you expect. The lesson here is that react-admin takes care of responsive web design for the layout, but it's your job to use `<Responsive>` in pages.
 
 ![Responsive List](./img/responsive-list.gif)
 
 ## Using Another REST Dialect
 
-Here is the elephant in the room of this tutorial. In real world projects, the REST dialect of your API won't match the JSONPLaceholder dialect. Writing a REST client is probably the first thing you'll have to do to make admin-on-rest work. Depending on your API, this can require a few hours of additional work.
+Here is the elephant in the room of this tutorial. In real world projects, the REST dialect of your API won't match the JSONPLaceholder dialect. Writing a REST client is probably the first thing you'll have to do to make react-admin work. Depending on your API, this can require a few hours of additional work.
 
 Admin-on-rest delegates every REST call to a REST client function. This function must simply return a promise for the result. This gives extreme freedom to map any API dialect, add authentication headers, use endpoints from several domains, etc.
 
@@ -573,7 +573,7 @@ import {
     UPDATE,
     DELETE,
     fetchUtils,
-} from 'admin-on-rest';
+} from 'react-admin';
 import { stringify } from 'query-string';
 
 const API_URL = 'my.api.url';
@@ -691,6 +691,6 @@ const App = () => (
 
 ## Conclusion
 
-Admin-on-rest was built with customization in mind. You can replace any admin-on-rest component with a component of your own, for instance to display a custom list layout, or a different edit form for a given resource.
+Admin-on-rest was built with customization in mind. You can replace any react-admin component with a component of your own, for instance to display a custom list layout, or a different edit form for a given resource.
 
-Now that you've completed the tutorial, continue reading the [admin-on-rest documentation](http://marmelab.com/admin-on-rest/), and read the [Material UI components documentation](http://www.material-ui.com/#/).
+Now that you've completed the tutorial, continue reading the [react-admin documentation](http://marmelab.com/react-admin/), and read the [Material UI components documentation](http://www.material-ui.com/#/).

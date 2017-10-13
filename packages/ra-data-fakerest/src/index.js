@@ -22,12 +22,12 @@ function log(type, resource, params, response) {
 }
 
 /**
- * Respond to admin-on-rest REST queries using a local JavaScript object
+ * Respond to react-admin REST queries using a local JavaScript object
  *
  * Useful for debugging and testing - do not use in production.
  *
  * @example
- * import { jsonRestClient } from 'admin-on-rest';
+ * import { jsonRestClient } from 'react-admin';
  * const restClient = jsonRestClient({
  *   posts: [
  *     { id: 0, title: 'Hello, world!' },

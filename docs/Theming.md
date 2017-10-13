@@ -9,7 +9,7 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 ## Overriding A Component Style
 
-Most admin-on-rest components support two style props to set inline styles:
+Most react-admin components support two style props to set inline styles:
 
 * `style`: A style object to customize the look and feel of the component container (e.g. the `<td>` in a datagrid). Most of the time, that's where you'll want to put your custom styles.
 * `elStyle`: A style object to customize the look and feel of the component element itself, usually a material ui component. Use this prop when you want to fine tune the display of a material ui component, according to [their styling documentation](http://www.material-ui.com/#/customization/styles).
@@ -18,7 +18,7 @@ These props accept a style object:
 
 {% raw %}
 ```jsx
-import { EmailField } from 'admin-on-rest/mui';
+import { EmailField } from 'react-admin/mui';
 
 <EmailField source="email" style={{ backgroundColor: 'lightgrey' }} elStyle={{ textDecoration: 'none' }} />
 // renders in the datagrid as
@@ -92,7 +92,7 @@ It expects element props named `small`, `medium`, and `large`. It displays the e
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -216,7 +216,7 @@ const App = () => (
 );
 ```
 
-Use the [default layout](https://github.com/marmelab/admin-on-rest/blob/master/src/mui/layout/Layout.js) as a starting point for your custom layout. Here is a simplified version (with no responsive support):
+Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src/mui/layout/Layout.js) as a starting point for your custom layout. Here is a simplified version (with no responsive support):
 
 ```jsx
 // in src/MyLayout.js
@@ -232,7 +232,7 @@ import {
     Notification,
     Sidebar,
     setSidebarVisibility,
-} from 'admin-on-rest';
+} from 'react-admin';
 
 const styles = {
     wrapper: {

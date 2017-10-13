@@ -6,9 +6,9 @@
     "files": ["*.md", "docs/*.md", "lib", "src"],
     "main": "lib/index",
     "authors": ["François Zaninotto"],
-    "repository": "marmelab/admin-on-rest",
-    "homepage": "https://github.com/marmelab/admin-on-rest#readme",
-    "bugs": "https://github.com/marmelab/admin-on-rest/issues",
+    "repository": "marmelab/react-admin",
+    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "devDependencies": {
         "enzyme": "~2.9.1",
