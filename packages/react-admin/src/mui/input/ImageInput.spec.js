@@ -7,9 +7,14 @@ import { ImageField } from '../field/ImageField';
 import { ImageInput } from './ImageInput';
 
 describe('<ImageInput />', () => {
-    before(() => {
+    beforeAll(() => {
         global.File = File;
         global.FileReader = FileReader;
+    });
+
+    afterAll(() => {
+        delete global.File;
+        delete global.FileReader;
     });
 
     it('should display a dropzone', () => {
