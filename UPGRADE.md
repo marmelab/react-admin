@@ -1,6 +1,26 @@
 # Upgrade to 2.0
 
-## Default REST clients moved to external packages
+## Default (English) Messages Moved To Standalone Package
+
+The English messages are no longer bundled with the core package. To display the interface in English, you'll need to install the `ra-language-english` package.
+
+```sh
+npm install -S ra-language-english
+```
+
+Then, in your code, pass the English messages to the `<Admin>` component:
+
+```js
+import enMessages from 'ra-language-english';
+
+const messages = { 'en': enMessages };
+
+<Admin locale="en" messages={messages}>
+  ...
+</Admin>
+```
+
+## Default REST Clients Moved to Standalone Packages
 
 `simpleRestClient` and `jsonServerRestClient` are no longer part of the core package. They have been moved to standalone packages, where they are the default export:
 

@@ -20,6 +20,7 @@
         "extract-text-webpack-plugin": "~2.1.2",
         "react-admin": "2.0.0-alpha1",
         "ra-data-fakerest": "2.0.0-alpha1",
+        "ra-language-english": "2.0.0-alpha1",
         "ra-language-french": "2.0.0-alpha1",
         "style-loader": "~0.18.2",
         "webpack": "~3.0.0",

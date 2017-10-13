@@ -4,8 +4,6 @@ import Polyglot from 'node-polyglot';
 import { connect } from 'react-redux';
 import { compose, withContext } from 'recompose';
 
-import defaultMessages from './messages';
-
 const withI18nContext = withContext(
     {
         translate: PropTypes.func.isRequired,
@@ -15,7 +13,7 @@ const withI18nContext = withContext(
         const userMessages = messages[locale] || {};
         const polyglot = new Polyglot({
             locale,
-            phrases: { ...defaultMessages, ...userMessages },
+            phrases: userMessages,
         });
 
         return {
