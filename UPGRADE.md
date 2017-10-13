@@ -5,8 +5,8 @@
 The main package name has changed, so you must update your dependencies:
 
 ```sh
-npm uninstall -S admin-on-rest
-npm install -S react-admin
+npm uninstall admin-on-rest
+npm install react-admin
 ```
 
 As well as all your files depending on the 'admin-on-rest' package:
@@ -25,7 +25,7 @@ A global search and replace on the string "admin-on-rest" should do the trick in
 The English messages are no longer bundled with the core package. To display the interface in English, you'll need to install the `ra-language-english` package.
 
 ```sh
-npm install -S ra-language-english
+npm install ra-language-english
 ```
 
 Then, in your code, pass the English messages to the `<Admin>` component:
