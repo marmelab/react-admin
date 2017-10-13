@@ -22,10 +22,12 @@ export class FileInputPreview extends Component {
     }
 
     componentWillUnmount() {
-        const { file } = this.props;
+        const { file, revokeObjectURL } = this.props;
 
         if (file.preview) {
-            window.URL.revokeObjectURL(file.preview);
+            revokeObjectURL
+                ? revokeObjectURL(file.preview)
+                : window.URL.revokeObjectURL(file.preview);
         }
     }
 
@@ -73,6 +75,7 @@ FileInputPreview.propTypes = {
     itemStyle: PropTypes.object,
     removeStyle: PropTypes.object,
     muiTheme: PropTypes.object.isRequired,
+    revokeObjectUrl: PropTypes.func,
 };
 
 FileInputPreview.defaultProps = {

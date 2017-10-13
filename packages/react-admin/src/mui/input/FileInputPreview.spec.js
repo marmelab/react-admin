@@ -38,16 +38,12 @@ describe('<FileInputPreview />', () => {
         const file = { preview: 'previewUrl' };
         const revokeObjectURL = jest.fn();
 
-        global.window = {
-            URL: {
-                revokeObjectURL,
-            },
-        };
         const wrapper = shallow(
             <FileInputPreview
                 onRemove={() => true}
                 file={file}
                 muiTheme={muiTheme}
+                revokeObjectURL={revokeObjectURL}
             >
                 <div id="child">Child</div>
             </FileInputPreview>,
@@ -62,16 +58,12 @@ describe('<FileInputPreview />', () => {
         const file = {};
         const revokeObjectURL = jest.fn();
 
-        global.window = {
-            URL: {
-                revokeObjectURL,
-            },
-        };
         const wrapper = shallow(
             <FileInputPreview
                 onRemove={() => true}
                 file={file}
                 muiTheme={muiTheme}
+                revokeObjectURL={revokeObjectURL}
             >
                 <div id="child">Child</div>
             </FileInputPreview>,
