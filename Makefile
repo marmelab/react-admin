@@ -40,17 +40,10 @@ test: test-unit lint test-e2e ## launch all tests
 
 test-unit: ## launch unit tests
 	@echo "Running unit tests..."
-	@NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/mocha \
-		--require ignore-styles \
-		--compilers js:babel-register \
-		'./src/**/*.spec.js'
+	@NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/jest
 
 test-unit-watch: ## launch unit tests and watch for changes
-	@NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/mocha \
-		--require ignore-styles \
-		--compilers js:babel-register \
-		--watch \
-		'./src/**/*.spec.js'
+	@NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/jest --watch
 
 test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \
