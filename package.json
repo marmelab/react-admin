@@ -16,12 +16,16 @@
         "babel-preset-react": "~6.24.1",
         "babel-preset-stage-0": "~6.24.1",
         "babel-register": "~6.26.0",
+        "chromedriver": "~2.26.1",
         "eslint": "~4.6.1",
         "eslint-config-prettier": "~2.4.0",
         "eslint-plugin-import": "^2.6.1",
         "eslint-plugin-prettier": "~2.2.0",
         "eslint-plugin-react": "~7.3.0",
-        "jest": "^21.2.1"
+        "express": "~4.15.2",
+        "jest": "^21.2.1",
+        "mocha": "^4.0.1",
+        "selenium-webdriver": "~3.5.0"
     },
     "workspaces": ["packages/*"]
 }

@@ -31,10 +31,10 @@ doc: ## compile doc as html and launch doc web server
 
 lint: ## lint the code and check coding conventions
 	@echo "Running linter..."
-	@./node_modules/.bin/eslint .
+	@./node_modules/.bin/eslint ./packages/react-admin/src/
 
 prettier: ## prettify the source code using prettier
-	@./node_modules/.bin/prettier-eslint --write --list-different  "src/**/*.js" "example/**/*.js"
+	@./node_modules/.bin/prettier-eslint --write --list-different  "packages/react-admin/src/**/*.js" "packages/ra-example/**/*.js"
 
 test: test-unit lint test-e2e ## launch all tests
 
@@ -48,9 +48,8 @@ test-unit-watch: ## launch unit tests and watch for changes
 test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \
 		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
-		cd example && ./node_modules/.bin/webpack; \
+		cd packages/ra-example && ./node_modules/.bin/webpack; \
 	fi
-	@echo 'Launching e2e tests...'
 	@NODE_ENV=test node_modules/.bin/mocha \
 		--compilers js:babel-register \
 		--timeout 15000 \
