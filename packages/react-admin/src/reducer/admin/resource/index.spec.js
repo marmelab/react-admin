@@ -1,5 +1,4 @@
 import assert from 'assert';
-import { stub } from 'sinon';
 import reducer from './index';
 import { DECLARE_RESOURCES } from '../../../actions';
 
@@ -54,8 +53,8 @@ describe('Resources Reducer', () => {
 
     it('should call inner reducers for each resource when action has a resource meta', () => {
         const innerReducer = state => state;
-        const dataReducer = stub().callsFake(() => innerReducer);
-        const listReducer = stub().callsFake(() => innerReducer);
+        const dataReducer = jest.fn(() => innerReducer);
+        const listReducer = jest.fn(() => innerReducer);
 
         assert.deepEqual(
             reducer(
@@ -89,9 +88,7 @@ describe('Resources Reducer', () => {
             }
         );
 
-        assert(dataReducer.calledWith('posts'));
-        assert(listReducer.calledWith('posts'));
-        assert(dataReducer.neverCalledWith('comments'));
-        assert(listReducer.neverCalledWith('comments'));
+        assert.equal(dataReducer.mock.calls[0][0], 'posts');
+        assert.equal(listReducer.mock.calls[0][0], 'posts');
     });
 });

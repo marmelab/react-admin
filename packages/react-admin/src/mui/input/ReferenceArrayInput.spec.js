@@ -1,7 +1,6 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 
 describe('<ReferenceArrayInput />', () => {
@@ -36,7 +35,7 @@ describe('<ReferenceArrayInput />', () => {
     });
 
     it('should call crudGetMatching on mount with default fetch values', () => {
-        const crudGetMatching = sinon.spy();
+        const crudGetMatching = jest.fn();
         shallow(
             <ReferenceArrayInput
                 {...defaultProps}
@@ -47,7 +46,7 @@ describe('<ReferenceArrayInput />', () => {
             </ReferenceArrayInput>,
             { lifecycleExperimental: true }
         );
-        assert.deepEqual(crudGetMatching.args[0], [
+        assert.deepEqual(crudGetMatching.mock.calls[0], [
             'tags',
             'posts@tag_ids',
             {
@@ -63,7 +62,7 @@ describe('<ReferenceArrayInput />', () => {
     });
 
     it('should allow to customize crudGetMatching arguments with perPage, sort, and filter props', () => {
-        const crudGetMatching = sinon.spy();
+        const crudGetMatching = jest.fn();
         shallow(
             <ReferenceArrayInput
                 {...defaultProps}
@@ -77,7 +76,7 @@ describe('<ReferenceArrayInput />', () => {
             </ReferenceArrayInput>,
             { lifecycleExperimental: true }
         );
-        assert.deepEqual(crudGetMatching.args[0], [
+        assert.deepEqual(crudGetMatching.mock.calls[0], [
             'tags',
             'posts@tag_ids',
             {
@@ -95,7 +94,7 @@ describe('<ReferenceArrayInput />', () => {
     });
 
     it('should call crudGetMatching when setFilter is called', () => {
-        const crudGetMatching = sinon.spy();
+        const crudGetMatching = jest.fn();
         const wrapper = shallow(
             <ReferenceArrayInput
                 {...defaultProps}
@@ -107,7 +106,7 @@ describe('<ReferenceArrayInput />', () => {
             { lifecycleExperimental: true }
         );
         wrapper.instance().setFilter('bar');
-        assert.deepEqual(crudGetMatching.args[1], [
+        assert.deepEqual(crudGetMatching.mock.calls[1], [
             'tags',
             'posts@tag_ids',
             {
@@ -125,7 +124,7 @@ describe('<ReferenceArrayInput />', () => {
     });
 
     it('should use custom filterToQuery function prop', () => {
-        const crudGetMatching = sinon.spy();
+        const crudGetMatching = jest.fn();
         const wrapper = shallow(
             <ReferenceArrayInput
                 {...defaultProps}
@@ -138,7 +137,7 @@ describe('<ReferenceArrayInput />', () => {
             { lifecycleExperimental: true }
         );
         wrapper.instance().setFilter('bar');
-        assert.deepEqual(crudGetMatching.args[1], [
+        assert.deepEqual(crudGetMatching.mock.calls[1], [
             'tags',
             'posts@tag_ids',
             {
@@ -156,7 +155,7 @@ describe('<ReferenceArrayInput />', () => {
     });
 
     it('should call crudGetMany on mount if value is set', () => {
-        const crudGetMany = sinon.spy();
+        const crudGetMany = jest.fn();
         shallow(
             <ReferenceArrayInput
                 {...defaultProps}
@@ -168,11 +167,11 @@ describe('<ReferenceArrayInput />', () => {
             </ReferenceArrayInput>,
             { lifecycleExperimental: true }
         );
-        assert.deepEqual(crudGetMany.args[0], ['tags', [5, 6]]);
+        assert.deepEqual(crudGetMany.mock.calls[0], ['tags', [5, 6]]);
     });
 
     it('should pass onChange down to child component', () => {
-        const onChange = sinon.spy();
+        const onChange = jest.fn();
         const wrapper = shallow(
             <ReferenceArrayInput
                 {...defaultProps}
@@ -183,7 +182,7 @@ describe('<ReferenceArrayInput />', () => {
             </ReferenceArrayInput>
         );
         wrapper.find('MyComponent').simulate('change', 'foo');
-        assert.deepEqual(onChange.args[0], ['foo']);
+        assert.deepEqual(onChange.mock.calls[0], ['foo']);
     });
 
     it('should pass meta down to child component', () => {

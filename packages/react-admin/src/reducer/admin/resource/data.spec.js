@@ -1,5 +1,4 @@
 import assert from 'assert';
-import { stub } from 'sinon';
 
 import { addRecordsFactory } from './data';
 
@@ -9,7 +8,7 @@ describe('data addRecordsFactory', () => {
         const oldRecords = {
             fetchedAt: 'previousFetchedAt',
         };
-        const getFetchedAt = stub().returns({
+        const getFetchedAt = jest.fn().mockReturnValue({
             record1: 'date',
             record2: 'date',
         });
@@ -24,9 +23,10 @@ describe('data addRecordsFactory', () => {
             record2: { id: 'record2' },
         });
 
-        assert(
-            getFetchedAt.calledWith(['record1', 'record2'], 'previousFetchedAt')
-        );
+        assert.deepEqual(getFetchedAt.mock.calls[0], [
+            ['record1', 'record2'],
+            'previousFetchedAt',
+        ]);
 
         assert.deepEqual(newState.fetchedAt, {
             record1: 'date',
@@ -37,7 +37,7 @@ describe('data addRecordsFactory', () => {
     it('should discard record that do not have their ids returned by getFetchedAt', () => {
         const newRecords = [{ id: 'record1' }, { id: 'record2' }];
         const oldRecords = { record3: 'record3' };
-        const getFetchedAt = stub().returns({
+        const getFetchedAt = jest.fn().mockReturnValue({
             record1: 'date',
             record2: 'date',
         });
@@ -56,7 +56,7 @@ describe('data addRecordsFactory', () => {
     it('should keep record that have their ids returned by getFetchedAt', () => {
         const newRecords = [{ id: 'record1' }, { id: 'record2' }];
         const oldRecords = { record3: 'record3' };
-        const getFetchedAt = stub().returns({
+        const getFetchedAt = jest.fn().mockReturnValue({
             record1: 'date',
             record2: 'date',
             record3: 'date',
@@ -77,7 +77,7 @@ describe('data addRecordsFactory', () => {
     it('should replace oldRecord by new record', () => {
         const newRecords = [{ id: 'record1' }, { id: 'record2' }];
         const oldRecords = { record1: 'old record 1' };
-        const getFetchedAt = stub().returns({
+        const getFetchedAt = jest.fn().mockReturnValue({
             record1: 'date',
             record2: 'date',
         });

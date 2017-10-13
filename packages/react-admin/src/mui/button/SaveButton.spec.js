@@ -1,7 +1,6 @@
 import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
-import sinon from 'sinon';
 
 import { SaveButton } from './SaveButton';
 
@@ -65,7 +64,7 @@ describe('<SaveButton />', () => {
     });
 
     it('should trigger submit action when clicked if no saving is in progress', () => {
-        const onSubmit = sinon.spy();
+        const onSubmit = jest.fn();
         const raisedButtonWrapper = shallow(
             <SaveButton
                 raised={true}
@@ -84,14 +83,14 @@ describe('<SaveButton />', () => {
         );
 
         raisedButtonWrapper.simulate('click');
-        assert(onSubmit.calledOnce);
+        assert.equal(onSubmit.mock.calls.length, 1);
         flatButtonWrapper.simulate('click');
-        assert(onSubmit.calledTwice);
+        assert.equal(onSubmit.mock.calls.length, 2);
     });
 
     it('should not trigger submit action when clicked if saving is in progress', () => {
-        const onSubmit = sinon.spy();
-        const event = { preventDefault: sinon.spy() };
+        const onSubmit = jest.fn();
+        const event = { preventDefault: jest.fn() };
 
         const raisedButtonWrapper = shallow(
             <SaveButton
@@ -111,10 +110,10 @@ describe('<SaveButton />', () => {
         );
 
         raisedButtonWrapper.simulate('click', event);
-        assert(event.preventDefault.calledOnce);
+        assert.equal(event.preventDefault.mock.calls.length, 1);
         flatButtonWrapper.simulate('click', event);
-        assert(event.preventDefault.calledTwice);
+        assert.equal(event.preventDefault.mock.calls.length, 2);
 
-        assert(onSubmit.notCalled);
+        assert.equal(onSubmit.mock.calls.length, 0);
     });
 });

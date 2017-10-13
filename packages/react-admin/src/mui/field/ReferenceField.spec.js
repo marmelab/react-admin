@@ -1,6 +1,5 @@
 import React from 'react';
 import assert from 'assert';
-import sinon from 'sinon';
 import { shallow } from 'enzyme';
 
 import { ReferenceField } from './ReferenceField';
@@ -8,7 +7,7 @@ import TextField from './TextField';
 
 describe('<ReferenceField />', () => {
     it('should call crudGetManyAccumulate on componentDidMount if reference source is defined', () => {
-        const crudGetManyAccumulate = sinon.spy();
+        const crudGetManyAccumulate = jest.fn();
         shallow(
             <ReferenceField
                 record={{ fooId: 123 }}
@@ -22,10 +21,10 @@ describe('<ReferenceField />', () => {
             </ReferenceField>,
             { lifecycleExperimental: true }
         );
-        assert(crudGetManyAccumulate.calledOnce);
+        assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
     });
     it('should not call crudGetManyAccumulate on componentDidMount if reference source is null or undefined', () => {
-        const crudGetManyAccumulate = sinon.spy();
+        const crudGetManyAccumulate = jest.fn();
         shallow(
             <ReferenceField
                 record={{ fooId: null }}
@@ -39,7 +38,7 @@ describe('<ReferenceField />', () => {
             </ReferenceField>,
             { lifecycleExperimental: true }
         );
-        assert(crudGetManyAccumulate.notCalled);
+        assert.equal(crudGetManyAccumulate.mock.calls.length, 0);
     });
     it('should render a link to the Edit page of the related record by default', () => {
         const wrapper = shallow(

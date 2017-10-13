@@ -1,24 +1,23 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow, render } from 'enzyme';
-import sinon from 'sinon';
 
 import { Restricted } from './Restricted';
 
 describe('<Restricted>', () => {
     const Foo = () => <div>Foo</div>;
     it('should call userCheck on mount', () => {
-        const userCheck = sinon.spy();
+        const userCheck = jest.fn();
         shallow(
             <Restricted userCheck={userCheck}>
                 <Foo />
             </Restricted>,
             { lifecycleExperimental: true }
         );
-        assert(userCheck.calledOnce);
+        assert.equal(userCheck.mock.calls.length, 1);
     });
     it('should call userCheck on update', () => {
-        const userCheck = sinon.spy();
+        const userCheck = jest.fn();
         const wrapper = shallow(
             <Restricted userCheck={userCheck}>
                 <Foo />
@@ -26,10 +25,10 @@ describe('<Restricted>', () => {
             { lifecycleExperimental: true }
         );
         wrapper.setProps({ location: { pathname: 'foo' }, userCheck });
-        assert(userCheck.calledTwice);
+        assert.equal(userCheck.mock.calls.length, 2);
     });
     it('should render its child by default', () => {
-        const userCheck = sinon.stub();
+        const userCheck = jest.fn();
         const wrapper = render(
             <Restricted userCheck={userCheck}>
                 <Foo />

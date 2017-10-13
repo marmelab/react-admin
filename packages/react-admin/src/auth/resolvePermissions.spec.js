@@ -1,11 +1,12 @@
 import assert from 'assert';
-import { stub } from 'sinon';
 import resolvePermissions from './resolvePermissions';
 
 describe('resolvePermissions', () => {
-    const checker = stub().callsFake(params =>
-        Promise.resolve(params.permissions === 'function')
-    );
+    const checker = jest
+        .fn()
+        .mockImplementation(params =>
+            Promise.resolve(params.permissions === 'function')
+        );
     const parameters = {
         mappings: [
             { permissions: 'admin', view: 'SingleValue' },
@@ -66,21 +67,20 @@ describe('resolvePermissions', () => {
     });
 
     it('returns a match with resolve being a function', async () => {
+        checker.mockClear();
         const match = await resolvePermissions({
             ...parameters,
             permissions: 'function',
         });
 
         assert.equal(match.view, 'FunctionValue');
-        assert(
-            checker.calledWith({
-                permissions: 'function',
-                resource: 'products',
-                record: { category: 'announcements' },
-                exact: true,
-                value: 'foo',
-            })
-        );
+        assert.deepEqual(checker.mock.calls[0][0], {
+            permissions: 'function',
+            resource: 'products',
+            record: { category: 'announcements' },
+            exact: true,
+            value: 'foo',
+        });
     });
 
     it('returns undefined if no match found', async () => {

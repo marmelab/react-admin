@@ -1,5 +1,4 @@
 import assert from 'assert';
-import { stub } from 'sinon';
 
 import { addRecordIdsFactory } from './ids';
 
@@ -8,7 +7,7 @@ describe('data addRecordIdsFactory', () => {
         const newRecords = ['record1', 'record2'];
         const oldRecords = [];
         oldRecords.fetchedAt = 'previousFetchetAt';
-        const getFetchedAt = stub().returns({
+        const getFetchedAt = jest.fn().mockReturnValue({
             record1: 'date',
             record2: 'date',
         });
@@ -20,9 +19,10 @@ describe('data addRecordIdsFactory', () => {
 
         assert.deepEqual(newState, ['record1', 'record2']);
 
-        assert(
-            getFetchedAt.calledWith(['record1', 'record2'], 'previousFetchetAt')
-        );
+        assert.deepEqual(getFetchedAt.mock.calls[0], [
+            ['record1', 'record2'],
+            'previousFetchetAt',
+        ]);
 
         assert.deepEqual(newState.fetchedAt, {
             record1: 'date',
@@ -33,7 +33,7 @@ describe('data addRecordIdsFactory', () => {
     it('should discard record that do not have their ids returned by getFetchedAt', () => {
         const newRecords = ['record1', 'record2'];
         const oldRecords = ['record3'];
-        const getFetchedAt = stub().returns({
+        const getFetchedAt = jest.fn().mockReturnValue({
             record1: 'date',
             record2: 'date',
         });
@@ -49,7 +49,7 @@ describe('data addRecordIdsFactory', () => {
     it('should keep record that have their ids returned by getFetchedAt and add newRecords after oldRecords', () => {
         const newRecords = ['record1', 'record2'];
         const oldRecords = ['record3'];
-        const getFetchedAt = stub().returns({
+        const getFetchedAt = jest.fn().mockReturnValue({
             record1: 'date',
             record2: 'date',
             record3: 'date',

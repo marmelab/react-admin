@@ -1,7 +1,6 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 import { ReferenceInput } from './ReferenceInput';
 
 describe('<ReferenceInput />', () => {
@@ -36,7 +35,7 @@ describe('<ReferenceInput />', () => {
     });
 
     it('should call crudGetMatching on mount with default fetch values', () => {
-        const crudGetMatching = sinon.spy();
+        const crudGetMatching = jest.fn();
         shallow(
             <ReferenceInput
                 {...defaultProps}
@@ -47,7 +46,7 @@ describe('<ReferenceInput />', () => {
             </ReferenceInput>,
             { lifecycleExperimental: true }
         );
-        assert.deepEqual(crudGetMatching.args[0], [
+        assert.deepEqual(crudGetMatching.mock.calls[0], [
             'posts',
             'comments@post_id',
             {
@@ -63,7 +62,7 @@ describe('<ReferenceInput />', () => {
     });
 
     it('should allow to customize crudGetMatching arguments with perPage, sort, and filter props', () => {
-        const crudGetMatching = sinon.spy();
+        const crudGetMatching = jest.fn();
         shallow(
             <ReferenceInput
                 {...defaultProps}
@@ -77,7 +76,7 @@ describe('<ReferenceInput />', () => {
             </ReferenceInput>,
             { lifecycleExperimental: true }
         );
-        assert.deepEqual(crudGetMatching.args[0], [
+        assert.deepEqual(crudGetMatching.mock.calls[0], [
             'posts',
             'comments@post_id',
             {
@@ -95,7 +94,7 @@ describe('<ReferenceInput />', () => {
     });
 
     it('should allow to customize crudGetMatching arguments with perPage, sort, and filter props without loosing original default filter', () => {
-        const crudGetMatching = sinon.spy();
+        const crudGetMatching = jest.fn();
         const wrapper = shallow(
             <ReferenceInput
                 {...defaultProps}
@@ -112,28 +111,26 @@ describe('<ReferenceInput />', () => {
 
         wrapper.instance().setFilter('search_me');
 
-        assert(
-            crudGetMatching.calledWith(
-                'posts',
-                'comments@post_id',
-                {
-                    page: 1,
-                    perPage: 5,
-                },
-                {
-                    field: 'foo',
-                    order: 'ASC',
-                },
-                {
-                    foo: 'bar',
-                    q: 'search_me',
-                }
-            )
-        );
+        assert.deepEqual(crudGetMatching.mock.calls[1], [
+            'posts',
+            'comments@post_id',
+            {
+                page: 1,
+                perPage: 5,
+            },
+            {
+                field: 'foo',
+                order: 'ASC',
+            },
+            {
+                foo: 'bar',
+                q: 'search_me',
+            },
+        ]);
     });
 
     it('should call crudGetMatching when setFilter is called', () => {
-        const crudGetMatching = sinon.spy();
+        const crudGetMatching = jest.fn();
         const wrapper = shallow(
             <ReferenceInput
                 {...defaultProps}
@@ -145,7 +142,7 @@ describe('<ReferenceInput />', () => {
             { lifecycleExperimental: true }
         );
         wrapper.instance().setFilter('bar');
-        assert.deepEqual(crudGetMatching.args[1], [
+        assert.deepEqual(crudGetMatching.mock.calls[1], [
             'posts',
             'comments@post_id',
             {
@@ -163,7 +160,7 @@ describe('<ReferenceInput />', () => {
     });
 
     it('should use custom filterToQuery function prop', () => {
-        const crudGetMatching = sinon.spy();
+        const crudGetMatching = jest.fn();
         const wrapper = shallow(
             <ReferenceInput
                 {...defaultProps}
@@ -176,7 +173,7 @@ describe('<ReferenceInput />', () => {
             { lifecycleExperimental: true }
         );
         wrapper.instance().setFilter('bar');
-        assert.deepEqual(crudGetMatching.args[1], [
+        assert.deepEqual(crudGetMatching.mock.calls[1], [
             'posts',
             'comments@post_id',
             {
@@ -194,7 +191,7 @@ describe('<ReferenceInput />', () => {
     });
 
     it('should call crudGetOne on mount if value is set', () => {
-        const crudGetOne = sinon.spy();
+        const crudGetOne = jest.fn();
         shallow(
             <ReferenceInput
                 {...defaultProps}
@@ -206,18 +203,18 @@ describe('<ReferenceInput />', () => {
             </ReferenceInput>,
             { lifecycleExperimental: true }
         );
-        assert.deepEqual(crudGetOne.args[0], ['posts', 5, null, false]);
+        assert.deepEqual(crudGetOne.mock.calls[0], ['posts', 5, null, false]);
     });
 
     it('should pass onChange down to child component', () => {
-        const onChange = sinon.spy();
+        const onChange = jest.fn();
         const wrapper = shallow(
             <ReferenceInput {...defaultProps} allowEmpty onChange={onChange}>
                 <MyComponent />
             </ReferenceInput>
         );
         wrapper.find('MyComponent').simulate('change', 'foo');
-        assert.deepEqual(onChange.args[0], ['foo']);
+        assert.deepEqual(onChange.mock.calls[0], ['foo']);
     });
 
     it('should pass meta down to child component', () => {

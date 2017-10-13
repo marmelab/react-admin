@@ -1,7 +1,6 @@
 import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
-import sinon from 'sinon';
 
 import { BooleanInput } from './BooleanInput';
 
@@ -32,34 +31,23 @@ describe('<BooleanInput />', () => {
     });
 
     it('should trigger input.onChange with true after being checked', () => {
-        const onChange = sinon.spy();
+        const onChange = jest.fn();
         const wrapper = shallow(
             <BooleanInput source="foo" input={{ value: false, onChange }} />
         );
 
         wrapper.find('Toggle').simulate('toggle', {}, true);
 
-        return new Promise(resolve => {
-            setTimeout(() => {
-                assert(onChange.calledWith(true));
-                resolve();
-            }, 100);
-        });
+        assert.equal(onChange.mock.calls[0][0], true);
     });
 
     it('should trigger input.onChange with false after being checked', () => {
-        const onChange = sinon.spy();
+        const onChange = jest.fn();
         const wrapper = shallow(
             <BooleanInput source="foo" input={{ value: true, onChange }} />
         );
 
         wrapper.find('Toggle').simulate('toggle', {}, false);
-
-        return new Promise(resolve => {
-            setTimeout(() => {
-                assert(onChange.calledWith(false));
-                resolve();
-            }, 100);
-        });
+        assert.equal(onChange.mock.calls[0][0], false);
     });
 });

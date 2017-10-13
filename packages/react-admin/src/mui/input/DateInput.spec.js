@@ -1,7 +1,6 @@
 import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
-import sinon from 'sinon';
 
 import { DateInput, datify } from './DateInput';
 
@@ -49,7 +48,7 @@ describe('<DateInput />', () => {
     });
 
     it('should call props `input.onChange` method when changed', () => {
-        const input = { value: null, onChange: sinon.spy(), onBlur: () => {} };
+        const input = { value: null, onChange: jest.fn(), onBlur: () => {} };
         const wrapper = shallow(
             <DateInput source="foo" input={input} meta={{}} locale="de-DE" />
         );
@@ -57,7 +56,10 @@ describe('<DateInput />', () => {
         wrapper
             .find('DatePicker')
             .simulate('change', null, new Date('2010-01-04'));
-        assert.deepEqual(input.onChange.args, [['2010-01-04T00:00:00.000Z']]);
+        assert.equal(
+            input.onChange.mock.calls[0][0],
+            '2010-01-04T00:00:00.000Z'
+        );
     });
 
     describe('error message', () => {

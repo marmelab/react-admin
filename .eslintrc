@@ -2,15 +2,12 @@
     "env": {
         "es6": true,
         "browser": true,
-        "mocha": true,
+        "jest": true,
         "node": true,
         "phantomjs": true,
         "protractor": true
     },
-    "plugins": [
-        "prettier",
-        "react"
-    ],
+    "plugins": ["prettier", "react"],
     "extends": [
         "eslint:recommended",
         "prettier",
@@ -36,27 +33,13 @@
                 "trailingComma": "es5"
             }
         ],
-        "react/forbid-prop-types": [
-            "off"
-        ],
-        "react/prop-types": [
-            "warn"
-        ],
-        "react/jsx-no-bind": [
-            "warn"
-        ],
-        "react/jsx-indent": [
-            "off"
-        ],
-        "react/jsx-indent-props": [
-            "off"
-        ],
-        "react/jsx-filename-extension": [
-            "off"
-        ],
-        "import/no-named-as-default": [
-            "off"
-        ],
+        "react/forbid-prop-types": ["off"],
+        "react/prop-types": ["warn"],
+        "react/jsx-no-bind": ["warn"],
+        "react/jsx-indent": ["off"],
+        "react/jsx-indent-props": ["off"],
+        "react/jsx-filename-extension": ["off"],
+        "import/no-named-as-default": ["off"],
         "no-unused-vars": [
             "error",
             {
@@ -66,16 +49,10 @@
     },
     "overrides": [
         {
-            "files": [
-                "**/*.spec.js"
-            ],
+            "files": ["**/*.spec.js"],
             "rules": {
-                "react/jsx-no-bind": [
-                    "off"
-                ],
-                "react/prop-types": [
-                    "off"
-                ]
+                "react/jsx-no-bind": ["off"],
+                "react/prop-types": ["off"]
             }
         }
     ]

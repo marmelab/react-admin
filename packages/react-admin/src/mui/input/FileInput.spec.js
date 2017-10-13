@@ -1,6 +1,5 @@
 import React from 'react';
 import assert from 'assert';
-import { spy } from 'sinon';
 import { shallow } from 'enzyme';
 import { File, FileReader } from 'file-api';
 
@@ -8,9 +7,14 @@ import { ImageField } from '../field/ImageField';
 import { FileInput } from './FileInput';
 
 describe('<FileInput />', () => {
-    before(() => {
+    beforeAll(() => {
         global.File = File;
         global.FileReader = FileReader;
+    });
+
+    afterAll(() => {
+        delete global.File;
+        delete global.FileReader;
     });
 
     it('should display a dropzone', () => {
@@ -30,7 +34,7 @@ describe('<FileInput />', () => {
     });
 
     it('should correctly update upon drop when allowing a single file', () => {
-        const onChange = spy();
+        const onChange = jest.fn();
 
         const wrapper = shallow(
             <FileInput
@@ -47,13 +51,13 @@ describe('<FileInput />', () => {
 
         wrapper.instance().onDrop([{ preview: 'new_b64_picture' }]);
 
-        assert.deepEqual(onChange.args[0][0], {
+        assert.deepEqual(onChange.mock.calls[0][0], {
             preview: 'new_b64_picture',
         });
     });
 
     it('should correctly update upon removal when allowing a single file', () => {
-        const onChange = spy();
+        const onChange = jest.fn();
 
         const wrapper = shallow(
             <FileInput
@@ -69,11 +73,11 @@ describe('<FileInput />', () => {
         );
 
         wrapper.instance().onRemove({ src: 'b64_picture' })();
-        assert.deepEqual(onChange.args[0][0], null);
+        assert.deepEqual(onChange.mock.calls[0][0], null);
     });
 
     it('should correctly update upon drop when allowing multiple files', () => {
-        const onChange = spy();
+        const onChange = jest.fn();
 
         const wrapper = shallow(
             <FileInput
@@ -92,7 +96,7 @@ describe('<FileInput />', () => {
 
         wrapper.instance().onDrop([{ preview: 'new_b64_picture' }]);
 
-        assert.deepEqual(onChange.args[0][0], [
+        assert.deepEqual(onChange.mock.calls[0][0], [
             { src: 'b64_picture' },
             { src: 'another_b64_picture' },
             { preview: 'new_b64_picture' },
@@ -100,7 +104,7 @@ describe('<FileInput />', () => {
     });
 
     it('should correctly update upon removal when allowing multiple files', () => {
-        const onChange = spy();
+        const onChange = jest.fn();
 
         const wrapper = shallow(
             <FileInput
@@ -119,7 +123,7 @@ describe('<FileInput />', () => {
 
         wrapper.instance().onRemove({ src: 'another_b64_picture' })();
 
-        assert.deepEqual(onChange.args[0][0], [{ src: 'b64_picture' }]);
+        assert.deepEqual(onChange.mock.calls[0][0], [{ src: 'b64_picture' }]);
     });
 
     it('should display correct label depending multiple property', () => {

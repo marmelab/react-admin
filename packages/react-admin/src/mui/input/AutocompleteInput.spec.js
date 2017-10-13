@@ -1,7 +1,6 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { spy } from 'sinon';
 
 import { AutocompleteInput } from './AutocompleteInput';
 
@@ -170,7 +169,7 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should change searchText state and call setFilter when calling handleUpdateInput', () => {
-        const setFilter = spy();
+        const setFilter = jest.fn();
         const wrapper = shallow(
             <AutocompleteInput
                 {...defaultProps}
@@ -187,7 +186,7 @@ describe('<AutocompleteInput />', () => {
         assert.equal(wrapper.state('searchText'), 'foo');
         wrapper.instance().handleUpdateInput('bar');
         assert.equal(wrapper.state('searchText'), 'bar');
-        assert(setFilter.calledWith('bar'));
+        assert.equal(setFilter.mock.calls[0][0], 'bar');
     });
 
     describe('error message', () => {

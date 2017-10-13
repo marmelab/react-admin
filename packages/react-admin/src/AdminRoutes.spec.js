@@ -4,7 +4,6 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { render, shallow } from 'enzyme';
 import assert from 'assert';
-import sinon from 'sinon';
 
 import { AdminRoutes } from './AdminRoutes';
 
@@ -32,7 +31,11 @@ describe('<AdminRoutes>', () => {
         const wrapper = render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/']}>
-                    <AdminRoutes dashboard={Dashboard} resources={resources} />
+                    <AdminRoutes
+                        dashboard={Dashboard}
+                        resources={resources}
+                        declareResources={() => true}
+                    />
                 </MemoryRouter>
             </Provider>
         );
@@ -42,7 +45,10 @@ describe('<AdminRoutes>', () => {
         const wrapper = render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/posts']}>
-                    <AdminRoutes resources={resources} />
+                    <AdminRoutes
+                        resources={resources}
+                        declareResources={() => true}
+                    />
                 </MemoryRouter>
             </Provider>
         );
@@ -52,7 +58,10 @@ describe('<AdminRoutes>', () => {
         const wrapper = render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/posts/12']}>
-                    <AdminRoutes resources={resources} />
+                    <AdminRoutes
+                        resources={resources}
+                        declareResources={() => true}
+                    />
                 </MemoryRouter>
             </Provider>
         );
@@ -62,7 +71,10 @@ describe('<AdminRoutes>', () => {
         const wrapper = render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/posts/12/show']}>
-                    <AdminRoutes resources={resources} />
+                    <AdminRoutes
+                        resources={resources}
+                        declareResources={() => true}
+                    />
                 </MemoryRouter>
             </Provider>
         );
@@ -72,7 +84,10 @@ describe('<AdminRoutes>', () => {
         const wrapper = render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/posts/12/delete']}>
-                    <AdminRoutes resources={resources} />
+                    <AdminRoutes
+                        resources={resources}
+                        declareResources={() => true}
+                    />
                 </MemoryRouter>
             </Provider>
         );
@@ -86,6 +101,7 @@ describe('<AdminRoutes>', () => {
                     <AdminRoutes
                         resources={resources}
                         customRoutes={customRoutes}
+                        declareResources={() => true}
                     />
                 </MemoryRouter>
             </Provider>
@@ -93,43 +109,39 @@ describe('<AdminRoutes>', () => {
         assert.equal(wrapper.html(), '<div>Custom</div>');
     });
 
-    it('should accept a function as children and declare the returned resources', () => {
-        const declareResources = sinon.stub();
-
-        shallow(
+    it('should accept a function as children and declare the returned resources', async () => {
+        const declareResources = jest.fn();
+        const Foo = () => <span />;
+        await shallow(
             <AdminRoutes declareResources={declareResources}>
-                {() => resources}
-            </AdminRoutes>,
-            { lifecycleExperimental: true }
-        );
+                {() =>
+                    resources.map(resource => (
+                        <Foo {...resource} /> // eslint-disable-line react/jsx-key
+                    ))}
+            </AdminRoutes>
+        )
+            .instance()
+            .componentDidMount();
 
-        return new Promise(resolve => {
-            setTimeout(() => {
-                assert(
-                    declareResources.calledWith(resources.map(r => r.props))
-                );
-                resolve();
-            }, 0);
-        });
+        assert.deepEqual(declareResources.mock.calls[0][0], resources);
     });
 
-    it('should accept a promise as children and declare the returned resources', () => {
-        const declareResources = sinon.stub();
-
-        shallow(
+    it('should accept a promise as children and declare the returned resources', async () => {
+        const declareResources = jest.fn();
+        const Foo = () => <span />;
+        await shallow(
             <AdminRoutes declareResources={declareResources}>
-                {() => Promise.resolve(resources)}
-            </AdminRoutes>,
-            { lifecycleExperimental: true }
-        );
+                {() =>
+                    Promise.resolve(
+                        resources.map(resource => (
+                            <Foo {...resource} /> // eslint-disable-line react/jsx-key
+                        ))
+                    )}
+            </AdminRoutes>
+        )
+            .instance()
+            .componentDidMount();
 
-        return new Promise(resolve => {
-            setTimeout(() => {
-                assert(
-                    declareResources.calledWith(resources.map(r => r.props))
-                );
-                resolve();
-            }, 0);
-        });
+        assert.deepEqual(declareResources.mock.calls[0][0], resources);
     });
 });
