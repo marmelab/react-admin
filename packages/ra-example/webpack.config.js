@@ -14,4 +14,15 @@ module.exports = {
             { test: /\.css$/, loader: 'style-loader!css-loader' },
         ],
     },
+    resolve: {
+        alias: {
+            'react-admin': path.join(__dirname, '..', 'react-admin', 'src'),
+            'ra-data-fakerest': path.join(
+                __dirname,
+                '..',
+                'ra-data-fakerest',
+                'src'
+            ),
+        },
+    },
 };
