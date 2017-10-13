@@ -5,7 +5,7 @@ title: "The Show View"
 
 # The Show View
 
-The Show view displays a record fetched from the API in a readonly fashion. It delegates the actual rendering of the record to a layout component - usually `<SimpleShowLayout>`. This layout component uses its children ([`<Fields>`](./Fields.md) components) to render each record field.
+The Show view displays a record fetched from the API in a read-only fashion. It delegates the actual rendering of the record to a layout component - usually `<SimpleShowLayout>`. This layout component uses its children ([`<Fields>`](./Fields.md) components) to render each record field.
 
 ![post show view](./img/show-view.png)
 
@@ -159,9 +159,9 @@ export const PostShow = (props) => (
 );
 ```
 
-## Declaring fields at runtime
+## Declaring Fields at Runtime
 
-You might want to dynamically define the fields when the `<Show>` component is rendered. It accepts a function as its child and this function can return a Promise. If you also defined an `authClient` on the `<Admin>` component, the function will receive the result of a call to `authClient` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
+You might want to dynamically define the fields when the `<Show>` component is rendered. It accepts a function as its child, and this function can return a Promise. If you defined an `authClient` on the `<Admin>` component, the function child of the `<Show>` component will receive the result of a call to `authClient` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
 
 For instance, getting the fields from an API might look like:
 

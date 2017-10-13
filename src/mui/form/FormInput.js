@@ -1,5 +1,6 @@
 import React from 'react';
-import FormField from './FormField';
+
+import Labeled from '../input/Labeled';
 
 const FormInput = ({ input, ...rest }) =>
     input ? (
@@ -7,7 +8,13 @@ const FormInput = ({ input, ...rest }) =>
             className={`aor-input aor-input-${input.props.source}`}
             style={input.props.style}
         >
-            <FormField input={input} {...rest} />
+            {input.props.addLabel ? (
+                <Labeled {...input.props} {...rest}>
+                    {input}
+                </Labeled>
+            ) : (
+                React.cloneElement(input, rest)
+            )}
         </div>
     ) : null;
 

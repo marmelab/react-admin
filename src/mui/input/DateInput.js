@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'material-ui/DatePicker';
+
+import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 
 export const datify = input => {
@@ -16,7 +18,7 @@ export const datify = input => {
     return date;
 };
 
-class DateInput extends Component {
+export class DateInput extends Component {
     onChange = (_, date) => {
         this.props.input.onChange(date.toISOString());
         this.props.input.onBlur();
@@ -79,7 +81,6 @@ class DateInput extends Component {
 }
 
 DateInput.propTypes = {
-    addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
@@ -91,8 +92,7 @@ DateInput.propTypes = {
 };
 
 DateInput.defaultProps = {
-    addField: true,
     options: {},
 };
 
-export default DateInput;
+export default addField(DateInput);

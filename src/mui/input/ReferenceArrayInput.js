@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
+import compose from 'recompose/compose';
+
+import addField from '../form/addField';
 import Labeled from '../input/Labeled';
 import {
     crudGetMany as crudGetManyAction,
@@ -210,7 +213,6 @@ export class ReferenceArrayInput extends Component {
 }
 
 ReferenceArrayInput.propTypes = {
-    addField: PropTypes.bool.isRequired,
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
@@ -263,13 +265,10 @@ function mapStateToProps(state, props) {
     };
 }
 
-const ConnectedReferenceInput = connect(mapStateToProps, {
-    crudGetMany: crudGetManyAction,
-    crudGetMatching: crudGetMatchingAction,
-})(ReferenceArrayInput);
-
-ConnectedReferenceInput.defaultProps = {
-    addField: true,
-};
-
-export default ConnectedReferenceInput;
+export default compose(
+    addField,
+    connect(mapStateToProps, {
+        crudGetMany: crudGetManyAction,
+        crudGetMatching: crudGetMatchingAction,
+    })
+)(ReferenceArrayInput);

@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import AutoComplete from 'material-ui/AutoComplete';
+import compose from 'recompose/compose';
 
+import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 import translate from '../../i18n/translate';
 
@@ -168,7 +170,6 @@ export class AutocompleteInput extends Component {
 }
 
 AutocompleteInput.propTypes = {
-    addField: PropTypes.bool.isRequired,
     choices: PropTypes.arrayOf(PropTypes.object),
     elStyle: PropTypes.object,
     filter: PropTypes.func.isRequired,
@@ -189,7 +190,6 @@ AutocompleteInput.propTypes = {
 };
 
 AutocompleteInput.defaultProps = {
-    addField: true,
     choices: [],
     filter: AutoComplete.fuzzyFilter,
     options: {},
@@ -198,4 +198,4 @@ AutocompleteInput.defaultProps = {
     translateChoice: true,
 };
 
-export default translate(AutocompleteInput);
+export default compose(addField, translate)(AutocompleteInput);

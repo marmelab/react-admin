@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
 import Labeled from './Labeled';
+import compose from 'recompose/compose';
+
+import addField from '../form/addField';
 import {
     crudGetOne as crudGetOneAction,
     crudGetMatching as crudGetMatchingAction,
@@ -204,7 +207,6 @@ export class ReferenceInput extends Component {
 }
 
 ReferenceInput.propTypes = {
-    addField: PropTypes.bool.isRequired,
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
@@ -229,7 +231,6 @@ ReferenceInput.propTypes = {
 };
 
 ReferenceInput.defaultProps = {
-    addField: true,
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
@@ -253,13 +254,10 @@ function mapStateToProps(state, props) {
     };
 }
 
-const ConnectedReferenceInput = connect(mapStateToProps, {
-    crudGetOne: crudGetOneAction,
-    crudGetMatching: crudGetMatchingAction,
-})(ReferenceInput);
-
-ConnectedReferenceInput.defaultProps = {
-    addField: true,
-};
-
-export default ConnectedReferenceInput;
+export default compose(
+    addField,
+    connect(mapStateToProps, {
+        crudGetOne: crudGetOneAction,
+        crudGetMatching: crudGetMatchingAction,
+    })
+)(ReferenceInput);

@@ -1,7 +1,8 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import LongTextInput from './LongTextInput';
+
+import { LongTextInput } from './LongTextInput';
 
 describe('<LongTextInput />', () => {
     describe('error message', () => {

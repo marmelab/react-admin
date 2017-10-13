@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import FieldTitle from '../../util/FieldTitle';
+import addField from '../form/addField';
 
 /**
  * An Input component for a number
@@ -15,7 +16,7 @@ import FieldTitle from '../../util/FieldTitle';
  *
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
-class NumberInput extends Component {
+export class NumberInput extends Component {
     handleBlur = eventOrValue => {
         this.props.onBlur(eventOrValue);
         this.props.input.onBlur(eventOrValue);
@@ -82,7 +83,6 @@ class NumberInput extends Component {
 }
 
 NumberInput.propTypes = {
-    addField: PropTypes.bool.isRequired,
     elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
@@ -103,7 +103,6 @@ NumberInput.propTypes = {
 };
 
 NumberInput.defaultProps = {
-    addField: true,
     onBlur: () => {},
     onChange: () => {},
     onFocus: () => {},
@@ -111,4 +110,4 @@ NumberInput.defaultProps = {
     step: 'any',
 };
 
-export default NumberInput;
+export default addField(NumberInput);

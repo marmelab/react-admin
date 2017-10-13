@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import compose from 'recompose/compose';
 
+import addField from '../form/addField';
 import translate from '../../i18n/translate';
 import FieldTitle from '../../util/FieldTitle';
 
@@ -164,7 +166,6 @@ export class SelectInput extends Component {
 }
 
 SelectInput.propTypes = {
-    addField: PropTypes.bool.isRequired,
     allowEmpty: PropTypes.bool.isRequired,
     choices: PropTypes.arrayOf(PropTypes.object),
     elStyle: PropTypes.object,
@@ -186,7 +187,6 @@ SelectInput.propTypes = {
 };
 
 SelectInput.defaultProps = {
-    addField: true,
     allowEmpty: false,
     choices: [],
     options: {},
@@ -195,4 +195,4 @@ SelectInput.defaultProps = {
     translateChoice: true,
 };
 
-export default translate(SelectInput);
+export default compose(addField, translate)(SelectInput);

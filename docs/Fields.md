@@ -27,16 +27,28 @@ All field components accept the following attributes:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
 * `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
-* `addLabel`: Defined the visibility of the label when the field is not in a datagrid, default value is ```true```.
 * `sortable`: Should the list be sortable using `source` attribute? Defaults to `true`.
 * `elStyle`: A style object to customize the look and feel of the field element itself
 * `style`: A style object to customize the look and feel of the field container (e.g. the `<td>` in a datagrid).
+* `addLabel`: Defines the visibility of the label when the field is not in a datagrid. Default value is ```true```.
 
 {% raw %}
 ```jsx
 <TextField source="zb_title" label="Title" style={{ color: 'purple' }} />
 ```
 {% endraw %}
+
+**Tip**: You can use field components inside the `Edit` or `Show` views, too:
+
+```jsx
+export const PostShow = ({ ...props }) => (
+    <Show {...props}>
+        <SimpleShowLayout>
+            <TextField source="title" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
 
 **Tip**: If you display a record with a complex structure, you can use a path with dot separators as the `source` attribute. For instance, if the API returns the following 'book' record:
 
@@ -287,6 +299,14 @@ import { NumberField }  from 'admin-on-rest';
 See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) for the `options` prop syntax.
 
 **Tip**: If you need more formatting options than what `Intl.Numberformat` can provide, build your own field component leveraging a third-party library like [numeral.js](http://numeraljs.com/).
+
+**Tip**: When used in a `Show` view, the right alignment may look weird. Disable it by resetting the `style` attribute:
+
+```jsx
+import { NumberField }  from 'admin-on-rest';
+
+<NumberField source="score" style={{}} />
+```
 
 ## `<SelectField>`
 
@@ -667,7 +687,7 @@ If you want to override the styles of the field *element*, use the `elStyle` pro
 ```
 {% endraw %}
 
-admin-on-rest usually delegates the rendering of fields components to material ui components. Refer to the material ui documentation to see the default styles for elements.
+Admin-on-rest usually delegates the rendering of fields components to material-ui components. Refer to the material-ui documentation to see the default styles for elements.
 
 Lastly, you may want to override the field header (the `<th>` element in the datagrid). In that case, use the `headerStyle` prop:
 

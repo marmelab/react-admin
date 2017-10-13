@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import sinon from 'sinon';
 
-import BooleanInput from './BooleanInput';
+import { BooleanInput } from './BooleanInput';
 
 describe('<BooleanInput />', () => {
     it('should render as a mui Toggle', () => {

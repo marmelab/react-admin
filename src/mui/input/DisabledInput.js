@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
+
+import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 
 const DisabledInput = ({
@@ -27,11 +29,6 @@ DisabledInput.propTypes = {
     source: PropTypes.string,
     elStyle: PropTypes.object,
     input: PropTypes.object,
-    addField: PropTypes.bool.isRequired,
 };
 
-DisabledInput.defaultProps = {
-    addField: true,
-};
-
-export default DisabledInput;
+export default addField(DisabledInput);

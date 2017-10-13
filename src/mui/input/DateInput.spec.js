@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import sinon from 'sinon';
 
-import DateInput, { datify } from './DateInput';
+import { DateInput, datify } from './DateInput';
 
 describe('DateInput .datify', () => {
     it('should return null if there is no input', () => {

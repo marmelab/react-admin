@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 
-import { initializeForm as initializeFormAction } from '../../actions';
-import Labeled from '../input/Labeled';
+import { initializeForm } from '../../actions';
 import { required } from './validate';
 
 const isRequired = validate => {
@@ -14,71 +14,42 @@ const isRequired = validate => {
     return false;
 };
 
-export class FormFieldComponent extends Component {
+export class FormField extends Component {
+    static propTypes = {
+        component: PropTypes.any.isRequired,
+        defaultValue: PropTypes.any,
+        initializeForm: PropTypes.func.isRequired,
+        input: PropTypes.object,
+        source: PropTypes.string,
+        validate: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
+    };
+
     componentDidMount() {
-        if (this.props.input.props.defaultValue) {
-            let defaultValue = this.props.input.props.defaultValue;
-
-            if (typeof defaultValue === 'function') {
-                defaultValue = this.props.input.props.defaultValue();
-            }
-
-            this.props.initializeForm({
-                [this.props.input.props.source]: defaultValue,
-            });
+        const { defaultValue, input, initializeForm, source } = this.props;
+        if (!defaultValue || input) {
+            return;
         }
+        initializeForm({
+            [source]:
+                typeof defaultValue === 'function'
+                    ? defaultValue()
+                    : defaultValue,
+        });
     }
 
     render() {
-        const { input, ...rest } = this.props;
-
-        if (input.props.addField) {
-            if (input.props.addLabel) {
-                return (
-                    <Field
-                        {...rest}
-                        {...input.props}
-                        name={input.props.source}
-                        component={Labeled}
-                        label={input.props.label}
-                        isRequired={isRequired(input.props.validate)}
-                    >
-                        {input}
-                    </Field>
-                );
-            }
-            return (
-                <Field
-                    {...rest}
-                    {...input.props}
-                    name={input.props.source}
-                    component={input.type}
-                    isRequired={isRequired(input.props.validate)}
-                />
-            );
-        }
-        if (input.props.addLabel) {
-            return (
-                <Labeled
-                    {...rest}
-                    label={input.props.label}
-                    source={input.props.source}
-                    isRequired={isRequired(input.props.validate)}
-                >
-                    {input}
-                </Labeled>
-            );
-        }
-        return typeof input.type === 'string'
-            ? input
-            : React.cloneElement(input, rest);
+        const { input, validate, component, ...props } = this.props;
+        return input ? ( // An ancestor is already decorated by Field
+            React.createElement(component, this.props)
+        ) : (
+            <Field
+                {...props}
+                name={props.source}
+                component={component}
+                isRequired={isRequired(validate)}
+            />
+        );
     }
 }
 
-const FormField = connect(undefined, { initializeForm: initializeFormAction })(
-    FormFieldComponent
-);
-
-FormField.displayName = 'FormField';
-
-export default FormField;
+export default connect(undefined, { initializeForm })(FormField);

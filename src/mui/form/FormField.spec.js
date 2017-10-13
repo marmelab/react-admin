@@ -1,57 +1,54 @@
 import assert from 'assert';
 import { shallow } from 'enzyme';
+import { spy } from 'sinon';
 import React from 'react';
 
-import { FormFieldComponent as FormField } from './FormField';
+import { FormField } from './FormField';
 
 describe('<FormField>', () => {
     const Foo = () => <div />;
-    Foo.defaultProps = { source: 'bar' };
-    it('should render the input component', () => {
-        const wrapper = shallow(<FormField input={<Foo />} />);
-        const component = wrapper.find('Foo');
-        assert.equal(component.length, 1);
-    });
-    it("should render the input component even if it's an html element", () => {
-        const wrapper = shallow(<FormField input={<div />} />);
-        const component = wrapper.find('div');
-        assert.equal(component.length, 1);
-    });
-    it('should not render <Field /> component by default', () => {
-        const wrapper = shallow(<FormField input={<Foo />} />);
-        const component = wrapper.find('Field');
-        assert.equal(component.length, 0);
-    });
-    it('should render a <Field /> component when addField is true', () => {
-        const wrapper = shallow(<FormField input={<Foo addField />} />);
-        const component = wrapper.find('Field');
-        assert.equal(component.length, 1);
-    });
-    it('should not render a <Labeled /> component when addField is true by default', () => {
-        const wrapper = shallow(<FormField input={<Foo addField />} />);
-        const component = wrapper.find('Field').prop('component').name;
-        assert.equal(component, 'Foo');
-    });
-    it('should render a <Labeled /> component when addField is true and addLabel is true', () => {
+    it('should render a <Field/> component for the input component', () => {
         const wrapper = shallow(
-            <FormField input={<Foo addField addLabel />} />
+            <FormField innitializeForm={() => true} component={Foo} />
         );
-        const component = wrapper.find('Field').prop('component').name;
-        assert.equal(component, 'Labeled');
-    });
-
-    it('should not render a <Labeled /> component by default', () => {
-        const wrapper = shallow(<FormField input={<Foo />} />);
-        const component = wrapper.find('Labeled');
-        assert.equal(component.length, 0);
-    });
-    it('should render a <Labeled /> component when addLabel is true', () => {
-        const wrapper = shallow(<FormField input={<Foo addLabel />} />);
-        const component = wrapper.find('Labeled');
+        const component = wrapper.find('Field');
         assert.equal(component.length, 1);
+        assert.equal(wrapper.prop('component'), Foo);
     });
-    it('should not render a <Field /> component when addLabel is true by default', () => {
-        const wrapper = shallow(<FormField input={<Foo addLabel />} />);
+    it('should not initialize the form if no default value', () => {
+        const initializeForm = spy();
+        shallow(
+            <FormField
+                source="title"
+                initializeForm={initializeForm}
+                component={Foo}
+            />,
+            { lifecycleExperimental: true }
+        );
+        assert(initializeForm.notCalled);
+    });
+    it('should initialize the form with default value on mount', () => {
+        const initializeForm = spy();
+        shallow(
+            <FormField
+                source="title"
+                initializeForm={initializeForm}
+                component={Foo}
+                defaultValue={2}
+            />,
+            { lifecycleExperimental: true }
+        );
+        assert(initializeForm.calledOnce);
+        assert.deepEqual(initializeForm.args, [[{ title: 2 }]]);
+    });
+    it('should not render a <Field /> component the field has an input', () => {
+        const wrapper = shallow(
+            <FormField
+                innitializeForm={() => true}
+                component={Foo}
+                input={{}}
+            />
+        );
         const component = wrapper.find('Field');
         assert.equal(component.length, 0);
     });
