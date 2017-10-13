@@ -3,9 +3,9 @@ import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 
-import { Admin, Resource, Delete, englishMessages } from 'admin-on-rest'; // eslint-disable-line import/no-unresolved
-import jsonRestClient from 'aor-json-rest-client';
-import frenchMessages from 'aor-language-french';
+import { Admin, Resource, Delete, englishMessages } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import jsonRestClient from 'ra-data-fakerest';
+import frenchMessages from 'ra-language-french';
 
 import addUploadFeature from './addUploadFeature';
 

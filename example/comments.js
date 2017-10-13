@@ -23,7 +23,7 @@ import {
     Show,
     ShowButton,
     SimpleShowLayout,
-} from 'admin-on-rest'; // eslint-disable-line import/no-unresolved
+} from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import PersonIcon from 'material-ui/svg-icons/social/person';
 import Avatar from 'material-ui/Avatar';

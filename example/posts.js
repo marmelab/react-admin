@@ -43,7 +43,7 @@ import {
     number,
     required,
     translate,
-} from 'admin-on-rest'; // eslint-disable-line import/no-unresolved
+} from 'react-admin'; // eslint-disable-line import/no-unresolved
 // import RichTextInput from 'aor-rich-text-input';
 import Chip from 'material-ui/Chip';
 

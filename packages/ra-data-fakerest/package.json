@@ -1,0 +1,37 @@
+{
+    "name": "ra-data-fakerest",
+    "version": "2.0.0-alpha1",
+    "description": "JSON Server data provider for react-admin",
+    "main": "lib/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "files": ["LICENSE", "*.md", "lib", "src"],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/marmelab/aor-json-rest-client.git"
+    },
+    "keywords": [
+        "reactjs",
+        "react",
+        "react-admin",
+        "rest",
+        "fakerest",
+        "local"
+    ],
+    "author": "François Zaninotto",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/marmelab/aor-json-rest-client/issues"
+    },
+    "homepage": "https://github.com/marmelab/aor-json-rest-client#readme",
+    "dependencies": {
+        "fakerest": "~2.1.0"
+    },
+    "devDependencies": {
+        "babel-cli": "^6.18.0",
+        "babel-plugin-add-module-exports": "^0.2.1",
+        "babel-preset-es2015": "^6.18.0",
+        "babel-preset-stage-0": "^6.16.0"
+    }
+}

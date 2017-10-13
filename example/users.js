@@ -23,7 +23,7 @@ import {
     Toolbar,
     required,
     translate,
-} from 'admin-on-rest'; // eslint-disable-line import/no-unresolved
+} from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 export UserIcon from 'material-ui/svg-icons/social/people';
 

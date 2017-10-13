@@ -16,7 +16,17 @@ module.exports = {
     },
     resolve: {
         alias: {
-            'admin-on-rest': path.join(__dirname, '..', 'src'),
+            'react-admin': path.join(__dirname, '..', 'packages/react-admin'),
+            'ra-data-fakerest': path.join(
+                __dirname,
+                '..',
+                'packages/ra-data-fakerest'
+            ),
+            'ra-language-french': path.join(
+                __dirname,
+                '..',
+                'packages/ra-language-french'
+            ),
         },
     },
 };
