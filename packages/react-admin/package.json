@@ -15,8 +15,6 @@
         "file-api": "~0.10.4",
         "full-icu": "~1.1.3",
         "ignore-styles": "~5.0.1",
-        "prettier": "^1.5.2",
-        "prettier-eslint-cli": "^4.1.1",
         "react": "~15.6.1",
         "react-dom": "~15.6.1",
         "react-test-renderer": "~15.6.1"
