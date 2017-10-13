@@ -6,7 +6,7 @@ import {
     GET_MANY_REFERENCE,
     CREATE,
     UPDATE,
-} from '../../../rest/types';
+} from '../../../dataFetchActions';
 
 import getFetchedAt from '../../../util/getFetchedAt';
 

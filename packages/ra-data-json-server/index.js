@@ -1,6 +1,7 @@
 import { stringify } from 'query-string';
-import { fetchJson } from '../util/fetch';
 import {
+    fetchJson,
+    flattenObject,
     GET_LIST,
     GET_ONE,
     GET_MANY,
@@ -8,17 +9,16 @@ import {
     CREATE,
     UPDATE,
     DELETE,
-} from './types';
+ } from 'react-admin';
 
 /**
- * Maps admin-on-rest queries to a simple REST API
+ * Maps admin-on-rest queries to a json-server powered REST API
  *
- * The REST dialect is similar to the one of FakeRest
- * @see https://github.com/marmelab/FakeRest
+ * @see https://github.com/typicode/json-server
  * @example
- * GET_LIST     => GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]
+ * GET_LIST     => GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24
  * GET_ONE      => GET http://my.api.url/posts/123
- * GET_MANY     => GET http://my.api.url/posts?filter={ids:[123,456,789]}
+ * GET_MANY     => GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789
  * UPDATE       => PUT http://my.api.url/posts/123
  * CREATE       => POST http://my.api.url/posts/123
  * DELETE       => DELETE http://my.api.url/posts/123
@@ -38,12 +38,11 @@ export default (apiUrl, httpClient = fetchJson) => {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
-                    sort: JSON.stringify([field, order]),
-                    range: JSON.stringify([
-                        (page - 1) * perPage,
-                        page * perPage - 1,
-                    ]),
-                    filter: JSON.stringify(params.filter),
+                    ...flattenObject(params.filter),
+                    _sort: field,
+                    _order: order,
+                    _start: (page - 1) * perPage,
+                    _end: page * perPage,
                 };
                 url = `${apiUrl}/${resource}?${stringify(query)}`;
                 break;
@@ -51,26 +50,16 @@ export default (apiUrl, httpClient = fetchJson) => {
             case GET_ONE:
                 url = `${apiUrl}/${resource}/${params.id}`;
                 break;
-            case GET_MANY: {
-                const query = {
-                    filter: JSON.stringify({ id: params.ids }),
-                };
-                url = `${apiUrl}/${resource}?${stringify(query)}`;
-                break;
-            }
             case GET_MANY_REFERENCE: {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
-                    sort: JSON.stringify([field, order]),
-                    range: JSON.stringify([
-                        (page - 1) * perPage,
-                        page * perPage - 1,
-                    ]),
-                    filter: JSON.stringify({
-                        ...params.filter,
-                        [params.target]: params.id,
-                    }),
+                    ...flattenObject(params.filter),
+                    [params.target]: params.id,
+                    _sort: field,
+                    _order: order,
+                    _start: (page - 1) * perPage,
+                    _end: page * perPage,
                 };
                 url = `${apiUrl}/${resource}?${stringify(query)}`;
                 break;
@@ -107,16 +96,16 @@ export default (apiUrl, httpClient = fetchJson) => {
         switch (type) {
             case GET_LIST:
             case GET_MANY_REFERENCE:
-                if (!headers.has('content-range')) {
+                if (!headers.has('x-total-count')) {
                     throw new Error(
-                        'The Content-Range header is missing in the HTTP Response. The simple REST client expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare Content-Range in the Access-Control-Expose-Headers header?'
+                        'The X-Total-Count header is missing in the HTTP Response. The jsonServer REST client expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare X-Total-Count in the Access-Control-Expose-Headers header?'
                     );
                 }
                 return {
                     data: json,
                     total: parseInt(
                         headers
-                            .get('content-range')
+                            .get('x-total-count')
                             .split('/')
                             .pop(),
                         10
@@ -136,6 +125,14 @@ export default (apiUrl, httpClient = fetchJson) => {
      * @returns {Promise} the Promise for a REST response
      */
     return (type, resource, params) => {
+        // json-server doesn't handle WHERE IN requests, so we fallback to calling GET_ONE n times instead
+        if (type === GET_MANY) {
+            return Promise.all(
+                params.ids.map(id => httpClient(`${apiUrl}/${resource}/${id}`))
+            ).then(responses => ({
+                data: responses.map(response => response.json),
+            }));
+        }
         const { url, options } = convertRESTRequestToHTTP(
             type,
             resource,

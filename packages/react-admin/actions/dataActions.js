@@ -6,7 +6,7 @@ import {
     DELETE,
     GET_MANY,
     GET_MANY_REFERENCE,
-} from '../rest/types';
+} from '../dataFetchActions';
 
 export const CRUD_GET_LIST = 'AOR/CRUD_GET_LIST';
 export const CRUD_GET_LIST_LOADING = 'AOR/CRUD_GET_LIST_LOADING';
