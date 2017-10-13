@@ -1,0 +1,28 @@
+{
+    "name": "react-admin-example",
+    "private": true,
+    "version": "2.0.0-alpha1",
+    "description": "",
+    "main": "index.html",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+        "aor-rich-text-input": "~1.0.0",
+        "babel-core": "~6.25.0",
+        "babel-loader": "~7.1.1",
+        "babel-plugin-transform-react-jsx": "~6.8.0",
+        "babel-polyfill": "~6.9.1",
+        "babel-preset-react": "~6.11.1",
+        "css-loader": "~0.28.4",
+        "extract-text-webpack-plugin": "~2.1.2",
+        "react-admin": "2.0.0-alpha1",
+        "ra-data-fakerest": "2.0.0-alpha1",
+        "ra-language-french": "2.0.0-alpha1",
+        "style-loader": "~0.18.2",
+        "webpack": "~3.0.0",
+        "webpack-dev-server": "~2.5.0"
+    }
+}
