@@ -1,6 +1,9 @@
 {
     "private": true,
     "name": "react-admin",
+    "scripts": {
+        "test": "make test"
+    },
     "devDependencies": {
         "babel-cli": "~6.26.0",
         "babel-core": "~6.26.0",
@@ -20,7 +23,5 @@
         "eslint-plugin-react": "~7.3.0",
         "jest": "^21.2.1"
     },
-    "workspaces": [
-        "packages/*"
-    ]
+    "workspaces": ["packages/*"]
 }

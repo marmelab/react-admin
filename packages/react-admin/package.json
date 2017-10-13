@@ -5,9 +5,6 @@
         "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
     "files": ["*.md", "docs/*.md", "lib", "src"],
     "main": "lib/index",
-    "scripts": {
-        "test": "make test"
-    },
     "authors": ["François Zaninotto"],
     "repository": "marmelab/admin-on-rest",
     "homepage": "https://github.com/marmelab/admin-on-rest#readme",
