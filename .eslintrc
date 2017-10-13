@@ -2,6 +2,7 @@
     "env": {
         "es6": true,
         "browser": true,
+        "mocha": true,
         "jest": true,
         "node": true,
         "phantomjs": true,
