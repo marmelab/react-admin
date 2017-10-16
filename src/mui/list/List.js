@@ -219,6 +219,7 @@ export class List extends Component {
             translate,
             theme,
             version,
+            isShowTitleBar
         } = this.props;
         const query = this.getQuery();
         const filterValues = query.filter;
@@ -241,7 +242,7 @@ export class List extends Component {
             <div className="list-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <div style={prefix(styles.header)}>
-                        <ViewTitle title={titleElement} />
+                        { isShowTitleBar ? <ViewTitle title={titleElement} /> : null }
                         {actions &&
                             React.cloneElement(actions, {
                                 resource,
@@ -320,6 +321,7 @@ List.propTypes = {
     hasCreate: PropTypes.bool.isRequired,
     ids: PropTypes.array,
     isLoading: PropTypes.bool.isRequired,
+    isShowTitleBar: PropTypes.bool,
     location: PropTypes.object.isRequired,
     path: PropTypes.string,
     params: PropTypes.object.isRequired,
