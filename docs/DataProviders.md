@@ -33,10 +33,11 @@ The `dataProvider` is also the ideal place to add custom HTTP headers, authentic
 
 ## Available Providers
 
-the react-admin projects includes 2 Data Providers:
+The react-admin projects includes 3 Data Providers:
 
-* simple REST: [simpleRestClient](#simple-rest) serves mostly as an example. Incidentally, it is compatible with the [FakeRest](https://github.com/marmelab/FakeRest) API.
-* **[JSON server](https://github.com/typicode/json-server)**: [jsonServerRestClient](#json-server-rest)
+* Simple REST: [marmelab/ra-data-simple-rest](https://github.com/marmelab/ra-data-simple-rest) ([read more below](#simple-rest)). It serves mostly as an example. Incidentally, it is compatible with the [FakeRest](https://github.com/marmelab/FakeRest) API.
+* **[JSON server](https://github.com/typicode/json-server)**: [marmelab/ra-data-json-server](https://github.com/marmelab/ra-data-json-server) ([read more below](#json-server-rest)).
+* Local JSON: [marmelab/ra-data-fakerest](https://github.com/marmelab/ra-data-fakerest). Based on a local object, it doesn't even use HTTP. Use it for testing purposes.
 
 You can find Data Providers for various backends in third-party repositories:
 
@@ -45,7 +46,6 @@ You can find Data Providers for various backends in third-party repositories:
 * **[Firebase](https://firebase.google.com/)**: [sidferreira/aor-firebase-client](https://github.com/sidferreira/aor-firebase-client)
 * **[GraphQL](http://graphql.org/)**: [marmelab/aor-simple-graphql-client](https://github.com/marmelab/aor-simple-graphql-client) (uses [Apollo](http://www.apollodata.com/))
 * **[JSON API](http://jsonapi.org/)**: [moonlight-labs/aor-jsonapi-client](https://github.com/moonlight-labs/aor-jsonapi-client)
-* Local JSON: [marmelab/aor-json-rest-client](https://github.com/marmelab/aor-json-rest-client). It doesn't even use HTTP. Use it for testing purposes.
 * **[Loopback](http://loopback.io/)**: [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback)
 * **[Parse Server](https://github.com/ParsePlatform/parse-server)**: [leperone/aor-parseserver-client](https://github.com/leperone/aor-parseserver-client)
 * **[PostgREST](http://postgrest.com/en/v0.4/)**: [tomberek/aor-postgrest-client](https://github.com/tomberek/aor-postgrest-client)

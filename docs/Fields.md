@@ -302,11 +302,13 @@ See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/W
 
 **Tip**: When used in a `Show` view, the right alignment may look weird. Disable it by resetting the `style` attribute:
 
+{% raw %}
 ```jsx
 import { NumberField }  from 'react-admin';
 
 <NumberField source="score" style={{}} />
 ```
+{% endraw %}
 
 ## `<SelectField>`
 

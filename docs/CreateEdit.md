@@ -459,6 +459,7 @@ You might want to dynamically define the inputs when the `<Create>` or `<Edit>` 
 
 For instance, getting the inputs from an API might look like:
 
+{% raw %}
 ```js
 import React from 'react';
 import { Create, Edit, SimpleForm, TextInput, DateInput } from 'react-admin';
@@ -496,3 +497,4 @@ export const PostCreate = (props) => (
     </Create>
 );
 ```
+{% endraw %}

@@ -38,14 +38,17 @@ export default App;
 
 You can find translation packages for the following languages:
 
-- English (`en`) is the default
+- French (`fr`): [marmelab/ra-language-french](https://github.com/marmelab/ra-language-french)
+- English (`en`): [marmelab/ra-language-english](https://github.com/marmelab/ra-language-english)
+
+The previous version of react-admin, called admin-on-rest, was translated in the following languages:
+
 - Chinese (`cn`): [downup2u/aor-language-chinese](https://github.com/downup2u/aor-language-chinese)
 - Chinese (Traditional) (`cht`): [leesei/aor-language-chinese-traditional](https://github.com/leesei/aor-language-chinese-traditional)
 - Czech (`cs`): [magikMaker/aor-language-czech](https://github.com/magikMaker/aor-language-czech)
 - Danish (`da`): [SSA111/aor-language-danish](https://github.com/SSA111/aor-language-danish)
 - Dutch (`nl`): [pimschaaf/aor-language-dutch](https://github.com/pimschaaf/aor-language-dutch)
 - Farsi (`fa`): [hamidfzm/aor-language-farsi](https://github.com/hamidfzm/aor-language-farsi)
-- French (`fr`): [marmelab/aor-language-french](https://github.com/marmelab/aor-language-french)
 - German (`de`): [der-On/aor-language-german](https://github.com/der-On/aor-language-german)
 - Greek (`el`): [zifnab87/aor-language-greek](https://github.com/zifnab87/aor-language-greek)
 - Hebrew (`he`): [mstmustisnt/aor-language-hebrew](https://github.com/mstmustisnt/aor-language-hebrew)
@@ -62,6 +65,8 @@ You can find translation packages for the following languages:
 - Turkish (`tr`): [ismailbaskin/aor-language-turkish](https://github.com/ismailbaskin/aor-language-turkish)
 - Ukrainian (`uk`): [vitivs/aor-language-ukrainian](https://github.com/vitivs/aor-language-ukrainian)
 - Vietnamese (`vi`): [kimkha/aor-language-vietnamese](https://github.com/kimkha/aor-language-vietnamese)
+
+These packages are not directly interoperable with react-admin, but the upgrade is strightforward; rename the root key from "aor" to "ra". We invite the authors of the packages listed above to republish their translations for react-admin, using a different package name.
 
 If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/react-admin/blob/master/docs/Translation.md) with a link to your package.
 
