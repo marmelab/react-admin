@@ -23,6 +23,12 @@ module.exports = {
                 'ra-data-fakerest',
                 'src'
             ),
+            'ra-input-rich-text': path.join(
+                __dirname,
+                '..',
+                'ra-input-rich-text',
+                'src'
+            ),
         },
     },
 };

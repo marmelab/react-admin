@@ -42,7 +42,7 @@ export default App;
 // in src/posts.js
 import React from 'react';
 import { Create, Edit, SimpleForm, DisabledInput, TextInput, DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
-import RichTextInput from 'aor-rich-text-input';
+import RichTextInput from 'ra-input-rich-text';
 
 export const PostCreate = (props) => (
     <Create {...props}>
@@ -463,7 +463,7 @@ For instance, getting the inputs from an API might look like:
 ```js
 import React from 'react';
 import { Create, Edit, SimpleForm, TextInput, DateInput } from 'react-admin';
-import RichTextInput from 'aor-rich-text-input';
+import RichTextInput from 'ra-input-rich-text';
 
 const knownInputs = [
     <TextInput source="title" />,

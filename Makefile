@@ -21,7 +21,12 @@ build-ra-data-simple-rest:
 	@rm -rf ./packages/ra-data-simple-rest/lib
 	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-simple-rest/src -d ./packages/ra-data-simple-rest/lib --ignore '*.spec.js'
 
-build: build-react-admin build-ra-data-json-server build-ra-data-simple-rest ## compile ES6 files to JS
+build-ra-input-rich-text:
+	@rm -rf ./packages/ra-input-rich-text/lib
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-input-rich-text/src -d ./packages/ra-input-rich-text/lib --ignore '*.spec.js'
+	@cd packages/ra-input-rich-text/src && rsync -R `find . -name *.css` ../lib
+
+build: build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-input-rich-text ## compile ES6 files to JS
 
 watch: ## continuously compile ES6 files to JS
 	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore '*.spec.js' --watch

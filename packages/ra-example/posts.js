@@ -44,7 +44,7 @@ import {
     required,
     translate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-// import RichTextInput from 'aor-rich-text-input';
+import RichTextInput from 'ra-input-rich-text';
 import Chip from 'material-ui/Chip';
 
 export PostIcon from 'material-ui/svg-icons/action/book';
@@ -167,7 +167,7 @@ export const PostCreate = ({ ...props }) => (
             <TextInput source="title" />
             <TextInput source="password" type="password" />
             <TextInput source="teaser" options={{ multiLine: true }} />
-            {/* <RichTextInput source="body" /> */}
+            <RichTextInput source="body" />
             <DateInput source="published_at" defaultValue={() => new Date()} />
             <NumberInput source="average_note" />
             <BooleanInput source="commentable" defaultValue />
@@ -197,12 +197,12 @@ export const PostEdit = ({ ...props }) => (
                 </ImageInput>
             </FormTab>
             <FormTab label="post.form.body">
-                {/* <RichTextInput
+                <RichTextInput
                     source="body"
                     label=""
                     validate={required}
                     addLabel={false}
-                /> */}
+                />
             </FormTab>
             <FormTab label="post.form.miscellaneous">
                 <ReferenceArrayInput source="tags" reference="tags" allowEmpty>

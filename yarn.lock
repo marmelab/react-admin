@@ -130,15 +130,6 @@ anymatch@^1.3.0:
     micromatch "^2.1.5"
     normalize-path "^2.0.0"
 
-aor-rich-text-input@~1.0.0:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/aor-rich-text-input/-/aor-rich-text-input-1.0.2.tgz#0d2e4548c35aef3f390e3dea6af2643d4194c565"
-  dependencies:
-    lodash.debounce "~4.0.8"
-    prop-types "~15.5.7"
-    quill "~1.1.9"
-    react "~15.5.4"
-
 append-transform@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/append-transform/-/append-transform-0.4.0.tgz#d76ebf8ca94d276e247a36bad44a4b74ab611991"
@@ -5468,15 +5459,6 @@ react-transition-group@^1.2.1:
     loose-envify "^1.3.1"
     prop-types "^15.5.6"
     warning "^3.0.0"
-
-react@~15.5.4:
-  version "15.5.4"
-  resolved "https://registry.yarnpkg.com/react/-/react-15.5.4.tgz#fa83eb01506ab237cdc1c8c3b1cea8de012bf047"
-  dependencies:
-    fbjs "^0.8.9"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.7"
 
 react@~15.6.1:
   version "15.6.2"

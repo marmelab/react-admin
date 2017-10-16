@@ -725,13 +725,13 @@ is powered by [Quill](https://quilljs.com/).
 **Note**: Due to its size, `<RichTextInput>` is not bundled by default with react-admin. You must install it first, using npm:
 
 ```sh
-npm install aor-rich-text-input --save
+npm install ra-input-rich-text
 ```
 
 Then use it as a normal input component:
 
 ```jsx
-import RichTextInput from 'aor-rich-text-input';
+import RichTextInput from 'ra-input-rich-text';
 
 <RichTextInput source="body" />
 ```
