@@ -2,5 +2,5 @@ npm-debug.log
 node_modules
 lib
 es6
-example/static
 docs/_site/
+packages/ra-example/static

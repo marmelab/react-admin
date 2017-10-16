@@ -24,12 +24,13 @@ Here is the minimal code necessary to display a view to show a post:
 ```jsx
 // in src/App.js
 import React from 'react';
-import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
+import { Admin, Resource } from 'react-admin';
+import jsonServerRestClient from 'ra-data-json-server';
 
 import { PostCreate, PostEdit, PostShow } from './posts';
 
 const App = () => (
-    <Admin restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" show={PostShow} create={PostCreate} edit={PostEdit} />
     </Admin>
 );
@@ -38,7 +39,7 @@ export default App;
 
 // in src/posts.js
 import React from 'react';
-import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'admin-on-rest';
+import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'react-admin';
 
 export const PostShow = (props) => (
     <Show {...props}>
@@ -71,7 +72,7 @@ export const PostShow = (props) => (
 );
 ```
 
-More interestingly, you can pass a component as `title`. Admin-on-rest clones this component and, in the `<ShowView>`, injects the current `record`. This allows to customize the title according to the current record:
+More interestingly, you can pass a component as `title`. React-admin clones this component and, in the `<ShowView>`, injects the current `record`. This allows to customize the title according to the current record:
 
 ```jsx
 const PostTitle = ({ record }) => {
@@ -92,7 +93,7 @@ You can replace the list of default actions by your own element using the `actio
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import { ListButton, EditButton, DeleteButton } from 'admin-on-rest';
+import { ListButton, EditButton, DeleteButton } from 'react-admin';
 
 const cardActionStyle = {
     zIndex: 2,
@@ -167,7 +168,7 @@ For instance, getting the fields from an API might look like:
 
 ```js
 import React from 'react';
-import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'admin-on-rest';
+import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'react-admin';
 
 const knownFields = [
     <TextField source="title" />,

@@ -30,12 +30,13 @@ Here is the minimal code necessary to display a list of posts:
 ```jsx
 // in src/App.js
 import React from 'react';
-import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
+import { Admin, Resource } from 'react-admin';
+import jsonServerRestClient from 'ra-data-json-server';
 
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
@@ -44,7 +45,7 @@ export default App;
 
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest';
+import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -177,7 +178,7 @@ It is possible to disable sorting for a specific field by passing a `sortable` p
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, TextField } from 'react-admin/lib/mui';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -262,7 +263,7 @@ It renders as many columns as it receives `<Field>` children.
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest';
+import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -349,7 +350,7 @@ export const PostList = (props) => (
 
 ### `options`, `headerOptions`, `bodyOptions`, and `rowOptions`
 
-Admin-on-rest relies on [material-ui's `<Table>` component](http://www.material-ui.com/#/components/table) for rendering the datagrid. The `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props allow your to override the props of `<Table>`, `<TableHeader>`, `<TableBody>`, and `<TableRow>`.
+React-admin relies on [material-ui's `<Table>` component](http://www.material-ui.com/#/components/table) for rendering the datagrid. The `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props allow your to override the props of `<Table>`, `<TableHeader>`, `<TableBody>`, and `<TableRow>`.
 
 For instance, to get a fixed header on the table, override the `<Table>` props with `options`:
 
@@ -388,7 +389,7 @@ For mobile devices, a `<Datagrid>` is often unusable - there is simply not enoug
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, SimpleList } from 'admin-on-rest';
+import { List, SimpleList } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -408,7 +409,7 @@ export const PostList = (props) => (
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -435,7 +436,7 @@ export const PostList = (props) => (
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, SimpleList } from 'admin-on-rest';
+import { List, SimpleList } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -537,7 +538,7 @@ For instance, getting the fields from an API might look like:
 
 ```js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest';
+import { List, Datagrid, TextField } from 'react-admin';
 
 const knownFields = [
     <TextField source="id" />,

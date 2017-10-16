@@ -1,0 +1,31 @@
+{
+    "name": "ra-data-fakerest",
+    "version": "2.0.0-alpha1",
+    "description": "JSON Server data provider for react-admin",
+    "main": "lib/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "files": ["LICENSE", "*.md", "lib", "src"],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/marmelab/react-admin.git"
+    },
+    "keywords": [
+        "reactjs",
+        "react",
+        "react-admin",
+        "rest",
+        "fakerest",
+        "local"
+    ],
+    "author": "François Zaninotto",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/marmelab/react-admin/issues"
+    },
+    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "dependencies": {
+        "fakerest": "~2.1.0"
+    }
+}

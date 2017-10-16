@@ -7,9 +7,9 @@ title: "Authentication"
 
 ![Logout button](./img/login.gif)
 
-Admin-on-rest lets you secure your admin app with the authentication strategy of your choice. Since there are many different possible strategies (Basic Auth, JWT, OAuth, etc.), admin-on-rest simply provides hooks to execute your own authentication code.
+React-admin lets you secure your admin app with the authentication strategy of your choice. Since there are many different possible strategies (Basic Auth, JWT, OAuth, etc.), react-admin simply provides hooks to execute your own authentication code.
 
-By default, an admin-on-rest app doesn't require authentication. But if the REST API ever returns a 401 (Unauthorized) or a 403 (Forbidden) response, then the user is redirected to the `/login` route. You have nothing to do - it's already built in.
+By default, an react-admin app doesn't require authentication. But if the REST API ever returns a 401 (Unauthorized) or a 403 (Forbidden) response, then the user is redirected to the `/login` route. You have nothing to do - it's already built in.
 
 ## Configuring the Auth Client
 
@@ -23,7 +23,7 @@ For instance, to query an authentication route via HTTPS and store the credentia
 
 ```jsx
 // in src/authClient.js
-import { AUTH_LOGIN } from 'admin-on-rest';
+import { AUTH_LOGIN } from 'react-admin';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
@@ -65,14 +65,16 @@ const App = () => (
 
 Upon receiving a 403 response, the admin app shows the Login page. `authClient` is now called when the user submits the login form. Once the promise resolves, the login form redirects to the previous page, or to the admin index if the user just arrived.
 
-## Sending Credentials to the REST API
+## Sending Credentials to the API
 
-To use the credentials when calling REST API routes, you have to tweak, this time, the `restClient`. As explained in the [REST client documentation](RestClients.md#adding-custom-headers), `simpleRestClient` and `jsonServerRestClient` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
+To use the credentials when calling a data provider, you have to tweak, this time, the `dataProvider` function. As explained in the [Data providers documentation](DataProviders.md#adding-custom-headers), `simpleRestClient` and `jsonServerRestClient` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
 
-For instance, to pass the token obtained during login as an `Authorization` header, configure the REST client as follows:
+For instance, to pass the token obtained during login as an `Authorization` header, configure the Data Provider as follows:
 
 ```jsx
-import { simpleRestClient, fetchUtils, Admin, Resource } from 'admin-on-rest';
+import { fetchUtils, Admin, Resource } from 'react-admin';
+import simpleRestClient from 'ra-data-simple-rest';
+
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
@@ -81,10 +83,10 @@ const httpClient = (url, options = {}) => {
     options.headers.set('Authorization', `Bearer ${token}`);
     return fetchUtils.fetchJson(url, options);
 }
-const restClient = simpleRestClient('http://localhost:3000', httpClient);
+const dataProvider = simpleRestClient('http://localhost:3000', httpClient);
 
 const App = () => (
-    <Admin restClient={restClient} authClient={authClient}>
+    <Admin dataProvider={dataProvider} authClient={authClient}>
         ...
     </Admin>
 );
@@ -94,13 +96,13 @@ If you have a custom REST client, don't forget to add credentials yourself.
 
 ## Adding a Logout Button
 
-If you provide an `authClient` prop to `<Admin>`, admin-on-rest displays a logout button in the sidebar. When the user clicks on the logout button, this calls the `authClient` with the `AUTH_LOGOUT` type and removes potentially sensitive data from the redux store. When resolved, the user gets redirected to the login page.
+If you provide an `authClient` prop to `<Admin>`, react-admin displays a logout button in the sidebar. When the user clicks on the logout button, this calls the `authClient` with the `AUTH_LOGOUT` type and removes potentially sensitive data from the redux store. When resolved, the user gets redirected to the login page.
 
 For instance, to remove the token from local storage upon logout:
 
 ```jsx
 // in src/authClient.js
-import { AUTH_LOGIN, AUTH_LOGOUT } from 'admin-on-rest';
+import { AUTH_LOGIN, AUTH_LOGOUT } from 'react-admin';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
@@ -128,7 +130,7 @@ For instance, to redirect the user to the login page for both 401 and 403 codes:
 
 ```jsx
 // in src/authClient.js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR } from 'admin-on-rest';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR } from 'react-admin';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
@@ -151,15 +153,15 @@ export default (type, params) => {
 
 ## Checking Credentials During Navigation
 
-Redirecting to the login page whenever a REST response uses a 401 status code is usually not enough, because admin-on-rest keeps data on the client side, and could display stale data while contacting the server - even after the credentials are no longer valid.
+Redirecting to the login page whenever a REST response uses a 401 status code is usually not enough, because react-admin keeps data on the client side, and could display stale data while contacting the server - even after the credentials are no longer valid.
 
-Fortunately, each time the user navigates, admin-on-rest calls the `authClient` with the `AUTH_CHECK` type, so it's the ideal place to check for credentials.
+Fortunately, each time the user navigates, react-admin calls the `authClient` with the `AUTH_CHECK` type, so it's the ideal place to check for credentials.
 
 For instance, to check for the existence of the token in local storage:
 
 ```jsx
 // in src/authClient.js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
@@ -178,11 +180,11 @@ export default (type, params) => {
 };
 ```
 
-If the promise is rejected, admin-on-rest redirects by default to the `/login` page. You can override where to redirect the user by passing an argument with a `redirectTo` property to the rejected promise:
+If the promise is rejected, react-admin redirects by default to the `/login` page. You can override where to redirect the user by passing an argument with a `redirectTo` property to the rejected promise:
 
 ```jsx
 // in src/authClient.js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
@@ -205,7 +207,7 @@ export default (type, params) => {
 
 ```jsx
 // in src/authClient.js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
@@ -246,7 +248,7 @@ For all these cases, it's up to you to implement your own `LoginPage` component,
 // in src/MyLoginPage.js
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { userLogin } from 'admin-on-rest';
+import { userLogin } from 'react-admin';
 
 class MyLoginPage extends Component {
     submit = (e) => {
@@ -271,7 +273,7 @@ export default connect(undefined, { userLogin })(MyLoginPage);
 
 // in src/MyLogoutButton.js
 import { connect } from 'react-redux';
-import { userLogout } from 'admin-on-rest';
+import { userLogout } from 'react-admin';
 
 const MyLogoutButton = ({ userLogout }) => (
     <button onClick={userLogout}>Logout</button>
@@ -298,7 +300,7 @@ If you add [custom pages](./Actions.md), of if you [create an admin app from scr
 ```jsx
 // in src/MyPage.js
 import { withRouter } from 'react-router-dom';
-import { Restricted } from 'admin-on-rest';
+import { Restricted } from 'react-admin';
 
 const MyPage = ({ location }) =>
     <Restricted authParams={{ foo: 'bar' }} location={location} />

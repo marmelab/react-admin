@@ -5,7 +5,7 @@ export default url => driver => ({
         appLoader: By.css('.app-loader'),
         input: (name, type = 'input') =>
             By.css(`.create-page ${type}[name='${name}']`),
-        inputs: By.css(`.aor-input`),
+        inputs: By.css(`.ra-input`),
         submitButton: By.css(".create-page button[type='submit']"),
         submitAndAddButton: By.css(
             ".create-page form>div:last-child button[type='button']"
@@ -74,8 +74,8 @@ export default url => driver => ({
                 fields.map(field =>
                     field.getAttribute('class').then(classes =>
                         classes
-                            .replace('aor-input-', '')
-                            .replace('aor-input', '')
+                            .replace('ra-input-', '')
+                            .replace('ra-input', '')
                             .trim()
                     )
                 )

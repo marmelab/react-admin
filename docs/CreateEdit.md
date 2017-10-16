@@ -26,12 +26,13 @@ Here is the minimal code necessary to display a form to create and edit comments
 ```jsx
 // in src/App.js
 import React from 'react';
-import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
+import { Admin, Resource } from 'react-admin';
+import jsonServerRestClient from 'ra-data-json-server';
 
 import { PostCreate, PostEdit } from './posts';
 
 const App = () => (
-    <Admin restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" create={PostCreate} edit={PostEdit} />
     </Admin>
 );
@@ -40,7 +41,7 @@ export default App;
 
 // in src/posts.js
 import React from 'react';
-import { Create, Edit, SimpleForm, DisabledInput, TextInput, DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'admin-on-rest';
+import { Create, Edit, SimpleForm, DisabledInput, TextInput, DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
 import RichTextInput from 'aor-rich-text-input';
 
 export const PostCreate = (props) => (
@@ -95,7 +96,7 @@ export const PostEdit = (props) => (
 );
 ```
 
-More interestingly, you can pass a component as `title`. Admin-on-rest clones this component and, in the `<EditView>`, injects the current `record`. This allows to customize the title according to the current record:
+More interestingly, you can pass a component as `title`. React-admin clones this component and, in the `<EditView>`, injects the current `record`. This allows to customize the title according to the current record:
 
 ```jsx
 const PostTitle = ({ record }) => {
@@ -116,7 +117,7 @@ You can replace the list of default actions by your own element using the `actio
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import { ListButton, ShowButton, DeleteButton } from 'admin-on-rest';
+import { ListButton, ShowButton, DeleteButton } from 'react-admin';
 
 const cardActionStyle = {
     zIndex: 2,
@@ -192,7 +193,7 @@ Here are all the props accepted by the `<TabbedForm>` component:
 
 {% raw %}
 ```jsx
-import { TabbedForm, FormTab } from 'admin-on-rest'
+import { TabbedForm, FormTab } from 'react-admin'
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -252,7 +253,7 @@ export const PostCreate = (props) => (
 
 ### Per Field Default Value
 
-Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. Admin-on-rest will merge the child default values with the form default value (input > form):
+Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. React-admin will merge the child default values with the form default value (input > form):
 
 ```jsx
 export const PostCreate = (props) => (
@@ -269,7 +270,7 @@ export const PostCreate = (props) => (
 
 ## Validation
 
-Admin-on-rest relies on [redux-form](http://redux-form.com/) for the validation.
+React-admin relies on [redux-form](http://redux-form.com/) for the validation.
 
 To validate values submitted by a form, you can add a `validate` prop to the form component, to individual inputs, or even mix both approaches.
 
@@ -307,7 +308,7 @@ export const UserCreate = (props) => (
 
 Alternatively, you can specify a `validate` prop directly in `<Input>` components, taking either a function, or an array of functions. These functions should return `undefined` when there is no error, or an error string.
 
-Admin-on-rest will mash all the individual functions up to a single function looking just like the previous one:
+React-admin will mash all the individual functions up to a single function looking just like the previous one:
 
 ```jsx
 const required = value => value ? undefined : 'Required';
@@ -351,7 +352,7 @@ const required = (value, allValues, props) => value ? undefined : props.translat
 
 ### Built-in Field Validators
 
-Admin-on-rest already bundles a few validator functions, that you can just require and use as field validators:
+React-admin already bundles a few validator functions, that you can just require and use as field validators:
 
 * `required` if the field is mandatory,
 * `minValue(min, message)` to specify a minimum value for integers,
@@ -365,7 +366,7 @@ Admin-on-rest already bundles a few validator functions, that you can just requi
 Example usage:
 
 ```jsx
-import { required, minLength, maxLength, minValue, maxValue, number, regex, email, choices } from 'admin-on-rest';
+import { required, minLength, maxLength, minValue, maxValue, number, regex, email, choices } from 'react-admin';
 
 export const UserCreate = (props) => (
     <Create {...props}>
@@ -432,7 +433,7 @@ The most common use case is to display two submit buttons in the `<Create>` view
 For that use case, use the `<SaveButton>` component with a custom `redirect` prop:
 
 ```jsx
-import { Edit, SimpleForm, SaveButton, Toolbar } from 'admin-on-rest';
+import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
 
 const PostCreateToolbar = props => <Toolbar {...props} >
     <SaveButton label="post.action.save_and_show" redirect="show" submitOnEnter={true} />
@@ -448,7 +449,7 @@ export const PostEdit = (props) => (
 );
 ```
 
-**Tip**: Use admin-on-rest's `<Toolbar>` component instead of material-ui's `<Toolbar>` component. The former builds up on the latter, and adds support for an alternative mobile layout (and is therefore responsive).
+**Tip**: Use react-admin's `<Toolbar>` component instead of material-ui's `<Toolbar>` component. The former builds up on the latter, and adds support for an alternative mobile layout (and is therefore responsive).
 
 **Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.
 
@@ -458,9 +459,10 @@ You might want to dynamically define the inputs when the `<Create>` or `<Edit>` 
 
 For instance, getting the inputs from an API might look like:
 
+{% raw %}
 ```js
 import React from 'react';
-import { Create, Edit, SimpleForm, TextInput, DateInput } from 'admin-on-rest';
+import { Create, Edit, SimpleForm, TextInput, DateInput } from 'react-admin';
 import RichTextInput from 'aor-rich-text-input';
 
 const knownInputs = [
@@ -495,3 +497,4 @@ export const PostCreate = (props) => (
     </Create>
 );
 ```
+{% endraw %}

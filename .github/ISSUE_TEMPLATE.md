@@ -1,4 +1,4 @@
-Please do not submit support requests or "How to" questions here. For that, go to [StackOverflow](http://stackoverflow.com/questions/tagged/admin-on-rest).
+Please do not submit support requests or "How to" questions here. For that, go to [StackOverflow](http://stackoverflow.com/questions/tagged/react-admin).
 
 **What you were expecting:**
 <!-- Describe what the behavior would be without the bug. -->
@@ -25,7 +25,7 @@ insert short code snippets here
 
 **Environment**
 
-* Admin-on-rest version:
+* React-admin version:
 * Last version that did not exhibit the issue (if applicable):
 * React version:
 * Browser:

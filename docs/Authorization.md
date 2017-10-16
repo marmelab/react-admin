@@ -5,9 +5,9 @@ title: "Authorization"
 
 # Authorization
 
-Some applications may require to determine what level of access a particular authenticated user should have to secured resources. Since there are many different possible strategies (single role, multiple roles or rights, etc.), admin-on-rest simply provides hooks to execute your own authorization code.
+Some applications may require to determine what level of access a particular authenticated user should have to secured resources. Since there are many different possible strategies (single role, multiple roles or rights, etc.), react-admin simply provides hooks to execute your own authorization code.
 
-By default, an admin-on-rest app doesn't require authorization. However, if needed, it will rely on the `authClient` introduced in the [Authentication](./Authentication.html) section.
+By default, a react-admin app doesn't require authorization. However, if needed, it will rely on the `authClient` introduced in the [Authentication](./Authentication.html) section.
 
 ## Configuring the Auth Client
 
@@ -17,7 +17,7 @@ Following is an example where the `authClient` stores the user's role upon authe
 
 ```jsx
 // in src/authClient.js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK, AUTH_GET_PERMISSIONS } from 'admin-on-rest';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK, AUTH_GET_PERMISSIONS } from 'react-admin';
 import decodeJwt from 'jwt-decode';
 
 export default (type, params) => {
@@ -68,7 +68,7 @@ It's possible to restrict access to resources or their views inside the `Admin` 
 {% raw %}
 ```jsx
 <Admin
-    restClient={restClient}
+    dataProvider={dataProvider}
     authClient={authClient}
 >
     {permissions => [
@@ -204,7 +204,7 @@ Note that for the `Filter` component,  the function returns an array of React el
 
 ## Restricting Access To Content In Custom Pages or Menus
 
-What if you want to check the permissions inside a [Dashboard](./Admin.html#dashboard), a [custom page](./Admin.html#customroutes) or a [custom menu](./Admin.html#menu) ? Admin-on-rest provides two components for that: `WithPermission` and `SwitchPermissions`.
+What if you want to check the permissions inside a [Dashboard](./Admin.html#dashboard), a [custom page](./Admin.html#customroutes) or a [custom menu](./Admin.html#menu) ? React-admin provides two components for that: `WithPermission` and `SwitchPermissions`.
 
 ### WithPermission
 
@@ -214,7 +214,7 @@ The `WithPermission` component will only display its content if the user has the
 ```jsx
 // in src/Menu.js
 import React from 'react';
-import { MenuItemLink, WithPermission } from 'admin-on-rest';
+import { MenuItemLink, WithPermission } from 'react-admin';
 
 export default ({ onMenuTap, logout }) => (
     <div>
@@ -241,7 +241,7 @@ You may bypass the default logic by specifying a function as the `resolve` prop.
 
 An optional `loading` prop may be specified on the `WithPermission` component to pass a component to display while checking for permissions. It defaults to `null`.
 
-**Tip**: Do not use the `WithPermission` component inside the others admin-on-rest components. It is only meant to be used in custom pages or components.
+**Tip**: Do not use the `WithPermission` component inside the others react-admin components. It is only meant to be used in custom pages or components.
 
 ### SwitchPermissions
 
@@ -269,7 +269,7 @@ Here's an example inside a `DashBoard`:
 import React from 'react';
 import BenefitsSummary from './BenefitsSummary';
 import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
-import { ViewTitle } from 'admin-on-rest/lib/mui';
+import { ViewTitle } from 'react-admin/lib/mui';
 
 export default () => (
     <Card>
@@ -287,5 +287,5 @@ export default () => (
 );
 ```
 
-**Tip**: Do not use the `SwitchPermissions` component inside the others admin-on-rest components. It is only meant to be used in custom pages or components.
+**Tip**: Do not use the `SwitchPermissions` component inside the others react-admin components. It is only meant to be used in custom pages or components.
 

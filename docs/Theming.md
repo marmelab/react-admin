@@ -9,7 +9,7 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 ## Overriding A Component Style
 
-Most admin-on-rest components support two style props to set inline styles:
+Most react-admin components support two style props to set inline styles:
 
 * `style`: A style object to customize the look and feel of the component container (e.g. the `<td>` in a datagrid). Most of the time, that's where you'll want to put your custom styles.
 * `elStyle`: A style object to customize the look and feel of the component element itself, usually a material ui component. Use this prop when you want to fine tune the display of a material ui component, according to [their styling documentation](http://www.material-ui.com/#/customization/styles).
@@ -18,7 +18,7 @@ These props accept a style object:
 
 {% raw %}
 ```jsx
-import { EmailField } from 'admin-on-rest/mui';
+import { EmailField } from 'react-admin/mui';
 
 <EmailField source="email" style={{ backgroundColor: 'lightgrey' }} elStyle={{ textDecoration: 'none' }} />
 // renders in the datagrid as
@@ -56,7 +56,7 @@ If you need more control over the HTML code, you can also create your own [Field
 
 ## Conditional Formatting
 
-Sometimes you want the format to depend on the value. Admin-on-rest doesn't provide any special way to do it, because React already has all that's necessary - in particular, Higher-Order Components (HOCs).
+Sometimes you want the format to depend on the value. React-admin doesn't provide any special way to do it, because React already has all that's necessary - in particular, Higher-Order Components (HOCs).
 
 For instance, if you want to highlight a `<TextField>` in red if the value is higher than 100, just wrap the field into a HOC:
 
@@ -92,7 +92,7 @@ It expects element props named `small`, `medium`, and `large`. It displays the e
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -126,14 +126,14 @@ export const PostList = (props) => (
 
 ## Using a Predefined Theme
 
-Material UI also supports [complete theming](http://www.material-ui.com/#/customization/themes) out of the box. Material UI ships two base themes: light and dark. Admin-on-rest uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `getMuiTheme()`).
+Material UI also supports [complete theming](http://www.material-ui.com/#/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `getMuiTheme()`).
 
 ```jsx
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 const App = () => (
-    <Admin theme={getMuiTheme(darkBaseTheme)} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin theme={getMuiTheme(darkBaseTheme)} dataProvider={simpleRestClient('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -195,7 +195,7 @@ Once your theme is defined, pass it to the `<Admin>` component, in the `theme` p
 
 ```jsx
 const App = () => (
-    <Admin theme={getMuiTheme(myTheme)} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin theme={getMuiTheme(myTheme)} dataProvider={simpleRestClient('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -210,13 +210,13 @@ Instead of the default layout, you can use your own component as the admin layou
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin appLayout={MyLayout} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin appLayout={MyLayout} dataProvider={simpleRestClient('http://path.to.my.api')}>
         // ...
     </Admin>
 );
 ```
 
-Use the [default layout](https://github.com/marmelab/admin-on-rest/blob/master/src/mui/layout/Layout.js) as a starting point for your custom layout. Here is a simplified version (with no responsive support):
+Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src/mui/layout/Layout.js) as a starting point for your custom layout. Here is a simplified version (with no responsive support):
 
 ```jsx
 // in src/MyLayout.js
@@ -232,7 +232,7 @@ import {
     Notification,
     Sidebar,
     setSidebarVisibility,
-} from 'admin-on-rest';
+} from 'react-admin';
 
 const styles = {
     wrapper: {
