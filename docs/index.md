@@ -59,12 +59,13 @@ Read the [Tutorial](./Tutorial.md) for a 15 minutes introduction. After that, he
 // in app.js
 import React from 'react';
 import { render } from 'react-dom';
-import { simpleRestClient, Admin, Resource } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
+import simpleRestClient from 'ra-data-simple-rest';
 
 import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
 
 render(
-    <Admin restClient={simpleRestClient('http://localhost:3000')}>
+    <Admin dataProvider={simpleRestClient('http://localhost:3000')}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon}/>
     </Admin>,
     document.getElementById('root')
@@ -125,15 +126,15 @@ export const PostCreate = (props) => (
 ```
 {% endraw %}
 
-## Does It Work With My REST API?
+## Does It Work With My API?
 
 Yes.
 
-React-admin uses an adapter approach, with a concept called *REST client*. Existing rest clients can be used as a blueprint to design your API, or you can write your own REST client to query an existing API. Writing a custom REST client is a matter of hours.
+React-admin uses an adapter approach, with a concept called *Data Providers*. Existing providers can be used as a blueprint to design your API, or you can write your own Data Provider to query an existing API. Writing a custom Data Provider is a matter of hours.
 
-![REST client architecture](./img/rest-client.png)
+![Data Provider architecture](./img/rest-client.png)
 
-See the [REST clients documentation](./RestClients.md) for details.
+See the [Data Providers documentation](./DataProviders.md) for details.
 
 ## Batteries Included But Removable
 

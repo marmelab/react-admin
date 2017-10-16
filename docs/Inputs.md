@@ -373,7 +373,7 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 </ImageInput>
 ```
 
-Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./RestClients.md#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
+Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
 ## `<FileInput>`
 
@@ -403,7 +403,7 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 </FileInput>
 ```
 
-Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./RestClients.md#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
+Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#decorating-your-rest-client-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
 ## `<LongTextInput>`
 
@@ -539,7 +539,7 @@ import { ReferenceInput, SelectInput } from 'react-admin'
 **Note**: You **must** add a `<Resource>` for the reference resource - react-admin needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
 
 ```jsx
-<Admin restClient={myRestClient}>
+<Admin dataProvider={myDataProvider}>
     <Resource name="comments" list={CommentList} />
     <Resource name="posts" />
 </Admin>
@@ -654,7 +654,7 @@ import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
 **Note**: You **must** add a `<Resource>` for the reference resource - react-admin needs it to fetch the reference data. You can omit the list prop in this reference if you want to hide it in the sidebar menu.
 
 ```js
-<Admin restClient={myRestClient}>
+<Admin dataProvider={myDataProvider}>
     <Resource name="posts" list={PostList} edit={PostEdit} />
     <Resource name="tags" />
 </Admin>

@@ -11,10 +11,10 @@ title: "FAQ"
 
 ## Can I have custom identifiers/primary keys for my resources?
 
-React-admin requires that each resource has an `id` field to identify it. If your REST API uses a different name for the primary key, you have to map that name to `id` in a custom [restClient](https://marmelab.com/react-admin/RestClients.md). For instance, to use a field named `_id` as identifier:
+React-admin requires that each resource has an `id` field to identify it. If your API uses a different name for the primary key, you have to map that name to `id` in a custom [dataProvider](./DataProviders.md). For instance, to use a field named `_id` as identifier:
 
 ```js
-const convertHTTPResponseToREST = (response, type, resource, params) => {
+const convertHTTPResponse = (response, type, resource, params) => {
     const { headers, json } = response;
     switch (type) {
     case GET_LIST:

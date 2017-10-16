@@ -7,7 +7,7 @@ title: "Ecosystem"
 
 - [Inputs and Fields](#inputs-and-fields)
 - [Translations](#translations)
-- [Rest clients](#rest-clients)
+- [Data Providers](#data-providers)
 - [Miscellaneous](#miscellaneous)
 
 ## Inputs and Fields
@@ -21,7 +21,7 @@ title: "Ecosystem"
 
 See the [translation](./Translation.md#available-locales) page.
 
-## Rest clients
+## Data Providers
 
 - [marmelab/aor-simple-graphql-client](https://github.com/marmelab/aor-simple-graphql-client): a GraphQL client using [Apollo](http://www.apollodata.com/)
 - [marmelab/aor-json-rest-client](https://github.com/marmelab/aor-json-rest-client): a local REST client based on a JavaScript object. It doesn't even use HTTP. Use it for testing purposes.

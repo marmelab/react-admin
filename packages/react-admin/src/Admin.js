@@ -32,7 +32,7 @@ const Admin = ({
     messages = {},
     menu = Menu,
     catchAll,
-    restClient,
+    dataProvider,
     theme,
     title = 'Admin on REST',
     loginPage,
@@ -43,7 +43,9 @@ const Admin = ({
     const resettableAppReducer = (state, action) =>
         appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
     const saga = function* rootSaga() {
-        yield all([crudSaga(restClient, authClient), ...customSagas].map(fork));
+        yield all(
+            [crudSaga(dataProvider, authClient), ...customSagas].map(fork)
+        );
     };
     const sagaMiddleware = createSagaMiddleware();
     const routerHistory = history || createHistory();
@@ -145,7 +147,7 @@ Admin.propTypes = {
     loginPage: componentPropType,
     logoutButton: componentPropType,
     menu: componentPropType,
-    restClient: PropTypes.func,
+    dataProvider: PropTypes.func,
     theme: PropTypes.object,
     title: PropTypes.node,
     locale: PropTypes.string,

@@ -30,12 +30,13 @@ Here is the minimal code necessary to display a list of posts:
 ```jsx
 // in src/App.js
 import React from 'react';
-import { jsonServerRestClient, Admin, Resource } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
+import jsonServerRestClient from 'ra-data-json-server';
 
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );

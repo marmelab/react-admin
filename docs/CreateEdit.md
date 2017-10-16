@@ -26,12 +26,13 @@ Here is the minimal code necessary to display a form to create and edit comments
 ```jsx
 // in src/App.js
 import React from 'react';
-import { jsonServerRestClient, Admin, Resource } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
+import jsonServerRestClient from 'ra-data-json-server';
 
 import { PostCreate, PostEdit } from './posts';
 
 const App = () => (
-    <Admin restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" create={PostCreate} edit={PostEdit} />
     </Admin>
 );

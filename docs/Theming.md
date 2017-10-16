@@ -133,7 +133,7 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 const App = () => (
-    <Admin theme={getMuiTheme(darkBaseTheme)} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin theme={getMuiTheme(darkBaseTheme)} dataProvider={simpleRestClient('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -195,7 +195,7 @@ Once your theme is defined, pass it to the `<Admin>` component, in the `theme` p
 
 ```jsx
 const App = () => (
-    <Admin theme={getMuiTheme(myTheme)} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin theme={getMuiTheme(myTheme)} dataProvider={simpleRestClient('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -210,7 +210,7 @@ Instead of the default layout, you can use your own component as the admin layou
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin appLayout={MyLayout} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin appLayout={MyLayout} dataProvider={simpleRestClient('http://path.to.my.api')}>
         // ...
     </Admin>
 );

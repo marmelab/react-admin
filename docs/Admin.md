@@ -5,7 +5,7 @@ title: "Admin and Resource Components"
 
 # The `<Admin>` Component
 
-The `<Admin>` component creates an application with its own state, routing, and controller logic. `<Admin>` requires only a `restClient` and at least one child `<Resource>` to work:
+The `<Admin>` component creates an application with its own state, routing, and controller logic. `<Admin>` requires only a `dataProvider` prop and at least one child `<Resource>` to work:
 
 ```jsx
 // in src/App.js
@@ -16,7 +16,7 @@ import { simpleRestClient, Admin, Resource } from 'react-admin';
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin dataProvider={simpleRestClient('http://path.to.my.api')}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
@@ -26,7 +26,7 @@ export default App;
 
 Here are all the props accepted by the component:
 
-* [`restClient`](#restclient)
+* [`dataProvider`](#dataprovider)
 * [`title`](#title)
 * [`dashboard`](#dashboard)
 * [`catchAll`](#catchall)
@@ -44,27 +44,27 @@ Here are all the props accepted by the component:
 * [`initialState`](#initialstate)
 * [`history`](#history)
 
-## `restClient`
+## `dataProvider`
 
 The only required prop, it must be a function returning a promise, with the following signature:
 
 ```jsx
 /**
- * Execute the REST request and return a promise for a REST response
+ * Query a data provider and return a promise for a response
  *
  * @example
- * restClient(GET_ONE, 'posts', { id: 123 })
+ * dataProvider(GET_ONE, 'posts', { id: 123 })
  *  => new Promise(resolve => resolve({ id: 123, title: "hello, world" }))
  *
  * @param {string} type Request type, e.g GET_LIST
  * @param {string} resource Resource name, e.g. "posts"
  * @param {Object} payload Request parameters. Depends on the action type
- * @returns {Promise} the Promise for a REST response
+ * @returns {Promise} the Promise for a response
  */
-const restClient = (type, resource, params) => new Promise();
+const dataProvider = (type, resource, params) => new Promise();
 ```
 
-The `restClient` is also the ideal place to add custom HTTP headers, authentication, etc. The [Rest Clients Chapter](./RestClients.md) of the documentation lists available REST clients, and how to build your own.
+The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc. The [Data Providers Chapter](./DataProviders.md) of the documentation lists available data providers, and how to build your own.
 
 ## `title`
 
@@ -72,7 +72,7 @@ By default, the header of an admin app uses 'Admin on REST' as the main app titl
 
 ```jsx
 const App = () => (
-    <Admin title="My Custom Admin" restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin title="My Custom Admin" dataProvider={simpleRestClient('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -101,7 +101,7 @@ export default () => (
 import Dashboard from './Dashboard';
 
 const App = () => (
-    <Admin dashboard={Dashboard} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin dashboard={Dashboard} dataProvider={simpleRestClient('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -138,7 +138,7 @@ export default () => (
 import NotFound from './NotFound';
 
 const App = () => (
-    <Admin catchAll={NotFound} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin catchAll={NotFound} dataProvider={simpleRestClient('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -176,7 +176,7 @@ Then, pass it to the `<Admin>` component as the `menu` prop:
 import Menu from './Menu';
 
 const App = () => (
-    <Admin menu={Menu} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin menu={Menu} dataProvider={simpleRestClient('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -193,7 +193,7 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 const App = () => (
-    <Admin theme={getMuiTheme(darkBaseTheme)} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin theme={getMuiTheme(darkBaseTheme)} dataProvider={simpleRestClient('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -214,7 +214,7 @@ Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin appLayout={MyLayout} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin appLayout={MyLayout} dataProvider={simpleRestClient('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -255,7 +255,7 @@ import { Admin } from 'react-admin';
 import bitcoinRateReducer from './bitcoinRateReducer';
 
 const App = () => (
-    <Admin customReducers={{ bitcoinRate: bitcoinRateReducer }} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin customReducers={{ bitcoinRate: bitcoinRateReducer }} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         ...
     </Admin>
 );
@@ -303,7 +303,7 @@ import { Admin } from 'react-admin';
 import bitcoinSaga from './bitcoinSaga';
 
 const App = () => (
-    <Admin customSagas={[ bitcoinSaga ]} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin customSagas={[ bitcoinSaga ]} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         ...
     </Admin>
 );
@@ -340,7 +340,7 @@ import { Admin } from 'react-admin';
 import customRoutes from './customRoutes';
 
 const App = () => (
-    <Admin customRoutes={customRoutes} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin customRoutes={customRoutes} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         ...
     </Admin>
 );
@@ -388,7 +388,7 @@ const authClient(type, params) {
 };
 
 const App = () => (
-    <Admin authClient={authClient} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin authClient={authClient} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         ...
     </Admin>
 );
@@ -462,7 +462,8 @@ For instance, getting the resource from an API might look like:
 ```js
 import React from 'react';
 
-import { simpleRestClient, Admin, Resource } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
+import simpleRestClient from 'ra-data-simple-rest';
 
 import { PostList } from './posts';
 import { CommentList } from './comments';
@@ -484,7 +485,7 @@ const fetchResources = permissions =>
     .then(json => knownResources.filter(resource => json.resources.includes(resource.props.name)));
 
 const App = () => (
-    <Admin restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin dataProvider={simpleRestClient('http://path.to.my.api')}>
         {fetchResources}
     </Admin>
 );

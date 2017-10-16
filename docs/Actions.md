@@ -106,24 +106,24 @@ export const CommentEdit = (props) =>
 ```
 {% endraw %}
 
-## Using The REST Client Instead of Fetch
+## Using a Data Provider Instead of Fetch
 
-The previous code uses `fetch()`, which means it has to make raw HTTP requests. The REST logic often requires a bit of HTTP plumbing to deal with query parameters, encoding, headers, body formatting, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: the [REST Client](./RestClients.md). So it's a good idea to use this function instead of `fetch` - provided you have exported it:
+The previous code uses `fetch()`, which means it has to make raw HTTP requests. The REST logic often requires a bit of HTTP plumbing to deal with query parameters, encoding, headers, body formatting, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: the [Data Provider](./DataProviders.md). So it's a good idea to use this function instead of `fetch` - provided you have exported it:
 
 ```jsx
-// in src/restClient.js
-import { simpleRestClient } from 'react-admin';
-export default simpleRestClient('http://Mydomain.com/api/');
+// in src/dataProvider.js
+import jsonServerRestClient from 'ra-data-json-server';
+export default jsonServerRestClient('http://Mydomain.com/api/');
 
 // in src/comments/ApproveButton.js
 import { UPDATE } from 'react-admin';
-import restClient from '../restClient';
+import dataProvider from '../dataProvider';
 
 class ApproveButton extends Component {
     handleClick = () => {
         const { push, record, showNotification } = this.props;
         const updatedRecord = { ...record, is_approved: true };
-        restClient(UPDATE, 'comments', { id: record.id, data: updatedRecord })
+        dataProvider(UPDATE, 'comments', { id: record.id, data: updatedRecord })
             .then(() => {
                 showNotification('Comment approved');
                 push('/comments');
@@ -140,29 +140,29 @@ class ApproveButton extends Component {
 }
 ```
 
-There you go: no more `fetch`. Just like `fetch`, the `restClient` returns a `Promise`. It's signature is:
+There you go: no more `fetch`. Just like `fetch`, the `dataProvider` returns a `Promise`. It's signature is:
 
 ```jsx
 /**
- * Execute the REST request and return a promise for a REST response
+ * Query a data provider and return a promise for a response
  *
  * @example
- * restClient(GET_ONE, 'posts', { id: 123 })
+ * dataProvider(GET_ONE, 'posts', { id: 123 })
  *  => new Promise(resolve => resolve({ id: 123, title: "hello, world" }))
  *
  * @param {string} type Request type, e.g GET_LIST
  * @param {string} resource Resource name, e.g. "posts"
  * @param {Object} payload Request parameters. Depends on the action type
- * @returns {Promise} the Promise for a REST response
+ * @returns {Promise} the Promise for a response
  */
-const restClient = (type, resource, params) => new Promise();
+const dataProvider = (type, resource, params) => new Promise();
 ```
 
-As for the syntax of the various request types (`GET_LIST`, `GET_ONE`, `UPDATE`, etc.), head to the [REST Client documentation](./RestClients.md#request-format) for more details.
+As for the syntax of the various request types (`GET_LIST`, `GET_ONE`, `UPDATE`, etc.), head to the [Data Provider documentation](./DataProviders.md#request-format) for more details.
 
 ## Using a Custom Action Creator
 
-Fetching data right inside the component is easy. But if you're a Redux user, you might want to do it in a more idiomatic way - by dispatching actions. First, create your own action creator to replace the call to `restClient`:
+Fetching data right inside the component is easy. But if you're a Redux user, you might want to do it in a more idiomatic way - by dispatching actions. First, create your own action creator to replace the call to `dataProvider`:
 
 ```jsx
 // in src/comment/commentActions.js
@@ -175,7 +175,7 @@ export const commentApprove = (id, data, basePath) => ({
 });
 ```
 
-This action creator takes advantage of react-admin's built in fetcher, which listens to actions with the `fetch` meta. Upon dispatch, this action will trigger the call to `restClient(UPDATE, 'comments')`, dispatch a `COMMENT_APPROVE_LOADING` action, then after receiving the response, dispatch either a `COMMENT_APPROVE_SUCCESS`, or a `COMMENT_APPROVE_FAILURE`.
+This action creator takes advantage of react-admin's built in fetcher, which listens to actions with the `fetch` meta. Upon dispatch, this action will trigger the call to `dataProvider(UPDATE, 'comments')`, dispatch a `COMMENT_APPROVE_LOADING` action, then after receiving the response, dispatch either a `COMMENT_APPROVE_SUCCESS`, or a `COMMENT_APPROVE_FAILURE`.
 
 To use the new action creator in the component, `connect` it:
 
@@ -256,7 +256,7 @@ import { CommentList } from './comments';
 import commentSaga from './comments/commentSaga';
 
 const App = () => (
-    <Admin customSagas={[ commentSaga ]} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin customSagas={[ commentSaga ]} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         <Resource name="comments" list={CommentList} />
     </Admin>
 );
@@ -347,7 +347,7 @@ import { Admin } from 'react-admin';
 import rate from './rateReducer';
 
 const App = () => (
-    <Admin customReducers={{ rate }} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin customReducers={{ rate }} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         ...
     </Admin>
 );

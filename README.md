@@ -1,14 +1,14 @@
-# react-admin [![Build Status](https://travis-ci.org/marmelab/admin-on-rest.svg?branch=master)](https://travis-ci.org/marmelab/admin-on-rest)
+# react-admin [![Build Status](https://travis-ci.org/marmelab/react-admin.svg?branch=master)](https://travis-ci.org/marmelab/react-admin)
 
 A frontend Framework for building admin applications running in the browser on top of REST/GraphQL services, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Open sourced and maintained by [marmelab](https://marmelab.com/).
 
-[Demo](https://marmelab.com/admin-on-rest-demo/) - [Documentation](https://marmelab.com/admin-on-rest/) - [Releases](https://github.com/marmelab/admin-on-rest/releases) - [Support](http://stackoverflow.com/questions/tagged/admin-on-rest)
+[Demo](https://marmelab.com/react-admin-demo/) - [Documentation](https://marmelab.com/react-admin/) - [Releases](https://github.com/marmelab/react-admin/releases) - [Support](http://stackoverflow.com/questions/tagged/react-admin)
 
-[![react-admin-demo](https://marmelab.com/admin-on-rest/img/admin-on-rest-demo-still.png)](https://vimeo.com/205118063)
+[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/205118063)
 
 ## Features
 
-* Adapts to any REST backend
+* Adapts to any backend (REST, GraphQL, SOAP, etc.)
 * Complete documentation
 * Optimistic rendering (renders before the server returns)
 * Relationships (many to one, one to many)
@@ -33,9 +33,9 @@ A frontend Framework for building admin applications running in the browser on t
 
 ## Versions In This Repository
 
-* [master](https://github.com/marmelab/admin-on-rest/commits/master) - commits that will be included in the next _patch_ release
+* [master](https://github.com/marmelab/react-admin/commits/master) - commits that will be included in the next _patch_ release
 
-* [next](https://github.com/marmelab/admin-on-rest/commits/next) - commits that will be included in the next _major_ or _minor_ release
+* [next](https://github.com/marmelab/react-admin/commits/next) - commits that will be included in the next _major_ or _minor_ release
 
 Bugfix PRs that don't break BC should be made against **master**. All other PRs (new features, bugfix with BC break) should be made against **next**.
 
@@ -50,7 +50,7 @@ npm install --save-dev react-admin
 
 ## Documentation
 
-Read the [Tutorial](http://marmelab.com/react-admin//Tutorial.html) for a 15 minutes introduction. After that, head to the [Documentation](http://marmelab.com/react-admin//index.html), or checkout the [source code of the demo](https://github.com/marmelab/admin-on-rest-demo) for an example usage.
+Read the [Tutorial](http://marmelab.com/react-admin//Tutorial.html) for a 15 minutes introduction. After that, head to the [Documentation](http://marmelab.com/react-admin//index.html), or checkout the [source code of the demo](https://github.com/marmelab/react-admin-demo) for an example usage.
 
 ## At a Glance
 
@@ -58,12 +58,13 @@ Read the [Tutorial](http://marmelab.com/react-admin//Tutorial.html) for a 15 min
 // in app.js
 import React from 'react';
 import { render } from 'react-dom';
-import { simpleRestClient, Admin, Resource } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
+import simpleRestClient from 'ra-data-simple-rest';
 
 import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
 
 render(
-    <Admin restClient={simpleRestClient('http://localhost:3000')}>
+    <Admin dataProvider={simpleRestClient('http://localhost:3000')}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon}/>
     </Admin>,
     document.getElementById('root')
@@ -122,15 +123,15 @@ export const PostCreate = (props) => (
 );
 ```
 
-## Does It Work With My REST API?
+## Does It Work With My API?
 
 Yes.
 
-React-admin uses an adapter approach, with a concept called *REST client*. Existing rest clients can be used as a blueprint to design your API, or you can write your own REST client to query an existing API. Writing a custom REST client is a matter of hours.
+React-admin uses an adapter approach, with a concept called *Data Providers*. Existing providers can be used as a blueprint to design your API, or you can write your own Data Provider to query an existing API. Writing a custom Data Provider is a matter of hours.
 
-![REST client architecture](https://marmelab.com/react-admin/img/rest-client.png)
+![Data Provider architecture](https://marmelab.com/react-admin/img/rest-client.png)
 
-See the [REST clients documentation](https://marmelab.com/react-admin/RestClients.html) for details.
+See the [Data Providers documentation](https://marmelab.com/react-admin/DataProviders.html) for details.
 
 ## Batteries Included But Removable
 
@@ -197,7 +198,7 @@ $ npm run
 
 ## License
 
-React-admin is licensed under the [MIT Licence](https://github.com/marmelab/admin-on-rest/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
+React-admin is licensed under the [MIT Licence](https://github.com/marmelab/react-admin/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
 
 ## Donate
 

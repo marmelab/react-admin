@@ -68,7 +68,7 @@ It's possible to restrict access to resources or their views inside the `Admin` 
 {% raw %}
 ```jsx
 <Admin
-    restClient={restClient}
+    dataProvider={dataProvider}
     authClient={authClient}
 >
     {permissions => [

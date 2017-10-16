@@ -36,11 +36,11 @@ import {
     adminReducer,
     localeReducer,
     crudSaga,
-    simpleRestClient,
     Delete,
     TranslationProvider,
     declareResources,
 } from 'react-admin';
+import simpleRestClient from 'ra-data-simple-rest';
 
 // your app components
 import Dashboard from './Dashboard';
@@ -64,8 +64,8 @@ const store = createStore(reducer, undefined, compose(
     window.devToolsExtension ? window.devToolsExtension() : f => f,
 ));
 store.dispatch(declareResources([{ name: 'posts' }, { name: 'comments' }, { name: 'users' }]));
-const restClient = simpleRestClient('http://path.to.my.api/');
-sagaMiddleware.run(crudSaga(restClient));
+const dataProvider = simpleRestClient('http://path.to.my.api/');
+sagaMiddleware.run(crudSaga(dataProvider));
 
 // bootstrap redux and the routes
 const App = () => (

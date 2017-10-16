@@ -2,7 +2,9 @@
 
 ## Admin-on-rest Renamed to React-Admin
 
-The main package name has changed, so you must update your dependencies:
+We've chosen to remove term REST from the project name, to emphasize the fact that it can adapt to any type of backend - including GraphQL.
+
+So the main package name has changed from `admin-on-rest` to `react-admin`. You must update your dependencies:
 
 ```sh
 npm uninstall admin-on-rest
@@ -19,6 +21,47 @@ import { BooleanField, NumberField, Show } from 'react-admin';
 ```
 
 A global search and replace on the string "admin-on-rest" should do the trick in no time.
+
+## `restClient` Prop Renamed To `dataProvider` in `<Admin>` Component
+
+In the `<Admin>` component, the `restClient` prop is now called `dataProvider`:
+
+```jsx
+// before
+import restClient from './restClient';
+<Admin restClient={restClient}>
+   ...
+</Admin>
+
+// after
+import restClient from './restClient';
+<Admin dataProvider={restClient}>
+   ...
+</Admin>
+```
+
+The signature of the Data Provider function is the same as the REST client function, so you shouldn't need to change anything in your previous REST client function.
+
+## Default REST Clients Moved to Standalone Packages
+
+`simpleRestClient` and `jsonServerRestClient` are no longer part of the core package. They have been moved to standalone packages, where they are the default export:
+
+* `simpleRestClient` => `ra-data-simple-rest`
+* `jsonServerRestClient` => `ra-data-json-server`
+
+Update your `import` statements accordingly:
+
+```js
+// before
+import { simpleRestClient } from 'admin-on-rest';
+// after
+import simpleRestClient from 'ra-data-simple-rest';
+
+// before
+import { jsonServerRestClient } from 'admin-on-rest';
+// after
+import jsonServerRestClient from 'ra-data-json-server';
+```
 
 ## Default (English) Messages Moved To Standalone Package
 
@@ -38,22 +81,6 @@ const messages = { 'en': enMessages };
 <Admin locale="en" messages={messages}>
   ...
 </Admin>
-```
-
-## Default REST Clients Moved to Standalone Packages
-
-`simpleRestClient` and `jsonServerRestClient` are no longer part of the core package. They have been moved to standalone packages, where they are the default export:
-
-* `simpleRestClient` => `ra-data-simple-rest`
-* `jsonServerRestClient` => `ra-data-json-server`
-
-Update your `import` statements accordingly:
-
-```js
-// before
-import { simpleRestClient } from 'admin-on-rest';
-// after
-import simpleRestClient from 'ra-data-simple-rest';
 ```
 
 ## `addField` Prop Replaced By `addField` HOC

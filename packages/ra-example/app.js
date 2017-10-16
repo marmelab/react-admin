@@ -4,7 +4,7 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import { Admin, Resource, Delete } from 'react-admin'; // eslint-disable-line import/no-unresolved
-import jsonRestClient from 'ra-data-fakerest';
+import jsonRestDataProvider from 'ra-data-fakerest';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 
@@ -29,12 +29,12 @@ const messages = {
     en: { ...englishMessages, ...customMessages.en },
 };
 
-const restClient = jsonRestClient(data, true);
-const uploadCapableClient = addUploadFeature(restClient);
-const delayedRestClient = (type, resource, params) =>
+const dataProvider = jsonRestDataProvider(data, true);
+const uploadCapableDataProvider = addUploadFeature(dataProvider);
+const delayedDataProvider = (type, resource, params) =>
     new Promise(resolve =>
         setTimeout(
-            () => resolve(uploadCapableClient(type, resource, params)),
+            () => resolve(uploadCapableDataProvider(type, resource, params)),
             1000
         )
     );
@@ -42,7 +42,7 @@ const delayedRestClient = (type, resource, params) =>
 render(
     <Admin
         authClient={authClient}
-        restClient={delayedRestClient}
+        dataProvider={delayedDataProvider}
         title="Example Admin"
         locale="en"
         messages={messages}

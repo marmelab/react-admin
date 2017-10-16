@@ -410,7 +410,7 @@ With this configuration, `<ReferenceField>` wraps the comment title in a link to
 **Note**: You **must** add a `<Resource>` for the reference resource - react-admin needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
 
 ```jsx
-<Admin restClient={myRestClient}>
+<Admin dataProvider={myDataProvider}>
     <Resource name="comments" list={CommentList} />
     <Resource name="posts" />
 </Admin>
@@ -594,7 +594,7 @@ export const PostList = (props) => (
 
 ```jsx
 export const App = () => (
-    <Admin restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin dataProvider={simpleRestClient('http://path.to.my.api')}>
         <Resource name="posts" list={PostList} />
         <Resource name="tags" /> // <= this one is compulsory
     </Admin>

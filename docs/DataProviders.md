@@ -1,44 +1,44 @@
 ---
 layout: default
-title: "REST Clients"
+title: "Data Providers"
 ---
 
-# REST Clients
+# Data Providers
 
-React-admin can communicate with any REST server, regardless of the REST dialect it uses. Whether it's [JSON API](http://jsonapi.org/), [HAL](http://stateless.co/hal_specification.html), [OData](http://www.odata.org/) or a custom dialect, the only thing react-admin needs is a REST client function. This is the place to translate REST requests to HTTP requests, and HTTP responses to REST responses.
+React-admin can communicate with any API, whether it uses REST, GraphQL, or even SOAP, regardless of the dialect it uses. For REST servers, it can be [JSON API](http://jsonapi.org/), [HAL](http://stateless.co/hal_specification.html), [OData](http://www.odata.org/) or a custom dialect. The only thing react-admin needs is a Data Provider function. This is the place to translate data queries to HTTP requests, and HTTP responses to data responses.
 
-![REST client architecture](./img/rest-client.png)
+![Data Provider architecture](./img/rest-client.png)
 
-The `restClient` parameter of the `<Admin>` component, must be a function with the following signature:
+The `dataProvider` parameter of the `<Admin>` component, must be a function with the following signature:
 
 ```jsx
 /**
- * Execute the REST request and return a promise for a REST response
+ * Query a data provider and return a promise for a response
  *
  * @example
- * restClient(GET_ONE, 'posts', { id: 123 })
+ * dataProvider(GET_ONE, 'posts', { id: 123 })
  *  => Promise.resolve({ data: { id: 123, title: "hello, world" } })
  *
  * @param {string} type Request type, e.g GET_LIST
  * @param {string} resource Resource name, e.g. "posts"
  * @param {Object} payload Request parameters. Depends on the action type
- * @returns {Promise} the Promise for a REST response
+ * @returns {Promise} the Promise for a response
  */
-const restClient = (type, resource, params) => new Promise();
+const dataProvider = (type, resource, params) => new Promise();
 ```
 
-You can find a REST client example implementation in [`src/rest/simple.js`](https://github.com/marmelab/react-admin/blob/master/src/rest/simple.js);
+You can find a Data Provider example implementation in [`packages/ra-data-simple-rest/src/index.js`](https://github.com/marmelab/react-admin/blob/master/packages/ra-data-simple-rest/src/index.js);
 
-The `restClient` is also the ideal place to add custom HTTP headers, authentication, etc.
+The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc.
 
-## Available Clients
+## Available Providers
 
-React-admin ships 2 REST client by default:
+the react-admin projects includes 2 Data Providers:
 
 * simple REST: [simpleRestClient](#simple-rest) serves mostly as an example. Incidentally, it is compatible with the [FakeRest](https://github.com/marmelab/FakeRest) API.
 * **[JSON server](https://github.com/typicode/json-server)**: [jsonServerRestClient](#json-server-rest)
 
-You can find REST clients for various backends in third-party repositories:
+You can find Data Providers for various backends in third-party repositories:
 
 * **[Epilogue](https://github.com/dchester/epilogue)**: [dunghuynh/aor-epilogue-client](https://github.com/dunghuynh/aor-epilogue-client)
 * **[Feathersjs](http://www.feathersjs.com/)**: [josx/aor-feathers-client](https://github.com/josx/aor-feathers-client)
@@ -50,11 +50,11 @@ You can find REST clients for various backends in third-party repositories:
 * **[Parse Server](https://github.com/ParsePlatform/parse-server)**: [leperone/aor-parseserver-client](https://github.com/leperone/aor-parseserver-client)
 * **[PostgREST](http://postgrest.com/en/v0.4/)**: [tomberek/aor-postgrest-client](https://github.com/tomberek/aor-postgrest-client)
 
-If you've written a REST client for another backend, and open-sourced it, please help complete this list with your package.
+If you've written a Data Provider for another backend, and open-sourced it, please help complete this list with your package.
 
 ### Simple REST
 
-This REST client fits APIs using simple GET parameters for filters and sorting. This is the dialect used for instance in [FakeRest](https://github.com/marmelab/FakeRest).
+This Data Provider fits REST APIs using simple GET parameters for filters and sorting. This is the dialect used for instance in [FakeRest](https://github.com/marmelab/FakeRest).
 
 | REST verb            | API calls
 |----------------------|----------------------------------------------------------------
@@ -83,13 +83,13 @@ Here is how to use it in your admin:
 ```jsx
 // in src/App.js
 import React from 'react';
-
-import { simpleRestClient, Admin, Resource } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
+import simpleRestClient from 'ra-data-simple-rest';
 
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin restClient={simpleRestClient('http://path.to.my.api/')}>
+    <Admin dataProvider={simpleRestClient('http://path.to.my.api/')}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
@@ -99,7 +99,7 @@ export default App;
 
 ### JSON Server REST
 
-This REST client fits APIs powered by [JSON Server](https://github.com/typicode/json-server), such as [JSONPlaceholder](http://jsonplaceholder.typicode.com/).
+This Data Provider fits REST APIs powered by [JSON Server](https://github.com/typicode/json-server), such as [JSONPlaceholder](http://jsonplaceholder.typicode.com/).
 
 | REST verb            | API calls
 |----------------------|----------------------------------------------------------------
@@ -111,7 +111,7 @@ This REST client fits APIs powered by [JSON Server](https://github.com/typicode/
 | `GET_MANY`           | `GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789`
 | `GET_MANY_REFERENCE` | `GET http://my.api.url/posts?author_id=345`
 
-**Note**: The jsonServer REST client expects the API to include a `X-Total-Count` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
+**Note**: The JSON Server REST Data Provider expects the API to include a `X-Total-Count` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
 
 ```
 X-Total-Count: 319
@@ -128,13 +128,13 @@ Here is how to use it in your admin:
 ```jsx
 // in src/App.js
 import React from 'react';
-
-import { jsonServerRestClient, Admin, Resource } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
+import jsonServerRestClient from 'ra-data-json-server';
 
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
@@ -144,12 +144,14 @@ export default App;
 
 ### Adding Custom Headers
 
-Both the `simpleRestClient` and the `jsonServerRestClient` functions accept an http client function as second argument. By default, they use react-admin's `fetchUtils.fetchJson()` as http client. It's similar to HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
+Both the `simpleRestClient` and the `jsonServerRestClient` functions accept an HTTP client function as second argument. By default, they use react-admin's `fetchUtils.fetchJson()` as HTTP client. It's similar to HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
 
 That means that if you need to add custom headers to your requests, you just need to *wrap* the `fetchJson()` call inside your own function:
 
 ```jsx
-import { simpleRestClient, fetchUtils, Admin, Resource } from 'react-admin';
+import { fetchUtils, Admin, Resource } from 'react-admin';
+import simpleRestClient from 'ra-data-simple-rest';
+
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
@@ -158,10 +160,10 @@ const httpClient = (url, options = {}) => {
     options.headers.set('X-Custom-Header', 'foobar');
     return fetchUtils.fetchJson(url, options);
 }
-const restClient = simpleRestClient('http://localhost:3000', httpClient);
+const dataProvider = simpleRestClient('http://localhost:3000', httpClient);
 
 render(
-    <Admin restClient={restClient} title="Example Admin">
+    <Admin dataProvider={dataProvider} title="Example Admin">
        ...
     </Admin>,
     document.getElementById('root')
@@ -184,9 +186,9 @@ const httpClient = (url, options = {}) => {
 
 Now all the requests to the REST API will contain the `Authorization: SRTRDFVESGNJYTUKTYTHRG` header.
 
-## Decorating your REST Client (Example of File Upload)
+## Decorating your Data Provider (Example of File Upload)
 
-Instead of writing your own REST client or using a third-party one, you can enhance its capabilities on a given resource. For instance, if you want to use upload components (such as `<ImageInput />` one), you can decorate it the following way:
+Instead of writing your own Data Provider or using a third-party one, you can enhance its capabilities on a given resource. For instance, if you want to use upload components (such as `<ImageInput />` one), you can decorate it the following way:
 
 ```jsx
 /**
@@ -238,14 +240,14 @@ export default addUploadCapabilities;
 This way, you can use simply your upload-capable client to your app calling this decorator:
 
 ```jsx
-import jsonRestClient from 'aor-json-rest-client';
+import jsonServerRestClient from 'ra-data-json-server';
 import addUploadFeature from './addUploadFeature';
 
-const restClient = jsonRestClient(data, true);
-const uploadCapableClient = addUploadFeature(restClient);
+const dataProvider = jsonServerdataProvider(data, true);
+const uploadCapableDataProvider = addUploadFeature(dataProvider);
 
 render(
-    <Admin restClient={uploadCapableClient} title="Example Admin">
+    <Admin restClient={uploadCapableDataProvider} title="Example Admin">
         // [...]
     </Admin>,
     document.getElementById('root'),
@@ -253,13 +255,13 @@ render(
 
 ```
 
-## Writing Your Own REST Client
+## Writing Your Own Data Provider
 
-Quite often, none of the the core REST clients match your API exactly. In such cases, you'll have to write your own REST client. But don't be afraid, it's easy!
+Quite often, none of the the core Data Providers match your API exactly. In such cases, you'll have to write your own Data Provider. But don't be afraid, it's easy!
 
 ### Request Format
 
-REST requests require a *type* (e.g. `GET_ONE`), a *resource* (e.g. 'posts') and a set of *parameters*.
+Data queries require a *type* (e.g. `GET_ONE`), a *resource* (e.g. 'posts') and a set of *parameters*.
 
 *Tip*: In comparison, HTTP requests require a *verb* (e.g. 'GET'), an *url* (e.g. 'http://myapi.com/posts'), a list of *headers* (like `Content-Type`) and a *body*.
 
@@ -278,24 +280,24 @@ Type                 | Params format
 Examples:
 
 ```jsx
-restClient(GET_LIST, 'posts', {
+dataProvider(GET_LIST, 'posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },
     filter: { author_id: 12 },
 });
-restClient(GET_ONE, 'posts', { id: 123 });
-restClient(CREATE, 'posts', { data: { title: "hello, world" } });
-restClient(UPDATE, 'posts', {
+dataProvider(GET_ONE, 'posts', { id: 123 });
+dataProvider(CREATE, 'posts', { data: { title: "hello, world" } });
+dataProvider(UPDATE, 'posts', {
     id: 123,
     data: { title: "hello, world!" },
     previousData: { title: "previous title" }
 });
-restClient(DELETE, 'posts', {
+dataProvider(DELETE, 'posts', {
     id: 123,
     previousData: { title: "hello, world" }
 });
-restClient(GET_MANY, 'posts', { ids: [123, 124, 125] });
-restClient(GET_MANY_REFERENCE, 'comments', {
+dataProvider(GET_MANY, 'posts', { ids: [123, 124, 125] });
+dataProvider(GET_MANY_REFERENCE, 'comments', {
     target: 'post_id',
     id: 123,
     sort: { field: 'created_at', order: 'DESC' }
@@ -304,7 +306,7 @@ restClient(GET_MANY_REFERENCE, 'comments', {
 
 ### Response Format
 
-REST responses are objects. The format depends on the type.
+Data responses are objects. The format depends on the type.
 
 Type                 | Response format
 -------------------- | ----------------
@@ -321,7 +323,7 @@ A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 12
 Examples:
 
 ```jsx
-restClient(GET_LIST, 'posts', {
+dataProvider(GET_LIST, 'posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },
     filter: { author_id: 12 },
@@ -338,19 +340,19 @@ restClient(GET_LIST, 'posts', {
 //     total: 27
 // }
 
-restClient(GET_ONE, 'posts', { id: 123 })
+dataProvider(GET_ONE, 'posts', { id: 123 })
 .then(response => console.log(response));
 // {
 //     data: { id: 123, title: "hello, world" }
 // }
 
-restClient(CREATE, 'posts', { data: { title: "hello, world" } })
+dataProvider(CREATE, 'posts', { data: { title: "hello, world" } })
 .then(response => console.log(response));
 // {
 //     data: { id: 450, title: "hello, world" }
 // }
 
-restClient(UPDATE, 'posts', {
+dataProvider(UPDATE, 'posts', {
     id: 123,
     data: { title: "hello, world!" },
     previousData: { title: "previous title" }
@@ -360,7 +362,7 @@ restClient(UPDATE, 'posts', {
 //     data: { id: 123, title: "hello, world!" }
 // }
 
-restClient(DELETE, 'posts', {
+dataProvider(DELETE, 'posts', {
     id: 123,
     previousData: { title: "hello, world!" }
 })
@@ -369,7 +371,7 @@ restClient(DELETE, 'posts', {
 //     data: { id: 123, title: "hello, world" }
 // }
 
-restClient(GET_MANY, 'posts', { ids: [123, 124, 125] })
+dataProvider(GET_MANY, 'posts', { ids: [123, 124, 125] })
 .then(response => console.log(response));
 // {
 //     data: [
@@ -379,7 +381,7 @@ restClient(GET_MANY, 'posts', { ids: [123, 124, 125] })
 //     ]
 // }
 
-restClient(GET_MANY_REFERENCE, 'comments', {
+dataProvider(GET_MANY_REFERENCE, 'comments', {
     target: 'post_id',
     id: 123,
     sort: { field: 'created_at', order: 'DESC' }
@@ -396,8 +398,8 @@ restClient(GET_MANY_REFERENCE, 'comments', {
 
 ### Error Format
 
-When the REST API returns an error, the rest client should `throw` an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors).
+When the API returns an error, the Data Provider should `throw` an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors).
 
 ### Example implementation
 
-Check the code from the [simple REST client](https://github.com/marmelab/react-admin/blob/master/src/rest/simple.js): it's a good starting point for a custom rest client implementation.
+Check the code from the [simple REST client](https://github.com/marmelab/react-admin/blob/master/packages/ra-data-simple-rest/src/index.js): it's a good starting point for a custom Data Provider implementation.

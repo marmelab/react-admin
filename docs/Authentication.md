@@ -65,14 +65,16 @@ const App = () => (
 
 Upon receiving a 403 response, the admin app shows the Login page. `authClient` is now called when the user submits the login form. Once the promise resolves, the login form redirects to the previous page, or to the admin index if the user just arrived.
 
-## Sending Credentials to the REST API
+## Sending Credentials to the API
 
-To use the credentials when calling REST API routes, you have to tweak, this time, the `restClient`. As explained in the [REST client documentation](RestClients.md#adding-custom-headers), `simpleRestClient` and `jsonServerRestClient` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
+To use the credentials when calling a data provider, you have to tweak, this time, the `dataProvider` function. As explained in the [Data providers documentation](DataProviders.md#adding-custom-headers), `simpleRestClient` and `jsonServerRestClient` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
 
-For instance, to pass the token obtained during login as an `Authorization` header, configure the REST client as follows:
+For instance, to pass the token obtained during login as an `Authorization` header, configure the Data Provider as follows:
 
 ```jsx
-import { simpleRestClient, fetchUtils, Admin, Resource } from 'react-admin';
+import { fetchUtils, Admin, Resource } from 'react-admin';
+import simpleRestClient from 'ra-data-simple-rest';
+
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
@@ -81,10 +83,10 @@ const httpClient = (url, options = {}) => {
     options.headers.set('Authorization', `Bearer ${token}`);
     return fetchUtils.fetchJson(url, options);
 }
-const restClient = simpleRestClient('http://localhost:3000', httpClient);
+const dataProvider = simpleRestClient('http://localhost:3000', httpClient);
 
 const App = () => (
-    <Admin restClient={restClient} authClient={authClient}>
+    <Admin dataProvider={dataProvider} authClient={authClient}>
         ...
     </Admin>
 );
