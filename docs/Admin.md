@@ -148,7 +148,7 @@ const App = () => (
 
 ## `menu`
 
-Admin-on-rest uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component.
+React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component.
 
 If you want to add or remove menu items, for instance to link to non-resources pages, you can create your own menu component:
 
@@ -398,7 +398,7 @@ The [Authentication documentation](./Authentication.md) explains how to implemen
 
 ## `loginPage`
 
-If you want to customize the Login page, or switch to another authentication strategy than a username/password form, pass a component of your own as the `loginPage` prop. Admin-on-rest will display this component whenever the `/login` route is called.
+If you want to customize the Login page, or switch to another authentication strategy than a username/password form, pass a component of your own as the `loginPage` prop. React-admin will display this component whenever the `/login` route is called.
 
 ```jsx
 import MyLoginPage from './MyLoginPage';

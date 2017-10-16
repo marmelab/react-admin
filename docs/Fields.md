@@ -433,7 +433,7 @@ You can also prevent `<ReferenceField>` from adding link to children by setting 
 </ReferenceField>
 ```
 
-**Tip**: Admin-on-rest uses `CRUD_GET_ONE_REFERENCE` action to accumulate and deduplicate the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
+**Tip**: React-admin uses `CRUD_GET_ONE_REFERENCE` action to accumulate and deduplicate the ids of the referenced records to make *one* `GET_MANY` call for the entire list, instead of n `GET_ONE` calls. So for instance, if the API returns the following list of comments:
 
 ```jsx
 [
@@ -687,7 +687,7 @@ If you want to override the styles of the field *element*, use the `elStyle` pro
 ```
 {% endraw %}
 
-Admin-on-rest usually delegates the rendering of fields components to material-ui components. Refer to the material-ui documentation to see the default styles for elements.
+React-admin usually delegates the rendering of fields components to material-ui components. Refer to the material-ui documentation to see the default styles for elements.
 
 Lastly, you may want to override the field header (the `<th>` element in the datagrid). In that case, use the `headerStyle` prop:
 
@@ -714,7 +714,7 @@ export const ProductList = (props) => (
 
 ## Writing Your Own Field Component
 
-If you don't find what you need in the list above, it's very easy to write your own Field component. It must be a regular React component, accepting not only a `source` attribute, but also a `record` attribute. Admin-on-rest will inject the `record` based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
+If you don't find what you need in the list above, it's very easy to write your own Field component. It must be a regular React component, accepting not only a `source` attribute, but also a `record` attribute. React-admin will inject the `record` based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
 
 For instance, here is an equivalent of react-admin's `<TextField>` component:
 
@@ -770,4 +770,4 @@ export const UserList = (props) => (
 );
 ```
 
-**Tip**: In such custom fields, the `source` is optional. Admin-on-rest uses it to determine which column to use for sorting when the column header is clicked.
+**Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked.

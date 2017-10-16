@@ -42,7 +42,7 @@ A frontend Framework for building admin applications running in the browser on t
 
 ## Installation
 
-Admin-on-rest is available from npm. You can install it (and its required dependencies)
+React-admin is available from npm. You can install it (and its required dependencies)
 using:
 
 ```sh
@@ -129,7 +129,7 @@ export const PostCreate = (props) => (
 
 Yes.
 
-Admin-on-rest uses an adapter approach, with a concept called *REST client*. Existing rest clients can be used as a blueprint to design your API, or you can write your own REST client to query an existing API. Writing a custom REST client is a matter of hours.
+React-admin uses an adapter approach, with a concept called *REST client*. Existing rest clients can be used as a blueprint to design your API, or you can write your own REST client to query an existing API. Writing a custom REST client is a matter of hours.
 
 ![REST client architecture](./img/rest-client.png)
 
@@ -137,7 +137,7 @@ See the [REST clients documentation](./RestClients.md) for details.
 
 ## Batteries Included But Removable
 
-Admin-on-rest is designed as a library of loosely coupled React components built on top of [material-ui](http://www.material-ui.com/#/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
+React-admin is designed as a library of loosely coupled React components built on top of [material-ui](http://www.material-ui.com/#/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
 
 ## Contributing
 
@@ -186,7 +186,7 @@ $ npm run
 
 ## License
 
-Admin-on-rest is licensed under the [MIT Licence](https://github.com/marmelab/react-admin/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
+React-admin is licensed under the [MIT Licence](https://github.com/marmelab/react-admin/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
 
 ## Donate
 

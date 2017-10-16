@@ -14,7 +14,7 @@ To handle translations, the `<Admin>` component supports:
 - a `locale` prop expecting a string ('en', 'fr', etc), and
 - a `messages` prop, expecting a dictionary object.
 
-Admin-on-rest only ships the English locale; if you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, install the `aor-language-french` npm package, then configure the `<Admin>` component as follows:
+React-admin only ships the English locale; if you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, install the `aor-language-french` npm package, then configure the `<Admin>` component as follows:
 
 ```jsx
 import React from 'react';
@@ -117,7 +117,7 @@ export default connect(undefined, { changeLocale: changeLocaleAction })(LocaleSw
 
 ## Using The Browser Locale
 
-Admin-on-rest provides a helper function named `resolveBrowserLocale()`, which helps you to introduce a dynamic locale attribution based on the locale configured in the user's browser. To use it, simply pass the function as `locale` prop.
+React-admin provides a helper function named `resolveBrowserLocale()`, which helps you to introduce a dynamic locale attribution based on the locale configured in the user's browser. To use it, simply pass the function as `locale` prop.
 
 ```jsx
 import React from 'react';
@@ -181,7 +181,7 @@ The default messages are available [here](https://github.com/marmelab/react-admi
 
 ## Translating Resource and Field Names
 
-By default, Admin-on-rest uses resource names ("post", "comment", etc) and field names ("title", "first_name", etc) everywhere in the interface. It simply "humanizes" the technical identifiers to make them look better (e.g. "first_name" becomes "First name").
+By default, React-admin uses resource names ("post", "comment", etc) and field names ("title", "first_name", etc) everywhere in the interface. It simply "humanizes" the technical identifiers to make them look better (e.g. "first_name" becomes "First name").
 
 However, before humanizing names, react-admin checks the `messages` dictionary for a possible translation, with the following keys:
 

@@ -204,7 +204,7 @@ Note that for the `Filter` component,  the function returns an array of React el
 
 ## Restricting Access To Content In Custom Pages or Menus
 
-What if you want to check the permissions inside a [Dashboard](./Admin.html#dashboard), a [custom page](./Admin.html#customroutes) or a [custom menu](./Admin.html#menu) ? Admin-on-rest provides two components for that: `WithPermission` and `SwitchPermissions`.
+What if you want to check the permissions inside a [Dashboard](./Admin.html#dashboard), a [custom page](./Admin.html#customroutes) or a [custom menu](./Admin.html#menu) ? React-admin provides two components for that: `WithPermission` and `SwitchPermissions`.
 
 ### WithPermission
 

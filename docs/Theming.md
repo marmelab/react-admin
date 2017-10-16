@@ -56,7 +56,7 @@ If you need more control over the HTML code, you can also create your own [Field
 
 ## Conditional Formatting
 
-Sometimes you want the format to depend on the value. Admin-on-rest doesn't provide any special way to do it, because React already has all that's necessary - in particular, Higher-Order Components (HOCs).
+Sometimes you want the format to depend on the value. React-admin doesn't provide any special way to do it, because React already has all that's necessary - in particular, Higher-Order Components (HOCs).
 
 For instance, if you want to highlight a `<TextField>` in red if the value is higher than 100, just wrap the field into a HOC:
 
@@ -126,7 +126,7 @@ export const PostList = (props) => (
 
 ## Using a Predefined Theme
 
-Material UI also supports [complete theming](http://www.material-ui.com/#/customization/themes) out of the box. Material UI ships two base themes: light and dark. Admin-on-rest uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `getMuiTheme()`).
+Material UI also supports [complete theming](http://www.material-ui.com/#/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `getMuiTheme()`).
 
 ```jsx
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';

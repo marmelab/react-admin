@@ -95,7 +95,7 @@ export const PostEdit = (props) => (
 );
 ```
 
-More interestingly, you can pass a component as `title`. Admin-on-rest clones this component and, in the `<EditView>`, injects the current `record`. This allows to customize the title according to the current record:
+More interestingly, you can pass a component as `title`. React-admin clones this component and, in the `<EditView>`, injects the current `record`. This allows to customize the title according to the current record:
 
 ```jsx
 const PostTitle = ({ record }) => {
@@ -252,7 +252,7 @@ export const PostCreate = (props) => (
 
 ### Per Field Default Value
 
-Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. Admin-on-rest will merge the child default values with the form default value (input > form):
+Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. React-admin will merge the child default values with the form default value (input > form):
 
 ```jsx
 export const PostCreate = (props) => (
@@ -269,7 +269,7 @@ export const PostCreate = (props) => (
 
 ## Validation
 
-Admin-on-rest relies on [redux-form](http://redux-form.com/) for the validation.
+React-admin relies on [redux-form](http://redux-form.com/) for the validation.
 
 To validate values submitted by a form, you can add a `validate` prop to the form component, to individual inputs, or even mix both approaches.
 
@@ -307,7 +307,7 @@ export const UserCreate = (props) => (
 
 Alternatively, you can specify a `validate` prop directly in `<Input>` components, taking either a function, or an array of functions. These functions should return `undefined` when there is no error, or an error string.
 
-Admin-on-rest will mash all the individual functions up to a single function looking just like the previous one:
+React-admin will mash all the individual functions up to a single function looking just like the previous one:
 
 ```jsx
 const required = value => value ? undefined : 'Required';
@@ -351,7 +351,7 @@ const required = (value, allValues, props) => value ? undefined : props.translat
 
 ### Built-in Field Validators
 
-Admin-on-rest already bundles a few validator functions, that you can just require and use as field validators:
+React-admin already bundles a few validator functions, that you can just require and use as field validators:
 
 * `required` if the field is mandatory,
 * `minValue(min, message)` to specify a minimum value for integers,

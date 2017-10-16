@@ -5,7 +5,7 @@ title: "REST Clients"
 
 # REST Clients
 
-Admin-on-rest can communicate with any REST server, regardless of the REST dialect it uses. Whether it's [JSON API](http://jsonapi.org/), [HAL](http://stateless.co/hal_specification.html), [OData](http://www.odata.org/) or a custom dialect, the only thing react-admin needs is a REST client function. This is the place to translate REST requests to HTTP requests, and HTTP responses to REST responses.
+React-admin can communicate with any REST server, regardless of the REST dialect it uses. Whether it's [JSON API](http://jsonapi.org/), [HAL](http://stateless.co/hal_specification.html), [OData](http://www.odata.org/) or a custom dialect, the only thing react-admin needs is a REST client function. This is the place to translate REST requests to HTTP requests, and HTTP responses to REST responses.
 
 ![REST client architecture](./img/rest-client.png)
 
@@ -33,7 +33,7 @@ The `restClient` is also the ideal place to add custom HTTP headers, authenticat
 
 ## Available Clients
 
-Admin-on-rest ships 2 REST client by default:
+React-admin ships 2 REST client by default:
 
 * simple REST: [simpleRestClient](#simple-rest) serves mostly as an example. Incidentally, it is compatible with the [FakeRest](https://github.com/marmelab/FakeRest) API.
 * **[JSON server](https://github.com/typicode/json-server)**: [jsonServerRestClient](#json-server-rest)
@@ -396,7 +396,7 @@ restClient(GET_MANY_REFERENCE, 'comments', {
 
 ### Error Format
 
-When the REST API returns an error, the rest client should `throw` an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). Admin-on-rest inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors).
+When the REST API returns an error, the rest client should `throw` an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors).
 
 ### Example implementation
 

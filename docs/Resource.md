@@ -69,7 +69,7 @@ const App = () => (
 
 ## `name`
 
-Admin-on-rest uses the `name` prop both to determine the API endpoint (passed to the `restClient`), and to form the URL for the resource.
+React-admin uses the `name` prop both to determine the API endpoint (passed to the `restClient`), and to form the URL for the resource.
 
 ```jsx
 <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={PostRemove} />
@@ -89,7 +89,7 @@ The routing will map the component as follows:
 
 ## `icon`
 
-Admin-on-rest will render the `icon` prop component in the menu:
+React-admin will render the `icon` prop component in the menu:
 
 ```jsx
 // in src/App.js

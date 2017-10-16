@@ -150,7 +150,7 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin'
 
 **Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](#referenceinput) doesn't cover your need), you'll have to [write your own Input component](#writing-your-own-input-component) based on material-ui `<AutoComplete>` component.
 
-**Tip**: Admin-on-rest's `<AutocompleteInput>` has only a capital A, while material-ui's `<AutoComplete>` has a capital A and a capital C. Don't mix up the components!
+**Tip**: React-admin's `<AutocompleteInput>` has only a capital A, while material-ui's `<AutoComplete>` has a capital A and a capital C. Don't mix up the components!
 
 ## `<BooleanInput>` and `<NullableBooleanInput>`
 
@@ -944,7 +944,7 @@ You can choose a specific input type using the `type` attribute, for instance `t
 
 ## Transforming Input Value to/from Record
 
-The data format returned by the input component may not be what your API desires. Since Admin-on-rest uses Redux Form, we can use its `parse()` and `format()` functions to transform the input value when saving to and loading from the record. It's better to understand the [input value's lifecycle](http://redux-form.com/6.5.0/docs/ValueLifecycle.md/) before you start.
+The data format returned by the input component may not be what your API desires. Since React-admin uses Redux Form, we can use its `parse()` and `format()` functions to transform the input value when saving to and loading from the record. It's better to understand the [input value's lifecycle](http://redux-form.com/6.5.0/docs/ValueLifecycle.md/) before you start.
 
 Mnemonic for the two functions:
 - `parse()`: input -> record
@@ -1037,7 +1037,7 @@ const LatLongInput = () => (
 );
 ```
 
-This component lacks a label. Admin-on-rest provides the `<Labeled>` component for that:
+This component lacks a label. React-admin provides the `<Labeled>` component for that:
 
 ```jsx
 // in LatLongInput.js
@@ -1133,7 +1133,7 @@ export default SexInput;
 
 For more details on how to use redux-form's `<Field>` component, please refer to [the redux-form doc](http://redux-form.com/6.5.0/docs/api/Field.md/).
 
-Instead of HTML `input` elements or material-ui components, you can use react-admin input components, like `<NumberInput>` for instance. Admin-on-rest components are already decorated by `<Field>`, and already include a label, so you don't need either `<Field>` or `<Labeled>` when using them:
+Instead of HTML `input` elements or material-ui components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components are already decorated by `<Field>`, and already include a label, so you don't need either `<Field>` or `<Labeled>` when using them:
 
 ```jsx
 // in LatLongInput.js

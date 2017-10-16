@@ -349,7 +349,7 @@ export const PostList = (props) => (
 
 ### `options`, `headerOptions`, `bodyOptions`, and `rowOptions`
 
-Admin-on-rest relies on [material-ui's `<Table>` component](http://www.material-ui.com/#/components/table) for rendering the datagrid. The `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props allow your to override the props of `<Table>`, `<TableHeader>`, `<TableBody>`, and `<TableRow>`.
+React-admin relies on [material-ui's `<Table>` component](http://www.material-ui.com/#/components/table) for rendering the datagrid. The `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props allow your to override the props of `<Table>`, `<TableHeader>`, `<TableBody>`, and `<TableRow>`.
 
 For instance, to get a fixed header on the table, override the `<Table>` props with `options`:
 

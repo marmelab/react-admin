@@ -213,7 +213,7 @@ This works fine: when a user presses the "Approve" button, the API receives the 
 
 ## Handling Side Effects With a Custom Saga
 
-`fetch`, `showNotification`, and `push` are called *side effects*. It's a functional programming term that describes functions that do more than just returning a value based on their input. Admin-on-rest promotes a programming style where side effects are decoupled from the rest of the code, which has the benefit of making them testable.
+`fetch`, `showNotification`, and `push` are called *side effects*. It's a functional programming term that describes functions that do more than just returning a value based on their input. React-admin promotes a programming style where side effects are decoupled from the rest of the code, which has the benefit of making them testable.
 
 In react-admin, side effects are handled by Sagas. [Redux-saga](https://redux-saga.github.io/redux-saga/) is a side effect library built for Redux, where side effects are defined by generator functions. This may sound complicated, but it's not: Here is the generator function necessary to handle the side effects for the `COMMENT_APPROVE` action.
 
@@ -268,7 +268,7 @@ With this code, approving a review now displays the correct notification, and re
 
 ## Bonus: Optimistic Rendering
 
-In this example, after clicking on the "Approve" button, users are redirected to the comments list. Admin-on-rest then fetches the `/comments` resource to grab the list of updated comments from the server. But react-admin doesn't wait for the response to this call to display the list of comments. In fact, it has an internal instance pool (in `state.admin.resources[resource]`) that is kept during navigation, and uses it to render the screen before the API calls are over - it's called *optimistic rendering*.
+In this example, after clicking on the "Approve" button, users are redirected to the comments list. React-admin then fetches the `/comments` resource to grab the list of updated comments from the server. But react-admin doesn't wait for the response to this call to display the list of comments. In fact, it has an internal instance pool (in `state.admin.resources[resource]`) that is kept during navigation, and uses it to render the screen before the API calls are over - it's called *optimistic rendering*.
 
 As the custom `COMMENT_APPROVE` action contains the `fetch: UPDATE` meta, react-admin will automatically update its instance pool with the response. That means that the initial rendering (before the `GET /comments` response arrives) will show the approved comment!
 
