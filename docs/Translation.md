@@ -14,19 +14,19 @@ To handle translations, the `<Admin>` component supports:
 - a `locale` prop expecting a string ('en', 'fr', etc), and
 - a `messages` prop, expecting a dictionary object.
 
-React-admin only ships the English locale; if you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, install the `aor-language-french` npm package, then configure the `<Admin>` component as follows:
+React-admin ships with the English locale by default. If you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, install the `ra-language-french` npm package, then configure the `<Admin>` component as follows:
 
 ```jsx
 import React from 'react';
 import { Admin, Resource, resolveBrowserLocale } from 'react-admin';
-import frenchMessages from 'aor-language-french';
+import frenchMessages from 'ra-language-french';
 
 const messages = {
     fr: frenchMessages,
 };
 
 const App = () => (
-    <Admin ...(your props) locale="fr" messages={messages}>
+    <Admin locale="fr" messages={messages}>
         ...
     </Admin>
 );
@@ -76,8 +76,9 @@ If you want to offer the ability to change locale at runtime, you must provide t
 
 ```jsx
 import React from 'react';
-import { Admin, Resource, englishMessages } from 'react-admin';
-import frenchMessages from 'aor-language-french';
+import { Admin, Resource } from 'react-admin';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
 
 const messages = {
     fr: frenchMessages,
@@ -85,7 +86,7 @@ const messages = {
 };
 
 const App = () => (
-    <Admin ...(your props) locale="en" messages={messages}>
+    <Admin locale="en" messages={messages}>
         ...
     </Admin>
 );
@@ -126,8 +127,9 @@ React-admin provides a helper function named `resolveBrowserLocale()`, which hel
 
 ```jsx
 import React from 'react';
-import { Admin, Resource, englishMessages, resolveBrowserLocale } from 'react-admin';
-import frenchMessages from 'aor-language-french';
+import { Admin, Resource, resolveBrowserLocale } from 'react-admin';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
 
 const messages = {
     fr: frenchMessages,
@@ -135,7 +137,7 @@ const messages = {
 };
 
 const App = () => (
-    <Admin ...(your props) locale={resolveBrowserLocale()} messages={messages}>
+    <Admin locale={resolveBrowserLocale()} messages={messages}>
         ...
     </Admin>
 );
@@ -150,7 +152,7 @@ The `message` value should be a dictionary with one entry per language supported
 ```jsx
 {
     en: {
-        aor: {
+        ra: {
             action: {
                 delete: 'Delete',
                 show: 'Show',
@@ -164,7 +166,7 @@ The `message` value should be a dictionary with one entry per language supported
         },
     },
     fr: {
-        aor: {
+        ra: {
             action: {
                 delete: 'Supprimer',
                 show: 'Afficher',
@@ -180,9 +182,9 @@ The `message` value should be a dictionary with one entry per language supported
 }
 ```
 
-All core translations are in the `aor` namespace, in order to prevent collisions with your own custom translations. The root key used at runtime is determined by the value of the `locale` prop.
+All core translations are in the `ra` namespace, in order to prevent collisions with your own custom translations. The root key used at runtime is determined by the value of the `locale` prop.
 
-The default messages are available [here](https://github.com/marmelab/react-admin/blob/master/src/i18n/messages.js).
+The default messages are available [here](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/index.js).
 
 ## Translating Resource and Field Names
 
@@ -231,8 +233,8 @@ When translating an admin, interface messages (e.g. "List", "Page", etc.) usuall
 
 ```jsx
 // interface translations
-import { englishMessages } from 'react-admin';
-import frenchMessages from 'aor-language-french';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
 
 // domain translations
 import * as domainMessages from './i18n';
@@ -243,7 +245,7 @@ const messages = {
 };
 
 const App = () => (
-    <Admin ...(your props) messages={messages}>
+    <Admin messages={messages}>
         ...
     </Admin>
 );
@@ -294,7 +296,7 @@ const MyHelloButton = ({ translate }) => (
 export default translate(MyHelloButton);
 ```
 
-**Tip**: For your message identifiers, choose a different root name than `aor` and `resources`, which are reserved.
+**Tip**: For your message identifiers, choose a different root name than `ra` and `resources`, which are reserved.
 
 **Tip**: Don't use `translate` for Field and Input labels, or for page titles, as they are already translated:
 

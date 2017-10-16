@@ -10,7 +10,7 @@ const Tab = ({ label, icon, children, ...rest }) => (
                     <div
                         key={field.props.source}
                         style={field.props.style}
-                        className={`aor-field aor-field-${field.props.source}`}
+                        className={`ra-field ra-field-${field.props.source}`}
                     >
                         {field.props.addLabel ? (
                             <Labeled

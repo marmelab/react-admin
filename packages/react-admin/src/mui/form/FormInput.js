@@ -5,7 +5,7 @@ import Labeled from '../input/Labeled';
 const FormInput = ({ input, ...rest }) =>
     input ? (
         <div
-            className={`aor-input aor-input-${input.props.source}`}
+            className={`ra-input ra-input-${input.props.source}`}
             style={input.props.style}
         >
             {input.props.addLabel ? (

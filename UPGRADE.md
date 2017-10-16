@@ -81,7 +81,7 @@ const messages = { 'en': enMessages };
 </Admin>
 ```
 
-## Message Hash Main Key Changed
+## Message Hash Main Key Changed ("aor" => "ra")
 
 The main kety of translation message objects was renamed from "aor" ro "ra". You must update your custom messages accordingly if you overrode core interface messages. If you're a language package author, you must also update and  republish your package to have it work with react-admin 2.0.
 
@@ -101,6 +101,17 @@ module.exports = {
             show: 'Show',
             ...
 ```
+
+## CSS Classes Changed
+
+React-admin does not rely heavily on CSS classes. Nevertheless, a few components added CSS classes to facilitate per-field theming: `<SimpleShowLayout>`, `<Tab>`, and `<FormInput>`. These CSS classes used to follow the "aor-" naming pattern. They have all been renamed to use the "ra-" pattern instead. Here is the list of concerned classes:
+
+* `aor-field` => `ra-field`
+* `aor-field-[source]` => `ra-field-[source]`
+* `aor-input` => `ra-input`
+* `aor-input-[source]` => `ra-input-[source]`
+
+If you used CSS to customize the look and feel of these components, please update your CSS selectors accordingly.
 
 ## `addField` Prop Replaced By `addField` HOC
 

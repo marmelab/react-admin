@@ -4,7 +4,7 @@ export default url => driver => ({
     elements: {
         appLoader: By.css('.app-loader'),
         input: name => By.css(`.edit-page input[name='${name}']`),
-        inputs: By.css(`.aor-input`),
+        inputs: By.css(`.ra-input`),
         tabs: By.css(`.form-tab`),
         submitButton: By.css(".edit-page button[type='submit']"),
         tab: index => By.css(`button.form-tab:nth-of-type(${index})`),
@@ -50,8 +50,8 @@ export default url => driver => ({
                 fields.map(field =>
                     field.getAttribute('class').then(classes =>
                         classes
-                            .replace('aor-input-', '')
-                            .replace('aor-input', '')
+                            .replace('ra-input-', '')
+                            .replace('ra-input', '')
                             .trim()
                     )
                 )

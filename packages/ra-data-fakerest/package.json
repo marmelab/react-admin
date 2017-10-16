@@ -9,7 +9,7 @@
     "files": ["LICENSE", "*.md", "lib", "src"],
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/marmelab/aor-json-rest-client.git"
+        "url": "git+https://github.com/marmelab/react-admin.git"
     },
     "keywords": [
         "reactjs",
@@ -22,9 +22,9 @@
     "author": "François Zaninotto",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/marmelab/aor-json-rest-client/issues"
+        "url": "https://github.com/marmelab/react-admin/issues"
     },
-    "homepage": "https://github.com/marmelab/aor-json-rest-client#readme",
+    "homepage": "https://github.com/marmelab/react-admin#readme",
     "dependencies": {
         "fakerest": "~2.1.0"
     }

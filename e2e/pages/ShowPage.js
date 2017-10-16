@@ -3,8 +3,8 @@ import { By, until } from 'selenium-webdriver';
 export default (url, initialField = 'title') => driver => ({
     elements: {
         appLoader: By.css('.app-loader'),
-        field: name => By.css(`.aor-field-${name} > div > span`),
-        fields: By.css(`.aor-field`),
+        field: name => By.css(`.ra-field-${name} > div > span`),
+        fields: By.css(`.ra-field`),
     },
 
     navigate() {
@@ -47,8 +47,8 @@ export default (url, initialField = 'title') => driver => ({
                 fields.map(field =>
                     field.getAttribute('class').then(classes =>
                         classes
-                            .replace('aor-field-', '')
-                            .replace('aor-field', '')
+                            .replace('ra-field-', '')
+                            .replace('ra-field', '')
                             .trim()
                     )
                 )
