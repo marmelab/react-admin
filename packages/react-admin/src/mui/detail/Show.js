@@ -59,7 +59,7 @@ export class Show extends Component {
             smart_count: 1,
             _: inflection.humanize(inflection.singularize(resource)),
         });
-        const defaultTitle = translate('aor.page.show', {
+        const defaultTitle = translate('ra.page.show', {
             name: `${resourceName}`,
             id,
             data,

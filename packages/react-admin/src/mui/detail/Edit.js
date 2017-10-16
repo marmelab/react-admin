@@ -94,7 +94,7 @@ export class Edit extends Component {
             smart_count: 1,
             _: inflection.humanize(inflection.singularize(resource)),
         });
-        const defaultTitle = translate('aor.page.edit', {
+        const defaultTitle = translate('ra.page.edit', {
             name: `${resourceName}`,
             id,
             data,

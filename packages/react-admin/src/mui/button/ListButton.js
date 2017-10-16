@@ -5,11 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 import ActionList from 'material-ui/svg-icons/action/list';
 import translate from '../../i18n/translate';
 
-const ListButton = ({
-    basePath = '',
-    label = 'aor.action.list',
-    translate,
-}) => (
+const ListButton = ({ basePath = '', label = 'ra.action.list', translate }) => (
     <FlatButton
         primary
         label={label && translate(label)}

@@ -49,12 +49,12 @@ const NotFound = ({ width, translate }) => (
         {width === 1 && <AppBarMobile />}
         <div style={styles.message}>
             <HotTub style={styles.icon} />
-            <h1>{translate('aor.page.not_found')}</h1>
-            <div>{translate('aor.message.not_found')}.</div>
+            <h1>{translate('ra.page.not_found')}</h1>
+            <div>{translate('ra.message.not_found')}.</div>
         </div>
         <div style={styles.toolbar}>
             <RaisedButton
-                label={translate('aor.action.back')}
+                label={translate('ra.action.back')}
                 icon={<History />}
                 onClick={goBack}
             />

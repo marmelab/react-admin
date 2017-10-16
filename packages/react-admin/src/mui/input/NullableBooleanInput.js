@@ -22,8 +22,8 @@ export const NullableBooleanInput = ({
         resource={resource}
         choices={[
             { id: null, name: '' },
-            { id: false, name: translate('aor.boolean.false') },
-            { id: true, name: translate('aor.boolean.true') },
+            { id: false, name: translate('ra.boolean.false') },
+            { id: true, name: translate('ra.boolean.true') },
         ]}
         meta={meta}
         style={elStyle}

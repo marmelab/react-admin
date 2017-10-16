@@ -44,8 +44,8 @@ export class FileInput extends Component {
 
     static defaultProps = {
         itemStyle: {},
-        labelMultiple: 'aor.input.file.upload_several',
-        labelSingle: 'aor.input.file.upload_single',
+        labelMultiple: 'ra.input.file.upload_several',
+        labelSingle: 'ra.input.file.upload_single',
         multiple: false,
         onUpload: () => {},
         removeStyle: { display: 'inline-block' },

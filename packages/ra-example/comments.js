@@ -53,7 +53,7 @@ const CommentPagination = translate(
                             <FlatButton
                                 primary
                                 key="prev"
-                                label={translate('aor.navigation.prev')}
+                                label={translate('ra.navigation.prev')}
                                 icon={<ChevronLeft />}
                                 onClick={() => setPage(page - 1)}
                             />
@@ -62,7 +62,7 @@ const CommentPagination = translate(
                             <FlatButton
                                 primary
                                 key="next"
-                                label={translate('aor.navigation.next')}
+                                label={translate('ra.navigation.next')}
                                 icon={<ChevronRight />}
                                 onClick={() => setPage(page + 1)}
                                 labelPosition="before"

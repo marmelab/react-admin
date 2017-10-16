@@ -54,7 +54,7 @@ class Create extends Component {
             smart_count: 1,
             _: inflection.humanize(inflection.singularize(resource)),
         });
-        const defaultTitle = translate('aor.page.create', {
+        const defaultTitle = translate('ra.page.create', {
             name: `${resourceName}`,
         });
         const titleElement = (

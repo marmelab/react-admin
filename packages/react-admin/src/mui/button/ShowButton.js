@@ -10,7 +10,7 @@ import translate from '../../i18n/translate';
 
 const ShowButton = ({
     basePath = '',
-    label = 'aor.action.show',
+    label = 'ra.action.show',
     record = {},
     translate,
 }) => (

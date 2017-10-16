@@ -43,6 +43,7 @@
         "react-router": "~4.1.0",
         "react-router-dom": "~4.1.0",
         "react-router-redux": "~5.0.0-alpha.6",
+        "ra-language-english": "~2.0.0-alpha1",
         "recompose": "~0.25.0",
         "redux": "~3.7.2",
         "redux-form": "~7.0.3",

@@ -144,8 +144,8 @@ describe('<FileInput />', () => {
             assert.equal(wrapper.find('Dropzone p').text(), expectedLabel);
         };
 
-        test(false, 'aor.input.file.upload_single');
-        test(true, 'aor.input.file.upload_several');
+        test(false, 'ra.input.file.upload_single');
+        test(true, 'ra.input.file.upload_several');
     });
 
     it('should display correct custom label', () => {

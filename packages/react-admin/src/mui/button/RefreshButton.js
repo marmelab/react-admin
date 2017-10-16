@@ -15,7 +15,7 @@ class RefreshButton extends Component {
     };
 
     static defaultProps = {
-        label: 'aor.action.refresh',
+        label: 'ra.action.refresh',
     };
 
     handleClick = event => {

@@ -37,7 +37,7 @@ describe('<Pagination />', () => {
             const iconButtons = wrapper.find('IconButton');
             assert.equal(iconButtons.length, 0);
             const span = wrapper.find('span');
-            assert.equal(span.text(), 'aor.navigation.page_range_info');
+            assert.equal(span.text(), 'ra.navigation.page_range_info');
         });
     });
     describe('desktop', () => {
@@ -71,7 +71,7 @@ describe('<Pagination />', () => {
             const flatButtons = wrapper.find('FlatButton');
             assert.equal(flatButtons.length, 0);
             const span = wrapper.find('span');
-            assert.equal(span.text(), 'aor.navigation.page_range_info');
+            assert.equal(span.text(), 'ra.navigation.page_range_info');
         });
     });
 });

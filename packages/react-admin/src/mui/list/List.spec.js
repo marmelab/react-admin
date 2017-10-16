@@ -33,7 +33,7 @@ describe('<List />', () => {
             </List>
         );
         const textElement = wrapper.find('CardText').children();
-        assert.equal(textElement.text(), 'aor.navigation.no_results');
+        assert.equal(textElement.text(), 'ra.navigation.no_results');
     });
 
     it('should not display a no results text when there are results', () => {

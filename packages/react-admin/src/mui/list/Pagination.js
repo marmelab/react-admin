@@ -68,7 +68,7 @@ export class Pagination extends Component {
         event.stopPropagation();
         if (this.props.page === 1) {
             throw new Error(
-                this.props.translate('aor.navigation.page_out_from_begin')
+                this.props.translate('ra.navigation.page_out_from_begin')
             );
         }
         this.props.setPage(this.props.page - 1);
@@ -78,7 +78,7 @@ export class Pagination extends Component {
         event.stopPropagation();
         if (this.props.page > this.getNbPages()) {
             throw new Error(
-                this.props.translate('aor.navigation.page_out_from_end')
+                this.props.translate('ra.navigation.page_out_from_end')
             );
         }
         this.props.setPage(this.props.page + 1);
@@ -89,7 +89,7 @@ export class Pagination extends Component {
         const page = event.currentTarget.dataset.page;
         if (page < 1 || page > this.getNbPages()) {
             throw new Error(
-                this.props.translate('aor.navigation.page_out_of_boundaries', {
+                this.props.translate('ra.navigation.page_out_of_boundaries', {
                     page,
                 })
             );
@@ -136,7 +136,7 @@ export class Pagination extends Component {
                         </IconButton>
                     )}
                     <span style={styles.pageInfo}>
-                        {translate('aor.navigation.page_range_info', {
+                        {translate('ra.navigation.page_range_info', {
                             offsetBegin,
                             offsetEnd,
                             total,
@@ -155,7 +155,7 @@ export class Pagination extends Component {
             <Toolbar>
                 <ToolbarGroup firstChild>
                     <span className="displayed-records" style={styles.pageInfo}>
-                        {translate('aor.navigation.page_range_info', {
+                        {translate('ra.navigation.page_range_info', {
                             offsetBegin,
                             offsetEnd,
                             total,
@@ -169,7 +169,7 @@ export class Pagination extends Component {
                                 className="previous-page"
                                 primary
                                 key="prev"
-                                label={translate('aor.navigation.prev')}
+                                label={translate('ra.navigation.prev')}
                                 icon={<ChevronLeft />}
                                 onClick={this.prevPage}
                                 style={styles.button}
@@ -181,7 +181,7 @@ export class Pagination extends Component {
                                 className="next-page"
                                 primary
                                 key="next"
-                                label={translate('aor.navigation.next')}
+                                label={translate('ra.navigation.next')}
                                 icon={<ChevronRight />}
                                 labelPosition="before"
                                 onClick={this.nextPage}

@@ -25,7 +25,7 @@ export class SaveButton extends Component {
     render() {
         const {
             saving,
-            label = 'aor.action.save',
+            label = 'ra.action.save',
             raised = true,
             translate,
             submitOnEnter,

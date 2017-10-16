@@ -26,7 +26,7 @@ const styles = {
 const CreateButton = ({
     basePath = '',
     translate,
-    label = 'aor.action.create',
+    label = 'ra.action.create',
     width,
 }) =>
     width === 1 ? (

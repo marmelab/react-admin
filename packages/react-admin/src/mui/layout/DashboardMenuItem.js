@@ -8,7 +8,7 @@ import translate from '../../i18n/translate';
 const DashboardMenuItem = ({ onClick, translate }) => (
     <MenuItem
         containerElement={<Link to="/" />}
-        primaryText={translate('aor.page.dashboard')}
+        primaryText={translate('ra.page.dashboard')}
         leftIcon={<DashboardIcon />}
         onClick={onClick}
     />

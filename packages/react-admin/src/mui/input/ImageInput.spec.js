@@ -51,8 +51,8 @@ describe('<ImageInput />', () => {
             assert.equal(wrapper.find('Dropzone p').text(), expectedLabel);
         };
 
-        test(false, 'aor.input.image.upload_single');
-        test(true, 'aor.input.image.upload_several');
+        test(false, 'ra.input.image.upload_single');
+        test(true, 'ra.input.image.upload_several');
     });
 
     it('should display correct custom label', () => {

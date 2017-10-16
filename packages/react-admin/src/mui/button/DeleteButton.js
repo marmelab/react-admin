@@ -8,7 +8,7 @@ import translate from '../../i18n/translate';
 
 const DeleteButton = ({
     basePath = '',
-    label = 'aor.action.delete',
+    label = 'ra.action.delete',
     record = {},
     translate,
 }) => (

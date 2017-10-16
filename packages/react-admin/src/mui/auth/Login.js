@@ -93,7 +93,7 @@ class Login extends Component {
                                         name="username"
                                         component={renderInput}
                                         floatingLabelText={translate(
-                                            'aor.auth.username'
+                                            'ra.auth.username'
                                         )}
                                         disabled={isLoading}
                                     />
@@ -103,7 +103,7 @@ class Login extends Component {
                                         name="password"
                                         component={renderInput}
                                         floatingLabelText={translate(
-                                            'aor.auth.password'
+                                            'ra.auth.password'
                                         )}
                                         type="password"
                                         disabled={isLoading}
@@ -123,7 +123,7 @@ class Login extends Component {
                                             />
                                         )
                                     }
-                                    label={translate('aor.auth.sign_in')}
+                                    label={translate('ra.auth.sign_in')}
                                     fullWidth
                                 />
                             </CardActions>
@@ -159,9 +159,9 @@ const enhance = compose(
             const errors = {};
             const { translate } = props;
             if (!values.username)
-                errors.username = translate('aor.validation.required');
+                errors.username = translate('ra.validation.required');
             if (!values.password)
-                errors.password = translate('aor.validation.required');
+                errors.password = translate('ra.validation.required');
             return errors;
         },
     }),

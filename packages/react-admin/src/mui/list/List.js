@@ -228,7 +228,7 @@ export class List extends Component {
             smart_count: 2,
             _: inflection.humanize(inflection.pluralize(resource)),
         });
-        const defaultTitle = translate('aor.page.list', {
+        const defaultTitle = translate('ra.page.list', {
             name: `${resourceName}`,
         });
         const titleElement = (
@@ -289,7 +289,7 @@ export class List extends Component {
                         </div>
                     ) : (
                         <CardText style={styles.noResults}>
-                            {translate('aor.navigation.no_results')}
+                            {translate('ra.navigation.no_results')}
                         </CardText>
                     )}
                 </Card>

@@ -25,7 +25,7 @@ describe('Validators', () => {
             test(required, ['foo', 12], undefined);
         });
         it('should return an error message if the value is empty', () => {
-            test(required, [undefined, '', null], 'aor.validation.required');
+            test(required, [undefined, '', null], 'ra.validation.required');
         });
     });
     describe('minLength', () => {
@@ -39,7 +39,7 @@ describe('Validators', () => {
             test(minLength(5), ['12345', '123456'], undefined);
         });
         it('should return an error message if the value has smaller length than the given minimum', () => {
-            test(minLength(5), ['1234', '12'], 'aor.validation.minLength');
+            test(minLength(5), ['1234', '12'], 'ra.validation.minLength');
         });
     });
     describe('maxLength', () => {
@@ -53,7 +53,7 @@ describe('Validators', () => {
             test(maxLength(5), ['12345', '123'], undefined);
         });
         it('should return an error message if the value has higher length than the given maximum', () => {
-            test(maxLength(10), ['12345678901'], 'aor.validation.maxLength');
+            test(maxLength(10), ['12345678901'], 'ra.validation.maxLength');
         });
     });
     describe('minValue', () => {
@@ -64,10 +64,10 @@ describe('Validators', () => {
             test(minValue(5), [5, 10, 5.5, '10'], undefined);
         });
         it('should return an error message if the value is lower than the given minimum', () => {
-            test(minValue(10), [1, 9.5, '5'], 'aor.validation.minValue');
+            test(minValue(10), [1, 9.5, '5'], 'ra.validation.minValue');
         });
         it('should return an error message if the value is 0', () => {
-            test(minValue(10), [0], 'aor.validation.minValue');
+            test(minValue(10), [0], 'ra.validation.minValue');
         });
     });
     describe('maxValue', () => {
@@ -78,7 +78,7 @@ describe('Validators', () => {
             test(maxValue(5), [5, 4, 4.5, '4'], undefined);
         });
         it('should return an error message if the value is higher than the given maximum', () => {
-            test(maxValue(10), [11, 10.5, '11'], 'aor.validation.maxValue');
+            test(maxValue(10), [11, 10.5, '11'], 'ra.validation.maxValue');
         });
         it('should return undefined if the value is 0', () => {
             test(maxValue(10), [0], undefined);
@@ -92,7 +92,7 @@ describe('Validators', () => {
             test(number, [123, '123', new Date(), 0, 2.5, -5], undefined);
         });
         it('should return an error message if the value is not a number', () => {
-            test(number, ['foo'], 'aor.validation.number');
+            test(number, ['foo'], 'ra.validation.number');
         });
     });
     describe('regex', () => {
@@ -128,7 +128,7 @@ describe('Validators', () => {
             test(email, ['foo@bar.com', 'john.doe@mydomain.co.uk'], undefined);
         });
         it('should return an error if the value is not a valid email', () => {
-            test(email, ['foo@bar', 'hello, world'], 'aor.validation.email');
+            test(email, ['foo@bar', 'hello, world'], 'ra.validation.email');
         });
     });
     describe('choices', () => {

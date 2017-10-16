@@ -13,7 +13,7 @@ const Logout = ({ translate, userLogout }) => (
     <MenuItem
         className="logout"
         leftIcon={<ExitIcon />}
-        primaryText={translate('aor.auth.logout')}
+        primaryText={translate('ra.auth.logout')}
         onClick={userLogout}
     />
 );

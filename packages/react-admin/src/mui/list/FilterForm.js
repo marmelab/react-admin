@@ -75,7 +75,7 @@ export class FilterForm extends Component {
                                         onClick={this.handleHide}
                                         data-key={filterElement.props.source}
                                         tooltip={translate(
-                                            'aor.action.remove_filter'
+                                            'ra.action.remove_filter'
                                         )}
                                     >
                                         <ActionHide />

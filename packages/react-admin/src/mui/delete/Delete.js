@@ -85,7 +85,7 @@ class Delete extends Component {
             smart_count: 1,
             _: inflection.humanize(inflection.singularize(resource)),
         });
-        const defaultTitle = translate('aor.page.delete', {
+        const defaultTitle = translate('ra.page.delete', {
             name: `${resourceName}`,
             id,
             data,
@@ -105,19 +105,19 @@ class Delete extends Component {
                     <ViewTitle title={titleElement} />
                     <form onSubmit={this.handleSubmit}>
                         <CardText>
-                            {translate('aor.message.are_you_sure')}
+                            {translate('ra.message.are_you_sure')}
                         </CardText>
                         <Toolbar style={styles.toolbar}>
                             <ToolbarGroup>
                                 <RaisedButton
                                     type="submit"
-                                    label={translate('aor.action.delete')}
+                                    label={translate('ra.action.delete')}
                                     icon={<ActionCheck />}
                                     primary
                                     style={styles.button}
                                 />
                                 <RaisedButton
-                                    label={translate('aor.action.cancel')}
+                                    label={translate('ra.action.cancel')}
                                     icon={<AlertError />}
                                     onClick={this.goBack}
                                     style={styles.button}

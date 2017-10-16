@@ -18,8 +18,8 @@ describe('<NullableBooleanInput />', () => {
         const choices = wrapper.find('WithFormField').prop('choices');
         assert.deepEqual(choices, [
             { id: null, name: '' },
-            { id: false, name: 'aor.boolean.false' },
-            { id: true, name: 'aor.boolean.true' },
+            { id: false, name: 'ra.boolean.false' },
+            { id: true, name: 'ra.boolean.true' },
         ]);
     });
 });

@@ -65,22 +65,41 @@ import jsonServerRestClient from 'ra-data-json-server';
 
 ## Default (English) Messages Moved To Standalone Package
 
-The English messages are no longer bundled with the core package. To display the interface in English, you'll need to install the `ra-language-english` package.
-
-```sh
-npm install ra-language-english
-```
-
-Then, in your code, pass the English messages to the `<Admin>` component:
+The English messages have moved to another package, `ra-language-english`. The core package still displays the interface messages in English by default (by using `ra-language-english` as a dependency), but if you overrode some of the messages, you'll need to update the package name:
 
 ```js
-import enMessages from 'ra-language-english';
+// before
+import { enMessages } from 'admin-on-rest';
+const messages = { 'en': enMessages };
 
+// after
+import enMessages from 'ra-language-english';
 const messages = { 'en': enMessages };
 
 <Admin locale="en" messages={messages}>
   ...
 </Admin>
+```
+
+## Message Hash Main Key Changed
+
+The main kety of translation message objects was renamed from "aor" ro "ra". You must update your custom messages accordingly if you overrode core interface messages. If you're a language package author, you must also update and  republish your package to have it work with react-admin 2.0.
+
+```js
+// before
+module.exports = {
+    aor: {
+        action: {
+            delete: 'Delete',
+            show: 'Show',
+            ...
+// after
+module.exports = {
+    ra: {
+        action: {
+            delete: 'Delete',
+            show: 'Show',
+            ...
 ```
 
 ## `addField` Prop Replaced By `addField` HOC

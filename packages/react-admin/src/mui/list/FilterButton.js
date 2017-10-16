@@ -63,7 +63,7 @@ export class FilterButton extends Component {
                     <FlatButton
                         className="add-filter"
                         primary
-                        label={this.props.translate('aor.action.add_filter')}
+                        label={this.props.translate('ra.action.add_filter')}
                         icon={<ContentFilter />}
                         onClick={this.handleTouchTap}
                     />

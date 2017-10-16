@@ -7,8 +7,8 @@ import { FileInput } from './FileInput';
 export class ImageInput extends FileInput {
     static defaultProps = {
         ...FileInput.defaultProps,
-        labelMultiple: 'aor.input.image.upload_several',
-        labelSingle: 'aor.input.image.upload_single',
+        labelMultiple: 'ra.input.image.upload_several',
+        labelSingle: 'ra.input.image.upload_single',
         itemStyle: {
             display: 'inline-block',
             position: 'relative',

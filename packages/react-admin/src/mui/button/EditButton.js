@@ -10,7 +10,7 @@ import translate from '../../i18n/translate';
 
 const EditButton = ({
     basePath = '',
-    label = 'aor.action.edit',
+    label = 'ra.action.edit',
     record = {},
     translate,
 }) => (

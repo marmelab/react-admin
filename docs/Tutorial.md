@@ -17,7 +17,7 @@ Admin-on-REST uses React. We'll use Facebook's [create-react-app](https://github
 npm install -g create-react-app
 create-react-app test-admin
 cd test-admin/
-yarn add react-admin ra-data-json-server
+yarn add react-admin
 yarn start
 ```
 
@@ -40,20 +40,20 @@ curl http://jsonplaceholder.typicode.com/posts/12
 }
 ```
 
-JSONPlaceholder provides endpoints for posts, comments, and users. The admin we'll build will allow to Create, Retrieve, Update, and Delete (CRUD) these resources.
+JSONPlaceholder provides endpoints for posts, comments, and users. The admin we'll build will allow to Create, Retrieve, Update, and Delete (CRUD) these resources. 
 
-Replace the `src/App.js` by the following code:
+Bootstrap your first admin by replacing the `src/App.js` by the following code:
 
 ```jsx
 // in src/App.js
 import React from 'react';
 import { Admin, Resource } from 'react-admin';
-import jsonServerRestClient from 'ra-data-json-server';
+import jsonServerProvider from 'ra-data-json-server';
 
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
@@ -61,7 +61,11 @@ const App = () => (
 export default App;
 ```
 
-The `App` component now renders an `<Admin>` component, which is the main component of react-admin. This component expects a Data Provider prop - a function capable of translating queries into HTTP requests for a given API. Since there is no standard for that, you will probably have to write a custom provider to connect to your own APIs. But we'll dive into Data Providers later. For now, let's take advantage of the `jsonServerRestClient`, which speaks the same REST dialect as JSONPlaceholder.
+The `App` component now renders an `<Admin>` component, which is the main component of react-admin. This component expects a `dataProvider` prop - a function capable of translating queries into HTTP requests for a given API. Since there is no standard for data exchanges between computers, you will probably have to write a custom provider to connect react-admin to your own APIs - but we'll dive into Data Providers later. For now, let's take advantage of the `ra-data-json-server` data provider, which speaks the same REST dialect as JSONPlaceholder.
+
+```sh
+yarn add ra-data-json-server
+```
 
 The `<Admin>` component can contain one or more `<Resource>` components, each resource being mapped to an endpoint in the API. To begin with, we'll display the list of posts. Here is what the `<PostList>` component looks like:
 

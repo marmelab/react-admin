@@ -44,7 +44,7 @@ export default authClient => {
                         typeof e === 'string'
                             ? e
                             : typeof e === 'undefined' || !e.message
-                              ? 'aor.auth.sign_in_error'
+                              ? 'ra.auth.sign_in_error'
                               : e.message;
                     yield put(showNotification(errorMessage, 'warning'));
                 }

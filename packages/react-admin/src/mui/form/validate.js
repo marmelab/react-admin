@@ -6,31 +6,31 @@ const isEmpty = value =>
     typeof value === 'undefined' || value === null || value === '';
 
 export const required = (value, _, props) =>
-    isEmpty(value) ? props.translate('aor.validation.required') : undefined;
+    isEmpty(value) ? props.translate('ra.validation.required') : undefined;
 
 export const minLength = (min, message) => (value, _, props) =>
     !isEmpty(value) && value.length < min
-        ? props.translate(message || 'aor.validation.minLength', { min })
+        ? props.translate(message || 'ra.validation.minLength', { min })
         : undefined;
 
 export const maxLength = (max, message) => (value, _, props) =>
     !isEmpty(value) && value.length > max
-        ? props.translate(message || 'aor.validation.maxLength', { max })
+        ? props.translate(message || 'ra.validation.maxLength', { max })
         : undefined;
 
 export const minValue = (min, message) => (value, _, props) =>
     !isEmpty(value) && value < min
-        ? props.translate(message || 'aor.validation.minValue', { min })
+        ? props.translate(message || 'ra.validation.minValue', { min })
         : undefined;
 
 export const maxValue = (max, message) => (value, _, props) =>
     !isEmpty(value) && value > max
-        ? props.translate(message || 'aor.validation.maxValue', { max })
+        ? props.translate(message || 'ra.validation.maxValue', { max })
         : undefined;
 
 export const number = (value, _, props) =>
     !isEmpty(value) && isNaN(Number(value))
-        ? props.translate('aor.validation.number')
+        ? props.translate('ra.validation.number')
         : undefined;
 
 export const regex = (pattern, message) => (value, _, props) =>
@@ -38,7 +38,7 @@ export const regex = (pattern, message) => (value, _, props) =>
         ? props.translate(message)
         : undefined;
 
-export const email = regex(EMAIL_REGEX, 'aor.validation.email');
+export const email = regex(EMAIL_REGEX, 'ra.validation.email');
 
 export const choices = (list, message) => (value, _, props) =>
     !isEmpty(value) && list.indexOf(value) === -1
