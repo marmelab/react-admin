@@ -5,13 +5,13 @@ import crudResponse from './crudResponse';
 import referenceFetch from './referenceFetch';
 
 /**
- * @param {Object} restClient A REST object with two methods: fetch() and convertResponse()
+ * @param {Object} dataProvider A Data Provider function
  */
-export default (restClient, authClient) =>
+export default (dataProvider, authClient) =>
     function* crudSaga() {
         yield all([
             auth(authClient)(),
-            crudFetch(restClient)(),
+            crudFetch(dataProvider)(),
             crudResponse(),
             referenceFetch(),
         ]);

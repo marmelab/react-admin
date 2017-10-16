@@ -9,7 +9,7 @@ import {
     CREATE,
     UPDATE,
     DELETE,
- } from 'react-admin';
+} from 'react-admin';
 
 /**
  * Maps react-admin queries to a json-server powered REST API
@@ -27,10 +27,10 @@ export default (apiUrl, httpClient = fetchJson) => {
     /**
      * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
      * @param {String} resource Name of the resource to fetch, e.g. 'posts'
-     * @param {Object} params The REST request params, depending on the type
+     * @param {Object} params The data request params, depending on the type
      * @returns {Object} { url, options } The HTTP request parameters
      */
-    const convertRESTRequestToHTTP = (type, resource, params) => {
+    const convertDataRequestToHTTP = (type, resource, params) => {
         let url = '';
         const options = {};
         switch (type) {
@@ -88,17 +88,17 @@ export default (apiUrl, httpClient = fetchJson) => {
      * @param {Object} response HTTP response from fetch()
      * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
      * @param {String} resource Name of the resource to fetch, e.g. 'posts'
-     * @param {Object} params The REST request params, depending on the type
-     * @returns {Object} REST response
+     * @param {Object} params The data request params, depending on the type
+     * @returns {Object} Data response
      */
-    const convertHTTPResponseToREST = (response, type, resource, params) => {
+    const convertHTTPResponse = (response, type, resource, params) => {
         const { headers, json } = response;
         switch (type) {
             case GET_LIST:
             case GET_MANY_REFERENCE:
                 if (!headers.has('x-total-count')) {
                     throw new Error(
-                        'The X-Total-Count header is missing in the HTTP Response. The jsonServer REST client expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare X-Total-Count in the Access-Control-Expose-Headers header?'
+                        'The X-Total-Count header is missing in the HTTP Response. The jsonServer Data Provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare X-Total-Count in the Access-Control-Expose-Headers header?'
                     );
                 }
                 return {
@@ -122,7 +122,7 @@ export default (apiUrl, httpClient = fetchJson) => {
      * @param {string} type Request type, e.g GET_LIST
      * @param {string} resource Resource name, e.g. "posts"
      * @param {Object} payload Request parameters. Depends on the request type
-     * @returns {Promise} the Promise for a REST response
+     * @returns {Promise} the Promise for a data response
      */
     return (type, resource, params) => {
         // json-server doesn't handle WHERE IN requests, so we fallback to calling GET_ONE n times instead
@@ -133,13 +133,13 @@ export default (apiUrl, httpClient = fetchJson) => {
                 data: responses.map(response => response.json),
             }));
         }
-        const { url, options } = convertRESTRequestToHTTP(
+        const { url, options } = convertDataRequestToHTTP(
             type,
             resource,
             params
         );
         return httpClient(url, options).then(response =>
-            convertHTTPResponseToREST(response, type, resource, params)
+            convertHTTPResponse(response, type, resource, params)
         );
     };
 };

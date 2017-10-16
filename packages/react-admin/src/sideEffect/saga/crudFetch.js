@@ -13,7 +13,7 @@ import {
     FETCH_CANCEL,
 } from '../../actions/fetchActions';
 
-const crudFetch = restClient => {
+const crudFetch = dataProvider => {
     function* handleFetch(action) {
         const { type, payload, meta: { fetch: fetchMeta, ...meta } } = action;
         const restType = fetchMeta;
@@ -24,7 +24,12 @@ const crudFetch = restClient => {
         ]);
         let response;
         try {
-            response = yield call(restClient, restType, meta.resource, payload);
+            response = yield call(
+                dataProvider,
+                restType,
+                meta.resource,
+                payload
+            );
             if (!response.data) {
                 throw new Error('REST response must contain a data key');
             }

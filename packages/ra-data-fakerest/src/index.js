@@ -22,13 +22,13 @@ function log(type, resource, params, response) {
 }
 
 /**
- * Respond to react-admin REST queries using a local JavaScript object
+ * Respond to react-admin data queries using a local JavaScript object
  *
  * Useful for debugging and testing - do not use in production.
  *
  * @example
- * import { jsonRestClient } from 'react-admin';
- * const restClient = jsonRestClient({
+ * import fakeDataProvider from 'ra-data-fakerest';
+ * const dataProvider = fakeDataProvider({
  *   posts: [
  *     { id: 0, title: 'Hello, world!' },
  *     { id: 1, title: 'FooBar' },
@@ -105,8 +105,8 @@ export default (data, loggingEnabled = false) => {
     /**
      * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
      * @param {String} resource Name of the resource to fetch, e.g. 'posts'
-     * @param {Object} params The REST request params, depending on the type
-     * @returns {Promise} The REST response
+     * @param {Object} params The data request params, depending on the type
+     * @returns {Promise} The response
      */
     return (type, resource, params) => {
         const collection = restServer.getCollection(resource);

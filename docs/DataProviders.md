@@ -247,7 +247,7 @@ const dataProvider = jsonServerdataProvider(data, true);
 const uploadCapableDataProvider = addUploadFeature(dataProvider);
 
 render(
-    <Admin restClient={uploadCapableDataProvider} title="Example Admin">
+    <Admin dataProvider={uploadCapableDataProvider} title="Example Admin">
         // [...]
     </Admin>,
     document.getElementById('root'),

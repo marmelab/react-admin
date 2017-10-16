@@ -11,7 +11,8 @@ The `<Admin>` component creates an application with its own state, routing, and 
 // in src/App.js
 import React from 'react';
 
-import { simpleRestClient, Admin, Resource } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
+import simpleRestClient from 'ra-data-simple-rest';
 
 import { PostList } from './posts';
 
