@@ -65,7 +65,7 @@ import jsonServerRestClient from 'ra-data-json-server';
 
 ## Default (English) Messages Moved To Standalone Package
 
-The English messages have moved to another package, `ra-language-english`. The core package still displays the interface messages in English by default (by using `ra-language-english` as a dependency), but if you override some of the messages, you'll need to update the package name:
+The English messages have moved to another package, `ra-language-english`. The core package still displays the interface messages in English by default (by using `ra-language-english` as a dependency), but if you overrode some of the messages, you'll need to update the package name:
 
 ```js
 // before
@@ -83,7 +83,7 @@ const messages = { 'en': enMessages };
 
 ## Message Hash Main Key Changed ("aor" => "ra")
 
-The main key of translation message objects was renamed from "aor" ro "ra". You must update your custom messages accordingly if you override core interface messages. If you're a language package author, you must also update and  republish your package to have it work with react-admin 2.0.
+The main key of translation message objects was renamed from "aor" ro "ra". You must update your custom messages accordingly if you overrode core interface messages. If you're a language package author, you must also update and  republish your package to have it work with react-admin 2.0.
 
 ```js
 // before
