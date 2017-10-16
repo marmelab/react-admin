@@ -7,7 +7,7 @@ title: "Data Providers"
 
 React-admin can communicate with any API, whether it uses REST, GraphQL, or even SOAP, regardless of the dialect it uses. For REST servers, it can be [JSON API](http://jsonapi.org/), [HAL](http://stateless.co/hal_specification.html), [OData](http://www.odata.org/) or a custom dialect. The only thing react-admin needs is a Data Provider function. This is the place to translate data queries to HTTP requests, and HTTP responses to data responses.
 
-![Data Provider architecture](./img/rest-client.png)
+![Data Provider architecture](./img/data-provider.png)
 
 The `dataProvider` parameter of the `<Admin>` component, must be a function with the following signature:
 

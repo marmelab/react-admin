@@ -129,7 +129,7 @@ Yes.
 
 React-admin uses an adapter approach, with a concept called *Data Providers*. Existing providers can be used as a blueprint to design your API, or you can write your own Data Provider to query an existing API. Writing a custom Data Provider is a matter of hours.
 
-![Data Provider architecture](https://marmelab.com/react-admin/img/rest-client.png)
+![Data Provider architecture](https://marmelab.com/react-admin/img/data-provider.png)
 
 See the [Data Providers documentation](https://marmelab.com/react-admin/DataProviders.html) for details.
 
