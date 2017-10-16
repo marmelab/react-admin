@@ -83,7 +83,7 @@ const messages = { 'en': enMessages };
 
 ## Message Hash Main Key Changed ("aor" => "ra")
 
-The main kety of translation message objects was renamed from "aor" ro "ra". You must update your custom messages accordingly if you overrode core interface messages. If you're a language package author, you must also update and  republish your package to have it work with react-admin 2.0.
+The main key of translation message objects was renamed from "aor" ro "ra". You must update your custom messages accordingly if you overrode core interface messages. If you're a language package author, you must also update and  republish your package to have it work with react-admin 2.0.
 
 ```js
 // before
