@@ -65,7 +65,7 @@ import jsonServerRestClient from 'ra-data-json-server';
 
 ## Default (English) Messages Moved To Standalone Package
 
-The English messages have moved to another package, `ra-language-english`. The core package still displays the interface messages in English by default (by using `ra-language-english` as a dependency), but if you overrode some of the messages, you'll need to update the package name:
+The English messages have moved to another package, `ra-language-english`. The core package still displays the interface messages in English by default (by using `ra-language-english` as a dependency), but if you override some of the messages, you'll need to update the package name:
 
 ```js
 // before
