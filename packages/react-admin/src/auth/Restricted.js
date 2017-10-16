@@ -7,13 +7,11 @@ import { userCheck as userCheckAction } from '../actions/authActions';
 /**
  * Restrict access to children
  *
- * Expects an authClient prop, which will be called with AUTH_CHECK upon mount and update
- *
  * Useful for Route components - used in CrudRoute
  *
  * @example
  * <Route path="/foo" render={routeParams =>
- *   <Restricted authClient={authClient} location={routeParams.location}>
+ *   <Restricted location={routeParams.location} authParams={{ resource, route }}>
  *     <Foo />
  *   </Restricted>
  * } />
@@ -21,6 +19,7 @@ import { userCheck as userCheckAction } from '../actions/authActions';
 export class Restricted extends Component {
     static propTypes = {
         authParams: PropTypes.object,
+        children: PropTypes.element.isRequired,
         location: PropTypes.object,
         userCheck: PropTypes.func,
     };
