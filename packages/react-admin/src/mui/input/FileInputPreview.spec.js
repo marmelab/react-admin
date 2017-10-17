@@ -46,8 +46,7 @@ describe('<FileInputPreview />', () => {
                 revokeObjectURL={revokeObjectURL}
             >
                 <div id="child">Child</div>
-            </FileInputPreview>,
-            { lifecycleExperimental: true }
+            </FileInputPreview>
         );
 
         wrapper.unmount();
@@ -66,8 +65,7 @@ describe('<FileInputPreview />', () => {
                 revokeObjectURL={revokeObjectURL}
             >
                 <div id="child">Child</div>
-            </FileInputPreview>,
-            { lifecycleExperimental: true }
+            </FileInputPreview>
         );
 
         wrapper.unmount();

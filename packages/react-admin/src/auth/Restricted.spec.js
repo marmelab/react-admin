@@ -12,8 +12,7 @@ describe('<Restricted>', () => {
         shallow(
             <Restricted userCheck={userCheck}>
                 <Foo />
-            </Restricted>,
-            { lifecycleExperimental: true }
+            </Restricted>
         );
         assert.equal(userCheck.mock.calls.length, 1);
     });
@@ -22,8 +21,7 @@ describe('<Restricted>', () => {
         const wrapper = shallow(
             <Restricted userCheck={userCheck}>
                 <Foo />
-            </Restricted>,
-            { lifecycleExperimental: true }
+            </Restricted>
         );
         wrapper.setProps({ location: { pathname: 'foo' }, userCheck });
         assert.equal(userCheck.mock.calls.length, 2);
