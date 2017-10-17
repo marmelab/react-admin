@@ -45,21 +45,19 @@ export default BaseComponent => {
             const { authClient, ...props } = this.props;
             return (
                 <BaseComponent {...props}>
-                    {children && Array.isArray(children) ? (
-                        children.map(
-                            child =>
-                                child
-                                    ? cloneElement(child, {
-                                          key:
-                                              child.props.name ||
-                                              child.props.source ||
-                                              child.props.label,
-                                      })
-                                    : null
-                        )
-                    ) : (
-                        children
-                    )}
+                    {children && Array.isArray(children)
+                        ? children.map(
+                              child =>
+                                  child
+                                      ? cloneElement(child, {
+                                            key:
+                                                child.props.name ||
+                                                child.props.source ||
+                                                child.props.label,
+                                        })
+                                      : null
+                          )
+                        : children}
                 </BaseComponent>
             );
         }
