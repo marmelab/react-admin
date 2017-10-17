@@ -18,6 +18,7 @@ describe('<List />', () => {
         crudGetList: () => {},
         push: () => {},
         translate: () => {},
+        refreshView: () => true,
     };
 
     it('should display a no results text when there is no result', () => {
