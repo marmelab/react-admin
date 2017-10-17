@@ -178,6 +178,40 @@ const SexInput = props => <SelectInput {...props} choices={choices}/>;
 export default SexInput;
 ```
 
-## No More `refresh` method On `<List>`
+## No More `refresh` Prop Passed To `<List>` Actions
 
-The Refresh button now uses Redux to force a refetch of the data. As a consequence, the various views (List, Show, Edit) don't need to pass an action creator down to the Refresh button. We've removed the `refresh` method of the `<List>` component - but the refresh button is still there and works fine. It's just that, if you relied on the presence of that method, you should now dispatch a `refreshView` action creator by hand.
+The Refresh button now uses Redux to force a refetch of the data. As a consequence, the List view no longer passes the `refresh` prop to the `<Actions>` component. If you relied on that prop to refresh the list, you must now use the new `<RefreshButton>` component.
+
+```jsx
+// before
+import { CardActions } from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+import { CreateButton } from 'admin-on-rest';
+
+const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
+    <CardActions>
+        {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
+        <CreateButton basePath={basePath} />
+        <FlatButton primary label="refresh" onClick={refresh} icon={<NavigationRefresh />} />
+        {/* Add your custom actions */}
+        <FlatButton primary label="Custom Action" onClick={customAction} />
+    </CardActions>
+);
+
+// after
+import { CardActions } from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+import { CreateButton, RefreshButton } from 'react-admin';
+
+const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter }) => (
+    <CardActions>
+        {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
+        <CreateButton basePath={basePath} />
+        <RefreshButton />
+        {/* Add your custom actions */}
+        <FlatButton primary label="Custom Action" onClick={customAction} />
+    </CardActions>
+);
+```

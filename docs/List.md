@@ -85,7 +85,7 @@ You can replace the list of default actions by your own element using the `actio
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import CreateButton from '../button/CreateButton';
+import { CreateButton, RefreshButton } from 'react-admin';
 
 const cardActionStyle = {
     zIndex: 2,
@@ -93,11 +93,11 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
+const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter }) => (
     <CardActions style={cardActionStyle}>
         {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         <CreateButton basePath={basePath} />
-        <FlatButton primary label="refresh" onClick={refresh} icon={<NavigationRefresh />} />
+        <RefreshButton />
         {/* Add your custom actions */}
         <FlatButton primary label="Custom Action" onClick={customAction} />
     </CardActions>
