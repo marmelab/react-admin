@@ -83,9 +83,9 @@ describe('<DateField />', () => {
                     elStyle={{ margin: 1 }}
                 />
             ).html(),
-            `<span style="margin:1px;">${new Date(
-                '1/1/2016'
-            ).toLocaleDateString('en-US')}</span>`
+            `<span style="margin:1px">${new Date('1/1/2016').toLocaleDateString(
+                'en-US'
+            )}</span>`
         ));
 
     it('should handle deep fields', () =>

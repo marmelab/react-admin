@@ -1,6 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow, render } from 'enzyme';
+import { html } from 'cheerio';
 
 import { Restricted } from './Restricted';
 
@@ -34,6 +35,6 @@ describe('<Restricted>', () => {
                 <Foo />
             </Restricted>
         );
-        assert.equal(wrapper.html(), '<div>Foo</div>');
+        assert.equal(html(wrapper), '<div>Foo</div>');
     });
 });

@@ -54,7 +54,7 @@ describe('<NumberField />', () => {
                     elStyle={{ margin: 1 }}
                 />
             ).html(),
-            '<span style="margin:1px;">1</span>'
+            '<span style="margin:1px">1</span>'
         ));
 
     it('should handle deep fields', () =>

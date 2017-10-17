@@ -18,7 +18,8 @@ describe('<ReferenceManyField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceManyField>
+            </ReferenceManyField>,
+            { disableLifecycleMethods: true }
         );
         const ProgressElements = wrapper.find('LinearProgress');
         assert.equal(ProgressElements.length, 1);
@@ -44,7 +45,8 @@ describe('<ReferenceManyField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceManyField>
+            </ReferenceManyField>,
+            { disableLifecycleMethods: true }
         );
         const ProgressElements = wrapper.find('LinearProgress');
         assert.equal(ProgressElements.length, 0);
@@ -69,7 +71,8 @@ describe('<ReferenceManyField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceManyField>
+            </ReferenceManyField>,
+            { disableLifecycleMethods: true }
         );
         const ProgressElements = wrapper.find('LinearProgress');
         assert.equal(ProgressElements.length, 0);
@@ -98,7 +101,8 @@ describe('<ReferenceManyField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceManyField>
+            </ReferenceManyField>,
+            { disableLifecycleMethods: true }
         );
         const ProgressElements = wrapper.find('LinearProgress');
         assert.equal(ProgressElements.length, 0);
@@ -130,7 +134,8 @@ describe('<ReferenceManyField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceManyField>
+            </ReferenceManyField>,
+            { disableLifecycleMethods: true }
         );
         const ProgressElements = wrapper.find('LinearProgress');
         assert.equal(ProgressElements.length, 0);
