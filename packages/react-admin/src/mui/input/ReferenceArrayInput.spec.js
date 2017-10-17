@@ -43,8 +43,7 @@ describe('<ReferenceArrayInput />', () => {
                 crudGetMatching={crudGetMatching}
             >
                 <MyComponent />
-            </ReferenceArrayInput>,
-            { lifecycleExperimental: true }
+            </ReferenceArrayInput>
         );
         assert.deepEqual(crudGetMatching.mock.calls[0], [
             'tags',
@@ -73,8 +72,7 @@ describe('<ReferenceArrayInput />', () => {
                 filter={{ q: 'foo' }}
             >
                 <MyComponent />
-            </ReferenceArrayInput>,
-            { lifecycleExperimental: true }
+            </ReferenceArrayInput>
         );
         assert.deepEqual(crudGetMatching.mock.calls[0], [
             'tags',
@@ -102,8 +100,7 @@ describe('<ReferenceArrayInput />', () => {
                 crudGetMatching={crudGetMatching}
             >
                 <MyComponent />
-            </ReferenceArrayInput>,
-            { lifecycleExperimental: true }
+            </ReferenceArrayInput>
         );
         wrapper.instance().setFilter('bar');
         assert.deepEqual(crudGetMatching.mock.calls[1], [
@@ -133,8 +130,7 @@ describe('<ReferenceArrayInput />', () => {
                 filterToQuery={searchText => ({ foo: searchText })}
             >
                 <MyComponent />
-            </ReferenceArrayInput>,
-            { lifecycleExperimental: true }
+            </ReferenceArrayInput>
         );
         wrapper.instance().setFilter('bar');
         assert.deepEqual(crudGetMatching.mock.calls[1], [
@@ -164,8 +160,7 @@ describe('<ReferenceArrayInput />', () => {
                 input={{ value: [5, 6] }}
             >
                 <MyComponent />
-            </ReferenceArrayInput>,
-            { lifecycleExperimental: true }
+            </ReferenceArrayInput>
         );
         assert.deepEqual(crudGetMany.mock.calls[0], ['tags', [5, 6]]);
     });

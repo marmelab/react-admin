@@ -3,6 +3,7 @@ import { Route, MemoryRouter } from 'react-router-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { render, shallow } from 'enzyme';
+import { html } from 'cheerio';
 import assert from 'assert';
 
 import { AdminRoutes } from './AdminRoutes';
@@ -39,7 +40,7 @@ describe('<AdminRoutes>', () => {
                 </MemoryRouter>
             </Provider>
         );
-        assert.equal(wrapper.html(), '<div>Dashboard</div>');
+        assert.equal(html(wrapper), '<div>Dashboard</div>');
     });
     it('should show resource list on /[resourcename]', () => {
         const wrapper = render(
@@ -52,7 +53,7 @@ describe('<AdminRoutes>', () => {
                 </MemoryRouter>
             </Provider>
         );
-        assert.equal(wrapper.html(), '<div>PostList</div>');
+        assert.equal(html(wrapper), '<div>PostList</div>');
     });
     it('should show resource edit on /[resourcename]/:id', () => {
         const wrapper = render(
@@ -65,7 +66,7 @@ describe('<AdminRoutes>', () => {
                 </MemoryRouter>
             </Provider>
         );
-        assert.equal(wrapper.html(), '<div>PostEdit</div>');
+        assert.equal(html(wrapper), '<div>PostEdit</div>');
     });
     it('should show resource show on /[resourcename]/:id/show', () => {
         const wrapper = render(
@@ -78,7 +79,7 @@ describe('<AdminRoutes>', () => {
                 </MemoryRouter>
             </Provider>
         );
-        assert.equal(wrapper.html(), '<div>PostShow</div>');
+        assert.equal(html(wrapper), '<div>PostShow</div>');
     });
     it('should show resource delete on /[resourcename]/:id/delete', () => {
         const wrapper = render(
@@ -91,7 +92,7 @@ describe('<AdminRoutes>', () => {
                 </MemoryRouter>
             </Provider>
         );
-        assert.equal(wrapper.html(), '<div>PostDelete</div>');
+        assert.equal(html(wrapper), '<div>PostDelete</div>');
     });
     it('should accept custom routes', () => {
         const customRoutes = [<Route path="/custom" component={Custom} />]; // eslint-disable-line react/jsx-key
@@ -106,7 +107,7 @@ describe('<AdminRoutes>', () => {
                 </MemoryRouter>
             </Provider>
         );
-        assert.equal(wrapper.html(), '<div>Custom</div>');
+        assert.equal(html(wrapper), '<div>Custom</div>');
     });
 
     it('should accept a function as children and declare the returned resources', async () => {

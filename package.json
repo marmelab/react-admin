@@ -4,6 +4,9 @@
     "scripts": {
         "test": "make test"
     },
+    "jest": {
+        "setupTestFrameworkScriptFile": "./test-setup.js"
+    },
     "devDependencies": {
         "babel-cli": "~6.26.0",
         "babel-core": "~6.26.0",
@@ -16,6 +19,7 @@
         "babel-preset-react": "~6.24.1",
         "babel-preset-stage-0": "~6.24.1",
         "babel-register": "~6.26.0",
+        "cheerio": "~1.0.0-rc.2",
         "chromedriver": "~2.26.1",
         "eslint": "~4.6.1",
         "eslint-config-prettier": "~2.4.0",
@@ -27,6 +31,7 @@
         "mocha": "^4.0.1",
         "prettier": "~1.6.0",
         "prettier-eslint-cli": "~4.4.0",
+        "raf": "~3.4.0",
         "selenium-webdriver": "~3.5.0"
     },
     "workspaces": ["packages/*"]

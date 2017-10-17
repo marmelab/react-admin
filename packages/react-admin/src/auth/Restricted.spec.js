@@ -1,6 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow, render } from 'enzyme';
+import { html } from 'cheerio';
 
 import { Restricted } from './Restricted';
 
@@ -11,8 +12,7 @@ describe('<Restricted>', () => {
         shallow(
             <Restricted userCheck={userCheck}>
                 <Foo />
-            </Restricted>,
-            { lifecycleExperimental: true }
+            </Restricted>
         );
         assert.equal(userCheck.mock.calls.length, 1);
     });
@@ -21,8 +21,7 @@ describe('<Restricted>', () => {
         const wrapper = shallow(
             <Restricted userCheck={userCheck}>
                 <Foo />
-            </Restricted>,
-            { lifecycleExperimental: true }
+            </Restricted>
         );
         wrapper.setProps({ location: { pathname: 'foo' }, userCheck });
         assert.equal(userCheck.mock.calls.length, 2);
@@ -34,6 +33,6 @@ describe('<Restricted>', () => {
                 <Foo />
             </Restricted>
         );
-        assert.equal(wrapper.html(), '<div>Foo</div>');
+        assert.equal(html(wrapper), '<div>Foo</div>');
     });
 });

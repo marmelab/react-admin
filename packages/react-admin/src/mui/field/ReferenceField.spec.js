@@ -18,8 +18,7 @@ describe('<ReferenceField />', () => {
                 crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 <TextField source="title" />
-            </ReferenceField>,
-            { lifecycleExperimental: true }
+            </ReferenceField>
         );
         assert.equal(crudGetManyAccumulate.mock.calls.length, 1);
     });
@@ -35,8 +34,7 @@ describe('<ReferenceField />', () => {
                 crudGetManyAccumulate={crudGetManyAccumulate}
             >
                 <TextField source="title" />
-            </ReferenceField>,
-            { lifecycleExperimental: true }
+            </ReferenceField>
         );
         assert.equal(crudGetManyAccumulate.mock.calls.length, 0);
     });

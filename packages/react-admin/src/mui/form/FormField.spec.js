@@ -25,8 +25,7 @@ describe('<FormField>', () => {
                 source="title"
                 initializeForm={initializeForm}
                 component={Foo}
-            />,
-            { lifecycleExperimental: true }
+            />
         );
         assert.equal(initializeForm.mock.calls.length, 0);
     });
@@ -38,8 +37,7 @@ describe('<FormField>', () => {
                 initializeForm={initializeForm}
                 component={Foo}
                 defaultValue={2}
-            />,
-            { lifecycleExperimental: true }
+            />
         );
         assert.equal(initializeForm.mock.calls.length, 1);
         assert.deepEqual(initializeForm.mock.calls[0][0], { title: 2 });

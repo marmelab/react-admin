@@ -6,22 +6,18 @@ import { DatagridHeaderCell } from './DatagridHeaderCell';
 
 describe('<DatagridHeaderCell />', () => {
     describe('sorting on a column', () => {
-        const defaultField = {
+        const Field = () => <div />;
+        Field.defaultProps = {
             type: 'foo',
-            props: {},
-            updateSort: () => {},
+            updateSort: () => true,
         };
 
         it('should be enabled when field has a source', () => {
             const wrapper = shallow(
                 <DatagridHeaderCell
                     currentSort={{}}
-                    field={{
-                        ...defaultField,
-                        props: {
-                            source: 'title',
-                        },
-                    }}
+                    field={<Field source="title" />}
+                    updateSort={() => true}
                 />
             );
 
@@ -32,7 +28,8 @@ describe('<DatagridHeaderCell />', () => {
             const wrapper = shallow(
                 <DatagridHeaderCell
                     currentSort={{}}
-                    field={{ ...defaultField }}
+                    field={<Field />}
+                    updateSort={() => true}
                 />
             );
 
@@ -43,13 +40,8 @@ describe('<DatagridHeaderCell />', () => {
             const wrapper = shallow(
                 <DatagridHeaderCell
                     currentSort={{}}
-                    field={{
-                        ...defaultField,
-                        props: {
-                            source: 'title',
-                            sortable: false,
-                        },
-                    }}
+                    field={<Field source="title" sortable={false} />}
+                    updateSort={() => true}
                 />
             );
 

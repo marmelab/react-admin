@@ -43,8 +43,7 @@ describe('<ReferenceInput />', () => {
                 crudGetMatching={crudGetMatching}
             >
                 <MyComponent />
-            </ReferenceInput>,
-            { lifecycleExperimental: true }
+            </ReferenceInput>
         );
         assert.deepEqual(crudGetMatching.mock.calls[0], [
             'posts',
@@ -73,8 +72,7 @@ describe('<ReferenceInput />', () => {
                 filter={{ q: 'foo' }}
             >
                 <MyComponent />
-            </ReferenceInput>,
-            { lifecycleExperimental: true }
+            </ReferenceInput>
         );
         assert.deepEqual(crudGetMatching.mock.calls[0], [
             'posts',
@@ -105,8 +103,7 @@ describe('<ReferenceInput />', () => {
                 filter={{ foo: 'bar' }}
             >
                 <MyComponent />
-            </ReferenceInput>,
-            { lifecycleExperimental: true }
+            </ReferenceInput>
         );
 
         wrapper.instance().setFilter('search_me');
@@ -138,8 +135,7 @@ describe('<ReferenceInput />', () => {
                 crudGetMatching={crudGetMatching}
             >
                 <MyComponent />
-            </ReferenceInput>,
-            { lifecycleExperimental: true }
+            </ReferenceInput>
         );
         wrapper.instance().setFilter('bar');
         assert.deepEqual(crudGetMatching.mock.calls[1], [
@@ -169,8 +165,7 @@ describe('<ReferenceInput />', () => {
                 filterToQuery={searchText => ({ foo: searchText })}
             >
                 <MyComponent />
-            </ReferenceInput>,
-            { lifecycleExperimental: true }
+            </ReferenceInput>
         );
         wrapper.instance().setFilter('bar');
         assert.deepEqual(crudGetMatching.mock.calls[1], [
@@ -200,8 +195,7 @@ describe('<ReferenceInput />', () => {
                 input={{ value: 5 }}
             >
                 <MyComponent />
-            </ReferenceInput>,
-            { lifecycleExperimental: true }
+            </ReferenceInput>
         );
         assert.deepEqual(crudGetOne.mock.calls[0], ['posts', 5, null, false]);
     });
