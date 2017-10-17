@@ -177,3 +177,7 @@ const choices = [
 const SexInput = props => <SelectInput {...props} choices={choices}/>;
 export default SexInput;
 ```
+
+## No More `refresh` method On `<List>`
+
+The Refresh button now uses Redux to force a refetch of the data. As a consequence, the various views (List, Show, Edit) don't need to pass an action creator down to the Refresh button. We've removed the `refresh` method of the `<List>` component - but the refresh button is still there and works fine. It's just that, if you relied on the presence of that method, you should now dispatch a `refreshView` action creator by hand.
