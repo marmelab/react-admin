@@ -21,7 +21,6 @@ import DefaultPagination from './Pagination';
 import DefaultActions from './Actions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
-import { refreshView } from '../../actions/uiActions';
 import translate from '../../i18n/translate';
 import removeKey from '../../util/removeKey';
 import defaultTheme from '../defaultTheme';
@@ -316,7 +315,6 @@ List.propTypes = {
     push: PropTypes.func.isRequired,
     query: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
-    refreshView: PropTypes.func.isRequired,
     total: PropTypes.number.isRequired,
     translate: PropTypes.func.isRequired,
     theme: PropTypes.object.isRequired,
@@ -362,7 +360,6 @@ const enhance = compose(
         crudGetList: crudGetListAction,
         changeListParams: changeListParamsAction,
         push: pushAction,
-        refreshView,
     }),
     translate,
     withChildrenAsFunction
