@@ -17,6 +17,8 @@ describe('<Show />', () => {
         params: {},
         resource: '',
         translate: x => x,
+        match: {},
+        version: 1,
     };
 
     it('should display correctly when called with a child', () => {

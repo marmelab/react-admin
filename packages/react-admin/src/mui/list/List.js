@@ -330,7 +330,7 @@ List.propTypes = {
     total: PropTypes.number.isRequired,
     translate: PropTypes.func.isRequired,
     theme: PropTypes.object.isRequired,
-    version: PropTypes.number.isRequired,
+    version: PropTypes.number,
 };
 
 List.defaultProps = {
