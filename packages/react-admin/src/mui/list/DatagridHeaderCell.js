@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import defaultsDeep from 'lodash.defaultsdeep';
 import shouldUpdate from 'recompose/shouldUpdate';
 import { TableHeaderColumn } from 'material-ui/Table';
-import FlatButton from 'material-ui/FlatButton';
-import ContentSort from 'material-ui/svg-icons/content/sort';
+import Button from 'material-ui/Button';
+import ContentSort from 'material-ui-icons/Sort';
 import FieldTitle from '../../util/FieldTitle';
 
 const styles = {
@@ -39,7 +39,7 @@ export const DatagridHeaderCell = ({
     return (
         <TableHeaderColumn style={style}>
             {field.props.sortable !== false && field.props.source ? (
-                <FlatButton
+                <Button
                     labelPosition="before"
                     onClick={updateSort}
                     data-sort={field.props.source}
@@ -54,9 +54,11 @@ export const DatagridHeaderCell = ({
                         field.props.source === currentSort.field ? (
                             <ContentSort
                                 style={
-                                    currentSort.order === 'ASC'
-                                        ? { transform: 'rotate(180deg)' }
-                                        : {}
+                                    currentSort.order === 'ASC' ? (
+                                        { transform: 'rotate(180deg)' }
+                                    ) : (
+                                        {}
+                                    )
                                 }
                             />
                         ) : (

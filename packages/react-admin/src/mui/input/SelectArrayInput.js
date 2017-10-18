@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
-import ChipInput from 'material-ui-chip-input';
 import compose from 'recompose/compose';
 
 import addField from '../form/addField';
 import translate from '../../i18n/translate';
-import FieldTitle from '../../util/FieldTitle';
-
-const dataSourceConfig = { text: 'text', value: 'value' };
 
 /**
  * An Input component for an array
@@ -159,51 +155,7 @@ export class SelectArrayInput extends Component {
     };
 
     render() {
-        const {
-            elStyle,
-            input,
-            isRequired,
-            choices,
-            label,
-            meta,
-            options,
-            resource,
-            source,
-            setFilter,
-        } = this.props;
-        if (typeof meta === 'undefined') {
-            throw new Error(
-                "The SelectArrayInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
-            );
-        }
-        const { touched, error } = meta;
-
-        return (
-            <ChipInput
-                {...input}
-                value={this.state.values}
-                onBlur={this.handleBlur}
-                onFocus={this.handleFocus}
-                onClick={this.handleFocus}
-                onRequestAdd={this.handleAdd}
-                onRequestDelete={this.handleDelete}
-                onUpdateInput={setFilter}
-                floatingLabelText={
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                }
-                errorText={touched && error}
-                style={elStyle}
-                dataSource={this.formatChoices(choices)}
-                dataSourceConfig={dataSourceConfig}
-                openOnFocus
-                {...options}
-            />
-        );
+        return <div>Not supported</div>;
     }
 }
 

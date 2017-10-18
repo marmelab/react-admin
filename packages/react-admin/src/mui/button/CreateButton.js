@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
-import FlatButton from 'material-ui/FlatButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import Button from 'material-ui/Button';
+import ContentAdd from 'material-ui-icons/Add';
 import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
@@ -30,14 +29,15 @@ const CreateButton = ({
     width,
 }) =>
     width === 1 ? (
-        <FloatingActionButton
+        <Button
+            fab
             style={styles.floating}
             containerElement={<Link to={`${basePath}/create`} />}
         >
             <ContentAdd />
-        </FloatingActionButton>
+        </Button>
     ) : (
-        <FlatButton
+        <Button
             primary
             label={label && translate(label)}
             icon={<ContentAdd />}

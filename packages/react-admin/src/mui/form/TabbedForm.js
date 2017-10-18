@@ -9,7 +9,7 @@ import {
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import { withTheme } from 'material-ui/styles';
 
 import Toolbar from './Toolbar';
 import getDefaultValues from './getDefaultValues';
@@ -41,16 +41,16 @@ export class TabbedForm extends Component {
             children,
             contentContainerStyle,
             invalid,
-            muiTheme,
             record,
             resource,
             submitOnEnter,
             tabsWithErrors,
+            theme,
             toolbar,
             translate,
         } = this.props;
 
-        const styles = getStyles(muiTheme);
+        const styles = getStyles(theme);
 
         return (
             <form className="tabbed-form">
@@ -75,9 +75,9 @@ export class TabbedForm extends Component {
                                         buttonStyle={
                                             tabsWithErrors.includes(
                                                 tab.props.label
-                                            ) && this.state.value !== index
-                                                ? styles.errorTabButton
-                                                : null
+                                            ) && this.state.value !== index ? (
+                                                styles.errorTabButton
+                                            ) : null
                                         }
                                     >
                                         {React.cloneElement(tab, {
@@ -108,7 +108,7 @@ TabbedForm.propTypes = {
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
-    muiTheme: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
@@ -172,7 +172,7 @@ const enhance = compose(
         form: 'record-form',
         enableReinitialize: true,
     }),
-    muiThemeable()
+    withTheme()
 );
 
 export default enhance(TabbedForm);

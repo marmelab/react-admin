@@ -1,10 +1,8 @@
 import React, { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import autoprefixer from 'material-ui/utils/autoprefixer';
-import CircularProgress from 'material-ui/CircularProgress';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import { CircularProgress } from 'material-ui/Progress';
 import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 
@@ -54,8 +52,6 @@ const styles = {
     },
 };
 
-const prefixedStyles = {};
-
 class Layout extends Component {
     componentWillMount() {
         if (this.props.width !== 1) {
@@ -77,35 +73,23 @@ class Layout extends Component {
             width,
         } = this.props;
 
-        const muiTheme = getMuiTheme(theme);
-        if (!prefixedStyles.main) {
-            // do this once because user agent never changes
-            const prefix = autoprefixer(muiTheme);
-            prefixedStyles.wrapper = prefix(styles.wrapper);
-            prefixedStyles.main = prefix(styles.main);
-            prefixedStyles.body = prefix(styles.body);
-            prefixedStyles.bodySmall = prefix(styles.bodySmall);
-            prefixedStyles.content = prefix(styles.content);
-            prefixedStyles.contentSmall = prefix(styles.contentSmall);
-        }
+        const muiTheme = createMuiTheme(theme);
         return (
-            <MuiThemeProvider muiTheme={muiTheme}>
-                <div style={prefixedStyles.wrapper}>
-                    <div style={prefixedStyles.main}>
+            <MuiThemeProvider theme={muiTheme}>
+                <div style={styles.wrapper}>
+                    <div style={styles.main}>
                         {width !== 1 && <AppBar title={title} />}
                         <div
                             className="body"
-                            style={
-                                width === 1
-                                    ? prefixedStyles.bodySmall
-                                    : prefixedStyles.body
-                            }
+                            style={width === 1 ? styles.bodySmall : styles.body}
                         >
                             <div
                                 style={
-                                    width === 1
-                                        ? prefixedStyles.contentSmall
-                                        : prefixedStyles.content
+                                    width === 1 ? (
+                                        styles.contentSmall
+                                    ) : (
+                                        styles.content
+                                    )
                                 }
                             >
                                 <AdminRoutes

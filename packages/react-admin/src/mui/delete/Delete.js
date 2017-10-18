@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card, CardText, CardActions } from 'material-ui/Card';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import RaisedButton from 'material-ui/RaisedButton';
-import ActionCheck from 'material-ui/svg-icons/action/check-circle';
-import AlertError from 'material-ui/svg-icons/alert/error-outline';
+import Button from 'material-ui/Button';
+import ActionCheck from 'material-ui-icons/CheckCircle';
+import AlertError from 'material-ui-icons/ErrorOutline';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
 import ViewTitle from '../layout/ViewTitle';
@@ -109,14 +109,16 @@ class Delete extends Component {
                         </CardText>
                         <Toolbar style={styles.toolbar}>
                             <ToolbarGroup>
-                                <RaisedButton
+                                <Button
+                                    raised
                                     type="submit"
                                     label={translate('ra.action.delete')}
                                     icon={<ActionCheck />}
                                     primary
                                     style={styles.button}
                                 />
-                                <RaisedButton
+                                <Button
+                                    raised
                                     label={translate('ra.action.cancel')}
                                     icon={<AlertError />}
                                     onClick={this.goBack}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import { withTheme } from 'material-ui/styles';
 import { Table, TableHeader, TableRow } from 'material-ui/Table';
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridBody from './DatagridBody';
@@ -85,7 +85,7 @@ class Datagrid extends Component {
             currentSort,
             basePath,
             styles = defaultStyles,
-            muiTheme,
+            theme,
             rowStyle,
             options,
             headerOptions,
@@ -103,7 +103,7 @@ class Datagrid extends Component {
                     adjustForCheckbox={false}
                     {...headerOptions}
                 >
-                    <TableRow style={muiTheme.tableRow}>
+                    <TableRow style={theme.tableRow}>
                         {React.Children.map(
                             children,
                             (field, index) =>
@@ -112,11 +112,11 @@ class Datagrid extends Component {
                                         key={field.props.source || index}
                                         field={field}
                                         defaultStyle={
-                                            index === 0
-                                                ? styles.header[
-                                                      'th:first-child'
-                                                  ]
-                                                : styles.header.th
+                                            index === 0 ? (
+                                                styles.header['th:first-child']
+                                            ) : (
+                                                styles.header.th
+                                            )
                                         }
                                         currentSort={currentSort}
                                         isSorting={
@@ -159,7 +159,7 @@ Datagrid.propTypes = {
     headerOptions: PropTypes.object,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     isLoading: PropTypes.bool,
-    muiTheme: PropTypes.object,
+    theme: PropTypes.object,
     options: PropTypes.object,
     resource: PropTypes.string,
     rowOptions: PropTypes.object,
@@ -173,4 +173,4 @@ Datagrid.defaultProps = {
     ids: [],
 };
 
-export default muiThemeable()(Datagrid);
+export default withTheme()(Datagrid);

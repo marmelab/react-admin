@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import FlatButton from 'material-ui/FlatButton';
-import ActionList from 'material-ui/svg-icons/action/list';
+import Button from 'material-ui/Button';
+import ActionList from 'material-ui-icons/List';
 import translate from '../../i18n/translate';
 
 const ListButton = ({ basePath = '', label = 'ra.action.list', translate }) => (
-    <FlatButton
+    <Button
         primary
         label={label && translate(label)}
         icon={<ActionList />}

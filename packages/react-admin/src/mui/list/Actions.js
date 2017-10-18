@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CardActions } from 'material-ui/Card';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import autoprefixer from 'material-ui/utils/autoprefixer';
 import { CreateButton, RefreshButton } from '../button';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 
@@ -18,16 +16,12 @@ const Actions = ({
     filters,
     displayedFilters,
     filterValues,
-    theme,
     hasCreate,
     basePath,
     showFilter,
 }) => {
-    const muiTheme = getMuiTheme(theme);
-    const prefix = autoprefixer(muiTheme);
-
     return (
-        <CardActions style={prefix(cardActionStyle)}>
+        <CardActions style={cardActionStyle}>
             {filters &&
                 React.cloneElement(filters, {
                     resource,
@@ -58,5 +52,4 @@ export default onlyUpdateForKeys([
     'filters',
     'displayedFilters',
     'filterValues',
-    'theme',
 ])(Actions);

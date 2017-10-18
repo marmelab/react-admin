@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu';
 import compose from 'recompose/compose';
 
 import addField from '../form/addField';
@@ -64,7 +64,7 @@ import FieldTitle from '../../util/FieldTitle';
  * @example
  * <SelectInput source="gender" choices={choices} translateChoice={false}/>
  *
- * The object passed as `options` props is passed to the material-ui <SelectField> component
+ * The object passed as `options` props is passed to the material-ui <Select> component
  */
 export class SelectInput extends Component {
     /*
@@ -113,9 +113,11 @@ export class SelectInput extends Component {
             <MenuItem
                 key={get(choice, optionValue)}
                 primaryText={
-                    translateChoice
-                        ? translate(choiceName, { _: choiceName })
-                        : choiceName
+                    translateChoice ? (
+                        translate(choiceName, { _: choiceName })
+                    ) : (
+                        choiceName
+                    )
                 }
                 value={get(choice, optionValue)}
             />
@@ -141,7 +143,7 @@ export class SelectInput extends Component {
         const { touched, error } = meta;
 
         return (
-            <SelectField
+            <Select
                 value={this.state.value}
                 floatingLabelText={
                     <FieldTitle
@@ -158,7 +160,7 @@ export class SelectInput extends Component {
                 {...options}
             >
                 {this.addAllowEmpty(choices.map(this.renderMenuItem))}
-            </SelectField>
+            </Select>
         );
     }
 }

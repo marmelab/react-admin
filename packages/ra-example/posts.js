@@ -47,7 +47,7 @@ import {
 import RichTextInput from 'ra-input-rich-text';
 import Chip from 'material-ui/Chip';
 
-export PostIcon from 'material-ui/svg-icons/action/book';
+export PostIcon from 'material-ui-icons/Book';
 
 const QuickFilter = translate(({ label, translate }) => (
     <Chip style={{ marginBottom: 8 }}>{translate(label)}</Chip>

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import IconButton from 'material-ui/IconButton';
-import RemoveCircle from 'material-ui/svg-icons/content/remove-circle';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import RemoveCircle from 'material-ui-icons/RemoveCircle';
+import { withTheme } from 'material-ui/styles';
 
 const getStyles = ({ palette: { accent1Color } }) => ({
     removeButtonHovered: {
@@ -40,9 +40,9 @@ export class FileInputPreview extends Component {
             onRemove,
             itemStyle,
             removeStyle,
-            muiTheme,
+            theme,
         } = this.props;
-        const styles = getStyles(muiTheme);
+        const styles = getStyles(theme);
         const removeButtonStyle = this.state.hovered
             ? {
                   ...removeStyle,
@@ -59,7 +59,7 @@ export class FileInputPreview extends Component {
                 <IconButton style={removeButtonStyle} onClick={onRemove}>
                     <RemoveCircle
                         style={styles.removeIcon}
-                        color={muiTheme.palette.accent1Color}
+                        color={theme.palette.accent1Color}
                     />
                 </IconButton>
                 {children}
@@ -74,7 +74,7 @@ FileInputPreview.propTypes = {
     onRemove: PropTypes.func.isRequired,
     itemStyle: PropTypes.object,
     removeStyle: PropTypes.object,
-    muiTheme: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
     revokeObjectUrl: PropTypes.func,
 };
 
@@ -84,4 +84,4 @@ FileInputPreview.defaultProps = {
     removeStyle: { display: 'inline-block' },
 };
 
-export default muiThemeable()(FileInputPreview);
+export default withTheme()(FileInputPreview);

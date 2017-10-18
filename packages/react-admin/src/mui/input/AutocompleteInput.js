@@ -1,12 +1,36 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash.get';
-import AutoComplete from 'material-ui/AutoComplete';
+import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 
 import addField from '../form/addField';
-import FieldTitle from '../../util/FieldTitle';
 import translate from '../../i18n/translate';
+
+const styles = theme => ({
+    container: {
+        flexGrow: 1,
+        position: 'relative',
+        height: 200,
+    },
+    suggestionsContainerOpen: {
+        position: 'absolute',
+        marginTop: theme.spacing.unit,
+        marginBottom: theme.spacing.unit * 3,
+        left: 0,
+        right: 0,
+    },
+    suggestion: {
+        display: 'block',
+    },
+    suggestionsList: {
+        margin: 0,
+        padding: 0,
+        listStyleType: 'none',
+    },
+    textField: {
+        width: '100%',
+    },
+});
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -75,97 +99,8 @@ import translate from '../../i18n/translate';
  * <AutocompleteInput source="author_id" options={{ fullWidth: true }} />
  */
 export class AutocompleteInput extends Component {
-    state = {};
-
-    componentWillMount() {
-        this.setSearchText(this.props);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.input.value !== nextProps.input.value) {
-            this.setSearchText(nextProps);
-        }
-    }
-
-    setSearchText(props) {
-        const { choices, input, optionValue } = props;
-
-        const selectedSource = choices.find(
-            choice => get(choice, optionValue) === input.value
-        );
-        const searchText = selectedSource && this.getSuggestion(selectedSource);
-        this.setState({ searchText });
-    }
-
-    handleNewRequest = (chosenRequest, index) => {
-        if (index !== -1) {
-            const { choices, input, optionValue } = this.props;
-            input.onChange(choices[index][optionValue]);
-        }
-    };
-
-    handleUpdateInput = searchText => {
-        this.setState({ searchText });
-        const { setFilter } = this.props;
-        setFilter && setFilter(searchText);
-    };
-
-    getSuggestion(choice) {
-        const { optionText, translate, translateChoice } = this.props;
-        const choiceName =
-            typeof optionText === 'function'
-                ? optionText(choice)
-                : get(choice, optionText);
-        return translateChoice
-            ? translate(choiceName, { _: choiceName })
-            : choiceName;
-    }
-
     render() {
-        const {
-            choices,
-            elStyle,
-            filter,
-            isRequired,
-            label,
-            meta,
-            options,
-            optionValue,
-            resource,
-            source,
-        } = this.props;
-        if (typeof meta === 'undefined') {
-            throw new Error(
-                "The AutocompleteInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
-            );
-        }
-        const { touched, error } = meta;
-
-        const dataSource = choices.map(choice => ({
-            value: get(choice, optionValue),
-            text: this.getSuggestion(choice),
-        }));
-        return (
-            <AutoComplete
-                searchText={this.state.searchText}
-                dataSource={dataSource}
-                floatingLabelText={
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                }
-                filter={filter}
-                onNewRequest={this.handleNewRequest}
-                onUpdateInput={this.handleUpdateInput}
-                openOnFocus
-                style={elStyle}
-                errorText={touched && error}
-                {...options}
-            />
-        );
+        return <div>not supported</div>;
     }
 }
 
@@ -191,11 +126,13 @@ AutocompleteInput.propTypes = {
 
 AutocompleteInput.defaultProps = {
     choices: [],
-    filter: AutoComplete.fuzzyFilter,
+    filter: null,
     options: {},
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
 };
 
-export default compose(addField, translate)(AutocompleteInput);
+export default compose(addField, translate, withStyles(styles))(
+    AutocompleteInput
+);

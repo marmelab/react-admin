@@ -25,14 +25,14 @@ import {
     SimpleShowLayout,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
-import PersonIcon from 'material-ui/svg-icons/social/person';
+import PersonIcon from 'material-ui-icons/Person';
 import Avatar from 'material-ui/Avatar';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
-import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-export CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
+import ChevronLeft from 'material-ui-icons/ChevronLeft';
+import ChevronRight from 'material-ui-icons/ChevronRight';
+export CommentIcon from 'material-ui-icons/ChatBubble';
 
 const CommentFilter = ({ ...props }) => (
     <Filter {...props}>
@@ -50,7 +50,7 @@ const CommentPagination = translate(
                 <Toolbar>
                     <ToolbarGroup>
                         {page > 1 && (
-                            <FlatButton
+                            <Button
                                 primary
                                 key="prev"
                                 label={translate('ra.navigation.prev')}
@@ -59,7 +59,7 @@ const CommentPagination = translate(
                             />
                         )}
                         {page !== nbPages && (
-                            <FlatButton
+                            <Button
                                 primary
                                 key="next"
                                 label={translate('ra.navigation.next')}

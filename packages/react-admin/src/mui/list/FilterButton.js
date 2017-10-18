@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
-import ContentFilter from 'material-ui/svg-icons/content/filter-list';
+import ContentFilter from 'material-ui-icons/FilterList';
 import translate from '../../i18n/translate';
 import FilterButtonMenuItem from './FilterButtonMenuItem';
 
@@ -60,7 +60,7 @@ export class FilterButton extends Component {
         return (
             hiddenFilters.length > 0 && (
                 <div style={{ display: 'inline-block' }}>
-                    <FlatButton
+                    <Button
                         className="add-filter"
                         primary
                         label={this.props.translate('ra.action.add_filter')}

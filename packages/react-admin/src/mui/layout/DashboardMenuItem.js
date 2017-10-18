@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MenuItem from 'material-ui/MenuItem';
-import DashboardIcon from 'material-ui/svg-icons/action/dashboard';
+import { MenuItem } from 'material-ui/Menu';
+import DashboardIcon from 'material-ui-icons/Dashboard';
 import { Link } from 'react-router-dom';
 import translate from '../../i18n/translate';
 

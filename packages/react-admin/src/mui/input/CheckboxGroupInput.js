@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import Checkbox from 'material-ui/Checkbox';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import { withTheme } from 'material-ui/styles';
 import compose from 'recompose/compose';
 
 import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 import translate from '../../i18n/translate';
 
-const getStyles = muiTheme => {
+const getStyles = theme => {
     const {
         baseTheme,
         textField: { floatingLabelColor, backgroundColor },
-    } = muiTheme;
+    } = theme;
 
     return {
         labelContainer: {
@@ -129,17 +129,21 @@ export class CheckboxGroupInput extends Component {
             <Checkbox
                 key={get(choice, optionValue)}
                 checked={
-                    value
-                        ? value.find(v => v == get(choice, optionValue)) !==
-                          undefined
-                        : false
+                    value ? (
+                        value.find(v => v == get(choice, optionValue)) !==
+                        undefined
+                    ) : (
+                        false
+                    )
                 }
                 onCheck={this.handleCheck}
                 value={get(choice, optionValue)}
                 label={
-                    translateChoice
-                        ? translate(choiceName, { _: choiceName })
-                        : choiceName
+                    translateChoice ? (
+                        translate(choiceName, { _: choiceName })
+                    ) : (
+                        choiceName
+                    )
                 }
                 {...options}
             />
@@ -151,12 +155,12 @@ export class CheckboxGroupInput extends Component {
             choices,
             isRequired,
             label,
-            muiTheme,
+            theme,
             resource,
             source,
         } = this.props;
-        const styles = getStyles(muiTheme);
-        const { prepareStyles } = muiTheme;
+        const styles = getStyles(theme);
+        const { prepareStyles } = theme;
 
         return (
             <div>
@@ -192,9 +196,9 @@ CheckboxGroupInput.propTypes = {
     ]).isRequired,
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
+    theme: PropTypes.object.isRequired,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
-    muiTheme: PropTypes.object.isRequired,
 };
 
 CheckboxGroupInput.defaultProps = {
@@ -205,4 +209,4 @@ CheckboxGroupInput.defaultProps = {
     translateChoice: true,
 };
 
-export default compose(addField, translate, muiThemeable())(CheckboxGroupInput);
+export default compose(addField, translate, withTheme())(CheckboxGroupInput);

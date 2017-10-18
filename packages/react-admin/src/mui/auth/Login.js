@@ -4,15 +4,13 @@ import { propTypes, reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import { Card, CardActions } from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
-import CircularProgress from 'material-ui/CircularProgress';
-import LockIcon from 'material-ui/svg-icons/action/lock-outline';
-import { cyan500, pinkA200 } from 'material-ui/styles/colors';
+import { CircularProgress } from 'material-ui/Progress';
+import LockIcon from 'material-ui-icons/LockOutline';
 
 import defaultTheme from '../defaultTheme';
 import { userLogin as userLoginAction } from '../../actions/authActions';
@@ -42,12 +40,6 @@ const styles = {
     },
 };
 
-function getColorsFromTheme(theme) {
-    if (!theme) return { primary1Color: cyan500, accent1Color: pinkA200 };
-    const { palette: { primary1Color, accent1Color } } = theme;
-    return { primary1Color, accent1Color };
-}
-
 // see http://redux-form.com/6.4.3/examples/material-ui/
 const renderInput = ({
     meta: { touched, error } = {},
@@ -73,15 +65,15 @@ class Login extends Component {
 
     render() {
         const { handleSubmit, isLoading, theme, translate } = this.props;
-        const muiTheme = getMuiTheme(theme);
-        const { primary1Color, accent1Color } = getColorsFromTheme(muiTheme);
+        const muiTheme = createMuiTheme(theme);
+        const { primary, secondary } = muiTheme.palette.text;
         return (
-            <MuiThemeProvider muiTheme={muiTheme}>
-                <div style={{ ...styles.main, backgroundColor: primary1Color }}>
+            <MuiThemeProvider theme={muiTheme}>
+                <div style={{ ...styles.main, backgroundColor: primary }}>
                     <Card style={styles.card}>
                         <div style={styles.avatar}>
                             <Avatar
-                                backgroundColor={accent1Color}
+                                backgroundColor={secondary}
                                 icon={<LockIcon />}
                                 size={60}
                             />
@@ -111,7 +103,8 @@ class Login extends Component {
                                 </div>
                             </div>
                             <CardActions>
-                                <RaisedButton
+                                <Button
+                                    raised
                                     type="submit"
                                     primary
                                     disabled={isLoading}

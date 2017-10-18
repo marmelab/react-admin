@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+import Radio, { RadioGroup } from 'material-ui/Radio';
 import compose from 'recompose/compose';
 
 import addField from '../form/addField';
@@ -83,12 +83,14 @@ export class RadioButtonGroupInput extends Component {
               ? optionText(choice)
               : get(choice, optionText);
         return (
-            <RadioButton
+            <Radio
                 key={get(choice, optionValue)}
                 label={
-                    translateChoice
-                        ? translate(choiceName, { _: choiceName })
-                        : choiceName
+                    translateChoice ? (
+                        translate(choiceName, { _: choiceName })
+                    ) : (
+                        choiceName
+                    )
                 }
                 value={get(choice, optionValue)}
             />
@@ -115,7 +117,7 @@ export class RadioButtonGroupInput extends Component {
                 source={source}
                 isRequired={isRequired}
             >
-                <RadioButtonGroup
+                <RadioGroup
                     name={source}
                     defaultSelected={input.value}
                     valueSelected={input.value}
@@ -123,7 +125,7 @@ export class RadioButtonGroupInput extends Component {
                     {...options}
                 >
                     {choices.map(this.renderRadioButton)}
-                </RadioButtonGroup>
+                </RadioGroup>
             </Labeled>
         );
     }

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import FlatButton from 'material-ui/FlatButton';
-import ActionDelete from 'material-ui/svg-icons/action/delete';
+import Button from 'material-ui/Button';
+import ActionDelete from 'material-ui-icons/Delete';
 import linkToRecord from '../../util/linkToRecord';
 import translate from '../../i18n/translate';
 
@@ -12,7 +12,7 @@ const DeleteButton = ({
     record = {},
     translate,
 }) => (
-    <FlatButton
+    <Button
         secondary
         label={label && translate(label)}
         icon={<ActionDelete />}

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import RaisedButton from 'material-ui/RaisedButton';
-import HotTub from 'material-ui/svg-icons/places/hot-tub';
-import History from 'material-ui/svg-icons/action/history';
+import Button from 'material-ui/Button';
+import HotTub from 'material-ui-icons/HotTub';
+import History from 'material-ui-icons/History';
 import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 
@@ -53,7 +53,8 @@ const NotFound = ({ width, translate }) => (
             <div>{translate('ra.message.not_found')}.</div>
         </div>
         <div style={styles.toolbar}>
-            <RaisedButton
+            <Button
+                raised
                 label={translate('ra.action.back')}
                 icon={<History />}
                 onClick={goBack}

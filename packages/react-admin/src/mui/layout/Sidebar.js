@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Drawer from 'material-ui/Drawer';
 import Paper from 'material-ui/Paper';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import { withTheme } from 'material-ui/styles';
 
 import Responsive from './Responsive';
 import { setSidebarVisibility as setSidebarVisibilityAction } from '../../actions';
@@ -38,8 +38,8 @@ class Sidebar extends PureComponent {
     };
 
     render() {
-        const { open, setSidebarVisibility, children, muiTheme } = this.props;
-        const styles = getStyles(muiTheme);
+        const { open, setSidebarVisibility, children, theme } = this.props;
+        const styles = getStyles(theme);
 
         return (
             <Responsive
@@ -70,7 +70,7 @@ class Sidebar extends PureComponent {
 
 Sidebar.propTypes = {
     children: PropTypes.node.isRequired,
-    muiTheme: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
     setSidebarVisibility: PropTypes.func.isRequired,
 };
@@ -82,7 +82,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 export default compose(
-    muiThemeable(),
+    withTheme(),
     connect(mapStateToProps, {
         setSidebarVisibility: setSidebarVisibilityAction,
     })

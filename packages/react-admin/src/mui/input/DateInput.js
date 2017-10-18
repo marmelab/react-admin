@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import DatePicker from 'material-ui/DatePicker';
+import TextField from 'material-ui/TextField';
 
 import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
@@ -55,8 +55,9 @@ export class DateInput extends Component {
         const { touched, error } = meta;
 
         return (
-            <DatePicker
+            <TextField
                 {...input}
+                type="date"
                 errorText={touched && error}
                 floatingLabelText={
                     <FieldTitle

@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { CardText } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
-import ActionHide from 'material-ui/svg-icons/action/highlight-off';
+import ActionHide from 'material-ui-icons/HighlightOff';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
-import autoprefixer from 'material-ui/utils/autoprefixer';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import { withTheme } from 'material-ui/styles';
 
 import translate from '../../i18n/translate';
 
@@ -43,15 +42,13 @@ export class FilterForm extends Component {
         this.props.hideFilter(event.currentTarget.dataset.key);
 
     render() {
-        const { resource, translate, muiTheme } = this.props;
+        const { resource, translate, theme } = this.props;
 
-        // Use a fake prefixer when none is returned. Useful for tests
-        const prefix = autoprefixer(muiTheme) || (style => style);
-        const styles = getStyles(muiTheme);
+        const styles = getStyles(theme);
 
         return (
             <div>
-                <CardText style={prefix(styles.card)}>
+                <CardText style={styles.card}>
                     {this.getShownFilters()
                         .reverse()
                         .map(filterElement => (
@@ -59,18 +56,13 @@ export class FilterForm extends Component {
                                 key={filterElement.props.source}
                                 data-source={filterElement.props.source}
                                 className="filter-field"
-                                style={
-                                    filterElement.props.style ||
-                                    prefix(styles.body)
-                                }
+                                style={filterElement.props.style || styles.body}
                             >
                                 {filterElement.props.alwaysOn ? (
-                                    <div style={prefix(styles.spacer)}>
-                                        &nbsp;
-                                    </div>
+                                    <div style={styles.spacer}>&nbsp;</div>
                                 ) : (
                                     <IconButton
-                                        iconStyle={prefix(styles.icon)}
+                                        iconStyle={styles.icon}
                                         className="hide-filter"
                                         onClick={this.handleHide}
                                         data-key={filterElement.props.source}
@@ -94,7 +86,7 @@ export class FilterForm extends Component {
                             </div>
                         ))}
                 </CardText>
-                <div style={prefix(styles.clearFix)} />
+                <div style={styles.clearFix} />
             </div>
         );
     }
@@ -107,7 +99,7 @@ FilterForm.propTypes = {
     hideFilter: PropTypes.func.isRequired,
     initialValues: PropTypes.object,
     translate: PropTypes.func.isRequired,
-    muiTheme: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
 };
 
 export const mergeInitialValuesWithDefaultValues = ({
@@ -134,7 +126,7 @@ export const mergeInitialValuesWithDefaultValues = ({
 });
 
 const enhance = compose(
-    muiThemeable(),
+    withTheme(),
     translate,
     withProps(mergeInitialValuesWithDefaultValues),
     reduxForm({

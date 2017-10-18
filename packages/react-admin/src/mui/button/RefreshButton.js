@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import FlatButton from 'material-ui/FlatButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+import Button from 'material-ui/Button';
+import NavigationRefresh from 'material-ui-icons/Refresh';
 import translate from '../../i18n/translate';
 import { refreshView as refreshViewAction } from '../../actions/uiActions';
 
@@ -27,7 +27,7 @@ class RefreshButton extends Component {
         const { label, translate } = this.props;
 
         return (
-            <FlatButton
+            <Button
                 primary
                 label={label && translate(label)}
                 onClick={this.handleClick}

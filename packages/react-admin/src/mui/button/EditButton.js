@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import shouldUpdate from 'recompose/shouldUpdate';
 import compose from 'recompose/compose';
-import FlatButton from 'material-ui/FlatButton';
-import ContentCreate from 'material-ui/svg-icons/content/create';
+import Button from 'material-ui/Button';
+import ContentCreate from 'material-ui-icons/Create';
 import linkToRecord from '../../util/linkToRecord';
 import translate from '../../i18n/translate';
 
@@ -14,7 +14,7 @@ const EditButton = ({
     record = {},
     translate,
 }) => (
-    <FlatButton
+    <Button
         primary
         label={label && translate(label)}
         icon={<ContentCreate />}

@@ -7,8 +7,6 @@ import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import inflection from 'inflection';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import autoprefixer from 'material-ui/utils/autoprefixer';
 import queryReducer, {
     SET_SORT,
     SET_PAGE,
@@ -206,7 +204,6 @@ export class List extends Component {
             total,
             isLoading,
             translate,
-            theme,
             version,
         } = this.props;
         const query = this.getQuery();
@@ -223,13 +220,11 @@ export class List extends Component {
         const titleElement = (
             <Title title={title} defaultTitle={defaultTitle} />
         );
-        const muiTheme = getMuiTheme(theme);
-        const prefix = autoprefixer(muiTheme);
 
         return (
             <div className="list-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    <div style={prefix(styles.header)}>
+                    <div style={styles.header}>
                         <ViewTitle title={titleElement} />
                         {actions &&
                             React.cloneElement(actions, {
@@ -240,7 +235,6 @@ export class List extends Component {
                                 hasCreate,
                                 displayedFilters: this.state,
                                 showFilter: this.showFilter,
-                                theme,
                                 refresh: this.refresh,
                             })}
                     </div>

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
-import MenuItem from 'material-ui/MenuItem';
-import ExitIcon from 'material-ui/svg-icons/action/power-settings-new';
+import { MenuItem } from 'material-ui/Menu';
+import ExitIcon from 'material-ui-icons/PowerSettingsNew';
 
 import translate from '../../i18n/translate';
 import { userLogout as userLogoutAction } from '../../actions/authActions';

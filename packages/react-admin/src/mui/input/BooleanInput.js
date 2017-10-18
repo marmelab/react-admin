@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Toggle from 'material-ui/Toggle';
+import Switch from 'material-ui/Switch';
 
 import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
@@ -36,7 +36,7 @@ export class BooleanInput extends Component {
 
         return (
             <div style={elStyle || styles.block}>
-                <Toggle
+                <Switch
                     defaultToggled={!!input.value}
                     onToggle={this.handleToggle}
                     labelStyle={styles.label}
