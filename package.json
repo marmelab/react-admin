@@ -75,7 +75,7 @@
         "react-redux": "~5.0.4",
         "react-router": "~4.1.0",
         "react-router-dom": "~4.1.0",
-        "react-router-redux": "~5.0.0-alpha.6",
+        "react-router-redux": "5.0.0-alpha.6",
         "recompose": "~0.25.0",
         "redux": "~3.7.2",
         "redux-form": "~7.0.3",
