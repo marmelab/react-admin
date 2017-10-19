@@ -1,15 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import defaultsDeep from 'lodash.defaultsdeep';
+import classNames from 'classnames';
 import shouldUpdate from 'recompose/shouldUpdate';
+import compose from 'recompose/compose';
 import { TableCell } from 'material-ui/Table';
 import Button from 'material-ui/Button';
+import { withStyles } from 'material-ui/styles';
 import ContentSort from 'material-ui-icons/Sort';
+
 import FieldTitle from '../../util/FieldTitle';
 
 const styles = {
     sortButton: {
         minWidth: 40,
+    },
+    sortIcon: {
+        transition: 'transform .25s cubic-bezier(0.0, 0, 0.2, 1)',
+        marginLeft: '0.5em',
+    },
+    sortIconReversed: {
+        transform: 'rotate(180deg)',
     },
     nonSortableLabel: {
         position: 'relative',
@@ -24,6 +35,7 @@ const styles = {
 };
 
 export const DatagridHeaderCell = ({
+    classes,
     field,
     defaultStyle,
     currentSort,
@@ -42,7 +54,7 @@ export const DatagridHeaderCell = ({
                 <Button
                     onClick={updateSort}
                     data-sort={field.props.source}
-                    style={styles.sortButton}
+                    className={classes.sortButton}
                 >
                     <FieldTitle
                         label={field.props.label}
@@ -52,16 +64,17 @@ export const DatagridHeaderCell = ({
 
                     {field.props.source === currentSort.field && (
                         <ContentSort
-                            style={
+                            className={classNames(
+                                classes.sortIcon,
                                 currentSort.order === 'ASC'
-                                    ? { transform: 'rotate(180deg)' }
-                                    : {}
-                            }
+                                    ? classes.sortIconReversed
+                                    : ''
+                            )}
                         />
                     )}
                 </Button>
             ) : (
-                <span style={styles.nonSortableLabel}>
+                <span className={classes.nonSortableLabel}>
                     {
                         <FieldTitle
                             label={field.props.label}
@@ -76,6 +89,7 @@ export const DatagridHeaderCell = ({
 };
 
 DatagridHeaderCell.propTypes = {
+    classes: PropTypes.object,
     field: PropTypes.element,
     defaultStyle: PropTypes.shape({
         th: PropTypes.object,
@@ -93,9 +107,14 @@ DatagridHeaderCell.propTypes = {
     updateSort: PropTypes.func.isRequired,
 };
 
-export default shouldUpdate(
-    (props, nextProps) =>
-        props.isSorting !== nextProps.isSorting ||
-        (nextProps.isSorting &&
-            props.currentSort.order !== nextProps.currentSort.order)
-)(DatagridHeaderCell);
+const enhance = compose(
+    shouldUpdate(
+        (props, nextProps) =>
+            props.isSorting !== nextProps.isSorting ||
+            (nextProps.isSorting &&
+                props.currentSort.order !== nextProps.currentSort.order)
+    ),
+    withStyles(styles)
+);
+
+export default enhance(DatagridHeaderCell);
