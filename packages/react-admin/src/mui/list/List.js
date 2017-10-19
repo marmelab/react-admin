@@ -283,17 +283,17 @@ export class List extends Component {
 
 List.propTypes = {
     // the props you can change
-    title: PropTypes.any,
+    actions: PropTypes.element,
+    children: PropTypes.node,
     filter: PropTypes.object,
     filters: PropTypes.element,
     pagination: PropTypes.element,
-    actions: PropTypes.element,
     perPage: PropTypes.number.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
         order: PropTypes.string,
     }),
-    children: PropTypes.node,
+    title: PropTypes.any,
     // the props managed by react-admin
     authClient: PropTypes.func,
     changeListParams: PropTypes.func.isRequired,
