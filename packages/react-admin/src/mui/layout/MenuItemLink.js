@@ -29,6 +29,7 @@ export class MenuItemLinkComponent extends Component {
         return (
             <MenuItem {...props} onClick={this.handleMenuTap}>
                 {leftIcon}
+                &nbsp;
                 {primaryText}
             </MenuItem>
         );
