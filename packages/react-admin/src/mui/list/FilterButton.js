@@ -62,11 +62,12 @@ export class FilterButton extends Component {
                 <div style={{ display: 'inline-block' }}>
                     <Button
                         className="add-filter"
-                        primary
-                        label={this.props.translate('ra.action.add_filter')}
-                        icon={<ContentFilter />}
+                        color="primary"
                         onClick={this.handleTouchTap}
-                    />
+                    >
+                        <ContentFilter />
+                        {this.props.translate('ra.action.add_filter')}
+                    </Button>
                     <Popover
                         open={open}
                         anchorEl={anchorEl}

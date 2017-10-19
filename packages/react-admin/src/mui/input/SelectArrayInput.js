@@ -154,6 +154,7 @@ export class SelectArrayInput extends Component {
         };
     };
 
+    // FIXME make it work again
     render() {
         return <div>Not supported</div>;
     }

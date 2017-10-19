@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'material-ui/styles';
-import { Table, TableHeader, TableRow } from 'material-ui/Table';
+import Table, { TableHead, TableRow } from 'material-ui/Table';
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridBody from './DatagridBody';
 
@@ -40,7 +40,7 @@ const defaultStyles = {
  *  - styles
  *  - rowStyle
  *  - options (passed as props to <Table>)
- *  - headerOptions (passed as props to mui <TableHeader>)
+ *  - headerOptions (passed as props to mui <TableHead>)
  *  - bodyOptions (passed as props to mui <TableBody>)
  *  - rowOptions (passed as props to mui <TableRow>)
  *
@@ -95,14 +95,9 @@ class Datagrid extends Component {
         return (
             <Table
                 style={options && options.fixedHeader ? null : styles.table}
-                fixedHeader={false}
                 {...options}
             >
-                <TableHeader
-                    displaySelectAll={false}
-                    adjustForCheckbox={false}
-                    {...headerOptions}
-                >
+                <TableHead {...headerOptions}>
                     <TableRow style={theme.tableRow}>
                         {React.Children.map(
                             children,
@@ -112,11 +107,11 @@ class Datagrid extends Component {
                                         key={field.props.source || index}
                                         field={field}
                                         defaultStyle={
-                                            index === 0 ? (
-                                                styles.header['th:first-child']
-                                            ) : (
-                                                styles.header.th
-                                            )
+                                            index === 0
+                                                ? styles.header[
+                                                      'th:first-child'
+                                                  ]
+                                                : styles.header.th
                                         }
                                         currentSort={currentSort}
                                         isSorting={
@@ -129,7 +124,7 @@ class Datagrid extends Component {
                                 ) : null
                         )}
                     </TableRow>
-                </TableHeader>
+                </TableHead>
                 <DatagridBody
                     resource={resource}
                     ids={ids}

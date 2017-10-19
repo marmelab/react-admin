@@ -25,6 +25,7 @@
         "react-dom": "^15.4.0 || ~16.0.0"
     },
     "dependencies": {
+        "classnames": "~2.2.5",
         "babel-runtime": "~6.26.0",
         "inflection": "~1.12.0",
         "lodash.debounce": "~4.0.8",
@@ -40,6 +41,7 @@
         "node-polyglot": "2.2.2",
         "prop-types": "~15.5.7",
         "query-string": "~5.0.0",
+        "react-autosuggest": "~9.3.2",
         "react-dropzone": "~4.0.1",
         "react-redux": "~5.0.4",
         "react-router": "~4.2.0",

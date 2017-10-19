@@ -60,7 +60,7 @@ export class TextInput extends Component {
                 onFocus={this.handleFocus}
                 onChange={this.handleChange}
                 type={type}
-                floatingLabelText={
+                label={
                     <FieldTitle
                         label={label}
                         source={source}
@@ -68,7 +68,8 @@ export class TextInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                errorText={touched && error}
+                error={error}
+                helperText={touched && error}
                 style={elStyle}
                 {...options}
             />

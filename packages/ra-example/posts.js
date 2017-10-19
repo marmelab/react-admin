@@ -46,6 +46,7 @@ import {
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import RichTextInput from 'ra-input-rich-text';
 import Chip from 'material-ui/Chip';
+import Hidden from 'material-ui/Hidden';
 
 export PostIcon from 'material-ui-icons/Book';
 
@@ -83,42 +84,24 @@ export const PostList = ({ ...props }) => (
         filters={<PostFilter />}
         sort={{ field: 'published_at', order: 'DESC' }}
     >
-        <Responsive
-            small={
-                <SimpleList
-                    primaryText={record => record.title}
-                    secondaryText={record => `${record.views} views`}
-                    tertiaryText={record =>
-                        new Date(record.published_at).toLocaleDateString()}
-                />
-            }
-            medium={
-                <Datagrid>
-                    <TextField source="id" />
-                    <TextField source="title" style={titleFieldStyle} />
-                    <DateField
-                        source="published_at"
-                        style={{ fontStyle: 'italic' }}
-                    />
-                    <BooleanField
-                        source="commentable"
-                        label="resources.posts.fields.commentable_short"
-                    />
-                    <NumberField source="views" />
-                    <ReferenceArrayField
-                        label="Tags"
-                        reference="tags"
-                        source="tags"
-                    >
-                        <SingleFieldList>
-                            <ChipField source="name" />
-                        </SingleFieldList>
-                    </ReferenceArrayField>
-                    <EditButton />
-                    <ShowButton />
-                </Datagrid>
-            }
-        />
+        {/* FIXME find a way to make responsive grids */}
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" style={titleFieldStyle} />
+            <DateField source="published_at" style={{ fontStyle: 'italic' }} />
+            <BooleanField
+                source="commentable"
+                label="resources.posts.fields.commentable_short"
+            />
+            <NumberField source="views" />
+            <ReferenceArrayField label="Tags" reference="tags" source="tags">
+                <SingleFieldList>
+                    <ChipField source="name" />
+                </SingleFieldList>
+            </ReferenceArrayField>
+            <EditButton />
+            <ShowButton />
+        </Datagrid>
     </List>
 );
 

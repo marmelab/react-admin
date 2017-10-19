@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import Button from 'material-ui/Button';
 import ContentAdd from 'material-ui-icons/Add';
-import withWidth from 'material-ui/utils/withWidth';
+import Hidden from 'material-ui/Hidden';
 import compose from 'recompose/compose';
+
 import translate from '../../i18n/translate';
 
 const styles = {
@@ -26,37 +27,30 @@ const CreateButton = ({
     basePath = '',
     translate,
     label = 'ra.action.create',
-    width,
-}) =>
-    width === 1 ? (
-        <Button
-            fab
-            style={styles.floating}
-            containerElement={<Link to={`${basePath}/create`} />}
-        >
-            <ContentAdd />
+}) => [
+    <Hidden mdUp key="mobile">
+        <Button fab style={styles.floating}>
+            <Link to={`${basePath}/create`}>
+                <ContentAdd />
+            </Link>
         </Button>
-    ) : (
-        <Button
-            primary
-            label={label && translate(label)}
-            icon={<ContentAdd />}
-            containerElement={<Link to={`${basePath}/create`} />}
-            style={styles.flat}
-        />
-    );
+    </Hidden>,
+    <Hidden mdDown key="destkop">
+        <Button color="primary" style={styles.flat}>
+            <Link to={`${basePath}/create`}>
+                <ContentAdd />
+                {label && translate(label)}
+            </Link>
+        </Button>
+    </Hidden>,
+];
 
 CreateButton.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
     translate: PropTypes.func.isRequired,
-    width: PropTypes.number,
 };
 
-const enhance = compose(
-    onlyUpdateForKeys(['basePath', 'label']),
-    withWidth(),
-    translate
-);
+const enhance = compose(onlyUpdateForKeys(['basePath', 'label']), translate);
 
 export default enhance(CreateButton);

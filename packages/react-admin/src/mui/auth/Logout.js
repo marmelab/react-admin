@@ -10,12 +10,10 @@ import translate from '../../i18n/translate';
 import { userLogout as userLogoutAction } from '../../actions/authActions';
 
 const Logout = ({ translate, userLogout }) => (
-    <MenuItem
-        className="logout"
-        leftIcon={<ExitIcon />}
-        primaryText={translate('ra.auth.logout')}
-        onClick={userLogout}
-    />
+    <MenuItem className="logout" onClick={userLogout}>
+        <ExitIcon />
+        {translate('ra.auth.logout')}
+    </MenuItem>
 );
 
 Logout.propTypes = {

@@ -17,6 +17,8 @@ export class MenuItemLinkComponent extends Component {
     };
     render() {
         const {
+            primaryText,
+            leftIcon,
             history,
             match,
             location,
@@ -24,7 +26,12 @@ export class MenuItemLinkComponent extends Component {
             ...props
         } = this.props;
 
-        return <MenuItem {...props} onClick={this.handleMenuTap} />;
+        return (
+            <MenuItem {...props} onClick={this.handleMenuTap}>
+                {leftIcon}
+                {primaryText}
+            </MenuItem>
+        );
     }
 }
 

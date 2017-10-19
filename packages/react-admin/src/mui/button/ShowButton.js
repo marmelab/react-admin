@@ -14,15 +14,12 @@ const ShowButton = ({
     record = {},
     translate,
 }) => (
-    <Button
-        primary
-        label={label && translate(label)}
-        icon={<ImageEye />}
-        containerElement={
-            <Link to={`${linkToRecord(basePath, record.id)}/show`} />
-        }
-        style={{ overflow: 'inherit' }}
-    />
+    <Button color="primary" style={{ overflow: 'inherit' }}>
+        <Link to={`${linkToRecord(basePath, record.id)}/show`}>
+            <ImageEye />
+            {label && translate(label)}
+        </Link>
+    </Button>
 );
 
 ShowButton.propTypes = {

@@ -5,8 +5,8 @@ import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import ChevronLeft from 'material-ui-icons/ChevronLeft';
 import ChevronRight from 'material-ui-icons/ChevronRight';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import withWidth from 'material-ui/utils/withWidth';
+import Toolbar from 'material-ui/Toolbar';
+import Hidden from 'material-ui/Hidden';
 import { withTheme } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
@@ -107,87 +107,101 @@ export class Pagination extends Component {
                 ) : (
                     <Button
                         className="page-number"
+                        color={
+                            pageNum === this.props.page ? 'accent' : 'primary'
+                        }
                         key={pageNum}
-                        label={pageNum}
                         data-page={pageNum}
                         onClick={this.gotoPage}
-                        primary={pageNum !== this.props.page}
                         style={styles.button}
-                    />
+                    >
+                        {pageNum}
+                    </Button>
                 )
         );
     }
 
     render() {
-        const { theme, page, perPage, total, translate, width } = this.props;
+        const { theme, page, perPage, total, translate } = this.props;
         if (total === 0) return null;
         const offsetEnd = Math.min(page * perPage, total);
         const offsetBegin = Math.min((page - 1) * perPage + 1, offsetEnd);
         const nbPages = this.getNbPages();
 
-        return width === 1 ? (
-            <Toolbar>
-                <ToolbarGroup style={styles.mobileToolbar}>
-                    {page > 1 && (
-                        <IconButton onClick={this.prevPage}>
-                            <ChevronLeft color={theme.palette.primary1Color} />
-                        </IconButton>
-                    )}
-                    <span style={styles.pageInfo}>
-                        {translate('ra.navigation.page_range_info', {
-                            offsetBegin,
-                            offsetEnd,
-                            total,
-                        })}
-                    </span>
-                    {page !== nbPages && (
-                        <IconButton onClick={this.nextPage}>
-                            <ChevronRight color={theme.palette.primary1Color} />
-                        </IconButton>
-                    )}
-                </ToolbarGroup>
-            </Toolbar>
-        ) : (
-            <Toolbar>
-                <ToolbarGroup firstChild>
-                    <span className="displayed-records" style={styles.pageInfo}>
-                        {translate('ra.navigation.page_range_info', {
-                            offsetBegin,
-                            offsetEnd,
-                            total,
-                        })}
-                    </span>
-                </ToolbarGroup>
-                {nbPages > 1 && (
-                    <ToolbarGroup>
+        return [
+            <Hidden mdUp key="mobile">
+                <Toolbar>
+                    <div style={styles.mobileToolbar}>
                         {page > 1 && (
-                            <Button
-                                className="previous-page"
-                                primary
-                                key="prev"
-                                label={translate('ra.navigation.prev')}
-                                icon={<ChevronLeft />}
-                                onClick={this.prevPage}
-                                style={styles.button}
-                            />
+                            <IconButton onClick={this.prevPage}>
+                                <ChevronLeft
+                                    color={theme.palette.primary1Color}
+                                />
+                            </IconButton>
                         )}
-                        {this.renderPageNums()}
+                        <span style={styles.pageInfo}>
+                            {translate('ra.navigation.page_range_info', {
+                                offsetBegin,
+                                offsetEnd,
+                                total,
+                            })}
+                        </span>
                         {page !== nbPages && (
-                            <Button
-                                className="next-page"
-                                primary
-                                key="next"
-                                label={translate('ra.navigation.next')}
-                                icon={<ChevronRight />}
-                                labelPosition="before"
-                                onClick={this.nextPage}
-                                style={styles.button}
-                            />
+                            <IconButton onClick={this.nextPage}>
+                                <ChevronRight
+                                    color={theme.palette.primary1Color}
+                                />
+                            </IconButton>
                         )}
-                    </ToolbarGroup>
-                )}
-            </Toolbar>
-        );
+                    </div>
+                </Toolbar>
+            </Hidden>,
+            <Hidden mdDown key="desktop">
+                <Toolbar>
+                    <div>
+                        <span
+                            className="displayed-records"
+                            style={styles.pageInfo}
+                        >
+                            {translate('ra.navigation.page_range_info', {
+                                offsetBegin,
+                                offsetEnd,
+                                total,
+                            })}
+                        </span>
+                    </div>
+                    {nbPages > 1 && (
+                        <div>
+                            {page > 1 && (
+                                <Button
+                                    className="previous-page"
+                                    color="primary"
+                                    key="prev"
+                                    onClick={this.prevPage}
+                                    style={styles.button}
+                                >
+                                    <ChevronLeft />
+                                    {translate('ra.navigation.prev')}
+                                </Button>
+                            )}
+                            {this.renderPageNums()}
+                            {page !== nbPages && (
+                                <Button
+                                    className="next-page"
+                                    color="primary"
+                                    key="next"
+                                    onClick={this.nextPage}
+                                    style={styles.button}
+                                >
+                                    {translate('ra.navigation.next')}
+                                    <ChevronRight />
+                                </Button>
+                            )}
+                        </div>
+                    )}
+                </Toolbar>
+            </Hidden>,
+        ];
     }
 }
 
@@ -198,9 +212,8 @@ Pagination.propTypes = {
     setPage: PropTypes.func,
     translate: PropTypes.func.isRequired,
     total: PropTypes.number,
-    width: PropTypes.number,
 };
 
-const enhance = compose(pure, translate, withWidth(), withTheme());
+const enhance = compose(pure, translate, withTheme());
 
 export default enhance(Pagination);

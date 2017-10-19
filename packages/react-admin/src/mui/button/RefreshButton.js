@@ -27,12 +27,10 @@ class RefreshButton extends Component {
         const { label, translate } = this.props;
 
         return (
-            <Button
-                primary
-                label={label && translate(label)}
-                onClick={this.handleClick}
-                icon={<NavigationRefresh />}
-            />
+            <Button color="primary" onClick={this.handleClick}>
+                <NavigationRefresh />
+                {label && translate(label)}
+            </Button>
         );
     }
 }

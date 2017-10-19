@@ -99,6 +99,7 @@ const styles = theme => ({
  * <AutocompleteInput source="author_id" options={{ fullWidth: true }} />
  */
 export class AutocompleteInput extends Component {
+    // FIXME implement again
     render() {
         return <div>not supported</div>;
     }

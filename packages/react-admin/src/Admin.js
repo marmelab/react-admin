@@ -8,6 +8,7 @@ import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import withContext from 'recompose/withContext';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 
 import { USER_LOGOUT } from './actions/authActions';
 
@@ -60,69 +61,72 @@ const Admin = ({
     sagaMiddleware.run(saga);
 
     const logout = authClient ? createElement(logoutButton || Logout) : null;
+    const muiTheme = createMuiTheme(theme);
 
     return (
         <Provider store={store}>
             <TranslationProvider messages={messages}>
                 <ConnectedRouter history={routerHistory}>
-                    <div>
-                        <Switch>
-                            <Route
-                                exact
-                                path="/login"
-                                render={({ location }) =>
-                                    createElement(loginPage || Login, {
-                                        location,
-                                        title,
-                                        theme,
-                                    })}
-                            />
-                            {customRoutes
-                                .filter(route => route.props.noLayout)
-                                .map((route, index) => (
-                                    <Route
-                                        key={index}
-                                        exact={route.props.exact}
-                                        path={route.props.path}
-                                        render={({ location }) => {
-                                            if (route.props.render) {
-                                                return route.props.render({
-                                                    location,
-                                                    title,
-                                                    theme,
-                                                });
-                                            }
-                                            if (route.props.component) {
-                                                return createElement(
-                                                    route.props.component,
-                                                    {
+                    <MuiThemeProvider theme={muiTheme}>
+                        <div>
+                            <Switch>
+                                <Route
+                                    exact
+                                    path="/login"
+                                    render={({ location }) =>
+                                        createElement(loginPage || Login, {
+                                            location,
+                                            title,
+                                        })}
+                                />
+                                {customRoutes
+                                    .filter(route => route.props.noLayout)
+                                    .map((route, index) => (
+                                        <Route
+                                            key={index}
+                                            exact={route.props.exact}
+                                            path={route.props.path}
+                                            render={({ location }) => {
+                                                if (route.props.render) {
+                                                    return route.props.render({
                                                         location,
                                                         title,
-                                                        theme,
-                                                    }
-                                                );
+                                                    });
+                                                }
+                                                if (route.props.component) {
+                                                    return createElement(
+                                                        route.props.component,
+                                                        {
+                                                            location,
+                                                            title,
+                                                        }
+                                                    );
+                                                }
+                                            }}
+                                        />
+                                    ))}
+                                <Route
+                                    path="/"
+                                    render={() =>
+                                        createElement(
+                                            appLayout || DefaultLayout,
+                                            {
+                                                children,
+                                                dashboard,
+                                                customRoutes: customRoutes.filter(
+                                                    route =>
+                                                        !route.props.noLayout
+                                                ),
+                                                logout,
+                                                menu,
+                                                catchAll,
+                                                title,
                                             }
-                                        }}
-                                    />
-                                ))}
-                            <Route
-                                path="/"
-                                render={() =>
-                                    createElement(appLayout || DefaultLayout, {
-                                        children,
-                                        dashboard,
-                                        customRoutes: customRoutes.filter(
-                                            route => !route.props.noLayout
-                                        ),
-                                        logout,
-                                        menu,
-                                        catchAll,
-                                        title,
-                                        theme,
-                                    })}
-                            />
-                        </Switch>
-                    </div>
+                                        )}
+                                />
+                            </Switch>
+                        </div>
+                    </MuiThemeProvider>
                 </ConnectedRouter>
             </TranslationProvider>
         </Provider>

@@ -14,13 +14,12 @@ const EditButton = ({
     record = {},
     translate,
 }) => (
-    <Button
-        primary
-        label={label && translate(label)}
-        icon={<ContentCreate />}
-        containerElement={<Link to={linkToRecord(basePath, record.id)} />}
-        style={{ overflow: 'inherit' }}
-    />
+    <Button color="primary" style={{ overflow: 'inherit' }}>
+        <Link to={linkToRecord(basePath, record.id)}>
+            <ContentCreate />
+            {label && translate(label)}
+        </Link>
+    </Button>
 );
 
 EditButton.propTypes = {

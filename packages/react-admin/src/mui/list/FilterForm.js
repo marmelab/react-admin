@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
-import { CardText } from 'material-ui/Card';
+import { CardContent } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import ActionHide from 'material-ui-icons/HighlightOff';
 import compose from 'recompose/compose';
@@ -48,7 +48,7 @@ export class FilterForm extends Component {
 
         return (
             <div>
-                <CardText style={styles.card}>
+                <CardContent style={styles.card}>
                     {this.getShownFilters()
                         .reverse()
                         .map(filterElement => (
@@ -85,7 +85,7 @@ export class FilterForm extends Component {
                                 </div>
                             </div>
                         ))}
-                </CardText>
+                </CardContent>
                 <div style={styles.clearFix} />
             </div>
         );
