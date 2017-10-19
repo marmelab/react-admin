@@ -66,6 +66,7 @@ export class FilterButton extends Component {
                         onClick={this.handleTouchTap}
                     >
                         <ContentFilter />
+                        &nbsp;
                         {this.props.translate('ra.action.add_filter')}
                     </Button>
                     <Popover

@@ -29,6 +29,7 @@ class RefreshButton extends Component {
         return (
             <Button color="primary" onClick={this.handleClick}>
                 <NavigationRefresh />
+                &nbsp;
                 {label && translate(label)}
             </Button>
         );

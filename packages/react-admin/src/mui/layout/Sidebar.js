@@ -18,14 +18,14 @@ class Sidebar extends PureComponent {
         const { open, setSidebarVisibility, children } = this.props;
 
         return [
-            <Hidden mdUp key="desktop">
+            <Hidden smUp key="desktop">
                 <Drawer type="temporary" open={open}>
                     {React.cloneElement(children, {
                         onMenuTap: () => null,
                     })}
                 </Drawer>
             </Hidden>,
-            <Hidden mdDown key="mobile">
+            <Hidden xsDown key="mobile">
                 <Drawer
                     type="permanent"
                     open={open}

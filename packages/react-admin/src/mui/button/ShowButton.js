@@ -5,18 +5,32 @@ import shouldUpdate from 'recompose/shouldUpdate';
 import compose from 'recompose/compose';
 import Button from 'material-ui/Button';
 import ImageEye from 'material-ui-icons/RemoveRedEye';
+import { withStyles } from 'material-ui/styles';
+
 import linkToRecord from '../../util/linkToRecord';
 import translate from '../../i18n/translate';
 
+const styles = {
+    link: {
+        display: 'inline-flex',
+        alignItems: 'center',
+    },
+};
+
 const ShowButton = ({
     basePath = '',
+    classes = {},
     label = 'ra.action.show',
     record = {},
     translate,
 }) => (
     <Button color="primary" style={{ overflow: 'inherit' }}>
-        <Link to={`${linkToRecord(basePath, record.id)}/show`}>
+        <Link
+            to={`${linkToRecord(basePath, record.id)}/show`}
+            className={classes.link}
+        >
             <ImageEye />
+            &nbsp;
             {label && translate(label)}
         </Link>
     </Button>
@@ -24,6 +38,7 @@ const ShowButton = ({
 
 ShowButton.propTypes = {
     basePath: PropTypes.string,
+    classes: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
     translate: PropTypes.func.isRequired,
@@ -36,6 +51,7 @@ const enhance = compose(
             props.basePath !== nextProps.basePath ||
             (props.record == null && nextProps.record != null)
     ),
+    withStyles(styles),
     translate
 );
 
