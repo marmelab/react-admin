@@ -6,7 +6,6 @@ import { withStyles } from 'material-ui/styles';
 import withWidth from 'material-ui/utils/withWidth';
 import { CircularProgress } from 'material-ui/Progress';
 import Hidden from 'material-ui/Hidden';
-
 import compose from 'recompose/compose';
 
 import AdminRoutes from '../../AdminRoutes';
@@ -17,36 +16,52 @@ import Notification from './Notification';
 import defaultTheme from '../defaultTheme';
 import { setSidebarVisibility } from '../../actions';
 
+const drawerWidth = 240;
+
 const styles = theme => ({
-    wrapper: {
-        // Avoid IE bug with Flexbox, see #467
-        display: 'flex',
-        flexDirection: 'column',
+    root: {
+        width: '100%',
+        zIndex: 1,
+        overflow: 'hidden',
     },
-    main: {
+    appFrame: {
+        position: 'relative',
         display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-    },
-    body: {
-        [theme.breakpoints.up('xs')]: {
-            backgroundColor: '#edecec',
-            display: 'flex',
-            flex: 1,
-            overflowY: 'hidden',
-            overflowX: 'scroll',
-        },
-        [theme.breakpoints.down('sm')]: {
-            backgroundColor: '#fff',
-        },
+        width: '100%',
+        height: '100%',
     },
     content: {
-        flex: 1,
+        width: '100%',
+        marginLeft: 0,
+        flexGrow: 1,
+        backgroundColor: theme.palette.background.default,
+        padding: theme.spacing.unit * 3,
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        height: 'calc(100% - 56px)',
+        [theme.breakpoints.up('sm')]: {
+            content: {
+                height: 'calc(100% - 64px)',
+                marginTop: 64,
+            },
+        },
         [theme.breakpoints.up('xs')]: {
-            paddingTop: '4em',
+            marginTop: '4em',
         },
         [theme.breakpoints.down('sm')]: {
-            padding: '2em',
+            marginTop: '3em',
+            padding: 0,
+        },
+    },
+    contentShift: {
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: drawerWidth,
+            transition: theme.transitions.create('margin', {
+                easing: theme.transitions.easing.easeOut,
+                duration: theme.transitions.duration.enteringScreen,
+            }),
         },
     },
     loader: {
@@ -73,6 +88,7 @@ class Layout extends Component {
 
     render() {
         const {
+            catchAll,
             children,
             classes,
             customRoutes,
@@ -80,34 +96,38 @@ class Layout extends Component {
             isLoading,
             logout,
             menu,
-            catchAll,
+            open,
             title,
             width,
         } = this.props;
 
         return (
-            <div className={classes.wrapper}>
-                <div className={classes.main}>
+            <div className={classes.root}>
+                <div className={classes.appFrame}>
                     <Hidden xsDown>
-                        <AppBar title={title} />
+                        <AppBar title={title} open={open} />
                     </Hidden>
-                    <div className={classNames('body', classes.body)}>
-                        <div className={classes.content}>
-                            <AdminRoutes
-                                customRoutes={customRoutes}
-                                dashboard={dashboard}
-                                catchAll={catchAll}
-                            >
-                                {children}
-                            </AdminRoutes>
-                        </div>
-                        <Sidebar>
-                            {createElement(menu || Menu, {
-                                logout,
-                                hasDashboard: !!dashboard,
-                            })}
-                        </Sidebar>
-                    </div>
+                    <Sidebar>
+                        {createElement(menu || Menu, {
+                            logout,
+                            hasDashboard: !!dashboard,
+                        })}
+                    </Sidebar>
+                    <main
+                        className={classNames(
+                            classes.content,
+                            open && classes.contentShift
+                        )}
+                    >
+                        <AdminRoutes
+                            customRoutes={customRoutes}
+                            dashboard={dashboard}
+                            catchAll={catchAll}
+                        >
+                            {children}
+                        </AdminRoutes>
+                    </main>
+
                     <Notification />
                     {isLoading && (
                         <CircularProgress
@@ -144,6 +164,7 @@ Layout.propTypes = {
         PropTypes.string,
     ]),
     menu: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+    open: PropTypes.bool,
     setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.node.isRequired,
     theme: PropTypes.object.isRequired,
@@ -154,8 +175,12 @@ Layout.defaultProps = {
     theme: defaultTheme,
 };
 
+const mapStateToProps = state => ({
+    isLoading: state.admin.loading > 0,
+    open: state.admin.ui.sidebarOpen,
+});
 const enhance = compose(
-    connect(state => ({ isLoading: state.admin.loading > 0 }), {
+    connect(mapStateToProps, {
         setSidebarVisibility,
     }),
     withStyles(styles),

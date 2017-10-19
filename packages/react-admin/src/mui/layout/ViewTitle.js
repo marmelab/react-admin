@@ -1,13 +1,16 @@
 import React from 'react';
 import { CardContent } from 'material-ui/Card';
-import withWidth from 'material-ui/utils/withWidth';
+import Hidden from 'material-ui/Hidden';
+
 import AppBarMobile from './AppBarMobile';
 
-const ViewTitle = ({ title, width }) =>
-    width === 1 ? (
-        <AppBarMobile title={title} />
-    ) : (
+const ViewTitle = ({ title }) => [
+    <Hidden xsDowm key="desktop">
         <CardContent title={title} className="title" />
-    );
+    </Hidden>,
+    <Hidden smUp key="mobile">
+        <AppBarMobile title={title} />
+    </Hidden>,
+];
 
-export default withWidth()(ViewTitle);
+export default ViewTitle;
