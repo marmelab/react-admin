@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card, CardText } from 'material-ui/Card';
+import Card, { CardContent } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
 import ViewTitle from '../layout/ViewTitle';
@@ -130,7 +130,7 @@ export class Edit extends Component {
                                     ? this.defaultRedirectRoute()
                                     : children.props.redirect,
                         })}
-                    {!data && <CardText>&nbsp;</CardText>}
+                    {!data && <CardContent>&nbsp;</CardContent>}
                 </Card>
             </div>
         );
