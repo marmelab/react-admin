@@ -29,7 +29,7 @@ const styles = theme => ({
         minHeight: '100vh',
     },
     body: {
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('xs')]: {
             backgroundColor: '#edecec',
             display: 'flex',
             flex: 1,
@@ -42,8 +42,8 @@ const styles = theme => ({
     },
     content: {
         flex: 1,
-        [theme.breakpoints.up('sm')]: {
-            paddingTop: '3em',
+        [theme.breakpoints.up('xs')]: {
+            paddingTop: '4em',
         },
         [theme.breakpoints.down('sm')]: {
             padding: '2em',
@@ -88,7 +88,7 @@ class Layout extends Component {
         return (
             <div className={classes.wrapper}>
                 <div className={classes.main}>
-                    <Hidden mdUp>
+                    <Hidden xsDown>
                         <AppBar title={title} />
                     </Hidden>
                     <div className={classNames('body', classes.body)}>
