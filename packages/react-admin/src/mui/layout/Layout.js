@@ -70,11 +70,7 @@ const styles = theme => ({
         right: 0,
         margin: 16,
         zIndex: 1200,
-    },
-    progress: {
-        primaryColor: {
-            color: 'white',
-        },
+        color: 'white',
     },
 });
 
@@ -131,13 +127,9 @@ class Layout extends Component {
                     <Notification />
                     {isLoading && (
                         <CircularProgress
-                            classes={{
-                                primaryColor: classes.progress.primaryColor,
-                            }}
-                            className="app-loader"
+                            className={classNames('app-loader', classes.loader)}
                             size={width === 'xs' || width === 'sm' ? 20 : 30}
                             thickness={2}
-                            style={styles.loader}
                         />
                     )}
                 </div>

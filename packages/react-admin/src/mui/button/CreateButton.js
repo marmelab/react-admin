@@ -19,9 +19,6 @@ const styles = {
         left: 'auto',
         position: 'fixed',
     },
-    mobileLink: {
-        color: 'white',
-    },
     desktopLink: {
         display: 'inline-flex',
         alignItems: 'center',
@@ -36,7 +33,7 @@ const CreateButton = ({
 }) => [
     <Hidden smUp key="mobile">
         <Button fab color="primary" className={classes.floating}>
-            <Link to={`${basePath}/create`} className={classes.mobileLink}>
+            <Link to={`${basePath}/create`}>
                 <ContentAdd />
             </Link>
         </Button>
