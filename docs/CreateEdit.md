@@ -82,6 +82,11 @@ That's enough to display the post edit form:
 
 **Tip**: You might find it cumbersome to repeat the same input components for both the `<Create>` and the `<Edit>` view. In practice, these two views almost never have exactly the same form inputs. For instance, in the previous snippet, the `<Edit>` views shows related comments to the current post, which makes no sense for a new post. Having two separate sets of input components for the two view is therefore a deliberate choice. However, if you have the same set of input components, export them as a custom Form component to avoid repetition.
 
+**Ps.**:  
+ `<Create>` accepts one more hidden prop: `record`. You can use it to pass object to child Form.  
+ `<Edit>` has the `record` prop too, but it's passed from Rest client, so you cannot override it.
+
+
 ### Page Title
 
 By default, the title for the Create view is "Create [resource_name]", and the title for the Edit view is "Edit [resource_name] #[record_id]".
