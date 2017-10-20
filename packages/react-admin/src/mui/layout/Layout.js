@@ -15,8 +15,7 @@ import Menu from './Menu';
 import Notification from './Notification';
 import defaultTheme from '../defaultTheme';
 import { setSidebarVisibility } from '../../actions';
-
-const drawerWidth = 240;
+import { DRAWER_WIDTH } from './Sidebar';
 
 const styles = theme => ({
     root: {
@@ -57,7 +56,7 @@ const styles = theme => ({
     },
     contentShift: {
         [theme.breakpoints.up('sm')]: {
-            marginLeft: drawerWidth,
+            marginLeft: DRAWER_WIDTH,
             transition: theme.transitions.create('margin', {
                 easing: theme.transitions.easing.easeOut,
                 duration: theme.transitions.duration.enteringScreen,

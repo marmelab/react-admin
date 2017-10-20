@@ -4,19 +4,19 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
-import Hidden from 'material-ui/Hidden';
 import IconButton from 'material-ui/IconButton';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import { withStyles } from 'material-ui/styles';
 
+import Responsive from './Responsive';
 import { setSidebarVisibility as setSidebarVisibilityAction } from '../../actions';
 
-const drawerWidth = 240;
+export const DRAWER_WIDTH = 240;
 
 const styles = theme => ({
     drawerPaper: {
         height: '100%',
-        width: drawerWidth,
+        width: DRAWER_WIDTH,
     },
     drawerHeader: {
         display: 'flex',
@@ -37,40 +37,42 @@ class Sidebar extends PureComponent {
     render() {
         const { children, classes, open, setSidebarVisibility } = this.props;
 
-        return [
-            <Hidden smUp key="mobile">
-                <Drawer
-                    type="temporary"
-                    open={open}
-                    onRequestClose={this.toggleSidebar}
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}
-                >
-                    {React.cloneElement(children, {
-                        onMenuTap: this.handleClose,
-                    })}
-                </Drawer>
-            </Hidden>,
-            <Hidden xsDown key="desktop">
-                <Drawer
-                    type="persistent"
-                    open={open}
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}
-                    onRequestClose={setSidebarVisibility}
-                >
-                    <div className={classes.drawerHeader}>
-                        <IconButton onClick={this.toggleSidebar}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                    </div>
-                    <Divider />
-                    {children}
-                </Drawer>
-            </Hidden>,
-        ];
+        return (
+            <Responsive
+                small={
+                    <Drawer
+                        type="temporary"
+                        open={open}
+                        onRequestClose={this.toggleSidebar}
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                    >
+                        {React.cloneElement(children, {
+                            onMenuTap: this.handleClose,
+                        })}
+                    </Drawer>
+                }
+                medium={
+                    <Drawer
+                        type="persistent"
+                        open={open}
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                        onRequestClose={setSidebarVisibility}
+                    >
+                        <div className={classes.drawerHeader}>
+                            <IconButton onClick={this.toggleSidebar}>
+                                <ChevronLeftIcon />
+                            </IconButton>
+                        </div>
+                        <Divider />
+                        {children}
+                    </Drawer>
+                }
+            />
+        );
     }
 }
 

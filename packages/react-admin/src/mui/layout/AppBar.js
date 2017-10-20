@@ -9,9 +9,9 @@ import MenuIcon from 'material-ui-icons/Menu';
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
-import { toggleSidebar as toggleSidebarAction } from '../../actions';
 
-const drawerWidth = 240;
+import { toggleSidebar as toggleSidebarAction } from '../../actions';
+import { DRAWER_WIDTH } from './Sidebar';
 
 const styles = theme => ({
     appBar: {
@@ -21,8 +21,8 @@ const styles = theme => ({
         }),
     },
     appBarShift: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: DRAWER_WIDTH,
+        width: `calc(100% - ${DRAWER_WIDTH}px)`,
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,

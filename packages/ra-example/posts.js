@@ -46,7 +46,6 @@ import {
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import RichTextInput from 'ra-input-rich-text';
 import Chip from 'material-ui/Chip';
-import Hidden from 'material-ui/Hidden';
 
 export PostIcon from 'material-ui-icons/Book';
 

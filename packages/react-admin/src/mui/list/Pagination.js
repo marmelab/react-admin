@@ -7,9 +7,10 @@ import ChevronLeft from 'material-ui-icons/ChevronLeft';
 import ChevronRight from 'material-ui-icons/ChevronRight';
 import Typography from 'material-ui/Typography';
 import Toolbar from 'material-ui/Toolbar';
-import Hidden from 'material-ui/Hidden';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
+
+import Responsive from '../layout/Responsive';
 import translate from '../../i18n/translate';
 
 const styles = {
@@ -126,65 +127,67 @@ export class Pagination extends Component {
         const offsetBegin = Math.min((page - 1) * perPage + 1, offsetEnd);
         const nbPages = this.getNbPages();
 
-        return [
-            <Hidden mdUp key="mobile">
-                <Toolbar classes={{ root: classes.mobileToolbar }}>
-                    {page > 1 && (
-                        <IconButton color="primary" onClick={this.prevPage}>
-                            <ChevronLeft />
-                        </IconButton>
-                    )}
-                    <Typography type="body1" className="displayed-records">
-                        {translate('ra.navigation.page_range_info', {
-                            offsetBegin,
-                            offsetEnd,
-                            total,
-                        })}
-                    </Typography>
-                    {page !== nbPages && (
-                        <IconButton color="primary" onClick={this.nextPage}>
-                            <ChevronRight />
-                        </IconButton>
-                    )}
-                </Toolbar>
-            </Hidden>,
-            <Hidden xsDown key="desktop">
-                <Toolbar>
-                    <Typography type="body1" className="displayed-records">
-                        {translate('ra.navigation.page_range_info', {
-                            offsetBegin,
-                            offsetEnd,
-                            total,
-                        })}
-                    </Typography>
-                    {nbPages > 1 && [
-                        page > 1 && (
-                            <Button
-                                color="primary"
-                                key="prev"
-                                onClick={this.prevPage}
-                                className="previous-page"
-                            >
+        return (
+            <Responsive
+                small={
+                    <Toolbar classes={{ root: classes.mobileToolbar }}>
+                        {page > 1 && (
+                            <IconButton color="primary" onClick={this.prevPage}>
                                 <ChevronLeft />
-                                {translate('ra.navigation.prev')}
-                            </Button>
-                        ),
-                        this.renderPageNums(),
-                        page !== nbPages && (
-                            <Button
-                                color="primary"
-                                key="next"
-                                onClick={this.nextPage}
-                                className="next-page"
-                            >
-                                {translate('ra.navigation.next')}
+                            </IconButton>
+                        )}
+                        <Typography type="body1" className="displayed-records">
+                            {translate('ra.navigation.page_range_info', {
+                                offsetBegin,
+                                offsetEnd,
+                                total,
+                            })}
+                        </Typography>
+                        {page !== nbPages && (
+                            <IconButton color="primary" onClick={this.nextPage}>
                                 <ChevronRight />
-                            </Button>
-                        ),
-                    ]}
-                </Toolbar>
-            </Hidden>,
-        ];
+                            </IconButton>
+                        )}
+                    </Toolbar>
+                }
+                medium={
+                    <Toolbar>
+                        <Typography type="body1" className="displayed-records">
+                            {translate('ra.navigation.page_range_info', {
+                                offsetBegin,
+                                offsetEnd,
+                                total,
+                            })}
+                        </Typography>
+                        {nbPages > 1 && [
+                            page > 1 && (
+                                <Button
+                                    color="primary"
+                                    key="prev"
+                                    onClick={this.prevPage}
+                                    className="previous-page"
+                                >
+                                    <ChevronLeft />
+                                    {translate('ra.navigation.prev')}
+                                </Button>
+                            ),
+                            this.renderPageNums(),
+                            page !== nbPages && (
+                                <Button
+                                    color="primary"
+                                    key="next"
+                                    onClick={this.nextPage}
+                                    className="next-page"
+                                >
+                                    {translate('ra.navigation.next')}
+                                    <ChevronRight />
+                                </Button>
+                            ),
+                        ]}
+                    </Toolbar>
+                }
+            />
+        );
     }
 }
 

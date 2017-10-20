@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import Button from 'material-ui/Button';
 import ContentAdd from 'material-ui-icons/Add';
-import Hidden from 'material-ui/Hidden';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 
+import Responsive from '../layout/Responsive';
 import Link from '../Link';
 import translate from '../../i18n/translate';
 
@@ -33,24 +33,29 @@ const CreateButton = ({
     classes = {},
     translate,
     label = 'ra.action.create',
-}) => [
-    <Hidden smUp key="mobile">
-        <Button fab color="primary" className={classes.floating}>
-            <Link to={`${basePath}/create`} className={classes.floatingLink}>
-                <ContentAdd />
-            </Link>
-        </Button>
-    </Hidden>,
-    <Hidden xsDown key="destkop">
-        <Button color="primary">
-            <Link to={`${basePath}/create`} className={classes.desktopLink}>
-                <ContentAdd />
-                &nbsp;
-                {label && translate(label)}
-            </Link>
-        </Button>
-    </Hidden>,
-];
+}) => (
+    <Responsive
+        small={
+            <Button fab color="primary" className={classes.floating}>
+                <Link
+                    to={`${basePath}/create`}
+                    className={classes.floatingLink}
+                >
+                    <ContentAdd />
+                </Link>
+            </Button>
+        }
+        medium={
+            <Button color="primary">
+                <Link to={`${basePath}/create`} className={classes.desktopLink}>
+                    <ContentAdd />
+                    &nbsp;
+                    {label && translate(label)}
+                </Link>
+            </Button>
+        }
+    />
+);
 
 CreateButton.propTypes = {
     basePath: PropTypes.string,
