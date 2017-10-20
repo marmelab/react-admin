@@ -24,15 +24,14 @@ class FilterButtonMenuItem extends Component {
                 data-key={filter.source}
                 data-default-value={filter.defaultValue}
                 key={filter.source}
-                primaryText={
-                    <FieldTitle
-                        label={filter.label}
-                        source={filter.source}
-                        resource={resource}
-                    />
-                }
                 onClick={this.handleShow}
-            />
+            >
+                <FieldTitle
+                    label={filter.label}
+                    source={filter.source}
+                    resource={resource}
+                />
+            </MenuItem>
         );
     }
 }

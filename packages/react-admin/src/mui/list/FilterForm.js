@@ -62,7 +62,6 @@ export class FilterForm extends Component {
                                     <div style={styles.spacer}>&nbsp;</div>
                                 ) : (
                                     <IconButton
-                                        iconStyle={styles.icon}
                                         className="hide-filter"
                                         onClick={this.handleHide}
                                         data-key={filterElement.props.source}

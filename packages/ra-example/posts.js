@@ -51,7 +51,7 @@ import Hidden from 'material-ui/Hidden';
 export PostIcon from 'material-ui-icons/Book';
 
 const QuickFilter = translate(({ label, translate }) => (
-    <Chip style={{ marginBottom: 8 }}>{translate(label)}</Chip>
+    <Chip style={{ marginBottom: 8 }} label={translate(label)} />
 ));
 
 const PostFilter = ({ ...props }) => (

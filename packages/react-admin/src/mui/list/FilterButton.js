@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import Popover from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
+import { MenuList } from 'material-ui/Menu';
 import ContentFilter from 'material-ui-icons/FilterList';
 import translate from '../../i18n/translate';
 import FilterButtonMenuItem from './FilterButtonMenuItem';
@@ -14,7 +15,7 @@ export class FilterButton extends Component {
         this.state = {
             open: false,
         };
-        this.handleTouchTap = this.handleTouchTap.bind(this);
+        this.handleClickButton = this.handleClickButton.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
         this.handleShow = this.handleShow.bind(this);
     }
@@ -29,13 +30,13 @@ export class FilterButton extends Component {
         );
     }
 
-    handleTouchTap(event) {
+    handleClickButton(event) {
         // This prevents ghost click.
         event.preventDefault();
 
         this.setState({
             open: true,
-            anchorEl: event.currentTarget,
+            anchorEl: findDOMNode(this.button),
         });
     }
 
@@ -52,6 +53,8 @@ export class FilterButton extends Component {
         });
     }
 
+    button = null;
+
     render() {
         const hiddenFilters = this.getHiddenFilters();
         const { resource } = this.props;
@@ -61,9 +64,12 @@ export class FilterButton extends Component {
             hiddenFilters.length > 0 && (
                 <div style={{ display: 'inline-block' }}>
                     <Button
+                        ref={node => {
+                            this.button = node;
+                        }}
                         className="add-filter"
                         color="primary"
-                        onClick={this.handleTouchTap}
+                        onClick={this.handleClickButton}
                     >
                         <ContentFilter />
                         &nbsp;
@@ -73,13 +79,16 @@ export class FilterButton extends Component {
                         open={open}
                         anchorEl={anchorEl}
                         anchorOrigin={{
-                            horizontal: 'left',
                             vertical: 'bottom',
+                            horizontal: 'left',
                         }}
-                        targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
+                        }}
                         onRequestClose={this.handleRequestClose}
                     >
-                        <Menu>
+                        <MenuList>
                             {hiddenFilters.map(filterElement => (
                                 <FilterButtonMenuItem
                                     key={filterElement.props.source}
@@ -88,7 +97,7 @@ export class FilterButton extends Component {
                                     onShow={this.handleShow}
                                 />
                             ))}
-                        </Menu>
+                        </MenuList>
                     </Popover>
                 </div>
             )
