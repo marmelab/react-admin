@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
-import Select from 'material-ui/Select';
+import TextField from 'material-ui/TextField';
 import { MenuItem } from 'material-ui/Menu';
 import compose from 'recompose/compose';
 
@@ -113,11 +113,9 @@ export class SelectInput extends Component {
             <MenuItem
                 key={get(choice, optionValue)}
                 primaryText={
-                    translateChoice ? (
-                        translate(choiceName, { _: choiceName })
-                    ) : (
-                        choiceName
-                    )
+                    translateChoice
+                        ? translate(choiceName, { _: choiceName })
+                        : choiceName
                 }
                 value={get(choice, optionValue)}
             />
@@ -143,9 +141,10 @@ export class SelectInput extends Component {
         const { touched, error } = meta;
 
         return (
-            <Select
+            <TextField
+                select
                 value={this.state.value}
-                floatingLabelText={
+                label={
                     <FieldTitle
                         label={label}
                         source={source}
@@ -160,7 +159,7 @@ export class SelectInput extends Component {
                 {...options}
             >
                 {this.addAllowEmpty(choices.map(this.renderMenuItem))}
-            </Select>
+            </TextField>
         );
     }
 }
