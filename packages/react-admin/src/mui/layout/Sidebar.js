@@ -43,9 +43,12 @@ class Sidebar extends PureComponent {
                     type="temporary"
                     open={open}
                     onRequestClose={this.toggleSidebar}
+                    classes={{
+                        paper: classes.drawerPaper,
+                    }}
                 >
                     {React.cloneElement(children, {
-                        onMenuTap: () => null,
+                        onMenuTap: this.handleClose,
                     })}
                 </Drawer>
             </Hidden>,
@@ -64,9 +67,7 @@ class Sidebar extends PureComponent {
                         </IconButton>
                     </div>
                     <Divider />
-                    {React.cloneElement(children, {
-                        onMenuTap: this.handleClose,
-                    })}
+                    {children}
                 </Drawer>
             </Hidden>,
         ];
