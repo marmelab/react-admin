@@ -8,18 +8,34 @@ import List, {
     ListItemSecondaryAction,
     ListItemText,
 } from 'material-ui/List';
+import { withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';
 import linkToRecord from '../../util/linkToRecord';
 
 const tertiaryStyle = { float: 'right', opacity: 0.541176 };
-const LinkOrNot = ({ linkType, basePath, id, children }) =>
-    linkType === 'edit' || linkType === true ? (
-        <Link to={linkToRecord(basePath, id)}>{children}</Link>
-    ) : linkType === 'show' ? (
-        <Link to={`${linkToRecord(basePath, id)}/show`}>{children}</Link>
-    ) : (
-        <span>{children}</span>
-    );
+const styles = {
+    link: {
+        textDecoration: 'none',
+        color: 'inherit',
+    },
+};
+const LinkOrNot = withStyles(styles)(
+    ({ classes, linkType, basePath, id, children }) =>
+        linkType === 'edit' || linkType === true ? (
+            <Link to={linkToRecord(basePath, id)} className={classes.link}>
+                {children}
+            </Link>
+        ) : linkType === 'show' ? (
+            <Link
+                to={`${linkToRecord(basePath, id)}/show`}
+                className={classes.link}
+            >
+                {children}
+            </Link>
+        ) : (
+            <span>{children}</span>
+        )
+);
 
 const SimpleList = ({
     ids,

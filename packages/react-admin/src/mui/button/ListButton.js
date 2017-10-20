@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import compose from 'recompose/compose';
 import Button from 'material-ui/Button';
 import ActionList from 'material-ui-icons/List';
 import { withStyles } from 'material-ui/styles';
 
+import Link from '../Link';
 import translate from '../../i18n/translate';
 
 const styles = {

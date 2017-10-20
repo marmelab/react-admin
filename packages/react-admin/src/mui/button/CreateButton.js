@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import Button from 'material-ui/Button';
 import ContentAdd from 'material-ui-icons/Add';
@@ -8,6 +7,7 @@ import Hidden from 'material-ui/Hidden';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 
+import Link from '../Link';
 import translate from '../../i18n/translate';
 
 const styles = {
@@ -18,6 +18,9 @@ const styles = {
         bottom: 60,
         left: 'auto',
         position: 'fixed',
+    },
+    floatingLink: {
+        color: 'inherit',
     },
     desktopLink: {
         display: 'inline-flex',
@@ -33,7 +36,7 @@ const CreateButton = ({
 }) => [
     <Hidden smUp key="mobile">
         <Button fab color="primary" className={classes.floating}>
-            <Link to={`${basePath}/create`}>
+            <Link to={`${basePath}/create`} className={classes.floatingLink}>
                 <ContentAdd />
             </Link>
         </Button>

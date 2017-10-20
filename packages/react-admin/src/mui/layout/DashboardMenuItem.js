@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { MenuItem } from 'material-ui/Menu';
 import DashboardIcon from 'material-ui-icons/Dashboard';
-import { Link } from 'react-router-dom';
+import Link from '../Link';
 import translate from '../../i18n/translate';
 
 const DashboardMenuItem = ({ onClick, translate }) => (
