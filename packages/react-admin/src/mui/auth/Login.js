@@ -4,41 +4,49 @@ import { propTypes, reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import { Card, CardActions } from 'material-ui/Card';
+import Card, { CardActions } from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import { CircularProgress } from 'material-ui/Progress';
 import LockIcon from 'material-ui-icons/LockOutline';
+import { withStyles } from 'material-ui/styles';
 
 import defaultTheme from '../defaultTheme';
-import { userLogin as userLoginAction } from '../../actions/authActions';
+import { userLogin } from '../../actions/authActions';
 import translate from '../../i18n/translate';
 import Notification from '../layout/Notification';
 
-const styles = {
+const styles = theme => ({
     main: {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: theme.palette.primary[500],
     },
     card: {
         minWidth: 300,
     },
     avatar: {
         margin: '1em',
-        textAlign: 'center ',
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    icon: {
+        backgroundColor: theme.palette.secondary[500],
     },
     form: {
         padding: '0 1em 1em 1em',
     },
     input: {
-        display: 'flex',
+        marginTop: '1em',
     },
-};
+    button: {
+        width: '100%',
+    },
+});
 
 // see http://redux-form.com/6.4.3/examples/material-ui/
 const renderInput = ({
@@ -47,7 +55,8 @@ const renderInput = ({
     ...props
 }) => (
     <TextField
-        errorText={touched && error}
+        error={!!(touched && error)}
+        helperText={touched && error}
         {...inputProps}
         {...props}
         fullWidth
@@ -64,67 +73,53 @@ class Login extends Component {
         );
 
     render() {
-        const { handleSubmit, isLoading, theme, translate } = this.props;
-        const muiTheme = createMuiTheme(theme);
-        const { primary, secondary } = muiTheme.palette.text;
+        const { classes, handleSubmit, isLoading, translate } = this.props;
         return (
-            <MuiThemeProvider theme={muiTheme}>
-                <div style={{ ...styles.main, backgroundColor: primary }}>
-                    <Card style={styles.card}>
-                        <div style={styles.avatar}>
-                            <Avatar
-                                backgroundColor={secondary}
-                                icon={<LockIcon />}
-                                size={60}
-                            />
-                        </div>
-                        <form onSubmit={handleSubmit(this.login)}>
-                            <div style={styles.form}>
-                                <div style={styles.input}>
-                                    <Field
-                                        name="username"
-                                        component={renderInput}
-                                        floatingLabelText={translate(
-                                            'ra.auth.username'
-                                        )}
-                                        disabled={isLoading}
-                                    />
-                                </div>
-                                <div style={styles.input}>
-                                    <Field
-                                        name="password"
-                                        component={renderInput}
-                                        floatingLabelText={translate(
-                                            'ra.auth.password'
-                                        )}
-                                        type="password"
-                                        disabled={isLoading}
-                                    />
-                                </div>
-                            </div>
-                            <CardActions>
-                                <Button
-                                    raised
-                                    type="submit"
-                                    primary
+            <div className={classes.main}>
+                <Card className={classes.card}>
+                    <div className={classes.avatar}>
+                        <Avatar className={classes.icon}>
+                            <LockIcon />
+                        </Avatar>
+                    </div>
+                    <form onSubmit={handleSubmit(this.login)}>
+                        <div className={classes.form}>
+                            <div className={classes.input}>
+                                <Field
+                                    name="username"
+                                    component={renderInput}
+                                    label={translate('ra.auth.username')}
                                     disabled={isLoading}
-                                    icon={
-                                        isLoading && (
-                                            <CircularProgress
-                                                size={25}
-                                                thickness={2}
-                                            />
-                                        )
-                                    }
-                                    label={translate('ra.auth.sign_in')}
-                                    fullWidth
                                 />
-                            </CardActions>
-                        </form>
-                    </Card>
-                    <Notification />
-                </div>
-            </MuiThemeProvider>
+                            </div>
+                            <div className={classes.input}>
+                                <Field
+                                    name="password"
+                                    component={renderInput}
+                                    label={translate('ra.auth.password')}
+                                    type="password"
+                                    disabled={isLoading}
+                                />
+                            </div>
+                        </div>
+                        <CardActions>
+                            <Button
+                                raised
+                                type="submit"
+                                color="primary"
+                                disabled={isLoading}
+                                className={classes.button}
+                            >
+                                {isLoading && (
+                                    <CircularProgress size={25} thickness={2} />
+                                )}
+                                {translate('ra.auth.sign_in')}
+                            </Button>
+                        </CardActions>
+                    </form>
+                </Card>
+                <Notification />
+            </div>
         );
     }
 }
@@ -132,8 +127,8 @@ class Login extends Component {
 Login.propTypes = {
     ...propTypes,
     authClient: PropTypes.func,
+    classes: PropTypes.object,
     previousRoute: PropTypes.string,
-    theme: PropTypes.object.isRequired,
     translate: PropTypes.func.isRequired,
     userLogin: PropTypes.func.isRequired,
 };
@@ -158,7 +153,8 @@ const enhance = compose(
             return errors;
         },
     }),
-    connect(mapStateToProps, { userLogin: userLoginAction })
+    connect(mapStateToProps, { userLogin }),
+    withStyles(styles)
 );
 
 export default enhance(Login);

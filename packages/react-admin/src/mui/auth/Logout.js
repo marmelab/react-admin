@@ -11,7 +11,7 @@ import { userLogout as userLogoutAction } from '../../actions/authActions';
 
 const Logout = ({ translate, userLogout }) => (
     <MenuItem className="logout" onClick={userLogout}>
-        <ExitIcon />
+        <ExitIcon />&nbsp;
         {translate('ra.auth.logout')}
     </MenuItem>
 );
