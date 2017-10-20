@@ -23,11 +23,15 @@ const styles = theme => ({
         flexDirection: 'column',
         minHeight: '100vh',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        background: 'url(https://source.unsplash.com/random/1600x900)',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
         backgroundColor: theme.palette.primary[500],
     },
     card: {
         minWidth: 300,
+        marginTop: '6em',
     },
     avatar: {
         margin: '1em',
