@@ -88,10 +88,7 @@ export class SelectInput extends Component {
 
     addAllowEmpty = choices => {
         if (this.props.allowEmpty) {
-            return [
-                <MenuItem value={null} key="null" primaryText="" />,
-                ...choices,
-            ];
+            return [<MenuItem value={null} key="null" />, ...choices];
         }
 
         return choices;
@@ -112,13 +109,12 @@ export class SelectInput extends Component {
         return (
             <MenuItem
                 key={get(choice, optionValue)}
-                primaryText={
-                    translateChoice
-                        ? translate(choiceName, { _: choiceName })
-                        : choiceName
-                }
                 value={get(choice, optionValue)}
-            />
+            >
+                {translateChoice
+                    ? translate(choiceName, { _: choiceName })
+                    : choiceName}
+            </MenuItem>
         );
     };
 
@@ -152,10 +148,12 @@ export class SelectInput extends Component {
                         isRequired={isRequired}
                     />
                 }
+                SelectProps={{
+                    autoWidth: true,
+                }}
                 onChange={this.handleChange}
-                autoWidth
                 style={elStyle}
-                errorText={touched && error}
+                helperText={touched && error}
                 {...options}
             >
                 {this.addAllowEmpty(choices.map(this.renderMenuItem))}
