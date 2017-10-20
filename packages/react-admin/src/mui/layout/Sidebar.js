@@ -38,7 +38,7 @@ class Sidebar extends PureComponent {
         const { children, classes, open, setSidebarVisibility } = this.props;
 
         return [
-            <Hidden smUp key="desktop">
+            <Hidden smUp key="mobile">
                 <Drawer
                     type="temporary"
                     open={open}
@@ -49,7 +49,7 @@ class Sidebar extends PureComponent {
                     })}
                 </Drawer>
             </Hidden>,
-            <Hidden xsDown key="mobile">
+            <Hidden xsDown key="desktop">
                 <Drawer
                     type="persistent"
                     open={open}

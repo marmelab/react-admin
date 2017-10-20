@@ -5,13 +5,15 @@ import withWidth from 'material-ui/utils/withWidth';
 export const Responsive = ({ small, medium, large, width, ...rest }) => {
     let component;
     switch (width) {
-        case 1:
+        case 'xs':
             component = small ? small : medium ? medium : large;
             break;
-        case 2:
+        case 'sm':
+        case 'md':
             component = medium ? medium : large ? large : small;
             break;
-        case 3:
+        case 'lg':
+        case 'xl':
             component = large ? large : medium ? medium : small;
             break;
         default:
@@ -24,7 +26,7 @@ Responsive.propTypes = {
     small: PropTypes.element,
     medium: PropTypes.element,
     large: PropTypes.element,
-    width: PropTypes.number,
+    width: PropTypes.string,
 };
 
 export default withWidth()(Responsive);

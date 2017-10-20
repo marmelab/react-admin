@@ -32,7 +32,6 @@ import Button from 'material-ui/Button';
 import Toolbar from 'material-ui/Toolbar';
 import ChevronLeft from 'material-ui-icons/ChevronLeft';
 import ChevronRight from 'material-ui-icons/ChevronRight';
-import Typography from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
 export CommentIcon from 'material-ui-icons/ChatBubble';
@@ -164,7 +163,7 @@ const CommentMobileList = props => (
         secondaryTextLines={2}
         tertiaryText={record =>
             new Date(record.created_at).toLocaleDateString()}
-        leftAvatar={() => <Avatar icon={<PersonIcon />} />}
+        leftAvatar={() => <PersonIcon />}
         {...props}
     />
 );
@@ -176,8 +175,7 @@ export const CommentList = ({ ...props }) => (
         filters={<CommentFilter />}
         pagination={<CommentPagination />}
     >
-        {/* FIXME readd mobile list */}
-        <CommentGrid />
+        <Responsive small={<CommentMobileList />} medium={<CommentGrid />} />
     </List>
 );
 
