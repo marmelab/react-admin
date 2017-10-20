@@ -19,6 +19,11 @@ export const ImageField = ({ elStyle = {}, record, source, src, title }) => {
         return <div />;
     }
 
+    const imageStyle = {
+        ...styles.image,
+        ...elStyle.image,
+    };
+
     if (Array.isArray(sourceValue)) {
         const style = {
             ...styles.list,
@@ -36,7 +41,7 @@ export const ImageField = ({ elStyle = {}, record, source, src, title }) => {
                                 alt={titleValue}
                                 title={titleValue}
                                 src={srcValue}
-                                style={styles.image}
+                                style={imageStyle}
                             />
                         </li>
                     );
@@ -53,7 +58,7 @@ export const ImageField = ({ elStyle = {}, record, source, src, title }) => {
                 title={titleValue}
                 alt={titleValue}
                 src={sourceValue}
-                style={styles.image}
+                style={imageStyle}
             />
         </div>
     );
