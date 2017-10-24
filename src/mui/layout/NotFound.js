@@ -50,7 +50,7 @@ const NotFound = ({ width, translate }) => (
         <div style={styles.message}>
             <HotTub style={styles.icon} />
             <h1>{translate('aor.page.not_found')}</h1>
-            <div>{translate('aor.message.not_found')}.</div>
+            <div>{translate('aor.message.not_found')}</div>
         </div>
         <div style={styles.toolbar}>
             <RaisedButton
