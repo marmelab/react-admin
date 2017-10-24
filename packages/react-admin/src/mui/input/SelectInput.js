@@ -3,11 +3,20 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import TextField from 'material-ui/TextField';
 import { MenuItem } from 'material-ui/Menu';
+import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 
 import addField from '../form/addField';
 import translate from '../../i18n/translate';
 import FieldTitle from '../../util/FieldTitle';
+
+const styles = theme => ({
+    textField: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        width: 200,
+    },
+});
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -81,9 +90,9 @@ export class SelectInput extends Component {
         }
     }
 
-    handleChange = (event, index, value) => {
-        this.props.input.onChange(value);
-        this.setState({ value });
+    handleChange = event => {
+        this.props.input.onChange(event.target.value);
+        this.setState({ value: event.target.value });
     };
 
     addAllowEmpty = choices => {
@@ -121,6 +130,7 @@ export class SelectInput extends Component {
     render() {
         const {
             choices,
+            classes,
             elStyle,
             isRequired,
             label,
@@ -148,10 +158,8 @@ export class SelectInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                SelectProps={{
-                    autoWidth: true,
-                }}
                 onChange={this.handleChange}
+                className={classes.textField}
                 style={elStyle}
                 helperText={touched && error}
                 {...options}
@@ -165,6 +173,7 @@ export class SelectInput extends Component {
 SelectInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     choices: PropTypes.arrayOf(PropTypes.object),
+    classes: PropTypes.object,
     elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
@@ -192,4 +201,4 @@ SelectInput.defaultProps = {
     translateChoice: true,
 };
 
-export default compose(addField, translate)(SelectInput);
+export default compose(addField, withStyles(styles), translate)(SelectInput);
