@@ -80,9 +80,7 @@ export class AutocompleteInput extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.input.value !== nextProps.input.value) {
-            this.setSearchText(nextProps);
-        }
+        this.setSearchText(nextProps);
     }
 
     setSearchText(props) {
