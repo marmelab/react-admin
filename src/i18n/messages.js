@@ -45,7 +45,7 @@ export default {
             are_you_sure: 'Are you sure?',
             about: 'About',
             not_found:
-                'Either you typed a wrong URL, or you followed a bad link',
+                'Either you typed a wrong URL, or you followed a bad link.',
         },
         navigation: {
             no_results: 'No results found',
