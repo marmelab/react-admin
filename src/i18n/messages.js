@@ -42,7 +42,7 @@ export default {
         message: {
             yes: 'Yes',
             no: 'No',
-            are_you_sure: 'Are you sure ?',
+            are_you_sure: 'Are you sure?',
             about: 'About',
             not_found:
                 'Either you typed a wrong URL, or you followed a bad link',
