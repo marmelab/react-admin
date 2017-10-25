@@ -46,7 +46,8 @@ const Labeled = ({
 
     return (
         <TextField
-            floatingLabelText={
+            margin="normal"
+            label={
                 <FieldTitle
                     label={label}
                     source={source}
@@ -54,10 +55,8 @@ const Labeled = ({
                     isRequired={isRequired}
                 />
             }
-            floatingLabelFixed
             fullWidth
             disabled={disabled}
-            underlineShow={false}
             style={labelStyle}
         >
             {children && typeof children.type !== 'string'

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FormControlLabel, FormGroup } from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
 
 import addField from '../form/addField';
@@ -19,7 +20,7 @@ const styles = {
 };
 
 export class BooleanInput extends Component {
-    handleToggle = (event, value) => {
+    handleChange = (event, value) => {
         this.props.input.onChange(value);
     };
 
@@ -35,12 +36,15 @@ export class BooleanInput extends Component {
         } = this.props;
 
         return (
-            <div style={elStyle || styles.block}>
-                <Switch
-                    defaultToggled={!!input.value}
-                    onToggle={this.handleToggle}
-                    labelStyle={styles.label}
-                    style={styles.toggle}
+            <FormGroup>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={!!input.value}
+                            onChange={this.handleChange}
+                            {...options}
+                        />
+                    }
                     label={
                         <FieldTitle
                             label={label}
@@ -49,9 +53,8 @@ export class BooleanInput extends Component {
                             isRequired={isRequired}
                         />
                     }
-                    {...options}
                 />
-            </div>
+            </FormGroup>
         );
     }
 }

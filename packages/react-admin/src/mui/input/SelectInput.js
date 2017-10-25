@@ -10,13 +10,11 @@ import addField from '../form/addField';
 import translate from '../../i18n/translate';
 import FieldTitle from '../../util/FieldTitle';
 
-const styles = theme => ({
+const styles = {
     textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
         width: 200,
     },
-});
+};
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -149,6 +147,7 @@ export class SelectInput extends Component {
         return (
             <TextField
                 select
+                margin="normal"
                 value={this.state.value}
                 label={
                     <FieldTitle

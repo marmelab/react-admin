@@ -13,12 +13,11 @@ const DisabledInput = ({
     elStyle,
 }) => (
     <TextField
-        value={value}
-        floatingLabelText={
-            <FieldTitle label={label} source={source} resource={resource} />
-        }
-        style={elStyle}
         disabled
+        margin="normal"
+        value={value}
+        label={<FieldTitle label={label} source={source} resource={resource} />}
+        style={elStyle}
     />
 );
 

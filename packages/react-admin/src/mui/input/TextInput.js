@@ -56,6 +56,7 @@ export class TextInput extends Component {
         return (
             <TextField
                 {...input}
+                margin="normal"
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
                 onChange={this.handleChange}

@@ -5,36 +5,25 @@ import TextField from 'material-ui/TextField';
 import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 
-export const datify = input => {
-    if (!input) {
-        return null;
-    }
-
-    const date = input instanceof Date ? input : new Date(input);
-    if (isNaN(date)) {
-        throw new Error(`Invalid date: ${input}`);
-    }
-
-    return date;
+/**
+ * Convert Date object to String
+ * 
+ * @param {Date} v value to convert
+ * @returns {String} A standardized date (yyyy-MM-dd), to be passed to an <input type="date" />
+ */
+const dateFormatter = v => {
+    if (!(v instanceof Date) || isNaN(v)) return;
+    const pad = '00';
+    const yyyy = v.getFullYear().toString();
+    const MM = (v.getMonth() + 1).toString();
+    const dd = v.getDate().toString();
+    return `${yyyy}-${(pad + MM).slice(-2)}-${(pad + dd).slice(-2)}`;
 };
 
 export class DateInput extends Component {
-    onChange = (_, date) => {
-        this.props.input.onChange(date.toISOString());
-        this.props.input.onBlur();
+    onChange = event => {
+        this.props.input.onChange(event.target.value);
     };
-
-    /**
-     * This aims to fix a bug created by the conjunction of
-     * redux-form, which expects onBlur to be triggered after onChange, and
-     * material-ui, which triggers onBlur on <DatePicker> when the user clicks
-     * on the input to bring the focus on the calendar rather than the input.
-     *
-     * @see https://github.com/erikras/redux-form/issues/1218#issuecomment-229072652
-     */
-    onBlur = () => {};
-
-    onDismiss = () => this.props.input.onBlur();
 
     render() {
         const {
@@ -58,8 +47,10 @@ export class DateInput extends Component {
             <TextField
                 {...input}
                 type="date"
-                errorText={touched && error}
-                floatingLabelText={
+                margin="normal"
+                error={error}
+                helperText={touched && error}
+                label={
                     <FieldTitle
                         label={label}
                         source={source}
@@ -67,13 +58,16 @@ export class DateInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                DateTimeFormat={Intl.DateTimeFormat}
-                container="inline"
-                autoOk
-                value={datify(input.value)}
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                value={
+                    input.value instanceof Date
+                        ? dateFormatter(input.value)
+                        : input.value
+                }
                 onChange={this.onChange}
                 onBlur={this.onBlur}
-                onDismiss={this.onDismiss}
                 style={elStyle}
                 {...options}
             />

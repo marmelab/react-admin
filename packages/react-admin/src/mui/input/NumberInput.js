@@ -61,12 +61,15 @@ export class NumberInput extends Component {
         return (
             <TextField
                 {...input}
+                type="number"
+                margin="normal"
+                error={error}
+                helperText={touched && error}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
                 onChange={this.handleChange}
-                type="number"
                 step={step}
-                floatingLabelText={
+                label={
                     <FieldTitle
                         label={label}
                         source={source}
@@ -74,7 +77,6 @@ export class NumberInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                errorText={touched && error}
                 style={elStyle}
                 {...options}
             />
