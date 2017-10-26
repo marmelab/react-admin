@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Card, { CardContent } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-import ViewTitle from '../layout/ViewTitle';
+import Header from '../layout/Header';
 import Title from '../layout/Title';
 import {
     crudGetOne as crudGetOneAction,
@@ -108,16 +108,18 @@ export class Edit extends Component {
         return (
             <div className="edit-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    {actions &&
-                        React.cloneElement(actions, {
+                    <Header
+                        title={titleElement}
+                        actions={actions}
+                        actionProps={{
                             basePath,
                             data,
                             hasDelete,
                             hasShow,
                             hasList,
                             resource,
-                        })}
-                    <ViewTitle title={titleElement} />
+                        }}
+                    />
                     {data &&
                         React.cloneElement(children, {
                             save: this.save,

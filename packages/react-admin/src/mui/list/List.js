@@ -13,7 +13,7 @@ import queryReducer, {
     SET_FILTER,
     SORT_DESC,
 } from '../../reducer/admin/resource/list/queryReducer';
-import ViewTitle from '../layout/ViewTitle';
+import Header from '../layout/Header';
 import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
 import DefaultActions from './Actions';
@@ -26,10 +26,6 @@ import withChildrenAsFunction from '../withChildrenAsFunction';
 
 const styles = {
     noResults: { padding: 20 },
-    header: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
 };
 
 /**
@@ -224,20 +220,20 @@ export class List extends Component {
         return (
             <div className="list-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    <div style={styles.header}>
-                        <ViewTitle title={titleElement} />
-                        {actions &&
-                            React.cloneElement(actions, {
-                                resource,
-                                filters,
-                                filterValues,
-                                basePath,
-                                hasCreate,
-                                displayedFilters: this.state,
-                                showFilter: this.showFilter,
-                                refresh: this.refresh,
-                            })}
-                    </div>
+                    <Header
+                        title={titleElement}
+                        actions={actions}
+                        actionProps={{
+                            resource,
+                            filters,
+                            filterValues,
+                            basePath,
+                            hasCreate,
+                            displayedFilters: this.state,
+                            showFilter: this.showFilter,
+                            refresh: this.refresh,
+                        }}
+                    />
                     {filters &&
                         React.cloneElement(filters, {
                             resource,

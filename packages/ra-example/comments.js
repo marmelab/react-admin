@@ -186,10 +186,10 @@ export const CommentEdit = ({ ...props }) => (
             <ReferenceInput
                 source="post_id"
                 reference="posts"
-                perPage={5}
+                perPage={15}
                 sort={{ field: 'title', order: 'ASC' }}
             >
-                <AutocompleteInput optionText="title" />
+                <SelectInput optionText="title" />
             </ReferenceInput>
             <TextInput source="author.name" validate={minLength(10)} />
             <DateInput source="created_at" />
