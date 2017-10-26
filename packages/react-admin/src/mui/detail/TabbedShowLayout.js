@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { Tabs, Tab } from 'material-ui/Tabs';
+import Tabs, { Tab } from 'material-ui/Tabs';
+import { withStyles } from 'material-ui/styles';
+
 import getDefaultValues from '../form/getDefaultValues';
 
-const divStyle = { padding: '0 1em 1em 1em' };
+const styles = { tab: { padding: '0 1em 1em 1em' } };
+
 export class TabbedShowLayout extends Component {
     constructor(props) {
         super(props);
@@ -14,47 +17,50 @@ export class TabbedShowLayout extends Component {
         };
     }
 
-    handleChange = value => {
+    handleChange = (event, value) => {
         this.setState({ value });
     };
 
     render() {
         const {
             children,
-            contentContainerStyle,
+            classes,
             record,
             resource,
             basePath,
             translate,
         } = this.props;
         return (
-            <div style={divStyle}>
-                <Tabs
-                    value={this.state.value}
-                    onChange={this.handleChange}
-                    contentContainerStyle={contentContainerStyle}
-                >
-                    {React.Children.map(
+            <div>
+                <Tabs value={this.state.value} onChange={this.handleChange}>
+                    {Children.map(
                         children,
                         (tab, index) =>
                             tab ? (
                                 <Tab
-                                    key={tab.props.value}
+                                    key={tab.props.label}
                                     label={translate(tab.props.label, {
                                         _: tab.props.label,
                                     })}
                                     value={index}
                                     icon={tab.props.icon}
-                                >
-                                    {React.cloneElement(tab, {
-                                        resource,
-                                        record,
-                                        basePath,
-                                    })}
-                                </Tab>
+                                />
                             ) : null
                     )}
                 </Tabs>
+                <div className={classes.tab}>
+                    {Children.map(
+                        children,
+                        (tab, index) =>
+                            tab &&
+                            this.state.value === index &&
+                            React.cloneElement(tab, {
+                                resource,
+                                record,
+                                basePath,
+                            })
+                    )}
+                </div>
             </div>
         );
     }
@@ -62,6 +68,7 @@ export class TabbedShowLayout extends Component {
 
 TabbedShowLayout.propTypes = {
     children: PropTypes.node,
+    classes: PropTypes.object,
     contentContainerStyle: PropTypes.object,
     record: PropTypes.object,
     resource: PropTypes.string,
@@ -76,7 +83,8 @@ TabbedShowLayout.defaultProps = {
 const enhance = compose(
     connect((state, props) => ({
         initialValues: getDefaultValues(state, props),
-    }))
+    })),
+    withStyles(styles)
 );
 
 export default enhance(TabbedShowLayout);
