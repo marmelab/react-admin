@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Tabs, { Tab } from 'material-ui/Tabs';
+import Divider from 'material-ui/Divider';
 import { withStyles } from 'material-ui/styles';
 
 import getDefaultValues from '../form/getDefaultValues';
@@ -48,6 +49,7 @@ export class TabbedShowLayout extends Component {
                             ) : null
                     )}
                 </Tabs>
+                <Divider />
                 <div className={classes.tab}>
                     {Children.map(
                         children,

@@ -283,7 +283,7 @@ export const PostShow = ({ ...props }) => (
             </Tab>
             <Tab label="post.form.comments">
                 <ReferenceManyField
-                    label="resources.posts.fields.comments"
+                    addLabel={false}
                     reference="comments"
                     target="post_id"
                     sort={{ field: 'created_at', order: 'DESC' }}
