@@ -2,9 +2,9 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import Labeled from '../input/Labeled';
 
-const styles = {
-    input: { width: 256 },
-};
+const styles = theme => ({
+    input: { width: theme.spacing.unit * 32 },
+});
 
 export const FormInput = ({ classes, input, ...rest }) =>
     input ? (
