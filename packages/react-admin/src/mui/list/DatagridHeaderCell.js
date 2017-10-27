@@ -35,7 +35,7 @@ const styles = {
 };
 
 export const DatagridHeaderCell = ({
-    classes,
+    classes = {},
     field,
     defaultStyle,
     currentSort,
