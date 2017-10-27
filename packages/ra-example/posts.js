@@ -166,7 +166,7 @@ export const PostCreate = ({ ...props }) => (
         >
             <TextInput source="title" />
             <TextInput source="password" type="password" />
-            <TextInput source="teaser" options={{ multiLine: true }} />
+            <LongTextInput source="teaser" />
             <RichTextInput source="body" />
             <DateInput source="published_at" defaultValue={() => new Date()} />
             <NumberInput source="average_note" />

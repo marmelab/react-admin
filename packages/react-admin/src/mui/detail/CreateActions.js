@@ -6,6 +6,7 @@ const cardActionStyle = {
     zIndex: 2,
     display: 'flex',
     justifyContent: 'flex-end',
+    flexWrap: 'wrap',
 };
 
 const CreateActions = ({ basePath, hasList }) => (
