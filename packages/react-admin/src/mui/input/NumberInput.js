@@ -41,6 +41,7 @@ export class NumberInput extends Component {
 
     render() {
         const {
+            classes,
             elStyle,
             input,
             isRequired,
@@ -63,7 +64,7 @@ export class NumberInput extends Component {
                 {...input}
                 type="number"
                 margin="normal"
-                error={error}
+                error={!!(touched && error)}
                 helperText={touched && error}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
@@ -77,6 +78,7 @@ export class NumberInput extends Component {
                         isRequired={isRequired}
                     />
                 }
+                classes={classes}
                 style={elStyle}
                 {...options}
             />
@@ -85,6 +87,7 @@ export class NumberInput extends Component {
 }
 
 NumberInput.propTypes = {
+    classes: PropTypes.object,
     elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,

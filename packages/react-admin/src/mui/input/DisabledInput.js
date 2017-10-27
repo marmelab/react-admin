@@ -6,6 +6,7 @@ import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 
 const DisabledInput = ({
+    classes,
     input: { value },
     label,
     resource,
@@ -17,11 +18,13 @@ const DisabledInput = ({
         margin="normal"
         value={value}
         label={<FieldTitle label={label} source={source} resource={resource} />}
+        classes={classes}
         style={elStyle}
     />
 );
 
 DisabledInput.propTypes = {
+    classes: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
     resource: PropTypes.string,

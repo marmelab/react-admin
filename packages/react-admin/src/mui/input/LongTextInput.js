@@ -36,7 +36,7 @@ export const LongTextInput = ({
                     isRequired={isRequired}
                 />
             }
-            error={error}
+            error={!!(touched && error)}
             helperText={touched && error}
             style={elStyle}
             {...options}

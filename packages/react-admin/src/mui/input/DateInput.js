@@ -27,6 +27,7 @@ export class DateInput extends Component {
 
     render() {
         const {
+            classes,
             input,
             isRequired,
             label,
@@ -48,7 +49,7 @@ export class DateInput extends Component {
                 {...input}
                 type="date"
                 margin="normal"
-                error={error}
+                error={!!(touched && error)}
                 helperText={touched && error}
                 label={
                     <FieldTitle
@@ -68,6 +69,7 @@ export class DateInput extends Component {
                 }
                 onChange={this.onChange}
                 onBlur={this.onBlur}
+                classes={classes}
                 style={elStyle}
                 {...options}
             />
@@ -76,6 +78,7 @@ export class DateInput extends Component {
 }
 
 DateInput.propTypes = {
+    classes: PropTypes.object,
     elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,

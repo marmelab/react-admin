@@ -36,6 +36,7 @@ export class TextInput extends Component {
 
     render() {
         const {
+            classes,
             elStyle,
             input,
             isRequired,
@@ -69,8 +70,9 @@ export class TextInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                error={error}
+                error={!!(touched && error)}
                 helperText={touched && error}
+                classes={classes}
                 style={elStyle}
                 {...options}
             />
