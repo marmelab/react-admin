@@ -129,19 +129,21 @@ export class Delete extends Component {
                             <Button
                                 raised
                                 type="submit"
-                                icon={<ActionCheck />}
                                 color="primary"
                                 className={classes.button}
                             >
+                                <ActionCheck />
+                                &nbsp;
                                 {translate('ra.action.delete')}
                             </Button>
                             &nbsp;
                             <Button
                                 raised
-                                icon={<AlertError />}
                                 onClick={this.goBack}
                                 className={classes.button}
                             >
+                                <AlertError />
+                                &nbsp;
                                 {translate('ra.action.cancel')}
                             </Button>
                         </Toolbar>
