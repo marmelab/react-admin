@@ -46,7 +46,7 @@ Admin-on-rest is available from npm. You can install it (and its required depend
 using:
 
 ```sh
-npm install --save-dev admin-on-rest
+npm install admin-on-rest
 ```
 
 ## Usage
