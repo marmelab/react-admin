@@ -156,6 +156,7 @@ export class ReferenceInput extends Component {
 
     render() {
         const {
+            classes,
             input,
             resource,
             label,
@@ -186,6 +187,7 @@ export class ReferenceInput extends Component {
 
         return React.cloneElement(children, {
             allowEmpty,
+            classes,
             input,
             label:
                 typeof label === 'undefined'

@@ -102,9 +102,9 @@ module.exports = {
             ...
 ```
 
-## `<AutocompleteInput>` no longer accepts a `filter` parameter
+## `<AutocompleteInput>` no longer accepts a `filter` prop
 
-TO BE COMPLETED
+Material-ui's implementation of the autocomplete input has radically changed. React-admin maintains backwards compatibility, except for the `filter` prop, which no longer makes sense in the new impementation.
 
 ## `<DateInput>` Stores a Date String Instead Of a Date Object
 
