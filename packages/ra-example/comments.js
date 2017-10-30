@@ -189,7 +189,7 @@ export const CommentEdit = ({ ...props }) => (
                 perPage={15}
                 sort={{ field: 'title', order: 'ASC' }}
             >
-                <SelectInput optionText="title" />
+                <AutocompleteInput optionText="title" />
             </ReferenceInput>
             <TextInput source="author.name" validate={minLength(10)} />
             <DateInput source="created_at" />

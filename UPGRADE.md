@@ -102,6 +102,10 @@ module.exports = {
             ...
 ```
 
+## `<AutocompleteInput>` no longer accepts a `filter` parameter
+
+TO BE COMPLETED
+
 ## `<DateInput>` Stores a Date String Instead Of a Date Object
 
 The value of the `<DateInput>` used to be a `Date` object. It's now a `String`, i.e. a stringified date. If you used `format` and `parse` to convert a string to a `Date`, you can now remove these props:

@@ -14,7 +14,6 @@ import {
 import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
-const noFilter = () => true;
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -198,7 +197,6 @@ export class ReferenceInput extends Component {
             choices: matchingReferences,
             basePath,
             onChange,
-            filter: noFilter, // for AutocompleteInput
             setFilter: this.debouncedSetFilter,
             setPagination: this.setPagination,
             setSort: this.setSort,
