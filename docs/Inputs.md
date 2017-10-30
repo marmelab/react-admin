@@ -266,7 +266,7 @@ Refer to [Material UI Checkbox documentation](http://www.material-ui.com/#/compo
 
 ## `<DateInput>`
 
-Ideal for editing dates, `<DateInput>` renders a beautiful [Date Picker](http://www.material-ui.com/#/components/date-picker) with full localization support.
+Ideal for editing dates, `<DateInput>` renders a standard browser [Date Picker](http://www.material-ui.com/#/components/date-picker).
 
 ```jsx
 import { DateInput } from 'react-admin';
@@ -960,7 +960,7 @@ const dateParser = v => {
   return d;
 };
 
-<DateInput source="isodate" format={dateFormatter} parse={dateParser} label="ISO date" />
+<DateInput source="isodate" format={dateFormatter} parse={dateParser} />
 ```
 
 ## Third-Party Components

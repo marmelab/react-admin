@@ -16,6 +16,7 @@ import FieldTitle from '../../util/FieldTitle';
 import translate from '../../i18n/translate';
 
 const styles = theme => ({
+    root: {},
     label: {
         transform: 'translate(0, 5px) scale(0.75)',
         transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
@@ -112,20 +113,15 @@ export class CheckboxGroupInput extends Component {
         return (
             <FormControlLabel
                 key={get(choice, optionValue)}
-                control={
-                    <Checkbox
-                        checked={
-                            value
-                                ? value.find(
-                                      v => v == get(choice, optionValue)
-                                  ) !== undefined
-                                : false
-                        }
-                        onChange={this.handleCheck}
-                        value={JSON.stringify(get(choice, optionValue))}
-                        {...options}
-                    />
+                checked={
+                    value
+                        ? value.find(v => v == get(choice, optionValue)) !==
+                          undefined
+                        : false
                 }
+                onChange={this.handleCheck}
+                value={String(get(choice, optionValue))}
+                control={<Checkbox {...options} />}
                 label={
                     translateChoice
                         ? translate(choiceName, { _: choiceName })
@@ -138,7 +134,7 @@ export class CheckboxGroupInput extends Component {
     render() {
         const {
             choices,
-            classes,
+            classes = {},
             isRequired,
             label,
             resource,
