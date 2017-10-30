@@ -86,42 +86,39 @@ const styles = theme => ({
  * @example
  * <AutocompleteInput source="author_id" options={{ fullWidth: true }} />
  */
-class AutocompleteInput extends React.Component {
+export class AutocompleteInput extends React.Component {
     state = {
         searchText: '',
         suggestions: [],
     };
 
     componentWillMount() {
-        this.setSearchText(this.props.input.value);
-        this.setSuggestions();
+        const { input, choices } = this.props;
+        this.setState({
+            searchText: this.getSearchText(input.value) || '',
+            suggestions: choices,
+        });
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.input.value !== nextProps.input.value) {
-            this.setSearchText(nextProps.input.value);
-        }
-        if (this.props.choices !== nextProps.choices) {
-            this.setSuggestions();
-        }
+        this.setState(state => {
+            let newState = {};
+            if (this.props.input.value !== nextProps.input.value) {
+                newState.searchText = this.getSearchText(nextProps.input.value);
+            }
+            if (this.props.choices !== nextProps.choices) {
+                newState.suggestions = nextProps.choices;
+            }
+            return { ...state, ...newState };
+        });
     }
 
-    setSearchText = value => {
+    getSearchText = value => {
         const { choices, optionValue } = this.props;
-
         const suggestion = choices.find(
             choice => get(choice, optionValue) === value
         );
-        const searchText = suggestion && this.getSuggestionLabel(suggestion);
-        this.setState(() => ({
-            searchText: searchText || '',
-        }));
-    };
-
-    setSuggestions = () => {
-        this.setState({
-            suggestions: this.props.choices,
-        });
+        return suggestion && this.getSuggestionLabel(suggestion);
     };
 
     getSuggestionValue = suggestion => {
@@ -166,9 +163,10 @@ class AutocompleteInput extends React.Component {
     renderInput = inputProps => {
         const {
             autoFocus,
-            classes,
+            classes = {},
             isRequired,
             label,
+            meta,
             onChange,
             resource,
             source,
@@ -176,6 +174,12 @@ class AutocompleteInput extends React.Component {
             ref,
             ...other
         } = inputProps;
+        if (typeof meta === 'undefined') {
+            throw new Error(
+                "The TextInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
+            );
+        }
+        const { touched, error } = meta;
 
         return (
             <TextField
@@ -193,6 +197,8 @@ class AutocompleteInput extends React.Component {
                 margin="normal"
                 className={classes.root}
                 inputRef={ref}
+                error={!!(touched && error)}
+                helperText={touched && error}
                 InputProps={{
                     classes: {
                         input: classes.input,
@@ -241,13 +247,16 @@ class AutocompleteInput extends React.Component {
 
     render() {
         const {
-            classes,
+            alwaysRenderSuggestions,
+            classes = {},
             elStyle,
             isRequired,
             label,
+            meta,
             resource,
             source,
         } = this.props;
+        const { suggestions, searchText } = this.state;
 
         return (
             <Autosuggest
@@ -258,7 +267,8 @@ class AutocompleteInput extends React.Component {
                     suggestion: classes.suggestion,
                 }}
                 renderInputComponent={this.renderInput}
-                suggestions={this.state.suggestions}
+                suggestions={suggestions}
+                alwaysRenderSuggestions={alwaysRenderSuggestions}
                 onSuggestionSelected={this.handleSuggestionSelected}
                 onSuggestionsFetchRequested={
                     this.handleSuggestionsFetchRequested
@@ -274,10 +284,11 @@ class AutocompleteInput extends React.Component {
                     classes,
                     isRequired,
                     label,
+                    meta,
                     onChange: this.handleChange,
                     resource,
                     source,
-                    value: this.state.searchText,
+                    value: searchText,
                 }}
                 style={elStyle}
             />
@@ -286,8 +297,9 @@ class AutocompleteInput extends React.Component {
 }
 
 AutocompleteInput.propTypes = {
+    alwaysRenderSuggestions: PropTypes.bool, // used only for unit tests
     choices: PropTypes.arrayOf(PropTypes.object),
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.object,
     elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,

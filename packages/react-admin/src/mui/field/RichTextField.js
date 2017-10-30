@@ -10,12 +10,17 @@ export const removeTags = input =>
 const RichTextField = ({ source, record = {}, stripTags, elStyle }) => {
     const value = get(record, source);
     if (stripTags) {
-        return <Typography style={elStyle}>{removeTags(value)}</Typography>;
+        return (
+            <Typography style={elStyle} component="span">
+                {removeTags(value)}
+            </Typography>
+        );
     }
 
     return (
         <Typography
             style={elStyle}
+            component="span"
             dangerouslySetInnerHTML={{ __html: value }}
         />
     );

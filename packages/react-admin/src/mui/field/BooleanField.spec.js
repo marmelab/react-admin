@@ -8,7 +8,7 @@ describe('<BooleanField />', () => {
         assert.ok(
             shallow(
                 <BooleanField record={{ published: true }} source="published" />
-            ).is('ActionDone')
+            ).is('pure(Done)')
         ));
 
     it('should display cross if value is false', () =>
@@ -18,7 +18,7 @@ describe('<BooleanField />', () => {
                     record={{ published: false }}
                     source="published"
                 />
-            ).is('ContentClear')
+            ).is('pure(Clear)')
         ));
 
     it('should not display anything if value is null', () =>
@@ -47,6 +47,6 @@ describe('<BooleanField />', () => {
                     record={{ foo: { bar: true } }}
                     source="foo.bar"
                 />
-            ).is('ActionDone')
+            ).is('pure(Done)')
         ));
 });

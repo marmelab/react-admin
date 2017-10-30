@@ -53,7 +53,10 @@ describe('<RichTextField />', () => {
     it('should render as HTML', () => {
         const record = { body: '<h1>Hello world!</h1>' };
         const wrapper = render(<RichTextField record={record} source="body" />);
-        assert.equal(html(wrapper), '<div><h1>Hello world!</h1></div>');
+        assert.equal(
+            html(wrapper),
+            '<span class="MuiTypography-root-1 MuiTypography-body1-10"><h1>Hello world!</h1></span>'
+        );
     });
 
     it('should handle deep fields', () => {
@@ -61,7 +64,10 @@ describe('<RichTextField />', () => {
         const wrapper = render(
             <RichTextField record={record} source="foo.body" />
         );
-        assert.equal(html(wrapper), '<div><h1>Hello world!</h1></div>');
+        assert.equal(
+            html(wrapper),
+            '<span class="MuiTypography-root-1 MuiTypography-body1-10"><h1>Hello world!</h1></span>'
+        );
     });
 
     it('should strip HTML tags if stripTags is set to true', () => {
@@ -69,8 +75,10 @@ describe('<RichTextField />', () => {
         const wrapper = render(
             <RichTextField stripTags={true} record={record} source="body" />
         );
-
-        assert.equal(html(wrapper), '<div>Hello world!</div>');
+        assert.equal(
+            html(wrapper),
+            '<span class="MuiTypography-root-1 MuiTypography-body1-10">Hello world!</span>'
+        );
     });
 
     it('should not strip HTML tags if stripTags is set to false', () => {
@@ -78,7 +86,9 @@ describe('<RichTextField />', () => {
         const wrapper = render(
             <RichTextField stripTags={false} record={record} source="body" />
         );
-
-        assert.equal(html(wrapper), '<div><h1>Hello world!</h1></div>');
+        assert.equal(
+            html(wrapper),
+            '<span class="MuiTypography-root-1 MuiTypography-body1-10"><h1>Hello world!</h1></span>'
+        );
     });
 });

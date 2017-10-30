@@ -40,7 +40,7 @@ export class TabbedForm extends Component {
         const {
             basePath,
             children,
-            classes,
+            classes = {},
             invalid,
             record,
             resource,

@@ -51,7 +51,7 @@ describe('<ReferenceField />', () => {
                 <TextField source="title" />
             </ReferenceField>
         );
-        const linkElement = wrapper.find('Link');
+        const linkElement = wrapper.find('withStyles(Link)');
         assert.equal(linkElement.prop('to'), '/bar/123');
     });
     it('should render a link to the Show page of the related record when the linkType is show', () => {
@@ -68,7 +68,7 @@ describe('<ReferenceField />', () => {
                 <TextField source="title" />
             </ReferenceField>
         );
-        const linkElement = wrapper.find('Link');
+        const linkElement = wrapper.find('withStyles(Link)');
         assert.equal(linkElement.prop('to'), '/bar/123/show');
     });
     it('should render no link when the linkType is false', () => {
@@ -85,7 +85,7 @@ describe('<ReferenceField />', () => {
                 <TextField source="title" />
             </ReferenceField>
         );
-        const linkElement = wrapper.find('Link');
+        const linkElement = wrapper.find('withStyles(Link)');
         assert.equal(linkElement.length, 0);
     });
 });
