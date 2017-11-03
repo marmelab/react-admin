@@ -55,7 +55,9 @@ const enhance = compose(
     shouldUpdate(
         (props, nextProps) =>
             props.translate !== nextProps.translate ||
-            (props.record && props.record.id !== nextProps.record.id) ||
+            (props.record &&
+                nextProps.record &&
+                props.record.id !== nextProps.record.id) ||
             props.basePath !== nextProps.basePath ||
             (props.record == null && nextProps.record != null)
     ),
