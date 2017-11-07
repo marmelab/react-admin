@@ -154,7 +154,8 @@ describe('<AutocompleteInput />', () => {
                 translate={x => `**${x}**`}
                 translateChoice={false}
                 alwaysRenderSuggestions={true}
-            />
+            />,
+            { context, childContextTypes }
         );
         const MenuItem = wrapper.find('div[role="menuitem"]').first();
         assert.equal(MenuItem.text(), 'Male');
