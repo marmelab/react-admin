@@ -23,7 +23,7 @@ describe('<ReferenceArrayField />', () => {
                 </SingleFieldList>
             </ReferenceArrayField>
         );
-        const ProgressElements = wrapper.find('LinearProgress');
+        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 1);
         const SingleFieldListElement = wrapper.find('SingleFieldList');
         assert.equal(SingleFieldListElement.length, 0);
@@ -50,7 +50,7 @@ describe('<ReferenceArrayField />', () => {
                 </SingleFieldList>
             </ReferenceArrayField>
         );
-        const ProgressElements = wrapper.find('LinearProgress');
+        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find('SingleFieldList');
         assert.equal(SingleFieldListElement.length, 1);
@@ -76,7 +76,7 @@ describe('<ReferenceArrayField />', () => {
                 </SingleFieldList>
             </ReferenceArrayField>
         );
-        const ProgressElements = wrapper.find('LinearProgress');
+        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find('SingleFieldList');
         assert.equal(SingleFieldListElement.length, 1);
@@ -106,7 +106,7 @@ describe('<ReferenceArrayField />', () => {
                 </SingleFieldList>
             </ReferenceArrayField>
         );
-        const ProgressElements = wrapper.find('LinearProgress');
+        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find('SingleFieldList');
         assert.equal(SingleFieldListElement.length, 1);
@@ -139,7 +139,7 @@ describe('<ReferenceArrayField />', () => {
                 </SingleFieldList>
             </ReferenceArrayField>
         );
-        const ProgressElements = wrapper.find('LinearProgress');
+        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find('SingleFieldList');
         assert.equal(SingleFieldListElement.length, 1);
