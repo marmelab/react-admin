@@ -45,6 +45,7 @@ export class TabbedShowLayout extends Component {
                                     })}
                                     value={index}
                                     icon={tab.props.icon}
+                                    className="show-tab"
                                 />
                             ) : null
                     )}

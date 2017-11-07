@@ -9,9 +9,11 @@ import ExitIcon from 'material-ui-icons/PowerSettingsNew';
 import translate from '../../i18n/translate';
 import { userLogout as userLogoutAction } from '../../actions/authActions';
 
+const iconPaddingStyle = { paddingRight: '0.5em' };
+
 const Logout = ({ translate, userLogout }) => (
     <MenuItem className="logout" onClick={userLogout}>
-        <ExitIcon />&nbsp;
+        <ExitIcon style={iconPaddingStyle} />
         {translate('ra.auth.logout')}
     </MenuItem>
 );

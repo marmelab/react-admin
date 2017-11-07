@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { MenuItem } from 'material-ui/Menu';
 import { withRouter } from 'react-router';
 
+const iconPaddingStyle = { paddingRight: '0.5em' };
+
 export class MenuItemLinkComponent extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired,
@@ -15,6 +17,7 @@ export class MenuItemLinkComponent extends Component {
         this.props.history.push(this.props.to);
         this.props.onClick();
     };
+
     render() {
         const {
             primaryText,
@@ -28,8 +31,7 @@ export class MenuItemLinkComponent extends Component {
 
         return (
             <MenuItem {...props} onClick={this.handleMenuTap}>
-                {leftIcon}
-                &nbsp;
+                {leftIcon && <span style={iconPaddingStyle}>{leftIcon}</span>}
                 {primaryText}
             </MenuItem>
         );

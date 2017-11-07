@@ -54,7 +54,6 @@ describe('Permissions', () => {
 
         it('in List page with DataGrid', async () => {
             await ListPage.navigate();
-
             assert.deepEqual(await ListPage.getColumns(), [
                 'ID',
                 'NAME',
@@ -65,25 +64,21 @@ describe('Permissions', () => {
 
         it('in List page filters', async () => {
             await ListPage.navigate();
-
             assert.deepEqual(await ListPage.getAvailableFilters(), ['Name']);
         });
 
         it('in Create page', async () => {
             await CreatePage.navigate();
-
             assert.deepEqual(await CreatePage.getFields(), ['name']);
         });
 
         it('in Show page', async () => {
             await ShowPage.navigate();
-
             assert.deepEqual(await ShowPage.getFields(), ['id', 'name']);
         });
 
         it('in Edit page', async () => {
             await EditPage.navigate();
-
             assert.deepEqual(await EditPage.getFields(), ['name']);
             assert.deepEqual(await EditPage.getTabs(), ['SUMMARY']);
         });
@@ -98,7 +93,6 @@ describe('Permissions', () => {
 
         it('in List page with DataGrid', async () => {
             await ListPage.navigate();
-
             assert.deepEqual(await ListPage.getColumns(), [
                 'ID',
                 'NAME',
@@ -110,7 +104,6 @@ describe('Permissions', () => {
 
         it('in List page filters', async () => {
             await ListPage.navigate();
-
             assert.deepEqual(await ListPage.getAvailableFilters(), [
                 'Name',
                 'Role',
@@ -119,29 +112,23 @@ describe('Permissions', () => {
 
         it('in Create page', async () => {
             await CreatePage.navigate();
-
             assert.deepEqual(await CreatePage.getFields(), ['name', 'role']);
         });
 
         it('in Show page', async () => {
             await ShowPage.navigate();
-
-            assert.deepEqual(await ShowPage.getFields(), [
-                'id',
-                'name',
-                'role',
-            ]);
+            assert.deepEqual(await ShowPage.getTabs(), ['SUMMARY', 'SECURITY']);
+            assert.deepEqual(await ShowPage.getFields(), ['id', 'name']);
+            await ShowPage.gotoTab(2);
+            assert.deepEqual(await ShowPage.getFields(), ['role']);
         });
 
         it('in Edit page', async () => {
             await EditPage.navigate();
-
-            assert.deepEqual(await EditPage.getFields(), [
-                'id',
-                'name',
-                'role',
-            ]);
             assert.deepEqual(await EditPage.getTabs(), ['SUMMARY', 'SECURITY']);
+            assert.deepEqual(await EditPage.getFields(), ['id', 'name']);
+            await EditPage.gotoTab(2);
+            assert.deepEqual(await EditPage.getFields(), ['role']);
         });
     });
 });
