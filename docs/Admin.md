@@ -86,13 +86,12 @@ By default, the homepage of an an admin app is the `list` of the first child `<R
 ```jsx
 // in src/Dashboard.js
 import React from 'react';
-import { Card, CardText } from 'material-ui/Card';
-import { ViewTitle } from 'react-admin/lib/mui';
-
+import Card, { CardContent } from 'material-ui/Card';
+import { ViewTitle } from 'react-admin';
 export default () => (
     <Card>
         <ViewTitle title="Dashboard" />
-        <CardText>Lorem ipsum sic dolor amet...</CardText>
+        <CardContent>Lorem ipsum sic dolor amet...</CardContent>
     </Card>
 );
 ```

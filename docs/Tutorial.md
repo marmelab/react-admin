@@ -165,7 +165,7 @@ const App = () => (
 
 The sidebar now gives access to the second resource, Users. The users list shows the email as a `<a href="mailto:">` tag.
 
-In react-admin, fields are simple React components. At runtime, they receive the `record` fetched from the API on (e.g. `{ "id": 2, "name": "Ervin Howell", "username": "Antonette", "email": "Shanna@melissa.tv", ... }`), and the `source` field they should display (e.g. 'email').
+In react-admin, fields are simple React components. At runtime, they receive the `record` fetched from the API (e.g. `{ "id": 2, "name": "Ervin Howell", "username": "Antonette", "email": "Shanna@melissa.tv", ... }`), and the `source` field they should display (e.g. 'email').
 
 That means that writing a custom Field component is really simple. For instance, to create an `UrlField`:
 
@@ -200,7 +200,7 @@ In JSONPlaceholder, each `post` record includes a `userId` field, which points t
 }
 ```
 
-Admin-on-REST knows how to take advantage of these foreign keys to fetch references. For instance, to include the user name in the posts list, use the `<ReferenceField>`:
+React-admin knows how to take advantage of these foreign keys to fetch references. For instance, to include the user name in the posts list, use the `<ReferenceField>`:
 
 ```jsx
 // in src/posts.js
@@ -229,8 +229,7 @@ When displaying the posts list, the app now fetches related user records, and di
 
 ## Creation and Editing
 
-
-An admin interface is about displaying remote data, but also about editing and creating. Admin-on-REST provides `<Create>` and `<Edit>` components for that purpose. Add them to the `posts` script:
+An admin interface is about displaying remote data, but also about editing and creating. React-admin provides `<Create>` and `<Edit>` components for that purpose. Add them to the `posts` script:
 
 ```jsx
 // in src/posts.js
@@ -393,12 +392,12 @@ By default, react-admin displays the list page of the first resource as home pag
 ```jsx
 // in src/Dashboard.js
 import React from 'react';
-import { Card, CardHeader, CardText } from 'material-ui/Card';
+import Card, { CardHeader, CardContent } from 'material-ui/Card';
 
 export default () => (
-    <Card style={{ margin: '2em' }}>
+    <Card>
         <CardHeader title="Welcome to the administration" />
-        <CardText>Lorem ipsum sic dolor amet...</CardText>
+        <CardContent>Lorem ipsum sic dolor amet...</CardContent>
     </Card>
 );
 ```
