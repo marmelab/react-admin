@@ -35,10 +35,6 @@ See the [translation](./Translation.md#available-locales) page.
 * **[PostgREST](http://postgrest.com/en/v0.4/)**: [tomberek/aor-postgrest-client](https://github.com/tomberek/aor-postgrest-client)
 * Simple REST: [marmelab/ra-data-simple-rest](https://github.com/marmelab/ra-data-simple-rest).
 
-## Rest servers
-
-- [zifnab87/react-admin-java-rest](https://github.com/zifnab87/react-admin-java-rest): building blocks for Java REST API Server bootstrapping customized for admin-on-rest using Java Spring Boot, Hibernate and JPA. Fully working example: [zifnab87/react-admin-demo-java-rest](https://github.com/zifnab87/react-admin-demo-java-rest)
-
 ## Miscellaneous
 
 - [marmelab/aor-realtime](https://github.com/marmelab/aor-realtime): enable realtime updates
