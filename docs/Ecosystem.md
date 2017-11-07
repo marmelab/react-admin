@@ -32,10 +32,6 @@ See the [translation](./Translation.md#available-locales) page.
 - [moonlight-labs/aor-jsonapi-client](https://github.com/moonlight-labs/aor-jsonapi-client): a REST client for [JSON API](http://jsonapi.org/)
 - [mhdsyrwan/aor-rest-client-router](https://github.com/MhdSyrwan/aor-rest-client-router): a REST client that enables routing to many REST clients based on resource name.
 
-## Rest servers
-
-- [zifnab87/react-admin-java-rest](https://github.com/zifnab87/react-admin-java-rest): building blocks for Java REST API Server bootstrapping customized for admin-on-rest using Java Spring Boot, Hibernate and JPA. Fully working example: [zifnab87/react-admin-demo-java-rest](https://github.com/zifnab87/react-admin-demo-java-rest)
-
 ## Miscellaneous
 
 - [marmelab/aor-realtime](https://github.com/marmelab/aor-realtime): enable realtime updates
