@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { shallowEqual } from 'recompose';
 import Dropzone from 'react-dropzone';
 import compose from 'recompose/compose';
+import { withStyles } from 'material-ui/styles';
 
 import Labeled from './Labeled';
 import addField from '../form/addField';
 import FileInputPreview from './FileInputPreview';
 import translate from '../../i18n/translate';
 
-const defaultStyle = {
+const styles = {
     dropZone: {
         background: '#efefef',
         cursor: 'pointer',
@@ -20,12 +21,16 @@ const defaultStyle = {
     preview: {
         float: 'left',
     },
+    removeStyle: {
+        display: 'inline-block',
+    },
 };
 
 export class FileInput extends Component {
     static propTypes = {
         accept: PropTypes.string,
         children: PropTypes.element,
+        classes: PropTypes.object,
         disableClick: PropTypes.bool,
         elStyle: PropTypes.object,
         input: PropTypes.object,
@@ -36,7 +41,6 @@ export class FileInput extends Component {
         maxSize: PropTypes.number,
         minSize: PropTypes.number,
         multiple: PropTypes.bool,
-        removeStyle: PropTypes.object,
         style: PropTypes.object,
         translate: PropTypes.func.isRequired,
         placeholder: PropTypes.node,
@@ -48,7 +52,6 @@ export class FileInput extends Component {
         labelSingle: 'ra.input.file.upload_single',
         multiple: false,
         onUpload: () => {},
-        removeStyle: { display: 'inline-block' },
     };
 
     constructor(props) {
@@ -145,6 +148,7 @@ export class FileInput extends Component {
         const {
             accept,
             children,
+            classes = {},
             disableClick,
             elStyle,
             isRequired,
@@ -156,13 +160,7 @@ export class FileInput extends Component {
             resource,
             source,
             style,
-            removeStyle,
         } = this.props;
-
-        const finalStyle = {
-            ...defaultStyle,
-            ...style,
-        };
 
         return (
             <Labeled
@@ -180,7 +178,8 @@ export class FileInput extends Component {
                         maxSize={maxSize}
                         minSize={minSize}
                         multiple={multiple}
-                        style={finalStyle.dropZone}
+                        className={classes.dropZone}
+                        style={style}
                     >
                         {this.label()}
                     </Dropzone>
@@ -192,11 +191,13 @@ export class FileInput extends Component {
                                     file={file}
                                     itemStyle={itemStyle}
                                     onRemove={this.onRemove(file)}
-                                    removeStyle={removeStyle}
+                                    classes={{
+                                        removeStyle: classes.removeStyle,
+                                    }}
                                 >
                                     {React.cloneElement(children, {
                                         record: file,
-                                        style: defaultStyle.preview,
+                                        className: classes.preview,
                                     })}
                                 </FileInputPreview>
                             ))}
@@ -208,4 +209,4 @@ export class FileInput extends Component {
     }
 }
 
-export default compose(addField, translate)(FileInput);
+export default compose(addField, translate, withStyles(styles))(FileInput);

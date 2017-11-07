@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import IconButton from 'material-ui/IconButton';
 import RemoveCircle from 'material-ui-icons/RemoveCircle';
-import { withTheme } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 
-const getStyles = ({ palette: { accent1Color } }) => ({
+const styles = theme => ({
     removeButtonHovered: {
         opacity: 1,
     },
     removeIcon: {
-        color: accent1Color,
+        color: theme.palette.accent1Color,
+    },
+    removeStyle: {
+        display: 'inline-block',
     },
 });
 
@@ -37,18 +41,11 @@ export class FileInputPreview extends Component {
     render() {
         const {
             children,
+            classes = {},
             onRemove,
             itemStyle,
-            removeStyle,
             theme,
         } = this.props;
-        const styles = getStyles(theme);
-        const removeButtonStyle = this.state.hovered
-            ? {
-                  ...removeStyle,
-                  ...styles.removeButtonHovered,
-              }
-            : removeStyle;
 
         return (
             <div
@@ -56,11 +53,14 @@ export class FileInputPreview extends Component {
                 onMouseOut={this.handleMouseOut}
                 style={itemStyle}
             >
-                <IconButton style={removeButtonStyle} onClick={onRemove}>
-                    <RemoveCircle
-                        style={styles.removeIcon}
-                        color={theme.palette.accent1Color}
-                    />
+                <IconButton
+                    className={classNames(
+                        classes.removeButtonHovered,
+                        this.state.hovered ? classes.removeStyle : ''
+                    )}
+                    onClick={onRemove}
+                >
+                    <RemoveCircle className={classes.removeIcon} />
                 </IconButton>
                 {children}
             </div>
@@ -70,18 +70,16 @@ export class FileInputPreview extends Component {
 
 FileInputPreview.propTypes = {
     children: PropTypes.element.isRequired,
+    classes: PropTypes.object,
     file: PropTypes.object,
     onRemove: PropTypes.func.isRequired,
     itemStyle: PropTypes.object,
-    removeStyle: PropTypes.object,
-    theme: PropTypes.object.isRequired,
     revokeObjectUrl: PropTypes.func,
 };
 
 FileInputPreview.defaultProps = {
     file: undefined,
     itemStyle: {},
-    removeStyle: { display: 'inline-block' },
 };
 
-export default withTheme()(FileInputPreview);
+export default withStyles(styles)(FileInputPreview);

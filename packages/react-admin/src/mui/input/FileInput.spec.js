@@ -321,7 +321,7 @@ describe('<FileInput />', () => {
             </FileInput>
         );
 
-        const inputPreview = wrapper.find('MuiComponent'); // FileInputPreview is an muiThemable component
+        const inputPreview = wrapper.find('withStyles(FileInputPreview)');
         inputPreview.at(1).prop('onRemove')();
         wrapper.update();
 
