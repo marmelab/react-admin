@@ -6,19 +6,6 @@ import Switch from 'material-ui/Switch';
 import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 
-const styles = {
-    block: {
-        margin: '1rem 0',
-        maxWidth: 250,
-    },
-    label: {
-        color: 'rgba(0, 0, 0, 0.298039)',
-    },
-    toggle: {
-        marginBottom: 16,
-    },
-};
-
 export class BooleanInput extends Component {
     handleChange = (event, value) => {
         this.props.input.onChange(value);
@@ -36,7 +23,7 @@ export class BooleanInput extends Component {
         } = this.props;
 
         return (
-            <FormGroup>
+            <FormGroup style={elStyle}>
                 <FormControlLabel
                     control={
                         <Switch

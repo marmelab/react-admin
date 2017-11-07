@@ -36,7 +36,7 @@ export class FilterButton extends Component {
 
         this.setState({
             open: true,
-            anchorEl: findDOMNode(this.button),
+            anchorEl: findDOMNode(this.button), // eslint-disable-line react/no-find-dom-node
         });
     }
 

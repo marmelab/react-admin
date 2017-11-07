@@ -39,13 +39,7 @@ export class FileInputPreview extends Component {
     handleMouseOver = () => this.setState({ hovered: true });
 
     render() {
-        const {
-            children,
-            classes = {},
-            onRemove,
-            itemStyle,
-            theme,
-        } = this.props;
+        const { children, classes = {}, onRemove, itemStyle } = this.props;
 
         return (
             <div

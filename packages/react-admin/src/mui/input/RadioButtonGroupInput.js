@@ -86,11 +86,9 @@ export class RadioButtonGroupInput extends Component {
             <Radio
                 key={get(choice, optionValue)}
                 label={
-                    translateChoice ? (
-                        translate(choiceName, { _: choiceName })
-                    ) : (
-                        choiceName
-                    )
+                    translateChoice
+                        ? translate(choiceName, { _: choiceName })
+                        : choiceName
                 }
                 value={get(choice, optionValue)}
             />
