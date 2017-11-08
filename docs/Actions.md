@@ -112,8 +112,8 @@ The previous code uses `fetch()`, which means it has to make raw HTTP requests. 
 
 ```jsx
 // in src/dataProvider.js
-import jsonServerRestClient from 'ra-data-json-server';
-export default jsonServerRestClient('http://Mydomain.com/api/');
+import jsonServerProvider from 'ra-data-json-server';
+export default jsonServerProvider('http://Mydomain.com/api/');
 
 // in src/comments/ApproveButton.js
 import { UPDATE } from 'react-admin';
@@ -184,7 +184,7 @@ To use the new action creator in the component, `connect` it:
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import { commentApprove as commentApproveAction } from './commentActions';
 
 class ApproveButton extends Component {
@@ -195,7 +195,7 @@ class ApproveButton extends Component {
     }
 
     render() {
-        return <FlatButton label="Approve" onClick={this.handleClick} />;
+        return <Button onClick={this.handleClick}>Approve</Button>;
     }
 }
 
@@ -256,7 +256,7 @@ import { CommentList } from './comments';
 import commentSaga from './comments/commentSaga';
 
 const App = () => (
-    <Admin customSagas={[ commentSaga ]} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin customSagas={[ commentSaga ]} dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="comments" list={CommentList} />
     </Admin>
 );
@@ -347,7 +347,7 @@ import { Admin } from 'react-admin';
 import rate from './rateReducer';
 
 const App = () => (
-    <Admin customReducers={{ rate }} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin customReducers={{ rate }} dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         ...
     </Admin>
 );

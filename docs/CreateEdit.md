@@ -27,12 +27,12 @@ Here is the minimal code necessary to display a form to create and edit comments
 // in src/App.js
 import React from 'react';
 import { Admin, Resource } from 'react-admin';
-import jsonServerRestClient from 'ra-data-json-server';
+import jsonServerProvider from 'ra-data-json-server';
 
 import { PostCreate, PostEdit } from './posts';
 
 const App = () => (
-    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" create={PostCreate} edit={PostEdit} />
     </Admin>
 );
@@ -115,9 +115,8 @@ You can replace the list of default actions by your own element using the `actio
 
 ```jsx
 import { CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import { ListButton, ShowButton, DeleteButton } from 'react-admin';
+import Button from 'material-ui/Button';
+import { ListButton, ShowButton, DeleteButton, RefreshButton } from 'react-admin';
 
 const cardActionStyle = {
     zIndex: 2,
@@ -130,9 +129,9 @@ const PostEditActions = ({ basePath, data, refresh }) => (
         <ShowButton basePath={basePath} record={data} />
         <ListButton basePath={basePath} />
         <DeleteButton basePath={basePath} record={data} />
-        <FlatButton primary label="Refresh" onClick={refresh} icon={<NavigationRefresh />} />
+        <RefreshButton />
         {/* Add your custom actions */}
-        <FlatButton primary label="Custom Action" onClick={customAction} />
+        <Button color="primary" onClick={customAction}>Custom Action</Button>
     </CardActions>
 );
 
@@ -453,7 +452,7 @@ export const PostEdit = (props) => (
 
 **Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.
 
-## Declaring inputs at runtime
+## Declaring Inputs At Runtime
 
 You might want to dynamically define the inputs when the `<Create>` or `<Edit>` components are rendered. They both accepts a function as their child and this function can return a Promise. If you also defined an `authClient` on the `<Admin>` component, the function will receive the result of a call to `authClient` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
 

@@ -35,7 +35,7 @@ const Admin = ({
     catchAll,
     dataProvider,
     theme,
-    title = 'Admin on REST',
+    title = 'React Admin',
     loginPage,
     logoutButton,
     initialState,

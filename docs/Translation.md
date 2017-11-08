@@ -99,7 +99,7 @@ Then, dispatch the `CHANGE_LOCALE` action, by using the `changeLocale` action cr
 ```jsx
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import { changeLocale as changeLocaleAction } from 'react-admin';
 
 class LocaleSwitcher extends Component {
@@ -110,9 +110,9 @@ class LocaleSwitcher extends Component {
         const { changeLocale } = this.props;
         return (
             <div>
-                <div style={styles.label}>Language</div>
-                <RaisedButton style={styles.button} label="en" onClick={this.switchToEnglish} />
-                <RaisedButton style={styles.button} label="fr" onClick={this.switchToFrench} />
+                <div>Language</div>
+                <Button onClick={this.switchToEnglish}>en</Button>
+                <Button onClick={this.switchToFrench}>fr</Button>
             </div>
         );
     }

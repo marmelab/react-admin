@@ -3,7 +3,7 @@ layout: default
 title: "My First Project Tutorial"
 ---
 
-# Admin-on-REST Tutorial
+# React-Admin Tutorial
 
 This 15 minutes tutorial will expose how to create a new admin app based on an existing REST API.
 
@@ -11,7 +11,7 @@ This 15 minutes tutorial will expose how to create a new admin app based on an e
 
 ## Installation
 
-Admin-on-REST uses React. We'll use Facebook's [create-react-app](https://github.com/facebookincubator/create-react-app) to create an empty React app, and install the `react-admin` package:
+React-admin uses React. We'll use Facebook's [create-react-app](https://github.com/facebookincubator/create-react-app) to create an empty React app, and install the `react-admin` package:
 
 ```sh
 npm install -g create-react-app
@@ -154,7 +154,7 @@ import { PostList } from './posts';
 import { UserList } from './users';
 
 const App = () => (
-    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} />
         <Resource name="users" list={UserList} />
     </Admin>
@@ -296,7 +296,7 @@ import { PostList, PostEdit, PostCreate } from './posts';
 import { UserList } from './users';
 
 const App = () => (
-    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} />
         // ...
     </Admin>
@@ -322,7 +322,7 @@ There is not much to configure in a deletion view. To add removal abilities to a
 import { Delete } from 'react-admin';
 
 const App = () => (
-    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} />
         // ...
     </Admin>
@@ -375,7 +375,7 @@ import PostIcon from 'material-ui/svg-icons/action/book';
 import UserIcon from 'material-ui/svg-icons/social/group';
 
 const App = () => (
-    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} icon={PostIcon} />
         <Resource name="users" list={UserList} icon={UserIcon} />
     </Admin>
@@ -408,7 +408,7 @@ export default () => (
 import Dashboard from './Dashboard';
 
 const App = () => (
-    <Admin dashboard={Dashboard} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dashboard={Dashboard} dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         // ...
     </Admin>
 );
@@ -470,7 +470,7 @@ import Dashboard from './Dashboard';
 import authClient from './authClient';
 
 const App = () => (
-    <Admin authClient={authClient} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin authClient={authClient} dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         // ...
     </Admin>
 );
@@ -551,7 +551,7 @@ Here is the elephant in the room of this tutorial. In real world projects, the d
 
 React-admin delegates every data query to a Data Provider function. This function must simply return a promise for the result. This gives extreme freedom to map any API dialect, add authentication headers, use endpoints from several domains, etc.
 
-For instance, let's imagine you have to use the my.api.url EST API, which expects the following parameters:
+For instance, let's imagine you have to use the my.api.url REST API, which expects the following parameters:
 
 | Action              | Expected API request |
 |---------------------|---------------------- |
@@ -564,7 +564,7 @@ For instance, let's imagine you have to use the my.api.url EST API, which expect
 
 React-admin defines custom verbs for each of the actions of this list. Just like HTTP verbs (`GET`, `POST`, etc.), react-admin verbs qualify a request to a data provider. React-admin verbs are called `GET_LIST`, `GET_ONE`, `GET_MANY`, `CREATE`, `UPDATE`, and `DELETE`. The Data Provider will have to map each of these verbs to one (or many) HTTP request(s).
 
-The code for an API client for my.api.url is as follows:
+The code for a Data Provider for the my.api.url API is as follows:
 
 ```jsx
 // in src/dataProvider
@@ -585,10 +585,10 @@ const API_URL = 'my.api.url';
 /**
  * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
  * @param {String} resource Name of the resource to fetch, e.g. 'posts'
- * @param {Object} params The REST request params, depending on the type
+ * @param {Object} params The Data Provider request params, depending on the type
  * @returns {Object} { url, options } The HTTP request parameters
  */
-const convertRESTRequestToHTTP = (type, resource, params) => {
+const convertDataProviderRequestToHTTP = (type, resource, params) => {
     let url = '';
     const options = {};
     switch (type) {
@@ -648,10 +648,10 @@ const convertRESTRequestToHTTP = (type, resource, params) => {
  * @param {Object} response HTTP response from fetch()
  * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
  * @param {String} resource Name of the resource to fetch, e.g. 'posts'
- * @param {Object} params The REST request params, depending on the type
- * @returns {Object} REST response
+ * @param {Object} params The Data Provider request params, depending on the type
+ * @returns {Object} Data Provider response
  */
-const convertHTTPResponseToREST = (response, type, resource, params) => {
+const convertHTTPResponseToDataProvider = (response, type, resource, params) => {
     const { headers, json } = response;
     switch (type) {
     case GET_LIST:
@@ -674,13 +674,15 @@ const convertHTTPResponseToREST = (response, type, resource, params) => {
  */
 export default (type, resource, params) => {
     const { fetchJson } = fetchUtils;
-    const { url, options } = convertRESTRequestToHTTP(type, resource, params);
+    const { url, options } = convertDataProviderRequestToHTTP(type, resource, params);
     return fetchJson(url, options)
-        .then(response => convertHTTPResponseToREST(response, type, resource, params));
+        .then(response => convertHTTPResponseToDataProvider(response, type, resource, params));
 };
 ```
 
-Using this client instead of the previous `jsonServerRestClient` is just a matter of switching a function:
+**Tip**: `fetchJson()` is just a shortcut for `fetch().then(r => r.json())`, plus a control of the HTTP response code to throw an `HTTPError` in case of 4xx or 5xx response.
+
+Using this provider instead of the previous `jsonServerProvider` is just a matter of switching a function:
 
 ```jsx
 // in src/app.js
