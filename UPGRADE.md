@@ -164,7 +164,7 @@ const dateParser = v => { // from input to record
 
 ## Removed `<DateInput>` `options` props
 
-Material-ui 1.0 doesn't provide a real data picker, so the `options` prop of the `<DateInput>` is no longer supported.
+Material-ui 1.0 doesn't provide a real date picker, so the `options` prop of the `<DateInput>` is no longer supported.
 
 ## CSS Classes Changed
 
