@@ -1,12 +1,40 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
-import AutoComplete from 'material-ui/AutoComplete';
+import Autosuggest from 'react-autosuggest';
+import TextField from 'material-ui/TextField';
+import Paper from 'material-ui/Paper';
+import { MenuItem } from 'material-ui/Menu';
+import { withStyles } from 'material-ui/styles';
+import parse from 'autosuggest-highlight/parse';
+import match from 'autosuggest-highlight/match';
 import compose from 'recompose/compose';
 
-import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
+import addField from '../form/addField';
 import translate from '../../i18n/translate';
+
+const styles = theme => ({
+    container: {
+        flexGrow: 1,
+        position: 'relative',
+    },
+    root: {},
+    suggestionsContainerOpen: {
+        position: 'absolute',
+        marginBottom: theme.spacing.unit * 3,
+        zIndex: 2,
+    },
+    suggestion: {
+        display: 'block',
+        fontFamily: theme.typography.fontFamily,
+    },
+    suggestionsList: {
+        margin: 0,
+        padding: 0,
+        listStyleType: 'none',
+    },
+});
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -41,22 +69,6 @@ import translate from '../../i18n/translate';
  * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
  * <AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
  *
- * You can customize the `filter` function used to filter the results.
- * By default, it's `AutoComplete.fuzzyFilter`, but you can use any of
- * the functions provided by `AutoComplete`, or a function of your own
- * @see http://www.material-ui.com/#/components/auto-complete
- * @example
- * import { Edit, SimpleForm, AutocompleteInput } from 'react-admin/mui';
- * import AutoComplete from 'material-ui/AutoComplete';
- *
- * export const PostEdit = (props) => (
- *     <Edit {...props}>
- *         <SimpleForm>
- *             <AutocompleteInput source="category" filter={AutoComplete.caseInsensitiveFilter} choices={choices} />
- *         </SimpleForm>
- *     </Edit>
- * );
- *
  * The choices are translated by default, so you can use translation identifiers as choices:
  * @example
  * const choices = [
@@ -74,82 +86,104 @@ import translate from '../../i18n/translate';
  * @example
  * <AutocompleteInput source="author_id" options={{ fullWidth: true }} />
  */
-export class AutocompleteInput extends Component {
-    state = {};
+export class AutocompleteInput extends React.Component {
+    state = {
+        searchText: '',
+        suggestions: [],
+    };
 
     componentWillMount() {
-        this.setSearchText(this.props);
+        const { input, choices } = this.props;
+        this.setState({
+            searchText: this.getSearchText(input.value) || '',
+            suggestions: choices,
+        });
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.input.value !== nextProps.input.value) {
-            this.setSearchText(nextProps);
-        }
+        this.setState(state => {
+            let newState = {};
+            if (this.props.input.value !== nextProps.input.value) {
+                newState.searchText = this.getSearchText(nextProps.input.value);
+            }
+            if (this.props.choices !== nextProps.choices) {
+                newState.suggestions = nextProps.choices;
+            }
+            return { ...state, ...newState };
+        });
     }
 
-    setSearchText(props) {
-        const { choices, input, optionValue } = props;
-
-        const selectedSource = choices.find(
-            choice => get(choice, optionValue) === input.value
+    getSearchText = value => {
+        const { choices, optionValue } = this.props;
+        const suggestion = choices.find(
+            choice => get(choice, optionValue) === value
         );
-        const searchText = selectedSource && this.getSuggestion(selectedSource);
-        this.setState({ searchText });
-    }
+        return suggestion && this.getSuggestionLabel(suggestion);
+    };
 
-    handleNewRequest = (chosenRequest, index) => {
-        if (index !== -1) {
-            const { choices, input, optionValue } = this.props;
-            input.onChange(choices[index][optionValue]);
+    getSuggestionValue = suggestion => {
+        return get(suggestion, this.props.optionText);
+    };
+
+    getSuggestionLabel = suggestion => {
+        const { optionText, translate, translateChoice } = this.props;
+        const suggestionLabel =
+            typeof optionText === 'function'
+                ? optionText(suggestion)
+                : get(suggestion, optionText);
+        return translateChoice
+            ? translate(suggestionLabel, { _: suggestionLabel })
+            : suggestionLabel;
+    };
+
+    handleSuggestionSelected = (event, { suggestion, method }) => {
+        this.props.input.onChange(get(suggestion, this.props.optionValue));
+        if (method === 'enter') {
+            event.preventDefault();
         }
     };
 
-    handleUpdateInput = searchText => {
-        this.setState({ searchText });
+    handleSuggestionsFetchRequested = ({ value: searchText, reason }) => {
+        if (reason === 'input-focused') {
+            // do not fetch on focus, the data is prefeteched already
+            return;
+        }
         const { setFilter } = this.props;
         setFilter && setFilter(searchText);
     };
 
-    getSuggestion(choice) {
-        const { optionText, translate, translateChoice } = this.props;
-        const choiceName =
-            typeof optionText === 'function'
-                ? optionText(choice)
-                : get(choice, optionText);
-        return translateChoice
-            ? translate(choiceName, { _: choiceName })
-            : choiceName;
-    }
+    handleSuggestionsClearRequested = () => {
+        this.setState({ suggestions: [] });
+    };
 
-    render() {
+    handleChange = (event, { newValue }) => {
+        this.setState({ searchText: newValue });
+    };
+
+    renderInput = inputProps => {
         const {
-            choices,
-            elStyle,
-            filter,
+            autoFocus,
+            classes = {},
             isRequired,
             label,
             meta,
-            options,
-            optionValue,
+            onChange,
             resource,
             source,
-        } = this.props;
+            value,
+            ref,
+            ...other
+        } = inputProps;
         if (typeof meta === 'undefined') {
             throw new Error(
-                "The AutocompleteInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
+                "The TextInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
             );
         }
         const { touched, error } = meta;
 
-        const dataSource = choices.map(choice => ({
-            value: get(choice, optionValue),
-            text: this.getSuggestion(choice),
-        }));
         return (
-            <AutoComplete
-                searchText={this.state.searchText}
-                dataSource={dataSource}
-                floatingLabelText={
+            <TextField
+                label={
                     <FieldTitle
                         label={label}
                         source={source}
@@ -157,28 +191,121 @@ export class AutocompleteInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                filter={filter}
-                onNewRequest={this.handleNewRequest}
-                onUpdateInput={this.handleUpdateInput}
-                openOnFocus
+                value={value}
+                onChange={onChange}
+                autoFocus={autoFocus}
+                margin="normal"
+                className={classes.root}
+                inputRef={ref}
+                error={!!(touched && error)}
+                helperText={touched && error}
+                InputProps={{
+                    classes: {
+                        input: classes.input,
+                    },
+                    ...other,
+                }}
+            />
+        );
+    };
+
+    renderSuggestionsContainer = options => {
+        const { containerProps, children } = options;
+
+        return (
+            <Paper {...containerProps} square>
+                {children}
+            </Paper>
+        );
+    };
+
+    renderSuggestion = (suggestion, { query, isHighlighted }) => {
+        const label = this.getSuggestionLabel(suggestion);
+        const matches = match(label, query);
+        const parts = parse(label, matches);
+
+        return (
+            <MenuItem selected={isHighlighted} component="div">
+                <div>
+                    {parts.map((part, index) => {
+                        return part.highlight ? (
+                            <span key={index} style={{ fontWeight: 500 }}>
+                                {part.text}
+                            </span>
+                        ) : (
+                            <strong key={index} style={{ fontWeight: 300 }}>
+                                {part.text}
+                            </strong>
+                        );
+                    })}
+                </div>
+            </MenuItem>
+        );
+    };
+
+    shouldRenderSuggestions = () => true;
+
+    render() {
+        const {
+            alwaysRenderSuggestions,
+            classes = {},
+            elStyle,
+            isRequired,
+            label,
+            meta,
+            resource,
+            source,
+        } = this.props;
+        const { suggestions, searchText } = this.state;
+
+        return (
+            <Autosuggest
+                theme={{
+                    container: classes.container,
+                    suggestionsContainerOpen: classes.suggestionsContainerOpen,
+                    suggestionsList: classes.suggestionsList,
+                    suggestion: classes.suggestion,
+                }}
+                renderInputComponent={this.renderInput}
+                suggestions={suggestions}
+                alwaysRenderSuggestions={alwaysRenderSuggestions}
+                onSuggestionSelected={this.handleSuggestionSelected}
+                onSuggestionsFetchRequested={
+                    this.handleSuggestionsFetchRequested
+                }
+                onSuggestionsClearRequested={
+                    this.handleSuggestionsClearRequested
+                }
+                renderSuggestionsContainer={this.renderSuggestionsContainer}
+                getSuggestionValue={this.getSuggestionValue}
+                renderSuggestion={this.renderSuggestion}
+                shouldRenderSuggestions={this.shouldRenderSuggestions}
+                inputProps={{
+                    classes,
+                    isRequired,
+                    label,
+                    meta,
+                    onChange: this.handleChange,
+                    resource,
+                    source,
+                    value: searchText,
+                }}
                 style={elStyle}
-                errorText={touched && error}
-                {...options}
             />
         );
     }
 }
 
 AutocompleteInput.propTypes = {
+    alwaysRenderSuggestions: PropTypes.bool, // used only for unit tests
     choices: PropTypes.arrayOf(PropTypes.object),
+    classes: PropTypes.object,
     elStyle: PropTypes.object,
-    filter: PropTypes.func.isRequired,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
     meta: PropTypes.object,
     options: PropTypes.object,
-    optionElement: PropTypes.element,
     optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
         .isRequired,
     optionValue: PropTypes.string.isRequired,
@@ -191,11 +318,12 @@ AutocompleteInput.propTypes = {
 
 AutocompleteInput.defaultProps = {
     choices: [],
-    filter: AutoComplete.fuzzyFilter,
     options: {},
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
 };
 
-export default compose(addField, translate)(AutocompleteInput);
+export default compose(addField, translate, withStyles(styles))(
+    AutocompleteInput
+);

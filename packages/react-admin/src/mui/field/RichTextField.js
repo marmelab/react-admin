@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
+import Typography from 'material-ui/Typography';
 
 export const removeTags = input =>
     input ? input.replace(/<[^>]+>/gm, '') : '';
@@ -9,10 +10,20 @@ export const removeTags = input =>
 const RichTextField = ({ source, record = {}, stripTags, elStyle }) => {
     const value = get(record, source);
     if (stripTags) {
-        return <div style={elStyle}>{removeTags(value)}</div>;
+        return (
+            <Typography style={elStyle} component="span">
+                {removeTags(value)}
+            </Typography>
+        );
     }
 
-    return <div style={elStyle} dangerouslySetInnerHTML={{ __html: value }} />;
+    return (
+        <Typography
+            style={elStyle}
+            component="span"
+            dangerouslySetInnerHTML={{ __html: value }}
+        />
+    );
 };
 
 RichTextField.propTypes = {

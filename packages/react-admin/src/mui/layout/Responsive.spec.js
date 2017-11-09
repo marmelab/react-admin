@@ -15,7 +15,7 @@ describe('<Responsive>', () => {
                 small={<Small />}
                 medium={<Medium />}
                 large={<Large />}
-                width={1}
+                width="xs"
             />
         );
         const component = wrapper.find('Small');
@@ -27,7 +27,7 @@ describe('<Responsive>', () => {
                 small={<Small />}
                 medium={<Medium />}
                 large={<Large />}
-                width={2}
+                width="sm"
             />
         );
         const component = wrapper.find('Medium');
@@ -39,7 +39,7 @@ describe('<Responsive>', () => {
                 small={<Small />}
                 medium={<Medium />}
                 large={<Large />}
-                width={3}
+                width="lg"
             />
         );
         const component = wrapper.find('Large');
@@ -47,72 +47,75 @@ describe('<Responsive>', () => {
     });
     it('should render the small component on all screens when no other component is passed', () => {
         assert.equal(
-            shallow(<Responsive small={<Small />} width={1} />).find('Small')
+            shallow(<Responsive small={<Small />} width="xs" />).find('Small')
                 .length,
             1
         );
         assert.equal(
-            shallow(<Responsive small={<Small />} width={2} />).find('Small')
+            shallow(<Responsive small={<Small />} width="sm" />).find('Small')
                 .length,
             1
         );
         assert.equal(
-            shallow(<Responsive small={<Small />} width={3} />).find('Small')
+            shallow(<Responsive small={<Small />} width="lg" />).find('Small')
                 .length,
             1
         );
     });
     it('should render the medium component on all screens when no other component is passed', () => {
         assert.equal(
-            shallow(<Responsive medium={<Medium />} width={1} />).find('Medium')
-                .length,
+            shallow(<Responsive medium={<Medium />} width="xs" />).find(
+                'Medium'
+            ).length,
             1
         );
         assert.equal(
-            shallow(<Responsive medium={<Medium />} width={2} />).find('Medium')
-                .length,
+            shallow(<Responsive medium={<Medium />} width="sm" />).find(
+                'Medium'
+            ).length,
             1
         );
         assert.equal(
-            shallow(<Responsive medium={<Medium />} width={3} />).find('Medium')
-                .length,
+            shallow(<Responsive medium={<Medium />} width="lg" />).find(
+                'Medium'
+            ).length,
             1
         );
     });
     it('should render the large component on all screens when no other component is passed', () => {
         assert.equal(
-            shallow(<Responsive large={<Large />} width={1} />).find('Large')
+            shallow(<Responsive large={<Large />} width="xs" />).find('Large')
                 .length,
             1
         );
         assert.equal(
-            shallow(<Responsive large={<Large />} width={2} />).find('Large')
+            shallow(<Responsive large={<Large />} width="sm" />).find('Large')
                 .length,
             1
         );
         assert.equal(
-            shallow(<Responsive large={<Large />} width={3} />).find('Large')
+            shallow(<Responsive large={<Large />} width="lg" />).find('Large')
                 .length,
             1
         );
     });
     it('should fallback to the large component on medium screens', () => {
         const wrapper = shallow(
-            <Responsive small={<Small />} large={<Large />} width={2} />
+            <Responsive small={<Small />} large={<Large />} width="sm" />
         );
         const component = wrapper.find('Large');
         assert.equal(component.length, 1);
     });
     it('should fallback to the medium component on small screens', () => {
         const wrapper = shallow(
-            <Responsive medium={<Medium />} large={<Large />} width={1} />
+            <Responsive medium={<Medium />} large={<Large />} width="sm" />
         );
         const component = wrapper.find('Medium');
         assert.equal(component.length, 1);
     });
     it('should fallback to the medium component on large screens', () => {
         const wrapper = shallow(
-            <Responsive small={<Small />} medium={<Medium />} width={3} />
+            <Responsive small={<Small />} medium={<Medium />} width="lg" />
         );
         const component = wrapper.find('Medium');
         assert.equal(component.length, 1);

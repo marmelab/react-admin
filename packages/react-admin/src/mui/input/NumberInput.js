@@ -41,6 +41,7 @@ export class NumberInput extends Component {
 
     render() {
         const {
+            classes,
             elStyle,
             input,
             isRequired,
@@ -61,12 +62,15 @@ export class NumberInput extends Component {
         return (
             <TextField
                 {...input}
+                type="number"
+                margin="normal"
+                error={!!(touched && error)}
+                helperText={touched && error}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
                 onChange={this.handleChange}
-                type="number"
                 step={step}
-                floatingLabelText={
+                label={
                     <FieldTitle
                         label={label}
                         source={source}
@@ -74,7 +78,7 @@ export class NumberInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                errorText={touched && error}
+                classes={classes}
                 style={elStyle}
                 {...options}
             />
@@ -83,6 +87,7 @@ export class NumberInput extends Component {
 }
 
 NumberInput.propTypes = {
+    classes: PropTypes.object,
     elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,

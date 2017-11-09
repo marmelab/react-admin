@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
-import ContentSave from 'material-ui/svg-icons/content/save';
-import CircularProgress from 'material-ui/CircularProgress';
+import Button from 'material-ui/Button';
+import ContentSave from 'material-ui-icons/Save';
+import { CircularProgress } from 'material-ui/Progress';
 import translate from '../../i18n/translate';
 
 export class SaveButton extends Component {
@@ -32,25 +31,25 @@ export class SaveButton extends Component {
             redirect,
         } = this.props;
         const type = submitOnEnter ? 'submit' : 'button';
-        const ButtonComponent = raised ? RaisedButton : FlatButton;
         return (
-            <ButtonComponent
+            <Button
+                raised={raised}
                 type={type}
-                label={label && translate(label)}
-                icon={
-                    saving && saving.redirect === redirect ? (
-                        <CircularProgress size={25} thickness={2} />
-                    ) : (
-                        <ContentSave />
-                    )
-                }
                 onClick={this.handleClick}
-                primary={!saving}
+                color={saving ? 'default' : 'primary'}
                 style={{
                     margin: '10px 24px',
                     position: 'relative',
                 }}
-            />
+            >
+                {saving && saving.redirect === redirect ? (
+                    <CircularProgress size={25} thickness={2} />
+                ) : (
+                    <ContentSave />
+                )}
+                &nbsp;
+                {label && translate(label)}
+            </Button>
         );
     }
 }
@@ -66,6 +65,7 @@ SaveButton.propTypes = {
 };
 
 SaveButton.defaultProps = {
+    redirect: 'list',
     handleSubmitWithRedirect: () => () => {},
 };
 

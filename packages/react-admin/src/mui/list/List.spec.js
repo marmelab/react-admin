@@ -32,7 +32,7 @@ describe('<List />', () => {
                 <div />
             </List>
         );
-        const textElement = wrapper.find('CardText').children();
+        const textElement = wrapper.find('withStyles(CardContent)').children();
         assert.equal(textElement.text(), 'ra.navigation.no_results');
     });
 

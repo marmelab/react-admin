@@ -102,6 +102,70 @@ module.exports = {
             ...
 ```
 
+## `<AutocompleteInput>` no longer accepts a `filter` prop
+
+Material-ui's implementation of the autocomplete input has radically changed. React-admin maintains backwards compatibility, except for the `filter` prop, which no longer makes sense in the new impementation.
+
+## `<DateInput>` Stores a Date String Instead Of a Date Object
+
+The value of the `<DateInput>` used to be a `Date` object. It's now a `String`, i.e. a stringified date. If you used `format` and `parse` to convert a string to a `Date`, you can now remove these props:
+
+```jsx
+// before
+const dateFormatter = v => { // from record to input
+  // v is a string of "YYYY-MM-DD" format
+  const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
+  if (match === null) return;
+  const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
+  if (isNaN(d)) return;
+  return d;
+};
+const dateParser = v => { // from input to record
+  // v is a `Date` object
+  if (!(v instanceof Date) || isNaN(v)) return;
+  const pad = '00';
+  const yy = v.getFullYear().toString();
+  const mm = (v.getMonth() + 1).toString();
+  const dd = v.getDate().toString();
+  return `${yy}-${(pad + mm).slice(-2)}-${(pad + dd).slice(-2)}`;
+};
+<DateInput source="isodate" format={dateFormatter} parse={dateParser} label="ISO date" />
+
+// after
+<DateInput source="isodate" label="ISO date" />
+```
+
+On the other way around, if your data provider expects JavaScript `Date` objects for value, you now need to do the conversion to and from strings using `format` and `parse`:
+
+```jsx
+// before
+<DateInput source="isodate" label="ISO date" />
+
+// after
+const dateFormatter = v => { // from record to input
+  // v is a `Date` object
+  if (!(v instanceof Date) || isNaN(v)) return;
+  const pad = '00';
+  const yy = v.getFullYear().toString();
+  const mm = (v.getMonth() + 1).toString();
+  const dd = v.getDate().toString();
+  return `${yy}-${(pad + mm).slice(-2)}-${(pad + dd).slice(-2)}`;
+};
+const dateParser = v => { // from input to record
+  // v is a string of "YYYY-MM-DD" format
+  const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
+  if (match === null) return;
+  const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
+  if (isNaN(d)) return;
+  return d;
+};
+<DateInput source="isodate" format={dateFormatter} parse={dateParser} label="ISO date" />
+```
+
+## Removed `<DateInput>` `options` props
+
+Material-ui 1.0 doesn't provide a real date picker, so the `options` prop of the `<DateInput>` is no longer supported.
+
 ## CSS Classes Changed
 
 React-admin does not rely heavily on CSS classes. Nevertheless, a few components added CSS classes to facilitate per-field theming: `<SimpleShowLayout>`, `<Tab>`, and `<FormInput>`. These CSS classes used to follow the "aor-" naming pattern. They have all been renamed to use the "ra-" pattern instead. Here is the list of concerned classes:

@@ -1,28 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import RaisedButton from 'material-ui/RaisedButton';
-import HotTub from 'material-ui/svg-icons/places/hot-tub';
-import History from 'material-ui/svg-icons/action/history';
-import withWidth from 'material-ui/utils/withWidth';
+import Button from 'material-ui/Button';
+import HotTub from 'material-ui-icons/HotTub';
+import History from 'material-ui-icons/History';
+import { withStyles } from 'material-ui/styles';
+import Hidden from 'material-ui/Hidden';
 import compose from 'recompose/compose';
 
 import AppBarMobile from './AppBarMobile';
 import translate from '../../i18n/translate';
 
-const styles = {
+const styles = theme => ({
     container: {
         display: 'flex',
-        height: '100%',
         flexDirection: 'column',
         justifyContent: 'center',
-    },
-    containerMobile: {
-        display: 'flex',
-        height: '100vh',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        marginTop: '-3em',
+        [theme.breakpoints.up('md')]: {
+            height: '100%',
+        },
+        [theme.breakpoints.down('md')]: {
+            height: '100vh',
+            marginTop: '-3em',
+        },
     },
     icon: {
         width: '9em',
@@ -38,35 +37,35 @@ const styles = {
         textAlign: 'center',
         marginTop: '2em',
     },
-};
+});
 
 function goBack() {
     history.go(-1);
 }
 
-const NotFound = ({ width, translate }) => (
-    <div style={width === 1 ? styles.containerMobile : styles.container}>
-        {width === 1 && <AppBarMobile />}
-        <div style={styles.message}>
+const NotFound = ({ classes, translate }) => (
+    <div className={classes.container}>
+        <Hidden mdUp>
+            <AppBarMobile />
+        </Hidden>
+        <div className={classes.message}>
             <HotTub style={styles.icon} />
             <h1>{translate('ra.page.not_found')}</h1>
             <div>{translate('ra.message.not_found')}.</div>
         </div>
-        <div style={styles.toolbar}>
-            <RaisedButton
-                label={translate('ra.action.back')}
-                icon={<History />}
-                onClick={goBack}
-            />
+        <div className={classes.toolbar}>
+            <Button raised icon={<History />} onClick={goBack}>
+                {translate('ra.action.back')}
+            </Button>
         </div>
     </div>
 );
 
 NotFound.propTypes = {
-    width: PropTypes.number,
+    classes: PropTypes.object,
     translate: PropTypes.func.isRequired,
 };
 
-const enhance = compose(withWidth(), translate);
+const enhance = compose(withStyles(styles), translate);
 
 export default enhance(NotFound);

@@ -31,12 +31,12 @@ Here is the minimal code necessary to display a list of posts:
 // in src/App.js
 import React from 'react';
 import { Admin, Resource } from 'react-admin';
-import jsonServerRestClient from 'ra-data-json-server';
+import jsonServerProvider from 'ra-data-json-server';
 
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
@@ -83,8 +83,8 @@ You can replace the list of default actions by your own element using the `actio
 
 ```jsx
 import { CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+import Button from 'material-ui/Button';
+import NavigationRefresh from 'material-ui-icons/Refresh';
 import { CreateButton, RefreshButton } from 'react-admin';
 
 const cardActionStyle = {
@@ -99,7 +99,7 @@ const PostActions = ({ resource, filters, displayedFilters, filterValues, basePa
         <CreateButton basePath={basePath} />
         <RefreshButton />
         {/* Add your custom actions */}
-        <FlatButton primary label="Custom Action" onClick={customAction} />
+        <Button primary onClick={customAction}>Custom Action</Button>
     </CardActions>
 );
 
@@ -178,7 +178,7 @@ It is possible to disable sorting for a specific field by passing a `sortable` p
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'react-admin/lib/mui';
+import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -216,24 +216,26 @@ You can replace the default pagination element by your own, using the `paginatio
 So if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
 
 ```jsx
-import FlatButton from 'material-ui/FlatButton';
-import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
-import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
+import Button from 'material-ui/Button';
+import ChevronLeft from 'material-ui-icons/ChevronLeft';
+import ChevronRight from 'material-ui-icons/ChevronRight';
+import Toolbar from 'material-ui/Toolbar';
 
 const PostPagination = ({ page, perPage, total, setPage }) => {
     const nbPages = Math.ceil(total / perPage) || 1;
     return (
         nbPages > 1 &&
             <Toolbar>
-                <ToolbarGroup>
                 {page > 1 &&
-                    <FlatButton primary key="prev" label="Prev" icon={<ChevronLeft />} onClick={() => setPage(page - 1)} />
+                    <Button primary key="prev" icon={<ChevronLeft />} onClick={() => setPage(page - 1)}>
+                        Prev
+                    </Button>
                 }
                 {page !== nbPages &&
-                    <FlatButton primary key="next" label="Next" icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before" />
+                    <Button primary key="next" icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before">
+                        Next
+                    </Button>
                 }
-                </ToolbarGroup>
             </Toolbar>
     );
 }
@@ -483,6 +485,8 @@ Simple: Create your own iterator component as follows:
 {% raw %}
 ```jsx
 // in src/comments.js
+import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
+
 const cardStyle = {
     width: 300,
     minHeight: 300,
@@ -496,18 +500,18 @@ const CommentGrid = ({ ids, data, basePath }) => (
         <Card key={id} style={cardStyle}>
             <CardHeader
                 title={<TextField record={data[id]} source="author.name" />}
-                subtitle={<DateField record={data[id]} source="created_at" />}
+                subheader={<DateField record={data[id]} source="created_at" />}
                 avatar={<Avatar icon={<PersonIcon />} />}
             />
-            <CardText>
+            <CardContent>
                 <TextField record={data[id]} source="body" />
-            </CardText>
-            <CardText>
+            </CardContent>
+            <CardContent>
                 about&nbsp;
                 <ReferenceField label="Post" resource="comments" record={data[id]} source="post_id" reference="posts" basePath={basePath}>
                     <TextField source="title" />
                 </ReferenceField>
-            </CardText>
+            </CardContent>
             <CardActions style={{ textAlign: 'right' }}>
                 <EditButton resource="posts" basePath={basePath} record={data[id]} />
             </CardActions>
@@ -530,7 +534,7 @@ export const CommentList = (props) => (
 
 As you can see, nothing prevents you from using `<Field>` components inside your own components... provided you inject the current `record`. Also, notice that components building links require the `basePath` component, which is also injected.
 
-## Declaring fields at runtime
+## Declaring Fields At Runtime
 
 You might want to dynamically define the fields when the `<List>` component is rendered. It accepts a function as its child and this function can return a Promise. If you also defined an `authClient` on the `<Admin>` component, the function will receive the result of a call to `authClient` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
 

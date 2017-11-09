@@ -1,8 +1,25 @@
 import compose from 'recompose/compose';
+import { withStyles } from 'material-ui/styles';
 
 import addField from '../form/addField';
 import translate from '../../i18n/translate';
 import { FileInput } from './FileInput';
+
+const styles = {
+    dropZone: {
+        background: '#efefef',
+        cursor: 'pointer',
+        padding: '1rem',
+        textAlign: 'center',
+        color: '#999',
+    },
+    preview: {
+        float: 'left',
+    },
+    removeStyle: {
+        display: 'inline-block',
+    },
+};
 
 export class ImageInput extends FileInput {
     static defaultProps = {
@@ -23,4 +40,4 @@ export class ImageInput extends FileInput {
     };
 }
 
-export default compose(addField, translate)(ImageInput);
+export default compose(addField, translate, withStyles(styles))(ImageInput);

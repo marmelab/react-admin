@@ -21,7 +21,7 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyField>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('LinearProgress');
+        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 1);
         const SingleFieldListElement = wrapper.find('SingleFieldList');
         assert.equal(SingleFieldListElement.length, 0);
@@ -48,7 +48,7 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyField>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('LinearProgress');
+        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find('SingleFieldList');
         assert.equal(SingleFieldListElement.length, 1);
@@ -74,7 +74,7 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyField>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('LinearProgress');
+        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find('SingleFieldList');
         assert.equal(SingleFieldListElement.length, 1);
@@ -104,7 +104,7 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyField>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('LinearProgress');
+        const ProgressElements = wrapper.find('widthStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find('SingleFieldList');
         assert.equal(SingleFieldListElement.length, 1);
@@ -137,7 +137,7 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyField>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('LinearProgress');
+        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find('SingleFieldList');
         assert.equal(SingleFieldListElement.length, 1);

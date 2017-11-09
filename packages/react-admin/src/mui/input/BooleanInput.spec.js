@@ -6,48 +6,39 @@ import { BooleanInput } from './BooleanInput';
 
 describe('<BooleanInput />', () => {
     it('should render as a mui Toggle', () => {
-        const wrapper = shallow(<BooleanInput source="foo" input={{}} />);
-        const choices = wrapper.find('Toggle');
+        const wrapper = shallow(<BooleanInput source="foo" input={{}} />)
+            .find('withStyles(FormControlLabel)')
+            .shallow()
+            .dive();
+        const choices = wrapper.find('withStyles(Switch)');
         assert.equal(choices.length, 1);
     });
 
     it('should be checked if the value is true', () => {
         const wrapper = shallow(
             <BooleanInput source="foo" input={{ value: true }} />
-        );
-        assert.equal(wrapper.find('Toggle').prop('defaultToggled'), true);
+        )
+            .find('withStyles(FormControlLabel)')
+            .shallow()
+            .dive();
+        assert.equal(wrapper.find('withStyles(Switch)').prop('checked'), true);
     });
 
     it('should not be checked if the value is false', () => {
         const wrapper = shallow(
             <BooleanInput source="foo" input={{ value: false }} />
-        );
-        assert.equal(wrapper.find('Toggle').prop('defaultToggled'), false);
+        )
+            .find('withStyles(FormControlLabel)')
+            .shallow()
+            .dive();
+        assert.equal(wrapper.find('withStyles(Switch)').prop('checked'), false);
     });
 
     it('should not be checked if the value is undefined', () => {
-        const wrapper = shallow(<BooleanInput source="foo" input={{}} />);
-        assert.equal(wrapper.find('Toggle').prop('defaultToggled'), false);
-    });
-
-    it('should trigger input.onChange with true after being checked', () => {
-        const onChange = jest.fn();
-        const wrapper = shallow(
-            <BooleanInput source="foo" input={{ value: false, onChange }} />
-        );
-
-        wrapper.find('Toggle').simulate('toggle', {}, true);
-
-        assert.equal(onChange.mock.calls[0][0], true);
-    });
-
-    it('should trigger input.onChange with false after being checked', () => {
-        const onChange = jest.fn();
-        const wrapper = shallow(
-            <BooleanInput source="foo" input={{ value: true, onChange }} />
-        );
-
-        wrapper.find('Toggle').simulate('toggle', {}, false);
-        assert.equal(onChange.mock.calls[0][0], false);
+        const wrapper = shallow(<BooleanInput source="foo" input={{}} />)
+            .find('withStyles(FormControlLabel)')
+            .shallow()
+            .dive();
+        assert.equal(wrapper.find('withStyles(Switch)').prop('checked'), false);
     });
 });

@@ -1,25 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
-import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
-import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import withWidth from 'material-ui/utils/withWidth';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import ChevronLeft from 'material-ui-icons/ChevronLeft';
+import ChevronRight from 'material-ui-icons/ChevronRight';
+import Typography from 'material-ui/Typography';
+import Toolbar from 'material-ui/Toolbar';
+import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
+
+import Responsive from '../layout/Responsive';
 import translate from '../../i18n/translate';
 
 const styles = {
-    button: {
-        margin: '10px 0',
-    },
     pageInfo: {
         padding: '1.2em',
     },
     mobileToolbar: {
-        margin: 'auto',
+        justifyContent: 'center',
     },
 };
 
@@ -105,106 +104,102 @@ export class Pagination extends Component {
                         &hellip;
                     </span>
                 ) : (
-                    <FlatButton
+                    <Button
                         className="page-number"
+                        color={
+                            pageNum === this.props.page ? 'default' : 'primary'
+                        }
                         key={pageNum}
-                        label={pageNum}
                         data-page={pageNum}
                         onClick={this.gotoPage}
-                        primary={pageNum !== this.props.page}
                         style={styles.button}
-                    />
+                    >
+                        {pageNum}
+                    </Button>
                 )
         );
     }
 
     render() {
-        const { muiTheme, page, perPage, total, translate, width } = this.props;
+        const { classes = {}, page, perPage, total, translate } = this.props;
         if (total === 0) return null;
         const offsetEnd = Math.min(page * perPage, total);
         const offsetBegin = Math.min((page - 1) * perPage + 1, offsetEnd);
         const nbPages = this.getNbPages();
 
-        return width === 1 ? (
-            <Toolbar>
-                <ToolbarGroup style={styles.mobileToolbar}>
-                    {page > 1 && (
-                        <IconButton onClick={this.prevPage}>
-                            <ChevronLeft
-                                color={muiTheme.palette.primary1Color}
-                            />
-                        </IconButton>
-                    )}
-                    <span style={styles.pageInfo}>
-                        {translate('ra.navigation.page_range_info', {
-                            offsetBegin,
-                            offsetEnd,
-                            total,
-                        })}
-                    </span>
-                    {page !== nbPages && (
-                        <IconButton onClick={this.nextPage}>
-                            <ChevronRight
-                                color={muiTheme.palette.primary1Color}
-                            />
-                        </IconButton>
-                    )}
-                </ToolbarGroup>
-            </Toolbar>
-        ) : (
-            <Toolbar>
-                <ToolbarGroup firstChild>
-                    <span className="displayed-records" style={styles.pageInfo}>
-                        {translate('ra.navigation.page_range_info', {
-                            offsetBegin,
-                            offsetEnd,
-                            total,
-                        })}
-                    </span>
-                </ToolbarGroup>
-                {nbPages > 1 && (
-                    <ToolbarGroup>
+        return (
+            <Responsive
+                small={
+                    <Toolbar classes={{ root: classes.mobileToolbar }}>
                         {page > 1 && (
-                            <FlatButton
-                                className="previous-page"
-                                primary
-                                key="prev"
-                                label={translate('ra.navigation.prev')}
-                                icon={<ChevronLeft />}
-                                onClick={this.prevPage}
-                                style={styles.button}
-                            />
+                            <IconButton color="primary" onClick={this.prevPage}>
+                                <ChevronLeft />
+                            </IconButton>
                         )}
-                        {this.renderPageNums()}
+                        <Typography type="body1" className="displayed-records">
+                            {translate('ra.navigation.page_range_info', {
+                                offsetBegin,
+                                offsetEnd,
+                                total,
+                            })}
+                        </Typography>
                         {page !== nbPages && (
-                            <FlatButton
-                                className="next-page"
-                                primary
-                                key="next"
-                                label={translate('ra.navigation.next')}
-                                icon={<ChevronRight />}
-                                labelPosition="before"
-                                onClick={this.nextPage}
-                                style={styles.button}
-                            />
+                            <IconButton color="primary" onClick={this.nextPage}>
+                                <ChevronRight />
+                            </IconButton>
                         )}
-                    </ToolbarGroup>
-                )}
-            </Toolbar>
+                    </Toolbar>
+                }
+                medium={
+                    <Toolbar>
+                        <Typography type="body1" className="displayed-records">
+                            {translate('ra.navigation.page_range_info', {
+                                offsetBegin,
+                                offsetEnd,
+                                total,
+                            })}
+                        </Typography>
+                        {nbPages > 1 && [
+                            page > 1 && (
+                                <Button
+                                    color="primary"
+                                    key="prev"
+                                    onClick={this.prevPage}
+                                    className="previous-page"
+                                >
+                                    <ChevronLeft />
+                                    {translate('ra.navigation.prev')}
+                                </Button>
+                            ),
+                            this.renderPageNums(),
+                            page !== nbPages && (
+                                <Button
+                                    color="primary"
+                                    key="next"
+                                    onClick={this.nextPage}
+                                    className="next-page"
+                                >
+                                    {translate('ra.navigation.next')}
+                                    <ChevronRight />
+                                </Button>
+                            ),
+                        ]}
+                    </Toolbar>
+                }
+            />
         );
     }
 }
 
 Pagination.propTypes = {
-    muiTheme: PropTypes.object.isRequired,
+    classes: PropTypes.object,
     page: PropTypes.number,
     perPage: PropTypes.number,
     setPage: PropTypes.func,
     translate: PropTypes.func.isRequired,
     total: PropTypes.number,
-    width: PropTypes.number,
 };
 
-const enhance = compose(pure, translate, withWidth(), muiThemeable());
+const enhance = compose(pure, translate, withStyles(styles));
 
 export default enhance(Pagination);

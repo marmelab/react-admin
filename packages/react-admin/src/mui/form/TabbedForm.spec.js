@@ -20,10 +20,10 @@ describe('<TabbedForm />', () => {
                 <FormTab />
             </TabbedForm>
         );
-        const tabsContainer = wrapper.find('Tabs');
+        const tabsContainer = wrapper.find('withStyles(Tabs)');
         assert.equal(tabsContainer.length, 1);
         const tabs = wrapper.find('FormTab');
-        assert.equal(tabs.length, 2);
+        assert.equal(tabs.length, 1);
     });
 
     it('should display <Toolbar />', () => {
@@ -71,19 +71,18 @@ describe('<TabbedForm />', () => {
                 translate={translate}
                 muiTheme={muiTheme}
                 tabsWithErrors={['tab2']}
+                classes={{ errorTabButton: 'error' }}
             >
                 <FormTab label="tab1" />
                 <FormTab label="tab2" />
             </TabbedForm>
         );
-        const tabs = wrapper.find('Tab');
+        const tabs = wrapper.find('withStyles(Tab)');
         const tab1 = tabs.at(0);
         const tab2 = tabs.at(1);
 
-        assert.deepEqual(tab1.prop('buttonStyle'), null);
-        assert.deepEqual(tab2.prop('buttonStyle'), {
-            color: muiTheme.textField.errorColor,
-        });
+        assert.equal(tab1.prop('className'), 'form-tab');
+        assert.equal(tab2.prop('className'), 'form-tab error');
     });
 
     it('should not set the style of an active Tab button with errors', () => {
@@ -92,17 +91,18 @@ describe('<TabbedForm />', () => {
                 translate={translate}
                 muiTheme={muiTheme}
                 tabsWithErrors={['tab1']}
+                classes={{ errorTabButton: 'error' }}
             >
                 <FormTab label="tab1" />
                 <FormTab label="tab2" />
             </TabbedForm>
         );
-        const tabs = wrapper.find('Tab');
+        const tabs = wrapper.find('withStyles(Tab)');
         const tab1 = tabs.at(0);
         const tab2 = tabs.at(1);
 
-        assert.deepEqual(tab1.prop('buttonStyle'), null);
-        assert.deepEqual(tab2.prop('buttonStyle'), null);
+        assert.equal(tab1.prop('className'), 'form-tab');
+        assert.equal(tab2.prop('className'), 'form-tab');
     });
 
     describe('findTabsWithErrors', () => {

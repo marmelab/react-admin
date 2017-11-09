@@ -17,7 +17,7 @@ A frontend Framework for building admin applications running in the browser on t
 
 ## Features
 
-* Adapts to any REST backend
+* Adapts to any backend (REST, GraphQL, SOAP, etc.)
 * Complete documentation
 * Optimistic rendering (renders before the server returns)
 * Relationships (many to one, one to many)
@@ -46,7 +46,7 @@ React-admin is available from npm. You can install it (and its required dependen
 using:
 
 ```sh
-npm install --save-dev react-admin
+npm install react-admin
 ```
 
 ## Usage
@@ -60,12 +60,12 @@ Read the [Tutorial](./Tutorial.md) for a 15 minutes introduction. After that, he
 import React from 'react';
 import { render } from 'react-dom';
 import { Admin, Resource } from 'react-admin';
-import simpleRestClient from 'ra-data-simple-rest';
+import simpleRestProvider from 'ra-data-simple-rest';
 
 import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
 
 render(
-    <Admin dataProvider={simpleRestClient('http://localhost:3000')}>
+    <Admin dataProvider={simpleRestProvider('http://localhost:3000')}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon}/>
     </Admin>,
     document.getElementById('root')
@@ -79,7 +79,7 @@ The `<Resource>` component is a configuration component that allows to define su
 // in posts.js
 import React from 'react';
 import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'react-admin';
-export PostIcon from 'material-ui/svg-icons/action/book';
+export PostIcon from 'material-ui-icons/Book';
 
 export const PostList = (props) => (
     <List {...props}>

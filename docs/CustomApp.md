@@ -28,8 +28,10 @@ import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { MuiThemeProvider } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
 
 // prebuilt react-admin features
 import {
@@ -73,7 +75,13 @@ const App = () => (
         <TranslationProvider messages={messages}>
             <ConnectedRouter history={history}>
                 <MuiThemeProvider>
-                    <AppBar title="My Admin" />
+                    <AppBar position="static" color="default">
+                        <Toolbar>
+                            <Typography type="title" color="inherit">
+                                My admin
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
                     <Switch>
                         <Route exact path="/" component={Dashboard} />
                         <Route exact path="/posts" hasCreate render={(routeProps) => <PostList resource="posts" {...routeProps} />} />

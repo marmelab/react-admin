@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import LinearProgress from 'material-ui/LinearProgress';
+import { LinearProgress } from 'material-ui/Progress';
 import get from 'lodash.get';
 
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';

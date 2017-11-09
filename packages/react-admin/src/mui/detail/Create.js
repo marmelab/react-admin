@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card } from 'material-ui/Card';
+import Card from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-import ViewTitle from '../layout/ViewTitle';
+import Header from '../layout/Header';
 import Title from '../layout/Title';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import DefaultActions from './CreateActions';
@@ -64,13 +64,15 @@ class Create extends Component {
         return (
             <div className="create-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    {actions &&
-                        React.cloneElement(actions, {
+                    <Header
+                        title={titleElement}
+                        actions={actions}
+                        actionProps={{
                             basePath,
                             resource,
                             hasList,
-                        })}
-                    <ViewTitle title={titleElement} />
+                        }}
+                    />
                     {React.cloneElement(children, {
                         save: this.save,
                         resource,

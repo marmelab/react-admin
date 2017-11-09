@@ -84,12 +84,12 @@ Here is how to use it in your admin:
 // in src/App.js
 import React from 'react';
 import { Admin, Resource } from 'react-admin';
-import simpleRestClient from 'ra-data-simple-rest';
+import simpleRestProvider from 'ra-data-simple-rest';
 
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin dataProvider={simpleRestClient('http://path.to.my.api/')}>
+    <Admin dataProvider={simpleRestProvider('http://path.to.my.api/')}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
@@ -129,12 +129,12 @@ Here is how to use it in your admin:
 // in src/App.js
 import React from 'react';
 import { Admin, Resource } from 'react-admin';
-import jsonServerRestClient from 'ra-data-json-server';
+import jsonServerProvider from 'ra-data-json-server';
 
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
@@ -144,13 +144,13 @@ export default App;
 
 ### Adding Custom Headers
 
-Both the `simpleRestClient` and the `jsonServerRestClient` functions accept an HTTP client function as second argument. By default, they use react-admin's `fetchUtils.fetchJson()` as HTTP client. It's similar to HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
+Both the `simpleRestProvider` and the `jsonServerProvider` functions accept an HTTP client function as second argument. By default, they use react-admin's `fetchUtils.fetchJson()` as HTTP client. It's similar to HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
 
 That means that if you need to add custom headers to your requests, you just need to *wrap* the `fetchJson()` call inside your own function:
 
 ```jsx
 import { fetchUtils, Admin, Resource } from 'react-admin';
-import simpleRestClient from 'ra-data-simple-rest';
+import simpleRestProvider from 'ra-data-simple-rest';
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -160,7 +160,7 @@ const httpClient = (url, options = {}) => {
     options.headers.set('X-Custom-Header', 'foobar');
     return fetchUtils.fetchJson(url, options);
 }
-const dataProvider = simpleRestClient('http://localhost:3000', httpClient);
+const dataProvider = simpleRestProvider('http://localhost:3000', httpClient);
 
 render(
     <Admin dataProvider={dataProvider} title="Example Admin">
@@ -240,7 +240,7 @@ export default addUploadCapabilities;
 This way, you can use simply your upload-capable client to your app calling this decorator:
 
 ```jsx
-import jsonServerRestClient from 'ra-data-json-server';
+import jsonServerProvider from 'ra-data-json-server';
 import addUploadFeature from './addUploadFeature';
 
 const dataProvider = jsonServerdataProvider(data, true);

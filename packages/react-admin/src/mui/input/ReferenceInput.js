@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
-import Labeled from './Labeled';
 import compose from 'recompose/compose';
 
+import LinearProgress from '../layout/LinearProgress';
+import Labeled from './Labeled';
 import addField from '../form/addField';
 import {
     crudGetOne as crudGetOneAction,
@@ -13,7 +14,6 @@ import {
 import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
-const noFilter = () => true;
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -156,6 +156,7 @@ export class ReferenceInput extends Component {
 
     render() {
         const {
+            classes,
             input,
             resource,
             label,
@@ -178,12 +179,15 @@ export class ReferenceInput extends Component {
                     }
                     source={source}
                     resource={resource}
-                />
+                >
+                    <LinearProgress />
+                </Labeled>
             );
         }
 
         return React.cloneElement(children, {
             allowEmpty,
+            classes,
             input,
             label:
                 typeof label === 'undefined'
@@ -195,7 +199,6 @@ export class ReferenceInput extends Component {
             choices: matchingReferences,
             basePath,
             onChange,
-            filter: noFilter, // for AutocompleteInput
             setFilter: this.debouncedSetFilter,
             setPagination: this.setPagination,
             setSort: this.setSort,

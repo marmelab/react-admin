@@ -3,19 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import { push as pushAction } from 'react-router-redux';
-import { Card, CardText } from 'material-ui/Card';
+import Card, { CardContent } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import inflection from 'inflection';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import autoprefixer from 'material-ui/utils/autoprefixer';
 import queryReducer, {
     SET_SORT,
     SET_PAGE,
     SET_FILTER,
     SORT_DESC,
 } from '../../reducer/admin/resource/list/queryReducer';
-import ViewTitle from '../layout/ViewTitle';
+import Header from '../layout/Header';
 import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
 import DefaultActions from './Actions';
@@ -28,10 +26,6 @@ import withChildrenAsFunction from '../withChildrenAsFunction';
 
 const styles = {
     noResults: { padding: 20 },
-    header: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
 };
 
 /**
@@ -206,7 +200,6 @@ export class List extends Component {
             total,
             isLoading,
             translate,
-            theme,
             version,
         } = this.props;
         const query = this.getQuery();
@@ -223,27 +216,24 @@ export class List extends Component {
         const titleElement = (
             <Title title={title} defaultTitle={defaultTitle} />
         );
-        const muiTheme = getMuiTheme(theme);
-        const prefix = autoprefixer(muiTheme);
 
         return (
             <div className="list-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    <div style={prefix(styles.header)}>
-                        <ViewTitle title={titleElement} />
-                        {actions &&
-                            React.cloneElement(actions, {
-                                resource,
-                                filters,
-                                filterValues,
-                                basePath,
-                                hasCreate,
-                                displayedFilters: this.state,
-                                showFilter: this.showFilter,
-                                theme,
-                                refresh: this.refresh,
-                            })}
-                    </div>
+                    <Header
+                        title={titleElement}
+                        actions={actions}
+                        actionProps={{
+                            resource,
+                            filters,
+                            filterValues,
+                            basePath,
+                            hasCreate,
+                            displayedFilters: this.state,
+                            showFilter: this.showFilter,
+                            refresh: this.refresh,
+                        }}
+                    />
                     {filters &&
                         React.cloneElement(filters, {
                             resource,
@@ -277,9 +267,9 @@ export class List extends Component {
                                 })}
                         </div>
                     ) : (
-                        <CardText style={styles.noResults}>
+                        <CardContent style={styles.noResults}>
                             {translate('ra.navigation.no_results')}
-                        </CardText>
+                        </CardContent>
                     )}
                 </Card>
             </div>
@@ -289,17 +279,17 @@ export class List extends Component {
 
 List.propTypes = {
     // the props you can change
-    title: PropTypes.any,
+    actions: PropTypes.element,
+    children: PropTypes.node,
     filter: PropTypes.object,
     filters: PropTypes.element,
     pagination: PropTypes.element,
-    actions: PropTypes.element,
     perPage: PropTypes.number.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
         order: PropTypes.string,
     }),
-    children: PropTypes.node,
+    title: PropTypes.any,
     // the props managed by react-admin
     authClient: PropTypes.func,
     changeListParams: PropTypes.func.isRequired,

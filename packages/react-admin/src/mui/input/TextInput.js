@@ -36,6 +36,7 @@ export class TextInput extends Component {
 
     render() {
         const {
+            classes,
             elStyle,
             input,
             isRequired,
@@ -56,11 +57,12 @@ export class TextInput extends Component {
         return (
             <TextField
                 {...input}
+                margin="normal"
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
                 onChange={this.handleChange}
                 type={type}
-                floatingLabelText={
+                label={
                     <FieldTitle
                         label={label}
                         source={source}
@@ -68,7 +70,9 @@ export class TextInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                errorText={touched && error}
+                error={!!(touched && error)}
+                helperText={touched && error}
+                classes={classes}
                 style={elStyle}
                 {...options}
             />

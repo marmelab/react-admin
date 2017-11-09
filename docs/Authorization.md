@@ -267,22 +267,25 @@ Here's an example inside a `DashBoard`:
 ```jsx
 // in src/Dashboard.js
 import React from 'react';
+import Card, { CardContent } from 'material-ui/Card';
+import { ViewTitle } from 'react-admin';
+
 import BenefitsSummary from './BenefitsSummary';
 import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
-import { ViewTitle } from 'react-admin/lib/mui';
 
 export default () => (
     <Card>
         <ViewTitle title="Dashboard" />
-
-        <SwitchPermissions>
-            <Permission value="associate">
-                <BenefitsSummary />
-            </Permission>
-            <Permission value="boss">
-                <BenefitsDetailsWithSensitiveData />
-            </Permission>
-        </SwitchPermissions>
+        <CardContent>
+            <SwitchPermissions>
+                <Permission value="associate">
+                    <BenefitsSummary />
+                </Permission>
+                <Permission value="boss">
+                    <BenefitsDetailsWithSensitiveData />
+                </Permission>
+            </SwitchPermissions>
+        </CardContent>
     </Card>
 );
 ```

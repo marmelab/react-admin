@@ -1,8 +1,12 @@
 import React from 'react';
-
+import { withStyles } from 'material-ui/styles';
 import Labeled from '../input/Labeled';
 
-const FormInput = ({ input, ...rest }) =>
+const styles = theme => ({
+    input: { width: theme.spacing.unit * 32 },
+});
+
+export const FormInput = ({ classes, input, ...rest }) =>
     input ? (
         <div
             className={`ra-input ra-input-${input.props.source}`}
@@ -13,9 +17,12 @@ const FormInput = ({ input, ...rest }) =>
                     {input}
                 </Labeled>
             ) : (
-                React.cloneElement(input, rest)
+                React.cloneElement(input, {
+                    classes: { root: classes.input },
+                    ...rest,
+                })
             )}
         </div>
     ) : null;
 
-export default FormInput;
+export default withStyles(styles)(FormInput);

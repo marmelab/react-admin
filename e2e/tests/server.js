@@ -18,6 +18,13 @@ before(
         })
 );
 
+before(() =>
+    driver
+        .manage()
+        .window()
+        .setSize(1200, 800)
+);
+
 after(async () => {
     listeningServer.close();
     return driver.quit();

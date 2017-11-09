@@ -266,7 +266,7 @@ Refer to [Material UI Checkbox documentation](http://www.material-ui.com/#/compo
 
 ## `<DateInput>`
 
-Ideal for editing dates, `<DateInput>` renders a beautiful [Date Picker](http://www.material-ui.com/#/components/date-picker) with full localization support.
+Ideal for editing dates, `<DateInput>` renders a standard browser [Date Picker](http://www.material-ui.com/#/components/date-picker).
 
 ```jsx
 import { DateInput } from 'react-admin';
@@ -275,24 +275,6 @@ import { DateInput } from 'react-admin';
 ```
 
 ![DateInput](./img/date-input.gif)
-
-You can override any of Material UI's `<DatePicker>` attributes by setting the `options` attribute:
-
-{% raw %}
-```jsx
-<DateInput source="published_at" options={{
-    mode: 'landscape',
-    minDate: new Date(),
-    hintText: 'Choisissez une date',
-    DateTimeFormat,
-    okLabel: 'OK',
-    cancelLabel: 'Annuler'
-    locale: 'fr'
-}} />
-```
-{% endraw %}
-
-Refer to [Material UI Datepicker documentation](http://www.material-ui.com/#/components/date-picker) for more details.
 
 ## `<DisabledInput>`
 
@@ -956,19 +938,10 @@ Say the user would like to input values of 0-100 to a percentage field but your 
 <NumberInput source="percent" format={v => v*100} parse={v => v/100} label="Formatted number" />
 ```
 
-`<DateInput>` stores and returns a `Date` object. If you would like to store the ISO date `"YYYY-MM-DD"` in your record:
+`<DateInput>` stores and returns a string. If you would like to store a JavaScript Date object in your record instead:
 
 ```jsx
 const dateFormatter = v => {
-  // v is a string of "YYYY-MM-DD" format
-  const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
-  if (match === null) return;
-  const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
-  if (isNaN(d)) return;
-  return d;
-};
-
-const dateParser = v => {
   // v is a `Date` object
   if (!(v instanceof Date) || isNaN(v)) return;
   const pad = '00';
@@ -978,7 +951,16 @@ const dateParser = v => {
   return `${yy}-${(pad + mm).slice(-2)}-${(pad + dd).slice(-2)}`;
 };
 
-<DateInput source="isodate" format={dateFormatter} parse={dateParser} label="ISO date" />
+const dateParser = v => {
+  // v is a string of "YYYY-MM-DD" format
+  const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
+  if (match === null) return;
+  const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
+  if (isNaN(d)) return;
+  return d;
+};
+
+<DateInput source="isodate" format={dateFormatter} parse={dateParser} />
 ```
 
 ## Third-Party Components

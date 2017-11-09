@@ -3,51 +3,50 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Drawer from 'material-ui/Drawer';
-import Paper from 'material-ui/Paper';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import Divider from 'material-ui/Divider';
+import IconButton from 'material-ui/IconButton';
+import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
+import { withStyles } from 'material-ui/styles';
 
 import Responsive from './Responsive';
 import { setSidebarVisibility as setSidebarVisibilityAction } from '../../actions';
 
-const getWidth = width => (typeof width === 'number' ? `${width}px` : width);
+export const DRAWER_WIDTH = 240;
 
-const getStyles = ({ drawer }) => {
-    const width = drawer && drawer.width ? getWidth(drawer.width) : '16em';
-
-    return {
-        sidebarOpen: {
-            flex: `0 0 ${width}`,
-            marginLeft: 0,
-            order: -1,
-            transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
-        },
-        sidebarClosed: {
-            flex: `0 0 ${width}`,
-            marginLeft: `-${width}`,
-            order: -1,
-            transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
-        },
-    };
-};
+const styles = theme => ({
+    drawerPaper: {
+        height: '100%',
+        width: DRAWER_WIDTH,
+    },
+    drawerHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        padding: '0 8px',
+        ...theme.mixins.toolbar,
+    },
+});
 
 // We shouldn't need PureComponent here as it's connected
 // but for some reason it keeps rendering even though mapStateToProps returns the same object
 class Sidebar extends PureComponent {
-    handleClose = () => {
-        this.props.setSidebarVisibility(false);
-    };
+    handleClose = () => this.props.setSidebarVisibility(false);
+
+    toggleSidebar = () => this.props.setSidebarVisibility(!this.props.open);
 
     render() {
-        const { open, setSidebarVisibility, children, muiTheme } = this.props;
-        const styles = getStyles(muiTheme);
+        const { children, classes, open, setSidebarVisibility } = this.props;
 
         return (
             <Responsive
                 small={
                     <Drawer
-                        docked={false}
+                        type="temporary"
                         open={open}
-                        onRequestChange={setSidebarVisibility}
+                        onRequestClose={this.toggleSidebar}
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
                     >
                         {React.cloneElement(children, {
                             onMenuTap: this.handleClose,
@@ -55,13 +54,22 @@ class Sidebar extends PureComponent {
                     </Drawer>
                 }
                 medium={
-                    <Paper
-                        style={open ? styles.sidebarOpen : styles.sidebarClosed}
+                    <Drawer
+                        type="persistent"
+                        open={open}
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                        onRequestClose={setSidebarVisibility}
                     >
-                        {React.cloneElement(children, {
-                            onMenuTap: () => null,
-                        })}
-                    </Paper>
+                        <div className={classes.drawerHeader}>
+                            <IconButton onClick={this.toggleSidebar}>
+                                <ChevronLeftIcon />
+                            </IconButton>
+                        </div>
+                        <Divider />
+                        {children}
+                    </Drawer>
                 }
             />
         );
@@ -70,20 +78,19 @@ class Sidebar extends PureComponent {
 
 Sidebar.propTypes = {
     children: PropTypes.node.isRequired,
-    muiTheme: PropTypes.object.isRequired,
+    classes: PropTypes.object,
     open: PropTypes.bool.isRequired,
     setSidebarVisibility: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = state => ({
     open: state.admin.ui.sidebarOpen,
     locale: state.locale, // force redraw on locale change
-    theme: props.theme, // force redraw on theme changes
 });
 
 export default compose(
-    muiThemeable(),
     connect(mapStateToProps, {
         setSidebarVisibility: setSidebarVisibilityAction,
-    })
+    }),
+    withStyles(styles)
 )(Sidebar);

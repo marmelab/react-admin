@@ -17,17 +17,11 @@ const DatagridBody = ({
     rowOptions,
     ...rest
 }) => (
-    <TableBody
-        displayRowCheckbox={false}
-        className="datagrid-body"
-        {...rest}
-        {...options}
-    >
+    <TableBody className="datagrid-body" {...rest} {...options}>
         {ids.map((id, rowIndex) => (
             <TableRow
                 style={rowStyle ? rowStyle(data[id], rowIndex) : styles.tr}
                 key={id}
-                selectable={false}
                 {...rowOptions}
             >
                 {React.Children.map(

@@ -25,12 +25,12 @@ Here is the minimal code necessary to display a view to show a post:
 // in src/App.js
 import React from 'react';
 import { Admin, Resource } from 'react-admin';
-import jsonServerRestClient from 'ra-data-json-server';
+import jsonServerProvider from 'ra-data-json-server';
 
 import { PostCreate, PostEdit, PostShow } from './posts';
 
 const App = () => (
-    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" show={PostShow} create={PostCreate} edit={PostEdit} />
     </Admin>
 );
@@ -91,8 +91,7 @@ You can replace the list of default actions by your own element using the `actio
 
 ```jsx
 import { CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+import Button from 'material-ui/Button';
 import { ListButton, EditButton, DeleteButton } from 'react-admin';
 
 const cardActionStyle = {
@@ -101,14 +100,13 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const PostShowActions = ({ basePath, data, refresh }) => (
+const PostShowActions = ({ basePath, data }) => (
     <CardActions style={cardActionStyle}>
         <EditButton basePath={basePath} record={data} />
         <ListButton basePath={basePath} />
         <DeleteButton basePath={basePath} record={data} />
-        <FlatButton primary label="Refresh" onClick={refresh} icon={<NavigationRefresh />} />
         {/* Add your custom actions */}
-        <FlatButton primary label="Custom Action" onClick={customAction} />
+        <Button color="primary" onClick={customAction}>Custom Action</Button>
     </CardActions>
 );
 

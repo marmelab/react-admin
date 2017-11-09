@@ -25,14 +25,16 @@ import {
     SimpleShowLayout,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
-import PersonIcon from 'material-ui/svg-icons/social/person';
+import PersonIcon from 'material-ui-icons/Person';
 import Avatar from 'material-ui/Avatar';
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
-import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-export CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
+import Card, { CardActions, CardHeader, CardContent } from 'material-ui/Card';
+import Button from 'material-ui/Button';
+import Toolbar from 'material-ui/Toolbar';
+import ChevronLeft from 'material-ui-icons/ChevronLeft';
+import ChevronRight from 'material-ui-icons/ChevronRight';
+import Grid from 'material-ui/Grid';
+import { withStyles } from 'material-ui/styles';
+export CommentIcon from 'material-ui-icons/ChatBubble';
 
 const CommentFilter = ({ ...props }) => (
     <Filter {...props}>
@@ -48,83 +50,106 @@ const CommentPagination = translate(
         return (
             nbPages > 1 && (
                 <Toolbar>
-                    <ToolbarGroup>
-                        {page > 1 && (
-                            <FlatButton
-                                primary
-                                key="prev"
-                                label={translate('ra.navigation.prev')}
-                                icon={<ChevronLeft />}
-                                onClick={() => setPage(page - 1)}
-                            />
-                        )}
-                        {page !== nbPages && (
-                            <FlatButton
-                                primary
-                                key="next"
-                                label={translate('ra.navigation.next')}
-                                icon={<ChevronRight />}
-                                onClick={() => setPage(page + 1)}
-                                labelPosition="before"
-                            />
-                        )}
-                    </ToolbarGroup>
+                    {page > 1 && (
+                        <Button
+                            type="primary"
+                            key="prev"
+                            onClick={() => setPage(page - 1)}
+                        >
+                            <ChevronLeft />&nbsp;
+                            {translate('ra.navigation.prev')}
+                        </Button>
+                    )}
+                    {page !== nbPages && (
+                        <Button
+                            type="primary"
+                            key="next"
+                            onClick={() => setPage(page + 1)}
+                        >
+                            {translate('ra.navigation.next')}&nbsp;
+                            <ChevronRight />
+                        </Button>
+                    )}
                 </Toolbar>
             )
         );
     }
 );
 
-const cardStyle = {
-    width: 300,
-    minHeight: 300,
-    margin: '0.5em',
-    display: 'inline-block',
-    verticalAlign: 'top',
-};
+const listStyles = theme => ({
+    card: {
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    cardContent: theme.typography.body1,
+    cardLink: {
+        ...theme.typography.body1,
+        flexGrow: 1,
+    },
+    cardActions: {
+        justifyContent: 'flex-end',
+    },
+});
 
-const CommentGrid = translate(({ ids, data, basePath, translate }) => (
-    <div style={{ margin: '1em' }}>
-        {ids.map(id => (
-            <Card key={id} style={cardStyle}>
-                <CardHeader
-                    title={<TextField record={data[id]} source="author.name" />}
-                    subtitle={
-                        <DateField record={data[id]} source="created_at" />
-                    }
-                    avatar={<Avatar icon={<PersonIcon />} />}
-                />
-                <CardText>
-                    <TextField record={data[id]} source="body" />
-                </CardText>
-                <CardText>
-                    {translate('comment.list.about')}&nbsp;
-                    <ReferenceField
-                        resource="comments"
-                        record={data[id]}
-                        source="post_id"
-                        reference="posts"
-                        basePath={basePath}
-                    >
-                        <TextField source="title" />
-                    </ReferenceField>
-                </CardText>
-                <CardActions style={{ textAlign: 'right' }}>
-                    <EditButton
-                        resource="posts"
-                        basePath={basePath}
-                        record={data[id]}
-                    />
-                    <ShowButton
-                        resource="posts"
-                        basePath={basePath}
-                        record={data[id]}
-                    />
-                </CardActions>
-            </Card>
-        ))}
-    </div>
-));
+const CommentGrid = withStyles(listStyles)(
+    translate(({ classes, ids, data, basePath, translate }) => (
+        <Grid container style={{ padding: '1em' }}>
+            {ids.map(id => (
+                <Grid item key={id} sm={12} md={6} lg={4}>
+                    <Card className={classes.card}>
+                        <CardHeader
+                            title={
+                                <TextField
+                                    record={data[id]}
+                                    source="author.name"
+                                />
+                            }
+                            subheader={
+                                <DateField
+                                    record={data[id]}
+                                    source="created_at"
+                                />
+                            }
+                            avatar={
+                                <Avatar>
+                                    <PersonIcon />
+                                </Avatar>
+                            }
+                        />
+                        <CardContent className={classes.cardContent}>
+                            <TextField record={data[id]} source="body" />
+                        </CardContent>
+                        <CardContent className={classes.cardLink}>
+                            {translate('comment.list.about')}&nbsp;
+                            <ReferenceField
+                                resource="comments"
+                                record={data[id]}
+                                source="post_id"
+                                reference="posts"
+                                basePath={basePath}
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </CardContent>
+                        <CardActions className={classes.cardActions}>
+                            <EditButton
+                                resource="posts"
+                                basePath={basePath}
+                                record={data[id]}
+                            />
+                            <ShowButton
+                                resource="posts"
+                                basePath={basePath}
+                                record={data[id]}
+                            />
+                        </CardActions>
+                    </Card>
+                </Grid>
+            ))}
+        </Grid>
+    ))
+);
 
 CommentGrid.defaultProps = {
     data: {},
@@ -138,7 +163,7 @@ const CommentMobileList = props => (
         secondaryTextLines={2}
         tertiaryText={record =>
             new Date(record.created_at).toLocaleDateString()}
-        leftAvatar={() => <Avatar icon={<PersonIcon />} />}
+        leftAvatar={() => <PersonIcon />}
         {...props}
     />
 );
@@ -161,7 +186,7 @@ export const CommentEdit = ({ ...props }) => (
             <ReferenceInput
                 source="post_id"
                 reference="posts"
-                perPage={5}
+                perPage={15}
                 sort={{ field: 'title', order: 'ASC' }}
             >
                 <AutocompleteInput optionText="title" />

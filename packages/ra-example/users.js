@@ -25,7 +25,7 @@ import {
     translate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
-export UserIcon from 'material-ui/svg-icons/social/people';
+export UserIcon from 'material-ui-icons/People';
 
 const UserFilter = ({ ...props }) => (
     <Filter {...props}>

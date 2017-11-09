@@ -7,20 +7,22 @@ import { SaveButton } from './SaveButton';
 const translate = label => label;
 
 describe('<SaveButton />', () => {
-    it('should render <RaisedButton /> when raised is true', () => {
+    it('should render <Button raised={true}/> when raised is true', () => {
         const wrapper = shallow(
             <SaveButton raised={true} translate={translate} />
         );
-
-        assert.equal(wrapper.type().muiName, 'RaisedButton');
+        const ButtonElement = wrapper.find('withStyles(Button)');
+        assert.equal(ButtonElement.length, 1);
+        assert.equal(ButtonElement.at(0).prop('raised'), true);
     });
 
-    it('should render <FlatButton /> when raised is false', () => {
+    it('should render <Button raised={false}/> when raised is false', () => {
         const wrapper = shallow(
             <SaveButton raised={false} translate={translate} />
         );
-
-        assert.equal(wrapper.type().muiName, 'FlatButton');
+        const ButtonElement = wrapper.find('withStyles(Button)');
+        assert.equal(ButtonElement.length, 1);
+        assert.equal(ButtonElement.at(0).prop('raised'), false);
     });
 
     it('should render as submit type when submitOnEnter is true', () => {

@@ -67,13 +67,13 @@ Upon receiving a 403 response, the admin app shows the Login page. `authClient` 
 
 ## Sending Credentials to the API
 
-To use the credentials when calling a data provider, you have to tweak, this time, the `dataProvider` function. As explained in the [Data providers documentation](DataProviders.md#adding-custom-headers), `simpleRestClient` and `jsonServerRestClient` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
+To use the credentials when calling a data provider, you have to tweak, this time, the `dataProvider` function. As explained in the [Data providers documentation](DataProviders.md#adding-custom-headers), `simpleRestProvider` and `jsonServerProvider` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
 
 For instance, to pass the token obtained during login as an `Authorization` header, configure the Data Provider as follows:
 
 ```jsx
 import { fetchUtils, Admin, Resource } from 'react-admin';
-import simpleRestClient from 'ra-data-simple-rest';
+import simpleRestProvider from 'ra-data-simple-rest';
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -83,7 +83,7 @@ const httpClient = (url, options = {}) => {
     options.headers.set('Authorization', `Bearer ${token}`);
     return fetchUtils.fetchJson(url, options);
 }
-const dataProvider = simpleRestClient('http://localhost:3000', httpClient);
+const dataProvider = simpleRestProvider('http://localhost:3000', httpClient);
 
 const App = () => (
     <Admin dataProvider={dataProvider} authClient={authClient}>

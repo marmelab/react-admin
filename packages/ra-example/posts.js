@@ -47,10 +47,10 @@ import {
 import RichTextInput from 'ra-input-rich-text';
 import Chip from 'material-ui/Chip';
 
-export PostIcon from 'material-ui/svg-icons/action/book';
+export PostIcon from 'material-ui-icons/Book';
 
 const QuickFilter = translate(({ label, translate }) => (
-    <Chip style={{ marginBottom: 8 }}>{translate(label)}</Chip>
+    <Chip style={{ marginBottom: 8 }} label={translate(label)} />
 ));
 
 const PostFilter = ({ ...props }) => (
@@ -166,7 +166,7 @@ export const PostCreate = ({ ...props }) => (
         >
             <TextInput source="title" />
             <TextInput source="password" type="password" />
-            <TextInput source="teaser" options={{ multiLine: true }} />
+            <LongTextInput source="teaser" />
             <RichTextInput source="body" />
             <DateInput source="published_at" defaultValue={() => new Date()} />
             <NumberInput source="average_note" />
@@ -283,7 +283,7 @@ export const PostShow = ({ ...props }) => (
             </Tab>
             <Tab label="post.form.comments">
                 <ReferenceManyField
-                    label="resources.posts.fields.comments"
+                    addLabel={false}
                     reference="comments"
                     target="post_id"
                     sort={{ field: 'created_at', order: 'DESC' }}

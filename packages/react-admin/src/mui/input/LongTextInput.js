@@ -25,9 +25,10 @@ export const LongTextInput = ({
     return (
         <TextField
             {...input}
-            multiLine
+            multiline
             fullWidth
-            floatingLabelText={
+            margin="normal"
+            label={
                 <FieldTitle
                     label={label}
                     source={source}
@@ -35,7 +36,8 @@ export const LongTextInput = ({
                     isRequired={isRequired}
                 />
             }
-            errorText={touched && error}
+            error={!!(touched && error)}
+            helperText={touched && error}
             style={elStyle}
             {...options}
         />

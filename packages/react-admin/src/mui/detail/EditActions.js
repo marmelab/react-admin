@@ -4,8 +4,9 @@ import { ListButton, ShowButton, DeleteButton, RefreshButton } from '../button';
 
 const cardActionStyle = {
     zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    flexWrap: 'wrap',
 };
 
 const EditActions = ({ basePath, data, hasDelete, hasShow, hasList }) => (
