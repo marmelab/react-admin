@@ -1,6 +1,6 @@
 {
     "name": "ra-input-rich-text",
-    "version": "2.0.0-alpha2",
+    "version": "2.0.0-alpha3",
     "description": "<RichTextInput> component for react-admin, useful for editing HTML code in admin GUIs.",
     "main": "lib/index.js",
     "scripts": {
@@ -41,6 +41,6 @@
         "lodash.debounce": "~4.0.8",
         "prop-types": "~15.5.7",
         "quill": "~1.1.9",
-        "react-admin": "^2.0.0-alpha2"
+        "react-admin": "^2.0.0-alpha3"
     }
 }
