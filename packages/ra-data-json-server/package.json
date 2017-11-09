@@ -3,17 +3,23 @@
     "version": "2.0.0-alpha1",
     "description": "JSON Server data provider for react-admin",
     "main": "lib/index.js",
-    "files": ["*.md", "lib", "src"],
+    "files": [
+        "*.md",
+        "lib",
+        "src"
+    ],
     "scripts": {
         "test": "make test"
     },
-    "authors": ["François Zaninotto"],
+    "authors": [
+        "François Zaninotto"
+    ],
     "repository": "marmelab/react-admin",
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "dependencies": {
-        "react-admin": "2.0.0-alpha1",
-        "query-string": "~5.0.0"
+        "query-string": "~5.0.0",
+        "react-admin": "^2.0.0-alpha1"
     }
 }

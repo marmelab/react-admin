@@ -6,7 +6,12 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "files": ["LICENSE", "*.md", "lib", "src"],
+    "files": [
+        "LICENSE",
+        "*.md",
+        "lib",
+        "src"
+    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/marmelab/react-admin.git"

@@ -48,7 +48,7 @@
         "node-polyglot": "2.2.2",
         "prop-types": "~15.5.7",
         "query-string": "~5.0.0",
-        "ra-language-english": "~2.0.0-alpha1",
+        "ra-language-english": "^2.0.0-alpha1",
         "react-autosuggest": "^9.3.2",
         "react-dropzone": "~4.0.1",
         "react-redux": "~5.0.4",
