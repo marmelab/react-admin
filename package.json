@@ -28,6 +28,7 @@
         "eslint-plugin-react": "~7.3.0",
         "express": "~4.15.2",
         "jest": "^21.2.1",
+        "lerna": "^2.5.1",
         "mocha": "^4.0.1",
         "prettier": "~1.7.0",
         "prettier-eslint-cli": "~4.4.0",
