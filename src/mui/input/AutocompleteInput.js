@@ -84,8 +84,7 @@ export class AutocompleteInput extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.input.value !== nextProps.input.value) {
             this.setSearchText(nextProps);
-        }
-        else if (
+        } else if (
             !isEqual(this.props.choices, nextProps.choices) &&
             !this.state.initChoices
         ) {
