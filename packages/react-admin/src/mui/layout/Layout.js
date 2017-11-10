@@ -1,21 +1,22 @@
-import React, { createElement, Component } from 'react';
+import React, { createElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import { withStyles } from 'material-ui/styles';
-import withWidth from 'material-ui/utils/withWidth';
-import { CircularProgress } from 'material-ui/Progress';
+import {
+    MuiThemeProvider,
+    createMuiTheme,
+    withStyles,
+} from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
 import compose from 'recompose/compose';
 
 import AdminRoutes from '../../AdminRoutes';
 import AppBar from './AppBar';
-import Sidebar from './Sidebar';
+import Sidebar, { DRAWER_WIDTH } from './Sidebar';
+import LoadingIndicator from './LoadingIndicator';
 import Menu from './Menu';
 import Notification from './Notification';
 import defaultTheme from '../defaultTheme';
-import { setSidebarVisibility } from '../../actions';
-import { DRAWER_WIDTH } from './Sidebar';
 
 const styles = theme => ({
     root: {
@@ -63,79 +64,52 @@ const styles = theme => ({
             }),
         },
     },
-    loader: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        margin: 16,
-        zIndex: 1200,
-        color: 'white',
-    },
 });
 
-class Layout extends Component {
-    componentWillMount() {
-        const { width, setSidebarVisibility } = this.props;
-        if (width !== 'xs' && width !== 'sm') {
-            setSidebarVisibility(true);
-        }
-    }
-
-    render() {
-        const {
-            catchAll,
-            children,
-            classes,
-            customRoutes,
-            dashboard,
-            isLoading,
-            logout,
-            menu,
-            open,
-            title,
-            width,
-        } = this.props;
-
-        return (
-            <div className={classes.root}>
-                <div className={classes.appFrame}>
-                    <Hidden xsDown>
-                        <AppBar title={title} open={open} />
-                    </Hidden>
-                    <Sidebar>
-                        {createElement(menu || Menu, {
-                            logout,
-                            hasDashboard: !!dashboard,
-                        })}
-                    </Sidebar>
-                    <main
-                        className={classNames(
-                            classes.content,
-                            open && classes.contentShift
-                        )}
-                    >
-                        <AdminRoutes
-                            customRoutes={customRoutes}
-                            dashboard={dashboard}
-                            catchAll={catchAll}
-                        >
-                            {children}
-                        </AdminRoutes>
-                    </main>
-
-                    <Notification />
-                    {isLoading && (
-                        <CircularProgress
-                            className={classNames('app-loader', classes.loader)}
-                            size={width === 'xs' || width === 'sm' ? 20 : 30}
-                            thickness={2}
-                        />
+const Layout = ({
+    catchAll,
+    children,
+    classes,
+    customRoutes,
+    dashboard,
+    logout,
+    menu,
+    open,
+    theme,
+    title,
+}) => (
+    <MuiThemeProvider theme={createMuiTheme(theme)}>
+        <div className={classes.root}>
+            <div className={classes.appFrame}>
+                <Hidden xsDown>
+                    <AppBar title={title} open={open} />
+                </Hidden>
+                <Sidebar>
+                    {createElement(menu || Menu, {
+                        logout,
+                        hasDashboard: !!dashboard,
+                    })}
+                </Sidebar>
+                <main
+                    className={classNames(
+                        classes.content,
+                        open && classes.contentShift
                     )}
-                </div>
+                >
+                    <AdminRoutes
+                        customRoutes={customRoutes}
+                        dashboard={dashboard}
+                        catchAll={catchAll}
+                    >
+                        {children}
+                    </AdminRoutes>
+                </main>
+                <Notification />
+                <LoadingIndicator />
             </div>
-        );
-    }
-}
+        </div>
+    </MuiThemeProvider>
+);
 
 const componentPropType = PropTypes.oneOfType([
     PropTypes.func,
@@ -148,7 +122,6 @@ Layout.propTypes = {
     catchAll: componentPropType,
     customRoutes: PropTypes.array,
     dashboard: componentPropType,
-    isLoading: PropTypes.bool.isRequired,
     logout: PropTypes.oneOfType([
         PropTypes.node,
         PropTypes.func,
@@ -156,10 +129,8 @@ Layout.propTypes = {
     ]),
     menu: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     open: PropTypes.bool,
-    setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.node.isRequired,
     theme: PropTypes.object.isRequired,
-    width: PropTypes.string,
 };
 
 Layout.defaultProps = {
@@ -167,15 +138,8 @@ Layout.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-    isLoading: state.admin.loading > 0,
     open: state.admin.ui.sidebarOpen,
 });
-const enhance = compose(
-    connect(mapStateToProps, {
-        setSidebarVisibility,
-    }),
-    withStyles(styles),
-    withWidth()
-);
+const enhance = compose(connect(mapStateToProps), withStyles(styles));
 
 export default enhance(Layout);

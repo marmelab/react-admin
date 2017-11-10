@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import { push as pushAction } from 'react-router-redux';
 import Card, { CardContent } from 'material-ui/Card';
+import Typography from 'material-ui/Typography';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import inflection from 'inflection';
@@ -268,7 +269,9 @@ export class List extends Component {
                         </div>
                     ) : (
                         <CardContent style={styles.noResults}>
-                            {translate('ra.navigation.no_results')}
+                            <Typography type="body1">
+                                {translate('ra.navigation.no_results')}
+                            </Typography>
                         </CardContent>
                     )}
                 </Card>
