@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
-import IconButton from 'material-ui/IconButton';
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import { withStyles } from 'material-ui/styles';
+import withWidth from 'material-ui/utils/withWidth';
+import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
+import IconButton from 'material-ui/IconButton';
 
 import Responsive from './Responsive';
-import { setSidebarVisibility as setSidebarVisibilityAction } from '../../actions';
+import { setSidebarVisibility } from '../../actions';
 
 export const DRAWER_WIDTH = 240;
 
@@ -30,6 +31,13 @@ const styles = theme => ({
 // We shouldn't need PureComponent here as it's connected
 // but for some reason it keeps rendering even though mapStateToProps returns the same object
 class Sidebar extends PureComponent {
+    componentWillMount() {
+        const { width, setSidebarVisibility } = this.props;
+        if (width !== 'xs' && width !== 'sm') {
+            setSidebarVisibility(true);
+        }
+    }
+
     handleClose = () => this.props.setSidebarVisibility(false);
 
     toggleSidebar = () => this.props.setSidebarVisibility(!this.props.open);
@@ -81,6 +89,7 @@ Sidebar.propTypes = {
     classes: PropTypes.object,
     open: PropTypes.bool.isRequired,
     setSidebarVisibility: PropTypes.func.isRequired,
+    width: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
@@ -89,8 +98,7 @@ const mapStateToProps = state => ({
 });
 
 export default compose(
-    connect(mapStateToProps, {
-        setSidebarVisibility: setSidebarVisibilityAction,
-    }),
-    withStyles(styles)
+    connect(mapStateToProps, { setSidebarVisibility }),
+    withStyles(styles),
+    withWidth()
 )(Sidebar);
