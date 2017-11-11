@@ -328,7 +328,7 @@ In order to put the rate passed to `bitcoinRateReceived()` into the Redux store,
 // in src/rateReducer.js
 import { BITCOIN_RATE_RECEIVED } from './bitcoinRateReceived';
 
-export const (previousState = 0, { type, payload }) => {
+export default (previousState = 0, { type, payload }) => {
     if (type === BITCOIN_RATE_RECEIVED) {
         return payload.rate;
     }
