@@ -26,6 +26,7 @@ const Admin = ({
     customReducers = {},
     customSagas = [],
     customRoutes = [],
+    customPages = [],
     dashboard,
     history,
     locale,
@@ -75,6 +76,19 @@ const Admin = ({
                                         theme,
                                     })}
                             />
+                            {customPages.map(customPage => (
+                                <Route
+                                    exact
+                                    path={customPage.path}
+                                    key={customPage.path}
+                                    render={({ location }) =>
+                                        createElement(customPage.page, {
+                                            location,
+                                            title,
+                                            theme,
+                                        })}
+                                />
+                            ))}
                             {customRoutes
                                 .filter(route => route.props.noLayout)
                                 .map((route, index) => (
@@ -140,6 +154,7 @@ Admin.propTypes = {
     customSagas: PropTypes.array,
     customReducers: PropTypes.object,
     customRoutes: PropTypes.array,
+    customPages: PropTypes.array,
     dashboard: componentPropType,
     history: PropTypes.object,
     loginPage: componentPropType,
