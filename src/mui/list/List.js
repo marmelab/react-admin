@@ -139,6 +139,9 @@ export class List extends Component {
         if (!query.perPage) {
             query.perPage = this.props.perPage;
         }
+        if (!query.page) {
+            query.page = 1;
+        }
         return query;
     }
 
