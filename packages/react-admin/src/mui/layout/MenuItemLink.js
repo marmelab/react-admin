@@ -6,16 +6,16 @@ import { withRouter } from 'react-router';
 
 const iconPaddingStyle = { paddingRight: '0.5em' };
 
-export class MenuItemLinkComponent extends Component {
+export class MenuItemLink extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired,
-        onClick: PropTypes.func.isRequired,
+        onClick: PropTypes.func,
         to: PropTypes.string.isRequired,
     };
 
     handleMenuTap = () => {
         this.props.history.push(this.props.to);
-        this.props.onClick();
+        this.props.onClick && this.props.onClick();
     };
 
     render() {
@@ -38,4 +38,4 @@ export class MenuItemLinkComponent extends Component {
     }
 }
 
-export default withRouter(MenuItemLinkComponent);
+export default withRouter(MenuItemLink);

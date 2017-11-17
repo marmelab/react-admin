@@ -27,7 +27,6 @@ export class DateInput extends Component {
 
     render() {
         const {
-            classes,
             input,
             isRequired,
             label,
@@ -62,14 +61,13 @@ export class DateInput extends Component {
                 InputLabelProps={{
                     shrink: true,
                 }}
-                value={
+                value={dateFormatter(
                     input.value instanceof Date
-                        ? dateFormatter(input.value)
-                        : input.value
-                }
+                        ? input.value
+                        : new Date(input.value)
+                )}
                 onChange={this.onChange}
                 onBlur={this.onBlur}
-                classes={classes}
                 style={elStyle}
                 {...options}
             />

@@ -18,7 +18,7 @@ const Link = ({ to, children, className, classes }) => (
 Link.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
-    to: PropTypes.string,
+    to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 export default withStyles(styles)(Link);
