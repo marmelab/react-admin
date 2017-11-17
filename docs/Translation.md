@@ -62,6 +62,7 @@ You can find translation packages for the following languages:
 - Turkish (`tr`): [ismailbaskin/aor-language-turkish](https://github.com/ismailbaskin/aor-language-turkish)
 - Ukrainian (`uk`): [vitivs/aor-language-ukrainian](https://github.com/vitivs/aor-language-ukrainian)
 - Vietnamese (`vi`): [kimkha/aor-language-vietnamese](https://github.com/kimkha/aor-language-vietnamese)
+- Arabic ( `ع` ): [aymendhaya/aor-language-arabic ](https://github.com/aymendhaya/aor-language-arabic)
 
 If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/admin-on-rest/blob/master/docs/Translation.md) with a link to your package.
 
