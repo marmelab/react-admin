@@ -195,6 +195,7 @@ AutocompleteInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
+    translate,
     translateChoice: true,
 };
 
