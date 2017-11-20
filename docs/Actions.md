@@ -78,7 +78,6 @@ export const CommentList = (props) =>
 
 Or, in the `<Edit>` page, as a [custom action](./CreateEdit.md#actions):
 
-{% raw %}
 ```jsx
 // in src/comments/CommentEditActions.js
 import React from 'react';
@@ -86,8 +85,14 @@ import { CardActions } from 'material-ui/Card';
 import { ListButton, DeleteButton } from 'react-admin';
 import ApproveButton from './ApproveButton';
 
+const cardActionStyle = {
+    zIndex: 2,
+    display: 'inline-block',
+    float: 'right',
+};
+
 const CommentEditActions = ({ basePath, data }) => (
-    <CardActions style={{ float: 'right' }}>
+    <CardActions style={cardActionStyle}>
         <ApproveButton record={data} />
         <ListButton basePath={basePath} />
         <DeleteButton basePath={basePath} record={data} />
@@ -102,9 +107,8 @@ import CommentEditActions from './CommentEditActions';
 export const CommentEdit = (props) =>
     <Edit {...props} actions={<CommentEditActions />}>
         ...
-    </List>;
+    </Edit>;
 ```
-{% endraw %}
 
 ## Using a Data Provider Instead of Fetch
 
