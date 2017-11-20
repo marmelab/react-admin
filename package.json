@@ -9,6 +9,8 @@
         "src"
     ],
     "main": "lib/index",
+    "module": "src/index",
+    "jsnext:main": "src/index",
     "scripts": {
         "test": "make test"
     },
