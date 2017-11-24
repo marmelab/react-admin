@@ -5,14 +5,15 @@ import { shallow } from 'enzyme';
 import { DatagridHeaderCell } from './DatagridHeaderCell';
 
 describe('<DatagridHeaderCell />', () => {
-    describe('sorting on a column', () => {
+    describe('content rendering', () => {
         const Field = () => <div />;
+        const MyHeader = () => <span />;
         Field.defaultProps = {
             type: 'foo',
             updateSort: () => true,
         };
 
-        it('should be enabled when field has a source', () => {
+        it('should use default header content renderer if none defined', () => {
             const wrapper = shallow(
                 <DatagridHeaderCell
                     currentSort={{}}
@@ -20,31 +21,18 @@ describe('<DatagridHeaderCell />', () => {
                     updateSort={() => true}
                 />
             );
-            assert.equal(wrapper.find('withStyles(Button)').length, 1);
+            assert.equal(wrapper.find('DatagridHeaderCellContent').length, 1);
         });
 
-        it('should be disabled when field has no source', () => {
+        it('should allow custom header renderer in field', () => {
             const wrapper = shallow(
                 <DatagridHeaderCell
                     currentSort={{}}
-                    field={<Field />}
+                    field={<Field source="title" header={<MyHeader />} />}
                     updateSort={() => true}
                 />
             );
-
-            assert.equal(wrapper.find('withStyles(Button)').length, 0);
-        });
-
-        it('should be disabled when sortable prop is explicitly set to false', () => {
-            const wrapper = shallow(
-                <DatagridHeaderCell
-                    currentSort={{}}
-                    field={<Field source="title" sortable={false} />}
-                    updateSort={() => true}
-                />
-            );
-
-            assert.equal(wrapper.find('withStyles(Button)').length, 0);
+            assert.equal(wrapper.find('MyHeader').length, 1);
         });
     });
 });
