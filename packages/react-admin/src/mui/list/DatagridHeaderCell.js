@@ -1,15 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import defaultsDeep from 'lodash.defaultsdeep';
-import classNames from 'classnames';
 import shouldUpdate from 'recompose/shouldUpdate';
 import compose from 'recompose/compose';
 import { TableCell } from 'material-ui/Table';
-import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
-import ContentSort from 'material-ui-icons/Sort';
-
-import FieldTitle from '../../util/FieldTitle';
+import DefaultHeaderCellContent from './DatagridHeaderCellContent';
 
 const styles = {
     sortButton: {
@@ -34,56 +30,22 @@ const styles = {
     },
 };
 
-export const DatagridHeaderCell = ({
-    classes = {},
-    field,
-    defaultStyle,
-    currentSort,
-    updateSort,
-    resource,
-}) => {
+export const DatagridHeaderCell = ({ field, defaultStyle, ...props }) => {
     const style = defaultsDeep(
         {},
         field.props.headerStyle,
         field.type.defaultProps ? field.type.defaultProps.headerStyle : {},
         defaultStyle
     );
+    const tableCellContent = field.props.header || <DefaultHeaderCellContent />;
+
     return (
         <TableCell style={style}>
-            {field.props.sortable !== false && field.props.source ? (
-                <Button
-                    onClick={updateSort}
-                    data-sort={field.props.source}
-                    className={classes.sortButton}
-                >
-                    <FieldTitle
-                        label={field.props.label}
-                        source={field.props.source}
-                        resource={resource}
-                    />
-
-                    {field.props.source === currentSort.field && (
-                        <ContentSort
-                            className={classNames(
-                                classes.sortIcon,
-                                currentSort.order === 'ASC'
-                                    ? classes.sortIconReversed
-                                    : ''
-                            )}
-                        />
-                    )}
-                </Button>
-            ) : (
-                <span className={classes.nonSortableLabel}>
-                    {
-                        <FieldTitle
-                            label={field.props.label}
-                            source={field.props.source}
-                            resource={resource}
-                        />
-                    }
-                </span>
-            )}
+            {tableCellContent &&
+                React.cloneElement(tableCellContent, {
+                    field,
+                    ...props,
+                })}
         </TableCell>
     );
 };
