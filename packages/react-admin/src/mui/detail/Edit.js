@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Card, { CardContent } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
+
 import Header from '../layout/Header';
 import Title from '../layout/Title';
 import {
@@ -23,7 +24,7 @@ import withChildrenAsFunction from '../withChildrenAsFunction';
  * that's the job of its child component (usually `<SimpleForm>`),
  * to which it passes pass the `record` as prop.
  *
- * Here are all the props accepted by the `<Edit>`component:
+ * The `<Edit>` component accepts the following props:
  *
  * - title
  * - actions

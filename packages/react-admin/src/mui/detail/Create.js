@@ -19,7 +19,7 @@ import withChildrenAsFunction from '../withChildrenAsFunction';
  * that's the job of its child component (usually `<SimpleForm>`),
  * to which it passes pass the `record` as prop.
  *
- * Here are all the props accepted by the `<Create>`component:
+ * The `<Create>` component accepts the following props:
  *
  * - title
  * - actions

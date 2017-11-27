@@ -21,7 +21,7 @@ import withChildrenAsFunction from '../withChildrenAsFunction';
  * that's the job of its child component (usually `<SimpleShowLayout>`),
  * to which it passes pass the `record` as prop.
  *
- * Here are all the props accepted by the `<Show>`component:
+ * The `<Show>` component accepts the following props:
  *
  * - title
  * - actions
