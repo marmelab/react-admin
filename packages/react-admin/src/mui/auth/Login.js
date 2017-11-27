@@ -149,7 +149,7 @@ Login.propTypes = {
     authClient: PropTypes.func,
     classes: PropTypes.object,
     input: PropTypes.object,
-    meta: PropTypes.object;
+    meta: PropTypes.object,
     previousRoute: PropTypes.string,
     translate: PropTypes.func.isRequired,
     userLogin: PropTypes.func.isRequired,

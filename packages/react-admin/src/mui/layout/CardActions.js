@@ -1,5 +1,5 @@
 import React from 'react';
-impoer PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { CardActions as MuiCardActions } from 'material-ui/Card';
 import { withStyles } from 'material-ui/styles';
 
