@@ -5,6 +5,31 @@ import getContext from 'recompose/getContext';
 import { AUTH_GET_PERMISSIONS } from './types';
 import resolvePermissions from './resolvePermissions';
 
+/**
+ * Render different components depending on permissions.
+ * 
+ * Each child of the <SwitchPermission> component 
+ * must be a <Permission> component.
+ * 
+ * If multiple `Permission` match, only the first one will be displayed.
+ * 
+ * @see Permission
+ * 
+ * @example
+ *     <Card>
+ *         <ViewTitle title="Dashboard" />
+ *         <CardContent>
+ *             <SwitchPermissions>
+ *                 <Permission value="associate">
+ *                     <BenefitsSummary />
+ *                 </Permission>
+ *                 <Permission value="boss">
+ *                     <BenefitsDetailsWithSensitiveData />
+ *                 </Permission>
+ *             </SwitchPermissions>
+ *         </CardContent>
+ *     </Card>
+ */
 export class SwitchPermissions extends Component {
     static propTypes = {
         authClient: PropTypes.func,
