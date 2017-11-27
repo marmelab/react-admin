@@ -157,6 +157,7 @@ If you want to add or remove menu items, for instance to link to non-resources p
 import React from 'react';
 import { connect } from 'react-redux';
 import { MenuItemLink } from 'admin-on-rest';
+import { getResources } from 'admin-on-rest/lib/reducer';
 
 const Menu = ({ resources, onMenuTap, logout }) => (
     <div>
