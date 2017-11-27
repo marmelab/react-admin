@@ -13,6 +13,9 @@ const styles = {
         display: 'inline-flex',
         alignItems: 'center',
     },
+    iconPaddingStyle: {
+        paddingRight: '0.5em',
+    },
 };
 
 const ListButton = ({
@@ -23,8 +26,7 @@ const ListButton = ({
 }) => (
     <Button color="primary">
         <Link to={basePath} className={classes.link}>
-            <ActionList />
-            &nbsp;
+            <ActionList className={classes.iconPaddingStyle} />
             {label && translate(label)}
         </Link>
     </Button>

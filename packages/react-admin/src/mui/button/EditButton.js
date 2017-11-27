@@ -15,6 +15,9 @@ const styles = {
         display: 'inline-flex',
         alignItems: 'center',
     },
+    iconPaddingStyle: {
+        paddingRight: '0.5em',
+    },
 };
 
 const EditButton = ({
@@ -26,8 +29,7 @@ const EditButton = ({
 }) => (
     <Button color="primary">
         <Link to={linkToRecord(basePath, record.id)} className={classes.link}>
-            <ContentCreate />
-            &nbsp;
+            <ContentCreate className={classes.iconPaddingStyle} />
             {label && translate(label)}
         </Link>
     </Button>

@@ -14,6 +14,9 @@ const styles = {
         display: 'inline-flex',
         alignItems: 'center',
     },
+    iconPaddingStyle: {
+        paddingRight: '0.5em',
+    },
 };
 
 const DeleteButton = ({
@@ -28,8 +31,7 @@ const DeleteButton = ({
             to={`${linkToRecord(basePath, record.id)}/delete`}
             className={classes.link}
         >
-            <ActionDelete />
-            &nbsp;
+            <ActionDelete className={classes.iconPaddingStyle} />
             {label && translate(label)}
         </Link>
     </Button>
