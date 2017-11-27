@@ -1,4 +1,3 @@
-import assert from 'assert';
 import resolvePermissions from './resolvePermissions';
 
 describe('resolvePermissions', () => {
@@ -36,7 +35,7 @@ describe('resolvePermissions', () => {
             permissions: 'admin',
         });
 
-        assert.equal(match.view, 'SingleValue');
+        expect(match.view).toEqual('SingleValue');
     });
 
     it('returns a match with mapping having an array of permissions and available permissions is a single value', async () => {
@@ -45,7 +44,7 @@ describe('resolvePermissions', () => {
             permissions: 'array_value',
         });
 
-        assert.equal(match.view, 'ArrayValue');
+        expect(match.view).toEqual('ArrayValue');
     });
 
     it('returns a match with mapping having an array of permissions, available permissions is an array and exact is falsy', async () => {
@@ -54,7 +53,7 @@ describe('resolvePermissions', () => {
             permissions: ['array_value', 'foo'],
         });
 
-        assert.equal(match.view, 'ArrayValue');
+        expect(match.view).toEqual('ArrayValue');
     });
 
     it('returns a match with mapping having an array of permissions, available permissions is a single value and exact match requested', async () => {
@@ -63,7 +62,7 @@ describe('resolvePermissions', () => {
             permissions: ['array_value_exact_1', 'array_value_exact_2'],
         });
 
-        assert.equal(match.view, 'ArrayValueExactMatch');
+        expect(match.view).toEqual('ArrayValueExactMatch');
     });
 
     it('returns a match with resolve being a function', async () => {
@@ -73,8 +72,8 @@ describe('resolvePermissions', () => {
             permissions: 'function',
         });
 
-        assert.equal(match.view, 'FunctionValue');
-        assert.deepEqual(checker.mock.calls[0][0], {
+        expect(match.view).toEqual('FunctionValue');
+        expect(checker.mock.calls[0][0]).toEqual({
             permissions: 'function',
             resource: 'products',
             record: { category: 'announcements' },
@@ -89,6 +88,6 @@ describe('resolvePermissions', () => {
             permissions: 'an_unknown_permission',
         });
 
-        assert.equal(match, undefined);
+        expect(match).toBeUndefined();
     });
 });

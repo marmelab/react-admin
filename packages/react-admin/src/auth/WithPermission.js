@@ -5,7 +5,42 @@ import getContext from 'recompose/getContext';
 import { AUTH_GET_PERMISSIONS } from './types';
 import { resolvePermission } from './resolvePermissions';
 
-export class WithPermissionComponent extends Component {
+/**
+ * Render children only if the user has the required permissions
+ * 
+ * Requires either:
+ * - a `value` prop with the permissions to check (could be a role, an array of roles, etc), or
+ * -  a `resolve` function.
+ *
+ * An additional `exact` prop may be specified depending on your requirements.
+ * It determines whether the user must have **all** the required permissions or only some.
+ * If `false`, the default, we'll only check if the user has at least one of the required permissions.
+ *
+ * You may bypass the default logic by specifying a function as the `resolve` prop.
+ * This function may return `true` or `false` directly or a promise resolving to either `true` or `false`.
+ * It will be called with an object having the following properties:
+ * - `permissions`: the result of the `authClient` call.
+ * - `value`: the value of the `value` prop if specified
+ * - `exact`: the value of the `exact` prop if specified
+ *
+ * An optional `loading` prop may be specified on the `WithPermission` component
+ * to pass a component to display while checking for permissions. It defaults to `null`.
+ * 
+ * Tip: Do not use the `WithPermission` component inside the others react-admin components.
+ * It is only meant to be used in custom pages or components.
+ *
+ * @example
+ *     const Menu = ({ onMenuTap }) => (
+ *         <div>
+ *             <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
+ *             <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
+ *             <WithPermission value="admin">
+ *                 <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+ *             </WithPermission>
+ *         </div>
+ *     );
+ */
+export class WithPermission extends Component {
     static propTypes = {
         authClient: PropTypes.func,
         children: PropTypes.node.isRequired,
@@ -103,4 +138,4 @@ export class WithPermissionComponent extends Component {
 
 export default getContext({
     authClient: PropTypes.func,
-})(WithPermissionComponent);
+})(WithPermission);

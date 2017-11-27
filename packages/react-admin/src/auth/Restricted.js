@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { userCheck as userCheckAction } from '../actions/authActions';
+import { userCheck } from '../actions/authActions';
 
 /**
  * Restrict access to children
@@ -52,6 +52,4 @@ export class Restricted extends Component {
     }
 }
 
-export default connect(null, {
-    userCheck: userCheckAction,
-})(Restricted);
+export default connect(null, { userCheck })(Restricted);
