@@ -68,13 +68,14 @@ export class SaveButton extends Component {
 }
 
 SaveButton.propTypes = {
+    classes: PropTypes.object,
+    handleSubmitWithRedirect: PropTypes.func,
     label: PropTypes.string,
+    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     raised: PropTypes.bool,
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-    translate: PropTypes.func.isRequired,
     submitOnEnter: PropTypes.bool,
-    handleSubmitWithRedirect: PropTypes.func,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    translate: PropTypes.func.isRequired,
 };
 
 SaveButton.defaultProps = {

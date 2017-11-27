@@ -135,6 +135,8 @@ Create.propTypes = {
     actions: PropTypes.element,
     children: PropTypes.element,
     crudCreate: PropTypes.func.isRequired,
+    hasEdit: PropTypes.bool,
+    hasShow: PropTypes.bool,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,

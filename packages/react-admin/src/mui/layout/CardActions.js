@@ -1,4 +1,5 @@
 import React from 'react';
+impoer PropTypes from 'prop-types';
 import { CardActions as MuiCardActions } from 'material-ui/Card';
 import { withStyles } from 'material-ui/styles';
 
@@ -16,5 +17,9 @@ const CardActions = ({ classes, children, ...rest }) => (
         {children}
     </MuiCardActions>
 );
+
+CardActions.propTypes = {
+    classes: PropTypes.object,
+};
 
 export default withStyles(styles)(CardActions);
