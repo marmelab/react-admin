@@ -82,20 +82,19 @@ The title can be either a string, or an element of your own.
 You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
-import { CardActions } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import NavigationRefresh from 'material-ui-icons/Refresh';
-import { CreateButton, RefreshButton } from 'react-admin';
-
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
-};
+import { CardActions, CreateButton, RefreshButton } from 'react-admin';
 
 const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter }) => (
-    <CardActions style={cardActionStyle}>
-        {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
+    <CardActions>
+        {filters && React.cloneElement(filters, {
+            resource,
+            showFilter,
+            displayedFilters,
+            filterValues,
+            context: 'button',
+        }) }
         <CreateButton basePath={basePath} />
         <RefreshButton />
         {/* Add your custom actions */}

@@ -1,5 +1,6 @@
 export AppBar from './AppBar';
 export AppBarMobile from './AppBarMobile';
+export CardActions from './CardActions';
 export DashboardMenuItem from './DashboardMenuItem';
 export Header from './Header';
 export Layout from './Layout';

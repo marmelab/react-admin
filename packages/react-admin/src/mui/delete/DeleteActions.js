@@ -1,28 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CardActions } from 'material-ui/Card';
-import { withStyles } from 'material-ui/styles';
 
+import CardActions from '../layout/CardActions';
 import { ListButton, ShowButton, EditButton } from '../button';
 
-const styles = {
-    cardActionStyle: {
-        zIndex: 2,
-        display: 'flex',
-        justifyContent: 'flex-end',
-        flexWrap: 'wrap',
-    },
-};
-
-const DeleteActions = ({
-    basePath,
-    classes,
-    data,
-    hasEdit,
-    hasList,
-    hasShow,
-}) => (
-    <CardActions className={classes.cardActionStyle}>
+/**
+ * Action Toolbar for the Delete view
+ * 
+ * Internal component. If you want to add or remove actions for a Delete view,
+ * write your own DeleteActions Component. Then, in the <Delete> component,
+ * use it in the `actions` prop to pas a custom element.
+ * 
+ * @example
+ *     import Button from 'material-ui/Button';
+ *     import { CardActions, ListButton, ShowButton, EditButton, Delete } from 'react-admin';
+ *     
+ *     const PostDeleteActions = ({ basePath, data }) => (
+ *         <CardActions>
+ *             <ListButton basePath={basePath} />
+ *             <EditButton basePath={basePath} record={data} />
+ *             <ShowButton basePath={basePath} record={data} />
+ *             // Add your custom actions here //
+ *             <Button color="primary" onClick={customAction}>Custom Action</Button>
+ *         </CardActions>
+ *     );
+ *     
+ *     export const PostDelete = (props) => (
+ *         <Delete actions={<PostDeleteActions />} {...props}>
+ *             ...
+ *         </Delete>
+ *     );
+ */
+const DeleteActions = ({ basePath, data, hasEdit, hasList, hasShow }) => (
+    <CardActions>
         {hasList && <ListButton basePath={basePath} />}
         {hasEdit && <EditButton basePath={basePath} record={data} />}
         {hasShow && <ShowButton basePath={basePath} record={data} />}
@@ -31,11 +41,10 @@ const DeleteActions = ({
 
 DeleteActions.propTypes = {
     basePath: PropTypes.string,
-    classes: PropTypes.object,
     data: PropTypes.object,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
     hasList: PropTypes.bool,
 };
 
-export default withStyles(styles)(DeleteActions);
+export default DeleteActions;

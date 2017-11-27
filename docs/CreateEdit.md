@@ -13,7 +13,7 @@ The Create and Edit views both display a form, initialized with an empty record 
 
 ## The `<Create>` and `<Edit>` components
 
-The `<Create>` and `<Edit>` components render the page title and actions, and fetch the record from the REST API. They are not responsible for rendering the actual form - that's the job of their child component (usually `<SimpleForm>`), to which they pass the `record` as prop.
+The `<Create>` and `<Edit>` components render the page title and actions, and fetch the record from the data provider. They are not responsible for rendering the actual form - that's the job of their child component (usually `<SimpleForm>`), to which they pass the `record` as prop.
 
 Here are all the props accepted by the `<Create>` and `<Edit>` components:
 
@@ -114,18 +114,17 @@ export const PostEdit = (props) => (
 You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
-import { CardActions } from 'material-ui/Card';
 import Button from 'material-ui/Button';
-import { ListButton, ShowButton, DeleteButton, RefreshButton } from 'react-admin';
+import {
+    CardActions,
+    ListButton,
+    ShowButton,
+    DeleteButton,
+    RefreshButton,
+} from 'react-admin';
 
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
-};
-
-const PostEditActions = ({ basePath, data, refresh }) => (
-    <CardActions style={cardActionStyle}>
+const PostEditActions = ({ basePath, data }) => (
+    <CardActions>
         <ShowButton basePath={basePath} record={data} />
         <ListButton basePath={basePath} />
         <DeleteButton basePath={basePath} record={data} />

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Card from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
+import Card from 'material-ui/Card';
+
 import Header from '../layout/Header';
 import Title from '../layout/Title';
 import { crudGetOne as crudGetOneAction } from '../../actions/dataActions';
@@ -11,6 +12,48 @@ import DefaultActions from './ShowActions';
 import translate from '../../i18n/translate';
 import withChildrenAsFunction from '../withChildrenAsFunction';
 
+/**
+ * Page component for the Show view
+ * 
+ * The `<Show>` component renders the page title and actions,
+ * fetches the record from the data provider.
+ * It is not responsible for rendering the actual form -
+ * that's the job of its child component (usually `<SimpleShowLayout>`),
+ * to which it passes pass the `record` as prop.
+ *
+ * Here are all the props accepted by the `<Show>`component:
+ *
+ * - title
+ * - actions
+ * 
+ * Both expect an element for value.
+ * 
+ * @example     
+ *     // in src/posts.js
+ *     import React from 'react';
+ *     import { Show, SimpleShowLayout, TextField } from 'react-admin';
+ *     
+ *     export const PostShow = (props) => (
+ *         <Show {...props}>
+ *             <SimpleShowLayout>
+ *                 <TextField source="title" />
+ *             </SimpleShowLayout>
+ *         </Show>
+ *     );
+ *
+ *     // in src/App.js
+ *     import React from 'react';
+ *     import { Admin, Resource } from 'react-admin';
+ *     
+ *     import { PostShow } from './posts';
+ *     
+ *     const App = () => (
+ *         <Admin dataProvider={...}>
+ *             <Resource name="posts" show={PostShow} />
+ *         </Admin>
+ *     );
+ *     export default App;
+ */
 export class Show extends Component {
     componentDidMount() {
         this.updateData();

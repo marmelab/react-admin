@@ -26,6 +26,48 @@ const styles = theme => ({
     },
 });
 
+/**
+ * Page component for the Delete view
+ * 
+ * Can be used either directly inside a `<Resource>`, or to define
+ * a custom Delete view.
+ *
+ * Here are all the props accepted by the `<Delete>`component:
+ *
+ * - title
+ * - actions
+ * 
+ * Both expect an element for value.
+ * 
+ * @example
+ *     import { Admin, Resource, Delete } from 'react-admin';
+ *     import { PostList } from '../posts';
+ *
+ *     const App = () => (
+ *         <Admin dataProvider={...}>
+ *             <Resource name="posts" list={PostList} remove={Delete} />
+ *         </Admin>
+ *     );
+ *
+ * @example
+ *     import PostDeleteActions from './DeleteActions';
+ *     const PostDeleteTitle = ({ record }) => (
+ *         <span>
+ *             {record ? `Delete post ${record.title}` : ''}
+ *         </span>
+ *     ));
+ *     const PostDelete = (props) =>
+ *         <Delete
+ *             title={<PostDeleteTitle />}
+ *             actions={<PostDeleteActions />}
+ *         />;
+ *
+ *     const App = () => (
+ *         <Admin dataProvider={...}>
+ *             <Resource name="posts" list={PostList} remove={PostDelete} />
+ *         </Admin>
+ *     );
+ */
 export class Delete extends Component {
     constructor(props) {
         super(props);
@@ -194,10 +236,7 @@ function mapStateToProps(state, props) {
 }
 
 const enhance = compose(
-    connect(mapStateToProps, {
-        crudGetOne,
-        crudDelete,
-    }),
+    connect(mapStateToProps, { crudGetOne, crudDelete }),
     withStyles(styles),
     translate
 );

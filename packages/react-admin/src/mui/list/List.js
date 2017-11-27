@@ -17,7 +17,7 @@ import queryReducer, {
 import Header from '../layout/Header';
 import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
-import DefaultActions from './Actions';
+import DefaultActions from './ListActions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
 import translate from '../../i18n/translate';
