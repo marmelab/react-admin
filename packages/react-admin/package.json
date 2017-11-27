@@ -9,6 +9,7 @@
         "src"
     ],
     "main": "lib/index",
+    "jsnext:main": "src/index",
     "authors": [
         "François Zaninotto"
     ],
