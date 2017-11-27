@@ -10,7 +10,7 @@ import { resolvePermission } from './resolvePermissions';
  * 
  * Requires either:
  * - a `value` prop with the permissions to check (could be a role, an array of roles, etc), or
- * -  a `resolve` function.
+ * - a `resolve` function.
  *
  * An additional `exact` prop may be specified depending on your requirements.
  * It determines whether the user must have **all** the required permissions or only some.
@@ -30,6 +30,8 @@ import { resolvePermission } from './resolvePermissions';
  * It is only meant to be used in custom pages or components.
  *
  * @example
+ *     import { WithPermission } from 'react-admin';
+ *
  *     const Menu = ({ onMenuTap }) => (
  *         <div>
  *             <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />

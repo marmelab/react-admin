@@ -16,19 +16,23 @@ import resolvePermissions from './resolvePermissions';
  * @see Permission
  * 
  * @example
- *     <Card>
- *         <ViewTitle title="Dashboard" />
- *         <CardContent>
- *             <SwitchPermissions>
- *                 <Permission value="associate">
- *                     <BenefitsSummary />
- *                 </Permission>
- *                 <Permission value="boss">
- *                     <BenefitsDetailsWithSensitiveData />
- *                 </Permission>
- *             </SwitchPermissions>
- *         </CardContent>
- *     </Card>
+ *     import { SwitchPermission, Permission } from 'react-admin';
+ * 
+ *     const Dashboard = () => (
+ *         <Card>
+ *             <ViewTitle title="Dashboard" />
+ *             <CardContent>
+ *                 <SwitchPermissions>
+ *                     <Permission value="associate">
+ *                         <BenefitsSummary />
+ *                     </Permission>
+ *                     <Permission value="boss">
+ *                         <BenefitsDetailsWithSensitiveData />
+ *                     </Permission>
+ *                 </SwitchPermissions>
+ *             </CardContent>
+ *         </Card>
+ *     );
  */
 export class SwitchPermissions extends Component {
     static propTypes = {

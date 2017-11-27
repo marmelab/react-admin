@@ -23,19 +23,23 @@ import PropTypes from 'prop-types';
  * - `exact`: the value of the `exact` prop if specified
  * 
  * @example
- *     <Card>
- *         <ViewTitle title="Dashboard" />
- *         <CardContent>
- *             <SwitchPermissions>
- *                 <Permission value="associate">
- *                     <BenefitsSummary />
- *                 </Permission>
- *                 <Permission value="boss">
- *                     <BenefitsDetailsWithSensitiveData />
- *                 </Permission>
- *             </SwitchPermissions>
- *         </CardContent>
- *     </Card>
+ *     import { SwitchPermission, Permission } from 'react-admin';
+ * 
+ *     const Dashboard = () => (
+ *         <Card>
+ *             <ViewTitle title="Dashboard" />
+ *             <CardContent>
+ *                 <SwitchPermissions>
+ *                     <Permission value="associate">
+ *                         <BenefitsSummary />
+ *                     </Permission>
+ *                     <Permission value="boss">
+ *                         <BenefitsDetailsWithSensitiveData />
+ *                     </Permission>
+ *                 </SwitchPermissions>
+ *             </CardContent>
+ *         </Card>
+ *     );
  */
 const Permission = () => (
     <span>
