@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
 import NavigationRefresh from 'material-ui-icons/Refresh';
 import translate from '../../i18n/translate';
+import Responsive from '../../mui/layout/Responsive';
 import { refreshView as refreshViewAction } from '../../actions/uiActions';
 
 class RefreshButton extends Component {
@@ -24,14 +26,21 @@ class RefreshButton extends Component {
     };
 
     render() {
-        const { label, translate } = this.props;
+        let { label, translate } = this.props;
 
         return (
-            <Button color="primary" onClick={this.handleClick}>
-                <NavigationRefresh />
-                &nbsp;
-                {label && translate(label)}
-            </Button>
+            <Responsive
+                small={
+                    <IconButton color="contrast" onClick={this.handleClick}>
+                        <NavigationRefresh />
+                    </IconButton>
+                }
+                medium={
+                    <Button color="primary" onClick={this.handleClick}>
+                        <NavigationRefresh /> {label && translate(label)}
+                    </Button>
+                }
+            />
         );
     }
 }
