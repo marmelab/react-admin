@@ -46,6 +46,7 @@ render(
         title="Example Admin"
         locale="en"
         messages={messages}
+        logo={<CommentIcon />}
     >
         {permissions => [
             <Resource

@@ -35,6 +35,7 @@ const Admin = ({
     dataProvider,
     theme,
     title = 'React Admin',
+    logo,
     loginPage,
     logoutButton,
     initialState,
@@ -74,6 +75,7 @@ const Admin = ({
                                     createElement(loginPage || Login, {
                                         location,
                                         title,
+                                        logo,
                                     })}
                             />
                             {customRoutes
@@ -88,6 +90,7 @@ const Admin = ({
                                                 return route.props.render({
                                                     location,
                                                     title,
+                                                    logo,
                                                 });
                                             }
                                             if (route.props.component) {
@@ -96,6 +99,7 @@ const Admin = ({
                                                     {
                                                         location,
                                                         title,
+                                                        logo,
                                                     }
                                                 );
                                             }
@@ -116,6 +120,7 @@ const Admin = ({
                                         catchAll,
                                         theme,
                                         title,
+                                        logo,
                                     })}
                             />
                         </Switch>
@@ -147,6 +152,7 @@ Admin.propTypes = {
     dataProvider: PropTypes.func,
     theme: PropTypes.object,
     title: PropTypes.node,
+    logo: PropTypes.element,
     locale: PropTypes.string,
     messages: PropTypes.object,
     initialState: PropTypes.object,
