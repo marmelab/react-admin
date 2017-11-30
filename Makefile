@@ -36,7 +36,7 @@ doc: ## compile doc as html and launch doc web server
 
 lint: ## lint the code and check coding conventions
 	@echo "Running linter..."
-	@./node_modules/.bin/eslint ./packages/react-admin/src/
+	@"./node_modules/.bin/eslint" ./packages/react-admin/src/
 
 prettier: ## prettify the source code using prettier
 	@./node_modules/.bin/prettier-eslint --write --list-different  "packages/react-admin/src/**/*.js" "packages/ra-example/**/*.js"
