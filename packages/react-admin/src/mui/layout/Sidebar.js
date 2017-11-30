@@ -23,16 +23,12 @@ const styles = theme => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        padding: {
-            right: theme.spacing.unit,
-        },
+        paddingRight: theme.spacing.unit,
         ...theme.mixins.toolbar,
     },
     drawerLogo: {
         flex: '1 0',
-        padding: {
-            left: theme.spacing.unit * 2,
-        },
+        paddingLeft: theme.spacing.unit * 2,
     },
 });
 
