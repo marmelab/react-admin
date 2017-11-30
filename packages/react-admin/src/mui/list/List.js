@@ -18,6 +18,7 @@ import Header from '../layout/Header';
 import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
 import DefaultActions from './Actions';
+import DefaultMobileActions from './MobileActions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
 import translate from '../../i18n/translate';
@@ -193,6 +194,7 @@ export class List extends Component {
             filters,
             pagination = <DefaultPagination />,
             actions = <DefaultActions />,
+            mobileActions = <DefaultMobileActions />,
             resource,
             hasCreate,
             title,
@@ -224,6 +226,7 @@ export class List extends Component {
                     <Header
                         title={titleElement}
                         actions={actions}
+                        mobileActions={mobileActions}
                         actionProps={{
                             resource,
                             filters,
@@ -283,6 +286,7 @@ export class List extends Component {
 List.propTypes = {
     // the props you can change
     actions: PropTypes.element,
+    mobileActions: PropTypes.element,
     children: PropTypes.node,
     filter: PropTypes.object,
     filters: PropTypes.element,

@@ -20,6 +20,7 @@ const styles = {
     title: {
         fontSize: '1.25em',
         lineHeight: '2.5em',
+        flex: 1,
     },
     icon: {
         marginTop: 0,
@@ -39,7 +40,13 @@ class AppBarMobile extends Component {
     };
 
     render() {
-        const { classes, title, toggleSidebar } = this.props;
+        const {
+            classes,
+            title,
+            toggleSidebar,
+            mobileActions,
+            actionProps,
+        } = this.props;
         return (
             <MuiAppBar className={classes.bar}>
                 <Toolbar>
@@ -51,9 +58,15 @@ class AppBarMobile extends Component {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography type="title" color="inherit">
+                    <Typography
+                        type="title"
+                        color="inherit"
+                        className={classes.title}
+                    >
                         {title}
                     </Typography>
+                    {mobileActions &&
+                        React.cloneElement(mobileActions, actionProps)}
                 </Toolbar>
             </MuiAppBar>
         );
@@ -62,9 +75,10 @@ class AppBarMobile extends Component {
 
 AppBarMobile.propTypes = {
     classes: PropTypes.object,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-        .isRequired,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     toggleSidebar: PropTypes.func.isRequired,
+    mobileActions: PropTypes.element,
+    actionProps: PropTypes.object,
 };
 
 const enhance = compose(connect(null, { toggleSidebar }), withStyles(styles));
