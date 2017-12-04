@@ -18,6 +18,10 @@ export default BaseComponent => {
             this.initializeChildren(this.props.children);
         }
 
+        componentWillReceiveProps(nextProps){
+            if (nextProps.children !== this.props.children) this.initializeChildren(this.props.children)
+        }
+
         initializeChildren(children) {
             if (typeof children === 'function') {
                 if (!this.props.authClient) {
