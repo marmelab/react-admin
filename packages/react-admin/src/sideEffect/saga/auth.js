@@ -53,11 +53,11 @@ export default authClient => {
             case USER_CHECK: {
                 try {
                     yield call(authClient, AUTH_CHECK, payload);
-                } catch (e) {
+                } catch (error) {
                     yield call(authClient, AUTH_LOGOUT);
                     yield put(
                         replace({
-                            pathname: (e && e.redirectTo) || '/login',
+                            pathname: (error && error.redirectTo) || '/login',
                             state: { nextPathname: meta.pathName },
                         })
                     );

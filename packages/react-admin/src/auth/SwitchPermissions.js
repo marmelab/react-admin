@@ -2,7 +2,7 @@ import React, { createElement, Children, cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import getContext from 'recompose/getContext';
 
-import { AUTH_GET_PERMISSIONS } from './types';
+import { AUTH_CHECK } from './types';
 import resolvePermissions from './resolvePermissions';
 
 /**
@@ -68,7 +68,7 @@ export class SwitchPermissions extends Component {
                 })
             ) || [];
 
-        const permissions = await authClient(AUTH_GET_PERMISSIONS, {
+        const permissions = await authClient(AUTH_CHECK, {
             record,
             resource,
         });

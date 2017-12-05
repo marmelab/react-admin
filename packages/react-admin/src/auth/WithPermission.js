@@ -2,7 +2,7 @@ import React, { createElement, cloneElement, Children, Component } from 'react';
 import PropTypes from 'prop-types';
 import getContext from 'recompose/getContext';
 
-import { AUTH_GET_PERMISSIONS } from './types';
+import { AUTH_CHECK } from './types';
 import { resolvePermission } from './resolvePermissions';
 
 /**
@@ -75,7 +75,7 @@ export class WithPermission extends Component {
             value: requiredPermissions,
             exact,
         } = this.props;
-        const permissions = await authClient(AUTH_GET_PERMISSIONS, {
+        const permissions = await authClient(AUTH_CHECK, {
             record,
             resource,
         });
