@@ -26,6 +26,9 @@ const styles = {
         display: 'inline-flex',
         alignItems: 'center',
     },
+    iconPaddingStyle: {
+        paddingRight: '0.5em',
+    },
 };
 
 const CreateButton = ({
@@ -48,8 +51,7 @@ const CreateButton = ({
         medium={
             <Button color="primary">
                 <Link to={`${basePath}/create`} className={classes.desktopLink}>
-                    <ContentAdd />
-                    &nbsp;
+                    <ContentAdd className={classes.iconPaddingStyle} />
                     {label && translate(label)}
                 </Link>
             </Button>

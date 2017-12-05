@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 import Button from 'material-ui/Button';
 import ContentSave from 'material-ui-icons/Save';
 import { CircularProgress } from 'material-ui/Progress';
+import { withStyles } from 'material-ui/styles';
+
 import translate from '../../i18n/translate';
+
+const styles = {
+    iconPaddingStyle: {
+        paddingRight: '0.5em',
+    },
+};
 
 export class SaveButton extends Component {
     handleClick = e => {
@@ -23,6 +32,7 @@ export class SaveButton extends Component {
 
     render() {
         const {
+            classes = {},
             saving,
             label = 'ra.action.save',
             raised = true,
@@ -43,11 +53,14 @@ export class SaveButton extends Component {
                 }}
             >
                 {saving && saving.redirect === redirect ? (
-                    <CircularProgress size={25} thickness={2} />
+                    <CircularProgress
+                        size={25}
+                        thickness={2}
+                        className={classes.iconPaddingStyle}
+                    />
                 ) : (
-                    <ContentSave />
+                    <ContentSave className={classes.iconPaddingStyle} />
                 )}
-                &nbsp;
                 {label && translate(label)}
             </Button>
         );
@@ -55,13 +68,14 @@ export class SaveButton extends Component {
 }
 
 SaveButton.propTypes = {
+    classes: PropTypes.object,
+    handleSubmitWithRedirect: PropTypes.func,
     label: PropTypes.string,
+    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     raised: PropTypes.bool,
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-    translate: PropTypes.func.isRequired,
     submitOnEnter: PropTypes.bool,
-    handleSubmitWithRedirect: PropTypes.func,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    translate: PropTypes.func.isRequired,
 };
 
 SaveButton.defaultProps = {
@@ -73,4 +87,9 @@ const mapStateToProps = state => ({
     saving: state.admin.saving,
 });
 
-export default connect(mapStateToProps)(translate(SaveButton));
+const enhance = compose(
+    connect(mapStateToProps),
+    withStyles(styles),
+    translate
+);
+export default enhance(SaveButton);

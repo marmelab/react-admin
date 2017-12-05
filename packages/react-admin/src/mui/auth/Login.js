@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { propTypes, reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-
 import Card, { CardActions } from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
 import Button from 'material-ui/Button';
@@ -66,6 +65,24 @@ const renderInput = ({
     />
 );
 
+/**
+ * A standalone login page, to serve as authentication gate to the admin
+ *
+ * Expects the user to enter a login and a password, which will be checked
+ * by the `authClient` using the AUTH_LOGIN verb. Redirects to the root page
+ * (/) upon success, otherwise displays an authentication error message.
+ *
+ * Copy and adapt this component to implement your own login logic
+ * (e.g. to authenticate via email or facebook or anything else).
+ *
+ * @example
+ *     import MyLoginPage from './MyLoginPage';
+ *     const App = () => (
+ *         <Admin loginPage={MyLoginPage} authClient={authClient}>
+ *             ...
+ *        </Admin>
+ *     );
+ */
 class Login extends Component {
     login = auth =>
         this.props.userLogin(
@@ -131,6 +148,8 @@ Login.propTypes = {
     ...propTypes,
     authClient: PropTypes.func,
     classes: PropTypes.object,
+    input: PropTypes.object,
+    meta: PropTypes.object,
     previousRoute: PropTypes.string,
     translate: PropTypes.func.isRequired,
     userLogin: PropTypes.func.isRequired,

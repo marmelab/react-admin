@@ -1,4 +1,3 @@
-import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
 
@@ -12,8 +11,8 @@ describe('<SaveButton />', () => {
             <SaveButton raised={true} translate={translate} />
         );
         const ButtonElement = wrapper.find('withStyles(Button)');
-        assert.equal(ButtonElement.length, 1);
-        assert.equal(ButtonElement.at(0).prop('raised'), true);
+        expect(ButtonElement.length).toEqual(1);
+        expect(ButtonElement.at(0).prop('raised')).toEqual(true);
     });
 
     it('should render <Button raised={false}/> when raised is false', () => {
@@ -21,8 +20,8 @@ describe('<SaveButton />', () => {
             <SaveButton raised={false} translate={translate} />
         );
         const ButtonElement = wrapper.find('withStyles(Button)');
-        assert.equal(ButtonElement.length, 1);
-        assert.equal(ButtonElement.at(0).prop('raised'), false);
+        expect(ButtonElement.length).toEqual(1);
+        expect(ButtonElement.at(0).prop('raised')).toEqual(false);
     });
 
     it('should render as submit type when submitOnEnter is true', () => {
@@ -41,8 +40,8 @@ describe('<SaveButton />', () => {
             />
         );
 
-        assert.equal(raisedButtonWrapper.prop('type'), 'submit');
-        assert.equal(flatButtonWrapper.prop('type'), 'submit');
+        expect(raisedButtonWrapper.prop('type')).toEqual('submit');
+        expect(flatButtonWrapper.prop('type')).toEqual('submit');
     });
 
     it('should render as button type when submitOnEnter is false', () => {
@@ -61,8 +60,8 @@ describe('<SaveButton />', () => {
             />
         );
 
-        assert.equal(raisedButtonWrapper.prop('type'), 'button');
-        assert.equal(flatButtonWrapper.prop('type'), 'button');
+        expect(raisedButtonWrapper.prop('type')).toEqual('button');
+        expect(flatButtonWrapper.prop('type')).toEqual('button');
     });
 
     it('should trigger submit action when clicked if no saving is in progress', () => {
@@ -85,9 +84,9 @@ describe('<SaveButton />', () => {
         );
 
         raisedButtonWrapper.simulate('click');
-        assert.equal(onSubmit.mock.calls.length, 1);
+        expect(onSubmit.mock.calls.length).toEqual(1);
         flatButtonWrapper.simulate('click');
-        assert.equal(onSubmit.mock.calls.length, 2);
+        expect(onSubmit.mock.calls.length).toEqual(2);
     });
 
     it('should not trigger submit action when clicked if saving is in progress', () => {
@@ -112,10 +111,10 @@ describe('<SaveButton />', () => {
         );
 
         raisedButtonWrapper.simulate('click', event);
-        assert.equal(event.preventDefault.mock.calls.length, 1);
+        expect(event.preventDefault.mock.calls.length).toEqual(1);
         flatButtonWrapper.simulate('click', event);
-        assert.equal(event.preventDefault.mock.calls.length, 2);
+        expect(event.preventDefault.mock.calls.length).toEqual(2);
 
-        assert.equal(onSubmit.mock.calls.length, 0);
+        expect(onSubmit.mock.calls.length).toEqual(0);
     });
 });

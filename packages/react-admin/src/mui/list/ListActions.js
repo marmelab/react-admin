@@ -1,15 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CardActions } from 'material-ui/Card';
-import { CreateButton, RefreshButton } from '../button';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'flex',
-    justifyContent: 'flex-end',
-    flexWrap: 'wrap',
-};
+import { CreateButton, RefreshButton } from '../button';
+import CardActions from '../layout/CardActions';
 
 const Actions = ({
     resource,
@@ -21,7 +15,7 @@ const Actions = ({
     showFilter,
 }) => {
     return (
-        <CardActions style={cardActionStyle}>
+        <CardActions>
             {filters &&
                 React.cloneElement(filters, {
                     resource,
@@ -44,7 +38,6 @@ Actions.propTypes = {
     hasCreate: PropTypes.bool,
     resource: PropTypes.string,
     showFilter: PropTypes.func,
-    theme: PropTypes.object,
 };
 
 export default onlyUpdateForKeys([

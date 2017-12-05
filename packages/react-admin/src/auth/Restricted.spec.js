@@ -1,5 +1,4 @@
 import React from 'react';
-import assert from 'assert';
 import { shallow, render } from 'enzyme';
 import { html } from 'cheerio';
 
@@ -14,7 +13,7 @@ describe('<Restricted>', () => {
                 <Foo />
             </Restricted>
         );
-        assert.equal(userCheck.mock.calls.length, 1);
+        expect(userCheck.mock.calls.length).toEqual(1);
     });
     it('should call userCheck on update', () => {
         const userCheck = jest.fn();
@@ -24,7 +23,7 @@ describe('<Restricted>', () => {
             </Restricted>
         );
         wrapper.setProps({ location: { pathname: 'foo' }, userCheck });
-        assert.equal(userCheck.mock.calls.length, 2);
+        expect(userCheck.mock.calls.length).toEqual(2);
     });
     it('should render its child by default', () => {
         const userCheck = jest.fn();
@@ -33,6 +32,6 @@ describe('<Restricted>', () => {
                 <Foo />
             </Restricted>
         );
-        assert.equal(html(wrapper), '<div>Foo</div>');
+        expect(html(wrapper)).toEqual('<div>Foo</div>');
     });
 });

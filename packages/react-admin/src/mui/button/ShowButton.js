@@ -15,6 +15,9 @@ const styles = {
         display: 'inline-flex',
         alignItems: 'center',
     },
+    iconPaddingStyle: {
+        paddingRight: '0.5em',
+    },
 };
 
 const ShowButton = ({
@@ -29,8 +32,7 @@ const ShowButton = ({
             to={`${linkToRecord(basePath, record.id)}/show`}
             className={classes.link}
         >
-            <ImageEye />
-            &nbsp;
+            <ImageEye className={classes.iconPaddingStyle} />
             {label && translate(label)}
         </Link>
     </Button>

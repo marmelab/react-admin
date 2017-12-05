@@ -82,20 +82,19 @@ The title can be either a string, or an element of your own.
 You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
-import { CardActions } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import NavigationRefresh from 'material-ui-icons/Refresh';
-import { CreateButton, RefreshButton } from 'react-admin';
-
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
-};
+import { CardActions, CreateButton, RefreshButton } from 'react-admin';
 
 const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter }) => (
-    <CardActions style={cardActionStyle}>
-        {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
+    <CardActions>
+        {filters && React.cloneElement(filters, {
+            resource,
+            showFilter,
+            displayedFilters,
+            filterValues,
+            context: 'button',
+        }) }
         <CreateButton basePath={basePath} />
         <RefreshButton />
         {/* Add your custom actions */}
@@ -255,10 +254,6 @@ Here are all the props accepted by the component:
 
 * [`styles`](#custom-grid-style)
 * [`rowStyle`](#row-style-function)
-* [`options`](#options)
-* [`headerOptions`](#options)
-* [`bodyOptions`](#options)
-* [`rowOptions`](#options)
 
 It renders as many columns as it receives `<Field>` children.
 
@@ -349,40 +344,6 @@ export const PostList = (props) => (
     </List>
 );
 ```
-
-### `options`, `headerOptions`, `bodyOptions`, and `rowOptions`
-
-React-admin relies on [material-ui's `<Table>` component](http://www.material-ui.com/#/components/table) for rendering the datagrid. The `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props allow your to override the props of `<Table>`, `<TableHeader>`, `<TableBody>`, and `<TableRow>`.
-
-For instance, to get a fixed header on the table, override the `<Table>` props with `options`:
-
-{% raw %}
-```jsx
-export const PostList = (props) => (
-    <List {...props}>
-        <Datagrid options={{ fixedHeader: true, height: 400 }}>
-            ...
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-To enable striped rows and row hover, override the `<TableBody>` props with `bodyOptions`:
-
-{% raw %}
-```jsx
-export const PostList = (props) => (
-    <List {...props}>
-        <Datagrid bodyOptions={{ stripedRows: true, showRowHover: true }}>
-            ...
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-For a list of all the possible props that you can override via these options, please refer to [the material-ui `<Table>` component documentation](http://www.material-ui.com/#/components/table).
 
 ## The `<SimpleList>` component
 

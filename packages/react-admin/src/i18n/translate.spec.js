@@ -1,4 +1,3 @@
-import assert from 'assert';
 import React from 'react';
 
 import translate from './translate';
@@ -9,6 +8,6 @@ describe('translate HOC', () => {
         Component.defaultProps = { foo: 'bar' };
 
         const TranslatedComponent = translate(Component);
-        assert.deepEqual(TranslatedComponent.defaultProps, { foo: 'bar' });
+        expect(TranslatedComponent.defaultProps).toEqual({ foo: 'bar' });
     });
 });
