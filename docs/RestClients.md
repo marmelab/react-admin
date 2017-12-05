@@ -255,7 +255,31 @@ render(
 
 ## Writing Your Own REST Client
 
-Quite often, none of the the core REST clients match your API exactly. In such cases, you'll have to write your own REST client. But don't be afraid, it's easy!
+Quite often, none of the the core REST clients match your API exactly. In such cases, you'll have to write your own REST client. The paragraphs below will help you create your own one.
+
+### Example implementation
+
+A good starting point for a custom rest client implementation is the code from the [simple REST client](https://github.com/marmelab/admin-on-rest/blob/master/src/rest/simple.js). Be aware that improvements to this client in the admin-on-rest repository could happen, in which case you would manually need to apply these code changes to your own rest client in case you want to benefit from them.
+
+When copying from the original file and placing it in your own `src`-directory, make sure to adapt the imports to something like this:
+
+``` jsx
+import { stringify } from 'query-string';
+import {
+  GET_LIST,
+  GET_ONE,
+  GET_MANY,
+  GET_MANY_REFERENCE,
+  CREATE,
+  UPDATE,
+  DELETE,
+  fetchUtils
+} from 'admin-on-rest';
+const { queryParameters, fetchJson, flattenObject } = fetchUtils;
+
+```
+
+*Tip:* The following paragraphs refer to the format of requests and responses from and to the rest client. In this format admin-on-rest sends requests and expects responses from your rest client. When you're copying the [simple REST client](https://github.com/marmelab/admin-on-rest/blob/master/src/rest/simple.js) you'll already have covered all of them.
 
 ### Request Format
 
@@ -397,7 +421,3 @@ restClient(GET_MANY_REFERENCE, 'comments', {
 ### Error Format
 
 When the REST API returns an error, the rest client should `throw` an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). Admin-on-rest inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors).
-
-### Example implementation
-
-Check the code from the [simple REST client](https://github.com/marmelab/admin-on-rest/blob/master/src/rest/simple.js): it's a good starting point for a custom rest client implementation.
