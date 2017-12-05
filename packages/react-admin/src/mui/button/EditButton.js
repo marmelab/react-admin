@@ -27,11 +27,13 @@ const EditButton = ({
     record = {},
     translate,
 }) => (
-    <Button color="primary">
-        <Link to={linkToRecord(basePath, record.id)} className={classes.link}>
-            <ContentCreate className={classes.iconPaddingStyle} />
-            {label && translate(label)}
-        </Link>
+    <Button
+        component={Link}
+        color="primary"
+        to={linkToRecord(basePath, record.id)}
+    >
+        <ContentCreate className={classes.iconPaddingStyle} />
+        {label && translate(label)}
     </Button>
 );
 

@@ -24,11 +24,9 @@ const ListButton = ({
     label = 'ra.action.list',
     translate,
 }) => (
-    <Button color="primary">
-        <Link to={basePath} className={classes.link}>
-            <ActionList className={classes.iconPaddingStyle} />
-            {label && translate(label)}
-        </Link>
+    <Button component={Link} color="primary" to={basePath}>
+        <ActionList className={classes.iconPaddingStyle} />
+        {label && translate(label)}
     </Button>
 );
 

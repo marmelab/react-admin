@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MenuItem } from 'material-ui/Menu';
 import DashboardIcon from 'material-ui-icons/Dashboard';
 import { withStyles } from 'material-ui/styles';
-import Link from '../Link';
 import translate from '../../i18n/translate';
+import MenuItemLink from './MenuItemLink';
 
 const iconPaddingStyle = { paddingRight: '0.5em' };
 
@@ -18,12 +17,13 @@ const styles = {
 };
 
 const DashboardMenuItem = ({ classes, onClick, translate }) => (
-    <MenuItem onClick={onClick}>
-        <Link to="/" className={classes.link}>
-            <DashboardIcon style={iconPaddingStyle} />
-            {translate('ra.page.dashboard')}
-        </Link>
-    </MenuItem>
+    <MenuItemLink
+        onClick={onClick}
+        to="/"
+        className={classes.link}
+        primaryText={translate('ra.page.dashboard')}
+        leftIcon={<DashboardIcon style={iconPaddingStyle} />}
+    />
 );
 
 DashboardMenuItem.propTypes = {

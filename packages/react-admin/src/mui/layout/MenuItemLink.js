@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+import { Link } from 'react-router-dom';
 import { MenuItem } from 'material-ui/Menu';
 import { withRouter } from 'react-router';
 
@@ -14,7 +14,6 @@ export class MenuItemLink extends Component {
     };
 
     handleMenuTap = () => {
-        this.props.history.push(this.props.to);
         this.props.onClick && this.props.onClick();
     };
 
@@ -30,7 +29,7 @@ export class MenuItemLink extends Component {
         } = this.props;
 
         return (
-            <MenuItem {...props} onClick={this.handleMenuTap}>
+            <MenuItem component={Link} {...props} onClick={this.handleMenuTap}>
                 {leftIcon && <span style={iconPaddingStyle}>{leftIcon}</span>}
                 {primaryText}
             </MenuItem>
