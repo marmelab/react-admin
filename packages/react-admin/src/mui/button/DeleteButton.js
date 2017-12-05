@@ -26,14 +26,13 @@ const DeleteButton = ({
     record = {},
     translate,
 }) => (
-    <Button color="accent">
-        <Link
-            to={`${linkToRecord(basePath, record.id)}/delete`}
-            className={classes.link}
-        >
-            <ActionDelete className={classes.iconPaddingStyle} />
-            {label && translate(label)}
-        </Link>
+    <Button
+        component={Link}
+        color="accent"
+        to={`${linkToRecord(basePath, record.id)}/delete`}
+    >
+        <ActionDelete className={classes.iconPaddingStyle} />
+        {label && translate(label)}
     </Button>
 );
 

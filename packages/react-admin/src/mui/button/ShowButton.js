@@ -27,14 +27,14 @@ const ShowButton = ({
     record = {},
     translate,
 }) => (
-    <Button color="primary" style={{ overflow: 'inherit' }}>
-        <Link
-            to={`${linkToRecord(basePath, record.id)}/show`}
-            className={classes.link}
-        >
-            <ImageEye className={classes.iconPaddingStyle} />
-            {label && translate(label)}
-        </Link>
+    <Button
+        component={Link}
+        color="primary"
+        style={{ overflow: 'inherit' }}
+        to={`${linkToRecord(basePath, record.id)}/show`}
+    >
+        <ImageEye className={classes.iconPaddingStyle} />
+        {label && translate(label)}
     </Button>
 );
 

@@ -39,21 +39,25 @@ const CreateButton = ({
 }) => (
     <Responsive
         small={
-            <Button fab color="primary" className={classes.floating}>
-                <Link
-                    to={`${basePath}/create`}
-                    className={classes.floatingLink}
-                >
-                    <ContentAdd />
-                </Link>
+            <Button
+                component={Link}
+                fab
+                color="primary"
+                className={classes.floating}
+                to={`${basePath}/create`}
+            >
+                <ContentAdd />
             </Button>
         }
         medium={
-            <Button color="primary">
-                <Link to={`${basePath}/create`} className={classes.desktopLink}>
-                    <ContentAdd className={classes.iconPaddingStyle} />
-                    {label && translate(label)}
-                </Link>
+            <Button
+                component={Link}
+                color="primary"
+                to={`${basePath}/create`}
+                className={classes.desktopLink}
+            >
+                <ContentAdd className={classes.iconPaddingStyle} />
+                {label && translate(label)}
             </Button>
         }
     />
