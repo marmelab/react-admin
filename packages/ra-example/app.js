@@ -39,12 +39,6 @@ const delayedDataProvider = (type, resource, params) =>
         )
     );
 
-const Dashboard = () => (
-    <div>
-        <h2>Dashboard</h2>
-    </div>
-);
-
 render(
     <Admin
         authClient={authClient}
@@ -52,7 +46,6 @@ render(
         title="Example Admin"
         locale="en"
         messages={messages}
-        dashboard={Dashboard}
     >
         {permissions => [
             <Resource
