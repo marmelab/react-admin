@@ -302,13 +302,13 @@ If you add [custom pages](./Actions.md), of if you [create an admin app from scr
 import { withRouter } from 'react-router-dom';
 import { Restricted } from 'react-admin';
 
-const MyPage = ({ location }) =>
-    <Restricted authParams={{ foo: 'bar' }} location={location} />
+const MyPage = ({ location }) => (
+    <Restricted authParams={{ foo: 'bar' }} location={location} >
         <div>
             ...
         </div>
     </Restricted>
-}
+);
 
 export default withRouter(MyPage);
 ```

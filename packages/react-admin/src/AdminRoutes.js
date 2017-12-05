@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Children, Component } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import getContext from 'recompose/getContext';
@@ -8,21 +8,44 @@ import getContext from 'recompose/getContext';
 import CrudRoute from './CrudRoute';
 import NotFound from './mui/layout/NotFound';
 import Restricted from './auth/Restricted';
-import { AUTH_GET_PERMISSIONS } from './auth';
+import WithPermissions from './auth/WithPermissions';
 import { declareResources as declareResourcesAction } from './actions';
+import { AUTH_GET_PERMISSIONS } from './auth/types';
+
+const initialPermissions = '@@ar/initialPermissions';
 
 export class AdminRoutes extends Component {
+    // Can't use null or undefined here as authClient may return any those values
+    state = { permissions: initialPermissions };
+
     componentDidMount() {
-        return this.initializeResources(this.props.children);
+        this.getPermissions();
     }
 
-    async initializeResources(children) {
-        if (typeof children === 'function') {
-            let permissions;
-            if (this.props.authClient) {
-                permissions = await this.props.authClient(AUTH_GET_PERMISSIONS);
-            }
+    componentDidUpdate(prevProps, prevState) {
+        if (
+            prevState.permissions !== this.state.permissions &&
+            this.state.permissions !== initialPermissions
+        ) {
+            this.initializeResources();
+        }
+    }
 
+    getPermissions = async () => {
+        const { authClient } = this.props;
+        try {
+            const permissions = await authClient(AUTH_GET_PERMISSIONS);
+            this.setState({ permissions });
+        } catch (error) {
+            this.setState({ permissions: initialPermissions });
+        }
+    };
+
+    async initializeResources() {
+        const { children, declareResources } = this.props;
+        const { permissions } = this.state;
+
+        if (typeof children === 'function') {
             const childrenResult = children(permissions);
             let resources = childrenResult;
 
@@ -34,11 +57,11 @@ export class AdminRoutes extends Component {
                 .filter(node => node)
                 .map(node => node.props);
 
-            this.props.declareResources(finalResources);
+            declareResources(finalResources);
         } else {
             const resources =
-                React.Children.map(children, ({ props }) => props) || [];
-            this.props.declareResources(resources);
+                Children.map(children, ({ props }) => props) || [];
+            declareResources(resources);
         }
     }
 
@@ -88,7 +111,12 @@ export class AdminRoutes extends Component {
                                 authParams={{ route: 'dashboard' }}
                                 {...routeProps}
                             >
-                                {React.createElement(dashboard)}
+                                <WithPermissions
+                                    authParams={{ route: 'dashboard' }}
+                                    {...routeProps}
+                                >
+                                    {React.createElement(dashboard)}
+                                </WithPermissions>
                             </Restricted>
                         )}
                     />
@@ -136,5 +164,6 @@ export default compose(
     }),
     connect(mapStateToProps, {
         declareResources: declareResourcesAction,
-    })
+    }),
+    withRouter
 )(AdminRoutes);

@@ -112,17 +112,25 @@ describe('<AdminRoutes>', () => {
 
     it('should accept a function as children and declare the returned resources', async () => {
         const declareResources = jest.fn();
+        const children = jest.fn(() =>
+            resources.map(resource => (
+                <Foo {...resource} /> // eslint-disable-line react/jsx-key
+            ))
+        );
         const Foo = () => <span />;
-        await shallow(
-            <AdminRoutes declareResources={declareResources}>
-                {() =>
-                    resources.map(resource => (
-                        <Foo {...resource} /> // eslint-disable-line react/jsx-key
-                    ))}
+        const instance = shallow(
+            <AdminRoutes
+                authClient={jest.fn()}
+                declareResources={declareResources}
+            >
+                {children}
             </AdminRoutes>
-        )
-            .instance()
-            .componentDidMount();
+        ).instance();
+
+        instance.setState({ permissions: 'permissions' });
+        await instance.componentDidUpdate(null, {
+            permissions: 'oldPermissions',
+        });
 
         assert.deepEqual(declareResources.mock.calls[0][0], resources);
     });
@@ -130,18 +138,28 @@ describe('<AdminRoutes>', () => {
     it('should accept a promise as children and declare the returned resources', async () => {
         const declareResources = jest.fn();
         const Foo = () => <span />;
-        await shallow(
-            <AdminRoutes declareResources={declareResources}>
-                {() =>
-                    Promise.resolve(
-                        resources.map(resource => (
-                            <Foo {...resource} /> // eslint-disable-line react/jsx-key
-                        ))
-                    )}
+
+        const children = jest.fn(() =>
+            Promise.resolve(
+                resources.map(resource => (
+                    <Foo {...resource} /> // eslint-disable-line react/jsx-key
+                ))
+            )
+        );
+
+        const instance = shallow(
+            <AdminRoutes
+                authClient={jest.fn()}
+                declareResources={declareResources}
+            >
+                {children}
             </AdminRoutes>
-        )
-            .instance()
-            .componentDidMount();
+        ).instance();
+
+        instance.setState({ permissions: 'permissions' });
+        await instance.componentDidUpdate(null, {
+            permissions: 'oldPermissions',
+        });
 
         assert.deepEqual(declareResources.mock.calls[0][0], resources);
     });

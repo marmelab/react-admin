@@ -9,7 +9,7 @@ import { userCheck } from '../actions/authActions';
  *
  * Useful for Route components ; used internally by CrudRoute.
  * Use it to decorate your custom page components to require 
- * authentication or a custom role.
+ * authentication.
  * 
  * Pass the `location` from the `routeParams` as `location` prop.
  * You can set additional `authParams` at will if your authClient

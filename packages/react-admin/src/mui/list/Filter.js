@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import isEqual from 'lodash.isequal';
 import { withStyles } from 'material-ui/styles';
-import compose from 'recompose/compose';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
 import removeEmpty from '../../util/removeEmpty';
-import withChildrenAsFunction from '../withChildrenAsFunction';
 
 const styles = {
     button: {},
@@ -107,4 +105,4 @@ Filter.defaultProps = {
     debounce: 500,
 };
 
-export default compose(withChildrenAsFunction, withStyles(styles))(Filter);
+export default withStyles(styles)(Filter);
