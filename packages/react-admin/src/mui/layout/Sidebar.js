@@ -23,8 +23,12 @@ const styles = theme => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        padding: '0 8px',
+        paddingRight: theme.spacing.unit,
         ...theme.mixins.toolbar,
+    },
+    drawerLogo: {
+        flex: '1 0',
+        paddingLeft: theme.spacing.unit * 2,
     },
 });
 
@@ -43,7 +47,13 @@ class Sidebar extends PureComponent {
     toggleSidebar = () => this.props.setSidebarVisibility(!this.props.open);
 
     render() {
-        const { children, classes, open, setSidebarVisibility } = this.props;
+        const {
+            children,
+            classes,
+            open,
+            setSidebarVisibility,
+            logo,
+        } = this.props;
 
         return (
             <Responsive
@@ -56,6 +66,13 @@ class Sidebar extends PureComponent {
                             paper: classes.drawerPaper,
                         }}
                     >
+                        {logo && (
+                            <div className={classes.drawerHeader}>
+                                <div className={classes.drawerLogo}>
+                                    {React.cloneElement(logo)}
+                                </div>
+                            </div>
+                        )}
                         {React.cloneElement(children, {
                             onMenuTap: this.handleClose,
                         })}
@@ -71,6 +88,11 @@ class Sidebar extends PureComponent {
                         onRequestClose={setSidebarVisibility}
                     >
                         <div className={classes.drawerHeader}>
+                            {logo && (
+                                <div className={classes.drawerLogo}>
+                                    {React.cloneElement(logo)}
+                                </div>
+                            )}
                             <IconButton onClick={this.toggleSidebar}>
                                 <ChevronLeftIcon />
                             </IconButton>
@@ -90,6 +112,7 @@ Sidebar.propTypes = {
     open: PropTypes.bool.isRequired,
     setSidebarVisibility: PropTypes.func.isRequired,
     width: PropTypes.string,
+    logo: PropTypes.element,
 };
 
 const mapStateToProps = state => ({

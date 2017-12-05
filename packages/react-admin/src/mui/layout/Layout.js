@@ -77,6 +77,7 @@ const Layout = ({
     open,
     theme,
     title,
+    logo,
 }) => (
     <MuiThemeProvider theme={createMuiTheme(theme)}>
         <div className={classes.root}>
@@ -84,7 +85,7 @@ const Layout = ({
                 <Hidden xsDown>
                     <AppBar title={title} open={open} />
                 </Hidden>
-                <Sidebar>
+                <Sidebar logo={logo}>
                     {createElement(menu || Menu, {
                         logout,
                         hasDashboard: !!dashboard,
@@ -131,6 +132,7 @@ Layout.propTypes = {
     open: PropTypes.bool,
     title: PropTypes.node.isRequired,
     theme: PropTypes.object.isRequired,
+    logo: PropTypes.element
 };
 
 Layout.defaultProps = {

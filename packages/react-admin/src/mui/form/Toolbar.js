@@ -26,7 +26,7 @@ const Toolbar = ({
 }) => (
     <Responsive
         small={
-            <MuiToolbar style={styles.mobileToolbar} noGutter>
+            <MuiToolbar style={styles.mobileToolbar} disableGutters>
                 {Children.count(children) === 0 ? (
                     <SaveButton
                         handleSubmitWithRedirect={handleSubmitWithRedirect}

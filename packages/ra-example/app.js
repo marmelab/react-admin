@@ -23,6 +23,7 @@ import { UserList, UserEdit, UserCreate, UserIcon, UserShow } from './users';
 import data from './data';
 import * as customMessages from './i18n';
 import authClient from './authClient';
+import Logo from './logo';
 
 const messages = {
     fr: { ...frenchMessages, ...customMessages.fr },
@@ -46,6 +47,7 @@ render(
         title="Example Admin"
         locale="en"
         messages={messages}
+        logo={<Logo />}
     >
         {permissions => [
             <Resource
