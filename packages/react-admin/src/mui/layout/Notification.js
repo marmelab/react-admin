@@ -6,6 +6,7 @@ import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 
 import { hideNotification as hideNotificationAction } from '../../actions/notificationActions';
+import { getNotification } from '../../reducer/admin/notifications';
 import translate from '../../i18n/translate';
 
 const styles = theme => {
@@ -23,7 +24,22 @@ const styles = theme => {
 };
 
 class Notification extends React.Component {
+    state = {
+        open: false,
+    };
+    componentWillReceiveProps = nextProps => {
+        this.setState({
+            open: !!nextProps.notification,
+        });
+    };
+
     handleRequestClose = () => {
+        this.setState({
+            open: false,
+        });
+    };
+
+    handleExited = () => {
         this.props.hideNotification();
     };
 
@@ -32,16 +48,25 @@ class Notification extends React.Component {
             classes,
             type,
             translate,
-            message,
+            notification,
             autoHideDuration,
         } = this.props;
+
         return (
             <Snackbar
-                open={!!message}
-                message={!!message && translate(message)}
-                autoHideDuration={autoHideDuration}
+                open={this.state.open}
+                message={
+                    notification &&
+                    notification.message &&
+                    translate(notification.message, notification.messageArgs)
+                }
+                autoHideDuration={
+                    (notification && notification.autoHideDuration) ||
+                    autoHideDuration
+                }
+                onExited={this.handleExited}
                 onRequestClose={this.handleRequestClose}
-                className={classes[type]}
+                className={classes[(notification && notification.type) || type]}
             />
         );
     }
@@ -49,8 +74,13 @@ class Notification extends React.Component {
 
 Notification.propTypes = {
     classes: PropTypes.object,
-    message: PropTypes.string,
-    type: PropTypes.string.isRequired,
+    notification: PropTypes.shape({
+        message: PropTypes.string,
+        type: PropTypes.string,
+        autoHideDuration: PropTypes.number,
+        messageArgs: PropTypes.object,
+    }),
+    type: PropTypes.string,
     hideNotification: PropTypes.func.isRequired,
     autoHideDuration: PropTypes.number,
     translate: PropTypes.func.isRequired,
@@ -62,13 +92,13 @@ Notification.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-    message: state.admin.notification.text,
-    type: state.admin.notification.type,
-    autoHideDuration: state.admin.notification.autoHideDuration,
+    notification: getNotification(state),
 });
 
 export default compose(
     translate,
     withStyles(styles),
-    connect(mapStateToProps, { hideNotification: hideNotificationAction })
+    connect(mapStateToProps, {
+        hideNotification: hideNotificationAction,
+    })
 )(Notification);

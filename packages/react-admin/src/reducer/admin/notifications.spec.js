@@ -1,20 +1,17 @@
 import assert from 'assert';
 import {
-    SHOW_NOTIFICATION,
     HIDE_NOTIFICATION,
+    SHOW_NOTIFICATION,
 } from '../../actions/notificationActions';
-import reducer from './notification';
+import reducer from './notifications';
 
-describe('notification reducer', () => {
+describe('notifications reducer', () => {
     it('should return empty notification by default', () => {
-        assert.deepEqual(
-            { text: '', type: 'info', autoHideDuration: undefined },
-            reducer(undefined, {})
-        );
+        assert.deepEqual([], reducer(undefined, {}));
     });
     it('should set autoHideDuration when passed in payload', () => {
         assert.deepEqual(
-            { text: 'test', type: 'info', autoHideDuration: 1337 },
+            [{ text: 'test', type: 'info', autoHideDuration: 1337 }],
             reducer(undefined, {
                 type: SHOW_NOTIFICATION,
                 payload: {
@@ -27,7 +24,7 @@ describe('notification reducer', () => {
     });
     it('should set text and type upon SHOW_NOTIFICATION', () => {
         assert.deepEqual(
-            { text: 'foo', type: 'warning', autoHideDuration: undefined },
+            [{ text: 'foo', type: 'warning' }],
             reducer(undefined, {
                 type: SHOW_NOTIFICATION,
                 payload: {
@@ -37,13 +34,21 @@ describe('notification reducer', () => {
             })
         );
     });
-    it('should set text to empty string upon HIDE_NOTIFICATION', () => {
+    it('should have no elements upon last HIDE_NOTIFICATION', () => {
         assert.deepEqual(
-            { text: '', type: 'warning' },
-            reducer(
-                { text: 'foo', type: 'warning' },
-                { type: HIDE_NOTIFICATION }
-            )
+            [],
+            reducer([{ text: 'foo', type: 'warning' }], {
+                type: HIDE_NOTIFICATION,
+            })
+        );
+    });
+    it('should have one less notification upon HIDE_NOTIFICATION with multiple notifications', () => {
+        const notifications = [{ text: 'foo' }, { text: 'bar' }];
+        assert.equal(
+            notifications.length - 1,
+            reducer(notifications, {
+                type: HIDE_NOTIFICATION,
+            }).length
         );
     });
 });
