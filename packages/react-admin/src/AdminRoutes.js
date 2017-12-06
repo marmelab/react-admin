@@ -1,13 +1,12 @@
 import React, { Children, Component } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import getContext from 'recompose/getContext';
 
 import CrudRoute from './CrudRoute';
 import NotFound from './mui/layout/NotFound';
-import Restricted from './auth/Restricted';
 import WithPermissions from './auth/WithPermissions';
 import { declareResources as declareResourcesAction } from './actions';
 import { AUTH_GET_PERMISSIONS } from './auth/types';
@@ -72,6 +71,7 @@ export class AdminRoutes extends Component {
             dashboard,
             catchAll,
         } = this.props;
+
         return (
             <Switch>
                 {customRoutes &&
@@ -107,7 +107,7 @@ export class AdminRoutes extends Component {
                         exact
                         path="/"
                         render={routeProps => (
-                            <Restricted
+                            <WithPermissions
                                 authParams={{ route: 'dashboard' }}
                                 {...routeProps}
                             >
@@ -117,7 +117,7 @@ export class AdminRoutes extends Component {
                                 >
                                     {React.createElement(dashboard)}
                                 </WithPermissions>
-                            </Restricted>
+                            </WithPermissions>
                         )}
                     />
                 ) : (
@@ -164,6 +164,5 @@ export default compose(
     }),
     connect(mapStateToProps, {
         declareResources: declareResourcesAction,
-    }),
-    withRouter
+    })
 )(AdminRoutes);

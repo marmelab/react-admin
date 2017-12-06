@@ -16,7 +16,7 @@ describe('<AdminRoutes>', () => {
     const PostShow = () => <div>PostShow</div>;
     const PostDelete = () => <div>PostDelete</div>;
     const Custom = () => <div>Custom</div>;
-    // the Provider is required because the dashboard is wrapped by <Restricted>, which is a connected component
+    // the Provider is required because the dashboard is wrapped by <Authenticated>, which is a connected component
     const store = createStore(x => x);
     const resources = [
         {

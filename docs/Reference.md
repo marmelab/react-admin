@@ -12,6 +12,7 @@ title: "Reference"
 * `<AdminRoutes>`
 * `<AppBar>`
 * `<AppBarMobile>`
+* [`<Authenticated>`](./Authentication.md#restricting-access-to-a-custom-page)
 * [`<AutocompleteInput>`](./Inputs.md#autocompleteinput)
 * [`<BooleanField>`](./Fields.md#booleanfield)
 * [`<BooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
@@ -67,7 +68,6 @@ title: "Reference"
 * `<RefreshButton>`
 * [`<Resource>`](./Resource.md#the-resource-component)
 * [`<Responsive>`](./Theming.md#responsive-utility)
-* [`<Restricted>`](./Authentication.md#restricting-access-to-a-custom-page)
 * [`<RichTextField>`](./Fields.md#richtextfield)
 * [`<RichTextInput>`](./Inputs.md#richtextinput)
 * `<SaveButton>`
@@ -83,7 +83,6 @@ title: "Reference"
 * [`<SimpleList>`](./List.html#the-simplelist-component)
 * [`<SimpleShowLayout>`](./Show.html#the-simpleshowlayout-component)
 * [`<SingleFieldList>`](./List.html#the-singlefieldlist-component)
-* [`<SwitchPermissions>`](./Authorization.html#switchpermissions)
 * `<Tab>`
 * [`<TabbedForm>`](./CreateEdit.md#the-tabbedform-component)
 * `<TabbedShowLayout>`
@@ -93,6 +92,6 @@ title: "Reference"
 * `<Toolbar>`
 * [`<UrlField>`](./Fields.md#urlfield)
 * `<ViewTitle>`
-* [`<WithPermission>`](./Authorization.html#withpermission)
+* [`<WithPermissions>`](./Authorization.html#withpermissions)
 
 </div>
