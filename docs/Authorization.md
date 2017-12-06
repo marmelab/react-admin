@@ -224,14 +224,14 @@ export default ({ permissions }) => (
 
 ## Restricting access to content inside custom routes
 
-You might want to check user permissions inside a custom route. You'll have to use the `Restricted` component for that:
+You might want to check user permissions inside a custom route. You'll have to use the `WithPermissions` component for that:
 
 {% raw %}
 ```jsx
 // in src/MyPage.js
 import React from 'react';
 import Card, { CardContent } from 'material-ui/Card';
-import { ViewTitle, Restricted } from 'react-admin';
+import { ViewTitle, WithPermissions } from 'react-admin';
 import { withRouter } from 'react-router-dom';
 
 const MyPage = ({ permissions }) => (
@@ -244,31 +244,31 @@ const MyPage = ({ permissions }) => (
         }
     </Card>
 )
-const MyRestrictedPage = ({ location, match }) => (
-    <Restricted
-        authParams={{ route: match.path, params: route.params }}
+const MyPageWithPermissions = ({ location, match }) => (
+    <WithPermissions
+        authParams={{ key: match.path, params: route.params }}
         location={location}
     >
         <MyPage />
-    </Restricted>
+    </WithPermissions>
 );
 
-export default withRouter(MyRestrictedPage);
+export default withRouter(MyPageWithPermissions);
 ```
 {% endraw %}
 
 ## Restricting access to content in custom menu
 
-What if you want to check the permissions inside a [custom menu](./Admin.html#menu) ? You'll to connect your menu component with redux.
+What if you want to check the permissions inside a [custom menu](./Admin.html#menu) ? Much like getting permissions inside a custom page, you'll have to use the `WithPermissions` component:
 
 {% raw %}
 ```jsx
 // in src/myMenu.js
 import React from 'react';
 import { connect } from 'react-redux';
-import { MenuItemLink, getPermissions } from 'react-admin';
+import { MenuItemLink, WithPermissions } from 'react-admin';
 
-const Menu = ({ resources, onMenuTap, logout, permissions }) => (
+const Menu = ({ onMenuTap, logout, permissions }) => (
     <div>
         <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
         <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
@@ -280,10 +280,10 @@ const Menu = ({ resources, onMenuTap, logout, permissions }) => (
     </div>
 );
 
-const mapStateToProps = state => ({
-    permissions: getPermissions(state),
-});
-
-export default connect(mapStateToProps)(Menu);
+const MenuWithPermissions = (props) => (
+    <WithPermissions {...props}>
+        <Menu />
+    </WithPermissions>
+);
 ```
 {% endraw %}
