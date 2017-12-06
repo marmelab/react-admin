@@ -52,7 +52,9 @@ describe('<ReferenceArrayField />', () => {
         );
         const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'withStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
@@ -78,7 +80,9 @@ describe('<ReferenceArrayField />', () => {
         );
         const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'withStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), {});
@@ -108,7 +112,9 @@ describe('<ReferenceArrayField />', () => {
         );
         const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'withStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
@@ -141,7 +147,9 @@ describe('<ReferenceArrayField />', () => {
         );
         const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'withStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);

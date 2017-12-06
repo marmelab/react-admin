@@ -121,7 +121,14 @@ export class Pagination extends Component {
     }
 
     render() {
-        const { classes = {}, page, perPage, total, translate } = this.props;
+        const {
+            classes = {},
+            className,
+            page,
+            perPage,
+            total,
+            translate,
+        } = this.props;
         if (total === 0) return null;
         const offsetEnd = Math.min(page * perPage, total);
         const offsetBegin = Math.min((page - 1) * perPage + 1, offsetEnd);
@@ -130,7 +137,10 @@ export class Pagination extends Component {
         return (
             <Responsive
                 small={
-                    <Toolbar classes={{ root: classes.mobileToolbar }}>
+                    <Toolbar
+                        className={className}
+                        classes={{ root: classes.mobileToolbar }}
+                    >
                         {page > 1 && (
                             <IconButton color="primary" onClick={this.prevPage}>
                                 <ChevronLeft />
@@ -151,7 +161,7 @@ export class Pagination extends Component {
                     </Toolbar>
                 }
                 medium={
-                    <Toolbar>
+                    <Toolbar className={className}>
                         <Typography type="body1" className="displayed-records">
                             {translate('ra.navigation.page_range_info', {
                                 offsetBegin,
@@ -193,6 +203,7 @@ export class Pagination extends Component {
 
 Pagination.propTypes = {
     classes: PropTypes.object,
+    className: PropTypes.string,
     page: PropTypes.number,
     perPage: PropTypes.number,
     setPage: PropTypes.func,

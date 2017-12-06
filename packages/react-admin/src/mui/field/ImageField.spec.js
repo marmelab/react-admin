@@ -6,7 +6,7 @@ import { ImageField } from './ImageField';
 describe('<ImageField />', () => {
     it('should return an empty div when record is not set', () => {
         assert.equal(
-            shallow(<ImageField classes={{}} source="url" />).html(),
+            shallow(<ImageField source="url" />).html(),
             '<div></div>'
         );
     });
@@ -14,7 +14,6 @@ describe('<ImageField />', () => {
     it('should render an image with correct attributes based on `source` and `title`', () => {
         const wrapper = shallow(
             <ImageField
-                classes={{}}
                 record={{
                     url: 'http://foo.com/bar.jpg',
                     title: 'Hello world!',
@@ -33,7 +32,6 @@ describe('<ImageField />', () => {
     it('should support deep linking', () => {
         const wrapper = shallow(
             <ImageField
-                classes={{}}
                 record={{
                     picture: {
                         url: 'http://foo.com/bar.jpg',
@@ -54,7 +52,6 @@ describe('<ImageField />', () => {
     it('should allow setting static string as title', () => {
         const wrapper = shallow(
             <ImageField
-                classes={{}}
                 record={{
                     url: 'http://foo.com/bar.jpg',
                 }}
@@ -71,7 +68,6 @@ describe('<ImageField />', () => {
     it('should render a list of images with correct attributes based on `src` and `title`', () => {
         const wrapper = shallow(
             <ImageField
-                classes={{}}
                 record={{
                     pictures: [
                         {

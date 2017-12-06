@@ -15,7 +15,7 @@ describe('<NumberField />', () => {
 
     it('should render a number', () => {
         const wrapper = shallow(
-            <NumberField classes={{}} record={{ foo: 1 }} source="foo" />
+            <NumberField record={{ foo: 1 }} source="foo" />
         );
         assert.equal(wrapper.text(), '1');
     });
@@ -23,7 +23,6 @@ describe('<NumberField />', () => {
     it('should pass the options prop to Intl.NumberFormat', () => {
         const wrapper = shallow(
             <NumberField
-                classes={{}}
                 record={{ foo: 1 }}
                 source="foo"
                 locales="en-US"
@@ -36,7 +35,6 @@ describe('<NumberField />', () => {
     it('should use the locales props as an argument to Intl.NumberFormat', () => {
         const wrapper = shallow(
             <NumberField
-                classes={{}}
                 record={{ foo: 1 }}
                 source="foo"
                 locales="fr-FR"
@@ -49,7 +47,6 @@ describe('<NumberField />', () => {
     it('should use custom styles passed as an elStyle prop', () => {
         const wrapper = shallow(
             <NumberField
-                classes={{}}
                 record={{ foo: 1 }}
                 source="foo"
                 elStyle={{ margin: 1 }}
@@ -61,11 +58,7 @@ describe('<NumberField />', () => {
 
     it('should handle deep fields', () => {
         const wrapper = shallow(
-            <NumberField
-                classes={{}}
-                record={{ foo: { bar: 2 } }}
-                source="foo.bar"
-            />
+            <NumberField record={{ foo: { bar: 2 } }} source="foo.bar" />
         );
 
         assert.equal(wrapper.text(), '2');
