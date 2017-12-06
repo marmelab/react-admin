@@ -12,7 +12,8 @@ import { AUTH_GET_PERMISSIONS } from '../auth/types';
  *
  * Useful for Route components ; used internally by CrudRoute.
  * Use it to decorate your custom page components to require 
- * a custom role.
+ * a custom role. It will pass the permissions as a prop to your
+ * component.
  * 
  * Pass the `location` from the `routeParams` as `location` prop.
  * You can set additional `authParams` at will if your authClient
@@ -21,7 +22,12 @@ import { AUTH_GET_PERMISSIONS } from '../auth/types';
  * @example
  *     import { WithPermissions } from 'react-admin';
  * 
- *     const CustomRoutes = [
+ *     const Foo = ({ permissions }) => (
+ *         {permissions === 'admin' ? <p>Sensitive data</p> : null}
+ *         <p>Not sensitive data</p>
+ *     );
+ * 
+ *     const customRoutes = [
  *         <Route path="/foo" render={routeParams =>
  *             <WithPermissions location={routeParams.location} authParams={{ foo: 'bar' }}>
  *                 <Foo />
@@ -44,14 +50,24 @@ export class WithPermissions extends Component {
 
     state = { permissions: null };
 
+    componentWillMount() {
+        this.checkAuthentication(this.props);
+    }
+
     async componentDidMount() {
         await this.checkPermissions(this.props);
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.location !== this.props.location) {
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.location !== this.props.location) {
+            this.checkAuthentication(nextProps);
             this.checkPermissions(this.props);
         }
+    }
+
+    checkAuthentication(params) {
+        const { userCheck, authParams, location } = params;
+        userCheck(authParams, location && location.pathname);
     }
 
     async checkPermissions(params) {
