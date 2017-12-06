@@ -11,13 +11,13 @@ By default, a react-admin app doesn't require authorization. However, if needed,
 
 ## Configuring the Auth Client
 
-A call to the `authClient` with the `AUTH_CHECK` type will be made each time a component requires to check the user's permissions.
+A call to the `authClient` with the `AUTH_GET_PERMISSIONS` type will be made each time a component requires to check the user's permissions.
 
 Following is an example where the `authClient` stores the user's role upon authentication, and returns it when called for a permissions check:
 
 ```jsx
 // in src/authClient.js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_GET_PERMISSIONS } from 'react-admin';
 import decodeJwt from 'jwt-decode';
 
 export default (type, params) => {
@@ -49,7 +49,7 @@ export default (type, params) => {
     if (type === AUTH_ERROR) {
         // ...
     }
-    if (type === AUTH_CHECK) {
+    if (type === AUTH_GET_PERMISSIONS) {
         const token = localStorage.getItem('token');
         if (!token) {
             return Promise.reject();
