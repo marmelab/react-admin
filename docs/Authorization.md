@@ -9,7 +9,7 @@ Some applications may require to determine what level of access a particular aut
 
 By default, a react-admin app doesn't require authorization. However, if needed, it will rely on the `authClient` introduced in the [Authentication](./Authentication.html) section.
 
-## Configuring the Auth Client
+## Configuring The Auth Client
 
 A call to the `authClient` with the `AUTH_GET_PERMISSIONS` type will be made each time a component requires to check the user's permissions.
 
@@ -62,7 +62,7 @@ export default (type, params) => {
 };
 ```
 
-## Restricting Access To Resources or Views
+## Restricting Access To Resources Or Views
 
 It's possible to restrict access to resources or their views inside the `Admin` component. To do so, you must specify a function as the `Admin` only child. This function will be called with the permissions returned by the `authClient`.
 
@@ -199,7 +199,7 @@ export const UserList = ({ permissions, ...props }) =>
 
 **Tip** Note how the `permissions` prop is passed down to the custom `filters` component.
 
-## Restricting access to content inside a dashboard
+## Restricting Access To Content Inside A Dashboard
 
 The component provided as a [`dashboard`]('./Admin.md#dashboard) will receive the permissions in its props too:
 
@@ -222,9 +222,9 @@ export default ({ permissions }) => (
 );
 ```
 
-## Restricting access to content inside custom routes
+## Restricting Access To Content Inside Custom Pages
 
-You might want to check user permissions inside a custom route. You'll have to use the `WithPermissions` component for that:
+You might want to check user permissions inside a custom pages. You'll have to use the `WithPermissions` component for that:
 
 {% raw %}
 ```jsx
@@ -257,7 +257,7 @@ export default withRouter(MyPageWithPermissions);
 ```
 {% endraw %}
 
-## Restricting access to content in custom menu
+## Restricting Access To Content In Custom Menu
 
 What if you want to check the permissions inside a [custom menu](./Admin.html#menu) ? Much like getting permissions inside a custom page, you'll have to use the `WithPermissions` component:
 
