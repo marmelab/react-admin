@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { MenuItem } from 'material-ui/Menu';
-import { withRouter } from 'react-router';
 
 const iconPaddingStyle = { paddingRight: '0.5em' };
 
@@ -18,15 +17,7 @@ export class MenuItemLink extends Component {
     };
 
     render() {
-        const {
-            primaryText,
-            leftIcon,
-            history,
-            match,
-            location,
-            staticContext,
-            ...props
-        } = this.props;
+        const { primaryText, leftIcon, staticContext, ...props } = this.props;
 
         return (
             <MenuItem component={Link} {...props} onClick={this.handleMenuTap}>
@@ -37,4 +28,4 @@ export class MenuItemLink extends Component {
     }
 }
 
-export default withRouter(MenuItemLink);
+export default MenuItemLink;

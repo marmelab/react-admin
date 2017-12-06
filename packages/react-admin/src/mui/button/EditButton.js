@@ -28,6 +28,7 @@ const EditButton = ({
     translate,
 }) => (
     <Button
+        className={classes.link}
         component={Link}
         color="primary"
         to={linkToRecord(basePath, record.id)}

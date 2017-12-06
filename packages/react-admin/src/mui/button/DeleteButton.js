@@ -27,6 +27,7 @@ const DeleteButton = ({
     translate,
 }) => (
     <Button
+        className={classes.link}
         component={Link}
         color="accent"
         to={`${linkToRecord(basePath, record.id)}/delete`}
