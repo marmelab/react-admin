@@ -28,6 +28,7 @@ const ShowButton = ({
     translate,
 }) => (
     <Button
+        className={classes.link}
         component={Link}
         color="primary"
         style={{ overflow: 'inherit' }}
