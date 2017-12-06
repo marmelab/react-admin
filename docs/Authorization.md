@@ -9,7 +9,7 @@ Some applications may require to determine what level of access a particular aut
 
 By default, a react-admin app doesn't require authorization. However, if needed, it will rely on the `authClient` introduced in the [Authentication](./Authentication.html) section.
 
-## Configuring The Auth Client
+## Configuring the Auth Client
 
 A call to the `authClient` with the `AUTH_GET_PERMISSIONS` type will be made each time a component requires to check the user's permissions.
 
@@ -49,6 +49,9 @@ export default (type, params) => {
     if (type === AUTH_ERROR) {
         // ...
     }
+    if (type === AUTH_CHECK) {
+        return localStorage.getItem('token') ? Promise.resolve() : Promise.reject();
+    }
     if (type === AUTH_GET_PERMISSIONS) {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -62,7 +65,7 @@ export default (type, params) => {
 };
 ```
 
-## Restricting Access To Resources Or Views
+## Restricting Access to Resources or Views
 
 It's possible to restrict access to resources or their views inside the `Admin` component. To do so, you must specify a function as the `Admin` only child. This function will be called with the permissions returned by the `authClient`.
 
@@ -94,7 +97,7 @@ Note that the function returns an array of React elements. This is required to a
 
 **Tip** Even if that's possible, be careful when completely excluding a resource (like with the `categories` resource in this example) as it will prevent you to reference them in the other resource views, too.
 
-## Restricting Access To Fields And Inputs
+## Restricting Access to Fields and Inputs
 
 You might want to display some fields, inputs or filters only to users with specific permissions. Just like for resources, pass a function as only child of the component, instead of a set of Fields and Inputs.
 
@@ -199,7 +202,7 @@ export const UserList = ({ permissions, ...props }) =>
 
 **Tip** Note how the `permissions` prop is passed down to the custom `filters` component.
 
-## Restricting Access To Content Inside A Dashboard
+## Restricting Access to Content Inside a Dashboard
 
 The component provided as a [`dashboard`]('./Admin.md#dashboard) will receive the permissions in its props too:
 
@@ -222,7 +225,7 @@ export default ({ permissions }) => (
 );
 ```
 
-## Restricting Access To Content Inside Custom Pages
+## Restricting Access to Content Inside Custom Pages
 
 You might want to check user permissions inside a custom pages. You'll have to use the `WithPermissions` component for that:
 
@@ -257,7 +260,7 @@ export default withRouter(MyPageWithPermissions);
 ```
 {% endraw %}
 
-## Restricting Access To Content In Custom Menu
+## Restricting Access to Content in Custom Menu
 
 What if you want to check the permissions inside a [custom menu](./Admin.html#menu) ? Much like getting permissions inside a custom page, you'll have to use the `WithPermissions` component:
 
