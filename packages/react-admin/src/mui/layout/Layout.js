@@ -1,7 +1,7 @@
 import React, { createElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
+import classnames from 'classnames';
 import {
     MuiThemeProvider,
     createMuiTheme,
@@ -70,6 +70,7 @@ const Layout = ({
     catchAll,
     children,
     classes,
+    className,
     customRoutes,
     dashboard,
     logout,
@@ -79,7 +80,7 @@ const Layout = ({
     title,
 }) => (
     <MuiThemeProvider theme={createMuiTheme(theme)}>
-        <div className={classes.root}>
+        <div className={classnames(classes.root, className)}>
             <div className={classes.appFrame}>
                 <Hidden xsDown>
                     <AppBar title={title} open={open} />
@@ -91,7 +92,7 @@ const Layout = ({
                     })}
                 </Sidebar>
                 <main
-                    className={classNames(
+                    className={classnames(
                         classes.content,
                         open && classes.contentShift
                     )}
@@ -119,6 +120,7 @@ const componentPropType = PropTypes.oneOfType([
 Layout.propTypes = {
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     classes: PropTypes.object,
+    className: PropTypes.string,
     catchAll: componentPropType,
     customRoutes: PropTypes.array,
     dashboard: componentPropType,

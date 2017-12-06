@@ -32,10 +32,14 @@ describe('<TabbedForm />', () => {
                 translate={translate}
                 muiTheme={muiTheme}
                 tabsWithErrors={[]}
-            />
+            >
+                <FormTab />
+                <FormTab />
+            </TabbedForm>
         );
-        const button = wrapper.find('Toolbar');
-        assert.equal(button.length, 1);
+
+        const toolbar = wrapper.find('withStyles(Toolbar)');
+        assert.equal(toolbar.length, 1);
     });
 
     it('should pass submitOnEnter to <Toolbar />', () => {
@@ -49,7 +53,7 @@ describe('<TabbedForm />', () => {
                 tabsWithErrors={[]}
             />
         );
-        const button1 = wrapper1.find('Toolbar');
+        const button1 = wrapper1.find('withStyles(Toolbar)');
         assert.equal(button1.prop('submitOnEnter'), false);
 
         const wrapper2 = shallow(
@@ -61,7 +65,7 @@ describe('<TabbedForm />', () => {
                 tabsWithErrors={[]}
             />
         );
-        const button2 = wrapper2.find('Toolbar');
+        const button2 = wrapper2.find('withStyles(Toolbar)');
         assert.strictEqual(button2.prop('submitOnEnter'), true);
     });
 

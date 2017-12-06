@@ -31,6 +31,7 @@ export class FileInput extends Component {
         accept: PropTypes.string,
         children: PropTypes.element,
         classes: PropTypes.object,
+        className: PropTypes.string,
         disableClick: PropTypes.bool,
         elStyle: PropTypes.object,
         input: PropTypes.object,
@@ -149,6 +150,7 @@ export class FileInput extends Component {
             accept,
             children,
             classes = {},
+            className,
             disableClick,
             elStyle,
             isRequired,
@@ -165,6 +167,7 @@ export class FileInput extends Component {
         return (
             <Labeled
                 label={label}
+                className={className}
                 source={source}
                 resource={resource}
                 isRequired={isRequired}

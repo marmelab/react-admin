@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Card, { CardContent } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
+import classnames from 'classnames';
 
 import Header from '../layout/Header';
 import Title from '../layout/Title';
@@ -118,6 +119,7 @@ export class Edit extends Component {
         const {
             actions = <DefaultActions />,
             children,
+            className,
             data,
             hasDelete,
             hasShow,
@@ -149,7 +151,7 @@ export class Edit extends Component {
         );
 
         return (
-            <div className="edit-page">
+            <div className={classnames('edit-page', className)}>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}
@@ -185,6 +187,7 @@ export class Edit extends Component {
 Edit.propTypes = {
     actions: PropTypes.element,
     children: PropTypes.node,
+    className: PropTypes.string,
     crudGetOne: PropTypes.func.isRequired,
     crudUpdate: PropTypes.func.isRequired,
     data: PropTypes.object,

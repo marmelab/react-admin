@@ -39,6 +39,7 @@ const toLocaleStringSupportsLocales = (() => {
  */
 
 export const DateField = ({
+    className,
     elStyle,
     locales,
     options,
@@ -58,11 +59,16 @@ export const DateField = ({
           ? date.toLocaleDateString(locales, options)
           : date.toLocaleDateString();
 
-    return <span style={elStyle}>{dateString}</span>;
+    return (
+        <span className={className} style={elStyle}>
+            {dateString}
+        </span>
+    );
 };
 
 DateField.propTypes = {
     addLabel: PropTypes.bool,
+    className: PropTypes.string,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     locales: PropTypes.oneOfType([

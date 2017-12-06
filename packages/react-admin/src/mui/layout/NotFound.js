@@ -6,6 +6,7 @@ import History from 'material-ui-icons/History';
 import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
 import compose from 'recompose/compose';
+import classnames from 'classnames';
 
 import AppBarMobile from './AppBarMobile';
 import translate from '../../i18n/translate';
@@ -43,8 +44,8 @@ function goBack() {
     history.go(-1);
 }
 
-const NotFound = ({ classes, translate }) => (
-    <div className={classes.container}>
+const NotFound = ({ classes, className, translate }) => (
+    <div className={classnames(classes.container, className)}>
         <Hidden mdUp>
             <AppBarMobile />
         </Hidden>
@@ -63,6 +64,7 @@ const NotFound = ({ classes, translate }) => (
 
 NotFound.propTypes = {
     classes: PropTypes.object,
+    className: PropTypes.string,
     translate: PropTypes.func.isRequired,
 };
 

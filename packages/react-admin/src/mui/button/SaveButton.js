@@ -6,10 +6,15 @@ import Button from 'material-ui/Button';
 import ContentSave from 'material-ui-icons/Save';
 import { CircularProgress } from 'material-ui/Progress';
 import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
 
 import translate from '../../i18n/translate';
 
 const styles = {
+    button: {
+        margin: '10px 24px',
+        position: 'relative',
+    },
     iconPaddingStyle: {
         paddingRight: '0.5em',
     },
@@ -32,6 +37,7 @@ export class SaveButton extends Component {
 
     render() {
         const {
+            className,
             classes = {},
             saving,
             label = 'ra.action.save',
@@ -43,14 +49,11 @@ export class SaveButton extends Component {
         const type = submitOnEnter ? 'submit' : 'button';
         return (
             <Button
+                className={classnames(classes.button, className)}
                 raised={raised}
                 type={type}
                 onClick={this.handleClick}
                 color={saving ? 'default' : 'primary'}
-                style={{
-                    margin: '10px 24px',
-                    position: 'relative',
-                }}
             >
                 {saving && saving.redirect === redirect ? (
                     <CircularProgress
@@ -68,6 +71,7 @@ export class SaveButton extends Component {
 }
 
 SaveButton.propTypes = {
+    className: PropTypes.string,
     classes: PropTypes.object,
     handleSubmitWithRedirect: PropTypes.func,
     label: PropTypes.string,

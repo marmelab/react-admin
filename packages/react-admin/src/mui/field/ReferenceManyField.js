@@ -109,6 +109,7 @@ export class ReferenceManyField extends Component {
 
     render() {
         const {
+            className,
             resource,
             reference,
             data,
@@ -127,6 +128,7 @@ export class ReferenceManyField extends Component {
         }
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
         return React.cloneElement(children, {
+            className,
             resource: reference,
             ids,
             data,
@@ -142,6 +144,7 @@ ReferenceManyField.propTypes = {
     addLabel: PropTypes.bool,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
+    className: PropTypes.string,
     crudGetManyReference: PropTypes.func.isRequired,
     filter: PropTypes.object,
     ids: PropTypes.array,

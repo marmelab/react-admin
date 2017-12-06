@@ -7,6 +7,7 @@ import FieldTitle from '../../util/FieldTitle';
 
 const DisabledInput = ({
     classes,
+    className,
     input: { value },
     label,
     resource,
@@ -18,6 +19,7 @@ const DisabledInput = ({
         margin="normal"
         value={value}
         label={<FieldTitle label={label} source={source} resource={resource} />}
+        className={className}
         classes={classes}
         style={elStyle}
     />
@@ -25,6 +27,7 @@ const DisabledInput = ({
 
 DisabledInput.propTypes = {
     classes: PropTypes.object,
+    className: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.object,
     resource: PropTypes.string,

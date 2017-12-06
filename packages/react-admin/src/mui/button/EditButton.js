@@ -5,6 +5,7 @@ import compose from 'recompose/compose';
 import Button from 'material-ui/Button';
 import ContentCreate from 'material-ui-icons/Create';
 import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
 
 import Link from '../Link';
 import linkToRecord from '../../util/linkToRecord';
@@ -22,13 +23,14 @@ const styles = {
 
 const EditButton = ({
     basePath = '',
+    className,
     classes = {},
     label = 'ra.action.edit',
     record = {},
     translate,
 }) => (
     <Button
-        className={classes.link}
+        className={classnames(classes.link, className)}
         component={Link}
         color="primary"
         to={linkToRecord(basePath, record.id)}
@@ -40,6 +42,7 @@ const EditButton = ({
 
 EditButton.propTypes = {
     basePath: PropTypes.string,
+    className: PropTypes.string,
     classes: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,

@@ -57,6 +57,7 @@ export class ReferenceField extends Component {
 
     render() {
         const {
+            className,
             record,
             source,
             reference,
@@ -90,14 +91,14 @@ export class ReferenceField extends Component {
         });
         if (linkType === 'edit' || linkType === true) {
             return (
-                <Link style={elStyle} to={href}>
+                <Link className={className} style={elStyle} to={href}>
                     {child}
                 </Link>
             );
         }
         if (linkType === 'show') {
             return (
-                <Link style={elStyle} to={`${href}/show`}>
+                <Link className={className} style={elStyle} to={`${href}/show`}>
                     {child}
                 </Link>
             );
@@ -111,6 +112,7 @@ ReferenceField.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
+    className: PropTypes.string,
     crudGetManyAccumulate: PropTypes.func.isRequired,
     elStyle: PropTypes.object,
     label: PropTypes.string,

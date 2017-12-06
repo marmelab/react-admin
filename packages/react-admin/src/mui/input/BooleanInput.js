@@ -13,6 +13,7 @@ export class BooleanInput extends Component {
 
     render() {
         const {
+            className,
             input,
             isRequired,
             label,
@@ -23,7 +24,7 @@ export class BooleanInput extends Component {
         } = this.props;
 
         return (
-            <FormGroup style={elStyle}>
+            <FormGroup className={className} style={elStyle}>
                 <FormControlLabel
                     control={
                         <Switch
@@ -47,6 +48,7 @@ export class BooleanInput extends Component {
 }
 
 BooleanInput.propTypes = {
+    className: PropTypes.string,
     elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,

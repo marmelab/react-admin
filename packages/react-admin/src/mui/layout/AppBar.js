@@ -37,9 +37,13 @@ const styles = theme => ({
     },
 });
 
-const AppBar = ({ classes, open, title, toggleSidebar }) => (
+const AppBar = ({ classes, className, open, title, toggleSidebar }) => (
     <MuiAppBar
-        className={classNames(classes.appBar, open && classes.appBarShift)}
+        className={classNames(
+            classes.appBar,
+            open && classes.appBarShift,
+            className
+        )}
     >
         <Toolbar disableGutters={!open}>
             <IconButton
@@ -59,6 +63,7 @@ const AppBar = ({ classes, open, title, toggleSidebar }) => (
 
 AppBar.propTypes = {
     classes: PropTypes.object,
+    className: PropTypes.string,
     open: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,
