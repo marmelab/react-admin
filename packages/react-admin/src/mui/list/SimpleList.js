@@ -38,6 +38,7 @@ const LinkOrNot = withStyles(styles)(
 );
 
 const SimpleList = ({
+    className,
     ids,
     data,
     basePath,
@@ -50,7 +51,7 @@ const SimpleList = ({
     rightIcon,
     linkType,
 }) => (
-    <List>
+    <List className={className}>
         {ids.map(id => (
             <LinkOrNot linkType={linkType} basePath={basePath} id={id} key={id}>
                 <ListItem button>
@@ -94,6 +95,7 @@ const SimpleList = ({
 );
 
 SimpleList.propTypes = {
+    className: PropTypes.string,
     ids: PropTypes.array,
     data: PropTypes.object,
     basePath: PropTypes.string,

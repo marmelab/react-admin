@@ -36,6 +36,7 @@ const styles = {
 
 export const DatagridHeaderCell = ({
     classes = {},
+    className,
     field,
     defaultStyle,
     currentSort,
@@ -49,7 +50,7 @@ export const DatagridHeaderCell = ({
         defaultStyle
     );
     return (
-        <TableCell style={style}>
+        <TableCell className={className} style={style}>
             {field.props.sortable !== false && field.props.source ? (
                 <Button
                     onClick={updateSort}
@@ -90,6 +91,7 @@ export const DatagridHeaderCell = ({
 
 DatagridHeaderCell.propTypes = {
     classes: PropTypes.object,
+    className: PropTypes.string,
     field: PropTypes.element,
     defaultStyle: PropTypes.shape({
         th: PropTypes.object,

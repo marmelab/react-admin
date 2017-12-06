@@ -2,9 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import { TableBody, TableRow } from 'material-ui/Table';
+import classnames from 'classnames';
+
 import DatagridCell from './DatagridCell';
 
 const DatagridBody = ({
+    className,
     resource,
     children,
     ids,
@@ -17,7 +20,11 @@ const DatagridBody = ({
     rowOptions,
     ...rest
 }) => (
-    <TableBody className="datagrid-body" {...rest} {...options}>
+    <TableBody
+        className={classnames('datagrid-body', className)}
+        {...rest}
+        {...options}
+    >
         {ids.map((id, rowIndex) => (
             <TableRow
                 style={rowStyle ? rowStyle(data[id], rowIndex) : styles.tr}
@@ -47,6 +54,8 @@ const DatagridBody = ({
 );
 
 DatagridBody.propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.node,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     isLoading: PropTypes.bool,
     resource: PropTypes.string,

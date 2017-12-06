@@ -17,7 +17,7 @@ const styles = {
 
 export const ImageField = ({
     className,
-    classes,
+    classes = {},
     elStyle = {},
     record,
     source,

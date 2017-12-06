@@ -35,6 +35,7 @@ export class Filter extends Component {
 
     renderButton() {
         const {
+            className,
             resource,
             children,
             showFilter,
@@ -43,6 +44,7 @@ export class Filter extends Component {
         } = this.props;
         return (
             <FilterButton
+                className={className}
                 resource={resource}
                 filters={React.Children.toArray(children)}
                 showFilter={showFilter}
@@ -54,6 +56,7 @@ export class Filter extends Component {
 
     renderForm() {
         const {
+            className,
             resource,
             children,
             hideFilter,
@@ -62,6 +65,7 @@ export class Filter extends Component {
         } = this.props;
         return (
             <FilterForm
+                className={className}
                 resource={resource}
                 filters={React.Children.toArray(children)}
                 hideFilter={hideFilter}
@@ -80,6 +84,7 @@ export class Filter extends Component {
 }
 
 Filter.propTypes = {
+    className: PropTypes.string,
     children: PropTypes.node,
     context: PropTypes.oneOf(['form', 'button']),
     debounce: PropTypes.number.isRequired,

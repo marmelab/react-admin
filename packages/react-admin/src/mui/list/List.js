@@ -8,6 +8,8 @@ import Typography from 'material-ui/Typography';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import inflection from 'inflection';
+import classnames from 'classnames';
+
 import queryReducer, {
     SET_SORT,
     SET_PAGE,
@@ -190,6 +192,7 @@ export class List extends Component {
     render() {
         const {
             children,
+            className,
             filters,
             pagination = <DefaultPagination />,
             actions = <DefaultActions />,
@@ -219,7 +222,7 @@ export class List extends Component {
         );
 
         return (
-            <div className="list-page">
+            <div className={classnames('list-page', className)}>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}
@@ -284,6 +287,7 @@ List.propTypes = {
     // the props you can change
     actions: PropTypes.element,
     children: PropTypes.node,
+    className: PropTypes.string,
     filter: PropTypes.object,
     filters: PropTypes.element,
     pagination: PropTypes.element,

@@ -44,7 +44,7 @@ const styles = {
  * <span>25,99 $US</span>
  */
 export const NumberField = ({
-    classes,
+    classes = {},
     className,
     record,
     source,
