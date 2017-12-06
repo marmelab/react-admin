@@ -4,6 +4,7 @@ import { Tab as MuiTab } from 'material-ui/Tabs';
 
 import Labeled from '../input/Labeled';
 import translate from '../../i18n/translate';
+import classnames from 'classnames';
 
 /**
  * Tab element for the SimpleShowLayout.
@@ -48,19 +49,19 @@ import translate from '../../i18n/translate';
  *     export default App;
  */
 class Tab extends Component {
-    renderHeader = ({ label, icon, value, translate, rest }) => (
+    renderHeader = ({ className, label, icon, value, translate, rest }) => (
         <MuiTab
             key={label}
             label={translate(label, { _: label })}
             value={value}
             icon={icon}
-            className="show-tab"
+            className={classnames('show-tab', className)}
             {...rest}
         />
     );
 
-    renderContent = ({ children, rest }) => (
-        <span>
+    renderContent = ({ className, children, rest }) => (
+        <span className={className}>
             {React.Children.map(
                 children,
                 field =>
@@ -93,6 +94,7 @@ class Tab extends Component {
     render() {
         const {
             children,
+            className,
             context,
             icon,
             label,
@@ -101,12 +103,21 @@ class Tab extends Component {
             ...rest
         } = this.props;
         return context === 'header'
-            ? this.renderHeader({ label, icon, value, translate, rest })
-            : this.renderContent({ children, rest });
+            ? this.renderHeader({
+                  className,
+                  label,
+                  icon,
+                  value,
+                  translate,
+                  rest,
+              })
+            : this.renderContent({ children, className, rest });
     }
 }
 
 Tab.propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.node,
     context: PropTypes.oneOf(['header', 'content']),
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,

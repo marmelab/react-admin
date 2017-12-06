@@ -17,6 +17,7 @@ const styles = {
 
 class RefreshButton extends Component {
     static propTypes = {
+        className: PropTypes.string,
         classes: PropTypes.object,
         label: PropTypes.string,
         translate: PropTypes.func.isRequired,
@@ -33,10 +34,14 @@ class RefreshButton extends Component {
     };
 
     render() {
-        const { classes = {}, label, translate } = this.props;
+        const { className, classes = {}, label, translate } = this.props;
 
         return (
-            <Button color="primary" onClick={this.handleClick}>
+            <Button
+                className={className}
+                color="primary"
+                onClick={this.handleClick}
+            >
                 <NavigationRefresh className={classes.iconPaddingStyle} />
                 {label && translate(label)}
             </Button>

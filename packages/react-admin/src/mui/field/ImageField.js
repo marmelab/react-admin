@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
+import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
 
 const styles = {
     list: {
@@ -13,19 +15,23 @@ const styles = {
     },
 };
 
-export const ImageField = ({ elStyle = {}, record, source, src, title }) => {
+export const ImageField = ({
+    className,
+    classes,
+    elStyle = {},
+    record,
+    source,
+    src,
+    title,
+}) => {
     const sourceValue = get(record, source);
     if (!sourceValue) {
         return <div />;
     }
 
     if (Array.isArray(sourceValue)) {
-        const style = {
-            ...styles.list,
-            ...elStyle,
-        };
         return (
-            <ul style={style}>
+            <ul className={classnames(classes.list, className)} style={elStyle}>
                 {sourceValue.map((file, index) => {
                     const titleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
@@ -36,7 +42,7 @@ export const ImageField = ({ elStyle = {}, record, source, src, title }) => {
                                 alt={titleValue}
                                 title={titleValue}
                                 src={srcValue}
-                                style={styles.image}
+                                style={classes.image}
                             />
                         </li>
                     );
@@ -48,22 +54,25 @@ export const ImageField = ({ elStyle = {}, record, source, src, title }) => {
     const titleValue = get(record, title) || title;
 
     return (
-        <div style={elStyle}>
+        <div className={className} style={elStyle}>
             <img
                 title={titleValue}
                 alt={titleValue}
                 src={sourceValue}
-                style={styles.image}
+                style={classes.image}
             />
         </div>
     );
 };
 
 ImageField.propTypes = {
+    className: PropTypes.string,
+    classes: PropTypes.object,
     elStyle: PropTypes.object,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
+    src: PropTypes.string,
     title: PropTypes.string,
 };
 
-export default ImageField;
+export default withStyles(styles)(ImageField);

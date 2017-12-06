@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
+import classnames from 'classnames';
 
 import { hideNotification as hideNotificationAction } from '../../actions/notificationActions';
 import { getNotification } from '../../reducer/admin/notifications';
@@ -46,6 +47,7 @@ class Notification extends React.Component {
     render() {
         const {
             classes,
+            className,
             type,
             translate,
             notification,
@@ -66,7 +68,10 @@ class Notification extends React.Component {
                 }
                 onExited={this.handleExited}
                 onRequestClose={this.handleRequestClose}
-                className={classes[(notification && notification.type) || type]}
+                className={classnames(
+                    classes[(notification && notification.type) || type],
+                    className
+                )}
             />
         );
     }
@@ -74,6 +79,7 @@ class Notification extends React.Component {
 
 Notification.propTypes = {
     classes: PropTypes.object,
+    className: PropTypes.string,
     notification: PropTypes.shape({
         message: PropTypes.string,
         type: PropTypes.string,

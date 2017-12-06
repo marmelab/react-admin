@@ -63,9 +63,16 @@ export class TabbedShowLayout extends Component {
     };
 
     render() {
-        const { children, classes, record, resource, basePath } = this.props;
+        const {
+            children,
+            className,
+            classes,
+            record,
+            resource,
+            basePath,
+        } = this.props;
         return (
-            <div>
+            <div className={className}>
                 <Tabs value={this.state.value} onChange={this.handleChange}>
                     {Children.map(
                         children,
@@ -99,6 +106,7 @@ export class TabbedShowLayout extends Component {
 
 TabbedShowLayout.propTypes = {
     children: PropTypes.node,
+    className: PropTypes.string,
     classes: PropTypes.object,
     contentContainerStyle: PropTypes.object,
     record: PropTypes.object,

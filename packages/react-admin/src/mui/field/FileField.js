@@ -2,16 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 
-export const FileField = ({ elStyle, record, source, title, src, target }) => {
+export const FileField = ({
+    className,
+    elStyle,
+    record,
+    source,
+    title,
+    src,
+    target,
+}) => {
     const sourceValue = get(record, source);
 
     if (!sourceValue) {
-        return <div />;
+        return <div className={className} />;
     }
 
     if (Array.isArray(sourceValue)) {
         return (
-            <ul style={elStyle}>
+            <ul className={className} style={elStyle}>
                 {sourceValue.map((file, index) => {
                     const titleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
@@ -44,6 +52,7 @@ export const FileField = ({ elStyle, record, source, title, src, target }) => {
 };
 
 FileField.propTypes = {
+    className: PropTypes.string,
     elStyle: PropTypes.object,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,

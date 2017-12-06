@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import classnames from 'classnames';
+
 import getDefaultValues from './getDefaultValues';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
@@ -17,6 +19,7 @@ export class SimpleForm extends Component {
         const {
             basePath,
             children,
+            className,
             invalid,
             record,
             resource,
@@ -25,7 +28,7 @@ export class SimpleForm extends Component {
         } = this.props;
 
         return (
-            <form className="simple-form">
+            <form className={classnames('simple-form', className)}>
                 <div style={formStyle}>
                     {Children.map(children, input => (
                         <FormInput
@@ -50,6 +53,7 @@ export class SimpleForm extends Component {
 SimpleForm.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
+    className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,

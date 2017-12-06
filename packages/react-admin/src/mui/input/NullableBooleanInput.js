@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField';
 import { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
+import classnames from 'classnames';
 
 import FieldTitle from '../../util/FieldTitle';
 import addField from '../form/addField';
@@ -46,6 +47,7 @@ export class NullableBooleanInput extends Component {
     render() {
         const {
             classes,
+            className,
             elStyle,
             isRequired,
             label,
@@ -73,7 +75,7 @@ export class NullableBooleanInput extends Component {
                 style={elStyle}
                 error={!!(touched && error)}
                 helperText={touched && error}
-                className={classes.input}
+                className={classnames(classes.input, className)}
                 {...options}
             >
                 <MenuItem value="" />
@@ -88,6 +90,7 @@ export class NullableBooleanInput extends Component {
 
 NullableBooleanInput.propTypes = {
     classes: PropTypes.object,
+    className: PropTypes.string,
     elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,

@@ -3,20 +3,32 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
 import Chip from 'material-ui/Chip';
+import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
 
-const ChipField = ({ source, record = {}, elStyle = { margin: 4 } }) => (
-    <Chip style={elStyle} label={get(record, source)} />
+const styles = {
+    chip: { margin: 4 },
+};
+
+const ChipField = ({ className, classes, source, record = {}, elStyle }) => (
+    <Chip
+        className={classnames(classes.chip, className)}
+        style={elStyle}
+        label={get(record, source)}
+    />
 );
 
 ChipField.propTypes = {
     addLabel: PropTypes.bool,
+    className: PropTypes.string,
+    classes: PropTypes.object,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     source: PropTypes.string.isRequired,
     record: PropTypes.object,
 };
 
-const PureChipField = pure(ChipField);
+const PureChipField = withStyles(styles)(pure(ChipField));
 
 PureChipField.defaultProps = {
     addLabel: true,

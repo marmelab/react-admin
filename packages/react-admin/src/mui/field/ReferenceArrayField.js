@@ -56,6 +56,7 @@ export class ReferenceArrayField extends Component {
 
     render() {
         const {
+            className,
             resource,
             reference,
             data,
@@ -77,6 +78,7 @@ export class ReferenceArrayField extends Component {
 
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
         return React.cloneElement(children, {
+            className,
             resource: reference,
             ids,
             data,
@@ -90,6 +92,7 @@ export class ReferenceArrayField extends Component {
 ReferenceArrayField.propTypes = {
     addLabel: PropTypes.bool,
     basePath: PropTypes.string.isRequired,
+    className: PropTypes.string,
     children: PropTypes.element.isRequired,
     crudGetManyAccumulate: PropTypes.func.isRequired,
     data: PropTypes.object,

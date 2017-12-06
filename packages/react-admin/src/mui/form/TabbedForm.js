@@ -1,6 +1,6 @@
 import React, { Children, Component } from 'react';
 import PropTypes from 'prop-types';
-import className from 'classnames';
+import classnames from 'classnames';
 import {
     reduxForm,
     getFormAsyncErrors,
@@ -40,6 +40,7 @@ export class TabbedForm extends Component {
         const {
             basePath,
             children,
+            className,
             classes = {},
             invalid,
             record,
@@ -51,7 +52,7 @@ export class TabbedForm extends Component {
         } = this.props;
 
         return (
-            <form className="tabbed-form">
+            <form className={classnames('tabbed-form', className)}>
                 <Tabs value={this.state.value} onChange={this.handleChange}>
                     {Children.map(
                         children,
@@ -64,7 +65,7 @@ export class TabbedForm extends Component {
                                     })}
                                     value={index}
                                     icon={tab.props.icon}
-                                    className={className(
+                                    className={classnames(
                                         'form-tab',
                                         tabsWithErrors.includes(
                                             tab.props.label
@@ -91,6 +92,7 @@ export class TabbedForm extends Component {
                     )}
                     {toolbar &&
                         React.cloneElement(toolbar, {
+                            className: 'toolbar',
                             handleSubmitWithRedirect: this
                                 .handleSubmitWithRedirect,
                             invalid,
@@ -105,6 +107,7 @@ export class TabbedForm extends Component {
 TabbedForm.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
+    className: PropTypes.string,
     classes: PropTypes.object,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form

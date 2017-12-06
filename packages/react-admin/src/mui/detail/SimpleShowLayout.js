@@ -1,6 +1,7 @@
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
 
 import Labeled from '../input/Labeled';
 
@@ -42,13 +43,14 @@ const styles = {
  */
 export const SimpleShowLayout = ({
     basePath,
+    className,
     children,
     classes,
     record,
     resource,
     style,
 }) => (
-    <div className={classes.root} style={style}>
+    <div className={classnames(classes.root, className)} style={style}>
         {Children.map(children, field => (
             <div
                 key={field.props.source}
@@ -82,6 +84,7 @@ export const SimpleShowLayout = ({
 
 SimpleShowLayout.propTypes = {
     basePath: PropTypes.string,
+    className: PropTypes.string,
     children: PropTypes.node,
     classes: PropTypes.object,
     record: PropTypes.object,
