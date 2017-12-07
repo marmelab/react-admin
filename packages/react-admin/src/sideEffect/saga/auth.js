@@ -70,7 +70,12 @@ export default authClient => {
                 break;
             }
             case USER_LOGOUT: {
-                yield put(push('/login'));
+                yield put(
+                    push(
+                        (action.payload && action.payload.redirectTo) ||
+                            '/login'
+                    )
+                );
                 yield call(authClient, AUTH_LOGOUT);
                 break;
             }

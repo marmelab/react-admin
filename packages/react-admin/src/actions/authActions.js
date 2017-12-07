@@ -23,7 +23,17 @@ export const userCheck = (payload, pathName, routeParams) => ({
 
 export const USER_LOGOUT = 'RA/USER_LOGOUT';
 
-export const userLogout = () => ({
+/**
+ * Action to trigger logout of the current user. The entire redux state will be cleared
+ * thanks to the resettableAppReducer in Admin.
+ * @see: Admin.js
+ * @param redirectTo Path to direct to after logout
+ * @return {{type: string, payload: {redirectTo: string}, meta: {auth: boolean}}}
+ */
+export const userLogout = (redirectTo = '/login') => ({
     type: USER_LOGOUT,
+    payload: {
+        redirectTo,
+    },
     meta: { auth: true },
 });
