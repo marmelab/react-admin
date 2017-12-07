@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
 
-const UrlField = ({ className, source, record = {}, elStyle }) => (
-    <a className={className} href={get(record, source)} style={elStyle}>
+const UrlField = ({ className, source, record = {} }) => (
+    <a className={className} href={get(record, source)}>
         {get(record, source)}
     </a>
 );
@@ -12,7 +12,6 @@ const UrlField = ({ className, source, record = {}, elStyle }) => (
 UrlField.propTypes = {
     addLabel: PropTypes.bool,
     className: PropTypes.string,
-    elStyle: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,

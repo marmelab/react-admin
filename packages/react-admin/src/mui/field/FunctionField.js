@@ -6,17 +6,12 @@ import pure from 'recompose/pure';
  * @example
  * <FunctionField source="last_name" label="Name" render={record => `${record.first_name} ${record.last_name}`} />
  */
-const FunctionField = ({ className, record = {}, source, render, elStyle }) =>
-    record ? (
-        <span className={className} style={elStyle}>
-            {render(record, source)}
-        </span>
-    ) : null;
+const FunctionField = ({ className, record = {}, source, render }) =>
+    record ? <span className={className}>{render(record, source)}</span> : null;
 
 FunctionField.propTypes = {
     addLabel: PropTypes.bool,
     className: PropTypes.string,
-    elStyle: PropTypes.object,
     label: PropTypes.string,
     render: PropTypes.func.isRequired,
     record: PropTypes.object,

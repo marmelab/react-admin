@@ -6,16 +6,16 @@ import pure from 'recompose/pure';
 import FalseIcon from 'material-ui-icons/Clear';
 import TrueIcon from 'material-ui-icons/Done';
 
-export const BooleanField = ({ className, source, record = {}, elStyle }) => {
+export const BooleanField = ({ className, source, record = {} }) => {
     if (get(record, source) === false) {
-        return <FalseIcon className={className} style={elStyle} />;
+        return <FalseIcon className={className} />;
     }
 
     if (get(record, source) === true) {
-        return <TrueIcon className={className} style={elStyle} />;
+        return <TrueIcon className={className} />;
     }
 
-    return <span className={className} style={elStyle} />;
+    return <span className={className} />;
 };
 
 BooleanField.propTypes = {

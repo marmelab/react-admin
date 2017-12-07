@@ -27,9 +27,9 @@ const styles = {
  * // renders the record { id: 1234, score: 567 } as
  * <span>567</span>
  *
- * <NumberField source="score" elStyle={{ color: 'red' }} />
+ * <NumberField source="score" className="red" />
  * // renders the record { id: 1234, score: 567 } as
- * <span style="color:red;">567</span>
+ * <span class="red">567</span>
  *
  * <NumberField source="share" options={{ style: 'percent' }} />
  * // renders the record { id: 1234, share: 0.2545 } as
@@ -50,22 +50,18 @@ export const NumberField = ({
     source,
     locales,
     options,
-    elStyle,
 }) => {
     if (!record) return null;
     const value = get(record, source);
     if (value == null) return null;
     if (!hasNumberFormat)
         return (
-            <span
-                className={classnames(classes.input, className)}
-                style={elStyle}
-            >
+            <span className={classnames(classes.input, className)}>
                 {value}
             </span>
         );
     return (
-        <span className={classnames(classes.input, className)} style={elStyle}>
+        <span className={classnames(classes.input, className)}>
             {value.toLocaleString(locales, options)}
         </span>
     );
@@ -75,7 +71,6 @@ NumberField.propTypes = {
     addLabel: PropTypes.bool,
     classes: PropTypes.object,
     className: PropTypes.string,
-    elStyle: PropTypes.object,
     label: PropTypes.string,
     locales: PropTypes.oneOfType([
         PropTypes.string,

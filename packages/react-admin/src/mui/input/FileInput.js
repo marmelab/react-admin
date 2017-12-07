@@ -4,6 +4,7 @@ import { shallowEqual } from 'recompose';
 import Dropzone from 'react-dropzone';
 import compose from 'recompose/compose';
 import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
 
 import Labeled from './Labeled';
 import addField from '../form/addField';
@@ -33,7 +34,7 @@ export class FileInput extends Component {
         classes: PropTypes.object,
         className: PropTypes.string,
         disableClick: PropTypes.bool,
-        elStyle: PropTypes.object,
+        dropZoneClassName: PropTypes.string,
         input: PropTypes.object,
         isRequired: PropTypes.bool,
         itemStyle: PropTypes.object,
@@ -42,7 +43,6 @@ export class FileInput extends Component {
         maxSize: PropTypes.number,
         minSize: PropTypes.number,
         multiple: PropTypes.bool,
-        style: PropTypes.object,
         translate: PropTypes.func.isRequired,
         placeholder: PropTypes.node,
     };
@@ -152,7 +152,7 @@ export class FileInput extends Component {
             classes = {},
             className,
             disableClick,
-            elStyle,
+            dropZoneClassName,
             isRequired,
             itemStyle,
             label,
@@ -161,7 +161,6 @@ export class FileInput extends Component {
             multiple,
             resource,
             source,
-            style,
         } = this.props;
 
         return (
@@ -171,7 +170,6 @@ export class FileInput extends Component {
                 source={source}
                 resource={resource}
                 isRequired={isRequired}
-                style={elStyle}
             >
                 <span>
                     <Dropzone
@@ -181,8 +179,10 @@ export class FileInput extends Component {
                         maxSize={maxSize}
                         minSize={minSize}
                         multiple={multiple}
-                        className={classes.dropZone}
-                        style={style}
+                        className={classnames(
+                            classes.dropZone,
+                            dropZoneClassName
+                        )}
                     >
                         {this.label()}
                     </Dropzone>

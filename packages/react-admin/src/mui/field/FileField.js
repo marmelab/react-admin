@@ -1,10 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
+import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
+
+const styles = {
+    root: { display: 'inline-block' },
+};
 
 export const FileField = ({
+    classes = {},
     className,
-    elStyle,
     record,
     source,
     title,
@@ -14,12 +20,12 @@ export const FileField = ({
     const sourceValue = get(record, source);
 
     if (!sourceValue) {
-        return <div className={className} />;
+        return <div className={classnames(classes.root, className)} />;
     }
 
     if (Array.isArray(sourceValue)) {
         return (
-            <ul className={className} style={elStyle}>
+            <ul className={classnames(classes.root, className)}>
                 {sourceValue.map((file, index) => {
                     const titleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
@@ -43,7 +49,7 @@ export const FileField = ({
     const titleValue = get(record, title) || title;
 
     return (
-        <div style={elStyle}>
+        <div className={classnames(classes.root, className)}>
             <a href={sourceValue} title={titleValue} target={target}>
                 {titleValue}
             </a>
@@ -52,8 +58,8 @@ export const FileField = ({
 };
 
 FileField.propTypes = {
+    classes: PropTypes.object,
     className: PropTypes.string,
-    elStyle: PropTypes.object,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
     src: PropTypes.string,
@@ -61,8 +67,4 @@ FileField.propTypes = {
     target: PropTypes.string,
 };
 
-FileField.defaultProps = {
-    elStyle: { display: 'inline-block' },
-};
-
-export default FileField;
+export default withStyles(styles)(FileField);

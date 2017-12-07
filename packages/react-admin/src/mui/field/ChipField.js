@@ -10,10 +10,9 @@ const styles = {
     chip: { margin: 4 },
 };
 
-const ChipField = ({ className, classes, source, record = {}, elStyle }) => (
+const ChipField = ({ className, classes, source, record = {} }) => (
     <Chip
         className={classnames(classes.chip, className)}
-        style={elStyle}
         label={get(record, source)}
     />
 );

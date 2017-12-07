@@ -105,7 +105,6 @@ export class RadioButtonGroupInput extends Component {
             isRequired,
             choices,
             options,
-            elStyle,
         } = this.props;
 
         return (
@@ -121,7 +120,6 @@ export class RadioButtonGroupInput extends Component {
                     name={source}
                     defaultSelected={input.value}
                     valueSelected={input.value}
-                    style={elStyle}
                     {...options}
                 >
                     {choices.map(this.renderRadioButton)}
@@ -134,7 +132,6 @@ export class RadioButtonGroupInput extends Component {
 RadioButtonGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     className: PropTypes.string,
-    elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

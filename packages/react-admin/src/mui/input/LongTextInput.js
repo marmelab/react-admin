@@ -13,7 +13,6 @@ export const LongTextInput = ({
     meta,
     options,
     source,
-    elStyle,
     resource,
 }) => {
     if (typeof meta === 'undefined') {
@@ -40,7 +39,6 @@ export const LongTextInput = ({
             }
             error={!!(touched && error)}
             helperText={touched && error}
-            style={elStyle}
             {...options}
         />
     );
@@ -48,7 +46,6 @@ export const LongTextInput = ({
 
 LongTextInput.propTypes = {
     className: PropTypes.string,
-    elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

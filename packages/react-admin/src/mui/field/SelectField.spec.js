@@ -35,16 +35,17 @@ describe('<SelectField />', () => {
         assert.equal(chipElement.children().text(), 'hello');
     });
 
-    it('should use custom styles passed as an elStyle prop', () => {
+    it('should use custom className', () => {
         const wrapper = shallow(
             <SelectField
                 {...defaultProps}
                 record={{ foo: 1 }}
                 elStyle={{ margin: 1 }}
+                className="foo"
             />
         );
         const chipElement = wrapper.find('span');
-        assert.deepEqual(chipElement.prop('style'), { margin: 1 });
+        assert.deepEqual(chipElement.prop('className'), 'foo');
     });
 
     it('should handle deep fields', () => {

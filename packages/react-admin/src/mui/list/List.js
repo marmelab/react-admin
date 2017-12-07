@@ -9,6 +9,7 @@ import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import inflection from 'inflection';
 import classnames from 'classnames';
+import { withStyles } from 'material-ui/styles';
 
 import queryReducer, {
     SET_SORT,
@@ -192,6 +193,7 @@ export class List extends Component {
     render() {
         const {
             children,
+            classes = {},
             className,
             filters,
             pagination = <DefaultPagination />,
@@ -271,7 +273,7 @@ export class List extends Component {
                                 })}
                         </div>
                     ) : (
-                        <CardContent style={styles.noResults}>
+                        <CardContent className={classes.noResults}>
                             <Typography type="body1">
                                 {translate('ra.navigation.no_results')}
                             </Typography>
@@ -287,6 +289,7 @@ List.propTypes = {
     // the props you can change
     actions: PropTypes.element,
     children: PropTypes.node,
+    classes: PropTypes.object,
     className: PropTypes.string,
     filter: PropTypes.object,
     filters: PropTypes.element,
@@ -359,6 +362,7 @@ const enhance = compose(
         push: pushAction,
     }),
     translate,
+    withStyles(styles),
     withChildrenAsFunction
 );
 

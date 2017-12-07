@@ -3,9 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { LinearProgress } from 'material-ui/Progress';
 import get from 'lodash.get';
+import { withStyles } from 'material-ui/styles';
+import compose from 'recompose/compose';
 
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
 import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
+
+const styles = {
+    progress: { marginTop: '1em' },
+};
 
 /**
  * A container component that fetches records from another resource specified
@@ -56,6 +62,7 @@ export class ReferenceArrayField extends Component {
 
     render() {
         const {
+            classes = {},
             className,
             resource,
             reference,
@@ -73,7 +80,7 @@ export class ReferenceArrayField extends Component {
         }
 
         if (ids.length !== 0 && Object.keys(data).length !== ids.length) {
-            return <LinearProgress style={{ marginTop: '1em' }} />;
+            return <LinearProgress className={classes.progress} />;
         }
 
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
@@ -92,6 +99,7 @@ export class ReferenceArrayField extends Component {
 ReferenceArrayField.propTypes = {
     addLabel: PropTypes.bool,
     basePath: PropTypes.string.isRequired,
+    classes: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.element.isRequired,
     crudGetManyAccumulate: PropTypes.func.isRequired,
@@ -117,12 +125,15 @@ const mapStateToProps = (state, props) => {
     };
 };
 
-const ConnectedReferenceArrayField = connect(mapStateToProps, {
-    crudGetManyAccumulate: crudGetManyAccumulateAction,
-})(ReferenceArrayField);
+const ComposedReferenceArrayField = compose(
+    connect(mapStateToProps, {
+        crudGetManyAccumulate: crudGetManyAccumulateAction,
+    }),
+    withStyles(styles)
+)(ReferenceArrayField);
 
-ConnectedReferenceArrayField.defaultProps = {
+ComposedReferenceArrayField.defaultProps = {
     addLabel: true,
 };
 
-export default ConnectedReferenceArrayField;
+export default ComposedReferenceArrayField;

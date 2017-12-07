@@ -43,7 +43,6 @@ export class NumberInput extends Component {
     render() {
         const {
             className,
-            elStyle,
             input,
             isRequired,
             label,
@@ -80,7 +79,6 @@ export class NumberInput extends Component {
                     />
                 }
                 className={className}
-                style={elStyle}
                 {...options}
             />
         );
@@ -89,7 +87,6 @@ export class NumberInput extends Component {
 
 NumberInput.propTypes = {
     className: PropTypes.string,
-    elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

@@ -7,8 +7,6 @@ import classnames from 'classnames';
 import translate from '../../i18n/translate';
 import MenuItemLink from './MenuItemLink';
 
-const iconPaddingStyle = { paddingRight: '0.5em' };
-
 const styles = {
     link: {
         display: 'flex',
@@ -16,6 +14,7 @@ const styles = {
         textDecoration: 'none',
         color: 'inherit',
     },
+    icon: { paddingRight: '0.5em' },
 };
 
 const DashboardMenuItem = ({ classes, className, onClick, translate }) => (
@@ -24,7 +23,7 @@ const DashboardMenuItem = ({ classes, className, onClick, translate }) => (
         to="/"
         className={classnames(classes.link, className)}
         primaryText={translate('ra.page.dashboard')}
-        leftIcon={<DashboardIcon style={iconPaddingStyle} />}
+        leftIcon={<DashboardIcon className={classes.icon} />}
     />
 );
 

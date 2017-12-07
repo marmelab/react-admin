@@ -56,9 +56,9 @@ export class FilterForm extends Component {
                                 data-source={filterElement.props.source}
                                 className={classnames(
                                     'filter-field',
-                                    classes.body
+                                    classes.body,
+                                    filterElement.props.className
                                 )}
-                                style={filterElement.props.style}
                             >
                                 {filterElement.props.alwaysOn ? (
                                     <div className={classes.spacer}>&nbsp;</div>

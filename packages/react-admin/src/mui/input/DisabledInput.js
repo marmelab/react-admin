@@ -12,7 +12,6 @@ const DisabledInput = ({
     label,
     resource,
     source,
-    elStyle,
 }) => (
     <TextField
         disabled
@@ -21,7 +20,6 @@ const DisabledInput = ({
         label={<FieldTitle label={label} source={source} resource={resource} />}
         className={className}
         classes={classes}
-        style={elStyle}
     />
 );
 
@@ -32,7 +30,6 @@ DisabledInput.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-    elStyle: PropTypes.object,
     input: PropTypes.object,
 };
 
