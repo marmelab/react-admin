@@ -46,5 +46,43 @@ describe('<DatagridHeaderCell />', () => {
 
             assert.equal(wrapper.find('withStyles(Button)').length, 0);
         });
+
+        it('should use cell className if specified', () => {
+            const wrapper = shallow(
+                <DatagridHeaderCell
+                    currentSort={{}}
+                    updateSort={() => true}
+                    field={<Field />}
+                    className="blue"
+                />
+            );
+            const col = wrapper.find('withStyles(TableCell)');
+            assert.deepEqual(col.at(0).prop('className'), 'blue');
+        });
+
+        it('should use field headerClassName if specified', () => {
+            const wrapper = shallow(
+                <DatagridHeaderCell
+                    currentSort={{}}
+                    updateSort={() => true}
+                    field={<Field headerClassName="red" />}
+                />
+            );
+            const col = wrapper.find('withStyles(TableCell)');
+            assert.deepEqual(col.at(0).prop('className'), 'red');
+        });
+
+        it('should use both cell className and field headerClassName props if specified', () => {
+            const wrapper = shallow(
+                <DatagridHeaderCell
+                    currentSort={{}}
+                    updateSort={() => true}
+                    field={<Field headerClassName="red" />}
+                    className="blue"
+                />
+            );
+            const col = wrapper.find('withStyles(TableCell)');
+            assert.deepEqual(col.at(0).prop('className'), 'blue red');
+        });
     });
 });
