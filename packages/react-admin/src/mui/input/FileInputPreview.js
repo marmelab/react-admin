@@ -39,19 +39,12 @@ export class FileInputPreview extends Component {
     handleMouseOver = () => this.setState({ hovered: true });
 
     render() {
-        const {
-            children,
-            classes = {},
-            className,
-            onRemove,
-            itemStyle,
-        } = this.props;
+        const { children, classes = {}, className, onRemove } = this.props;
 
         return (
             <div
                 onMouseOver={this.handleMouseOver}
                 onMouseOut={this.handleMouseOut}
-                style={itemStyle}
                 className={className}
             >
                 <IconButton
@@ -75,13 +68,11 @@ FileInputPreview.propTypes = {
     className: PropTypes.string,
     file: PropTypes.object,
     onRemove: PropTypes.func.isRequired,
-    itemStyle: PropTypes.object,
     revokeObjectUrl: PropTypes.func,
 };
 
 FileInputPreview.defaultProps = {
     file: undefined,
-    itemStyle: {},
 };
 
 export default withStyles(styles)(FileInputPreview);

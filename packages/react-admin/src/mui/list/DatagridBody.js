@@ -16,7 +16,7 @@ const DatagridBody = ({
     data,
     basePath,
     styles,
-    rowStyle,
+    rowClassName,
     options,
     rowOptions,
     ...rest
@@ -28,8 +28,14 @@ const DatagridBody = ({
     >
         {ids.map((id, rowIndex) => (
             <TableRow
-                className={classes.row}
-                style={rowStyle ? rowStyle(data[id], rowIndex) : undefined}
+                className={classnames(
+                    classes.row,
+                    rowClassName
+                        ? typeof rowClassName === 'function'
+                          ? rowClassName(data[id], rowIndex)
+                          : rowClassName
+                        : undefined
+                )}
                 key={id}
                 {...rowOptions}
             >
@@ -68,7 +74,7 @@ DatagridBody.propTypes = {
     options: PropTypes.object,
     rowOptions: PropTypes.object,
     styles: PropTypes.object,
-    rowStyle: PropTypes.func,
+    rowClassName: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 };
 
 DatagridBody.defaultProps = {

@@ -7,17 +7,11 @@ import Typography from 'material-ui/Typography';
 export const removeTags = input =>
     input ? input.replace(/<[^>]+>/gm, '') : '';
 
-const RichTextField = ({
-    className,
-    source,
-    record = {},
-    stripTags,
-    elStyle,
-}) => {
+const RichTextField = ({ className, source, record = {}, stripTags }) => {
     const value = get(record, source);
     if (stripTags) {
         return (
-            <Typography className={className} style={elStyle} component="span">
+            <Typography className={className} component="span">
                 {removeTags(value)}
             </Typography>
         );
@@ -26,7 +20,6 @@ const RichTextField = ({
     return (
         <Typography
             className={className}
-            style={elStyle}
             component="span"
             dangerouslySetInnerHTML={{ __html: value }}
         />
@@ -36,7 +29,6 @@ const RichTextField = ({
 RichTextField.propTypes = {
     addLabel: PropTypes.bool,
     className: PropTypes.string,
-    elStyle: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,

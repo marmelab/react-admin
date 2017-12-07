@@ -12,13 +12,14 @@ import { withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';
 import linkToRecord from '../../util/linkToRecord';
 
-const tertiaryStyle = { float: 'right', opacity: 0.541176 };
 const styles = {
     link: {
         textDecoration: 'none',
         color: 'inherit',
     },
+    tertiary: { float: 'right', opacity: 0.541176 },
 };
+
 const LinkOrNot = withStyles(styles)(
     ({ classes, linkType, basePath, id, children }) =>
         linkType === 'edit' || linkType === true ? (
@@ -38,6 +39,7 @@ const LinkOrNot = withStyles(styles)(
 );
 
 const SimpleList = ({
+    classes,
     className,
     ids,
     data,
@@ -68,7 +70,7 @@ const SimpleList = ({
                             <div>
                                 {primaryText(data[id], id)}
                                 {tertiaryText && (
-                                    <span style={tertiaryStyle}>
+                                    <span className={classes.tertiary}>
                                         {tertiaryText(data[id], id)}
                                     </span>
                                 )}
@@ -95,6 +97,7 @@ const SimpleList = ({
 );
 
 SimpleList.propTypes = {
+    classes: PropTypes.object,
     className: PropTypes.string,
     ids: PropTypes.array,
     data: PropTypes.object,

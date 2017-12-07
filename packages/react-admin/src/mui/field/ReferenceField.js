@@ -65,7 +65,6 @@ export class ReferenceField extends Component {
             basePath,
             allowEmpty,
             children,
-            elStyle,
             linkType,
         } = this.props;
         if (React.Children.count(children) !== 1) {
@@ -91,14 +90,14 @@ export class ReferenceField extends Component {
         });
         if (linkType === 'edit' || linkType === true) {
             return (
-                <Link className={className} style={elStyle} to={href}>
+                <Link className={className} to={href}>
                     {child}
                 </Link>
             );
         }
         if (linkType === 'show') {
             return (
-                <Link className={className} style={elStyle} to={`${href}/show`}>
+                <Link className={className} to={`${href}/show`}>
                     {child}
                 </Link>
             );
@@ -114,7 +113,6 @@ ReferenceField.propTypes = {
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     crudGetManyAccumulate: PropTypes.func.isRequired,
-    elStyle: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
@@ -131,14 +129,12 @@ ReferenceField.defaultProps = {
     linkType: 'edit',
 };
 
-function mapStateToProps(state, props) {
-    return {
-        referenceRecord:
-            state.admin.resources[props.reference].data[
-                get(props.record, props.source)
-            ],
-    };
-}
+const mapStateToProps = (state, props) => ({
+    referenceRecord:
+        state.admin.resources[props.reference].data[
+            get(props.record, props.source)
+        ],
+});
 
 const ConnectedReferenceField = connect(mapStateToProps, {
     crudGetManyAccumulate: crudGetManyAccumulateAction,

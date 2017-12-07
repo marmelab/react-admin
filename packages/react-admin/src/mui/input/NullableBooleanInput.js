@@ -48,7 +48,6 @@ export class NullableBooleanInput extends Component {
         const {
             classes,
             className,
-            elStyle,
             isRequired,
             label,
             meta,
@@ -72,7 +71,6 @@ export class NullableBooleanInput extends Component {
                     />
                 }
                 onChange={this.handleChange}
-                style={elStyle}
                 error={!!(touched && error)}
                 helperText={touched && error}
                 className={classnames(classes.input, className)}
@@ -91,7 +89,6 @@ export class NullableBooleanInput extends Component {
 NullableBooleanInput.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
-    elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

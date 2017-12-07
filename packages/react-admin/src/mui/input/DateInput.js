@@ -34,7 +34,6 @@ export class DateInput extends Component {
             meta,
             options,
             source,
-            elStyle,
             resource,
         } = this.props;
         if (typeof meta === 'undefined') {
@@ -70,7 +69,6 @@ export class DateInput extends Component {
                 )}
                 onChange={this.onChange}
                 onBlur={this.onBlur}
-                style={elStyle}
                 {...options}
             />
         );
@@ -80,7 +78,6 @@ export class DateInput extends Component {
 DateInput.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
-    elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

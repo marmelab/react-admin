@@ -14,4 +14,16 @@ describe('<FunctionField />', () => {
         );
         assert.equal(wrapper.html(), '<span>ba</span>');
     });
+
+    it('should use custom className', () =>
+        assert.deepEqual(
+            shallow(
+                <FunctionField
+                    record={{ foo: true }}
+                    render={r => r['foo'].substr(0, 2)}
+                    className="foo"
+                />
+            ).prop('className'),
+            'foo'
+        ));
 });

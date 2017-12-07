@@ -48,14 +48,16 @@ export const SimpleShowLayout = ({
     classes,
     record,
     resource,
-    style,
+    ...rest
 }) => (
-    <div className={classnames(classes.root, className)} style={style}>
+    <div className={classnames(classes.root, className)} {...rest}>
         {Children.map(children, field => (
             <div
                 key={field.props.source}
-                style={field.props.style}
-                className={`ra-field ra-field-${field.props.source}`}
+                className={classnames(
+                    `ra-field ra-field-${field.props.source}`,
+                    field.props.className
+                )}
             >
                 {field.props.addLabel ? (
                     <Labeled
@@ -89,7 +91,6 @@ SimpleShowLayout.propTypes = {
     classes: PropTypes.object,
     record: PropTypes.object,
     resource: PropTypes.string,
-    style: PropTypes.object,
 };
 
 export default withStyles(styles)(SimpleShowLayout);

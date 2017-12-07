@@ -25,9 +25,9 @@ const toLocaleStringSupportsLocales = (() => {
  * // renders the record { id: 1234, published_at: new Date('2012-11-07') } as
  * <span>07/11/2012</span>
  *
- * <DateField source="published_at" elStyle={{ color: 'red' }} />
+ * <DateField source="published_at" className="red" />
  * // renders the record { id: 1234, new Date('2012-11-07') } as
- * <span style="color:red;">07/11/2012</span>
+ * <span class="red">07/11/2012</span>
  *
  * <DateField source="share" options={{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }} />
  * // renders the record { id: 1234, new Date('2012-11-07') } as
@@ -40,7 +40,6 @@ const toLocaleStringSupportsLocales = (() => {
 
 export const DateField = ({
     className,
-    elStyle,
     locales,
     options,
     record,
@@ -59,17 +58,12 @@ export const DateField = ({
           ? date.toLocaleDateString(locales, options)
           : date.toLocaleDateString();
 
-    return (
-        <span className={className} style={elStyle}>
-            {dateString}
-        </span>
-    );
+    return <span className={className}>{dateString}</span>;
 };
 
 DateField.propTypes = {
     addLabel: PropTypes.bool,
     className: PropTypes.string,
-    elStyle: PropTypes.object,
     label: PropTypes.string,
     locales: PropTypes.oneOfType([
         PropTypes.string,

@@ -50,7 +50,7 @@ const NotFound = ({ classes, className, translate }) => (
             <AppBarMobile />
         </Hidden>
         <div className={classes.message}>
-            <HotTub style={styles.icon} />
+            <HotTub className={classes.icon} />
             <h1>{translate('ra.page.not_found')}</h1>
             <div>{translate('ra.message.not_found')}.</div>
         </div>

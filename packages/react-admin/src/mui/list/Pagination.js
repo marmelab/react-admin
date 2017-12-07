@@ -9,6 +9,7 @@ import Typography from 'material-ui/Typography';
 import Toolbar from 'material-ui/Toolbar';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
+import classnames from 'classnames';
 
 import Responsive from '../layout/Responsive';
 import translate from '../../i18n/translate';
@@ -20,6 +21,7 @@ const styles = {
     mobileToolbar: {
         justifyContent: 'center',
     },
+    hellip: { padding: '1.2em' },
 };
 
 export class Pagination extends Component {
@@ -97,22 +99,23 @@ export class Pagination extends Component {
     };
 
     renderPageNums() {
+        const { classes = {} } = this.props;
+
         return this.range().map(
             (pageNum, index) =>
                 pageNum === '.' ? (
-                    <span key={`hyphen_${index}`} style={{ padding: '1.2em' }}>
+                    <span key={`hyphen_${index}`} className={classes.hellip}>
                         &hellip;
                     </span>
                 ) : (
                     <Button
-                        className="page-number"
+                        className={classnames('page-number', classes.button)}
                         color={
                             pageNum === this.props.page ? 'default' : 'primary'
                         }
                         key={pageNum}
                         data-page={pageNum}
                         onClick={this.gotoPage}
-                        style={styles.button}
                     >
                         {pageNum}
                     </Button>

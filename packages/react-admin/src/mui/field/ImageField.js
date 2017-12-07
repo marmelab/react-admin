@@ -18,7 +18,6 @@ const styles = {
 export const ImageField = ({
     className,
     classes = {},
-    elStyle = {},
     record,
     source,
     src,
@@ -26,12 +25,12 @@ export const ImageField = ({
 }) => {
     const sourceValue = get(record, source);
     if (!sourceValue) {
-        return <div />;
+        return <div className={className} />;
     }
 
     if (Array.isArray(sourceValue)) {
         return (
-            <ul className={classnames(classes.list, className)} style={elStyle}>
+            <ul className={classnames(classes.list, className)}>
                 {sourceValue.map((file, index) => {
                     const titleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
@@ -42,7 +41,7 @@ export const ImageField = ({
                                 alt={titleValue}
                                 title={titleValue}
                                 src={srcValue}
-                                style={classes.image}
+                                className={classes.image}
                             />
                         </li>
                     );
@@ -54,12 +53,12 @@ export const ImageField = ({
     const titleValue = get(record, title) || title;
 
     return (
-        <div className={className} style={elStyle}>
+        <div className={className}>
             <img
                 title={titleValue}
                 alt={titleValue}
                 src={sourceValue}
-                style={classes.image}
+                className={classes.image}
             />
         </div>
     );
@@ -68,7 +67,6 @@ export const ImageField = ({
 ImageField.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
-    elStyle: PropTypes.object,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
     src: PropTypes.string,

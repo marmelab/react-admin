@@ -73,17 +73,17 @@ describe('<DateField />', () => {
             `<span>${new Date('2017-04-23').toLocaleDateString('fr-FR')}</span>`
         ));
 
-    it('should use custom styles passed as an elStyle prop', () =>
+    it('should use custom className', () =>
         assert.equal(
             shallow(
                 <DateField
                     record={{ foo: new Date('01/01/2016') }}
                     source="foo"
                     locales="en-US"
-                    elStyle={{ margin: 1 }}
+                    className="foo"
                 />
             ).html(),
-            `<span style="margin:1px">${new Date('1/1/2016').toLocaleDateString(
+            `<span class="foo">${new Date('1/1/2016').toLocaleDateString(
                 'en-US'
             )}</span>`
         ));

@@ -69,7 +69,6 @@ export const SelectField = ({
     source,
     record,
     choices,
-    elStyle,
     optionValue,
     optionText,
     translate,
@@ -84,7 +83,7 @@ export const SelectField = ({
           ? optionText(choice)
           : choice[optionText];
     return (
-        <span className={className} style={elStyle}>
+        <span className={className}>
             {translateChoice
                 ? translate(choiceName, { _: choiceName })
                 : choiceName}
@@ -96,7 +95,6 @@ SelectField.propTypes = {
     addLabel: PropTypes.bool,
     className: PropTypes.string,
     choices: PropTypes.arrayOf(PropTypes.object),
-    elStyle: PropTypes.object,
     label: PropTypes.string,
     optionText: PropTypes.oneOfType([
         PropTypes.string,

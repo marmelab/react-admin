@@ -68,9 +68,11 @@ class Tab extends Component {
                     field && (
                         <div
                             key={field.props.source}
-                            style={field.props.style}
-                            className={`ra-field ra-field-${field.props
-                                .source}`}
+                            className={classnames(
+                                'ra-field',
+                                `ra-field-${field.props.source}`,
+                                field.props.className
+                            )}
                         >
                             {field.props.addLabel ? (
                                 <Labeled

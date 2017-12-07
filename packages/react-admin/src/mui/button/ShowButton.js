@@ -15,6 +15,7 @@ const styles = {
     link: {
         display: 'inline-flex',
         alignItems: 'center',
+        overflow: 'inherit',
     },
     iconPaddingStyle: {
         paddingRight: '0.5em',
@@ -33,7 +34,6 @@ const ShowButton = ({
         className={classnames(classes.link, className)}
         component={Link}
         color="primary"
-        style={{ overflow: 'inherit' }}
         to={`${linkToRecord(basePath, record.id)}/show`}
     >
         <ImageEye className={classes.iconPaddingStyle} />

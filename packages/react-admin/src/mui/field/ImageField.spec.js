@@ -94,4 +94,16 @@ describe('<ImageField />', () => {
         assert.equal(imgs.at(1).prop('alt'), 'Bye world!');
         assert.equal(imgs.at(1).prop('title'), 'Bye world!');
     });
+
+    it('should use custom className', () =>
+        assert.deepEqual(
+            shallow(
+                <ImageField
+                    source="foo"
+                    record={{ foo: true }}
+                    className="foo"
+                />
+            ).prop('className'),
+            'foo'
+        ));
 });

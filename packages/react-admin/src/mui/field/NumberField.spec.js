@@ -44,17 +44,17 @@ describe('<NumberField />', () => {
         assert.equal(wrapper.text(), '1,00');
     });
 
-    it('should use custom styles passed as an elStyle prop', () => {
-        const wrapper = shallow(
-            <NumberField
-                record={{ foo: 1 }}
-                source="foo"
-                elStyle={{ margin: 1 }}
-            />
-        );
-
-        assert.deepEqual(wrapper.prop('style'), { margin: 1 });
-    });
+    it('should use custom className', () =>
+        assert.deepEqual(
+            shallow(
+                <NumberField
+                    record={{ foo: true }}
+                    source="foo"
+                    className="foo"
+                />
+            ).prop('className'),
+            'foo'
+        ));
 
     it('should handle deep fields', () => {
         const wrapper = shallow(
