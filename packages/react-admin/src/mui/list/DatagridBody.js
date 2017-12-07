@@ -7,6 +7,7 @@ import classnames from 'classnames';
 import DatagridCell from './DatagridCell';
 
 const DatagridBody = ({
+    classes,
     className,
     resource,
     children,
@@ -27,7 +28,8 @@ const DatagridBody = ({
     >
         {ids.map((id, rowIndex) => (
             <TableRow
-                style={rowStyle ? rowStyle(data[id], rowIndex) : styles.tr}
+                className={classes.row}
+                style={rowStyle ? rowStyle(data[id], rowIndex) : undefined}
                 key={id}
                 {...rowOptions}
             >
@@ -37,13 +39,14 @@ const DatagridBody = ({
                         field ? (
                             <DatagridCell
                                 key={`${id}-${field.props.source || index}`}
-                                className={`column-${field.props.source}`}
+                                className={classnames(
+                                    `column-${field.props.source}`,
+                                    {
+                                        [classes.rowFirstCell]: index === 0,
+                                        [classes.rowCell]: index > 0,
+                                    }
+                                )}
                                 record={data[id]}
-                                defaultStyle={
-                                    index === 0
-                                        ? styles.cell['td:first-child']
-                                        : styles.cell.td
-                                }
                                 {...{ field, basePath, resource }}
                             />
                         ) : null
@@ -54,6 +57,7 @@ const DatagridBody = ({
 );
 
 DatagridBody.propTypes = {
+    classes: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.node,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
