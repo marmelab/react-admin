@@ -1,10 +1,10 @@
-import { CRUD_GET_MANY_REFERENCE_SUCCESS } from '../../../actions/dataActions';
+import { crudGetManyReference } from '../../../actions/dataActions';
 
 const initialState = {};
 
 export default (previousState = initialState, { type, payload, meta }) => {
     switch (type) {
-        case CRUD_GET_MANY_REFERENCE_SUCCESS:
+        case crudGetManyReference.SUCCESS:
             return {
                 ...previousState,
                 [meta.relatedTo]: payload.data.map(record => record.id),

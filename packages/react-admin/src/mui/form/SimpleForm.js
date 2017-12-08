@@ -11,7 +11,9 @@ const formStyle = { padding: '0 1em 1em 1em' };
 
 export class SimpleForm extends Component {
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
-        this.props.handleSubmit(values => this.props.save(values, redirect));
+        this.props.handleSubmit((values, dispatch) =>
+            this.props.save(values, redirect, dispatch)
+        );
 
     render() {
         const {

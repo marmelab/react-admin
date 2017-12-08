@@ -12,7 +12,7 @@ import withContext from 'recompose/withContext';
 import { USER_LOGOUT } from './actions/authActions';
 
 import createAppReducer from './reducer';
-import { crudSaga } from './sideEffect/saga';
+import { crudSaga, promiseAction } from './sideEffect/saga';
 import DefaultLayout from './mui/layout/Layout';
 import Menu from './mui/layout/Menu';
 import Login from './mui/auth/Login';
@@ -44,7 +44,11 @@ const Admin = ({
         appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
     const saga = function* rootSaga() {
         yield all(
-            [crudSaga(dataProvider, authClient), ...customSagas].map(fork)
+            [
+                crudSaga(dataProvider, authClient),
+                promiseAction,
+                ...customSagas,
+            ].map(fork)
         );
     };
     const sagaMiddleware = createSagaMiddleware();

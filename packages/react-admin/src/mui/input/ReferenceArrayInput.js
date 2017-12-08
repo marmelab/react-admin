@@ -143,15 +143,18 @@ export class ReferenceArrayInput extends Component {
                     'The value of ReferenceArrayInput should be an array'
                 );
             }
-            this.props.crudGetMany(reference, ids);
+            this.props.crudGetMany({
+                reference,
+                ids,
+            });
         }
-        this.props.crudGetMatching(
+        this.props.crudGetMatching({
             reference,
-            referenceSource(resource, source),
+            relatedTo: referenceSource(resource, source),
             pagination,
             sort,
-            filter
-        );
+            filter,
+        });
     }
 
     render() {

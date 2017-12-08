@@ -1,12 +1,12 @@
 import uniq from 'lodash.uniq';
 import {
-    CRUD_GET_LIST_SUCCESS,
-    CRUD_DELETE_SUCCESS,
-    CRUD_GET_MANY_SUCCESS,
-    CRUD_GET_MANY_REFERENCE_SUCCESS,
-    CRUD_GET_ONE_SUCCESS,
-    CRUD_CREATE_SUCCESS,
-    CRUD_UPDATE_SUCCESS,
+    crudGetList,
+    crudDelete,
+    crudGetMany,
+    crudGetManyReference,
+    crudGetOne,
+    crudCreate,
+    crudUpdate,
 } from '../../../../actions/dataActions';
 
 import getFetchedAt from '../../../../util/getFetchedAt';
@@ -36,21 +36,21 @@ export default resource => (
         return previousState;
     }
     switch (type) {
-        case CRUD_GET_LIST_SUCCESS:
+        case crudGetList.SUCCESS:
             return addRecordIds(payload.data.map(({ id }) => id), []);
-        case CRUD_GET_MANY_SUCCESS:
-        case CRUD_GET_MANY_REFERENCE_SUCCESS:
+        case crudGetMany.SUCCESS:
+        case crudGetManyReference.SUCCESS:
             return addRecordIds(
                 payload.data
                     .map(({ id }) => id)
                     .filter(id => previousState.indexOf(id) !== -1),
                 previousState
             );
-        case CRUD_GET_ONE_SUCCESS:
-        case CRUD_CREATE_SUCCESS:
-        case CRUD_UPDATE_SUCCESS:
+        case crudGetOne.SUCCESS:
+        case crudCreate.SUCCESS:
+        case crudUpdate.SUCCESS:
             return addRecordIds([payload.data.id], previousState);
-        case CRUD_DELETE_SUCCESS: {
+        case crudDelete.SUCCESS: {
             const index = previousState
                 .map(el => el == requestPayload.id) // eslint-disable-line eqeqeq
                 .indexOf(true);

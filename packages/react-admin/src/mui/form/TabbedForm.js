@@ -34,7 +34,9 @@ export class TabbedForm extends Component {
     };
 
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
-        this.props.handleSubmit(values => this.props.save(values, redirect));
+        this.props.handleSubmit((values, dispatch) =>
+            this.props.save(values, redirect, dispatch)
+        );
 
     render() {
         const {

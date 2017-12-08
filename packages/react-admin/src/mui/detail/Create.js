@@ -68,12 +68,15 @@ class Create extends Component {
         return 'list';
     }
 
-    save = (record, redirect) => {
-        this.props.crudCreate(
-            this.props.resource,
-            record,
-            this.getBasePath(),
-            redirect
+    save = (record, redirect, dispatch) => {
+        return crudCreateAction(
+            {
+                resource: this.props.resource,
+                data: record,
+                basePath: this.getBasePath(),
+                redirectTo: redirect,
+            },
+            dispatch
         );
     };
 

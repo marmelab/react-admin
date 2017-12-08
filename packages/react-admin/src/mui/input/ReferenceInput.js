@@ -142,16 +142,21 @@ export class ReferenceInput extends Component {
 
         const id = input.value;
         if (id) {
-            this.props.crudGetOne(reference, id, null, false);
+            this.props.crudGetOne({
+                resource: reference,
+                id,
+                basePath: null,
+                cancelPrevious: false,
+            });
         }
         const finalFilter = { ...filterFromProps, ...filter };
-        this.props.crudGetMatching(
+        this.props.crudGetMatching({
             reference,
-            referenceSource(resource, source),
+            relatedTo: referenceSource(resource, source),
             pagination,
             sort,
-            finalFilter
-        );
+            filter: finalFilter,
+        });
     }
 
     render() {

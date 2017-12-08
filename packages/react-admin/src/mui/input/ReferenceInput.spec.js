@@ -46,17 +46,19 @@ describe('<ReferenceInput />', () => {
             </ReferenceInput>
         );
         assert.deepEqual(crudGetMatching.mock.calls[0], [
-            'posts',
-            'comments@post_id',
             {
-                page: 1,
-                perPage: 25,
+                reference: 'posts',
+                relatedTo: 'comments@post_id',
+                pagination: {
+                    page: 1,
+                    perPage: 25,
+                },
+                sort: {
+                    field: 'id',
+                    order: 'DESC',
+                },
+                filter: {},
             },
-            {
-                field: 'id',
-                order: 'DESC',
-            },
-            {},
         ]);
     });
 
@@ -75,18 +77,20 @@ describe('<ReferenceInput />', () => {
             </ReferenceInput>
         );
         assert.deepEqual(crudGetMatching.mock.calls[0], [
-            'posts',
-            'comments@post_id',
             {
-                page: 1,
-                perPage: 5,
-            },
-            {
-                field: 'foo',
-                order: 'ASC',
-            },
-            {
-                q: 'foo',
+                reference: 'posts',
+                relatedTo: 'comments@post_id',
+                pagination: {
+                    page: 1,
+                    perPage: 5,
+                },
+                sort: {
+                    field: 'foo',
+                    order: 'ASC',
+                },
+                filter: {
+                    q: 'foo',
+                },
             },
         ]);
     });
@@ -109,19 +113,21 @@ describe('<ReferenceInput />', () => {
         wrapper.instance().setFilter('search_me');
 
         assert.deepEqual(crudGetMatching.mock.calls[1], [
-            'posts',
-            'comments@post_id',
             {
-                page: 1,
-                perPage: 5,
-            },
-            {
-                field: 'foo',
-                order: 'ASC',
-            },
-            {
-                foo: 'bar',
-                q: 'search_me',
+                reference: 'posts',
+                relatedTo: 'comments@post_id',
+                pagination: {
+                    page: 1,
+                    perPage: 5,
+                },
+                sort: {
+                    field: 'foo',
+                    order: 'ASC',
+                },
+                filter: {
+                    foo: 'bar',
+                    q: 'search_me',
+                },
             },
         ]);
     });
@@ -139,18 +145,20 @@ describe('<ReferenceInput />', () => {
         );
         wrapper.instance().setFilter('bar');
         assert.deepEqual(crudGetMatching.mock.calls[1], [
-            'posts',
-            'comments@post_id',
             {
-                page: 1,
-                perPage: 25,
-            },
-            {
-                field: 'id',
-                order: 'DESC',
-            },
-            {
-                q: 'bar',
+                reference: 'posts',
+                relatedTo: 'comments@post_id',
+                pagination: {
+                    page: 1,
+                    perPage: 25,
+                },
+                sort: {
+                    field: 'id',
+                    order: 'DESC',
+                },
+                filter: {
+                    q: 'bar',
+                },
             },
         ]);
     });
@@ -169,18 +177,20 @@ describe('<ReferenceInput />', () => {
         );
         wrapper.instance().setFilter('bar');
         assert.deepEqual(crudGetMatching.mock.calls[1], [
-            'posts',
-            'comments@post_id',
             {
-                page: 1,
-                perPage: 25,
-            },
-            {
-                field: 'id',
-                order: 'DESC',
-            },
-            {
-                foo: 'bar',
+                reference: 'posts',
+                relatedTo: 'comments@post_id',
+                pagination: {
+                    page: 1,
+                    perPage: 25,
+                },
+                sort: {
+                    field: 'id',
+                    order: 'DESC',
+                },
+                filter: {
+                    foo: 'bar',
+                },
             },
         ]);
     });
@@ -197,7 +207,9 @@ describe('<ReferenceInput />', () => {
                 <MyComponent />
             </ReferenceInput>
         );
-        assert.deepEqual(crudGetOne.mock.calls[0], ['posts', 5, null, false]);
+        assert.deepEqual(crudGetOne.mock.calls[0], [
+            { resource: 'posts', id: 5, basePath: null, cancelPrevious: false },
+        ]);
     });
 
     it('should pass onChange down to child component', () => {

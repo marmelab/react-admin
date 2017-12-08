@@ -76,20 +76,20 @@ export class Delete extends Component {
     }
 
     componentDidMount() {
-        this.props.crudGetOne(
-            this.props.resource,
-            this.props.id,
-            this.getBasePath()
-        );
+        this.props.crudGetOne({
+            resource: this.props.resource,
+            id: this.props.id,
+            basePath: this.getBasePath(),
+        });
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.id !== nextProps.id) {
-            this.props.crudGetOne(
-                nextProps.resource,
-                nextProps.id,
-                this.getBasePath()
-            );
+            this.props.crudGetOne({
+                resource: nextProps.resource,
+                id: nextProps.id,
+                basePath: this.getBasePath(),
+            });
         }
     }
 
@@ -107,15 +107,15 @@ export class Delete extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.crudDelete(
-            this.props.resource,
-            this.props.id,
-            this.props.data,
-            this.getBasePath(),
-            this.props.redirect
+        this.props.crudDelete({
+            resource: this.props.resource,
+            id: this.props.id,
+            previousData: this.props.data,
+            basePath: this.getBasePath(),
+            redirectTo: this.props.redirect
                 ? this.props.redirect
-                : this.defaultRedirectRoute()
-        );
+                : this.defaultRedirectRoute(),
+        });
     }
 
     goBack() {

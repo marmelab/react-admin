@@ -9,7 +9,7 @@ import Header from '../layout/Header';
 import Title from '../layout/Title';
 import {
     crudGetOne as crudGetOneAction,
-    crudUpdate as crudUpdateAction,
+    crudUpdate,
 } from '../../actions/dataActions';
 import DefaultActions from './EditActions';
 import translate from '../../i18n/translate';
@@ -100,17 +100,24 @@ export class Edit extends Component {
     }
 
     updateData(resource = this.props.resource, id = this.props.id) {
-        this.props.crudGetOne(resource, id, this.getBasePath());
+        this.props.crudGetOne({
+            resource,
+            id,
+            basePath: this.getBasePath(),
+        });
     }
 
-    save = (record, redirect) => {
-        this.props.crudUpdate(
-            this.props.resource,
-            this.props.id,
-            record,
-            this.props.data,
-            this.getBasePath(),
-            redirect
+    save = (record, redirect, dispatch) => {
+        return crudUpdate(
+            {
+                resource: this.props.resource,
+                id: this.props.id,
+                data: record,
+                previousData: this.props.data,
+                basePath: this.getBasePath(),
+                redirectTo: redirect,
+            },
+            dispatch
         );
     };
 
@@ -186,7 +193,6 @@ Edit.propTypes = {
     actions: PropTypes.element,
     children: PropTypes.node,
     crudGetOne: PropTypes.func.isRequired,
-    crudUpdate: PropTypes.func.isRequired,
     data: PropTypes.object,
     hasDelete: PropTypes.bool,
     hasShow: PropTypes.bool,
@@ -217,7 +223,6 @@ function mapStateToProps(state, props) {
 const enhance = compose(
     connect(mapStateToProps, {
         crudGetOne: crudGetOneAction,
-        crudUpdate: crudUpdateAction,
     }),
     translate,
     withChildrenAsFunction
