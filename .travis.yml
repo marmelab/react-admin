@@ -8,14 +8,15 @@ env:
         - NODE_ENV=test
 dist: trusty
 cache:
+  yarn: true
   directories:
     - node_modules
 before_install:
     - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
+    - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.1.0
+    - source ~/.bashrc
     - sh -e /etc/init.d/xvfb start
     - sleep 3
-before_script:
-    - make example_install
 branches:
   only:
     - master

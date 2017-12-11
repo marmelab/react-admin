@@ -30,12 +30,13 @@ Here is the minimal code necessary to display a list of posts:
 ```jsx
 // in src/App.js
 import React from 'react';
-import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
+import { Admin, Resource } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
 
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
@@ -44,7 +45,7 @@ export default App;
 
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest';
+import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -81,24 +82,23 @@ The title can be either a string, or an element of your own.
 You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
-import { CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import CreateButton from '../button/CreateButton';
+import Button from 'material-ui/Button';
+import NavigationRefresh from 'material-ui-icons/Refresh';
+import { CardActions, CreateButton, RefreshButton } from 'react-admin';
 
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
-};
-
-const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
-    <CardActions style={cardActionStyle}>
-        {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
+const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter }) => (
+    <CardActions>
+        {filters && React.cloneElement(filters, {
+            resource,
+            showFilter,
+            displayedFilters,
+            filterValues,
+            context: 'button',
+        }) }
         <CreateButton basePath={basePath} />
-        <FlatButton primary label="refresh" onClick={refresh} icon={<NavigationRefresh />} />
+        <RefreshButton />
         {/* Add your custom actions */}
-        <FlatButton primary label="Custom Action" onClick={customAction} />
+        <Button primary onClick={customAction}>Custom Action</Button>
     </CardActions>
 );
 
@@ -177,7 +177,7 @@ It is possible to disable sorting for a specific field by passing a `sortable` p
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -215,24 +215,26 @@ You can replace the default pagination element by your own, using the `paginatio
 So if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
 
 ```jsx
-import FlatButton from 'material-ui/FlatButton';
-import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
-import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
+import Button from 'material-ui/Button';
+import ChevronLeft from 'material-ui-icons/ChevronLeft';
+import ChevronRight from 'material-ui-icons/ChevronRight';
+import Toolbar from 'material-ui/Toolbar';
 
 const PostPagination = ({ page, perPage, total, setPage }) => {
     const nbPages = Math.ceil(total / perPage) || 1;
     return (
         nbPages > 1 &&
             <Toolbar>
-                <ToolbarGroup>
                 {page > 1 &&
-                    <FlatButton primary key="prev" label="Prev" icon={<ChevronLeft />} onClick={() => setPage(page - 1)} />
+                    <Button primary key="prev" icon={<ChevronLeft />} onClick={() => setPage(page - 1)}>
+                        Prev
+                    </Button>
                 }
                 {page !== nbPages &&
-                    <FlatButton primary key="next" label="Next" icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before" />
+                    <Button primary key="next" icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before">
+                        Next
+                    </Button>
                 }
-                </ToolbarGroup>
             </Toolbar>
     );
 }
@@ -246,23 +248,19 @@ export const PostList = (props) => (
 
 ## The `<Datagrid>` component
 
-The datagrid component renders a list of records as a table. It is usually used as a child of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.html#referencemanyfield) components.
+The datagrid component renders a list of records as a table. It is usually used as a child of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components.
 
 Here are all the props accepted by the component:
 
 * [`styles`](#custom-grid-style)
 * [`rowStyle`](#row-style-function)
-* [`options`](#options)
-* [`headerOptions`](#options)
-* [`bodyOptions`](#options)
-* [`rowOptions`](#options)
 
 It renders as many columns as it receives `<Field>` children.
 
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest';
+import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -326,7 +324,7 @@ export const PostList = (props) => (
 ```
 {% endraw %}
 
-**Tip**: if you want to go even further and apply a custom style cell by cell, check out the [Conditional Formatting section of the Theming chapter](./Theming.html#conditional-formatting.)
+**Tip**: if you want to go even further and apply a custom style cell by cell, check out the [Conditional Formatting section of the Theming chapter](./Theming.md#conditional-formatting.)
 
 ### Row Style Function
 
@@ -347,40 +345,6 @@ export const PostList = (props) => (
 );
 ```
 
-### `options`, `headerOptions`, `bodyOptions`, and `rowOptions`
-
-Admin-on-rest relies on [material-ui's `<Table>` component](http://www.material-ui.com/#/components/table) for rendering the datagrid. The `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props allow your to override the props of `<Table>`, `<TableHeader>`, `<TableBody>`, and `<TableRow>`.
-
-For instance, to get a fixed header on the table, override the `<Table>` props with `options`:
-
-{% raw %}
-```jsx
-export const PostList = (props) => (
-    <List {...props}>
-        <Datagrid options={{ fixedHeader: true, height: 400 }}>
-            ...
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-To enable striped rows and row hover, override the `<TableBody>` props with `bodyOptions`:
-
-{% raw %}
-```jsx
-export const PostList = (props) => (
-    <List {...props}>
-        <Datagrid bodyOptions={{ stripedRows: true, showRowHover: true }}>
-            ...
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-For a list of all the possible props that you can override via these options, please refer to [the material-ui `<Table>` component documentation](http://www.material-ui.com/#/components/table).
-
 ## The `<SimpleList>` component
 
 For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](http://www.material-ui.com/#/components/list). You can use it as `<List>` or `<ReferenceManyField>` child:
@@ -388,7 +352,7 @@ For mobile devices, a `<Datagrid>` is often unusable - there is simply not enoug
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, SimpleList } from 'admin-on-rest';
+import { List, SimpleList } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -408,7 +372,7 @@ export const PostList = (props) => (
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -429,6 +393,27 @@ export const PostList = (props) => (
     </List>
 );
 ```
+
+**Tip**: The `<SimpleList>` items link to the edition page by default. You can set the `linkType` prop to `show` to link to the `<Show>` page instead.
+
+```jsx
+// in src/posts.js
+import React from 'react';
+import { List, SimpleList } from 'react-admin';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => `${record.views} views`}
+            tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+            linkType="show"
+        />
+    </List>
+);
+```
+
+Setting the `linkType` prop to `false` (boolean, not string) removes the link in all list items.
 
 ## The `<SingleFieldList>` component
 
@@ -461,6 +446,8 @@ Simple: Create your own iterator component as follows:
 {% raw %}
 ```jsx
 // in src/comments.js
+import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
+
 const cardStyle = {
     width: 300,
     minHeight: 300,
@@ -474,18 +461,18 @@ const CommentGrid = ({ ids, data, basePath }) => (
         <Card key={id} style={cardStyle}>
             <CardHeader
                 title={<TextField record={data[id]} source="author.name" />}
-                subtitle={<DateField record={data[id]} source="created_at" />}
+                subheader={<DateField record={data[id]} source="created_at" />}
                 avatar={<Avatar icon={<PersonIcon />} />}
             />
-            <CardText>
+            <CardContent>
                 <TextField record={data[id]} source="body" />
-            </CardText>
-            <CardText>
+            </CardContent>
+            <CardContent>
                 about&nbsp;
                 <ReferenceField label="Post" resource="comments" record={data[id]} source="post_id" reference="posts" basePath={basePath}>
                     <TextField source="title" />
                 </ReferenceField>
-            </CardText>
+            </CardContent>
             <CardActions style={{ textAlign: 'right' }}>
                 <EditButton resource="posts" basePath={basePath} record={data[id]} />
             </CardActions>
@@ -507,3 +494,47 @@ export const CommentList = (props) => (
 {% endraw %}
 
 As you can see, nothing prevents you from using `<Field>` components inside your own components... provided you inject the current `record`. Also, notice that components building links require the `basePath` component, which is also injected.
+
+## Declaring Fields At Runtime
+
+You might want to dynamically define the fields when the `<List>` component is rendered. It accepts a function as its child and this function can return a Promise. If you also defined an `authClient` on the `<Admin>` component, the function will receive the result of a call to `authClient` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
+
+For instance, getting the fields from an API might look like:
+
+```js
+import React from 'react';
+import { List, Datagrid, TextField } from 'react-admin';
+
+const knownFields = [
+    <TextField source="id" />,
+    <TextField source="title" />,
+    <TextField source="body" />,
+];
+
+const fetchFields = permissions =>
+    fetch('https://myapi/fields', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            permissions,
+            resource: 'posts',
+        }),
+    })
+    .then(response => response.json())
+    .then(json => knownFields.filter(field => json.fields.includes(field.props.source)))
+    .then(fields => (
+        <Datagrid>
+            {fields}
+        </Datagrid>
+    ));
+
+export const PostList = (props) => (
+    <List {...props}>
+        {fetchFields}
+    </List>
+);
+```
+
+**Tip**: This pattern also work for the `<Filter>` component.

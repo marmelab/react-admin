@@ -3,15 +3,15 @@ layout: default
 title: "Including the Admin in Another App"
 ---
 
-# Including admin-on-rest on another React app
+# Including react-admin on another React app
 
-The `<Admin>` tag is a great shortcut got be up and running with admin-on-rest in minutes. However, in many cases, you will want to embed the admin in another application, or customize the admin deeply. Fortunately, you can do all the work that `<Admin>` does on any React application.
+The `<Admin>` tag is a great shortcut got be up and running with react-admin in minutes. However, in many cases, you will want to embed the admin in another application, or customize the admin deeply. Fortunately, you can do all the work that `<Admin>` does on any React application.
 
 Beware that you need to know about [redux](http://redux.js.org/), [react-router](https://github.com/reactjs/react-router), and [redux-saga](https://github.com/yelouafi/redux-saga) to go further.
 
-**Tip**: Before going for the Custom App route, explore all the options of [the `<Admin>` component](./AdminResource.html##the-admin-component). They allow you to add custom routes, custom reducers, custom sagas, and customize the layout.
+**Tip**: Before going for the Custom App route, explore all the options of [the `<Admin>` component](./Admin.md). They allow you to add custom routes, custom reducers, custom sagas, and customize the layout.
 
-Here is the main code for bootstrapping a barebones admin-on-rest application with 3 resources: `posts`, `comments`, and `users`:
+Here is the main code for bootstrapping a barebones react-admin application with 3 resources: `posts`, `comments`, and `users`:
 
 ```jsx
 // in src/App.js
@@ -20,7 +20,7 @@ import PropTypes from 'prop-types';
 import { render } from 'react-dom';
 
 // redux, react-router, redux-form, saga, and material-ui
-// form the 'kernel' on which admin-on-rest runs
+// form the 'kernel' on which react-admin runs
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createHistory from 'history/createHashHistory';
@@ -28,18 +28,21 @@ import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { MuiThemeProvider } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
 
-// prebuilt admin-on-rest features
+// prebuilt react-admin features
 import {
     adminReducer,
     localeReducer,
     crudSaga,
-    simpleRestClient,
     Delete,
     TranslationProvider,
-} from 'admin-on-rest';
+    declareResources,
+} from 'react-admin';
+import simpleRestClient from 'ra-data-simple-rest';
 
 // your app components
 import Dashboard from './Dashboard';
@@ -51,7 +54,7 @@ import messages from './i18n';
 
 // create a Redux app
 const reducer = combineReducers({
-    admin: adminReducer([{ name: 'posts' }, { name: 'comments' }, { name: 'users' }]),
+    admin: adminReducer,
     locale: localeReducer(),
     form: formReducer,
     routing: routerReducer,
@@ -62,8 +65,9 @@ const store = createStore(reducer, undefined, compose(
     applyMiddleware(sagaMiddleware, routerMiddleware(history)),
     window.devToolsExtension ? window.devToolsExtension() : f => f,
 ));
-const restClient = simpleRestClient('http://path.to.my.api/');
-sagaMiddleware.run(crudSaga(restClient));
+store.dispatch(declareResources([{ name: 'posts' }, { name: 'comments' }, { name: 'users' }]));
+const dataProvider = simpleRestClient('http://path.to.my.api/');
+sagaMiddleware.run(crudSaga(dataProvider));
 
 // bootstrap redux and the routes
 const App = () => (
@@ -71,7 +75,13 @@ const App = () => (
         <TranslationProvider messages={messages}>
             <ConnectedRouter history={history}>
                 <MuiThemeProvider>
-                    <AppBar title="My Admin" />
+                    <AppBar position="static" color="default">
+                        <Toolbar>
+                            <Typography type="title" color="inherit">
+                                My admin
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
                     <Switch>
                         <Route exact path="/" component={Dashboard} />
                         <Route exact path="/posts" hasCreate render={(routeProps) => <PostList resource="posts" {...routeProps} />} />
@@ -95,4 +105,4 @@ const App = () => (
 );
 ```
 
-This application has no sidebar, no theming, no [auth control](./Authentication.html#restricting-access-to-a-custom-page) - it's up to you to add these. From then on, you can customize pretty much anything you want.
+This application has no sidebar, no theming, no [auth control](./Authentication.md#restricting-access-to-a-custom-page) - it's up to you to add these. From then on, you can customize pretty much anything you want.

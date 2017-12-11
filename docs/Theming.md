@@ -9,16 +9,16 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 ## Overriding A Component Style
 
-Most admin-on-rest components support two style props to set inline styles:
+Most react-admin components support two style props to set inline styles:
 
 * `style`: A style object to customize the look and feel of the component container (e.g. the `<td>` in a datagrid). Most of the time, that's where you'll want to put your custom styles.
-* `elStyle`: A style object to customize the look and feel of the component element itself, usually a material ui component. Use this prop when you want to fine tune the display of a material ui component, according to [their styling documentation]((http://www.material-ui.com/#/customization/styles)).
+* `elStyle`: A style object to customize the look and feel of the component element itself, usually a material ui component. Use this prop when you want to fine tune the display of a material ui component, according to [their styling documentation](http://www.material-ui.com/#/customization/styles).
 
 These props accept a style object:
 
 {% raw %}
 ```jsx
-import { EmailField } from 'admin-on-rest/mui';
+import { EmailField } from 'react-admin/mui';
 
 <EmailField source="email" style={{ backgroundColor: 'lightgrey' }} elStyle={{ textDecoration: 'none' }} />
 // renders in the datagrid as
@@ -52,11 +52,11 @@ export const ProductList = (props) => (
 
 Refer to each component documentation for a list of supported style props.
 
-If you need more control over the HTML code, you can also create your own [Field](./Fields.html#writing-your-own-field-component) and [Input](./Inputs.html#writing-your-own-input-component) components.
+If you need more control over the HTML code, you can also create your own [Field](./Fields.md#writing-your-own-field-component) and [Input](./Inputs.md#writing-your-own-input-component) components.
 
 ## Conditional Formatting
 
-Sometimes you want the format to depend on the value. Admin-on-rest doesn't provide any special way to do it, because React already has all that's necessary - in particular, Higher-Order Components (HOCs).
+Sometimes you want the format to depend on the value. React-admin doesn't provide any special way to do it, because React already has all that's necessary - in particular, Higher-Order Components (HOCs).
 
 For instance, if you want to highlight a `<TextField>` in red if the value is higher than 100, just wrap the field into a HOC:
 
@@ -92,7 +92,7 @@ It expects element props named `small`, `medium`, and `large`. It displays the e
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -122,18 +122,23 @@ export const PostList = (props) => (
 
 **Tip**: If you only provide `small` and `medium`, the `medium` element will also be used on large screens. The same kind of smart default exists for when you omit `small` or `medium`.
 
-**Tip**: You can also use [material-ui's `withWith()` higher order component](https://github.com/callemall/material-ui/blob/master/src/utils/withWidth.js) to have the `with` prop injected in your own components.
+**Tip**: You can also use [material-ui's `withWidth()` higher order component](https://github.com/callemall/material-ui/blob/master/src/utils/withWidth.js) to have the `with` prop injected in your own components.
 
 ## Using a Predefined Theme
 
-Material UI also supports [complete theming](http://www.material-ui.com/#/customization/themes) out of the box. Material UI ships two base themes: light and dark. Admin-on-rest uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `getMuiTheme()`).
+Material UI also supports [complete theming](http://www.material-ui.com/#/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `createMuiTheme()`).
 
 ```jsx
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { createMuiTheme } from 'material-ui/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark', // Switching the dark mode on is a single property value change.
+  },
+});
 
 const App = () => (
-    <Admin theme={getMuiTheme(darkBaseTheme)} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -195,7 +200,7 @@ Once your theme is defined, pass it to the `<Admin>` component, in the `theme` p
 
 ```jsx
 const App = () => (
-    <Admin theme={getMuiTheme(myTheme)} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin theme={getMuiTheme(myTheme)} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -210,31 +215,29 @@ Instead of the default layout, you can use your own component as the admin layou
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin appLayout={MyLayout} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
 ```
 
-Use the [default layout](https://github.com/marmelab/admin-on-rest/blob/master/src/mui/layout/Layout.js) as a starting point for your custom layout. Here is a simplified version (with no responsive support):
+Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src/mui/layout/Layout.js) as a starting point for your custom layout. Here is a simplified version (with no responsive support):
 
 ```jsx
 // in src/MyLayout.js
-import React, { Component } from 'react';
+import React, { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import CircularProgress from 'material-ui/CircularProgress';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import {
     AdminRoutes,
     AppBar,
-    Sidebar,
+    Menu,
     Notification,
-    setSidebarVisibility as setSidebarVisibilityAction
-} from 'admin-on-rest';
-
-injectTapEventPlugin();
+    Sidebar,
+    setSidebarVisibility,
+} from 'react-admin';
 
 const styles = {
     wrapper: {
@@ -274,14 +277,13 @@ class MyLayout extends Component {
 
     render() {
         const {
-            authClient,
+            children,
             customRoutes,
             dashboard,
             isLoading,
+            logout,
             menu,
-            resources,
             title,
-            width,
         } = this.props;
         return (
             <MuiThemeProvider>
@@ -292,22 +294,27 @@ class MyLayout extends Component {
                             <div style={styles.content}>
                                 <AdminRoutes
                                     customRoutes={customRoutes}
-                                    resources={resources}
-                                    authClient={authClient}
                                     dashboard={dashboard}
-                                />
+                                >
+                                    {children}
+                                </AdminRoutes>
                             </div>
                             <Sidebar>
-                                {menu}
+                                {createElement(menu || Menu, {
+                                    logout,
+                                    hasDashboard: !!dashboard,
+                                })}
                             </Sidebar>
                         </div>
                         <Notification />
-                        {isLoading && <CircularProgress
-                            color="#fff"
-                            size={width === 1 ? 20 : 30}
-                            thickness={2}
-                            style={styles.loader}
-                        />}
+                        {isLoading && (
+                            <CircularProgress
+                                color="#fff"
+                                size={30}
+                                thickness={2}
+                                style={styles.loader}
+                            />
+                        )}
                     </div>
                 </div>
             </MuiThemeProvider>
@@ -324,16 +331,21 @@ MyLayout.propTypes = {
     resources: PropTypes.array,
     setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
-    width: PropTypes.number,
 };
 
-function mapStateToProps(state) {
-    return {
-        isLoading: state.admin.loading > 0,
-    };
-}
-
-export default connect(mapStateToProps, {
-    setSidebarVisibility: setSidebarVisibilityAction,
-})(MyLayout);
+const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
+export default connect(mapStateToProps, { setSidebarVisibility })(MyLayout);
 ```
+
+
+## Notifications
+
+If you use your own layout (or custom login page), then you probably use the `<Notification>` component.
+
+You can override the notification duration by setting the `autoHideDuration` prop. It defaults to 4000, i.e. 4 seconds.
+
+```jsx
+<Notification autoHideDuration={5000} />
+```
+
+**Tip**: if you use the `showNotification` action, then you can define `autoHideDuration` per message as the third parameter of the `showNotification` action creator.

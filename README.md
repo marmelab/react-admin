@@ -1,14 +1,14 @@
-# admin-on-rest [![Build Status](https://travis-ci.org/marmelab/admin-on-rest.svg?branch=master)](https://travis-ci.org/marmelab/admin-on-rest)
+# react-admin [![Build Status](https://travis-ci.org/marmelab/react-admin.svg?branch=master)](https://travis-ci.org/marmelab/react-admin)
 
-A frontend Framework for building admin applications running in the browser on top of REST services, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Open sourced and maintained by [marmelab](https://marmelab.com/).
+A frontend Framework for building admin applications running in the browser on top of REST/GraphQL services, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Open sourced and maintained by [marmelab](https://marmelab.com/).
 
-[Demo](https://marmelab.com/admin-on-rest-demo/) - [Documentation](https://marmelab.com/admin-on-rest/) - [Releases](https://github.com/marmelab/admin-on-rest/releases) - [Support](http://stackoverflow.com/questions/tagged/admin-on-rest)
+[Demo](https://marmelab.com/react-admin-demo/) - [Documentation](https://marmelab.com/react-admin/) - [Releases](https://github.com/marmelab/react-admin/releases) - [Support](http://stackoverflow.com/questions/tagged/react-admin)
 
-[![admin-on-rest-demo](https://marmelab.com/admin-on-rest/img/admin-on-rest-demo-still.png)](https://vimeo.com/205118063)
+[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/205118063)
 
 ## Features
 
-* Adapts to any REST backend
+* Adapts to any backend (REST, GraphQL, SOAP, etc.)
 * Complete documentation
 * Optimistic rendering (renders before the server returns)
 * Relationships (many to one, one to many)
@@ -33,49 +33,50 @@ A frontend Framework for building admin applications running in the browser on t
 
 ## Versions In This Repository
 
-* [master](https://github.com/marmelab/admin-on-rest/commits/master) - commits that will be included in the next _patch_ release
+* [master](https://github.com/marmelab/react-admin/commits/master) - commits that will be included in the next _patch_ release
 
-* [next](https://github.com/marmelab/admin-on-rest/commits/next) - commits that will be included in the next _major_ or _minor_ release
+* [next](https://github.com/marmelab/react-admin/commits/next) - commits that will be included in the next _major_ or _minor_ release
 
 Bugfix PRs that don't break BC should be made against **master**. All other PRs (new features, bugfix with BC break) should be made against **next**.
 
 ## Installation
 
-Admin-on-rest is available from npm. You can install it (and its required dependencies)
+React-admin is available from npm. You can install it (and its required dependencies)
 using:
 
 ```sh
-npm install --save-dev admin-on-rest
+npm install --save-dev react-admin
 ```
 
 ## Documentation
 
-Read the [Tutorial](http://marmelab.com/admin-on-rest//Tutorial.html) for a 15 minutes introduction. After that, head to the [Documentation](http://marmelab.com/admin-on-rest//index.html), or checkout the [source code of the demo](https://github.com/marmelab/admin-on-rest-demo) for an example usage.
+Read the [Tutorial](http://marmelab.com/react-admin/Tutorial.html) for a 15 minutes introduction. After that, head to the [Documentation](http://marmelab.com/react-admin/index.html), or checkout the [source code of the demo](https://github.com/marmelab/react-admin-demo) for an example usage.
 
 ## At a Glance
 
-```js
+```jsx
 // in app.js
 import React from 'react';
 import { render } from 'react-dom';
-import { simpleRestClient, Admin, Resource } from 'admin-on-rest';
+import { Admin, Resource } from 'react-admin';
+import simpleRestClient from 'ra-data-simple-rest';
 
 import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
 
 render(
-    <Admin restClient={simpleRestClient('http://localhost:3000')}>
+    <Admin dataProvider={simpleRestClient('http://localhost:3000')}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon}/>
     </Admin>,
     document.getElementById('root')
 );
 ```
 
-The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use Material UI and custom components from admin-on-rest:
+The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use Material UI and custom components from react-admin:
 
-```js
+```jsx
 // in posts.js
 import React from 'react';
-import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'admin-on-rest';
+import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'react-admin';
 export PostIcon from 'material-ui/svg-icons/action/book';
 
 export const PostList = (props) => (
@@ -122,31 +123,47 @@ export const PostCreate = (props) => (
 );
 ```
 
-## Does It Work With My REST API?
+## Does It Work With My API?
 
 Yes.
 
-Admin-on-rest uses an adapter approach, with a concept called *REST client*. Existing rest clients can be used as a blueprint to design your API, or you can write your own REST client to query an existing API. Writing a custom REST client is a matter of hours.
+React-admin uses an adapter approach, with a concept called *Data Providers*. Existing providers can be used as a blueprint to design your API, or you can write your own Data Provider to query an existing API. Writing a custom Data Provider is a matter of hours.
 
-![REST client architecture](https://marmelab.com/admin-on-rest/img/rest-client.png)
+![Data Provider architecture](https://marmelab.com/react-admin/img/data-provider.png)
 
-See the [REST clients documentation](https://marmelab.com/admin-on-rest/RestClients.html) for details.
+See the [Data Providers documentation](https://marmelab.com/react-admin/DataProviders.html) for details.
 
 ## Batteries Included But Removable
 
-Admin-on-rest is designed as a library of loosely coupled React components built on top of [material-ui](http://www.material-ui.com/#/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of admin-on-rest with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
+React-admin is designed as a library of loosely coupled React components built on top of [material-ui](http://www.material-ui.com/#/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
 
-## Contributing
-
-Pull requests are welcome. Try to follow the coding style of the existing files, and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
+## Run the example
 
 You can run the example app by calling:
 
 ```sh
+npm install
 make run
 ```
 
 And then browse to [http://localhost:8080/](http://localhost:8080/).
+The credentials are **login/password**
+
+## Contributing
+
+Pull requests are welcome. You must follow the coding style of the existing files (based on [prettier](https://github.com/prettier/prettier)), and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
+
+You can run the tests (linting, unit and functional tests) by calling
+
+```sh
+make test
+```
+
+If you have coding standards problems, you can fix them automatically using `prettier` by calling
+
+```sh
+make prettier
+```
 
 If you want to contribute to the documentation, install jekyll, then call
 
@@ -158,24 +175,18 @@ And then browse to [http://localhost:4000/](http://localhost:4000/)
 
 *Note*: if you have added a section with heading to the docs, you also have to add it to `docs/_layouts/default.html` (the links on the left) manually.
 
-You can run the unit tests by calling
-
-```sh
-make test
-```
-
-If you are using admin-on-rest as a dependency, and if you want to try and hack it, here is the advised process:
+If you are using react-admin as a dependency, and if you want to try and hack it, here is the advised process:
 
 ```sh
 # in myapp
-# install admin-on-rest from GitHub in another directory
+# install react-admin from GitHub in another directory
 $ cd ..
-$ git clone git@github.com:marmelab/admin-on-rest.git && cd admin-on-rest && make install
-# replace your node_modules/admin-on-rest by a symbolic link to the github checkout
+$ git clone git@github.com:marmelab/react-admin.git && cd react-admin && make install
+# replace your node_modules/react-admin by a symbolic link to the github checkout
 $ cd ../myapp
-$ npm link ../admin-on-rest
+$ npm link ../react-admin
 # go back to the checkout, and replace the version of react by the one in your app
-$ cd ../admin-on-rest
+$ cd ../react-admin
 $ npm link ../myapp/node_modules/react
 $ make watch
 # in another terminal, go back to your app, and start it as usual
@@ -187,8 +198,8 @@ $ npm run
 
 ## License
 
-Admin-on-rest is licensed under the [MIT Licence](https://github.com/marmelab/admin-on-rest/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
+React-admin is licensed under the [MIT License](https://github.com/marmelab/react-admin/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
 
 ## Donate
 
-This library is free to use, even for commercial purpose. If you want to give back, please talk about it, help newcomers, or contribute code. But the best way to give back is to **donate to a charity**. We recommend [Doctors Without Borders](http://www.doctorswithoutborders.org/).
+This library is free to use, even for commercial purpose. If you want to give back, please talk about it, [help newcomers](https://stackoverflow.com/questions/tagged/react-admin), or contribute code. But the best way to give back is to **donate to a charity**. We recommend [Doctors Without Borders](http://www.doctorswithoutborders.org/).

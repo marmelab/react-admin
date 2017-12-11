@@ -1,0 +1,64 @@
+{
+    "name": "react-admin",
+    "version": "2.0.0-alpha3",
+    "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
+    "files": [
+        "*.md",
+        "docs/*.md",
+        "lib",
+        "src"
+    ],
+    "main": "lib/index",
+    "authors": [
+        "François Zaninotto"
+    ],
+    "repository": "marmelab/react-admin",
+    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "bugs": "https://github.com/marmelab/react-admin/issues",
+    "license": "MIT",
+    "devDependencies": {
+        "enzyme": "~3.1.0",
+        "enzyme-adapter-react-16": "~1.0.1",
+        "file-api": "~0.10.4",
+        "full-icu": "~1.1.3",
+        "ignore-styles": "~5.0.1",
+        "react": "~16.0.0",
+        "react-dom": "~16.0.0",
+        "react-test-renderer": "~16.0.0"
+    },
+    "peerDependencies": {
+        "react": "^15.4.0 || ~16.0.0",
+        "react-dom": "^15.4.0 || ~16.0.0"
+    },
+    "dependencies": {
+        "autosuggest-highlight": "^3.1.1",
+        "babel-runtime": "~6.26.0",
+        "classnames": "~2.2.5",
+        "inflection": "~1.12.0",
+        "lodash.debounce": "~4.0.8",
+        "lodash.defaultsdeep": "~4.6.0",
+        "lodash.get": "~4.4.2",
+        "lodash.isequal": "~4.5.0",
+        "lodash.pickby": "~4.6.0",
+        "lodash.set": "~4.3.2",
+        "lodash.uniq": "~4.5.0",
+        "material-ui": "~1.0.0-beta.17",
+        "material-ui-chip-input": "~0.18.1",
+        "material-ui-icons": "~1.0.0-beta.17",
+        "node-polyglot": "2.2.2",
+        "prop-types": "~15.5.7",
+        "query-string": "~5.0.0",
+        "ra-language-english": "^2.0.0-alpha3",
+        "react-autosuggest": "^9.3.2",
+        "react-dropzone": "~4.0.1",
+        "react-redux": "~5.0.4",
+        "react-router": "~4.2.0",
+        "react-router-dom": "~4.2.2",
+        "react-router-redux": "~5.0.0-alpha.6",
+        "recompose": "~0.25.0",
+        "redux": "~3.7.2",
+        "redux-form": "~7.0.3",
+        "redux-saga": "~0.15.0",
+        "reselect": "~3.0.0"
+    }
+}

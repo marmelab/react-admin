@@ -1,0 +1,33 @@
+{
+    "name": "ra-example",
+    "private": true,
+    "version": "2.0.0-alpha3",
+    "description": "",
+    "main": "index.html",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+        "babel-core": "~6.26.0",
+        "babel-loader": "~7.1.1",
+        "babel-plugin-transform-react-jsx": "~6.24.1",
+        "babel-polyfill": "~6.9.1",
+        "babel-preset-react": "~6.24.1",
+        "css-loader": "~0.28.4",
+        "extract-text-webpack-plugin": "~2.1.2",
+        "material-ui": "~1.0.0-beta.17",
+        "material-ui-icons": "~1.0.0-beta.17",
+        "ra-data-fakerest": "^2.0.0-alpha3",
+        "ra-input-rich-text": "^2.0.0-alpha3",
+        "ra-language-english": "^2.0.0-alpha3",
+        "ra-language-french": "^2.0.0-alpha3",
+        "react": "~16.0.0",
+        "react-admin": "^2.0.0-alpha3",
+        "react-dom": "~16.0.0",
+        "style-loader": "~0.18.2",
+        "webpack": "~3.0.0",
+        "webpack-dev-server": "~2.5.0"
+    }
+}

@@ -1,6 +1,201 @@
 # Changelog
 
+## v1.3.2
+
+* Fix JS error on `<WithPermission>` ([fzaninotto](https://github.com/fzaninotto))
+* Fix tag filter in example post list ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix bad links to `Authorization` documentation sections ([djhi](https://github.com/djhi))
+* Fix mention about a `<ReferenceManyInput>` ([djhi](https://github.com/djhi))
+* Fix multiple `<ReferenceManyField>` on same resource with different filter ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix trailing slash in `<EditButton>` link ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix Optimistic rendering of List may create errors due to outdated data ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix documentation about `onTouchTap`, replaced by `onClick` ([djhi](https://github.com/djhi))
+* Fix List button displayed in show view even when no List component defined ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix `<AutocompleteInput>` can not be changed once a value is selected ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix `<DateInput>` Filter first passed as `String`, then as `Date` ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix `<FilterForm>` is not themable ([djhi](https://github.com/djhi))
+* Fix typo in `<Admin>` component documentation ([than](https://github.com/than))
+* Fix `<FileInputPreview>` is not themable ([djhi](https://github.com/djhi))
+* Fix Custom App documentation ([kopax](https://github.com/kopax))
+* Fix missing refresh of `<RadioButtonGroupInput>` ([michaelluk](https://github.com/michaelluk))
+* Remove mention of `aor-permissions` from documentation ([djhi](https://github.com/djhi))
+* Fix performance optimization in `<CreateButton>` ([natrim](https://github.com/natrim))
+* Add mentions of `aor-embedded-array` and `aor-rest-client-router` packages to the doc ([MhdSyrwan](https://github.com/MhdSyrwan))
+
+## v1.3.1
+
+* Fix Delete actions fails on IE11 ([fzaninotto](https://github.com/fzaninotto))
+* Fix npm package contains files from previous builds ([ArnaudD](https://github.com/ArnaudD))
+* Fix default values handling for deep paths with dot notation ([djhi](https://github.com/djhi))
+* Fix alwaysOn filters defaultValue being ignored ([djhi](https://github.com/djhi))
+* Fix missing import in Authorization documentation ([Phocea](https://github.com/Phocea))
+* Fix `<BooleanInput>` `onChange` with false value ([djhi](https://github.com/djhi))
+* Fix missing `refresh` prop in `<List>` component ([djhi](https://github.com/djhi))
+* Fix date filters ([djhi](https://github.com/djhi))
+* Fix typo in custom actions documentation ([RWOverdijk](https://github.com/RWOverdijk))
+
+## v.1.3.0
+
+* Add permissions handling ([djhi](https://github.com/djhi))
+* Add Not Found page ([fzaninotto](https://github.com/fzaninotto))
+* Add support for layoutless custom routes ([marcw](https://github.com/marcw))
+* Add support for custom validator messages ([fzaninotto](https://github.com/fzaninotto))
+* Add support for nested filter object ([mtakayuki](https://github.com/mtakayuki))
+* Add response body to HttpError ([marcw](https://github.com/marcw))
+* Add ability to refresh views using a redux action ([djhi](https://github.com/djhi))
+* Add `previousData` to `crudDelete` payload ([grahamlyus](https://github.com/grahamlyus))
+* Add greek translation ([zifnab87](https://github.com/zifnab87))
+* Add Ukrainian translation ([vitivs](https://github.com/vitivs))
+* Upgrade dependencies (MUI 0.19, react in peer dependencies) ([djhi](https://github.com/djhi))
+* Update the redux state structure to avoid name conflicts ([lutangar](https://github.com/lutangar))
+* Update code formatting standard (prettier) ([fzaninotto](https://github.com/fzaninotto))
+* Fix query string builder in REST clients ([mtakayuki](https://github.com/mtakayuki))
+* Fix webpack file present in root directory ([fzaninotto](https://github.com/fzaninotto))
+* Fix forms default values handling ([djhi](https://github.com/djhi))
+* Fix `<SelectInput>` with `allowEmpty` throws key-warning ([fab1an](https://github.com/fab1an))
+* Fix `onMenuTap` warning on medium and larger devices ([jf248](https://github.com/jf248))
+* Fix links in documentation ([Phocea](https://github.com/Phocea))
+
+## v1.2.3
+
+* Add Epilogue REST client ([dunghuynh](https://github.com/dunghuynh))
+* Fix `SelectInput` selection via keyboard ([djhi](https://github.com/djhi))
+* Fix `fetchJson` to allow custom content type ([sGy1980de](https://github.com/sGy1980de))
+* Fix `TabbedForm` errors being hidden for inactive tabs ([djhi](https://github.com/djhi))
+* Fix `FileInput` handling when allowing only a single file ([djhi](https://github.com/djhi))
+* Fix numeric validators for sero value ([djhi](https://github.com/djhi))
+* Fix colors used for pagination chevrons ([djhi](https://github.com/djhi))
+* Fix `SelectInput` Bidirectional binding ([djhi](https://github.com/djhi))
+* Fix `FileInput` does not display error on validation error ([djhi](https://github.com/djhi))
+* Add Danish translation ([SSA111](https://github.com/SSA111))
+* Fix typo in tutorial ([melaniedavila](https://github.com/melaniedavila))
+* Add Norwegian translation ([zeusbaba](https://github.com/zeusbaba))
+* Fix checkboxes getting reordered when used with `ReferenceArrayInput` ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo in Translation documentation ([dimitrovs](https://github.com/dimitrovs))
+
+## v1.2.2
+
+* Add yarn support ([dervos](https://github.com/dervos))
+* Fix login form lock and loader ([teldosas](https://github.com/teldosas))
+* Fix custom headers documentation ([fzaninotto](https://github.com/fzaninotto))
+* Add support for numeric value in NumberInput step prop ([fzaninotto](https://github.com/fzaninotto))
+* Add documentation for admin history prop ([fzaninotto](https://github.com/fzaninotto))
+* Fix doc for ISO date input ([leesei](https://github.com/leesei))
+* Fix wrong use of the 'Edition' word across the documentation ([cornhundred](https://github.com/cornhundred))
+* Fix typo in tutorial ([cornhundred](https://github.com/cornhundred))
+* Fix typo in RestClients documentation ([arlair](https://github.com/arlair))
+* Add farsi translation package ([hamidfzm](https://github.com/hamidfzm))
+* Fix translation warning on `TabbedShowLayout`'s tab names ([freeznet](https://github.com/freeznet))
+* Fix typo in Authentication documentation ([RWOverdijk](https://github.com/RWOverdijk))
+* Fix typo in CreateEdit documentation ([RWOverdijk](https://github.com/RWOverdijk))
+* Add Turkish translation package ([ismailbaskin](https://github.com/ismailbaskin))
+
+## v1.2.1
+
+* Fix multi select in `FileInput` ([doananh234](https://github.com/doananh234))
+* Fix `RadioButtonGroupInput` label translation ([lucasfevi](https://github.com/lucasfevi))
+* Fix `TabbedForm` `initialValues` gathering ([djhi](https://github.com/djhi))
+* Fix `ReferenceFields` label hidden on the top of field ([philippe-cleany](https://github.com/philippe-cleany))
+* Fix `ReferenceArrayField` used with `Datagrid` child ([fzaninotto](https://github.com/fzaninotto))
+* Fix custom saga documentation ([fzaninotto](https://github.com/fzaninotto))
+* Add Code of conduct ([fzaninotto](https://github.com/fzaninotto))
+* Fix documentation on `ReferenceArrayList` ([vmattos](https://github.com/vmattos))
+
+## v1.2.0
+
+Read the [v1.1 and v1.2 announcement on the marmelab blog](https://marmelab.com/blog/2017/06/29/admin-on-rest-1-2.html).
+
+* Add ability to override redirect behavior on save for `<Create>` and `<Edit>` views ([wesley6j](https://github.com/wesley6j))
+* Add refresh button to `<Show>` view ([djhi](https://github.com/djhi))
+* Add asterisk to label on required `Input` ([djhi](https://github.com/djhi))
+* Add `<FileInput>` ([djhi](https://github.com/djhi))
+* Add sort feature to `<ReferenceManyField>` ([wesley6j](https://github.com/wesley6j))
+* Add ability to use custom history in `<Admin>` ([fzaninotto](https://github.com/fzaninotto))
+* Add `<TabbedShowLayout>` to mirror `<TabbedForm>` ([remi13131](https://github.com/remi13131))
+* Add `options` prop to `<BooleanInput>` and pass them to mui `<Toggle>` ([djhi](https://github.com/djhi))
+* Add `AOR/` prefix to Redux actions ([ThieryMichel](https://github.com/ThieryMichel))
+* Add deep path support for `optionText` and `optionValue` props the `Input` components used as `Reference` children ([mtakayuki](https://github.com/mtakayuki))
+* Add ability to override `<SimpleShowLayout>` container styles ([djhi](https://github.com/djhi))
+* Add `<MenuItemLink>` to fix bad click handling of menu on mobile ([djhi](https://github.com/djhi))
+* Add `aor-firebase-client` to the list of REST clients ([sidferreira](https://github.com/sidferreira))
+* Update redux-saga to 0.15.3 ([dervos](https://github.com/dervos))
+* Fix filter in `<ReferenceInput>` not taken into account when `<AutocompleteInput>` is filled ([djhi](https://github.com/djhi))
+* Fix `<ReferenceArrayField>` when ids is null ([wesley6j](https://github.com/wesley6j))
+* Fix missing translation helper in `<Show>` view ([djhi](https://github.com/djhi))
+* Fix code highlighting on REAMDE ([diegohaz](https://github.com/diegohaz))
+* Fix custom REST client list format for better readability ([fzaninotto](https://github.com/fzaninotto))
+
+## v1.1.2
+
+* Fix a typo in tutorial ([calebhaye](https://github.com/calebhaye))
+* Add Polish translation ([KamilDzierbicki](https://github.com/KamilDzierbicki))
+* Fix a typo in tutorial ([ferhatelmas](https://github.com/ferhatelmas))
+* Fix `<SelectArrayInput>` default value for filters ([djhi](https://github.com/djhi))
+* Add Thai translation ([liverbool](https://github.com/liverbool))
+* Fix duplicate `resource` propType in `<FilterButton>` ([thiagoterleski](https://github.com/thiagoterleski))
+* Fix `<SelectArrayInput>` example usage in tags for post ([wesley6j](https://github.com/wesley6j))
+* Fix `<List>` layout on mobile ([sebastien-cleany](https://github.com/sebastien-cleany))
+
+## v1.1.1
+
+* Add Show view documentation ([djhi](https://github.com/djhi))
+* Split Admin and Resource docs for better readability ([fzaninotto](https://github.com/fzaninotto))
+* Fix flaky end-to-end tests ([dervos](https://github.com/dervos))
+* Fix `<DisabledInput>` not showing default value ([wesley6j](https://github.com/wesley6j))
+* Fix `<SelectArrayInput>` prop types ([floo51](https://github.com/floo51))
+* Fix `<DateInput>` for some locales ([wesley6j](https://github.com/wesley6j))
+* Fix support for null and false value in `<SelectInput>` options ([wesley6j](https://github.com/wesley6j))
+* Fix missing `<FileInput>` mention in documentation reference ([djhi](https://github.com/djhi))
+* Fix duplicate documentation in Ecosystem ([djhi](https://github.com/djhi))
+* Fix typos on Theming documentation ([martjanz](https://github.com/martjanz))
+
+## v1.1.0
+
+* Add `<ReferenceArrayInput>` and `<SelectArrayInput>` ([kimkha](https://github.com/kimkha) and [fzaninotto](https://github.com/fzaninotto))
+* Add `<ReferenceArrayField>` ([leesei](https://github.com/leesei) and [fzaninotto](https://github.com/fzaninotto))
+* Add payload to `USER_LOGIN_SUCCESS` action, using the `AUTH_LOGIN` response from the authClient ([SidFerreira](https://github.com/SidFerreira))
+* Add reset state after logout ([bodo22](https://github.com/bodo22))
+* Add ability to disable submit on enter in `<SimpleForm>` and `<TabbedForm>` ([jkrnak](https://github.com/jkrnak))
+* Add integer casting to pagination params ([grahamlyus](https://github.com/grahamlyus))
+* Add `elStyle` prop to `<DisabledInput>` ([wesley6j](https://github.com/wesley6j))
+* Add Frequently Asked Questions (FAQ) to the documentation ([djhi](https://github.com/djhi))
+* Add Ecosystem to the documentation ([djhi](https://github.com/djhi))
+* Add Swedish translation ([StefanWallin](https://github.com/StefanWallin))
+* Fix filters with dot notation not properly cleared ([djhi](https://github.com/djhi))
+* Fix show (edit) button in Edit (Show) page on initial load ([wesley6j](https://github.com/wesley6j))
+* Fix defaultValue typo in blog example ([wesley6j](https://github.com/wesley6j))
+
+## v1.0.2
+
+* Fix typo in Login page instructions in tutorial ([DjLeChuck](https://github.com/DjLeChuck))
+* Fix clear filter breaks filters on subsequent refreshes ([djhi](https://github.com/djhi))
+* Add ability to customize sidebar width ([djhi](https://github.com/djhi))
+* Add example about using auth action creators ([djhi](https://github.com/djhi))
+* Fix `<ReferenceField>` should not fetch null values ([djhi](https://github.com/djhi))
+* Fix typo in `<FilterForm>` styles ([djhi](https://github.com/djhi))
+* Fix Edit View not being updated when fields get changed ([djhi](https://github.com/djhi))
+* Fix DateField tests on all timezones ([djhi](https://github.com/djhi))
+* Add instructions to run the example app in README ([juanda99](https://github.com/juanda99))
+* Fix edge case in `<RichTextField>` when string is falsey value ([faviouz](https://github.com/faviouz))
+
+## v1.0.1
+
+* Fix filters on refresh ([djhi](https://github.com/djhi))
+* Fix `<CheckboxGroupInput>` on IE ([djhi](https://github.com/djhi))
+* Fix warning when using non-string `title` prop in `<Admin>` ([JulienDemangeon](https://github.com/JulienDemangeon))
+* Fix id parameter not decoded in URL ([abarani](https://github.com/abarani))
+* Fix Auth error message not displayed ([tacoo](https://github.com/tacoo))
+* Fix `<Logout>` button not redrawn on theme change ([zyhou](https://github.com/zyhou))
+* Fix validation documentation (`validation` prop renamed to `validate`) ([tacoo](https://github.com/tacoo))
+* Fix JSX syntax highlighting in documentation ([fzaninotto](https://github.com/fzaninotto))
+* Add mention of obligation to declare a `Resource` for `ReferenceInput` to work ([fzaninotto](https://github.com/fzaninotto))
+* Add a missing link in the doc Table of Contents ([leesei](https://github.com/leesei))
+* Add link to Chinese (Traditional) (`cht`) translation ([leesei](https://github.com/leesei))
+* Add link to sandbox in the Contributing documentation ([fzaninotto](https://github.com/fzaninotto))
+
 ## v1.0.0
+
+Read the [v1.0 announcement on the marmelab blog](https://marmelab.com/blog/2017/04/26/admin-on-rest-1-0.html).
 
 * [BC Break] Switch validation system to redux-form native validation (breaks all input validation)
 * [BC Break] Move error mapping (HTTP to REST) to `authClient` (breaks HTTP 401 and 403 error handling)
@@ -74,6 +269,8 @@
 * Update Webpack example config ([velociwabbit](https://github.com/velociwabbit))
 
 ## v0.9.0
+
+Read the [v0.9 announcement on the marmelab blog](https://marmelab.com/blog/2017/03/10/admin-on-rest-0-9.html)
 
 * [BC Break] Update REST response format to always expect a `data` key
 * Add mobile UI (Sidebar, AppBar, Datagrid, actions, form action)
