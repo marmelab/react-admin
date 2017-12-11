@@ -16,18 +16,20 @@ const styles = {
     },
     headerCell: {
         padding: 0,
-    },
-    headerFirstCell: {
-        padding: '0 0 0 12px',
+        '&:first-child': {
+            padding: '0 0 0 12px',
+        },
     },
     row: {},
+    rowEven: {},
+    rowOdd: {},
     rowCell: {
         padding: '0 12px',
         whiteSpace: 'normal',
-    },
-    rowFirstCell: {
-        padding: '0 12px 0 16px',
-        whiteSpace: 'normal',
+        '&:first-child': {
+            padding: '0 12px 0 16px',
+            whiteSpace: 'normal',
+        },
     },
 };
 
@@ -89,6 +91,7 @@ class Datagrid extends Component {
             headerOptions,
             bodyOptions,
             rowOptions,
+            rowStyle,
         } = this.props;
         return (
             <Table
@@ -109,11 +112,7 @@ class Datagrid extends Component {
                                     <DatagridHeaderCell
                                         key={field.props.source || index}
                                         field={field}
-                                        className={classnames({
-                                            [classes.headerFirstCell]:
-                                                index === 0,
-                                            [classes.headerCell]: index > 0,
-                                        })}
+                                        className={classes.headerCell}
                                         currentSort={currentSort}
                                         isSorting={
                                             field.props.source ===
@@ -135,6 +134,7 @@ class Datagrid extends Component {
                     isLoading={isLoading}
                     options={bodyOptions}
                     rowOptions={rowOptions}
+                    rowStyle={rowStyle}
                 >
                     {children}
                 </DatagridBody>
@@ -158,6 +158,7 @@ Datagrid.propTypes = {
     options: PropTypes.object,
     resource: PropTypes.string,
     rowOptions: PropTypes.object,
+    rowStyle: PropTypes.func,
     setSort: PropTypes.func,
     classes: PropTypes.object,
     className: PropTypes.string,

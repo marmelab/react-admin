@@ -29,6 +29,9 @@ import defaultTheme from '../defaultTheme';
 import withChildrenAsFunction from '../withChildrenAsFunction';
 
 const styles = {
+    root: {},
+    actions: {},
+    header: {},
     noResults: { padding: 20 },
 };
 
@@ -224,11 +227,14 @@ export class List extends Component {
         );
 
         return (
-            <div className={classnames('list-page', className)}>
+            <div className={classnames('list-page', classes.root, className)}>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
+                        className={classes.header}
                         title={titleElement}
-                        actions={actions}
+                        actions={React.cloneElement(actions, {
+                            className: classes.actions,
+                        })}
                         actionProps={{
                             resource,
                             filters,

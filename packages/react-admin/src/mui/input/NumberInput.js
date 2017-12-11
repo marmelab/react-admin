@@ -111,6 +111,12 @@ NumberInput.defaultProps = {
     onFocus: () => {},
     options: {},
     step: 'any',
+    textAlign: 'right',
 };
 
-export default addField(NumberInput);
+export const NumberInputWithField = addField(NumberInput);
+NumberInputWithField.defaultProps = {
+    textAlign: 'right',
+};
+
+export default NumberInputWithField;

@@ -4,6 +4,7 @@ import get from 'lodash.get';
 import pure from 'recompose/pure';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
+import compose from 'recompose/compose';
 
 const hasNumberFormat = !!(
     typeof Intl === 'object' &&
@@ -54,12 +55,14 @@ export const NumberField = ({
     if (!record) return null;
     const value = get(record, source);
     if (value == null) return null;
+
     if (!hasNumberFormat)
         return (
             <span className={classnames(classes.input, className)}>
                 {value}
             </span>
         );
+
     return (
         <span className={classnames(classes.input, className)}>
             {value.toLocaleString(locales, options)}
@@ -81,10 +84,9 @@ NumberField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const PureNumberField = pure(NumberField);
-
-PureNumberField.defaultProps = {
+const ComposedNumberField = compose(pure, withStyles(styles))(NumberField);
+ComposedNumberField.defaultProps = {
     addLabel: true,
+    textAlign: 'right',
 };
-
-export default withStyles(styles)(PureNumberField);
+export default ComposedNumberField;

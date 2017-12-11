@@ -1,6 +1,6 @@
 {
     "private": true,
-    "name": "react-admin",
+    "name": "react-admin-lerna",
     "scripts": {
         "test": "make test"
     },

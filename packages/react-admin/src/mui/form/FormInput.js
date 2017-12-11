@@ -15,8 +15,7 @@ export const FormInput = ({ className, classes, input, ...rest }) =>
             className={classnames(
                 'ra-input',
                 `ra-input-${input.props.source}`,
-                className,
-                input.props.className
+                className
             )}
         >
             {input.props.addLabel ? (

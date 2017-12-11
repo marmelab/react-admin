@@ -4,7 +4,6 @@ import { shallowEqual } from 'recompose';
 import Dropzone from 'react-dropzone';
 import compose from 'recompose/compose';
 import { withStyles } from 'material-ui/styles';
-import classnames from 'classnames';
 
 import Labeled from './Labeled';
 import addField from '../form/addField';
@@ -34,7 +33,6 @@ export class FileInput extends Component {
         classes: PropTypes.object,
         className: PropTypes.string,
         disableClick: PropTypes.bool,
-        dropZoneClassName: PropTypes.string,
         input: PropTypes.object,
         isRequired: PropTypes.bool,
         itemStyle: PropTypes.object,
@@ -152,7 +150,6 @@ export class FileInput extends Component {
             classes = {},
             className,
             disableClick,
-            dropZoneClassName,
             isRequired,
             itemStyle,
             label,
@@ -179,10 +176,7 @@ export class FileInput extends Component {
                         maxSize={maxSize}
                         minSize={minSize}
                         multiple={multiple}
-                        className={classnames(
-                            classes.dropZone,
-                            dropZoneClassName
-                        )}
+                        className={classes.dropZone}
                     >
                         {this.label()}
                     </Dropzone>

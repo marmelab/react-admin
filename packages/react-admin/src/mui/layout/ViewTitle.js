@@ -9,7 +9,12 @@ import AppBarMobile from './AppBarMobile';
 
 const ViewTitle = ({ className, title }) => (
     <Responsive
-        small={<AppBarMobile className={className} title={title} />}
+        small={
+            <AppBarMobile
+                className={classnames('title', className)}
+                title={title}
+            />
+        }
         medium={
             <CardContent className={classnames('title', className)}>
                 <Typography type="headline">{title}</Typography>

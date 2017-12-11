@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import classnames from 'classnames';
 import shouldUpdate from 'recompose/shouldUpdate';
 import compose from 'recompose/compose';
 import { TableCell } from 'material-ui/Table';
@@ -11,6 +11,7 @@ import ContentSort from 'material-ui-icons/Sort';
 import FieldTitle from '../../util/FieldTitle';
 
 const styles = {
+    cellRightAligned: { textAlign: 'right' },
     sortButton: {
         minWidth: 40,
     },
@@ -41,7 +42,15 @@ export const DatagridHeaderCell = ({
     updateSort,
     resource,
 }) => (
-    <TableCell className={classNames(className, field.props.headerClassName)}>
+    <TableCell
+        className={classnames(
+            {
+                [classes.cellRightAligned]: field.props.textAlign === 'right',
+            },
+            className,
+            field.props.headerClassName
+        )}
+    >
         {field.props.sortable !== false && field.props.source ? (
             <Button
                 onClick={updateSort}
@@ -56,7 +65,7 @@ export const DatagridHeaderCell = ({
 
                 {field.props.source === currentSort.field && (
                     <ContentSort
-                        className={classNames(
+                        className={classnames(
                             classes.sortIcon,
                             currentSort.order === 'ASC'
                                 ? classes.sortIconReversed
