@@ -50,7 +50,7 @@ const mapStateToProps = state => ({
     theme: state.theme,
 });
 
-const mapDispatchToProps = (dispatch, { redirectTo = '/login' }) => ({
+const mapDispatchToProps = (dispatch, { redirectTo }) => ({
     userLogout: () => dispatch(userLogoutAction(redirectTo)),
 });
 

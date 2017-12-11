@@ -30,10 +30,8 @@ export const USER_LOGOUT = 'RA/USER_LOGOUT';
  * @param redirectTo Path to direct to after logout
  * @return {{type: string, payload: {redirectTo: string}, meta: {auth: boolean}}}
  */
-export const userLogout = (redirectTo = '/login') => ({
+export const userLogout = redirectTo => ({
     type: USER_LOGOUT,
-    payload: {
-        redirectTo,
-    },
+    payload: redirectTo,
     meta: { auth: true },
 });
