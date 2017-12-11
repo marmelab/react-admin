@@ -285,3 +285,115 @@ const PostActions = ({ resource, filters, displayedFilters, filterValues, basePa
     </CardActions>
 );
 ```
+
+## Customizing styles
+
+We migrated from styling with the `style` prop to using [JSS](https://github.com/cssinjs/jss) the same Material-UI does. All components now accepts a `className` property which is applied to their root element. Thanks to JSS, you can leverage the [`withStyles` Higher Order Component](https://material-ui-next.com/customization/css-in-js/#api) supplied by Material-UI to customize the styles.
+
+Additionally, the `Datagrid` component will check if its children have a `headerClassName` and `cellClassName` props. If they do, it will apply those classes to the table header and cells respectively.
+
+```jsx
+// before
+import { EmailField, List, Datagrid } from 'react-admin';
+
+export const UserList = props => (
+    <List
+        {...props}
+        filters={<UserFilter />}
+        sort={{ field: 'name', order: 'ASC' }}
+    >
+        <Datagrid>
+            <EmailField source="email" style={{ backgroundColor: 'lightgrey' }} elStyle={{ textDecoration: 'none' }} />
+        </Datagrid>
+    </List>
+);
+// renders in the datagrid as
+<td style="background-color:lightgrey">
+    <a style="text-decoration:none" href="mailto:foo@example.com">
+        foo@example.com
+    </a>
+</td>
+
+// after
+import { EmailField, List, Datagrid } from 'react-admin';
+import { withStyles } from 'material-ui/styles';
+
+const styles = {
+    cell: {
+        backgroundColor: 'lightgrey',
+    },
+    field: {
+        textDecoration: 'none',
+    },
+};
+
+export const UserList = ({ classes, ...props }) => (
+    <List
+        {...props}
+        filters={<UserFilter />}
+        sort={{ field: 'name', order: 'ASC' }}
+    >
+        <Datagrid>
+            <EmailField
+                source="email"
+                cellClassName={classes.cell}
+                className={classes.field}
+            />
+        </Datagrid>
+    </List>
+);
+
+// renders in the datagrid as
+<td style="background-color:lightgrey">
+    <a style="text-decoration:none" href="mailto:foo@example.com">
+        foo@example.com
+    </a>
+</td>
+```
+
+**Tip**: If we also passes the `classes` prop to the `List` or `Datagrid` components (more on this prop below), we might see warnings about the `cell` and `field` classes being unknown by those components. Those warnings are not displayed in `production` mode and are just a way to ensure we know what we're doing. However, we could make them disappear by destructuring the `classes` prop:
+
+```jsx
+import { EmailField, List, Datagrid } from 'react-admin';
+import { withStyles } from 'material-ui/styles';
+
+const styles = {
+    header: { fontWeight: 'bold' },
+    actions: { fontWeight: 'bold' },
+    emailCellClassName: {
+        backgroundColor: 'lightgrey',
+    },
+    emailFieldClassName: {
+        textDecoration: 'none',
+    },
+};
+
+export const UserList = ({
+    { emailCellClassName, emailFieldClassName, ...classes },
+    ...props
+}) => (
+    <List
+        {...props}
+        filters={<UserFilter />}
+        sort={{ field: 'name', order: 'ASC' }}
+        classes={classes}
+    >
+        <Datagrid>
+            <EmailField
+                source="email"
+                cellClassName={emailCellClassName}
+                className={emailFieldClassName}
+            />
+        </Datagrid>
+    </List>
+);
+
+// renders in the datagrid as
+<td style="background-color:lightgrey">
+    <a style="text-decoration:none" href="mailto:foo@example.com">
+        foo@example.com
+    </a>
+</td>
+```
+
+Furthermore, some React-admin components such as the `List`, `Filter` and `Datagrid` also accepts a `classes` prop. This prop is injected by the [`withStyles` Higher Order Component](https://material-ui-next.com/customization/css-in-js/#api) and allows you to customize the style of some deep children.
