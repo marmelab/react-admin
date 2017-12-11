@@ -9,7 +9,7 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 ## Overriding A Component Style
 
-Every react-admin component provides a className property which is always applied to the root element.
+Every react-admin component provides a `className` property which is always applied to the root element.
 
 Here is an example customizing an `EditButton` component inside a `Datagrid`, using its `className` property and the `withStyles` Higher Order Component from Material-UI:
 
@@ -45,7 +45,7 @@ export const ProductList = (props) => (
 ```
 {% endraw %}
 
-For some components, when the `className` property isn't enough and you need to access deeper elements, you can take advantage of the `classes` property to customize them. Take a look at a component documentation to know what classes are available. For instance, you can have a look at the [Datagrid CSS documentation](./List.md#the-datagrid-component).
+For some components, when the `className` property isn't enough and you need to access deeper elements, you can take advantage of the `classes` property to customize them. Take a look at a component documentation to know which classes are available. For instance, you can have a look at the [Datagrid CSS documentation](./List.md#the-datagrid-component).
 
 Here's an example using the `classes` property of the `Filter` and `List` components:
 
