@@ -16,9 +16,9 @@ const DatagridBody = ({
     data,
     basePath,
     styles,
-    rowClassName,
     options,
     rowOptions,
+    rowStyle,
     ...rest
 }) => (
     <TableBody
@@ -28,15 +28,12 @@ const DatagridBody = ({
     >
         {ids.map((id, rowIndex) => (
             <TableRow
-                className={classnames(
-                    classes.row,
-                    rowClassName
-                        ? typeof rowClassName === 'function'
-                          ? rowClassName(data[id], rowIndex)
-                          : rowClassName
-                        : undefined
-                )}
+                className={classnames(classes.row, {
+                    [classes.rowEven]: rowIndex % 2 === 0,
+                    [classes.rowOdd]: rowIndex % 2 !== 0,
+                })}
                 key={id}
+                style={rowStyle ? rowStyle(data[id], rowIndex) : null}
                 {...rowOptions}
             >
                 {React.Children.map(
@@ -47,10 +44,7 @@ const DatagridBody = ({
                                 key={`${id}-${field.props.source || index}`}
                                 className={classnames(
                                     `column-${field.props.source}`,
-                                    {
-                                        [classes.rowFirstCell]: index === 0,
-                                        [classes.rowCell]: index > 0,
-                                    }
+                                    classes.rowCell
                                 )}
                                 record={data[id]}
                                 {...{ field, basePath, resource }}
@@ -73,8 +67,8 @@ DatagridBody.propTypes = {
     basePath: PropTypes.string,
     options: PropTypes.object,
     rowOptions: PropTypes.object,
+    rowStyle: PropTypes.func,
     styles: PropTypes.object,
-    rowClassName: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 };
 
 DatagridBody.defaultProps = {

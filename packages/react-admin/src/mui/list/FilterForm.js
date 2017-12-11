@@ -56,8 +56,7 @@ export class FilterForm extends Component {
                                 data-source={filterElement.props.source}
                                 className={classnames(
                                     'filter-field',
-                                    classes.body,
-                                    filterElement.props.className
+                                    classes.body
                                 )}
                             >
                                 {filterElement.props.alwaysOn ? (
