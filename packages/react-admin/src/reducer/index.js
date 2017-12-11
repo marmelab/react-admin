@@ -5,12 +5,12 @@ import admin, {
     getResources as getAdminResources,
     isLoggedIn as adminIsLoggedIn,
 } from './admin';
-import localeReducer from './locale';
+import i18n, { getLocale as adminGetLocale } from './i18n';
 
-export default (customReducers, locale) =>
+export default (customReducers, locale, messages) =>
     combineReducers({
         admin,
-        locale: localeReducer(locale),
+        i18n: i18n(locale, messages),
         form: formReducer,
         routing: routerReducer,
         ...customReducers,
@@ -18,3 +18,4 @@ export default (customReducers, locale) =>
 
 export const getResources = state => getAdminResources(state.admin);
 export const isLoggedIn = state => adminIsLoggedIn(state.admin);
+export const getLocale = state => adminGetLocale(state.i18n);

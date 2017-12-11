@@ -5,8 +5,6 @@ import { render } from 'react-dom';
 
 import { Admin, Resource, Delete } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import jsonRestDataProvider from 'ra-data-fakerest';
-import englishMessages from 'ra-language-english';
-import frenchMessages from 'ra-language-french';
 
 import addUploadFeature from './addUploadFeature';
 
@@ -21,13 +19,9 @@ import {
 import { UserList, UserEdit, UserCreate, UserIcon, UserShow } from './users';
 
 import data from './data';
-import * as customMessages from './i18n';
 import authClient from './authClient';
-
-const messages = {
-    fr: { ...frenchMessages, ...customMessages.fr },
-    en: { ...englishMessages, ...customMessages.en },
-};
+import messagesProvider from './messagesProvider';
+import customSagas from './sagas';
 
 const dataProvider = jsonRestDataProvider(data, true);
 const uploadCapableDataProvider = addUploadFeature(dataProvider);
@@ -43,9 +37,10 @@ render(
     <Admin
         authClient={authClient}
         dataProvider={delayedDataProvider}
+        messagesProvider={messagesProvider}
+        customSagas={customSagas}
         title="Example Admin"
         locale="en"
-        messages={messages}
     >
         {permissions => [
             <Resource

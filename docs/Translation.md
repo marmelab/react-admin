@@ -12,19 +12,27 @@ The react-admin interface uses English as the default language. But it also supp
 To handle translations, the `<Admin>` component supports:
 
 - a `locale` prop expecting a string ('en', 'fr', etc), and
-- a `messages` prop, expecting a dictionary object.
+- a `messagesProvider` prop, expecting an `messagesProvider` as explained below.
+
+## `messagesProvider`
+
+Provides messages for a specific locale. React-admin ships with a `createMessagesProvider` factory to easily create your own `messagesProvider`. 
+`createMessagesProvider` requires a single argument `messageBundles` and allows an optional `defaultMessageBundle`. 
+* `messageBundles`: required, an object with a language pack per locale. These language packs can be resolved async by returning a Promise.
+* `defaultMessageBundle`: optional, a default language pack where the application starts with. The `defaultMessageBundle` must always be resolved synchronous and defaults to the messages from `ra-language-english`.
 
 React-admin ships with the English locale by default. If you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, install the `ra-language-french` npm package, then configure the `<Admin>` component as follows:
 
 ```jsx
 import React from 'react';
-import { Admin, Resource, resolveBrowserLocale } from 'react-admin';
+import { Admin, Resource, resolveBrowserLocale, createMessagesProvider } from 'react-admin';
 import frenchMessages from 'ra-language-french';
 
-const messages = {
+const messagesProvider = createMessagesProvider({
     fr: frenchMessages,
-};
-
+    // Or using async load, remove the `import frenchMessages from 'ra-language-french'` from above!
+    fr: () => import('ra-language-french').default 
+})
 const App = () => (
     <Admin locale="fr" messages={messages}>
         ...
@@ -32,7 +40,9 @@ const App = () => (
 );
 
 export default App;
-```
+``` 
+
+You're allowed to create a custom `messagesProvider` as discussed in the last section of this chapter.
 
 ## Available Locales
 
@@ -125,6 +135,42 @@ class LocaleSwitcher extends Component {
 
 export default connect(undefined, { changeLocale: changeLocaleAction })(LocaleSwitcher);
 ```
+
+## Changing the locale using the browser URL 
+
+If you want the user to be able to change the locale using a url query parameter like `https://mysite?locale=nl`, a customSaga can be used.
+
+```javascript
+import { parse } from 'query-string';
+import { getLocale, changeLocale } from 'react-admin';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
+
+const localeParam = 'locale';
+
+function* handleChangeLocaleAction({ payload: { search } }) {
+    if (search) {
+        try {
+            const params = yield call(parse, search);
+            if (params[localeParam]) {
+                const currentLocale = yield select(getLocale);
+                if (currentLocale !== params[localeParam]) {
+                    yield put(changeLocale(params[localeParam]));
+                }
+            }
+        } catch (err) {
+            // Ignore parse errors
+        }
+    }
+}
+
+function* watchQueryParamLocaleChange() {
+    yield takeLatest(LOCATION_CHANGE, handleChangeLocaleAction);
+}
+
+export default [watchQueryParamLocaleChange];
+```
+
 
 ## Using The Browser Locale
 
@@ -344,3 +390,52 @@ translate('not_yet_translated', { _: 'Default translation' })
 ```
 
 To find more detailed examples, please refer to [http://airbnb.io/polyglot.js/](http://airbnb.io/polyglot.js/)
+
+## Custom `messagesProvider` 
+
+React-admin allows the user to create a custom `messagesProvider`. The signature of the provider is: 
+```jsx
+(type,locale) => {Object|Promise|Function}
+```
+
+The possible values for `type`, are: 
+
+`type` | Description
+----|-----
+GET_DEFAULT_MESSAGES | The provider should `synchronously` return a default messages object for initial render of `React-admin`.
+GET_LOCALE_MESSAGES | The provider should return the messages object specific for the locale requested. If the locale is not supported, an error should be thrown or a rejected promise should be returned.
+
+The returned messages from `GET_LOCALE_MESSAGES`, can either be an:  
+
+`type` | Description
+----|----
+Object | Messages object as required by polyglot. 
+Promise | A promise which will resolve to a messages Object
+Function | Will be called immediately and the result should be a `Promise` or an `object`, which are handled like above. 
+
+An example custom `messagesProvider` would be: 
+
+```jsx
+import { GET_LOCALE_MESSAGES, GET_DEFAULT_MESSAGES } from 'react-admin';
+ 
+export const createCustomI18nProvider = (messages = {}, defaultMessageBundle) => (
+    type,
+    locale
+) => {
+    switch (type) {
+        case GET_DEFAULT_MESSAGES:
+            return defaultMessageBundle;
+        case GET_LOCALE_MESSAGES:
+            return messages[locale]
+                ? typeof messages[locale] === 'function'
+                  ? messages[locale]()
+                  : messages[locale]
+                : Promise.reject(`Locale ${locale} is not supported`);
+        default:
+            throw new Error(`Undefined messagesProvider action type ${type}`);
+    }
+};
+export default createMessagesProvider(undefined, null);
+```
+
+Coincidentally this is exact the implementation of `createMessagesProvider` in `react-admin`. 
