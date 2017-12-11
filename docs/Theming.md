@@ -21,6 +21,7 @@ import { withStyles } from 'material-ui/styles';
 const styles = {
     button: {
         fontWeight: 'bold',
+        // This is JSS syntax to target a deeper element using css selector, here the svg icon for this button
         '& svg': { color: 'orange' }
     },
 };
