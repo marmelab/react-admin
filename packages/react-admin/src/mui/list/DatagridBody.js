@@ -16,16 +16,11 @@ const DatagridBody = ({
     data,
     basePath,
     styles,
-    options,
     rowOptions,
     rowStyle,
     ...rest
 }) => (
-    <TableBody
-        className={classnames('datagrid-body', className)}
-        {...rest}
-        {...options}
-    >
+    <TableBody className={classnames('datagrid-body', className)} {...rest}>
         {ids.map((id, rowIndex) => (
             <TableRow
                 className={classnames(classes.row, {
@@ -65,7 +60,6 @@ DatagridBody.propTypes = {
     resource: PropTypes.string,
     data: PropTypes.object.isRequired,
     basePath: PropTypes.string,
-    options: PropTypes.object,
     rowOptions: PropTypes.object,
     rowStyle: PropTypes.func,
     styles: PropTypes.object,
