@@ -1,9 +1,9 @@
 import {
+    AUTH_GET_PERMISSIONS,
     AUTH_LOGIN,
     AUTH_LOGOUT,
     AUTH_ERROR,
     AUTH_CHECK,
-    AUTH_GET_PERMISSIONS,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 // Authenticatd by default
@@ -13,17 +13,17 @@ export default (type, params) => {
         if (username === 'login' && password === 'password') {
             localStorage.removeItem('not_authenticated');
             localStorage.removeItem('role');
-            return Promise.resolve({ username });
+            return Promise.resolve();
         }
         if (username === 'user' && password === 'password') {
             localStorage.setItem('role', 'user');
             localStorage.removeItem('not_authenticated');
-            return Promise.resolve({ username });
+            return Promise.resolve();
         }
         if (username === 'admin' && password === 'password') {
             localStorage.setItem('role', 'admin');
             localStorage.removeItem('not_authenticated');
-            return Promise.resolve({ username });
+            return Promise.resolve();
         }
         localStorage.setItem('not_authenticated', true);
         return Promise.reject();
