@@ -15,12 +15,16 @@ const CrudRoute = ({ resource, list, create, edit, show, remove, options }) => {
     };
     const restrictPage = (component, route) => {
         const AuthenticatedPage = routeProps => (
-            <WithPermissions authParams={{ resource, route }} {...routeProps}>
-                {createElement(component, {
-                    ...commonProps,
-                    ...routeProps,
-                })}
-            </WithPermissions>
+            <WithPermissions
+                authParams={{ resource, route }}
+                {...routeProps}
+                render={props =>
+                    createElement(component, {
+                        ...commonProps,
+                        ...routeProps,
+                        ...props,
+                    })}
+            />
         );
         return AuthenticatedPage;
     };
