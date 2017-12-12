@@ -16,7 +16,6 @@ const DatagridBody = ({
     data,
     basePath,
     styles,
-    rowOptions,
     rowStyle,
     ...rest
 }) => (
@@ -29,7 +28,6 @@ const DatagridBody = ({
                 })}
                 key={id}
                 style={rowStyle ? rowStyle(data[id], rowIndex) : null}
-                {...rowOptions}
             >
                 {React.Children.map(
                     children,
@@ -60,7 +58,6 @@ DatagridBody.propTypes = {
     resource: PropTypes.string,
     data: PropTypes.object.isRequired,
     basePath: PropTypes.string,
-    rowOptions: PropTypes.object,
     rowStyle: PropTypes.func,
     styles: PropTypes.object,
 };
