@@ -26,7 +26,7 @@ import {
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 export UserIcon from 'material-ui-icons/People';
 
-const UserFilter = ({ ...props }) => (
+const UserFilter = props => (
     <Filter {...props}>
         {permissions => [
             <TextInput label="user.list.search" source="q" alwaysOn />,
@@ -54,10 +54,7 @@ export const UserList = props => (
                 medium={
                     <Datagrid>
                         <TextField source="id" />
-                        <TextField
-                            source="name"
-                            cellClassName={classes.titleCellClassName}
-                        />
+                        <TextField source="name" />
                         {permissions === 'admin' && <TextField source="role" />}
                         <EditButton />
                         <ShowButton />
@@ -92,7 +89,7 @@ const UserCreateToolbar = ({ permissions, ...props }) => (
     </Toolbar>
 );
 
-export const UserCreate = ({ ...props }) => (
+export const UserCreate = props => (
     <Create {...props}>
         {permissions => (
             <SimpleForm
@@ -108,7 +105,7 @@ export const UserCreate = ({ ...props }) => (
     </Create>
 );
 
-export const UserEdit = ({ ...props }) => (
+export const UserEdit = props => (
     <Edit title={<UserTitle />} {...props}>
         {permissions => (
             <TabbedForm defaultValue={{ role: 'user' }}>
@@ -126,7 +123,7 @@ export const UserEdit = ({ ...props }) => (
     </Edit>
 );
 
-export const UserShow = ({ ...props }) => (
+export const UserShow = props => (
     <Show title={<UserTitle />} {...props}>
         {permissions => (
             <TabbedShowLayout>
