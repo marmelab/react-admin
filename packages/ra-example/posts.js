@@ -46,6 +46,7 @@ import {
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import RichTextInput from 'ra-input-rich-text';
 import Chip from 'material-ui/Chip';
+import { withStyles } from 'material-ui/styles';
 
 export PostIcon from 'material-ui-icons/Book';
 
@@ -71,13 +72,16 @@ const PostFilter = ({ ...props }) => (
     </Filter>
 );
 
-const titleFieldStyle = {
-    maxWidth: '20em',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
+const styles = {
+    title: {
+        maxWidth: '20em',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+    },
+    publishedAt: { fontStyle: 'italic' },
 };
-export const PostList = ({ ...props }) => (
+export const PostList = withStyles(styles)(({ classes, ...props }) => (
     <List
         {...props}
         filters={<PostFilter />}
@@ -95,10 +99,10 @@ export const PostList = ({ ...props }) => (
             medium={
                 <Datagrid>
                     <TextField source="id" />
-                    <TextField source="title" style={titleFieldStyle} />
+                    <TextField source="title" cellClassName={classes.title} />
                     <DateField
                         source="published_at"
-                        style={{ fontStyle: 'italic' }}
+                        cellClassName={classes.publishedAt}
                     />
                     <BooleanField
                         source="commentable"
@@ -120,7 +124,7 @@ export const PostList = ({ ...props }) => (
             }
         />
     </List>
-);
+));
 
 const PostTitle = translate(({ record, translate }) => (
     <span>
@@ -277,8 +281,8 @@ export const PostShow = ({ ...props }) => (
                         { name: 'Lifestyle', id: 'lifestyle' },
                     ]}
                 />
-                <NumberField source="average_note" style={{}} />
-                <BooleanField source="commentable" elStyle={{}} />
+                <NumberField source="average_note" />
+                <BooleanField source="commentable" />
                 <TextField source="views" />
             </Tab>
             <Tab label="post.form.comments">
