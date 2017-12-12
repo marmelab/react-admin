@@ -5,9 +5,9 @@ import {
     GET_MANY_REFERENCE,
     CREATE,
     UPDATE,
-    DELETE
-} from 'admin-on-rest';
-import {fetchJson} from "admin-on-rest/lib/util/fetch";
+    DELETE,
+} from './types';
+import {fetchJson} from "../util/fetch";
 
 /**
  * Maps admin-on-rest queries to XMYSQL REST API
@@ -32,7 +32,6 @@ import {fetchJson} from "admin-on-rest/lib/util/fetch";
  *
  */
 export default (apiUrl, decorators = {}, httpClient = fetchJson) => {
-
     /**
      * @param {string} type Request type, e.g GET_LIST
      * @param {string} resource Resource name, e.g. "posts"
