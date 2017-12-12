@@ -17,13 +17,21 @@ const styles = {
     icon: { paddingRight: '0.5em' },
 };
 
+<<<<<<< a284b0a08f189ea178d849bbe8272fafcc1af639
 const DashboardMenuItem = ({ classes, className, onClick, translate, ...props }) => (
+=======
+const DashboardMenuItem = ({ classes, onClick, translate, props }) => (
+>>>>>>> Fix remaining props name
     <MenuItemLink
         onClick={onClick}
         to="/"
         className={classnames(classes.link, className)}
         primaryText={translate('ra.page.dashboard')}
+<<<<<<< a284b0a08f189ea178d849bbe8272fafcc1af639
         leftIcon={<DashboardIcon className={classes.icon} />}
+=======
+        leftIcon={<DashboardIcon style={iconPaddingStyle} />}
+>>>>>>> Fix remaining props name
         {...props}
     />
 );
@@ -33,7 +41,7 @@ DashboardMenuItem.propTypes = {
     className: PropTypes.string,
     onClick: PropTypes.func,
     translate: PropTypes.func.isRequired,
-    options: PropTypes.object,
+    props: PropTypes.object,
 };
 
 export default withStyles(styles)(translate(DashboardMenuItem));
