@@ -21,10 +21,6 @@ import resolveRedirectTo from '../../util/resolveRedirectTo';
 function* handleResponse({ type, requestPayload, error, payload }) {
     switch (type) {
         case crudUpdate.SUCCESS:
-            yield crudUpdate.success({
-                requestPayload,
-                data: payload,
-            });
             return requestPayload.redirectTo
                 ? yield all([
                       put(showNotification('ra.notification.updated')),
@@ -40,10 +36,6 @@ function* handleResponse({ type, requestPayload, error, payload }) {
                   ])
                 : yield [put(showNotification('ra.notification.updated'))];
         case crudCreate.SUCCESS:
-            yield crudCreate.success({
-                requestPayload,
-                data: payload,
-            });
             return requestPayload.redirectTo
                 ? yield all([
                       put(showNotification('ra.notification.created')),
@@ -104,20 +96,6 @@ function* handleResponse({ type, requestPayload, error, payload }) {
         case crudGetMany.FAILURE:
         case crudGetManyReference.FAILURE:
         case crudDelete.FAILURE: {
-            switch (type) {
-                case crudCreate.FAILURE:
-                    yield crudCreate.failure({
-                        request: requestPayload,
-                        error,
-                    });
-                    break;
-                case crudUpdate.FAILURE:
-                    yield crudUpdate.failure({
-                        request: requestPayload,
-                        error,
-                    });
-                    break;
-            }
             console.error(error); // eslint-disable-line no-console
             const errorMessage =
                 typeof error === 'string'

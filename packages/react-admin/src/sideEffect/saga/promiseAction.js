@@ -14,19 +14,15 @@ function* handlePromiseSaga({ payload }) {
     ]);
 
     if (winner.success) {
-        yield call(
-            resolve,
-            winner.success && winner.success.payload
-                ? winner.success.payload
-                : winner.success
-        );
+        yield call(resolve, {
+            data: winner.success.payload,
+            requestPayload: winner.success.requestPayload,
+        });
     } else {
-        yield call(
-            reject,
-            winner.fail && winner.fail.payload
-                ? winner.fail.payload
-                : winner.fail
-        );
+        yield call(reject, {
+            error: winner.fail.error,
+            requestPayload: winner.fail.requestPayload,
+        });
     }
 }
 

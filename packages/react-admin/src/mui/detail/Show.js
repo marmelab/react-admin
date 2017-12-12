@@ -77,7 +77,11 @@ export class Show extends Component {
     }
 
     updateData(resource = this.props.resource, id = this.props.id) {
-        this.props.crudGetOne(resource, id, this.getBasePath());
+        this.props.crudGetOne({
+            resource,
+            id,
+            basePath: this.getBasePath(),
+        });
     }
 
     render() {
