@@ -32,8 +32,15 @@ import CardActions from '../layout/CardActions';
  *         </Show>
  *     );
  */
-const ShowActions = ({ basePath, data, hasDelete, hasEdit, hasList }) => (
-    <CardActions>
+const ShowActions = ({
+    basePath,
+    className,
+    data,
+    hasDelete,
+    hasEdit,
+    hasList,
+}) => (
+    <CardActions className={className}>
         {hasEdit && <EditButton basePath={basePath} record={data} />}
         {hasList && <ListButton basePath={basePath} />}
         {hasDelete && <DeleteButton basePath={basePath} record={data} />}
@@ -43,6 +50,7 @@ const ShowActions = ({ basePath, data, hasDelete, hasEdit, hasList }) => (
 
 ShowActions.propTypes = {
     basePath: PropTypes.string,
+    className: PropTypes.string,
     data: PropTypes.object,
     hasDelete: PropTypes.bool,
     hasEdit: PropTypes.bool,

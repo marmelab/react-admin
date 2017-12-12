@@ -29,12 +29,15 @@ import { ListButton } from '../button';
  *         </Create>
  *     );
  */
-const CreateActions = ({ basePath, hasList }) => (
-    <CardActions>{hasList && <ListButton basePath={basePath} />}</CardActions>
+const CreateActions = ({ basePath, className, hasList }) => (
+    <CardActions className={className}>
+        {hasList && <ListButton basePath={basePath} />}
+    </CardActions>
 );
 
 CreateActions.propTypes = {
     basePath: PropTypes.string,
+    className: PropTypes.string,
     hasList: PropTypes.bool,
 };
 

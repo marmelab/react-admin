@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import inflection from 'inflection';
 import compose from 'recompose/compose';
+import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
+
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 import translate from '../../i18n/translate';
@@ -29,8 +32,16 @@ const translatedResourceName = (resource, translate) =>
                 : inflection.humanize(inflection.pluralize(resource.name)),
     });
 
-const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) => (
-    <div style={styles.main}>
+const Menu = ({
+    classes,
+    className,
+    hasDashboard,
+    onMenuTap,
+    resources,
+    translate,
+    logout,
+}) => (
+    <div className={classnames(classes.main, className)}>
         {hasDashboard && <DashboardMenuItem onClick={onMenuTap} />}
         {resources
             .filter(r => r.list)
@@ -48,6 +59,8 @@ const Menu = ({ hasDashboard, onMenuTap, resources, translate, logout }) => (
 );
 
 Menu.propTypes = {
+    classes: PropTypes.object,
+    className: PropTypes.string,
     hasDashboard: PropTypes.bool,
     logout: PropTypes.element,
     onMenuTap: PropTypes.func,
@@ -63,6 +76,10 @@ const mapStateToProps = state => ({
     resources: getResources(state),
 });
 
-const enhance = compose(translate, connect(mapStateToProps));
+const enhance = compose(
+    translate,
+    connect(mapStateToProps),
+    withStyles(styles)
+);
 
 export default enhance(Menu);

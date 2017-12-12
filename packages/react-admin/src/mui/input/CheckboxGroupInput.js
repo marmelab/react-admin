@@ -134,6 +134,7 @@ export class CheckboxGroupInput extends Component {
     render() {
         const {
             choices,
+            className,
             classes = {},
             isRequired,
             label,
@@ -142,7 +143,11 @@ export class CheckboxGroupInput extends Component {
         } = this.props;
 
         return (
-            <FormControl component="fieldset" margin="normal">
+            <FormControl
+                className={className}
+                component="fieldset"
+                margin="normal"
+            >
                 <FormLabel component="legend" className={classes.label}>
                     <FieldTitle
                         label={label}
@@ -160,6 +165,7 @@ export class CheckboxGroupInput extends Component {
 CheckboxGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
+    className: PropTypes.string,
     label: PropTypes.string,
     source: PropTypes.string,
     options: PropTypes.object,

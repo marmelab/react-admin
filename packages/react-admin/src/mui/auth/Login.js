@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { propTypes, reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -93,9 +94,15 @@ class Login extends Component {
         );
 
     render() {
-        const { classes, handleSubmit, isLoading, translate } = this.props;
+        const {
+            classes,
+            className,
+            handleSubmit,
+            isLoading,
+            translate,
+        } = this.props;
         return (
-            <div className={classes.main}>
+            <div className={classnames(classes.main, className)}>
                 <Card className={classes.card}>
                     <div className={classes.avatar}>
                         <Avatar className={classes.icon}>
@@ -146,6 +153,7 @@ class Login extends Component {
 
 Login.propTypes = {
     ...propTypes,
+    className: PropTypes.string,
     authClient: PropTypes.func,
     classes: PropTypes.object,
     input: PropTypes.object,

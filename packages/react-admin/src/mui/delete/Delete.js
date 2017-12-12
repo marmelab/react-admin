@@ -125,6 +125,7 @@ export class Delete extends Component {
     render() {
         const {
             actions = <DefaultActions />,
+            className,
             classes = {},
             title,
             id,
@@ -154,7 +155,7 @@ export class Delete extends Component {
         );
 
         return (
-            <div>
+            <div className={className}>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}
@@ -206,6 +207,7 @@ export class Delete extends Component {
 
 Delete.propTypes = {
     actions: PropTypes.element,
+    className: PropTypes.string,
     classes: PropTypes.object,
     crudDelete: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,

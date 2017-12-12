@@ -1,6 +1,6 @@
 import React from 'react';
 import assert from 'assert';
-import { render } from 'enzyme';
+import { render, shallow } from 'enzyme';
 import { html } from 'cheerio';
 import RichTextField, { removeTags } from './RichTextField';
 
@@ -91,4 +91,16 @@ describe('<RichTextField />', () => {
             '<span class="MuiTypography-root-1 MuiTypography-body1-10"><h1>Hello world!</h1></span>'
         );
     });
+
+    it('should use custom className', () =>
+        assert.deepEqual(
+            shallow(
+                <RichTextField
+                    record={{ foo: true }}
+                    source="body"
+                    className="foo"
+                />
+            ).prop('className'),
+            'foo'
+        ));
 });

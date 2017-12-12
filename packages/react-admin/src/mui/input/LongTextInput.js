@@ -6,13 +6,13 @@ import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 
 export const LongTextInput = ({
+    className,
     input,
     isRequired,
     label,
     meta,
     options,
     source,
-    elStyle,
     resource,
 }) => {
     if (typeof meta === 'undefined') {
@@ -25,6 +25,7 @@ export const LongTextInput = ({
     return (
         <TextField
             {...input}
+            className={className}
             multiline
             fullWidth
             margin="normal"
@@ -38,14 +39,13 @@ export const LongTextInput = ({
             }
             error={!!(touched && error)}
             helperText={touched && error}
-            style={elStyle}
             {...options}
         />
     );
 };
 
 LongTextInput.propTypes = {
-    elStyle: PropTypes.object,
+    className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

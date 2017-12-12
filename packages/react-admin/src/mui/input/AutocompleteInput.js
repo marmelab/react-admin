@@ -29,6 +29,8 @@ const styles = theme => ({
         display: 'block',
         fontFamily: theme.typography.fontFamily,
     },
+    suggestionText: { fontWeight: 300 },
+    highlightedSuggestionText: { fontWeight: 500 },
     suggestionsList: {
         margin: 0,
         padding: 0,
@@ -223,17 +225,24 @@ export class AutocompleteInput extends React.Component {
         const label = this.getSuggestionLabel(suggestion);
         const matches = match(label, query);
         const parts = parse(label, matches);
+        const { classes = {} } = this.props;
 
         return (
             <MenuItem selected={isHighlighted} component="div">
                 <div>
                     {parts.map((part, index) => {
                         return part.highlight ? (
-                            <span key={index} style={{ fontWeight: 500 }}>
+                            <span
+                                key={index}
+                                className={classes.highlightedSuggestionText}
+                            >
                                 {part.text}
                             </span>
                         ) : (
-                            <strong key={index} style={{ fontWeight: 300 }}>
+                            <strong
+                                key={index}
+                                className={classes.suggestionText}
+                            >
                                 {part.text}
                             </strong>
                         );
@@ -249,7 +258,6 @@ export class AutocompleteInput extends React.Component {
         const {
             alwaysRenderSuggestions,
             classes = {},
-            elStyle,
             isRequired,
             label,
             meta,
@@ -290,7 +298,6 @@ export class AutocompleteInput extends React.Component {
                     source,
                     value: searchText,
                 }}
-                style={elStyle}
             />
         );
     }
@@ -300,7 +307,6 @@ AutocompleteInput.propTypes = {
     alwaysRenderSuggestions: PropTypes.bool, // used only for unit tests
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
-    elStyle: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

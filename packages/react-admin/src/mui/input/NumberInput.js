@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
+
 import FieldTitle from '../../util/FieldTitle';
 import addField from '../form/addField';
 
@@ -41,8 +42,7 @@ export class NumberInput extends Component {
 
     render() {
         const {
-            classes,
-            elStyle,
+            className,
             input,
             isRequired,
             label,
@@ -78,8 +78,7 @@ export class NumberInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                classes={classes}
-                style={elStyle}
+                className={className}
                 {...options}
             />
         );
@@ -87,8 +86,7 @@ export class NumberInput extends Component {
 }
 
 NumberInput.propTypes = {
-    classes: PropTypes.object,
-    elStyle: PropTypes.object,
+    className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
@@ -113,6 +111,12 @@ NumberInput.defaultProps = {
     onFocus: () => {},
     options: {},
     step: 'any',
+    textAlign: 'right',
 };
 
-export default addField(NumberInput);
+export const NumberInputWithField = addField(NumberInput);
+NumberInputWithField.defaultProps = {
+    textAlign: 'right',
+};
+
+export default NumberInputWithField;

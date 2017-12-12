@@ -2,6 +2,7 @@ import React from 'react';
 import { LinearProgress as Progress } from 'material-ui/Progress';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
 
 const styles = theme => ({
     root: {
@@ -20,11 +21,12 @@ const styles = theme => ({
  * 
  * @param {object} classes CSS class names injected by withStyles 
  */
-export const LinearProgress = ({ classes }) => (
-    <Progress className={classes.root} />
+export const LinearProgress = ({ classes, className }) => (
+    <Progress className={classnames(classes.root, className)} />
 );
 LinearProgress.propTypes = {
     classes: PropTypes.object,
+    className: PropTypes.string,
 };
 
 export default withStyles(styles)(LinearProgress);

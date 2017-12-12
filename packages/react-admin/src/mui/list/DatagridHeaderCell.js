@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import defaultsDeep from 'lodash.defaultsdeep';
-import classNames from 'classnames';
+import classnames from 'classnames';
 import shouldUpdate from 'recompose/shouldUpdate';
 import compose from 'recompose/compose';
 import { TableCell } from 'material-ui/Table';
@@ -12,6 +11,7 @@ import ContentSort from 'material-ui-icons/Sort';
 import FieldTitle from '../../util/FieldTitle';
 
 const styles = {
+    cellRightAligned: { textAlign: 'right' },
     sortButton: {
         minWidth: 40,
     },
@@ -36,67 +36,62 @@ const styles = {
 
 export const DatagridHeaderCell = ({
     classes = {},
+    className,
     field,
-    defaultStyle,
     currentSort,
     updateSort,
     resource,
-}) => {
-    const style = defaultsDeep(
-        {},
-        field.props.headerStyle,
-        field.type.defaultProps ? field.type.defaultProps.headerStyle : {},
-        defaultStyle
-    );
-    return (
-        <TableCell style={style}>
-            {field.props.sortable !== false && field.props.source ? (
-                <Button
-                    onClick={updateSort}
-                    data-sort={field.props.source}
-                    className={classes.sortButton}
-                >
+}) => (
+    <TableCell
+        className={classnames(
+            {
+                [classes.cellRightAligned]: field.props.textAlign === 'right',
+            },
+            className,
+            field.props.headerClassName
+        )}
+    >
+        {field.props.sortable !== false && field.props.source ? (
+            <Button
+                onClick={updateSort}
+                data-sort={field.props.source}
+                className={classes.sortButton}
+            >
+                <FieldTitle
+                    label={field.props.label}
+                    source={field.props.source}
+                    resource={resource}
+                />
+
+                {field.props.source === currentSort.field && (
+                    <ContentSort
+                        className={classnames(
+                            classes.sortIcon,
+                            currentSort.order === 'ASC'
+                                ? classes.sortIconReversed
+                                : ''
+                        )}
+                    />
+                )}
+            </Button>
+        ) : (
+            <span className={classes.nonSortableLabel}>
+                {
                     <FieldTitle
                         label={field.props.label}
                         source={field.props.source}
                         resource={resource}
                     />
-
-                    {field.props.source === currentSort.field && (
-                        <ContentSort
-                            className={classNames(
-                                classes.sortIcon,
-                                currentSort.order === 'ASC'
-                                    ? classes.sortIconReversed
-                                    : ''
-                            )}
-                        />
-                    )}
-                </Button>
-            ) : (
-                <span className={classes.nonSortableLabel}>
-                    {
-                        <FieldTitle
-                            label={field.props.label}
-                            source={field.props.source}
-                            resource={resource}
-                        />
-                    }
-                </span>
-            )}
-        </TableCell>
-    );
-};
+                }
+            </span>
+        )}
+    </TableCell>
+);
 
 DatagridHeaderCell.propTypes = {
     classes: PropTypes.object,
+    className: PropTypes.string,
     field: PropTypes.element,
-    defaultStyle: PropTypes.shape({
-        th: PropTypes.object,
-        'th:first-child': PropTypes.object,
-        sortButton: PropTypes.object,
-        nonSortableLabel: PropTypes.object,
-    }),
     currentSort: PropTypes.shape({
         sort: PropTypes.string,
         order: PropTypes.string,

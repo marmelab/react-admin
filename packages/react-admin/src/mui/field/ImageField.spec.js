@@ -1,7 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import ImageField from './ImageField';
+import { ImageField } from './ImageField';
 
 describe('<ImageField />', () => {
     it('should return an empty div when record is not set', () => {
@@ -94,4 +94,16 @@ describe('<ImageField />', () => {
         assert.equal(imgs.at(1).prop('alt'), 'Bye world!');
         assert.equal(imgs.at(1).prop('title'), 'Bye world!');
     });
+
+    it('should use custom className', () =>
+        assert.deepEqual(
+            shallow(
+                <ImageField
+                    source="foo"
+                    record={{ foo: true }}
+                    className="foo"
+                />
+            ).prop('className'),
+            'foo'
+        ));
 });

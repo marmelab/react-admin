@@ -6,20 +6,21 @@ import pure from 'recompose/pure';
 import FalseIcon from 'material-ui-icons/Clear';
 import TrueIcon from 'material-ui-icons/Done';
 
-export const BooleanField = ({ source, record = {}, elStyle }) => {
+export const BooleanField = ({ className, source, record = {} }) => {
     if (get(record, source) === false) {
-        return <FalseIcon style={elStyle} />;
+        return <FalseIcon className={className} />;
     }
 
     if (get(record, source) === true) {
-        return <TrueIcon style={elStyle} />;
+        return <TrueIcon className={className} />;
     }
 
-    return <span style={elStyle} />;
+    return <span className={className} />;
 };
 
 BooleanField.propTypes = {
     addLabel: PropTypes.bool,
+    className: PropTypes.string,
     elStyle: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,

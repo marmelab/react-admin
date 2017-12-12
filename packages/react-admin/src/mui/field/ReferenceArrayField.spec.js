@@ -52,7 +52,9 @@ describe('<ReferenceArrayField />', () => {
         );
         const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'withStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
@@ -78,7 +80,9 @@ describe('<ReferenceArrayField />', () => {
         );
         const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'withStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), {});
@@ -108,7 +112,9 @@ describe('<ReferenceArrayField />', () => {
         );
         const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'withStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
@@ -141,10 +147,42 @@ describe('<ReferenceArrayField />', () => {
         );
         const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'withStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
         assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), [1, 2]);
+    });
+
+    it('should use custom className', () => {
+        const data = {
+            1: { id: 1, title: 'hello' },
+            2: { id: 2, title: 'world' },
+        };
+        const wrapper = shallow(
+            <ReferenceArrayField
+                record={{ barIds: [1, 2] }}
+                className="myClass"
+                resource="foo"
+                reference="bar"
+                source="barIds"
+                basePath=""
+                data={data}
+                ids={[1, 2]}
+                crudGetManyAccumulate={() => {}}
+            >
+                <SingleFieldList>
+                    <TextField source="title" />
+                </SingleFieldList>
+            </ReferenceArrayField>
+        );
+        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
+        assert.equal(ProgressElements.length, 0);
+        const SingleFieldListElement = wrapper.find(
+            'withStyles(SingleFieldList)'
+        );
+        assert.equal(SingleFieldListElement.at(0).prop('className'), 'myClass');
     });
 });

@@ -27,13 +27,13 @@ export class DateInput extends Component {
 
     render() {
         const {
+            className,
             input,
             isRequired,
             label,
             meta,
             options,
             source,
-            elStyle,
             resource,
         } = this.props;
         if (typeof meta === 'undefined') {
@@ -46,6 +46,7 @@ export class DateInput extends Component {
         return (
             <TextField
                 {...input}
+                className={className}
                 type="date"
                 margin="normal"
                 error={!!(touched && error)}
@@ -68,7 +69,6 @@ export class DateInput extends Component {
                 )}
                 onChange={this.onChange}
                 onBlur={this.onBlur}
-                style={elStyle}
                 {...options}
             />
         );
@@ -77,7 +77,7 @@ export class DateInput extends Component {
 
 DateInput.propTypes = {
     classes: PropTypes.object,
-    elStyle: PropTypes.object,
+    className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

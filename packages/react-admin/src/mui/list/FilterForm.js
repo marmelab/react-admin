@@ -6,11 +6,12 @@ import IconButton from 'material-ui/IconButton';
 import ActionHide from 'material-ui-icons/HighlightOff';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
-import { withTheme } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
 
 import translate from '../../i18n/translate';
 
-const getStyles = ({ palette: { primary1Color } }) => ({
+const styles = ({ palette: { primary1Color } }) => ({
     card: {
         marginTop: '-14px',
         paddingTop: 0,
@@ -42,24 +43,24 @@ export class FilterForm extends Component {
         this.props.hideFilter(event.currentTarget.dataset.key);
 
     render() {
-        const { resource, translate, theme } = this.props;
-
-        const styles = getStyles(theme);
+        const { classes = {}, className, resource, translate } = this.props;
 
         return (
-            <div>
-                <CardContent style={styles.card}>
+            <div className={className}>
+                <CardContent className={classes.card}>
                     {this.getShownFilters()
                         .reverse()
                         .map(filterElement => (
                             <div
                                 key={filterElement.props.source}
                                 data-source={filterElement.props.source}
-                                className="filter-field"
-                                style={filterElement.props.style || styles.body}
+                                className={classnames(
+                                    'filter-field',
+                                    classes.body
+                                )}
                             >
                                 {filterElement.props.alwaysOn ? (
-                                    <div style={styles.spacer}>&nbsp;</div>
+                                    <div className={classes.spacer}>&nbsp;</div>
                                 ) : (
                                     <IconButton
                                         className="hide-filter"
@@ -85,7 +86,7 @@ export class FilterForm extends Component {
                             </div>
                         ))}
                 </CardContent>
-                <div style={styles.clearFix} />
+                <div className={classes.clearFix} />
             </div>
         );
     }
@@ -98,7 +99,8 @@ FilterForm.propTypes = {
     hideFilter: PropTypes.func.isRequired,
     initialValues: PropTypes.object,
     translate: PropTypes.func.isRequired,
-    theme: PropTypes.object.isRequired,
+    classes: PropTypes.object,
+    className: PropTypes.string,
 };
 
 export const mergeInitialValuesWithDefaultValues = ({
@@ -125,7 +127,7 @@ export const mergeInitialValuesWithDefaultValues = ({
 });
 
 const enhance = compose(
-    withTheme(),
+    withStyles(styles),
     translate,
     withProps(mergeInitialValuesWithDefaultValues),
     reduxForm({
