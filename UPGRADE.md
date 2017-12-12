@@ -397,3 +397,6 @@ export const UserList = ({
 ```
 
 Furthermore, some React-admin components such as the `List`, `Filter` and `Datagrid` also accepts a `classes` prop. This prop is injected by the [`withStyles` Higher Order Component](https://material-ui-next.com/customization/css-in-js/#api) and allows you to customize the style of some deep children.
+
+Finally, fields and inputs components accepts a `textAlign` prop which accepts either `left` or `right`. By defining this prop, they can inform their parent component that they look better when aligned to left or right. It's the responsability of the parent component to apply this alignment. For instance, the `NumberField` component has a default value of `right` for this prop will be displayed right aligned in a `DataGrid` but form components (`SimpleForm` and `TabbedForm`) will ignore the prop and display it left aligned.
+

@@ -87,15 +87,12 @@ class Datagrid extends Component {
             data,
             currentSort,
             basePath,
-            headerOptions,
-            bodyOptions,
-            rowOptions,
             rowStyle,
             ...rest
         } = this.props;
         return (
             <Table className={classnames(classes.table, className)} {...rest}>
-                <TableHead {...headerOptions}>
+                <TableHead>
                     <TableRow className={classes.row}>
                         {React.Children.map(
                             children,
@@ -124,8 +121,6 @@ class Datagrid extends Component {
                     basePath={basePath}
                     classes={classes}
                     isLoading={isLoading}
-                    options={bodyOptions}
-                    rowOptions={rowOptions}
                     rowStyle={rowStyle}
                 >
                     {children}
@@ -137,18 +132,15 @@ class Datagrid extends Component {
 
 Datagrid.propTypes = {
     basePath: PropTypes.string,
-    bodyOptions: PropTypes.object,
     currentSort: PropTypes.shape({
         sort: PropTypes.string,
         order: PropTypes.string,
     }),
     children: PropTypes.node.isRequired,
     data: PropTypes.object.isRequired,
-    headerOptions: PropTypes.object,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     isLoading: PropTypes.bool,
     resource: PropTypes.string,
-    rowOptions: PropTypes.object,
     rowStyle: PropTypes.func,
     setSort: PropTypes.func,
     classes: PropTypes.object,
