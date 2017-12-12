@@ -440,9 +440,9 @@ export const UserList = ({
 
 Finally, Field and Input components accept a `textAlign` prop, which can be either `left`, or `right`. Through this prop, these components inform their parent component that they look better when aligned to left or right. It's the responsability of the parent component to apply this alignment. For instance, the `NumberField` component has a default value of `right` for the `textAlign` prop, so the `Datagrid` component uses a right alignment in header and table cell - but form components (`SimpleForm` and `TabbedForm`) ignore the prop and display it left aligned.
 
-## Authentication
+## Authentication: `<Restricted>` renamed to `<Authenticated>`
 
-The `Restricted` component has been renamed `Authenticated`, update your `import` statements accordingly:
+The `Restricted` component has been renamed to `Authenticated`. update your `import` statements accordingly:
 
 ```jsx
 // before
@@ -476,13 +476,11 @@ const MyPage = ({ location }) => (
 export default withRouter(MyPage);
 ```
 
-## Authorization
+## Authorization: `<WithPermission>` and `<SwitchPermissions>` replaced by `<WithPermissions>`
 
-We removed the `WithPermission` and `SwitchPermissions` in favor of a more versatile component: `WithPermissions`. This component follows the [render callback pattern](https://cdb.reacttraining.com/use-a-render-prop-50de598f11ce).
+We removed the `WithPermission` and `SwitchPermissions` in favor of a more versatile component: `WithPermissions`. The `WithPermissions` component retrieves permissions by calling the `authClient` with the `AUTH_GET_PERMISSIONS` type. It then passes the permissions to the render callback. 
 
-As the [React Router `Route`](https://reacttraining.com/react-router/web/api/Route) component, it can be passed the render callback either as its only child or via its `render` prop (if both are passed, the `render` prop is used.
-
-The render callback will be called with the permissions which the `WithPermissions` component will retrieve by calling the `authClient` with the `AUTH_GET_PERMISSIONS` type.
+This component follows the [render callback pattern](https://cdb.reacttraining.com/use-a-render-prop-50de598f11ce). Just like the [React Router `Route`](https://reacttraining.com/react-router/web/api/Route) component, you can pass a render callback to `<WithPermissions>` either as its only child, or via its `render` prop (if both are passed, the `render` prop is used).
 
 If you were using `WithPermission` before, here's how to migrate to `WithPermissions`:
 
@@ -575,7 +573,7 @@ export default () => (
 );
 ```
 
-We also reviewed how permissions are passed to the `List`, `Edit`, `Create`, `Show` and `Delete` components. They now receive the permissions in their props without having to use the render callback pattern. It should now be easier to customize behaviors and components according to permissions.
+We also reviewed how permissions are passed to the `List`, `Edit`, `Create`, `Show` and `Delete` components. React-admin now injects the permissions to theses components in the `permissions` props, without having to use the render callback pattern. It should now be easier to customize behaviors and components according to permissions.
 
 Here's how to migrate a `Create` component:
 
@@ -675,7 +673,7 @@ export const UserEdit = ({ permissions, ...props }) =>
     </Edit>;
 ```
 
-Here's how to migrate a `List` component. Note that the Filter component does not support the child as a function anymore. If you need permissions within it, just pass them from the `List` component.
+Here's how to migrate a `List` component. Note that the `<Filter>` component does not support the child as a function pattern anymore. If you need permissions within it, just pass them from the `List` component.
 
 ```jsx
 // before
@@ -760,7 +758,7 @@ export const UserList = ({ permissions, ...props }) =>
     </List>;
 ```
 
-Moreover, you won't need the now deprecated `WithPermission` or `SwitchPermissions` inside a `Dashboard` to access permissions anymore: they will be passed in its props too:
+Moreover, you won't need the now deprecated `<WithPermission>` or `<SwitchPermissions>` components inside a `Dashboard` to access permissions anymore: react-admin injects `permissions` to the dashboard, too:
 
 ```jsx
 // before
@@ -806,7 +804,7 @@ export default ({ permissions }) => (
 );
 ```
 
-Finally, you won't need the now deprecated `WithPermission` or `SwitchPermissions` in custom routes either if you want access to permissions. Much like you can restrict access to authenticated users only with the [`Authenticated`](Authentication.html#restricting-access-to-a-custom-page) component, you may decorate your custom route with the `WithPermissions` component. It will ensure the user is authenticated then call the `authClient` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
+Finally, you won't need the now deprecated `<WithPermission>` or `<SwitchPermissions>` in custom routes either if you want access to permissions. Much like you can restrict access to authenticated users only with the [`Authenticated`](Authentication.html#restricting-access-to-a-custom-page) component, you may decorate your custom route with the `WithPermissions` component. It will ensure the user is authenticated then call the `authClient` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
 
 {% raw %}
 ```jsx
