@@ -72,7 +72,10 @@ export class WithPermissions extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.location !== this.props.location) {
+        if (
+            nextProps.location !== this.props.location ||
+            nextProps.authParams !== this.props.authParams
+        ) {
             this.checkAuthentication(nextProps);
             this.checkPermissions(this.props);
         }
