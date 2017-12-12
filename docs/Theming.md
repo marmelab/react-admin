@@ -9,7 +9,7 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 ## Overriding A Component Style
 
-Every react-admin component provides a `className` property which is always applied to the root element.
+Every react-admin component provides a `className` property, which is always applied to the root element.
 
 Here is an example customizing an `EditButton` component inside a `Datagrid`, using its `className` property and the `withStyles` Higher Order Component from Material-UI:
 
@@ -45,9 +45,9 @@ export const ProductList = (props) => (
 ```
 {% endraw %}
 
-For some components, when the `className` property isn't enough and you need to access deeper elements, you can take advantage of the `classes` property to customize them. Take a look at a component documentation to know which classes are available. For instance, you can have a look at the [Datagrid CSS documentation](./List.md#the-datagrid-component).
+For some components, you may want to override not only the root component style, but also the style of components inside the root. In this case, the `className` property isn't enough. You can take advantage of the `classes` property to customize the classes that the component uses internally.
 
-Here's an example using the `classes` property of the `Filter` and `List` components:
+Here is an example using the `classes` property of the `Filter` and `List` components:
 
 {% raw %}
 ```jsx
@@ -130,6 +130,8 @@ export const VisitorList = withStyles(listStyles)(({ classes, ...props }) => (
 This example results in:
 
 ![Visitor List with customized CSS classes](./img/list_with_customized_css.png)
+
+Take a look at a component documentation and source code to know which classes are available for styling. For instance, you can have a look at the [Datagrid CSS documentation](./List.md#the-datagrid-component).
 
 If you need more control over the HTML code, you can also create your own [Field](./Fields.md#writing-your-own-field-component) and [Input](./Inputs.md#writing-your-own-input-component) components.
 
