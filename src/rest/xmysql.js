@@ -7,7 +7,7 @@ import {
     UPDATE,
     DELETE,
 } from './types';
-import {fetchJson} from "../util/fetch";
+import { fetchJson } from '../util/fetch';
 
 /**
  * Maps admin-on-rest queries to XMYSQL REST API
@@ -40,8 +40,10 @@ export default (apiUrl, decorators = {}, httpClient = fetchJson) => {
      */
     return (type, resource, params) => {
         switch (type) {
-            case GET_LIST: {
-                return httpClient(`${apiUrl}/${resource}/count`).then(response => {
+            case GET_LIST:
+                return httpClient(
+                    `${apiUrl}/${resource}/count`
+                ).then(response => {
                     const rows = parseInt(response.json[0].no_of_rows, 10);
 
                     if (rows < 1) {
@@ -50,30 +52,45 @@ export default (apiUrl, decorators = {}, httpClient = fetchJson) => {
                             total: 0,
                         };
                     }
-                    const {page, perPage} = params.pagination;
-                    const {field, order} = params.sort;
-                    return httpClient(`${apiUrl}/${resource}?_p=${page - 1}&_size=${perPage}&_sort=${order === 'DESC' ? '-' : ''}${field}`).then(response => {
+                    const { page, perPage } = params.pagination;
+                    const { field, order } = params.sort;
+                    return httpClient(
+                        `${apiUrl}/${resource}?_p=${page -
+                            1}&_size=${perPage}&_sort=${order === 'DESC'
+                            ? '-'
+                            : ''}${field}`
+                    ).then(response => {
                         return {
-                            data: response.json.map(row => decorators[resource] ? decorators[resource](row) : row),
+                            data: response.json.map(
+                                row =>
+                                    decorators[resource]
+                                        ? decorators[resource](row)
+                                        : row
+                            ),
                             total: rows,
                         };
-                    })
+                    });
                 });
-            }
             case GET_ONE:
-                return httpClient(`${apiUrl}/${resource}/${params.id}`).then(response => {
+                return httpClient(
+                    `${apiUrl}/${resource}/${params.id}`
+                ).then(response => {
                     return {
-                        data: response.json[0]
+                        data: response.json[0],
                     };
                 });
             case GET_MANY:
-                return httpClient(`${apiUrl}/${resource}/bulk/?_ids=${params.ids.join(',')}`).then(response => {
+                return httpClient(
+                    `${apiUrl}/${resource}/bulk/?_ids=${params.ids.join(',')}`
+                ).then(response => {
                     return {
-                        data: response.json
+                        data: response.json,
                     };
                 });
-            case GET_MANY_REFERENCE: {
-                return httpClient(`${apiUrl}/${resource}/count`).then(response => {
+            case GET_MANY_REFERENCE:
+                return httpClient(
+                    `${apiUrl}/${resource}/count`
+                ).then(response => {
                     const rows = parseInt(response.json[0].no_of_rows, 10);
                     if (rows < 1) {
                         return {
@@ -82,42 +99,62 @@ export default (apiUrl, decorators = {}, httpClient = fetchJson) => {
                         };
                     }
 
-                    const {page, perPage} = params.pagination;
-                    const {field, order} = params.sort;
-                    return httpClient(`${apiUrl}/${resource}?_p=${page - 1}&_size=${perPage}&_sort=${order === 'DESC' ? '-' : ''}${field}&_where=(${params.target},eq,${params.id})`).then(response => {
+                    const { page, perPage } = params.pagination;
+                    const { field, order } = params.sort;
+                    return httpClient(
+                        `${apiUrl}/${resource}?_p=${page -
+                            1}&_size=${perPage}&_sort=${order === 'DESC'
+                            ? '-'
+                            : ''}${field}&_where=(${params.target},eq,${params.id})`
+                    ).then(response => {
                         return {
-                            data: response.json.map(row => decorators[resource] ? decorators[resource](row) : row),
+                            data: response.json.map(
+                                row =>
+                                    decorators[resource]
+                                        ? decorators[resource](row)
+                                        : row
+                            ),
                             total: rows,
                         };
-                    })
+                    });
                 });
-            }
             case UPDATE:
-                console.log(decorators[`-${resource}`]);
                 return httpClient(`${apiUrl}/${resource}`, {
                     method: 'PUT',
-                    body: JSON.stringify(decorators[`-${resource}`] ? decorators[`-${resource}`](params.data) : params.data)
+                    body: JSON.stringify(
+                        decorators[`-${resource}`]
+                            ? decorators[`-${resource}`](params.data)
+                            : params.data
+                    ),
                 }).then(response => {
                     return {
-                        data: response.json
+                        data: response.json,
                     };
                 });
             case CREATE:
                 return httpClient(`${apiUrl}/${resource}`, {
                     method: 'POST',
-                    body: JSON.stringify(decorators[`-${resource}`] ? decorators[`-${resource}`](params.data) : params.data)
+                    body: JSON.stringify(
+                        decorators[`-${resource}`]
+                            ? decorators[`-${resource}`](params.data)
+                            : params.data
+                    ),
                 }).then(response => {
                     return {
-                        data: response.json
+                        data: response.json,
                     };
                 });
             case DELETE:
                 return httpClient(`${apiUrl}/${resource}/${params.id}`, {
                     method: 'DELETE',
-                    body: JSON.stringify(decorators[`-${resource}`] ? decorators[`-${resource}`](params.data) : params.data)
+                    body: JSON.stringify(
+                        decorators[`-${resource}`]
+                            ? decorators[`-${resource}`](params.data)
+                            : params.data
+                    ),
                 }).then(response => {
                     return {
-                        data: response.json
+                        data: response.json,
                     };
                 });
             default:
