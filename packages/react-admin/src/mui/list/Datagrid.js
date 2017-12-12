@@ -88,6 +88,7 @@ class Datagrid extends Component {
             currentSort,
             basePath,
             rowStyle,
+            setSort,
             ...rest
         } = this.props;
         return (

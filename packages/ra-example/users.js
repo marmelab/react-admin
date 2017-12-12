@@ -24,9 +24,7 @@ import {
     required,
     translate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-
 export UserIcon from 'material-ui-icons/People';
-import { withStyles } from 'material-ui/styles';
 
 const UserFilter = ({ ...props }) => (
     <Filter {...props}>
@@ -38,22 +36,7 @@ const UserFilter = ({ ...props }) => (
     </Filter>
 );
 
-const styles = {
-    header: {
-        '& button': {
-            color: 'blue',
-            fontWeight: 'bold',
-        },
-    },
-    cell: {
-        backgroundColor: 'lightgrey',
-    },
-    field: {
-        color: 'red',
-    },
-};
-
-export const UserList = withStyles(styles)(({ classes, ...props }) => (
+export const UserList = props => (
     <List
         {...props}
         filters={<UserFilter />}
@@ -72,10 +55,8 @@ export const UserList = withStyles(styles)(({ classes, ...props }) => (
                     <Datagrid>
                         <TextField source="id" />
                         <TextField
-                            cellClassName={classes.cell}
-                            headerClassName={classes.header}
-                            className={classes.field}
                             source="name"
+                            cellClassName={classes.titleCellClassName}
                         />
                         {permissions === 'admin' && <TextField source="role" />}
                         <EditButton />
@@ -85,7 +66,7 @@ export const UserList = withStyles(styles)(({ classes, ...props }) => (
             />
         )}
     </List>
-));
+);
 
 const UserTitle = translate(({ record, translate }) => (
     <span>
