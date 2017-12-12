@@ -230,7 +230,7 @@ export default ({ permissions }) => (
 
 ## Restricting Access to Content Inside Custom Pages
 
-You might want to check user permissions inside a custom pages. You'll have to use the `WithPermissions` component for that. It will ensure the user is authenticated then call the `authClient` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
+You might want to check user permissions inside a [custom pages](./Admin.md#customroutes). You'll have to use the `WithPermissions` component for that. It will ensure the user is authenticated then call the `authClient` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
 
 {% raw %}
 ```jsx
@@ -259,9 +259,23 @@ const MyPageWithPermissions = ({ location, match }) => (
     />
 );
 
-export default withRouter(MyPageWithPermissions);
+export default MyPageWithPermissions;
+
+// in src/customRoutes.js
+import React from 'react';
+import { Route } from 'react-router-dom';
+import Foo from './Foo';
+import Bar from './Bar';
+import Baz from './Baz';
+import MyPageWithPermissions from './MyPage';
+
+export default [
+    <Route exact path="/foo" component={Foo} />,
+    <Route exact path="/bar" component={Bar} />,
+    <Route exact path="/baz" component={Baz} noLayout />,
+    <Route exact path="/baz" component={MyPageWithPermissions} />,
+];
 ```
-{% endraw %}
 
 ## Restricting Access to Content in Custom Menu
 
