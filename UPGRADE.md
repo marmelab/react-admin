@@ -440,3 +440,413 @@ export const UserList = ({
 
 Finally, Field and Input components accept a `textAlign` prop, which can be either `left`, or `right`. Through this prop, these components inform their parent component that they look better when aligned to left or right. It's the responsability of the parent component to apply this alignment. For instance, the `NumberField` component has a default value of `right` for the `textAlign` prop, so the `Datagrid` component uses a right alignment in header and table cell - but form components (`SimpleForm` and `TabbedForm`) ignore the prop and display it left aligned.
 
+## Authentication: `<Restricted>` renamed to `<Authenticated>`
+
+The `Restricted` component has been renamed to `Authenticated`. update your `import` statements accordingly:
+
+```jsx
+// before
+// in src/MyPage.js
+import { withRouter } from 'react-router-dom';
+import { Restricted } from 'admin-on-rest';
+
+const MyPage = ({ location }) => (
+    <Restricted authParams={{ foo: 'bar' }} location={location}>
+        <div>
+            ...
+        </div>
+    </Restricted>
+)
+
+export default withRouter(MyPage);
+
+// after
+// in src/MyPage.js
+import { withRouter } from 'react-router-dom';
+import { Authenticated } from 'admin-on-rest';
+
+const MyPage = ({ location }) => (
+    <Authenticated authParams={{ foo: 'bar' }} location={location}>
+        <div>
+            ...
+        </div>
+    </Authenticated>
+)
+
+export default withRouter(MyPage);
+```
+
+## Authorization: `<WithPermission>` and `<SwitchPermissions>` replaced by `<WithPermissions>`
+
+We removed the `WithPermission` and `SwitchPermissions` in favor of a more versatile component: `WithPermissions`. The `WithPermissions` component retrieves permissions by calling the `authClient` with the `AUTH_GET_PERMISSIONS` type. It then passes the permissions to the render callback. 
+
+This component follows the [render callback pattern](https://cdb.reacttraining.com/use-a-render-prop-50de598f11ce). Just like the [React Router `Route`](https://reacttraining.com/react-router/web/api/Route) component, you can pass a render callback to `<WithPermissions>` either as its only child, or via its `render` prop (if both are passed, the `render` prop is used).
+
+If you were using `WithPermission` before, here's how to migrate to `WithPermissions`:
+
+```jsx
+// before
+import React from 'react';
+import { MenuItemLink, WithPermission } from 'admin-on-rest';
+
+export default ({ onMenuTap, logout }) => (
+    <div>
+        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
+        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
+        <WithPermission value="admin">
+            <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+        </WithPermission>
+        {logout}
+    </div>
+);
+
+// after
+import React from 'react';
+import { MenuItemLink, WithPermissions } from 'admin-on-rest';
+
+export default ({ onMenuTap, logout }) => (
+    <div>
+        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
+        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
+        <WithPermissions
+            render={
+            permissions =>
+                permissions === 'admin'
+                ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+                : null
+            }
+        />
+        {/* OR */}
+        <WithPermissions>
+            {permissions =>
+                permissions === 'admin'
+                ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+                : null
+            }
+        />
+        {logout}
+    </div>
+);
+```
+
+If you were using `SwitchPermissions` before, here's how to migrate to `WithPermissions`:
+
+```jsx
+// before
+import React from 'react';
+import BenefitsSummary from './BenefitsSummary';
+import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
+import { ViewTitle, SwitchPermissions, Permission } from 'admin-on-rest/lib/mui';
+
+export default () => (
+    <div>
+        <SwitchPermissions>
+            <Permission value="associate">
+                <BenefitsSummary />
+            </Permission>
+            <Permission value="boss">
+                <BenefitsDetailsWithSensitiveData />
+            </Permission>
+        </SwitchPermissions>
+    </div>
+);
+
+// after
+import React from 'react';
+import BenefitsSummary from './BenefitsSummary';
+import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
+import { ViewTitle, WithPermissions } from 'admin-on-rest/lib/mui';
+
+export default () => (
+    <div>
+        <WithPermissions
+            render={permissions => {
+                if (permissions === 'associate') {
+                    return <BenefitsSummary />;
+                }
+                if (permissions === 'boss') {
+                    return <BenefitsDetailsWithSensitiveData />;
+                }
+            }}
+        />
+    </div>
+);
+```
+
+We also reviewed how permissions are passed to the `List`, `Edit`, `Create`, `Show` and `Delete` components. React-admin now injects the permissions to theses components in the `permissions` props, without having to use the render callback pattern. It should now be easier to customize behaviors and components according to permissions.
+
+Here's how to migrate a `Create` component:
+
+```jsx
+// before
+const UserCreateToolbar = ({ permissions, ...props }) =>
+    <Toolbar {...props}>
+        <SaveButton
+            label="user.action.save_and_show"
+            redirect="show"
+            submitOnEnter={true}
+        />
+        {permissions === 'admin' &&
+            <SaveButton
+                label="user.action.save_and_add"
+                redirect={false}
+                submitOnEnter={false}
+                raised={false}
+            />}
+    </Toolbar>;
+
+export const UserCreate = ({ ...props }) =>
+    <Create {...props}>
+        {permissions =>
+            <SimpleForm
+                toolbar={<UserCreateToolbar permissions={permissions} />}
+                defaultValue={{ role: 'user' }}
+            >
+                <TextInput source="name" validate={[required]} />
+                {permissions === 'admin' &&
+                    <TextInput source="role" validate={[required]} />}
+            </SimpleForm>}
+    </Create>;
+
+// after
+const UserCreateToolbar = ({ permissions, ...props }) =>
+    <Toolbar {...props}>
+        <SaveButton
+            label="user.action.save_and_show"
+            redirect="show"
+            submitOnEnter={true}
+        />
+        {permissions === 'admin' &&
+            <SaveButton
+                label="user.action.save_and_add"
+                redirect={false}
+                submitOnEnter={false}
+                raised={false}
+            />}
+    </Toolbar>;
+
+export const UserCreate = ({ permissions, ...props }) =>
+    <Create {...props}>
+        <SimpleForm
+            toolbar={<UserCreateToolbar permissions={permissions} />}
+            defaultValue={{ role: 'user' }}
+        >
+            <TextInput source="name" validate={[required]} />
+            {permissions === 'admin' &&
+                <TextInput source="role" validate={[required]} />}
+        </SimpleForm>
+    </Create>;
+```
+
+Here's how to migrate an `Edit` component:
+
+```jsx
+// before
+export const UserEdit = ({ ...props }) =>
+    <Edit title={<UserTitle />} {...props}>
+        {permissions =>
+            <TabbedForm defaultValue={{ role: 'user' }}>
+                <FormTab label="user.form.summary">
+                    {permissions === 'admin' && <DisabledInput source="id" />}
+                    <TextInput source="name" validate={required} />
+                </FormTab>
+                {permissions === 'admin' &&
+                    <FormTab label="user.form.security">
+                        <TextInput source="role" validate={required} />
+                    </FormTab>}
+            </TabbedForm>}
+    </Edit>;
+
+// after
+export const UserEdit = ({ permissions, ...props }) =>
+    <Edit title={<UserTitle />} {...props}>
+        <TabbedForm defaultValue={{ role: 'user' }}>
+            <FormTab label="user.form.summary">
+                {permissions === 'admin' && <DisabledInput source="id" />}
+                <TextInput source="name" validate={required} />
+            </FormTab>
+            {permissions === 'admin' &&
+                <FormTab label="user.form.security">
+                    <TextInput source="role" validate={required} />
+                </FormTab>}
+        </TabbedForm>
+    </Edit>;
+```
+
+Here's how to migrate a `List` component. Note that the `<Filter>` component does not support the child as a function pattern anymore. If you need permissions within it, just pass them from the `List` component.
+
+```jsx
+// before
+const UserFilter = ({ ...props }) =>
+    <Filter {...props}>
+        {permissions => [
+            <TextInput
+                key="user.list.search"
+                label="user.list.search"
+                source="q"
+                alwaysOn
+            />,
+            <TextInput key="name" source="name" />,
+            permissions === 'admin' ? <TextInput source="role" /> : null,
+        ]}
+    </Filter>;
+
+export const UserList = ({ ...props }) =>
+    <List
+        {...props}
+        filters={<UserFilter />}
+        sort={{ field: 'name', order: 'ASC' }}
+    >
+        {permissions =>
+            <Responsive
+                small={
+                    <SimpleList
+                        primaryText={record => record.name}
+                        secondaryText={record =>
+                            permissions === 'admin' ? record.role : null}
+                    />
+                }
+                medium={
+                    <Datagrid>
+                        <TextField source="id" />
+                        <TextField source="name" />
+                        {permissions === 'admin' && <TextField source="role" />}
+                        {permissions === 'admin' && <EditButton />}
+                        <ShowButton />
+                    </Datagrid>
+                }
+            />}
+    </List>;
+
+// after
+const UserFilter = ({ permissions, ...props }) =>
+    <Filter {...props}>
+        <TextInput
+            key="user.list.search"
+            label="user.list.search"
+            source="q"
+            alwaysOn
+        />
+        <TextInput key="name" source="name" />
+        {permissions === 'admin' ? <TextInput source="role" /> : null}
+    </Filter>;
+
+export const UserList = ({ permissions, ...props }) =>
+    <List
+        {...props}
+        filters={<UserFilter permissions={permissions} />}
+        sort={{ field: 'name', order: 'ASC' }}
+    >
+        <Responsive
+            small={
+                <SimpleList
+                    primaryText={record => record.name}
+                    secondaryText={record =>
+                        permissions === 'admin' ? record.role : null}
+                />
+            }
+            medium={
+                <Datagrid>
+                    <TextField source="id" />
+                    <TextField source="name" />
+                    {permissions === 'admin' && <TextField source="role" />}
+                    {permissions === 'admin' && <EditButton />}
+                    <ShowButton />
+                </Datagrid>
+            }
+        />
+    </List>;
+```
+
+Moreover, you won't need the now deprecated `<WithPermission>` or `<SwitchPermissions>` components inside a `Dashboard` to access permissions anymore: react-admin injects `permissions` to the dashboard, too:
+
+```jsx
+// before
+// in src/Dashboard.js
+import React from 'react';
+import BenefitsSummary from './BenefitsSummary';
+import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
+import { ViewTitle SwitchPermissions, Permission } from 'admin-on-rest/lib/mui';
+
+export default () => (
+    <Card>
+        <ViewTitle title="Dashboard" />
+
+        <SwitchPermissions>
+            <Permission value="associate">
+                <BenefitsSummary />
+            </Permission>
+            <Permission value="boss">
+                <BenefitsDetailsWithSensitiveData />
+            </Permission>
+        </SwitchPermissions>
+    </Card>
+);
+
+// after
+// in src/Dashboard.js
+import React from 'react';
+import BenefitsSummary from './BenefitsSummary';
+import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
+import { ViewTitle } from 'admin-on-rest/lib/mui';
+
+export default ({ permissions }) => (
+    <Card>
+        <ViewTitle title="Dashboard" />
+
+        {permissions === 'associate'
+            ? <BenefitsSummary />
+            : null}
+        {permissions === 'boss'
+            ? <BenefitsDetailsWithSensitiveData />
+            : null}
+    </Card>
+);
+```
+
+Finally, you won't need the now deprecated `<WithPermission>` or `<SwitchPermissions>` in custom routes either if you want access to permissions. Much like you can restrict access to authenticated users only with the [`Authenticated`](Authentication.html#restricting-access-to-a-custom-page) component, you may decorate your custom route with the `WithPermissions` component. It will ensure the user is authenticated then call the `authClient` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
+
+{% raw %}
+```jsx
+// in src/MyPage.js
+import React from 'react';
+import Card, { CardContent } from 'material-ui/Card';
+import { ViewTitle, WithPermissions } from 'react-admin';
+import { withRouter } from 'react-router-dom';
+
+const MyPage = ({ permissions }) => (
+    <Card>
+        <ViewTitle title="My custom page" />
+        <CardContent>Lorem ipsum sic dolor amet...</CardContent>
+        {permissions === 'admin'
+            ? <CardContent>Sensitive data</CardContent>
+            : null
+        }
+    </Card>
+)
+const MyPageWithPermissions = ({ location, match }) => (
+    <WithPermissions
+        authParams={{ key: match.path, params: route.params }}
+        // location is not required but it will trigger a new permissions check if specified when it changes
+        location={location}
+        render={({ permissions }) => <MyPage permissions={permissions} /> }
+    />
+);
+
+export default MyPageWithPermissions;
+
+// in src/customRoutes.js
+import React from 'react';
+import { Route } from 'react-router-dom';
+import Foo from './Foo';
+import Bar from './Bar';
+import Baz from './Baz';
+import MyPageWithPermissions from './MyPage';
+
+export default [
+    <Route exact path="/foo" component={Foo} />,
+    <Route exact path="/bar" component={Bar} />,
+    <Route exact path="/baz" component={Baz} noLayout />,
+    <Route exact path="/baz" component={MyPageWithPermissions} />,
+];
+```

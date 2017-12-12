@@ -26,7 +26,6 @@ import { changeListParams as changeListParamsAction } from '../../actions/listAc
 import translate from '../../i18n/translate';
 import removeKey from '../../util/removeKey';
 import defaultTheme from '../defaultTheme';
-import withChildrenAsFunction from '../withChildrenAsFunction';
 
 const styles = {
     root: {},
@@ -368,8 +367,7 @@ const enhance = compose(
         push: pushAction,
     }),
     translate,
-    withStyles(styles),
-    withChildrenAsFunction
+    withStyles(styles)
 );
 
 export default enhance(List);

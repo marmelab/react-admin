@@ -2,25 +2,25 @@ import React from 'react';
 import { shallow, render } from 'enzyme';
 import { html } from 'cheerio';
 
-import { Restricted } from './Restricted';
+import { Authenticated } from './Authenticated';
 
-describe('<Restricted>', () => {
+describe('<Authenticated>', () => {
     const Foo = () => <div>Foo</div>;
     it('should call userCheck on mount', () => {
         const userCheck = jest.fn();
         shallow(
-            <Restricted userCheck={userCheck}>
+            <Authenticated userCheck={userCheck}>
                 <Foo />
-            </Restricted>
+            </Authenticated>
         );
         expect(userCheck.mock.calls.length).toEqual(1);
     });
     it('should call userCheck on update', () => {
         const userCheck = jest.fn();
         const wrapper = shallow(
-            <Restricted userCheck={userCheck}>
+            <Authenticated userCheck={userCheck}>
                 <Foo />
-            </Restricted>
+            </Authenticated>
         );
         wrapper.setProps({ location: { pathname: 'foo' }, userCheck });
         expect(userCheck.mock.calls.length).toEqual(2);
@@ -28,9 +28,9 @@ describe('<Restricted>', () => {
     it('should render its child by default', () => {
         const userCheck = jest.fn();
         const wrapper = render(
-            <Restricted userCheck={userCheck}>
+            <Authenticated userCheck={userCheck}>
                 <Foo />
-            </Restricted>
+            </Authenticated>
         );
         expect(html(wrapper)).toEqual('<div>Foo</div>');
     });

@@ -294,24 +294,24 @@ const App = () => (
 
 ## Restricting Access To A Custom Page
 
-If you add [custom pages](./Actions.md), of if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `<Restricted>` component, that you can use as a decorator for your own components.
+If you add [custom pages](./Actions.md), of if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `<Authenticated>` component, that you can use as a decorator for your own components.
 
 {% raw %}
 ```jsx
 // in src/MyPage.js
 import { withRouter } from 'react-router-dom';
-import { Restricted } from 'react-admin';
+import { Authenticated } from 'react-admin';
 
-const MyPage = ({ location }) =>
-    <Restricted authParams={{ foo: 'bar' }} location={location} />
+const MyPage = ({ location }) => (
+    <Authenticated authParams={{ foo: 'bar' }} location={location}>
         <div>
             ...
         </div>
-    </Restricted>
-}
+    </Authenticated>
+);
 
 export default withRouter(MyPage);
 ```
 {% endraw %}
 
-The `<Restricted>` component calls the `authClient` function with `AUTH_CHECK` and `authParams`. If the response is a fulfilled promise, the child component is rendered. If the response is a rejected promise, `<Restricted>` redirects to the login form. Upon successful login, the user is redirected to the initial location (that's why it's necessary to get the location from the router).
+The `<Authenticated>` component calls the `authClient` function with `AUTH_CHECK` and `authParams`. If the response is a fulfilled promise, the child component is rendered. If the response is a rejected promise, `<Authenticated>` redirects to the login form. Upon successful login, the user is redirected to the initial location (that's why it's necessary to get the location from the router).
