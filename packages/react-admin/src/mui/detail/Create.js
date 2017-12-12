@@ -77,7 +77,11 @@ class Create extends Component {
                 redirectTo: redirect,
             },
             dispatch
-        );
+        )
+            .then(
+                result => this.props.onSuccess && this.props.onSuccess(result)
+            )
+            .catch(err => this.props.onError && this.props.onError(err));
     };
 
     render() {
@@ -145,6 +149,8 @@ Create.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func.isRequired,
+    onSuccess: PropTypes.func,
+    onError: PropTypes.func,
     hasList: PropTypes.bool,
 };
 

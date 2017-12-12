@@ -118,7 +118,11 @@ export class Edit extends Component {
                 redirectTo: redirect,
             },
             dispatch
-        );
+        )
+            .then(
+                result => this.props.onSuccess && this.props.onSuccess(result)
+            )
+            .then(err => this.props.onError && this.props.onError(err));
     };
 
     render() {
@@ -205,6 +209,8 @@ Edit.propTypes = {
     title: PropTypes.any,
     translate: PropTypes.func,
     version: PropTypes.number.isRequired,
+    onSuccess: PropTypes.func,
+    onError: PropTypes.func,
 };
 
 function mapStateToProps(state, props) {
