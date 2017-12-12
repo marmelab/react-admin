@@ -110,14 +110,9 @@ export class AdminRoutes extends Component {
                             <WithPermissions
                                 authParams={{ route: 'dashboard' }}
                                 {...routeProps}
-                            >
-                                <WithPermissions
-                                    authParams={{ route: 'dashboard' }}
-                                    {...routeProps}
-                                >
-                                    {React.createElement(dashboard)}
-                                </WithPermissions>
-                            </WithPermissions>
+                                render={props =>
+                                    React.createElement(dashboard, props)}
+                            />
                         )}
                     />
                 ) : (

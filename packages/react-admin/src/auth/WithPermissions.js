@@ -1,14 +1,17 @@
-import React, { Component } from 'react';
+import React, { Children, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import getContext from 'recompose/getContext';
+import warning from 'warning';
 
 import { userCheck } from '../actions/authActions';
 import { AUTH_GET_PERMISSIONS } from '../auth/types';
 
+const isEmptyChildren = children => Children.count(children) === 0;
 /**
- * Retrieve permissions for a specific route.
+ * After checking that the user is authenticated, 
+ * retrieves the user's permissions for a specific context.
  *
  * Useful for Route components ; used internally by CrudRoute.
  * Use it to decorate your custom page components to require 
@@ -43,14 +46,24 @@ import { AUTH_GET_PERMISSIONS } from '../auth/types';
 export class WithPermissions extends Component {
     static propTypes = {
         authParams: PropTypes.object,
-        children: PropTypes.element.isRequired,
+        children: PropTypes.func,
         location: PropTypes.object,
+        match: PropTypes.object,
+        render: PropTypes.func,
         userCheck: PropTypes.func,
     };
 
     state = { permissions: null };
 
     componentWillMount() {
+        warning(
+            !(
+                this.props.render &&
+                this.props.children &&
+                !isEmptyChildren(this.props.children)
+            ),
+            'You should not use both <WithPermissions render> and <WithPermissions children>; <WithPermissions children> will be ignored'
+        );
         this.checkAuthentication(this.props);
     }
 
@@ -85,17 +98,19 @@ export class WithPermissions extends Component {
         }
     }
 
-    // render the child even though the AUTH_GET_PERMISSIONS isn't finished (optimistic rendering)
+    // render even though the AUTH_GET_PERMISSIONS
+    // isn't finished (optimistic rendering)
     render() {
-        const {
-            children,
-            userCheck,
-            authParams,
-            location,
-            ...rest
-        } = this.props;
+        const { render, children, location, match } = this.props;
         const { permissions } = this.state;
-        return React.cloneElement(children, { ...rest, permissions });
+
+        if (render) {
+            return render({ permissions, location, match });
+        }
+
+        if (children) {
+            return children({ permissions, location, match });
+        }
     }
 }
 
