@@ -15,6 +15,7 @@ A call to the `authClient` with the `AUTH_GET_PERMISSIONS` type will be made eac
 
 Following is an example where the `authClient` stores the user's role upon authentication, and returns it when called for a permissions check:
 
+{% raw %}
 ```jsx
 // in src/authClient.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_GET_PERMISSIONS } from 'react-admin';
@@ -64,6 +65,7 @@ export default (type, params) => {
     return Promise.reject('Unkown method');
 };
 ```
+{% endraw %}
 
 ## Restricting Access to Resources or Views
 
@@ -206,7 +208,7 @@ export const UserList = ({ permissions, ...props }) =>
 
 The component provided as a [`dashboard`]('./Admin.md#dashboard) will receive the permissions in its props too:
 
-
+{% raw %}
 ```jsx
 // in src/Dashboard.js
 import React from 'react';
@@ -224,10 +226,11 @@ export default ({ permissions }) => (
     </Card>
 );
 ```
+{% endraw %}
 
 ## Restricting Access to Content Inside Custom Pages
 
-You might want to check user permissions inside a custom pages. You'll have to use the `WithPermissions` component for that:
+You might want to check user permissions inside a custom pages. You'll have to use the `WithPermissions` component for that. It will ensure the user is authenticated then call the `authClient` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
 
 {% raw %}
 ```jsx
@@ -250,10 +253,10 @@ const MyPage = ({ permissions }) => (
 const MyPageWithPermissions = ({ location, match }) => (
     <WithPermissions
         authParams={{ key: match.path, params: route.params }}
+        // location is not required but it will trigger a new permissions check if specified when it changes
         location={location}
-    >
-        <MyPage />
-    </WithPermissions>
+        render={({ permissions }) => <MyPage permissions={permissions} /> }
+    />
 );
 
 export default withRouter(MyPageWithPermissions);
@@ -275,18 +278,15 @@ const Menu = ({ onMenuTap, logout, permissions }) => (
     <div>
         <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
         <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
-        {permissions === admin
-            ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
-            : null
-        }
+        <WithPermissions
+            render={({ permissions }) => (
+                permissions === '
+                    ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+                    : null
+            )}
+        />
         {logout}
     </div>
-);
-
-const MenuWithPermissions = (props) => (
-    <WithPermissions {...props}>
-        <Menu />
-    </WithPermissions>
 );
 ```
 {% endraw %}
