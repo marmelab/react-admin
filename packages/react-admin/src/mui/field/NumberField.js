@@ -45,12 +45,18 @@ const styles = {
  * <span>25,99 $US</span>
  */
 export const NumberField = ({
+    addLabel,
+    basePath,
     classes = {},
     className,
+    cellClassName,
+    headerClassName,
     record,
     source,
     locales,
     options,
+    textAlign,
+    ...rest
 }) => {
     if (!record) return null;
     const value = get(record, source);
@@ -58,13 +64,13 @@ export const NumberField = ({
 
     if (!hasNumberFormat)
         return (
-            <span className={classnames(classes.input, className)}>
+            <span className={classnames(classes.input, className)} {...rest}>
                 {value}
             </span>
         );
 
     return (
-        <span className={classnames(classes.input, className)}>
+        <span className={classnames(classes.input, className)} {...rest}>
             {value.toLocaleString(locales, options)}
         </span>
     );
@@ -72,8 +78,11 @@ export const NumberField = ({
 
 NumberField.propTypes = {
     addLabel: PropTypes.bool,
+    basePath: PropTypes.string,
     classes: PropTypes.object,
     className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
     label: PropTypes.string,
     locales: PropTypes.oneOfType([
         PropTypes.string,
@@ -81,6 +90,7 @@ NumberField.propTypes = {
     ]),
     options: PropTypes.object,
     record: PropTypes.object,
+    textAlign: PropTypes.string,
     source: PropTypes.string.isRequired,
 };
 

@@ -14,9 +14,10 @@ const Actions = ({
     hasCreate,
     basePath,
     showFilter,
+    ...rest
 }) => {
     return (
-        <CardActions className={className}>
+        <CardActions className={className} {...rest}>
             {filters &&
                 React.cloneElement(filters, {
                     resource,

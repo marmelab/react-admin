@@ -10,16 +10,30 @@ const styles = {
     chip: { margin: 4 },
 };
 
-const ChipField = ({ className, classes, source, record = {} }) => (
+const ChipField = ({
+    addLabel,
+    basePath,
+    className,
+    cellClassName,
+    headerClassName,
+    classes,
+    source,
+    record = {},
+    ...rest
+}) => (
     <Chip
         className={classnames(classes.chip, className)}
         label={get(record, source)}
+        {...rest}
     />
 );
 
 ChipField.propTypes = {
     addLabel: PropTypes.bool,
+    basePath: PropTypes.string,
     className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
     classes: PropTypes.object,
     elStyle: PropTypes.object,
     label: PropTypes.string,

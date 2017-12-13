@@ -40,8 +40,9 @@ const Menu = ({
     resources,
     translate,
     logout,
+    ...rest
 }) => (
-    <div className={classnames(classes.main, className)}>
+    <div className={classnames(classes.main, className)} {...rest}>
         {hasDashboard && <DashboardMenuItem onClick={onMenuTap} />}
         {resources
             .filter(r => r.hasList)
@@ -78,7 +79,10 @@ const mapStateToProps = state => ({
 
 const enhance = compose(
     translate,
-    connect(mapStateToProps),
+    connect(
+        mapStateToProps,
+        {} // Avoid connect passing dispatch in props
+    ),
     withStyles(styles)
 );
 

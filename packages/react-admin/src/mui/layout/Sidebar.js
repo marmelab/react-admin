@@ -43,7 +43,13 @@ class Sidebar extends PureComponent {
     toggleSidebar = () => this.props.setSidebarVisibility(!this.props.open);
 
     render() {
-        const { children, classes, open, setSidebarVisibility } = this.props;
+        const {
+            children,
+            classes,
+            open,
+            setSidebarVisibility,
+            ...rest
+        } = this.props;
 
         return (
             <Responsive
@@ -55,6 +61,7 @@ class Sidebar extends PureComponent {
                         classes={{
                             paper: classes.drawerPaper,
                         }}
+                        {...rest}
                     >
                         {React.cloneElement(children, {
                             onMenuTap: this.handleClose,
@@ -69,6 +76,7 @@ class Sidebar extends PureComponent {
                             paper: classes.drawerPaper,
                         }}
                         onRequestClose={setSidebarVisibility}
+                        {...rest}
                     >
                         <div className={classes.drawerHeader}>
                             <IconButton onClick={this.toggleSidebar}>

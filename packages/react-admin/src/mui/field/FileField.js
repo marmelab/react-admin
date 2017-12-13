@@ -9,13 +9,18 @@ const styles = {
 };
 
 export const FileField = ({
+    addLabel,
+    basePath,
     classes = {},
     className,
+    cellClassName,
+    headerClassName,
     record,
     source,
     title,
     src,
     target,
+    ...rest
 }) => {
     const sourceValue = get(record, source);
 
@@ -25,7 +30,7 @@ export const FileField = ({
 
     if (Array.isArray(sourceValue)) {
         return (
-            <ul className={classnames(classes.root, className)}>
+            <ul className={classnames(classes.root, className)} {...rest}>
                 {sourceValue.map((file, index) => {
                     const titleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
@@ -49,7 +54,7 @@ export const FileField = ({
     const titleValue = get(record, title) || title;
 
     return (
-        <div className={classnames(classes.root, className)}>
+        <div className={classnames(classes.root, className)} {...rest}>
             <a href={sourceValue} title={titleValue} target={target}>
                 {titleValue}
             </a>
@@ -58,8 +63,12 @@ export const FileField = ({
 };
 
 FileField.propTypes = {
+    addLabel: PropTypes.bool,
+    basePath: PropTypes.string,
     classes: PropTypes.object,
     className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
     src: PropTypes.string,

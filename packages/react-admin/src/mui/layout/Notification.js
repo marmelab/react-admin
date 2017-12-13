@@ -52,6 +52,8 @@ class Notification extends React.Component {
             translate,
             notification,
             autoHideDuration,
+            hideNotification,
+            ...rest
         } = this.props;
 
         return (
@@ -72,6 +74,7 @@ class Notification extends React.Component {
                     classes[(notification && notification.type) || type],
                     className
                 )}
+                {...rest}
             />
         );
     }

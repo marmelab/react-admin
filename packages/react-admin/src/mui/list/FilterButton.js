@@ -65,12 +65,21 @@ export class FilterButton extends Component {
 
     render() {
         const hiddenFilters = this.getHiddenFilters();
-        const { classes = {}, className, resource } = this.props;
+        const {
+            classes = {},
+            className,
+            resource,
+            showFilter,
+            displayedFilters,
+            filterValues,
+            translate,
+            ...rest
+        } = this.props;
         const { open, anchorEl } = this.state;
 
         return (
             hiddenFilters.length > 0 && (
-                <div className={classnames(classes.root, className)}>
+                <div className={classnames(classes.root, className)} {...rest}>
                     <Button
                         ref={node => {
                             this.button = node;
@@ -81,7 +90,7 @@ export class FilterButton extends Component {
                     >
                         <ContentFilter />
                         &nbsp;
-                        {this.props.translate('ra.action.add_filter')}
+                        {translate('ra.action.add_filter')}
                     </Button>
                     <Popover
                         open={open}

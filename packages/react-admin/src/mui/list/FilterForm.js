@@ -28,6 +28,44 @@ const styles = ({ palette: { primary1Color } }) => ({
 
 const emptyRecord = {};
 
+const sanitizeRestProps = ({
+    anyTouched,
+    asyncValidate,
+    asyncValidating,
+    clearSubmit,
+    dirty,
+    handleSubmit,
+    initialized,
+    initialValues,
+    invalid,
+    pristine,
+    submitting,
+    submitFailed,
+    submitSucceeded,
+    valid,
+    hideFilter,
+    displayedFilters,
+    setFilters,
+    pure,
+    triggerSubmit,
+    clearSubmitErrors,
+    clearAsyncError,
+    blur,
+    change,
+    destroy,
+    dispatch,
+    initialize,
+    reset,
+    touch,
+    untouch,
+    validate,
+    save,
+    translate,
+    autofill,
+    submit,
+    ...props
+}) => props;
+
 export class FilterForm extends Component {
     getShownFilters() {
         const { filters, displayedFilters, initialValues } = this.props;
@@ -43,10 +81,16 @@ export class FilterForm extends Component {
         this.props.hideFilter(event.currentTarget.dataset.key);
 
     render() {
-        const { classes = {}, className, resource, translate } = this.props;
+        const {
+            classes = {},
+            className,
+            resource,
+            translate,
+            ...rest
+        } = this.props;
 
         return (
-            <div className={className}>
+            <div className={className} {...sanitizeRestProps(rest)}>
                 <CardContent className={classes.card}>
                     {this.getShownFilters()
                         .reverse()

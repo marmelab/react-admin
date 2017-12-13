@@ -119,16 +119,21 @@ export class Edit extends Component {
             actions = <DefaultActions />,
             children,
             className,
+            crudGetOne,
+            crudUpdate,
             data,
+            hasCreate,
             hasDelete,
-            hasShow,
+            hasEdit,
             hasList,
+            hasShow,
             id,
             isLoading,
             resource,
             title,
             translate,
             version,
+            ...rest
         } = this.props;
 
         if (!children) return null;
@@ -151,7 +156,7 @@ export class Edit extends Component {
         );
 
         return (
-            <div className={classnames('edit-page', className)}>
+            <div className={classnames('edit-page', className)} {...rest}>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}
@@ -194,6 +199,8 @@ Edit.propTypes = {
     crudGetOne: PropTypes.func.isRequired,
     crudUpdate: PropTypes.func.isRequired,
     data: PropTypes.object,
+    hasCreate: PropTypes.bool,
+    hasEdit: PropTypes.bool,
     hasDelete: PropTypes.bool,
     hasShow: PropTypes.bool,
     hasList: PropTypes.bool,

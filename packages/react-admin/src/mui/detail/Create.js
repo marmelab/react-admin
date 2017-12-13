@@ -83,11 +83,17 @@ class Create extends Component {
             actions = <DefaultActions />,
             children,
             className,
+            crudCreate,
             isLoading,
             resource,
             title,
             translate,
+            hasCreate,
+            hasDelete,
+            hasEdit,
             hasList,
+            hasShow,
+            ...rest
         } = this.props;
 
         if (!children) return null;
@@ -105,7 +111,7 @@ class Create extends Component {
         );
 
         return (
-            <div className={classnames('create-page', className)}>
+            <div className={classnames('create-page', className)} {...rest}>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}
@@ -138,6 +144,8 @@ Create.propTypes = {
     children: PropTypes.element,
     className: PropTypes.string,
     crudCreate: PropTypes.func.isRequired,
+    hasCreate: PropTypes.bool,
+    hasDelete: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
     isLoading: PropTypes.bool.isRequired,

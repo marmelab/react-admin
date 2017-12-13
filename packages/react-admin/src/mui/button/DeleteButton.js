@@ -27,12 +27,14 @@ const DeleteButton = ({
     label = 'ra.action.delete',
     record = {},
     translate,
+    ...rest
 }) => (
     <Button
         className={classnames(classes.link, className)}
         component={Link}
         color="accent"
         to={`${linkToRecord(basePath, record.id)}/delete`}
+        {...rest}
     >
         <ActionDelete className={classes.iconPaddingStyle} />
         {label && translate(label)}

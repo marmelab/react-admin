@@ -100,9 +100,10 @@ class Login extends Component {
             handleSubmit,
             isLoading,
             translate,
+            ...rest
         } = this.props;
         return (
-            <div className={classnames(classes.main, className)}>
+            <div className={classnames(classes.main, className)} {...rest}>
                 <Card className={classes.card}>
                     <div className={classes.avatar}>
                         <Avatar className={classes.icon}>

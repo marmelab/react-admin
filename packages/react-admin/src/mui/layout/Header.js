@@ -12,8 +12,15 @@ const styles = {
     },
 };
 
-export const Header = ({ classes, className, title, actions, actionProps }) => (
-    <div className={classnames(classes.root, className)}>
+export const Header = ({
+    classes,
+    className,
+    title,
+    actions,
+    actionProps,
+    ...rest
+}) => (
+    <div className={classnames(classes.root, className)} {...rest}>
         <ViewTitle title={title} />
         {actions && React.cloneElement(actions, actionProps)}
     </div>

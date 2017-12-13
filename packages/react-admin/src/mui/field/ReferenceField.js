@@ -57,15 +57,19 @@ export class ReferenceField extends Component {
 
     render() {
         const {
+            addLabel,
+            basePath,
             className,
+            cellClassName,
+            headerClassName,
             record,
             source,
             reference,
             referenceRecord,
-            basePath,
             allowEmpty,
             children,
             linkType,
+            ...rest
         } = this.props;
         if (React.Children.count(children) !== 1) {
             throw new Error('<ReferenceField> only accepts a single child');
@@ -90,14 +94,14 @@ export class ReferenceField extends Component {
         });
         if (linkType === 'edit' || linkType === true) {
             return (
-                <Link className={className} to={href}>
+                <Link className={className} to={href} {...rest}>
                     {child}
                 </Link>
             );
         }
         if (linkType === 'show') {
             return (
-                <Link className={className} to={`${href}/show`}>
+                <Link className={className} to={`${href}/show`} {...rest}>
                     {child}
                 </Link>
             );
@@ -112,6 +116,8 @@ ReferenceField.propTypes = {
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
     crudGetManyAccumulate: PropTypes.func.isRequired,
     label: PropTypes.string,
     record: PropTypes.object,

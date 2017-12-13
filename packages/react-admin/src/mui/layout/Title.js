@@ -4,16 +4,29 @@ import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
 
-const Title = ({ className, defaultTitle, record, title, translate }) => {
+const Title = ({
+    className,
+    defaultTitle,
+    record,
+    title,
+    translate,
+    ...rest
+}) => {
     if (!title) {
-        return <span className={className}>{defaultTitle}</span>;
+        return (
+            <span className={className} {...rest}>
+                {defaultTitle}
+            </span>
+        );
     }
     if (typeof title === 'string') {
         return (
-            <span className={className}>{translate(title, { _: title })}</span>
+            <span className={className} {...rest}>
+                {translate(title, { _: title })}
+            </span>
         );
     }
-    return React.cloneElement(title, { className, record });
+    return React.cloneElement(title, { className, record, ...rest });
 };
 
 Title.propTypes = {

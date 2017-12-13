@@ -41,10 +41,13 @@ export class SaveButton extends Component {
             classes = {},
             saving,
             label = 'ra.action.save',
+            invalid,
             raised = true,
             translate,
+            handleSubmitWithRedirect,
             submitOnEnter,
             redirect,
+            ...rest
         } = this.props;
         const type = submitOnEnter ? 'submit' : 'button';
         return (
@@ -54,6 +57,7 @@ export class SaveButton extends Component {
                 type={type}
                 onClick={this.handleClick}
                 color={saving ? 'default' : 'primary'}
+                {...rest}
             >
                 {saving && saving.redirect === redirect ? (
                     <CircularProgress
@@ -76,6 +80,7 @@ SaveButton.propTypes = {
     handleSubmitWithRedirect: PropTypes.func,
     label: PropTypes.string,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    invalid: PropTypes.bool,
     raised: PropTypes.bool,
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
@@ -93,7 +98,11 @@ const mapStateToProps = state => ({
 
 const enhance = compose(
     translate,
-    connect(mapStateToProps),
+    connect(
+        mapStateToProps,
+        {} // Avoid connect passing dispatch in props
+    ),
     withStyles(styles)
 );
+
 export default enhance(SaveButton);

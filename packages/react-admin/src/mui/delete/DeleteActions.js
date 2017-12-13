@@ -38,8 +38,9 @@ const DeleteActions = ({
     hasEdit,
     hasList,
     hasShow,
+    ...rest
 }) => (
-    <CardActions className={className}>
+    <CardActions className={className} {...rest}>
         {hasList && <ListButton basePath={basePath} />}
         {hasEdit && <EditButton basePath={basePath} record={data} />}
         {hasShow && <ShowButton basePath={basePath} record={data} />}

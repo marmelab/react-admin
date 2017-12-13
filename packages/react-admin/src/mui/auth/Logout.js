@@ -19,8 +19,12 @@ const styles = {
  *
  * Used for the Logout Menu item in the sidebar
  */
-const Logout = ({ classes, className, translate, userLogout }) => (
-    <MenuItem className={classnames('logout', className)} onClick={userLogout}>
+const Logout = ({ classes, className, translate, userLogout, ...rest }) => (
+    <MenuItem
+        className={classnames('logout', className)}
+        onClick={userLogout}
+        {...rest}
+    >
         <ExitIcon className={classes.iconPaddingStyle} />
         {translate('ra.auth.logout')}
     </MenuItem>

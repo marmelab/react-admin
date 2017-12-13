@@ -38,6 +38,7 @@ const CreateButton = ({
     classes = {},
     translate,
     label = 'ra.action.create',
+    ...rest
 }) => (
     <Responsive
         small={
@@ -47,6 +48,7 @@ const CreateButton = ({
                 color="primary"
                 className={classnames(classes.floating, className)}
                 to={`${basePath}/create`}
+                {...rest}
             >
                 <ContentAdd />
             </Button>
@@ -57,6 +59,7 @@ const CreateButton = ({
                 color="primary"
                 to={`${basePath}/create`}
                 className={classnames(classes.desktopLink, className)}
+                {...rest}
             >
                 <ContentAdd className={classes.iconPaddingStyle} />
                 {label && translate(label)}

@@ -127,15 +127,20 @@ export class Delete extends Component {
             actions = <DefaultActions />,
             className,
             classes = {},
+            crudGetOne,
+            crudDelete,
             title,
             id,
             data,
             isLoading,
+            hasCreate,
+            hasDelete,
             hasEdit,
             hasShow,
             hasList,
             resource,
             translate,
+            ...rest
         } = this.props;
         const basePath = this.getBasePath();
 
@@ -155,7 +160,7 @@ export class Delete extends Component {
         );
 
         return (
-            <div className={className}>
+            <div className={className} {...rest}>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}
@@ -212,6 +217,8 @@ Delete.propTypes = {
     crudDelete: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,
     data: PropTypes.object,
+    hasCreate: PropTypes.bool,
+    hasDelete: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
     hasList: PropTypes.bool,

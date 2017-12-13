@@ -38,6 +38,35 @@ export class TabbedForm extends Component {
 
     render() {
         const {
+            anyTouched,
+            asyncValidate,
+            asyncValidating,
+            clearSubmit,
+            dirty,
+            handleSubmit,
+            initialized,
+            initialValues,
+            pristine,
+            submitting,
+            submitFailed,
+            submitSucceeded,
+            valid,
+            pure,
+            triggerSubmit,
+            clearSubmitErrors,
+            clearAsyncError,
+            blur,
+            change,
+            destroy,
+            dispatch,
+            initialize,
+            reset,
+            touch,
+            untouch,
+            validate,
+            save,
+            autofill,
+            submit,
             basePath,
             children,
             className,
@@ -50,12 +79,14 @@ export class TabbedForm extends Component {
             toolbar,
             translate,
             version,
+            ...rest
         } = this.props;
 
         return (
             <form
                 className={classnames('tabbed-form', className)}
                 key={version}
+                {...rest}
             >
                 <Tabs value={this.state.value} onChange={this.handleChange}>
                     {Children.map(

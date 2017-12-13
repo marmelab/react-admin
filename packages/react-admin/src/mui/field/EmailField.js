@@ -3,15 +3,27 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
 
-const EmailField = ({ className, source, record = {} }) => (
-    <a className={className} href={`mailto:${get(record, source)}`}>
+const EmailField = ({
+    addLabel,
+    basePath,
+    className,
+    cellClassName,
+    headerClassName,
+    source,
+    record = {},
+    ...rest
+}) => (
+    <a className={className} href={`mailto:${get(record, source)}`} {...rest}>
         {get(record, source)}
     </a>
 );
 
 EmailField.propTypes = {
     addLabel: PropTypes.bool,
+    basePath: PropTypes.string,
     className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,

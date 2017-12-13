@@ -18,12 +18,19 @@ const styles = {
     },
 };
 
-export const LoadingIndicator = ({ classes, className, isLoading, width }) =>
+export const LoadingIndicator = ({
+    classes,
+    className,
+    isLoading,
+    width,
+    ...rest
+}) =>
     isLoading ? (
         <CircularProgress
             className={classNames('app-loader', classes.loader, className)}
             size={width === 'xs' || width === 'sm' ? 20 : 30}
             thickness={2}
+            {...rest}
         />
     ) : null;
 
@@ -39,7 +46,10 @@ const mapStateToProps = state => ({
 });
 
 export default compose(
-    connect(mapStateToProps),
+    connect(
+        mapStateToProps,
+        {} // Avoid connect passing dispatch in props
+    ),
     withStyles(styles),
     withWidth()
 )(LoadingIndicator);

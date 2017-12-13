@@ -46,6 +46,7 @@ export class Filter extends Component {
             showFilter,
             displayedFilters,
             filterValues,
+            ...rest
         } = this.props;
         return (
             <FilterButton
@@ -55,6 +56,7 @@ export class Filter extends Component {
                 showFilter={showFilter}
                 displayedFilters={displayedFilters}
                 filterValues={filterValues}
+                {...rest}
             />
         );
     }
@@ -67,6 +69,7 @@ export class Filter extends Component {
             hideFilter,
             displayedFilters,
             filterValues,
+            ...rest
         } = this.props;
         return (
             <FilterForm
@@ -77,6 +80,7 @@ export class Filter extends Component {
                 displayedFilters={displayedFilters}
                 initialValues={filterValues}
                 setFilters={this.setFilters}
+                {...rest}
             />
         );
     }

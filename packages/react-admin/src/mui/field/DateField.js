@@ -39,12 +39,17 @@ const toLocaleStringSupportsLocales = (() => {
  */
 
 export const DateField = ({
+    addLabel,
+    basePath,
     className,
+    cellClassName,
+    headerClassName,
     locales,
     options,
     record,
     showTime = false,
     source,
+    ...rest
 }) => {
     if (!record) return null;
     const value = get(record, source);
@@ -58,12 +63,19 @@ export const DateField = ({
           ? date.toLocaleDateString(locales, options)
           : date.toLocaleDateString();
 
-    return <span className={className}>{dateString}</span>;
+    return (
+        <span className={className} {...rest}>
+            {dateString}
+        </span>
+    );
 };
 
 DateField.propTypes = {
     addLabel: PropTypes.bool,
+    basePath: PropTypes.string,
     className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
     label: PropTypes.string,
     locales: PropTypes.oneOfType([
         PropTypes.string,

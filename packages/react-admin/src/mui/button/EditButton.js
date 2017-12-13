@@ -28,12 +28,14 @@ const EditButton = ({
     label = 'ra.action.edit',
     record = {},
     translate,
+    ...rest
 }) => (
     <Button
         className={classnames(classes.link, className)}
         component={Link}
         color="primary"
         to={linkToRecord(basePath, record.id)}
+        {...rest}
     >
         <ContentCreate className={classes.iconPaddingStyle} />
         {label && translate(label)}

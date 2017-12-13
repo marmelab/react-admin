@@ -205,6 +205,15 @@ export class List extends Component {
             actions = <DefaultActions />,
             resource,
             hasCreate,
+            hasEdit,
+            hasDelete,
+            hasList,
+            hasShow,
+            filter,
+            filterValues,
+            crudGetList,
+            changeListParams,
+            perPage,
             title,
             data,
             ids,
@@ -212,9 +221,21 @@ export class List extends Component {
             isLoading,
             translate,
             version,
+            push,
+            history,
+            locale,
+            location,
+            match,
+            options,
+            params,
+            permissions,
+            query: q,
+            sort,
+            theme,
+            ...rest
         } = this.props;
         const query = this.getQuery();
-        const filterValues = query.filter;
+        const queryFilterValues = query.filter;
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
@@ -229,7 +250,10 @@ export class List extends Component {
         );
 
         return (
-            <div className={classnames('list-page', classes.root, className)}>
+            <div
+                className={classnames('list-page', classes.root, className)}
+                {...rest}
+            >
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         className={classes.header}
@@ -240,7 +264,7 @@ export class List extends Component {
                         actionProps={{
                             resource,
                             filters,
-                            filterValues,
+                            filterValues: queryFilterValues,
                             basePath,
                             hasCreate,
                             displayedFilters: this.state,
@@ -252,7 +276,7 @@ export class List extends Component {
                         React.cloneElement(filters, {
                             resource,
                             hideFilter: this.hideFilter,
-                            filterValues,
+                            filterValues: queryFilterValues,
                             displayedFilters: this.state,
                             setFilters: this.setFilters,
                             context: 'form',
@@ -315,6 +339,10 @@ List.propTypes = {
     data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     hasCreate: PropTypes.bool.isRequired,
+    hasEdit: PropTypes.bool.isRequired,
+    hasDelete: PropTypes.bool.isRequired,
+    hasList: PropTypes.bool.isRequired,
+    hasShow: PropTypes.bool.isRequired,
     ids: PropTypes.array,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,

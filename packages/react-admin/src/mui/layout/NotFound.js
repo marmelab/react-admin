@@ -44,10 +44,10 @@ function goBack() {
     history.go(-1);
 }
 
-const NotFound = ({ classes, className, translate }) => (
-    <div className={classnames(classes.container, className)}>
+const NotFound = ({ classes, className, translate, title, ...rest }) => (
+    <div className={classnames(classes.container, className)} {...rest}>
         <Hidden mdUp>
-            <AppBarMobile />
+            <AppBarMobile title={title} />
         </Hidden>
         <div className={classes.message}>
             <HotTub className={classes.icon} />
@@ -65,6 +65,7 @@ const NotFound = ({ classes, className, translate }) => (
 NotFound.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
+    title: PropTypes.string,
     translate: PropTypes.func.isRequired,
 };
 

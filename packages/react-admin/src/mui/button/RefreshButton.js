@@ -34,13 +34,21 @@ class RefreshButton extends Component {
     };
 
     render() {
-        const { className, classes = {}, label, translate } = this.props;
+        const {
+            className,
+            classes = {},
+            label,
+            translate,
+            refreshView,
+            ...rest
+        } = this.props;
 
         return (
             <Button
                 className={className}
                 color="primary"
                 onClick={this.handleClick}
+                {...rest}
             >
                 <NavigationRefresh className={classes.iconPaddingStyle} />
                 {label && translate(label)}

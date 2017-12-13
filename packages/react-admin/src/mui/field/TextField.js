@@ -3,13 +3,29 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
 
-const TextField = ({ className, source, record = {} }) => {
-    return <span className={className}>{get(record, source)}</span>;
+const TextField = ({
+    addLabel,
+    basePath,
+    className,
+    cellClassName,
+    headerClassName,
+    source,
+    record = {},
+    ...rest
+}) => {
+    return (
+        <span className={className} {...rest}>
+            {get(record, source)}
+        </span>
+    );
 };
 
 TextField.propTypes = {
     addLabel: PropTypes.bool,
+    basePath: PropTypes.string,
     className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
