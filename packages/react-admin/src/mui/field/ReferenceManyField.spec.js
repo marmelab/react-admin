@@ -155,4 +155,25 @@ describe('<ReferenceManyField />', () => {
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
         assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), [1, 2]);
     });
+
+    it('should support custom source', () => {
+        const crudGetManyReference = jest.fn(() => {});
+
+        shallow(
+            <ReferenceManyField
+                resource="posts"
+                reference="comments"
+                target="post_id"
+                basePath=""
+                record={{ id: 'not me', customId: 1 }}
+                source="customId"
+                crudGetManyReference={crudGetManyReference}
+            >
+                <SingleFieldList>
+                    <TextField source="title" />
+                </SingleFieldList>
+            </ReferenceManyField>
+        );
+        assert.equal(crudGetManyReference.mock.calls[0][2], 1);
+    });
 });
