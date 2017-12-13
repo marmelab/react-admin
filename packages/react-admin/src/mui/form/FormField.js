@@ -46,6 +46,7 @@ export class FormField extends Component {
                 {...props}
                 name={props.source}
                 component={component}
+                validate={validate}
                 isRequired={isRequired(validate)}
             />
         );
