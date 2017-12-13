@@ -45,9 +45,9 @@ class RefreshButton extends Component {
 }
 
 const enhance = compose(
+    translate,
     connect(null, { refreshView: refreshViewAction }),
-    withStyles(styles),
-    translate
+    withStyles(styles)
 );
 
 export default enhance(RefreshButton);
