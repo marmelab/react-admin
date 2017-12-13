@@ -70,9 +70,10 @@ export class TabbedShowLayout extends Component {
             record,
             resource,
             basePath,
+            version,
         } = this.props;
         return (
-            <div className={className}>
+            <div className={className} key={version}>
                 <Tabs value={this.state.value} onChange={this.handleChange}>
                     {Children.map(
                         children,
@@ -112,6 +113,7 @@ TabbedShowLayout.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     basePath: PropTypes.string,
+    version: PropTypes.number,
 };
 
 TabbedShowLayout.defaultProps = {
