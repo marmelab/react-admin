@@ -45,7 +45,9 @@ const sanitizeRestProps = ({
     valid,
     hideFilter,
     displayedFilters,
+    setFilter,
     setFilters,
+    filterValues,
     pure,
     triggerSubmit,
     clearSubmitErrors,
@@ -177,7 +179,8 @@ const enhance = compose(
     reduxForm({
         form: 'filterForm',
         enableReinitialize: true,
-        onChange: (values, dispatch, props) => props.setFilters(values),
+        onChange: (values, dispatch, props) =>
+            props && props.setFilters(values),
     })
 );
 

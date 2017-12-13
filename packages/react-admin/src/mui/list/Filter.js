@@ -41,13 +41,17 @@ export class Filter extends Component {
     renderButton() {
         const {
             classes = {},
+            context,
+            debounce,
             resource,
             children,
             showFilter,
+            hideFilter,
             displayedFilters,
             filterValues,
             ...rest
         } = this.props;
+
         return (
             <FilterButton
                 className={classes.button}
@@ -64,13 +68,18 @@ export class Filter extends Component {
     renderForm() {
         const {
             classes = {},
+            context,
+            debounce,
             resource,
             children,
             hideFilter,
             displayedFilters,
+            showFilter,
             filterValues,
+            setFilters,
             ...rest
         } = this.props;
+
         return (
             <FilterForm
                 className={classes.form}
