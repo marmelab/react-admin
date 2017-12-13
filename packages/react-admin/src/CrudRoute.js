@@ -14,7 +14,7 @@ const CrudRoute = ({ resource, list, create, edit, show, remove, options }) => {
         hasDelete: !!remove,
     };
     const restrictPage = (component, route) => {
-        const AuthenticatedPage = routeProps => (
+        const AuthenticatedPage = ({ staticContext, ...routeProps }) => (
             <WithPermissions
                 authParams={{ resource, route }}
                 {...routeProps}

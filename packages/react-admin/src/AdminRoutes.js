@@ -70,6 +70,7 @@ export class AdminRoutes extends Component {
             resources = [],
             dashboard,
             catchAll,
+            title,
         } = this.props;
 
         return (
@@ -126,7 +127,10 @@ export class AdminRoutes extends Component {
                         />
                     )
                 )}
-                <Route component={catchAll || NotFound} />
+                <Route
+                    render={() =>
+                        React.createElement(catchAll || NotFound, { title })}
+                />
             </Switch>
         );
     }
