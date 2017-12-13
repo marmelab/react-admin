@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import EmailField from './EmailField';
 
 describe('<EmailField />', () => {
-    it('should render as an email link', () => {
+    test('should render as an email link', () => {
         const record = { foo: 'foo@bar.com' };
         const wrapper = shallow(<EmailField record={record} source="foo" />);
         assert.equal(
@@ -13,7 +13,7 @@ describe('<EmailField />', () => {
         );
     });
 
-    it('should handle deep fields', () => {
+    test('should handle deep fields', () => {
         const record = { foo: { bar: 'foo@bar.com' } };
         const wrapper = shallow(
             <EmailField record={record} source="foo.bar" />
@@ -24,7 +24,7 @@ describe('<EmailField />', () => {
         );
     });
 
-    it('should display an email (mailto) link', () => {
+    test('should display an email (mailto) link', () => {
         const record = { email: 'hal@kubrickcorp.com' };
         const wrapper = shallow(<EmailField record={record} source="email" />);
         assert.equal(
@@ -33,7 +33,7 @@ describe('<EmailField />', () => {
         );
     });
 
-    it('should use custom className', () =>
+    test('should use custom className', () =>
         assert.deepEqual(
             shallow(
                 <EmailField

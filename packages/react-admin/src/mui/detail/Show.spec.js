@@ -20,7 +20,7 @@ describe('<Show />', () => {
         version: 1,
     };
 
-    it('should display correctly when called with a child', () => {
+    test('should display correctly when called with a child', () => {
         const Foo = () => <div />;
         const wrapper = shallow(
             <Show {...defaultProps}>
@@ -32,7 +32,7 @@ describe('<Show />', () => {
         expect(inner.length).toEqual(1);
     });
 
-    it('should display children inputs of SimpleShowLayout', () => {
+    test('should display children inputs of SimpleShowLayout', () => {
         const wrapper = shallow(
             <Show {...defaultProps}>
                 <SimpleShowLayout>

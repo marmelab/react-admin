@@ -28,7 +28,7 @@ describe('<AdminRoutes>', () => {
             remove: PostDelete,
         },
     ];
-    it('should show dashboard on / when provided', () => {
+    test('should show dashboard on / when provided', () => {
         const wrapper = render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/']}>
@@ -42,7 +42,7 @@ describe('<AdminRoutes>', () => {
         );
         assert.equal(html(wrapper), '<div>Dashboard</div>');
     });
-    it('should show resource list on /[resourcename]', () => {
+    test('should show resource list on /[resourcename]', () => {
         const wrapper = render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/posts']}>
@@ -55,7 +55,7 @@ describe('<AdminRoutes>', () => {
         );
         assert.equal(html(wrapper), '<div>PostList</div>');
     });
-    it('should show resource edit on /[resourcename]/:id', () => {
+    test('should show resource edit on /[resourcename]/:id', () => {
         const wrapper = render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/posts/12']}>
@@ -68,7 +68,7 @@ describe('<AdminRoutes>', () => {
         );
         assert.equal(html(wrapper), '<div>PostEdit</div>');
     });
-    it('should show resource show on /[resourcename]/:id/show', () => {
+    test('should show resource show on /[resourcename]/:id/show', () => {
         const wrapper = render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/posts/12/show']}>
@@ -81,7 +81,7 @@ describe('<AdminRoutes>', () => {
         );
         assert.equal(html(wrapper), '<div>PostShow</div>');
     });
-    it('should show resource delete on /[resourcename]/:id/delete', () => {
+    test('should show resource delete on /[resourcename]/:id/delete', () => {
         const wrapper = render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/posts/12/delete']}>
@@ -94,7 +94,7 @@ describe('<AdminRoutes>', () => {
         );
         assert.equal(html(wrapper), '<div>PostDelete</div>');
     });
-    it('should accept custom routes', () => {
+    test('should accept custom routes', () => {
         const customRoutes = [<Route path="/custom" component={Custom} />]; // eslint-disable-line react/jsx-key
         const wrapper = render(
             <Provider store={store}>
@@ -110,7 +110,7 @@ describe('<AdminRoutes>', () => {
         assert.equal(html(wrapper), '<div>Custom</div>');
     });
 
-    it('should accept a function as children and declare the returned resources', async () => {
+    test('should accept a function as children and declare the returned resources', async () => {
         const declareResources = jest.fn();
         const children = jest.fn(() =>
             resources.map(resource => (
@@ -135,7 +135,7 @@ describe('<AdminRoutes>', () => {
         assert.deepEqual(declareResources.mock.calls[0][0], resources);
     });
 
-    it('should accept a promise as children and declare the returned resources', async () => {
+    test('should accept a promise as children and declare the returned resources', async () => {
         const declareResources = jest.fn();
         const Foo = () => <span />;
 

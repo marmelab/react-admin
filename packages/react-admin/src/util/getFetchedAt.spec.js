@@ -3,7 +3,7 @@ import assert from 'assert';
 import getFetchedAt from './getFetchedAt';
 
 describe('getFetchedAt', () => {
-    it('should return now date for every newRecordsId', () => {
+    test('should return now date for every newRecordsId', () => {
         const cacheDuration = 10 * 60 * 1000;
         const now = new Date();
         const newRecordIds = [1, 2, 3];
@@ -15,7 +15,7 @@ describe('getFetchedAt', () => {
         });
     });
 
-    it('should keep old date if it is still valid', () => {
+    test('should keep old date if it is still valid', () => {
         const cacheDuration = 10 * 60 * 1000;
         const now = new Date();
         const newRecordIds = [1, 2, 3];
@@ -37,7 +37,7 @@ describe('getFetchedAt', () => {
         );
     });
 
-    it('should discard old date if it is not valid anymore', () => {
+    test('should discard old date if it is not valid anymore', () => {
         const cacheDuration = 10 * 60 * 1000;
         const now = new Date();
         const newRecordIds = [1, 2, 3];
@@ -58,7 +58,7 @@ describe('getFetchedAt', () => {
         );
     });
 
-    it('should update old date if id present in newRecordsId even if not valid anymore', () => {
+    test('should update old date if id present in newRecordsId even if not valid anymore', () => {
         const cacheDuration = 10 * 60 * 1000;
         const now = new Date();
         const newRecordIds = [1, 2, 3];

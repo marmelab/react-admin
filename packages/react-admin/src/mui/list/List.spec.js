@@ -20,7 +20,7 @@ describe('<List />', () => {
         translate: () => {},
     };
 
-    it('should display a no results text when there is no result', () => {
+    test('should display a no results text when there is no result', () => {
         const wrapper = shallow(
             <List
                 {...defaultProps}
@@ -39,7 +39,7 @@ describe('<List />', () => {
         assert.equal(textElement.text(), 'ra.navigation.no_results');
     });
 
-    it('should not display a no results text when there are results', () => {
+    test('should not display a no results text when there are results', () => {
         const wrapper = shallow(
             <List
                 {...defaultProps}

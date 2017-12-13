@@ -6,7 +6,7 @@ import { FormField } from './FormField';
 
 describe('<FormField>', () => {
     const Foo = () => <div />;
-    it('should render a <Field/> component for the input component', () => {
+    test('should render a <Field/> component for the input component', () => {
         const wrapper = shallow(
             <FormField
                 source="title"
@@ -18,7 +18,7 @@ describe('<FormField>', () => {
         assert.equal(component.length, 1);
         assert.equal(wrapper.prop('component'), Foo);
     });
-    it('should not initialize the form if no default value', () => {
+    test('should not initialize the form if no default value', () => {
         const initializeForm = jest.fn();
         shallow(
             <FormField
@@ -29,7 +29,7 @@ describe('<FormField>', () => {
         );
         assert.equal(initializeForm.mock.calls.length, 0);
     });
-    it('should initialize the form with default value on mount', () => {
+    test('should initialize the form with default value on mount', () => {
         const initializeForm = jest.fn();
         shallow(
             <FormField
@@ -42,7 +42,7 @@ describe('<FormField>', () => {
         assert.equal(initializeForm.mock.calls.length, 1);
         assert.deepEqual(initializeForm.mock.calls[0][0], { title: 2 });
     });
-    it('should not render a <Field /> component the field has an input', () => {
+    test('should not render a <Field /> component the field has an input', () => {
         const wrapper = shallow(
             <FormField initializeForm={() => true} component={Foo} input={{}} />
         );

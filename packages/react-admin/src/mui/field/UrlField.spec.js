@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import UrlField from './UrlField';
 
 describe('<UrlField />', () => {
-    it('should display a link', () => {
+    test('should display a link', () => {
         const record = { website: 'https://en.wikipedia.org/wiki/HAL_9000' };
         const wrapper = shallow(<UrlField record={record} source="website" />);
         assert.equal(
@@ -13,7 +13,7 @@ describe('<UrlField />', () => {
         );
     });
 
-    it('should handle deep fields', () => {
+    test('should handle deep fields', () => {
         const record = {
             foo: { website: 'https://en.wikipedia.org/wiki/HAL_9000' },
         };

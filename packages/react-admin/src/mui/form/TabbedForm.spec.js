@@ -9,7 +9,7 @@ const translate = label => label;
 const muiTheme = { textField: { errorColor: 'red' } };
 
 describe('<TabbedForm />', () => {
-    it('should render tabs', () => {
+    test('should render tabs', () => {
         const wrapper = shallow(
             <TabbedForm
                 translate={translate}
@@ -26,7 +26,7 @@ describe('<TabbedForm />', () => {
         assert.equal(tabs.length, 1);
     });
 
-    it('should display <Toolbar />', () => {
+    test('should display <Toolbar />', () => {
         const wrapper = shallow(
             <TabbedForm
                 translate={translate}
@@ -42,7 +42,7 @@ describe('<TabbedForm />', () => {
         assert.equal(toolbar.length, 1);
     });
 
-    it('should pass submitOnEnter to <Toolbar />', () => {
+    test('should pass submitOnEnter to <Toolbar />', () => {
         const handleSubmit = () => {};
         const wrapper1 = shallow(
             <TabbedForm
@@ -69,7 +69,7 @@ describe('<TabbedForm />', () => {
         assert.strictEqual(button2.prop('submitOnEnter'), true);
     });
 
-    it('should set the style of an inactive Tab button with errors', () => {
+    test('should set the style of an inactive Tab button with errors', () => {
         const wrapper = shallow(
             <TabbedForm
                 translate={translate}
@@ -89,7 +89,7 @@ describe('<TabbedForm />', () => {
         assert.equal(tab2.prop('className'), 'form-tab error');
     });
 
-    it('should not set the style of an active Tab button with errors', () => {
+    test('should not set the style of an active Tab button with errors', () => {
         const wrapper = shallow(
             <TabbedForm
                 translate={translate}
@@ -110,7 +110,7 @@ describe('<TabbedForm />', () => {
     });
 
     describe('findTabsWithErrors', () => {
-        it('should find the tabs containing errors', () => {
+        test('should find the tabs containing errors', () => {
             const collectErrors = () => ({
                 field1: 'required',
                 field5: 'required',

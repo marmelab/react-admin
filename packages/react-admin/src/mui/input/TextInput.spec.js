@@ -11,7 +11,7 @@ describe('<TextInput />', () => {
         input: {},
     };
 
-    it('should use a mui TextField', () => {
+    test('should use a mui TextField', () => {
         const wrapper = shallow(
             <TextInput {...defaultProps} input={{ value: 'hello' }} />
         );
@@ -21,7 +21,7 @@ describe('<TextInput />', () => {
         assert.equal(TextFieldElement.prop('type'), 'text');
     });
 
-    it('should use a mui TextField', () => {
+    test('should use a mui TextField', () => {
         const wrapper = shallow(
             <TextInput {...defaultProps} type="password" />
         );
@@ -30,7 +30,7 @@ describe('<TextInput />', () => {
         assert.equal(TextFieldElement.prop('type'), 'password');
     });
 
-    it('should call redux-form onBlur handler when blurred', () => {
+    test('should call redux-form onBlur handler when blurred', () => {
         const onBlur = jest.fn();
         const wrapper = shallow(
             <TextInput {...defaultProps} input={{ onBlur }} />
@@ -42,7 +42,7 @@ describe('<TextInput />', () => {
     });
 
     describe('error message', () => {
-        it('should not be displayed if field is pristine', () => {
+        test('should not be displayed if field is pristine', () => {
             const wrapper = shallow(
                 <TextInput {...defaultProps} meta={{ touched: false }} />
             );
@@ -50,7 +50,7 @@ describe('<TextInput />', () => {
             assert.equal(TextFieldElement.prop('helperText'), false);
         });
 
-        it('should not be displayed if field has been touched but is valid', () => {
+        test('should not be displayed if field has been touched but is valid', () => {
             const wrapper = shallow(
                 <TextInput
                     {...defaultProps}
@@ -61,7 +61,7 @@ describe('<TextInput />', () => {
             assert.equal(TextFieldElement.prop('helperText'), false);
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
+        test('should be displayed if field has been touched and is invalid', () => {
             const wrapper = shallow(
                 <TextInput
                     {...defaultProps}

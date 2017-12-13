@@ -17,7 +17,7 @@ describe('<FileInput />', () => {
         delete global.FileReader;
     });
 
-    it('should display a dropzone', () => {
+    test('should display a dropzone', () => {
         const wrapper = shallow(
             <FileInput
                 input={{
@@ -33,7 +33,7 @@ describe('<FileInput />', () => {
         assert.equal(wrapper.find('Dropzone').length, 1);
     });
 
-    it('should correctly update upon drop when allowing a single file', () => {
+    test('should correctly update upon drop when allowing a single file', () => {
         const onChange = jest.fn();
 
         const wrapper = shallow(
@@ -56,7 +56,7 @@ describe('<FileInput />', () => {
         });
     });
 
-    it('should correctly update upon removal when allowing a single file', () => {
+    test('should correctly update upon removal when allowing a single file', () => {
         const onChange = jest.fn();
 
         const wrapper = shallow(
@@ -76,7 +76,7 @@ describe('<FileInput />', () => {
         assert.deepEqual(onChange.mock.calls[0][0], null);
     });
 
-    it('should correctly update upon drop when allowing multiple files', () => {
+    test('should correctly update upon drop when allowing multiple files', () => {
         const onChange = jest.fn();
 
         const wrapper = shallow(
@@ -103,7 +103,7 @@ describe('<FileInput />', () => {
         ]);
     });
 
-    it('should correctly update upon removal when allowing multiple files', () => {
+    test('should correctly update upon removal when allowing multiple files', () => {
         const onChange = jest.fn();
 
         const wrapper = shallow(
@@ -126,7 +126,7 @@ describe('<FileInput />', () => {
         assert.deepEqual(onChange.mock.calls[0][0], [{ src: 'b64_picture' }]);
     });
 
-    it('should display correct label depending multiple property', () => {
+    test('should display correct label depending multiple property', () => {
         const test = (multiple, expectedLabel) => {
             const wrapper = shallow(
                 <FileInput
@@ -148,7 +148,7 @@ describe('<FileInput />', () => {
         test(true, 'ra.input.file.upload_several');
     });
 
-    it('should display correct custom label', () => {
+    test('should display correct custom label', () => {
         const test = expectedLabel => {
             const wrapper = shallow(
                 <FileInput
@@ -173,7 +173,7 @@ describe('<FileInput />', () => {
     });
 
     describe('Image Preview', () => {
-        it('should display file preview using child as preview component', () => {
+        test('should display file preview using child as preview component', () => {
             const wrapper = shallow(
                 <FileInput
                     input={{
@@ -199,7 +199,7 @@ describe('<FileInput />', () => {
             });
         });
 
-        it('should display all files (when several) previews using child as preview component', () => {
+        test('should display all files (when several) previews using child as preview component', () => {
             const wrapper = shallow(
                 <FileInput
                     input={{
@@ -246,7 +246,7 @@ describe('<FileInput />', () => {
             );
         });
 
-        it('should update previews when updating input value', () => {
+        test('should update previews when updating input value', () => {
             const wrapper = shallow(
                 <FileInput
                     source="picture"
@@ -280,7 +280,7 @@ describe('<FileInput />', () => {
             assert.equal(updatedPreviewUrl, 'http://static.acme.com/bar.jpg');
         });
 
-        it('should update previews when dropping a file', () => {
+        test('should update previews when dropping a file', () => {
             const wrapper = shallow(
                 <FileInput source="picture" translate={x => x} input={{}}>
                     <ImageField source="url" />
@@ -303,7 +303,7 @@ describe('<FileInput />', () => {
         });
     });
 
-    it('should allow to remove an image from the input with `FileInputPreview.onRemove`', () => {
+    test('should allow to remove an image from the input with `FileInputPreview.onRemove`', () => {
         const wrapper = shallow(
             <FileInput
                 source="picture"

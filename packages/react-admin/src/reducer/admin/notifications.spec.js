@@ -6,10 +6,10 @@ import {
 import reducer from './notifications';
 
 describe('notifications reducer', () => {
-    it('should return empty notification by default', () => {
+    test('should return empty notification by default', () => {
         assert.deepEqual([], reducer(undefined, {}));
     });
-    it('should set autoHideDuration when passed in payload', () => {
+    test('should set autoHideDuration when passed in payload', () => {
         assert.deepEqual(
             [{ text: 'test', type: 'info', autoHideDuration: 1337 }],
             reducer(undefined, {
@@ -22,7 +22,7 @@ describe('notifications reducer', () => {
             })
         );
     });
-    it('should set text and type upon SHOW_NOTIFICATION', () => {
+    test('should set text and type upon SHOW_NOTIFICATION', () => {
         assert.deepEqual(
             [{ text: 'foo', type: 'warning' }],
             reducer(undefined, {
@@ -34,7 +34,7 @@ describe('notifications reducer', () => {
             })
         );
     });
-    it('should have no elements upon last HIDE_NOTIFICATION', () => {
+    test('should have no elements upon last HIDE_NOTIFICATION', () => {
         assert.deepEqual(
             [],
             reducer([{ text: 'foo', type: 'warning' }], {
@@ -42,7 +42,7 @@ describe('notifications reducer', () => {
             })
         );
     });
-    it('should have one less notification upon HIDE_NOTIFICATION with multiple notifications', () => {
+    test('should have one less notification upon HIDE_NOTIFICATION with multiple notifications', () => {
         const notifications = [{ text: 'foo' }, { text: 'bar' }];
         assert.equal(
             notifications.length - 1,

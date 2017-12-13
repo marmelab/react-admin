@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 import { FileInputPreview } from './FileInputPreview';
 
 describe('<FileInputPreview />', () => {
-    it('should call `onRemove` prop when clicking on remove button', () => {
+    test('should call `onRemove` prop when clicking on remove button', () => {
         const onRemoveSpy = jest.fn();
 
         const wrapper = shallow(
@@ -20,7 +20,7 @@ describe('<FileInputPreview />', () => {
         assert.equal(onRemoveSpy.mock.calls.length, 1);
     });
 
-    it('should render passed children', () => {
+    test('should render passed children', () => {
         const wrapper = shallow(
             <FileInputPreview onRemove={() => true}>
                 <div id="child">Child</div>
@@ -31,7 +31,7 @@ describe('<FileInputPreview />', () => {
         assert.equal(child.length, 1);
     });
 
-    it('should clean up generated URLs for preview', () => {
+    test('should clean up generated URLs for preview', () => {
         const file = { preview: 'previewUrl' };
         const revokeObjectURL = jest.fn();
 
@@ -49,7 +49,7 @@ describe('<FileInputPreview />', () => {
         assert.equal(revokeObjectURL.mock.calls[0][0], 'previewUrl');
     });
 
-    it('should not try to clean up preview urls if not passed a File object with a preview', () => {
+    test('should not try to clean up preview urls if not passed a File object with a preview', () => {
         const file = {};
         const revokeObjectURL = jest.fn();
 

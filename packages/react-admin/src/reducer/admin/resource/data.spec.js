@@ -3,7 +3,7 @@ import assert from 'assert';
 import { addRecordsFactory } from './data';
 
 describe('data addRecordsFactory', () => {
-    it('should call getFetchedAt with newRecords ids and oldRecordFetchedAt and return records returned by getFetchedAt', () => {
+    test('should call getFetchedAt with newRecords ids and oldRecordFetchedAt and return records returned by getFetchedAt', () => {
         const newRecords = [{ id: 'record1' }, { id: 'record2' }];
         const oldRecords = {
             fetchedAt: 'previousFetchedAt',
@@ -34,7 +34,7 @@ describe('data addRecordsFactory', () => {
         });
     });
 
-    it('should discard record that do not have their ids returned by getFetchedAt', () => {
+    test('should discard record that do not have their ids returned by getFetchedAt', () => {
         const newRecords = [{ id: 'record1' }, { id: 'record2' }];
         const oldRecords = { record3: 'record3' };
         const getFetchedAt = jest.fn().mockReturnValue({
@@ -53,7 +53,7 @@ describe('data addRecordsFactory', () => {
         });
     });
 
-    it('should keep record that have their ids returned by getFetchedAt', () => {
+    test('should keep record that have their ids returned by getFetchedAt', () => {
         const newRecords = [{ id: 'record1' }, { id: 'record2' }];
         const oldRecords = { record3: 'record3' };
         const getFetchedAt = jest.fn().mockReturnValue({
@@ -74,7 +74,7 @@ describe('data addRecordsFactory', () => {
         });
     });
 
-    it('should replace oldRecord by new record', () => {
+    test('should replace oldRecord by new record', () => {
         const newRecords = [{ id: 'record1' }, { id: 'record2' }];
         const oldRecords = { record1: 'old record 1' };
         const getFetchedAt = jest.fn().mockReturnValue({

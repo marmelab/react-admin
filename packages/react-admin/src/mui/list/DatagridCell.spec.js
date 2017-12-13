@@ -9,7 +9,7 @@ describe('<DatagridCell />', () => {
     Field.defaultProps = {
         type: 'foo',
     };
-    it('should render as a mui <TableRowColumn /> component', () => {
+    test('should render as a mui <TableRowColumn /> component', () => {
         const wrapper = shallow(<DatagridCell field={<Field />} />);
         const col = wrapper.find('withStyles(TableCell)');
         assert.equal(col.length, 1);

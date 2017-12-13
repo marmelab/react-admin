@@ -11,7 +11,7 @@ describe('<RadioButtonGroupInput />', () => {
         translate: x => x,
     };
 
-    it('should use a mui RadioGroup', () => {
+    test('should use a mui RadioGroup', () => {
         const wrapper = shallow(
             <RadioButtonGroupInput {...defaultProps} label="hello" />
         );
@@ -19,7 +19,7 @@ describe('<RadioButtonGroupInput />', () => {
         assert.equal(RadioGroupElement.length, 1);
     });
 
-    it('should use the input parameter value as the initial input value', () => {
+    test('should use the input parameter value as the initial input value', () => {
         const wrapper = shallow(
             <RadioButtonGroupInput {...defaultProps} input={{ value: 2 }} />
         );
@@ -27,7 +27,7 @@ describe('<RadioButtonGroupInput />', () => {
         assert.equal(RadioGroupElement.prop('defaultSelected'), '2');
     });
 
-    it('should use the input parameter value as the selected value', () => {
+    test('should use the input parameter value as the selected value', () => {
         const wrapper = shallow(
             <RadioButtonGroupInput {...defaultProps} input={{ value: 2 }} />
         );
@@ -35,7 +35,7 @@ describe('<RadioButtonGroupInput />', () => {
         assert.equal(RadioGroupElement.prop('valueSelected'), '2');
     });
 
-    it('should render choices as mui Radio components', () => {
+    test('should render choices as mui Radio components', () => {
         const wrapper = shallow(
             <RadioButtonGroupInput
                 {...defaultProps}
@@ -55,7 +55,7 @@ describe('<RadioButtonGroupInput />', () => {
         assert.equal(RadioButtonElement2.prop('label'), 'Female');
     });
 
-    it('should use optionValue as value identifier', () => {
+    test('should use optionValue as value identifier', () => {
         const wrapper = shallow(
             <RadioButtonGroupInput
                 {...defaultProps}
@@ -69,7 +69,7 @@ describe('<RadioButtonGroupInput />', () => {
         assert.equal(RadioButtonElement1.prop('label'), 'Male');
     });
 
-    it('should use optionValue including "." as value identifier', () => {
+    test('should use optionValue including "." as value identifier', () => {
         const wrapper = shallow(
             <RadioButtonGroupInput
                 {...defaultProps}
@@ -83,7 +83,7 @@ describe('<RadioButtonGroupInput />', () => {
         assert.equal(RadioButtonElement1.prop('label'), 'Male');
     });
 
-    it('should use optionText with a string value as text identifier', () => {
+    test('should use optionText with a string value as text identifier', () => {
         const wrapper = shallow(
             <RadioButtonGroupInput
                 {...defaultProps}
@@ -97,7 +97,7 @@ describe('<RadioButtonGroupInput />', () => {
         assert.equal(RadioButtonElement1.prop('label'), 'Male');
     });
 
-    it('should use optionText with a string value including "." as text identifier', () => {
+    test('should use optionText with a string value including "." as text identifier', () => {
         const wrapper = shallow(
             <RadioButtonGroupInput
                 {...defaultProps}
@@ -111,7 +111,7 @@ describe('<RadioButtonGroupInput />', () => {
         assert.equal(RadioButtonElement1.prop('label'), 'Male');
     });
 
-    it('should use optionText with a function value as text identifier', () => {
+    test('should use optionText with a function value as text identifier', () => {
         const wrapper = shallow(
             <RadioButtonGroupInput
                 {...defaultProps}
@@ -125,7 +125,7 @@ describe('<RadioButtonGroupInput />', () => {
         assert.equal(RadioButtonElement1.prop('label'), 'Male');
     });
 
-    it('should use optionText with an element value as text identifier', () => {
+    test('should use optionText with an element value as text identifier', () => {
         const Foobar = ({ record }) => <span>{record.foobar}</span>;
         const wrapper = shallow(
             <RadioButtonGroupInput
@@ -143,7 +143,7 @@ describe('<RadioButtonGroupInput />', () => {
         );
     });
 
-    it('should translate the choices by default', () => {
+    test('should translate the choices by default', () => {
         const wrapper = shallow(
             <RadioButtonGroupInput
                 {...defaultProps}
@@ -159,7 +159,7 @@ describe('<RadioButtonGroupInput />', () => {
         assert.equal(RadioButtonElement1.prop('label'), '**Male**');
     });
 
-    it('should not translate the choices if translateChoice is false', () => {
+    test('should not translate the choices if translateChoice is false', () => {
         const wrapper = shallow(
             <RadioButtonGroupInput
                 {...defaultProps}
