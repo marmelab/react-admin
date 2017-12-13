@@ -92,8 +92,8 @@ const mapStateToProps = state => ({
 });
 
 const enhance = compose(
+    translate,
     connect(mapStateToProps),
-    withStyles(styles),
-    translate
+    withStyles(styles)
 );
 export default enhance(SaveButton);
