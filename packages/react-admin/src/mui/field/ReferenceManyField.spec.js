@@ -174,6 +174,7 @@ describe('<ReferenceManyField />', () => {
                 </SingleFieldList>
             </ReferenceManyField>
         );
+
         assert.equal(crudGetManyReference.mock.calls[0][2], 1);
     });
 });
