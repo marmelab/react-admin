@@ -23,6 +23,14 @@ export class AdminRoutes extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (
+            this.props.resources &&
+            this.props.resources.length === 0 &&
+            prevProps.resources &&
+            prevProps.resources.length !== 0
+        ) {
+            this.getPermissions();
+        }
+        if (
             prevState.permissions !== this.state.permissions &&
             this.state.permissions !== initialPermissions
         ) {
