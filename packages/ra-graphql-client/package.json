@@ -23,18 +23,13 @@
     "graphql"
   ],
   "license": "MIT",
-  "devDependencies": {
-    "react-admin": "^2.0.0-alpha3"
-  },
   "dependencies": {
     "apollo-client": "^1.9.3",
     "graphql": "^0.11.7",
     "graphql-tag": "^2.4.2",
     "lodash.get": "~4.4.2",
     "lodash.merge": "~4.6.0",
-    "pluralize": "~7.0.0"
-  },
-  "peerDependencies": {
+    "pluralize": "~7.0.0",
     "react-admin": "^2.0.0-alpha3"
   }
 }
