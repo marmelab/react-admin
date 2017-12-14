@@ -2,10 +2,10 @@
 
 [![Build Status](https://travis-ci.org/marmelab/ra-data-graphql.svg?branch=master)](https://travis-ci.org/marmelab/ra-data-graphql)
 
-A GraphQL client for [react-admin](https://github.com/marmelab/react-admin/)
+A GraphQL data provider for [react-admin](https://github.com/marmelab/react-admin/)
 built with [Apollo](http://www.apollodata.com/)
 
-A version of the `react-admin` demo using this client is available at https://marmelab.com/react-admin-graphql-demo.<br>
+A version of the `react-admin` demo using this data provider is available at https://marmelab.com/react-admin-graphql-demo.<br>
 
 - [Installation](#installation)
 - [Usage](#installation)
@@ -180,7 +180,7 @@ For example:
 }
 ```
 
-The `queryBuilder` function must return a function which will be called with the same parameters as the react-admin client but must return an object matching the `options` of the ApolloClient [query](http://dev.apollodata.com/core/apollo-client-api.html#ApolloClient.query) method with an additional `parseResponse` function.
+The `queryBuilder` function must return a function which will be called with the same parameters as the react-admin data provider but must return an object matching the `options` of the ApolloClient [query](http://dev.apollodata.com/core/apollo-client-api.html#ApolloClient.query) method with an additional `parseResponse` function.
 
 This `parseResponse` function will be called with an [ApolloQueryResult](http://dev.apollodata.com/core/apollo-client-api.html#ApolloQueryResult) and must returns the data expected by react-admin.
 

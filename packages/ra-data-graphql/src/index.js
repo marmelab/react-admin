@@ -73,7 +73,7 @@ export default async options => {
 
     const buildQuery = buildQueryFactory(introspectionResults, otherOptions);
 
-    const aorClient = (aorFetchType, resource, params) => {
+    const raDataProvider = (aorFetchType, resource, params) => {
         const overridedbuildQuery = get(
             override,
             `${resource}.${aorFetchType}`
@@ -105,7 +105,7 @@ export default async options => {
         return client.mutate(apolloQuery).then(parseResponse);
     };
 
-    aorClient.observeRequest = (aorFetchType, resource, params) => {
+    raDataProvider.observeRequest = (aorFetchType, resource, params) => {
         const { parseResponse, ...query } = buildQuery(
             aorFetchType,
             resource,
@@ -120,7 +120,7 @@ export default async options => {
         return client.watchQuery(apolloQuery).then(parseResponse);
     };
 
-    aorClient.saga = () => {};
+    raDataProvider.saga = () => {};
 
-    return aorClient;
+    return raDataProvider;
 };
