@@ -344,6 +344,27 @@ Input validation functions receive the current field value, and the values of al
 const required = (value, allValues, props) => value ? undefined : props.translate('myroot.validation.required');
 ```
 
+**Tip**: Make sure you store your validation functions or array of functions in a variable that you pass to the input component as it can results in a new function or array at every render and trigger infinite rerender.
+
+```jsx
+import { Edit, SimpleForm, NumberInput, required, minValue, number } from 'react-admin';
+
+const validateStock = [required, number, minValue(0)];
+
+export const ProductEdit = ({ ...props }) => (
+    <Edit {...props}>
+        <SimpleForm defaultValue={{ stock: 0 }}>
+            ...
+            <NumberInput
+                source="stock"
+                validate={validateStock}
+            />
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
 **Tip**: The props of your Input components are passed to a redux-form `<Field>` component. So in addition to `validate`, you can also use `warn`.
 
 **Tip**: You can use *both* Form validation and input validation.
