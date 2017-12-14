@@ -11,7 +11,7 @@ A version of the `react-admin` demo using this client is available at https://ma
 - [Usage](#installation)
 - [Options](#options)
 
-This is a very low level library which is not meant to be used directly unless you really want full control or are building a custom GraphQL client.
+This is a very low level library which is not meant to be used directly unless you really want full control or are building a custom GraphQL data provider.
 
 It provides the foundations for other GraphQL data provider packages such as [ra-data-graphcool](https://github.com/marmelab/ra-data-graphcool)
 
