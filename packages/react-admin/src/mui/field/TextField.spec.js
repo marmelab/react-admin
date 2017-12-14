@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import TextField from './TextField';
 
 describe('<TextField />', () => {
-    it('should display record specific value as plain text', () => {
+    test('should display record specific value as plain text', () => {
         const record = {
             title: "I'm sorry, Dave. I'm afraid I can't do that.",
         };
@@ -15,7 +15,7 @@ describe('<TextField />', () => {
         );
     });
 
-    it('should handle deep fields', () => {
+    test('should handle deep fields', () => {
         const record = {
             foo: { title: "I'm sorry, Dave. I'm afraid I can't do that." },
         };

@@ -18,7 +18,7 @@ describe('<NumberInput />', () => {
         onFocus: () => {},
     };
 
-    it('should use a mui TextField', () => {
+    test('should use a mui TextField', () => {
         const wrapper = shallow(
             <NumberInput {...defaultProps} input={{ value: 'hello' }} />
         );
@@ -29,7 +29,7 @@ describe('<NumberInput />', () => {
     });
 
     describe('onChange event', () => {
-        it('should be customizable via the `onChange` prop', () => {
+        test('should be customizable via the `onChange` prop', () => {
             const onChange = jest.fn();
 
             const props = { ...defaultProps };
@@ -41,7 +41,7 @@ describe('<NumberInput />', () => {
             assert.equal(onChange.mock.calls[0][0], 3);
         });
 
-        it('should keep calling redux-form original event', () => {
+        test('should keep calling redux-form original event', () => {
             const onChange = jest.fn();
 
             const wrapper = shallow(
@@ -53,7 +53,7 @@ describe('<NumberInput />', () => {
     });
 
     describe('onFocus event', () => {
-        it('should be customizable via the `onFocus` prop', () => {
+        test('should be customizable via the `onFocus` prop', () => {
             const onFocus = jest.fn();
 
             const props = { ...defaultProps };
@@ -65,7 +65,7 @@ describe('<NumberInput />', () => {
             assert.equal(onFocus.mock.calls[0][0], 3);
         });
 
-        it('should keep calling redux-form original event', () => {
+        test('should keep calling redux-form original event', () => {
             const onFocus = jest.fn();
 
             const wrapper = shallow(
@@ -77,7 +77,7 @@ describe('<NumberInput />', () => {
     });
 
     describe('onBlur event', () => {
-        it('should be customizable via the `onBlur` prop', () => {
+        test('should be customizable via the `onBlur` prop', () => {
             const onBlur = jest.fn();
 
             const props = { ...defaultProps };
@@ -87,7 +87,7 @@ describe('<NumberInput />', () => {
             assert.equal(onBlur.mock.calls[0][0], 3);
         });
 
-        it('should keep calling redux-form original event', () => {
+        test('should keep calling redux-form original event', () => {
             const onBlur = jest.fn();
 
             const props = {
@@ -103,7 +103,7 @@ describe('<NumberInput />', () => {
             assert.equal(onBlur.mock.calls[0][0], 3);
         });
 
-        it('should cast value as a numeric one', () => {
+        test('should cast value as a numeric one', () => {
             const onChange = jest.fn();
             const wrapper = shallow(
                 <NumberInput

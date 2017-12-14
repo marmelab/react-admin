@@ -11,7 +11,7 @@ describe('<Filter />', () => {
             resource: 'posts',
         };
 
-        it('should render a redux <FilterForm /> component', () => {
+        test('should render a redux <FilterForm /> component', () => {
             const wrapper = shallow(<Filter {...defaultProps} />);
             const form = wrapper.find(
                 'withStyles(getContext(withProps(ReduxForm)))'
@@ -19,7 +19,7 @@ describe('<Filter />', () => {
             assert.equal(form.length, 1);
         });
 
-        it('should pass `filterValues` as `initialValues` props', () => {
+        test('should pass `filterValues` as `initialValues` props', () => {
             const wrapper = shallow(
                 <Filter {...defaultProps} filterValues={{ q: 'Lorem' }} />
             );

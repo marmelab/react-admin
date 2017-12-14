@@ -3,7 +3,7 @@ import reducer from './index';
 import { DECLARE_RESOURCES } from '../../../actions';
 
 describe('Resources Reducer', () => {
-    it('should return previous state if the action has no resource meta and is not DECLARE_RESOURCES', () => {
+    test('should return previous state if the action has no resource meta and is not DECLARE_RESOURCES', () => {
         const previousState = { previous: true };
         assert.deepEqual(
             reducer(previousState, { type: 'A_TYPE', meta: { foo: 'bar' } }),
@@ -11,7 +11,7 @@ describe('Resources Reducer', () => {
         );
     });
 
-    it('should initialize resources upon DECLARE_RESOURCES', () => {
+    test('should initialize resources upon DECLARE_RESOURCES', () => {
         const postsList = () => {};
         const commentsCreate = () => {};
         const usersEdit = () => {};
@@ -51,7 +51,7 @@ describe('Resources Reducer', () => {
         );
     });
 
-    it('should call inner reducers for each resource when action has a resource meta', () => {
+    test('should call inner reducers for each resource when action has a resource meta', () => {
         const innerReducer = state => state;
         const dataReducer = jest.fn(() => innerReducer);
         const listReducer = jest.fn(() => innerReducer);

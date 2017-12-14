@@ -4,7 +4,7 @@ import { nameRelatedTo } from './oneToMany';
 
 describe('oneToMany', () => {
     describe('oneToMany', () => {
-        it('should name relation based on reference, id, resource and target', () => {
+        test('should name relation based on reference, id, resource and target', () => {
             assert.equal(
                 nameRelatedTo('reference', 'id', 'resource', 'target'),
                 'resource_reference@target_id'
@@ -15,7 +15,7 @@ describe('oneToMany', () => {
             );
         });
 
-        it('should incorporate filter to the name if any', () => {
+        test('should incorporate filter to the name if any', () => {
             assert.equal(
                 nameRelatedTo('reference', 'id', 'resource', 'target', {
                     filter1: 'value1',

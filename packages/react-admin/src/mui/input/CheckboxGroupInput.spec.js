@@ -20,7 +20,7 @@ describe('<CheckboxGroupInput />', () => {
         },
     };
 
-    it('should use a mui Checkbox', () => {
+    test('should use a mui Checkbox', () => {
         const wrapper = shallow(<CheckboxGroupInput {...defaultProps} />);
         const CheckboxElement = wrapper
             .find('withStyles(FormControlLabel)')
@@ -30,7 +30,7 @@ describe('<CheckboxGroupInput />', () => {
         assert.equal(CheckboxElement.length, 1);
     });
 
-    it('should use the input parameter value as the initial input value', () => {
+    test('should use the input parameter value as the initial input value', () => {
         const wrapper = shallow(
             <CheckboxGroupInput
                 {...defaultProps}
@@ -46,7 +46,7 @@ describe('<CheckboxGroupInput />', () => {
         assert.equal(CheckboxElement.prop('checked'), true);
     });
 
-    it('should render choices as mui Checkbox components', () => {
+    test('should render choices as mui Checkbox components', () => {
         const wrapper = shallow(
             <CheckboxGroupInput
                 {...defaultProps}
@@ -66,7 +66,7 @@ describe('<CheckboxGroupInput />', () => {
         assert.equal(CheckboxElement2.prop('label'), 'React');
     });
 
-    it('should use optionValue as value identifier', () => {
+    test('should use optionValue as value identifier', () => {
         const wrapper = shallow(
             <CheckboxGroupInput
                 {...defaultProps}
@@ -80,7 +80,7 @@ describe('<CheckboxGroupInput />', () => {
         assert.equal(CheckboxElement1.prop('label'), 'Bar');
     });
 
-    it('should use optionValue including "." as value identifier', () => {
+    test('should use optionValue including "." as value identifier', () => {
         const wrapper = shallow(
             <CheckboxGroupInput
                 {...defaultProps}
@@ -94,7 +94,7 @@ describe('<CheckboxGroupInput />', () => {
         assert.equal(CheckboxElement1.prop('label'), 'Bar');
     });
 
-    it('should use optionText with a string value as text identifier', () => {
+    test('should use optionText with a string value as text identifier', () => {
         const wrapper = shallow(
             <CheckboxGroupInput
                 {...defaultProps}
@@ -108,7 +108,7 @@ describe('<CheckboxGroupInput />', () => {
         assert.equal(CheckboxElement1.prop('label'), 'Bar');
     });
 
-    it('should use optionText with a string value including "." as text identifier', () => {
+    test('should use optionText with a string value including "." as text identifier', () => {
         const wrapper = shallow(
             <CheckboxGroupInput
                 {...defaultProps}
@@ -122,7 +122,7 @@ describe('<CheckboxGroupInput />', () => {
         assert.equal(CheckboxElement1.prop('label'), 'Bar');
     });
 
-    it('should use optionText with a function value as text identifier', () => {
+    test('should use optionText with a function value as text identifier', () => {
         const wrapper = shallow(
             <CheckboxGroupInput
                 {...defaultProps}
@@ -136,7 +136,7 @@ describe('<CheckboxGroupInput />', () => {
         assert.equal(CheckboxElement1.prop('label'), 'Bar');
     });
 
-    it('should use optionText with an element value as text identifier', () => {
+    test('should use optionText with an element value as text identifier', () => {
         const Foobar = ({ record }) => <span>{record.foobar}</span>;
         const wrapper = shallow(
             <CheckboxGroupInput
@@ -154,7 +154,7 @@ describe('<CheckboxGroupInput />', () => {
         );
     });
 
-    it('should translate the choices by default', () => {
+    test('should translate the choices by default', () => {
         const wrapper = shallow(
             <CheckboxGroupInput
                 {...defaultProps}
@@ -170,7 +170,7 @@ describe('<CheckboxGroupInput />', () => {
         assert.equal(CheckboxElement1.prop('label'), '**Male**');
     });
 
-    it('should not translate the choices if translateChoice is false', () => {
+    test('should not translate the choices if translateChoice is false', () => {
         const wrapper = shallow(
             <CheckboxGroupInput
                 {...defaultProps}

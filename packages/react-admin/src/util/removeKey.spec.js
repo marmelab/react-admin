@@ -16,7 +16,7 @@ describe('removeKey', () => {
         },
     };
 
-    it('remove simple key from target', () => {
+    test('remove simple key from target', () => {
         assert.deepEqual(removeKey(target, 'foo'), {
             deep: {
                 foo: '',
@@ -31,7 +31,7 @@ describe('removeKey', () => {
         });
     });
 
-    it('remove first level deep key from target', () => {
+    test('remove first level deep key from target', () => {
         assert.deepEqual(removeKey(target, 'deep.foo'), {
             foo: 'bar',
             deep: {
@@ -46,7 +46,7 @@ describe('removeKey', () => {
         });
     });
 
-    it('remove deep key from target', () => {
+    test('remove deep key from target', () => {
         assert.deepEqual(removeKey(target, 'deep.deep2.foo'), {
             foo: 'bar',
             deep: {
@@ -59,7 +59,7 @@ describe('removeKey', () => {
         });
     });
 
-    it('remove deep key from target keeping deep object if not empty', () => {
+    test('remove deep key from target keeping deep object if not empty', () => {
         assert.deepEqual(removeKey(target, 'deep.deep3.foo'), {
             foo: 'bar',
             deep: {

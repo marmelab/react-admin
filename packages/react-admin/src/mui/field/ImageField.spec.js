@@ -4,14 +4,14 @@ import { shallow } from 'enzyme';
 import { ImageField } from './ImageField';
 
 describe('<ImageField />', () => {
-    it('should return an empty div when record is not set', () => {
+    test('should return an empty div when record is not set', () => {
         assert.equal(
             shallow(<ImageField source="url" />).html(),
             '<div></div>'
         );
     });
 
-    it('should render an image with correct attributes based on `source` and `title`', () => {
+    test('should render an image with correct attributes based on `source` and `title`', () => {
         const wrapper = shallow(
             <ImageField
                 record={{
@@ -29,7 +29,7 @@ describe('<ImageField />', () => {
         assert.equal(img.prop('title'), 'Hello world!');
     });
 
-    it('should support deep linking', () => {
+    test('should support deep linking', () => {
         const wrapper = shallow(
             <ImageField
                 record={{
@@ -49,7 +49,7 @@ describe('<ImageField />', () => {
         assert.equal(img.prop('title'), 'Hello world!');
     });
 
-    it('should allow setting static string as title', () => {
+    test('should allow setting static string as title', () => {
         const wrapper = shallow(
             <ImageField
                 record={{
@@ -65,7 +65,7 @@ describe('<ImageField />', () => {
         assert.equal(img.prop('title'), 'Hello world!');
     });
 
-    it('should render a list of images with correct attributes based on `src` and `title`', () => {
+    test('should render a list of images with correct attributes based on `src` and `title`', () => {
         const wrapper = shallow(
             <ImageField
                 record={{
@@ -95,7 +95,7 @@ describe('<ImageField />', () => {
         assert.equal(imgs.at(1).prop('title'), 'Bye world!');
     });
 
-    it('should use custom className', () =>
+    test('should use custom className', () =>
         assert.deepEqual(
             shallow(
                 <ImageField

@@ -21,7 +21,7 @@ describe('<Edit />', () => {
         version: 1,
     };
 
-    it('should display correctly when called with a child', () => {
+    test('should display correctly when called with a child', () => {
         const Foo = () => <div />;
         const wrapper = shallow(
             <Edit {...defaultProps}>
@@ -33,7 +33,7 @@ describe('<Edit />', () => {
         expect(inner.length).toEqual(1);
     });
 
-    it('should display children inputs of SimpleForm', () => {
+    test('should display children inputs of SimpleForm', () => {
         const wrapper = shallow(
             <Edit {...defaultProps}>
                 <SimpleForm>

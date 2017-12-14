@@ -12,7 +12,7 @@ describe('<DatagridHeaderCell />', () => {
             updateSort: () => true,
         };
 
-        it('should be enabled when field has a source', () => {
+        test('should be enabled when field has a source', () => {
             const wrapper = shallow(
                 <DatagridHeaderCell
                     currentSort={{}}
@@ -23,7 +23,7 @@ describe('<DatagridHeaderCell />', () => {
             assert.equal(wrapper.find('withStyles(Button)').length, 1);
         });
 
-        it('should be disabled when field has no source', () => {
+        test('should be disabled when field has no source', () => {
             const wrapper = shallow(
                 <DatagridHeaderCell
                     currentSort={{}}
@@ -35,7 +35,7 @@ describe('<DatagridHeaderCell />', () => {
             assert.equal(wrapper.find('withStyles(Button)').length, 0);
         });
 
-        it('should be disabled when sortable prop is explicitly set to false', () => {
+        test('should be disabled when sortable prop is explicitly set to false', () => {
             const wrapper = shallow(
                 <DatagridHeaderCell
                     currentSort={{}}
@@ -47,7 +47,7 @@ describe('<DatagridHeaderCell />', () => {
             assert.equal(wrapper.find('withStyles(Button)').length, 0);
         });
 
-        it('should use cell className if specified', () => {
+        test('should use cell className if specified', () => {
             const wrapper = shallow(
                 <DatagridHeaderCell
                     currentSort={{}}

@@ -11,7 +11,7 @@ describe('<NullableBooleanInput />', () => {
         translate: x => x,
     };
 
-    it('should give three different choices for true, false or unknown', () => {
+    test('should give three different choices for true, false or unknown', () => {
         const wrapper = shallow(
             <NullableBooleanInput source="foo" {...defaultProps} />
         );

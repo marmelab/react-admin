@@ -6,7 +6,7 @@ import { SaveButton } from './SaveButton';
 const translate = label => label;
 
 describe('<SaveButton />', () => {
-    it('should render <Button raised={true}/> when raised is true', () => {
+    test('should render <Button raised={true}/> when raised is true', () => {
         const wrapper = shallow(
             <SaveButton raised={true} translate={translate} />
         );
@@ -15,7 +15,7 @@ describe('<SaveButton />', () => {
         expect(ButtonElement.at(0).prop('raised')).toEqual(true);
     });
 
-    it('should render <Button raised={false}/> when raised is false', () => {
+    test('should render <Button raised={false}/> when raised is false', () => {
         const wrapper = shallow(
             <SaveButton raised={false} translate={translate} />
         );
@@ -24,7 +24,7 @@ describe('<SaveButton />', () => {
         expect(ButtonElement.at(0).prop('raised')).toEqual(false);
     });
 
-    it('should render as submit type when submitOnEnter is true', () => {
+    test('should render as submit type when submitOnEnter is true', () => {
         const raisedButtonWrapper = shallow(
             <SaveButton
                 raised={true}
@@ -44,7 +44,7 @@ describe('<SaveButton />', () => {
         expect(flatButtonWrapper.prop('type')).toEqual('submit');
     });
 
-    it('should render as button type when submitOnEnter is false', () => {
+    test('should render as button type when submitOnEnter is false', () => {
         const raisedButtonWrapper = shallow(
             <SaveButton
                 raised={true}
@@ -64,7 +64,7 @@ describe('<SaveButton />', () => {
         expect(flatButtonWrapper.prop('type')).toEqual('button');
     });
 
-    it('should trigger submit action when clicked if no saving is in progress', () => {
+    test('should trigger submit action when clicked if no saving is in progress', () => {
         const onSubmit = jest.fn();
         const raisedButtonWrapper = shallow(
             <SaveButton
@@ -89,7 +89,7 @@ describe('<SaveButton />', () => {
         expect(onSubmit.mock.calls.length).toEqual(2);
     });
 
-    it('should not trigger submit action when clicked if saving is in progress', () => {
+    test('should not trigger submit action when clicked if saving is in progress', () => {
         const onSubmit = jest.fn();
         const event = { preventDefault: jest.fn() };
 

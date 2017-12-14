@@ -14,7 +14,7 @@ describe('<ReferenceInput />', () => {
     };
     const MyComponent = () => <span id="mycomponent" />;
 
-    it('should not render anything if there is no referenceRecord and allowEmpty is false', () => {
+    test('should not render anything if there is no referenceRecord and allowEmpty is false', () => {
         const wrapper = shallow(
             <ReferenceInput {...defaultProps}>
                 <MyComponent />
@@ -24,7 +24,7 @@ describe('<ReferenceInput />', () => {
         assert.equal(MyComponentElement.length, 0);
     });
 
-    it('should not render enclosed component if allowEmpty is true', () => {
+    test('should not render enclosed component if allowEmpty is true', () => {
         const wrapper = shallow(
             <ReferenceInput {...defaultProps} allowEmpty>
                 <MyComponent />
@@ -34,7 +34,7 @@ describe('<ReferenceInput />', () => {
         assert.equal(MyComponentElement.length, 1);
     });
 
-    it('should call crudGetMatching on mount with default fetch values', () => {
+    test('should call crudGetMatching on mount with default fetch values', () => {
         const crudGetMatching = jest.fn();
         shallow(
             <ReferenceInput
@@ -60,7 +60,7 @@ describe('<ReferenceInput />', () => {
         ]);
     });
 
-    it('should allow to customize crudGetMatching arguments with perPage, sort, and filter props', () => {
+    test('should allow to customize crudGetMatching arguments with perPage, sort, and filter props', () => {
         const crudGetMatching = jest.fn();
         shallow(
             <ReferenceInput
@@ -91,7 +91,7 @@ describe('<ReferenceInput />', () => {
         ]);
     });
 
-    it('should allow to customize crudGetMatching arguments with perPage, sort, and filter props without loosing original default filter', () => {
+    test('should allow to customize crudGetMatching arguments with perPage, sort, and filter props without loosing original default filter', () => {
         const crudGetMatching = jest.fn();
         const wrapper = shallow(
             <ReferenceInput
@@ -126,7 +126,7 @@ describe('<ReferenceInput />', () => {
         ]);
     });
 
-    it('should call crudGetMatching when setFilter is called', () => {
+    test('should call crudGetMatching when setFilter is called', () => {
         const crudGetMatching = jest.fn();
         const wrapper = shallow(
             <ReferenceInput
@@ -155,7 +155,7 @@ describe('<ReferenceInput />', () => {
         ]);
     });
 
-    it('should use custom filterToQuery function prop', () => {
+    test('should use custom filterToQuery function prop', () => {
         const crudGetMatching = jest.fn();
         const wrapper = shallow(
             <ReferenceInput
@@ -185,7 +185,7 @@ describe('<ReferenceInput />', () => {
         ]);
     });
 
-    it('should call crudGetOne on mount if value is set', () => {
+    test('should call crudGetOne on mount if value is set', () => {
         const crudGetOne = jest.fn();
         shallow(
             <ReferenceInput
@@ -200,7 +200,7 @@ describe('<ReferenceInput />', () => {
         assert.deepEqual(crudGetOne.mock.calls[0], ['posts', 5, null, false]);
     });
 
-    it('should pass onChange down to child component', () => {
+    test('should pass onChange down to child component', () => {
         const onChange = jest.fn();
         const wrapper = shallow(
             <ReferenceInput {...defaultProps} allowEmpty onChange={onChange}>
@@ -211,7 +211,7 @@ describe('<ReferenceInput />', () => {
         assert.deepEqual(onChange.mock.calls[0], ['foo']);
     });
 
-    it('should pass meta down to child component', () => {
+    test('should pass meta down to child component', () => {
         const wrapper = shallow(
             <ReferenceInput
                 {...defaultProps}

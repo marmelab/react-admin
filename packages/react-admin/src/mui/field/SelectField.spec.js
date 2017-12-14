@@ -10,16 +10,16 @@ describe('<SelectField />', () => {
         translate: x => x,
     };
 
-    it('should return null when the record is not set', () =>
+    test('should return null when the record is not set', () =>
         assert.equal(shallow(<SelectField {...defaultProps} />).html(), null));
 
-    it('should return null when the record has no value for the source', () =>
+    test('should return null when the record has no value for the source', () =>
         assert.equal(
             shallow(<SelectField {...defaultProps} record={{}} />).html(),
             null
         ));
 
-    it('should return null when the record has a value for the source not in the choices', () =>
+    test('should return null when the record has a value for the source not in the choices', () =>
         assert.equal(
             shallow(
                 <SelectField {...defaultProps} record={{ foo: 2 }} />
@@ -27,7 +27,7 @@ describe('<SelectField />', () => {
             null
         ));
 
-    it('should render the choice', () => {
+    test('should render the choice', () => {
         const wrapper = shallow(
             <SelectField {...defaultProps} record={{ foo: 0 }} />
         );
@@ -35,7 +35,7 @@ describe('<SelectField />', () => {
         assert.equal(chipElement.children().text(), 'hello');
     });
 
-    it('should use custom className', () => {
+    test('should use custom className', () => {
         const wrapper = shallow(
             <SelectField
                 {...defaultProps}
@@ -48,7 +48,7 @@ describe('<SelectField />', () => {
         assert.deepEqual(chipElement.prop('className'), 'foo');
     });
 
-    it('should handle deep fields', () => {
+    test('should handle deep fields', () => {
         const wrapper = shallow(
             <SelectField
                 {...defaultProps}
@@ -60,7 +60,7 @@ describe('<SelectField />', () => {
         assert.equal(chipElement.children().text(), 'hello');
     });
 
-    it('should use optionValue as value identifier', () => {
+    test('should use optionValue as value identifier', () => {
         const wrapper = shallow(
             <SelectField
                 {...defaultProps}
@@ -73,7 +73,7 @@ describe('<SelectField />', () => {
         assert.equal(chipElement.children().text(), 'hello');
     });
 
-    it('should use optionText with a string value as text identifier', () => {
+    test('should use optionText with a string value as text identifier', () => {
         const wrapper = shallow(
             <SelectField
                 {...defaultProps}
@@ -86,7 +86,7 @@ describe('<SelectField />', () => {
         assert.equal(chipElement.children().text(), 'hello');
     });
 
-    it('should use optionText with a function value as text identifier', () => {
+    test('should use optionText with a function value as text identifier', () => {
         const wrapper = shallow(
             <SelectField
                 {...defaultProps}
@@ -99,7 +99,7 @@ describe('<SelectField />', () => {
         assert.equal(chipElement.children().text(), 'hello');
     });
 
-    it('should use optionText with an element value as text identifier', () => {
+    test('should use optionText with an element value as text identifier', () => {
         const Foobar = ({ record }) => <span>{record.foobar}</span>;
         const wrapper = shallow(
             <SelectField
@@ -116,7 +116,7 @@ describe('<SelectField />', () => {
         });
     });
 
-    it('should translate the choice by default', () => {
+    test('should translate the choice by default', () => {
         const wrapper = shallow(
             <SelectField
                 {...defaultProps}
@@ -128,7 +128,7 @@ describe('<SelectField />', () => {
         assert.equal(chipElement.children().text(), '**hello**');
     });
 
-    it('should not translate the choice if translateChoice is false', () => {
+    test('should not translate the choice if translateChoice is false', () => {
         const wrapper = shallow(
             <SelectField
                 {...defaultProps}

@@ -11,13 +11,13 @@ describe.skip('<SelectArrayInput />', () => {
         translate: x => x,
     };
 
-    it('should use a mui ChipInput', () => {
+    test('should use a mui ChipInput', () => {
         const wrapper = shallow(<SelectArrayInput {...defaultProps} />);
         const ChipInputElement = wrapper.find('ChipInput');
         assert.equal(ChipInputElement.length, 1);
     });
 
-    it('should use the input parameter value as the initial input value', () => {
+    test('should use the input parameter value as the initial input value', () => {
         const wrapper = shallow(
             <SelectArrayInput {...defaultProps} input={{ value: [1, 2] }} />
         );
@@ -28,7 +28,7 @@ describe.skip('<SelectArrayInput />', () => {
         ]);
     });
 
-    it('should pass choices to the ChipInput as dataSource', () => {
+    test('should pass choices to the ChipInput as dataSource', () => {
         const wrapper = shallow(
             <SelectArrayInput
                 {...defaultProps}
@@ -47,7 +47,7 @@ describe.skip('<SelectArrayInput />', () => {
         ]);
     });
 
-    it('should use the dataSource to set the initial input value', () => {
+    test('should use the dataSource to set the initial input value', () => {
         const wrapper = shallow(
             <SelectArrayInput
                 {...defaultProps}
@@ -66,7 +66,7 @@ describe.skip('<SelectArrayInput />', () => {
         ]);
     });
 
-    it('should update the value when the dataSource updates', () => {
+    test('should update the value when the dataSource updates', () => {
         const input = { value: [1, 2] };
         const wrapper = shallow(
             <SelectArrayInput {...defaultProps} input={input} />
@@ -87,7 +87,7 @@ describe.skip('<SelectArrayInput />', () => {
         ]);
     });
 
-    it('should use optionValue as value identifier', () => {
+    test('should use optionValue as value identifier', () => {
         const wrapper = shallow(
             <SelectArrayInput
                 {...defaultProps}
@@ -101,7 +101,7 @@ describe.skip('<SelectArrayInput />', () => {
         ]);
     });
 
-    it('should use optionValue including as value identifier', () => {
+    test('should use optionValue including as value identifier', () => {
         const wrapper = shallow(
             <SelectArrayInput
                 {...defaultProps}
@@ -115,7 +115,7 @@ describe.skip('<SelectArrayInput />', () => {
         ]);
     });
 
-    it('should use optionText with a string value as text identifier', () => {
+    test('should use optionText with a string value as text identifier', () => {
         const wrapper = shallow(
             <SelectArrayInput
                 {...defaultProps}
@@ -129,7 +129,7 @@ describe.skip('<SelectArrayInput />', () => {
         ]);
     });
 
-    it('should use optionText with a string value including "." as text identifier', () => {
+    test('should use optionText with a string value including "." as text identifier', () => {
         const wrapper = shallow(
             <SelectArrayInput
                 {...defaultProps}
@@ -143,7 +143,7 @@ describe.skip('<SelectArrayInput />', () => {
         ]);
     });
 
-    it('should use optionText with a function value as text identifier', () => {
+    test('should use optionText with a function value as text identifier', () => {
         const wrapper = shallow(
             <SelectArrayInput
                 {...defaultProps}
@@ -157,7 +157,7 @@ describe.skip('<SelectArrayInput />', () => {
         ]);
     });
 
-    it('should translate the choices by default', () => {
+    test('should translate the choices by default', () => {
         const wrapper = shallow(
             <SelectArrayInput
                 {...defaultProps}
@@ -177,7 +177,7 @@ describe.skip('<SelectArrayInput />', () => {
         ]);
     });
 
-    it('should not translate the choices if translateChoice is false', () => {
+    test('should not translate the choices if translateChoice is false', () => {
         const wrapper = shallow(
             <SelectArrayInput
                 {...defaultProps}
@@ -199,7 +199,7 @@ describe.skip('<SelectArrayInput />', () => {
     });
 
     describe('error message', () => {
-        it('should not be displayed if field is pristine', () => {
+        test('should not be displayed if field is pristine', () => {
             const wrapper = shallow(
                 <SelectArrayInput {...defaultProps} meta={{ touched: false }} />
             );
@@ -207,7 +207,7 @@ describe.skip('<SelectArrayInput />', () => {
             assert.equal(ChipInputElement.prop('errorText'), false);
         });
 
-        it('should not be displayed if field has been touched but is valid', () => {
+        test('should not be displayed if field has been touched but is valid', () => {
             const wrapper = shallow(
                 <SelectArrayInput
                     {...defaultProps}
@@ -218,7 +218,7 @@ describe.skip('<SelectArrayInput />', () => {
             assert.equal(ChipInputElement.prop('errorText'), false);
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
+        test('should be displayed if field has been touched and is invalid', () => {
             const wrapper = shallow(
                 <SelectArrayInput
                     {...defaultProps}

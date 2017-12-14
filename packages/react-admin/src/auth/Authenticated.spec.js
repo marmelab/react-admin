@@ -6,7 +6,7 @@ import { Authenticated } from './Authenticated';
 
 describe('<Authenticated>', () => {
     const Foo = () => <div>Foo</div>;
-    it('should call userCheck on mount', () => {
+    test('should call userCheck on mount', () => {
         const userCheck = jest.fn();
         shallow(
             <Authenticated userCheck={userCheck}>
@@ -15,7 +15,7 @@ describe('<Authenticated>', () => {
         );
         expect(userCheck.mock.calls.length).toEqual(1);
     });
-    it('should call userCheck on update', () => {
+    test('should call userCheck on update', () => {
         const userCheck = jest.fn();
         const wrapper = shallow(
             <Authenticated userCheck={userCheck}>
@@ -25,7 +25,7 @@ describe('<Authenticated>', () => {
         wrapper.setProps({ location: { pathname: 'foo' }, userCheck });
         expect(userCheck.mock.calls.length).toEqual(2);
     });
-    it('should render its child by default', () => {
+    test('should render its child by default', () => {
         const userCheck = jest.fn();
         const wrapper = render(
             <Authenticated userCheck={userCheck}>

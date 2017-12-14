@@ -24,7 +24,7 @@ describe('<FilterForm />', () => {
         store = createStore(() => ({ locale: 'en' }));
     });
 
-    it('should display correctly passed filters', () => {
+    test('should display correctly passed filters', () => {
         const filters = [<TextInput source="title" label="Title" />]; // eslint-disable-line react/jsx-key
         const displayedFilters = { title: true };
 
@@ -48,7 +48,7 @@ describe('<FilterForm />', () => {
     });
 
     describe('mergeInitialValuesWithDefaultValues', () => {
-        it('should correctly merge initial values with the default values of the alwayson filters', () => {
+        test('should correctly merge initial values with the default values of the alwayson filters', () => {
             const initialValues = {
                 title: 'initial title',
             };

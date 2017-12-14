@@ -7,13 +7,13 @@ import {
 import reducer from './ui';
 
 describe('ui reducer', () => {
-    it('should return hidden sidebar by default', () => {
+    test('should return hidden sidebar by default', () => {
         assert.deepEqual(
             { sidebarOpen: false, viewVersion: 0 },
             reducer(undefined, {})
         );
     });
-    it('should toggle sidebar visibility upon TOGGLE_SIDEBAR', () => {
+    test('should toggle sidebar visibility upon TOGGLE_SIDEBAR', () => {
         assert.deepEqual(
             { sidebarOpen: false },
             reducer({ sidebarOpen: true }, toggleSidebar())
@@ -23,7 +23,7 @@ describe('ui reducer', () => {
             reducer({ sidebarOpen: false }, toggleSidebar())
         );
     });
-    it('should set sidebar visibility upon SET_SIDEBAR_VISIBILITY', () => {
+    test('should set sidebar visibility upon SET_SIDEBAR_VISIBILITY', () => {
         assert.deepEqual(
             { sidebarOpen: false },
             reducer({ sidebarOpen: true }, setSidebarVisibility(false))
@@ -41,7 +41,7 @@ describe('ui reducer', () => {
             reducer({ sidebarOpen: false }, setSidebarVisibility(true))
         );
     });
-    it('should increment the viewVersion upon REFRESH_VIEW', () => {
+    test('should increment the viewVersion upon REFRESH_VIEW', () => {
         assert.deepEqual(
             { sidebarOpen: false, viewVersion: 1 },
             reducer(undefined, refreshView())

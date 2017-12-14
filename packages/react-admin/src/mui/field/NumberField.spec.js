@@ -4,23 +4,23 @@ import { shallow } from 'enzyme';
 import { NumberField } from './NumberField';
 
 describe('<NumberField />', () => {
-    it('should return null when the record is not set', () =>
+    test('should return null when the record is not set', () =>
         assert.equal(shallow(<NumberField source="foo" />).html(), null));
 
-    it('should return null when the record has no value for the source', () =>
+    test('should return null when the record has no value for the source', () =>
         assert.equal(
             shallow(<NumberField record={{}} source="foo" />).html(),
             null
         ));
 
-    it('should render a number', () => {
+    test('should render a number', () => {
         const wrapper = shallow(
             <NumberField record={{ foo: 1 }} source="foo" />
         );
         assert.equal(wrapper.text(), '1');
     });
 
-    it('should pass the options prop to Intl.NumberFormat', () => {
+    test('should pass the options prop to Intl.NumberFormat', () => {
         const wrapper = shallow(
             <NumberField
                 record={{ foo: 1 }}
@@ -32,7 +32,7 @@ describe('<NumberField />', () => {
         assert.equal(wrapper.text(), '1.00');
     });
 
-    it('should use the locales props as an argument to Intl.NumberFormat', () => {
+    test('should use the locales props as an argument to Intl.NumberFormat', () => {
         const wrapper = shallow(
             <NumberField
                 record={{ foo: 1 }}
@@ -44,7 +44,7 @@ describe('<NumberField />', () => {
         assert.equal(wrapper.text(), '1,00');
     });
 
-    it('should use custom className', () =>
+    test('should use custom className', () =>
         assert.deepEqual(
             shallow(
                 <NumberField
@@ -56,7 +56,7 @@ describe('<NumberField />', () => {
             'foo'
         ));
 
-    it('should handle deep fields', () => {
+    test('should handle deep fields', () => {
         const wrapper = shallow(
             <NumberField record={{ foo: { bar: 2 } }} source="foo.bar" />
         );

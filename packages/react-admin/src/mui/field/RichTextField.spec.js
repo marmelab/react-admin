@@ -5,12 +5,12 @@ import { html } from 'cheerio';
 import RichTextField, { removeTags } from './RichTextField';
 
 describe('stripTags', () => {
-    it('should strip HTML tags from input', () => {
+    test('should strip HTML tags from input', () => {
         assert.equal(removeTags('<h1>Hello world!</h1>'), 'Hello world!');
         assert.equal(removeTags('<p>Cake is a lie</p>'), 'Cake is a lie');
     });
 
-    it('should strip HTML tags even with attributes', () => {
+    test('should strip HTML tags even with attributes', () => {
         assert.equal(
             removeTags('<a href="http://www.zombo.com">Zombo</a>'),
             'Zombo'
@@ -23,7 +23,7 @@ describe('stripTags', () => {
         );
     });
 
-    it('should strip HTML tags splitted on several lines', () => {
+    test('should strip HTML tags splitted on several lines', () => {
         assert.equal(
             removeTags(`<a
             href="http://www.zombo.com"
@@ -32,7 +32,7 @@ describe('stripTags', () => {
         );
     });
 
-    it('should strip HTML embedded tags', () => {
+    test('should strip HTML embedded tags', () => {
         assert.equal(
             removeTags(
                 '<marquee><a href="http://www.zombo.com">Zombo</a></marquee>'
@@ -41,7 +41,7 @@ describe('stripTags', () => {
         );
     });
 
-    it('should strip HTML tags even if they are malformed', () => {
+    test('should strip HTML tags even if they are malformed', () => {
         assert.equal(
             removeTags('<p>All our base is belong to us.<p>'),
             'All our base is belong to us.'
@@ -50,7 +50,7 @@ describe('stripTags', () => {
 });
 
 describe('<RichTextField />', () => {
-    it('should render as HTML', () => {
+    test('should render as HTML', () => {
         const record = { body: '<h1>Hello world!</h1>' };
         const wrapper = render(<RichTextField record={record} source="body" />);
         assert.equal(
@@ -59,7 +59,7 @@ describe('<RichTextField />', () => {
         );
     });
 
-    it('should handle deep fields', () => {
+    test('should handle deep fields', () => {
         const record = { foo: { body: '<h1>Hello world!</h1>' } };
         const wrapper = render(
             <RichTextField record={record} source="foo.body" />
@@ -70,7 +70,7 @@ describe('<RichTextField />', () => {
         );
     });
 
-    it('should strip HTML tags if stripTags is set to true', () => {
+    test('should strip HTML tags if stripTags is set to true', () => {
         const record = { body: '<h1>Hello world!</h1>' };
         const wrapper = render(
             <RichTextField stripTags={true} record={record} source="body" />
@@ -81,7 +81,7 @@ describe('<RichTextField />', () => {
         );
     });
 
-    it('should not strip HTML tags if stripTags is set to false', () => {
+    test('should not strip HTML tags if stripTags is set to false', () => {
         const record = { body: '<h1>Hello world!</h1>' };
         const wrapper = render(
             <RichTextField stripTags={false} record={record} source="body" />
@@ -92,7 +92,7 @@ describe('<RichTextField />', () => {
         );
     });
 
-    it('should use custom className', () =>
+    test('should use custom className', () =>
         assert.deepEqual(
             shallow(
                 <RichTextField

@@ -3,7 +3,7 @@ import queryReducer from './queryReducer';
 
 describe('Query Reducer', () => {
     describe('SET_PAGE action', () => {
-        it('should update the page', () => {
+        test('should update the page', () => {
             const updatedState = queryReducer(
                 {
                     page: 1,
@@ -15,7 +15,7 @@ describe('Query Reducer', () => {
             );
             assert.equal(updatedState.page, 2);
         });
-        it('should not update the filter', () => {
+        test('should not update the filter', () => {
             const initialFilter = {};
             const updatedState = queryReducer(
                 {
@@ -31,7 +31,7 @@ describe('Query Reducer', () => {
         });
     });
     describe('SET_FILTER action', () => {
-        it('should add new filter with given value when set', () => {
+        test('should add new filter with given value when set', () => {
             const updatedState = queryReducer(
                 {},
                 {
@@ -42,7 +42,7 @@ describe('Query Reducer', () => {
             assert.deepEqual(updatedState.filter, { title: 'foo' });
         });
 
-        it('should replace existing filter with given value', () => {
+        test('should replace existing filter with given value', () => {
             const updatedState = queryReducer(
                 {
                     filter: {
@@ -58,7 +58,7 @@ describe('Query Reducer', () => {
             assert.deepEqual(updatedState.filter, { title: 'bar' });
         });
 
-        it('should reset page to 1', () => {
+        test('should reset page to 1', () => {
             const updatedState = queryReducer(
                 { page: 3 },
                 { type: 'SET_FILTER', payload: {} }

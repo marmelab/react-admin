@@ -7,14 +7,14 @@ import { FieldTitle } from './FieldTitle';
 describe('FieldTitle', () => {
     const translateMock = dictionary => (term, options) =>
         dictionary[term] || options._ || '';
-    it('should return empty span by default', () =>
+    test('should return empty span by default', () =>
         assert.equal(shallow(<FieldTitle />).html(), '<span></span>'));
-    it('should use the label when given', () =>
+    test('should use the label when given', () =>
         assert.equal(
             shallow(<FieldTitle label="foo" />).html(),
             '<span>foo</span>'
         ));
-    it('should the label as translate key when translation is available', () =>
+    test('should the label as translate key when translation is available', () =>
         assert.equal(
             shallow(
                 <FieldTitle
@@ -24,7 +24,7 @@ describe('FieldTitle', () => {
             ).html(),
             '<span>bar</span>'
         ));
-    it('should use the humanized source when given', () =>
+    test('should use the humanized source when given', () =>
         assert.equal(
             shallow(
                 <FieldTitle
@@ -35,7 +35,7 @@ describe('FieldTitle', () => {
             ).html(),
             '<span>Title</span>'
         ));
-    it('should use the source and resource as translate key when translation is available', () =>
+    test('should use the source and resource as translate key when translation is available', () =>
         assert.equal(
             shallow(
                 <FieldTitle
@@ -48,14 +48,14 @@ describe('FieldTitle', () => {
             ).html(),
             '<span>titre</span>'
         ));
-    it('should use label rather than source', () =>
+    test('should use label rather than source', () =>
         assert.equal(
             shallow(
                 <FieldTitle label="foo" resource="posts" source="title" />
             ).html(),
             '<span>foo</span>'
         ));
-    it('should add a trailing asterisk if the field is required', () =>
+    test('should add a trailing asterisk if the field is required', () =>
         assert.equal(
             shallow(<FieldTitle label="foo" isRequired />).html(),
             '<span>foo *</span>'

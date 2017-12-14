@@ -6,7 +6,7 @@ import { Pagination } from './Pagination';
 
 describe('<Pagination />', () => {
     describe('mobile', () => {
-        it('should render a condensed <Toolbar>', () => {
+        test('should render a condensed <Toolbar>', () => {
             const wrapper = shallow(
                 <Pagination
                     page={2}
@@ -25,7 +25,7 @@ describe('<Pagination />', () => {
             const flatButtons = wrapper.find('withStyles(Button)');
             assert.equal(flatButtons.length, 0);
         });
-        it('should render only the text when no pagination is necessary', () => {
+        test('should render only the text when no pagination is necessary', () => {
             const wrapper = shallow(
                 <Pagination
                     page={1}
@@ -53,7 +53,7 @@ describe('<Pagination />', () => {
         });
     });
     describe('desktop', () => {
-        it('should render a normal <Toolbar>', () => {
+        test('should render a normal <Toolbar>', () => {
             const wrapper = shallow(
                 <Pagination
                     page={2}
@@ -72,7 +72,7 @@ describe('<Pagination />', () => {
             const flatButtons = wrapper.find('withStyles(Button)');
             assert.equal(flatButtons.length, 5);
         });
-        it('should render only the text when no pagination is necessary', () => {
+        test('should render only the text when no pagination is necessary', () => {
             const wrapper = shallow(
                 <Pagination
                     page={1}

@@ -13,7 +13,7 @@ describe('<AutocompleteInput />', () => {
         translate: x => x,
     };
 
-    it('should use a react Autosuggest', () => {
+    test('should use a react Autosuggest', () => {
         const wrapper = shallow(
             <AutocompleteInput
                 {...defaultProps}
@@ -25,7 +25,7 @@ describe('<AutocompleteInput />', () => {
         assert.equal(AutoCompleteElement.length, 1);
     });
 
-    it('should use the input parameter value as the initial state and input searchText', () => {
+    test('should use the input parameter value as the initial state and input searchText', () => {
         const wrapper = shallow(
             <AutocompleteInput
                 {...defaultProps}
@@ -38,7 +38,7 @@ describe('<AutocompleteInput />', () => {
         assert.equal(wrapper.state('searchText'), 'foo');
     });
 
-    it('should pass choices as suggestions', () => {
+    test('should pass choices as suggestions', () => {
         const wrapper = shallow(
             <AutocompleteInput
                 {...defaultProps}
@@ -55,7 +55,7 @@ describe('<AutocompleteInput />', () => {
         ]);
     });
 
-    it('should use optionValue as value identifier', () => {
+    test('should use optionValue as value identifier', () => {
         const wrapper = shallow(
             <AutocompleteInput
                 {...defaultProps}
@@ -68,7 +68,7 @@ describe('<AutocompleteInput />', () => {
         assert.equal(AutoCompleteElement.prop('inputProps').value, 'Male');
     });
 
-    it('should use optionValue including "." as value identifier', () => {
+    test('should use optionValue including "." as value identifier', () => {
         const wrapper = shallow(
             <AutocompleteInput
                 {...defaultProps}
@@ -90,7 +90,7 @@ describe('<AutocompleteInput />', () => {
         locale: PropTypes.string.isRequired,
     };
 
-    it('should use optionText with a string value as text identifier', () => {
+    test('should use optionText with a string value as text identifier', () => {
         const wrapper = render(
             <AutocompleteInput
                 {...defaultProps}
@@ -104,7 +104,7 @@ describe('<AutocompleteInput />', () => {
         assert.equal(MenuItem.text(), 'Male');
     });
 
-    it('should use optionText with a string value including "." as text identifier', () => {
+    test('should use optionText with a string value including "." as text identifier', () => {
         const wrapper = render(
             <AutocompleteInput
                 {...defaultProps}
@@ -118,7 +118,7 @@ describe('<AutocompleteInput />', () => {
         assert.equal(MenuItem.text(), 'Male');
     });
 
-    it('should use optionText with a function value as text identifier', () => {
+    test('should use optionText with a function value as text identifier', () => {
         const wrapper = render(
             <AutocompleteInput
                 {...defaultProps}
@@ -132,7 +132,7 @@ describe('<AutocompleteInput />', () => {
         assert.equal(MenuItem.text(), 'Male');
     });
 
-    it('should translate the choices by default', () => {
+    test('should translate the choices by default', () => {
         const wrapper = render(
             <AutocompleteInput
                 {...defaultProps}
@@ -146,7 +146,7 @@ describe('<AutocompleteInput />', () => {
         assert.equal(MenuItem.text(), '**Male**');
     });
 
-    it('should not translate the choices if translateChoice is false', () => {
+    test('should not translate the choices if translateChoice is false', () => {
         const wrapper = render(
             <AutocompleteInput
                 {...defaultProps}
@@ -162,7 +162,7 @@ describe('<AutocompleteInput />', () => {
     });
 
     describe('error message', () => {
-        it('should not be displayed if field is pristine', () => {
+        test('should not be displayed if field is pristine', () => {
             const wrapper = shallow(
                 <AutocompleteInput
                     {...defaultProps}
@@ -175,7 +175,7 @@ describe('<AutocompleteInput />', () => {
             });
         });
 
-        it('should not be displayed if field has been touched but is valid', () => {
+        test('should not be displayed if field has been touched but is valid', () => {
             const wrapper = shallow(
                 <AutocompleteInput
                     {...defaultProps}
@@ -189,7 +189,7 @@ describe('<AutocompleteInput />', () => {
             });
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
+        test('should be displayed if field has been touched and is invalid', () => {
             const wrapper = shallow(
                 <AutocompleteInput
                     {...defaultProps}

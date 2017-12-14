@@ -11,7 +11,7 @@ describe('<SelectInput />', () => {
         translate: x => x,
     };
 
-    it('should use a mui TextField', () => {
+    test('should use a mui TextField', () => {
         const wrapper = shallow(
             <SelectInput {...defaultProps} input={{ value: 'hello' }} />
         );
@@ -20,7 +20,7 @@ describe('<SelectInput />', () => {
         assert.equal(SelectFieldElement.prop('value'), 'hello');
     });
 
-    it('should use the input parameter value as the initial input value', () => {
+    test('should use the input parameter value as the initial input value', () => {
         const wrapper = shallow(
             <SelectInput {...defaultProps} input={{ value: 2 }} />
         );
@@ -28,7 +28,7 @@ describe('<SelectInput />', () => {
         assert.equal(SelectFieldElement.prop('value'), '2');
     });
 
-    it('should render choices as mui MenuItem components', () => {
+    test('should render choices as mui MenuItem components', () => {
         const wrapper = shallow(
             <SelectInput
                 {...defaultProps}
@@ -48,7 +48,7 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElement2.childAt(0).text(), 'Female');
     });
 
-    it('should add an empty menu when allowEmpty is true', () => {
+    test('should add an empty menu when allowEmpty is true', () => {
         const wrapper = shallow(
             <SelectInput
                 allowEmpty
@@ -66,7 +66,7 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElement1.childAt(0).text(), '');
     });
 
-    it('should not add a falsy (null or false) element when allowEmpty is false', () => {
+    test('should not add a falsy (null or false) element when allowEmpty is false', () => {
         const wrapper = shallow(
             <SelectInput
                 {...defaultProps}
@@ -80,7 +80,7 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElements.length, 2);
     });
 
-    it('should use optionValue as value identifier', () => {
+    test('should use optionValue as value identifier', () => {
         const wrapper = shallow(
             <SelectInput
                 {...defaultProps}
@@ -94,7 +94,7 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
     });
 
-    it('should use optionValue including "." as value identifier', () => {
+    test('should use optionValue including "." as value identifier', () => {
         const wrapper = shallow(
             <SelectInput
                 {...defaultProps}
@@ -108,7 +108,7 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
     });
 
-    it('should use optionText with a string value as text identifier', () => {
+    test('should use optionText with a string value as text identifier', () => {
         const wrapper = shallow(
             <SelectInput
                 {...defaultProps}
@@ -122,7 +122,7 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
     });
 
-    it('should use optionText with a string value including "." as text identifier', () => {
+    test('should use optionText with a string value including "." as text identifier', () => {
         const wrapper = shallow(
             <SelectInput
                 {...defaultProps}
@@ -136,7 +136,7 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
     });
 
-    it('should use optionText with a function value as text identifier', () => {
+    test('should use optionText with a function value as text identifier', () => {
         const wrapper = shallow(
             <SelectInput
                 {...defaultProps}
@@ -150,7 +150,7 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
     });
 
-    it('should use optionText with an element value as text identifier', () => {
+    test('should use optionText with an element value as text identifier', () => {
         const Foobar = ({ record }) => <span>{record.foobar}</span>;
         const wrapper = shallow(
             <SelectInput
@@ -169,7 +169,7 @@ describe('<SelectInput />', () => {
         });
     });
 
-    it('should translate the choices by default', () => {
+    test('should translate the choices by default', () => {
         const wrapper = shallow(
             <SelectInput
                 {...defaultProps}
@@ -186,7 +186,7 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElement1.childAt(0).text(), '**Male**');
     });
 
-    it('should not translate the choices if translateChoice is false', () => {
+    test('should not translate the choices if translateChoice is false', () => {
         const wrapper = shallow(
             <SelectInput
                 {...defaultProps}
@@ -205,7 +205,7 @@ describe('<SelectInput />', () => {
     });
 
     describe('error message', () => {
-        it('should not be displayed if field is pristine', () => {
+        test('should not be displayed if field is pristine', () => {
             const wrapper = shallow(
                 <SelectInput {...defaultProps} meta={{ touched: false }} />
             );
@@ -213,7 +213,7 @@ describe('<SelectInput />', () => {
             assert.equal(SelectFieldElement.prop('helperText'), false);
         });
 
-        it('should not be displayed if field has been touched but is valid', () => {
+        test('should not be displayed if field has been touched but is valid', () => {
             const wrapper = shallow(
                 <SelectInput
                     {...defaultProps}
@@ -224,7 +224,7 @@ describe('<SelectInput />', () => {
             assert.equal(SelectFieldElement.prop('helperText'), false);
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
+        test('should be displayed if field has been touched and is invalid', () => {
             const wrapper = shallow(
                 <SelectInput
                     {...defaultProps}
