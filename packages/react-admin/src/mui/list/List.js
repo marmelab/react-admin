@@ -138,12 +138,15 @@ export class List extends Component {
         if (!query.perPage) {
             query.perPage = this.props.perPage;
         }
+        if (!query.page) {
+            query.page = 1;
+        }
         return query;
     }
 
     updateData(query) {
         const params = query || this.getQuery();
-        const { sort, order, page, perPage, filter } = params;
+        const { sort, order, page = 1, perPage, filter } = params;
         const pagination = {
             page: parseInt(page, 10),
             perPage: parseInt(perPage, 10),
@@ -272,7 +275,7 @@ export class List extends Component {
                             {pagination &&
                                 React.cloneElement(pagination, {
                                     total,
-                                    page: parseInt(query.page, 10),
+                                    page: parseInt(query.page || 1, 10),
                                     perPage: parseInt(query.perPage, 10),
                                     setPage: this.setPage,
                                 })}
