@@ -1,0 +1,36 @@
+{
+  "name": "ra-realtime",
+  "version": "2.0.0-alpha3",
+  "description": "A saga enabling realtime updates for react-admin",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marmelab/react-admin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/marmelab/react-admin/issues"
+  },
+  "homepage": "https://github.com/marmelab/react-admin#readme",
+  "authors": [
+    "Gildas Garcia"
+  ],
+  "keywords": [
+    "reactjs",
+    "react",
+    "react-admin",
+    "admin-on-rest",
+    "rest",
+    "realtime"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "lodash.merge": "~4.6.0",
+    "lodash.omit": "~4.5.0",
+    "lodash.pick": "~4.4.0",
+    "lodash.pickby": "~4.6.0",
+    "react-admin": "^2.0.0-alpha3",
+    "react-router": "~4.2.0",
+    "react-router-redux": "~5.0.0-alpha.6",
+    "redux-saga": "~0.15.6"
+  }
+}
