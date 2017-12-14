@@ -26,15 +26,15 @@ build-ra-input-rich-text:
 	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-input-rich-text/src -d ./packages/ra-input-rich-text/lib --ignore '*.spec.js'
 	@cd packages/ra-input-rich-text/src && rsync -R `find . -name *.css` ../lib
 
-build-ra-graphql-client:
-	@rm -rf ./packages/ra-graphql-client/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-graphql-client/src -d ./packages/ra-graphql-client/lib --ignore '*.spec.js'
+build-ra-data-graphql:
+	@rm -rf ./packages/ra-data-graphql/lib
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-graphql/src -d ./packages/ra-data-graphql/lib --ignore '*.spec.js'
 
-build-ra-graphql-client-graphcool:
-	@rm -rf ./packages/ra-graphql-client-graphcool/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-graphql-client-graphcool/src -d ./packages/ra-graphql-client-graphcool/lib --ignore '*.spec.js'
+build-ra-data-graphcool:
+	@rm -rf ./packages/ra-data-graphcool/lib
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-graphcool/src -d ./packages/ra-data-graphcool/lib --ignore '*.spec.js'
 
-build: build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-input-rich-text build-ra-graphql-client build-ra-graphql-client-graphcool ## compile ES6 files to JS
+build: build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-input-rich-text build-ra-data-graphql build-ra-data-graphcool ## compile ES6 files to JS
 
 watch: ## continuously compile ES6 files to JS
 	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore '*.spec.js' --watch

@@ -1,6 +1,6 @@
-# ra-graphql-client
+# ra-data-graphql
 
-[![Build Status](https://travis-ci.org/marmelab/ra-graphql-client.svg?branch=master)](https://travis-ci.org/marmelab/ra-graphql-client)
+[![Build Status](https://travis-ci.org/marmelab/ra-data-graphql.svg?branch=master)](https://travis-ci.org/marmelab/ra-data-graphql)
 
 A GraphQL client for [react-admin](https://github.com/marmelab/react-admin/)
 built with [Apollo](http://www.apollodata.com/)
@@ -13,10 +13,7 @@ A version of the `react-admin` demo using this client is available at https://ma
 
 This is a very low level library which is not meant to be used directly unless you really want full control or are building a custom GraphQL client.
 
-It provides the foundations for other packages such as:
-
-- [ra-graphql-client-simple](https://github.com/marmelab/ra-graphql-client-simple)
-- [ra-graphql-client-graphcool](https://github.com/marmelab/ra-graphql-client-graphcool)
+It provides the foundations for other GraphQL data provider packages such as [ra-data-graphcool](https://github.com/marmelab/ra-data-graphcool)
 
 ## About GraphQL and Apollo
 
@@ -28,13 +25,13 @@ you're free to use any graphql **server**.
 Install with:
 
 ```sh
-npm install --save ra-graphql-client
+npm install --save ra-data-graphql
 ```
 
 or
 
 ```sh
-yarn add ra-graphql-client
+yarn add ra-data-graphql
 ```
 
 ## Usage
@@ -42,7 +39,7 @@ yarn add ra-graphql-client
 ```jsx
 // in App.js
 import React, { Component } from 'react';
-import buildApolloClient from 'ra-graphql-client';
+import buildGraphQLProvider from 'ra-data-graphql';
 import { Admin, Resource, Delete } from 'react-admin';
 
 import { PostCreate, PostEdit, PostList } from '../components/admin/posts';
@@ -52,22 +49,22 @@ const client = new ApolloClient();
 class App extends Component {
     constructor() {
         super();
-        this.state = { restClient: null };
+        this.state = { dataProvider: null };
     }
     componentDidMount() {
-        buildApolloClient()
-            .then(restClient => this.setState({ restClient }));
+        buildGraphQLProvider()
+            .then(dataProvider => this.setState({ dataProvider }));
     }
 
     render() {
-        const { restClient } = this.state;
+        const { dataProvider } = this.state;
 
-        if (!restClient) {
+        if (!dataProvider) {
             return <div>Loading</div>;
         }
 
         return (
-            <Admin restClient={restClient}>
+            <Admin dataProvider={dataProvider}>
                 <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} />
             </Admin>
         );
@@ -81,12 +78,12 @@ export default App;
 
 ### Customize the Apollo client
 
-You can specify the client options by calling `buildApolloClient` like this:
+You can specify the client options by calling `buildGraphQLProvider` like this:
 
 ```js
 import { createNetworkInterface } from 'react-apollo';
 
-buildApolloClient({
+buildGraphQLProvider({
     client: {
         networkInterface: createNetworkInterface({
             uri: 'http://api.myproduct.com/graphql',
@@ -100,7 +97,7 @@ You can pass any options supported by the [ApolloClient](http://dev.apollodata.c
 You can also supply your own [ApolloClient](http://dev.apollodata.com/core/apollo-client-api.html#apollo-client) instance directly with:
 
 ```js
-buildApolloClient({ client: myClient });
+buildGraphQLProvider({ client: myClient });
 ```
 
 ### Introspection Options
@@ -114,7 +111,7 @@ const introspectionOptions = {
     schema
 };
 
-buildApolloClient({
+buildGraphQLProvider({
     introspection: introspectionOptions
 });
 ```
@@ -213,7 +210,7 @@ const queryBuilder = introspectionResults => (raFetchType, resourceName, params)
 ```
 
 ```js
-buildApolloClient({ queryBuilder });
+buildGraphQLProvider({ queryBuilder });
 ```
 
 ## Troubleshooting

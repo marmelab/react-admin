@@ -1,7 +1,7 @@
 {
-  "name": "ra-graphql-client-graphcool",
+  "name": "ra-data-graphcool",
   "version": "2.0.0-alpha3",
-  "description": "A Graphcool GraphQL client for react-admin",
+  "description": "A Graphcool data provider for react-admin",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
     "graphql-tag": "~2.4.2",
     "lodash.merge": "~4.6.0",
     "pluralize": "~7.0.0",
-    "ra-graphql-client": "^2.0.0-alpha3",
+    "ra-data-graphql": "^2.0.0-alpha3",
     "react-admin": "^2.0.0-alpha3"
   }
 }

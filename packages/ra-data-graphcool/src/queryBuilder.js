@@ -9,7 +9,7 @@ import {
     UPDATE,
     DELETE,
 } from 'react-admin';
-import { QUERY_TYPES } from 'ra-graphql-client';
+import { QUERY_TYPES } from 'ra-data-graphql';
 
 import { encodeQuery, encodeMutation } from './graphqlify';
 /**

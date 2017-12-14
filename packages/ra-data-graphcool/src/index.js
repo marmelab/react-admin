@@ -1,5 +1,5 @@
 import merge from 'lodash.merge';
-import buildClient from 'ra-graphql-client';
+import buildClient from 'ra-data-graphql';
 import buildQuery from './buildQuery';
 
 const defaultOptions = {
