@@ -122,7 +122,7 @@ The `./schema` file is a `schema.json` in `./scr` retrieved with [`get-graphql-s
 
 ## Specify your queries and mutations
 
-For the client to know how to map react-admin request to apollo queries and mutations, you must provide a `queryBuilder` option. The `queryBuilder` is a factory function which will be called with the introspection query result.
+For the provider to know how to map react-admin request to apollo queries and mutations, you must provide a `queryBuilder` option. The `queryBuilder` is a factory function which will be called with the introspection query result.
 
 The introspection result is an object with 3 properties:
 
