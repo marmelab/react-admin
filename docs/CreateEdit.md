@@ -326,11 +326,14 @@ const ageValidation = (value, values) => {
     return [];
 }
 
+const validateFirstName = [required, maxLength(15)];
+const validateAge = [required, number, minValue(18)];
+
 export const UserCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput label="First Name" source="firstName" validate={[ required, maxLength(15) ]} />
-            <TextInput label="Age" source="age" validate={[ required, number, minValue(18) ]}/>
+            <TextInput label="First Name" source="firstName" validate={validateFirstName} />
+            <TextInput label="Age" source="age" validate={validateAge}/>
         </SimpleForm>
     </Create>
 );
@@ -387,17 +390,22 @@ Example usage:
 ```jsx
 import { required, minLength, maxLength, minValue, maxValue, number, regex, email, choices } from 'react-admin';
 
+const validateFirstName = [required, minLength(2), maxLength(15)];
+const validateAge = [number, minValue(18)];
+const validateZipCode = regex(/^\d{5}$/, 'Must be a valid Zip Code');
+const validateSex = choices(['m', 'f'], 'Must be Male or Female');
+
 export const UserCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput label="First Name" source="firstName" validate={[ required, minLength(2), maxLength(15) ]} />
+            <TextInput label="First Name" source="firstName" validate={validateFirstName} />
             <TextInput label="Email" source="email" validate={email} />
-            <TextInput label="Age" source="age" validate={[ number, minValue(18) ]}/>
-            <TextInput label="Zip Code" source="zip" validate={regex(/^\d{5}$/, 'Must be a valid Zip Code')}/>
+            <TextInput label="Age" source="age" validate={validateAge}/>
+            <TextInput label="Zip Code" source="zip" validate={validateZipCode}/>
             <SelectInput label="Sex" source="sex" choices={[
                 { id: 'm', name: 'Male' },
                 { id: 'f', name: 'Female' },
-            ]} validation={choices(['m', 'f'], 'Must be Male or Female')}/>
+            ]} validation={validateSex}/>
         </SimpleForm>
     </Create>
 );
