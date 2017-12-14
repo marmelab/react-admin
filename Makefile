@@ -49,7 +49,7 @@ lint: ## lint the code and check coding conventions
 prettier: ## prettify the source code using prettier
 	@./node_modules/.bin/prettier-eslint --write --list-different  "packages/react-admin/src/**/*.js" "packages/ra-example/**/*.js"
 
-test: test-unit lint test-e2e ## launch all tests
+test: build test-unit lint test-e2e ## launch all tests
 
 test-unit: ## launch unit tests
 	@echo "Running unit tests..."
