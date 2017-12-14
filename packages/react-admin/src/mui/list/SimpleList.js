@@ -39,8 +39,11 @@ const LinkOrNot = withStyles(styles)(
 );
 
 const SimpleList = ({
-    classes,
+    classes = {},
     className,
+    currentSort,
+    isLoading,
+    setSort,
     ids,
     data,
     basePath,
@@ -52,8 +55,9 @@ const SimpleList = ({
     rightAvatar,
     rightIcon,
     linkType,
+    ...rest
 }) => (
-    <List className={className}>
+    <List className={className} {...rest}>
         {ids.map(id => (
             <LinkOrNot linkType={linkType} basePath={basePath} id={id} key={id}>
                 <ListItem button>
@@ -117,4 +121,4 @@ SimpleList.defaultProps = {
     linkType: 'edit',
 };
 
-export default SimpleList;
+export default withStyles(styles)(SimpleList);
