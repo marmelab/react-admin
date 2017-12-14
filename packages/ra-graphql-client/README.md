@@ -103,7 +103,7 @@ You can also supply your own [ApolloClient](http://dev.apollodata.com/core/apoll
 buildApolloClient({ client: myClient });
 ```
 
-### IntrospectionOptions
+### Introspection Options
 
 Instead of running an IntrospectionQuery you can also provide the IntrospectionQuery result directly. This speeds up the initial rendering of the `Admin` component as it no longer has to wait for the introspection query request to resolve.
 
