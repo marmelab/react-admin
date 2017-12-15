@@ -103,8 +103,8 @@ import Button from 'material-ui/Button';
 import { changeLocale as changeLocaleAction } from 'react-admin';
 
 class LocaleSwitcher extends Component {
-    switchToFrench = () => this.changeLocale('fr');
-    switchToEnglish = () => this.changeLocale('en');
+    switchToFrench = () => this.props.changeLocale('fr');
+    switchToEnglish = () => this.props.changeLocale('en');
 
     render() {
         const { changeLocale } = this.props;
