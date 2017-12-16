@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux';
-import resources, { getResources as innerGetResources } from './resource';
+import resources, {
+    getResources as innerGetResources,
+    hasDeclaredResources as innerHasDeclaredResources,
+} from './resource';
 import loading from './loading';
 import notifications from './notifications';
 import record from './record';
@@ -17,4 +20,6 @@ export default combineReducers({
     ui,
 });
 
+export const hasDeclaredResources = state =>
+    innerHasDeclaredResources(state.resources);
 export const getResources = state => innerGetResources(state.resources);

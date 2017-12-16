@@ -7,9 +7,12 @@ import getContext from 'recompose/getContext';
 
 import CrudRoute from './CrudRoute';
 import NotFound from './mui/layout/NotFound';
+import Loading from './mui/layout/Loading';
 import WithPermissions from './auth/WithPermissions';
 import { declareResources as declareResourcesAction } from './actions';
 import { AUTH_GET_PERMISSIONS } from './auth/types';
+
+import { getResources, hasDeclaredResources } from './index';
 
 const initialPermissions = '@@ar/initialPermissions';
 
@@ -70,6 +73,7 @@ export class AdminRoutes extends Component {
             resources = [],
             dashboard,
             catchAll,
+            areResourcesBeingDeclared,
             title,
         } = this.props;
 
@@ -86,6 +90,18 @@ export class AdminRoutes extends Component {
                             children={route.props.children} // eslint-disable-line react/no-children-prop
                         />
                     ))}
+                {areResourcesBeingDeclared && (
+                    <Route
+                        path="/"
+                        key="loading"
+                        render={() => (
+                            <Loading
+                                loadingPrimary="ra.page.loading_resources"
+                                loadingSecondary="ra.message.loading_resources"
+                            />
+                        )}
+                    />
+                )}
                 {resources.map(resource => (
                     <Route
                         path={`/${resource.name}`}
@@ -148,13 +164,13 @@ AdminRoutes.propTypes = {
     customRoutes: PropTypes.array,
     declareResources: PropTypes.func.isRequired,
     resources: PropTypes.array,
+    areResourcesBeingDeclared: PropTypes.bool,
     dashboard: componentPropType,
 };
 
 const mapStateToProps = state => ({
-    resources: Object.keys(state.admin.resources).map(
-        key => state.admin.resources[key].props
-    ),
+    resources: getResources(state),
+    areResourcesBeingDeclared: !hasDeclaredResources(state),
 });
 
 export default compose(
