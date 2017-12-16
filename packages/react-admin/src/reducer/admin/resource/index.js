@@ -58,5 +58,6 @@ export default (
     return newState;
 };
 
+export const hasDeclaredResources = state => state !== initialState;
 export const getResources = state =>
     Object.keys(state).map(key => state[key].props);

@@ -1,7 +1,10 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import { routerReducer } from 'react-router-redux';
-import admin, { getResources as getAdminResources } from './admin';
+import admin, {
+    getResources as getAdminResources,
+    hasDeclaredResources as hasAdminDeclaredResources,
+} from './admin';
 import localeReducer from './locale';
 
 export default (customReducers, locale) =>
@@ -14,3 +17,5 @@ export default (customReducers, locale) =>
     });
 
 export const getResources = state => getAdminResources(state.admin);
+export const hasDeclaredResources = state =>
+    hasAdminDeclaredResources(state.admin);
