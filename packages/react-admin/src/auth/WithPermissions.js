@@ -13,7 +13,7 @@ const isEmptyChildren = children => Children.count(children) === 0;
  * After checking that the user is authenticated, 
  * retrieves the user's permissions for a specific context.
  *
- * Useful for Route components ; used internally by CrudRoute.
+ * Useful for Route components ; used internally by Resource.
  * Use it to decorate your custom page components to require 
  * a custom role. It will pass the permissions as a prop to your
  * component.
@@ -104,15 +104,15 @@ export class WithPermissions extends Component {
     // render even though the AUTH_GET_PERMISSIONS
     // isn't finished (optimistic rendering)
     render() {
-        const { render, children, location, match } = this.props;
+        const { render, children, ...props } = this.props;
         const { permissions } = this.state;
 
         if (render) {
-            return render({ permissions, location, match });
+            return render({ permissions, ...props });
         }
 
         if (children) {
-            return children({ permissions, location, match });
+            return children({ permissions, ...props });
         }
     }
 }

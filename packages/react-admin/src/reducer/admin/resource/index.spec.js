@@ -1,9 +1,9 @@
 import assert from 'assert';
 import reducer from './index';
-import { DECLARE_RESOURCES } from '../../../actions';
+import { REGISTER_RESOURCE, UNREGISTER_RESOURCE } from '../../../actions';
 
 describe('Resources Reducer', () => {
-    it('should return previous state if the action has no resource meta and is not DECLARE_RESOURCES', () => {
+    it('should return previous state if the action has no resource meta and is not REGISTER_RESOURCE nor UNREGISTER_RESOURCE', () => {
         const previousState = { previous: true };
         assert.deepEqual(
             reducer(previousState, { type: 'A_TYPE', meta: { foo: 'bar' } }),
@@ -11,23 +11,31 @@ describe('Resources Reducer', () => {
         );
     });
 
-    it('should initialize resources upon DECLARE_RESOURCES', () => {
-        const postsList = () => {};
-        const commentsCreate = () => {};
-        const usersEdit = () => {};
-        const resources = [
-            { name: 'posts', list: postsList },
-            { name: 'comments', create: commentsCreate },
-            { name: 'users', edit: usersEdit },
-        ];
-
+    it('should initialize a new resource upon REGISTER_RESOURCE', () => {
         const dataReducer = () => () => 'data_data';
         const listReducer = () => () => 'list_data';
 
         assert.deepEqual(
             reducer(
-                { oldResource: {} },
-                { type: DECLARE_RESOURCES, payload: resources },
+                {
+                    posts: {
+                        data: 'data_data',
+                        list: 'list_data',
+                        props: { name: 'posts' },
+                    },
+                    comments: {
+                        data: 'data_data',
+                        list: 'list_data',
+                        props: { name: 'comments' },
+                    },
+                },
+                {
+                    type: REGISTER_RESOURCE,
+                    payload: {
+                        name: 'users',
+                        options: 'foo',
+                    },
+                },
                 dataReducer,
                 listReducer
             ),
@@ -35,17 +43,52 @@ describe('Resources Reducer', () => {
                 posts: {
                     data: 'data_data',
                     list: 'list_data',
-                    props: { name: 'posts', list: postsList },
+                    props: { name: 'posts' },
                 },
                 comments: {
                     data: 'data_data',
                     list: 'list_data',
-                    props: { name: 'comments', create: commentsCreate },
+                    props: { name: 'comments' },
                 },
                 users: {
                     data: 'data_data',
                     list: 'list_data',
-                    props: { name: 'users', edit: usersEdit },
+                    props: { name: 'users', options: 'foo' },
+                },
+            }
+        );
+    });
+
+    it('should remove a resource upon UNREGISTER_RESOURCE', () => {
+        const dataReducer = () => () => 'data_data';
+        const listReducer = () => () => 'list_data';
+
+        assert.deepEqual(
+            reducer(
+                {
+                    posts: {
+                        data: 'data_data',
+                        list: 'list_data',
+                        props: { name: 'posts' },
+                    },
+                    comments: {
+                        data: 'data_data',
+                        list: 'list_data',
+                        props: { name: 'comments' },
+                    },
+                },
+                {
+                    type: UNREGISTER_RESOURCE,
+                    payload: 'comments',
+                },
+                dataReducer,
+                listReducer
+            ),
+            {
+                posts: {
+                    data: 'data_data',
+                    list: 'list_data',
+                    props: { name: 'posts' },
                 },
             }
         );

@@ -7,7 +7,7 @@ import { userCheck } from '../actions/authActions';
 /**
  * Restrict access to children to authenticated users
  *
- * Useful for Route components ; used internally by CrudRoute.
+ * Useful for Route components ; used internally by Resource.
  * Use it to decorate your custom page components to require 
  * authentication.
  * 

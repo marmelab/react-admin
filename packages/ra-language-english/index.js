@@ -25,6 +25,7 @@ module.exports = {
             delete: 'Delete %{name} #%{id}',
             dashboard: 'Dashboard',
             not_found: 'Not Found',
+            loading: 'Loading',
         },
         input: {
             file: {
@@ -46,6 +47,7 @@ module.exports = {
             about: 'About',
             not_found:
                 'Either you typed a wrong URL, or you followed a bad link.',
+            loading: 'The page is loading, just a moment please',
         },
         navigation: {
             no_results: 'No results found',

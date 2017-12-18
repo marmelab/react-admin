@@ -21,7 +21,6 @@ title: "Reference"
 * [`<Create>`](./CreateEdit.md#the-create-and-edit-components)
 * `<CreateActions>`
 * `<CreateButton>`
-* `<CrudRoute>`
 * `<DashboardMenuItem>`
 * [`<Datagrid>`](./List.md#the-datagrid-component)
 * `<DatagridBody>`

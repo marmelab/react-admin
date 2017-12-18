@@ -183,7 +183,6 @@ const emptyKeycode = [];
 // Store the validation functions array in a variable to avoid
 // creating a new one at each render as it results in a infinite rerenders
 // and crashes the app.
-const validateAverageNote = [required, number, minValue(0)];
 export const PostEdit = ({ ...props }) => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
@@ -231,7 +230,7 @@ export const PostEdit = ({ ...props }) => (
                 />
                 <NumberInput
                     source="average_note"
-                    validate={validateAverageNote}
+                    validate={[required, number, minValue(0)]}
                 />
                 <BooleanInput source="commentable" defaultValue />
                 <DisabledInput source="views" />
