@@ -27,7 +27,7 @@ export const DependentInputComponent = ({
                     <div
                         key={child.props.source}
                         style={child.props.style}
-                        className={`aor-input-${child.props.source}`}
+                        className={`ra-input-${child.props.source}`}
                     >
                         <FormField input={child} {...props} />
                     </div>
@@ -40,7 +40,7 @@ export const DependentInputComponent = ({
         <div
             key={children.props.source}
             style={children.props.style}
-            className={`aor-input-${children.props.source}`}
+            className={`ra-input-${children.props.source}`}
         >
             <FormField input={children} {...props} />
         </div>

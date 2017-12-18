@@ -14,7 +14,7 @@ title: "Ecosystem"
 
 - [dreinke/aor-color-input](https://github.com/dreinke/aor-color-input): a color input using [React Color](http://casesandberg.github.io/react-color/), a collection of color pickers.
 - [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
-- [marmelab/ra-dependent-input](https://github.com/marmelab/react-admin/packages/ra-dependent-input): conditionnaly display inputs depending on other inputs values
+- [marmelab/ra-dependent-input](https://github.com/marmelab/react-admin/tree/master/packages/ra-dependent-input): conditionnaly display inputs depending on other inputs values
 - [mhdsyrwan/aor-embedded-array](https://github.com/MhdSyrwan/aor-embedded-array): Field and Input for embedded arrays.
 
 ## Translations
@@ -26,8 +26,8 @@ See the [translation](./Translation.md#available-locales) page.
 * **[Epilogue](https://github.com/dchester/epilogue)**: [dunghuynh/aor-epilogue-client](https://github.com/dunghuynh/aor-epilogue-client)
 * **[Feathersjs](http://www.feathersjs.com/)**: [josx/aor-feathers-client](https://github.com/josx/aor-feathers-client)
 * **[Firebase](https://firebase.google.com/)**: [sidferreira/aor-firebase-client](https://github.com/sidferreira/aor-firebase-client)
-* **[GraphQL](http://graphql.org/)**: [marmelab/ra-data-graphql](https://github.com/marmelab/react-admin/packages/ra-data-graphql) (uses [Apollo](http://www.apollodata.com/))
-* **[GraphCool](http://www.graph.cool/)**: [marmelab/ra-data-graphcool](https://github.com/marmelab/react-admin/packages/ra-data-graphql) (uses [Apollo](http://www.apollodata.com/))
+* **[GraphQL](http://graphql.org/)**: [marmelab/ra-data-graphql](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql) (uses [Apollo](http://www.apollodata.com/))
+* **[GraphCool](http://www.graph.cool/)**: [marmelab/ra-data-graphcool](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql) (uses [Apollo](http://www.apollodata.com/))
 * **[JSON API](http://jsonapi.org/)**: [moonlight-labs/aor-jsonapi-client](https://github.com/moonlight-labs/aor-jsonapi-client)
 * **[JSON server](https://github.com/typicode/json-server)**: [marmelab/ra-data-json-server](https://github.com/marmelab/ra-data-json-server).
 * Local JSON: [marmelab/ra-data-fakerest](https://github.com/marmelab/ra-data-fakerest)

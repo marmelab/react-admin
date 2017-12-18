@@ -1,6 +1,6 @@
 # ra-dependent-input
 
-A component for displaying inputs and fields depending on other inputs or fields values in [react-admin](https://github.com/marmelab/react-admin).
+Introduces two new components for [react-admin](https://github.com/marmelab/react-admin): `<DependentField>` and `<DependentInput>`. Use these components to display inputs and fields depending on other inputs or fields values.
 
 - [Installation](#installation)
 - [Usage](#installation)
