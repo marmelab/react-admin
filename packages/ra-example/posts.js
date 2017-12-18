@@ -21,11 +21,9 @@ import {
     NumberInput,
     ReferenceArrayField,
     ReferenceManyField,
-    ReferenceArrayInput,
     Responsive,
     RichTextField,
     SaveButton,
-    SelectArrayInput,
     SelectField,
     SelectInput,
     Show,
@@ -61,9 +59,6 @@ const PostFilter = ({ ...props }) => (
             source="title"
             defaultValue="Qui tempore rerum et voluptates"
         />
-        <ReferenceArrayInput source="tags" reference="tags" defaultValue={[3]}>
-            <SelectArrayInput optionText="name" />
-        </ReferenceArrayInput>
         <QuickFilter
             label="resources.posts.fields.commentable"
             source="commentable"
@@ -179,7 +174,6 @@ export const PostCreate = ({ ...props }) => (
     </Create>
 );
 
-const emptyKeycode = [];
 export const PostEdit = ({ ...props }) => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
@@ -208,15 +202,6 @@ export const PostEdit = ({ ...props }) => (
                 />
             </FormTab>
             <FormTab label="post.form.miscellaneous">
-                <ReferenceArrayInput source="tags" reference="tags" allowEmpty>
-                    <SelectArrayInput
-                        optionText="name"
-                        options={{
-                            fullWidth: true,
-                            newChipKeyCodes: emptyKeycode,
-                        }}
-                    />
-                </ReferenceArrayInput>
                 <DateInput source="published_at" options={{ locale: 'pt' }} />
                 <SelectInput
                     source="category"
