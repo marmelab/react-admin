@@ -180,9 +180,6 @@ export const PostCreate = ({ ...props }) => (
 );
 
 const emptyKeycode = [];
-// Store the validation functions array in a variable to avoid
-// creating a new one at each render as it results in a infinite rerenders
-// and crashes the app.
 export const PostEdit = ({ ...props }) => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
