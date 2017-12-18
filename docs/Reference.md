@@ -60,7 +60,6 @@ title: "Reference"
 * [`<Pagination>`](./List.md#pagination)
 * [`<RadioButtonGroupInput>`](./Inputs.md#radiobuttongroupinput)
 * [`<ReferenceArrayField>`](./Fields.md#referencearrayfield)
-* [`<ReferenceArrayInput>`](./Inputs.md#referencearrayinput)
 * [`<ReferenceField>`](./Fields.md#referencefield)
 * [`<ReferenceInput>`](./Inputs.md#referenceinput)
 * [`<ReferenceManyField>`](./Fields.md#referencemanyfield)
@@ -70,7 +69,6 @@ title: "Reference"
 * [`<RichTextField>`](./Fields.md#richtextfield)
 * [`<RichTextInput>`](./Inputs.md#richtextinput)
 * `<SaveButton>`
-* [`<SelectArrayInput>`](./Inputs.md#selectarrayinput)
 * [`<SelectField>`](./Fields.md#selectfield)
 * [`<SelectInput>`](./Inputs.md#selectinput)
 * [`<Show>`](./Show.md#the-show-component)

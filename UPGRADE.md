@@ -172,6 +172,10 @@ const dateParser = v => { // from input to record
 
 Material-ui 1.0 doesn't provide a real date picker, so the `options` prop of the `<DateInput>` is no longer supported.
 
+## `<SelectArrayInput>` has been removed
+
+This component relied on [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input) which is not yet fully ported to Material-ui 1.0: it doesn't support the autocomplete feature we need. We will add this component back when it will.
+
 ## CSS Classes Changed
 
 React-admin does not rely heavily on CSS classes. Nevertheless, a few components added CSS classes to facilitate per-field theming: `<SimpleShowLayout>`, `<Tab>`, and `<FormInput>`. These CSS classes used to follow the "aor-" naming pattern. They have all been renamed to use the "ra-" pattern instead. Here is the list of concerned classes:
