@@ -26,7 +26,15 @@ build-ra-input-rich-text:
 	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-input-rich-text/src -d ./packages/ra-input-rich-text/lib --ignore '*.spec.js'
 	@cd packages/ra-input-rich-text/src && rsync -R `find . -name *.css` ../lib
 
-build: build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-input-rich-text ## compile ES6 files to JS
+build-ra-data-graphql:
+	@rm -rf ./packages/ra-data-graphql/lib
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-graphql/src -d ./packages/ra-data-graphql/lib --ignore '*.spec.js'
+
+build-ra-data-graphcool:
+	@rm -rf ./packages/ra-data-graphcool/lib
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-graphcool/src -d ./packages/ra-data-graphcool/lib --ignore '*.spec.js'
+
+build: build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-input-rich-text build-ra-data-graphql build-ra-data-graphcool ## compile ES6 files to JS
 
 watch: ## continuously compile ES6 files to JS
 	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore '*.spec.js' --watch
@@ -41,7 +49,7 @@ lint: ## lint the code and check coding conventions
 prettier: ## prettify the source code using prettier
 	@./node_modules/.bin/prettier-eslint --write --list-different  "packages/react-admin/src/**/*.js" "packages/ra-example/**/*.js"
 
-test: test-unit lint test-e2e ## launch all tests
+test: build test-unit lint test-e2e ## launch all tests
 
 test-unit: ## launch unit tests
 	@echo "Running unit tests..."
