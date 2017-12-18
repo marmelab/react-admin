@@ -17,13 +17,20 @@ const styles = {
     icon: { paddingRight: '0.5em' },
 };
 
-const DashboardMenuItem = ({ classes, className, onClick, translate }) => (
+const DashboardMenuItem = ({
+    classes,
+    className,
+    onClick,
+    translate,
+    ...props
+}) => (
     <MenuItemLink
         onClick={onClick}
         to="/"
         className={classnames(classes.link, className)}
         primaryText={translate('ra.page.dashboard')}
         leftIcon={<DashboardIcon className={classes.icon} />}
+        {...props}
     />
 );
 
