@@ -1,14 +1,12 @@
-import React, { Children, Component } from 'react';
+import React, { Children, Component, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import getContext from 'recompose/getContext';
 
-import CrudRoute from './CrudRoute';
+import Loading from './mui/layout/Loading';
 import NotFound from './mui/layout/NotFound';
 import WithPermissions from './auth/WithPermissions';
-import { declareResources as declareResourcesAction } from './actions';
 import { AUTH_GET_PERMISSIONS } from './auth/types';
 
 const initialPermissions = '@@ar/initialPermissions';
@@ -17,16 +15,11 @@ export class AdminRoutes extends Component {
     // Can't use null or undefined here as authClient may return any those values
     state = { permissions: initialPermissions };
 
-    componentDidMount() {
-        this.getPermissions();
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (
-            prevState.permissions !== this.state.permissions &&
-            this.state.permissions !== initialPermissions
-        ) {
-            this.initializeResources();
+    componentWillMount() {
+        if (typeof this.props.children === 'function') {
+            this.getPermissions();
+        } else {
+            this.setState({ childrenToRender: this.props.children });
         }
     }
 
@@ -40,98 +33,115 @@ export class AdminRoutes extends Component {
         }
     };
 
-    async initializeResources() {
-        const { children, declareResources } = this.props;
-        const { permissions } = this.state;
+    componentWillUpdate(nextProps, nextState) {
+        if (
+            typeof nextProps.children === 'function' &&
+            nextState.permissions !== this.state.permissions
+        ) {
+            const { children } = nextProps;
 
-        if (typeof children === 'function') {
-            const childrenResult = children(permissions);
-            let resources = childrenResult;
-
-            if (typeof childrenResult.then === 'function') {
-                resources = await childrenResult;
+            const childrenFuncResult = children(nextState.permissions);
+            if (childrenFuncResult.then) {
+                childrenFuncResult.then(resolvedChildren => {
+                    this.setState({
+                        childrenToRender: resolvedChildren.filter(
+                            child => child
+                        ),
+                    });
+                });
+                return;
             }
 
-            const finalResources = resources
-                .filter(node => node)
-                .map(node => node.props);
-
-            declareResources(finalResources);
-        } else {
-            const resources =
-                Children.map(children, ({ props }) => props) || [];
-            declareResources(resources);
+            return this.setState({
+                childrenToRender: childrenFuncResult.filter(child => child),
+            });
         }
     }
 
     render() {
-        const {
-            customRoutes,
-            resources = [],
-            dashboard,
-            catchAll,
-            title,
-        } = this.props;
+        const { customRoutes, dashboard, catchAll, title } = this.props;
+
+        const { childrenToRender } = this.state;
+
+        if (!childrenToRender) {
+            return (
+                <Route
+                    path="/"
+                    key="loading"
+                    render={() => (
+                        <Loading
+                            loadingPrimary="ra.page.loading"
+                            loadingSecondary="ra.message.loading"
+                        />
+                    )}
+                />
+            );
+        }
 
         return (
-            <Switch>
-                {customRoutes &&
-                    customRoutes.map((route, index) => (
+            <div>
+                {Children.map(childrenToRender, child =>
+                    cloneElement(child, {
+                        context: 'registration',
+                    })
+                )}
+                <Switch>
+                    {customRoutes &&
+                        customRoutes.map((route, index) => (
+                            <Route
+                                key={index}
+                                exact={route.props.exact}
+                                path={route.props.path}
+                                component={route.props.component}
+                                render={route.props.render}
+                                children={route.props.children} // eslint-disable-line react/no-children-prop
+                            />
+                        ))}
+                    {Children.map(childrenToRender, child => (
                         <Route
-                            key={index}
-                            exact={route.props.exact}
-                            path={route.props.path}
-                            component={route.props.component}
-                            render={route.props.render}
-                            children={route.props.children} // eslint-disable-line react/no-children-prop
+                            path={`/${child.props.name}`}
+                            render={props =>
+                                cloneElement(child, {
+                                    context: 'route',
+                                    ...props,
+                                })}
                         />
                     ))}
-                {resources.map(resource => (
-                    <Route
-                        path={`/${resource.name}`}
-                        key={resource.name}
-                        render={() => (
-                            <CrudRoute
-                                resource={resource.name}
-                                list={resource.list}
-                                create={resource.create}
-                                edit={resource.edit}
-                                show={resource.show}
-                                remove={resource.remove}
-                                options={resource.options}
-                            />
-                        )}
-                    />
-                ))}
-                {dashboard ? (
-                    <Route
-                        exact
-                        path="/"
-                        render={routeProps => (
-                            <WithPermissions
-                                authParams={{ route: 'dashboard' }}
-                                {...routeProps}
-                                render={props =>
-                                    React.createElement(dashboard, props)}
-                            />
-                        )}
-                    />
-                ) : (
-                    resources[0] && (
+                    {dashboard ? (
                         <Route
                             exact
                             path="/"
-                            render={() => (
-                                <Redirect to={`/${resources[0].name}`} />
+                            render={routeProps => (
+                                <WithPermissions
+                                    authParams={{ route: 'dashboard' }}
+                                    {...routeProps}
+                                    render={props =>
+                                        React.createElement(dashboard, props)}
+                                />
                             )}
                         />
-                    )
-                )}
-                <Route
-                    render={() =>
-                        React.createElement(catchAll || NotFound, { title })}
-                />
-            </Switch>
+                    ) : (
+                        childrenToRender[0] && (
+                            <Route
+                                exact
+                                path="/"
+                                render={() => (
+                                    <Redirect
+                                        to={`/${childrenToRender[0].props
+                                            .name}`}
+                                    />
+                                )}
+                            />
+                        )
+                    )}
+                    <Route
+                        render={() =>
+                            React.createElement(catchAll || NotFound, {
+                                title,
+                            })}
+                    />
+                </Switch>
+            </div>
         );
     }
 }
@@ -146,22 +156,12 @@ AdminRoutes.propTypes = {
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     catchAll: componentPropType,
     customRoutes: PropTypes.array,
-    declareResources: PropTypes.func.isRequired,
-    resources: PropTypes.array,
+    title: PropTypes.string,
     dashboard: componentPropType,
 };
-
-const mapStateToProps = state => ({
-    resources: Object.keys(state.admin.resources).map(
-        key => state.admin.resources[key].props
-    ),
-});
 
 export default compose(
     getContext({
         authClient: PropTypes.func,
-    }),
-    connect(mapStateToProps, {
-        declareResources: declareResourcesAction,
     })
 )(AdminRoutes);

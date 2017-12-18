@@ -36,7 +36,7 @@
         ],
         "react/forbid-prop-types": ["off"],
         "react/prop-types": ["warn"],
-        "react/jsx-no-bind": ["warn"],
+        "react/jsx-no-bind": ["off"],
         "react/jsx-indent": ["off"],
         "react/jsx-indent-props": ["off"],
         "react/jsx-filename-extension": ["off"],

@@ -23,6 +23,7 @@ import { UserList, UserEdit, UserCreate, UserIcon, UserShow } from './users';
 import data from './data';
 import * as customMessages from './i18n';
 import authClient from './authClient';
+import { setTimeout } from 'core-js/library/web/timers';
 
 const messages = {
     fr: { ...frenchMessages, ...customMessages.fr },

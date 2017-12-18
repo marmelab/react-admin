@@ -65,8 +65,8 @@ export default authClient => {
                 break;
             }
             case USER_LOGOUT: {
-                yield call(authClient, AUTH_LOGOUT);
                 yield put(push('/login'));
+                yield call(authClient, AUTH_LOGOUT);
                 break;
             }
             case FETCH_ERROR:

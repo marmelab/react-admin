@@ -44,7 +44,7 @@ const Menu = ({
     <div className={classnames(classes.main, className)}>
         {hasDashboard && <DashboardMenuItem onClick={onMenuTap} />}
         {resources
-            .filter(r => r.list)
+            .filter(r => r.hasList)
             .map(resource => (
                 <MenuItemLink
                     key={resource.name}
