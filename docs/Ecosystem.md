@@ -38,5 +38,5 @@ See the [translation](./Translation.md#available-locales) page.
 
 ## Miscellaneous
 
-- [marmelab/ra-realtime](https://github.com/marmelab/react-admin/packages/ra-realtime): enable realtime updates
+- [marmelab/ra-realtime](https://github.com/marmelab/react-admin/tree/master/packages/ra-realtime): enable realtime updates
 - [zifnab87/ra-component-factory](https://github.com/zifnab87/ra-component-factory): centralized configuration of immutability/visibility of fields/menu-links/action buttons, easy re-ordering of fields/properties and tab reorganization based on permission roles
