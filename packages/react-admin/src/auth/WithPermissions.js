@@ -95,10 +95,18 @@ export class WithPermissions extends Component {
                 location: location ? location.pathname : undefined,
             });
 
-            this.setState({ permissions });
+            if (!this.didUnmount) {
+                this.setState({ permissions });
+            }
         } catch (error) {
-            this.setState({ permissions: null });
+            if (!this.didUnmount) {
+                this.setState({ permissions: null });
+            }
         }
+    }
+
+    componentWillUnmount() {
+        this.didUnmount = true;
     }
 
     // render even though the AUTH_GET_PERMISSIONS
