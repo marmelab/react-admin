@@ -1,5 +1,6 @@
 import React, { Children, Component, cloneElement } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import compose from 'recompose/compose';
 import getContext from 'recompose/getContext';
@@ -8,6 +9,7 @@ import Loading from './mui/layout/Loading';
 import NotFound from './mui/layout/NotFound';
 import WithPermissions from './auth/WithPermissions';
 import { AUTH_GET_PERMISSIONS } from './auth/types';
+import { isLoggedIn } from './reducer';
 
 const initialPermissions = '@@ar/initialPermissions';
 
@@ -34,6 +36,15 @@ export class AdminRoutes extends Component {
     };
 
     componentWillUpdate(nextProps, nextState) {
+        if (
+            !nextProps.isLoggedIn &&
+            nextProps.isLoggedIn !== this.props.isLoggedIn
+        ) {
+            this.setState({ permissions: initialPermissions }, () =>
+                this.getPermissions()
+            );
+        }
+
         if (
             typeof nextProps.children === 'function' &&
             nextState.permissions !== this.state.permissions
@@ -156,12 +167,18 @@ AdminRoutes.propTypes = {
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     catchAll: componentPropType,
     customRoutes: PropTypes.array,
+    isLoggedIn: PropTypes.bool,
     title: PropTypes.string,
     dashboard: componentPropType,
 };
 
+const mapStateToProps = state => ({
+    isLoggedIn: isLoggedIn(state),
+});
+
 export default compose(
     getContext({
         authClient: PropTypes.func,
-    })
+    }),
+    connect(mapStateToProps, {})
 )(AdminRoutes);
