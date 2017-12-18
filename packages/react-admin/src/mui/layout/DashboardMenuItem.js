@@ -17,7 +17,13 @@ const styles = {
     icon: { paddingRight: '0.5em' },
 };
 
-const DashboardMenuItem = ({ classes, className, onClick, translate, ...props }) => (
+const DashboardMenuItem = ({
+    classes,
+    className,
+    onClick,
+    translate,
+    ...props
+}) => (
     <MenuItemLink
         onClick={onClick}
         to="/"
