@@ -5,24 +5,24 @@ import { connect } from 'react-redux';
 import { userCheck } from '../actions/authActions';
 
 /**
- * Restrict access to children
+ * Restrict access to children to authenticated users
  *
  * Useful for Route components ; used internally by CrudRoute.
  * Use it to decorate your custom page components to require 
- * authentication or a custom role.
+ * authentication.
  * 
  * Pass the `location` from the `routeParams` as `location` prop.
  * You can set additional `authParams` at will if your authClient
  * requires it.
  *
  * @example
- *     import { Restricted } from 'react-admin';
+ *     import { Authenticated } from 'react-admin';
  * 
  *     const CustomRoutes = [
  *         <Route path="/foo" render={routeParams =>
- *             <Restricted location={routeParams.location} authParams={{ foo: 'bar' }}>
+ *             <Authenticated location={routeParams.location} authParams={{ foo: 'bar' }}>
  *                 <Foo />
- *             </Restricted>
+ *             </Authenticated>
  *         } />
  *     ];
  *     const App = () => (
@@ -31,7 +31,7 @@ import { userCheck } from '../actions/authActions';
  *         </Admin>
  *     );
  */
-export class Restricted extends Component {
+export class Authenticated extends Component {
     static propTypes = {
         authParams: PropTypes.object,
         children: PropTypes.element.isRequired,
@@ -67,4 +67,4 @@ export class Restricted extends Component {
     }
 }
 
-export default connect(null, { userCheck })(Restricted);
+export default connect(null, { userCheck })(Authenticated);

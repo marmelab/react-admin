@@ -1,5 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import { withStyles } from 'material-ui/styles';
+
+const styles = {
+    root: { display: 'flex', flexWrap: 'wrap' },
+};
 
 /**
  * Iterator component to be used to display a list of entities, using a single field
@@ -11,8 +17,16 @@ import PropTypes from 'prop-types';
  *     </SingleFieldList>
  * </ReferenceManyField>
  */
-const SingleFieldList = ({ ids, data, resource, basePath, children }) => (
-    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+const SingleFieldList = ({
+    classes = {},
+    className,
+    ids,
+    data,
+    resource,
+    basePath,
+    children,
+}) => (
+    <div className={classnames(classes.root, className)}>
         {ids.map(id =>
             React.cloneElement(children, {
                 key: id,
@@ -26,6 +40,8 @@ const SingleFieldList = ({ ids, data, resource, basePath, children }) => (
 
 SingleFieldList.propTypes = {
     children: PropTypes.element.isRequired,
+    classes: PropTypes.object,
+    className: PropTypes.string,
 };
 
-export default SingleFieldList;
+export default withStyles(styles)(SingleFieldList);

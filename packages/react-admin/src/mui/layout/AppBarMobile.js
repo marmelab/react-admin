@@ -8,6 +8,7 @@ import MenuIcon from 'material-ui-icons/Menu';
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
+import classnames from 'classnames';
 
 import { toggleSidebar } from '../../actions';
 
@@ -39,9 +40,9 @@ class AppBarMobile extends Component {
     };
 
     render() {
-        const { classes, title, toggleSidebar } = this.props;
+        const { classes, className, title, toggleSidebar } = this.props;
         return (
-            <MuiAppBar className={classes.bar}>
+            <MuiAppBar className={classnames(classes.bar, className)}>
                 <Toolbar>
                     <IconButton
                         color="contrast"
@@ -62,6 +63,7 @@ class AppBarMobile extends Component {
 
 AppBarMobile.propTypes = {
     classes: PropTypes.object,
+    className: PropTypes.string,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,
     toggleSidebar: PropTypes.func.isRequired,

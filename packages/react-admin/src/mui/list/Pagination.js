@@ -9,6 +9,7 @@ import Typography from 'material-ui/Typography';
 import Toolbar from 'material-ui/Toolbar';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
+import classnames from 'classnames';
 
 import Responsive from '../layout/Responsive';
 import translate from '../../i18n/translate';
@@ -20,6 +21,7 @@ const styles = {
     mobileToolbar: {
         justifyContent: 'center',
     },
+    hellip: { padding: '1.2em' },
 };
 
 export class Pagination extends Component {
@@ -97,22 +99,23 @@ export class Pagination extends Component {
     };
 
     renderPageNums() {
+        const { classes = {} } = this.props;
+
         return this.range().map(
             (pageNum, index) =>
                 pageNum === '.' ? (
-                    <span key={`hyphen_${index}`} style={{ padding: '1.2em' }}>
+                    <span key={`hyphen_${index}`} className={classes.hellip}>
                         &hellip;
                     </span>
                 ) : (
                     <Button
-                        className="page-number"
+                        className={classnames('page-number', classes.button)}
                         color={
                             pageNum === this.props.page ? 'default' : 'primary'
                         }
                         key={pageNum}
                         data-page={pageNum}
                         onClick={this.gotoPage}
-                        style={styles.button}
                     >
                         {pageNum}
                     </Button>
@@ -121,7 +124,14 @@ export class Pagination extends Component {
     }
 
     render() {
-        const { classes = {}, page, perPage, total, translate } = this.props;
+        const {
+            classes = {},
+            className,
+            page,
+            perPage,
+            total,
+            translate,
+        } = this.props;
         if (total === 0) return null;
         const offsetEnd = Math.min(page * perPage, total);
         const offsetBegin = Math.min((page - 1) * perPage + 1, offsetEnd);
@@ -130,7 +140,10 @@ export class Pagination extends Component {
         return (
             <Responsive
                 small={
-                    <Toolbar classes={{ root: classes.mobileToolbar }}>
+                    <Toolbar
+                        className={className}
+                        classes={{ root: classes.mobileToolbar }}
+                    >
                         {page > 1 && (
                             <IconButton color="primary" onClick={this.prevPage}>
                                 <ChevronLeft />
@@ -151,7 +164,7 @@ export class Pagination extends Component {
                     </Toolbar>
                 }
                 medium={
-                    <Toolbar>
+                    <Toolbar className={className}>
                         <Typography type="body1" className="displayed-records">
                             {translate('ra.navigation.page_range_info', {
                                 offsetBegin,
@@ -193,6 +206,7 @@ export class Pagination extends Component {
 
 Pagination.propTypes = {
     classes: PropTypes.object,
+    className: PropTypes.string,
     page: PropTypes.number,
     perPage: PropTypes.number,
     setPage: PropTypes.func,

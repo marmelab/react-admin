@@ -1,11 +1,14 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import FileField from './FileField';
+import { FileField } from './FileField';
 
 describe('<FileField />', () => {
     it('should return an empty div when record is not set', () => {
-        assert.equal(shallow(<FileField source="url" />).html(), '<div></div>');
+        assert.equal(
+            shallow(<FileField source="url" />).html(),
+            '<div class=""></div>'
+        );
     });
 
     it('should render a link with correct attributes based on `source` and `title`', () => {
@@ -101,4 +104,16 @@ describe('<FileField />', () => {
         assert.equal(links.at(1).prop('href'), 'http://bar.com/foo.jpg');
         assert.equal(links.at(1).prop('title'), 'Bye world!');
     });
+
+    it('should use custom className', () =>
+        assert.deepEqual(
+            shallow(
+                <FileField
+                    record={{ foo: true }}
+                    source="email"
+                    className="foo"
+                />
+            ).prop('className'),
+            'foo'
+        ));
 });

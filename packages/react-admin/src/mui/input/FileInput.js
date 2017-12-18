@@ -31,8 +31,8 @@ export class FileInput extends Component {
         accept: PropTypes.string,
         children: PropTypes.element,
         classes: PropTypes.object,
+        className: PropTypes.string,
         disableClick: PropTypes.bool,
-        elStyle: PropTypes.object,
         input: PropTypes.object,
         isRequired: PropTypes.bool,
         itemStyle: PropTypes.object,
@@ -41,7 +41,6 @@ export class FileInput extends Component {
         maxSize: PropTypes.number,
         minSize: PropTypes.number,
         multiple: PropTypes.bool,
-        style: PropTypes.object,
         translate: PropTypes.func.isRequired,
         placeholder: PropTypes.node,
     };
@@ -149,8 +148,8 @@ export class FileInput extends Component {
             accept,
             children,
             classes = {},
+            className,
             disableClick,
-            elStyle,
             isRequired,
             itemStyle,
             label,
@@ -159,16 +158,15 @@ export class FileInput extends Component {
             multiple,
             resource,
             source,
-            style,
         } = this.props;
 
         return (
             <Labeled
                 label={label}
+                className={className}
                 source={source}
                 resource={resource}
                 isRequired={isRequired}
-                style={elStyle}
             >
                 <span>
                     <Dropzone
@@ -179,7 +177,6 @@ export class FileInput extends Component {
                         minSize={minSize}
                         multiple={multiple}
                         className={classes.dropZone}
-                        style={style}
                     >
                         {this.label()}
                     </Dropzone>

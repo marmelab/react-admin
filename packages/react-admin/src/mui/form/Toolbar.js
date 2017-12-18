@@ -1,6 +1,9 @@
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import MuiToolbar from 'material-ui/Toolbar';
+import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
+
 import { SaveButton } from '../button';
 import Responsive from '../layout/Responsive';
 
@@ -19,6 +22,8 @@ const valueOrDefault = (value, defaultValue) =>
     typeof value === 'undefined' ? defaultValue : value;
 
 const Toolbar = ({
+    classes,
+    className,
     invalid,
     submitOnEnter,
     handleSubmitWithRedirect,
@@ -26,7 +31,10 @@ const Toolbar = ({
 }) => (
     <Responsive
         small={
-            <MuiToolbar style={styles.mobileToolbar} noGutter>
+            <MuiToolbar
+                className={classnames(classes.mobileToolbar, className)}
+                noGutter
+            >
                 {Children.count(children) === 0 ? (
                     <SaveButton
                         handleSubmitWithRedirect={handleSubmitWithRedirect}
@@ -54,7 +62,7 @@ const Toolbar = ({
             </MuiToolbar>
         }
         medium={
-            <MuiToolbar>
+            <MuiToolbar className={className}>
                 {Children.count(children) === 0 ? (
                     <SaveButton
                         handleSubmitWithRedirect={handleSubmitWithRedirect}
@@ -84,6 +92,8 @@ const Toolbar = ({
 
 Toolbar.propTypes = {
     children: PropTypes.node,
+    classes: PropTypes.object,
+    className: PropTypes.string,
     handleSubmitWithRedirect: PropTypes.func,
     invalid: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
@@ -93,4 +103,4 @@ Toolbar.defaultProps = {
     submitOnEnter: true,
 };
 
-export default Toolbar;
+export default withStyles(styles)(Toolbar);

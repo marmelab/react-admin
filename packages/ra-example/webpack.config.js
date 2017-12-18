@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    devtool: 'eval',
+    devtool: 'cheap-module-source-map',
     entry: './app.js',
     output: {
         path: path.join(__dirname, 'static'),

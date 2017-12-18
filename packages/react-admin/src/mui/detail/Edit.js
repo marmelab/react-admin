@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Card, { CardContent } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
+import classnames from 'classnames';
 
 import Header from '../layout/Header';
 import Title from '../layout/Title';
@@ -13,7 +14,6 @@ import {
 } from '../../actions/dataActions';
 import DefaultActions from './EditActions';
 import translate from '../../i18n/translate';
-import withChildrenAsFunction from '../withChildrenAsFunction';
 
 /**
  * Page component for the Edit view
@@ -118,6 +118,7 @@ export class Edit extends Component {
         const {
             actions = <DefaultActions />,
             children,
+            className,
             data,
             hasDelete,
             hasShow,
@@ -127,6 +128,7 @@ export class Edit extends Component {
             resource,
             title,
             translate,
+            version,
         } = this.props;
 
         if (!children) return null;
@@ -149,7 +151,7 @@ export class Edit extends Component {
         );
 
         return (
-            <div className="edit-page">
+            <div className={classnames('edit-page', className)}>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}
@@ -163,19 +165,22 @@ export class Edit extends Component {
                             resource,
                         }}
                     />
-                    {data &&
+                    {data ? (
                         React.cloneElement(children, {
                             save: this.save,
                             resource,
                             basePath,
                             record: data,
                             translate,
+                            version,
                             redirect:
                                 typeof children.props.redirect === 'undefined'
                                     ? this.defaultRedirectRoute()
                                     : children.props.redirect,
-                        })}
-                    {!data && <CardContent>&nbsp;</CardContent>}
+                        })
+                    ) : (
+                        <CardContent>&nbsp;</CardContent>
+                    )}
                 </Card>
             </div>
         );
@@ -185,6 +190,7 @@ export class Edit extends Component {
 Edit.propTypes = {
     actions: PropTypes.element,
     children: PropTypes.node,
+    className: PropTypes.string,
     crudGetOne: PropTypes.func.isRequired,
     crudUpdate: PropTypes.func.isRequired,
     data: PropTypes.object,
@@ -219,8 +225,7 @@ const enhance = compose(
         crudGetOne: crudGetOneAction,
         crudUpdate: crudUpdateAction,
     }),
-    translate,
-    withChildrenAsFunction
+    translate
 );
 
 export default enhance(Edit);

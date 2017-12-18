@@ -65,10 +65,10 @@ import translate from '../../i18n/translate';
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
 export const SelectField = ({
+    className,
     source,
     record,
     choices,
-    elStyle,
     optionValue,
     optionText,
     translate,
@@ -83,7 +83,7 @@ export const SelectField = ({
           ? optionText(choice)
           : choice[optionText];
     return (
-        <span style={elStyle}>
+        <span className={className}>
             {translateChoice
                 ? translate(choiceName, { _: choiceName })
                 : choiceName}
@@ -93,8 +93,8 @@ export const SelectField = ({
 
 SelectField.propTypes = {
     addLabel: PropTypes.bool,
+    className: PropTypes.string,
     choices: PropTypes.arrayOf(PropTypes.object),
-    elStyle: PropTypes.object,
     label: PropTypes.string,
     optionText: PropTypes.oneOfType([
         PropTypes.string,

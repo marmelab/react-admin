@@ -31,8 +31,15 @@ import { ListButton, ShowButton, EditButton } from '../button';
  *         </Delete>
  *     );
  */
-const DeleteActions = ({ basePath, data, hasEdit, hasList, hasShow }) => (
-    <CardActions>
+const DeleteActions = ({
+    basePath,
+    className,
+    data,
+    hasEdit,
+    hasList,
+    hasShow,
+}) => (
+    <CardActions className={className}>
         {hasList && <ListButton basePath={basePath} />}
         {hasEdit && <EditButton basePath={basePath} record={data} />}
         {hasShow && <ShowButton basePath={basePath} record={data} />}
@@ -41,6 +48,7 @@ const DeleteActions = ({ basePath, data, hasEdit, hasList, hasShow }) => (
 
 DeleteActions.propTypes = {
     basePath: PropTypes.string,
+    className: PropTypes.string,
     data: PropTypes.object,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,

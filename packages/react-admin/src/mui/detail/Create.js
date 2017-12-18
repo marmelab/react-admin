@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import Card from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
+import classnames from 'classnames';
+
 import Header from '../layout/Header';
 import Title from '../layout/Title';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import DefaultActions from './CreateActions';
 import translate from '../../i18n/translate';
-import withChildrenAsFunction from '../withChildrenAsFunction';
 
 /**
  * Page component for the Create view
@@ -81,6 +82,7 @@ class Create extends Component {
         const {
             actions = <DefaultActions />,
             children,
+            className,
             isLoading,
             resource,
             title,
@@ -103,7 +105,7 @@ class Create extends Component {
         );
 
         return (
-            <div className="create-page">
+            <div className={classnames('create-page', className)}>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}
@@ -134,6 +136,7 @@ class Create extends Component {
 Create.propTypes = {
     actions: PropTypes.element,
     children: PropTypes.element,
+    className: PropTypes.string,
     crudCreate: PropTypes.func.isRequired,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
@@ -157,8 +160,7 @@ function mapStateToProps(state) {
 
 const enhance = compose(
     connect(mapStateToProps, { crudCreate: crudCreateAction }),
-    translate,
-    withChildrenAsFunction
+    translate
 );
 
 export default enhance(Create);

@@ -5,6 +5,7 @@ import Button from 'material-ui/Button';
 import ContentAdd from 'material-ui-icons/Add';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
+import classnames from 'classnames';
 
 import Responsive from '../layout/Responsive';
 import Link from '../Link';
@@ -33,6 +34,7 @@ const styles = {
 
 const CreateButton = ({
     basePath = '',
+    className,
     classes = {},
     translate,
     label = 'ra.action.create',
@@ -43,7 +45,7 @@ const CreateButton = ({
                 component={Link}
                 fab
                 color="primary"
-                className={classes.floating}
+                className={classnames(classes.floating, className)}
                 to={`${basePath}/create`}
             >
                 <ContentAdd />
@@ -54,7 +56,7 @@ const CreateButton = ({
                 component={Link}
                 color="primary"
                 to={`${basePath}/create`}
-                className={classes.desktopLink}
+                className={classnames(classes.desktopLink, className)}
             >
                 <ContentAdd className={classes.iconPaddingStyle} />
                 {label && translate(label)}
@@ -65,15 +67,16 @@ const CreateButton = ({
 
 CreateButton.propTypes = {
     basePath: PropTypes.string,
+    className: PropTypes.string,
     classes: PropTypes.object,
     label: PropTypes.string,
     translate: PropTypes.func.isRequired,
 };
 
 const enhance = compose(
+    translate,
     onlyUpdateForKeys(['basePath', 'label']),
-    withStyles(styles),
-    translate
+    withStyles(styles)
 );
 
 export default enhance(CreateButton);

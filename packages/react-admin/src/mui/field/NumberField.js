@@ -2,12 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
+import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
+import compose from 'recompose/compose';
 
 const hasNumberFormat = !!(
     typeof Intl === 'object' &&
     Intl &&
     typeof Intl.NumberFormat === 'function'
 );
+
+const styles = {
+    input: { textAlign: 'right' },
+};
 
 /**
  * Display a numeric value as a locale string.
@@ -21,9 +28,9 @@ const hasNumberFormat = !!(
  * // renders the record { id: 1234, score: 567 } as
  * <span>567</span>
  *
- * <NumberField source="score" elStyle={{ color: 'red' }} />
+ * <NumberField source="score" className="red" />
  * // renders the record { id: 1234, score: 567 } as
- * <span style="color:red;">567</span>
+ * <span class="red">567</span>
  *
  * <NumberField source="share" options={{ style: 'percent' }} />
  * // renders the record { id: 1234, share: 0.2545 } as
@@ -37,19 +44,36 @@ const hasNumberFormat = !!(
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
-export const NumberField = ({ record, source, locales, options, elStyle }) => {
+export const NumberField = ({
+    classes = {},
+    className,
+    record,
+    source,
+    locales,
+    options,
+}) => {
     if (!record) return null;
     const value = get(record, source);
     if (value == null) return null;
-    if (!hasNumberFormat) return <span style={elStyle}>{value}</span>;
+
+    if (!hasNumberFormat)
+        return (
+            <span className={classnames(classes.input, className)}>
+                {value}
+            </span>
+        );
+
     return (
-        <span style={elStyle}>{value.toLocaleString(locales, options)}</span>
+        <span className={classnames(classes.input, className)}>
+            {value.toLocaleString(locales, options)}
+        </span>
     );
 };
 
 NumberField.propTypes = {
     addLabel: PropTypes.bool,
-    elStyle: PropTypes.object,
+    classes: PropTypes.object,
+    className: PropTypes.string,
     label: PropTypes.string,
     locales: PropTypes.oneOfType([
         PropTypes.string,
@@ -60,12 +84,9 @@ NumberField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const PureNumberField = pure(NumberField);
-
-PureNumberField.defaultProps = {
+const ComposedNumberField = compose(pure, withStyles(styles))(NumberField);
+ComposedNumberField.defaultProps = {
     addLabel: true,
-    style: { textAlign: 'right' },
-    headerStyle: { textAlign: 'right' },
+    textAlign: 'right',
 };
-
-export default PureNumberField;
+export default ComposedNumberField;

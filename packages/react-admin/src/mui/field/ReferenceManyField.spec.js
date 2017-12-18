@@ -23,7 +23,9 @@ describe('<ReferenceManyField />', () => {
         );
         const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 1);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'withStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 0);
     });
 
@@ -50,7 +52,9 @@ describe('<ReferenceManyField />', () => {
         );
         const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'withStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
@@ -76,7 +80,9 @@ describe('<ReferenceManyField />', () => {
         );
         const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'withStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), {});
@@ -106,7 +112,9 @@ describe('<ReferenceManyField />', () => {
         );
         const ProgressElements = wrapper.find('widthStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'withStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
@@ -139,7 +147,9 @@ describe('<ReferenceManyField />', () => {
         );
         const ProgressElements = wrapper.find('withStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'withStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);

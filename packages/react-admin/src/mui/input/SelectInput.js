@@ -121,8 +121,7 @@ export class SelectInput extends Component {
     render() {
         const {
             choices,
-            classes,
-            elStyle,
+            className,
             isRequired,
             label,
             meta,
@@ -151,8 +150,7 @@ export class SelectInput extends Component {
                     />
                 }
                 onChange={this.handleChange}
-                classes={classes}
-                style={elStyle}
+                className={className}
                 error={!!(touched && error)}
                 helperText={touched && error}
                 {...options}
@@ -166,8 +164,7 @@ export class SelectInput extends Component {
 SelectInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     choices: PropTypes.arrayOf(PropTypes.object),
-    classes: PropTypes.object,
-    elStyle: PropTypes.object,
+    className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

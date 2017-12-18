@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
 
-const TextField = ({ source, record = {}, elStyle }) => {
-    return <span style={elStyle}>{get(record, source)}</span>;
+const TextField = ({ className, source, record = {} }) => {
+    return <span className={className}>{get(record, source)}</span>;
 };
 
 TextField.propTypes = {
     addLabel: PropTypes.bool,
-    elStyle: PropTypes.object,
+    className: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,

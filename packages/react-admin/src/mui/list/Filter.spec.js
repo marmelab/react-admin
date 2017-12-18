@@ -14,7 +14,7 @@ describe('<Filter />', () => {
         it('should render a redux <FilterForm /> component', () => {
             const wrapper = shallow(<Filter {...defaultProps} />);
             const form = wrapper.find(
-                'withTheme(getContext(withProps(ReduxForm)))'
+                'withStyles(getContext(withProps(ReduxForm)))'
             ); // FilterForm is an muiThemable component
             assert.equal(form.length, 1);
         });
@@ -24,7 +24,7 @@ describe('<Filter />', () => {
                 <Filter {...defaultProps} filterValues={{ q: 'Lorem' }} />
             );
             const form = wrapper
-                .find('withTheme(getContext(withProps(ReduxForm)))')
+                .find('withStyles(getContext(withProps(ReduxForm)))')
                 .first(); // FilterForm is an muiThemable component
             assert.deepEqual(form.prop('initialValues'), { q: 'Lorem' });
         });

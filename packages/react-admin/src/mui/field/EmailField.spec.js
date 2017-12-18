@@ -32,4 +32,16 @@ describe('<EmailField />', () => {
             '<a href="mailto:hal@kubrickcorp.com">hal@kubrickcorp.com</a>'
         );
     });
+
+    it('should use custom className', () =>
+        assert.deepEqual(
+            shallow(
+                <EmailField
+                    record={{ foo: true }}
+                    source="email"
+                    className="foo"
+                />
+            ).prop('className'),
+            'foo'
+        ));
 });

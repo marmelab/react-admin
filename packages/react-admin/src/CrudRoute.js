@@ -1,7 +1,7 @@
 import React, { createElement } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import Restricted from './auth/Restricted';
+import WithPermissions from './auth/WithPermissions';
 
 const CrudRoute = ({ resource, list, create, edit, show, remove, options }) => {
     const commonProps = {
@@ -14,15 +14,19 @@ const CrudRoute = ({ resource, list, create, edit, show, remove, options }) => {
         hasDelete: !!remove,
     };
     const restrictPage = (component, route) => {
-        const RestrictedPage = routeProps => (
-            <Restricted authParams={{ resource, route }} {...routeProps}>
-                {createElement(component, {
-                    ...commonProps,
-                    ...routeProps,
-                })}
-            </Restricted>
+        const AuthenticatedPage = routeProps => (
+            <WithPermissions
+                authParams={{ resource, route }}
+                {...routeProps}
+                render={props =>
+                    createElement(component, {
+                        ...commonProps,
+                        ...routeProps,
+                        ...props,
+                    })}
+            />
         );
-        return RestrictedPage;
+        return AuthenticatedPage;
     };
     return (
         <Switch>

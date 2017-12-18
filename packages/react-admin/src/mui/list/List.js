@@ -8,6 +8,9 @@ import Typography from 'material-ui/Typography';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import inflection from 'inflection';
+import classnames from 'classnames';
+import { withStyles } from 'material-ui/styles';
+
 import queryReducer, {
     SET_SORT,
     SET_PAGE,
@@ -23,9 +26,11 @@ import { changeListParams as changeListParamsAction } from '../../actions/listAc
 import translate from '../../i18n/translate';
 import removeKey from '../../util/removeKey';
 import defaultTheme from '../defaultTheme';
-import withChildrenAsFunction from '../withChildrenAsFunction';
 
 const styles = {
+    root: {},
+    actions: {},
+    header: {},
     noResults: { padding: 20 },
 };
 
@@ -190,6 +195,8 @@ export class List extends Component {
     render() {
         const {
             children,
+            classes = {},
+            className,
             filters,
             pagination = <DefaultPagination />,
             actions = <DefaultActions />,
@@ -219,11 +226,14 @@ export class List extends Component {
         );
 
         return (
-            <div className="list-page">
+            <div className={classnames('list-page', classes.root, className)}>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
+                        className={classes.header}
                         title={titleElement}
-                        actions={actions}
+                        actions={React.cloneElement(actions, {
+                            className: classes.actions,
+                        })}
                         actionProps={{
                             resource,
                             filters,
@@ -268,7 +278,7 @@ export class List extends Component {
                                 })}
                         </div>
                     ) : (
-                        <CardContent style={styles.noResults}>
+                        <CardContent className={classes.noResults}>
                             <Typography type="body1">
                                 {translate('ra.navigation.no_results')}
                             </Typography>
@@ -284,6 +294,8 @@ List.propTypes = {
     // the props you can change
     actions: PropTypes.element,
     children: PropTypes.node,
+    classes: PropTypes.object,
+    className: PropTypes.string,
     filter: PropTypes.object,
     filters: PropTypes.element,
     pagination: PropTypes.element,
@@ -355,7 +367,7 @@ const enhance = compose(
         push: pushAction,
     }),
     translate,
-    withChildrenAsFunction
+    withStyles(styles)
 );
 
 export default enhance(List);

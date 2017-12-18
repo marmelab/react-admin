@@ -37,6 +37,6 @@ FieldTitle.defaultProps = {
     translate: x => x,
 };
 
-const enhance = compose(pure, translate);
+const enhance = compose(translate, pure);
 
 export default enhance(FieldTitle);

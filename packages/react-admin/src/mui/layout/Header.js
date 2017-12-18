@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
 
 import ViewTitle from './ViewTitle';
 
@@ -11,8 +12,8 @@ const styles = {
     },
 };
 
-export const Header = ({ classes, title, actions, actionProps }) => (
-    <div className={classes.root}>
+export const Header = ({ classes, className, title, actions, actionProps }) => (
+    <div className={classnames(classes.root, className)}>
         <ViewTitle title={title} />
         {actions && React.cloneElement(actions, actionProps)}
     </div>
@@ -20,6 +21,7 @@ export const Header = ({ classes, title, actions, actionProps }) => (
 
 Header.propTypes = {
     classes: PropTypes.object,
+    className: PropTypes.string,
     title: PropTypes.any,
     actions: PropTypes.element,
     actionProps: PropTypes.object,

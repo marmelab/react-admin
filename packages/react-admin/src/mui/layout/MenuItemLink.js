@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { MenuItem } from 'material-ui/Menu';
+import { withStyles } from 'material-ui/styles';
 
-const iconPaddingStyle = { paddingRight: '0.5em' };
+const styles = {
+    iconPaddingStyle: { paddingRight: '0.5em' },
+};
 
 export class MenuItemLink extends Component {
     static propTypes = {
-        history: PropTypes.object.isRequired,
         onClick: PropTypes.func,
         to: PropTypes.string.isRequired,
     };
@@ -17,15 +19,29 @@ export class MenuItemLink extends Component {
     };
 
     render() {
-        const { primaryText, leftIcon, staticContext, ...props } = this.props;
+        const {
+            classes,
+            className,
+            primaryText,
+            leftIcon,
+            staticContext,
+            ...props
+        } = this.props;
 
         return (
-            <MenuItem component={Link} {...props} onClick={this.handleMenuTap}>
-                {leftIcon && <span style={iconPaddingStyle}>{leftIcon}</span>}
+            <MenuItem
+                className={className}
+                component={Link}
+                {...props}
+                onClick={this.handleMenuTap}
+            >
+                {leftIcon && (
+                    <span className={classes.iconPaddingStyle}>{leftIcon}</span>
+                )}
                 {primaryText}
             </MenuItem>
         );
     }
 }
 
-export default MenuItemLink;
+export default withStyles(styles)(MenuItemLink);

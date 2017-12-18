@@ -18,10 +18,10 @@ const styles = {
     },
 };
 
-export const LoadingIndicator = ({ classes, isLoading, width }) =>
+export const LoadingIndicator = ({ classes, className, isLoading, width }) =>
     isLoading ? (
         <CircularProgress
-            className={classNames('app-loader', classes.loader)}
+            className={classNames('app-loader', classes.loader, className)}
             size={width === 'xs' || width === 'sm' ? 20 : 30}
             thickness={2}
         />
@@ -29,6 +29,7 @@ export const LoadingIndicator = ({ classes, isLoading, width }) =>
 
 LoadingIndicator.propTypes = {
     classes: PropTypes.object,
+    className: PropTypes.string,
     isLoading: PropTypes.bool,
     width: PropTypes.string,
 };

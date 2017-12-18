@@ -6,6 +6,7 @@ import { CreateButton, RefreshButton } from '../button';
 import CardActions from '../layout/CardActions';
 
 const Actions = ({
+    className,
     resource,
     filters,
     displayedFilters,
@@ -15,7 +16,7 @@ const Actions = ({
     showFilter,
 }) => {
     return (
-        <CardActions>
+        <CardActions className={className}>
             {filters &&
                 React.cloneElement(filters, {
                     resource,
@@ -32,6 +33,7 @@ const Actions = ({
 
 Actions.propTypes = {
     basePath: PropTypes.string,
+    className: PropTypes.string,
     displayedFilters: PropTypes.object,
     filters: PropTypes.element,
     filterValues: PropTypes.object,

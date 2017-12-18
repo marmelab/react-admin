@@ -4,9 +4,17 @@ import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import Popover from 'material-ui/Popover';
 import { MenuList } from 'material-ui/Menu';
+import { withStyles } from 'material-ui/styles';
 import ContentFilter from 'material-ui-icons/FilterList';
+import classnames from 'classnames';
+import compose from 'recompose/compose';
+
 import translate from '../../i18n/translate';
 import FilterButtonMenuItem from './FilterButtonMenuItem';
+
+const styles = {
+    root: { display: 'inline-block' },
+};
 
 export class FilterButton extends Component {
     constructor(props) {
@@ -57,12 +65,12 @@ export class FilterButton extends Component {
 
     render() {
         const hiddenFilters = this.getHiddenFilters();
-        const { resource } = this.props;
+        const { classes = {}, className, resource } = this.props;
         const { open, anchorEl } = this.state;
 
         return (
             hiddenFilters.length > 0 && (
-                <div style={{ display: 'inline-block' }}>
+                <div className={classnames(classes.root, className)}>
                     <Button
                         ref={node => {
                             this.button = node;
@@ -112,6 +120,8 @@ FilterButton.propTypes = {
     filterValues: PropTypes.object.isRequired,
     showFilter: PropTypes.func.isRequired,
     translate: PropTypes.func.isRequired,
+    classes: PropTypes.object,
+    className: PropTypes.string,
 };
 
-export default translate(FilterButton);
+export default compose(translate, withStyles(styles))(FilterButton);

@@ -8,6 +8,7 @@ import { withStyles } from 'material-ui/styles';
 import Link from '../Link';
 import linkToRecord from '../../util/linkToRecord';
 import translate from '../../i18n/translate';
+import classnames from 'classnames';
 
 const styles = {
     link: {
@@ -21,13 +22,14 @@ const styles = {
 
 const DeleteButton = ({
     basePath = '',
+    className,
     classes = {},
     label = 'ra.action.delete',
     record = {},
     translate,
 }) => (
     <Button
-        className={classes.link}
+        className={classnames(classes.link, className)}
         component={Link}
         color="accent"
         to={`${linkToRecord(basePath, record.id)}/delete`}
@@ -39,6 +41,7 @@ const DeleteButton = ({
 
 DeleteButton.propTypes = {
     basePath: PropTypes.string,
+    className: PropTypes.string,
     classes: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,

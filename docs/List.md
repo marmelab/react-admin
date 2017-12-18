@@ -139,6 +139,11 @@ It does so by inspecting its `context` prop.
 
 **Tip**: Don't mix up this `filters` prop, expecting a React element, with the `filter` props, which expects an object to define permanent filters (see below).
 
+The `Filter` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui-next.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
+
+* `form`: applied to the root element when rendering as a form.
+* `button`: applied to the root element when rendering as a button.
+
 ### Records Per Page
 
 By default, the list paginates results by groups of 10. You can override this setting by specifying the `perPage` prop:
@@ -246,6 +251,15 @@ export const PostList = (props) => (
 );
 ```
 
+### CSS API
+
+The `List` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui-next.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
+
+* `root`: alternative to using `className`. Applied to the root element.
+* `header`: applied to the page header
+* `actions`: applied to the actions container
+* `noResults`: applied to the component shown when there is no result
+
 ## The `<Datagrid>` component
 
 The datagrid component renders a list of records as a table. It is usually used as a child of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components.
@@ -260,7 +274,7 @@ It renders as many columns as it receives `<Field>` children.
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, Datagrid, TextField, EditButton } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -324,8 +338,6 @@ export const PostList = (props) => (
 ```
 {% endraw %}
 
-**Tip**: if you want to go even further and apply a custom style cell by cell, check out the [Conditional Formatting section of the Theming chapter](./Theming.md#conditional-formatting.)
-
 ### Row Style Function
 
 You can customize the datagrid row style (applied to the `<tr>` element) based on the record, thanks to the `rowStyle` prop, which expects a function.
@@ -344,6 +356,18 @@ export const PostList = (props) => (
     </List>
 );
 ```
+
+### CSS API
+
+The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui-next.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
+
+* `table`: alternative to using `className`. Applied to the root element.
+* `tbody`: applied to the tbody
+* `headerCell`: applied to each header cell
+* `row`: applied to each row
+* `rowEven`: applied to each even row
+* `rowOdd`: applied to each odd row
+* `rowCell`: applied to each row cell
 
 ## The `<SimpleList>` component
 

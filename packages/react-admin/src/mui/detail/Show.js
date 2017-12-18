@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
 import Card from 'material-ui/Card';
+import classnames from 'classnames';
 
 import Header from '../layout/Header';
 import Title from '../layout/Title';
 import { crudGetOne as crudGetOneAction } from '../../actions/dataActions';
 import DefaultActions from './ShowActions';
 import translate from '../../i18n/translate';
-import withChildrenAsFunction from '../withChildrenAsFunction';
 
 /**
  * Page component for the Show view
@@ -85,6 +85,7 @@ export class Show extends Component {
             actions = <DefaultActions />,
             title,
             children,
+            className,
             id,
             data,
             isLoading,
@@ -93,6 +94,7 @@ export class Show extends Component {
             hasDelete,
             hasEdit,
             translate,
+            version,
         } = this.props;
 
         if (!children) return null;
@@ -114,7 +116,7 @@ export class Show extends Component {
         );
 
         return (
-            <div>
+            <div className={classnames('edit-page', className)}>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}
@@ -134,6 +136,7 @@ export class Show extends Component {
                             basePath,
                             record: data,
                             translate,
+                            version,
                         })}
                 </Card>
             </div>
@@ -144,6 +147,7 @@ export class Show extends Component {
 Show.propTypes = {
     actions: PropTypes.element,
     children: PropTypes.element,
+    className: PropTypes.string,
     crudGetOne: PropTypes.func.isRequired,
     data: PropTypes.object,
     hasList: PropTypes.bool,
@@ -174,8 +178,7 @@ function mapStateToProps(state, props) {
 
 const enhance = compose(
     connect(mapStateToProps, { crudGetOne: crudGetOneAction }),
-    translate,
-    withChildrenAsFunction
+    translate
 );
 
 export default enhance(Show);

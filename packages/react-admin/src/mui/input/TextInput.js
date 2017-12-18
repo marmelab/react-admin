@@ -36,8 +36,7 @@ export class TextInput extends Component {
 
     render() {
         const {
-            classes,
-            elStyle,
+            className,
             input,
             isRequired,
             label,
@@ -72,8 +71,7 @@ export class TextInput extends Component {
                 }
                 error={!!(touched && error)}
                 helperText={touched && error}
-                classes={classes}
-                style={elStyle}
+                className={className}
                 {...options}
             />
         );
@@ -81,7 +79,7 @@ export class TextInput extends Component {
 }
 
 TextInput.propTypes = {
-    elStyle: PropTypes.object,
+    className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
