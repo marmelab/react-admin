@@ -6,6 +6,7 @@ import record from './record';
 import references from './references';
 import saving from './saving';
 import ui from './ui';
+import auth, { isLoggedIn as innerIsLoggedIn } from './auth';
 
 export default combineReducers({
     resources,
@@ -15,6 +16,8 @@ export default combineReducers({
     references,
     saving,
     ui,
+    auth,
 });
 
 export const getResources = state => innerGetResources(state.resources);
+export const isLoggedIn = state => innerIsLoggedIn(state.auth);
