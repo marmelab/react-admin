@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.3.3
+
+* Add `aor-xmysql` to the list of REST clients ([soaserele](https://github.com/soaserele))
+* Add Slovenian translation ([ariskemper](https://github.com/ariskemper))
+* Fix wrong code sample in Translations docs ([fzaninotto](https://github.com/fzaninotto))
+* Add `getResources` function to allow ressource injection in custom components ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo in Actions documentation ([xiaomingplus](https://github.com/xiaomingplus))
+* Add mention of `ra-component-factory` to the list of related packages ([zifnab87](https://github.com/zifnab87))
+* Fix exception when using React 16 and hot reloading ([natrim](https://github.com/natrim))
+* Fix custom menu documentation ([fzaninotto](https://github.com/fzaninotto))
+* Fix installation documentation ([faviouz](https://github.com/faviouz))
+* Fix typo in English translations ([netsgnut](https://github.com/netsgnut))
+* Add a link to the updated Hebrew translations ([motro](https://github.com/motro))
+* Fix linting problems ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing import in `<List>` documentation ([clementtalleu](https://github.com/clementtalleu))
+* Fix Refresh button does not refresh data in `<ReferenceManyField>` ([fzaninotto](https://github.com/fzaninotto))
+* Fix `refreshView` is undefined when using custom actions in list ([natrim](https://github.com/natrim))
+
 ## v1.3.2
 
 * Fix JS error on `<WithPermission>` ([fzaninotto](https://github.com/fzaninotto))
