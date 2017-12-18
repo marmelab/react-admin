@@ -97,8 +97,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { changeLocale as changeLocaleAction } from 'admin-on-rest';
 
 class LocaleSwitcher extends Component {
-    switchToFrench = () => this.changeLocale('fr');
-    switchToEnglish = () => this.changeLocale('en');
+    switchToFrench = () => this.props.changeLocale('fr');
+    switchToEnglish = () => this.props.changeLocale('en');
 
     render() {
         const { changeLocale } = this.props;
