@@ -2,7 +2,7 @@ export * from './actions';
 export * from './auth';
 export * from './i18n';
 export * from './mui';
-export createAppReducer from './reducer';
+export createAppReducer, { getResources } from './reducer';
 export adminReducer from './reducer/admin';
 export localeReducer from './reducer/locale';
 export queryReducer from './reducer/admin/resource/list/queryReducer';
