@@ -153,16 +153,27 @@ export const PostCreate = ({ ...props }) => (
         <SimpleForm
             toolbar={<PostCreateToolbar />}
             defaultValue={{ average_note: 0 }}
+            validate={values => {
+                const errors = {};
+                ['title', 'teaser'].forEach(field => {
+                    if (!values[field]) {
+                        errors[field] = ['Required field'];
+                    }
+                });
+
+                if (values.average_note < 0 || values.average_note > 5) {
+                    errors.average_note = ['Should be between 0 and 5'];
+                }
+
+                return errors;
+            }}
         >
             <TextInput source="title" />
             <TextInput source="password" type="password" />
             <LongTextInput source="teaser" />
             <RichTextInput source="body" />
             <DateInput source="published_at" defaultValue={() => new Date()} />
-            <NumberInput
-                source="average_note"
-                validate={[required, number, minValue(0)]}
-            />
+            <NumberInput source="average_note" />
             <BooleanInput source="commentable" defaultValue />
         </SimpleForm>
     </Create>
@@ -172,7 +183,6 @@ const emptyKeycode = [];
 // Store the validation functions array in a variable to avoid
 // creating a new one at each render as it results in a infinite rerenders
 // and crashes the app.
-const validateAverageNote = [required, number, minValue(0)];
 export const PostEdit = ({ ...props }) => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
@@ -220,7 +230,7 @@ export const PostEdit = ({ ...props }) => (
                 />
                 <NumberInput
                     source="average_note"
-                    validate={validateAverageNote}
+                    validate={[required, number, minValue(0)]}
                 />
                 <BooleanInput source="commentable" defaultValue />
                 <DisabledInput source="views" />
