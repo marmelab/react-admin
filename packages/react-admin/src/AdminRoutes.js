@@ -13,7 +13,7 @@ const initialPermissions = '@@ar/initialPermissions';
 
 export class AdminRoutes extends Component {
     // Can't use null or undefined here as authClient may return any those values
-    state = { permissions: initialPermissions };
+    state = { childrenToRender: [], permissions: initialPermissions };
 
     componentWillMount() {
         if (typeof this.props.children === 'function') {
@@ -63,7 +63,7 @@ export class AdminRoutes extends Component {
 
         const { childrenToRender } = this.state;
 
-        if (!childrenToRender) {
+        if (!childrenToRender || childrenToRender.length === 0) {
             return (
                 <Route
                     path="/"
