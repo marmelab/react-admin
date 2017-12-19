@@ -6,7 +6,7 @@ import translate from '../../i18n/translate';
 import { FileInput } from './FileInput';
 
 const styles = {
-    root: {},
+    root: { width: '100%' },
     dropZone: {
         background: '#efefef',
         cursor: 'pointer',
@@ -18,6 +18,7 @@ const styles = {
     removeButton: {
         display: 'inline-block',
         position: 'relative',
+        float: 'left',
         '& button': {
             position: 'absolute',
             top: '0.5rem',

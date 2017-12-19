@@ -12,13 +12,6 @@ const styles = theme => ({
 });
 
 export class FileInputPreview extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            hovered: false,
-        };
-    }
-
     componentWillUnmount() {
         const { file, revokeObjectURL } = this.props;
 
@@ -29,25 +22,19 @@ export class FileInputPreview extends Component {
         }
     }
 
-    handleMouseOut = () => this.setState({ hovered: false });
-    handleMouseOver = () => this.setState({ hovered: true });
-
     render() {
         const {
             children,
             classes = {},
             className,
             onRemove,
+            revokeObjectURL,
+            file,
             ...rest
         } = this.props;
 
         return (
-            <div
-                onMouseOver={this.handleMouseOver}
-                onMouseOut={this.handleMouseOut}
-                className={className}
-                {...rest}
-            >
+            <div className={className} {...rest}>
                 <IconButton className={classes.removeButton} onClick={onRemove}>
                     <RemoveCircle className={classes.removeIcon} />
                 </IconButton>

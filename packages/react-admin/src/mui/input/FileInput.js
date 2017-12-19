@@ -19,13 +19,9 @@ const styles = {
         textAlign: 'center',
         color: '#999',
     },
-    preview: {
-        float: 'left',
-    },
-    removeButton: {
-        display: 'inline-block',
-    },
-    root: {},
+    preview: {},
+    removeButton: {},
+    root: { width: '100%' },
 };
 
 export class FileInput extends Component {
