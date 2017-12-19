@@ -45,11 +45,13 @@ const isEmptyChildren = children => Children.count(children) === 0;
  */
 export class WithPermissions extends Component {
     static propTypes = {
+        authClient: PropTypes.func,
         authParams: PropTypes.object,
         children: PropTypes.func,
         location: PropTypes.object,
         match: PropTypes.object,
         render: PropTypes.func,
+        staticContext: PropTypes.object,
         userCheck: PropTypes.func,
     };
 
@@ -104,7 +106,14 @@ export class WithPermissions extends Component {
     // render even though the AUTH_GET_PERMISSIONS
     // isn't finished (optimistic rendering)
     render() {
-        const { render, children, ...props } = this.props;
+        const {
+            authClient,
+            userCheck,
+            render,
+            children,
+            staticContext,
+            ...props
+        } = this.props;
         const { permissions } = this.state;
 
         if (render) {
