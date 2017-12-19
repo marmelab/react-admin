@@ -854,3 +854,36 @@ export default [
     <Route exact path="/baz" component={MyPageWithPermissions} />,
 ];
 ```
+
+## react-admin addon packages renamed with ra prefix and moved into root repository
+
+`aor-graphql` `aor-realtime` and `aor-dependent-input` packages have been migrated into the main `react-admin` repository and renamed with the new prefix. Besides, `aor-graphql-client` and `aor-graphql-client-graphcool` follow the new dataProvider packages naming.
+
+* `aor-realtime` => `ra-realtime`
+* `aor-dependent-input` => `ra-dependent-input`
+* `aor-graphql-client` => `ra-data-graphql`
+* `aor-graphql-client-graphcool` => `ra-data-graphcool`
+
+Update your `import` statements accordingly:
+
+```js
+// before
+import realtimeSaga from 'aor-realtime';
+// after
+import realtimeSaga from 'ra-realtime';
+
+// before
+import { DependentInput, DependentField } from 'aor-dependent-input';
+// after
+import { DependentInput, DependentField } from 'ra-dependent-input';
+
+// before
+import buildGraphQLProvider from 'aor-graphql-client';
+// after
+import buildGraphQLProvider from 'ra-data-graphql';
+
+// before
+import buildGraphcoolProvider from 'aor-graphql-client-graphcool';
+// after
+import buildGraphcoolProvider from 'ra-data-graphcool';
+```
