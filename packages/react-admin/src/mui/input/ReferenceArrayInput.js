@@ -167,7 +167,13 @@ export class ReferenceArrayInput extends Component {
             basePath,
             onChange,
             children,
+            initializeForm,
             meta,
+            record,
+            defaultValue,
+            textAlign,
+            options,
+            ...rest
         } = this.props;
 
         if (React.Children.count(children) !== 1) {
@@ -187,6 +193,7 @@ export class ReferenceArrayInput extends Component {
                     source={source}
                     resource={resource}
                     className={className}
+                    {...rest}
                 />
             );
         }
@@ -209,6 +216,8 @@ export class ReferenceArrayInput extends Component {
             setPagination: this.setPagination,
             setSort: this.setSort,
             translateChoice: false,
+            options,
+            ...rest,
         });
     }
 }

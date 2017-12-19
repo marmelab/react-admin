@@ -46,15 +46,21 @@ export class NullableBooleanInput extends Component {
 
     render() {
         const {
+            basePath,
             classes,
             className,
+            initializeForm,
             isRequired,
             label,
             meta,
+            record,
+            defaultValue,
             options,
             resource,
             source,
             translate,
+            textAlign,
+            ...rest
         } = this.props;
         const { touched, error } = meta;
         return (
@@ -75,6 +81,7 @@ export class NullableBooleanInput extends Component {
                 helperText={touched && error}
                 className={classnames(classes.input, className)}
                 {...options}
+                {...rest}
             >
                 <MenuItem value="" />
                 <MenuItem value="false">

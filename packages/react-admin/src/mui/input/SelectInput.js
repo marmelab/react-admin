@@ -128,6 +128,17 @@ export class SelectInput extends Component {
             options,
             resource,
             source,
+            basePath,
+            initializeForm,
+            record,
+            defaultValue,
+            textAlign,
+            translate,
+            translateChoice,
+            optionValue,
+            optionText,
+            allowEmpty,
+            ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
             throw new Error(
@@ -154,6 +165,7 @@ export class SelectInput extends Component {
                 error={!!(touched && error)}
                 helperText={touched && error}
                 {...options}
+                {...rest}
             >
                 {this.addAllowEmpty(choices.map(this.renderMenuItem))}
             </TextField>

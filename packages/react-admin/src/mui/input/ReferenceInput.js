@@ -168,7 +168,13 @@ export class ReferenceInput extends Component {
             basePath,
             onChange,
             children,
+            initializeForm,
             meta,
+            record,
+            defaultValue,
+            textAlign,
+            options,
+            ...rest
         } = this.props;
         if (!referenceRecord && !allowEmpty) {
             return (
@@ -181,6 +187,7 @@ export class ReferenceInput extends Component {
                     source={source}
                     resource={resource}
                     className={className}
+                    {...rest}
                 >
                     <LinearProgress />
                 </Labeled>
@@ -206,6 +213,8 @@ export class ReferenceInput extends Component {
             setPagination: this.setPagination,
             setSort: this.setSort,
             translateChoice: false,
+            options,
+            ...rest,
         });
     }
 }

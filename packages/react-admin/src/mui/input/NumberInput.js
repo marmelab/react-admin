@@ -42,15 +42,21 @@ export class NumberInput extends Component {
 
     render() {
         const {
+            basePath,
             className,
             input,
             isRequired,
             label,
+            initializeForm,
             meta,
+            record,
+            defaultValue,
             options,
             source,
             step,
             resource,
+            textAlign,
+            ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
             throw new Error(
@@ -80,6 +86,7 @@ export class NumberInput extends Component {
                 }
                 className={className}
                 {...options}
+                {...rest}
             />
         );
     }

@@ -13,17 +13,24 @@ export class BooleanInput extends Component {
 
     render() {
         const {
+            basePath,
             className,
             input,
             isRequired,
+            initializeForm,
             label,
             source,
             resource,
             options,
+            meta,
+            record,
+            defaultValue,
+            textAlign,
+            ...rest
         } = this.props;
 
         return (
-            <FormGroup className={className}>
+            <FormGroup className={className} {...rest}>
                 <FormControlLabel
                     control={
                         <Switch

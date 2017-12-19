@@ -6,14 +6,21 @@ import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 
 export const LongTextInput = ({
+    basePath,
     className,
+    classes,
     input,
+    initializeForm,
+    meta,
+    record,
+    defaultValue,
     isRequired,
     label,
-    meta,
     options,
     source,
     resource,
+    textAlign,
+    ...rest
 }) => {
     if (typeof meta === 'undefined') {
         throw new Error(
@@ -21,7 +28,6 @@ export const LongTextInput = ({
         );
     }
     const { touched, error } = meta;
-
     return (
         <TextField
             {...input}
@@ -40,6 +46,7 @@ export const LongTextInput = ({
             error={!!(touched && error)}
             helperText={touched && error}
             {...options}
+            {...rest}
         />
     );
 };

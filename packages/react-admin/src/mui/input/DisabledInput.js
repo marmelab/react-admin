@@ -6,12 +6,21 @@ import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 
 const DisabledInput = ({
+    basePath,
     classes,
     className,
+    initializeForm,
+    meta,
+    record,
+    defaultValue,
     input: { value },
+    isRequired,
     label,
     resource,
     source,
+    options,
+    textAlign,
+    ...rest
 }) => (
     <TextField
         disabled
@@ -20,6 +29,8 @@ const DisabledInput = ({
         label={<FieldTitle label={label} source={source} resource={resource} />}
         className={className}
         classes={classes}
+        {...options}
+        {...rest}
     />
 );
 

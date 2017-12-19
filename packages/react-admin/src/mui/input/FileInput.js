@@ -4,6 +4,7 @@ import { shallowEqual } from 'recompose';
 import Dropzone from 'react-dropzone';
 import compose from 'recompose/compose';
 import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
 
 import Labeled from './Labeled';
 import addField from '../form/addField';
@@ -21,9 +22,10 @@ const styles = {
     preview: {
         float: 'left',
     },
-    removeStyle: {
+    removeButton: {
         display: 'inline-block',
     },
+    root: {},
 };
 
 export class FileInput extends Component {
@@ -35,7 +37,6 @@ export class FileInput extends Component {
         disableClick: PropTypes.bool,
         input: PropTypes.object,
         isRequired: PropTypes.bool,
-        itemStyle: PropTypes.object,
         labelMultiple: PropTypes.string,
         labelSingle: PropTypes.string,
         maxSize: PropTypes.number,
@@ -46,7 +47,6 @@ export class FileInput extends Component {
     };
 
     static defaultProps = {
-        itemStyle: {},
         labelMultiple: 'ra.input.file.upload_several',
         labelSingle: 'ra.input.file.upload_single',
         multiple: false,
@@ -146,27 +146,35 @@ export class FileInput extends Component {
     render() {
         const {
             accept,
+            basePath,
             children,
             classes = {},
             className,
             disableClick,
+            initializeForm,
+            meta,
+            record,
+            defaultValue,
             isRequired,
-            itemStyle,
             label,
             maxSize,
             minSize,
             multiple,
             resource,
             source,
+            options,
+            textAlign,
+            ...rest
         } = this.props;
 
         return (
             <Labeled
                 label={label}
-                className={className}
+                className={classnames(classes.root, className)}
                 source={source}
                 resource={resource}
                 isRequired={isRequired}
+                {...rest}
             >
                 <span>
                     <Dropzone
@@ -177,6 +185,7 @@ export class FileInput extends Component {
                         minSize={minSize}
                         multiple={multiple}
                         className={classes.dropZone}
+                        {...options}
                     >
                         {this.label()}
                     </Dropzone>
@@ -186,11 +195,8 @@ export class FileInput extends Component {
                                 <FileInputPreview
                                     key={index}
                                     file={file}
-                                    itemStyle={itemStyle}
                                     onRemove={this.onRemove(file)}
-                                    classes={{
-                                        removeStyle: classes.removeStyle,
-                                    }}
+                                    className={classes.removeButton}
                                 >
                                     {React.cloneElement(children, {
                                         record: file,

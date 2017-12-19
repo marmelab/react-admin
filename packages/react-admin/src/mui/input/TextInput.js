@@ -36,6 +36,9 @@ export class TextInput extends Component {
 
     render() {
         const {
+            allowEmpty,
+            alwaysOn,
+            component,
             className,
             input,
             isRequired,
@@ -45,6 +48,12 @@ export class TextInput extends Component {
             resource,
             source,
             type,
+            basePath,
+            initializeForm,
+            record,
+            defaultValue,
+            textAlign,
+            ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
             throw new Error(
@@ -73,6 +82,7 @@ export class TextInput extends Component {
                 helperText={touched && error}
                 className={className}
                 {...options}
+                {...rest}
             />
         );
     }

@@ -9,7 +9,7 @@ const styles = theme => ({
     input: { width: theme.spacing.unit * 32 },
 });
 
-export const FormInput = ({ className, classes, input, ...rest }) =>
+export const FormInput = ({ className, classes = {}, input, ...rest }) =>
     input ? (
         input.props.addLabel ? (
             <Labeled

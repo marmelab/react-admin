@@ -133,13 +133,26 @@ export class CheckboxGroupInput extends Component {
 
     render() {
         const {
+            basePath,
             choices,
             className,
             classes = {},
+            initializeForm,
+            meta,
+            record,
+            defaultValue,
             isRequired,
             label,
             resource,
             source,
+            options,
+            optionText,
+            optionValue,
+            input,
+            translate,
+            translateChoice,
+            textAlign,
+            ...rest
         } = this.props;
 
         return (
@@ -147,6 +160,7 @@ export class CheckboxGroupInput extends Component {
                 className={className}
                 component="fieldset"
                 margin="normal"
+                {...rest}
             >
                 <FormLabel component="legend" className={classes.label}>
                     <FieldTitle

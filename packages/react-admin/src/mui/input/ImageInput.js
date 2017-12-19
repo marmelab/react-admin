@@ -6,6 +6,7 @@ import translate from '../../i18n/translate';
 import { FileInput } from './FileInput';
 
 const styles = {
+    root: {},
     dropZone: {
         background: '#efefef',
         cursor: 'pointer',
@@ -13,11 +14,20 @@ const styles = {
         textAlign: 'center',
         color: '#999',
     },
-    preview: {
-        float: 'left',
-    },
-    removeStyle: {
+    preview: {},
+    removeButton: {
         display: 'inline-block',
+        position: 'relative',
+        '& button': {
+            position: 'absolute',
+            top: '0.5rem',
+            right: '0.5rem',
+            minWidth: '2rem',
+            opacity: 0,
+        },
+        '&:hover button': {
+            opacity: 1,
+        },
     },
 };
 
@@ -26,17 +36,6 @@ export class ImageInput extends FileInput {
         ...FileInput.defaultProps,
         labelMultiple: 'ra.input.image.upload_several',
         labelSingle: 'ra.input.image.upload_single',
-        itemStyle: {
-            display: 'inline-block',
-            position: 'relative',
-        },
-        removeStyle: {
-            position: 'absolute',
-            top: '0.5rem',
-            right: '0.5rem',
-            minWidth: '2rem',
-            opacity: 0,
-        },
     };
 }
 

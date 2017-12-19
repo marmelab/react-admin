@@ -105,6 +105,13 @@ export class RadioButtonGroupInput extends Component {
             isRequired,
             choices,
             options,
+            basePath,
+            initializeForm,
+            meta,
+            record,
+            defaultValue,
+            textAlign,
+            ...rest
         } = this.props;
 
         return (
@@ -115,6 +122,7 @@ export class RadioButtonGroupInput extends Component {
                 resource={resource}
                 source={source}
                 isRequired={isRequired}
+                {...rest}
             >
                 <RadioGroup
                     name={source}

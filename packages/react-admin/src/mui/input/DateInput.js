@@ -27,14 +27,20 @@ export class DateInput extends Component {
 
     render() {
         const {
+            basePath,
             className,
+            initializeForm,
+            meta,
+            record,
+            defaultValue,
             input,
             isRequired,
             label,
-            meta,
             options,
             source,
             resource,
+            textAlign,
+            ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
             throw new Error(
@@ -70,6 +76,7 @@ export class DateInput extends Component {
                 onChange={this.onChange}
                 onBlur={this.onBlur}
                 {...options}
+                {...rest}
             />
         );
     }

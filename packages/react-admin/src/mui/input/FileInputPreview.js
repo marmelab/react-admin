@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import IconButton from 'material-ui/IconButton';
 import RemoveCircle from 'material-ui-icons/RemoveCircle';
 import { withStyles } from 'material-ui/styles';
 
 const styles = theme => ({
-    removeButtonHovered: {
-        opacity: 1,
-    },
+    removeButton: {},
     removeIcon: {
         color: theme.palette.accent1Color,
-    },
-    removeStyle: {
-        display: 'inline-block',
     },
 });
 
@@ -39,21 +33,22 @@ export class FileInputPreview extends Component {
     handleMouseOver = () => this.setState({ hovered: true });
 
     render() {
-        const { children, classes = {}, className, onRemove } = this.props;
+        const {
+            children,
+            classes = {},
+            className,
+            onRemove,
+            ...rest
+        } = this.props;
 
         return (
             <div
                 onMouseOver={this.handleMouseOver}
                 onMouseOut={this.handleMouseOut}
                 className={className}
+                {...rest}
             >
-                <IconButton
-                    className={classNames(
-                        classes.removeButtonHovered,
-                        this.state.hovered ? classes.removeStyle : ''
-                    )}
-                    onClick={onRemove}
-                >
+                <IconButton className={classes.removeButton} onClick={onRemove}>
                     <RemoveCircle className={classes.removeIcon} />
                 </IconButton>
                 {children}
