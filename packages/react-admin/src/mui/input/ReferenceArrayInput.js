@@ -11,9 +11,31 @@ import {
     crudGetMatching as crudGetMatchingAction,
 } from '../../actions/dataActions';
 import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
-import sanitizeRestProps from './sanitizeRestProps';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
+
+const sanitizeRestProps = ({
+    alwaysOn,
+    basePath,
+    component,
+    defaultValue,
+    initializeForm,
+    input,
+    isRequired,
+    label,
+    locale,
+    meta,
+    optionText,
+    optionValue,
+    record,
+    resource,
+    allowEmpty,
+    source,
+    textAlign,
+    translate,
+    translateChoice,
+    ...rest
+}) => rest;
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -170,6 +192,7 @@ export class ReferenceArrayInput extends Component {
             children,
             meta,
             record,
+            options,
             ...rest
         } = this.props;
 
