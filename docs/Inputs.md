@@ -849,7 +849,7 @@ const LatLngInput = () => (
             &nbsp;
             <Field name="lng" component="input" type="number" placeholder="longitude" />
         </span>
-    </Labelled>
+    </Labeled>
 );
 export default LatLngInput;
 ```
