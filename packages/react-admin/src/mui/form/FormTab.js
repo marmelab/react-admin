@@ -5,7 +5,14 @@ const FormTab = ({ label, icon, children, ...rest }) => (
     <span>
         {React.Children.map(
             children,
-            input => input && <FormInput input={input} {...rest} />
+            input =>
+                input && (
+                    <FormInput
+                        className={input.props.className}
+                        input={input}
+                        {...rest}
+                    />
+                )
         )}
     </span>
 );
