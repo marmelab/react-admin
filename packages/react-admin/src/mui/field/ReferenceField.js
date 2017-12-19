@@ -69,6 +69,7 @@ export class ReferenceField extends Component {
             allowEmpty,
             children,
             linkType,
+            translateChoice,
             ...rest
         } = this.props;
         if (React.Children.count(children) !== 1) {
