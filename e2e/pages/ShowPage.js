@@ -49,9 +49,11 @@ export default (url, initialField = 'title') => driver => ({
                 fields.map(field =>
                     field.getAttribute('class').then(classes =>
                         classes
+                            .split(' ')
+                            .filter(className =>
+                                className.startsWith('ra-field-')
+                            )[0]
                             .replace('ra-field-', '')
-                            .replace('ra-field', '')
-                            .trim()
                     )
                 )
             )

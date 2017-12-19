@@ -11,24 +11,29 @@ const styles = theme => ({
 
 export const FormInput = ({ className, classes, input, ...rest }) =>
     input ? (
-        <div
-            className={classnames(
-                'ra-input',
-                `ra-input-${input.props.source}`,
-                className
-            )}
-        >
-            {input.props.addLabel ? (
-                <Labeled {...input.props} {...rest}>
-                    {input}
-                </Labeled>
-            ) : (
-                React.cloneElement(input, {
-                    classes: { root: classes.input },
-                    ...rest,
-                })
-            )}
-        </div>
+        input.props.addLabel ? (
+            <Labeled
+                className={classnames(
+                    'ra-input',
+                    `ra-input-${input.props.source}`,
+                    className
+                )}
+                {...input.props}
+                {...rest}
+            >
+                {input}
+            </Labeled>
+        ) : (
+            React.cloneElement(input, {
+                className: classnames(
+                    'ra-input',
+                    `ra-input-${input.props.source}`,
+                    className
+                ),
+                classes: { root: classes.input },
+                ...rest,
+            })
+        )
     ) : null;
 
 FormInput.propTypes = {
