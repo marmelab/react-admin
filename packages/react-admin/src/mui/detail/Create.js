@@ -93,6 +93,12 @@ class Create extends Component {
             hasEdit,
             hasList,
             hasShow,
+            match,
+            location,
+            history,
+            options,
+            locale,
+            permissions,
             ...rest
         } = this.props;
 
@@ -154,10 +160,6 @@ Create.propTypes = {
     title: PropTypes.any,
     translate: PropTypes.func.isRequired,
     hasList: PropTypes.bool,
-};
-
-Create.defaultProps = {
-    data: {},
 };
 
 function mapStateToProps(state) {

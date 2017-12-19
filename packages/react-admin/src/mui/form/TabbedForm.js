@@ -79,6 +79,9 @@ export class TabbedForm extends Component {
             toolbar,
             translate,
             version,
+            redirect,
+            array,
+            form,
             ...rest
         } = this.props;
 

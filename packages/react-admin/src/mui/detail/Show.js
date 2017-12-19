@@ -98,6 +98,12 @@ export class Show extends Component {
             hasShow,
             translate,
             version,
+            match,
+            location,
+            history,
+            options,
+            locale,
+            permissions,
             ...rest
         } = this.props;
 
@@ -120,7 +126,7 @@ export class Show extends Component {
         );
 
         return (
-            <div className={classnames('edit-page', className)} {...rest}>
+            <div className={classnames('show-page', className)} {...rest}>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}

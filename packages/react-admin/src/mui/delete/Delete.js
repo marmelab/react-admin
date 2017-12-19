@@ -140,6 +140,12 @@ export class Delete extends Component {
             hasList,
             resource,
             translate,
+            match,
+            location,
+            history,
+            options,
+            locale,
+            permissions,
             ...rest
         } = this.props;
         const basePath = this.getBasePath();

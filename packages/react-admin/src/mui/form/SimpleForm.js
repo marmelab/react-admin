@@ -45,6 +45,9 @@ const sanitizeRestProps = ({
     translate,
     autofill,
     submit,
+    redirect,
+    array,
+    form,
     ...props
 }) => props;
 

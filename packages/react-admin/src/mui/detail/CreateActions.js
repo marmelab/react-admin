@@ -29,7 +29,7 @@ import { ListButton } from '../button';
  *         </Create>
  *     );
  */
-const CreateActions = ({ basePath, className, hasList, ...rest }) => (
+const CreateActions = ({ basePath, className, hasList, resource, ...rest }) => (
     <CardActions className={className} {...rest}>
         {hasList && <ListButton basePath={basePath} />}
     </CardActions>

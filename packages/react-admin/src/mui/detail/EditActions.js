@@ -39,6 +39,7 @@ const EditActions = ({
     hasDelete,
     hasShow,
     hasList,
+    resource,
     ...rest
 }) => (
     <CardActions className={className} {...rest}>

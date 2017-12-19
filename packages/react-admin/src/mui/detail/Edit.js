@@ -133,6 +133,12 @@ export class Edit extends Component {
             title,
             translate,
             version,
+            match,
+            location,
+            history,
+            options,
+            locale,
+            permissions,
             ...rest
         } = this.props;
 
