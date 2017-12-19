@@ -4,22 +4,17 @@ import TextField from 'material-ui/TextField';
 
 import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
+import sanitizeRestProps from './sanitizeRestProps';
 
 const DisabledInput = ({
-    basePath,
     classes,
     className,
-    initializeForm,
-    meta,
     record,
-    defaultValue,
     input: { value },
-    isRequired,
     label,
     resource,
     source,
     options,
-    textAlign,
     ...rest
 }) => (
     <TextField
@@ -30,7 +25,7 @@ const DisabledInput = ({
         className={className}
         classes={classes}
         {...options}
-        {...rest}
+        {...sanitizeRestProps(rest)}
     />
 );
 

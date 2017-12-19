@@ -5,6 +5,7 @@ import Switch from 'material-ui/Switch';
 
 import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
+import sanitizeRestProps from './sanitizeRestProps';
 
 export class BooleanInput extends Component {
     handleChange = (event, value) => {
@@ -13,24 +14,18 @@ export class BooleanInput extends Component {
 
     render() {
         const {
-            basePath,
             className,
             input,
             isRequired,
-            initializeForm,
             label,
             source,
             resource,
             options,
-            meta,
-            record,
-            defaultValue,
-            textAlign,
             ...rest
         } = this.props;
 
         return (
-            <FormGroup className={className} {...rest}>
+            <FormGroup className={className} {...sanitizeRestProps(rest)}>
                 <FormControlLabel
                     control={
                         <Switch

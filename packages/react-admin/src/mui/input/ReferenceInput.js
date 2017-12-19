@@ -15,6 +15,43 @@ import { getPossibleReferences } from '../../reducer/admin/references/possibleVa
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
+const sanitizeRestProps = ({
+    allowEmpty,
+    basePath,
+    choices,
+    className,
+    component,
+    crudGetMatching,
+    crudGetOne,
+    defaultValue,
+    filter,
+    filterToQuery,
+    initializeForm,
+    input,
+    isRequired,
+    label,
+    locale,
+    meta,
+    onChange,
+    options,
+    optionValue,
+    optionText,
+    perPage,
+    record,
+    reference,
+    resource,
+    setFilter,
+    setPagination,
+    setSort,
+    sort,
+    source,
+    textAlign,
+    translate,
+    translateChoice,
+    validation,
+    ...rest
+}) => rest;
+
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
  *
@@ -168,14 +205,11 @@ export class ReferenceInput extends Component {
             basePath,
             onChange,
             children,
-            initializeForm,
             meta,
-            record,
-            defaultValue,
-            textAlign,
             options,
             ...rest
         } = this.props;
+
         if (!referenceRecord && !allowEmpty) {
             return (
                 <Labeled
@@ -187,7 +221,7 @@ export class ReferenceInput extends Component {
                     source={source}
                     resource={resource}
                     className={className}
-                    {...rest}
+                    {...sanitizeRestProps(rest)}
                 >
                     <LinearProgress />
                 </Labeled>
@@ -214,7 +248,7 @@ export class ReferenceInput extends Component {
             setSort: this.setSort,
             translateChoice: false,
             options,
-            ...rest,
+            ...sanitizeRestProps(rest),
         });
     }
 }

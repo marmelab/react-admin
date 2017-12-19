@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField';
 
 import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
+import sanitizeRestProps from './sanitizeRestProps';
 
 /**
  * Convert Date object to String
@@ -27,19 +28,14 @@ export class DateInput extends Component {
 
     render() {
         const {
-            basePath,
             className,
-            initializeForm,
             meta,
-            record,
-            defaultValue,
             input,
             isRequired,
             label,
             options,
             source,
             resource,
-            textAlign,
             ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
@@ -68,6 +64,8 @@ export class DateInput extends Component {
                 InputLabelProps={{
                     shrink: true,
                 }}
+                {...options}
+                {...sanitizeRestProps(rest)}
                 value={dateFormatter(
                     input.value instanceof Date
                         ? input.value
@@ -75,8 +73,6 @@ export class DateInput extends Component {
                 )}
                 onChange={this.onChange}
                 onBlur={this.onBlur}
-                {...options}
-                {...rest}
             />
         );
     }

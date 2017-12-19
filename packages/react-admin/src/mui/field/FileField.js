@@ -3,18 +3,15 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
+import sanitizeRestProps from './sanitizeRestProps';
 
 const styles = {
     root: { display: 'inline-block' },
 };
 
 export const FileField = ({
-    addLabel,
-    basePath,
     classes = {},
     className,
-    cellClassName,
-    headerClassName,
     record,
     source,
     title,
@@ -25,12 +22,20 @@ export const FileField = ({
     const sourceValue = get(record, source);
 
     if (!sourceValue) {
-        return <div className={classnames(classes.root, className)} />;
+        return (
+            <div
+                className={classnames(classes.root, className)}
+                {...sanitizeRestProps(rest)}
+            />
+        );
     }
 
     if (Array.isArray(sourceValue)) {
         return (
-            <ul className={classnames(classes.root, className)} {...rest}>
+            <ul
+                className={classnames(classes.root, className)}
+                {...sanitizeRestProps(rest)}
+            >
                 {sourceValue.map((file, index) => {
                     const titleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;

@@ -3,16 +3,13 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
 import Typography from 'material-ui/Typography';
+import sanitizeRestProps from './sanitizeRestProps';
 
 export const removeTags = input =>
     input ? input.replace(/<[^>]+>/gm, '') : '';
 
 const RichTextField = ({
-    addLabel,
-    basePath,
     className,
-    cellClassName,
-    headerClassName,
     source,
     record = {},
     stripTags,
@@ -21,7 +18,11 @@ const RichTextField = ({
     const value = get(record, source);
     if (stripTags) {
         return (
-            <Typography className={className} component="span" {...rest}>
+            <Typography
+                className={className}
+                component="span"
+                {...sanitizeRestProps(rest)}
+            >
                 {removeTags(value)}
             </Typography>
         );
@@ -32,6 +33,7 @@ const RichTextField = ({
             className={className}
             component="span"
             dangerouslySetInnerHTML={{ __html: value }}
+            {...sanitizeRestProps(rest)}
         />
     );
 };

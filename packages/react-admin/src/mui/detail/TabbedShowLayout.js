@@ -12,6 +12,19 @@ const styles = {
     tab: { padding: '0 1em 1em 1em' },
 };
 
+const sanitizeRestProps = ({
+    children,
+    className,
+    classes,
+    record,
+    resource,
+    basePath,
+    version,
+    initialValues,
+    translate,
+    ...rest
+}) => rest;
+
 /**
  * Tabbed Layout for a Show view, showing fields grouped in tabs.
  * 
@@ -71,12 +84,14 @@ export class TabbedShowLayout extends Component {
             resource,
             basePath,
             version,
-            initialValues,
-            translate,
             ...rest
         } = this.props;
         return (
-            <div className={className} key={version} {...rest}>
+            <div
+                className={className}
+                key={version}
+                {...sanitizeRestProps(rest)}
+            >
                 <Tabs value={this.state.value} onChange={this.handleChange}>
                     {Children.map(
                         children,

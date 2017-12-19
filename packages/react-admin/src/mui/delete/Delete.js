@@ -26,6 +26,32 @@ const styles = theme => ({
     },
 });
 
+const sanitizeRestProps = ({
+    actions,
+    className,
+    classes,
+    crudGetOne,
+    crudDelete,
+    title,
+    id,
+    data,
+    isLoading,
+    hasCreate,
+    hasDelete,
+    hasEdit,
+    hasShow,
+    hasList,
+    resource,
+    translate,
+    match,
+    location,
+    history,
+    options,
+    locale,
+    permissions,
+    ...rest
+}) => rest;
+
 /**
  * Page component for the Delete view
  * 
@@ -127,28 +153,19 @@ export class Delete extends Component {
             actions = <DefaultActions />,
             className,
             classes = {},
-            crudGetOne,
-            crudDelete,
             title,
             id,
             data,
             isLoading,
-            hasCreate,
-            hasDelete,
             hasEdit,
             hasShow,
             hasList,
             resource,
             translate,
-            match,
-            location,
-            history,
-            options,
-            locale,
-            permissions,
-            ...rest
+            ...props
         } = this.props;
         const basePath = this.getBasePath();
+        const rest = sanitizeRestProps(props);
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,

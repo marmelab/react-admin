@@ -9,6 +9,43 @@ import addField from '../form/addField';
 import translate from '../../i18n/translate';
 import FieldTitle from '../../util/FieldTitle';
 
+const sanitizeRestProps = ({
+    allowEmpty,
+    basePath,
+    choices,
+    className,
+    component,
+    crudGetMatching,
+    crudGetOne,
+    defaultValue,
+    filter,
+    filterToQuery,
+    initializeForm,
+    input,
+    isRequired,
+    label,
+    locale,
+    meta,
+    onChange,
+    options,
+    optionValue,
+    optionText,
+    perPage,
+    record,
+    reference,
+    resource,
+    setFilter,
+    setPagination,
+    setSort,
+    sort,
+    source,
+    textAlign,
+    translate,
+    translateChoice,
+    validation,
+    ...rest
+}) => rest;
+
 /**
  * An Input component for a select box, using an array of objects for the options
  *
@@ -128,15 +165,6 @@ export class SelectInput extends Component {
             options,
             resource,
             source,
-            basePath,
-            initializeForm,
-            record,
-            defaultValue,
-            textAlign,
-            translate,
-            translateChoice,
-            optionValue,
-            optionText,
             allowEmpty,
             ...rest
         } = this.props;
@@ -160,12 +188,12 @@ export class SelectInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                onChange={this.handleChange}
                 className={className}
                 error={!!(touched && error)}
                 helperText={touched && error}
                 {...options}
-                {...rest}
+                {...sanitizeRestProps(rest)}
+                onChange={this.handleChange}
             >
                 {this.addAllowEmpty(choices.map(this.renderMenuItem))}
             </TextField>

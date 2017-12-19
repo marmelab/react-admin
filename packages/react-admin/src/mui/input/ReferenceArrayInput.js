@@ -11,6 +11,7 @@ import {
     crudGetMatching as crudGetMatchingAction,
 } from '../../actions/dataActions';
 import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
+import sanitizeRestProps from './sanitizeRestProps';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
@@ -167,12 +168,8 @@ export class ReferenceArrayInput extends Component {
             basePath,
             onChange,
             children,
-            initializeForm,
             meta,
             record,
-            defaultValue,
-            textAlign,
-            options,
             ...rest
         } = this.props;
 
@@ -193,7 +190,7 @@ export class ReferenceArrayInput extends Component {
                     source={source}
                     resource={resource}
                     className={className}
-                    {...rest}
+                    {...sanitizeRestProps(rest)}
                 />
             );
         }
@@ -217,7 +214,7 @@ export class ReferenceArrayInput extends Component {
             setSort: this.setSort,
             translateChoice: false,
             options,
-            ...rest,
+            ...sanitizeRestProps(rest),
         });
     }
 }

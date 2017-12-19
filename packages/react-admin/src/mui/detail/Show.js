@@ -12,6 +12,32 @@ import { crudGetOne as crudGetOneAction } from '../../actions/dataActions';
 import DefaultActions from './ShowActions';
 import translate from '../../i18n/translate';
 
+const sanitizeRestProps = ({
+    actions,
+    title,
+    children,
+    className,
+    crudGetOne,
+    id,
+    data,
+    isLoading,
+    resource,
+    hasCreate,
+    hasDelete,
+    hasEdit,
+    hasList,
+    hasShow,
+    translate,
+    version,
+    match,
+    location,
+    history,
+    options,
+    locale,
+    permissions,
+    ...rest
+}) => rest;
+
 /**
  * Page component for the Show view
  * 
@@ -86,24 +112,15 @@ export class Show extends Component {
             title,
             children,
             className,
-            crudGetOne,
             id,
             data,
             isLoading,
             resource,
-            hasCreate,
             hasDelete,
             hasEdit,
             hasList,
-            hasShow,
             translate,
             version,
-            match,
-            location,
-            history,
-            options,
-            locale,
-            permissions,
             ...rest
         } = this.props;
 
@@ -126,7 +143,10 @@ export class Show extends Component {
         );
 
         return (
-            <div className={classnames('show-page', className)} {...rest}>
+            <div
+                className={classnames('show-page', className)}
+                {...sanitizeRestProps(rest)}
+            >
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}

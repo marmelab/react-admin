@@ -2,19 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
+import sanitizeRestProps from './sanitizeRestProps';
 
-const TextField = ({
-    addLabel,
-    basePath,
-    className,
-    cellClassName,
-    headerClassName,
-    source,
-    record = {},
-    ...rest
-}) => {
+const TextField = ({ className, source, record = {}, ...rest }) => {
     return (
-        <span className={className} {...rest}>
+        <span className={className} {...sanitizeRestProps(rest)}>
             {get(record, source)}
         </span>
     );

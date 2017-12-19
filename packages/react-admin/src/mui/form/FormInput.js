@@ -1,15 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 
 import Labeled from '../input/Labeled';
 
-const styles = theme => ({
-    input: { width: theme.spacing.unit * 32 },
-});
-
-export const FormInput = ({ className, classes = {}, input, ...rest }) =>
+export const FormInput = ({ className, input, ...rest }) =>
     input ? (
         input.props.addLabel ? (
             <Labeled
@@ -30,7 +25,6 @@ export const FormInput = ({ className, classes = {}, input, ...rest }) =>
                     `ra-input-${input.props.source}`,
                     className
                 ),
-                classes: { root: classes.input },
                 ...rest,
             })
         )
@@ -42,4 +36,4 @@ FormInput.propTypes = {
     input: PropTypes.object,
 };
 
-export default withStyles(styles)(FormInput);
+export default FormInput;

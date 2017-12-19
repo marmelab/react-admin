@@ -4,22 +4,17 @@ import TextField from 'material-ui/TextField';
 
 import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
+import sanitizeRestProps from './sanitizeRestProps';
 
 export const LongTextInput = ({
-    basePath,
     className,
-    classes,
     input,
-    initializeForm,
     meta,
-    record,
-    defaultValue,
     isRequired,
     label,
     options,
     source,
     resource,
-    textAlign,
     ...rest
 }) => {
     if (typeof meta === 'undefined') {
@@ -46,7 +41,7 @@ export const LongTextInput = ({
             error={!!(touched && error)}
             helperText={touched && error}
             {...options}
-            {...rest}
+            {...sanitizeRestProps(rest)}
         />
     );
 };

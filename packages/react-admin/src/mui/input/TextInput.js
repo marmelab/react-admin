@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import FieldTitle from '../../util/FieldTitle';
 import addField from '../form/addField';
+import sanitizeRestProps from './sanitizeRestProps';
 
 /**
  * An Input component for a string
@@ -36,9 +37,6 @@ export class TextInput extends Component {
 
     render() {
         const {
-            allowEmpty,
-            alwaysOn,
-            component,
             className,
             input,
             isRequired,
@@ -48,11 +46,6 @@ export class TextInput extends Component {
             resource,
             source,
             type,
-            basePath,
-            initializeForm,
-            record,
-            defaultValue,
-            textAlign,
             ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
@@ -78,7 +71,7 @@ export class TextInput extends Component {
                 helperText={touched && error}
                 className={className}
                 {...options}
-                {...rest}
+                {...sanitizeRestProps(rest)}
                 {...input}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}

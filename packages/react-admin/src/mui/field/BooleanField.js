@@ -5,26 +5,18 @@ import pure from 'recompose/pure';
 
 import FalseIcon from 'material-ui-icons/Clear';
 import TrueIcon from 'material-ui-icons/Done';
+import sanitizeRestProps from './sanitizeRestProps';
 
-export const BooleanField = ({
-    addLabel,
-    basePath,
-    className,
-    cellClassName,
-    headerClassName,
-    source,
-    record = {},
-    ...rest
-}) => {
+export const BooleanField = ({ className, source, record = {}, ...rest }) => {
     if (get(record, source) === false) {
-        return <FalseIcon className={className} {...rest} />;
+        return <FalseIcon className={className} {...sanitizeRestProps(rest)} />;
     }
 
     if (get(record, source) === true) {
-        return <TrueIcon className={className} {...rest} />;
+        return <TrueIcon className={className} {...sanitizeRestProps(rest)} />;
     }
 
-    return <span className={className} {...rest} />;
+    return <span className={className} {...sanitizeRestProps(rest)} />;
 };
 
 BooleanField.propTypes = {

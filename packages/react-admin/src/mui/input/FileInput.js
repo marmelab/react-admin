@@ -10,6 +10,7 @@ import Labeled from './Labeled';
 import addField from '../form/addField';
 import FileInputPreview from './FileInputPreview';
 import translate from '../../i18n/translate';
+import sanitizeRestProps from './sanitizeRestProps';
 
 const styles = {
     dropZone: {
@@ -142,15 +143,10 @@ export class FileInput extends Component {
     render() {
         const {
             accept,
-            basePath,
             children,
             classes = {},
             className,
             disableClick,
-            initializeForm,
-            meta,
-            record,
-            defaultValue,
             isRequired,
             label,
             maxSize,
@@ -159,7 +155,6 @@ export class FileInput extends Component {
             resource,
             source,
             options,
-            textAlign,
             ...rest
         } = this.props;
 
@@ -170,7 +165,7 @@ export class FileInput extends Component {
                 source={source}
                 resource={resource}
                 isRequired={isRequired}
-                {...rest}
+                {...sanitizeRestProps(rest)}
             >
                 <span>
                     <Dropzone

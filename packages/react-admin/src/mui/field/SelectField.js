@@ -4,6 +4,7 @@ import get from 'lodash.get';
 import pure from 'recompose/pure';
 import compose from 'recompose/compose';
 import translate from '../../i18n/translate';
+import sanitizeRestProps from './sanitizeRestProps';
 
 /**
  * Display a value in an enumeration
@@ -65,11 +66,7 @@ import translate from '../../i18n/translate';
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
 export const SelectField = ({
-    addLabel,
-    basePath,
     className,
-    cellClassName,
-    headerClassName,
     source,
     record,
     choices,
@@ -88,7 +85,7 @@ export const SelectField = ({
           ? optionText(choice)
           : choice[optionText];
     return (
-        <span className={className} {...rest}>
+        <span className={className} {...sanitizeRestProps(rest)}>
             {translateChoice
                 ? translate(choiceName, { _: choiceName })
                 : choiceName}

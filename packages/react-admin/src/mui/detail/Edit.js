@@ -15,6 +15,33 @@ import {
 import DefaultActions from './EditActions';
 import translate from '../../i18n/translate';
 
+const sanitizeRestProps = ({
+    actions,
+    children,
+    className,
+    crudGetOne,
+    crudUpdate,
+    data,
+    hasCreate,
+    hasDelete,
+    hasEdit,
+    hasList,
+    hasShow,
+    id,
+    isLoading,
+    resource,
+    title,
+    translate,
+    version,
+    match,
+    location,
+    history,
+    options,
+    locale,
+    permissions,
+    ...rest
+}) => rest;
+
 /**
  * Page component for the Edit view
  * 
@@ -119,12 +146,8 @@ export class Edit extends Component {
             actions = <DefaultActions />,
             children,
             className,
-            crudGetOne,
-            crudUpdate,
             data,
-            hasCreate,
             hasDelete,
-            hasEdit,
             hasList,
             hasShow,
             id,
@@ -133,12 +156,6 @@ export class Edit extends Component {
             title,
             translate,
             version,
-            match,
-            location,
-            history,
-            options,
-            locale,
-            permissions,
             ...rest
         } = this.props;
 
@@ -162,7 +179,10 @@ export class Edit extends Component {
         );
 
         return (
-            <div className={classnames('edit-page', className)} {...rest}>
+            <div
+                className={classnames('edit-page', className)}
+                {...sanitizeRestProps(rest)}
+            >
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}

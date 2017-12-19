@@ -5,26 +5,17 @@ import pure from 'recompose/pure';
 import Chip from 'material-ui/Chip';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
+import sanitizeRestProps from './sanitizeRestProps';
 
 const styles = {
     chip: { margin: 4 },
 };
 
-const ChipField = ({
-    addLabel,
-    basePath,
-    className,
-    cellClassName,
-    headerClassName,
-    classes,
-    source,
-    record = {},
-    ...rest
-}) => (
+const ChipField = ({ className, classes, source, record = {}, ...rest }) => (
     <Chip
         className={classnames(classes.chip, className)}
         label={get(record, source)}
-        {...rest}
+        {...sanitizeRestProps(rest)}
     />
 );
 

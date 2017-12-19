@@ -14,6 +14,14 @@ const styles = {
     iconPaddingStyle: { paddingRight: '0.5em' },
 };
 
+const sanitizeRestProps = ({
+    classes,
+    className,
+    translate,
+    userLogout,
+    locale,
+    ...rest
+}) => rest;
 /**
  * Logout button component, to be passed to the Admin component
  *
@@ -23,7 +31,7 @@ const Logout = ({ classes, className, translate, userLogout, ...rest }) => (
     <MenuItem
         className={classnames('logout', className)}
         onClick={userLogout}
-        {...rest}
+        {...sanitizeRestProps(rest)}
     >
         <ExitIcon className={classes.iconPaddingStyle} />
         {translate('ra.auth.logout')}

@@ -20,6 +20,21 @@ const styles = {
     },
 };
 
+const sanitizeRestProps = ({
+    className,
+    classes,
+    saving,
+    label,
+    invalid,
+    raised,
+    translate,
+    handleSubmitWithRedirect,
+    submitOnEnter,
+    redirect,
+    locale,
+    ...rest
+}) => rest;
+
 export class SaveButton extends Component {
     handleClick = e => {
         if (this.props.saving) {
@@ -41,10 +56,8 @@ export class SaveButton extends Component {
             classes = {},
             saving,
             label = 'ra.action.save',
-            invalid,
             raised = true,
             translate,
-            handleSubmitWithRedirect,
             submitOnEnter,
             redirect,
             ...rest
@@ -57,7 +70,7 @@ export class SaveButton extends Component {
                 type={type}
                 onClick={this.handleClick}
                 color={saving ? 'default' : 'primary'}
-                {...rest}
+                {...sanitizeRestProps(rest)}
             >
                 {saving && saving.redirect === redirect ? (
                     <CircularProgress

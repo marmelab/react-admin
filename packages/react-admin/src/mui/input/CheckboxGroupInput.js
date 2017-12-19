@@ -14,6 +14,7 @@ import compose from 'recompose/compose';
 import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 import translate from '../../i18n/translate';
+import sanitizeRestProps from './sanitizeRestProps';
 
 const styles = theme => ({
     root: {},
@@ -133,25 +134,14 @@ export class CheckboxGroupInput extends Component {
 
     render() {
         const {
-            basePath,
             choices,
             className,
             classes = {},
-            initializeForm,
-            meta,
-            record,
-            defaultValue,
             isRequired,
             label,
             resource,
             source,
-            options,
-            optionText,
-            optionValue,
             input,
-            translate,
-            translateChoice,
-            textAlign,
             ...rest
         } = this.props;
 
@@ -160,7 +150,7 @@ export class CheckboxGroupInput extends Component {
                 className={className}
                 component="fieldset"
                 margin="normal"
-                {...rest}
+                {...sanitizeRestProps(rest)}
             >
                 <FormLabel component="legend" className={classes.label}>
                     <FieldTitle

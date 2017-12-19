@@ -15,6 +15,16 @@ const styles = {
     },
 };
 
+const sanitizeRestProps = ({
+    className,
+    classes,
+    label,
+    translate,
+    refreshView,
+    locale,
+    ...rest
+}) => rest;
+
 class RefreshButton extends Component {
     static propTypes = {
         className: PropTypes.string,
@@ -48,7 +58,7 @@ class RefreshButton extends Component {
                 className={className}
                 color="primary"
                 onClick={this.handleClick}
-                {...rest}
+                {...sanitizeRestProps(rest)}
             >
                 <NavigationRefresh className={classes.iconPaddingStyle} />
                 {label && translate(label)}

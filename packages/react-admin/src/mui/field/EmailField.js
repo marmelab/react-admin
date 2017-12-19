@@ -2,18 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
+import sanitizeRestProps from './sanitizeRestProps';
 
-const EmailField = ({
-    addLabel,
-    basePath,
-    className,
-    cellClassName,
-    headerClassName,
-    source,
-    record = {},
-    ...rest
-}) => (
-    <a className={className} href={`mailto:${get(record, source)}`} {...rest}>
+const EmailField = ({ className, source, record = {}, ...rest }) => (
+    <a
+        className={className}
+        href={`mailto:${get(record, source)}`}
+        {...sanitizeRestProps(rest)}
+    >
         {get(record, source)}
     </a>
 );

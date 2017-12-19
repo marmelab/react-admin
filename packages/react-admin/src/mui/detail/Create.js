@@ -12,6 +12,29 @@ import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import DefaultActions from './CreateActions';
 import translate from '../../i18n/translate';
 
+const sanitizeRestProps = ({
+    actions,
+    children,
+    className,
+    crudCreate,
+    isLoading,
+    resource,
+    title,
+    translate,
+    hasCreate,
+    hasDelete,
+    hasEdit,
+    hasList,
+    hasShow,
+    match,
+    location,
+    history,
+    options,
+    locale,
+    permissions,
+    ...rest
+}) => rest;
+
 /**
  * Page component for the Create view
  * 
@@ -83,22 +106,11 @@ class Create extends Component {
             actions = <DefaultActions />,
             children,
             className,
-            crudCreate,
             isLoading,
             resource,
             title,
             translate,
-            hasCreate,
-            hasDelete,
-            hasEdit,
             hasList,
-            hasShow,
-            match,
-            location,
-            history,
-            options,
-            locale,
-            permissions,
             ...rest
         } = this.props;
 
@@ -117,7 +129,10 @@ class Create extends Component {
         );
 
         return (
-            <div className={classnames('create-page', className)} {...rest}>
+            <div
+                className={classnames('create-page', className)}
+                {...sanitizeRestProps(rest)}
+            >
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}

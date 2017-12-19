@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
+import sanitizeRestProps from './sanitizeRestProps';
 
 const styles = {
     list: {
@@ -16,11 +17,7 @@ const styles = {
 };
 
 export const ImageField = ({
-    addLabel,
-    basePath,
     className,
-    cellClassName,
-    headerClassName,
     classes = {},
     record,
     source,
@@ -30,12 +27,15 @@ export const ImageField = ({
 }) => {
     const sourceValue = get(record, source);
     if (!sourceValue) {
-        return <div className={className} {...rest} />;
+        return <div className={className} {...sanitizeRestProps(rest)} />;
     }
 
     if (Array.isArray(sourceValue)) {
         return (
-            <ul className={classnames(classes.list, className)} {...rest}>
+            <ul
+                className={classnames(classes.list, className)}
+                {...sanitizeRestProps(rest)}
+            >
                 {sourceValue.map((file, index) => {
                     const titleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
@@ -58,7 +58,7 @@ export const ImageField = ({
     const titleValue = get(record, title) || title;
 
     return (
-        <div className={className}>
+        <div className={className} {...sanitizeRestProps(rest)}>
             <img
                 title={titleValue}
                 alt={titleValue}

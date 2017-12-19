@@ -5,6 +5,7 @@ import pure from 'recompose/pure';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 import compose from 'recompose/compose';
+import sanitizeRestProps from './sanitizeRestProps';
 
 const hasNumberFormat = !!(
     typeof Intl === 'object' &&
@@ -45,17 +46,12 @@ const styles = {
  * <span>25,99 $US</span>
  */
 export const NumberField = ({
-    addLabel,
-    basePath,
     classes = {},
     className,
-    cellClassName,
-    headerClassName,
     record,
     source,
     locales,
     options,
-    textAlign,
     ...rest
 }) => {
     if (!record) return null;
@@ -64,13 +60,19 @@ export const NumberField = ({
 
     if (!hasNumberFormat)
         return (
-            <span className={classnames(classes.input, className)} {...rest}>
+            <span
+                className={classnames(classes.input, className)}
+                {...sanitizeRestProps(rest)}
+            >
                 {value}
             </span>
         );
 
     return (
-        <span className={classnames(classes.input, className)} {...rest}>
+        <span
+            className={classnames(classes.input, className)}
+            {...sanitizeRestProps(rest)}
+        >
             {value.toLocaleString(locales, options)}
         </span>
     );
