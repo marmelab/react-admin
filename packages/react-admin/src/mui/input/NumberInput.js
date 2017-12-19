@@ -67,14 +67,10 @@ export class NumberInput extends Component {
 
         return (
             <TextField
-                {...input}
                 type="number"
                 margin="normal"
                 error={!!(touched && error)}
                 helperText={touched && error}
-                onBlur={this.handleBlur}
-                onFocus={this.handleFocus}
-                onChange={this.handleChange}
                 step={step}
                 label={
                     <FieldTitle
@@ -87,6 +83,10 @@ export class NumberInput extends Component {
                 className={className}
                 {...options}
                 {...rest}
+                {...input}
+                onBlur={this.handleBlur}
+                onFocus={this.handleFocus}
+                onChange={this.handleChange}
             />
         );
     }

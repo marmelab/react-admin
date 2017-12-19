@@ -64,11 +64,7 @@ export class TextInput extends Component {
 
         return (
             <TextField
-                {...input}
                 margin="normal"
-                onBlur={this.handleBlur}
-                onFocus={this.handleFocus}
-                onChange={this.handleChange}
                 type={type}
                 label={
                     <FieldTitle
@@ -83,6 +79,10 @@ export class TextInput extends Component {
                 className={className}
                 {...options}
                 {...rest}
+                {...input}
+                onBlur={this.handleBlur}
+                onFocus={this.handleFocus}
+                onChange={this.handleChange}
             />
         );
     }
