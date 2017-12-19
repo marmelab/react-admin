@@ -7,7 +7,7 @@ export default emitter => ({
     error() {
         emitter(END);
     },
-    next(apolloQueryResult) {
-        emitter(apolloQueryResult);
+    next(value) {
+        emitter(value);
     },
 });

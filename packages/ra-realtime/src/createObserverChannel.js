@@ -1,11 +1,11 @@
 import { eventChannel } from 'redux-saga';
-import queryObserver from './queryObserver';
+import realtimeObserver from './realtimeObserver';
 
-export const createSubscribeFactory = queryObserverImpl => (
+export const createSubscribeFactory = realtimeObserverImpl => (
     watcher,
-    emitter,
+    emitter
 ) => {
-    const observer = queryObserverImpl(emitter);
+    const observer = realtimeObserverImpl(emitter);
     const result = watcher.subscribe(observer);
 
     return result.unsubscribe;
@@ -13,5 +13,5 @@ export const createSubscribeFactory = queryObserverImpl => (
 
 export default watcher =>
     eventChannel(emitter =>
-        createSubscribeFactory(queryObserver)(watcher, emitter),
+        createSubscribeFactory(realtimeObserver)(watcher, emitter)
     );

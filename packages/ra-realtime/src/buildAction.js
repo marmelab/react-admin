@@ -1,11 +1,11 @@
 import { FETCH_END } from 'react-admin';
 
 export default (
-    { type, payload, meta: { fetch: restType, ...meta } },
-    parsedApolloQueryResult
+    { type, payload: requestPayload, meta: { fetch: restType, ...meta } },
+    payload
 ) => ({
     type: `${type}_SUCCESS`,
-    payload: parsedApolloQueryResult,
-    requestPayload: payload,
+    payload,
+    requestPayload,
     meta: { ...meta, fetchResponse: restType, fetchStatus: FETCH_END },
 });

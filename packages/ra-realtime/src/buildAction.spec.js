@@ -1,28 +1,28 @@
 import expect from 'expect';
 import { FETCH_END } from 'react-admin';
 
-import buildAorAction from './buildAorAction';
+import buildAction from './buildAction';
 
-describe('buildAorAction', () => {
+describe('buildAction', () => {
     it('returns an action correctly configured', () => {
-        const payload = 'payload';
+        const requestPayload = 'payload';
         const restType = 'GET_LIST';
         const meta = { prop: 'value' };
-        const parsedApolloQueryResult = 'parsedApolloQueryResult';
+        const payload = 'payload';
 
         expect(
-            buildAorAction(
+            buildAction(
                 {
                     type: 'CRUD_GET_LIST',
-                    payload,
+                    payload: requestPayload,
                     meta: { fetch: restType, ...meta },
                 },
-                parsedApolloQueryResult
+                payload
             )
         ).toEqual({
             type: 'CRUD_GET_LIST_SUCCESS',
-            payload: parsedApolloQueryResult,
-            requestPayload: payload,
+            payload,
+            requestPayload,
             meta: { ...meta, fetchResponse: restType, fetchStatus: FETCH_END },
         });
     });

@@ -8,48 +8,49 @@ import {
 } from 'react-admin';
 import omit from 'lodash.omit';
 
-import buildAorAction from './buildAorAction';
+import buildAction from './buildAction';
 import createObserverChannel from './createObserverChannel';
 
-export const watchCrudActionsFactory = observeQuery =>
+export const watchCrudActionsFactory = observeRequest =>
     function* watchCrudActions(action) {
         const {
             payload: params,
             meta: { fetch: fetchType, resource },
         } = action;
-        const observer = yield call(observeQuery, fetchType, resource, params);
+        const observer = yield call(
+            observeRequest,
+            fetchType,
+            resource,
+            params
+        );
 
         if (!observer) return;
 
-        const queryChannel = yield call(createObserverChannel, observer);
+        const realtimeChannel = yield call(createObserverChannel, observer);
 
         try {
             while (true) { // eslint-disable-line
-                const parsedApolloQueryResult = yield take(queryChannel);
-                const { type, payload, meta } = action;
+                const payload = yield take(realtimeChannel);
+                const { type, payload: requestPayload, meta } = action;
 
                 yield [
                     put({
                         type: `${type}_LOADING`,
-                        payload,
+                        payload: requestPayload,
                         meta: omit(meta, 'fetch'),
                     }),
                     put({ type: FETCH_START }),
                 ];
 
-                const aorAction = yield call(
-                    buildAorAction,
-                    action,
-                    parsedApolloQueryResult
-                );
+                const raAction = yield call(buildAction, action, payload);
 
-                yield put(aorAction);
+                yield put(raAction);
 
                 yield put({ type: FETCH_END });
             }
         } finally {
-            if (yield cancelled() && queryChannel) {
-                queryChannel.close();
+            if (yield cancelled() && realtimeChannel) {
+                realtimeChannel.close();
             }
         }
     };
@@ -60,7 +61,7 @@ export const watchLocationChangeFactory = watchCrudActions =>
     };
 
 export default observeQuery =>
-    function* aorGraphQlSaga() {
+    function* realtimeSaga() {
         const watchCrudActions = watchCrudActionsFactory(observeQuery);
         yield takeLatest(
             LOCATION_CHANGE,
