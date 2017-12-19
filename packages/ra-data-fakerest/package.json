@@ -31,6 +31,7 @@
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "dependencies": {
-        "fakerest": "~2.1.0"
+        "fakerest": "~2.1.0",
+        "react-admin": "^2.0.0-alpha3"
     }
 }
