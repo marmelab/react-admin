@@ -68,7 +68,7 @@ test-e2e: ## launch end-to-end tests
 		cd packages/ra-example && ./node_modules/.bin/webpack; \
 	fi
 	@NODE_ENV=test node_modules/.bin/mocha \
-		--compilers js:babel-register \
+		--require babel-core/register \
 		--timeout 15000 \
 		./e2e/tests/server.js \
 		./e2e/tests/*.js
