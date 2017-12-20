@@ -12,7 +12,6 @@ import { AUTH_GET_PERMISSIONS } from './auth/types';
 import { isLoggedIn } from './reducer';
 
 export class AdminRoutes extends Component {
-    // Can't use null or undefined here as authClient may return any those values
     state = { childrenToRender: [] };
 
     componentWillMount() {
