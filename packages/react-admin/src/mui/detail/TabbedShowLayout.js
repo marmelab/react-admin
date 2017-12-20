@@ -92,7 +92,11 @@ export class TabbedShowLayout extends Component {
                 key={version}
                 {...sanitizeRestProps(rest)}
             >
-                <Tabs value={this.state.value} onChange={this.handleChange}>
+                <Tabs
+                    scrollable
+                    value={this.state.value}
+                    onChange={this.handleChange}
+                >
                     {Children.map(
                         children,
                         (tab, index) =>
