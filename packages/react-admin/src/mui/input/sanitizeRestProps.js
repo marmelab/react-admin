@@ -3,6 +3,7 @@ export default ({
     basePath,
     component,
     defaultValue,
+    formClassName,
     initializeForm,
     input,
     isRequired,

@@ -19,6 +19,7 @@ const sanitizeRestProps = ({
     basePath,
     component,
     defaultValue,
+    formClassName,
     initializeForm,
     input,
     isRequired,

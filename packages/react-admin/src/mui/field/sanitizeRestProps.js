@@ -5,6 +5,7 @@ export default ({
     className,
     cellClassName,
     headerClassName,
+    formClassName,
     source,
     record,
     resource,

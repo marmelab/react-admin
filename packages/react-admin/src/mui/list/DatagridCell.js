@@ -8,6 +8,19 @@ const styles = {
     cellRightAligned: { textAlign: 'right' },
 };
 
+const sanitizeRestProps = ({
+    cellClassName,
+    classes,
+    className,
+    field,
+    formClassName,
+    headerClassName,
+    record,
+    basePath,
+    resource,
+    ...rest
+}) => rest;
+
 export const DatagridCell = ({
     classes = {},
     className,
@@ -25,7 +38,7 @@ export const DatagridCell = ({
             className,
             field.props.cellClassName
         )}
-        {...rest}
+        {...sanitizeRestProps(rest)}
     >
         {React.cloneElement(field, { record, basePath, resource })}
     </TableCell>
