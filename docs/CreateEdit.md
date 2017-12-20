@@ -533,7 +533,7 @@ The input components are wrapped inside a `div` to ensure a good looking form by
 {% raw %}
 ```js
 const styles = {
-    inlineBlock: { display: 'inline-block', marginRight: '1rem' },
+    inlineBlock: { display: 'inline-flex', marginRight: '1rem' },
 };
 export const UserEdit = withStyles(editStyles)(({ classes, ...props }) => (
     <Edit {...props}>
