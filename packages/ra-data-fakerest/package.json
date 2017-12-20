@@ -1,6 +1,6 @@
 {
     "name": "ra-data-fakerest",
-    "version": "2.0.0-alpha3",
+    "version": "2.0.0-beta1",
     "description": "JSON Server data provider for react-admin",
     "main": "lib/index.js",
     "scripts": {
@@ -32,6 +32,6 @@
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "dependencies": {
         "fakerest": "~2.1.0",
-        "react-admin": "^2.0.0-alpha3"
+        "react-admin": "^2.0.0-beta1"
     }
 }

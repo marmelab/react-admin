@@ -1,6 +1,6 @@
 {
   "name": "ra-data-graphcool",
-  "version": "2.0.0-alpha3",
+  "version": "2.0.0-beta1",
   "description": "A Graphcool data provider for react-admin",
   "main": "./lib/index.js",
   "repository": {
@@ -29,7 +29,7 @@
     "graphql-tag": "~2.4.2",
     "lodash.merge": "~4.6.0",
     "pluralize": "~7.0.0",
-    "ra-data-graphql": "^2.0.0-alpha3",
-    "react-admin": "^2.0.0-alpha3"
+    "ra-data-graphql": "^2.0.0-beta1",
+    "react-admin": "^2.0.0-beta1"
   }
 }

@@ -1,6 +1,6 @@
 {
     "name": "react-admin",
-    "version": "2.0.0-alpha3",
+    "version": "2.0.0-beta1",
     "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
     "files": [
         "*.md",
@@ -48,7 +48,7 @@
         "node-polyglot": "2.2.2",
         "prop-types": "~15.5.7",
         "query-string": "~5.0.0",
-        "ra-language-english": "^2.0.0-alpha3",
+        "ra-language-english": "^2.0.0-beta1",
         "react-autosuggest": "^9.3.2",
         "react-dropzone": "~4.0.1",
         "react-redux": "~5.0.4",

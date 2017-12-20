@@ -1,6 +1,6 @@
 {
   "name": "ra-data-graphql",
-  "version": "2.0.0-alpha3",
+  "version": "2.0.0-beta1",
   "description": "A GraphQL data provider for react-admin",
   "main": "./lib/index.js",
   "repository": {
@@ -30,6 +30,6 @@
     "lodash.get": "~4.4.2",
     "lodash.merge": "~4.6.0",
     "pluralize": "~7.0.0",
-    "react-admin": "^2.0.0-alpha3"
+    "react-admin": "^2.0.0-beta1"
   }
 }

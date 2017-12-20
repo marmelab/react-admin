@@ -1,6 +1,6 @@
 {
   "name": "ra-dependent-input",
-  "version": "2.0.0-alpha3",
+  "version": "2.0.0-beta1",
   "description": "A component for displaying input depending on other inputs values in react-admin",
   "main": "./lib/index.js",
   "repository": "https://github.com/marmelab/react-admin.git",
@@ -11,7 +11,7 @@
   "dependencies": {
     "lodash.get": "~4.4.2",
     "prop-types": "~15.6.0",
-    "react-admin": "^2.0.0-alpha3"
+    "react-admin": "^2.0.0-beta1"
   },
   "peerDependencies": {
     "react": "^15.6.2",
