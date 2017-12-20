@@ -56,8 +56,14 @@ prettier: ## prettify the source code using prettier
 test: build test-unit lint test-e2e ## launch all tests
 
 test-unit: ## launch unit tests
-	@echo "Running unit tests..."
-	@NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/jest
+	@if [ "$(CI)" != "true" ]; then \
+		echo "Running unit tests..."; \
+		NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/jest; \
+	fi
+	@if [ "$(CI)" = "true" ]; then \
+		echo "Running unit tests in CI..."; \
+		NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/jest --runInBand; \
+	fi
 
 test-unit-watch: ## launch unit tests and watch for changes
 	@NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/jest --watch
