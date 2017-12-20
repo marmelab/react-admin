@@ -12,6 +12,32 @@ import { crudGetOne as crudGetOneAction } from '../../actions/dataActions';
 import DefaultActions from './ShowActions';
 import translate from '../../i18n/translate';
 
+const sanitizeRestProps = ({
+    actions,
+    title,
+    children,
+    className,
+    crudGetOne,
+    id,
+    data,
+    isLoading,
+    resource,
+    hasCreate,
+    hasDelete,
+    hasEdit,
+    hasList,
+    hasShow,
+    translate,
+    version,
+    match,
+    location,
+    history,
+    options,
+    locale,
+    permissions,
+    ...rest
+}) => rest;
+
 /**
  * Page component for the Show view
  * 
@@ -90,11 +116,12 @@ export class Show extends Component {
             data,
             isLoading,
             resource,
-            hasList,
             hasDelete,
             hasEdit,
+            hasList,
             translate,
             version,
+            ...rest
         } = this.props;
 
         if (!children) return null;
@@ -116,7 +143,10 @@ export class Show extends Component {
         );
 
         return (
-            <div className={classnames('edit-page', className)}>
+            <div
+                className={classnames('show-page', className)}
+                {...sanitizeRestProps(rest)}
+            >
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}
@@ -150,9 +180,11 @@ Show.propTypes = {
     className: PropTypes.string,
     crudGetOne: PropTypes.func.isRequired,
     data: PropTypes.object,
-    hasList: PropTypes.bool,
+    hasCreate: PropTypes.bool,
     hasDelete: PropTypes.bool,
     hasEdit: PropTypes.bool,
+    hasList: PropTypes.bool,
+    hasShow: PropTypes.bool,
     id: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,

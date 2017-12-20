@@ -78,9 +78,10 @@ const Layout = ({
     open,
     theme,
     title,
+    ...rest
 }) => (
     <MuiThemeProvider theme={createMuiTheme(theme)}>
-        <div className={classnames(classes.root, className)}>
+        <div className={classnames(classes.root, className)} {...rest}>
             <div className={classes.appFrame}>
                 <Hidden xsDown>
                     <AppBar title={title} open={open} />
@@ -101,6 +102,7 @@ const Layout = ({
                         customRoutes={customRoutes}
                         dashboard={dashboard}
                         catchAll={catchAll}
+                        title={title}
                     >
                         {children}
                     </AdminRoutes>
@@ -142,6 +144,12 @@ Layout.defaultProps = {
 const mapStateToProps = state => ({
     open: state.admin.ui.sidebarOpen,
 });
-const enhance = compose(connect(mapStateToProps), withStyles(styles));
+const enhance = compose(
+    connect(
+        mapStateToProps,
+        {} // Avoid connect passing dispatch in props
+    ),
+    withStyles(styles)
+);
 
 export default enhance(Layout);

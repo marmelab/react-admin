@@ -21,6 +21,43 @@ const styles = theme => ({
     errorTabButton: { color: theme.palette.error[500] },
 });
 
+const sanitizeRestProps = ({
+    anyTouched,
+    asyncValidate,
+    asyncValidating,
+    clearSubmit,
+    dirty,
+    handleSubmit,
+    initialized,
+    initialValues,
+    pristine,
+    submitting,
+    submitFailed,
+    submitSucceeded,
+    valid,
+    pure,
+    triggerSubmit,
+    clearSubmitErrors,
+    clearAsyncError,
+    blur,
+    change,
+    destroy,
+    dispatch,
+    initialize,
+    reset,
+    touch,
+    untouch,
+    validate,
+    save,
+    translate,
+    autofill,
+    submit,
+    redirect,
+    array,
+    form,
+    ...props
+}) => props;
+
 export class TabbedForm extends Component {
     constructor(props) {
         super(props);
@@ -50,12 +87,14 @@ export class TabbedForm extends Component {
             toolbar,
             translate,
             version,
+            ...rest
         } = this.props;
 
         return (
             <form
                 className={classnames('tabbed-form', className)}
                 key={version}
+                {...sanitizeRestProps(rest)}
             >
                 <Tabs value={this.state.value} onChange={this.handleChange}>
                     {Children.map(

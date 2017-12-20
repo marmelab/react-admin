@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField';
 
 import FieldTitle from '../../util/FieldTitle';
 import addField from '../form/addField';
+import sanitizeRestProps from './sanitizeRestProps';
 
 /**
  * An Input component for a number
@@ -51,6 +52,7 @@ export class NumberInput extends Component {
             source,
             step,
             resource,
+            ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
             throw new Error(
@@ -61,14 +63,10 @@ export class NumberInput extends Component {
 
         return (
             <TextField
-                {...input}
                 type="number"
                 margin="normal"
                 error={!!(touched && error)}
                 helperText={touched && error}
-                onBlur={this.handleBlur}
-                onFocus={this.handleFocus}
-                onChange={this.handleChange}
                 step={step}
                 label={
                     <FieldTitle
@@ -80,6 +78,11 @@ export class NumberInput extends Component {
                 }
                 className={className}
                 {...options}
+                {...sanitizeRestProps(rest)}
+                {...input}
+                onBlur={this.handleBlur}
+                onFocus={this.handleFocus}
+                onChange={this.handleChange}
             />
         );
     }

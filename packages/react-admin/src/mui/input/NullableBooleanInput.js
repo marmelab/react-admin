@@ -9,6 +9,7 @@ import classnames from 'classnames';
 import FieldTitle from '../../util/FieldTitle';
 import addField from '../form/addField';
 import translate from '../../i18n/translate';
+import sanitizeRestProps from './sanitizeRestProps';
 
 const styles = theme => ({
     input: { width: theme.spacing.unit * 16 },
@@ -55,6 +56,7 @@ export class NullableBooleanInput extends Component {
             resource,
             source,
             translate,
+            ...rest
         } = this.props;
         const { touched, error } = meta;
         return (
@@ -70,11 +72,12 @@ export class NullableBooleanInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                onChange={this.handleChange}
                 error={!!(touched && error)}
                 helperText={touched && error}
                 className={classnames(classes.input, className)}
                 {...options}
+                {...sanitizeRestProps(rest)}
+                onChange={this.handleChange}
             >
                 <MenuItem value="" />
                 <MenuItem value="false">

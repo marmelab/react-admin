@@ -41,6 +41,8 @@ export const DatagridHeaderCell = ({
     currentSort,
     updateSort,
     resource,
+    isSorting,
+    ...rest
 }) => (
     <TableCell
         className={classnames(
@@ -50,6 +52,7 @@ export const DatagridHeaderCell = ({
             className,
             field.props.headerClassName
         )}
+        {...rest}
     >
         {field.props.sortable !== false && field.props.source ? (
             <Button

@@ -14,6 +14,30 @@ import { getPossibleReferences } from '../../reducer/admin/references/possibleVa
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
+const sanitizeRestProps = ({
+    alwaysOn,
+    basePath,
+    component,
+    defaultValue,
+    formClassName,
+    initializeForm,
+    input,
+    isRequired,
+    label,
+    locale,
+    meta,
+    optionText,
+    optionValue,
+    record,
+    resource,
+    allowEmpty,
+    source,
+    textAlign,
+    translate,
+    translateChoice,
+    ...rest
+}) => rest;
+
 /**
  * An Input component for fields containing a list of references to another resource.
  * Useful for 'hasMany' relationship.
@@ -168,6 +192,9 @@ export class ReferenceArrayInput extends Component {
             onChange,
             children,
             meta,
+            record,
+            options,
+            ...rest
         } = this.props;
 
         if (React.Children.count(children) !== 1) {
@@ -187,6 +214,7 @@ export class ReferenceArrayInput extends Component {
                     source={source}
                     resource={resource}
                     className={className}
+                    {...sanitizeRestProps(rest)}
                 />
             );
         }
@@ -209,6 +237,8 @@ export class ReferenceArrayInput extends Component {
             setPagination: this.setPagination,
             setSort: this.setSort,
             translateChoice: false,
+            options,
+            ...sanitizeRestProps(rest),
         });
     }
 }

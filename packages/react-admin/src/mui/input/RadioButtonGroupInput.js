@@ -7,6 +7,7 @@ import compose from 'recompose/compose';
 import addField from '../form/addField';
 import Labeled from './Labeled';
 import translate from '../../i18n/translate';
+import sanitizeRestProps from './sanitizeRestProps';
 
 /**
  * An Input component for a radio button group, using an array of objects for the options
@@ -105,14 +106,16 @@ export class RadioButtonGroupInput extends Component {
             isRequired,
             choices,
             options,
+            ...rest
         } = this.props;
 
         return (
             <Labeled
+                {...sanitizeRestProps(rest)}
                 className={className}
                 label={label}
-                onChange={this.handleChange}
                 resource={resource}
+                onChange={this.handleChange}
                 source={source}
                 isRequired={isRequired}
             >

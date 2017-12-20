@@ -40,9 +40,15 @@ class AppBarMobile extends Component {
     };
 
     render() {
-        const { classes, className, title, toggleSidebar } = this.props;
+        const {
+            classes,
+            className,
+            title,
+            toggleSidebar,
+            ...rest
+        } = this.props;
         return (
-            <MuiAppBar className={classnames(classes.bar, className)}>
+            <MuiAppBar className={classnames(classes.bar, className)} {...rest}>
                 <Toolbar>
                     <IconButton
                         color="contrast"

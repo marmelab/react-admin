@@ -20,13 +20,16 @@ const styles = {
 const SingleFieldList = ({
     classes = {},
     className,
+    currentSort,
     ids,
+    isLoading,
     data,
     resource,
     basePath,
     children,
+    ...rest
 }) => (
-    <div className={classnames(classes.root, className)}>
+    <div className={classnames(classes.root, className)} {...rest}>
         {ids.map(id =>
             React.cloneElement(children, {
                 key: id,

@@ -21,8 +21,8 @@ const styles = theme => ({
  * 
  * @param {object} classes CSS class names injected by withStyles 
  */
-export const LinearProgress = ({ classes, className }) => (
-    <Progress className={classnames(classes.root, className)} />
+export const LinearProgress = ({ classes, className, ...rest }) => (
+    <Progress className={classnames(classes.root, className)} {...rest} />
 );
 LinearProgress.propTypes = {
     classes: PropTypes.object,

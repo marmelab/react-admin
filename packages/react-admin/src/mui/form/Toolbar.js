@@ -28,12 +28,14 @@ const Toolbar = ({
     submitOnEnter,
     handleSubmitWithRedirect,
     children,
+    ...rest
 }) => (
     <Responsive
         small={
             <MuiToolbar
                 className={classnames(classes.mobileToolbar, className)}
                 noGutter
+                {...rest}
             >
                 {Children.count(children) === 0 ? (
                     <SaveButton
@@ -62,7 +64,7 @@ const Toolbar = ({
             </MuiToolbar>
         }
         medium={
-            <MuiToolbar className={className}>
+            <MuiToolbar className={className} {...rest}>
                 {Children.count(children) === 0 ? (
                     <SaveButton
                         handleSubmitWithRedirect={handleSubmitWithRedirect}

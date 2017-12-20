@@ -12,6 +12,19 @@ const styles = {
     tab: { padding: '0 1em 1em 1em' },
 };
 
+const sanitizeRestProps = ({
+    children,
+    className,
+    classes,
+    record,
+    resource,
+    basePath,
+    version,
+    initialValues,
+    translate,
+    ...rest
+}) => rest;
+
 /**
  * Tabbed Layout for a Show view, showing fields grouped in tabs.
  * 
@@ -71,9 +84,14 @@ export class TabbedShowLayout extends Component {
             resource,
             basePath,
             version,
+            ...rest
         } = this.props;
         return (
-            <div className={className} key={version}>
+            <div
+                className={className}
+                key={version}
+                {...sanitizeRestProps(rest)}
+            >
                 <Tabs value={this.state.value} onChange={this.handleChange}>
                     {Children.map(
                         children,
@@ -109,21 +127,21 @@ TabbedShowLayout.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     classes: PropTypes.object,
-    contentContainerStyle: PropTypes.object,
     record: PropTypes.object,
     resource: PropTypes.string,
     basePath: PropTypes.string,
     version: PropTypes.number,
-};
-
-TabbedShowLayout.defaultProps = {
-    contentContainerStyle: { borderTop: 'solid 1px #e0e0e0' },
+    translate: PropTypes.func,
+    initialValues: PropTypes.object,
 };
 
 const enhance = compose(
-    connect((state, props) => ({
-        initialValues: getDefaultValues(state, props),
-    })),
+    connect(
+        (state, props) => ({
+            initialValues: getDefaultValues(state, props),
+        }),
+        {} // Avoid connect passing dispatch in props
+    ),
     withStyles(styles)
 );
 

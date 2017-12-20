@@ -7,6 +7,7 @@ import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
 import linkToRecord from '../../util/linkToRecord';
+import sanitizeRestProps from './sanitizeRestProps';
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -57,15 +58,17 @@ export class ReferenceField extends Component {
 
     render() {
         const {
+            basePath,
             className,
             record,
             source,
             reference,
             referenceRecord,
-            basePath,
             allowEmpty,
             children,
             linkType,
+            translateChoice,
+            ...rest
         } = this.props;
         if (React.Children.count(children) !== 1) {
             throw new Error('<ReferenceField> only accepts a single child');
@@ -81,28 +84,49 @@ export class ReferenceField extends Component {
             `${rootPath}/${reference}`,
             get(record, source)
         );
-        const child = React.cloneElement(children, {
-            record: referenceRecord,
-            resource: reference,
-            allowEmpty,
-            basePath,
-            translateChoice: false,
-        });
         if (linkType === 'edit' || linkType === true) {
             return (
-                <Link className={className} to={href}>
-                    {child}
+                <Link
+                    className={className}
+                    to={href}
+                    {...sanitizeRestProps(rest)}
+                >
+                    {React.cloneElement(children, {
+                        record: referenceRecord,
+                        resource: reference,
+                        allowEmpty,
+                        basePath,
+                        translateChoice: false,
+                    })}
                 </Link>
             );
         }
         if (linkType === 'show') {
             return (
-                <Link className={className} to={`${href}/show`}>
-                    {child}
+                <Link
+                    className={className}
+                    to={`${href}/show`}
+                    {...sanitizeRestProps(rest)}
+                >
+                    {React.cloneElement(children, {
+                        record: referenceRecord,
+                        resource: reference,
+                        allowEmpty,
+                        basePath,
+                        translateChoice: false,
+                    })}
                 </Link>
             );
         }
-        return child;
+
+        return React.cloneElement(children, {
+            record: referenceRecord,
+            resource: reference,
+            allowEmpty,
+            basePath,
+            translateChoice: false,
+            ...sanitizeRestProps(rest),
+        });
     }
 }
 
@@ -112,12 +136,15 @@ ReferenceField.propTypes = {
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
     crudGetManyAccumulate: PropTypes.func.isRequired,
     label: PropTypes.string,
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
     source: PropTypes.string.isRequired,
+    translateChoice: PropTypes.func,
     linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
         .isRequired,
 };

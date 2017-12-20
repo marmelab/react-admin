@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
+import sanitizeRestProps from './sanitizeRestProps';
 
 const styles = {
     list: {
@@ -22,15 +23,19 @@ export const ImageField = ({
     source,
     src,
     title,
+    ...rest
 }) => {
     const sourceValue = get(record, source);
     if (!sourceValue) {
-        return <div className={className} />;
+        return <div className={className} {...sanitizeRestProps(rest)} />;
     }
 
     if (Array.isArray(sourceValue)) {
         return (
-            <ul className={classnames(classes.list, className)}>
+            <ul
+                className={classnames(classes.list, className)}
+                {...sanitizeRestProps(rest)}
+            >
                 {sourceValue.map((file, index) => {
                     const titleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
@@ -53,7 +58,7 @@ export const ImageField = ({
     const titleValue = get(record, title) || title;
 
     return (
-        <div className={className}>
+        <div className={className} {...sanitizeRestProps(rest)}>
             <img
                 title={titleValue}
                 alt={titleValue}
@@ -65,7 +70,11 @@ export const ImageField = ({
 };
 
 ImageField.propTypes = {
+    addLabel: PropTypes.bool,
+    basePath: PropTypes.string,
     className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
     classes: PropTypes.object,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,

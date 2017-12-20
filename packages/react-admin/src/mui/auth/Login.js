@@ -66,6 +66,20 @@ const renderInput = ({
     />
 );
 
+const sanitizeRestProps = ({
+    classes,
+    className,
+    handleSubmit,
+    isLoading,
+    translate,
+    location,
+    title,
+    locale,
+    array,
+    theme,
+    ...rest
+}) => rest;
+
 /**
  * A standalone login page, to serve as authentication gate to the admin
  *
@@ -100,9 +114,14 @@ class Login extends Component {
             handleSubmit,
             isLoading,
             translate,
+            ...rest
         } = this.props;
+
         return (
-            <div className={classnames(classes.main, className)}>
+            <div
+                className={classnames(classes.main, className)}
+                {...sanitizeRestProps(rest)}
+            >
                 <Card className={classes.card}>
                     <div className={classes.avatar}>
                         <Avatar className={classes.icon}>

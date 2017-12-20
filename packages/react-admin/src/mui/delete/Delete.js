@@ -26,6 +26,32 @@ const styles = theme => ({
     },
 });
 
+const sanitizeRestProps = ({
+    actions,
+    className,
+    classes,
+    crudGetOne,
+    crudDelete,
+    title,
+    id,
+    data,
+    isLoading,
+    hasCreate,
+    hasDelete,
+    hasEdit,
+    hasShow,
+    hasList,
+    resource,
+    translate,
+    match,
+    location,
+    history,
+    options,
+    locale,
+    permissions,
+    ...rest
+}) => rest;
+
 /**
  * Page component for the Delete view
  * 
@@ -136,8 +162,10 @@ export class Delete extends Component {
             hasList,
             resource,
             translate,
+            ...props
         } = this.props;
         const basePath = this.getBasePath();
+        const rest = sanitizeRestProps(props);
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
@@ -155,7 +183,7 @@ export class Delete extends Component {
         );
 
         return (
-            <div className={className}>
+            <div className={className} {...rest}>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}
@@ -212,6 +240,8 @@ Delete.propTypes = {
     crudDelete: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,
     data: PropTypes.object,
+    hasCreate: PropTypes.bool,
+    hasDelete: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
     hasList: PropTypes.bool,

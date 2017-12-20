@@ -29,12 +29,14 @@ const ShowButton = ({
     label = 'ra.action.show',
     record = {},
     translate,
+    ...rest
 }) => (
     <Button
         className={classnames(classes.link, className)}
         component={Link}
         color="primary"
         to={`${linkToRecord(basePath, record.id)}/show`}
+        {...rest}
     >
         <ImageEye className={classes.iconPaddingStyle} />
         {label && translate(label)}

@@ -525,3 +525,34 @@ export const PostCreate = (props) => (
 );
 ```
 {% endraw %}
+
+## Customize Input Containers Styles
+
+The input components are wrapped inside a `div` to ensure a good looking form by default. You can pass a `formClassName` prop to the input components to customize the style of this `div`. For example, here is how to display two inputs on the same line:
+
+{% raw %}
+```js
+const styles = {
+    inlineBlock: { display: 'inline-block', marginRight: '1rem' },
+};
+export const UserEdit = withStyles(editStyles)(({ classes, ...props }) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <TextInput
+                formClassName={classes.inlineBlock}
+                source="first_name"
+            />
+            <TextInput
+                formClassName={classes.inlineBlock}
+                source="last_name"
+            />
+            {/* This input will be display below the two first one */}
+            <TextInput
+                type="email"
+                source="email"
+                validation={{ email: true }}
+            />
+        </SimpleForm>
+    </Edit>
+```
+{% endraw %}

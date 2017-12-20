@@ -20,6 +20,21 @@ const styles = {
     },
 };
 
+const sanitizeRestProps = ({
+    className,
+    classes,
+    saving,
+    label,
+    invalid,
+    raised,
+    translate,
+    handleSubmitWithRedirect,
+    submitOnEnter,
+    redirect,
+    locale,
+    ...rest
+}) => rest;
+
 export class SaveButton extends Component {
     handleClick = e => {
         if (this.props.saving) {
@@ -45,6 +60,7 @@ export class SaveButton extends Component {
             translate,
             submitOnEnter,
             redirect,
+            ...rest
         } = this.props;
         const type = submitOnEnter ? 'submit' : 'button';
         return (
@@ -54,6 +70,7 @@ export class SaveButton extends Component {
                 type={type}
                 onClick={this.handleClick}
                 color={saving ? 'default' : 'primary'}
+                {...sanitizeRestProps(rest)}
             >
                 {saving && saving.redirect === redirect ? (
                     <CircularProgress
@@ -76,6 +93,7 @@ SaveButton.propTypes = {
     handleSubmitWithRedirect: PropTypes.func,
     label: PropTypes.string,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    invalid: PropTypes.bool,
     raised: PropTypes.bool,
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
@@ -93,7 +111,11 @@ const mapStateToProps = state => ({
 
 const enhance = compose(
     translate,
-    connect(mapStateToProps),
+    connect(
+        mapStateToProps,
+        {} // Avoid connect passing dispatch in props
+    ),
     withStyles(styles)
 );
+
 export default enhance(SaveButton);

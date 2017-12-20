@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
+import sanitizeRestProps from './sanitizeRestProps';
 
 const toLocaleStringSupportsLocales = (() => {
     // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
@@ -45,6 +46,7 @@ export const DateField = ({
     record,
     showTime = false,
     source,
+    ...rest
 }) => {
     if (!record) return null;
     const value = get(record, source);
@@ -58,12 +60,19 @@ export const DateField = ({
           ? date.toLocaleDateString(locales, options)
           : date.toLocaleDateString();
 
-    return <span className={className}>{dateString}</span>;
+    return (
+        <span className={className} {...sanitizeRestProps(rest)}>
+            {dateString}
+        </span>
+    );
 };
 
 DateField.propTypes = {
     addLabel: PropTypes.bool,
+    basePath: PropTypes.string,
     className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
     label: PropTypes.string,
     locales: PropTypes.oneOfType([
         PropTypes.string,

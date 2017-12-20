@@ -12,6 +12,29 @@ import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import DefaultActions from './CreateActions';
 import translate from '../../i18n/translate';
 
+const sanitizeRestProps = ({
+    actions,
+    children,
+    className,
+    crudCreate,
+    isLoading,
+    resource,
+    title,
+    translate,
+    hasCreate,
+    hasDelete,
+    hasEdit,
+    hasList,
+    hasShow,
+    match,
+    location,
+    history,
+    options,
+    locale,
+    permissions,
+    ...rest
+}) => rest;
+
 /**
  * Page component for the Create view
  * 
@@ -88,6 +111,7 @@ class Create extends Component {
             title,
             translate,
             hasList,
+            ...rest
         } = this.props;
 
         if (!children) return null;
@@ -105,7 +129,10 @@ class Create extends Component {
         );
 
         return (
-            <div className={classnames('create-page', className)}>
+            <div
+                className={classnames('create-page', className)}
+                {...sanitizeRestProps(rest)}
+            >
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
                         title={titleElement}
@@ -138,6 +165,8 @@ Create.propTypes = {
     children: PropTypes.element,
     className: PropTypes.string,
     crudCreate: PropTypes.func.isRequired,
+    hasCreate: PropTypes.bool,
+    hasDelete: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
     isLoading: PropTypes.bool.isRequired,
@@ -146,10 +175,6 @@ Create.propTypes = {
     title: PropTypes.any,
     translate: PropTypes.func.isRequired,
     hasList: PropTypes.bool,
-};
-
-Create.defaultProps = {
-    data: {},
 };
 
 function mapStateToProps(state) {

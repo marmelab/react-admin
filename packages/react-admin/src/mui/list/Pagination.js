@@ -129,8 +129,10 @@ export class Pagination extends Component {
             className,
             page,
             perPage,
+            setPage,
             total,
             translate,
+            ...rest
         } = this.props;
         if (total === 0) return null;
         const offsetEnd = Math.min(page * perPage, total);
@@ -143,6 +145,7 @@ export class Pagination extends Component {
                     <Toolbar
                         className={className}
                         classes={{ root: classes.mobileToolbar }}
+                        {...rest}
                     >
                         {page > 1 && (
                             <IconButton color="primary" onClick={this.prevPage}>
@@ -164,7 +167,7 @@ export class Pagination extends Component {
                     </Toolbar>
                 }
                 medium={
-                    <Toolbar className={className}>
+                    <Toolbar className={className} {...rest}>
                         <Typography type="body1" className="displayed-records">
                             {translate('ra.navigation.page_range_info', {
                                 offsetBegin,

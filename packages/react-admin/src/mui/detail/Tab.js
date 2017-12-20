@@ -49,7 +49,7 @@ import classnames from 'classnames';
  *     export default App;
  */
 class Tab extends Component {
-    renderHeader = ({ className, label, icon, value, translate, rest }) => (
+    renderHeader = ({ className, label, icon, value, translate, ...rest }) => (
         <MuiTab
             key={label}
             label={translate(label, { _: label })}
@@ -60,7 +60,7 @@ class Tab extends Component {
         />
     );
 
-    renderContent = ({ className, children, rest }) => (
+    renderContent = ({ className, children, ...rest }) => (
         <span className={className}>
             {React.Children.map(
                 children,
@@ -111,9 +111,9 @@ class Tab extends Component {
                   icon,
                   value,
                   translate,
-                  rest,
+                  ...rest,
               })
-            : this.renderContent({ children, className, rest });
+            : this.renderContent({ children, className, ...rest });
     }
 }
 
