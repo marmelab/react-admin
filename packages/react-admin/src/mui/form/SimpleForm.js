@@ -74,7 +74,6 @@ export class SimpleForm extends Component {
             submitOnEnter,
             toolbar,
             version,
-            width,
             ...rest
         } = this.props;
 
