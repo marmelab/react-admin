@@ -9,6 +9,7 @@ import Link from '../Link';
 import linkToRecord from '../../util/linkToRecord';
 import translate from '../../i18n/translate';
 import classnames from 'classnames';
+import Responsive from '../layout/Responsive';
 
 const styles = {
     link: {
@@ -29,16 +30,31 @@ const DeleteButton = ({
     translate,
     ...rest
 }) => (
-    <Button
-        className={classnames(classes.link, className)}
-        component={Link}
-        color="accent"
-        to={`${linkToRecord(basePath, record.id)}/delete`}
-        {...rest}
-    >
-        <ActionDelete className={classes.iconPaddingStyle} />
-        {label && translate(label)}
-    </Button>
+    <Responsive
+        small={
+            <Button
+                className={classnames(classes.link, className)}
+                component={Link}
+                color="accent"
+                to={`${linkToRecord(basePath, record.id)}/delete`}
+                {...rest}
+            >
+                <ActionDelete />
+            </Button>
+        }
+        medium={
+            <Button
+                className={classnames(classes.link, className)}
+                component={Link}
+                color="accent"
+                to={`${linkToRecord(basePath, record.id)}/delete`}
+                {...rest}
+            >
+                <ActionDelete className={classes.iconPaddingStyle} />
+                {label && translate(label)}
+            </Button>
+        }
+    />
 );
 
 DeleteButton.propTypes = {

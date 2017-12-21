@@ -11,14 +11,16 @@ import Responsive from '../layout/Responsive';
 import Link from '../Link';
 import translate from '../../i18n/translate';
 
-const styles = {
+const styles = theme => ({
     floating: {
+        color: theme.palette.getContrastText(theme.palette.primary[500]),
         margin: 0,
         top: 'auto',
         right: 20,
         bottom: 60,
         left: 'auto',
         position: 'fixed',
+        zIndex: 1000,
     },
     floatingLink: {
         color: 'inherit',
@@ -30,7 +32,7 @@ const styles = {
     iconPaddingStyle: {
         paddingRight: '0.5em',
     },
-};
+});
 
 const CreateButton = ({
     basePath = '',

@@ -8,6 +8,7 @@ import classnames from 'classnames';
 
 import Link from '../Link';
 import translate from '../../i18n/translate';
+import Responsive from '../layout/Responsive';
 
 const styles = {
     link: {
@@ -27,16 +28,31 @@ const ListButton = ({
     translate,
     ...rest
 }) => (
-    <Button
-        className={classnames(classes.link, className)}
-        component={Link}
-        color="primary"
-        to={basePath}
-        {...rest}
-    >
-        <ActionList className={classes.iconPaddingStyle} />
-        {label && translate(label)}
-    </Button>
+    <Responsive
+        small={
+            <Button
+                className={classnames(classes.link, className)}
+                component={Link}
+                color="primary"
+                to={basePath}
+                {...rest}
+            >
+                <ActionList />
+            </Button>
+        }
+        medium={
+            <Button
+                className={classnames(classes.link, className)}
+                component={Link}
+                color="primary"
+                to={basePath}
+                {...rest}
+            >
+                <ActionList className={classes.iconPaddingStyle} />
+                {label && translate(label)}
+            </Button>
+        }
+    />
 );
 
 ListButton.propTypes = {

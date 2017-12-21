@@ -11,9 +11,13 @@ import compose from 'recompose/compose';
 
 import translate from '../../i18n/translate';
 import FilterButtonMenuItem from './FilterButtonMenuItem';
+import Responsive from '../layout/Responsive';
 
 const styles = {
     root: { display: 'inline-block' },
+    iconPaddingStyle: {
+        paddingRight: '0.5em',
+    },
 };
 
 export class FilterButton extends Component {
@@ -80,18 +84,35 @@ export class FilterButton extends Component {
         return (
             hiddenFilters.length > 0 && (
                 <div className={classnames(classes.root, className)} {...rest}>
-                    <Button
-                        ref={node => {
-                            this.button = node;
-                        }}
-                        className="add-filter"
-                        color="primary"
-                        onClick={this.handleClickButton}
-                    >
-                        <ContentFilter />
-                        &nbsp;
-                        {translate('ra.action.add_filter')}
-                    </Button>
+                    <Responsive
+                        small={
+                            <Button
+                                ref={node => {
+                                    this.button = node;
+                                }}
+                                className="add-filter"
+                                color="primary"
+                                onClick={this.handleClickButton}
+                            >
+                                <ContentFilter />
+                            </Button>
+                        }
+                        medium={
+                            <Button
+                                ref={node => {
+                                    this.button = node;
+                                }}
+                                className="add-filter"
+                                color="primary"
+                                onClick={this.handleClickButton}
+                            >
+                                <ContentFilter
+                                    className={classes.iconPaddingStyle}
+                                />
+                                {translate('ra.action.add_filter')}
+                            </Button>
+                        }
+                    />
                     <Popover
                         open={open}
                         anchorEl={anchorEl}

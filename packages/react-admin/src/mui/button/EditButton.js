@@ -10,6 +10,7 @@ import classnames from 'classnames';
 import Link from '../Link';
 import linkToRecord from '../../util/linkToRecord';
 import translate from '../../i18n/translate';
+import Responsive from '../layout/Responsive';
 
 const styles = {
     link: {
@@ -30,16 +31,31 @@ const EditButton = ({
     translate,
     ...rest
 }) => (
-    <Button
-        className={classnames(classes.link, className)}
-        component={Link}
-        color="primary"
-        to={linkToRecord(basePath, record.id)}
-        {...rest}
-    >
-        <ContentCreate className={classes.iconPaddingStyle} />
-        {label && translate(label)}
-    </Button>
+    <Responsive
+        small={
+            <Button
+                className={classnames(classes.link, className)}
+                component={Link}
+                color="primary"
+                to={linkToRecord(basePath, record.id)}
+                {...rest}
+            >
+                <ContentCreate />
+            </Button>
+        }
+        medium={
+            <Button
+                className={classnames(classes.link, className)}
+                component={Link}
+                color="primary"
+                to={linkToRecord(basePath, record.id)}
+                {...rest}
+            >
+                <ContentCreate className={classes.iconPaddingStyle} />
+                {label && translate(label)}
+            </Button>
+        }
+    />
 );
 
 EditButton.propTypes = {

@@ -8,6 +8,7 @@ import { withStyles } from 'material-ui/styles';
 
 import translate from '../../i18n/translate';
 import { refreshView as refreshViewAction } from '../../actions/uiActions';
+import Responsive from '../layout/Responsive';
 
 const styles = {
     iconPaddingStyle: {
@@ -54,15 +55,31 @@ class RefreshButton extends Component {
         } = this.props;
 
         return (
-            <Button
-                className={className}
-                color="primary"
-                onClick={this.handleClick}
-                {...sanitizeRestProps(rest)}
-            >
-                <NavigationRefresh className={classes.iconPaddingStyle} />
-                {label && translate(label)}
-            </Button>
+            <Responsive
+                small={
+                    <Button
+                        className={className}
+                        color="primary"
+                        onClick={this.handleClick}
+                        {...sanitizeRestProps(rest)}
+                    >
+                        <NavigationRefresh />
+                    </Button>
+                }
+                medium={
+                    <Button
+                        className={className}
+                        color="primary"
+                        onClick={this.handleClick}
+                        {...sanitizeRestProps(rest)}
+                    >
+                        <NavigationRefresh
+                            className={classes.iconPaddingStyle}
+                        />
+                        {label && translate(label)}
+                    </Button>
+                }
+            />
         );
     }
 }
