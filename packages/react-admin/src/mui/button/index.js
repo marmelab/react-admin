@@ -1,3 +1,4 @@
+export Button from './Button';
 export CreateButton from './CreateButton';
 export DeleteButton from './DeleteButton';
 export EditButton from './EditButton';
