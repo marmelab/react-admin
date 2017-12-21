@@ -59,7 +59,7 @@ This REST client fits APIs using simple GET parameters for filters and sorting. 
 
 | REST verb            | API calls
 |----------------------|----------------------------------------------------------------
-| `GET_LIST`           | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}`
+| `GET_LIST`           | `GET http://my.api.url/posts?sort=["title","ASC"]&range=[0, 24]&filter={"title":"bar"}`
 | `GET_ONE`            | `GET http://my.api.url/posts/123`
 | `CREATE`             | `POST http://my.api.url/posts/123`
 | `UPDATE`             | `PUT http://my.api.url/posts/123`
