@@ -9,6 +9,7 @@ import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import inflection from 'inflection';
 import classnames from 'classnames';
+import pickBy from 'lodash.pickby';
 import { withStyles } from 'material-ui/styles';
 
 import queryReducer, {
@@ -368,11 +369,21 @@ List.defaultProps = {
     theme: defaultTheme,
 };
 
+const validQueryParams = ['page', 'perPage', 'sort', 'order', 'filter'];
 const getLocationSearch = props => props.location.search;
 const getQuery = createSelector(getLocationSearch, locationSearch => {
-    const query = parse(locationSearch);
+    const query = pickBy(
+        parse(locationSearch),
+        (v, k) => validQueryParams.indexOf(k) !== -1
+    );
     if (query.filter && typeof query.filter === 'string') {
-        query.filter = JSON.parse(query.filter);
+        try {
+            query.filter = JSON.parse(query.filter);
+        } catch (err) {
+            query.filter = {};
+        }
+    } else {
+        query.filter = {};
     }
     return query;
 });
