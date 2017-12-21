@@ -32,9 +32,10 @@ const RichTextField = ({
         <Typography
             className={className}
             component="span"
-            dangerouslySetInnerHTML={{ __html: value }}
             {...sanitizeRestProps(rest)}
-        />
+        >
+            <span dangerouslySetInnerHTML={{ __html: value }} />
+        </Typography>
     );
 };
 
