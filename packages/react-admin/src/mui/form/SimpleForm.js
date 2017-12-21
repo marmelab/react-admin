@@ -4,21 +4,22 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withStyles } from 'material-ui/styles';
-import withWidth from 'material-ui/utils/withWidth';
 import classnames from 'classnames';
 
 import getDefaultValues from './getDefaultValues';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
 
-const styles = {
+const styles = theme => ({
     form: {
-        padding: '0 1em 1em 1em',
+        [theme.breakpoints.up('sm')]: {
+            padding: '0 1em 1em 1em',
+        },
+        [theme.breakpoints.down('sm')]: {
+            padding: '0 1em 5em 1em',
+        },
     },
-    formSmall: {
-        padding: '0 1em 5em 1em',
-    },
-};
+});
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -82,13 +83,7 @@ export class SimpleForm extends Component {
                 className={classnames('simple-form', className)}
                 {...sanitizeRestProps(rest)}
             >
-                <div
-                    className={classnames({
-                        [classes.form]: width !== 'xs',
-                        [classes.formSmall]: width === 'xs',
-                    })}
-                    key={version}
-                >
+                <div className={classes.form} key={version}>
                     {Children.map(children, input => (
                         <FormInput
                             basePath={basePath}
@@ -140,8 +135,7 @@ const enhance = compose(
         form: 'record-form',
         enableReinitialize: true,
     }),
-    withStyles(styles),
-    withWidth()
+    withStyles(styles)
 );
 
 export default enhance(SimpleForm);

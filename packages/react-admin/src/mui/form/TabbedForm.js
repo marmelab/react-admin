@@ -12,17 +12,18 @@ import compose from 'recompose/compose';
 import Divider from 'material-ui/Divider';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import { withStyles } from 'material-ui/styles';
-import withWidth from 'material-ui/utils/withWidth';
 
 import Toolbar from './Toolbar';
 import getDefaultValues from './getDefaultValues';
 
 const styles = theme => ({
     form: {
-        padding: '0 1em 1em 1em',
-    },
-    formSmall: {
-        padding: '0 1em 5em 1em',
+        [theme.breakpoints.up('sm')]: {
+            padding: '0 1em 1em 1em',
+        },
+        [theme.breakpoints.down('sm')]: {
+            padding: '0 1em 5em 1em',
+        },
     },
     errorTabButton: { color: theme.palette.error[500] },
 });
@@ -132,12 +133,7 @@ export class TabbedForm extends Component {
                     )}
                 </Tabs>
                 <Divider />
-                <div
-                    className={classnames({
-                        [classes.form]: width !== 'xs',
-                        [classes.formSmall]: width === 'xs',
-                    })}
-                >
+                <div className={classes.form}>
                     {Children.map(
                         children,
                         (tab, index) =>
@@ -234,8 +230,7 @@ const enhance = compose(
         form: 'record-form',
         enableReinitialize: true,
     }),
-    withStyles(styles),
-    withWidth()
+    withStyles(styles)
 );
 
 export default enhance(TabbedForm);
