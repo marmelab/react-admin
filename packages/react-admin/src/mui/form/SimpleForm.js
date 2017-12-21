@@ -10,9 +10,16 @@ import getDefaultValues from './getDefaultValues';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
 
-const styles = {
-    form: { padding: '0 1em 1em 1em' },
-};
+const styles = theme => ({
+    form: {
+        [theme.breakpoints.up('sm')]: {
+            padding: '0 1em 1em 1em',
+        },
+        [theme.breakpoints.down('sm')]: {
+            padding: '0 1em 5em 1em',
+        },
+    },
+});
 
 const sanitizeRestProps = ({
     anyTouched,

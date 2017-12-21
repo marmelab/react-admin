@@ -17,7 +17,14 @@ import Toolbar from './Toolbar';
 import getDefaultValues from './getDefaultValues';
 
 const styles = theme => ({
-    form: { padding: '0 1em' },
+    form: {
+        [theme.breakpoints.up('sm')]: {
+            padding: '0 1em 1em 1em',
+        },
+        [theme.breakpoints.down('sm')]: {
+            padding: '0 1em 5em 1em',
+        },
+    },
     errorTabButton: { color: theme.palette.error[500] },
 });
 
