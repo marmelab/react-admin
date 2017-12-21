@@ -20,6 +20,7 @@ const sanitizeRestProps = ({
     translate,
     userLogout,
     locale,
+    redirectTo,
     ...rest
 }) => rest;
 /**
