@@ -21,6 +21,9 @@ const styles = {
     title: {
         fontSize: '1.25em',
         lineHeight: '2.5em',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
     },
     icon: {
         marginTop: 0,
@@ -50,7 +53,7 @@ const AppBarMobile = ({
             >
                 <MenuIcon />
             </IconButton>
-            <Typography type="title" color="inherit">
+            <Typography className={classes.title} type="title" color="inherit">
                 {title}
             </Typography>
         </Toolbar>
