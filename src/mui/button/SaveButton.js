@@ -36,7 +36,7 @@ export class SaveButton extends Component {
         return (
             <ButtonComponent
                 type={type}
-                label={label && translate(label)}
+                label={label && translate(label, { _: label })}
                 icon={
                     saving && saving.redirect === redirect ? (
                         <CircularProgress size={25} thickness={2} />
