@@ -236,7 +236,8 @@ export class List extends Component {
             ...rest
         } = this.props;
         const query = this.getQuery();
-        const queryFilterValues = query.filter;
+
+        const queryFilterValues = query.filter || {};
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
@@ -370,23 +371,26 @@ List.defaultProps = {
 };
 
 const validQueryParams = ['page', 'perPage', 'sort', 'order', 'filter'];
+const getLocationPath = props => props.location.pathname;
 const getLocationSearch = props => props.location.search;
-const getQuery = createSelector(getLocationSearch, locationSearch => {
-    const query = pickBy(
-        parse(locationSearch),
-        (v, k) => validQueryParams.indexOf(k) !== -1
-    );
-    if (query.filter && typeof query.filter === 'string') {
-        try {
-            query.filter = JSON.parse(query.filter);
-        } catch (err) {
-            query.filter = {};
+const getQuery = createSelector(
+    getLocationPath,
+    getLocationSearch,
+    (path, search) => {
+        const query = pickBy(
+            parse(search),
+            (v, k) => validQueryParams.indexOf(k) !== -1
+        );
+        if (query.filter && typeof query.filter === 'string') {
+            try {
+                query.filter = JSON.parse(query.filter);
+            } catch (err) {
+                delete query.filter;
+            }
         }
-    } else {
-        query.filter = {};
+        return query;
     }
-    return query;
-});
+);
 
 function mapStateToProps(state, props) {
     const resourceState = state.admin.resources[props.resource];
