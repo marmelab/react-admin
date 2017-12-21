@@ -18,8 +18,8 @@ const styles = {
         alignItems: 'center',
         overflow: 'inherit',
     },
-    iconPaddingStyle: {
-        paddingRight: '0.5em',
+    label: {
+        marginLeft: '0.5em',
     },
 };
 
@@ -32,31 +32,23 @@ const ShowButton = ({
     translate,
     ...rest
 }) => (
-    <Responsive
-        small={
-            <Button
-                className={classnames(classes.link, className)}
-                component={Link}
-                color="primary"
-                to={`${linkToRecord(basePath, record.id)}/show`}
-                {...rest}
-            >
-                <ImageEye />
-            </Button>
-        }
-        medium={
-            <Button
-                className={classnames(classes.link, className)}
-                component={Link}
-                color="primary"
-                to={`${linkToRecord(basePath, record.id)}/show`}
-                {...rest}
-            >
-                <ImageEye className={classes.iconPaddingStyle} />
-                {label && translate(label)}
-            </Button>
-        }
-    />
+    <Button
+        className={classnames(classes.link, className)}
+        component={Link}
+        color="primary"
+        to={`${linkToRecord(basePath, record.id)}/show`}
+        {...rest}
+    >
+        <ImageEye />
+        <Responsive
+            small={<span />}
+            medium={
+                <span className={classes.label}>
+                    {label && translate(label)}
+                </span>
+            }
+        />
+    </Button>
 );
 
 ShowButton.propTypes = {

@@ -17,8 +17,8 @@ const styles = {
         display: 'inline-flex',
         alignItems: 'center',
     },
-    iconPaddingStyle: {
-        paddingRight: '0.5em',
+    label: {
+        marginLeft: '0.5em',
     },
 };
 
@@ -31,31 +31,23 @@ const EditButton = ({
     translate,
     ...rest
 }) => (
-    <Responsive
-        small={
-            <Button
-                className={classnames(classes.link, className)}
-                component={Link}
-                color="primary"
-                to={linkToRecord(basePath, record.id)}
-                {...rest}
-            >
-                <ContentCreate />
-            </Button>
-        }
-        medium={
-            <Button
-                className={classnames(classes.link, className)}
-                component={Link}
-                color="primary"
-                to={linkToRecord(basePath, record.id)}
-                {...rest}
-            >
-                <ContentCreate className={classes.iconPaddingStyle} />
-                {label && translate(label)}
-            </Button>
-        }
-    />
+    <Button
+        className={classnames(classes.link, className)}
+        component={Link}
+        color="primary"
+        to={linkToRecord(basePath, record.id)}
+        {...rest}
+    >
+        <ContentCreate />
+        <Responsive
+            small={<span />}
+            medium={
+                <span className={classes.label}>
+                    {label && translate(label)}
+                </span>
+            }
+        />
+    </Button>
 );
 
 EditButton.propTypes = {

@@ -16,8 +16,8 @@ const styles = {
         display: 'inline-flex',
         alignItems: 'center',
     },
-    iconPaddingStyle: {
-        paddingRight: '0.5em',
+    label: {
+        paddingLeft: '0.5em',
     },
 };
 
@@ -30,31 +30,23 @@ const DeleteButton = ({
     translate,
     ...rest
 }) => (
-    <Responsive
-        small={
-            <Button
-                className={classnames(classes.link, className)}
-                component={Link}
-                color="accent"
-                to={`${linkToRecord(basePath, record.id)}/delete`}
-                {...rest}
-            >
-                <ActionDelete />
-            </Button>
-        }
-        medium={
-            <Button
-                className={classnames(classes.link, className)}
-                component={Link}
-                color="accent"
-                to={`${linkToRecord(basePath, record.id)}/delete`}
-                {...rest}
-            >
-                <ActionDelete className={classes.iconPaddingStyle} />
-                {label && translate(label)}
-            </Button>
-        }
-    />
+    <Button
+        className={classnames(classes.link, className)}
+        component={Link}
+        color="accent"
+        to={`${linkToRecord(basePath, record.id)}/delete`}
+        {...rest}
+    >
+        <ActionDelete />
+        <Responsive
+            small={<span />}
+            medium={
+                <span className={classes.label}>
+                    {label && translate(label)}
+                </span>
+            }
+        />
+    </Button>
 );
 
 DeleteButton.propTypes = {

@@ -11,8 +11,8 @@ import { refreshView as refreshViewAction } from '../../actions/uiActions';
 import Responsive from '../layout/Responsive';
 
 const styles = {
-    iconPaddingStyle: {
-        paddingRight: '0.5em',
+    label: {
+        marginLeft: '0.5em',
     },
 };
 
@@ -55,31 +55,22 @@ class RefreshButton extends Component {
         } = this.props;
 
         return (
-            <Responsive
-                small={
-                    <Button
-                        className={className}
-                        color="primary"
-                        onClick={this.handleClick}
-                        {...sanitizeRestProps(rest)}
-                    >
-                        <NavigationRefresh />
-                    </Button>
-                }
-                medium={
-                    <Button
-                        className={className}
-                        color="primary"
-                        onClick={this.handleClick}
-                        {...sanitizeRestProps(rest)}
-                    >
-                        <NavigationRefresh
-                            className={classes.iconPaddingStyle}
-                        />
-                        {label && translate(label)}
-                    </Button>
-                }
-            />
+            <Button
+                className={className}
+                color="primary"
+                onClick={this.handleClick}
+                {...sanitizeRestProps(rest)}
+            >
+                <NavigationRefresh />
+                <Responsive
+                    small={<span />}
+                    medium={
+                        <span className={classes.label}>
+                            {label && translate(label)}
+                        </span>
+                    }
+                />
+            </Button>
         );
     }
 }

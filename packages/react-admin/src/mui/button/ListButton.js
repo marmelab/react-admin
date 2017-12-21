@@ -15,8 +15,8 @@ const styles = {
         display: 'inline-flex',
         alignItems: 'center',
     },
-    iconPaddingStyle: {
-        paddingRight: '0.5em',
+    label: {
+        marginLeft: '0.5em',
     },
 };
 
@@ -28,31 +28,23 @@ const ListButton = ({
     translate,
     ...rest
 }) => (
-    <Responsive
-        small={
-            <Button
-                className={classnames(classes.link, className)}
-                component={Link}
-                color="primary"
-                to={basePath}
-                {...rest}
-            >
-                <ActionList />
-            </Button>
-        }
-        medium={
-            <Button
-                className={classnames(classes.link, className)}
-                component={Link}
-                color="primary"
-                to={basePath}
-                {...rest}
-            >
-                <ActionList className={classes.iconPaddingStyle} />
-                {label && translate(label)}
-            </Button>
-        }
-    />
+    <Button
+        className={classnames(classes.link, className)}
+        component={Link}
+        color="primary"
+        to={basePath}
+        {...rest}
+    >
+        <ActionList />
+        <Responsive
+            small={<span />}
+            medium={
+                <span className={classes.label}>
+                    {label && translate(label)}
+                </span>
+            }
+        />
+    </Button>
 );
 
 ListButton.propTypes = {

@@ -15,8 +15,8 @@ import Responsive from '../layout/Responsive';
 
 const styles = {
     root: { display: 'inline-block' },
-    iconPaddingStyle: {
-        paddingRight: '0.5em',
+    label: {
+        marginLeft: '0.5em',
     },
 };
 
@@ -84,35 +84,24 @@ export class FilterButton extends Component {
         return (
             hiddenFilters.length > 0 && (
                 <div className={classnames(classes.root, className)} {...rest}>
-                    <Responsive
-                        small={
-                            <Button
-                                ref={node => {
-                                    this.button = node;
-                                }}
-                                className="add-filter"
-                                color="primary"
-                                onClick={this.handleClickButton}
-                            >
-                                <ContentFilter />
-                            </Button>
-                        }
-                        medium={
-                            <Button
-                                ref={node => {
-                                    this.button = node;
-                                }}
-                                className="add-filter"
-                                color="primary"
-                                onClick={this.handleClickButton}
-                            >
-                                <ContentFilter
-                                    className={classes.iconPaddingStyle}
-                                />
-                                {translate('ra.action.add_filter')}
-                            </Button>
-                        }
-                    />
+                    <Button
+                        ref={node => {
+                            this.button = node;
+                        }}
+                        className="add-filter"
+                        color="primary"
+                        onClick={this.handleClickButton}
+                    >
+                        <ContentFilter />
+                        <Responsive
+                            small={<span />}
+                            medium={
+                                <span className={classes.label}>
+                                    {translate('ra.action.add_filter')}
+                                </span>
+                            }
+                        />
+                    </Button>
                     <Popover
                         open={open}
                         anchorEl={anchorEl}
