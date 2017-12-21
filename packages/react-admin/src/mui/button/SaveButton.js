@@ -81,7 +81,7 @@ export class SaveButton extends Component {
                 ) : (
                     <ContentSave className={classes.iconPaddingStyle} />
                 )}
-                {label && translate(label)}
+                {label && translate(label, { _: label })}
             </Button>
         );
     }
