@@ -69,7 +69,7 @@ class Notification extends React.Component {
                     autoHideDuration
                 }
                 onExited={this.handleExited}
-                onRequestClose={this.handleRequestClose}
+                onClose={this.handleRequestClose}
                 className={classnames(
                     classes[(notification && notification.type) || type],
                     className

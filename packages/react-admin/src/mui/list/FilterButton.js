@@ -103,7 +103,7 @@ export class FilterButton extends Component {
                             vertical: 'top',
                             horizontal: 'left',
                         }}
-                        onRequestClose={this.handleRequestClose}
+                        onClose={this.handleRequestClose}
                     >
                         <MenuList>
                             {hiddenFilters.map(filterElement => (

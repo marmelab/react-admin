@@ -83,7 +83,7 @@ const Layout = ({
     <MuiThemeProvider theme={createMuiTheme(theme)}>
         <div className={classnames(classes.root, className)} {...rest}>
             <div className={classes.appFrame}>
-                <Hidden xsDown>
+                <Hidden smDown>
                     <AppBar title={title} open={open} />
                 </Hidden>
                 <Sidebar>

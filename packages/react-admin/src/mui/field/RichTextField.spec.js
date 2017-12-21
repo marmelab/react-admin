@@ -55,7 +55,7 @@ describe('<RichTextField />', () => {
         const wrapper = render(<RichTextField record={record} source="body" />);
         assert.equal(
             html(wrapper),
-            '<span class="MuiTypography-root-1 MuiTypography-body1-10"><h1>Hello world!</h1></span>'
+            '<span class="MuiTypography-root-1 MuiTypography-body1-10"><span><h1>Hello world!</h1></span></span>'
         );
     });
 
@@ -66,7 +66,7 @@ describe('<RichTextField />', () => {
         );
         assert.equal(
             html(wrapper),
-            '<span class="MuiTypography-root-1 MuiTypography-body1-10"><h1>Hello world!</h1></span>'
+            '<span class="MuiTypography-root-1 MuiTypography-body1-10"><span><h1>Hello world!</h1></span></span>'
         );
     });
 
@@ -88,7 +88,7 @@ describe('<RichTextField />', () => {
         );
         assert.equal(
             html(wrapper),
-            '<span class="MuiTypography-root-1 MuiTypography-body1-10"><h1>Hello world!</h1></span>'
+            '<span class="MuiTypography-root-1 MuiTypography-body1-10"><span><h1>Hello world!</h1></span></span>'
         );
     });
 

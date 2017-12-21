@@ -34,7 +34,7 @@ const Toolbar = ({
         small={
             <MuiToolbar
                 className={classnames(classes.mobileToolbar, className)}
-                noGutter
+                disableGutters
                 {...rest}
             >
                 {Children.count(children) === 0 ? (

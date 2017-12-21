@@ -57,7 +57,7 @@ class Sidebar extends PureComponent {
                     <Drawer
                         type="temporary"
                         open={open}
-                        onRequestClose={this.toggleSidebar}
+                        onClose={this.toggleSidebar}
                         classes={{
                             paper: classes.drawerPaper,
                         }}
@@ -75,7 +75,7 @@ class Sidebar extends PureComponent {
                         classes={{
                             paper: classes.drawerPaper,
                         }}
-                        onRequestClose={setSidebarVisibility}
+                        onClose={setSidebarVisibility}
                         {...rest}
                     >
                         <div className={classes.drawerHeader}>

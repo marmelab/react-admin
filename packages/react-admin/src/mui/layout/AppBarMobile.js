@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MuiAppBar from 'material-ui/AppBar';
@@ -33,39 +33,29 @@ const styles = {
     },
 };
 
-class AppBarMobile extends Component {
-    handleLeftIconButtonTouchTap = event => {
-        event.preventDefault();
-        this.props.toggleSidebar();
-    };
-
-    render() {
-        const {
-            classes,
-            className,
-            title,
-            toggleSidebar,
-            ...rest
-        } = this.props;
-        return (
-            <MuiAppBar className={classnames(classes.bar, className)} {...rest}>
-                <Toolbar>
-                    <IconButton
-                        color="contrast"
-                        aria-label="open drawer"
-                        onClick={toggleSidebar}
-                        className={classes.icon}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography type="title" color="inherit">
-                        {title}
-                    </Typography>
-                </Toolbar>
-            </MuiAppBar>
-        );
-    }
-}
+const AppBarMobile = ({
+    classes,
+    className,
+    title,
+    toggleSidebar,
+    ...rest
+}) => (
+    <MuiAppBar className={classnames(classes.bar, className)} {...rest}>
+        <Toolbar>
+            <IconButton
+                color="contrast"
+                aria-label="open drawer"
+                onClick={toggleSidebar}
+                className={classes.icon}
+            >
+                <MenuIcon />
+            </IconButton>
+            <Typography type="title" color="inherit">
+                {title}
+            </Typography>
+        </Toolbar>
+    </MuiAppBar>
+);
 
 AppBarMobile.propTypes = {
     classes: PropTypes.object,
