@@ -292,13 +292,13 @@ dataProvider(GET_MANY_REFERENCE, 'comments', {
 
 Let's say that you want to map the Data Provider requests to a REST backend, like so:
 
- * `GET_LIST  => GET http://path.to.my.api/posts?sort=['title','ASC']&range=[0, 24]&filter={author_id:12}`
+ * `GET_LIST  => GET http://path.to.my.api/posts?sort=["title","ASC"]&range=[0, 24]&filter={"author_id":12}`
  * `GET_ONE   => GET http://path.to.my.api/posts/123`
  * `CREATE    => POST http://path.to.my.api/posts`
  * `UPDATE    => PUT http://path.to.my.api/posts/123`
  * `DELETE    => DELETE http://path.to.my.api/posts/123`
- * `GET_MANY  => GET http://path.to.my.api/posts?filter={ids:[123,124,125]}`
- * `GET_MANY_REFERENCE  => GET http://path.to.my.api/comments?sort=['created_at','DESC']&range=[0, 24]&filter={post_id:123}`
+ * `GET_MANY  => GET http://path.to.my.api/posts?filter={"ids":[123,124,125]}`
+ * `GET_MANY_REFERENCE  => GET http://path.to.my.api/comments?sort=["created_at","DESC"]&range=[0, 24]&filter={"post_id":123}`
 
 Data Providers often use a `switch` statement, and finish by a call to `fetch()`. Here is an example implementation:
 
