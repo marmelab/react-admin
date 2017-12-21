@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
-import Button from 'material-ui/Button';
 import Popover from 'material-ui/Popover';
 import { MenuList } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
@@ -11,7 +10,7 @@ import compose from 'recompose/compose';
 
 import translate from '../../i18n/translate';
 import FilterButtonMenuItem from './FilterButtonMenuItem';
-import Responsive from '../layout/Responsive';
+import Button from '../button/Button';
 
 const styles = {
     root: { display: 'inline-block' },
@@ -89,18 +88,10 @@ export class FilterButton extends Component {
                             this.button = node;
                         }}
                         className="add-filter"
-                        color="primary"
+                        label="ra.action.add_filter"
                         onClick={this.handleClickButton}
                     >
                         <ContentFilter />
-                        <Responsive
-                            small={<span />}
-                            medium={
-                                <span className={classes.label}>
-                                    {translate('ra.action.add_filter')}
-                                </span>
-                            }
-                        />
                     </Button>
                     <Popover
                         open={open}
