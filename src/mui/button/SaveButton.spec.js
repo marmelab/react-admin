@@ -117,4 +117,33 @@ describe('<SaveButton />', () => {
 
         assert(onSubmit.notCalled);
     });
+
+    it('should not trigger submit action when disabled', () => {
+        const onSubmit = sinon.spy();
+        const event = { preventDefault: sinon.spy() };
+
+        const raisedButtonWrapper = shallow(
+            <SaveButton
+                raised={true}
+                translate={translate}
+                handleSubmitWithRedirect={() => onSubmit}
+                disabled={true}
+            />
+        );
+        const flatButtonWrapper = shallow(
+            <SaveButton
+                raised={false}
+                translate={translate}
+                handleSubmitWithRedirect={() => onSubmit}
+                disabled={true}
+            />
+        );
+
+        raisedButtonWrapper.simulate('click', event);
+        assert(event.preventDefault.calledOnce);
+        flatButtonWrapper.simulate('click', event);
+        assert(event.preventDefault.calledTwice);
+
+        assert(onSubmit.notCalled);
+    });
 });

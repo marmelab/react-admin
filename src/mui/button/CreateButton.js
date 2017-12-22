@@ -23,16 +23,20 @@ const styles = {
     },
 };
 
-const CreateButton = ({
+export const CreateButton = ({
     basePath = '',
     translate,
     label = 'aor.action.create',
     width,
+    disabled,
 }) =>
     width === 1 ? (
         <FloatingActionButton
             style={styles.floating}
-            containerElement={<Link to={`${basePath}/create`} />}
+            containerElement={
+                disabled ? 'div' : <Link to={`${basePath}/create`} />
+            }
+            disabled={disabled}
         >
             <ContentAdd />
         </FloatingActionButton>
@@ -41,8 +45,11 @@ const CreateButton = ({
             primary
             label={label && translate(label)}
             icon={<ContentAdd />}
-            containerElement={<Link to={`${basePath}/create`} />}
+            containerElement={
+                disabled ? 'div' : <Link to={`${basePath}/create`} />
+            }
             style={styles.flat}
+            disabled={disabled}
         />
     );
 
@@ -51,6 +58,7 @@ CreateButton.propTypes = {
     label: PropTypes.string,
     translate: PropTypes.func.isRequired,
     width: PropTypes.number,
+    disabled: PropTypes.bool,
 };
 
 const enhance = compose(

@@ -6,20 +6,26 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 import linkToRecord from '../../util/linkToRecord';
 import translate from '../../i18n/translate';
 
-const DeleteButton = ({
+export const DeleteButton = ({
     basePath = '',
     label = 'aor.action.delete',
     record = {},
     translate,
+    disabled,
 }) => (
     <FlatButton
         secondary
         label={label && translate(label)}
         icon={<ActionDelete />}
         containerElement={
-            <Link to={`${linkToRecord(basePath, record.id)}/delete`} />
+            disabled ? (
+                'div'
+            ) : (
+                <Link to={`${linkToRecord(basePath, record.id)}/delete`} />
+            )
         }
         style={{ overflow: 'inherit' }}
+        disabled={disabled}
     />
 );
 
@@ -28,6 +34,7 @@ DeleteButton.propTypes = {
     label: PropTypes.string,
     record: PropTypes.object,
     translate: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
 };
 
 export default translate(DeleteButton);
