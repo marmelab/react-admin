@@ -315,3 +315,72 @@ export default withRouter(MyPage);
 {% endraw %}
 
 The `<Authenticated>` component calls the `authClient` function with `AUTH_CHECK` and `authParams`. If the response is a fulfilled promise, the child component is rendered. If the response is a rejected promise, `<Authenticated>` redirects to the login form. Upon successful login, the user is redirected to the initial location (that's why it's necessary to get the location from the router).
+
+
+## Redirect after logout
+
+By default react-admin will redirect to '/login'. There are a couple of ways to change this: 
+
+Add a redirectTo prop to the logoutButton.
+{% raw %} 
+```jsx 
+import { Admin, Logout } from 'react-admin';
+const App = () => (
+    <Admin logoutButton={props => <Logout {...props} redirectTo="/">} authClient={authClient}>
+    ...
+    </Admin>
+);
+```
+{% endraw %}
+
+Add a redirectTo prop to a customMenu
+{% raw %}
+```jsx
+// in src/myMenu.js
+import React from 'react';
+import { connect } from 'react-redux';
+import { MenuItemLink, WithPermissions } from 'react-admin';
+
+const Menu = ({ onMenuTap, logout, permissions }) => (
+    <div>
+        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
+        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
+        <WithPermissions
+            render={({ permissions }) => (
+                permissions === '
+                    ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+                    : null
+            )}
+        />
+        {React.cloneElement(logout,{
+            redirectTo:'/'
+        })}
+    </div>
+);
+```
+{% endraw %}
+
+Call the userLogout with a redirectTo argument
+{% raw %}
+```jsx
+// in src/MyLogoutButton.js
+import { connect } from 'react-redux';
+import { userLogout } from 'react-admin';
+
+const MyLogoutButton = ({ userLogout }) => (
+    <button onClick={()=>userLogout('/')}>Logout</button>
+);
+
+export default connect(undefined, { userLogout })(MyLogoutButton);
+
+// in src/App.js
+import MyLoginPage from './MyLoginPage';
+import MyLogoutButton from './MyLogoutButton';
+
+const App = () => (
+    <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton} authClient={authClient}>
+    ...
+    </Admin>
+);
+```
+{% endraw %}

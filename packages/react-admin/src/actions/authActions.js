@@ -32,6 +32,8 @@ export const USER_LOGOUT = 'RA/USER_LOGOUT';
  */
 export const userLogout = redirectTo => ({
     type: USER_LOGOUT,
-    payload: redirectTo,
+    payload: {
+        redirectTo,
+    },
     meta: { auth: true },
 });
