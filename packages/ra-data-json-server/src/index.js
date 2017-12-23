@@ -1,7 +1,6 @@
 import { stringify } from 'query-string';
 import {
     fetchUtils,
-    flattenObject,
     GET_LIST,
     GET_ONE,
     GET_MANY,
@@ -38,7 +37,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
-                    ...flattenObject(params.filter),
+                    ...fetchUtils.flattenObject(params.filter),
                     _sort: field,
                     _order: order,
                     _start: (page - 1) * perPage,
@@ -54,7 +53,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
-                    ...flattenObject(params.filter),
+                    ...fetchUtils.flattenObject(params.filter),
                     [params.target]: params.id,
                     _sort: field,
                     _order: order,
