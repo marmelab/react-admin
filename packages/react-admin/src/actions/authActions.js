@@ -16,6 +16,7 @@ export const userCheck = (payload, pathName, routeParams) => ({
     type: USER_CHECK,
     payload: {
         ...payload,
+        location: pathName,
         routeParams,
     },
     meta: { auth: true, pathName },
