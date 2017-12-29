@@ -70,6 +70,7 @@ const sanitizeRestProps = ({
     classes,
     className,
     handleSubmit,
+    userLogin,
     isLoading,
     translate,
     location,
@@ -79,6 +80,57 @@ const sanitizeRestProps = ({
     theme,
     ...rest
 }) => rest;
+
+let LoginForm = ({ classes, isLoading, handleSubmit, login, translate }) => (
+    <form onSubmit={handleSubmit(login)}>
+        <div className={classes.form}>
+            <div className={classes.input}>
+                <Field
+                    name="username"
+                    component={renderInput}
+                    label={translate('ra.auth.username')}
+                    disabled={isLoading}
+                />
+            </div>
+            <div className={classes.input}>
+                <Field
+                    name="password"
+                    component={renderInput}
+                    label={translate('ra.auth.password')}
+                    type="password"
+                    disabled={isLoading}
+                />
+            </div>
+        </div>
+        <CardActions>
+            <Button
+                raised
+                type="submit"
+                color="primary"
+                disabled={isLoading}
+                className={classes.button}
+            >
+                {isLoading && <CircularProgress size={25} thickness={2} />}
+                {translate('ra.auth.sign_in')}
+            </Button>
+        </CardActions>
+    </form>
+);
+LoginForm.propTypes = {
+    ...propTypes,
+};
+LoginForm = reduxForm({
+    form: 'signIn',
+    validate: (values, props) => {
+        const errors = {};
+        const { translate } = props;
+        if (!values.username)
+            errors.username = translate('ra.validation.required');
+        if (!values.password)
+            errors.password = translate('ra.validation.required');
+        return errors;
+    },
+})(LoginForm);
 
 /**
  * A standalone login page, to serve as authentication gate to the admin
@@ -108,14 +160,7 @@ class Login extends Component {
         );
 
     render() {
-        const {
-            classes,
-            className,
-            handleSubmit,
-            isLoading,
-            translate,
-            ...rest
-        } = this.props;
+        const { classes, className, translate, ...rest } = this.props;
 
         return (
             <div
@@ -128,41 +173,11 @@ class Login extends Component {
                             <LockIcon />
                         </Avatar>
                     </div>
-                    <form onSubmit={handleSubmit(this.login)}>
-                        <div className={classes.form}>
-                            <div className={classes.input}>
-                                <Field
-                                    name="username"
-                                    component={renderInput}
-                                    label={translate('ra.auth.username')}
-                                    disabled={isLoading}
-                                />
-                            </div>
-                            <div className={classes.input}>
-                                <Field
-                                    name="password"
-                                    component={renderInput}
-                                    label={translate('ra.auth.password')}
-                                    type="password"
-                                    disabled={isLoading}
-                                />
-                            </div>
-                        </div>
-                        <CardActions>
-                            <Button
-                                raised
-                                type="submit"
-                                color="primary"
-                                disabled={isLoading}
-                                className={classes.button}
-                            >
-                                {isLoading && (
-                                    <CircularProgress size={25} thickness={2} />
-                                )}
-                                {translate('ra.auth.sign_in')}
-                            </Button>
-                        </CardActions>
-                    </form>
+                    <LoginForm
+                        classes={classes}
+                        translate={translate}
+                        login={this.login}
+                    />
                 </Card>
                 <Notification />
             </div>
@@ -171,7 +186,6 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-    ...propTypes,
     className: PropTypes.string,
     authClient: PropTypes.func,
     classes: PropTypes.object,
@@ -190,18 +204,6 @@ const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
 
 const enhance = compose(
     translate,
-    reduxForm({
-        form: 'signIn',
-        validate: (values, props) => {
-            const errors = {};
-            const { translate } = props;
-            if (!values.username)
-                errors.username = translate('ra.validation.required');
-            if (!values.password)
-                errors.password = translate('ra.validation.required');
-            return errors;
-        },
-    }),
     connect(mapStateToProps, { userLogin }),
     withStyles(styles)
 );
