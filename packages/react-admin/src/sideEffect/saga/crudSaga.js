@@ -6,13 +6,15 @@ import referenceFetch from './referenceFetch';
 
 /**
  * @param {Object} dataProvider A Data Provider function
+ * @param {Object} authClient
+ * @param {Object} appSettings
  */
-export default (dataProvider, authClient) =>
+export default (dataProvider, authClient, appSettings) =>
     function* crudSaga() {
         yield all([
-            auth(authClient)(),
+            auth(authClient, appSettings)(),
             crudFetch(dataProvider)(),
-            crudResponse(),
+            crudResponse(appSettings)(),
             referenceFetch(),
         ]);
     };
