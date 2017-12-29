@@ -14,7 +14,7 @@ import {
     FETCH_ERROR,
     FETCH_CANCEL,
 } from '../../actions/fetchActions';
-import { USER_LOGOUT } from '../../actions/authActions';
+import { USER_CHECK_FAILURE } from '../../actions/authActions';
 
 const crudFetch = dataProvider => {
     function* handleFetch(action) {
@@ -87,7 +87,7 @@ const crudFetch = dataProvider => {
                 ),
             ]);
 
-            yield take(USER_LOGOUT);
+            yield take(USER_CHECK_FAILURE);
             yield all([cancel(taskLatest, taskEvery)]);
         }
     };
