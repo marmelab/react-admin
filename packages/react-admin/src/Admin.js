@@ -26,6 +26,7 @@ const Admin = ({
     customReducers = {},
     customSagas = [],
     customRoutes = [],
+    customMiddleware = [],
     dashboard,
     history,
     locale,
@@ -53,7 +54,11 @@ const Admin = ({
         resettableAppReducer,
         initialState,
         compose(
-            applyMiddleware(sagaMiddleware, routerMiddleware(routerHistory)),
+            applyMiddleware(
+                sagaMiddleware,
+                routerMiddleware(routerHistory),
+                ...customMiddleware
+            ),
             window.devToolsExtension ? window.devToolsExtension() : f => f
         )
     );
