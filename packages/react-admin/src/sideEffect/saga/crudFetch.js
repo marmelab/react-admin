@@ -50,8 +50,7 @@ const crudFetch = dataProvider => {
         } catch (error) {
             yield put({
                 type: `${type}_FAILURE`,
-                error: error.message ? error.message : error,
-                payload: error.body ? error.body : null,
+                error,
                 requestPayload: payload,
                 meta: {
                     ...meta,
