@@ -71,6 +71,7 @@ module.exports = {
             deleted: 'Element deleted',
             bad_item: 'Incorrect element',
             item_doesnt_exist: 'Element does not exist',
+            item_forbidden: "You're not authorized for this item",
             http_error: 'Server communication error',
         },
         validation: {
