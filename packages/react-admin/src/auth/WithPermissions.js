@@ -116,6 +116,8 @@ export class WithPermissions extends Component {
         const {
             authClient,
             userCheck,
+            authParams,
+            isLoggedIn,
             render,
             children,
             staticContext,
