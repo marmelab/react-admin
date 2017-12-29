@@ -5,6 +5,8 @@ import {
     cancelled,
     takeEvery,
     takeLatest,
+    take,
+    cancel,
 } from 'redux-saga/effects';
 import {
     FETCH_START,
@@ -12,6 +14,7 @@ import {
     FETCH_ERROR,
     FETCH_CANCEL,
 } from '../../actions/fetchActions';
+import { USER_LOGOUT } from '../../actions/authActions';
 
 const crudFetch = dataProvider => {
     function* handleFetch(action) {
@@ -66,22 +69,27 @@ const crudFetch = dataProvider => {
     }
 
     return function* watchCrudFetch() {
-        yield all([
-            takeLatest(
-                action =>
-                    action.meta &&
-                    action.meta.fetch &&
-                    action.meta.cancelPrevious,
-                handleFetch
-            ),
-            takeEvery(
-                action =>
-                    action.meta &&
-                    action.meta.fetch &&
-                    !action.meta.cancelPrevious,
-                handleFetch
-            ),
-        ]);
+        while (true) {
+            const [taskLatest, taskEvery] = yield all([
+                takeLatest(
+                    action =>
+                        action.meta &&
+                        action.meta.fetch &&
+                        action.meta.cancelPrevious,
+                    handleFetch
+                ),
+                takeEvery(
+                    action =>
+                        action.meta &&
+                        action.meta.fetch &&
+                        !action.meta.cancelPrevious,
+                    handleFetch
+                ),
+            ]);
+
+            yield take(USER_LOGOUT);
+            yield all([cancel(taskLatest, taskEvery)]);
+        }
     };
 };
 
