@@ -2,17 +2,13 @@ import { all, put, takeEvery } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { reset } from 'redux-form';
 import {
-    CRUD_CREATE_FAILURE,
-    CRUD_CREATE_SUCCESS,
-    CRUD_DELETE_FAILURE,
-    CRUD_DELETE_SUCCESS,
-    CRUD_GET_LIST_FAILURE,
-    CRUD_GET_MANY_FAILURE,
-    CRUD_GET_MANY_REFERENCE_FAILURE,
-    CRUD_GET_ONE_SUCCESS,
-    CRUD_GET_ONE_FAILURE,
-    CRUD_UPDATE_FAILURE,
-    CRUD_UPDATE_SUCCESS,
+    crudCreate,
+    crudDelete,
+    crudGetList,
+    crudGetMany,
+    crudGetManyReference,
+    crudGetOne,
+    crudUpdate,
 } from '../../actions/dataActions';
 import { showNotification } from '../../actions/notificationActions';
 import resolveRedirectTo from '../../util/resolveRedirectTo';
@@ -24,7 +20,7 @@ import resolveRedirectTo from '../../util/resolveRedirectTo';
  */
 function* handleResponse({ type, requestPayload, error, payload }) {
     switch (type) {
-        case CRUD_UPDATE_SUCCESS:
+        case crudUpdate.SUCCESS:
             return requestPayload.redirectTo
                 ? yield all([
                       put(showNotification('ra.notification.updated')),
@@ -39,7 +35,7 @@ function* handleResponse({ type, requestPayload, error, payload }) {
                       ),
                   ])
                 : yield [put(showNotification('ra.notification.updated'))];
-        case CRUD_CREATE_SUCCESS:
+        case crudCreate.SUCCESS:
             return requestPayload.redirectTo
                 ? yield all([
                       put(showNotification('ra.notification.created')),
@@ -57,7 +53,7 @@ function* handleResponse({ type, requestPayload, error, payload }) {
                       put(showNotification('ra.notification.created')),
                       put(reset('record-form')),
                   ]);
-        case CRUD_DELETE_SUCCESS:
+        case crudDelete.SUCCESS:
             return requestPayload.redirectTo
                 ? yield all([
                       put(showNotification('ra.notification.deleted')),
@@ -72,7 +68,7 @@ function* handleResponse({ type, requestPayload, error, payload }) {
                       ),
                   ])
                 : yield [put(showNotification('ra.notification.deleted'))];
-        case CRUD_GET_ONE_SUCCESS:
+        case crudGetOne.SUCCESS:
             if (
                 !('id' in payload.data) ||
                 payload.data.id != requestPayload.id
@@ -82,7 +78,7 @@ function* handleResponse({ type, requestPayload, error, payload }) {
                 );
             }
             break;
-        case CRUD_GET_ONE_FAILURE:
+        case crudGetOne.FAILURE:
             return requestPayload.basePath
                 ? yield all([
                       put(
@@ -94,12 +90,12 @@ function* handleResponse({ type, requestPayload, error, payload }) {
                       put(push(requestPayload.basePath)),
                   ])
                 : yield all([]);
-        case CRUD_GET_LIST_FAILURE:
-        case CRUD_GET_MANY_FAILURE:
-        case CRUD_GET_MANY_REFERENCE_FAILURE:
-        case CRUD_CREATE_FAILURE:
-        case CRUD_UPDATE_FAILURE:
-        case CRUD_DELETE_FAILURE: {
+        case crudCreate.FAILURE:
+        case crudUpdate.FAILURE:
+        case crudGetList.FAILURE:
+        case crudGetMany.FAILURE:
+        case crudGetManyReference.FAILURE:
+        case crudDelete.FAILURE: {
             console.error(error); // eslint-disable-line no-console
             const errorMessage =
                 typeof error === 'string'

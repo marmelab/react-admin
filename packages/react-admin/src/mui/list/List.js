@@ -152,12 +152,12 @@ export class List extends Component {
             perPage: parseInt(perPage, 10),
         };
         const permanentFilter = this.props.filter;
-        this.props.crudGetList(
-            this.props.resource,
-            pagination,
-            { field: sort, order },
-            { ...filter, ...permanentFilter }
-        );
+        this.props.crudGetList({
+            resource: this.props.resource,
+            pagination: pagination,
+            sort: { field: sort, order },
+            filter: { ...filter, ...permanentFilter },
+        });
     }
 
     setSort = sort => this.changeParams({ type: SET_SORT, payload: sort });

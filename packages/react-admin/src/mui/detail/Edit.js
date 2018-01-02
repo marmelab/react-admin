@@ -10,7 +10,7 @@ import Header from '../layout/Header';
 import Title from '../layout/Title';
 import {
     crudGetOne as crudGetOneAction,
-    crudUpdate as crudUpdateAction,
+    crudUpdate,
 } from '../../actions/dataActions';
 import DefaultActions from './EditActions';
 import translate from '../../i18n/translate';
@@ -127,18 +127,29 @@ export class Edit extends Component {
     }
 
     updateData(resource = this.props.resource, id = this.props.id) {
-        this.props.crudGetOne(resource, id, this.getBasePath());
+        this.props.crudGetOne({
+            resource,
+            id,
+            basePath: this.getBasePath(),
+        });
     }
 
-    save = (record, redirect) => {
-        this.props.crudUpdate(
-            this.props.resource,
-            this.props.id,
-            record,
-            this.props.data,
-            this.getBasePath(),
-            redirect
-        );
+    save = (record, redirect, dispatch) => {
+        return crudUpdate(
+            {
+                resource: this.props.resource,
+                id: this.props.id,
+                data: record,
+                previousData: this.props.data,
+                basePath: this.getBasePath(),
+                redirectTo: redirect,
+            },
+            dispatch
+        )
+            .then(
+                result => this.props.onSuccess && this.props.onSuccess(result)
+            )
+            .then(err => this.props.onError && this.props.onError(err));
     };
 
     render() {
@@ -223,7 +234,6 @@ Edit.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     crudGetOne: PropTypes.func.isRequired,
-    crudUpdate: PropTypes.func.isRequired,
     data: PropTypes.object,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
@@ -238,6 +248,8 @@ Edit.propTypes = {
     title: PropTypes.any,
     translate: PropTypes.func,
     version: PropTypes.number.isRequired,
+    onSuccess: PropTypes.func,
+    onError: PropTypes.func,
 };
 
 function mapStateToProps(state, props) {
@@ -256,7 +268,6 @@ function mapStateToProps(state, props) {
 const enhance = compose(
     connect(mapStateToProps, {
         crudGetOne: crudGetOneAction,
-        crudUpdate: crudUpdateAction,
     }),
     translate
 );

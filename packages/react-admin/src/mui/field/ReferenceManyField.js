@@ -103,15 +103,15 @@ export class ReferenceManyField extends Component {
             target,
             filter
         );
-        crudGetManyReference(
+        crudGetManyReference({
             reference,
             target,
-            record.id,
+            id: record.id,
             relatedTo,
             pagination,
-            this.state.sort,
-            filter
-        );
+            sort: this.state.sort,
+            filter,
+        });
     }
 
     render() {

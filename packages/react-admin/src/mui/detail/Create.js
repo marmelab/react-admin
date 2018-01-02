@@ -92,13 +92,20 @@ class Create extends Component {
         return 'list';
     }
 
-    save = (record, redirect) => {
-        this.props.crudCreate(
-            this.props.resource,
-            record,
-            this.getBasePath(),
-            redirect
-        );
+    save = (record, redirect, dispatch) => {
+        return crudCreateAction(
+            {
+                resource: this.props.resource,
+                data: record,
+                basePath: this.getBasePath(),
+                redirectTo: redirect,
+            },
+            dispatch
+        )
+            .then(
+                result => this.props.onSuccess && this.props.onSuccess(result)
+            )
+            .catch(err => this.props.onError && this.props.onError(err));
     };
 
     render() {
@@ -174,6 +181,8 @@ Create.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func.isRequired,
+    onSuccess: PropTypes.func,
+    onError: PropTypes.func,
     hasList: PropTypes.bool,
 };
 
