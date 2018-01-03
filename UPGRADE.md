@@ -213,7 +213,7 @@ export default SexInput;
 // after
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import { addField } from 'admin-on-rest';
+import { addField } from 'react-admin';
 const SexInput = ({ input, meta: { touched, error } }) => (
     <SelectField
         floatingLabelText="Sex"
@@ -243,7 +243,7 @@ SexInput.defaultProps = {
 export default SexInput;
 
 // after
-import { SelectInput } from 'admin-on-rest';
+import { SelectInput } from 'react-admin';
 const choices = [
     { id: 'M', name: 'Male' },
     { id: 'F', name: 'Female' },
@@ -467,7 +467,7 @@ export default withRouter(MyPage);
 // after
 // in src/MyPage.js
 import { withRouter } from 'react-router-dom';
-import { Authenticated } from 'admin-on-rest';
+import { Authenticated } from 'react-admin';
 
 const MyPage = ({ location }) => (
     <Authenticated authParams={{ foo: 'bar' }} location={location}>
@@ -506,7 +506,7 @@ export default ({ onMenuTap, logout }) => (
 
 // after
 import React from 'react';
-import { MenuItemLink, WithPermissions } from 'admin-on-rest';
+import { MenuItemLink, WithPermissions } from 'react-admin';
 
 export default ({ onMenuTap, logout }) => (
     <div>
@@ -559,7 +559,7 @@ export default () => (
 import React from 'react';
 import BenefitsSummary from './BenefitsSummary';
 import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
-import { ViewTitle, WithPermissions } from 'admin-on-rest/lib/mui';
+import { ViewTitle, WithPermissions } from 'react-admin/lib/mui';
 
 export default () => (
     <div>
@@ -792,7 +792,7 @@ export default () => (
 import React from 'react';
 import BenefitsSummary from './BenefitsSummary';
 import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
-import { ViewTitle } from 'admin-on-rest/lib/mui';
+import { ViewTitle } from 'react-admin/lib/mui';
 
 export default ({ permissions }) => (
     <Card>
