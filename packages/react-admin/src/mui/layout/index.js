@@ -4,6 +4,7 @@ export CardActions from './CardActions';
 export DashboardMenuItem from './DashboardMenuItem';
 export Header from './Header';
 export Layout from './Layout';
+export Loading from './Loading';
 export LoadingIndicator from './LoadingIndicator';
 export Menu from './Menu';
 export MenuItemLink from './MenuItemLink';
