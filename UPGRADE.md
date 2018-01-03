@@ -540,7 +540,7 @@ If you were using `SwitchPermissions` before, here's how to migrate to `WithPerm
 import React from 'react';
 import BenefitsSummary from './BenefitsSummary';
 import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
-import { ViewTitle, SwitchPermissions, Permission } from 'admin-on-rest/lib/mui';
+import { ViewTitle, SwitchPermissions, Permission } from 'admin-on-rest';
 
 export default () => (
     <div>
@@ -559,7 +559,7 @@ export default () => (
 import React from 'react';
 import BenefitsSummary from './BenefitsSummary';
 import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
-import { ViewTitle, WithPermissions } from 'react-admin/lib/mui';
+import { ViewTitle, WithPermissions } from 'react-admin';
 
 export default () => (
     <div>
@@ -770,7 +770,7 @@ Moreover, you won't need the now deprecated `<WithPermission>` or `<SwitchPermis
 import React from 'react';
 import BenefitsSummary from './BenefitsSummary';
 import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
-import { ViewTitle SwitchPermissions, Permission } from 'admin-on-rest/lib/mui';
+import { ViewTitle SwitchPermissions, Permission } from 'admin-on-rest';
 
 export default () => (
     <Card>
@@ -792,7 +792,7 @@ export default () => (
 import React from 'react';
 import BenefitsSummary from './BenefitsSummary';
 import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
-import { ViewTitle } from 'react-admin/lib/mui';
+import { ViewTitle } from 'react-admin';
 
 export default ({ permissions }) => (
     <Card>

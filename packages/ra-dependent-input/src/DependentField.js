@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash.get';
 import set from 'lodash.set';
-import FormField from 'react-admin/lib/mui/form/FormField';
+import { FormField } from 'react-admin';
 import getValue from './getValue';
 
 export const DependentFieldComponent = ({
