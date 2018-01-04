@@ -1,21 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { propTypes, reduxForm, Field } from 'redux-form';
-import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import Card, { CardActions } from 'material-ui/Card';
+import Card from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
-import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
-import { CircularProgress } from 'material-ui/Progress';
 import LockIcon from 'material-ui-icons/LockOutline';
 import { withStyles } from 'material-ui/styles';
 
 import defaultTheme from '../defaultTheme';
-import { userLogin } from '../../actions/authActions';
-import translate from '../../i18n/translate';
 import Notification from '../layout/Notification';
+import LoginForm from './LoginForm';
 
 const styles = theme => ({
     main: {
@@ -51,86 +45,15 @@ const styles = theme => ({
     },
 });
 
-// see http://redux-form.com/6.4.3/examples/material-ui/
-const renderInput = ({
-    meta: { touched, error } = {},
-    input: { ...inputProps },
-    ...props
-}) => (
-    <TextField
-        error={!!(touched && error)}
-        helperText={touched && error}
-        {...inputProps}
-        {...props}
-        fullWidth
-    />
-);
-
 const sanitizeRestProps = ({
     classes,
     className,
-    handleSubmit,
-    userLogin,
-    isLoading,
-    translate,
     location,
     title,
-    locale,
     array,
     theme,
     ...rest
 }) => rest;
-
-let LoginForm = ({ classes, isLoading, handleSubmit, login, translate }) => (
-    <form onSubmit={handleSubmit(login)}>
-        <div className={classes.form}>
-            <div className={classes.input}>
-                <Field
-                    name="username"
-                    component={renderInput}
-                    label={translate('ra.auth.username')}
-                    disabled={isLoading}
-                />
-            </div>
-            <div className={classes.input}>
-                <Field
-                    name="password"
-                    component={renderInput}
-                    label={translate('ra.auth.password')}
-                    type="password"
-                    disabled={isLoading}
-                />
-            </div>
-        </div>
-        <CardActions>
-            <Button
-                raised
-                type="submit"
-                color="primary"
-                disabled={isLoading}
-                className={classes.button}
-            >
-                {isLoading && <CircularProgress size={25} thickness={2} />}
-                {translate('ra.auth.sign_in')}
-            </Button>
-        </CardActions>
-    </form>
-);
-LoginForm.propTypes = {
-    ...propTypes,
-};
-LoginForm = reduxForm({
-    form: 'signIn',
-    validate: (values, props) => {
-        const errors = {};
-        const { translate } = props;
-        if (!values.username)
-            errors.username = translate('ra.validation.required');
-        if (!values.password)
-            errors.password = translate('ra.validation.required');
-        return errors;
-    },
-})(LoginForm);
 
 /**
  * A standalone login page, to serve as authentication gate to the admin
@@ -151,16 +74,8 @@ LoginForm = reduxForm({
  *     );
  */
 class Login extends Component {
-    login = auth =>
-        this.props.userLogin(
-            auth,
-            this.props.location.state
-                ? this.props.location.state.nextPathname
-                : '/'
-        );
-
     render() {
-        const { classes, className, translate, ...rest } = this.props;
+        const { classes, className, ...rest } = this.props;
 
         return (
             <div
@@ -173,11 +88,7 @@ class Login extends Component {
                             <LockIcon />
                         </Avatar>
                     </div>
-                    <LoginForm
-                        classes={classes}
-                        translate={translate}
-                        login={this.login}
-                    />
+                    <LoginForm />
                 </Card>
                 <Notification />
             </div>
@@ -192,20 +103,12 @@ Login.propTypes = {
     input: PropTypes.object,
     meta: PropTypes.object,
     previousRoute: PropTypes.string,
-    translate: PropTypes.func.isRequired,
-    userLogin: PropTypes.func.isRequired,
 };
 
 Login.defaultProps = {
     theme: defaultTheme,
 };
 
-const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
-
-const enhance = compose(
-    translate,
-    connect(mapStateToProps, { userLogin }),
-    withStyles(styles)
-);
+const enhance = compose(withStyles(styles));
 
 export default enhance(Login);
