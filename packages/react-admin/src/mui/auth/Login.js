@@ -34,15 +34,6 @@ const styles = theme => ({
     icon: {
         backgroundColor: theme.palette.secondary[500],
     },
-    form: {
-        padding: '0 1em 1em 1em',
-    },
-    input: {
-        marginTop: '1em',
-    },
-    button: {
-        width: '100%',
-    },
 });
 
 const sanitizeRestProps = ({
