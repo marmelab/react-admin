@@ -132,10 +132,11 @@ export const crudGetManyReference = (
     relatedTo,
     pagination,
     sort,
-    filter
+    filter,
+    source
 ) => ({
     type: CRUD_GET_MANY_REFERENCE,
-    payload: { target, id, pagination, sort, filter },
+    payload: { target, id, pagination, sort, filter, source },
     meta: {
         resource: reference,
         relatedTo,

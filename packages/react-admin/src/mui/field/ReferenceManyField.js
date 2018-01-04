@@ -92,13 +92,14 @@ export class ReferenceManyField extends Component {
     };
 
     fetchReferences(
-        { reference, record, resource, target, perPage, filter } = this.props
+        { reference, record, resource, target, perPage, filter, source } = this
+            .props
     ) {
         const { crudGetManyReference } = this.props;
         const pagination = { page: 1, perPage };
         const relatedTo = nameRelatedTo(
             reference,
-            record.id,
+            record[source],
             resource,
             target,
             filter
@@ -106,7 +107,7 @@ export class ReferenceManyField extends Component {
         crudGetManyReference(
             reference,
             target,
-            record.id,
+            record[source],
             relatedTo,
             pagination,
             this.state.sort,
@@ -176,13 +177,13 @@ ReferenceManyField.defaultProps = {
     filter: {},
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
-    source: '',
+    source: 'id',
 };
 
 function mapStateToProps(state, props) {
     const relatedTo = nameRelatedTo(
         props.reference,
-        props.record.id,
+        props.record[props.source],
         props.resource,
         props.target,
         props.filter

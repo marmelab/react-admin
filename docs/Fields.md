@@ -487,7 +487,7 @@ export const PostList = (props) => (
 
 ![ReferenceManyFieldSingleFieldList](./img/reference-many-field-single-field-list.png)
 
-`<ReferenceManyField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record.
+`<ReferenceManyField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. It also accepts a `source` attribute which define the field containing the value to look for in the `target` field of the referenced resource. By default this is the `id` of the resource (`post.id` in the previous example).
 
 **Note**: You **must** add a `<Resource>` for the reference resource - react-admin needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
 
