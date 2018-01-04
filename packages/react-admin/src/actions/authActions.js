@@ -1,4 +1,5 @@
 export const USER_CHECK_SUCCESS = 'RA/USER_CHECK_SUCCESS';
+export const USER_CHECK_FAILURE = 'RA/USER_CHECK_FAILURE';
 export const USER_LOGIN = 'RA/USER_LOGIN';
 export const USER_LOGIN_LOADING = 'RA/USER_LOGIN_LOADING';
 export const USER_LOGIN_FAILURE = 'RA/USER_LOGIN_FAILURE';
@@ -19,6 +20,12 @@ export const userCheck = (payload, pathName, routeParams) => ({
         routeParams,
     },
     meta: { auth: true, pathName },
+});
+
+export const userCheckFailed = payload => ({
+    type: USER_CHECK_FAILURE,
+    payload,
+    meta: { auth: true },
 });
 
 export const USER_LOGOUT = 'RA/USER_LOGOUT';

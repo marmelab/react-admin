@@ -12,6 +12,7 @@ import {
     USER_LOGIN_FAILURE,
     USER_CHECK,
     USER_LOGOUT,
+    userCheckFailed,
 } from '../../actions/authActions';
 import { FETCH_ERROR } from '../../actions/fetchActions';
 import { AUTH_LOGIN, AUTH_CHECK, AUTH_ERROR, AUTH_LOGOUT } from '../../auth';
@@ -54,6 +55,7 @@ export default authClient => {
                 try {
                     yield call(authClient, AUTH_CHECK, payload);
                 } catch (error) {
+                    yield put(userCheckFailed(payload));
                     yield call(authClient, AUTH_LOGOUT);
                     yield put(
                         replace({

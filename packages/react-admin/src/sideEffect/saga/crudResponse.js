@@ -83,23 +83,36 @@ function* handleResponse({ type, requestPayload, error, payload }) {
             }
             break;
         case CRUD_GET_ONE_FAILURE:
-            return requestPayload.basePath
-                ? yield all([
-                      put(
-                          showNotification(
-                              'ra.notification.item_doesnt_exist',
-                              'warning'
-                          )
-                      ),
-                      put(push(requestPayload.basePath)),
-                  ])
-                : yield all([]);
         case CRUD_GET_LIST_FAILURE:
         case CRUD_GET_MANY_FAILURE:
         case CRUD_GET_MANY_REFERENCE_FAILURE:
         case CRUD_CREATE_FAILURE:
         case CRUD_UPDATE_FAILURE:
         case CRUD_DELETE_FAILURE: {
+            if (
+                CRUD_GET_ONE_FAILURE === type &&
+                error &&
+                (404 === error.status || 403 === error.status)
+            ) {
+                if (404 === error.status) {
+                    yield put(
+                        showNotification(
+                            'ra.notification.item_doesnt_exist',
+                            'warning'
+                        )
+                    );
+                } else if (403 === error.status) {
+                    yield put(
+                        showNotification(
+                            'ra.notification.item_forbidden',
+                            'warning'
+                        )
+                    );
+                }
+                return requestPayload.basePath
+                    ? yield put(push(requestPayload.basePath))
+                    : yield all([]);
+            }
             console.error(error); // eslint-disable-line no-console
             const errorMessage =
                 typeof error === 'string'
