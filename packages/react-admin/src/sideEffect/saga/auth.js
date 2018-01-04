@@ -16,7 +16,7 @@ import {
 import { FETCH_ERROR } from '../../actions/fetchActions';
 import { AUTH_LOGIN, AUTH_CHECK, AUTH_ERROR, AUTH_LOGOUT } from '../../auth';
 
-export default authClient => {
+export default (authClient, settings) => {
     if (!authClient) return () => null;
     function* handleAuth(action) {
         const { type, payload, error, meta } = action;
@@ -33,7 +33,9 @@ export default authClient => {
                         type: USER_LOGIN_SUCCESS,
                         payload: authPayload,
                     });
-                    yield put(push(meta.pathName || '/'));
+                    yield put(
+                        push(meta.pathName || settings.redirectAfterLoginPath)
+                    );
                 } catch (e) {
                     yield put({
                         type: USER_LOGIN_FAILURE,
@@ -57,7 +59,9 @@ export default authClient => {
                     yield call(authClient, AUTH_LOGOUT);
                     yield put(
                         replace({
-                            pathname: (error && error.redirectTo) || '/login',
+                            pathname:
+                                (error && error.redirectTo) ||
+                                settings.loginUrl,
                             state: { nextPathname: meta.pathName },
                         })
                     );
@@ -65,7 +69,7 @@ export default authClient => {
                 break;
             }
             case USER_LOGOUT: {
-                yield put(push('/login'));
+                yield put(push(settings.loginUrl));
                 yield call(authClient, AUTH_LOGOUT);
                 break;
             }
@@ -74,7 +78,7 @@ export default authClient => {
                     yield call(authClient, AUTH_ERROR, error);
                 } catch (e) {
                     yield call(authClient, AUTH_LOGOUT);
-                    yield put(push('/login'));
+                    yield put(push(settings.loginUrl));
                     yield put(hideNotification());
                 }
                 break;

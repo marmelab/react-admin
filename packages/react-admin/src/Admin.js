@@ -18,6 +18,7 @@ import Menu from './mui/layout/Menu';
 import Login from './mui/auth/Login';
 import Logout from './mui/auth/Logout';
 import TranslationProvider from './i18n/TranslationProvider';
+import DefaultSettings from './AdminSettings';
 
 const Admin = ({
     appLayout,
@@ -26,6 +27,7 @@ const Admin = ({
     customReducers = {},
     customSagas = [],
     customRoutes = [],
+    settings,
     dashboard,
     history,
     locale,
@@ -39,12 +41,19 @@ const Admin = ({
     logoutButton,
     initialState,
 }) => {
+    const appSettings = {
+        ...DefaultSettings,
+        ...settings,
+    };
     const appReducer = createAppReducer(customReducers, locale);
     const resettableAppReducer = (state, action) =>
         appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
     const saga = function* rootSaga() {
         yield all(
-            [crudSaga(dataProvider, authClient), ...customSagas].map(fork)
+            [
+                crudSaga(dataProvider, authClient, appSettings),
+                ...customSagas,
+            ].map(fork)
         );
     };
     const sagaMiddleware = createSagaMiddleware();
@@ -69,7 +78,7 @@ const Admin = ({
                         <Switch>
                             <Route
                                 exact
-                                path="/login"
+                                path={appSettings.loginUrl}
                                 render={({ location }) =>
                                     createElement(loginPage || Login, {
                                         location,
@@ -150,6 +159,11 @@ Admin.propTypes = {
     locale: PropTypes.string,
     messages: PropTypes.object,
     initialState: PropTypes.object,
+    settings: PropTypes.shape({
+        debug: PropTypes.bool,
+        loginUrl: PropTypes.string,
+        redirectAfterLoginPath: PropTypes.string,
+    }),
 };
 
 export default withContext(
