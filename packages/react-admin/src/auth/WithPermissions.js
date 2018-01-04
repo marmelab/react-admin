@@ -7,6 +7,7 @@ import warning from 'warning';
 
 import { userCheck } from '../actions/authActions';
 import { AUTH_GET_PERMISSIONS } from '../auth/types';
+import { isLoggedIn } from '../reducer';
 
 const isEmptyChildren = children => Children.count(children) === 0;
 /**
@@ -51,6 +52,7 @@ export class WithPermissions extends Component {
         location: PropTypes.object,
         match: PropTypes.object,
         render: PropTypes.func,
+        isLoggedIn: PropTypes.bool,
         staticContext: PropTypes.object,
         userCheck: PropTypes.func,
     };
@@ -76,7 +78,8 @@ export class WithPermissions extends Component {
     componentWillReceiveProps(nextProps) {
         if (
             nextProps.location !== this.props.location ||
-            nextProps.authParams !== this.props.authParams
+            nextProps.authParams !== this.props.authParams ||
+            nextProps.isLoggedIn !== this.props.isLoggedIn
         ) {
             this.checkAuthentication(nextProps);
             this.checkPermissions(this.props);
@@ -84,8 +87,12 @@ export class WithPermissions extends Component {
     }
 
     checkAuthentication(params) {
-        const { userCheck, authParams, location } = params;
-        userCheck(authParams, location && location.pathname);
+        const { userCheck, authParams, location, match } = params;
+        userCheck(
+            authParams,
+            location && location.pathname,
+            match && match.params
+        );
     }
 
     async checkPermissions(params) {
@@ -109,6 +116,8 @@ export class WithPermissions extends Component {
         const {
             authClient,
             userCheck,
+            authParams,
+            isLoggedIn,
             render,
             children,
             staticContext,
@@ -125,10 +134,13 @@ export class WithPermissions extends Component {
         }
     }
 }
+const mapStateToProps = state => ({
+    isLoggedIn: isLoggedIn(state),
+});
 
 export default compose(
     getContext({
         authClient: PropTypes.func,
     }),
-    connect(null, { userCheck })
+    connect(mapStateToProps, { userCheck })
 )(WithPermissions);

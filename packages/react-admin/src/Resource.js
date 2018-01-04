@@ -61,6 +61,7 @@ export class Resource extends Component {
             show,
             remove,
             options,
+            authParams,
         } = this.props;
 
         if (context === 'registration') {
@@ -88,6 +89,11 @@ export class Resource extends Component {
                                 render={props => createElement(create, props)}
                                 {...routeProps}
                                 {...resource}
+                                authParams={{
+                                    resource: name,
+                                    type: 'create',
+                                    ...authParams,
+                                }}
                             />
                         )}
                     />
@@ -101,6 +107,11 @@ export class Resource extends Component {
                                 render={props => createElement(show, props)}
                                 {...routeProps}
                                 {...resource}
+                                authParams={{
+                                    resource: name,
+                                    type: 'show',
+                                    ...authParams,
+                                }}
                             />
                         )}
                     />
@@ -114,6 +125,11 @@ export class Resource extends Component {
                                 render={props => createElement(remove, props)}
                                 {...routeProps}
                                 {...resource}
+                                authParams={{
+                                    resource: name,
+                                    type: 'delete',
+                                    ...authParams,
+                                }}
                             />
                         )}
                     />
@@ -127,6 +143,11 @@ export class Resource extends Component {
                                 render={props => createElement(edit, props)}
                                 {...routeProps}
                                 {...resource}
+                                authParams={{
+                                    resource: name,
+                                    type: 'edit',
+                                    ...authParams,
+                                }}
                             />
                         )}
                     />
@@ -140,6 +161,11 @@ export class Resource extends Component {
                                 render={props => createElement(list, props)}
                                 {...routeProps}
                                 {...resource}
+                                authParams={{
+                                    resource: name,
+                                    type: 'list',
+                                    ...authParams,
+                                }}
                             />
                         )}
                     />

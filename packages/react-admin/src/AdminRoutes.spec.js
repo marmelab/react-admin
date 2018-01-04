@@ -12,7 +12,9 @@ describe('<AdminRoutes>', () => {
     const Dashboard = () => <div>Dashboard</div>;
     const Custom = () => <div>Custom</div>;
     // the Provider is required because the dashboard is wrapped by <Authenticated>, which is a connected component
-    const store = createStore(x => x);
+    const store = createStore(() => ({
+        admin: { auth: { isLoggedIn: true } },
+    }));
 
     it('should show dashboard on / when provided', () => {
         const wrapper = render(
