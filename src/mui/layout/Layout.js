@@ -30,7 +30,7 @@ const styles = {
     body: {
         backgroundColor: '#edecec',
         display: 'flex',
-        flex: 1,
+        flex: '1 1 auto',
         overflowY: 'hidden',
         overflowX: 'scroll',
     },
