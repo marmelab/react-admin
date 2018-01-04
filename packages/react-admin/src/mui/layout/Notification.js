@@ -60,9 +60,13 @@ class Notification extends React.Component {
             <Snackbar
                 open={this.state.open}
                 message={
-                    notification &&
-                    notification.message &&
-                    translate(notification.message, notification.messageArgs)
+                    (notification &&
+                        notification.message &&
+                        translate(
+                            notification.message,
+                            notification.messageArgs
+                        )) ||
+                    ''
                 }
                 autoHideDuration={
                     (notification && notification.autoHideDuration) ||
