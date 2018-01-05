@@ -3,23 +3,23 @@ import PropTypes from 'prop-types';
 import withWidth from 'material-ui/utils/withWidth';
 
 export const Responsive = ({ small, medium, large, width, ...rest }) => {
-    let component;
+    let element;
     switch (width) {
         case 'xs':
-            component = small ? small : medium ? medium : large;
+            element = small ? small : medium ? medium : large;
             break;
         case 'sm':
         case 'md':
-            component = medium ? medium : large ? large : small;
+            element = medium ? medium : large ? large : small;
             break;
         case 'lg':
         case 'xl':
-            component = large ? large : medium ? medium : small;
+            element = large ? large : medium ? medium : small;
             break;
         default:
             throw new Error(`Unknown width ${width}`);
     }
-    return React.cloneElement(component, rest);
+    return React.cloneElement(element, rest);
 };
 
 Responsive.propTypes = {
