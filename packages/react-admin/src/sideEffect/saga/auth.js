@@ -17,7 +17,7 @@ import { FETCH_ERROR } from '../../actions/fetchActions';
 import { AUTH_LOGIN, AUTH_CHECK, AUTH_ERROR, AUTH_LOGOUT } from '../../auth';
 const nextPathnameSelector = state => {
     const locationState = state.routing.location.state;
-    return (locationState && locationState.nextPathname) || '/';
+    return locationState && locationState.nextPathname;
 };
 export default authClient => {
     if (!authClient) return () => null;
@@ -36,8 +36,11 @@ export default authClient => {
                         type: USER_LOGIN_SUCCESS,
                         payload: authPayload,
                     });
-                    const redirectTo = yield select(nextPathnameSelector);
-                    yield put(push(redirectTo));
+                    let redirectTo = meta.pathName;
+                    if (!redirectTo) {
+                        redirectTo = yield select(nextPathnameSelector);
+                    }
+                    yield put(push(redirectTo || '/'));
                 } catch (e) {
                     yield put({
                         type: USER_LOGIN_FAILURE,
