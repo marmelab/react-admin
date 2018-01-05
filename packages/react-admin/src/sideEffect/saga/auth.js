@@ -17,7 +17,7 @@ import { FETCH_ERROR } from '../../actions/fetchActions';
 import { AUTH_LOGIN, AUTH_CHECK, AUTH_ERROR, AUTH_LOGOUT } from '../../auth';
 const nextPathnameSelector = state => {
     const locationState = state.routing.location.state;
-    return (locationState && locationState.pathname) || '/';
+    return (locationState && locationState.nextPathname) || '/';
 };
 export default authClient => {
     if (!authClient) return () => null;
