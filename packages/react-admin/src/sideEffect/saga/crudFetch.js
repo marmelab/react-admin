@@ -3,6 +3,8 @@ import {
     put,
     call,
     cancelled,
+    race,
+    take,
     takeEvery,
     takeLatest,
 } from 'redux-saga/effects';
@@ -10,6 +12,8 @@ import {
     FETCH_START,
     FETCH_END,
     FETCH_ERROR,
+    FETCH_ERROR_REJECTED,
+    FETCH_ERROR_RESOLVED,
     FETCH_CANCEL,
 } from '../../actions/fetchActions';
 
@@ -45,18 +49,25 @@ const crudFetch = dataProvider => {
             });
             yield put({ type: FETCH_END });
         } catch (error) {
-            yield put({
-                type: `${type}_FAILURE`,
-                error: error.message ? error.message : error,
-                payload: error.body ? error.body : null,
-                requestPayload: payload,
-                meta: {
-                    ...meta,
-                    fetchResponse: restType,
-                    fetchStatus: FETCH_ERROR,
-                },
-            });
             yield put({ type: FETCH_ERROR, error });
+            // FETCH_ERROR is evaluated by the auth saga and responds with RESOLVED or REJECTED
+            const { resolved } = yield race({
+                resolved: take(FETCH_ERROR_RESOLVED),
+                rejected: take(FETCH_ERROR_REJECTED),
+            });
+            if (resolved) {
+                yield put({
+                    type: `${type}_FAILURE`,
+                    error: error.message ? error.message : error,
+                    payload: error.body ? error.body : null,
+                    requestPayload: payload,
+                    meta: {
+                        ...meta,
+                        fetchResponse: restType,
+                        fetchStatus: FETCH_ERROR,
+                    },
+                });
+            }
         } finally {
             if (yield cancelled()) {
                 yield put({ type: FETCH_CANCEL });
