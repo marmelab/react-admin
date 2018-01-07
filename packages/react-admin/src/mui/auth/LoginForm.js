@@ -38,7 +38,8 @@ const renderInput = ({
         fullWidth
     />
 );
-const login = (auth, dispatch) => dispatch(userLogin(auth));
+const login = (auth, dispatch, { redirectTo }) =>
+    dispatch(userLogin(auth, redirectTo));
 
 const LoginForm = ({ classes, isLoading, handleSubmit, translate }) => (
     <form onSubmit={handleSubmit(login)}>
@@ -78,6 +79,7 @@ const LoginForm = ({ classes, isLoading, handleSubmit, translate }) => (
 LoginForm.propTypes = {
     ...propTypes,
     classes: PropTypes.object,
+    redirectTo: PropTypes.string,
 };
 
 const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });

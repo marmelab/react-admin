@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import compose from 'recompose/compose';
 import Card from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
 import LockIcon from 'material-ui-icons/LockOutline';
@@ -9,7 +8,7 @@ import { withStyles } from 'material-ui/styles';
 
 import defaultTheme from '../defaultTheme';
 import Notification from '../layout/Notification';
-import LoginForm from './LoginForm';
+import DefaultLoginForm from './LoginForm';
 
 const styles = theme => ({
     main: {
@@ -64,28 +63,27 @@ const sanitizeRestProps = ({
  *        </Admin>
  *     );
  */
-class Login extends Component {
-    render() {
-        const { classes, className, ...rest } = this.props;
-
-        return (
-            <div
-                className={classnames(classes.main, className)}
-                {...sanitizeRestProps(rest)}
-            >
-                <Card className={classes.card}>
-                    <div className={classes.avatar}>
-                        <Avatar className={classes.icon}>
-                            <LockIcon />
-                        </Avatar>
-                    </div>
-                    <LoginForm />
-                </Card>
-                <Notification />
+const Login = ({
+    classes,
+    className,
+    loginForm = <DefaultLoginForm />,
+    ...rest
+}) => (
+    <div
+        className={classnames(classes.main, className)}
+        {...sanitizeRestProps(rest)}
+    >
+        <Card className={classes.card}>
+            <div className={classes.avatar}>
+                <Avatar className={classes.icon}>
+                    <LockIcon />
+                </Avatar>
             </div>
-        );
-    }
-}
+            {loginForm}
+        </Card>
+        <Notification />
+    </div>
+);
 
 Login.propTypes = {
     className: PropTypes.string,
@@ -94,12 +92,11 @@ Login.propTypes = {
     input: PropTypes.object,
     meta: PropTypes.object,
     previousRoute: PropTypes.string,
+    loginForm: PropTypes.func,
 };
 
 Login.defaultProps = {
     theme: defaultTheme,
 };
 
-const enhance = compose(withStyles(styles));
-
-export default enhance(Login);
+export default withStyles(styles)(Login);
