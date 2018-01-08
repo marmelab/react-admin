@@ -48,6 +48,7 @@ export class SimpleForm extends Component {
             <As
                 className={classnames('simple-form', className)}
                 resource={resource}
+                invalid={invalid}
                 {...rest}
             >
                 <div className={classes.form} key={version}>

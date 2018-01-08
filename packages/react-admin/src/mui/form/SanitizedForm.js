@@ -25,6 +25,7 @@ const SanitizedForm = ({
     dispatch,
     initialize,
     reset,
+    invalid,
     touch,
     untouch,
     validate,

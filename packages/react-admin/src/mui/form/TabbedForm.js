@@ -69,6 +69,7 @@ export class TabbedForm extends Component {
                 className={classnames('tabbed-form', className)}
                 key={version}
                 resource={resource}
+                invalid={invalid}
                 {...rest}
             >
                 <Tabs
