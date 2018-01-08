@@ -69,9 +69,6 @@
 .book-summary ul.summary li a:hover {
     text-decoration: underline
 }
-.book-summary ul.summary li a:focus {
-    outline: 0
-}
 .book-summary ul.summary li.active>a {
     color: #008cff;
     background: 0 0;
@@ -150,6 +147,12 @@
     background: none;
     text-transform: uppercase
 }
+
+.page-menu button img {
+    width: 16px;
+    height: 16px;
+}
+
 
 .book-body {
     position: absolute;
