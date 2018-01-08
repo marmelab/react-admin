@@ -233,10 +233,6 @@
 .button:hover {
     color: #444
 }
-.button:focus,
-.button:hover {
-    outline: 0
-}
 .button.size-2 {
     width: 50%
 }
@@ -313,7 +309,6 @@
 .markdown-section a:active,
 .markdown-section a:focus,
 .markdown-section a:hover {
-    outline: 0;
     text-decoration: underline
 }
 .markdown-section img {
