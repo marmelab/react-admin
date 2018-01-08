@@ -9,6 +9,7 @@ import classnames from 'classnames';
 import getDefaultValues from './getDefaultValues';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
+import SanitizedForm from './SanitizedForm';
 
 const styles = theme => ({
     form: {
@@ -21,49 +22,15 @@ const styles = theme => ({
     },
 });
 
-const sanitizeRestProps = ({
-    anyTouched,
-    asyncValidate,
-    asyncValidating,
-    clearSubmit,
-    dirty,
-    handleSubmit,
-    initialized,
-    initialValues,
-    pristine,
-    submitting,
-    submitFailed,
-    submitSucceeded,
-    valid,
-    pure,
-    triggerSubmit,
-    clearSubmitErrors,
-    clearAsyncError,
-    blur,
-    change,
-    destroy,
-    dispatch,
-    initialize,
-    reset,
-    touch,
-    untouch,
-    validate,
-    save,
-    translate,
-    autofill,
-    submit,
-    redirect,
-    array,
-    form,
-    ...props
-}) => props;
-
 export class SimpleForm extends Component {
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
-        this.props.handleSubmit(values => this.props.save(values, redirect));
+        this.props.handleSubmit((values, ...otherArgs) =>
+            this.props.save(values, redirect, ...otherArgs)
+        );
 
     render() {
         const {
+            as: As = SanitizedForm,
             basePath,
             children,
             classes = {},
@@ -78,9 +45,11 @@ export class SimpleForm extends Component {
         } = this.props;
 
         return (
-            <form
+            <As
                 className={classnames('simple-form', className)}
-                {...sanitizeRestProps(rest)}
+                resource={resource}
+                invalid={invalid}
+                {...rest}
             >
                 <div className={classes.form} key={version}>
                     {Children.map(children, input => (
@@ -98,12 +67,13 @@ export class SimpleForm extends Component {
                         invalid,
                         submitOnEnter,
                     })}
-            </form>
+            </As>
         );
     }
 }
 
 SimpleForm.propTypes = {
+    as: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     basePath: PropTypes.string,
     children: PropTypes.node,
     classes: PropTypes.object,

@@ -15,6 +15,7 @@ import { withStyles } from 'material-ui/styles';
 
 import Toolbar from './Toolbar';
 import getDefaultValues from './getDefaultValues';
+import SanitizedForm from './SanitizedForm';
 
 const styles = theme => ({
     form: {
@@ -27,43 +28,6 @@ const styles = theme => ({
     },
     errorTabButton: { color: theme.palette.error[500] },
 });
-
-const sanitizeRestProps = ({
-    anyTouched,
-    asyncValidate,
-    asyncValidating,
-    clearSubmit,
-    dirty,
-    handleSubmit,
-    initialized,
-    initialValues,
-    pristine,
-    submitting,
-    submitFailed,
-    submitSucceeded,
-    valid,
-    pure,
-    triggerSubmit,
-    clearSubmitErrors,
-    clearAsyncError,
-    blur,
-    change,
-    destroy,
-    dispatch,
-    initialize,
-    reset,
-    touch,
-    untouch,
-    validate,
-    save,
-    translate,
-    autofill,
-    submit,
-    redirect,
-    array,
-    form,
-    ...props
-}) => props;
 
 export class TabbedForm extends Component {
     constructor(props) {
@@ -78,10 +42,13 @@ export class TabbedForm extends Component {
     };
 
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
-        this.props.handleSubmit(values => this.props.save(values, redirect));
+        this.props.handleSubmit((values, ...otherArgs) =>
+            this.props.save(values, redirect, ...otherArgs)
+        );
 
     render() {
         const {
+            as: As = SanitizedForm,
             basePath,
             children,
             className,
@@ -98,10 +65,12 @@ export class TabbedForm extends Component {
         } = this.props;
 
         return (
-            <form
+            <As
                 className={classnames('tabbed-form', className)}
                 key={version}
-                {...sanitizeRestProps(rest)}
+                resource={resource}
+                invalid={invalid}
+                {...rest}
             >
                 <Tabs
                     scrollable
@@ -153,12 +122,13 @@ export class TabbedForm extends Component {
                             submitOnEnter,
                         })}
                 </div>
-            </form>
+            </As>
         );
     }
 }
 
 TabbedForm.propTypes = {
+    as: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
