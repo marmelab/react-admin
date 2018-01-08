@@ -37,9 +37,8 @@ export default authClient => {
                         payload: authPayload,
                     });
                     const redirectTo = yield meta.pathName ||
-                        select(nextPathnameSelector) ||
-                        '/';
-                    yield put(push(redirectTo));
+                        select(nextPathnameSelector);
+                    yield put(push(redirectTo || '/'));
                 } catch (e) {
                     yield put({
                         type: USER_LOGIN_FAILURE,
