@@ -9,6 +9,8 @@ import classnames from 'classnames';
 import getDefaultValues from './getDefaultValues';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
+import promisingForm from './promisingForm';
+import GenericFormError from './GenericFormError';
 
 const styles = theme => ({
     form: {
@@ -60,7 +62,9 @@ const sanitizeRestProps = ({
 
 export class SimpleForm extends Component {
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
-        this.props.handleSubmit(values => this.props.save(values, redirect));
+        this.props.handleSubmit((values, ...otherArgs) =>
+            this.props.save(values, redirect, ...otherArgs)
+        );
 
     render() {
         const {
@@ -75,6 +79,8 @@ export class SimpleForm extends Component {
             submitOnEnter,
             toolbar,
             version,
+            translate,
+            error,
             ...rest
         } = this.props;
 
@@ -83,6 +89,7 @@ export class SimpleForm extends Component {
                 className={classnames('simple-form', className)}
                 {...sanitizeRestProps(rest)}
             >
+                <GenericFormError error={error && translate(error)} />
                 <div className={classes.form} key={version}>
                     {Children.map(children, input => (
                         <FormInput
@@ -111,6 +118,11 @@ SimpleForm.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    error: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array,
+        PropTypes.string,
+    ]),
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
     pristine: PropTypes.bool,
@@ -119,6 +131,7 @@ SimpleForm.propTypes = {
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     submitOnEnter: PropTypes.bool,
+    translate: PropTypes.func.isRequired,
     toolbar: PropTypes.element,
     validate: PropTypes.func,
     version: PropTypes.number,
@@ -137,6 +150,7 @@ const enhance = compose(
         form: 'record-form',
         enableReinitialize: true,
     }),
+    promisingForm,
     withStyles(styles)
 );
 

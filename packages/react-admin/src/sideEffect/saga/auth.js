@@ -13,7 +13,11 @@ import {
     USER_CHECK,
     USER_LOGOUT,
 } from '../../actions/authActions';
-import { FETCH_ERROR } from '../../actions/fetchActions';
+import {
+    FETCH_ERROR_AUTH,
+    FETCH_ERROR_HANDLED,
+    FETCH_ERROR_UNHANDLED,
+} from '../../actions/fetchActions';
 import { AUTH_LOGIN, AUTH_CHECK, AUTH_ERROR, AUTH_LOGOUT } from '../../auth';
 const nextPathnameSelector = state => {
     const locationState = state.routing.location.state;
@@ -79,11 +83,19 @@ export default authProvider => {
                 yield call(authProvider, AUTH_LOGOUT);
                 break;
             }
-            case FETCH_ERROR:
+            case FETCH_ERROR_AUTH:
                 try {
                     yield call(authProvider, AUTH_ERROR, error);
+                    yield put({
+                        type: FETCH_ERROR_UNHANDLED,
+                        meta,
+                    });
                 } catch (e) {
                     yield call(authProvider, AUTH_LOGOUT);
+                    yield put({
+                        type: FETCH_ERROR_HANDLED,
+                        meta,
+                    });
                     yield put(push('/login'));
                     yield put(hideNotification());
                 }
@@ -93,7 +105,7 @@ export default authProvider => {
     return function* watchAuthActions() {
         yield all([
             takeEvery(action => action.meta && action.meta.auth, handleAuth),
-            takeEvery(FETCH_ERROR, handleAuth),
+            takeEvery(FETCH_ERROR_AUTH, handleAuth),
         ]);
     };
 };

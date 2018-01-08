@@ -2,6 +2,7 @@ import { all } from 'redux-saga/effects';
 import auth from './auth';
 import crudFetch from './crudFetch';
 import crudResponse from './crudResponse';
+import form from './form';
 import referenceFetch from './referenceFetch';
 import i18n from './i18n';
 
@@ -13,6 +14,7 @@ export default (dataProvider, authProvider, i18nProvider) =>
         yield all([
             i18n(i18nProvider)(),
             auth(authProvider)(),
+            form(),
             crudFetch(dataProvider)(),
             crudResponse(),
             referenceFetch(),

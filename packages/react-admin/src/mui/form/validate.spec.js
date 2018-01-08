@@ -12,10 +12,12 @@ import {
 } from './validate';
 
 describe('Validators', () => {
+    const unwrapValidator = finding =>
+        Array.isArray(finding) ? finding[0] : finding;
     const test = (validator, inputs, message) =>
         assert.deepEqual(
             inputs
-                .map(input => validator(input, null, { translate: x => x }))
+                .map(input => unwrapValidator(validator(input)))
                 .filter(m => m === message),
             Array(...Array(inputs.length)).map(() => message)
         );

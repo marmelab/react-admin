@@ -77,4 +77,47 @@ describe('Create Page', () => {
         await CreatePage.setValues(values);
         await CreatePage.submit();
     });
+
+    it('should show error on server validation error response', async () => {
+        const values = [
+            {
+                type: 'input',
+                name: 'title',
+                value: 'Test validation',
+            },
+            {
+                type: 'textarea',
+                name: 'teaser',
+                value: 'Test teaser',
+            },
+        ];
+        await CreatePage.setValues(values);
+        await CreatePage.submitAndAdd();
+        await driver.sleep(1000);
+        assert.equal(
+            await CreatePage.getInputError('title'),
+            'Server validation error response'
+        );
+    });
+    it('should show generic error on server validation generic error response', async () => {
+        const values = [
+            {
+                type: 'input',
+                name: 'title',
+                value: 'Test generic validation',
+            },
+            {
+                type: 'textarea',
+                name: 'teaser',
+                value: 'Test teaser',
+            },
+        ];
+        await CreatePage.setValues(values);
+        await CreatePage.submitAndAdd();
+        await driver.sleep(1000);
+        assert.equal(
+            await CreatePage.getGenericErrorMessage(),
+            'Server generic error'
+        );
+    });
 });

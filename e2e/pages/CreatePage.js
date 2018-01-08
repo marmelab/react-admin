@@ -6,6 +6,8 @@ export default url => driver => ({
         input: (name, type = 'input') =>
             By.css(`.create-page ${type}[name='${name}']`),
         inputs: By.css(`.ra-input`),
+        inputError: name => By.css(`.create-page .ra-input-${name} p`),
+        genericErrorElement: By.css('.create-page p[class*=Generic]'),
         submitButton: By.css(".create-page button[type='submit']"),
         submitAndAddButton: By.css(
             ".create-page form>div:last-child button[type='button']"
@@ -66,6 +68,14 @@ export default url => driver => ({
         return driver
             .findElement(this.elements.input(name, type))
             .getAttribute('value');
+    },
+
+    getInputError(name) {
+        return driver.findElement(this.elements.inputError(name)).getText();
+    },
+
+    getGenericErrorMessage() {
+        return driver.findElement(this.elements.genericErrorElement).getText();
     },
 
     getFields() {

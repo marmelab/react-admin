@@ -1,4 +1,5 @@
 export auth from './auth';
+export form from './form';
 export crudFetch from './crudFetch';
 export crudResponse from './crudResponse';
 export crudSaga from './crudSaga';

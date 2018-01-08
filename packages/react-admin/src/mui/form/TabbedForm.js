@@ -15,6 +15,8 @@ import { withStyles } from 'material-ui/styles';
 
 import Toolbar from './Toolbar';
 import getDefaultValues from './getDefaultValues';
+import promisingForm from './promisingForm';
+import GenericFormError from './GenericFormError';
 
 const styles = theme => ({
     form: {
@@ -78,7 +80,9 @@ export class TabbedForm extends Component {
     };
 
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
-        this.props.handleSubmit(values => this.props.save(values, redirect));
+        this.props.handleSubmit((values, ...otherArgs) =>
+            this.props.save(values, redirect, ...otherArgs)
+        );
 
     render() {
         const {
@@ -95,6 +99,7 @@ export class TabbedForm extends Component {
             toolbar,
             translate,
             version,
+            error,
             ...rest
         } = this.props;
 
@@ -133,6 +138,7 @@ export class TabbedForm extends Component {
                     )}
                 </Tabs>
                 <Divider />
+                <GenericFormError error={error && translate(error)} />
                 <div className={classes.form}>
                     {Children.map(
                         children,
@@ -143,6 +149,7 @@ export class TabbedForm extends Component {
                                 resource,
                                 record,
                                 basePath,
+                                translate,
                             })
                     )}
                     {toolbar &&
@@ -166,6 +173,11 @@ TabbedForm.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    error: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array,
+        PropTypes.string,
+    ]),
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
     pristine: PropTypes.bool,
@@ -176,7 +188,7 @@ TabbedForm.propTypes = {
     submitOnEnter: PropTypes.bool,
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
     toolbar: PropTypes.element,
-    translate: PropTypes.func,
+    translate: PropTypes.func.isRequired,
     validate: PropTypes.func,
     version: PropTypes.number,
 };
@@ -232,6 +244,7 @@ const enhance = compose(
         form: 'record-form',
         enableReinitialize: true,
     }),
+    promisingForm,
     withStyles(styles)
 );
 

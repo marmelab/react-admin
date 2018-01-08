@@ -3,6 +3,7 @@ import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { Route } from 'react-router';
+import { SubmissionError } from 'redux-form';
 
 import { Admin, Resource, Delete } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import jsonRestDataProvider from 'ra-data-fakerest';
@@ -27,10 +28,29 @@ import i18nProvider from './i18nProvider';
 
 const dataProvider = jsonRestDataProvider(data, true);
 const uploadCapableDataProvider = addUploadFeature(dataProvider);
+const simulateValidationError = (type, resource, params) => {
+    if (('CREATE' === type || 'UPDATE' === type) && 'posts' === resource) {
+        if (params.data.title === 'Test validation') {
+            return Promise.reject(
+                new SubmissionError({
+                    title: 'Server validation error response',
+                })
+            );
+        } else if (params.data.title === 'Test generic validation') {
+            return Promise.reject(
+                new SubmissionError({
+                    _error: 'Server generic error',
+                })
+            );
+        }
+    }
+    return uploadCapableDataProvider(type, resource, params);
+};
+
 const delayedDataProvider = (type, resource, params) =>
     new Promise(resolve =>
         setTimeout(
-            () => resolve(uploadCapableDataProvider(type, resource, params)),
+            () => resolve(simulateValidationError(type, resource, params)),
             1000
         )
     );

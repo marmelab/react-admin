@@ -43,10 +43,20 @@ const withI18nContext = withContext(
             locale,
             phrases: defaultsDeep({}, messages, defaultMessages),
         });
+        polyglot.t = polyglot.t.bind(polyglot);
+
+        const translate = (message, options) =>
+            polyglot.t(message, {
+                _: message,
+                ...options,
+            });
 
         return {
             locale,
-            translate: polyglot.t.bind(polyglot),
+            translate: (message, ...args) =>
+                Array.isArray(message)
+                    ? translate(...message)
+                    : translate(message, ...args),
         };
     }
 );

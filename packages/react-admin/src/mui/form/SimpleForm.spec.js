@@ -6,9 +6,10 @@ import { SimpleForm } from './SimpleForm';
 import TextInput from '../input/TextInput';
 
 describe('<SimpleForm />', () => {
+    const translate = t => t;
     it('should embed a form with given component children', () => {
         const wrapper = shallow(
-            <SimpleForm>
+            <SimpleForm translate={translate}>
                 <TextInput source="name" />
                 <TextInput source="city" />
             </SimpleForm>
@@ -22,7 +23,7 @@ describe('<SimpleForm />', () => {
 
     it('should display <Toolbar />', () => {
         const wrapper = shallow(
-            <SimpleForm>
+            <SimpleForm translate={translate}>
                 <TextInput source="name" />
             </SimpleForm>
         );
@@ -33,7 +34,11 @@ describe('<SimpleForm />', () => {
     it('should pass submitOnEnter to <Toolbar />', () => {
         const handleSubmit = () => {};
         const wrapper1 = shallow(
-            <SimpleForm submitOnEnter={false} handleSubmit={handleSubmit}>
+            <SimpleForm
+                translate={translate}
+                submitOnEnter={false}
+                handleSubmit={handleSubmit}
+            >
                 <TextInput source="name" />
             </SimpleForm>
         );
@@ -41,7 +46,11 @@ describe('<SimpleForm />', () => {
         assert.equal(button1.prop('submitOnEnter'), false);
 
         const wrapper2 = shallow(
-            <SimpleForm submitOnEnter={true} handleSubmit={handleSubmit}>
+            <SimpleForm
+                translate={translate}
+                submitOnEnter={true}
+                handleSubmit={handleSubmit}
+            >
                 <TextInput source="name" />
             </SimpleForm>
         );

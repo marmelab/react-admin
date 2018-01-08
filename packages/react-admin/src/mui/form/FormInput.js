@@ -50,6 +50,7 @@ FormInput.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
     input: PropTypes.object,
+    translate: PropTypes.func,
 };
 
 export default withStyles(styles)(FormInput);
