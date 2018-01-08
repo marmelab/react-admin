@@ -4,6 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import Table, { TableHead, TableRow } from 'material-ui/Table';
 import classnames from 'classnames';
 
+import DatagridHeaderSelectCell from './DatagridHeaderSelectCell';
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridBody from './DatagridBody';
 
@@ -19,6 +20,9 @@ const styles = {
         '&:first-child': {
             padding: '0 0 0 12px',
         },
+        select: {
+            padding: 0,
+        },
     },
     row: {},
     rowEven: {},
@@ -27,7 +31,6 @@ const styles = {
         padding: '0 12px',
         whiteSpace: 'normal',
         '&:first-child': {
-            padding: '0 12px 0 16px',
             whiteSpace: 'normal',
         },
     },
@@ -89,12 +92,25 @@ class Datagrid extends Component {
             basePath,
             rowStyle,
             setSort,
+            selectable,
+            selectionMode = 'bulk',
+            selection,
             ...rest
         } = this.props;
         return (
             <Table className={classnames(classes.table, className)} {...rest}>
                 <TableHead>
                     <TableRow className={classes.row}>
+                        {selectable && (
+                            <DatagridHeaderSelectCell
+                                ids={ids}
+                                selection={selection}
+                                selectionMode={selectionMode}
+                                className={classes.headerCell}
+                                resource={resource}
+                            />
+                        )}
+
                         {React.Children.map(
                             children,
                             (field, index) =>
@@ -123,6 +139,9 @@ class Datagrid extends Component {
                     classes={classes}
                     isLoading={isLoading}
                     rowStyle={rowStyle}
+                    selectable={selectable}
+                    selection={selection}
+                    selectionMode={selectionMode}
                 >
                     {children}
                 </DatagridBody>
@@ -146,11 +165,19 @@ Datagrid.propTypes = {
     setSort: PropTypes.func,
     classes: PropTypes.object,
     className: PropTypes.string,
+    selectable: PropTypes.bool,
+    selectionMode: PropTypes.oneOf(['single', 'page', 'bulk']),
+    selectAction: PropTypes.shape({
+        type: PropTypes.oneOf(['delete', 'custom']),
+        label: PropTypes.string,
+    }),
+    selection: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 Datagrid.defaultProps = {
     data: {},
     ids: [],
+    selection: [],
 };
 
 export default withStyles(styles)(Datagrid);

@@ -5,6 +5,7 @@ import { TableBody, TableRow } from 'material-ui/Table';
 import classnames from 'classnames';
 
 import DatagridCell from './DatagridCell';
+import DatagridSelectCell from './DatagridSelectCell';
 
 const DatagridBody = ({
     classes,
@@ -15,8 +16,10 @@ const DatagridBody = ({
     isLoading,
     data,
     basePath,
-    styles,
     rowStyle,
+    selectable,
+    selection,
+    selectionMode,
     ...rest
 }) => (
     <TableBody className={classnames('datagrid-body', className)} {...rest}>
@@ -29,6 +32,16 @@ const DatagridBody = ({
                 key={id}
                 style={rowStyle ? rowStyle(data[id], rowIndex) : null}
             >
+                {selectable && (
+                    <DatagridSelectCell
+                        key={`${id}-select`}
+                        record={data[id]}
+                        selection={selection}
+                        selectionMode={selectionMode}
+                        resource={resource}
+                        className={classes.rowCell}
+                    />
+                )}
                 {React.Children.map(
                     children,
                     (field, index) =>
@@ -60,11 +73,15 @@ DatagridBody.propTypes = {
     basePath: PropTypes.string,
     rowStyle: PropTypes.func,
     styles: PropTypes.object,
+    selectable: PropTypes.bool,
+    selection: PropTypes.array,
+    selectionMode: PropTypes.oneOf(['single', 'page', 'bulk']),
 };
 
 DatagridBody.defaultProps = {
     data: {},
     ids: [],
+    selectionMode: 'bulk',
 };
 
 const PureDatagridBody = shouldUpdate(
