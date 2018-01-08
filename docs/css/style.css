@@ -129,7 +129,8 @@
 .page-menu {
     background: #fafafa;
     display: none;
-    padding: 10px 15px
+    padding: 10px 15px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
 }
 
 @media (max-width: 600px) {
