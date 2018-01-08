@@ -11,47 +11,27 @@ import WithPermissions from './auth/WithPermissions';
 import { AUTH_GET_PERMISSIONS } from './auth/types';
 import { isLoggedIn } from './reducer';
 
-const initialPermissions = '@@ar/initialPermissions';
-
 export class AdminRoutes extends Component {
-    // Can't use null or undefined here as authClient may return any those values
-    state = { childrenToRender: [], permissions: initialPermissions };
+    state = { childrenToRender: [] };
 
     componentWillMount() {
-        if (typeof this.props.children === 'function') {
-            this.getPermissions();
-        } else {
-            this.setState({ childrenToRender: this.props.children });
-        }
+        this.initializeResources(this.props);
     }
 
-    getPermissions = async () => {
-        const { authClient } = this.props;
-        try {
-            const permissions = await authClient(AUTH_GET_PERMISSIONS);
-            this.setState({ permissions });
-        } catch (error) {
-            this.setState({ permissions: initialPermissions });
+    initializeResources = nextProps => {
+        if (typeof nextProps.children === 'function') {
+            this.initializeResourcesAsync(nextProps);
+        } else {
+            this.setState({ childrenToRender: nextProps.children });
         }
     };
-
-    componentWillUpdate(nextProps, nextState) {
-        if (
-            !nextProps.isLoggedIn &&
-            nextProps.isLoggedIn !== this.props.isLoggedIn
-        ) {
-            this.setState({ permissions: initialPermissions }, () =>
-                this.getPermissions()
-            );
-        }
-
-        if (
-            typeof nextProps.children === 'function' &&
-            nextState.permissions !== this.state.permissions
-        ) {
+    initializeResourcesAsync = async nextProps => {
+        const { authClient } = nextProps;
+        try {
+            const permissions = await authClient(AUTH_GET_PERMISSIONS);
             const { children } = nextProps;
 
-            const childrenFuncResult = children(nextState.permissions);
+            const childrenFuncResult = children(permissions);
             if (childrenFuncResult.then) {
                 childrenFuncResult.then(resolvedChildren => {
                     this.setState({
@@ -60,12 +40,23 @@ export class AdminRoutes extends Component {
                         ),
                     });
                 });
-                return;
+            } else {
+                this.setState({
+                    childrenToRender: childrenFuncResult.filter(child => child),
+                });
             }
-
-            return this.setState({
-                childrenToRender: childrenFuncResult.filter(child => child),
-            });
+        } catch (error) {
+            this.setState({ childrenToRender: [] });
+        }
+    };
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.isLoggedIn !== this.props.isLoggedIn) {
+            this.setState(
+                {
+                    childrenToRender: [],
+                },
+                () => this.initializeResources(nextProps)
+            );
         }
     }
 
