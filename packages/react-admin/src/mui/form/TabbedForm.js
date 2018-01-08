@@ -68,6 +68,7 @@ export class TabbedForm extends Component {
             <As
                 className={classnames('tabbed-form', className)}
                 key={version}
+                resource={resource}
                 {...rest}
             >
                 <Tabs

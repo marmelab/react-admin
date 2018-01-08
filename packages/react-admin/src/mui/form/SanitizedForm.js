@@ -32,6 +32,7 @@ const SanitizedForm = ({
     translate,
     autofill,
     submit,
+    resource,
     redirect,
     array,
     ...props

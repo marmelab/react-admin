@@ -45,7 +45,11 @@ export class SimpleForm extends Component {
         } = this.props;
 
         return (
-            <As className={classnames('simple-form', className)} {...rest}>
+            <As
+                className={classnames('simple-form', className)}
+                resource={resource}
+                {...rest}
+            >
                 <div className={classes.form} key={version}>
                     {Children.map(children, input => (
                         <FormInput
