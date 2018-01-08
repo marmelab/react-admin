@@ -7,7 +7,10 @@ import {
     CRUD_GET_ONE_SUCCESS,
     CRUD_CREATE_SUCCESS,
     CRUD_UPDATE_SUCCESS,
+    CRUD_BULK_ACTION_SUCCESS,
 } from '../../../../actions/dataActions';
+
+import { DELETE } from '../../../../dataFetchActions';
 
 import getFetchedAt from '../../../../util/getFetchedAt';
 
@@ -27,6 +30,8 @@ export const addRecordIdsFactory = getFetchedAt => (
 };
 
 const addRecordIds = addRecordIdsFactory(getFetchedAt);
+const deleteRecordIds = (previousState, ids) =>
+    previousState.filter(id => !ids.find(it => it == id)); // eslint-disable-line eqeqeq
 
 export default resource => (
     previousState = [],
@@ -51,24 +56,36 @@ export default resource => (
         case CRUD_UPDATE_SUCCESS:
             return addRecordIds([payload.data.id], previousState);
         case CRUD_DELETE_SUCCESS: {
-            const index = previousState
-                .map(el => el == requestPayload.id) // eslint-disable-line eqeqeq
-                .indexOf(true);
-            if (index === -1) {
-                return previousState;
-            }
-            const newState = [
-                ...previousState.slice(0, index),
-                ...previousState.slice(index + 1),
-            ];
+            const newState = deleteRecordIds(previousState, [
+                requestPayload.id,
+            ]);
 
-            Object.defineProperty(
-                newState,
-                'fetchedAt',
-                previousState.fetchedAt
-            );
+            Object.defineProperty(newState, 'fetchedAt', {
+                value: previousState.fetchedAt,
+            });
 
             return newState;
+        }
+        case CRUD_BULK_ACTION_SUCCESS: {
+            if (DELETE === meta.cacheAction) {
+                const successfulRemovedIds = payload.data
+                    .map(
+                        (record, index) =>
+                            record.resolved ? requestPayload.ids[index] : false
+                    )
+                    .filter(t => t);
+
+                const newState = deleteRecordIds(
+                    previousState,
+                    successfulRemovedIds
+                );
+
+                Object.defineProperty(newState, 'fetchedAt', {
+                    value: previousState.fetchedAt,
+                });
+                return newState;
+            }
+            return previousState;
         }
         default:
             return previousState;
