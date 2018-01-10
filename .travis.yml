@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - '8.9.3'
+  - '8.9.4'
 env:
     global:
         - CHROME_BIN="chromium-browser"
