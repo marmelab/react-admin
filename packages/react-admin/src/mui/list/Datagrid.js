@@ -20,9 +20,9 @@ const styles = {
         '&:first-child': {
             padding: '0 0 0 12px',
         },
-        select: {
-            padding: 0,
-        },
+    },
+    headerSelectCell: {
+        width: '3em',
     },
     row: {},
     rowEven: {},
@@ -33,6 +33,9 @@ const styles = {
         '&:first-child': {
             whiteSpace: 'normal',
         },
+    },
+    rowSelectCell: {
+        width: '3em',
     },
 };
 
@@ -106,7 +109,10 @@ class Datagrid extends Component {
                                 ids={ids}
                                 selection={selection}
                                 selectionMode={selectionMode}
-                                className={classes.headerCell}
+                                className={classnames(
+                                    classes.headerCell,
+                                    classes.headerSelectCell
+                                )}
                                 resource={resource}
                             />
                         )}

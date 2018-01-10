@@ -39,7 +39,10 @@ const DatagridBody = ({
                         selection={selection}
                         selectionMode={selectionMode}
                         resource={resource}
-                        className={classes.rowCell}
+                        className={classnames(
+                            classes.rowCell,
+                            classes.rowSelectCell
+                        )}
                     />
                 )}
                 {React.Children.map(
