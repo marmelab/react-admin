@@ -6,7 +6,7 @@ let listeningServer;
 
 before(
     () =>
-        new Promise(resolve => {
+        new Promise((resolve, reject) => {
             const server = express();
             server.use(
                 '/',
@@ -14,18 +14,32 @@ before(
                     path.join(__dirname, '../../packages/ra-example')
                 )
             );
-            listeningServer = server.listen(8083, resolve);
+
+            listeningServer = server.listen(8083, err => {
+                if (err) {
+                    return reject(err);
+                }
+
+                resolve();
+            });
         })
 );
 
-before(() =>
-    driver
-        .manage()
-        .window()
-        .setSize(1200, 800)
-);
+before(() => {
+    try {
+        return driver
+            .manage()
+            .window()
+            .setSize(1200, 800)
+            .catch(error => {
+                console.error(error);
+            });
+    } catch (error) {
+        console.error(error);
+    }
+});
 
-after(async () => {
+after(() => {
     listeningServer.close();
     return driver.quit();
 });
