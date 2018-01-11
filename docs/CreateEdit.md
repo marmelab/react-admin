@@ -318,18 +318,18 @@ const number = value => value && isNaN(Number(value)) ? 'Must be a number' : und
 const minValue = min => value =>
   value && value < min ? `Must be at least ${min}` : undefined;
 
-const ageValidation = (value, values) => {
+const ageValidation = (value, allValues) => {
     if (!value) {
         return 'The age is required';
     }
-    if (values.age < 18) {
+    if (value < 18) {
         return 'Must be over 18';
     }
     return [];
 }
 
 const validateFirstName = [required, maxLength(15)];
-const validateAge = [required, number, minValue(18)];
+const validateAge = [required, number, ageValidation];
 
 export const UserCreate = (props) => (
     <Create {...props}>
