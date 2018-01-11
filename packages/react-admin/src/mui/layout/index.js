@@ -5,6 +5,7 @@ export DashboardMenuItem from './DashboardMenuItem';
 export Header from './Header';
 export Layout from './Layout';
 export Loading from './Loading';
+export LinearProgress from './LinearProgress';
 export LoadingIndicator from './LoadingIndicator';
 export Menu from './Menu';
 export MenuItemLink from './MenuItemLink';
