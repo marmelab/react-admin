@@ -38,7 +38,7 @@ describe('<SelectInput />', () => {
                 ]}
             />
         );
-        const MenuItemElements = wrapper.find('withStyles(MenuItem)');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         assert.equal(MenuItemElements.length, 2);
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
@@ -59,7 +59,7 @@ describe('<SelectInput />', () => {
                 ]}
             />
         );
-        const MenuItemElements = wrapper.find('withStyles(MenuItem)');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         assert.equal(MenuItemElements.length, 3);
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), null);
@@ -76,7 +76,7 @@ describe('<SelectInput />', () => {
                 ]}
             />
         );
-        const MenuItemElements = wrapper.find('withStyles(MenuItem)');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         assert.equal(MenuItemElements.length, 2);
     });
 
@@ -88,7 +88,7 @@ describe('<SelectInput />', () => {
                 choices={[{ foobar: 'M', name: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find('withStyles(MenuItem)');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
         assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
@@ -102,7 +102,7 @@ describe('<SelectInput />', () => {
                 choices={[{ foobar: { id: 'M' }, name: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find('withStyles(MenuItem)');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
         assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
@@ -116,7 +116,7 @@ describe('<SelectInput />', () => {
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find('withStyles(MenuItem)');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
         assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
@@ -130,7 +130,7 @@ describe('<SelectInput />', () => {
                 choices={[{ id: 'M', foobar: { name: 'Male' } }]}
             />
         );
-        const MenuItemElements = wrapper.find('withStyles(MenuItem)');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
         assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
@@ -144,7 +144,7 @@ describe('<SelectInput />', () => {
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find('withStyles(MenuItem)');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
         assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
@@ -159,7 +159,7 @@ describe('<SelectInput />', () => {
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find('withStyles(MenuItem)');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
         assert.equal(MenuItemElement1.childAt(0).type(), Foobar);
@@ -180,7 +180,7 @@ describe('<SelectInput />', () => {
                 translate={x => `**${x}**`}
             />
         );
-        const MenuItemElements = wrapper.find('withStyles(MenuItem)');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
         assert.equal(MenuItemElement1.childAt(0).text(), '**Male**');
@@ -198,7 +198,7 @@ describe('<SelectInput />', () => {
                 translateChoice={false}
             />
         );
-        const MenuItemElements = wrapper.find('withStyles(MenuItem)');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
         assert.equal(MenuItemElement1.childAt(0).text(), 'Male');

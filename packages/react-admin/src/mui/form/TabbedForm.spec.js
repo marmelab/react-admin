@@ -20,7 +20,7 @@ describe('<TabbedForm />', () => {
                 <FormTab />
             </TabbedForm>
         );
-        const tabsContainer = wrapper.find('withStyles(Tabs)');
+        const tabsContainer = wrapper.find('WithStyles(Tabs)');
         assert.equal(tabsContainer.length, 1);
         const tabs = wrapper.find('FormTab');
         assert.equal(tabs.length, 1);
@@ -38,7 +38,7 @@ describe('<TabbedForm />', () => {
             </TabbedForm>
         );
 
-        const toolbar = wrapper.find('withStyles(Toolbar)');
+        const toolbar = wrapper.find('WithStyles(Toolbar)');
         assert.equal(toolbar.length, 1);
     });
 
@@ -53,7 +53,7 @@ describe('<TabbedForm />', () => {
                 tabsWithErrors={[]}
             />
         );
-        const button1 = wrapper1.find('withStyles(Toolbar)');
+        const button1 = wrapper1.find('WithStyles(Toolbar)');
         assert.equal(button1.prop('submitOnEnter'), false);
 
         const wrapper2 = shallow(
@@ -65,7 +65,7 @@ describe('<TabbedForm />', () => {
                 tabsWithErrors={[]}
             />
         );
-        const button2 = wrapper2.find('withStyles(Toolbar)');
+        const button2 = wrapper2.find('WithStyles(Toolbar)');
         assert.strictEqual(button2.prop('submitOnEnter'), true);
     });
 
@@ -81,7 +81,7 @@ describe('<TabbedForm />', () => {
                 <FormTab label="tab2" />
             </TabbedForm>
         );
-        const tabs = wrapper.find('withStyles(Tab)');
+        const tabs = wrapper.find('WithStyles(Tab)');
         const tab1 = tabs.at(0);
         const tab2 = tabs.at(1);
 
@@ -101,7 +101,7 @@ describe('<TabbedForm />', () => {
                 <FormTab label="tab2" />
             </TabbedForm>
         );
-        const tabs = wrapper.find('withStyles(Tab)');
+        const tabs = wrapper.find('WithStyles(Tab)');
         const tab1 = tabs.at(0);
         const tab2 = tabs.at(1);
 

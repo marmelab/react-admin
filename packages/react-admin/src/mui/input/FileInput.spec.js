@@ -321,7 +321,7 @@ describe('<FileInput />', () => {
             </FileInput>
         );
 
-        const inputPreview = wrapper.find('withStyles(FileInputPreview)');
+        const inputPreview = wrapper.find('WithStyles(FileInputPreview)');
         inputPreview.at(1).prop('onRemove')();
         wrapper.update();
 

@@ -23,10 +23,10 @@ describe('<CheckboxGroupInput />', () => {
     it('should use a mui Checkbox', () => {
         const wrapper = shallow(<CheckboxGroupInput {...defaultProps} />);
         const CheckboxElement = wrapper
-            .find('withStyles(FormControlLabel)')
+            .find('WithStyles(FormControlLabel)')
             .shallow()
             .dive()
-            .find('withStyles(Checkbox)');
+            .find('WithStyles(Checkbox)');
         assert.equal(CheckboxElement.length, 1);
     });
 
@@ -38,10 +38,10 @@ describe('<CheckboxGroupInput />', () => {
             />
         );
         const CheckboxElement = wrapper
-            .find('withStyles(FormControlLabel)')
+            .find('WithStyles(FormControlLabel)')
             .shallow()
             .dive()
-            .find('withStyles(Checkbox)')
+            .find('WithStyles(Checkbox)')
             .first();
         assert.equal(CheckboxElement.prop('checked'), true);
     });
@@ -56,7 +56,7 @@ describe('<CheckboxGroupInput />', () => {
                 ]}
             />
         );
-        const CheckboxElements = wrapper.find('withStyles(FormControlLabel)');
+        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
         assert.equal(CheckboxElements.length, 2);
         const CheckboxElement1 = CheckboxElements.first();
         assert.equal(CheckboxElement1.prop('value'), 'ang');
@@ -74,7 +74,7 @@ describe('<CheckboxGroupInput />', () => {
                 choices={[{ foobar: 'foo', name: 'Bar' }]}
             />
         );
-        const CheckboxElements = wrapper.find('withStyles(FormControlLabel)');
+        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
         const CheckboxElement1 = CheckboxElements.first();
         assert.equal(CheckboxElement1.prop('value'), 'foo');
         assert.equal(CheckboxElement1.prop('label'), 'Bar');
@@ -88,7 +88,7 @@ describe('<CheckboxGroupInput />', () => {
                 choices={[{ foobar: { id: 'foo' }, name: 'Bar' }]}
             />
         );
-        const CheckboxElements = wrapper.find('withStyles(FormControlLabel)');
+        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
         const CheckboxElement1 = CheckboxElements.first();
         assert.equal(CheckboxElement1.prop('value'), 'foo');
         assert.equal(CheckboxElement1.prop('label'), 'Bar');
@@ -102,7 +102,7 @@ describe('<CheckboxGroupInput />', () => {
                 choices={[{ id: 'foo', foobar: 'Bar' }]}
             />
         );
-        const CheckboxElements = wrapper.find('withStyles(FormControlLabel)');
+        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
         const CheckboxElement1 = CheckboxElements.first();
         assert.equal(CheckboxElement1.prop('value'), 'foo');
         assert.equal(CheckboxElement1.prop('label'), 'Bar');
@@ -116,7 +116,7 @@ describe('<CheckboxGroupInput />', () => {
                 choices={[{ id: 'foo', foobar: { name: 'Bar' } }]}
             />
         );
-        const CheckboxElements = wrapper.find('withStyles(FormControlLabel)');
+        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
         const CheckboxElement1 = CheckboxElements.first();
         assert.equal(CheckboxElement1.prop('value'), 'foo');
         assert.equal(CheckboxElement1.prop('label'), 'Bar');
@@ -130,7 +130,7 @@ describe('<CheckboxGroupInput />', () => {
                 choices={[{ id: 'foo', foobar: 'Bar' }]}
             />
         );
-        const CheckboxElements = wrapper.find('withStyles(FormControlLabel)');
+        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
         const CheckboxElement1 = CheckboxElements.first();
         assert.equal(CheckboxElement1.prop('value'), 'foo');
         assert.equal(CheckboxElement1.prop('label'), 'Bar');
@@ -145,7 +145,7 @@ describe('<CheckboxGroupInput />', () => {
                 choices={[{ id: 'foo', foobar: 'Bar' }]}
             />
         );
-        const CheckboxElements = wrapper.find('withStyles(FormControlLabel)');
+        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
         const CheckboxElement1 = CheckboxElements.first();
         assert.equal(CheckboxElement1.prop('value'), 'foo');
         assert.deepEqual(
@@ -165,7 +165,7 @@ describe('<CheckboxGroupInput />', () => {
                 translate={x => `**${x}**`}
             />
         );
-        const CheckboxElements = wrapper.find('withStyles(FormControlLabel)');
+        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
         const CheckboxElement1 = CheckboxElements.first();
         assert.equal(CheckboxElement1.prop('label'), '**Male**');
     });
@@ -182,7 +182,7 @@ describe('<CheckboxGroupInput />', () => {
                 translateChoice={false}
             />
         );
-        const CheckboxElements = wrapper.find('withStyles(FormControlLabel)');
+        const CheckboxElements = wrapper.find('WithStyles(FormControlLabel)');
         const CheckboxElement1 = CheckboxElements.first();
         assert.equal(CheckboxElement1.prop('label'), 'Male');
     });

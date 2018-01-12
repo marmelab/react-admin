@@ -36,7 +36,7 @@ describe('<List />', () => {
             </List>
         );
         const textElement = wrapper
-            .find('withStyles(CardContent)')
+            .find('WithStyles(CardContent)')
             .children()
             .children();
         assert.equal(textElement.text(), 'ra.navigation.no_results');

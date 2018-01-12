@@ -21,10 +21,10 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyField>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
+        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 1);
         const SingleFieldListElement = wrapper.find(
-            'withStyles(SingleFieldList)'
+            'WithStyles(SingleFieldList)'
         );
         assert.equal(SingleFieldListElement.length, 0);
     });
@@ -50,10 +50,10 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyField>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
+        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find(
-            'withStyles(SingleFieldList)'
+            'WithStyles(SingleFieldList)'
         );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
@@ -78,10 +78,10 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyField>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
+        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find(
-            'withStyles(SingleFieldList)'
+            'WithStyles(SingleFieldList)'
         );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
@@ -113,7 +113,7 @@ describe('<ReferenceManyField />', () => {
         const ProgressElements = wrapper.find('widthStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find(
-            'withStyles(SingleFieldList)'
+            'WithStyles(SingleFieldList)'
         );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
@@ -145,10 +145,10 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyField>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
+        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find(
-            'withStyles(SingleFieldList)'
+            'WithStyles(SingleFieldList)'
         );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');

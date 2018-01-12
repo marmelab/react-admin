@@ -20,9 +20,9 @@ describe('<Pagination />', () => {
                 .setProps({ width: 'xs' })
                 .shallow()
                 .shallow();
-            const iconButtons = wrapper.find('withStyles(IconButton)');
+            const iconButtons = wrapper.find('WithStyles(IconButton)');
             assert.equal(iconButtons.length, 2);
-            const flatButtons = wrapper.find('withStyles(Button)');
+            const flatButtons = wrapper.find('WithStyles(Button)');
             assert.equal(flatButtons.length, 0);
         });
         it('should render only the text when no pagination is necessary', () => {
@@ -40,9 +40,9 @@ describe('<Pagination />', () => {
                 .setProps({ width: 'xs' })
                 .shallow()
                 .shallow();
-            const iconButtons = wrapper.find('withStyles(IconButton)');
+            const iconButtons = wrapper.find('WithStyles(IconButton)');
             assert.equal(iconButtons.length, 0);
-            const typography = wrapper.find('withStyles(Typography)');
+            const typography = wrapper.find('WithStyles(Typography)');
             assert.equal(
                 typography
                     .shallow()
@@ -67,9 +67,9 @@ describe('<Pagination />', () => {
                 .shallow()
                 .shallow()
                 .shallow();
-            const iconButtons = wrapper.find('withStyles(IconButton)');
+            const iconButtons = wrapper.find('WithStyles(IconButton)');
             assert.equal(iconButtons.length, 0);
-            const flatButtons = wrapper.find('withStyles(Button)');
+            const flatButtons = wrapper.find('WithStyles(Button)');
             assert.equal(flatButtons.length, 5);
         });
         it('should render only the text when no pagination is necessary', () => {
@@ -86,9 +86,9 @@ describe('<Pagination />', () => {
                 .shallow()
                 .shallow()
                 .shallow();
-            const flatButtons = wrapper.find('withStyles(Button)');
+            const flatButtons = wrapper.find('WithStyles(Button)');
             assert.equal(flatButtons.length, 0);
-            const typography = wrapper.find('withStyles(Typography)');
+            const typography = wrapper.find('WithStyles(Typography)');
             assert.equal(
                 typography
                     .shallow()

@@ -21,7 +21,7 @@ describe('<DateInput />', () => {
             <DateInput source="foo" input={input} meta={{}} />
         )
             .shallow()
-            .find('withStyles(Input)')
+            .find('WithStyles(Input)')
             .shallow()
             .shallow()
             .find('input');
