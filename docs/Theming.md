@@ -486,3 +486,33 @@ You can override the notification duration by setting the `autoHideDuration` pro
 ```
 
 **Tip**: if you use the `showNotification` action, then you can define `autoHideDuration` per message as the third parameter of the `showNotification` action creator.
+
+
+## Loading
+
+Display a circular progress component with optional messages. Display the same loading component as `react-admin` on custom pages for consistency. 
+
+Supported props: 
+
+Prop | Type | Default | Descriptions
+---|---|---|---
+`loadingPrimary` |`String` | `ra.page.loading` | Label to use for primary loading message
+`loadingSecondary` |`String` | `ra.message.loading` | Label to use for secondary loading message
+
+Usage:
+
+```jsx 
+    <Loading loadingPrimary="app.page.loading" loadingSecondary="app.message.loading" />
+``` 
+
+## LinearProgress
+
+Display a linear progress component. Display the same loading component as `react-admin` on custom inputs for consistency. 
+
+Usage:
+
+```jsx 
+    ({ data, ...props }) => !data? 
+        <LinearProgress /> : 
+        <MyInput data={data} />        
+``` 

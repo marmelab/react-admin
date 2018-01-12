@@ -49,6 +49,7 @@ title: "Reference"
 * [`<FunctionField>`](./Fields.md#functionfield)
 * `<Labeled>`
 * [`<Layout>`](./Admin.md#applayout)
+* [`<Loading>`](./Theming.md#Loading)
 * [`<List>`](./List.md#the-list-component)
 * `<ListButton>`
 * [`<LongTextInput>`](./Inputs.md#longtextinput)
