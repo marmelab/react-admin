@@ -15,7 +15,7 @@ import Toolbar from './Toolbar';
 import getDefaultValues from './getDefaultValues';
 
 const getStyles = theme => ({
-    form: { padding: '0 1em 1em 1em' },
+    form: { padding: '0 1em 3em 1em' },
     // TODO: The color will be taken from another property in MUI 0.19 and later
     errorTabButton: { color: theme.textField.errorColor },
 });
@@ -76,9 +76,9 @@ export class TabbedForm extends Component {
                                         buttonStyle={
                                             tabsWithErrors.includes(
                                                 tab.props.label
-                                            ) && this.state.value !== index ? (
-                                                styles.errorTabButton
-                                            ) : null
+                                            ) && this.state.value !== index
+                                                ? styles.errorTabButton
+                                                : null
                                         }
                                     >
                                         {React.cloneElement(tab, {
