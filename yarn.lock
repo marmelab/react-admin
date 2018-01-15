@@ -4900,32 +4900,7 @@ material-ui-icons@~1.0.0-beta.17:
   dependencies:
     recompose "^0.26.0"
 
-material-ui@~1.0.0-beta.24:
-  version "1.0.0-beta.24"
-  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.24.tgz#a51452d0486f88fd7f13ebed869793f298aa800c"
-  dependencies:
-    babel-runtime "^6.26.0"
-    brcast "^3.0.1"
-    classnames "^2.2.5"
-    deepmerge "^2.0.1"
-    dom-helpers "^3.2.1"
-    hoist-non-react-statics "^2.3.1"
-    jss "^9.3.3"
-    jss-preset-default "^4.0.1"
-    keycode "^2.1.9"
-    lodash "^4.17.4"
-    normalize-scroll-left "^0.1.2"
-    prop-types "^15.6.0"
-    react-event-listener "^0.5.1"
-    react-jss "^8.1.0"
-    react-popper "^0.7.4"
-    react-scrollbar-size "^2.0.2"
-    react-transition-group "^2.2.1"
-    recompose "^0.26.0"
-    scroll "^2.0.1"
-    warning "^3.0.0"
-
-material-ui@~1.0.0-beta.27:
+material-ui@1.0.0-beta.27:
   version "1.0.0-beta.27"
   resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.27.tgz#f3073b7acffebd1fc6d0339a3260d4555445daf7"
   dependencies:
@@ -4944,6 +4919,31 @@ material-ui@~1.0.0-beta.27:
     jss-vendor-prefixer "^7.0.0"
     keycode "^2.1.9"
     lodash "^4.2.0"
+    normalize-scroll-left "^0.1.2"
+    prop-types "^15.6.0"
+    react-event-listener "^0.5.1"
+    react-jss "^8.1.0"
+    react-popper "^0.7.4"
+    react-scrollbar-size "^2.0.2"
+    react-transition-group "^2.2.1"
+    recompose "^0.26.0"
+    scroll "^2.0.1"
+    warning "^3.0.0"
+
+material-ui@~1.0.0-beta.24:
+  version "1.0.0-beta.24"
+  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.24.tgz#a51452d0486f88fd7f13ebed869793f298aa800c"
+  dependencies:
+    babel-runtime "^6.26.0"
+    brcast "^3.0.1"
+    classnames "^2.2.5"
+    deepmerge "^2.0.1"
+    dom-helpers "^3.2.1"
+    hoist-non-react-statics "^2.3.1"
+    jss "^9.3.3"
+    jss-preset-default "^4.0.1"
+    keycode "^2.1.9"
+    lodash "^4.17.4"
     normalize-scroll-left "^0.1.2"
     prop-types "^15.6.0"
     react-event-listener "^0.5.1"
