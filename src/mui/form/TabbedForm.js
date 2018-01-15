@@ -76,9 +76,9 @@ export class TabbedForm extends Component {
                                         buttonStyle={
                                             tabsWithErrors.includes(
                                                 tab.props.label
-                                            ) && this.state.value !== index
-                                                ? styles.errorTabButton
-                                                : null
+                                            ) && this.state.value !== index ? (
+                                                styles.errorTabButton
+                                            ) : null
                                         }
                                     >
                                         {React.cloneElement(tab, {
