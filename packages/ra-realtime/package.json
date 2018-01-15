@@ -27,7 +27,15 @@
     "lodash.merge": "~4.6.0",
     "lodash.omit": "~4.5.0",
     "lodash.pick": "~4.4.0",
-    "lodash.pickby": "~4.6.0",
+    "lodash.pickby": "~4.6.0"
+  },
+  "peerDependencies": {
+    "react-admin": "^2.0.0-beta1",
+    "react-router": "~4.2.0",
+    "react-router-redux": "~5.0.0-alpha.6",
+    "redux-saga": "~0.15.6"
+  },
+  "devDependencies": {
     "react-admin": "^2.0.0-beta1",
     "react-router": "~4.2.0",
     "react-router-redux": "~5.0.0-alpha.6",

@@ -35,12 +35,12 @@
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "peerDependencies": {
         "react": "^15.4.0 || ~16.0.0",
+        "react-admin": "^2.0.0-beta1",
         "react-dom": "^15.4.0 || ~16.0.0"
     },
     "dependencies": {
         "lodash.debounce": "~4.0.8",
         "prop-types": "~15.5.7",
-        "quill": "~1.1.9",
-        "react-admin": "^2.0.0-beta1"
+        "quill": "~1.1.9"
     }
 }

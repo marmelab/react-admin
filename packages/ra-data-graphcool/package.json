@@ -29,7 +29,12 @@
     "graphql-tag": "~2.4.2",
     "lodash.merge": "~4.6.0",
     "pluralize": "~7.0.0",
-    "ra-data-graphql": "^2.0.0-beta1",
+    "ra-data-graphql": "^2.0.0-beta1"
+  },
+  "peerDependencies": {
+    "react-admin": "^2.0.0-beta1"
+  },
+  "devDependencies": {
     "react-admin": "^2.0.0-beta1"
   }
 }

@@ -10,11 +10,11 @@
   "license": "MIT",
   "dependencies": {
     "lodash.get": "~4.4.2",
-    "prop-types": "~15.6.0",
-    "react-admin": "^2.0.0-beta1"
+    "prop-types": "~15.6.0"
   },
   "peerDependencies": {
     "react": "^15.6.2",
-    "react-dom": "^15.6.2"
+    "react-dom": "^15.6.2",
+    "react-admin": "^2.0.0-beta1"
   }
 }
