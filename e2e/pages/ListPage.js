@@ -1,4 +1,4 @@
-import { By, until } from 'selenium-webdriver';
+import { By, until, Key } from 'selenium-webdriver';
 
 export default url => driver => ({
     elements: {
@@ -9,6 +9,8 @@ export default url => driver => ({
         filter: name => By.css(`.filter-field[data-source='${name}'] input`),
         filterMenuItems: By.css(`.new-filter-item`),
         menuItems: By.css(`[role=menuitem`),
+        filterError: source =>
+            By.css(`.filter-field[data-source="${source}"] p`),
         filterMenuItem: source =>
             By.css(`.new-filter-item[data-key="${source}"]`),
         hideFilterButton: source =>
@@ -161,7 +163,12 @@ export default url => driver => ({
         if (clearPreviousValue) {
             filterField.clear();
         }
-        filterField.sendKeys(value);
+        if (clearPreviousValue && '' === value) {
+            // Ensure onChange is called
+            filterField.sendKeys(value, Key.TAB);
+        } else {
+            filterField.sendKeys(value);
+        }
         driver.sleep(500);
         return this.waitUntilDataLoaded();
     },
@@ -183,6 +190,10 @@ export default url => driver => ({
         );
         hideFilterButton.click();
         return this.waitUntilDataLoaded(); // wait for debounce and reload
+    },
+
+    getFilterError(name) {
+        return driver.findElement(this.elements.filterError(name)).getText();
     },
 
     logout() {

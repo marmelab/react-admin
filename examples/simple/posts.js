@@ -41,6 +41,7 @@ import {
     TextField,
     TextInput,
     Toolbar,
+    minLength,
     minValue,
     number,
     required,
@@ -76,6 +77,7 @@ const PostFilter = props => (
         <TextInput
             source="title"
             defaultValue="Qui tempore rerum et voluptates"
+            validate={minLength(2)}
         />
         <QuickFilter
             label="resources.posts.fields.commentable"

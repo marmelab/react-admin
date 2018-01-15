@@ -255,10 +255,15 @@ It does so by inspecting its `context` prop.
 
 **Tip**: Don't mix up this `filters` prop, expecting a React element, with the `filter` props, which expects an object to define permanent filters (see below).
 
+#### Styling
 The `Filter` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui-next.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
 
 * `form`: applied to the root element when rendering as a form.
 * `button`: applied to the root element when rendering as a button.
+
+#### Validation
+The `Filter` component accepts a `validate` prop to validate the filter values before a list is filtered. Field level validations are supported as well. 
+For more information on validation, see: [`<SimpleForm>`](./CreateEdit.html#validation) 
 
 ### Records Per Page
 

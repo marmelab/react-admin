@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import debounce from 'lodash.debounce';
+
 import isEqual from 'lodash.isequal';
 import { withStyles } from 'material-ui/styles';
 
@@ -23,20 +23,14 @@ export class Filter extends Component {
         this.filters = nextProps.filterValues;
     }
 
-    componentWillUnmount() {
-        if (this.props.setFilters) {
-            this.setFilters.cancel();
-        }
-    }
-
-    setFilters = debounce(filters => {
-        if (!isEqual(filters, this.filters)) {
+    setFilters = filters => {
+        const filtersWithoutEmpty = removeEmpty(filters);
+        if (!isEqual(filtersWithoutEmpty, this.filters)) {
             // fix for redux-form bug with onChange and enableReinitialize
-            const filtersWithoutEmpty = removeEmpty(filters);
             this.props.setFilters(filtersWithoutEmpty);
             this.filters = filtersWithoutEmpty;
         }
-    }, this.props.debounce);
+    };
 
     renderButton() {
         const {
@@ -69,7 +63,6 @@ export class Filter extends Component {
         const {
             classes = {},
             context,
-            debounce,
             resource,
             children,
             hideFilter,
@@ -79,7 +72,6 @@ export class Filter extends Component {
             setFilters,
             ...rest
         } = this.props;
-
         return (
             <FilterForm
                 className={classes.form}
@@ -105,7 +97,7 @@ Filter.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     context: PropTypes.oneOf(['form', 'button']),
-    debounce: PropTypes.number.isRequired,
+    debounce: PropTypes.number,
     displayedFilters: PropTypes.object,
     filterValues: PropTypes.object,
     hideFilter: PropTypes.func,
