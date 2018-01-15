@@ -7,7 +7,7 @@ install: package.json ## install dependencies
 	@yarn
 
 run: ## run the example
-	@cd packages/ra-example && ./node_modules/.bin/webpack-dev-server --hot --inline --config ./webpack.config.js
+	@cd examples/simple && ./node_modules/.bin/webpack-dev-server --hot --inline --config ./webpack.config.js
 
 build-react-admin:
 	@rm -rf ./packages/react-admin/lib
