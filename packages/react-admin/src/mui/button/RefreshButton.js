@@ -25,7 +25,7 @@ class RefreshButton extends Component {
         const { label, refreshView, ...rest } = this.props;
 
         return (
-            <Button onClick={this.handleClick} {...rest}>
+            <Button label={label} onClick={this.handleClick} {...rest}>
                 <NavigationRefresh />
             </Button>
         );
