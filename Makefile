@@ -7,7 +7,7 @@ install: package.json ## install dependencies
 	@yarn
 
 run: ## run the example
-	@cd packages/ra-example && ./node_modules/.bin/webpack-dev-server --hot --inline --config ./webpack.config.js
+	@cd examples/simple && ./node_modules/.bin/webpack-dev-server --hot --inline --config ./webpack.config.js
 
 build-react-admin:
 	@rm -rf ./packages/react-admin/lib
@@ -51,7 +51,7 @@ lint: ## lint the code and check coding conventions
 	@"./node_modules/.bin/eslint" ./packages/react-admin/src/
 
 prettier: ## prettify the source code using prettier
-	@./node_modules/.bin/prettier-eslint --write --list-different  "packages/react-admin/src/**/*.js" "packages/ra-example/**/*.js"
+	@./node_modules/.bin/prettier-eslint --write --list-different  "packages/react-admin/src/**/*.js" "examples/**/*.js"
 
 test: build test-unit lint test-e2e ## launch all tests
 
