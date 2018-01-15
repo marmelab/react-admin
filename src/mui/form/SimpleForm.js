@@ -7,7 +7,7 @@ import getDefaultValues from './getDefaultValues';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
 
-const formStyle = { padding: '0 1em 1em 1em' };
+const formStyle = { padding: '0 1em 3em 1em' };
 
 export class SimpleForm extends Component {
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
