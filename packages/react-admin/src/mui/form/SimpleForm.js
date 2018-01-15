@@ -15,7 +15,7 @@ const styles = theme => ({
         [theme.breakpoints.up('sm')]: {
             padding: '0 1em 1em 1em',
         },
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('xs')]: {
             padding: '0 1em 5em 1em',
         },
     },

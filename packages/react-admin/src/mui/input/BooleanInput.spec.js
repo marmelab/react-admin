@@ -7,10 +7,10 @@ import { BooleanInput } from './BooleanInput';
 describe('<BooleanInput />', () => {
     it('should render as a mui Toggle', () => {
         const wrapper = shallow(<BooleanInput source="foo" input={{}} />)
-            .find('withStyles(FormControlLabel)')
+            .find('WithStyles(FormControlLabel)')
             .shallow()
             .dive();
-        const choices = wrapper.find('withStyles(Switch)');
+        const choices = wrapper.find('WithStyles(Switch)');
         assert.equal(choices.length, 1);
     });
 
@@ -18,27 +18,27 @@ describe('<BooleanInput />', () => {
         const wrapper = shallow(
             <BooleanInput source="foo" input={{ value: true }} />
         )
-            .find('withStyles(FormControlLabel)')
+            .find('WithStyles(FormControlLabel)')
             .shallow()
             .dive();
-        assert.equal(wrapper.find('withStyles(Switch)').prop('checked'), true);
+        assert.equal(wrapper.find('WithStyles(Switch)').prop('checked'), true);
     });
 
     it('should not be checked if the value is false', () => {
         const wrapper = shallow(
             <BooleanInput source="foo" input={{ value: false }} />
         )
-            .find('withStyles(FormControlLabel)')
+            .find('WithStyles(FormControlLabel)')
             .shallow()
             .dive();
-        assert.equal(wrapper.find('withStyles(Switch)').prop('checked'), false);
+        assert.equal(wrapper.find('WithStyles(Switch)').prop('checked'), false);
     });
 
     it('should not be checked if the value is undefined', () => {
         const wrapper = shallow(<BooleanInput source="foo" input={{}} />)
-            .find('withStyles(FormControlLabel)')
+            .find('WithStyles(FormControlLabel)')
             .shallow()
             .dive();
-        assert.equal(wrapper.find('withStyles(Switch)').prop('checked'), false);
+        assert.equal(wrapper.find('WithStyles(Switch)').prop('checked'), false);
     });
 });

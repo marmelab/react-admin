@@ -14,7 +14,7 @@ const styles = theme => ({
         [theme.breakpoints.up('md')]: {
             height: '100%',
         },
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('sm')]: {
             height: '100vh',
             marginTop: '-3em',
         },

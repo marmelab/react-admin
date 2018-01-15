@@ -41,7 +41,7 @@ const styles = theme => ({
             duration: theme.transitions.duration.leavingScreen,
         }),
         height: 'calc(100% - 56px)',
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             content: {
                 height: 'calc(100% - 64px)',
                 marginTop: 64,
@@ -51,12 +51,11 @@ const styles = theme => ({
             marginTop: '4em',
         },
         [theme.breakpoints.down('sm')]: {
-            marginTop: '3em',
             padding: 0,
         },
     },
     contentShift: {
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             marginLeft: DRAWER_WIDTH,
             transition: theme.transitions.create('margin', {
                 easing: theme.transitions.easing.easeOut,
@@ -83,7 +82,7 @@ const Layout = ({
     <MuiThemeProvider theme={createMuiTheme(theme)}>
         <div className={classnames(classes.root, className)} {...rest}>
             <div className={classes.appFrame}>
-                <Hidden smDown>
+                <Hidden xsDown>
                     <AppBar title={title} open={open} />
                 </Hidden>
                 <Sidebar>

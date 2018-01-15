@@ -23,7 +23,7 @@ describe('<ReferenceArrayField />', () => {
                 </SingleFieldList>
             </ReferenceArrayField>
         );
-        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
+        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 1);
         const SingleFieldListElement = wrapper.find('SingleFieldList');
         assert.equal(SingleFieldListElement.length, 0);
@@ -50,10 +50,10 @@ describe('<ReferenceArrayField />', () => {
                 </SingleFieldList>
             </ReferenceArrayField>
         );
-        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
+        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find(
-            'withStyles(SingleFieldList)'
+            'WithStyles(SingleFieldList)'
         );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
@@ -78,10 +78,10 @@ describe('<ReferenceArrayField />', () => {
                 </SingleFieldList>
             </ReferenceArrayField>
         );
-        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
+        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find(
-            'withStyles(SingleFieldList)'
+            'WithStyles(SingleFieldList)'
         );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
@@ -110,10 +110,10 @@ describe('<ReferenceArrayField />', () => {
                 </SingleFieldList>
             </ReferenceArrayField>
         );
-        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
+        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find(
-            'withStyles(SingleFieldList)'
+            'WithStyles(SingleFieldList)'
         );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
@@ -145,10 +145,10 @@ describe('<ReferenceArrayField />', () => {
                 </SingleFieldList>
             </ReferenceArrayField>
         );
-        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
+        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find(
-            'withStyles(SingleFieldList)'
+            'WithStyles(SingleFieldList)'
         );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
@@ -178,10 +178,10 @@ describe('<ReferenceArrayField />', () => {
                 </SingleFieldList>
             </ReferenceArrayField>
         );
-        const ProgressElements = wrapper.find('withStyles(LinearProgress)');
+        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
         const SingleFieldListElement = wrapper.find(
-            'withStyles(SingleFieldList)'
+            'WithStyles(SingleFieldList)'
         );
         assert.equal(SingleFieldListElement.at(0).prop('className'), 'myClass');
     });
