@@ -20,6 +20,7 @@ const sanitizeRestProps = ({
     translate,
     userLogout,
     locale,
+    redirectTo,
     ...rest
 }) => rest;
 /**
@@ -43,15 +44,20 @@ Logout.propTypes = {
     className: PropTypes.string,
     translate: PropTypes.func,
     userLogout: PropTypes.func,
+    redirectTo: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
     theme: state.theme,
 });
 
+const mapDispatchToProps = (dispatch, { redirectTo }) => ({
+    userLogout: () => dispatch(userLogoutAction(redirectTo)),
+});
+
 const enhance = compose(
     translate,
-    connect(mapStateToProps, { userLogout: userLogoutAction }),
+    connect(mapStateToProps, mapDispatchToProps),
     withStyles(styles)
 );
 

@@ -315,3 +315,24 @@ export default withRouter(MyPage);
 {% endraw %}
 
 The `<Authenticated>` component calls the `authClient` function with `AUTH_CHECK` and `authParams`. If the response is a fulfilled promise, the child component is rendered. If the response is a rejected promise, `<Authenticated>` redirects to the login form. Upon successful login, the user is redirected to the initial location (that's why it's necessary to get the location from the router).
+
+
+## Redirect After Logout
+
+By default react-admin will redirect to '/login' after the user logs out. This can be changed by adding a `redirectTo` prop to the `logoutButton` of a customMenu
+```jsx
+// in src/myMenu.js
+import React from 'react';
+import { connect } from 'react-redux';
+import { MenuItemLink } from 'react-admin';
+
+const Menu = ({ onMenuTap, logout, permissions }) => (
+    <div>
+        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
+        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
+        {React.cloneElement(logout,{
+            redirectTo:'/'
+        })}
+    </div>
+);
+```
