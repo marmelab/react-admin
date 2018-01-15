@@ -1,5 +1,5 @@
 {
-    "name": "ra-example",
+    "name": "simple",
     "private": true,
     "version": "2.0.0-beta1",
     "description": "",
@@ -28,6 +28,7 @@
         "react-dom": "~16.0.0",
         "style-loader": "~0.18.2",
         "webpack": "~3.0.0",
-        "webpack-dev-server": "~2.5.0"
+        "webpack-dev-server": "~2.5.0",
+        "webpack-node-externals": "~1.6.0"
     }
 }

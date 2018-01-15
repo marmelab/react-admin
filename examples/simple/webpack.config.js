@@ -16,16 +16,27 @@ module.exports = {
     },
     resolve: {
         alias: {
-            'react-admin': path.join(__dirname, '..', 'react-admin', 'src'),
+            'react-admin': path.join(
+                __dirname,
+                '..',
+                '..',
+                'packages',
+                'react-admin',
+                'src'
+            ),
             'ra-data-fakerest': path.join(
                 __dirname,
                 '..',
+                '..',
+                'packages',
                 'ra-data-fakerest',
                 'src'
             ),
             'ra-input-rich-text': path.join(
                 __dirname,
                 '..',
+                '..',
+                'packages',
                 'ra-input-rich-text',
                 'src'
             ),
