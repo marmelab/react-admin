@@ -155,7 +155,7 @@ The `<SimpleForm>` renders its child components line by line (within `<div>` com
 Here are all the props accepted by the `<SimpleForm>` component:
 
 * [`defautValue`](#default-values)
-* [`validation`](#validation)
+* [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
 * [`redirect`](#redirection-after-submission)
 * [`toolbar`](#toolbar)
@@ -184,7 +184,7 @@ to change this behaviour you can pass `false` for the `submitOnEnter` property.
 Here are all the props accepted by the `<TabbedForm>` component:
 
 * [`defautValue`](#default-values)
-* [`validation`](#validation)
+* [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
 * [`redirect`](#redirection-after-submission)
 * [`toolbar`](#toolbar)
@@ -405,7 +405,7 @@ export const UserCreate = (props) => (
             <SelectInput label="Sex" source="sex" choices={[
                 { id: 'm', name: 'Male' },
                 { id: 'f', name: 'Female' },
-            ]} validation={validateSex}/>
+            ]} validate={validateSex}/>
         </SimpleForm>
     </Create>
 );

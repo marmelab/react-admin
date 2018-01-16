@@ -54,7 +54,9 @@ const Admin = ({
         initialState,
         compose(
             applyMiddleware(sagaMiddleware, routerMiddleware(routerHistory)),
-            window.devToolsExtension ? window.devToolsExtension() : f => f
+            typeof window !== 'undefined' && window.devToolsExtension
+                ? window.devToolsExtension()
+                : f => f
         )
     );
     sagaMiddleware.run(saga);
