@@ -110,6 +110,7 @@ class Create extends Component {
             resource,
             title,
             translate,
+            record,
             hasList,
             ...rest
         } = this.props;
@@ -147,7 +148,7 @@ class Create extends Component {
                         save: this.save,
                         resource,
                         basePath,
-                        record: {},
+                        record,
                         translate,
                         redirect:
                             typeof children.props.redirect === 'undefined'
@@ -174,7 +175,12 @@ Create.propTypes = {
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func.isRequired,
+    record: PropTypes.object,
     hasList: PropTypes.bool,
+};
+
+Create.defaultProps = {
+    record: {},
 };
 
 function mapStateToProps(state) {
