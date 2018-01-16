@@ -19,7 +19,7 @@ import Login from './mui/auth/Login';
 import Logout from './mui/auth/Logout';
 import {
     TranslationProvider,
-    defaultMessagesProvider,
+    defaultI18nProvider,
     GET_DEFAULT_MESSAGES,
 } from './i18n';
 
@@ -36,14 +36,14 @@ const Admin = ({
     menu = Menu,
     catchAll,
     dataProvider,
-    messagesProvider = defaultMessagesProvider,
+    i18nProvider = defaultI18nProvider,
     theme,
     title = 'React Admin',
     loginPage,
     logoutButton,
     initialState,
 }) => {
-    const defaultMessages = messagesProvider(GET_DEFAULT_MESSAGES, locale);
+    const defaultMessages = i18nProvider(GET_DEFAULT_MESSAGES, { locale });
     const appReducer = createAppReducer(
         customReducers,
         locale,
@@ -55,7 +55,7 @@ const Admin = ({
     const saga = function* rootSaga() {
         yield all(
             [
-                crudSaga(dataProvider, authClient, messagesProvider),
+                crudSaga(dataProvider, authClient, i18nProvider),
                 ...customSagas,
             ].map(fork)
         );
@@ -160,7 +160,7 @@ Admin.propTypes = {
     logoutButton: componentPropType,
     menu: componentPropType,
     dataProvider: PropTypes.func,
-    messagesProvider: PropTypes.func,
+    i18nProvider: PropTypes.func,
     theme: PropTypes.object,
     title: PropTypes.node,
     locale: PropTypes.string,

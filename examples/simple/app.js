@@ -20,8 +20,7 @@ import { UserList, UserEdit, UserCreate, UserIcon, UserShow } from './users';
 
 import data from './data';
 import authClient from './authClient';
-import messagesProvider from './messagesProvider';
-import customSagas from './sagas';
+import i18nProvider from './i18nProvider';
 
 const dataProvider = jsonRestDataProvider(data, true);
 const uploadCapableDataProvider = addUploadFeature(dataProvider);
@@ -37,8 +36,7 @@ render(
     <Admin
         authClient={authClient}
         dataProvider={delayedDataProvider}
-        messagesProvider={messagesProvider}
-        customSagas={customSagas}
+        i18nProvider={i18nProvider}
         title="Example Admin"
         locale="en"
     >
