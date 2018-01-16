@@ -321,7 +321,7 @@ const ageValidation = (value, allValues) => {
     if (!value) {
         return 'The age is required';
     }
-    if (allValues.age < 18) {
+    if (value < 18) {
         return 'Must be over 18';
     }
     return [];
