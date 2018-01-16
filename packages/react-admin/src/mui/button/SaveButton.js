@@ -92,7 +92,11 @@ SaveButton.propTypes = {
     classes: PropTypes.object,
     handleSubmitWithRedirect: PropTypes.func,
     label: PropTypes.string,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
     invalid: PropTypes.bool,
     raised: PropTypes.bool,
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),

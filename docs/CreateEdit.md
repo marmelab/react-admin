@@ -444,6 +444,22 @@ export const PostEdit = (props) => (
 );
 ```
 
+In case when this is not enough you can also use a function. For example if you want set the recently added object as value of reference field in the another object:
+
+```jsx
+const redirect = (basePath, id) => {
+    return `/a/b/c?basePath=${basePath}&id=${id}`;
+};
+    
+export const PostEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm redirect={redirect}>
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
 This affects both the submit button, and the form submission when the user presses `ENTER` in one of the form fields.
 
 ## Toolbar
