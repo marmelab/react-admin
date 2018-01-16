@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
+import isEqual from 'lodash.isequal';
 import AutoComplete from 'material-ui/AutoComplete';
 
 import FieldTitle from '../../util/FieldTitle';
@@ -80,7 +81,10 @@ export class AutocompleteInput extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.input.value !== nextProps.input.value) {
+        if (
+            this.props.input.value !== nextProps.input.value ||
+            !isEqual(this.props.choices, nextProps.choices)
+        ) {
             this.setSearchText(nextProps);
         }
     }
