@@ -21,6 +21,17 @@ const dateFormatter = v => {
     return `${yyyy}-${(pad + MM).slice(-2)}-${(pad + dd).slice(-2)}`;
 };
 
+const sanitizeValue = value => {
+    // null, undefined and empty string values should not go through dateFormatter
+    // otherwise, it returns undefined and will make the input an uncontrolled one.
+    if (value == null || value === '') {
+        return '';
+    }
+
+    const finalValue = typeof value instanceof Date ? value : new Date(value);
+    return dateFormatter(finalValue);
+};
+
 export class DateInput extends Component {
     onChange = event => {
         this.props.input.onChange(event.target.value);
@@ -44,6 +55,7 @@ export class DateInput extends Component {
             );
         }
         const { touched, error } = meta;
+        const value = sanitizeValue(input.value);
 
         return (
             <TextField
@@ -66,11 +78,7 @@ export class DateInput extends Component {
                 }}
                 {...options}
                 {...sanitizeRestProps(rest)}
-                value={dateFormatter(
-                    input.value instanceof Date
-                        ? input.value
-                        : new Date(input.value)
-                )}
+                value={value}
                 onChange={this.onChange}
                 onBlur={this.onBlur}
             />
