@@ -468,7 +468,7 @@ const cardStyle = {
     display: 'inline-block',
     verticalAlign: 'top'
 };
-const CommentGrid = ({ ids, data, basePath }) => (
+const CommentGrid = ({ ids=[], data={}, basePath }) => (
     <div style={{ margin: '1em' }}>
     {ids.map(id =>
         <Card key={id} style={cardStyle}>
@@ -493,10 +493,6 @@ const CommentGrid = ({ ids, data, basePath }) => (
     )}
     </div>
 );
-CommentGrid.defaultProps = {
-    data: {},
-    ids: [],
-};
 
 export const CommentList = (props) => (
     <List title="All comments" {...props}>
