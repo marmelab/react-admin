@@ -121,7 +121,7 @@ You can customize this page to use the component of your choice by passing it as
 // in src/NotFound.js
 import React from 'react';
 import Card, { CardContent } from 'material-ui/Card';
-import { ViewTitle } from 'react-admin/lib/mui';
+import { ViewTitle } from 'react-admin';
 
 export default () => (
     <Card>

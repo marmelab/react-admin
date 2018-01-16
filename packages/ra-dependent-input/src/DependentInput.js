@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { formValueSelector, getFormValues } from 'redux-form';
 import get from 'lodash.get';
-import FormField from 'react-admin/lib/mui/form/FormField';
+import { FormField } from 'react-admin';
 import getValue from './getValue';
 
 const REDUX_FORM_NAME = 'record-form';
