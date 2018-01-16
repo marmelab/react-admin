@@ -16,19 +16,19 @@ describe('<BooleanInput />', () => {
         const wrapper = shallow(
             <BooleanInput source="foo" input={{ value: true }} />
         );
-        assert.equal(wrapper.find('Toggle').prop('defaultToggled'), true);
+        assert.equal(wrapper.find('Toggle').prop('toggled'), true);
     });
 
     it('should not be checked if the value is false', () => {
         const wrapper = shallow(
             <BooleanInput source="foo" input={{ value: false }} />
         );
-        assert.equal(wrapper.find('Toggle').prop('defaultToggled'), false);
+        assert.equal(wrapper.find('Toggle').prop('toggled'), false);
     });
 
     it('should not be checked if the value is undefined', () => {
         const wrapper = shallow(<BooleanInput source="foo" input={{}} />);
-        assert.equal(wrapper.find('Toggle').prop('defaultToggled'), false);
+        assert.equal(wrapper.find('Toggle').prop('toggled'), false);
     });
 
     it('should trigger input.onChange with true after being checked', () => {
