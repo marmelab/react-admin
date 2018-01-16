@@ -35,7 +35,7 @@ class BooleanInput extends Component {
         return (
             <div style={elStyle || styles.block}>
                 <Toggle
-                    defaultToggled={!!input.value}
+                    toggled={!!input.value}
                     onToggle={this.handleToggle}
                     labelStyle={styles.label}
                     style={styles.toggle}
