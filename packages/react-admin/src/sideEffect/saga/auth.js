@@ -13,7 +13,11 @@ import {
     USER_CHECK,
     USER_LOGOUT,
 } from '../../actions/authActions';
-import { FETCH_ERROR } from '../../actions/fetchActions';
+import {
+    FETCH_ERROR,
+    FETCH_ERROR_REJECTED,
+    FETCH_ERROR_RESOLVED,
+} from '../../actions/fetchActions';
 import { AUTH_LOGIN, AUTH_CHECK, AUTH_ERROR, AUTH_LOGOUT } from '../../auth';
 const nextPathnameSelector = state => {
     const locationState = state.routing.location.state;
@@ -82,7 +86,13 @@ export default authClient => {
             case FETCH_ERROR:
                 try {
                     yield call(authClient, AUTH_ERROR, error);
+                    yield put({
+                        type: FETCH_ERROR_RESOLVED,
+                    });
                 } catch (e) {
+                    yield put({
+                        type: FETCH_ERROR_REJECTED,
+                    });
                     yield call(authClient, AUTH_LOGOUT);
                     yield put(push('/login'));
                     yield put(hideNotification());
