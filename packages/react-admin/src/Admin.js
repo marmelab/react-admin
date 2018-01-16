@@ -72,9 +72,9 @@ const Admin = ({
                             <Route
                                 exact
                                 path="/login"
-                                render={({ location }) =>
+                                render={props =>
                                     createElement(loginPage || Login, {
-                                        location,
+                                        ...props,
                                         title,
                                     })}
                             />
@@ -85,10 +85,10 @@ const Admin = ({
                                         key={index}
                                         exact={route.props.exact}
                                         path={route.props.path}
-                                        render={({ location }) => {
+                                        render={props => {
                                             if (route.props.render) {
                                                 return route.props.render({
-                                                    location,
+                                                    ...props,
                                                     title,
                                                 });
                                             }
@@ -96,7 +96,7 @@ const Admin = ({
                                                 return createElement(
                                                     route.props.component,
                                                     {
-                                                        location,
+                                                        ...props,
                                                         title,
                                                     }
                                                 );
