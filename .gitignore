@@ -3,4 +3,5 @@ node_modules
 lib
 es6
 docs/_site/
-packages/ra-example/static
+examples/**/static
+packages/ra-example-shop

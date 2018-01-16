@@ -102,6 +102,80 @@ module.exports = {
             ...
 ```
 
+## `<AutocompleteInput>` no longer accepts a `filter` prop
+
+Material-ui's implementation of the autocomplete input has radically changed. React-admin maintains backwards compatibility, except for the `filter` prop, which no longer makes sense in the new impementation.
+
+## `<Datagrid>` No Longer Accepts `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props
+
+Material-ui's implementation of the `<Table>` component has reduced dramatically. Therefore, all the advanced features of the datagrid are no longer available from react-admin.
+
+If you need a fixed header, row hover, multi-row selection, or any other material-ui 0.x `<Table>` feature, you'll need to implement your own `<Datagrid>` alternative, e.g. using the library recommended by material-ui, [DevExtreme React Grid](https://devexpress.github.io/devextreme-reactive/react/grid/).
+
+## `<DateInput>` Stores a Date String Instead Of a Date Object
+
+The value of the `<DateInput>` used to be a `Date` object. It's now a `String`, i.e. a stringified date. If you used `format` and `parse` to convert a string to a `Date`, you can now remove these props:
+
+```jsx
+// before
+const dateFormatter = v => { // from record to input
+  // v is a string of "YYYY-MM-DD" format
+  const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
+  if (match === null) return;
+  const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
+  if (isNaN(d)) return;
+  return d;
+};
+const dateParser = v => { // from input to record
+  // v is a `Date` object
+  if (!(v instanceof Date) || isNaN(v)) return;
+  const pad = '00';
+  const yy = v.getFullYear().toString();
+  const mm = (v.getMonth() + 1).toString();
+  const dd = v.getDate().toString();
+  return `${yy}-${(pad + mm).slice(-2)}-${(pad + dd).slice(-2)}`;
+};
+<DateInput source="isodate" format={dateFormatter} parse={dateParser} label="ISO date" />
+
+// after
+<DateInput source="isodate" label="ISO date" />
+```
+
+On the other way around, if your data provider expects JavaScript `Date` objects for value, you now need to do the conversion to and from strings using `format` and `parse`:
+
+```jsx
+// before
+<DateInput source="isodate" label="ISO date" />
+
+// after
+const dateFormatter = v => { // from record to input
+  // v is a `Date` object
+  if (!(v instanceof Date) || isNaN(v)) return;
+  const pad = '00';
+  const yy = v.getFullYear().toString();
+  const mm = (v.getMonth() + 1).toString();
+  const dd = v.getDate().toString();
+  return `${yy}-${(pad + mm).slice(-2)}-${(pad + dd).slice(-2)}`;
+};
+const dateParser = v => { // from input to record
+  // v is a string of "YYYY-MM-DD" format
+  const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
+  if (match === null) return;
+  const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
+  if (isNaN(d)) return;
+  return d;
+};
+<DateInput source="isodate" format={dateFormatter} parse={dateParser} label="ISO date" />
+```
+
+## Removed `<DateInput>` `options` props
+
+Material-ui 1.0 doesn't provide a real date picker, so the `options` prop of the `<DateInput>` is no longer supported.
+
+## `<SelectArrayInput>` has been removed
+
+This component relied on [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input) which is not yet fully ported to Material-ui 1.0: it doesn't support the autocomplete feature we need. We will add this component back when `material-ui-chip-input` is ported.
+
 ## CSS Classes Changed
 
 React-admin does not rely heavily on CSS classes. Nevertheless, a few components added CSS classes to facilitate per-field theming: `<SimpleShowLayout>`, `<Tab>`, and `<FormInput>`. These CSS classes used to follow the "aor-" naming pattern. They have all been renamed to use the "ra-" pattern instead. Here is the list of concerned classes:
@@ -139,7 +213,7 @@ export default SexInput;
 // after
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import { addField } from 'admin-on-rest';
+import { addField } from 'react-admin';
 const SexInput = ({ input, meta: { touched, error } }) => (
     <SelectField
         floatingLabelText="Sex"
@@ -169,7 +243,7 @@ SexInput.defaultProps = {
 export default SexInput;
 
 // after
-import { SelectInput } from 'admin-on-rest';
+import { SelectInput } from 'react-admin';
 const choices = [
     { id: 'M', name: 'Male' },
     { id: 'F', name: 'Female' },
@@ -214,4 +288,602 @@ const PostActions = ({ resource, filters, displayedFilters, filterValues, basePa
         <FlatButton primary label="Custom Action" onClick={customAction} />
     </CardActions>
 );
+```
+
+## Customizing styles
+
+Following the same path as Material UI, react-admin now uses [JSS](https://github.com/cssinjs/jss) for styling components instead of the `style` prop. This approach has many benefits, including a smaller DOM, faster rendering, media queries support, and automated browser prefixing.
+
+All react-admin components now accept a `className` prop instead of the `elStyle` prop. But it expects a CSS *class name* instead of a CSS object. To set custom styles through a class name, you must use the [`withStyles` Higher Order Component](https://material-ui-next.com/customization/css-in-js/#api) supplied by Material-UI.
+
+```jsx
+// before
+import { EmailField, List, Datagrid } from 'react-admin';
+
+const UserList = props => (
+    <List {...props}
+>
+        <Datagrid>
+            ...
+            <EmailField source="email" elStyle={{ textDecoration: 'none' }} />
+        </Datagrid>
+    </List>
+);
+export default UserList;
+// renders in the datagrid as
+//<td>
+//    <a style="text-decoration:none" href="mailto:foo@example.com">foo@example.com</a>
+//</td>
+
+// after
+import { EmailField, List, Datagrid } from 'react-admin';
+import { withStyles } from 'material-ui/styles';
+
+const styles = {
+    field: {
+        textDecoration: 'none',
+    },
+};
+
+const UserList = ({ classes, ...props }) => (
+    <List {...props}>
+        <Datagrid>
+           ...
+            <EmailField source="email" className={classes.field} />
+        </Datagrid>
+    </List>
+);
+export default withStyles(styles)(UserList);
+// renders the same in the datagrid 
+// <td>
+//    <a style="text-decoration:none" href="mailto:foo@example.com">foo@example.com</a>
+//</td>
+```
+
+In addition to `elStyle`, Field and Input components used to support a `style` prop to override the styles of the *container element* (the `<td>` in a datagrid). This prop is no longer supported in react-admin. Instead, the `Datagrid` component will check if its children have a `headerClassName` and `cellClassName` props. If they do, it will apply those classes to the table header and cells respectively.
+
+```jsx
+// before
+import { EmailField, List, Datagrid } from 'react-admin';
+
+const UserList = props => (
+    <List {...props}>
+        <Datagrid>
+            <EmailField source="email" style={{ backgroundColor: 'lightgrey' }} elStyle={{ textDecoration: 'none' }} />
+        </Datagrid>
+    </List>
+);
+export default UserList;
+// renders in the datagrid as
+// <td style="background-color:lightgrey">
+//     <a style="text-decoration:none" href="mailto:foo@example.com">
+//         foo@example.com
+//     </a>
+// </td>
+
+// after
+import { EmailField, List, Datagrid } from 'react-admin';
+import { withStyles } from 'material-ui/styles';
+
+const styles = {
+    cell: {
+        backgroundColor: 'lightgrey',
+    },
+    field: {
+        textDecoration: 'none',
+    },
+};
+
+const UserList = ({ classes, ...props }) => (
+    <List {...props}>
+        <Datagrid>
+            <EmailField
+                source="email"
+                cellClassName={classes.cell}
+                className={classes.field}
+            />
+        </Datagrid>
+    </List>
+);
+export default withStyles(styles)(UserList);
+// renders the same in the datagrid
+// <td style="background-color:lightgrey">
+//     <a style="text-decoration:none" href="mailto:foo@example.com">
+//         foo@example.com
+//     </a>
+// </td>
+
+```
+
+Furthermore, some React-admin components such as the `List`, `Filter`, and `Datagrid` also accept a `classes` prop. This prop is injected by the [`withStyles` Higher Order Component](https://material-ui-next.com/customization/css-in-js/#api) and allows you to customize the style of some deep children. See the Theming documentation for details.
+
+**Tip**: When you set the `classes` prop in the `List` or `Datagrid` components, you might see warnings about the `cell` and `field` classes being unknown by those components. Those warnings are not displayed in `production` mode, and are just a way to ensure you know what you're doing. And you can make them disappear by destructuring the `classes` prop:
+
+```jsx
+import { EmailField, List, Datagrid } from 'react-admin';
+import { withStyles } from 'material-ui/styles';
+
+const styles = {
+    header: { fontWeight: 'bold' },
+    actions: { fontWeight: 'bold' },
+    emailCellClassName: {
+        backgroundColor: 'lightgrey',
+    },
+    emailFieldClassName: {
+        textDecoration: 'none',
+    },
+};
+
+export const UserList = ({
+    classes: { emailCellClassName, emailFieldClassName, ...classes },
+    ...props
+}) => (
+    <List
+        {...props}
+        filters={<UserFilter />}
+        sort={{ field: 'name', order: 'ASC' }}
+        classes={classes}
+    >
+        <Datagrid>
+            <EmailField
+                source="email"
+                cellClassName={emailCellClassName}
+                className={emailFieldClassName}
+            />
+        </Datagrid>
+    </List>
+);
+
+// renders in the datagrid as
+<td style="background-color:lightgrey">
+    <a style="text-decoration:none" href="mailto:foo@example.com">
+        foo@example.com
+    </a>
+</td>
+```
+
+Finally, Field and Input components accept a `textAlign` prop, which can be either `left`, or `right`. Through this prop, these components inform their parent component that they look better when aligned to left or right. It's the responsability of the parent component to apply this alignment. For instance, the `NumberField` component has a default value of `right` for the `textAlign` prop, so the `Datagrid` component uses a right alignment in header and table cell - but form components (`SimpleForm` and `TabbedForm`) ignore the prop and display it left aligned.
+
+## Authentication: `<Restricted>` renamed to `<Authenticated>`
+
+The `Restricted` component has been renamed to `Authenticated`. update your `import` statements accordingly:
+
+```jsx
+// before
+// in src/MyPage.js
+import { withRouter } from 'react-router-dom';
+import { Restricted } from 'admin-on-rest';
+
+const MyPage = ({ location }) => (
+    <Restricted authParams={{ foo: 'bar' }} location={location}>
+        <div>
+            ...
+        </div>
+    </Restricted>
+)
+
+export default withRouter(MyPage);
+
+// after
+// in src/MyPage.js
+import { withRouter } from 'react-router-dom';
+import { Authenticated } from 'react-admin';
+
+const MyPage = ({ location }) => (
+    <Authenticated authParams={{ foo: 'bar' }} location={location}>
+        <div>
+            ...
+        </div>
+    </Authenticated>
+)
+
+export default withRouter(MyPage);
+```
+
+## Authorization: `<WithPermission>` and `<SwitchPermissions>` replaced by `<WithPermissions>`
+
+We removed the `WithPermission` and `SwitchPermissions` in favor of a more versatile component: `WithPermissions`. The `WithPermissions` component retrieves permissions by calling the `authClient` with the `AUTH_GET_PERMISSIONS` type. It then passes the permissions to the render callback. 
+
+This component follows the [render callback pattern](https://cdb.reacttraining.com/use-a-render-prop-50de598f11ce). Just like the [React Router `Route`](https://reacttraining.com/react-router/web/api/Route) component, you can pass a render callback to `<WithPermissions>` either as its only child, or via its `render` prop (if both are passed, the `render` prop is used).
+
+If you were using `WithPermission` before, here's how to migrate to `WithPermissions`:
+
+```jsx
+// before
+import React from 'react';
+import { MenuItemLink, WithPermission } from 'admin-on-rest';
+
+export default ({ onMenuTap, logout }) => (
+    <div>
+        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
+        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
+        <WithPermission value="admin">
+            <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+        </WithPermission>
+        {logout}
+    </div>
+);
+
+// after
+import React from 'react';
+import { MenuItemLink, WithPermissions } from 'react-admin';
+
+export default ({ onMenuTap, logout }) => (
+    <div>
+        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
+        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
+        <WithPermissions
+            render={
+            permissions =>
+                permissions === 'admin'
+                ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+                : null
+            }
+        />
+        {/* OR */}
+        <WithPermissions>
+            {permissions =>
+                permissions === 'admin'
+                ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+                : null
+            }
+        />
+        {logout}
+    </div>
+);
+```
+
+If you were using `SwitchPermissions` before, here's how to migrate to `WithPermissions`:
+
+```jsx
+// before
+import React from 'react';
+import BenefitsSummary from './BenefitsSummary';
+import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
+import { ViewTitle, SwitchPermissions, Permission } from 'admin-on-rest';
+
+export default () => (
+    <div>
+        <SwitchPermissions>
+            <Permission value="associate">
+                <BenefitsSummary />
+            </Permission>
+            <Permission value="boss">
+                <BenefitsDetailsWithSensitiveData />
+            </Permission>
+        </SwitchPermissions>
+    </div>
+);
+
+// after
+import React from 'react';
+import BenefitsSummary from './BenefitsSummary';
+import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
+import { ViewTitle, WithPermissions } from 'react-admin';
+
+export default () => (
+    <div>
+        <WithPermissions
+            render={permissions => {
+                if (permissions === 'associate') {
+                    return <BenefitsSummary />;
+                }
+                if (permissions === 'boss') {
+                    return <BenefitsDetailsWithSensitiveData />;
+                }
+            }}
+        />
+    </div>
+);
+```
+
+We also reviewed how permissions are passed to the `List`, `Edit`, `Create`, `Show` and `Delete` components. React-admin now injects the permissions to theses components in the `permissions` props, without having to use the render callback pattern. It should now be easier to customize behaviors and components according to permissions.
+
+Here's how to migrate a `Create` component:
+
+```jsx
+// before
+const UserCreateToolbar = ({ permissions, ...props }) =>
+    <Toolbar {...props}>
+        <SaveButton
+            label="user.action.save_and_show"
+            redirect="show"
+            submitOnEnter={true}
+        />
+        {permissions === 'admin' &&
+            <SaveButton
+                label="user.action.save_and_add"
+                redirect={false}
+                submitOnEnter={false}
+                raised={false}
+            />}
+    </Toolbar>;
+
+export const UserCreate = ({ ...props }) =>
+    <Create {...props}>
+        {permissions =>
+            <SimpleForm
+                toolbar={<UserCreateToolbar permissions={permissions} />}
+                defaultValue={{ role: 'user' }}
+            >
+                <TextInput source="name" validate={[required]} />
+                {permissions === 'admin' &&
+                    <TextInput source="role" validate={[required]} />}
+            </SimpleForm>}
+    </Create>;
+
+// after
+const UserCreateToolbar = ({ permissions, ...props }) =>
+    <Toolbar {...props}>
+        <SaveButton
+            label="user.action.save_and_show"
+            redirect="show"
+            submitOnEnter={true}
+        />
+        {permissions === 'admin' &&
+            <SaveButton
+                label="user.action.save_and_add"
+                redirect={false}
+                submitOnEnter={false}
+                raised={false}
+            />}
+    </Toolbar>;
+
+export const UserCreate = ({ permissions, ...props }) =>
+    <Create {...props}>
+        <SimpleForm
+            toolbar={<UserCreateToolbar permissions={permissions} />}
+            defaultValue={{ role: 'user' }}
+        >
+            <TextInput source="name" validate={[required]} />
+            {permissions === 'admin' &&
+                <TextInput source="role" validate={[required]} />}
+        </SimpleForm>
+    </Create>;
+```
+
+Here's how to migrate an `Edit` component:
+
+```jsx
+// before
+export const UserEdit = ({ ...props }) =>
+    <Edit title={<UserTitle />} {...props}>
+        {permissions =>
+            <TabbedForm defaultValue={{ role: 'user' }}>
+                <FormTab label="user.form.summary">
+                    {permissions === 'admin' && <DisabledInput source="id" />}
+                    <TextInput source="name" validate={required} />
+                </FormTab>
+                {permissions === 'admin' &&
+                    <FormTab label="user.form.security">
+                        <TextInput source="role" validate={required} />
+                    </FormTab>}
+            </TabbedForm>}
+    </Edit>;
+
+// after
+export const UserEdit = ({ permissions, ...props }) =>
+    <Edit title={<UserTitle />} {...props}>
+        <TabbedForm defaultValue={{ role: 'user' }}>
+            <FormTab label="user.form.summary">
+                {permissions === 'admin' && <DisabledInput source="id" />}
+                <TextInput source="name" validate={required} />
+            </FormTab>
+            {permissions === 'admin' &&
+                <FormTab label="user.form.security">
+                    <TextInput source="role" validate={required} />
+                </FormTab>}
+        </TabbedForm>
+    </Edit>;
+```
+
+Here's how to migrate a `List` component. Note that the `<Filter>` component does not support the child as a function pattern anymore. If you need permissions within it, just pass them from the `List` component.
+
+```jsx
+// before
+const UserFilter = ({ ...props }) =>
+    <Filter {...props}>
+        {permissions => [
+            <TextInput
+                key="user.list.search"
+                label="user.list.search"
+                source="q"
+                alwaysOn
+            />,
+            <TextInput key="name" source="name" />,
+            permissions === 'admin' ? <TextInput source="role" /> : null,
+        ]}
+    </Filter>;
+
+export const UserList = ({ ...props }) =>
+    <List
+        {...props}
+        filters={<UserFilter />}
+        sort={{ field: 'name', order: 'ASC' }}
+    >
+        {permissions =>
+            <Responsive
+                small={
+                    <SimpleList
+                        primaryText={record => record.name}
+                        secondaryText={record =>
+                            permissions === 'admin' ? record.role : null}
+                    />
+                }
+                medium={
+                    <Datagrid>
+                        <TextField source="id" />
+                        <TextField source="name" />
+                        {permissions === 'admin' && <TextField source="role" />}
+                        {permissions === 'admin' && <EditButton />}
+                        <ShowButton />
+                    </Datagrid>
+                }
+            />}
+    </List>;
+
+// after
+const UserFilter = ({ permissions, ...props }) =>
+    <Filter {...props}>
+        <TextInput
+            key="user.list.search"
+            label="user.list.search"
+            source="q"
+            alwaysOn
+        />
+        <TextInput key="name" source="name" />
+        {permissions === 'admin' ? <TextInput source="role" /> : null}
+    </Filter>;
+
+export const UserList = ({ permissions, ...props }) =>
+    <List
+        {...props}
+        filters={<UserFilter permissions={permissions} />}
+        sort={{ field: 'name', order: 'ASC' }}
+    >
+        <Responsive
+            small={
+                <SimpleList
+                    primaryText={record => record.name}
+                    secondaryText={record =>
+                        permissions === 'admin' ? record.role : null}
+                />
+            }
+            medium={
+                <Datagrid>
+                    <TextField source="id" />
+                    <TextField source="name" />
+                    {permissions === 'admin' && <TextField source="role" />}
+                    {permissions === 'admin' && <EditButton />}
+                    <ShowButton />
+                </Datagrid>
+            }
+        />
+    </List>;
+```
+
+Moreover, you won't need the now deprecated `<WithPermission>` or `<SwitchPermissions>` components inside a `Dashboard` to access permissions anymore: react-admin injects `permissions` to the dashboard, too:
+
+```jsx
+// before
+// in src/Dashboard.js
+import React from 'react';
+import BenefitsSummary from './BenefitsSummary';
+import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
+import { ViewTitle SwitchPermissions, Permission } from 'admin-on-rest';
+
+export default () => (
+    <Card>
+        <ViewTitle title="Dashboard" />
+
+        <SwitchPermissions>
+            <Permission value="associate">
+                <BenefitsSummary />
+            </Permission>
+            <Permission value="boss">
+                <BenefitsDetailsWithSensitiveData />
+            </Permission>
+        </SwitchPermissions>
+    </Card>
+);
+
+// after
+// in src/Dashboard.js
+import React from 'react';
+import BenefitsSummary from './BenefitsSummary';
+import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
+import { ViewTitle } from 'react-admin';
+
+export default ({ permissions }) => (
+    <Card>
+        <ViewTitle title="Dashboard" />
+
+        {permissions === 'associate'
+            ? <BenefitsSummary />
+            : null}
+        {permissions === 'boss'
+            ? <BenefitsDetailsWithSensitiveData />
+            : null}
+    </Card>
+);
+```
+
+Finally, you won't need the now deprecated `<WithPermission>` or `<SwitchPermissions>` in custom routes either if you want access to permissions. Much like you can restrict access to authenticated users only with the [`Authenticated`](Authentication.html#restricting-access-to-a-custom-page) component, you may decorate your custom route with the `WithPermissions` component. It will ensure the user is authenticated then call the `authClient` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
+
+{% raw %}
+```jsx
+// in src/MyPage.js
+import React from 'react';
+import Card, { CardContent } from 'material-ui/Card';
+import { ViewTitle, WithPermissions } from 'react-admin';
+import { withRouter } from 'react-router-dom';
+
+const MyPage = ({ permissions }) => (
+    <Card>
+        <ViewTitle title="My custom page" />
+        <CardContent>Lorem ipsum sic dolor amet...</CardContent>
+        {permissions === 'admin'
+            ? <CardContent>Sensitive data</CardContent>
+            : null
+        }
+    </Card>
+)
+const MyPageWithPermissions = ({ location, match }) => (
+    <WithPermissions
+        authParams={{ key: match.path, params: route.params }}
+        // location is not required but it will trigger a new permissions check if specified when it changes
+        location={location}
+        render={({ permissions }) => <MyPage permissions={permissions} /> }
+    />
+);
+
+export default MyPageWithPermissions;
+
+// in src/customRoutes.js
+import React from 'react';
+import { Route } from 'react-router-dom';
+import Foo from './Foo';
+import Bar from './Bar';
+import Baz from './Baz';
+import MyPageWithPermissions from './MyPage';
+
+export default [
+    <Route exact path="/foo" component={Foo} />,
+    <Route exact path="/bar" component={Bar} />,
+    <Route exact path="/baz" component={Baz} noLayout />,
+    <Route exact path="/baz" component={MyPageWithPermissions} />,
+];
+```
+
+## react-admin addon packages renamed with ra prefix and moved into root repository
+
+`aor-graphql` `aor-realtime` and `aor-dependent-input` packages have been migrated into the main `react-admin` repository and renamed with the new prefix. Besides, `aor-graphql-client` and `aor-graphql-client-graphcool` follow the new dataProvider packages naming.
+
+* `aor-realtime` => `ra-realtime`
+* `aor-dependent-input` => `ra-dependent-input`
+* `aor-graphql-client` => `ra-data-graphql`
+* `aor-graphql-client-graphcool` => `ra-data-graphcool`
+
+Update your `import` statements accordingly:
+
+```js
+// before
+import realtimeSaga from 'aor-realtime';
+// after
+import realtimeSaga from 'ra-realtime';
+
+// before
+import { DependentInput, DependentField } from 'aor-dependent-input';
+// after
+import { DependentInput, DependentField } from 'ra-dependent-input';
+
+// before
+import buildGraphQLProvider from 'aor-graphql-client';
+// after
+import buildGraphQLProvider from 'ra-data-graphql';
+
+// before
+import buildGraphcoolProvider from 'aor-graphql-client-graphcool';
+// after
+import buildGraphcoolProvider from 'ra-data-graphcool';
 ```

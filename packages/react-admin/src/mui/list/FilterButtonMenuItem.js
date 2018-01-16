@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MenuItem from 'material-ui/MenuItem';
+import { MenuItem } from 'material-ui/Menu';
 import FieldTitle from '../../util/FieldTitle';
 
 class FilterButtonMenuItem extends Component {
@@ -24,15 +24,14 @@ class FilterButtonMenuItem extends Component {
                 data-key={filter.source}
                 data-default-value={filter.defaultValue}
                 key={filter.source}
-                primaryText={
-                    <FieldTitle
-                        label={filter.label}
-                        source={filter.source}
-                        resource={resource}
-                    />
-                }
                 onClick={this.handleShow}
-            />
+            >
+                <FieldTitle
+                    label={filter.label}
+                    source={filter.source}
+                    resource={resource}
+                />
+            </MenuItem>
         );
     }
 }

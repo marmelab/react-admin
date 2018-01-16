@@ -13,55 +13,54 @@ describe('<NumberField />', () => {
             null
         ));
 
-    it('should render a number', () =>
-        assert.equal(
-            shallow(<NumberField record={{ foo: 1 }} source="foo" />).html(),
-            '<span>1</span>'
-        ));
+    it('should render a number', () => {
+        const wrapper = shallow(
+            <NumberField record={{ foo: 1 }} source="foo" />
+        );
+        assert.equal(wrapper.text(), '1');
+    });
 
-    it('should pass the options prop to Intl.NumberFormat', () =>
-        assert.equal(
+    it('should pass the options prop to Intl.NumberFormat', () => {
+        const wrapper = shallow(
+            <NumberField
+                record={{ foo: 1 }}
+                source="foo"
+                locales="en-US"
+                options={{ minimumFractionDigits: 2 }}
+            />
+        );
+        assert.equal(wrapper.text(), '1.00');
+    });
+
+    it('should use the locales props as an argument to Intl.NumberFormat', () => {
+        const wrapper = shallow(
+            <NumberField
+                record={{ foo: 1 }}
+                source="foo"
+                locales="fr-FR"
+                options={{ minimumFractionDigits: 2 }}
+            />
+        );
+        assert.equal(wrapper.text(), '1,00');
+    });
+
+    it('should use custom className', () =>
+        assert.deepEqual(
             shallow(
                 <NumberField
-                    record={{ foo: 1 }}
+                    record={{ foo: true }}
                     source="foo"
-                    locales="en-US"
-                    options={{ minimumFractionDigits: 2 }}
+                    className="foo"
                 />
-            ).html(),
-            '<span>1.00</span>'
+            ).prop('className'),
+            'foo'
         ));
 
-    it('should use the locales props as an argument to Intl.NumberFormat', () =>
-        assert.equal(
-            shallow(
-                <NumberField
-                    record={{ foo: 1 }}
-                    source="foo"
-                    locales="fr-FR"
-                    options={{ minimumFractionDigits: 2 }}
-                />
-            ).html(),
-            '<span>1,00</span>'
-        ));
+    it('should handle deep fields', () => {
+        const wrapper = shallow(
+            <NumberField record={{ foo: { bar: 2 } }} source="foo.bar" />
+        );
 
-    it('should use custom styles passed as an elStyle prop', () =>
-        assert.equal(
-            shallow(
-                <NumberField
-                    record={{ foo: 1 }}
-                    source="foo"
-                    elStyle={{ margin: 1 }}
-                />
-            ).html(),
-            '<span style="margin:1px">1</span>'
-        ));
-
-    it('should handle deep fields', () =>
-        assert.equal(
-            shallow(
-                <NumberField record={{ foo: { bar: 2 } }} source="foo.bar" />
-            ).html(),
-            '<span>2</span>'
-        ));
+        assert.equal(wrapper.text(), '2');
+    });
 });

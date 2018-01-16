@@ -20,10 +20,10 @@ describe('<TabbedForm />', () => {
                 <FormTab />
             </TabbedForm>
         );
-        const tabsContainer = wrapper.find('Tabs');
+        const tabsContainer = wrapper.find('WithStyles(Tabs)');
         assert.equal(tabsContainer.length, 1);
         const tabs = wrapper.find('FormTab');
-        assert.equal(tabs.length, 2);
+        assert.equal(tabs.length, 1);
     });
 
     it('should display <Toolbar />', () => {
@@ -32,10 +32,14 @@ describe('<TabbedForm />', () => {
                 translate={translate}
                 muiTheme={muiTheme}
                 tabsWithErrors={[]}
-            />
+            >
+                <FormTab />
+                <FormTab />
+            </TabbedForm>
         );
-        const button = wrapper.find('Toolbar');
-        assert.equal(button.length, 1);
+
+        const toolbar = wrapper.find('WithStyles(Toolbar)');
+        assert.equal(toolbar.length, 1);
     });
 
     it('should pass submitOnEnter to <Toolbar />', () => {
@@ -49,7 +53,7 @@ describe('<TabbedForm />', () => {
                 tabsWithErrors={[]}
             />
         );
-        const button1 = wrapper1.find('Toolbar');
+        const button1 = wrapper1.find('WithStyles(Toolbar)');
         assert.equal(button1.prop('submitOnEnter'), false);
 
         const wrapper2 = shallow(
@@ -61,7 +65,7 @@ describe('<TabbedForm />', () => {
                 tabsWithErrors={[]}
             />
         );
-        const button2 = wrapper2.find('Toolbar');
+        const button2 = wrapper2.find('WithStyles(Toolbar)');
         assert.strictEqual(button2.prop('submitOnEnter'), true);
     });
 
@@ -71,19 +75,18 @@ describe('<TabbedForm />', () => {
                 translate={translate}
                 muiTheme={muiTheme}
                 tabsWithErrors={['tab2']}
+                classes={{ errorTabButton: 'error' }}
             >
                 <FormTab label="tab1" />
                 <FormTab label="tab2" />
             </TabbedForm>
         );
-        const tabs = wrapper.find('Tab');
+        const tabs = wrapper.find('WithStyles(Tab)');
         const tab1 = tabs.at(0);
         const tab2 = tabs.at(1);
 
-        assert.deepEqual(tab1.prop('buttonStyle'), null);
-        assert.deepEqual(tab2.prop('buttonStyle'), {
-            color: muiTheme.textField.errorColor,
-        });
+        assert.equal(tab1.prop('className'), 'form-tab');
+        assert.equal(tab2.prop('className'), 'form-tab error');
     });
 
     it('should not set the style of an active Tab button with errors', () => {
@@ -92,17 +95,18 @@ describe('<TabbedForm />', () => {
                 translate={translate}
                 muiTheme={muiTheme}
                 tabsWithErrors={['tab1']}
+                classes={{ errorTabButton: 'error' }}
             >
                 <FormTab label="tab1" />
                 <FormTab label="tab2" />
             </TabbedForm>
         );
-        const tabs = wrapper.find('Tab');
+        const tabs = wrapper.find('WithStyles(Tab)');
         const tab1 = tabs.at(0);
         const tab2 = tabs.at(1);
 
-        assert.deepEqual(tab1.prop('buttonStyle'), null);
-        assert.deepEqual(tab2.prop('buttonStyle'), null);
+        assert.equal(tab1.prop('className'), 'form-tab');
+        assert.equal(tab2.prop('className'), 'form-tab');
     });
 
     describe('findTabsWithErrors', () => {

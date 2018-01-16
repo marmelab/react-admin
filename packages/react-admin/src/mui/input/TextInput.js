@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import FieldTitle from '../../util/FieldTitle';
 import addField from '../form/addField';
+import sanitizeRestProps from './sanitizeRestProps';
 
 /**
  * An Input component for a string
@@ -36,7 +37,7 @@ export class TextInput extends Component {
 
     render() {
         const {
-            elStyle,
+            className,
             input,
             isRequired,
             label,
@@ -45,6 +46,7 @@ export class TextInput extends Component {
             resource,
             source,
             type,
+            ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
             throw new Error(
@@ -55,12 +57,9 @@ export class TextInput extends Component {
 
         return (
             <TextField
-                {...input}
-                onBlur={this.handleBlur}
-                onFocus={this.handleFocus}
-                onChange={this.handleChange}
+                margin="normal"
                 type={type}
-                floatingLabelText={
+                label={
                     <FieldTitle
                         label={label}
                         source={source}
@@ -68,16 +67,22 @@ export class TextInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                errorText={touched && error}
-                style={elStyle}
+                error={!!(touched && error)}
+                helperText={touched && error}
+                className={className}
                 {...options}
+                {...sanitizeRestProps(rest)}
+                {...input}
+                onBlur={this.handleBlur}
+                onFocus={this.handleFocus}
+                onChange={this.handleChange}
             />
         );
     }
 }
 
 TextInput.propTypes = {
-    elStyle: PropTypes.object,
+    className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

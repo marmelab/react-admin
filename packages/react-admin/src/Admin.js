@@ -34,7 +34,7 @@ const Admin = ({
     catchAll,
     dataProvider,
     theme,
-    title = 'Admin on REST',
+    title = 'React Admin',
     loginPage,
     logoutButton,
     initialState,
@@ -54,7 +54,9 @@ const Admin = ({
         initialState,
         compose(
             applyMiddleware(sagaMiddleware, routerMiddleware(routerHistory)),
-            window.devToolsExtension ? window.devToolsExtension() : f => f
+            typeof window !== 'undefined' && window.devToolsExtension
+                ? window.devToolsExtension()
+                : f => f
         )
     );
     sagaMiddleware.run(saga);
@@ -74,7 +76,6 @@ const Admin = ({
                                     createElement(loginPage || Login, {
                                         location,
                                         title,
-                                        theme,
                                     })}
                             />
                             {customRoutes
@@ -89,7 +90,6 @@ const Admin = ({
                                                 return route.props.render({
                                                     location,
                                                     title,
-                                                    theme,
                                                 });
                                             }
                                             if (route.props.component) {
@@ -98,7 +98,6 @@ const Admin = ({
                                                     {
                                                         location,
                                                         title,
-                                                        theme,
                                                     }
                                                 );
                                             }
@@ -117,8 +116,8 @@ const Admin = ({
                                         logout,
                                         menu,
                                         catchAll,
-                                        title,
                                         theme,
+                                        title,
                                     })}
                             />
                         </Switch>

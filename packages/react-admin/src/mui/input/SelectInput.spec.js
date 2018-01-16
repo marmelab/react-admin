@@ -11,11 +11,11 @@ describe('<SelectInput />', () => {
         translate: x => x,
     };
 
-    it('should use a mui SelectField', () => {
+    it('should use a mui TextField', () => {
         const wrapper = shallow(
             <SelectInput {...defaultProps} input={{ value: 'hello' }} />
         );
-        const SelectFieldElement = wrapper.find('SelectField');
+        const SelectFieldElement = wrapper.find('TextField');
         assert.equal(SelectFieldElement.length, 1);
         assert.equal(SelectFieldElement.prop('value'), 'hello');
     });
@@ -24,7 +24,7 @@ describe('<SelectInput />', () => {
         const wrapper = shallow(
             <SelectInput {...defaultProps} input={{ value: 2 }} />
         );
-        const SelectFieldElement = wrapper.find('SelectField').first();
+        const SelectFieldElement = wrapper.find('TextField').first();
         assert.equal(SelectFieldElement.prop('value'), '2');
     });
 
@@ -38,14 +38,14 @@ describe('<SelectInput />', () => {
                 ]}
             />
         );
-        const MenuItemElements = wrapper.find('MenuItem');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         assert.equal(MenuItemElements.length, 2);
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.prop('primaryText'), 'Male');
+        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
         const MenuItemElement2 = MenuItemElements.at(1);
         assert.equal(MenuItemElement2.prop('value'), 'F');
-        assert.equal(MenuItemElement2.prop('primaryText'), 'Female');
+        assert.equal(MenuItemElement2.childAt(0).text(), 'Female');
     });
 
     it('should add an empty menu when allowEmpty is true', () => {
@@ -59,11 +59,11 @@ describe('<SelectInput />', () => {
                 ]}
             />
         );
-        const MenuItemElements = wrapper.find('MenuItem');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         assert.equal(MenuItemElements.length, 3);
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), null);
-        assert.equal(MenuItemElement1.prop('primaryText'), '');
+        assert.equal(MenuItemElement1.childAt(0).text(), '');
     });
 
     it('should not add a falsy (null or false) element when allowEmpty is false', () => {
@@ -76,12 +76,8 @@ describe('<SelectInput />', () => {
                 ]}
             />
         );
-        const SelectFieldElement = wrapper.find('SelectField').at(0);
-        assert.equal(
-            SelectFieldElement.prop('children').includes(false),
-            false
-        );
-        assert.equal(SelectFieldElement.prop('children').includes(null), false);
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
+        assert.equal(MenuItemElements.length, 2);
     });
 
     it('should use optionValue as value identifier', () => {
@@ -92,10 +88,10 @@ describe('<SelectInput />', () => {
                 choices={[{ foobar: 'M', name: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find('MenuItem');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.prop('primaryText'), 'Male');
+        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
     });
 
     it('should use optionValue including "." as value identifier', () => {
@@ -106,10 +102,10 @@ describe('<SelectInput />', () => {
                 choices={[{ foobar: { id: 'M' }, name: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find('MenuItem');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.prop('primaryText'), 'Male');
+        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
     });
 
     it('should use optionText with a string value as text identifier', () => {
@@ -120,10 +116,10 @@ describe('<SelectInput />', () => {
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find('MenuItem');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.prop('primaryText'), 'Male');
+        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
@@ -134,10 +130,10 @@ describe('<SelectInput />', () => {
                 choices={[{ id: 'M', foobar: { name: 'Male' } }]}
             />
         );
-        const MenuItemElements = wrapper.find('MenuItem');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.prop('primaryText'), 'Male');
+        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
     });
 
     it('should use optionText with a function value as text identifier', () => {
@@ -148,10 +144,10 @@ describe('<SelectInput />', () => {
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find('MenuItem');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.prop('primaryText'), 'Male');
+        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
     });
 
     it('should use optionText with an element value as text identifier', () => {
@@ -163,13 +159,14 @@ describe('<SelectInput />', () => {
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const MenuItemElements = wrapper.find('MenuItem');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.deepEqual(
-            MenuItemElement1.prop('primaryText'),
-            <Foobar record={{ id: 'M', foobar: 'Male' }} />
-        );
+        assert.equal(MenuItemElement1.childAt(0).type(), Foobar);
+        assert.deepEqual(MenuItemElement1.childAt(0).prop('record'), {
+            id: 'M',
+            foobar: 'Male',
+        });
     });
 
     it('should translate the choices by default', () => {
@@ -183,10 +180,10 @@ describe('<SelectInput />', () => {
                 translate={x => `**${x}**`}
             />
         );
-        const MenuItemElements = wrapper.find('MenuItem');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.prop('primaryText'), '**Male**');
+        assert.equal(MenuItemElement1.childAt(0).text(), '**Male**');
     });
 
     it('should not translate the choices if translateChoice is false', () => {
@@ -201,10 +198,10 @@ describe('<SelectInput />', () => {
                 translateChoice={false}
             />
         );
-        const MenuItemElements = wrapper.find('MenuItem');
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
         const MenuItemElement1 = MenuItemElements.first();
         assert.equal(MenuItemElement1.prop('value'), 'M');
-        assert.equal(MenuItemElement1.prop('primaryText'), 'Male');
+        assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
     });
 
     describe('error message', () => {
@@ -212,8 +209,8 @@ describe('<SelectInput />', () => {
             const wrapper = shallow(
                 <SelectInput {...defaultProps} meta={{ touched: false }} />
             );
-            const SelectFieldElement = wrapper.find('SelectField');
-            assert.equal(SelectFieldElement.prop('errorText'), false);
+            const SelectFieldElement = wrapper.find('TextField');
+            assert.equal(SelectFieldElement.prop('helperText'), false);
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
@@ -223,8 +220,8 @@ describe('<SelectInput />', () => {
                     meta={{ touched: true, error: false }}
                 />
             );
-            const SelectFieldElement = wrapper.find('SelectField');
-            assert.equal(SelectFieldElement.prop('errorText'), false);
+            const SelectFieldElement = wrapper.find('TextField');
+            assert.equal(SelectFieldElement.prop('helperText'), false);
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
@@ -234,9 +231,9 @@ describe('<SelectInput />', () => {
                     meta={{ touched: true, error: 'Required field.' }}
                 />
             );
-            const SelectFieldElement = wrapper.find('SelectField');
+            const SelectFieldElement = wrapper.find('TextField');
             assert.equal(
-                SelectFieldElement.prop('errorText'),
+                SelectFieldElement.prop('helperText'),
                 'Required field.'
             );
         });

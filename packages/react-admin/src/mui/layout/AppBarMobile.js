@@ -1,12 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MuiAppBar from 'material-ui/AppBar';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import Toolbar from 'material-ui/Toolbar';
+import IconButton from 'material-ui/IconButton';
+import MenuIcon from 'material-ui-icons/Menu';
+import Typography from 'material-ui/Typography';
+import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
-import { toggleSidebar as toggleSidebarAction } from '../../actions';
+import classnames from 'classnames';
 
-const style = {
+import { toggleSidebar } from '../../actions';
+
+const styles = {
     bar: {
         height: '3em',
         position: 'absolute',
@@ -15,6 +21,9 @@ const style = {
     title: {
         fontSize: '1.25em',
         lineHeight: '2.5em',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
     },
     icon: {
         marginTop: 0,
@@ -27,37 +36,38 @@ const style = {
     },
 };
 
-class AppBarMobile extends Component {
-    handleLeftIconButtonTouchTap = event => {
-        event.preventDefault();
-        this.props.toggleSidebar();
-    };
-
-    render() {
-        const { title } = this.props;
-        return (
-            <MuiAppBar
-                style={style.bar}
-                titleStyle={style.title}
-                iconStyleLeft={style.icon}
-                title={title}
-                onLeftIconButtonTouchTap={this.handleLeftIconButtonTouchTap}
-            />
-        );
-    }
-}
+const AppBarMobile = ({
+    classes,
+    className,
+    title,
+    toggleSidebar,
+    ...rest
+}) => (
+    <MuiAppBar className={classnames(classes.bar, className)} {...rest}>
+        <Toolbar>
+            <IconButton
+                color="contrast"
+                aria-label="open drawer"
+                onClick={toggleSidebar}
+                className={classes.icon}
+            >
+                <MenuIcon />
+            </IconButton>
+            <Typography className={classes.title} type="title" color="inherit">
+                {title}
+            </Typography>
+        </Toolbar>
+    </MuiAppBar>
+);
 
 AppBarMobile.propTypes = {
+    classes: PropTypes.object,
+    className: PropTypes.string,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,
     toggleSidebar: PropTypes.func.isRequired,
 };
 
-const enhance = compose(
-    muiThemeable(), // force redraw on theme change
-    connect(null, {
-        toggleSidebar: toggleSidebarAction,
-    })
-);
+const enhance = compose(connect(null, { toggleSidebar }), withStyles(styles));
 
 export default enhance(AppBarMobile);

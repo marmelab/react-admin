@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import isEqual from 'lodash.isequal';
+import { withStyles } from 'material-ui/styles';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
 import removeEmpty from '../../util/removeEmpty';
-import withChildrenAsFunction from '../withChildrenAsFunction';
+
+const styles = {
+    button: {},
+    form: {},
+};
 
 export class Filter extends Component {
     constructor(props) {
@@ -35,39 +40,56 @@ export class Filter extends Component {
 
     renderButton() {
         const {
+            classes = {},
+            context,
+            debounce,
             resource,
             children,
             showFilter,
+            hideFilter,
             displayedFilters,
             filterValues,
+            ...rest
         } = this.props;
+
         return (
             <FilterButton
+                className={classes.button}
                 resource={resource}
                 filters={React.Children.toArray(children)}
                 showFilter={showFilter}
                 displayedFilters={displayedFilters}
                 filterValues={filterValues}
+                {...rest}
             />
         );
     }
 
     renderForm() {
         const {
+            classes = {},
+            context,
+            debounce,
             resource,
             children,
             hideFilter,
             displayedFilters,
+            showFilter,
             filterValues,
+            setFilters,
+            ...rest
         } = this.props;
+
         return (
             <FilterForm
+                className={classes.form}
                 resource={resource}
                 filters={React.Children.toArray(children)}
                 hideFilter={hideFilter}
                 displayedFilters={displayedFilters}
                 initialValues={filterValues}
                 setFilters={this.setFilters}
+                {...rest}
             />
         );
     }
@@ -81,6 +103,7 @@ export class Filter extends Component {
 
 Filter.propTypes = {
     children: PropTypes.node,
+    classes: PropTypes.object,
     context: PropTypes.oneOf(['form', 'button']),
     debounce: PropTypes.number.isRequired,
     displayedFilters: PropTypes.object,
@@ -95,4 +118,4 @@ Filter.defaultProps = {
     debounce: 500,
 };
 
-export default withChildrenAsFunction(Filter);
+export default withStyles(styles)(Filter);

@@ -1,23 +1,20 @@
+import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import React from 'react';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import { FileInputPreview } from './FileInputPreview';
 
 describe('<FileInputPreview />', () => {
-    const muiTheme = getMuiTheme({ userAgent: false });
-
     it('should call `onRemove` prop when clicking on remove button', () => {
         const onRemoveSpy = jest.fn();
 
         const wrapper = shallow(
-            <FileInputPreview onRemove={onRemoveSpy} muiTheme={muiTheme}>
+            <FileInputPreview onRemove={onRemoveSpy}>
                 <div>Child</div>
             </FileInputPreview>
         );
 
-        const removeButton = wrapper.find('IconButton');
+        const removeButton = wrapper.find('WithStyles(IconButton)');
         removeButton.simulate('click');
 
         assert.equal(onRemoveSpy.mock.calls.length, 1);
@@ -25,7 +22,7 @@ describe('<FileInputPreview />', () => {
 
     it('should render passed children', () => {
         const wrapper = shallow(
-            <FileInputPreview onRemove={() => true} muiTheme={muiTheme}>
+            <FileInputPreview onRemove={() => true}>
                 <div id="child">Child</div>
             </FileInputPreview>
         );
@@ -42,7 +39,6 @@ describe('<FileInputPreview />', () => {
             <FileInputPreview
                 onRemove={() => true}
                 file={file}
-                muiTheme={muiTheme}
                 revokeObjectURL={revokeObjectURL}
             >
                 <div id="child">Child</div>
@@ -61,7 +57,6 @@ describe('<FileInputPreview />', () => {
             <FileInputPreview
                 onRemove={() => true}
                 file={file}
-                muiTheme={muiTheme}
                 revokeObjectURL={revokeObjectURL}
             >
                 <div id="child">Child</div>

@@ -1,46 +1,39 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Toggle from 'material-ui/Toggle';
+import { FormControlLabel, FormGroup } from 'material-ui/Form';
+import Switch from 'material-ui/Switch';
 
 import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
-
-const styles = {
-    block: {
-        margin: '1rem 0',
-        maxWidth: 250,
-    },
-    label: {
-        color: 'rgba(0, 0, 0, 0.298039)',
-    },
-    toggle: {
-        marginBottom: 16,
-    },
-};
+import sanitizeRestProps from './sanitizeRestProps';
 
 export class BooleanInput extends Component {
-    handleToggle = (event, value) => {
+    handleChange = (event, value) => {
         this.props.input.onChange(value);
     };
 
     render() {
         const {
+            className,
             input,
             isRequired,
             label,
             source,
-            elStyle,
             resource,
             options,
+            ...rest
         } = this.props;
 
         return (
-            <div style={elStyle || styles.block}>
-                <Toggle
-                    defaultToggled={!!input.value}
-                    onToggle={this.handleToggle}
-                    labelStyle={styles.label}
-                    style={styles.toggle}
+            <FormGroup className={className} {...sanitizeRestProps(rest)}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={!!input.value}
+                            onChange={this.handleChange}
+                            {...options}
+                        />
+                    }
                     label={
                         <FieldTitle
                             label={label}
@@ -49,15 +42,14 @@ export class BooleanInput extends Component {
                             isRequired={isRequired}
                         />
                     }
-                    {...options}
                 />
-            </div>
+            </FormGroup>
         );
     }
 }
 
 BooleanInput.propTypes = {
-    elStyle: PropTypes.object,
+    className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

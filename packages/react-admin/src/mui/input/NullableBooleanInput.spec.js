@@ -1,4 +1,3 @@
-import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
 
@@ -8,6 +7,7 @@ describe('<NullableBooleanInput />', () => {
     const defaultProps = {
         input: {},
         meta: {},
+        classes: {},
         translate: x => x,
     };
 
@@ -15,11 +15,19 @@ describe('<NullableBooleanInput />', () => {
         const wrapper = shallow(
             <NullableBooleanInput source="foo" {...defaultProps} />
         );
-        const choices = wrapper.find('WithFormField').prop('choices');
-        assert.deepEqual(choices, [
-            { id: null, name: '' },
-            { id: false, name: 'ra.boolean.false' },
-            { id: true, name: 'ra.boolean.true' },
-        ]);
+        const MenuItemElements = wrapper.find('WithStyles(MenuItem)');
+        expect(MenuItemElements.length).toEqual(3);
+
+        const MenuItemElement1 = MenuItemElements.at(0);
+        expect(MenuItemElement1.prop('value')).toEqual('');
+        expect(MenuItemElement1.childAt(0).text()).toEqual('');
+
+        const MenuItemElement2 = MenuItemElements.at(1);
+        expect(MenuItemElement2.prop('value')).toEqual('false');
+        expect(MenuItemElement2.childAt(0).text()).toEqual('ra.boolean.false');
+
+        const MenuItemElement3 = MenuItemElements.at(2);
+        expect(MenuItemElement3.prop('value')).toEqual('true');
+        expect(MenuItemElement3.childAt(0).text()).toEqual('ra.boolean.true');
     });
 });

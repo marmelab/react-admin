@@ -15,9 +15,10 @@ A call to the `authClient` with the `AUTH_GET_PERMISSIONS` type will be made eac
 
 Following is an example where the `authClient` stores the user's role upon authentication, and returns it when called for a permissions check:
 
+{% raw %}
 ```jsx
 // in src/authClient.js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK, AUTH_GET_PERMISSIONS } from 'react-admin';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_GET_PERMISSIONS } from 'react-admin';
 import decodeJwt from 'jwt-decode';
 
 export default (type, params) => {
@@ -53,15 +54,20 @@ export default (type, params) => {
         return localStorage.getItem('token') ? Promise.resolve() : Promise.reject();
     }
     if (type === AUTH_GET_PERMISSIONS) {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return Promise.reject();
+        }
         const role = localStorage.getItem('role');
-        return Promise.resolve(role);
+        Promise.resolve(role);
     }
 
     return Promise.reject('Unkown method');
 };
 ```
+{% endraw %}
 
-## Restricting Access To Resources or Views
+## Restricting Access to Resources or Views
 
 It's possible to restrict access to resources or their views inside the `Admin` component. To do so, you must specify a function as the `Admin` only child. This function will be called with the permissions returned by the `authClient`.
 
@@ -93,7 +99,7 @@ Note that the function returns an array of React elements. This is required to a
 
 **Tip** Even if that's possible, be careful when completely excluding a resource (like with the `categories` resource in this example) as it will prevent you to reference them in the other resource views, too.
 
-## Restricting Access To Fields And Inputs
+## Restricting Access to Fields and Inputs
 
 You might want to display some fields, inputs or filters only to users with specific permissions. Just like for resources, pass a function as only child of the component, instead of a set of Fields and Inputs.
 
@@ -117,38 +123,38 @@ const UserCreateToolbar = ({ permissions, ...props }) =>
             />}
     </Toolbar>;
 
-export const UserCreate = ({ ...props }) =>
+export const UserCreate = ({ permissions, ...props }) =>
     <Create {...props}>
-        {permissions =>
-            <SimpleForm
-                toolbar={<UserCreateToolbar permissions={permissions} />}
-                defaultValue={{ role: 'user' }}
-            >
-                <TextInput source="name" validate={[required]} />
-                {permissions === 'admin' &&
-                    <TextInput source="role" validate={[required]} />}
-            </SimpleForm>}
+        <SimpleForm
+            toolbar={<UserCreateToolbar permissions={permissions} />}
+            defaultValue={{ role: 'user' }}
+        >
+            <TextInput source="name" validate={[required]} />
+            {permissions === 'admin' &&
+                <TextInput source="role" validate={[required]} />}
+        </SimpleForm>
     </Create>;
 ```
 {% endraw %}
+
+**Tip** Note how the `permissions` prop is passed down to the custom `toolbar` component.
 
 This also works inside an `Edition` view with a `TabbedForm`, and you can hide a `FormTab` completely:
 
 {% raw %}
 ```jsx
-export const UserEdit = ({ ...props }) =>
+export const UserEdit = ({ permissions, ...props }) =>
     <Edit title={<UserTitle />} {...props}>
-        {permissions =>
-            <TabbedForm defaultValue={{ role: 'user' }}>
-                <FormTab label="user.form.summary">
-                    {permissions === 'admin' && <DisabledInput source="id" />}
-                    <TextInput source="name" validate={required} />
-                </FormTab>
-                {permissions === 'admin' &&
-                    <FormTab label="user.form.security">
-                        <TextInput source="role" validate={required} />
-                    </FormTab>}
-            </TabbedForm>}
+        <TabbedForm defaultValue={{ role: 'user' }}>
+            <FormTab label="user.form.summary">
+                {permissions === 'admin' && <DisabledInput source="id" />}
+                <TextInput source="name" validate={required} />
+            </FormTab>
+            {permissions === 'admin' &&
+                <FormTab label="user.form.security">
+                    <TextInput source="role" validate={required} />
+                </FormTab>}
+        </TabbedForm>
     </Edit>;
 ```
 {% endraw %}
@@ -157,135 +163,144 @@ What about the `List` view, the `DataGrid`, `SimpleList` and `Filter` components
 
 {% raw %}
 ```jsx
-const UserFilter = ({ ...props }) =>
+const UserFilter = ({ permissions, ...props }) =>
     <Filter {...props}>
-        {permissions => [
-            <TextInput
-                key="user.list.search"
-                label="user.list.search"
-                source="q"
-                alwaysOn
-            />,
-            <TextInput key="name" source="name" />,
-            permissions === 'admin' ? <TextInput source="role" /> : null,
-        ]}
+        <TextInput
+            label="user.list.search"
+            source="q"
+            alwaysOn
+        />
+        <TextInput source="name" />
+        {permissions === 'admin' ? <TextInput source="role" /> : null}
     </Filter>;
 
-export const UserList = ({ ...props }) =>
+export const UserList = ({ permissions, ...props }) =>
     <List
         {...props}
-        filters={<UserFilter />}
+        filters={<UserFilter permissions={permissions} />}
         sort={{ field: 'name', order: 'ASC' }}
     >
-        {permissions =>
-            <Responsive
-                small={
-                    <SimpleList
-                        primaryText={record => record.name}
-                        secondaryText={record =>
-                            permissions === 'admin' ? record.role : null}
-                    />
-                }
-                medium={
-                    <Datagrid>
-                        <TextField source="id" />
-                        <TextField source="name" />
-                        {permissions === 'admin' && <TextField source="role" />}
-                        {permissions === 'admin' && <EditButton />}
-                        <ShowButton />
-                    </Datagrid>
-                }
-            />}
+        <Responsive
+            small={
+                <SimpleList
+                    primaryText={record => record.name}
+                    secondaryText={record =>
+                        permissions === 'admin' ? record.role : null}
+                />
+            }
+            medium={
+                <Datagrid>
+                    <TextField source="id" />
+                    <TextField source="name" />
+                    {permissions === 'admin' && <TextField source="role" />}
+                    {permissions === 'admin' && <EditButton />}
+                    <ShowButton />
+                </Datagrid>
+            }
+        />
     </List>;
 ```
 {% endraw %}
 
-Note that for the `Filter` component,  the function returns an array of React elements. This is required to avoid having to wrap them in a container element which would prevent the `Filter` from working.
+**Tip** Note how the `permissions` prop is passed down to the custom `filters` component.
 
-## Restricting Access To Content In Custom Pages or Menus
+## Restricting Access to Content Inside a Dashboard
 
-What if you want to check the permissions inside a [Dashboard](./Admin.html#dashboard), a [custom page](./Admin.html#customroutes) or a [custom menu](./Admin.html#menu) ? React-admin provides two components for that: `WithPermission` and `SwitchPermissions`.
-
-### WithPermission
-
-The `WithPermission` component will only display its content if the user has the required permissions. Let's see an example with a custom menu where a custom page link should only be presented to admins:
+The component provided as a [`dashboard`]('./Admin.md#dashboard) will receive the permissions in its props too:
 
 {% raw %}
 ```jsx
-// in src/Menu.js
+// in src/Dashboard.js
 import React from 'react';
-import { MenuItemLink, WithPermission } from 'react-admin';
+import Card, { CardContent } from 'material-ui/Card';
+import { ViewTitle } from 'react-admin';
 
-export default ({ onMenuTap, logout }) => (
+export default ({ permissions }) => (
+    <Card>
+        <ViewTitle title="Dashboard" />
+        <CardContent>Lorem ipsum sic dolor amet...</CardContent>
+        {permissions === 'admin'
+            ? <CardContent>Sensitive data</CardContent>
+            : null
+        }
+    </Card>
+);
+```
+{% endraw %}
+
+## Restricting Access to Content Inside Custom Pages
+
+You might want to check user permissions inside a [custom pages](./Admin.md#customroutes). You'll have to use the `WithPermissions` component for that. It will ensure the user is authenticated then call the `authClient` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
+
+{% raw %}
+```jsx
+// in src/MyPage.js
+import React from 'react';
+import Card, { CardContent } from 'material-ui/Card';
+import { ViewTitle, WithPermissions } from 'react-admin';
+import { withRouter } from 'react-router-dom';
+
+const MyPage = ({ permissions }) => (
+    <Card>
+        <ViewTitle title="My custom page" />
+        <CardContent>Lorem ipsum sic dolor amet...</CardContent>
+        {permissions === 'admin'
+            ? <CardContent>Sensitive data</CardContent>
+            : null
+        }
+    </Card>
+)
+const MyPageWithPermissions = ({ location, match }) => (
+    <WithPermissions
+        authParams={{ key: match.path, params: route.params }}
+        // location is not required but it will trigger a new permissions check if specified when it changes
+        location={location}
+        render={({ permissions }) => <MyPage permissions={permissions} /> }
+    />
+);
+
+export default MyPageWithPermissions;
+
+// in src/customRoutes.js
+import React from 'react';
+import { Route } from 'react-router-dom';
+import Foo from './Foo';
+import Bar from './Bar';
+import Baz from './Baz';
+import MyPageWithPermissions from './MyPage';
+
+export default [
+    <Route exact path="/foo" component={Foo} />,
+    <Route exact path="/bar" component={Bar} />,
+    <Route exact path="/baz" component={Baz} noLayout />,
+    <Route exact path="/baz" component={MyPageWithPermissions} />,
+];
+```
+
+## Restricting Access to Content in Custom Menu
+
+What if you want to check the permissions inside a [custom menu](./Admin.html#menu) ? Much like getting permissions inside a custom page, you'll have to use the `WithPermissions` component:
+
+{% raw %}
+```jsx
+// in src/myMenu.js
+import React from 'react';
+import { connect } from 'react-redux';
+import { MenuItemLink, WithPermissions } from 'react-admin';
+
+const Menu = ({ onMenuTap, logout, permissions }) => (
     <div>
         <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
         <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
-        <WithPermission value="admin">
-            <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
-        </WithPermission>
+        <WithPermissions
+            render={({ permissions }) => (
+                permissions === '
+                    ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+                    : null
+            )}
+        />
         {logout}
     </div>
 );
 ```
 {% endraw %}
-
-The `WithPermission` component requires either a `value` with the permissions to check (could be a role, an array of roles, etc) or a `resolve` function.
-
-An additional `exact` prop may be specified depending on your requirements. It determines whether the user must have **all** the required permissions or only some. If `false`, the default, we'll only check if the user has at least one of the required permissions.
-
-You may bypass the default logic by specifying a function as the `resolve` prop. This function may return `true` or `false` directly or a promise resolving to either `true` or `false`. It will be called with an object having the following properties:
-
-- `permissions`: the result of the `authClient` call.
-- `value`: the value of the `value` prop if specified
-- `exact`: the value of the `exact` prop if specified
-
-An optional `loading` prop may be specified on the `WithPermission` component to pass a component to display while checking for permissions. It defaults to `null`.
-
-**Tip**: Do not use the `WithPermission` component inside the others react-admin components. It is only meant to be used in custom pages or components.
-
-### SwitchPermissions
-
-The `SwitchPermissions` component will display one of its `Permission` children depending on the permissions returned by the `authClient`. It accepts two optional props:
-
-- `loading`: A component to display while checking for permissions. Defaults to `null`.
-- `notFound`: A component to display when no match was found while checking the permissions. Default to `null`.
-
-The `Permission` component requires either a `value` with the permissions to check (could be a role, an array of roles, etc) or a `resolve` function.
-
-An additional `exact` prop may be specified depending on your requirements. It determines whether the user must have **all** the required permissions or only some. If `false`, the default, we'll only check if the user has at least one of the required permissions.
-
-You may bypass the default logic by specifying a function as the `resolve` prop. This function may return `true` or `false` directly or a promise resolving to either `true` or `false`. It will be called with an object having the following properties:
-
-- `permissions`: the result of the `authClient` call.
-- `value`: the value of the `value` prop if specified
-- `exact`: the value of the `exact` prop if specified
-
-If multiple `Permission` match, only the first one will be displayed.
-
-Here's an example inside a `DashBoard`:
-
-```jsx
-// in src/Dashboard.js
-import React from 'react';
-import BenefitsSummary from './BenefitsSummary';
-import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
-import { ViewTitle } from 'react-admin/lib/mui';
-
-export default () => (
-    <Card>
-        <ViewTitle title="Dashboard" />
-
-        <SwitchPermissions>
-            <Permission value="associate">
-                <BenefitsSummary />
-            </Permission>
-            <Permission value="boss">
-                <BenefitsDetailsWithSensitiveData />
-            </Permission>
-        </SwitchPermissions>
-    </Card>
-);
-```
-
-**Tip**: Do not use the `SwitchPermissions` component inside the others react-admin components. It is only meant to be used in custom pages or components.
-

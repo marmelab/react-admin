@@ -1,5 +1,4 @@
 import React from 'react';
-import assert from 'assert';
 import { shallow } from 'enzyme';
 
 import { Edit } from './Edit';
@@ -31,7 +30,7 @@ describe('<Edit />', () => {
         );
 
         const inner = wrapper.find('Foo');
-        assert.equal(inner.length, 1);
+        expect(inner.length).toEqual(1);
     });
 
     it('should display children inputs of SimpleForm', () => {
@@ -44,6 +43,6 @@ describe('<Edit />', () => {
             </Edit>
         );
         const inputs = wrapper.find('WithFormField');
-        assert.deepEqual(inputs.map(i => i.prop('source')), ['foo', 'bar']);
+        expect(inputs.map(i => i.prop('source'))).toEqual(['foo', 'bar']);
     });
 });

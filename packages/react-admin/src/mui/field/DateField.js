@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
+import sanitizeRestProps from './sanitizeRestProps';
 
 const toLocaleStringSupportsLocales = (() => {
     // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
@@ -25,9 +26,9 @@ const toLocaleStringSupportsLocales = (() => {
  * // renders the record { id: 1234, published_at: new Date('2012-11-07') } as
  * <span>07/11/2012</span>
  *
- * <DateField source="published_at" elStyle={{ color: 'red' }} />
+ * <DateField source="published_at" className="red" />
  * // renders the record { id: 1234, new Date('2012-11-07') } as
- * <span style="color:red;">07/11/2012</span>
+ * <span class="red">07/11/2012</span>
  *
  * <DateField source="share" options={{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }} />
  * // renders the record { id: 1234, new Date('2012-11-07') } as
@@ -39,12 +40,13 @@ const toLocaleStringSupportsLocales = (() => {
  */
 
 export const DateField = ({
-    elStyle,
+    className,
     locales,
     options,
     record,
     showTime = false,
     source,
+    ...rest
 }) => {
     if (!record) return null;
     const value = get(record, source);
@@ -58,12 +60,19 @@ export const DateField = ({
           ? date.toLocaleDateString(locales, options)
           : date.toLocaleDateString();
 
-    return <span style={elStyle}>{dateString}</span>;
+    return (
+        <span className={className} {...sanitizeRestProps(rest)}>
+            {dateString}
+        </span>
+    );
 };
 
 DateField.propTypes = {
     addLabel: PropTypes.bool,
-    elStyle: PropTypes.object,
+    basePath: PropTypes.string,
+    className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
     label: PropTypes.string,
     locales: PropTypes.oneOfType([
         PropTypes.string,

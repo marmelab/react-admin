@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import LinearProgress from 'material-ui/LinearProgress';
+import { LinearProgress } from 'material-ui/Progress';
+import { withStyles } from 'material-ui/styles';
+import compose from 'recompose/compose';
+
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions/dataActions';
 import {
     getIds,
@@ -12,6 +15,10 @@ import {
     SORT_ASC,
     SORT_DESC,
 } from '../../reducer/admin/resource/list/queryReducer';
+
+const styles = {
+    progress: { marginTop: '1em' },
+};
 
 /**
  * Render related records to the current one.
@@ -85,13 +92,14 @@ export class ReferenceManyField extends Component {
     };
 
     fetchReferences(
-        { reference, record, resource, target, perPage, filter } = this.props
+        { reference, record, resource, target, perPage, filter, source } = this
+            .props
     ) {
         const { crudGetManyReference } = this.props;
         const pagination = { page: 1, perPage };
         const relatedTo = nameRelatedTo(
             reference,
-            record.id,
+            record[source],
             resource,
             target,
             filter
@@ -99,7 +107,7 @@ export class ReferenceManyField extends Component {
         crudGetManyReference(
             reference,
             target,
-            record.id,
+            record[source],
             relatedTo,
             pagination,
             this.state.sort,
@@ -109,6 +117,8 @@ export class ReferenceManyField extends Component {
 
     render() {
         const {
+            classes = {},
+            className,
             resource,
             reference,
             data,
@@ -123,10 +133,11 @@ export class ReferenceManyField extends Component {
             );
         }
         if (typeof ids === 'undefined') {
-            return <LinearProgress style={{ marginTop: '1em' }} />;
+            return <LinearProgress className={classes.progress} />;
         }
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
         return React.cloneElement(children, {
+            className,
             resource: reference,
             ids,
             data,
@@ -142,6 +153,8 @@ ReferenceManyField.propTypes = {
     addLabel: PropTypes.bool,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
+    classes: PropTypes.object,
+    className: PropTypes.string,
     crudGetManyReference: PropTypes.func.isRequired,
     filter: PropTypes.object,
     ids: PropTypes.array,
@@ -164,13 +177,13 @@ ReferenceManyField.defaultProps = {
     filter: {},
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
-    source: '',
+    source: 'id',
 };
 
 function mapStateToProps(state, props) {
     const relatedTo = nameRelatedTo(
         props.reference,
-        props.record.id,
+        props.record[props.source],
         props.resource,
         props.target,
         props.filter
@@ -182,13 +195,16 @@ function mapStateToProps(state, props) {
     };
 }
 
-const ConnectedReferenceManyField = connect(mapStateToProps, {
-    crudGetManyReference: crudGetManyReferenceAction,
-})(ReferenceManyField);
+const ComposedReferenceManyField = compose(
+    connect(mapStateToProps, {
+        crudGetManyReference: crudGetManyReferenceAction,
+    }),
+    withStyles(styles)
+)(ReferenceManyField);
 
-ConnectedReferenceManyField.defaultProps = {
+ComposedReferenceManyField.defaultProps = {
     addLabel: true,
     source: '',
 };
 
-export default ConnectedReferenceManyField;
+export default ComposedReferenceManyField;

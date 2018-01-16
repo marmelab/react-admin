@@ -1,5 +1,4 @@
 import React from 'react';
-import assert from 'assert';
 import { shallow } from 'enzyme';
 
 import { Show } from './Show';
@@ -30,7 +29,7 @@ describe('<Show />', () => {
         );
 
         const inner = wrapper.find('Foo');
-        assert.equal(inner.length, 1);
+        expect(inner.length).toEqual(1);
     });
 
     it('should display children inputs of SimpleShowLayout', () => {
@@ -43,6 +42,6 @@ describe('<Show />', () => {
             </Show>
         );
         const inputs = wrapper.find('pure(TextField)');
-        assert.deepEqual(inputs.map(i => i.prop('source')), ['foo', 'bar']);
+        expect(inputs.map(i => i.prop('source'))).toEqual(['foo', 'bar']);
     });
 });

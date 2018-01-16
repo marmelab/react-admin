@@ -1,33 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import FlatButton from 'material-ui/FlatButton';
-import ActionDelete from 'material-ui/svg-icons/action/delete';
+import ActionDelete from 'material-ui-icons/Delete';
+
+import Link from '../Link';
 import linkToRecord from '../../util/linkToRecord';
-import translate from '../../i18n/translate';
+import Button from './Button';
 
 const DeleteButton = ({
     basePath = '',
     label = 'ra.action.delete',
     record = {},
-    translate,
+    ...rest
 }) => (
-    <FlatButton
-        secondary
-        label={label && translate(label)}
-        icon={<ActionDelete />}
-        containerElement={
-            <Link to={`${linkToRecord(basePath, record.id)}/delete`} />
-        }
-        style={{ overflow: 'inherit' }}
-    />
+    <Button
+        component={Link}
+        to={`${linkToRecord(basePath, record.id)}/delete`}
+        label={label}
+        color="accent"
+        {...rest}
+    >
+        <ActionDelete />
+    </Button>
 );
 
 DeleteButton.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.object,
-    translate: PropTypes.func.isRequired,
 };
 
-export default translate(DeleteButton);
+export default DeleteButton;

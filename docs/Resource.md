@@ -11,13 +11,13 @@ A `<Resource>` component maps one API endpoint to a CRUD interface. For instance
 // in src/App.js
 import React from 'react';
 import { Admin, Resource } from 'react-admin';
-import jsonServerRestClient from 'ra-data-json-server';
+import jsonServerProvider from 'ra-data-json-server';
 
 import { PostList } from './posts';
-import { UserList } from './posts';
+import { UserList } from './users';
 
 const App = () => (
-    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} />
         <Resource name="users" list={UserList} />
     </Admin>
@@ -37,14 +37,14 @@ Here is a more complete admin, with components for all the CRUD operations:
 ```jsx
 import React from 'react';
 import { Admin, Resource } from 'react-admin';
-import jsonServerRestClient from 'ra-data-json-server';
+import jsonServerProvider from 'ra-data-json-server';
 
 import { PostList, PostCreate, PostEdit, PostShow, PostIcon } from './posts';
 import { UserList } from './posts';
 import { CommentList, CommentEdit, CommentCreate, CommentIcon } from './comments';
 
 const App = () => (
-    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={Delete} icon={PostIcon} />
         <Resource name="users" list={UserList} />
         <Resource name="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} remove={Delete} icon={CommentIcon} />
@@ -96,15 +96,15 @@ React-admin will render the `icon` prop component in the menu:
 ```jsx
 // in src/App.js
 import React from 'react';
-import PostIcon from 'material-ui/svg-icons/action/book';
-import UserIcon from 'material-ui/svg-icons/social/group';
+import PostIcon from 'material-ui-icons/Book';
+import UserIcon from 'material-ui-icons/People';
 import { Admin, Resource } from 'react-admin';
-import jsonServerRestClient from 'ra-data-json-server';
+import jsonServerProvider from 'ra-data-json-server';
 
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} icon={PostIcon} />
         <Resource name="users" list={UserList} icon={UserIcon} />
     </Admin>

@@ -67,13 +67,13 @@ Upon receiving a 403 response, the admin app shows the Login page. `authClient` 
 
 ## Sending Credentials to the API
 
-To use the credentials when calling a data provider, you have to tweak, this time, the `dataProvider` function. As explained in the [Data providers documentation](DataProviders.md#adding-custom-headers), `simpleRestClient` and `jsonServerRestClient` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
+To use the credentials when calling a data provider, you have to tweak, this time, the `dataProvider` function. As explained in the [Data providers documentation](DataProviders.md#adding-custom-headers), `simpleRestProvider` and `jsonServerProvider` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
 
 For instance, to pass the token obtained during login as an `Authorization` header, configure the Data Provider as follows:
 
 ```jsx
 import { fetchUtils, Admin, Resource } from 'react-admin';
-import simpleRestClient from 'ra-data-simple-rest';
+import simpleRestProvider from 'ra-data-simple-rest';
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -83,7 +83,7 @@ const httpClient = (url, options = {}) => {
     options.headers.set('Authorization', `Bearer ${token}`);
     return fetchUtils.fetchJson(url, options);
 }
-const dataProvider = simpleRestClient('http://localhost:3000', httpClient);
+const dataProvider = simpleRestProvider('http://localhost:3000', httpClient);
 
 const App = () => (
     <Admin dataProvider={dataProvider} authClient={authClient}>
@@ -294,24 +294,45 @@ const App = () => (
 
 ## Restricting Access To A Custom Page
 
-If you add [custom pages](./Actions.md), of if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `<Restricted>` component, that you can use as a decorator for your own components.
+If you add [custom pages](./Actions.md), of if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `<Authenticated>` component, that you can use as a decorator for your own components.
 
 {% raw %}
 ```jsx
 // in src/MyPage.js
 import { withRouter } from 'react-router-dom';
-import { Restricted } from 'react-admin';
+import { Authenticated } from 'react-admin';
 
-const MyPage = ({ location }) =>
-    <Restricted authParams={{ foo: 'bar' }} location={location} />
+const MyPage = ({ location }) => (
+    <Authenticated authParams={{ foo: 'bar' }} location={location}>
         <div>
             ...
         </div>
-    </Restricted>
-}
+    </Authenticated>
+);
 
 export default withRouter(MyPage);
 ```
 {% endraw %}
 
-The `<Restricted>` component calls the `authClient` function with `AUTH_CHECK` and `authParams`. If the response is a fulfilled promise, the child component is rendered. If the response is a rejected promise, `<Restricted>` redirects to the login form. Upon successful login, the user is redirected to the initial location (that's why it's necessary to get the location from the router).
+The `<Authenticated>` component calls the `authClient` function with `AUTH_CHECK` and `authParams`. If the response is a fulfilled promise, the child component is rendered. If the response is a rejected promise, `<Authenticated>` redirects to the login form. Upon successful login, the user is redirected to the initial location (that's why it's necessary to get the location from the router).
+
+
+## Redirect After Logout
+
+By default react-admin will redirect to '/login' after the user logs out. This can be changed by adding a `redirectTo` prop to the `logoutButton` of a customMenu
+```jsx
+// in src/myMenu.js
+import React from 'react';
+import { connect } from 'react-redux';
+import { MenuItemLink } from 'react-admin';
+
+const Menu = ({ onMenuTap, logout, permissions }) => (
+    <div>
+        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
+        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
+        {React.cloneElement(logout,{
+            redirectTo:'/'
+        })}
+    </div>
+);
+```

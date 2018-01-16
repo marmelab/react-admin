@@ -59,4 +59,8 @@ export class RichTextInput extends Component {
     }
 }
 
-export default addField(RichTextInput);
+const RichRextInputWithField = addField(RichTextInput);
+RichRextInputWithField.defaultProps = {
+    addLabel: true,
+};
+export default RichRextInputWithField;

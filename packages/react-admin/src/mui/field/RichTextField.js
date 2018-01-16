@@ -2,22 +2,49 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
+import Typography from 'material-ui/Typography';
+import sanitizeRestProps from './sanitizeRestProps';
 
 export const removeTags = input =>
     input ? input.replace(/<[^>]+>/gm, '') : '';
 
-const RichTextField = ({ source, record = {}, stripTags, elStyle }) => {
+const RichTextField = ({
+    className,
+    source,
+    record = {},
+    stripTags,
+    ...rest
+}) => {
     const value = get(record, source);
     if (stripTags) {
-        return <div style={elStyle}>{removeTags(value)}</div>;
+        return (
+            <Typography
+                className={className}
+                component="span"
+                {...sanitizeRestProps(rest)}
+            >
+                {removeTags(value)}
+            </Typography>
+        );
     }
 
-    return <div style={elStyle} dangerouslySetInnerHTML={{ __html: value }} />;
+    return (
+        <Typography
+            className={className}
+            component="span"
+            {...sanitizeRestProps(rest)}
+        >
+            <span dangerouslySetInnerHTML={{ __html: value }} />
+        </Typography>
+    );
 };
 
 RichTextField.propTypes = {
     addLabel: PropTypes.bool,
-    elStyle: PropTypes.object,
+    basePath: PropTypes.string,
+    className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,

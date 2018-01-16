@@ -34,7 +34,7 @@ describe('Edit Page', () => {
         });
 
         it('should allow to switch tabs', async () => {
-            await EditPage.gotoTab(2);
+            await EditPage.gotoTab(3);
             assert.equal(await EditPage.getInputValue('average_note'), '3');
         });
 

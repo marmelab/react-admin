@@ -1,13 +1,51 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import TextField from 'material-ui/TextField';
+import { MenuItem } from 'material-ui/Menu';
 import compose from 'recompose/compose';
 
 import addField from '../form/addField';
 import translate from '../../i18n/translate';
 import FieldTitle from '../../util/FieldTitle';
+
+const sanitizeRestProps = ({
+    allowEmpty,
+    basePath,
+    choices,
+    className,
+    component,
+    crudGetMatching,
+    crudGetOne,
+    defaultValue,
+    filter,
+    filterToQuery,
+    formClassName,
+    initializeForm,
+    input,
+    isRequired,
+    label,
+    locale,
+    meta,
+    onChange,
+    options,
+    optionValue,
+    optionText,
+    perPage,
+    record,
+    reference,
+    resource,
+    setFilter,
+    setPagination,
+    setSort,
+    sort,
+    source,
+    textAlign,
+    translate,
+    translateChoice,
+    validation,
+    ...rest
+}) => rest;
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -64,7 +102,7 @@ import FieldTitle from '../../util/FieldTitle';
  * @example
  * <SelectInput source="gender" choices={choices} translateChoice={false}/>
  *
- * The object passed as `options` props is passed to the material-ui <SelectField> component
+ * The object passed as `options` props is passed to the material-ui <Select> component
  */
 export class SelectInput extends Component {
     /*
@@ -81,17 +119,14 @@ export class SelectInput extends Component {
         }
     }
 
-    handleChange = (event, index, value) => {
-        this.props.input.onChange(value);
-        this.setState({ value });
+    handleChange = event => {
+        this.props.input.onChange(event.target.value);
+        this.setState({ value: event.target.value });
     };
 
     addAllowEmpty = choices => {
         if (this.props.allowEmpty) {
-            return [
-                <MenuItem value={null} key="null" primaryText="" />,
-                ...choices,
-            ];
+            return [<MenuItem value={null} key="null" />, ...choices];
         }
 
         return choices;
@@ -112,26 +147,27 @@ export class SelectInput extends Component {
         return (
             <MenuItem
                 key={get(choice, optionValue)}
-                primaryText={
-                    translateChoice
-                        ? translate(choiceName, { _: choiceName })
-                        : choiceName
-                }
                 value={get(choice, optionValue)}
-            />
+            >
+                {translateChoice
+                    ? translate(choiceName, { _: choiceName })
+                    : choiceName}
+            </MenuItem>
         );
     };
 
     render() {
         const {
             choices,
-            elStyle,
+            className,
             isRequired,
             label,
             meta,
             options,
             resource,
             source,
+            allowEmpty,
+            ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
             throw new Error(
@@ -141,9 +177,11 @@ export class SelectInput extends Component {
         const { touched, error } = meta;
 
         return (
-            <SelectField
+            <TextField
+                select
+                margin="normal"
                 value={this.state.value}
-                floatingLabelText={
+                label={
                     <FieldTitle
                         label={label}
                         source={source}
@@ -151,14 +189,15 @@ export class SelectInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                onChange={this.handleChange}
-                autoWidth
-                style={elStyle}
-                errorText={touched && error}
+                className={className}
+                error={!!(touched && error)}
+                helperText={touched && error}
                 {...options}
+                {...sanitizeRestProps(rest)}
+                onChange={this.handleChange}
             >
                 {this.addAllowEmpty(choices.map(this.renderMenuItem))}
-            </SelectField>
+            </TextField>
         );
     }
 }
@@ -166,7 +205,7 @@ export class SelectInput extends Component {
 SelectInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     choices: PropTypes.arrayOf(PropTypes.object),
-    elStyle: PropTypes.object,
+    className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

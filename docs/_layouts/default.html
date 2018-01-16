@@ -8,7 +8,7 @@
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <meta name="description" content="{{ page.description }}">
     <meta name="HandheldFriendly" content="true" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="css/normalize.css">
@@ -20,7 +20,7 @@
 
 <body>
     <div class="book with-summary font-size-2 font-family-1">
-        <div class="book-summary">
+        <div id="book-summary" class="book-summary">
             <nav role="navigation">
                 <ul class="summary">
                     <li class="header">Table of Contents</li>
@@ -81,13 +81,10 @@
                         </a>
                         <ul class="articles" {% if page.path !='DataProviders.md' %}style="display:none" {% endif %}>
                             <li class="chapter">
-                                <a href="#available-clients">Available Clients</a>
+                                <a href="#available-providers">Available Providers</a>
                             </li>
                             <li class="chapter">
-                                <a href="#simple-rest">Simple REST</a>
-                            </li>
-                            <li class="chapter">
-                                <a href="#json-server-rest">JSON Server REST</a>
+                                <a href="#usage">Usage</a>
                             </li>
                             <li class="chapter">
                                 <a href="#adding-custom-headers">Adding Custom Headers</a>
@@ -96,7 +93,25 @@
                                 <a href="#decorating-your-data-provider-example-of-file-upload">Decorating a Data Provider</a>
                             </li>
                             <li class="chapter">
-                                <a href="#writing-your-own-data-provider">Writing Your Own Data PRovider</a>
+                                <a href="#writing-your-own-data-provider">Writing Your Own Data Provider</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#request-format">Request Format</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#example-request-processing">Example Request Processing</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#response-format">Response Format</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#example-response-processing">Example Response Processing</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#error-format">Error Format</a>
+                            </li>
+                            <li class="chapter">
+                                <a href="#example-implementation">Example Implmentation</a>
                             </li>
                         </ul>
                     </li>
@@ -664,9 +679,14 @@
                 </ul>
             </nav>
         </div>
-        <div class="book-body">
+        <div id="book-body" class="book-body">
             <div class="body-inner">
                 <div class="page-wrapper" tabindex="-1" role="main">
+                    <div class="page-menu">
+                        <button aria-label="Open menu" id="buttonToggleMenu">
+                            <img src='./img/menu.svg' />
+                        </button>
+                    </div>
                     <div class="page-inner">
 
                         <div id="book-search-results">
@@ -695,6 +715,7 @@
             ga('send', 'pageview');
         </script>
         <script src="js/prism.js"></script>
+        <script src="js/menu.js"></script>
 </body>
 
 </html>

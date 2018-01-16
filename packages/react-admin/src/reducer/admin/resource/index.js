@@ -1,4 +1,4 @@
-import { DECLARE_RESOURCES } from '../../../actions';
+import { REGISTER_RESOURCE, UNREGISTER_RESOURCE } from '../../../actions';
 
 import data from './data';
 import list from './list';
@@ -10,18 +10,26 @@ export default (
     dataReducer = data,
     listReducer = list
 ) => {
-    if (action.type === DECLARE_RESOURCES) {
-        const newState = action.payload.reduce(
-            (acc, resource) => ({
-                ...acc,
-                [resource.name]: {
-                    props: resource,
-                    data: dataReducer(resource.name)(undefined, action),
-                    list: listReducer(resource.name)(undefined, action),
-                },
-            }),
-            {}
-        );
+    if (action.type === REGISTER_RESOURCE) {
+        const newState = {
+            ...previousState,
+            [action.payload.name]: {
+                props: action.payload,
+                data: dataReducer(action.payload.name)(undefined, action),
+                list: listReducer(action.payload.name)(undefined, action),
+            },
+        };
+        return newState;
+    }
+
+    if (action.type === UNREGISTER_RESOURCE) {
+        const newState = Object.keys(previousState).reduce((acc, key) => {
+            if (key === action.payload) {
+                return acc;
+            }
+
+            return { ...acc, [key]: previousState[key] };
+        }, {});
         return newState;
     }
 

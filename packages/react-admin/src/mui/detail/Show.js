@@ -1,16 +1,85 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-import ViewTitle from '../layout/ViewTitle';
+import Card from 'material-ui/Card';
+import classnames from 'classnames';
+
+import Header from '../layout/Header';
 import Title from '../layout/Title';
 import { crudGetOne as crudGetOneAction } from '../../actions/dataActions';
 import DefaultActions from './ShowActions';
 import translate from '../../i18n/translate';
-import withChildrenAsFunction from '../withChildrenAsFunction';
 
+const sanitizeRestProps = ({
+    actions,
+    title,
+    children,
+    className,
+    crudGetOne,
+    id,
+    data,
+    isLoading,
+    resource,
+    hasCreate,
+    hasDelete,
+    hasEdit,
+    hasList,
+    hasShow,
+    translate,
+    version,
+    match,
+    location,
+    history,
+    options,
+    locale,
+    permissions,
+    ...rest
+}) => rest;
+
+/**
+ * Page component for the Show view
+ * 
+ * The `<Show>` component renders the page title and actions,
+ * fetches the record from the data provider.
+ * It is not responsible for rendering the actual form -
+ * that's the job of its child component (usually `<SimpleShowLayout>`),
+ * to which it passes pass the `record` as prop.
+ *
+ * The `<Show>` component accepts the following props:
+ *
+ * - title
+ * - actions
+ * 
+ * Both expect an element for value.
+ * 
+ * @example     
+ *     // in src/posts.js
+ *     import React from 'react';
+ *     import { Show, SimpleShowLayout, TextField } from 'react-admin';
+ *     
+ *     export const PostShow = (props) => (
+ *         <Show {...props}>
+ *             <SimpleShowLayout>
+ *                 <TextField source="title" />
+ *             </SimpleShowLayout>
+ *         </Show>
+ *     );
+ *
+ *     // in src/App.js
+ *     import React from 'react';
+ *     import { Admin, Resource } from 'react-admin';
+ *     
+ *     import { PostShow } from './posts';
+ *     
+ *     const App = () => (
+ *         <Admin dataProvider={...}>
+ *             <Resource name="posts" show={PostShow} />
+ *         </Admin>
+ *     );
+ *     export default App;
+ */
 export class Show extends Component {
     componentDidMount() {
         this.updateData();
@@ -42,14 +111,17 @@ export class Show extends Component {
             actions = <DefaultActions />,
             title,
             children,
+            className,
             id,
             data,
             isLoading,
             resource,
-            hasList,
             hasDelete,
             hasEdit,
+            hasList,
             translate,
+            version,
+            ...rest
         } = this.props;
 
         if (!children) return null;
@@ -71,24 +143,30 @@ export class Show extends Component {
         );
 
         return (
-            <div>
+            <div
+                className={classnames('show-page', className)}
+                {...sanitizeRestProps(rest)}
+            >
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    {actions &&
-                        React.cloneElement(actions, {
+                    <Header
+                        title={titleElement}
+                        actions={actions}
+                        actionProps={{
                             basePath,
                             data,
                             hasList,
                             hasDelete,
                             hasEdit,
                             resource,
-                        })}
-                    <ViewTitle title={titleElement} />
+                        }}
+                    />
                     {data &&
                         React.cloneElement(children, {
                             resource,
                             basePath,
                             record: data,
                             translate,
+                            version,
                         })}
                 </Card>
             </div>
@@ -99,11 +177,14 @@ export class Show extends Component {
 Show.propTypes = {
     actions: PropTypes.element,
     children: PropTypes.element,
+    className: PropTypes.string,
     crudGetOne: PropTypes.func.isRequired,
     data: PropTypes.object,
-    hasList: PropTypes.bool,
+    hasCreate: PropTypes.bool,
     hasDelete: PropTypes.bool,
     hasEdit: PropTypes.bool,
+    hasList: PropTypes.bool,
+    hasShow: PropTypes.bool,
     id: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
@@ -129,8 +210,7 @@ function mapStateToProps(state, props) {
 
 const enhance = compose(
     connect(mapStateToProps, { crudGetOne: crudGetOneAction }),
-    translate,
-    withChildrenAsFunction
+    translate
 );
 
 export default enhance(Show);

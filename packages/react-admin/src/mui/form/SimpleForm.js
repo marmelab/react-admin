@@ -3,11 +3,60 @@ import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
+
 import getDefaultValues from './getDefaultValues';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
 
-const formStyle = { padding: '0 1em 1em 1em' };
+const styles = theme => ({
+    form: {
+        [theme.breakpoints.up('sm')]: {
+            padding: '0 1em 1em 1em',
+        },
+        [theme.breakpoints.down('xs')]: {
+            padding: '0 1em 5em 1em',
+        },
+    },
+});
+
+const sanitizeRestProps = ({
+    anyTouched,
+    asyncValidate,
+    asyncValidating,
+    clearSubmit,
+    dirty,
+    handleSubmit,
+    initialized,
+    initialValues,
+    pristine,
+    submitting,
+    submitFailed,
+    submitSucceeded,
+    valid,
+    pure,
+    triggerSubmit,
+    clearSubmitErrors,
+    clearAsyncError,
+    blur,
+    change,
+    destroy,
+    dispatch,
+    initialize,
+    reset,
+    touch,
+    untouch,
+    validate,
+    save,
+    translate,
+    autofill,
+    submit,
+    redirect,
+    array,
+    form,
+    ...props
+}) => props;
 
 export class SimpleForm extends Component {
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
@@ -17,16 +66,23 @@ export class SimpleForm extends Component {
         const {
             basePath,
             children,
+            classes = {},
+            className,
             invalid,
             record,
             resource,
             submitOnEnter,
             toolbar,
+            version,
+            ...rest
         } = this.props;
 
         return (
-            <form className="simple-form">
-                <div style={formStyle}>
+            <form
+                className={classnames('simple-form', className)}
+                {...sanitizeRestProps(rest)}
+            >
+                <div className={classes.form} key={version}>
                     {Children.map(children, input => (
                         <FormInput
                             basePath={basePath}
@@ -50,6 +106,8 @@ export class SimpleForm extends Component {
 SimpleForm.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
+    classes: PropTypes.object,
+    className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
@@ -60,6 +118,7 @@ SimpleForm.propTypes = {
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.element,
     validate: PropTypes.func,
+    version: PropTypes.number,
 };
 
 SimpleForm.defaultProps = {
@@ -74,7 +133,8 @@ const enhance = compose(
     reduxForm({
         form: 'record-form',
         enableReinitialize: true,
-    })
+    }),
+    withStyles(styles)
 );
 
 export default enhance(SimpleForm);

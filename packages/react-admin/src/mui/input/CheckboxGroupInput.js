@@ -1,42 +1,28 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
+import {
+    FormLabel,
+    FormControl,
+    FormGroup,
+    FormControlLabel,
+} from 'material-ui/Form';
 import Checkbox from 'material-ui/Checkbox';
-import muiThemeable from 'material-ui/styles/muiThemeable';
+import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 
 import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
 import translate from '../../i18n/translate';
+import sanitizeRestProps from './sanitizeRestProps';
 
-const getStyles = muiTheme => {
-    const {
-        baseTheme,
-        textField: { floatingLabelColor, backgroundColor },
-    } = muiTheme;
-
-    return {
-        labelContainer: {
-            fontSize: 16,
-            lineHeight: '24px',
-            display: 'inline-block',
-            position: 'relative',
-            backgroundColor,
-            fontFamily: baseTheme.fontFamily,
-            cursor: 'auto',
-            marginTop: 14,
-        },
-        label: {
-            color: floatingLabelColor,
-            lineHeight: '22px',
-            zIndex: 1,
-            transform: 'scale(0.75)',
-            transformOrigin: 'left top',
-            pointerEvents: 'none',
-            userSelect: 'none',
-        },
-    };
-};
+const styles = theme => ({
+    root: {},
+    label: {
+        transform: 'translate(0, 5px) scale(0.75)',
+        transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
+    },
+});
 
 /**
  * An Input component for a checkbox group, using an array of objects for the options
@@ -103,11 +89,11 @@ const getStyles = muiTheme => {
 export class CheckboxGroupInput extends Component {
     handleCheck = (event, isChecked) => {
         const { input: { value, onChange } } = this.props;
-
+        const newValue = JSON.parse(event.target.value);
         if (isChecked) {
-            onChange([...value, ...[event.target.value]]);
+            onChange([...value, ...[newValue]]);
         } else {
-            onChange(value.filter(v => v != event.target.value));
+            onChange(value.filter(v => v != newValue));
         }
     };
 
@@ -126,7 +112,7 @@ export class CheckboxGroupInput extends Component {
               ? optionText(choice)
               : get(choice, optionText);
         return (
-            <Checkbox
+            <FormControlLabel
                 key={get(choice, optionValue)}
                 checked={
                     value
@@ -134,14 +120,14 @@ export class CheckboxGroupInput extends Component {
                           undefined
                         : false
                 }
-                onCheck={this.handleCheck}
-                value={get(choice, optionValue)}
+                onChange={this.handleCheck}
+                value={String(get(choice, optionValue))}
+                control={<Checkbox {...options} />}
                 label={
                     translateChoice
                         ? translate(choiceName, { _: choiceName })
                         : choiceName
                 }
-                {...options}
             />
         );
     };
@@ -149,35 +135,41 @@ export class CheckboxGroupInput extends Component {
     render() {
         const {
             choices,
+            className,
+            classes = {},
             isRequired,
             label,
-            muiTheme,
             resource,
             source,
+            input,
+            ...rest
         } = this.props;
-        const styles = getStyles(muiTheme);
-        const { prepareStyles } = muiTheme;
 
         return (
-            <div>
-                <div style={prepareStyles(styles.labelContainer)}>
-                    <div style={prepareStyles(styles.label)}>
-                        <FieldTitle
-                            label={label}
-                            source={source}
-                            resource={resource}
-                            isRequired={isRequired}
-                        />
-                    </div>
-                </div>
-                {choices.map(this.renderCheckbox)}
-            </div>
+            <FormControl
+                className={className}
+                component="fieldset"
+                margin="normal"
+                {...sanitizeRestProps(rest)}
+            >
+                <FormLabel component="legend" className={classes.label}>
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                </FormLabel>
+                <FormGroup row>{choices.map(this.renderCheckbox)}</FormGroup>
+            </FormControl>
         );
     }
 }
 
 CheckboxGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
+    classes: PropTypes.object,
+    className: PropTypes.string,
     label: PropTypes.string,
     source: PropTypes.string,
     options: PropTypes.object,
@@ -194,7 +186,6 @@ CheckboxGroupInput.propTypes = {
     resource: PropTypes.string,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
-    muiTheme: PropTypes.object.isRequired,
 };
 
 CheckboxGroupInput.defaultProps = {
@@ -205,4 +196,6 @@ CheckboxGroupInput.defaultProps = {
     translateChoice: true,
 };
 
-export default compose(addField, translate, muiThemeable())(CheckboxGroupInput);
+export default compose(addField, translate, withStyles(styles))(
+    CheckboxGroupInput
+);

@@ -1,4 +1,4 @@
-import { all, put, call, takeEvery } from 'redux-saga/effects';
+import { all, put, call, select, takeEvery } from 'redux-saga/effects';
 import { push, replace } from 'react-router-redux';
 
 import {
@@ -15,7 +15,10 @@ import {
 } from '../../actions/authActions';
 import { FETCH_ERROR } from '../../actions/fetchActions';
 import { AUTH_LOGIN, AUTH_CHECK, AUTH_ERROR, AUTH_LOGOUT } from '../../auth';
-
+const nextPathnameSelector = state => {
+    const locationState = state.routing.location.state;
+    return locationState && locationState.nextPathname;
+};
 export default authClient => {
     if (!authClient) return () => null;
     function* handleAuth(action) {
@@ -33,7 +36,9 @@ export default authClient => {
                         type: USER_LOGIN_SUCCESS,
                         payload: authPayload,
                     });
-                    yield put(push(meta.pathName || '/'));
+                    const redirectTo = yield meta.pathName ||
+                        select(nextPathnameSelector);
+                    yield put(push(redirectTo || '/'));
                 } catch (e) {
                     yield put({
                         type: USER_LOGIN_FAILURE,
@@ -53,11 +58,11 @@ export default authClient => {
             case USER_CHECK: {
                 try {
                     yield call(authClient, AUTH_CHECK, payload);
-                } catch (e) {
+                } catch (error) {
                     yield call(authClient, AUTH_LOGOUT);
                     yield put(
                         replace({
-                            pathname: (e && e.redirectTo) || '/login',
+                            pathname: (error && error.redirectTo) || '/login',
                             state: { nextPathname: meta.pathName },
                         })
                     );
@@ -65,8 +70,13 @@ export default authClient => {
                 break;
             }
             case USER_LOGOUT: {
+                yield put(
+                    push(
+                        (action.payload && action.payload.redirectTo) ||
+                            '/login'
+                    )
+                );
                 yield call(authClient, AUTH_LOGOUT);
-                yield put(push('/login'));
                 break;
             }
             case FETCH_ERROR:

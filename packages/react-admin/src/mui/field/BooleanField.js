@@ -3,24 +3,28 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
 
-import FalseIcon from 'material-ui/svg-icons/content/clear';
-import TrueIcon from 'material-ui/svg-icons/action/done';
+import FalseIcon from 'material-ui-icons/Clear';
+import TrueIcon from 'material-ui-icons/Done';
+import sanitizeRestProps from './sanitizeRestProps';
 
-export const BooleanField = ({ source, record = {}, elStyle }) => {
+export const BooleanField = ({ className, source, record = {}, ...rest }) => {
     if (get(record, source) === false) {
-        return <FalseIcon style={elStyle} />;
+        return <FalseIcon className={className} {...sanitizeRestProps(rest)} />;
     }
 
     if (get(record, source) === true) {
-        return <TrueIcon style={elStyle} />;
+        return <TrueIcon className={className} {...sanitizeRestProps(rest)} />;
     }
 
-    return <span style={elStyle} />;
+    return <span className={className} {...sanitizeRestProps(rest)} />;
 };
 
 BooleanField.propTypes = {
     addLabel: PropTypes.bool,
-    elStyle: PropTypes.object,
+    basePath: PropTypes.string,
+    className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
@@ -30,10 +34,6 @@ const PureBooleanField = pure(BooleanField);
 
 PureBooleanField.defaultProps = {
     addLabel: true,
-    elStyle: {
-        display: 'block',
-        margin: 'auto',
-    },
 };
 
 export default PureBooleanField;

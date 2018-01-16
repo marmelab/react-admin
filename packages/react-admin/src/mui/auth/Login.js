@@ -1,171 +1,102 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { propTypes, reduxForm, Field } from 'redux-form';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { Card, CardActions } from 'material-ui/Card';
+import classnames from 'classnames';
+import Card from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import CircularProgress from 'material-ui/CircularProgress';
-import LockIcon from 'material-ui/svg-icons/action/lock-outline';
-import { cyan500, pinkA200 } from 'material-ui/styles/colors';
+import LockIcon from 'material-ui-icons/LockOutline';
+import { withStyles } from 'material-ui/styles';
 
 import defaultTheme from '../defaultTheme';
-import { userLogin as userLoginAction } from '../../actions/authActions';
-import translate from '../../i18n/translate';
 import Notification from '../layout/Notification';
+import DefaultLoginForm from './LoginForm';
 
-const styles = {
+const styles = theme => ({
     main: {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        background: 'url(https://source.unsplash.com/random/1600x900)',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
     },
     card: {
         minWidth: 300,
+        marginTop: '6em',
     },
     avatar: {
         margin: '1em',
-        textAlign: 'center ',
-    },
-    form: {
-        padding: '0 1em 1em 1em',
-    },
-    input: {
         display: 'flex',
+        justifyContent: 'center',
     },
-};
+    icon: {
+        backgroundColor: theme.palette.secondary[500],
+    },
+});
 
-function getColorsFromTheme(theme) {
-    if (!theme) return { primary1Color: cyan500, accent1Color: pinkA200 };
-    const { palette: { primary1Color, accent1Color } } = theme;
-    return { primary1Color, accent1Color };
-}
+const sanitizeRestProps = ({
+    classes,
+    className,
+    location,
+    title,
+    array,
+    theme,
+    ...rest
+}) => rest;
 
-// see http://redux-form.com/6.4.3/examples/material-ui/
-const renderInput = ({
-    meta: { touched, error } = {},
-    input: { ...inputProps },
-    ...props
+/**
+ * A standalone login page, to serve as authentication gate to the admin
+ *
+ * Expects the user to enter a login and a password, which will be checked
+ * by the `authClient` using the AUTH_LOGIN verb. Redirects to the root page
+ * (/) upon success, otherwise displays an authentication error message.
+ *
+ * Copy and adapt this component to implement your own login logic
+ * (e.g. to authenticate via email or facebook or anything else).
+ *
+ * @example
+ *     import MyLoginPage from './MyLoginPage';
+ *     const App = () => (
+ *         <Admin loginPage={MyLoginPage} authClient={authClient}>
+ *             ...
+ *        </Admin>
+ *     );
+ */
+const Login = ({
+    classes,
+    className,
+    loginForm = <DefaultLoginForm />,
+    ...rest
 }) => (
-    <TextField
-        errorText={touched && error}
-        {...inputProps}
-        {...props}
-        fullWidth
-    />
+    <div
+        className={classnames(classes.main, className)}
+        {...sanitizeRestProps(rest)}
+    >
+        <Card className={classes.card}>
+            <div className={classes.avatar}>
+                <Avatar className={classes.icon}>
+                    <LockIcon />
+                </Avatar>
+            </div>
+            {loginForm}
+        </Card>
+        <Notification />
+    </div>
 );
 
-class Login extends Component {
-    login = auth =>
-        this.props.userLogin(
-            auth,
-            this.props.location.state
-                ? this.props.location.state.nextPathname
-                : '/'
-        );
-
-    render() {
-        const { handleSubmit, isLoading, theme, translate } = this.props;
-        const muiTheme = getMuiTheme(theme);
-        const { primary1Color, accent1Color } = getColorsFromTheme(muiTheme);
-        return (
-            <MuiThemeProvider muiTheme={muiTheme}>
-                <div style={{ ...styles.main, backgroundColor: primary1Color }}>
-                    <Card style={styles.card}>
-                        <div style={styles.avatar}>
-                            <Avatar
-                                backgroundColor={accent1Color}
-                                icon={<LockIcon />}
-                                size={60}
-                            />
-                        </div>
-                        <form onSubmit={handleSubmit(this.login)}>
-                            <div style={styles.form}>
-                                <div style={styles.input}>
-                                    <Field
-                                        name="username"
-                                        component={renderInput}
-                                        floatingLabelText={translate(
-                                            'ra.auth.username'
-                                        )}
-                                        disabled={isLoading}
-                                    />
-                                </div>
-                                <div style={styles.input}>
-                                    <Field
-                                        name="password"
-                                        component={renderInput}
-                                        floatingLabelText={translate(
-                                            'ra.auth.password'
-                                        )}
-                                        type="password"
-                                        disabled={isLoading}
-                                    />
-                                </div>
-                            </div>
-                            <CardActions>
-                                <RaisedButton
-                                    type="submit"
-                                    primary
-                                    disabled={isLoading}
-                                    icon={
-                                        isLoading && (
-                                            <CircularProgress
-                                                size={25}
-                                                thickness={2}
-                                            />
-                                        )
-                                    }
-                                    label={translate('ra.auth.sign_in')}
-                                    fullWidth
-                                />
-                            </CardActions>
-                        </form>
-                    </Card>
-                    <Notification />
-                </div>
-            </MuiThemeProvider>
-        );
-    }
-}
-
 Login.propTypes = {
-    ...propTypes,
+    className: PropTypes.string,
     authClient: PropTypes.func,
+    classes: PropTypes.object,
+    input: PropTypes.object,
+    meta: PropTypes.object,
     previousRoute: PropTypes.string,
-    theme: PropTypes.object.isRequired,
-    translate: PropTypes.func.isRequired,
-    userLogin: PropTypes.func.isRequired,
+    loginForm: PropTypes.func,
 };
 
 Login.defaultProps = {
     theme: defaultTheme,
 };
 
-const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
-
-const enhance = compose(
-    translate,
-    reduxForm({
-        form: 'signIn',
-        validate: (values, props) => {
-            const errors = {};
-            const { translate } = props;
-            if (!values.username)
-                errors.username = translate('ra.validation.required');
-            if (!values.password)
-                errors.password = translate('ra.validation.required');
-            return errors;
-        },
-    }),
-    connect(mapStateToProps, { userLogin: userLoginAction })
-);
-
-export default enhance(Login);
+export default withStyles(styles)(Login);

@@ -74,9 +74,11 @@ export default url => driver => ({
                 fields.map(field =>
                     field.getAttribute('class').then(classes =>
                         classes
+                            .split(' ')
+                            .filter(className =>
+                                className.startsWith('ra-input-')
+                            )[0]
                             .replace('ra-input-', '')
-                            .replace('ra-input', '')
-                            .trim()
                     )
                 )
             )

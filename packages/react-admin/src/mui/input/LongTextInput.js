@@ -4,16 +4,18 @@ import TextField from 'material-ui/TextField';
 
 import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
+import sanitizeRestProps from './sanitizeRestProps';
 
 export const LongTextInput = ({
+    className,
     input,
+    meta,
     isRequired,
     label,
-    meta,
     options,
     source,
-    elStyle,
     resource,
+    ...rest
 }) => {
     if (typeof meta === 'undefined') {
         throw new Error(
@@ -21,13 +23,13 @@ export const LongTextInput = ({
         );
     }
     const { touched, error } = meta;
-
     return (
         <TextField
             {...input}
-            multiLine
-            fullWidth
-            floatingLabelText={
+            className={className}
+            multiline
+            margin="normal"
+            label={
                 <FieldTitle
                     label={label}
                     source={source}
@@ -35,18 +37,20 @@ export const LongTextInput = ({
                     isRequired={isRequired}
                 />
             }
-            errorText={touched && error}
-            style={elStyle}
+            error={!!(touched && error)}
+            helperText={touched && error}
+            {...sanitizeRestProps(rest)}
             {...options}
         />
     );
 };
 
 LongTextInput.propTypes = {
-    elStyle: PropTypes.object,
+    className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
+    fullWidth: PropTypes.bool,
     meta: PropTypes.object,
     name: PropTypes.string,
     options: PropTypes.object,
@@ -58,8 +62,10 @@ LongTextInput.propTypes = {
     ]),
 };
 
-LongTextInput.defaultProps = {
+const EnhancedLongTextInput = addField(LongTextInput);
+EnhancedLongTextInput.defaultProps = {
     options: {},
+    fullWidth: true,
 };
 
-export default addField(LongTextInput);
+export default EnhancedLongTextInput;

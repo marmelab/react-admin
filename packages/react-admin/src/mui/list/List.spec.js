@@ -9,6 +9,9 @@ describe('<List />', () => {
         resource: 'post',
         hasCreate: false,
         hasEdit: false,
+        hasList: true,
+        hasDelete: false,
+        hasShow: false,
         location: { pathname: '' },
         params: {},
         query: {},
@@ -32,7 +35,10 @@ describe('<List />', () => {
                 <div />
             </List>
         );
-        const textElement = wrapper.find('CardText').children();
+        const textElement = wrapper
+            .find('WithStyles(CardContent)')
+            .children()
+            .children();
         assert.equal(textElement.text(), 'ra.navigation.no_results');
     });
 

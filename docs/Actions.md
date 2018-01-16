@@ -78,7 +78,6 @@ export const CommentList = (props) =>
 
 Or, in the `<Edit>` page, as a [custom action](./CreateEdit.md#actions):
 
-{% raw %}
 ```jsx
 // in src/comments/CommentEditActions.js
 import React from 'react';
@@ -86,8 +85,14 @@ import { CardActions } from 'material-ui/Card';
 import { ListButton, DeleteButton } from 'react-admin';
 import ApproveButton from './ApproveButton';
 
+const cardActionStyle = {
+    zIndex: 2,
+    display: 'inline-block',
+    float: 'right',
+};
+
 const CommentEditActions = ({ basePath, data }) => (
-    <CardActions style={{ float: 'right' }}>
+    <CardActions style={cardActionStyle}>
         <ApproveButton record={data} />
         <ListButton basePath={basePath} />
         <DeleteButton basePath={basePath} record={data} />
@@ -102,9 +107,8 @@ import CommentEditActions from './CommentEditActions';
 export const CommentEdit = (props) =>
     <Edit {...props} actions={<CommentEditActions />}>
         ...
-    </List>;
+    </Edit>;
 ```
-{% endraw %}
 
 ## Using a Data Provider Instead of Fetch
 
@@ -112,8 +116,8 @@ The previous code uses `fetch()`, which means it has to make raw HTTP requests. 
 
 ```jsx
 // in src/dataProvider.js
-import jsonServerRestClient from 'ra-data-json-server';
-export default jsonServerRestClient('http://Mydomain.com/api/');
+import jsonServerProvider from 'ra-data-json-server';
+export default jsonServerProvider('http://Mydomain.com/api/');
 
 // in src/comments/ApproveButton.js
 import { UPDATE } from 'react-admin';
@@ -184,7 +188,7 @@ To use the new action creator in the component, `connect` it:
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import { commentApprove as commentApproveAction } from './commentActions';
 
 class ApproveButton extends Component {
@@ -195,7 +199,7 @@ class ApproveButton extends Component {
     }
 
     render() {
-        return <FlatButton label="Approve" onClick={this.handleClick} />;
+        return <Button onClick={this.handleClick}>Approve</Button>;
     }
 }
 
@@ -256,7 +260,7 @@ import { CommentList } from './comments';
 import commentSaga from './comments/commentSaga';
 
 const App = () => (
-    <Admin customSagas={[ commentSaga ]} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin customSagas={[ commentSaga ]} dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="comments" list={CommentList} />
     </Admin>
 );
@@ -328,7 +332,7 @@ In order to put the rate passed to `bitcoinRateReceived()` into the Redux store,
 // in src/rateReducer.js
 import { BITCOIN_RATE_RECEIVED } from './bitcoinRateReceived';
 
-export const (previousState = 0, { type, payload }) => {
+export default (previousState = 0, { type, payload }) => {
     if (type === BITCOIN_RATE_RECEIVED) {
         return payload.rate;
     }
@@ -347,7 +351,7 @@ import { Admin } from 'react-admin';
 import rate from './rateReducer';
 
 const App = () => (
-    <Admin customReducers={{ rate }} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin customReducers={{ rate }} dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         ...
     </Admin>
 );

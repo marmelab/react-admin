@@ -1,43 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import shouldUpdate from 'recompose/shouldUpdate';
-import compose from 'recompose/compose';
-import FlatButton from 'material-ui/FlatButton';
-import ContentCreate from 'material-ui/svg-icons/content/create';
+import ContentCreate from 'material-ui-icons/Create';
+
+import Link from '../Link';
 import linkToRecord from '../../util/linkToRecord';
-import translate from '../../i18n/translate';
+import Button from './Button';
 
 const EditButton = ({
     basePath = '',
     label = 'ra.action.edit',
     record = {},
-    translate,
+    ...rest
 }) => (
-    <FlatButton
-        primary
-        label={label && translate(label)}
-        icon={<ContentCreate />}
-        containerElement={<Link to={linkToRecord(basePath, record.id)} />}
-        style={{ overflow: 'inherit' }}
-    />
+    <Button
+        component={Link}
+        to={linkToRecord(basePath, record.id)}
+        label={label}
+        {...rest}
+    >
+        <ContentCreate />
+    </Button>
 );
 
 EditButton.propTypes = {
     basePath: PropTypes.string,
+    className: PropTypes.string,
+    classes: PropTypes.object,
     label: PropTypes.string,
     record: PropTypes.object,
-    translate: PropTypes.func.isRequired,
 };
 
-const enhance = compose(
-    shouldUpdate(
-        (props, nextProps) =>
-            (props.record && props.record.id !== nextProps.record.id) ||
-            props.basePath !== nextProps.basePath ||
-            (props.record == null && nextProps.record != null)
-    ),
-    translate
+const enhance = shouldUpdate(
+    (props, nextProps) =>
+        props.translate !== nextProps.translate ||
+        (props.record &&
+            nextProps.record &&
+            props.record.id !== nextProps.record.id) ||
+        props.basePath !== nextProps.basePath ||
+        (props.record == null && nextProps.record != null)
 );
 
 export default enhance(EditButton);

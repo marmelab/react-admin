@@ -12,6 +12,7 @@ title: "Reference"
 * `<AdminRoutes>`
 * `<AppBar>`
 * `<AppBarMobile>`
+* [`<Authenticated>`](./Authentication.md#restricting-access-to-a-custom-page)
 * [`<AutocompleteInput>`](./Inputs.md#autocompleteinput)
 * [`<BooleanField>`](./Fields.md#booleanfield)
 * [`<BooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
@@ -20,7 +21,6 @@ title: "Reference"
 * [`<Create>`](./CreateEdit.md#the-create-and-edit-components)
 * `<CreateActions>`
 * `<CreateButton>`
-* `<CrudRoute>`
 * `<DashboardMenuItem>`
 * [`<Datagrid>`](./List.md#the-datagrid-component)
 * `<DatagridBody>`
@@ -49,6 +49,7 @@ title: "Reference"
 * [`<FunctionField>`](./Fields.md#functionfield)
 * `<Labeled>`
 * [`<Layout>`](./Admin.md#applayout)
+* [`<Loading>`](./Theming.md#Loading)
 * [`<List>`](./List.md#the-list-component)
 * `<ListButton>`
 * [`<LongTextInput>`](./Inputs.md#longtextinput)
@@ -60,18 +61,15 @@ title: "Reference"
 * [`<Pagination>`](./List.md#pagination)
 * [`<RadioButtonGroupInput>`](./Inputs.md#radiobuttongroupinput)
 * [`<ReferenceArrayField>`](./Fields.md#referencearrayfield)
-* [`<ReferenceArrayInput>`](./Inputs.md#referencearrayinput)
 * [`<ReferenceField>`](./Fields.md#referencefield)
 * [`<ReferenceInput>`](./Inputs.md#referenceinput)
 * [`<ReferenceManyField>`](./Fields.md#referencemanyfield)
 * `<RefreshButton>`
 * [`<Resource>`](./Resource.md#the-resource-component)
 * [`<Responsive>`](./Theming.md#responsive-utility)
-* [`<Restricted>`](./Authentication.md#restricting-access-to-a-custom-page)
 * [`<RichTextField>`](./Fields.md#richtextfield)
 * [`<RichTextInput>`](./Inputs.md#richtextinput)
 * `<SaveButton>`
-* [`<SelectArrayInput>`](./Inputs.md#selectarrayinput)
 * [`<SelectField>`](./Fields.md#selectfield)
 * [`<SelectInput>`](./Inputs.md#selectinput)
 * [`<Show>`](./Show.md#the-show-component)
@@ -83,7 +81,6 @@ title: "Reference"
 * [`<SimpleList>`](./List.html#the-simplelist-component)
 * [`<SimpleShowLayout>`](./Show.html#the-simpleshowlayout-component)
 * [`<SingleFieldList>`](./List.html#the-singlefieldlist-component)
-* [`<SwitchPermissions>`](./Authorization.html#switchpermissions)
 * `<Tab>`
 * [`<TabbedForm>`](./CreateEdit.md#the-tabbedform-component)
 * `<TabbedShowLayout>`
@@ -93,6 +90,6 @@ title: "Reference"
 * `<Toolbar>`
 * [`<UrlField>`](./Fields.md#urlfield)
 * `<ViewTitle>`
-* [`<WithPermission>`](./Authorization.html#withpermission)
+* [`<WithPermissions>`](./Authorization.html#withpermissions)
 
 </div>

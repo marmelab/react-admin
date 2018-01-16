@@ -69,9 +69,6 @@
 .book-summary ul.summary li a:hover {
     text-decoration: underline
 }
-.book-summary ul.summary li a:focus {
-    outline: 0
-}
 .book-summary ul.summary li.active>a {
     color: #008cff;
     background: 0 0;
@@ -112,6 +109,14 @@
     }
     .book.with-summary .book-summary {
         width: 0;
+        overflow-x: hidden;
+        transition: all 250ms ease-out
+    }
+    .book.with-summary .book-summary.open {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        padding-top: 30px
     }
 }
 .book.without-animation .book-body {
@@ -120,6 +125,36 @@
     -o-transition: none!important;
     transition: none!important
 }
+
+.page-menu {
+    background: #fafafa;
+    display: none;
+    padding: 10px 15px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+}
+
+@media (max-width: 600px) {
+    .page-menu {
+        display: flex;
+        position: fixed;
+        z-index: 1;
+        width: 100%
+    }
+}
+.page-menu button {
+    color: #939da3;
+    cursor: pointer;
+    border: none;
+    background: none;
+    text-transform: uppercase
+}
+
+.page-menu button img {
+    width: 16px;
+    height: 16px;
+}
+
+
 .book-body {
     position: absolute;
     top: 0;
@@ -165,6 +200,12 @@
     margin: 0 auto;
     padding: 20px 15px 40px 15px
 }
+@media (max-width: 600px) {
+    .page-inner {
+        padding: 40px 15px 40px 15px
+    }
+}
+
 .page-inner .btn-group .btn {
     border-radius: 0;
     background: #eee;
@@ -192,10 +233,6 @@
 }
 .button:hover {
     color: #444
-}
-.button:focus,
-.button:hover {
-    outline: 0
 }
 .button.size-2 {
     width: 50%
@@ -273,7 +310,6 @@
 .markdown-section a:active,
 .markdown-section a:focus,
 .markdown-section a:hover {
-    outline: 0;
     text-decoration: underline
 }
 .markdown-section img {

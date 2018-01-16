@@ -2,47 +2,94 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
+import { withStyles } from 'material-ui/styles';
+import compose from 'recompose/compose';
+import classnames from 'classnames';
+
 import { hideNotification as hideNotificationAction } from '../../actions/notificationActions';
+import { getNotification } from '../../reducer/admin/notifications';
 import translate from '../../i18n/translate';
 
-function getStyles(context) {
-    if (!context) return { primary1Color: '#00bcd4', accent1Color: '#ff4081' };
-    const {
-        muiTheme: { baseTheme: { palette: { primary1Color, accent1Color } } },
-    } = context;
-    return { primary1Color, accent1Color };
-}
+const styles = theme => {
+    const type = theme.palette.type === 'light' ? 'dark' : 'light';
+    const confirm = theme.palette.shades[type].background.default;
+    const warning = theme.palette.error.A100;
+    return {
+        confirm: {
+            backgroundColor: confirm,
+        },
+        warning: {
+            backgroundColor: warning,
+        },
+    };
+};
 
 class Notification extends React.Component {
+    state = {
+        open: false,
+    };
+    componentWillReceiveProps = nextProps => {
+        this.setState({
+            open: !!nextProps.notification,
+        });
+    };
+
     handleRequestClose = () => {
+        this.setState({
+            open: false,
+        });
+    };
+
+    handleExited = () => {
         this.props.hideNotification();
     };
 
     render() {
-        const style = {};
-        const { primary1Color, accent1Color } = getStyles(this.context);
-        const { type, translate, message, autoHideDuration } = this.props;
-        if (type === 'warning') {
-            style.backgroundColor = accent1Color;
-        }
-        if (type === 'confirm') {
-            style.backgroundColor = primary1Color;
-        }
+        const {
+            classes,
+            className,
+            type,
+            translate,
+            notification,
+            autoHideDuration,
+            hideNotification,
+            ...rest
+        } = this.props;
+
         return (
             <Snackbar
-                open={!!message}
-                message={!!message && translate(message)}
-                autoHideDuration={autoHideDuration}
-                onRequestClose={this.handleRequestClose}
-                bodyStyle={style}
+                open={this.state.open}
+                message={
+                    notification &&
+                    notification.message &&
+                    translate(notification.message, notification.messageArgs)
+                }
+                autoHideDuration={
+                    (notification && notification.autoHideDuration) ||
+                    autoHideDuration
+                }
+                onExited={this.handleExited}
+                onClose={this.handleRequestClose}
+                className={classnames(
+                    classes[(notification && notification.type) || type],
+                    className
+                )}
+                {...rest}
             />
         );
     }
 }
 
 Notification.propTypes = {
-    message: PropTypes.string,
-    type: PropTypes.string.isRequired,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    notification: PropTypes.shape({
+        message: PropTypes.string,
+        type: PropTypes.string,
+        autoHideDuration: PropTypes.number,
+        messageArgs: PropTypes.object,
+    }),
+    type: PropTypes.string,
     hideNotification: PropTypes.func.isRequired,
     autoHideDuration: PropTypes.number,
     translate: PropTypes.func.isRequired,
@@ -53,18 +100,14 @@ Notification.defaultProps = {
     autoHideDuration: 4000,
 };
 
-Notification.contextTypes = {
-    muiTheme: PropTypes.object.isRequired,
-};
-
 const mapStateToProps = state => ({
-    message: state.admin.notification.text,
-    type: state.admin.notification.type,
-    autoHideDuration: state.admin.notification.autoHideDuration,
+    notification: getNotification(state),
 });
 
-export default translate(
-    connect(mapStateToProps, { hideNotification: hideNotificationAction })(
-        Notification
-    )
-);
+export default compose(
+    translate,
+    withStyles(styles),
+    connect(mapStateToProps, {
+        hideNotification: hideNotificationAction,
+    })
+)(Notification);

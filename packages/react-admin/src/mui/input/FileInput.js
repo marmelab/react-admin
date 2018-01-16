@@ -3,13 +3,16 @@ import PropTypes from 'prop-types';
 import { shallowEqual } from 'recompose';
 import Dropzone from 'react-dropzone';
 import compose from 'recompose/compose';
+import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
 
 import Labeled from './Labeled';
 import addField from '../form/addField';
 import FileInputPreview from './FileInputPreview';
 import translate from '../../i18n/translate';
+import sanitizeRestProps from './sanitizeRestProps';
 
-const defaultStyle = {
+const styles = {
     dropZone: {
         background: '#efefef',
         cursor: 'pointer',
@@ -17,38 +20,34 @@ const defaultStyle = {
         textAlign: 'center',
         color: '#999',
     },
-    preview: {
-        float: 'left',
-    },
+    preview: {},
+    removeButton: {},
+    root: { width: '100%' },
 };
 
 export class FileInput extends Component {
     static propTypes = {
         accept: PropTypes.string,
         children: PropTypes.element,
+        classes: PropTypes.object,
+        className: PropTypes.string,
         disableClick: PropTypes.bool,
-        elStyle: PropTypes.object,
         input: PropTypes.object,
         isRequired: PropTypes.bool,
-        itemStyle: PropTypes.object,
         labelMultiple: PropTypes.string,
         labelSingle: PropTypes.string,
         maxSize: PropTypes.number,
         minSize: PropTypes.number,
         multiple: PropTypes.bool,
-        removeStyle: PropTypes.object,
-        style: PropTypes.object,
         translate: PropTypes.func.isRequired,
         placeholder: PropTypes.node,
     };
 
     static defaultProps = {
-        itemStyle: {},
         labelMultiple: 'ra.input.file.upload_several',
         labelSingle: 'ra.input.file.upload_single',
         multiple: false,
         onUpload: () => {},
-        removeStyle: { display: 'inline-block' },
     };
 
     constructor(props) {
@@ -145,32 +144,28 @@ export class FileInput extends Component {
         const {
             accept,
             children,
+            classes = {},
+            className,
             disableClick,
-            elStyle,
             isRequired,
-            itemStyle,
             label,
             maxSize,
             minSize,
             multiple,
             resource,
             source,
-            style,
-            removeStyle,
+            options,
+            ...rest
         } = this.props;
-
-        const finalStyle = {
-            ...defaultStyle,
-            ...style,
-        };
 
         return (
             <Labeled
                 label={label}
+                className={classnames(classes.root, className)}
                 source={source}
                 resource={resource}
                 isRequired={isRequired}
-                style={elStyle}
+                {...sanitizeRestProps(rest)}
             >
                 <span>
                     <Dropzone
@@ -180,7 +175,8 @@ export class FileInput extends Component {
                         maxSize={maxSize}
                         minSize={minSize}
                         multiple={multiple}
-                        style={finalStyle.dropZone}
+                        className={classes.dropZone}
+                        {...options}
                     >
                         {this.label()}
                     </Dropzone>
@@ -190,13 +186,12 @@ export class FileInput extends Component {
                                 <FileInputPreview
                                     key={index}
                                     file={file}
-                                    itemStyle={itemStyle}
                                     onRemove={this.onRemove(file)}
-                                    removeStyle={removeStyle}
+                                    className={classes.removeButton}
                                 >
                                     {React.cloneElement(children, {
                                         record: file,
-                                        style: defaultStyle.preview,
+                                        className: classes.preview,
                                     })}
                                 </FileInputPreview>
                             ))}
@@ -208,4 +203,4 @@ export class FileInput extends Component {
     }
 }
 
-export default compose(addField, translate)(FileInput);
+export default compose(addField, translate, withStyles(styles))(FileInput);

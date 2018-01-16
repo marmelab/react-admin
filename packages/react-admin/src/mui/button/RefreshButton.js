@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import FlatButton from 'material-ui/FlatButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import translate from '../../i18n/translate';
+import NavigationRefresh from 'material-ui-icons/Refresh';
+
 import { refreshView as refreshViewAction } from '../../actions/uiActions';
+import Button from './Button';
 
 class RefreshButton extends Component {
     static propTypes = {
         label: PropTypes.string,
-        translate: PropTypes.func.isRequired,
         refreshView: PropTypes.func.isRequired,
     };
 
@@ -24,22 +22,16 @@ class RefreshButton extends Component {
     };
 
     render() {
-        const { label, translate } = this.props;
+        const { label, refreshView, ...rest } = this.props;
 
         return (
-            <FlatButton
-                primary
-                label={label && translate(label)}
-                onClick={this.handleClick}
-                icon={<NavigationRefresh />}
-            />
+            <Button label={label} onClick={this.handleClick} {...rest}>
+                <NavigationRefresh />
+            </Button>
         );
     }
 }
 
-const enhance = compose(
-    connect(null, { refreshView: refreshViewAction }),
-    translate
-);
+const enhance = connect(null, { refreshView: refreshViewAction });
 
 export default enhance(RefreshButton);

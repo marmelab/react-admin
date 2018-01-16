@@ -47,7 +47,7 @@ describe('<TextInput />', () => {
                 <TextInput {...defaultProps} meta={{ touched: false }} />
             );
             const TextFieldElement = wrapper.find('TextField');
-            assert.equal(TextFieldElement.prop('errorText'), false);
+            assert.equal(TextFieldElement.prop('helperText'), false);
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
@@ -58,7 +58,7 @@ describe('<TextInput />', () => {
                 />
             );
             const TextFieldElement = wrapper.find('TextField');
-            assert.equal(TextFieldElement.prop('errorText'), false);
+            assert.equal(TextFieldElement.prop('helperText'), false);
         });
 
         it('should be displayed if field has been touched and is invalid', () => {
@@ -69,7 +69,10 @@ describe('<TextInput />', () => {
                 />
             );
             const TextFieldElement = wrapper.find('TextField');
-            assert.equal(TextFieldElement.prop('errorText'), 'Required field.');
+            assert.equal(
+                TextFieldElement.prop('helperText'),
+                'Required field.'
+            );
         });
     });
 });

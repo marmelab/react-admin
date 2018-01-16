@@ -31,12 +31,12 @@ Here is the minimal code necessary to display a list of posts:
 // in src/App.js
 import React from 'react';
 import { Admin, Resource } from 'react-admin';
-import jsonServerRestClient from 'ra-data-json-server';
+import jsonServerProvider from 'ra-data-json-server';
 
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
@@ -82,24 +82,23 @@ The title can be either a string, or an element of your own.
 You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
-import { CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import { CreateButton, RefreshButton } from 'react-admin';
-
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
-};
+import Button from 'material-ui/Button';
+import NavigationRefresh from 'material-ui-icons/Refresh';
+import { CardActions, CreateButton, RefreshButton } from 'react-admin';
 
 const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter }) => (
-    <CardActions style={cardActionStyle}>
-        {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
+    <CardActions>
+        {filters && React.cloneElement(filters, {
+            resource,
+            showFilter,
+            displayedFilters,
+            filterValues,
+            context: 'button',
+        }) }
         <CreateButton basePath={basePath} />
         <RefreshButton />
         {/* Add your custom actions */}
-        <FlatButton primary label="Custom Action" onClick={customAction} />
+        <Button primary onClick={customAction}>Custom Action</Button>
     </CardActions>
 );
 
@@ -140,6 +139,11 @@ It does so by inspecting its `context` prop.
 
 **Tip**: Don't mix up this `filters` prop, expecting a React element, with the `filter` props, which expects an object to define permanent filters (see below).
 
+The `Filter` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui-next.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
+
+* `form`: applied to the root element when rendering as a form.
+* `button`: applied to the root element when rendering as a button.
+
 ### Records Per Page
 
 By default, the list paginates results by groups of 10. You can override this setting by specifying the `perPage` prop:
@@ -178,7 +182,7 @@ It is possible to disable sorting for a specific field by passing a `sortable` p
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'react-admin/lib/mui';
+import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -216,24 +220,26 @@ You can replace the default pagination element by your own, using the `paginatio
 So if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
 
 ```jsx
-import FlatButton from 'material-ui/FlatButton';
-import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
-import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
+import Button from 'material-ui/Button';
+import ChevronLeft from 'material-ui-icons/ChevronLeft';
+import ChevronRight from 'material-ui-icons/ChevronRight';
+import Toolbar from 'material-ui/Toolbar';
 
 const PostPagination = ({ page, perPage, total, setPage }) => {
     const nbPages = Math.ceil(total / perPage) || 1;
     return (
         nbPages > 1 &&
             <Toolbar>
-                <ToolbarGroup>
                 {page > 1 &&
-                    <FlatButton primary key="prev" label="Prev" icon={<ChevronLeft />} onClick={() => setPage(page - 1)} />
+                    <Button primary key="prev" icon={<ChevronLeft />} onClick={() => setPage(page - 1)}>
+                        Prev
+                    </Button>
                 }
                 {page !== nbPages &&
-                    <FlatButton primary key="next" label="Next" icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before" />
+                    <Button primary key="next" icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before">
+                        Next
+                    </Button>
                 }
-                </ToolbarGroup>
             </Toolbar>
     );
 }
@@ -245,6 +251,15 @@ export const PostList = (props) => (
 );
 ```
 
+### CSS API
+
+The `List` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui-next.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
+
+* `root`: alternative to using `className`. Applied to the root element.
+* `header`: applied to the page header
+* `actions`: applied to the actions container
+* `noResults`: applied to the component shown when there is no result
+
 ## The `<Datagrid>` component
 
 The datagrid component renders a list of records as a table. It is usually used as a child of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components.
@@ -253,17 +268,13 @@ Here are all the props accepted by the component:
 
 * [`styles`](#custom-grid-style)
 * [`rowStyle`](#row-style-function)
-* [`options`](#options)
-* [`headerOptions`](#options)
-* [`bodyOptions`](#options)
-* [`rowOptions`](#options)
 
 It renders as many columns as it receives `<Field>` children.
 
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, Datagrid, TextField, EditButton } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -327,8 +338,6 @@ export const PostList = (props) => (
 ```
 {% endraw %}
 
-**Tip**: if you want to go even further and apply a custom style cell by cell, check out the [Conditional Formatting section of the Theming chapter](./Theming.md#conditional-formatting.)
-
 ### Row Style Function
 
 You can customize the datagrid row style (applied to the `<tr>` element) based on the record, thanks to the `rowStyle` prop, which expects a function.
@@ -348,39 +357,17 @@ export const PostList = (props) => (
 );
 ```
 
-### `options`, `headerOptions`, `bodyOptions`, and `rowOptions`
+### CSS API
 
-React-admin relies on [material-ui's `<Table>` component](http://www.material-ui.com/#/components/table) for rendering the datagrid. The `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props allow your to override the props of `<Table>`, `<TableHeader>`, `<TableBody>`, and `<TableRow>`.
+The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui-next.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
 
-For instance, to get a fixed header on the table, override the `<Table>` props with `options`:
-
-{% raw %}
-```jsx
-export const PostList = (props) => (
-    <List {...props}>
-        <Datagrid options={{ fixedHeader: true, height: 400 }}>
-            ...
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-To enable striped rows and row hover, override the `<TableBody>` props with `bodyOptions`:
-
-{% raw %}
-```jsx
-export const PostList = (props) => (
-    <List {...props}>
-        <Datagrid bodyOptions={{ stripedRows: true, showRowHover: true }}>
-            ...
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-For a list of all the possible props that you can override via these options, please refer to [the material-ui `<Table>` component documentation](http://www.material-ui.com/#/components/table).
+* `table`: alternative to using `className`. Applied to the root element.
+* `tbody`: applied to the tbody
+* `headerCell`: applied to each header cell
+* `row`: applied to each row
+* `rowEven`: applied to each even row
+* `rowOdd`: applied to each odd row
+* `rowCell`: applied to each row cell
 
 ## The `<SimpleList>` component
 
@@ -483,6 +470,8 @@ Simple: Create your own iterator component as follows:
 {% raw %}
 ```jsx
 // in src/comments.js
+import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
+
 const cardStyle = {
     width: 300,
     minHeight: 300,
@@ -496,18 +485,18 @@ const CommentGrid = ({ ids, data, basePath }) => (
         <Card key={id} style={cardStyle}>
             <CardHeader
                 title={<TextField record={data[id]} source="author.name" />}
-                subtitle={<DateField record={data[id]} source="created_at" />}
+                subheader={<DateField record={data[id]} source="created_at" />}
                 avatar={<Avatar icon={<PersonIcon />} />}
             />
-            <CardText>
+            <CardContent>
                 <TextField record={data[id]} source="body" />
-            </CardText>
-            <CardText>
+            </CardContent>
+            <CardContent>
                 about&nbsp;
                 <ReferenceField label="Post" resource="comments" record={data[id]} source="post_id" reference="posts" basePath={basePath}>
                     <TextField source="title" />
                 </ReferenceField>
-            </CardText>
+            </CardContent>
             <CardActions style={{ textAlign: 'right' }}>
                 <EditButton resource="posts" basePath={basePath} record={data[id]} />
             </CardActions>
@@ -530,7 +519,7 @@ export const CommentList = (props) => (
 
 As you can see, nothing prevents you from using `<Field>` components inside your own components... provided you inject the current `record`. Also, notice that components building links require the `basePath` component, which is also injected.
 
-## Declaring fields at runtime
+## Declaring Fields At Runtime
 
 You might want to dynamically define the fields when the `<List>` component is rendered. It accepts a function as its child and this function can return a Promise. If you also defined an `authClient` on the `<Admin>` component, the function will receive the result of a call to `authClient` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
 

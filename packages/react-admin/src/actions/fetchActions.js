@@ -1,4 +1,4 @@
-export const FETCH_START = 'AOR/FETCH_START';
-export const FETCH_END = 'AOR/FETCH_END';
-export const FETCH_ERROR = 'AOR/FETCH_ERROR';
-export const FETCH_CANCEL = 'AOR/FETCH_CANCEL';
+export const FETCH_START = 'RA/FETCH_START';
+export const FETCH_END = 'RA/FETCH_END';
+export const FETCH_ERROR = 'RA/FETCH_ERROR';
+export const FETCH_CANCEL = 'RA/FETCH_CANCEL';

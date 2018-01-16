@@ -1,24 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import FlatButton from 'material-ui/FlatButton';
-import ActionList from 'material-ui/svg-icons/action/list';
-import translate from '../../i18n/translate';
+import ActionList from 'material-ui-icons/List';
 
-const ListButton = ({ basePath = '', label = 'ra.action.list', translate }) => (
-    <FlatButton
-        primary
-        label={label && translate(label)}
-        icon={<ActionList />}
-        containerElement={<Link to={basePath} />}
-        style={{ overflow: 'inherit' }}
-    />
+import Link from '../Link';
+import Button from './Button';
+
+const ListButton = ({ basePath = '', label = 'ra.action.list', ...rest }) => (
+    <Button component={Link} to={basePath} label={label} {...rest}>
+        <ActionList />
+    </Button>
 );
 
 ListButton.propTypes = {
     basePath: PropTypes.string,
     label: PropTypes.string,
-    translate: PropTypes.func.isRequired,
 };
 
-export default translate(ListButton);
+export default ListButton;

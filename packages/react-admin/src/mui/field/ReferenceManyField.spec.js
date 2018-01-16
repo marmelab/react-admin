@@ -21,9 +21,11 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyField>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('LinearProgress');
+        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 1);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'WithStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 0);
     });
 
@@ -48,9 +50,11 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyField>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('LinearProgress');
+        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'WithStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
@@ -74,9 +78,11 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyField>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('LinearProgress');
+        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'WithStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), {});
@@ -104,9 +110,11 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyField>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('LinearProgress');
+        const ProgressElements = wrapper.find('widthStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'WithStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
@@ -137,12 +145,36 @@ describe('<ReferenceManyField />', () => {
             </ReferenceManyField>,
             { disableLifecycleMethods: true }
         );
-        const ProgressElements = wrapper.find('LinearProgress');
+        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
-        const SingleFieldListElement = wrapper.find('SingleFieldList');
+        const SingleFieldListElement = wrapper.find(
+            'WithStyles(SingleFieldList)'
+        );
         assert.equal(SingleFieldListElement.length, 1);
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
         assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), [1, 2]);
+    });
+
+    it('should support custom source', () => {
+        const crudGetManyReference = jest.fn(() => {});
+
+        shallow(
+            <ReferenceManyField
+                resource="posts"
+                reference="comments"
+                target="post_id"
+                basePath=""
+                record={{ id: 'not me', customId: 1 }}
+                source="customId"
+                crudGetManyReference={crudGetManyReference}
+            >
+                <SingleFieldList>
+                    <TextField source="title" />
+                </SingleFieldList>
+            </ReferenceManyField>
+        );
+
+        assert.equal(crudGetManyReference.mock.calls[0][2], 1);
     });
 });

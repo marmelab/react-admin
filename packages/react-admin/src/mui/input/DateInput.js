@@ -1,51 +1,42 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import DatePicker from 'material-ui/DatePicker';
+import TextField from 'material-ui/TextField';
 
 import addField from '../form/addField';
 import FieldTitle from '../../util/FieldTitle';
+import sanitizeRestProps from './sanitizeRestProps';
 
-export const datify = input => {
-    if (!input) {
-        return null;
-    }
-
-    const date = input instanceof Date ? input : new Date(input);
-    if (isNaN(date)) {
-        throw new Error(`Invalid date: ${input}`);
-    }
-
-    return date;
+/**
+ * Convert Date object to String
+ * 
+ * @param {Date} v value to convert
+ * @returns {String} A standardized date (yyyy-MM-dd), to be passed to an <input type="date" />
+ */
+const dateFormatter = v => {
+    if (!(v instanceof Date) || isNaN(v)) return;
+    const pad = '00';
+    const yyyy = v.getFullYear().toString();
+    const MM = (v.getMonth() + 1).toString();
+    const dd = v.getDate().toString();
+    return `${yyyy}-${(pad + MM).slice(-2)}-${(pad + dd).slice(-2)}`;
 };
 
 export class DateInput extends Component {
-    onChange = (_, date) => {
-        this.props.input.onChange(date.toISOString());
-        this.props.input.onBlur();
+    onChange = event => {
+        this.props.input.onChange(event.target.value);
     };
-
-    /**
-     * This aims to fix a bug created by the conjunction of
-     * redux-form, which expects onBlur to be triggered after onChange, and
-     * material-ui, which triggers onBlur on <DatePicker> when the user clicks
-     * on the input to bring the focus on the calendar rather than the input.
-     *
-     * @see https://github.com/erikras/redux-form/issues/1218#issuecomment-229072652
-     */
-    onBlur = () => {};
-
-    onDismiss = () => this.props.input.onBlur();
 
     render() {
         const {
+            className,
+            meta,
             input,
             isRequired,
             label,
-            meta,
             options,
             source,
-            elStyle,
             resource,
+            ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
             throw new Error(
@@ -55,10 +46,14 @@ export class DateInput extends Component {
         const { touched, error } = meta;
 
         return (
-            <DatePicker
+            <TextField
                 {...input}
-                errorText={touched && error}
-                floatingLabelText={
+                className={className}
+                type="date"
+                margin="normal"
+                error={!!(touched && error)}
+                helperText={touched && error}
+                label={
                     <FieldTitle
                         label={label}
                         source={source}
@@ -66,22 +61,26 @@ export class DateInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                DateTimeFormat={Intl.DateTimeFormat}
-                container="inline"
-                autoOk
-                value={datify(input.value)}
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                {...options}
+                {...sanitizeRestProps(rest)}
+                value={dateFormatter(
+                    input.value instanceof Date
+                        ? input.value
+                        : new Date(input.value)
+                )}
                 onChange={this.onChange}
                 onBlur={this.onBlur}
-                onDismiss={this.onDismiss}
-                style={elStyle}
-                {...options}
             />
         );
     }
 }
 
 DateInput.propTypes = {
-    elStyle: PropTypes.object,
+    classes: PropTypes.object,
+    className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

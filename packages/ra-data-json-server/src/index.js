@@ -1,7 +1,6 @@
 import { stringify } from 'query-string';
 import {
-    fetchJson,
-    flattenObject,
+    fetchUtils,
     GET_LIST,
     GET_ONE,
     GET_MANY,
@@ -23,7 +22,7 @@ import {
  * CREATE       => POST http://my.api.url/posts/123
  * DELETE       => DELETE http://my.api.url/posts/123
  */
-export default (apiUrl, httpClient = fetchJson) => {
+export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
     /**
      * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
      * @param {String} resource Name of the resource to fetch, e.g. 'posts'
@@ -38,7 +37,7 @@ export default (apiUrl, httpClient = fetchJson) => {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
-                    ...flattenObject(params.filter),
+                    ...fetchUtils.flattenObject(params.filter),
                     _sort: field,
                     _order: order,
                     _start: (page - 1) * perPage,
@@ -54,7 +53,7 @@ export default (apiUrl, httpClient = fetchJson) => {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
-                    ...flattenObject(params.filter),
+                    ...fetchUtils.flattenObject(params.filter),
                     [params.target]: params.id,
                     _sort: field,
                     _order: order,

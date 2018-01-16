@@ -1,62 +1,87 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
-import FlatButton from 'material-ui/FlatButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import withWidth from 'material-ui/utils/withWidth';
+import Button from 'material-ui/Button';
+import ContentAdd from 'material-ui-icons/Add';
+import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
+import classnames from 'classnames';
+
+import Responsive from '../layout/Responsive';
+import Link from '../Link';
 import translate from '../../i18n/translate';
 
-const styles = {
+const styles = theme => ({
     floating: {
+        color: theme.palette.getContrastText(theme.palette.primary[500]),
         margin: 0,
         top: 'auto',
         right: 20,
         bottom: 60,
         left: 'auto',
         position: 'fixed',
+        zIndex: 1000,
     },
-    flat: {
-        overflow: 'inherit',
+    floatingLink: {
+        color: 'inherit',
     },
-};
+    desktopLink: {
+        display: 'inline-flex',
+        alignItems: 'center',
+    },
+    iconPaddingStyle: {
+        paddingRight: '0.5em',
+    },
+});
 
 const CreateButton = ({
     basePath = '',
+    className,
+    classes = {},
     translate,
     label = 'ra.action.create',
-    width,
-}) =>
-    width === 1 ? (
-        <FloatingActionButton
-            style={styles.floating}
-            containerElement={<Link to={`${basePath}/create`} />}
-        >
-            <ContentAdd />
-        </FloatingActionButton>
-    ) : (
-        <FlatButton
-            primary
-            label={label && translate(label)}
-            icon={<ContentAdd />}
-            containerElement={<Link to={`${basePath}/create`} />}
-            style={styles.flat}
-        />
-    );
+    ...rest
+}) => (
+    <Responsive
+        small={
+            <Button
+                component={Link}
+                fab
+                color="primary"
+                className={classnames(classes.floating, className)}
+                to={`${basePath}/create`}
+                {...rest}
+            >
+                <ContentAdd />
+            </Button>
+        }
+        medium={
+            <Button
+                component={Link}
+                color="primary"
+                to={`${basePath}/create`}
+                className={classnames(classes.desktopLink, className)}
+                {...rest}
+            >
+                <ContentAdd className={classes.iconPaddingStyle} />
+                {label && translate(label)}
+            </Button>
+        }
+    />
+);
 
 CreateButton.propTypes = {
     basePath: PropTypes.string,
+    className: PropTypes.string,
+    classes: PropTypes.object,
     label: PropTypes.string,
     translate: PropTypes.func.isRequired,
-    width: PropTypes.number,
 };
 
 const enhance = compose(
+    translate,
     onlyUpdateForKeys(['basePath', 'label']),
-    withWidth(),
-    translate
+    withStyles(styles)
 );
 
 export default enhance(CreateButton);

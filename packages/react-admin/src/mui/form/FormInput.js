@@ -1,21 +1,55 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import { withStyles } from 'material-ui/styles';
 
 import Labeled from '../input/Labeled';
 
-const FormInput = ({ input, ...rest }) =>
+const sanitizeRestProps = ({ basePath, record, resoure, ...rest }) => rest;
+
+const styles = theme => ({
+    input: { width: theme.spacing.unit * 32 },
+});
+
+export const FormInput = ({ classes, input, ...rest }) =>
     input ? (
         <div
-            className={`ra-input ra-input-${input.props.source}`}
-            style={input.props.style}
+            className={classnames(
+                'ra-input',
+                `ra-input-${input.props.source}`,
+                input.props.formClassName
+            )}
         >
             {input.props.addLabel ? (
-                <Labeled {...input.props} {...rest}>
-                    {input}
+                <Labeled {...input.props} {...sanitizeRestProps(rest)}>
+                    {React.cloneElement(input, {
+                        className: classnames(
+                            {
+                                [classes.input]: !input.props.fullWidth,
+                            },
+                            input.props.className
+                        ),
+                        ...rest,
+                    })}
                 </Labeled>
             ) : (
-                React.cloneElement(input, rest)
+                React.cloneElement(input, {
+                    className: classnames(
+                        {
+                            [classes.input]: !input.props.fullWidth,
+                        },
+                        input.props.className
+                    ),
+                    ...rest,
+                })
             )}
         </div>
     ) : null;
 
-export default FormInput;
+FormInput.propTypes = {
+    className: PropTypes.string,
+    classes: PropTypes.object,
+    input: PropTypes.object,
+};
+
+export default withStyles(styles)(FormInput);

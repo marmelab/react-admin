@@ -1,66 +1,113 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { List, ListItem } from 'material-ui/List';
+import Avatar from 'material-ui/Avatar';
+import List, {
+    ListItem,
+    ListItemAvatar,
+    ListItemIcon,
+    ListItemSecondaryAction,
+    ListItemText,
+} from 'material-ui/List';
+import { withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';
 import linkToRecord from '../../util/linkToRecord';
 
-const tertiaryStyle = { float: 'right', opacity: 0.541176 };
+const styles = {
+    link: {
+        textDecoration: 'none',
+        color: 'inherit',
+    },
+    tertiary: { float: 'right', opacity: 0.541176 },
+};
+
+const LinkOrNot = withStyles(styles)(
+    ({ classes, linkType, basePath, id, children }) =>
+        linkType === 'edit' || linkType === true ? (
+            <Link to={linkToRecord(basePath, id)} className={classes.link}>
+                {children}
+            </Link>
+        ) : linkType === 'show' ? (
+            <Link
+                to={`${linkToRecord(basePath, id)}/show`}
+                className={classes.link}
+            >
+                {children}
+            </Link>
+        ) : (
+            <span>{children}</span>
+        )
+);
 
 const SimpleList = ({
+    classes = {},
+    className,
+    currentSort,
+    isLoading,
+    setSort,
     ids,
     data,
     basePath,
     primaryText,
     secondaryText,
-    secondaryTextLines,
     tertiaryText,
     leftAvatar,
     leftIcon,
     rightAvatar,
     rightIcon,
     linkType,
+    ...rest
 }) => (
-    <List>
+    <List className={className} {...rest}>
         {ids.map(id => (
-            <ListItem
-                key={id}
-                primaryText={
-                    <div>
-                        {primaryText(data[id], id)}
-                        {tertiaryText && (
-                            <span style={tertiaryStyle}>
-                                {tertiaryText(data[id], id)}
-                            </span>
-                        )}
-                    </div>
-                }
-                secondaryText={secondaryText && secondaryText(data[id], id)}
-                secondaryTextLines={secondaryTextLines}
-                leftAvatar={leftAvatar && leftAvatar(data[id], id)}
-                leftIcon={leftIcon && leftIcon(data[id], id)}
-                rightAvatar={rightAvatar && rightAvatar(data[id], id)}
-                rightIcon={rightIcon && rightIcon(data[id], id)}
-                containerElement={
-                    linkType === 'edit' || linkType === true ? (
-                        <Link to={linkToRecord(basePath, id)} />
-                    ) : linkType === 'show' ? (
-                        <Link to={`${linkToRecord(basePath, id)}/show`} />
-                    ) : (
-                        'span'
-                    )
-                }
-            />
+            <LinkOrNot linkType={linkType} basePath={basePath} id={id} key={id}>
+                <ListItem button>
+                    {leftIcon && (
+                        <ListItemIcon>{leftIcon(data[id], id)}</ListItemIcon>
+                    )}
+                    {leftAvatar && (
+                        <ListItemAvatar>
+                            <Avatar>{leftAvatar(data[id], id)}</Avatar>
+                        </ListItemAvatar>
+                    )}
+                    <ListItemText
+                        primary={
+                            <div>
+                                {primaryText(data[id], id)}
+                                {tertiaryText && (
+                                    <span className={classes.tertiary}>
+                                        {tertiaryText(data[id], id)}
+                                    </span>
+                                )}
+                            </div>
+                        }
+                        secondary={secondaryText && secondaryText(data[id], id)}
+                    />
+                    {(rightAvatar || rightIcon) && (
+                        <ListItemSecondaryAction>
+                            {rightAvatar && (
+                                <Avatar>{rightAvatar(data[id], id)}</Avatar>
+                            )}
+                            {rightIcon && (
+                                <ListItemIcon>
+                                    {rightIcon(data[id], id)}
+                                </ListItemIcon>
+                            )}
+                        </ListItemSecondaryAction>
+                    )}
+                </ListItem>
+            </LinkOrNot>
         ))}
     </List>
 );
 
 SimpleList.propTypes = {
+    classes: PropTypes.object,
+    className: PropTypes.string,
     ids: PropTypes.array,
     data: PropTypes.object,
     basePath: PropTypes.string,
     primaryText: PropTypes.func,
     secondaryText: PropTypes.func,
-    secondaryTextLines: PropTypes.number,
     tertiaryText: PropTypes.func,
     leftAvatar: PropTypes.func,
     leftIcon: PropTypes.func,
@@ -74,4 +121,4 @@ SimpleList.defaultProps = {
     linkType: 'edit',
 };
 
-export default SimpleList;
+export default withStyles(styles)(SimpleList);

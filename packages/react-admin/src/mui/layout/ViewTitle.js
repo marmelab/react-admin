@@ -1,13 +1,33 @@
 import React from 'react';
-import { CardTitle } from 'material-ui/Card';
-import withWidth from 'material-ui/utils/withWidth';
+import PropTypes from 'prop-types';
+import { CardContent } from 'material-ui/Card';
+import Typography from 'material-ui/Typography';
+import classnames from 'classnames';
+
+import Responsive from './Responsive';
 import AppBarMobile from './AppBarMobile';
 
-const ViewTitle = ({ title, width }) =>
-    width === 1 ? (
-        <AppBarMobile title={title} />
-    ) : (
-        <CardTitle title={title} className="title" />
-    );
+const ViewTitle = ({ className, title, ...rest }) => (
+    <Responsive
+        small={
+            <AppBarMobile
+                className={classnames('title', className)}
+                title={title}
+                {...rest}
+            />
+        }
+        medium={
+            <CardContent className={classnames('title', className)} {...rest}>
+                <Typography type="headline">{title}</Typography>
+            </CardContent>
+        }
+    />
+);
 
-export default withWidth()(ViewTitle);
+ViewTitle.propTypes = {
+    className: PropTypes.string,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+        .isRequired,
+};
+
+export default ViewTitle;

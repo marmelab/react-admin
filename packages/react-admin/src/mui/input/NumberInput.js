@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
+
 import FieldTitle from '../../util/FieldTitle';
 import addField from '../form/addField';
+import sanitizeRestProps from './sanitizeRestProps';
 
 /**
  * An Input component for a number
@@ -41,7 +43,7 @@ export class NumberInput extends Component {
 
     render() {
         const {
-            elStyle,
+            className,
             input,
             isRequired,
             label,
@@ -50,6 +52,7 @@ export class NumberInput extends Component {
             source,
             step,
             resource,
+            ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
             throw new Error(
@@ -60,13 +63,12 @@ export class NumberInput extends Component {
 
         return (
             <TextField
-                {...input}
-                onBlur={this.handleBlur}
-                onFocus={this.handleFocus}
-                onChange={this.handleChange}
                 type="number"
+                margin="normal"
+                error={!!(touched && error)}
+                helperText={touched && error}
                 step={step}
-                floatingLabelText={
+                label={
                     <FieldTitle
                         label={label}
                         source={source}
@@ -74,16 +76,20 @@ export class NumberInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                errorText={touched && error}
-                style={elStyle}
+                className={className}
                 {...options}
+                {...sanitizeRestProps(rest)}
+                {...input}
+                onBlur={this.handleBlur}
+                onFocus={this.handleFocus}
+                onChange={this.handleChange}
             />
         );
     }
 }
 
 NumberInput.propTypes = {
-    elStyle: PropTypes.object,
+    className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
@@ -108,6 +114,12 @@ NumberInput.defaultProps = {
     onFocus: () => {},
     options: {},
     step: 'any',
+    textAlign: 'right',
 };
 
-export default addField(NumberInput);
+export const NumberInputWithField = addField(NumberInput);
+NumberInputWithField.defaultProps = {
+    textAlign: 'right',
+};
+
+export default NumberInputWithField;

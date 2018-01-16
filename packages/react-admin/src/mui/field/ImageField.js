@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
+import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
+import sanitizeRestProps from './sanitizeRestProps';
 
 const styles = {
     list: {
@@ -13,19 +16,26 @@ const styles = {
     },
 };
 
-export const ImageField = ({ elStyle = {}, record, source, src, title }) => {
+export const ImageField = ({
+    className,
+    classes = {},
+    record,
+    source,
+    src,
+    title,
+    ...rest
+}) => {
     const sourceValue = get(record, source);
     if (!sourceValue) {
-        return <div />;
+        return <div className={className} {...sanitizeRestProps(rest)} />;
     }
 
     if (Array.isArray(sourceValue)) {
-        const style = {
-            ...styles.list,
-            ...elStyle,
-        };
         return (
-            <ul style={style}>
+            <ul
+                className={classnames(classes.list, className)}
+                {...sanitizeRestProps(rest)}
+            >
                 {sourceValue.map((file, index) => {
                     const titleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
@@ -36,7 +46,7 @@ export const ImageField = ({ elStyle = {}, record, source, src, title }) => {
                                 alt={titleValue}
                                 title={titleValue}
                                 src={srcValue}
-                                style={styles.image}
+                                className={classes.image}
                             />
                         </li>
                     );
@@ -48,22 +58,28 @@ export const ImageField = ({ elStyle = {}, record, source, src, title }) => {
     const titleValue = get(record, title) || title;
 
     return (
-        <div style={elStyle}>
+        <div className={className} {...sanitizeRestProps(rest)}>
             <img
                 title={titleValue}
                 alt={titleValue}
                 src={sourceValue}
-                style={styles.image}
+                className={classes.image}
             />
         </div>
     );
 };
 
 ImageField.propTypes = {
-    elStyle: PropTypes.object,
+    addLabel: PropTypes.bool,
+    basePath: PropTypes.string,
+    className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
+    classes: PropTypes.object,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
+    src: PropTypes.string,
     title: PropTypes.string,
 };
 
-export default ImageField;
+export default withStyles(styles)(ImageField);

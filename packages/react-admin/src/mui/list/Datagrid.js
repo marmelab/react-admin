@@ -1,31 +1,32 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import muiThemeable from 'material-ui/styles/muiThemeable';
-import { Table, TableHeader, TableRow } from 'material-ui/Table';
+import { withStyles } from 'material-ui/styles';
+import Table, { TableHead, TableRow } from 'material-ui/Table';
+import classnames from 'classnames';
+
 import DatagridHeaderCell from './DatagridHeaderCell';
 import DatagridBody from './DatagridBody';
 
-const defaultStyles = {
+const styles = {
     table: {
         tableLayout: 'auto',
     },
     tbody: {
         height: 'inherit',
     },
-    header: {
-        th: {
-            padding: 0,
-        },
-        'th:first-child': {
+    headerCell: {
+        padding: 0,
+        '&:first-child': {
             padding: '0 0 0 12px',
         },
     },
-    cell: {
-        td: {
-            padding: '0 12px',
-            whiteSpace: 'normal',
-        },
-        'td:first-child': {
+    row: {},
+    rowEven: {},
+    rowOdd: {},
+    rowCell: {
+        padding: '0 12px',
+        whiteSpace: 'normal',
+        '&:first-child': {
             padding: '0 12px 0 16px',
             whiteSpace: 'normal',
         },
@@ -40,7 +41,7 @@ const defaultStyles = {
  *  - styles
  *  - rowStyle
  *  - options (passed as props to <Table>)
- *  - headerOptions (passed as props to mui <TableHeader>)
+ *  - headerOptions (passed as props to mui <TableHead>)
  *  - bodyOptions (passed as props to mui <TableBody>)
  *  - rowOptions (passed as props to mui <TableRow>)
  *
@@ -79,31 +80,21 @@ class Datagrid extends Component {
         const {
             resource,
             children,
+            classes,
+            className,
             ids,
             isLoading,
             data,
             currentSort,
             basePath,
-            styles = defaultStyles,
-            muiTheme,
             rowStyle,
-            options,
-            headerOptions,
-            bodyOptions,
-            rowOptions,
+            setSort,
+            ...rest
         } = this.props;
         return (
-            <Table
-                style={options && options.fixedHeader ? null : styles.table}
-                fixedHeader={false}
-                {...options}
-            >
-                <TableHeader
-                    displaySelectAll={false}
-                    adjustForCheckbox={false}
-                    {...headerOptions}
-                >
-                    <TableRow style={muiTheme.tableRow}>
+            <Table className={classnames(classes.table, className)} {...rest}>
+                <TableHead>
+                    <TableRow className={classes.row}>
                         {React.Children.map(
                             children,
                             (field, index) =>
@@ -111,13 +102,7 @@ class Datagrid extends Component {
                                     <DatagridHeaderCell
                                         key={field.props.source || index}
                                         field={field}
-                                        defaultStyle={
-                                            index === 0
-                                                ? styles.header[
-                                                      'th:first-child'
-                                                  ]
-                                                : styles.header.th
-                                        }
+                                        className={classes.headerCell}
                                         currentSort={currentSort}
                                         isSorting={
                                             field.props.source ===
@@ -129,17 +114,15 @@ class Datagrid extends Component {
                                 ) : null
                         )}
                     </TableRow>
-                </TableHeader>
+                </TableHead>
                 <DatagridBody
                     resource={resource}
                     ids={ids}
                     data={data}
                     basePath={basePath}
-                    styles={styles}
-                    rowStyle={rowStyle}
+                    classes={classes}
                     isLoading={isLoading}
-                    options={bodyOptions}
-                    rowOptions={rowOptions}
+                    rowStyle={rowStyle}
                 >
                     {children}
                 </DatagridBody>
@@ -150,22 +133,19 @@ class Datagrid extends Component {
 
 Datagrid.propTypes = {
     basePath: PropTypes.string,
-    bodyOptions: PropTypes.object,
     currentSort: PropTypes.shape({
         sort: PropTypes.string,
         order: PropTypes.string,
     }),
+    children: PropTypes.node.isRequired,
     data: PropTypes.object.isRequired,
-    headerOptions: PropTypes.object,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     isLoading: PropTypes.bool,
-    muiTheme: PropTypes.object,
-    options: PropTypes.object,
     resource: PropTypes.string,
-    rowOptions: PropTypes.object,
     rowStyle: PropTypes.func,
     setSort: PropTypes.func,
-    styles: PropTypes.object,
+    classes: PropTypes.object,
+    className: PropTypes.string,
 };
 
 Datagrid.defaultProps = {
@@ -173,4 +153,4 @@ Datagrid.defaultProps = {
     ids: [],
 };
 
-export default muiThemeable()(Datagrid);
+export default withStyles(styles)(Datagrid);

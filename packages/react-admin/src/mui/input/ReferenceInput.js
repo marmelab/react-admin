@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
-import Labeled from './Labeled';
 import compose from 'recompose/compose';
 
+import LinearProgress from '../layout/LinearProgress';
+import Labeled from './Labeled';
 import addField from '../form/addField';
 import {
     crudGetOne as crudGetOneAction,
@@ -13,7 +14,44 @@ import {
 import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
-const noFilter = () => true;
+
+const sanitizeRestProps = ({
+    allowEmpty,
+    basePath,
+    choices,
+    className,
+    component,
+    crudGetMatching,
+    crudGetOne,
+    defaultValue,
+    filter,
+    filterToQuery,
+    formClassName,
+    initializeForm,
+    input,
+    isRequired,
+    label,
+    locale,
+    meta,
+    onChange,
+    options,
+    optionValue,
+    optionText,
+    perPage,
+    record,
+    reference,
+    resource,
+    setFilter,
+    setPagination,
+    setSort,
+    sort,
+    source,
+    textAlign,
+    translate,
+    translateChoice,
+    validation,
+    ...rest
+}) => rest;
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -156,6 +194,8 @@ export class ReferenceInput extends Component {
 
     render() {
         const {
+            classes,
+            className,
             input,
             resource,
             label,
@@ -167,7 +207,10 @@ export class ReferenceInput extends Component {
             onChange,
             children,
             meta,
+            options,
+            ...rest
         } = this.props;
+
         if (!referenceRecord && !allowEmpty) {
             return (
                 <Labeled
@@ -178,12 +221,18 @@ export class ReferenceInput extends Component {
                     }
                     source={source}
                     resource={resource}
-                />
+                    className={className}
+                    {...sanitizeRestProps(rest)}
+                >
+                    <LinearProgress />
+                </Labeled>
             );
         }
 
         return React.cloneElement(children, {
             allowEmpty,
+            classes,
+            className,
             input,
             label:
                 typeof label === 'undefined'
@@ -195,11 +244,12 @@ export class ReferenceInput extends Component {
             choices: matchingReferences,
             basePath,
             onChange,
-            filter: noFilter, // for AutocompleteInput
             setFilter: this.debouncedSetFilter,
             setPagination: this.setPagination,
             setSort: this.setSort,
             translateChoice: false,
+            options,
+            ...sanitizeRestProps(rest),
         });
     }
 }
@@ -208,6 +258,8 @@ ReferenceInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
+    className: PropTypes.string,
+    classes: PropTypes.object,
     crudGetMatching: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,
     filter: PropTypes.object,

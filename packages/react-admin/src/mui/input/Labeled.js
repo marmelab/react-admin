@@ -1,12 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
+import { InputLabel } from 'material-ui/Input';
+import { FormControl } from 'material-ui/Form';
+import { withStyles } from 'material-ui/styles';
 import FieldTitle from '../../util/FieldTitle';
 
-const defaultLabelStyle = {
-    paddingTop: '2em',
-    height: 'auto',
-};
+const styles = theme => ({
+    label: {
+        position: 'relative',
+    },
+    value: {
+        fontFamily: theme.typography.fontFamily,
+        color: 'currentColor',
+        padding: `${theme.spacing.unit}px 0 ${theme.spacing.unit / 2}px`,
+        border: 0,
+        boxSizing: 'content-box',
+        verticalAlign: 'middle',
+        background: 'none',
+        margin: 0, // Reset for Safari
+        display: 'block',
+        width: '100%',
+    },
+});
 
 /**
  * Use any component as read-only Input, labeled just like other Inputs.
@@ -23,16 +38,16 @@ const defaultLabelStyle = {
  *     <FooComponent source="title" />
  * </Labeled>
  */
-const Labeled = ({
+export const Labeled = ({
+    children,
+    classes,
+    className,
     input,
     isRequired,
     label,
     meta,
     resource,
-    children,
     source,
-    disabled = true,
-    labelStyle = defaultLabelStyle,
     ...rest
 }) => {
     if (!label && !source) {
@@ -45,32 +60,29 @@ const Labeled = ({
     }
 
     return (
-        <TextField
-            floatingLabelText={
+        <FormControl className={className} margin="normal">
+            <InputLabel shrink className={classes.label}>
                 <FieldTitle
                     label={label}
                     source={source}
                     resource={resource}
                     isRequired={isRequired}
                 />
-            }
-            floatingLabelFixed
-            fullWidth
-            disabled={disabled}
-            underlineShow={false}
-            style={labelStyle}
-        >
-            {children && typeof children.type !== 'string'
-                ? React.cloneElement(children, { input, resource, ...rest })
-                : children}
-        </TextField>
+            </InputLabel>
+            <div className={classes.value}>
+                {children && typeof children.type !== 'string'
+                    ? React.cloneElement(children, { input, resource, ...rest })
+                    : children}
+            </div>
+        </FormControl>
     );
 };
 
 Labeled.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.element,
-    disabled: PropTypes.bool,
+    classes: PropTypes.object,
+    className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
@@ -82,4 +94,4 @@ Labeled.propTypes = {
     labelStyle: PropTypes.object,
 };
 
-export default Labeled;
+export default withStyles(styles)(Labeled);

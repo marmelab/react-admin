@@ -3,35 +3,36 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import { push as pushAction } from 'react-router-redux';
-import { Card, CardText } from 'material-ui/Card';
+import Card, { CardContent } from 'material-ui/Card';
+import Typography from 'material-ui/Typography';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import inflection from 'inflection';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import autoprefixer from 'material-ui/utils/autoprefixer';
+import classnames from 'classnames';
+import pickBy from 'lodash.pickby';
+import { withStyles } from 'material-ui/styles';
+
 import queryReducer, {
     SET_SORT,
     SET_PAGE,
     SET_FILTER,
     SORT_DESC,
 } from '../../reducer/admin/resource/list/queryReducer';
-import ViewTitle from '../layout/ViewTitle';
+import Header from '../layout/Header';
 import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
-import DefaultActions from './Actions';
+import DefaultActions from './ListActions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import { changeListParams as changeListParamsAction } from '../../actions/listActions';
 import translate from '../../i18n/translate';
 import removeKey from '../../util/removeKey';
 import defaultTheme from '../defaultTheme';
-import withChildrenAsFunction from '../withChildrenAsFunction';
 
 const styles = {
+    root: {},
+    actions: {},
+    header: {},
     noResults: { padding: 20 },
-    header: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
 };
 
 /**
@@ -138,12 +139,15 @@ export class List extends Component {
         if (!query.perPage) {
             query.perPage = this.props.perPage;
         }
+        if (!query.page) {
+            query.page = 1;
+        }
         return query;
     }
 
     updateData(query) {
         const params = query || this.getQuery();
-        const { sort, order, page, perPage, filter } = params;
+        const { sort, order, page = 1, perPage, filter } = params;
         const pagination = {
             page: parseInt(page, 10),
             perPage: parseInt(perPage, 10),
@@ -195,22 +199,45 @@ export class List extends Component {
     render() {
         const {
             children,
+            classes = {},
+            className,
             filters,
             pagination = <DefaultPagination />,
             actions = <DefaultActions />,
             resource,
             hasCreate,
+            hasEdit,
+            hasDelete,
+            hasList,
+            hasShow,
+            filter,
+            filterValues,
+            crudGetList,
+            changeListParams,
+            perPage,
             title,
             data,
             ids,
             total,
             isLoading,
             translate,
-            theme,
             version,
+            push,
+            history,
+            locale,
+            location,
+            match,
+            options,
+            params,
+            permissions,
+            query: q,
+            sort,
+            theme,
+            ...rest
         } = this.props;
         const query = this.getQuery();
-        const filterValues = query.filter;
+
+        const queryFilterValues = query.filter || {};
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
@@ -223,32 +250,35 @@ export class List extends Component {
         const titleElement = (
             <Title title={title} defaultTitle={defaultTitle} />
         );
-        const muiTheme = getMuiTheme(theme);
-        const prefix = autoprefixer(muiTheme);
 
         return (
-            <div className="list-page">
+            <div
+                className={classnames('list-page', classes.root, className)}
+                {...rest}
+            >
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    <div style={prefix(styles.header)}>
-                        <ViewTitle title={titleElement} />
-                        {actions &&
-                            React.cloneElement(actions, {
-                                resource,
-                                filters,
-                                filterValues,
-                                basePath,
-                                hasCreate,
-                                displayedFilters: this.state,
-                                showFilter: this.showFilter,
-                                theme,
-                                refresh: this.refresh,
-                            })}
-                    </div>
+                    <Header
+                        className={classes.header}
+                        title={titleElement}
+                        actions={React.cloneElement(actions, {
+                            className: classes.actions,
+                        })}
+                        actionProps={{
+                            resource,
+                            filters,
+                            filterValues: queryFilterValues,
+                            basePath,
+                            hasCreate,
+                            displayedFilters: this.state,
+                            showFilter: this.showFilter,
+                            refresh: this.refresh,
+                        }}
+                    />
                     {filters &&
                         React.cloneElement(filters, {
                             resource,
                             hideFilter: this.hideFilter,
-                            filterValues,
+                            filterValues: queryFilterValues,
                             displayedFilters: this.state,
                             setFilters: this.setFilters,
                             context: 'form',
@@ -271,15 +301,17 @@ export class List extends Component {
                             {pagination &&
                                 React.cloneElement(pagination, {
                                     total,
-                                    page: parseInt(query.page, 10),
+                                    page: parseInt(query.page || 1, 10),
                                     perPage: parseInt(query.perPage, 10),
                                     setPage: this.setPage,
                                 })}
                         </div>
                     ) : (
-                        <CardText style={styles.noResults}>
-                            {translate('ra.navigation.no_results')}
-                        </CardText>
+                        <CardContent className={classes.noResults}>
+                            <Typography type="body1">
+                                {translate('ra.navigation.no_results')}
+                            </Typography>
+                        </CardContent>
                     )}
                 </Card>
             </div>
@@ -289,17 +321,19 @@ export class List extends Component {
 
 List.propTypes = {
     // the props you can change
-    title: PropTypes.any,
+    actions: PropTypes.element,
+    children: PropTypes.node,
+    classes: PropTypes.object,
+    className: PropTypes.string,
     filter: PropTypes.object,
     filters: PropTypes.element,
     pagination: PropTypes.element,
-    actions: PropTypes.element,
     perPage: PropTypes.number.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
         order: PropTypes.string,
     }),
-    children: PropTypes.node,
+    title: PropTypes.any,
     // the props managed by react-admin
     authClient: PropTypes.func,
     changeListParams: PropTypes.func.isRequired,
@@ -307,6 +341,10 @@ List.propTypes = {
     data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     hasCreate: PropTypes.bool.isRequired,
+    hasEdit: PropTypes.bool.isRequired,
+    hasDelete: PropTypes.bool.isRequired,
+    hasList: PropTypes.bool.isRequired,
+    hasShow: PropTypes.bool.isRequired,
     ids: PropTypes.array,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
@@ -332,14 +370,27 @@ List.defaultProps = {
     theme: defaultTheme,
 };
 
+const validQueryParams = ['page', 'perPage', 'sort', 'order', 'filter'];
+const getLocationPath = props => props.location.pathname;
 const getLocationSearch = props => props.location.search;
-const getQuery = createSelector(getLocationSearch, locationSearch => {
-    const query = parse(locationSearch);
-    if (query.filter && typeof query.filter === 'string') {
-        query.filter = JSON.parse(query.filter);
+const getQuery = createSelector(
+    getLocationPath,
+    getLocationSearch,
+    (path, search) => {
+        const query = pickBy(
+            parse(search),
+            (v, k) => validQueryParams.indexOf(k) !== -1
+        );
+        if (query.filter && typeof query.filter === 'string') {
+            try {
+                query.filter = JSON.parse(query.filter);
+            } catch (err) {
+                delete query.filter;
+            }
+        }
+        return query;
     }
-    return query;
-});
+);
 
 function mapStateToProps(state, props) {
     const resourceState = state.admin.resources[props.resource];
@@ -362,7 +413,7 @@ const enhance = compose(
         push: pushAction,
     }),
     translate,
-    withChildrenAsFunction
+    withStyles(styles)
 );
 
 export default enhance(List);

@@ -3,13 +3,15 @@ import { By, until } from 'selenium-webdriver';
 export default (url, initialField = 'title') => driver => ({
     elements: {
         appLoader: By.css('.app-loader'),
-        field: name => By.css(`.ra-field-${name} > div > span`),
+        field: name => By.css(`.ra-field-${name} > div > div > span`),
         fields: By.css(`.ra-field`),
+        tabs: By.css(`.show-tab`),
+        tab: index => By.css(`button.show-tab:nth-of-type(${index})`),
     },
 
     navigate() {
         driver.navigate().to(url);
-        return this.waitUntilVisible();
+        return this.waitUntilDataLoaded();
     },
 
     waitUntilVisible() {
@@ -47,12 +49,26 @@ export default (url, initialField = 'title') => driver => ({
                 fields.map(field =>
                     field.getAttribute('class').then(classes =>
                         classes
+                            .split(' ')
+                            .filter(className =>
+                                className.startsWith('ra-field-')
+                            )[0]
                             .replace('ra-field-', '')
-                            .replace('ra-field', '')
-                            .trim()
                     )
                 )
             )
         );
+    },
+
+    getTabs() {
+        return driver
+            .findElements(this.elements.tabs)
+            .then(tabs => Promise.all(tabs.map(tab => tab.getText())));
+    },
+
+    gotoTab(index) {
+        const tab = driver.findElement(this.elements.tab(index));
+        tab.click();
+        return driver.sleep(200);
     },
 });

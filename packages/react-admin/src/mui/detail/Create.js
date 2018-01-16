@@ -1,16 +1,81 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card } from 'material-ui/Card';
+import Card from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-import ViewTitle from '../layout/ViewTitle';
+import classnames from 'classnames';
+
+import Header from '../layout/Header';
 import Title from '../layout/Title';
 import { crudCreate as crudCreateAction } from '../../actions/dataActions';
 import DefaultActions from './CreateActions';
 import translate from '../../i18n/translate';
-import withChildrenAsFunction from '../withChildrenAsFunction';
 
+const sanitizeRestProps = ({
+    actions,
+    children,
+    className,
+    crudCreate,
+    isLoading,
+    resource,
+    title,
+    translate,
+    hasCreate,
+    hasDelete,
+    hasEdit,
+    hasList,
+    hasShow,
+    match,
+    location,
+    history,
+    options,
+    locale,
+    permissions,
+    ...rest
+}) => rest;
+
+/**
+ * Page component for the Create view
+ * 
+ * The `<Create>` component renders the page title and actions.
+ * It is not responsible for rendering the actual form -
+ * that's the job of its child component (usually `<SimpleForm>`),
+ * to which it passes pass the `record` as prop.
+ *
+ * The `<Create>` component accepts the following props:
+ *
+ * - title
+ * - actions
+ * 
+ * Both expect an element for value.
+ * 
+ * @example     
+ *     // in src/posts.js
+ *     import React from 'react';
+ *     import { Create, SimpleForm, TextInput } from 'react-admin';
+ *     
+ *     export const PostCreate = (props) => (
+ *         <Create {...props}>
+ *             <SimpleForm>
+ *                 <TextInput source="title" />
+ *             </SimpleForm>
+ *         </Create>
+ *     );
+ *
+ *     // in src/App.js
+ *     import React from 'react';
+ *     import { Admin, Resource } from 'react-admin';
+ *     
+ *     import { PostCreate } from './posts';
+ *     
+ *     const App = () => (
+ *         <Admin dataProvider={...}>
+ *             <Resource name="posts" create={PostCreate} />
+ *         </Admin>
+ *     );
+ *     export default App;
+ */
 class Create extends Component {
     getBasePath() {
         const { location } = this.props;
@@ -40,12 +105,14 @@ class Create extends Component {
         const {
             actions = <DefaultActions />,
             children,
+            className,
             isLoading,
             resource,
             title,
             translate,
             record,
             hasList,
+            ...rest
         } = this.props;
 
         if (!children) return null;
@@ -63,15 +130,20 @@ class Create extends Component {
         );
 
         return (
-            <div className="create-page">
+            <div
+                className={classnames('create-page', className)}
+                {...sanitizeRestProps(rest)}
+            >
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    {actions &&
-                        React.cloneElement(actions, {
+                    <Header
+                        title={titleElement}
+                        actions={actions}
+                        actionProps={{
                             basePath,
                             resource,
                             hasList,
-                        })}
-                    <ViewTitle title={titleElement} />
+                        }}
+                    />
                     {React.cloneElement(children, {
                         save: this.save,
                         resource,
@@ -92,7 +164,12 @@ class Create extends Component {
 Create.propTypes = {
     actions: PropTypes.element,
     children: PropTypes.element,
+    className: PropTypes.string,
     crudCreate: PropTypes.func.isRequired,
+    hasCreate: PropTypes.bool,
+    hasDelete: PropTypes.bool,
+    hasEdit: PropTypes.bool,
+    hasShow: PropTypes.bool,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
@@ -114,8 +191,7 @@ function mapStateToProps(state) {
 
 const enhance = compose(
     connect(mapStateToProps, { crudCreate: crudCreateAction }),
-    translate,
-    withChildrenAsFunction
+    translate
 );
 
 export default enhance(Create);

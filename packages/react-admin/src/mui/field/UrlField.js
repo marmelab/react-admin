@@ -2,16 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
+import sanitizeRestProps from './sanitizeRestProps';
 
-const UrlField = ({ source, record = {}, elStyle }) => (
-    <a href={get(record, source)} style={elStyle}>
+const UrlField = ({ className, source, record = {}, ...rest }) => (
+    <a
+        className={className}
+        href={get(record, source)}
+        {...sanitizeRestProps(rest)}
+    >
         {get(record, source)}
     </a>
 );
 
 UrlField.propTypes = {
     addLabel: PropTypes.bool,
-    elStyle: PropTypes.object,
+    basePath: PropTypes.string,
+    className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,

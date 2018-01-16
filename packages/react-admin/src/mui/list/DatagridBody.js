@@ -2,9 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import { TableBody, TableRow } from 'material-ui/Table';
+import classnames from 'classnames';
+
 import DatagridCell from './DatagridCell';
 
 const DatagridBody = ({
+    classes,
+    className,
     resource,
     children,
     ids,
@@ -13,22 +17,17 @@ const DatagridBody = ({
     basePath,
     styles,
     rowStyle,
-    options,
-    rowOptions,
     ...rest
 }) => (
-    <TableBody
-        displayRowCheckbox={false}
-        className="datagrid-body"
-        {...rest}
-        {...options}
-    >
+    <TableBody className={classnames('datagrid-body', className)} {...rest}>
         {ids.map((id, rowIndex) => (
             <TableRow
-                style={rowStyle ? rowStyle(data[id], rowIndex) : styles.tr}
+                className={classnames(classes.row, {
+                    [classes.rowEven]: rowIndex % 2 === 0,
+                    [classes.rowOdd]: rowIndex % 2 !== 0,
+                })}
                 key={id}
-                selectable={false}
-                {...rowOptions}
+                style={rowStyle ? rowStyle(data[id], rowIndex) : null}
             >
                 {React.Children.map(
                     children,
@@ -36,13 +35,11 @@ const DatagridBody = ({
                         field ? (
                             <DatagridCell
                                 key={`${id}-${field.props.source || index}`}
-                                className={`column-${field.props.source}`}
+                                className={classnames(
+                                    `column-${field.props.source}`,
+                                    classes.rowCell
+                                )}
                                 record={data[id]}
-                                defaultStyle={
-                                    index === 0
-                                        ? styles.cell['td:first-child']
-                                        : styles.cell.td
-                                }
                                 {...{ field, basePath, resource }}
                             />
                         ) : null
@@ -53,15 +50,16 @@ const DatagridBody = ({
 );
 
 DatagridBody.propTypes = {
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    children: PropTypes.node,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     isLoading: PropTypes.bool,
     resource: PropTypes.string,
     data: PropTypes.object.isRequired,
     basePath: PropTypes.string,
-    options: PropTypes.object,
-    rowOptions: PropTypes.object,
-    styles: PropTypes.object,
     rowStyle: PropTypes.func,
+    styles: PropTypes.object,
 };
 
 DatagridBody.defaultProps = {

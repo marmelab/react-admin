@@ -1,29 +1,100 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card, CardText, CardActions } from 'material-ui/Card';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import RaisedButton from 'material-ui/RaisedButton';
-import ActionCheck from 'material-ui/svg-icons/action/check-circle';
-import AlertError from 'material-ui/svg-icons/alert/error-outline';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-import ViewTitle from '../layout/ViewTitle';
+import Card, { CardContent } from 'material-ui/Card';
+import Toolbar from 'material-ui/Toolbar';
+import Button from 'material-ui/Button';
+import Typography from 'material-ui/Typography';
+import { withStyles } from 'material-ui/styles';
+import ActionCheck from 'material-ui-icons/CheckCircle';
+import AlertError from 'material-ui-icons/ErrorOutline';
+
+import Header from '../layout/Header';
 import Title from '../layout/Title';
-import { ListButton } from '../button';
-import {
-    crudGetOne as crudGetOneAction,
-    crudDelete as crudDeleteAction,
-} from '../../actions/dataActions';
+import { crudGetOne, crudDelete } from '../../actions/dataActions';
 import translate from '../../i18n/translate';
+import DefaultActions from './DeleteActions';
 
-const styles = {
-    actions: { zIndex: 2, display: 'inline-block', float: 'right' },
-    toolbar: { clear: 'both' },
-    button: { margin: '10px 24px', position: 'relative' },
-};
+const styles = theme => ({
+    button: {
+        margin: theme.spacing.unit * 2,
+    },
+    iconPaddingStyle: {
+        paddingRight: '0.5em',
+    },
+});
 
-class Delete extends Component {
+const sanitizeRestProps = ({
+    actions,
+    className,
+    classes,
+    crudGetOne,
+    crudDelete,
+    title,
+    id,
+    data,
+    isLoading,
+    hasCreate,
+    hasDelete,
+    hasEdit,
+    hasShow,
+    hasList,
+    resource,
+    translate,
+    match,
+    location,
+    history,
+    options,
+    locale,
+    permissions,
+    ...rest
+}) => rest;
+
+/**
+ * Page component for the Delete view
+ * 
+ * Can be used either directly inside a `<Resource>`, or to define
+ * a custom Delete view.
+ *
+ * Here are all the props accepted by the `<Delete>`component:
+ *
+ * - title
+ * - actions
+ * 
+ * Both expect an element for value.
+ * 
+ * @example
+ *     import { Admin, Resource, Delete } from 'react-admin';
+ *     import { PostList } from '../posts';
+ *
+ *     const App = () => (
+ *         <Admin dataProvider={...}>
+ *             <Resource name="posts" list={PostList} remove={Delete} />
+ *         </Admin>
+ *     );
+ *
+ * @example
+ *     import PostDeleteActions from './DeleteActions';
+ *     const PostDeleteTitle = ({ record }) => (
+ *         <span>
+ *             {record ? `Delete post ${record.title}` : ''}
+ *         </span>
+ *     ));
+ *     const PostDelete = (props) =>
+ *         <Delete
+ *             title={<PostDeleteTitle />}
+ *             actions={<PostDeleteActions />}
+ *         />;
+ *
+ *     const App = () => (
+ *         <Admin dataProvider={...}>
+ *             <Resource name="posts" list={PostList} remove={PostDelete} />
+ *         </Admin>
+ *     );
+ */
+export class Delete extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -78,8 +149,23 @@ class Delete extends Component {
     }
 
     render() {
-        const { title, id, data, isLoading, resource, translate } = this.props;
+        const {
+            actions = <DefaultActions />,
+            className,
+            classes = {},
+            title,
+            id,
+            data,
+            isLoading,
+            hasEdit,
+            hasShow,
+            hasList,
+            resource,
+            translate,
+            ...props
+        } = this.props;
         const basePath = this.getBasePath();
+        const rest = sanitizeRestProps(props);
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
@@ -97,32 +183,48 @@ class Delete extends Component {
         );
 
         return (
-            <div>
+            <div className={className} {...rest}>
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    <CardActions style={styles.actions}>
-                        <ListButton basePath={basePath} />
-                    </CardActions>
-                    <ViewTitle title={titleElement} />
+                    <Header
+                        title={titleElement}
+                        actions={actions}
+                        actionProps={{
+                            basePath,
+                            data,
+                            hasEdit,
+                            hasList,
+                            hasShow,
+                        }}
+                    />
                     <form onSubmit={this.handleSubmit}>
-                        <CardText>
-                            {translate('ra.message.are_you_sure')}
-                        </CardText>
-                        <Toolbar style={styles.toolbar}>
-                            <ToolbarGroup>
-                                <RaisedButton
-                                    type="submit"
-                                    label={translate('ra.action.delete')}
-                                    icon={<ActionCheck />}
-                                    primary
-                                    style={styles.button}
+                        <CardContent>
+                            <Typography>
+                                {translate('ra.message.are_you_sure')}
+                            </Typography>
+                        </CardContent>
+                        <Toolbar disableGutters={true}>
+                            <Button
+                                raised
+                                type="submit"
+                                color="primary"
+                                className={classes.button}
+                            >
+                                <ActionCheck
+                                    className={classes.iconPaddingStyle}
                                 />
-                                <RaisedButton
-                                    label={translate('ra.action.cancel')}
-                                    icon={<AlertError />}
-                                    onClick={this.goBack}
-                                    style={styles.button}
+                                {translate('ra.action.delete')}
+                            </Button>
+                            &nbsp;
+                            <Button
+                                raised
+                                onClick={this.goBack}
+                                className={classes.button}
+                            >
+                                <AlertError
+                                    className={classes.iconPaddingStyle}
                                 />
-                            </ToolbarGroup>
+                                {translate('ra.action.cancel')}
+                            </Button>
                         </Toolbar>
                     </form>
                 </Card>
@@ -132,18 +234,26 @@ class Delete extends Component {
 }
 
 Delete.propTypes = {
-    title: PropTypes.any,
+    actions: PropTypes.element,
+    className: PropTypes.string,
+    classes: PropTypes.object,
+    crudDelete: PropTypes.func.isRequired,
+    crudGetOne: PropTypes.func.isRequired,
+    data: PropTypes.object,
+    hasCreate: PropTypes.bool,
+    hasDelete: PropTypes.bool,
+    hasEdit: PropTypes.bool,
+    hasShow: PropTypes.bool,
+    hasList: PropTypes.bool,
+    history: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
-    resource: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-    data: PropTypes.object,
-    isLoading: PropTypes.bool.isRequired,
-    crudGetOne: PropTypes.func.isRequired,
-    crudDelete: PropTypes.func.isRequired,
-    translate: PropTypes.func.isRequired,
     redirect: PropTypes.string,
+    resource: PropTypes.string.isRequired,
+    title: PropTypes.any,
+    translate: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, props) {
@@ -158,10 +268,8 @@ function mapStateToProps(state, props) {
 }
 
 const enhance = compose(
-    connect(mapStateToProps, {
-        crudGetOne: crudGetOneAction,
-        crudDelete: crudDeleteAction,
-    }),
+    connect(mapStateToProps, { crudGetOne, crudDelete }),
+    withStyles(styles),
     translate
 );
 

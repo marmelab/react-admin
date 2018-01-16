@@ -43,22 +43,26 @@ You can find translation packages for the following languages:
 
 The previous version of react-admin, called admin-on-rest, was translated in the following languages:
 
+- Arabic ( `ع` ): [aymendhaya/aor-language-arabic](https://github.com/aymendhaya/aor-language-arabic)
 - Chinese (`cn`): [downup2u/aor-language-chinese](https://github.com/downup2u/aor-language-chinese)
 - Chinese (Traditional) (`cht`): [leesei/aor-language-chinese-traditional](https://github.com/leesei/aor-language-chinese-traditional)
+- Croatian (`hr`): [ariskemper/aor-language-croatian](https://github.com/ariskemper/aor-language-croatian)
 - Czech (`cs`): [magikMaker/aor-language-czech](https://github.com/magikMaker/aor-language-czech)
 - Danish (`da`): [SSA111/aor-language-danish](https://github.com/SSA111/aor-language-danish)
 - Dutch (`nl`): [pimschaaf/aor-language-dutch](https://github.com/pimschaaf/aor-language-dutch)
 - Farsi (`fa`): [hamidfzm/aor-language-farsi](https://github.com/hamidfzm/aor-language-farsi)
 - German (`de`): [der-On/aor-language-german](https://github.com/der-On/aor-language-german)
 - Greek (`el`): [zifnab87/aor-language-greek](https://github.com/zifnab87/aor-language-greek)
-- Hebrew (`he`): [mstmustisnt/aor-language-hebrew](https://github.com/mstmustisnt/aor-language-hebrew)
+- Hebrew (`he`): [motro/aor-language-hebrew](https://github.com/motro/aor-language-hebrew)
 - Hungarian (`hu`): [s33m4nn/aor-language-hungarian](https://github.com/s33m4nn/aor-language-hungarian)
+- Indonesian (`id`): [ronadi/aor-language-indonesian](https://github.com/ronadi/aor-language-indonesian)
 - Italian (`it`): [stefsava/aor-language-italian](https://github.com/stefsava/aor-language-italian)
 - Japanese (`ja`): [kuma-guy/aor-language-japanese](https://github.com/kuma-guy/aor-language-japanese)
 - Norwegian (`nb`): [zeusbaba/aor-language-norwegian](https://github.com/zeusbaba/aor-language-norwegian)
 - Polish (`pl`): [KamilDzierbicki/aor-language-polish](https://github.com/KamilDzierbicki/aor-language-polish)
 - Portuguese (`pt`): [movibe/aor-language-portugues](https://github.com/movibe/aor-language-portugues)
 - Russian (`ru`): [cytomich/aor-language-russian](https://github.com/cytomich/aor-language-russian)
+- Slovenian (`sl`): [ariskemper/aor-language-slovenian](https://github.com/ariskemper/aor-language-slovenian)
 - Spanish (`es`): [blackboxvision/aor-language-spanish](https://github.com/BlackBoxVision/aor-language-spanish)
 - Swedish (`sv`): [StefanWallin/aor-language-swedish](https://github.com/StefanWallin/aor-language-swedish)
 - Thai (`th`): [liverbool/aor-language-thai](https://github.com/liverbool/aor-language-thai)
@@ -99,20 +103,20 @@ Then, dispatch the `CHANGE_LOCALE` action, by using the `changeLocale` action cr
 ```jsx
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import { changeLocale as changeLocaleAction } from 'react-admin';
 
 class LocaleSwitcher extends Component {
-    switchToFrench = () => this.changeLocale('fr');
-    switchToEnglish = () => this.changeLocale('en');
+    switchToFrench = () => this.props.changeLocale('fr');
+    switchToEnglish = () => this.props.changeLocale('en');
 
     render() {
         const { changeLocale } = this.props;
         return (
             <div>
-                <div style={styles.label}>Language</div>
-                <RaisedButton style={styles.button} label="en" onClick={this.switchToEnglish} />
-                <RaisedButton style={styles.button} label="fr" onClick={this.switchToFrench} />
+                <div>Language</div>
+                <Button onClick={this.switchToEnglish}>en</Button>
+                <Button onClick={this.switchToFrench}>fr</Button>
             </div>
         );
     }

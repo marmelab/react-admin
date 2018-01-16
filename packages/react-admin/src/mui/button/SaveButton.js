@@ -1,11 +1,39 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
-import ContentSave from 'material-ui/svg-icons/content/save';
-import CircularProgress from 'material-ui/CircularProgress';
+import compose from 'recompose/compose';
+import Button from 'material-ui/Button';
+import ContentSave from 'material-ui-icons/Save';
+import { CircularProgress } from 'material-ui/Progress';
+import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
+
 import translate from '../../i18n/translate';
+
+const styles = {
+    button: {
+        margin: '10px 24px',
+        position: 'relative',
+    },
+    iconPaddingStyle: {
+        paddingRight: '0.5em',
+    },
+};
+
+const sanitizeRestProps = ({
+    className,
+    classes,
+    saving,
+    label,
+    invalid,
+    raised,
+    translate,
+    handleSubmitWithRedirect,
+    submitOnEnter,
+    redirect,
+    locale,
+    ...rest
+}) => rest;
 
 export class SaveButton extends Component {
     handleClick = e => {
@@ -24,48 +52,56 @@ export class SaveButton extends Component {
 
     render() {
         const {
+            className,
+            classes = {},
             saving,
             label = 'ra.action.save',
             raised = true,
             translate,
             submitOnEnter,
             redirect,
+            ...rest
         } = this.props;
         const type = submitOnEnter ? 'submit' : 'button';
-        const ButtonComponent = raised ? RaisedButton : FlatButton;
         return (
-            <ButtonComponent
+            <Button
+                className={classnames(classes.button, className)}
+                raised={raised}
                 type={type}
-                label={label && translate(label)}
-                icon={
-                    saving && saving.redirect === redirect ? (
-                        <CircularProgress size={25} thickness={2} />
-                    ) : (
-                        <ContentSave />
-                    )
-                }
                 onClick={this.handleClick}
-                primary={!saving}
-                style={{
-                    margin: '10px 24px',
-                    position: 'relative',
-                }}
-            />
+                color={saving ? 'default' : 'primary'}
+                {...sanitizeRestProps(rest)}
+            >
+                {saving && saving.redirect === redirect ? (
+                    <CircularProgress
+                        size={25}
+                        thickness={2}
+                        className={classes.iconPaddingStyle}
+                    />
+                ) : (
+                    <ContentSave className={classes.iconPaddingStyle} />
+                )}
+                {label && translate(label, { _: label })}
+            </Button>
         );
     }
 }
 
 SaveButton.propTypes = {
+    className: PropTypes.string,
+    classes: PropTypes.object,
+    handleSubmitWithRedirect: PropTypes.func,
     label: PropTypes.string,
+    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    invalid: PropTypes.bool,
     raised: PropTypes.bool,
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-    translate: PropTypes.func.isRequired,
     submitOnEnter: PropTypes.bool,
-    handleSubmitWithRedirect: PropTypes.func,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    translate: PropTypes.func.isRequired,
 };
 
 SaveButton.defaultProps = {
+    redirect: 'list',
     handleSubmitWithRedirect: () => () => {},
 };
 
@@ -73,4 +109,13 @@ const mapStateToProps = state => ({
     saving: state.admin.saving,
 });
 
-export default connect(mapStateToProps)(translate(SaveButton));
+const enhance = compose(
+    translate,
+    connect(
+        mapStateToProps,
+        {} // Avoid connect passing dispatch in props
+    ),
+    withStyles(styles)
+);
+
+export default enhance(SaveButton);

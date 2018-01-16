@@ -5,19 +5,19 @@ title: "Admin and Resource Components"
 
 # The `<Admin>` Component
 
-The `<Admin>` component creates an application with its own state, routing, and controller logic. `<Admin>` requires only a `dataProvider` prop and at least one child `<Resource>` to work:
+The `<Admin>` component creates an application with its own state, routing, and controller logic. `<Admin>` requires only a `dataProvider` prop, and at least one child `<Resource>` to work:
 
 ```jsx
 // in src/App.js
 import React from 'react';
 
 import { Admin, Resource } from 'react-admin';
-import simpleRestClient from 'ra-data-simple-rest';
+import simpleRestProvider from 'ra-data-simple-rest';
 
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin dataProvider={simpleRestClient('http://path.to.my.api')}>
+    <Admin dataProvider={simpleRestProvider('http://path.to.my.api')}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
@@ -65,15 +65,15 @@ The only required prop, it must be a function returning a promise, with the foll
 const dataProvider = (type, resource, params) => new Promise();
 ```
 
-The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc. The [Data Providers Chapter](./DataProviders.md) of the documentation lists available data providers, and how to build your own.
+The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc. The [Data Providers Chapter](./DataProviders.md) of the documentation lists available data providers, and explains how to build your own.
 
 ## `title`
 
-By default, the header of an admin app uses 'Admin on REST' as the main app title. It's probably the first thing you'll want to customize. The `title` prop serves exactly that purpose.
+By default, the header of an admin app uses 'React Admin' as the main app title. It's probably the first thing you'll want to customize. The `title` prop serves exactly that purpose.
 
 ```jsx
 const App = () => (
-    <Admin title="My Custom Admin" dataProvider={simpleRestClient('http://path.to.my.api')}>
+    <Admin title="My Custom Admin" dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -86,13 +86,12 @@ By default, the homepage of an an admin app is the `list` of the first child `<R
 ```jsx
 // in src/Dashboard.js
 import React from 'react';
-import { Card, CardText } from 'material-ui/Card';
-import { ViewTitle } from 'react-admin/lib/mui';
-
+import Card, { CardContent } from 'material-ui/Card';
+import { ViewTitle } from 'react-admin';
 export default () => (
     <Card>
         <ViewTitle title="Dashboard" />
-        <CardText>Lorem ipsum sic dolor amet...</CardText>
+        <CardContent>Lorem ipsum sic dolor amet...</CardContent>
     </Card>
 );
 ```
@@ -102,7 +101,7 @@ export default () => (
 import Dashboard from './Dashboard';
 
 const App = () => (
-    <Admin dashboard={Dashboard} dataProvider={simpleRestClient('http://path.to.my.api')}>
+    <Admin dashboard={Dashboard} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -121,15 +120,15 @@ You can customize this page to use the component of your choice by passing it as
 ```jsx
 // in src/NotFound.js
 import React from 'react';
-import { Card, CardText } from 'material-ui/Card';
-import { ViewTitle } from 'react-admin/lib/mui';
+import Card, { CardContent } from 'material-ui/Card';
+import { ViewTitle } from 'react-admin';
 
 export default () => (
     <Card>
         <ViewTitle title="Not Found" />
-        <CardText>
+        <CardContent>
             <h1>404: Page not found</h1>
-        </CardText>
+        </CardContent>
     </Card>
 );
 ```
@@ -139,7 +138,7 @@ export default () => (
 import NotFound from './NotFound';
 
 const App = () => (
-    <Admin catchAll={NotFound} dataProvider={simpleRestClient('http://path.to.my.api')}>
+    <Admin catchAll={NotFound} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -156,16 +155,24 @@ If you want to add or remove menu items, for instance to link to non-resources p
 ```jsx
 // in src/Menu.js
 import React from 'react';
-import { MenuItemLink } from 'react-admin';
+import { connect } from 'react-redux';
+import { MenuItemLink, getResources } from 'react-admin';
 
-export default ({ resources, onMenuTap, logout }) => (
+const Menu = ({ resources, onMenuTap, logout }) => (
     <div>
-        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
-        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
+        {resources.map(resource => (
+            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuTap} />
+        ))}
         <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
         {logout}
     </div>
 );
+
+const mapStateToProps = state => ({
+    resources: getResources(state),
+});
+
+export default connect(mapStateToProps)(Menu);
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
@@ -177,7 +184,7 @@ Then, pass it to the `<Admin>` component as the `menu` prop:
 import Menu from './Menu';
 
 const App = () => (
-    <Admin menu={Menu} dataProvider={simpleRestClient('http://path.to.my.api')}>
+    <Admin menu={Menu} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -190,11 +197,16 @@ const App = () => (
 Material UI supports [theming](http://www.material-ui.com/#/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
 
 ```jsx
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { createMuiTheme } from 'material-ui/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark', // Switching the dark mode on is a single property value change.
+  },
+});
 
 const App = () => (
-    <Admin theme={getMuiTheme(darkBaseTheme)} dataProvider={simpleRestClient('http://path.to.my.api')}>
+    <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -202,20 +214,20 @@ const App = () => (
 
 ![Dark theme](./img/dark-theme.png)
 
-For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](http://www.material-ui.com/#/customization/themes).
+For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](https://material-ui-next.com/customization/themes/).
 
 ## `appLayout`
 
-If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it *must* contain a `<MuiThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
+If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<MuiThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
 
-Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src/mui/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
+Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/react-admin/src/mui/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
 
 ```jsx
 // in src/App.js
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin appLayout={MyLayout} dataProvider={simpleRestClient('http://path.to.my.api')}>
+    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -256,7 +268,7 @@ import { Admin } from 'react-admin';
 import bitcoinRateReducer from './bitcoinRateReducer';
 
 const App = () => (
-    <Admin customReducers={{ bitcoinRate: bitcoinRateReducer }} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin customReducers={{ bitcoinRate: bitcoinRateReducer }} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         ...
     </Admin>
 );
@@ -278,7 +290,7 @@ Now the state will look like:
 
 ## `customSagas`
 
-The `<Admin>` app uses [redux-saga](https://github.com/redux-saga/redux-saga) to handle side effects.
+The `<Admin>` app uses [redux-saga](https://github.com/redux-saga/redux-saga) to handle side effects (AJAX calls, notifications, redirections, etc).
 
 If your components dispatch custom actions, you probably need to register your own side effects as sagas. Let's imagine that you want to show a notification whenever the `BITCOIN_RATE_RECEIVED` action is dispatched. You probably have a saga looking like the following:
 
@@ -304,7 +316,7 @@ import { Admin } from 'react-admin';
 import bitcoinSaga from './bitcoinSaga';
 
 const App = () => (
-    <Admin customSagas={[ bitcoinSaga ]} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin customSagas={[ bitcoinSaga ]} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         ...
     </Admin>
 );
@@ -341,7 +353,7 @@ import { Admin } from 'react-admin';
 import customRoutes from './customRoutes';
 
 const App = () => (
-    <Admin customRoutes={customRoutes} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin customRoutes={customRoutes} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         ...
     </Admin>
 );
@@ -362,13 +374,15 @@ to design the screen the way you want.
 ```jsx
 // in src/Foo.js
 import React from 'react';
-import { Card } from 'material-ui/Card';
+import Card, { CardContent } from 'material-ui/Card';
 import { ViewTitle } from 'react-admin';
 
 const Foo = () => (
     <Card>
         <ViewTitle title="My Page" />
-        ...
+        <CardContent>
+            ...
+        </CardContent>
     </Card>
 ));
 
@@ -389,7 +403,7 @@ const authClient(type, params) {
 };
 
 const App = () => (
-    <Admin authClient={authClient} dataProvider={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin authClient={authClient} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         ...
     </Admin>
 );
@@ -411,7 +425,7 @@ const App = () => (
 );
 ```
 
-See The [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more explanations.
+See The [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
 
 ## `logoutButton`
 
@@ -464,7 +478,7 @@ For instance, getting the resource from an API might look like:
 import React from 'react';
 
 import { Admin, Resource } from 'react-admin';
-import simpleRestClient from 'ra-data-simple-rest';
+import simpleRestProvider from 'ra-data-simple-rest';
 
 import { PostList } from './posts';
 import { CommentList } from './comments';
@@ -486,7 +500,7 @@ const fetchResources = permissions =>
     .then(json => knownResources.filter(resource => json.resources.includes(resource.props.name)));
 
 const App = () => (
-    <Admin dataProvider={simpleRestClient('http://path.to.my.api')}>
+    <Admin dataProvider={simpleRestProvider('http://path.to.my.api')}>
         {fetchResources}
     </Admin>
 );
