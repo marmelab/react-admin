@@ -415,6 +415,28 @@ export const PostEdit = (props) => (
     </Edit>
 );
 ```
+In case when this is not enough you can also use a function. For example if you want set the recently added object as value of reference field in the another object:
+Unfortunately I do not know how to write test for that.
+```jsx
+import { stringify } from 'query-string';
+
+
+export const PostEdit = (props) => {
+    const { location: { search } } = props;
+    const query = parse(search);
+    const customRedirect(basePath, id) => {
+        return `${basePath}?${stringify({referrer_id: id})}`;
+    }
+
+    return (
+        <Edit {...props}>
+            <SimpleForm redirect={customRedirect}>
+                ...
+            </SimpleForm>
+        </Edit>
+    )
+};
+```
 
 This affects both the submit button, and the form submission when the user presses `ENTER` in one of the form fields.
 

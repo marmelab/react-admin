@@ -62,7 +62,11 @@ SaveButton.propTypes = {
     translate: PropTypes.func.isRequired,
     submitOnEnter: PropTypes.bool,
     handleSubmitWithRedirect: PropTypes.func,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
 };
 
 SaveButton.defaultProps = {
