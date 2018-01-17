@@ -8,7 +8,7 @@ export default url => driver => ({
         inputs: By.css(`.ra-input`),
         submitButton: By.css(".create-page button[type='submit']"),
         submitAndAddButton: By.css(
-            ".create-page form>div:last-child button[type='button']"
+            ".create-page form>div>div:last-child button[type='button']"
         ),
         descInput: By.css('.ql-editor'),
     },
