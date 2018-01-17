@@ -60,7 +60,6 @@ describe('Create Page', () => {
         await CreatePage.setValues(values);
         await CreatePage.submitAndAdd();
         await driver.wait(until.urlIs('http://localhost:8083/#/posts/create'));
-        await driver.sleep(3000);
         assert.equal(await CreatePage.getInputValue('title'), ''); // new empty form
         await DeletePage.navigate();
         await DeletePage.delete();
