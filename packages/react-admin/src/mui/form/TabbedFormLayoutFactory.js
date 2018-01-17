@@ -24,6 +24,7 @@ class TabbedFormLayoutFactory extends React.Component {
     componentWillMount() {
         this.factories = {
             activeTab: this.createActiveTab,
+            defaultLayout: this.createDefaultLayout,
             toolbar: this.createToolbar,
             tabs: this.createTabs,
             tab: this.createTab,
@@ -73,7 +74,11 @@ class TabbedFormLayoutFactory extends React.Component {
             </Tabs>
         );
     };
-
+    createDefaultLayout = props =>
+        TabbedFormLayout(
+            this.factories,
+            props ? { ...this.props, ...props } : this.props
+        );
     createActiveTab = props => {
         const { children, value, ...rest } = this.props;
         const tab = React.Children

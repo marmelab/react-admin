@@ -21,6 +21,7 @@ class SimpleFormLayoutFactory extends React.Component {
     componentWillMount() {
         this.factories = {
             toolbar: this.createToolbar,
+            defaultLayout: this.createDefaultLayout,
         };
     }
 
@@ -34,6 +35,12 @@ class SimpleFormLayoutFactory extends React.Component {
             record={record}
         />
     );
+
+    createDefaultLayout = props =>
+        SimpleFormLayout(
+            this.factories,
+            props ? { ...this.props, ...props } : this.props
+        );
 
     createToolbar = props => {
         const {
