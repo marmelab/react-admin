@@ -204,7 +204,7 @@ const ComposedReferenceManyField = compose(
 
 ComposedReferenceManyField.defaultProps = {
     addLabel: true,
-    source: '',
+    source: 'id',
 };
 
 export default ComposedReferenceManyField;
