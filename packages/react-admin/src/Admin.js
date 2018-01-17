@@ -40,59 +40,61 @@ const Admin = ({
             dataProvider={dataProvider}
             initialState={initialState}
         >
-            <Switch>
-                <Route
-                    exact
-                    path="/login"
-                    render={({ location }) =>
-                        createElement(loginPage || Login, {
-                            location,
-                            title,
-                        })}
-                />
-                {customRoutes
-                    .filter(route => route.props.noLayout)
-                    .map((route, index) => (
-                        <Route
-                            key={index}
-                            exact={route.props.exact}
-                            path={route.props.path}
-                            render={({ location }) => {
-                                if (route.props.render) {
-                                    return route.props.render({
-                                        location,
-                                        title,
-                                    });
-                                }
-                                if (route.props.component) {
-                                    return createElement(
-                                        route.props.component,
-                                        {
+            <div>
+                <Switch>
+                    <Route
+                        exact
+                        path="/login"
+                        render={({ location }) =>
+                            createElement(loginPage || Login, {
+                                location,
+                                title,
+                            })}
+                    />
+                    {customRoutes
+                        .filter(route => route.props.noLayout)
+                        .map((route, index) => (
+                            <Route
+                                key={index}
+                                exact={route.props.exact}
+                                path={route.props.path}
+                                render={({ location }) => {
+                                    if (route.props.render) {
+                                        return route.props.render({
                                             location,
                                             title,
-                                        }
-                                    );
-                                }
-                            }}
-                        />
-                    ))}
-                <Route
-                    path="/"
-                    render={() =>
-                        createElement(appLayout || DefaultLayout, {
-                            children,
-                            dashboard,
-                            customRoutes: customRoutes.filter(
-                                route => !route.props.noLayout
-                            ),
-                            logout,
-                            menu,
-                            catchAll,
-                            theme,
-                            title,
-                        })}
-                />
-            </Switch>
+                                        });
+                                    }
+                                    if (route.props.component) {
+                                        return createElement(
+                                            route.props.component,
+                                            {
+                                                location,
+                                                title,
+                                            }
+                                        );
+                                    }
+                                }}
+                            />
+                        ))}
+                    <Route
+                        path="/"
+                        render={() =>
+                            createElement(appLayout || DefaultLayout, {
+                                children,
+                                dashboard,
+                                customRoutes: customRoutes.filter(
+                                    route => !route.props.noLayout
+                                ),
+                                logout,
+                                menu,
+                                catchAll,
+                                theme,
+                                title,
+                            })}
+                    />
+                </Switch>
+            </div>
         </AdminConfig>
     );
 };

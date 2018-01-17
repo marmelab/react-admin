@@ -59,7 +59,7 @@ const AdminConfig = ({
         <Provider store={store}>
             <TranslationProvider messages={messages}>
                 <ConnectedRouter history={routerHistory}>
-                    <div>{children}</div>
+                    {children}
                 </ConnectedRouter>
             </TranslationProvider>
         </Provider>
