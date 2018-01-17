@@ -90,7 +90,7 @@ import Card, { CardContent } from 'material-ui/Card';
 import { ViewTitle } from 'react-admin';
 export default () => (
     <Card>
-        <ViewTitle title="Dashboard" />
+        <ViewTitle title="Welcome to the administration" />
         <CardContent>Lorem ipsum sic dolor amet...</CardContent>
     </Card>
 );
@@ -107,7 +107,7 @@ const App = () => (
 );
 ```
 
-![Custom home page](http://static.marmelab.com/react-admin/dashboard.png)
+![Custom home page](./img/dashboard.png)
 
 ## `catchAll`
 

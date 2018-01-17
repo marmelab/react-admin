@@ -319,7 +319,7 @@ There is not much to configure in a deletion view. To add removal abilities to a
 
 ```jsx
 // in src/App.js
-import { Delete } from 'react-admin';
+import { Admin, Resource, Delete } from 'react-admin';
 
 const App = () => (
     <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
@@ -544,6 +544,8 @@ export const PostList = (props) => (
 This works exactly the way you expect. The lesson here is that react-admin takes care of responsive web design for the layout, but it's your job to use `<Responsive>` in pages.
 
 ![Responsive List](./img/responsive-list.gif)
+
+**Note:** We switched to a custom API for those screenshots in order to demonstrate how to use some of the `SimpleList` component props.
 
 ## Connecting To A Real API
 

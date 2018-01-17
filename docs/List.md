@@ -441,15 +441,19 @@ Setting the `linkType` prop to `false` (boolean, not string) removes the link in
 
 ## The `<SingleFieldList>` component
 
-When you want to display only one property of a list of records, instead of using a `<Datagrid>`, use the `<SingleFieldList>`. It expects a single `<Field>` as child. It's especially useful for `<ReferenceManyField>` components:
+When you want to display only one property of a list of records, instead of using a `<Datagrid>`, use the `<SingleFieldList>`. It expects a single `<Field>` as child. It's especially useful for `<ReferenceManyField>` or `<ReferenceArrayField>` components:
 
 ```jsx
-// Display all the books by the current author
-<ReferenceManyField reference="books" target="author_id">
+// Display all the tags for the current post
+<ReferenceArrayField
+    label="Tags"
+    reference="tags"
+    source="tags"
+>
     <SingleFieldList>
-        <ChipField source="title" />
+        <ChipField source="name" />
     </SingleFieldList>
-</ReferenceManyField>
+</ReferenceArrayField>
 ```
 
 ![ReferenceManyFieldSingleFieldList](./img/reference-many-field-single-field-list.png)
@@ -465,7 +469,7 @@ For instance, what if you prefer to show a list of cards rather than a datagrid?
 
 ![Custom iterator](./img/custom-iterator.png)
 
-Simple: Create your own iterator component as follows:
+You'll need to create your own iterator component as follows:
 
 {% raw %}
 ```jsx
@@ -519,46 +523,3 @@ export const CommentList = (props) => (
 
 As you can see, nothing prevents you from using `<Field>` components inside your own components... provided you inject the current `record`. Also, notice that components building links require the `basePath` component, which is also injected.
 
-## Declaring Fields At Runtime
-
-You might want to dynamically define the fields when the `<List>` component is rendered. It accepts a function as its child and this function can return a Promise. If you also defined an `authClient` on the `<Admin>` component, the function will receive the result of a call to `authClient` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
-
-For instance, getting the fields from an API might look like:
-
-```js
-import React from 'react';
-import { List, Datagrid, TextField } from 'react-admin';
-
-const knownFields = [
-    <TextField source="id" />,
-    <TextField source="title" />,
-    <TextField source="body" />,
-];
-
-const fetchFields = permissions =>
-    fetch('https://myapi/fields', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            permissions,
-            resource: 'posts',
-        }),
-    })
-    .then(response => response.json())
-    .then(json => knownFields.filter(field => json.fields.includes(field.props.source)))
-    .then(fields => (
-        <Datagrid>
-            {fields}
-        </Datagrid>
-    ));
-
-export const PostList = (props) => (
-    <List {...props}>
-        {fetchFields}
-    </List>
-);
-```
-
-**Tip**: This pattern also work for the `<Filter>` component.
