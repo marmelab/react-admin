@@ -253,6 +253,7 @@ If the record actually contains an array of files in its property defined by the
 ```
 
 You can optionally set the `target` prop to choose which window will the link try to open in.
+
 ```jsx
 // Will make the file open in new window
 <FileField source="file.url" target="_blank" />
@@ -391,19 +392,19 @@ For instance, here is how to fetch the `post` related to `comment` records, and 
 import React from 'react';
 import { List, Datagrid, ReferenceField, TextField } from 'react-admin';
 
-export const CommentList = (props) => (
+export const PostList = (props) => (
     <List {...props}>
         <Datagrid>
             <TextField source="id" />
-            <ReferenceField label="Post" source="post_id" reference="posts">
-                <TextField source="title" />
+            <ReferenceField label="Author" source="user_id" reference="users">
+                <TextField source="name" />
             </ReferenceField>
         </Datagrid>
     </List>
 );
 ```
 
-With this configuration, `<ReferenceField>` wraps the comment title in a link to the related post `<Edit>` page.
+With this configuration, `<ReferenceField>` wraps the user title in a link to the related user `<Edit>` page.
 
 ![ReferenceField](./img/reference-field.png)
 
@@ -502,10 +503,15 @@ export const PostEdit = (props) => (
         <SimpleForm>
             <DisabledInput label="Id" source="id" />
             <TextInput source="title" />
-            <ReferenceManyField label="Comments" reference="comments" target="post_id">
+            <ReferenceManyField
+                label="Comments"
+                reference="comments"
+                target="post_id"
+            >
                 <Datagrid>
-                    <TextField source="body" />
                     <DateField source="created_at" />
+                    <TextField source="author.name" />
+                    <TextField source="body" />
                     <EditButton />
                 </Datagrid>
             </ReferenceManyField>
@@ -669,7 +675,7 @@ import { UrlField } from 'react-admin';
 
 ## Styling Fields
 
-All field components accept the `style` prop, which overrides the default style of the field *container*:
+All field components accept a `style` prop, which overrides the default style of the field *container*:
 
 {% raw %}
 ```jsx
@@ -716,7 +722,7 @@ export const ProductList = (props) => (
 
 ## Writing Your Own Field Component
 
-If you don't find what you need in the list above, it's very easy to write your own Field component. It must be a regular React component, accepting not only a `source` attribute, but also a `record` attribute. React-admin will inject the `record` based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
+If you don't find what you need in the list above, you can write your own Field component. It must be a regular React component, accepting not only a `source` attribute, but also a `record` attribute. React-admin will inject the `record` based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
 
 For instance, here is an equivalent of react-admin's `<TextField>` component:
 
@@ -737,7 +743,7 @@ export default TextField;
 
 **Tip**: The `label` attribute isn't used in the `render()` method, but react-admin uses it to display the table header.
 
-**Tip**: If you want to support deep field sources (e.g. source values like `author.name`), use `lodash.get` to replace the simple object lookup:
+**Tip**: If you want to support deep field sources (e.g. source values like `author.name`), use [`lodash.get`](https://www.npmjs.com/package/lodash.get) to replace the simple object lookup:
 
 ```jsx
 import get from 'lodash.get';
@@ -754,7 +760,7 @@ If you are not looking for reusability, you can create even simpler components, 
 }
 ```
 
-It's as easy as writing:
+The component will be:
 
 ```jsx
 import React from 'react';
