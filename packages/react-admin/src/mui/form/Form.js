@@ -20,4 +20,5 @@ const Form = (props = {}) => <form {...formPropsSanitizer(props)} />;
 Form.propTypes = {
     ...formPropTypes,
 };
+
 export default Form;

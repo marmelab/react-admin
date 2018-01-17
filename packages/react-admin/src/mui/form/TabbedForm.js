@@ -45,6 +45,7 @@ export class TabbedForm extends Component {
     render() {
         const {
             className,
+            renderWrapper,
             renderLayout,
             tabsWithErrors,
             toolbar,
@@ -54,7 +55,7 @@ export class TabbedForm extends Component {
         return (
             <FormWrapper
                 className={classnames('tabbed-form', className)}
-                render={renderLayout}
+                render={renderWrapper}
                 {...rest}
             >
                 <TabbedFormLayoutFactory
@@ -63,6 +64,7 @@ export class TabbedForm extends Component {
                     tabsWithErrors={tabsWithErrors}
                     handleSubmitWithRedirect={this.handleSubmitWithRedirect}
                     handleChange={this.handleChange}
+                    render={renderLayout}
                     {...rest}
                 />
             </FormWrapper>
@@ -80,6 +82,7 @@ TabbedForm.propTypes = {
     invalid: PropTypes.bool,
     record: PropTypes.object,
     renderLayout: PropTypes.func,
+    renderWrapper: PropTypes.func,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission

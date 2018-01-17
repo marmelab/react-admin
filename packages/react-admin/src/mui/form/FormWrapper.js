@@ -1,17 +1,16 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import Form from './Form';
 
-const FormWrapper = ({ render, ...props }) =>
-    render({
-        ...props,
-        defaultRenderer: Form,
-    });
+const defaultRenderer = (Component, props) => <Component {...props} />;
+
+const FormWrapper = ({ render, ...props }) => render(Form, props);
 
 FormWrapper.propTypes = {
     render: PropTypes.func,
 };
 FormWrapper.defaultProps = {
-    render: Form,
+    render: defaultRenderer,
 };
 
 export default FormWrapper;

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 /**
  *
  */
-class ChildFactory extends React.Component {
+class BaseFactory extends React.Component {
     static propTypes = {
         factories: PropTypes.object,
         render: PropTypes.func.isRequired,
@@ -85,4 +85,4 @@ class ChildFactory extends React.Component {
         );
     }
 }
-export default ChildFactory;
+export default BaseFactory;

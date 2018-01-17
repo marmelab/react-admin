@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ChildFactory from './ChildFactory';
+import BaseFactory from './BaseFactory';
 import SimpleFormLayout from './SimpleFormLayout';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
@@ -54,7 +54,7 @@ class SimpleFormLayoutFactory extends React.Component {
 
     render() {
         return (
-            <ChildFactory
+            <BaseFactory
                 factories={this.factories}
                 childIdentifier={this.childIdentifier}
                 childFactoryProp="field"

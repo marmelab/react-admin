@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import ChildFactory from './ChildFactory';
+import BaseFactory from './BaseFactory';
 import TabbedFormLayout from './TabbedFormLayout';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Toolbar from './Toolbar';
@@ -101,7 +101,7 @@ class TabbedFormLayoutFactory extends React.Component {
 
     render() {
         return (
-            <ChildFactory
+            <BaseFactory
                 factories={this.factories}
                 childIdentifier={this.childIdentifier}
                 childRenderer={this.childRenderer}
