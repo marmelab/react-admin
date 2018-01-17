@@ -17,6 +17,7 @@ class BaseFactory extends React.Component {
         childRenderer: PropTypes.func,
         childrenFactoryProp: PropTypes.string,
         childFactoryProp: PropTypes.string,
+        defaultLayout: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
@@ -27,6 +28,14 @@ class BaseFactory extends React.Component {
 
     componentWillMount() {
         this.indexComponentsByIdentifier(this.props);
+
+        const { factories, childrenFactoryProp, childFactoryProp } = this.props;
+        this.factories = {
+            ...factories,
+            [childFactoryProp]: this.createChild,
+            [childrenFactoryProp]: this.createChildren,
+            defaultLayout: this.createDefaultLayout,
+        };
     }
     componentWillReceiveProps(nextProps) {
         this.indexComponentsByIdentifier(nextProps);
@@ -65,9 +74,13 @@ class BaseFactory extends React.Component {
         );
     };
 
+    createDefaultLayout = props =>
+        this.props.defaultLayout(this.factories, props);
+
     render() {
         const {
             factories,
+            defaultLayout,
             children,
             childFactoryProp,
             childrenFactoryProp,
@@ -75,14 +88,7 @@ class BaseFactory extends React.Component {
             ...props
         } = this.props;
 
-        return render(
-            {
-                ...factories,
-                [childrenFactoryProp]: this.createChildren,
-                [childFactoryProp]: this.createChild,
-            },
-            props
-        );
+        return render(this.factories, props);
     }
 }
 export default BaseFactory;

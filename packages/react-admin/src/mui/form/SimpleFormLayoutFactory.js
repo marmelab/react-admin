@@ -21,7 +21,6 @@ class SimpleFormLayoutFactory extends React.Component {
     componentWillMount() {
         this.factories = {
             toolbar: this.createToolbar,
-            defaultLayout: this.createDefaultLayout,
         };
     }
 
@@ -35,12 +34,6 @@ class SimpleFormLayoutFactory extends React.Component {
             record={record}
         />
     );
-
-    createDefaultLayout = props =>
-        SimpleFormLayout(
-            this.props.factories,
-            props // Don't pass this.props, because the user is allowed to sanitize the props before rendering the default layout
-        );
 
     createToolbar = props => {
         const {
@@ -62,6 +55,7 @@ class SimpleFormLayoutFactory extends React.Component {
     render() {
         return (
             <BaseFactory
+                defaultLayout={SimpleFormLayout}
                 factories={this.factories}
                 childIdentifier={this.childIdentifier}
                 childFactoryProp="field"

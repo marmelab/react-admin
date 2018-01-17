@@ -24,7 +24,6 @@ class TabbedFormLayoutFactory extends React.Component {
     componentWillMount() {
         this.factories = {
             activeTab: this.createActiveTab,
-            defaultLayout: this.createDefaultLayout,
             toolbar: this.createToolbar,
             tabs: this.createTabs,
             tab: this.createTab,
@@ -74,11 +73,6 @@ class TabbedFormLayoutFactory extends React.Component {
             </Tabs>
         );
     };
-    createDefaultLayout = props =>
-        TabbedFormLayout(
-            this.props.factories,
-            props // Don't pass this.props, because the user is allowed to sanitize the props before rendering the default layout
-        );
     createActiveTab = props => {
         const { children, value, ...rest } = this.props;
         const tab = React.Children
@@ -107,6 +101,7 @@ class TabbedFormLayoutFactory extends React.Component {
     render() {
         return (
             <BaseFactory
+                defaultLayout={TabbedFormLayout}
                 factories={this.factories}
                 childIdentifier={this.childIdentifier}
                 childRenderer={this.childRenderer}
