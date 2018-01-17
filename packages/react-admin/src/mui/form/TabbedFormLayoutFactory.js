@@ -76,7 +76,7 @@ class TabbedFormLayoutFactory extends React.Component {
     };
     createDefaultLayout = props =>
         TabbedFormLayout(
-            this.factories,
+            this.props.factories,
             props // Don't pass this.props, because the user is allowed to sanitize the props before rendering the default layout
         );
     createActiveTab = props => {
