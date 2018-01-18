@@ -196,6 +196,14 @@ CheckboxGroupInput.defaultProps = {
     translateChoice: true,
 };
 
-export default compose(addField, translate, withStyles(styles))(
-    CheckboxGroupInput
-);
+const EnhancedCheckboxGroupInput = compose(
+    addField,
+    translate,
+    withStyles(styles)
+)(CheckboxGroupInput);
+
+EnhancedCheckboxGroupInput.defaultProps = {
+    fullWidth: true,
+};
+
+export default EnhancedCheckboxGroupInput;
