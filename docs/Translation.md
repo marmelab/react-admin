@@ -21,7 +21,7 @@ If you want to use another locale, you'll have to install a third-party package.
 
 ```jsx
 import React from 'react';
-import { Admin, Resource, resolveBrowserLocale } from 'react-admin';
+import { Admin, Resource, resolveBrowserLocale, GET_DEFAULT_MESSAGES, GET_LOCALE_MESSAGES } from 'react-admin';
 import frenchMessages from 'ra-language-french';
 import englishMessages from 'ra-language-english';
 
@@ -30,10 +30,10 @@ const messages = {
   fr: frenchMessages,
 };
 const i18nProvider = (type, params) => {
-    if (type === 'GET_DEFAULT_MESSAGES') {
+    if (type === GET_DEFAULT_MESSAGES) {
         return englishMessages;
     }
-    if (type === 'GET_LOCALE_MESSAGES') {
+    if (type === GET_LOCALE_MESSAGES) {
         return messages[params.locale];
     }
     throw new Error('Undefined action type', type); 
