@@ -14,7 +14,7 @@ import createAppReducer from './reducer';
 import { crudSaga } from './sideEffect/saga';
 import TranslationProvider from './i18n/TranslationProvider';
 
-const identity = a => a;
+const identity = (...args) => [...args];
 
 const AdminConfig = ({
     authClient,
@@ -43,7 +43,7 @@ const AdminConfig = ({
         initialState,
         compose(
             applyMiddleware(
-                customMiddleware(
+                ...customMiddleware(
                     sagaMiddleware,
                     routerMiddleware(routerHistory)
                 )
