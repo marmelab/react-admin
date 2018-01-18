@@ -159,7 +159,7 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin'
 ```jsx
 import { BooleanInput } from 'react-admin';
 
-<BooleanInput label="Allow comments?" source="commentable" />
+<BooleanInput label="Commentable" source="commentable" />
 ```
 
 ![BooleanInput](./img/boolean-input.png)
@@ -168,14 +168,6 @@ This input does not handle `null` values. You would need the `<NullableBooleanIn
 
 You can use the `options` prop to pass any option supported by the Material UI `Toggle` components.
 
-{% raw %}
-```jsx
-<BooleanInput source="finished" options={{
-    labelPosition: 'right'
-}} />
-```
-{% endraw %}
-
 Refer to [Material UI Toggle documentation](http://www.material-ui.com/#/components/toggle) for more details.
 
 `<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
@@ -183,7 +175,7 @@ Refer to [Material UI Toggle documentation](http://www.material-ui.com/#/compone
 ```jsx
 import { NullableBooleanInput } from 'react-admin';
 
-<NullableBooleanInput label="Allow comments?" source="commentable" />
+<NullableBooleanInput label="Commentable" source="commentable" />
 ```
 
 ![NullableBooleanInput](./img/nullable-boolean-input.png)
@@ -488,7 +480,7 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 ```
 {% endraw %}
 
-Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/components/radio-button) for more details.
+Refer to [Material UI RadioGroup documentation](http://www.material-ui.com/#/components/radio-button) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
