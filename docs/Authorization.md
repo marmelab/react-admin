@@ -276,6 +276,7 @@ export default [
     <Route exact path="/baz" component={MyPageWithPermissions} />,
 ];
 ```
+{% endraw %}
 
 ## Restricting Access to Content in Custom Menu
 
