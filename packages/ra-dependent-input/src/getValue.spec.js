@@ -1,4 +1,3 @@
-import expect from 'expect';
 import getValue from './getValue';
 
 describe('getValue', () => {

@@ -1,4 +1,3 @@
-import expect from 'expect';
 import { FETCH_END } from 'react-admin';
 
 import buildAction from './buildAction';

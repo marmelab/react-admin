@@ -1,0 +1,30 @@
+{
+  "name": "shop",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "fakerest": "~1.2.1",
+    "fetch-mock": "~5.5.0",
+    "material-ui-icons": "1.0.0-beta.17",
+    "material-ui": "1.0.0-beta.27",
+    "ra-data-fakerest": "^2.0.0-beta1",
+    "ra-data-simple-rest": "~2.0.0-beta1",
+    "ra-input-rich-text": "^2.0.0-beta1",
+    "ra-language-english": "^2.0.0-beta1",
+    "ra-language-french": "^2.0.0-beta1",
+    "react": "~16.0.0",
+    "react-admin": "~2.0.0-beta1",
+    "react-dom": "~16.0.0",
+    "react-redux": "~5.0.4",
+    "react-router-dom": "~4.2.2",
+    "react-scripts": "1.1.0",
+    "recompose": "~0.25.0",
+    "redux-form": "~7.0.3",
+    "redux-saga": "~0.15.0"        
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject"
+  }
+}
