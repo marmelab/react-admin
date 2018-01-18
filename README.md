@@ -137,16 +137,29 @@ See the [Data Providers documentation](https://marmelab.com/react-admin/DataProv
 
 React-admin is designed as a library of loosely coupled React components built on top of [material-ui](http://www.material-ui.com/#/), in addition to controller functions implemented the Redux way. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or bootstrap instead of Material Design.
 
-## Run the example
+## Examples
 
-You can run the example app by calling:
+There are several examples inside the `examples` folder:
+
+* `simple`: a simple application with posts, comments and users that we use for our e2e tests.
+* `tutorial`: the application built while following the tutorial.
+* `demo`: the official demo application.
+
+You can run those example applications by calling:
 
 ```sh
-npm install
-make run
+# At the react-admin project root
+make install
+
+# Run the simple application
+make run-simple
+# Run the tutorial application
+make run-tutorial
+# Run the demo application
+make run-demo
 ```
 
-And then browse to [http://localhost:8080/](http://localhost:8080/).
+And then browse to the URL displayed in your console.
 The credentials are **login/password**
 
 ## Contributing
