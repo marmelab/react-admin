@@ -482,52 +482,6 @@ export const PostEdit = (props) => (
 
 **Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.
 
-## Declaring Inputs At Runtime
-
-You might want to dynamically define the inputs when the `<Create>` or `<Edit>` components are rendered. They both accepts a function as their child and this function can return a Promise. If you also defined an `authClient` on the `<Admin>` component, the function will receive the result of a call to `authClient` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
-
-For instance, getting the inputs from an API might look like:
-
-{% raw %}
-```js
-import React from 'react';
-import { Create, Edit, SimpleForm, TextInput, DateInput } from 'react-admin';
-import RichTextInput from 'ra-input-rich-text';
-
-const knownInputs = [
-    <TextInput source="title" />,
-    <TextInput source="teaser" options={{ multiLine: true }} />,
-    <RichTextInput source="body" />,
-    <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />,
-];
-
-const fetchInputs = permissions =>
-    fetch('https://myapi/inputs', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            permissions,
-            resource: 'posts',
-        }),
-    })
-    .then(response => response.json())
-    .then(json => knownInputs.filter(input => json.fields.includes(input.props.source)))
-    .then(inputs => (
-        <SimpleForm>
-            {inputs}
-        </SimpleForm>
-    ));
-
-export const PostCreate = (props) => (
-    <Create {...props}>
-        {fetchInputs}
-    </Create>
-);
-```
-{% endraw %}
-
 ## Customize Input Containers Styles
 
 The input components are wrapped inside a `div` to ensure a good looking form by default. You can pass a `formClassName` prop to the input components to customize the style of this `div`. For example, here is how to display two inputs on the same line:
