@@ -319,7 +319,8 @@ The `<Authenticated>` component calls the `authClient` function with `AUTH_CHECK
 
 ## Redirect After Logout
 
-By default react-admin will redirect to '/login' after the user logs out. This can be changed by adding a `redirectTo` prop to the `logoutButton` of a customMenu
+By default react-admin will redirect to '/login' after the user logs out. This can be changed by adding a `redirectTo` prop to the `logoutButton` of a customMenu:
+
 ```jsx
 // in src/myMenu.js
 import React from 'react';
