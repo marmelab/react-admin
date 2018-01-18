@@ -72,7 +72,7 @@ AdminConfig.propTypes = {
     customSagas: PropTypes.array,
     customReducers: PropTypes.object,
     customMiddleware: PropTypes.func,
-    history: PropTypes.object.isRequired,
+    history: PropTypes.object,
     dataProvider: PropTypes.func.isRequired,
     locale: PropTypes.string,
     messages: PropTypes.object,
