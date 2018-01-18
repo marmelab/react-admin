@@ -1,6 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
+
 import { RadioButtonGroupInput } from './RadioButtonGroupInput';
 
 describe('<RadioButtonGroupInput />', () => {
@@ -21,7 +22,7 @@ describe('<RadioButtonGroupInput />', () => {
 
     it('should use the input parameter value as the initial input value', () => {
         const wrapper = shallow(
-            <RadioButtonGroupInput {...defaultProps} input={{ value: 2 }} />
+            <RadioButtonGroupInput {...defaultProps} input={{ value: '2' }} />
         );
         const RadioGroupElement = wrapper.find('RadioGroup').first();
         assert.equal(RadioGroupElement.prop('defaultSelected'), '2');
@@ -29,13 +30,13 @@ describe('<RadioButtonGroupInput />', () => {
 
     it('should use the input parameter value as the selected value', () => {
         const wrapper = shallow(
-            <RadioButtonGroupInput {...defaultProps} input={{ value: 2 }} />
+            <RadioButtonGroupInput {...defaultProps} input={{ value: '2' }} />
         );
         const RadioGroupElement = wrapper.find('RadioGroup').first();
-        assert.equal(RadioGroupElement.prop('valueSelected'), '2');
+        assert.equal(RadioGroupElement.prop('value'), '2');
     });
 
-    it('should render choices as mui Radio components', () => {
+    it('should render choices as mui FormControlLabel components with a Radio control', () => {
         const wrapper = shallow(
             <RadioButtonGroupInput
                 {...defaultProps}
@@ -45,7 +46,9 @@ describe('<RadioButtonGroupInput />', () => {
                 ]}
             />
         );
-        const RadioButtonElements = wrapper.find('WithStyles(Radio)');
+        const RadioButtonElements = wrapper.find(
+            'WithStyles(FormControlLabel)'
+        );
         assert.equal(RadioButtonElements.length, 2);
         const RadioButtonElement1 = RadioButtonElements.first();
         assert.equal(RadioButtonElement1.prop('value'), 'M');
@@ -63,7 +66,9 @@ describe('<RadioButtonGroupInput />', () => {
                 choices={[{ foobar: 'M', name: 'Male' }]}
             />
         );
-        const RadioButtonElements = wrapper.find('WithStyles(Radio)');
+        const RadioButtonElements = wrapper.find(
+            'WithStyles(FormControlLabel)'
+        );
         const RadioButtonElement1 = RadioButtonElements.first();
         assert.equal(RadioButtonElement1.prop('value'), 'M');
         assert.equal(RadioButtonElement1.prop('label'), 'Male');
@@ -77,7 +82,9 @@ describe('<RadioButtonGroupInput />', () => {
                 choices={[{ foobar: { id: 'M' }, name: 'Male' }]}
             />
         );
-        const RadioButtonElements = wrapper.find('WithStyles(Radio)');
+        const RadioButtonElements = wrapper.find(
+            'WithStyles(FormControlLabel)'
+        );
         const RadioButtonElement1 = RadioButtonElements.first();
         assert.equal(RadioButtonElement1.prop('value'), 'M');
         assert.equal(RadioButtonElement1.prop('label'), 'Male');
@@ -91,7 +98,9 @@ describe('<RadioButtonGroupInput />', () => {
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const RadioButtonElements = wrapper.find('WithStyles(Radio)');
+        const RadioButtonElements = wrapper.find(
+            'WithStyles(FormControlLabel)'
+        );
         const RadioButtonElement1 = RadioButtonElements.first();
         assert.equal(RadioButtonElement1.prop('value'), 'M');
         assert.equal(RadioButtonElement1.prop('label'), 'Male');
@@ -105,7 +114,9 @@ describe('<RadioButtonGroupInput />', () => {
                 choices={[{ id: 'M', foobar: { name: 'Male' } }]}
             />
         );
-        const RadioButtonElements = wrapper.find('WithStyles(Radio)');
+        const RadioButtonElements = wrapper.find(
+            'WithStyles(FormControlLabel)'
+        );
         const RadioButtonElement1 = RadioButtonElements.first();
         assert.equal(RadioButtonElement1.prop('value'), 'M');
         assert.equal(RadioButtonElement1.prop('label'), 'Male');
@@ -119,7 +130,9 @@ describe('<RadioButtonGroupInput />', () => {
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const RadioButtonElements = wrapper.find('WithStyles(Radio)');
+        const RadioButtonElements = wrapper.find(
+            'WithStyles(FormControlLabel)'
+        );
         const RadioButtonElement1 = RadioButtonElements.first();
         assert.equal(RadioButtonElement1.prop('value'), 'M');
         assert.equal(RadioButtonElement1.prop('label'), 'Male');
@@ -134,7 +147,9 @@ describe('<RadioButtonGroupInput />', () => {
                 choices={[{ id: 'M', foobar: 'Male' }]}
             />
         );
-        const RadioButtonElements = wrapper.find('WithStyles(Radio)');
+        const RadioButtonElements = wrapper.find(
+            'WithStyles(FormControlLabel)'
+        );
         const RadioButtonElement1 = RadioButtonElements.first();
         assert.equal(RadioButtonElement1.prop('value'), 'M');
         assert.deepEqual(
@@ -154,7 +169,9 @@ describe('<RadioButtonGroupInput />', () => {
                 translate={x => `**${x}**`}
             />
         );
-        const RadioButtonElements = wrapper.find('WithStyles(Radio)');
+        const RadioButtonElements = wrapper.find(
+            'WithStyles(FormControlLabel)'
+        );
         const RadioButtonElement1 = RadioButtonElements.first();
         assert.equal(RadioButtonElement1.prop('label'), '**Male**');
     });
@@ -171,7 +188,9 @@ describe('<RadioButtonGroupInput />', () => {
                 translateChoice={false}
             />
         );
-        const RadioButtonElements = wrapper.find('WithStyles(Radio)');
+        const RadioButtonElements = wrapper.find(
+            'WithStyles(FormControlLabel)'
+        );
         const RadioButtonElement1 = RadioButtonElements.first();
         assert.equal(RadioButtonElement1.prop('label'), 'Male');
     });
