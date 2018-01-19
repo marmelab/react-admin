@@ -6,6 +6,8 @@ help:
 install: package.json ## install dependencies
 	@yarn
 
+run: run-simple
+
 run-simple: ## run the simple example
 	@cd examples/simple && ./node_modules/.bin/webpack-dev-server --hot --inline --config ./webpack.config.js
 
