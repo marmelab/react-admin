@@ -1,4 +1,3 @@
-import expect from 'expect';
 import { createSubscribeFactory } from './createObserverChannel';
 
 describe('createObserverChannel', () => {
@@ -11,7 +10,7 @@ describe('createObserverChannel', () => {
 
     const unsubscribeWatcher = createSubscribeFactory(queryObserver)(
         watcher,
-        'the emitter',
+        'the emitter'
     );
     it('calls the queryObserver with the specified emitter', () => {
         expect(queryObserver).toHaveBeenCalledWith(emitter);

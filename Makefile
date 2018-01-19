@@ -6,8 +6,14 @@ help:
 install: package.json ## install dependencies
 	@yarn
 
-run: ## run the example
+run-simple: ## run the simple example
 	@cd examples/simple && ./node_modules/.bin/webpack-dev-server --hot --inline --config ./webpack.config.js
+
+run-tutorial: build ## run the tutorial example
+	@cd examples/tutorial && yarn start
+
+run-demo: build ## run the demo example
+	@cd examples/demo && yarn start
 
 build-react-admin:
 	@rm -rf ./packages/react-admin/lib

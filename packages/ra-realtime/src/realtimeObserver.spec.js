@@ -1,4 +1,3 @@
-import expect from 'expect';
 import { END } from 'redux-saga';
 
 import realtimeObserver from './realtimeObserver';
