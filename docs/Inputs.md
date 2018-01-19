@@ -166,9 +166,24 @@ import { BooleanInput } from 'react-admin';
 
 This input does not handle `null` values. You would need the `<NullableBooleanInput />` component if you have to handle non-set booleans.
 
-You can use the `options` prop to pass any option supported by the Material UI `Toggle` components.
+You can use the `options` prop to pass any option supported by the Material UI `Switch` components. For example, here's how to set a custom checked icon:
 
-Refer to [Material UI Toggle documentation](http://www.material-ui.com/#/components/toggle) for more details.
+```jsx
+import { BooleanInput } from 'react-admin';
+import FavoriteIcon from 'material-ui-icons/Favorite';
+
+<BooleanInput
+    source="favorite"
+    options={{
+        checkedIcon: <FavoriteIcon />,
+    }}
+/>
+```
+
+![CustomBooleanInputCheckIcon](./img/custom-switch-icon.png)
+
+
+Refer to [Material UI Switch documentation](http://www.material-ui.com/#/components/switch) for more details.
 
 `<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
 
