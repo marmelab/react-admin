@@ -11,8 +11,7 @@ import { getNotification } from '../../reducer/admin/notifications';
 import translate from '../../i18n/translate';
 
 const styles = theme => {
-    const type = theme.palette.type === 'light' ? 'dark' : 'light';
-    const confirm = theme.palette.shades[type].background.default;
+    const confirm = theme.palette.background.default;
     const warning = theme.palette.error.A100;
     return {
         confirm: {
