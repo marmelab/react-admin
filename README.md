@@ -160,7 +160,6 @@ make run-demo
 ```
 
 And then browse to the URL displayed in your console.
-The credentials are **login/password**
 
 ## Contributing
 
