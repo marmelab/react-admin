@@ -486,6 +486,8 @@ The react-admin layout is already responsive. Try to resize your browser to see 
 
 But a responsive layout is not enough to make a responsive app. Datagrid components work well on desktop, but are absolutely not adapted to mobile devices. If your admin must be used on mobile devices, you'll have to provide an alternative component for small screens
 
+**Note:** We switched to a custom API for those screenshots in order to demonstrate how to use some of the `SimpleList` component props.
+
 First, you should know that you don't have to use the `<Datagrid>` component as `<List>` child. You can use any other component you like. For instance, the `<SimpleList>` component:
 
 ```jsx
@@ -544,8 +546,6 @@ export const PostList = (props) => (
 This works exactly the way you expect. The lesson here is that react-admin takes care of responsive web design for the layout, but it's your job to use `<Responsive>` in pages.
 
 ![Responsive List](./img/responsive-list.gif)
-
-**Note:** We switched to a custom API for those screenshots in order to demonstrate how to use some of the `SimpleList` component props.
 
 ## Connecting To A Real API
 
