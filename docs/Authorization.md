@@ -101,7 +101,9 @@ Note that the function returns an array of React elements. This is required to a
 
 ## Restricting Access to Fields and Inputs
 
-You might want to display some fields, inputs or filters only to users with specific permissions. Just like for resources, pass a function as only child of the component, instead of a set of Fields and Inputs.
+You might want to display some fields or inputs only to users with specific permissions. Those permissions are retrieved for each route and will provided to your component as a `permissions` prop.
+
+Each route will call the `authClient` with the `AUTH_GET_PERMISSIONS` type and some parameters including the current location and route parameters. It's up to you to return whatever you need to check inside your component such as the user's role, etc.
 
 Here's an example inside a `Create` view with a `SimpleForm` and a custom `Toolbar`:
 

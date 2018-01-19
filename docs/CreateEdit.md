@@ -512,3 +512,65 @@ export const UserEdit = withStyles(editStyles)(({ classes, ...props }) => (
     </Edit>
 ```
 {% endraw %}
+
+## Displaying Fields or Inputs depending on the user permissions
+
+You might want to display some fields, inputs or filters only to users with specific permissions. Those permissions are retrieved for each route and will provided to your component as a `permissions` prop.
+
+Each route will call the `authClient` with the `AUTH_GET_PERMISSIONS` type and some parameters including the current location and route parameters. It's up to you to return whatever you need to check inside your component such as the user's role, etc.
+
+Here's an example inside a `Create` view with a `SimpleForm` and a custom `Toolbar`:
+
+{% raw %}
+```jsx
+const UserCreateToolbar = ({ permissions, ...props }) =>
+    <Toolbar {...props}>
+        <SaveButton
+            label="user.action.save_and_show"
+            redirect="show"
+            submitOnEnter={true}
+        />
+        {permissions === 'admin' &&
+            <SaveButton
+                label="user.action.save_and_add"
+                redirect={false}
+                submitOnEnter={false}
+                raised={false}
+            />}
+    </Toolbar>;
+
+export const UserCreate = ({ permissions, ...props }) =>
+    <Create {...props}>
+        <SimpleForm
+            toolbar={<UserCreateToolbar permissions={permissions} />}
+            defaultValue={{ role: 'user' }}
+        >
+            <TextInput source="name" validate={[required]} />
+            {permissions === 'admin' &&
+                <TextInput source="role" validate={[required]} />}
+        </SimpleForm>
+    </Create>;
+```
+{% endraw %}
+
+**Tip** Note how the `permissions` prop is passed down to the custom `toolbar` component.
+
+This also works inside an `Edition` view with a `TabbedForm`, and you can hide a `FormTab` completely:
+
+{% raw %}
+```jsx
+export const UserEdit = ({ permissions, ...props }) =>
+    <Edit title={<UserTitle />} {...props}>
+        <TabbedForm defaultValue={{ role: 'user' }}>
+            <FormTab label="user.form.summary">
+                {permissions === 'admin' && <DisabledInput source="id" />}
+                <TextInput source="name" validate={required} />
+            </FormTab>
+            {permissions === 'admin' &&
+                <FormTab label="user.form.security">
+                    <TextInput source="role" validate={required} />
+                </FormTab>}
+        </TabbedForm>
+    </Edit>;
+```
+{% endraw %}

@@ -523,3 +523,51 @@ export const CommentList = (props) => (
 
 As you can see, nothing prevents you from using `<Field>` components inside your own components... provided you inject the current `record`. Also, notice that components building links require the `basePath` component, which is also injected.
 
+## Displaying Fields depending on the user permissions
+
+You might want to display some fields or filters only to users with specific permissions. Those permissions are retrieved for each route and will provided to your component as a `permissions` prop.
+
+Each route will call the `authClient` with the `AUTH_GET_PERMISSIONS` type and some parameters including the current location and route parameters. It's up to you to return whatever you need to check inside your component such as the user's role, etc.
+
+{% raw %}
+```jsx
+const UserFilter = ({ permissions, ...props }) =>
+    <Filter {...props}>
+        <TextInput
+            label="user.list.search"
+            source="q"
+            alwaysOn
+        />
+        <TextInput source="name" />
+        {permissions === 'admin' ? <TextInput source="role" /> : null}
+    </Filter>;
+
+export const UserList = ({ permissions, ...props }) =>
+    <List
+        {...props}
+        filters={<UserFilter permissions={permissions} />}
+        sort={{ field: 'name', order: 'ASC' }}
+    >
+        <Responsive
+            small={
+                <SimpleList
+                    primaryText={record => record.name}
+                    secondaryText={record =>
+                        permissions === 'admin' ? record.role : null}
+                />
+            }
+            medium={
+                <Datagrid>
+                    <TextField source="id" />
+                    <TextField source="name" />
+                    {permissions === 'admin' && <TextField source="role" />}
+                    {permissions === 'admin' && <EditButton />}
+                    <ShowButton />
+                </Datagrid>
+            }
+        />
+    </List>;
+```
+{% endraw %}
+
+**Tip** Note how the `permissions` prop is passed down to the custom `filters` component.
