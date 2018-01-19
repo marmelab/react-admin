@@ -8,5 +8,7 @@ describe('resolve redirect to', () => {
         assert.equal(resolveRedirectTo('edit', 'books', 1), 'books/1');
         assert.equal(resolveRedirectTo('show', 'books', 1), 'books/1/show');
         assert.equal(resolveRedirectTo('home', 'books', 1), 'home');
+        const rFunc = (basePath, id) => `${basePath}/${id}/show`;
+        assert.equal(resolveRedirectTo(rFunc, 'books', 1), 'books/1/show');
     });
 });

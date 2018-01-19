@@ -1,6 +1,9 @@
 import linkToRecord from './linkToRecord';
 
 export default (redirectTo, basePath, id) => {
+    if (typeof redirectTo === 'function') {
+        return redirectTo(basePath, id);
+    }
     switch (redirectTo) {
         case 'list':
             return basePath;
