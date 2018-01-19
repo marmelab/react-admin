@@ -25,7 +25,7 @@ const styles = theme => ({
             padding: '0 1em 5em 1em',
         },
     },
-    errorTabButton: { color: theme.palette.error[500] },
+    errorTabButton: { color: theme.palette.error.main },
 });
 
 const sanitizeRestProps = ({
