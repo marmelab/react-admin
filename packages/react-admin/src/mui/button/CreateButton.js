@@ -13,7 +13,7 @@ import translate from '../../i18n/translate';
 
 const styles = theme => ({
     floating: {
-        color: theme.palette.getContrastText(theme.palette.primary[500]),
+        color: theme.palette.getContrastText(theme.palette.primary.main),
         margin: 0,
         top: 'auto',
         right: 20,

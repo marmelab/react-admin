@@ -17,7 +17,7 @@
         "babel-preset-react": "~6.24.1",
         "css-loader": "~0.28.4",
         "extract-text-webpack-plugin": "~2.1.2",
-        "material-ui": "1.0.0-beta.27",
+        "material-ui": "1.0.0-beta.29",
         "material-ui-icons": "~1.0.0-beta.17",
         "ra-data-fakerest": "^2.0.0-beta1",
         "ra-input-rich-text": "^2.0.0-beta1",

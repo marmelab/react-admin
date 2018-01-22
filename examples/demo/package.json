@@ -6,7 +6,7 @@
     "fakerest": "~1.2.1",
     "fetch-mock": "~5.5.0",
     "material-ui-icons": "1.0.0-beta.17",
-    "material-ui": "1.0.0-beta.27",
+    "material-ui": "1.0.0-beta.29",
     "ra-data-fakerest": "^2.0.0-beta1",
     "ra-data-simple-rest": "~2.0.0-beta1",
     "ra-input-rich-text": "^2.0.0-beta1",
