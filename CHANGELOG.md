@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.3.4
+
+* Add Croatian translation ([ariskemper](https://github.com/ariskemper))
+* Add Indonesian translation ([ronadi](https://github.com/ronadi))
+* Add Arabic translation ([aymendhaya](https://github.com/aymendhaya))
+* Add Finnish translation ([Joni-Aaltonen](https://github.com/Joni-Aaltonen))
+* Fix spelling of Labeled in documentation ([jyash97](https://github.com/jyash97))
+* Fix documentation for Writing Actions ([danyalaytekin](https://github.com/danyalaytekin))
+* Fix check that window exists before checking for devToolsExtension ([twDuke](https://github.com/twDuke))
+* Fix missing key warning for SaveButton ([MadalenaGoncalves](https://github.com/MadalenaGoncalves))
+* Fix RestClient example in documentation ([alexanderankin](https://github.com/alexanderankin))
+* Fix documentation menu on mobile ([djhi](https://github.com/djhi))
+* Add shadow under doc menu bar on mobile ([djhi](https://github.com/djhi))
+* Fix SelectArrayInput by upgrade material-ui-chip-input ([djhi](https://github.com/djhi))
+* Fix Bottom Toolbars on mobile ([djhi](https://github.com/djhi))
+* Fix documentation, Prop name is validate not validation ([alauper](https://github.com/alauper))
+* Fix AutocompleteInput does not render text for existing value on initial render ([hasghari](https://github.com/hasghari))
+* Fix BooleanInput warning about uncontrolled to controlled component ([djhi](https://github.com/djhi))
+* Fix title is not updated when record changes ([djhi](https://github.com/djhi))
+* Fix vertical scroll issue on page on IE11 ([activist](https://github.com/activist))
+
 ## v1.3.3
 
 * Add `aor-xmysql` to the list of REST clients ([soaserele](https://github.com/soaserele))
