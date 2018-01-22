@@ -82,15 +82,15 @@ import frenchMessages from 'ra-language-french';
 import englishMessages from 'ra-language-english';
 
 const messages = {
-  en: () => englishMessages,
-  fr: () => import('ra-language-french').then( bundle => bundle.default ),
+  en: englishMessages,
+  fr: frenchMessages,
 };
 const i18nProvider = (type, params) => {
     if (type === GET_DEFAULT_MESSAGES) {
-        return messages.en(); // The default messages should always resolve synchronous!! 
+        return messages.en; // The default messages should always resolve synchronous!! 
     }
     if (type === GET_LOCALE_MESSAGES) {
-        return messages[params.locale]();
+        return messages[params.locale];
     }
     throw new Error('Undefined action type', type); 
 }

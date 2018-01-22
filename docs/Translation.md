@@ -16,7 +16,7 @@ To handle translations, the `<Admin>` component supports:
 
 ## `i18nProvider`
 
-Provides messages for a specific locale. React-admin ships with a default `i18nProvider` which supports the English language.  
+Provides messages for a specific locale. React-admin ships with the English locale by default.   
 If you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, install the `ra-language-french` npm package, then configure the `<Admin>` component as follows:
 
 ```jsx
@@ -53,8 +53,8 @@ Type `GET_LOCALE_MESSAGES` is allowed to return a promise so messages can be loa
 
 ```javascript
 const asyncMessages = {
-  en: ()=> import('../en.js').default,
-  fr: ()=> import('../fr.js').default,
+  en: ()=> import('../en.js').then(messages => messages.default),
+  fr: ()=> import('../fr.js').then(messages => messages.default),
 };
 const i18nProvider = (type, params) => {
     if (type === 'GET_DEFAULT_MESSAGES') {
