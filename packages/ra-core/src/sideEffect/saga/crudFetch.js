@@ -19,13 +19,12 @@ const crudFetch = dataProvider => {
         const { type, payload, meta: { fetch: fetchMeta, ...meta } } = action;
         const restType = fetchMeta;
 
-        yield all([
-            put({ type: `${type}_LOADING`, payload, meta }),
-            put({ type: FETCH_START }),
-        ]);
-        let response;
         try {
-            response = yield call(
+            yield all([
+                put({ type: `${type}_LOADING`, payload, meta }),
+                put({ type: FETCH_START }),
+            ]);
+            let response = yield call(
                 dataProvider,
                 restType,
                 meta.resource,
