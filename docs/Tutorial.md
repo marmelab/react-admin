@@ -319,7 +319,7 @@ There is not much to configure in a deletion view. To add removal abilities to a
 
 ```jsx
 // in src/App.js
-import { Delete } from 'react-admin';
+import { Admin, Resource, Delete } from 'react-admin';
 
 const App = () => (
     <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
@@ -485,6 +485,8 @@ Once the app reloads, it's now behind a login form that accepts everyone:
 The react-admin layout is already responsive. Try to resize your browser to see how the sidebar switches to a drawer on smaller screens.
 
 But a responsive layout is not enough to make a responsive app. Datagrid components work well on desktop, but are absolutely not adapted to mobile devices. If your admin must be used on mobile devices, you'll have to provide an alternative component for small screens
+
+**Note:** We switched to a custom API for those screenshots in order to demonstrate how to use some of the `SimpleList` component props.
 
 First, you should know that you don't have to use the `<Datagrid>` component as `<List>` child. You can use any other component you like. For instance, the `<SimpleList>` component:
 

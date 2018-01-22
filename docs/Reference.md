@@ -83,7 +83,7 @@ title: "Reference"
 * [`<SingleFieldList>`](./List.html#the-singlefieldlist-component)
 * `<Tab>`
 * [`<TabbedForm>`](./CreateEdit.md#the-tabbedform-component)
-* `<TabbedShowLayout>`
+* [`<TabbedShowLayout>`](./Show.md#the-tabbedshowlayout-component)
 * [`<TextField>`](./Fields.md#textfield)
 * [`<TextInput>`](./Inputs.md#textinput)
 * `<Title>`

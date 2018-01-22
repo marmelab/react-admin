@@ -159,31 +159,38 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin'
 ```jsx
 import { BooleanInput } from 'react-admin';
 
-<BooleanInput label="Allow comments?" source="commentable" />
+<BooleanInput label="Commentable" source="commentable" />
 ```
 
 ![BooleanInput](./img/boolean-input.png)
 
 This input does not handle `null` values. You would need the `<NullableBooleanInput />` component if you have to handle non-set booleans.
 
-You can use the `options` prop to pass any option supported by the Material UI `Toggle` components.
+You can use the `options` prop to pass any option supported by the Material UI `Switch` components. For example, here's how to set a custom checked icon:
 
-{% raw %}
 ```jsx
-<BooleanInput source="finished" options={{
-    labelPosition: 'right'
-}} />
-```
-{% endraw %}
+import { BooleanInput } from 'react-admin';
+import FavoriteIcon from 'material-ui-icons/Favorite';
 
-Refer to [Material UI Toggle documentation](http://www.material-ui.com/#/components/toggle) for more details.
+<BooleanInput
+    source="favorite"
+    options={{
+        checkedIcon: <FavoriteIcon />,
+    }}
+/>
+```
+
+![CustomBooleanInputCheckIcon](./img/custom-switch-icon.png)
+
+
+Refer to [Material UI Switch documentation](http://www.material-ui.com/#/components/switch) for more details.
 
 `<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
 
 ```jsx
 import { NullableBooleanInput } from 'react-admin';
 
-<NullableBooleanInput label="Allow comments?" source="commentable" />
+<NullableBooleanInput label="Commentable" source="commentable" />
 ```
 
 ![NullableBooleanInput](./img/nullable-boolean-input.png)
@@ -488,7 +495,7 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 ```
 {% endraw %}
 
-Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/components/radio-button) for more details.
+Refer to [Material UI RadioGroup documentation](http://www.material-ui.com/#/components/radio-button) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 

@@ -482,52 +482,6 @@ export const PostEdit = (props) => (
 
 **Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.
 
-## Declaring Inputs At Runtime
-
-You might want to dynamically define the inputs when the `<Create>` or `<Edit>` components are rendered. They both accepts a function as their child and this function can return a Promise. If you also defined an `authClient` on the `<Admin>` component, the function will receive the result of a call to `authClient` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
-
-For instance, getting the inputs from an API might look like:
-
-{% raw %}
-```js
-import React from 'react';
-import { Create, Edit, SimpleForm, TextInput, DateInput } from 'react-admin';
-import RichTextInput from 'ra-input-rich-text';
-
-const knownInputs = [
-    <TextInput source="title" />,
-    <TextInput source="teaser" options={{ multiLine: true }} />,
-    <RichTextInput source="body" />,
-    <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />,
-];
-
-const fetchInputs = permissions =>
-    fetch('https://myapi/inputs', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            permissions,
-            resource: 'posts',
-        }),
-    })
-    .then(response => response.json())
-    .then(json => knownInputs.filter(input => json.fields.includes(input.props.source)))
-    .then(inputs => (
-        <SimpleForm>
-            {inputs}
-        </SimpleForm>
-    ));
-
-export const PostCreate = (props) => (
-    <Create {...props}>
-        {fetchInputs}
-    </Create>
-);
-```
-{% endraw %}
-
 ## Customize Input Containers Styles
 
 The input components are wrapped inside a `div` to ensure a good looking form by default. You can pass a `formClassName` prop to the input components to customize the style of this `div`. For example, here is how to display two inputs on the same line:
@@ -556,5 +510,67 @@ export const UserEdit = withStyles(editStyles)(({ classes, ...props }) => (
             />
         </SimpleForm>
     </Edit>
+```
+{% endraw %}
+
+## Displaying Fields or Inputs depending on the user permissions
+
+You might want to display some fields, inputs or filters only to users with specific permissions. Those permissions are retrieved for each route and will provided to your component as a `permissions` prop.
+
+Each route will call the `authClient` with the `AUTH_GET_PERMISSIONS` type and some parameters including the current location and route parameters. It's up to you to return whatever you need to check inside your component such as the user's role, etc.
+
+Here's an example inside a `Create` view with a `SimpleForm` and a custom `Toolbar`:
+
+{% raw %}
+```jsx
+const UserCreateToolbar = ({ permissions, ...props }) =>
+    <Toolbar {...props}>
+        <SaveButton
+            label="user.action.save_and_show"
+            redirect="show"
+            submitOnEnter={true}
+        />
+        {permissions === 'admin' &&
+            <SaveButton
+                label="user.action.save_and_add"
+                redirect={false}
+                submitOnEnter={false}
+                raised={false}
+            />}
+    </Toolbar>;
+
+export const UserCreate = ({ permissions, ...props }) =>
+    <Create {...props}>
+        <SimpleForm
+            toolbar={<UserCreateToolbar permissions={permissions} />}
+            defaultValue={{ role: 'user' }}
+        >
+            <TextInput source="name" validate={[required]} />
+            {permissions === 'admin' &&
+                <TextInput source="role" validate={[required]} />}
+        </SimpleForm>
+    </Create>;
+```
+{% endraw %}
+
+**Tip** Note how the `permissions` prop is passed down to the custom `toolbar` component.
+
+This also works inside an `Edition` view with a `TabbedForm`, and you can hide a `FormTab` completely:
+
+{% raw %}
+```jsx
+export const UserEdit = ({ permissions, ...props }) =>
+    <Edit title={<UserTitle />} {...props}>
+        <TabbedForm defaultValue={{ role: 'user' }}>
+            <FormTab label="user.form.summary">
+                {permissions === 'admin' && <DisabledInput source="id" />}
+                <TextInput source="name" validate={required} />
+            </FormTab>
+            {permissions === 'admin' &&
+                <FormTab label="user.form.security">
+                    <TextInput source="role" validate={required} />
+                </FormTab>}
+        </TabbedForm>
+    </Edit>;
 ```
 {% endraw %}
