@@ -2,9 +2,10 @@ import {
     all,
     put,
     call,
+    cancel,
     cancelled,
-    takeEvery,
-    takeLatest,
+    fork,
+    take,
 } from 'redux-saga/effects';
 import {
     FETCH_START,
@@ -66,22 +67,19 @@ const crudFetch = dataProvider => {
     }
 
     return function* watchCrudFetch() {
-        yield all([
-            takeLatest(
-                action =>
-                    action.meta &&
-                    action.meta.fetch &&
-                    action.meta.cancelPrevious,
-                handleFetch
-            ),
-            takeEvery(
-                action =>
-                    action.meta &&
-                    action.meta.fetch &&
-                    !action.meta.cancelPrevious,
-                handleFetch
-            ),
-        ]);
+        const runningTasks = {};
+
+        while (true) {
+            const action = yield take(
+                action => action.meta && action.meta.fetch
+            );
+            const { cancelPrevious, resource } = action.meta;
+
+            if (cancelPrevious && runningTasks[resource]) {
+                runningTasks[resource] = yield cancel(runningTasks[resource]);
+            }
+            runningTasks[resource] = yield fork(handleFetch, action);
+        }
     };
 };
 
