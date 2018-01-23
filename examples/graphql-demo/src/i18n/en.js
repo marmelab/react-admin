@@ -33,11 +33,11 @@ export default {
             fields: {
                 commands: 'Orders',
                 groups: 'Segments',
-                lastSeen_gte: 'Visited Since',
+                last_seen_gte: 'Visited Since',
                 name: 'Name',
-                latestPurchase: 'Latest Purchase',
-                hasOrdered: 'Has Ordered',
-                hasNewsletter: 'Has Newsletter',
+                latest_purchase: 'Latest Purchase',
+                has_ordered: 'Has Ordered',
+                has_newsletter: 'Has Newsletter',
             },
             tabs: {
                 identity: 'Identity',
@@ -62,7 +62,7 @@ export default {
                     total: 'Total',
                     unit_price: 'Unit Price',
                 },
-                'customer.id': 'Customer',
+                customer_id: 'Customer',
                 date_gte: 'Passed Since',
                 date_lte: 'Passed Before',
                 total_gte: 'Min amount',
@@ -71,7 +71,7 @@ export default {
         Product: {
             name: 'Poster |||| Posters',
             fields: {
-                'category.id': 'Category',
+                category_id: 'Category',
                 height_gte: 'Min height',
                 height_lte: 'Max height',
                 height: 'Height',
@@ -101,9 +101,9 @@ export default {
         Review: {
             name: 'Review |||| Reviews',
             fields: {
-                'customer.id': 'Customer',
-                'command.id': 'Order',
-                'product.id': 'Product',
+                customer_id: 'Customer',
+                command_id: 'Order',
+                product_id: 'Product',
                 date_gte: 'Posted since',
                 date_lte: 'Posted before',
                 date: 'Date',

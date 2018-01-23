@@ -4,6 +4,8 @@ import data from './data';
 
 export default () => {
     const restServer = JsonGraphqlServer({ data });
-    fetchMock.mock('^http://localhost:3000', restServer.getHandler());
+    const handler = restServer.getHandler();
+
+    fetchMock.mock('^http://localhost:4000', handler);
     return () => fetchMock.restore();
 };

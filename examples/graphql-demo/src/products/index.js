@@ -36,7 +36,7 @@ const QuickFilter = translate(({ label, translate }) => (
 export const ProductFilter = props => (
     <Filter {...props}>
         <TextInput label="pos.search" source="q" alwaysOn />
-        <ReferenceInput source="category.id" reference="Category">
+        <ReferenceInput source="category_id" reference="Category">
             <SelectInput source="name" />
         </ReferenceInput>
         <NumberInput source="width_gte" />
@@ -103,7 +103,7 @@ export const ProductCreate = withStyles(
                     formClassName={classes.heightForm}
                 />
                 <ReferenceInput
-                    source="category.id"
+                    source="category_id"
                     reference="Category"
                     allowEmpty
                 >
@@ -160,7 +160,7 @@ export const ProductEdit = withStyles(stylesEdit)(({ classes, ...props }) => (
                     formClassName={classes.heightForm}
                     className={classes.height}
                 />
-                <ReferenceInput source="category.id" reference="Category">
+                <ReferenceInput source="category_id" reference="Category">
                     <SelectInput source="name" />
                 </ReferenceInput>
                 <NumberInput source="stock" formClassName={classes.stock} />
@@ -171,7 +171,7 @@ export const ProductEdit = withStyles(stylesEdit)(({ classes, ...props }) => (
             <FormTab label="resources.Product.tabs.reviews">
                 <ReferenceManyField
                     reference="Review"
-                    target="product.id"
+                    target="product_id"
                     addLabel={false}
                 >
                     <Datagrid>

@@ -40,12 +40,13 @@ export const ReviewFilter = props => (
             ]}
             elStyle={{ width: 150 }}
         />
-        <ReferenceInput source="customer.id" reference="Customer">
+        <ReferenceInput source="customer_id" reference="Customer">
             <AutocompleteInput
-                optionText={choice => `${choice.firstName} ${choice.lastName}`}
+                optionText={choice =>
+                    `${choice.first_name} ${choice.last_name}`}
             />
         </ReferenceInput>
-        <ReferenceInput source="product.id" reference="Product">
+        <ReferenceInput source="product_id" reference="Product">
             <AutocompleteInput optionText="reference" />
         </ReferenceInput>
         <DateInput source="date_gte" />
@@ -98,7 +99,7 @@ export const ReviewEdit = withStyles(editStyles)(({ classes, ...props }) => (
             <CustomerReferenceField className={classes.detail} />
             <ProductReferenceField className={classes.detail} />
             <ReferenceField
-                source="command.id"
+                source="command_id"
                 reference="Command"
                 addLabel
                 className={classes.detail}

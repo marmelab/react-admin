@@ -31,9 +31,10 @@ export const CommandIcon = Icon;
 const CommandFilter = props => (
     <Filter {...props}>
         <TextInput label="pos.search" source="q" alwaysOn />
-        <ReferenceInput source="customer.id" reference="Customer">
+        <ReferenceInput source="customer_id" reference="Customer">
             <AutocompleteInput
-                optionText={choice => `${choice.firstName} ${choice.lastName}`}
+                optionText={choice =>
+                    `${choice.first_name} ${choice.last_name}`}
             />
         </ReferenceInput>
         <SelectInput
@@ -93,10 +94,10 @@ export const CommandEdit = translate(({ translate, ...rest }) => (
         <SimpleForm>
             <Basket />
             <DateInput source="date" />
-            <ReferenceInput source="customer.id" reference="Customer">
+            <ReferenceInput source="customer_id" reference="Customer">
                 <AutocompleteInput
                     optionText={choice =>
-                        `${choice.firstName} ${choice.lastName}`}
+                        `${choice.first_name} ${choice.last_name}`}
                 />
             </ReferenceInput>
             <SelectInput

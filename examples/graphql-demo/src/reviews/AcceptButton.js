@@ -18,7 +18,7 @@ class AcceptButton extends Component {
         return record && record.status === 'pending' ? (
             <Button color="primary" onClick={this.handleApprove}>
                 <ThumbUp color="#4CAF50" style={{ paddingRight: '0.5em' }} />
-                {translate('resources.reviews.action.accept')}
+                {translate('resources.Review.action.accept')}
             </Button>
         ) : (
             <span />

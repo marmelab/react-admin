@@ -91,7 +91,7 @@ class Dashboard extends Component {
                     this.setState({ pendingReviews, nbPendingReviews });
                     return pendingReviews;
                 })
-                .then(reviews => reviews.map(review => review.customer.id))
+                .then(reviews => reviews.map(review => review.customer_id))
                 .then(customerIds =>
                     dataProvider(GET_MANY, 'Customer', { ids: customerIds })
                 )
@@ -107,8 +107,8 @@ class Dashboard extends Component {
                 );
 
             dataProvider(GET_LIST, 'Customer', {
-                filter: { hasOrdered: true, firstSeen_gte: d.toISOString() },
-                sort: { field: 'firstSeen', order: 'DESC' },
+                filter: { has_ordered: true, first_seen_gte: d.toISOString() },
+                sort: { field: 'first_seen', order: 'DESC' },
                 pagination: { page: 1, perPage: 100 },
             })
                 .then(response => response.data)

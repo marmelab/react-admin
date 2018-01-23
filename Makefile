@@ -48,11 +48,15 @@ build-ra-data-graphcool:
 	@rm -rf ./packages/ra-data-graphcool/lib
 	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-graphcool/src -d ./packages/ra-data-graphcool/lib --ignore '*.spec.js'
 
+build-ra-data-graphql-simple:
+	@rm -rf ./packages/ra-data-graphql-simple/lib
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-graphql-simple/src -d ./packages/ra-data-graphql-simple/lib --ignore '*.spec.js'
+
 build-ra-dependent-input:
 	@rm -rf ./packages/ra-dependent-input/lib
 	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-dependent-input/src -d ./packages/ra-dependent-input/lib --ignore '*.spec.js'
 
-build: build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-input-rich-text build-ra-data-graphql build-ra-data-graphcool build-ra-dependent-input ## compile ES6 files to JS
+build: build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-input-rich-text build-ra-data-graphql build-ra-data-graphcool build-ra-dependent-input build-ra-data-graphql-simple ## compile ES6 files to JS
 
 watch: ## continuously compile ES6 files to JS
 	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore '*.spec.js' --watch

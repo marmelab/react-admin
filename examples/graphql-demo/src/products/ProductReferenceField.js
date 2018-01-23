@@ -2,12 +2,12 @@ import React from 'react';
 import { ReferenceField, TextField } from 'react-admin';
 
 const ProductReferenceField = props => (
-    <ReferenceField source="product.id" reference="Product" {...props}>
+    <ReferenceField source="product_id" reference="Product" {...props}>
         <TextField source="reference" />
     </ReferenceField>
 );
 ProductReferenceField.defaultProps = {
-    source: 'product.id',
+    source: 'product_id',
     addLabel: true,
 };
 

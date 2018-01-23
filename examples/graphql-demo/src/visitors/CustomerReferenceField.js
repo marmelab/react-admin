@@ -4,12 +4,12 @@ import { ReferenceField } from 'react-admin';
 import FullNameField from './FullNameField';
 
 const CustomerReferenceField = props => (
-    <ReferenceField source="customer.id" reference="Customer" {...props}>
+    <ReferenceField source="customer_id" reference="Customer" {...props}>
         <FullNameField />
     </ReferenceField>
 );
 CustomerReferenceField.defaultProps = {
-    source: 'customer.id',
+    source: 'customer_id',
     addLabel: true,
 };
 

@@ -33,9 +33,9 @@ export const VisitorIcon = Icon;
 const VisitorFilter = props => (
     <Filter {...props}>
         <TextInput label="pos.search" source="q" alwaysOn />
-        <DateInput source="lastSeen_gte" />
-        <NullableBooleanInput source="hasOrdered" />
-        <NullableBooleanInput source="hasNewsletter" defaultValue />
+        <DateInput source="last_seen_gte" />
+        <NullableBooleanInput source="has_ordered" />
+        <NullableBooleanInput source="has_newsletter" defaultValue />
     </Filter>
 );
 
@@ -61,23 +61,23 @@ export const VisitorList = props => (
     <List
         {...props}
         filters={<VisitorFilter />}
-        sort={{ field: 'lastSeen', order: 'DESC' }}
+        sort={{ field: 'last_seen', order: 'DESC' }}
         perPage={25}
     >
         <Datagrid>
             <FullNameField />
-            <DateField source="lastSeen" type="date" />
+            <DateField source="last_seen" type="date" />
             <NumberField
-                source="nbCommands"
+                source="nb_commands"
                 label="resources.Customer.fields.commands"
                 style={{ color: 'purple' }}
             />
             <ColoredNumberField
-                source="totalSpent"
+                source="total_spent"
                 options={{ style: 'currency', currency: 'USD' }}
             />
-            <DateField source="latestPurchase" showTime />
-            <BooleanField source="hasNewsletter" label="News." />
+            <DateField source="latest_purchase" showTime />
+            <BooleanField source="has_newsletter" label="News." />
             <SegmentReferenceField />
             <EditButton />
         </Datagrid>
@@ -90,8 +90,8 @@ const VisitorTitle = ({ record }) =>
 const editStyles = {
     address: { maxWidth: 544 },
     email: { width: 544 },
-    firstName: { display: 'inline-block' },
-    lastName: { display: 'inline-block', marginLeft: 32 },
+    first_name: { display: 'inline-block' },
+    last_name: { display: 'inline-block', marginLeft: 32 },
     zipcode: { display: 'inline-block' },
     city: { display: 'inline-block', marginLeft: 32 },
     comment: {
@@ -108,10 +108,10 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
         <TabbedForm>
             <FormTab label="resources.Customer.tabs.identity">
                 <TextInput
-                    source="firstName"
-                    formClassName={classes.firstName}
+                    source="first_name"
+                    formClassName={classes.first_name}
                 />
-                <TextInput source="lastName" formClassName={classes.lastName} />
+                <TextInput source="last_name" formClassName={classes.last_name} />
                 <TextInput
                     type="email"
                     source="email"
@@ -133,7 +133,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                 <ReferenceManyField
                     addLabel={false}
                     reference="Command"
-                    target="customer.id"
+                    target="customer_id"
                 >
                     <Datagrid>
                         <DateField source="date" />
@@ -152,7 +152,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                 <ReferenceManyField
                     addLabel={false}
                     reference="Review"
-                    target="customer.id"
+                    target="customer_id"
                 >
                     <Datagrid filter={{ status: 'approved' }}>
                         <DateField source="date" />
@@ -167,13 +167,13 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                 </ReferenceManyField>
             </FormTab>
             <FormTab label="resources.Customer.tabs.stats">
-                <NullableBooleanInput source="hasNewsletter" />
-                <DateField source="firstSeen" formClassName={classes.date} />
+                <NullableBooleanInput source="has_newsletter" />
+                <DateField source="first_seen" formClassName={classes.date} />
                 <DateField
-                    source="latestPurchase"
+                    source="latest_purchase"
                     formClassName={classes.date}
                 />
-                <DateField source="lastSeen" formClassName={classes.date} />
+                <DateField source="last_seen" formClassName={classes.date} />
             </FormTab>
         </TabbedForm>
     </Edit>
@@ -185,7 +185,7 @@ const VisitorDeleteTitle = translate(({ record, translate }) => (
         {record && (
             <img src={`${record.avatar}?size=25x25`} width="25" alt="" />
         )}
-        {record && `${record.firstName} ${record.lastName}`}
+        {record && `${record.first_name} ${record.last_name}`}
     </span>
 ));
 

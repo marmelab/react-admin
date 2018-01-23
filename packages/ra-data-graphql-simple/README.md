@@ -1,9 +1,7 @@
-# ra-data-graphcool
+# ra-data-graphql-simple
 
 A GraphQL data provider for [react-admin](https://github.com/marmelab/react-admin/)
-built with [Apollo](http://www.apollodata.com/) and tailored to target the [GraphCool](https://www.graph.cool/) service.
-
-A version of the `react-admin` demo using this data provider is available at https://react-admin-graphql.now.sh/.<br>
+built with [Apollo](http://www.apollodata.com/) and tailored to target a simple GraphQL implementation.
 
 - [Installation](#installation)
 - [Usage](#installation)
@@ -14,23 +12,21 @@ A version of the `react-admin` demo using this data provider is available at htt
 Install with:
 
 ```sh
-npm install --save ra-data-graphcool
+npm install --save ra-data-graphql-simple
 ```
 
 or
 
 ```sh
-yarn add ra-data-graphcool
+yarn add ra-data-graphql-simple
 ```
 
 ## Usage
 
-This example assumes a `Post` type is defined in the graphcool schema.
-
 ```js
 // in App.js
 import React, { Component } from 'react';
-import buildGraphcoolProvider from 'ra-data-graphcool';
+import buildGraphQLProvider from 'ra-data-graphql-simple';
 import { Admin, Resource, Delete } from 'react-admin';
 
 import { PostCreate, PostEdit, PostList } from './posts';
@@ -43,7 +39,7 @@ class App extends Component {
         this.state = { dataProvider: null };
     }
     componentDidMount() {
-        buildGraphcoolProvider({ clientOptions: { uri: 'https://api.graph.cool/simple/v1/graphcool_id' }})
+        buildGraphQLProvider({ clientOptions: { uri: 'http://localhost:4000' }})
             .then(dataProvider => this.setState({ dataProvider }));
     }
 
@@ -65,22 +61,22 @@ class App extends Component {
 export default App;
 ```
 
-And that's it, `buildGraphcoolProvider` will create a default ApolloClient for you and run an [introspection](http://graphql.org/learn/introspection/) query on your graphcool endpoint, listing all potential resources.
+And that's it, `buildGraphQLProvider` will create a default ApolloClient for you and run an [introspection](http://graphql.org/learn/introspection/) query on your GraphQL endpoint, listing all potential resources.
 
 ## Options
 
 ### Customize the Apollo client
 
-You can either supply the client options by calling `buildGraphcoolProvider` like this:
+You can either supply the client options by calling `buildGraphQLProvider` like this:
 
 ```js
-buildGraphcoolProvider({ clientOptions: { uri: 'https://api.graph.cool/simple/v1/graphcool_id', ...otherApolloOptions } });
+buildGraphQLProvider({ clientOptions: { uri: 'http://localhost:4000', ...otherApolloOptions } });
 ```
 
 Or supply your client directly with:
 
 ```js
-buildGraphcoolProvider({ client: myClient });
+buildGraphQLProvider({ client: myClient });
 ```
 
 ### Customize the introspection

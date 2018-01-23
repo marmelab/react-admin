@@ -1,9 +1,11 @@
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
-import buildApolloClient from 'ra-data-graphcool';
+import buildApolloClient from 'ra-data-graphql-simple';
 import gql from 'graphql-tag';
 
 const client = new ApolloClient({
-    networkInterface: createNetworkInterface('http://localhost:3000'),
+    networkInterface: createNetworkInterface({
+        uri: 'http://localhost:4000/graphql',
+    }),
 });
 
 const getOneCommandQuery = gql`
@@ -14,25 +16,16 @@ const getOneCommandQuery = gql`
             date
             status
             returned
-            taxRate
+            tax_rate
             total
-            deliveryFees
-            totalExTaxes
-            customer {
+            delivery_fees
+            total_ex_taxes
+            Customer {
                 id
-                firstName
-                lastName
+                first_name
+                last_name
             }
-            basket {
-                id
-                product {
-                    id
-                    reference
-                    price
-                    stock
-                }
-                quantity
-            }
+            basket
         }
     }
 `;
