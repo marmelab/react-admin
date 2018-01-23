@@ -65,7 +65,7 @@ import jsonServerRestClient from 'ra-data-json-server';
 
 ## Introduced `i18nProvider` for loading of locale messages
 
-Previously you would supply `react-admin` with a `messages` prop object to allow alternative locales, this should be replaced with an `i18nProvider`. The new `i18nProvider` allows you to load the messages asynchronously. @See [`i18nProvider`](./Translation.md#i18nProvider) 
+Previously you would supply `react-admin` with a `messages` prop object to allow alternative locales, this should be replaced with an `i18nProvider`. The new `i18nProvider` allows you to load the messages asynchronously. See [`i18nProvider`](./Translation.md#i18nProvider) 
 
 ```jsx
 // before
@@ -78,16 +78,14 @@ const messages = { 'en': enMessages };
 
 import React from 'react';
 import { Admin, Resource, resolveBrowserLocale, GET_DEFAULT_MESSAGES, GET_LOCALE_MESSAGES } from 'react-admin';
-import frenchMessages from 'ra-language-french';
 import englishMessages from 'ra-language-english';
 
 const messages = {
   en: englishMessages,
-  fr: frenchMessages,
 };
 const i18nProvider = (type, params) => {
     if (type === GET_DEFAULT_MESSAGES) {
-        return messages.en; // The default messages should always resolve synchronous!! 
+        return messages.en; // The default messages should always resolve synchronously!! 
     }
     if (type === GET_LOCALE_MESSAGES) {
         return messages[params.locale];
@@ -96,7 +94,7 @@ const i18nProvider = (type, params) => {
 }
 
 const App = () => (
-    <Admin locale="fr" i18nProvider={i18nProvider}>
+    <Admin locale="en" i18nProvider={i18nProvider}>
         ...
     </Admin>
 );

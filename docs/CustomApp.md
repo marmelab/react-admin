@@ -41,8 +41,11 @@ import {
     Delete,
     TranslationProvider,
     declareResources,
+    GET_LOCALE_MESSAGES,
+    GET_DEFAULT_MESSAGES,
 } from 'react-admin';
 import simpleRestClient from 'ra-data-simple-rest';
+import defaultMessages from 'ra-language-english';
 
 // your app components
 import Dashboard from './Dashboard';
@@ -53,7 +56,10 @@ import { UserList, UserEdit, UserCreate } from './User';
 import messages from './i18n';
 
 const i18nProvider = (type, params) => {
-    if (type === 'CHANGE_LOCALE') {
+    if (type === GET_DEFAULT_MESSAGES) {
+        return defaultMessages;
+    }
+    else if (type === GET_LOCALE_MESSAGES) {
         return messages[params.locale];
     }
     throw new Error('Undefined action type', type); 
