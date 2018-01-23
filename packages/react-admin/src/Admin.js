@@ -17,7 +17,11 @@ import DefaultLayout from './mui/layout/Layout';
 import Menu from './mui/layout/Menu';
 import Login from './mui/auth/Login';
 import Logout from './mui/auth/Logout';
-import TranslationProvider from './i18n/TranslationProvider';
+import {
+    TranslationProvider,
+    defaultI18nProvider,
+    GET_DEFAULT_MESSAGES,
+} from './i18n';
 
 const Admin = ({
     appLayout,
@@ -29,22 +33,31 @@ const Admin = ({
     dashboard,
     history,
     locale,
-    messages = {},
     menu = Menu,
     catchAll,
     dataProvider,
+    i18nProvider = defaultI18nProvider,
     theme,
     title = 'React Admin',
     loginPage,
     logoutButton,
     initialState,
 }) => {
-    const appReducer = createAppReducer(customReducers, locale);
+    const defaultMessages = i18nProvider(GET_DEFAULT_MESSAGES, { locale });
+    const appReducer = createAppReducer(
+        customReducers,
+        locale,
+        defaultMessages
+    );
+
     const resettableAppReducer = (state, action) =>
         appReducer(action.type !== USER_LOGOUT ? state : undefined, action);
     const saga = function* rootSaga() {
         yield all(
-            [crudSaga(dataProvider, authClient), ...customSagas].map(fork)
+            [
+                crudSaga(dataProvider, authClient, i18nProvider),
+                ...customSagas,
+            ].map(fork)
         );
     };
     const sagaMiddleware = createSagaMiddleware();
@@ -65,7 +78,7 @@ const Admin = ({
 
     return (
         <Provider store={store}>
-            <TranslationProvider messages={messages}>
+            <TranslationProvider>
                 <ConnectedRouter history={routerHistory}>
                     <div>
                         <Switch>
@@ -147,10 +160,10 @@ Admin.propTypes = {
     logoutButton: componentPropType,
     menu: componentPropType,
     dataProvider: PropTypes.func,
+    i18nProvider: PropTypes.func,
     theme: PropTypes.object,
     title: PropTypes.node,
     locale: PropTypes.string,
-    messages: PropTypes.object,
     initialState: PropTypes.object,
 };
 

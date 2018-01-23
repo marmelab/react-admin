@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import Polyglot from 'node-polyglot';
 import { connect } from 'react-redux';
 import { compose, withContext } from 'recompose';
-
 import defaultMessages from 'ra-language-english';
+import defaultsDeep from 'lodash.defaultsdeep';
 
 /**
  * Creates a translation context, available to its children
@@ -28,7 +28,10 @@ TranslationProvider.propTypes = {
     children: PropTypes.element,
 };
 
-const mapStateToProps = state => ({ locale: state.locale });
+const mapStateToProps = state => ({
+    locale: state.i18n.locale,
+    messages: state.i18n.messages,
+});
 
 const withI18nContext = withContext(
     {
@@ -36,10 +39,9 @@ const withI18nContext = withContext(
         locale: PropTypes.string.isRequired,
     },
     ({ locale, messages = {} }) => {
-        const userMessages = messages[locale] || {};
         const polyglot = new Polyglot({
             locale,
-            phrases: { ...defaultMessages, ...userMessages },
+            phrases: defaultsDeep({}, messages, defaultMessages),
         });
 
         return {

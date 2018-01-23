@@ -107,6 +107,7 @@ export class List extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         if (
+            nextProps.translate === this.props.translate &&
             nextProps.isLoading === this.props.isLoading &&
             nextProps.width === this.props.width &&
             nextProps.version === this.props.version &&

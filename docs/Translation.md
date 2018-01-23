@@ -12,27 +12,60 @@ The react-admin interface uses English as the default language. But it also supp
 To handle translations, the `<Admin>` component supports:
 
 - a `locale` prop expecting a string ('en', 'fr', etc), and
-- a `messages` prop, expecting a dictionary object.
+- a `i18nProvider` prop, expecting an `i18nProvider` as explained below.
 
-React-admin ships with the English locale by default. If you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, install the `ra-language-french` npm package, then configure the `<Admin>` component as follows:
+## `i18nProvider`
+
+Provides messages for a specific locale. React-admin ships with the English locale by default.   
+If you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, install the `ra-language-french` npm package, then configure the `<Admin>` component as follows:
 
 ```jsx
 import React from 'react';
-import { Admin, Resource, resolveBrowserLocale } from 'react-admin';
+import { Admin, Resource, resolveBrowserLocale, GET_DEFAULT_MESSAGES, GET_LOCALE_MESSAGES } from 'react-admin';
 import frenchMessages from 'ra-language-french';
+import englishMessages from 'ra-language-english';
 
 const messages = {
-    fr: frenchMessages,
+  en: englishMessages,
+  fr: frenchMessages,
 };
+const i18nProvider = (type, params) => {
+    if (type === GET_DEFAULT_MESSAGES) {
+        return englishMessages;
+    }
+    if (type === GET_LOCALE_MESSAGES) {
+        return messages[params.locale];
+    }
+    throw new Error('Undefined action type', type); 
+}
 
 const App = () => (
-    <Admin locale="fr" messages={messages}>
+    <Admin locale="fr" i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
 
 export default App;
-```
+``` 
+
+Type `GET_DEFAULT_MESSAGES` should return the default application messages `synchronously`. 
+Type `GET_LOCALE_MESSAGES` is allowed to return a promise so messages can be loaded `asynchronously`, for example: 
+
+```javascript
+const asyncMessages = {
+  en: ()=> import('../en.js').then(messages => messages.default),
+  fr: ()=> import('../fr.js').then(messages => messages.default),
+};
+const i18nProvider = (type, params) => {
+    if (type === 'GET_DEFAULT_MESSAGES') {
+        return englishMessages;
+    }
+    if (type === 'GET_LOCALE_MESSAGES') {
+        return asyncMessages[params.locale]();
+    }
+    throw new Error('Undefined action type', type); 
+}
+``` 
 
 ## Available Locales
 
@@ -344,3 +377,4 @@ translate('not_yet_translated', { _: 'Default translation' })
 ```
 
 To find more detailed examples, please refer to [http://airbnb.io/polyglot.js/](http://airbnb.io/polyglot.js/)
+

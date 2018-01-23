@@ -63,6 +63,43 @@ import { jsonServerRestClient } from 'admin-on-rest';
 import jsonServerRestClient from 'ra-data-json-server';
 ```
 
+## Introduced `i18nProvider` for loading of locale messages
+
+Previously you would supply `react-admin` with a `messages` prop object to allow alternative locales, this should be replaced with an `i18nProvider`. The new `i18nProvider` allows you to load the messages asynchronously. See [`i18nProvider`](./Translation.md#i18nProvider) 
+
+```jsx
+// before
+import { enMessages } from 'admin-on-rest';
+const messages = { 'en': enMessages };
+
+<Admin locale='en' messages={messages} .../>
+
+// after
+
+import React from 'react';
+import { Admin, Resource, resolveBrowserLocale, GET_DEFAULT_MESSAGES, GET_LOCALE_MESSAGES } from 'react-admin';
+import englishMessages from 'ra-language-english';
+
+const messages = {
+  en: englishMessages,
+};
+const i18nProvider = (type, params) => {
+    if (type === GET_DEFAULT_MESSAGES) {
+        return messages.en; // The default messages should always resolve synchronously!! 
+    }
+    if (type === GET_LOCALE_MESSAGES) {
+        return messages[params.locale];
+    }
+    throw new Error('Undefined action type', type); 
+}
+
+const App = () => (
+    <Admin locale="en" i18nProvider={i18nProvider}>
+        ...
+    </Admin>
+);
+```
+
 ## Default (English) Messages Moved To Standalone Package
 
 The English messages have moved to another package, `ra-language-english`. The core package still displays the interface messages in English by default (by using `ra-language-english` as a dependency), but if you overrode some of the messages, you'll need to update the package name:

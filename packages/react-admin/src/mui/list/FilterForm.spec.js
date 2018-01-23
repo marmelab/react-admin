@@ -21,7 +21,7 @@ describe('<FilterForm />', () => {
 
     let store;
     beforeEach(() => {
-        store = createStore(() => ({ locale: 'en' }));
+        store = createStore(() => ({ i18n: { locale: 'en' } }));
     });
 
     it('should display correctly passed filters', () => {
