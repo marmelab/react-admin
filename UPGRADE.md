@@ -42,6 +42,8 @@ import restClient from './restClient';
 
 The signature of the Data Provider function is the same as the REST client function, so you shouldn't need to change anything in your previous REST client function.
 
+Once again, this change de-emphasizes the "REST" term in admin-on-rest.
+
 ## Default REST Clients Moved to Standalone Packages
 
 `simpleRestClient` and `jsonServerRestClient` are no longer part of the core package. They have been moved to standalone packages, where they are the default export:
@@ -63,43 +65,6 @@ import { jsonServerRestClient } from 'admin-on-rest';
 import jsonServerRestClient from 'ra-data-json-server';
 ```
 
-## Introduced `i18nProvider` for loading of locale messages
-
-Previously you would supply `react-admin` with a `messages` prop object to allow alternative locales, this should be replaced with an `i18nProvider`. The new `i18nProvider` allows you to load the messages asynchronously. See [`i18nProvider`](./Translation.md#i18nProvider) 
-
-```jsx
-// before
-import { enMessages } from 'admin-on-rest';
-const messages = { 'en': enMessages };
-
-<Admin locale='en' messages={messages} .../>
-
-// after
-
-import React from 'react';
-import { Admin, Resource, resolveBrowserLocale, GET_DEFAULT_MESSAGES, GET_LOCALE_MESSAGES } from 'react-admin';
-import englishMessages from 'ra-language-english';
-
-const messages = {
-  en: englishMessages,
-};
-const i18nProvider = (type, params) => {
-    if (type === GET_DEFAULT_MESSAGES) {
-        return messages.en; // The default messages should always resolve synchronously!! 
-    }
-    if (type === GET_LOCALE_MESSAGES) {
-        return messages[params.locale];
-    }
-    throw new Error('Undefined action type', type); 
-}
-
-const App = () => (
-    <Admin locale="en" i18nProvider={i18nProvider}>
-        ...
-    </Admin>
-);
-```
-
 ## Default (English) Messages Moved To Standalone Package
 
 The English messages have moved to another package, `ra-language-english`. The core package still displays the interface messages in English by default (by using `ra-language-english` as a dependency), but if you overrode some of the messages, you'll need to update the package name:
@@ -112,10 +77,6 @@ const messages = { 'en': enMessages };
 // after
 import enMessages from 'ra-language-english';
 const messages = { 'en': enMessages };
-
-<Admin locale="en" messages={messages}>
-  ...
-</Admin>
 ```
 
 ## Message Hash Main Key Changed ("aor" => "ra")
@@ -138,6 +99,44 @@ module.exports = {
             show: 'Show',
             ...
 ```
+
+## Replaced `messages` by `i18nProvider` in `<Admin>`
+
+In admin-on-rest, localization messages were passed as an object literal in the `messages` props of the `<Admin>` component. To do the same in react-admin, you must now use a slightly more lengthy syntax, and pass a function in the `i18nProvider` prop instead.
+
+```jsx
+// before
+import { Admin, enMessages } from 'admin-on-rest';
+import frMessages from 'aor-language-french';
+
+const messages = {
+    en: enMessages,
+    fr: frMessages,
+};
+
+const App = () => <Admin locale="en" messages={messages} />;
+
+// after
+import { Admin, GET_DEFAULT_MESSAGES, GET_LOCALE_MESSAGES } from 'react-admin';
+import enMessages from 'ra-language-english';
+import frMessages from 'ra-language-french';
+
+const messages = {
+    en: enMessages,
+    fr: frMessages,
+};
+
+const i18nProvider = (type, params) => {
+    if (type === GET_DEFAULT_MESSAGES) {
+        return messages.en; // The default messages should always resolve synchronously!! 
+    }
+    return messages[params.locale];
+}
+
+const App = () => <Admin locale="en" i18nProvider={i18nProvider} />;
+```
+
+The new `i18nProvider` allows to load the messages asynchronously - see [the `i18nProvider` documentation](./Translation.md#i18nProvider) for details.
 
 ## `<AutocompleteInput>` no longer accepts a `filter` prop
 
