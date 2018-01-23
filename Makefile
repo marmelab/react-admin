@@ -20,6 +20,9 @@ run-demo: build ## run the demo example
 run-graphql-demo: build ## run the demo example
 	@cd examples/graphql-demo && yarn start
 
+run-graphcool-demo: build ## run the demo example
+	@cd examples/graphcool-demo && yarn start
+
 build-react-admin:
 	@rm -rf ./packages/react-admin/lib
 	@NODE_ENV=production ./node_modules/.bin/babel ./packages/react-admin/src -d ./packages/react-admin/lib --ignore '*.spec.js'
