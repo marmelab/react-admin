@@ -6,7 +6,6 @@ export default {
         posts: {
             name: 'Article |||| Articles',
             fields: {
-                allow_comments: 'Accepte les commentaires ?',
                 average_note: 'Note moyenne',
                 body: 'Contenu',
                 comments: 'Commentaires',

@@ -4,18 +4,16 @@ import {
     changeLocaleSuccess,
     changeLocaleFailure,
 } from '../../actions';
-import { GET_LOCALE_MESSAGES } from '../../i18n/i18nActions';
 
 export default i18nProvider => {
     function* loadMessages(action) {
         const locale = action.payload;
+
         try {
-            const messages = yield call(i18nProvider, GET_LOCALE_MESSAGES, {
-                locale,
-            });
+            const messages = yield call(i18nProvider, locale);
             yield put(changeLocaleSuccess(locale, messages));
         } catch (err) {
-            yield put(changeLocaleFailure(locale, err));
+            yield put(changeLocaleFailure(action.payload.locale, err));
         }
     }
     return function*() {

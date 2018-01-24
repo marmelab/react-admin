@@ -17,11 +17,7 @@ import DefaultLayout from './mui/layout/Layout';
 import Menu from './mui/layout/Menu';
 import Login from './mui/auth/Login';
 import Logout from './mui/auth/Logout';
-import {
-    TranslationProvider,
-    defaultI18nProvider,
-    GET_DEFAULT_MESSAGES,
-} from './i18n';
+import { TranslationProvider, defaultI18nProvider } from './i18n';
 
 const Admin = ({
     appLayout,
@@ -32,7 +28,6 @@ const Admin = ({
     customRoutes = [],
     dashboard,
     history,
-    locale,
     menu = Menu,
     catchAll,
     dataProvider,
@@ -42,13 +37,10 @@ const Admin = ({
     loginPage,
     logoutButton,
     initialState,
+    locale = 'en',
 }) => {
-    const defaultMessages = i18nProvider(GET_DEFAULT_MESSAGES, { locale });
-    const appReducer = createAppReducer(
-        customReducers,
-        locale,
-        defaultMessages
-    );
+    const messages = i18nProvider(locale);
+    const appReducer = createAppReducer(customReducers, locale, messages);
 
     const resettableAppReducer = (state, action) =>
         appReducer(action.type !== USER_LOGOUT ? state : undefined, action);

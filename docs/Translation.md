@@ -9,63 +9,59 @@ The react-admin interface uses English as the default language. But it also supp
 
 ## Changing Locale
 
-To handle translations, the `<Admin>` component supports:
+If you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, you must install the `ra-language-french` npm package then instruct react-admin to use it.
 
-- a `locale` prop expecting a string ('en', 'fr', etc), and
-- a `i18nProvider` prop, expecting an `i18nProvider` as explained below.
+The `<Admin>` component accepts an `i18nProvider` prop which accepts a function with the following signature:
 
-## `i18nProvider`
+```js
+const i18nProvider = locale => { ... }
+```
 
-Provides messages for a specific locale. React-admin ships with the English locale by default.   
-If you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, install the `ra-language-french` npm package, then configure the `<Admin>` component as follows:
+It will be called once when react-admin starts with the locale specified on the `Admin` component and must returns the messages synchronously. For example:
 
 ```jsx
 import React from 'react';
-import { Admin, Resource, resolveBrowserLocale, GET_DEFAULT_MESSAGES, GET_LOCALE_MESSAGES } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
 import frenchMessages from 'ra-language-french';
 import englishMessages from 'ra-language-english';
 
 const messages = {
-  en: englishMessages,
-  fr: frenchMessages,
-};
-const i18nProvider = (type, params) => {
-    if (type === GET_DEFAULT_MESSAGES) {
-        return englishMessages;
-    }
-    if (type === GET_LOCALE_MESSAGES) {
-        return messages[params.locale];
-    }
-    throw new Error('Undefined action type', type); 
+    fr: frenchMessages,
+    en: englishMessages,
 }
 
+const i18nProvider = locale => messages[locale];
+
 const App = () => (
-    <Admin locale="fr" i18nProvider={i18nProvider}>
+    <Admin locale="en" i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
 
 export default App;
-``` 
+```
 
-Type `GET_DEFAULT_MESSAGES` should return the default application messages `synchronously`. 
-Type `GET_LOCALE_MESSAGES` is allowed to return a promise so messages can be loaded `asynchronously`, for example: 
+The i18nProvider may return a promise for any subsequent calls, which can be useful to only load the needed locale. For example:
 
 ```javascript
+import englishMessages from '../en.js';
+
 const asyncMessages = {
-  en: ()=> import('../en.js').then(messages => messages.default),
-  fr: ()=> import('../fr.js').then(messages => messages.default),
+    fr: () => import('../i18n/fr.js').then(messages => messages.default),
+    it: () => import('../i18n/it.js').then(messages => messages.default),
 };
-const i18nProvider = (type, params) => {
-    if (type === 'GET_DEFAULT_MESSAGES') {
-        return englishMessages;
-    }
-    if (type === 'GET_LOCALE_MESSAGES') {
+
+const i18nProvider = locale => {
+    if (asyncMessages[params.locale]) {
+        // Returns a promise
         return asyncMessages[params.locale]();
     }
-    throw new Error('Undefined action type', type); 
+
+    // Always fallback to english
+    // Note that we must not return a promise here
+    return englishMessages;
 }
-``` 
+```
 
 ## Available Locales
 

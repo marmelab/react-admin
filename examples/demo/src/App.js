@@ -12,7 +12,7 @@ import Layout from './Layout';
 import Menu from './Menu';
 import { Dashboard } from './dashboard';
 import customRoutes from './routes';
-import translations from './i18n';
+import englishMessages from './i18n/en';
 
 import {
     VisitorList,
@@ -32,6 +32,15 @@ import { ReviewList, ReviewEdit, ReviewIcon } from './reviews';
 
 import dataProvider from './dataProvider';
 import fakeRestServer from './restServer';
+
+const i18nProvider = locale => {
+    if (locale === 'fr') {
+        return import('./i18n/fr').then(messages => messages.default);
+    }
+
+    // Always fallback on english
+    return englishMessages;
+};
 
 class App extends Component {
     componentWillMount() {
@@ -55,7 +64,8 @@ class App extends Component {
                 loginPage={Login}
                 appLayout={Layout}
                 menu={Menu}
-                messages={translations}
+                locale="en"
+                i18nProvider={i18nProvider}
             >
                 <Resource
                     name="customers"

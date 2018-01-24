@@ -117,21 +117,16 @@ const messages = {
 const App = () => <Admin locale="en" messages={messages} />;
 
 // after
-import { Admin, GET_DEFAULT_MESSAGES, GET_LOCALE_MESSAGES } from 'react-admin';
+import { Admin } from 'react-admin';
 import enMessages from 'ra-language-english';
 import frMessages from 'ra-language-french';
 
 const messages = {
-    en: enMessages,
-    fr: frMessages,
-};
-
-const i18nProvider = (type, params) => {
-    if (type === GET_DEFAULT_MESSAGES) {
-        return messages.en; // The default messages should always resolve synchronously!! 
-    }
-    return messages[params.locale];
+    fr: frenchMessages,
+    en: englishMessages,
 }
+
+const i18nProvider = locale => messages[locale];
 
 const App = () => <Admin locale="en" i18nProvider={i18nProvider} />;
 ```
