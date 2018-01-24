@@ -121,15 +121,12 @@ import { Admin } from 'react-admin';
 import enMessages from 'ra-language-english';
 import frMessages from 'ra-language-french';
 
-const i18nProvider = locale => {
-    if (locale === 'fr') {
-        return frMessages;
-    }
-
-    // If locale wasn't specified it's a request for default messages
-    // If locale is not supported, fallback to english
-    return enMessages;
+const messages = {
+    fr: frenchMessages,
+    en: englishMessages,
 }
+
+const i18nProvider = locale => messages[locale];
 
 const App = () => <Admin locale="en" i18nProvider={i18nProvider} />;
 ```

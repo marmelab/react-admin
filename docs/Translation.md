@@ -25,14 +25,12 @@ import { Admin, Resource } from 'react-admin';
 import frenchMessages from 'ra-language-french';
 import englishMessages from 'ra-language-english';
 
-const i18nProvider = locale => {
-    if (locale === 'fr') {
-        return frenchMessages;
-    }
-
-    // Always fallback on english
-    return englishMessages;
+const messages = {
+    fr: frenchMessages,
+    en: englishMessages,
 }
+
+const i18nProvider = locale => messages[locale];
 
 const App = () => (
     <Admin locale="en" i18nProvider={i18nProvider}>
@@ -54,12 +52,12 @@ const asyncMessages = {
 };
 
 const i18nProvider = locale => {
-    if (locale !== 'en') {
+    if (asyncMessages[params.locale]) {
         // Returns a promise
         return asyncMessages[params.locale]();
     }
 
-    // Always fallback on english
+    // Always fallback to english
     // Note that we must not return a promise here
     return englishMessages;
 }
