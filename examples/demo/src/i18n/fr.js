@@ -1,4 +1,7 @@
+import frenchMessages from 'ra-language-french';
+
 export default {
+    ...frenchMessages,
     pos: {
         search: 'Rechercher',
         configuration: 'Configuration',

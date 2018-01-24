@@ -41,8 +41,6 @@ import {
     Delete,
     TranslationProvider,
     declareResources,
-    GET_LOCALE_MESSAGES,
-    GET_DEFAULT_MESSAGES,
 } from 'react-admin';
 import simpleRestClient from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
@@ -55,20 +53,18 @@ import { UserList, UserEdit, UserCreate } from './User';
 // your app labels
 import messages from './i18n';
 
-const i18nProvider = (type, params) => {
-    if (type === GET_DEFAULT_MESSAGES) {
-        return defaultMessages;
+const i18nProvider = locale => {
+    if (locale !== 'en') {
+        return messages[locale];
     }
-    else if (type === GET_LOCALE_MESSAGES) {
-        return messages[params.locale];
-    }
-    throw new Error('Undefined action type', type); 
-}
+
+    return defaultMessages;
+};
 
 
 // create a Redux app
 const reducer = combineReducers({
-    admin: adminReducer(locale,messages['en']),
+    admin: adminReducer('en', messages['en']),
     locale: localeReducer(),
     form: formReducer,
     routing: routerReducer,
@@ -81,7 +77,7 @@ const store = createStore(reducer, undefined, compose(
 ));
 store.dispatch(declareResources([{ name: 'posts' }, { name: 'comments' }, { name: 'users' }]));
 const dataProvider = simpleRestClient('http://path.to.my.api/');
-sagaMiddleware.run(crudSaga(dataProvider,i18nProvider));
+sagaMiddleware.run(crudSaga(dataProvider, i18nProvider));
 
 // bootstrap redux and the routes
 const App = () => (

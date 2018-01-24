@@ -3,7 +3,6 @@ export const messages = {
         posts: {
             name: 'Post |||| Posts',
             fields: {
-                allow_comments: 'Allo comments?',
                 average_note: 'Average note',
                 body: 'Body',
                 comments: 'Comments',

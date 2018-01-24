@@ -1,17 +1,18 @@
 import englishMessages from './i18n/en';
-import { GET_DEFAULT_MESSAGES, GET_LOCALE_MESSAGES } from 'react-admin';
 
 const messages = {
-    en: () => englishMessages,
-    fr: () => import('./i18n/fr.js').default
+    fr: () =>
+        import('./i18n/fr.js').then(messages => ({
+            locale: 'fr',
+            messages: messages.default,
+        })),
 };
 
-export default (type, params) => {
-    if(GET_DEFAULT_MESSAGES=== type){
-        return englishMessages;
+export default locale => {
+    if (locale === 'fr') {
+        return messages[locale]();
     }
-    if(GET_LOCALE_MESSAGES === type){
-        return messages[params.locale]();
-    }
-    throw new Error('Undefined action type', type);
-}
+
+    // Always fallback on english
+    return { locale: 'en', messages: englishMessages };
+};
