@@ -1,11 +1,7 @@
 # ra-data-graphql
 
-[![Build Status](https://travis-ci.org/marmelab/ra-data-graphql.svg?branch=master)](https://travis-ci.org/marmelab/ra-data-graphql)
-
 A GraphQL data provider for [react-admin](https://github.com/marmelab/react-admin/)
 built with [Apollo](http://www.apollodata.com/)
-
-A version of the `react-admin` demo using this data provider is available at https://marmelab.com/react-admin-graphql-demo.<br>
 
 - [Installation](#installation)
 - [Usage](#installation)
@@ -13,7 +9,7 @@ A version of the `react-admin` demo using this data provider is available at htt
 
 This is a very low level library which is not meant to be used directly unless you really want full control or are building a custom GraphQL data provider.
 
-It provides the foundations for other GraphQL data provider packages such as [ra-data-graphcool](https://github.com/marmelab/ra-data-graphcool)
+It provides the foundations for other GraphQL data provider packages such as `ra-data-graphcool` or `ra-data-graphql-simple`
 
 ## About GraphQL and Apollo
 

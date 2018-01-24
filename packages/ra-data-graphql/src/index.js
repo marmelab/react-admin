@@ -50,7 +50,8 @@ const getOptions = (options, aorFetchType, resource) => {
 
 export default async options => {
     const {
-        client: clientOptions,
+        client: clientObject,
+        clientOptions,
         introspection,
         resolveIntrospection,
         buildQuery: buildQueryFactory,
@@ -58,10 +59,7 @@ export default async options => {
         ...otherOptions
     } = merge({}, defaultOptions, options);
 
-    const client =
-        clientOptions && clientOptions instanceof ApolloClient
-            ? clientOptions
-            : buildApolloClient(clientOptions);
+    const client = clientObject || buildApolloClient(clientOptions);
 
     let introspectionResults;
     if (introspection) {

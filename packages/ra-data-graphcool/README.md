@@ -1,7 +1,5 @@
 # ra-data-graphcool
 
-[![Build Status](https://travis-ci.org/marmelab/ra-data-graphcool.svg?branch=master)](https://travis-ci.org/marmelab/ra-graphql)
-
 A GraphQL data provider for [react-admin](https://github.com/marmelab/react-admin/)
 built with [Apollo](http://www.apollodata.com/) and tailored to target the [GraphCool](https://www.graph.cool/) service.
 
@@ -45,7 +43,7 @@ class App extends Component {
         this.state = { dataProvider: null };
     }
     componentDidMount() {
-        buildGraphcoolProvider({ client: { uri: 'https://api.graph.cool/simple/v1/graphcool_id' }})
+        buildGraphcoolProvider({ clientOptions: { uri: 'https://api.graph.cool/simple/v1/graphcool_id' }})
             .then(dataProvider => this.setState({ dataProvider }));
     }
 
@@ -76,7 +74,7 @@ And that's it, `buildGraphcoolProvider` will create a default ApolloClient for y
 You can either supply the client options by calling `buildGraphcoolProvider` like this:
 
 ```js
-buildGraphcoolProvider({ client: { uri: 'https://api.graph.cool/simple/v1/graphcool_id', ...otherApolloOptions } });
+buildGraphcoolProvider({ clientOptions: { uri: 'https://api.graph.cool/simple/v1/graphcool_id', ...otherApolloOptions } });
 ```
 
 Or supply your client directly with:
