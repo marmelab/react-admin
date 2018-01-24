@@ -37,8 +37,9 @@ const Admin = ({
     loginPage,
     logoutButton,
     initialState,
+    locale = 'en',
 }) => {
-    const { locale, messages } = i18nProvider();
+    const messages = i18nProvider(locale);
     const appReducer = createAppReducer(customReducers, locale, messages);
 
     const resettableAppReducer = (state, action) =>

@@ -1,11 +1,7 @@
 import englishMessages from './i18n/en';
 
 const messages = {
-    fr: () =>
-        import('./i18n/fr.js').then(messages => ({
-            locale: 'fr',
-            messages: messages.default,
-        })),
+    fr: () => import('./i18n/fr.js').then(messages => messages.default),
 };
 
 export default locale => {
@@ -14,5 +10,5 @@ export default locale => {
     }
 
     // Always fallback on english
-    return { locale: 'en', messages: englishMessages };
+    return englishMessages;
 };

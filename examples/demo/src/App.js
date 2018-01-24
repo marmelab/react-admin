@@ -35,14 +35,11 @@ import fakeRestServer from './restServer';
 
 const i18nProvider = locale => {
     if (locale === 'fr') {
-        return import('./i18n/fr').then(messages => ({
-            locale: 'fr',
-            messages: messages.default,
-        }));
+        return import('./i18n/fr').then(messages => messages.default);
     }
 
     // Always fallback on english
-    return { locale: 'en', messages: englishMessages };
+    return englishMessages;
 };
 
 class App extends Component {
@@ -67,6 +64,7 @@ class App extends Component {
                 loginPage={Login}
                 appLayout={Layout}
                 menu={Menu}
+                locale="en"
                 i18nProvider={i18nProvider}
             >
                 <Resource

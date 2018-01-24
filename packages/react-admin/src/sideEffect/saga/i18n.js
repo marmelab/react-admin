@@ -7,11 +7,10 @@ import {
 
 export default i18nProvider => {
     function* loadMessages(action) {
+        const locale = action.payload;
+
         try {
-            const { locale, messages } = yield call(
-                i18nProvider,
-                action.payload
-            );
+            const messages = yield call(i18nProvider, locale);
             yield put(changeLocaleSuccess(locale, messages));
         } catch (err) {
             yield put(changeLocaleFailure(action.payload.locale, err));

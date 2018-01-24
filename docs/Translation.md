@@ -17,7 +17,7 @@ The `<Admin>` component accepts an `i18nProvider` prop which accepts a function 
 const i18nProvider = locale => { ... }
 ```
 
-It will be called once when react-admin starts with no parameter (`locale` will not be specified) so that you can specify the default locale for your app. It must returns the and object with `locale` and `messages` keys.  For example:
+It will be called once when react-admin starts with the locale specified on the `Admin` component and must returns the messages synchronously. For example:
 
 ```jsx
 import React from 'react';
@@ -27,15 +27,15 @@ import englishMessages from 'ra-language-english';
 
 const i18nProvider = locale => {
     if (locale === 'fr') {
-        return { locale: 'fr', messages: frenchMessages };
+        return frenchMessages;
     }
 
     // Always fallback on english
-    return { locale: 'en', messages: englishMessages };
+    return englishMessages;
 }
 
 const App = () => (
-    <Admin i18nProvider={i18nProvider}>
+    <Admin locale="en" i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
@@ -43,22 +43,14 @@ const App = () => (
 export default App;
 ```
 
-The i18nProvider may return a promise for any subsequent calls, which can be useful to only load the needed locale.
+The i18nProvider may return a promise for any subsequent calls, which can be useful to only load the needed locale. For example:
 
 ```javascript
 import englishMessages from '../en.js';
 
 const asyncMessages = {
-    fr: () =>
-        import('../i18n/fr.js').then(messages => ({
-            locale: 'fr',
-            messages: messages.default,
-        })),
-    it: () =>
-        import('../i18n/it.js').then(messages => ({
-            locale: 'it',
-            messages: messages.default,
-        })),
+    fr: () => import('../i18n/fr.js').then(messages => messages.default),
+    it: () => import('../i18n/it.js').then(messages => messages.default),
 };
 
 const i18nProvider = locale => {
@@ -69,7 +61,7 @@ const i18nProvider = locale => {
 
     // Always fallback on english
     // Note that we must not return a promise here
-    return { locale: 'en', messages: englishMessages };
+    return englishMessages;
 }
 ```
 

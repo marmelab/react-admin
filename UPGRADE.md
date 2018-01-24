@@ -123,15 +123,15 @@ import frMessages from 'ra-language-french';
 
 const i18nProvider = locale => {
     if (locale === 'fr') {
-        return { locale, messages: frMessages };
+        return frMessages;
     }
 
     // If locale wasn't specified it's a request for default messages
     // If locale is not supported, fallback to english
-    return { locale: 'en', messages: enMessages };
+    return enMessages;
 }
 
-const App = () => <Admin i18nProvider={i18nProvider} />;
+const App = () => <Admin locale="en" i18nProvider={i18nProvider} />;
 ```
 
 The new `i18nProvider` allows to load the messages asynchronously - see [the `i18nProvider` documentation](./Translation.md#i18nProvider) for details.
