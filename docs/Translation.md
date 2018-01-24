@@ -16,7 +16,7 @@ To handle translations, the `<Admin>` component supports:
 
 ## `i18nProvider`
 
-Provides messages for a specific locale. React-admin ships with the English locale by default.   
+Provides messages for a specific locale. React-admin ships with the English locale by default.
 If you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, install the `ra-language-french` npm package, then configure the `<Admin>` component as follows:
 
 ```jsx
@@ -36,7 +36,7 @@ const i18nProvider = (type, params) => {
     if (type === GET_LOCALE_MESSAGES) {
         return messages[params.locale];
     }
-    throw new Error('Undefined action type', type); 
+    throw new Error('Undefined action type', type);
 }
 
 const App = () => (
@@ -46,10 +46,10 @@ const App = () => (
 );
 
 export default App;
-``` 
+```
 
-Type `GET_DEFAULT_MESSAGES` should return the default application messages `synchronously`. 
-Type `GET_LOCALE_MESSAGES` is allowed to return a promise so messages can be loaded `asynchronously`, for example: 
+Type `GET_DEFAULT_MESSAGES` should return the default application messages `synchronously`.
+Type `GET_LOCALE_MESSAGES` is allowed to return a promise so messages can be loaded `asynchronously`, for example:
 
 ```javascript
 const asyncMessages = {
@@ -63,9 +63,9 @@ const i18nProvider = (type, params) => {
     if (type === 'GET_LOCALE_MESSAGES') {
         return asyncMessages[params.locale]();
     }
-    throw new Error('Undefined action type', type); 
+    throw new Error('Undefined action type', type);
 }
-``` 
+```
 
 ## Available Locales
 
@@ -96,6 +96,7 @@ The previous version of react-admin, called admin-on-rest, was translated in the
 - Polish (`pl`): [KamilDzierbicki/aor-language-polish](https://github.com/KamilDzierbicki/aor-language-polish)
 - Portuguese (`pt`): [movibe/aor-language-portugues](https://github.com/movibe/aor-language-portugues)
 - Russian (`ru`): [cytomich/aor-language-russian](https://github.com/cytomich/aor-language-russian)
+- Slovak (`sk`): [zavadpe/aor-language-slovak](https://github.com/zavadpe/aor-language-slovak)
 - Slovenian (`sl`): [ariskemper/aor-language-slovenian](https://github.com/ariskemper/aor-language-slovenian)
 - Spanish (`es`): [blackboxvision/aor-language-spanish](https://github.com/BlackBoxVision/aor-language-spanish)
 - Swedish (`sv`): [StefanWallin/aor-language-swedish](https://github.com/StefanWallin/aor-language-swedish)
