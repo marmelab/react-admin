@@ -55,7 +55,7 @@ const AppBar = ({
     >
         <Toolbar disableGutters={!open}>
             <IconButton
-                color="contrast"
+                color="inherit"
                 aria-label="open drawer"
                 onClick={toggleSidebar}
                 className={classNames(classes.menuButton, open && classes.hide)}

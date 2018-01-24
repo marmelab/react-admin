@@ -46,7 +46,7 @@ const AppBarMobile = ({
     <MuiAppBar className={classnames(classes.bar, className)} {...rest}>
         <Toolbar>
             <IconButton
-                color="contrast"
+                color="inherit"
                 aria-label="open drawer"
                 onClick={toggleSidebar}
                 className={classes.icon}

@@ -21,7 +21,7 @@ const styles = theme => ({
         color: '#f44336',
     },
     avatar: {
-        background: theme.palette.background.contentFrame,
+        background: theme.palette.background.avatar,
     },
     listItemText: {
         overflowY: 'hidden',
