@@ -1,6 +1,12 @@
 import 'babel-polyfill';
 import React, { Component } from 'react';
-import { Admin, Delete, Resource } from 'react-admin';
+import {
+    Admin,
+    Delete,
+    Resource,
+    GET_DEFAULT_MESSAGES,
+    GET_LOCALE_MESSAGES,
+} from 'react-admin';
 
 import './App.css';
 

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "material-ui": "1.0.0-beta.29",
+    "material-ui": "1.0.0-beta.30",
     "ra-data-json-server": "~2.0.0-beta1",
     "react": "~16.0.0",
     "react-admin": "~2.0.0-beta1",

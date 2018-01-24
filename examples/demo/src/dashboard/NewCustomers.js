@@ -18,7 +18,7 @@ const styles = theme => ({
         color: '#4caf50',
     },
     avatar: {
-        background: theme.palette.background.contentFrame,
+        background: theme.palette.background.avatar,
     },
     listItemText: {
         paddingRight: 0,

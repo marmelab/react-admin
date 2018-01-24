@@ -16,7 +16,7 @@ const DeleteButton = ({
         component={Link}
         to={`${linkToRecord(basePath, record.id)}/delete`}
         label={label}
-        color="accent"
+        color="secondary"
         {...rest}
     >
         <ActionDelete />
