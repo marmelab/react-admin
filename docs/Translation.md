@@ -11,13 +11,15 @@ The react-admin interface uses English as the default language. But it also supp
 
 If you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, you must install the `ra-language-french` npm package then instruct react-admin to use it.
 
-The `<Admin>` component accepts an `i18nProvider` prop which accepts a function with the following signature:
+The `<Admin>` component has an `i18nProvider` prop, which accepts a function with the following signature:
 
 ```js
-const i18nProvider = locale => { ... }
+const i18nProvider = locale => messages;
 ```
 
-It will be called once when react-admin starts with the locale specified on the `Admin` component and must returns the messages synchronously. For example:
+The `messages` should be a dictionary of interface and resource names (see the [Translation Messages section](#translation-messages) below for details about the dictionary format).
+
+React-admin calls the `i18nProvider` when it starts, passing the `locale` specified on the `Admin` component as parameter. The provider must return the messages synchronously. React-admin also calls the `i18nProvider` whenever the locale changes, passing the new locale as parameter. So the simplest example for a multilingual interface reads as follow:
 
 ```jsx
 import React from 'react';
@@ -29,7 +31,6 @@ const messages = {
     fr: frenchMessages,
     en: englishMessages,
 }
-
 const i18nProvider = locale => messages[locale];
 
 const App = () => (
@@ -41,9 +42,9 @@ const App = () => (
 export default App;
 ```
 
-The i18nProvider may return a promise for any subsequent calls, which can be useful to only load the needed locale. For example:
+The `i18nProvider` may return a promise for locale change calls (except the initial call, when the app starts). This can be useful to only load the needed locale. For example:
 
-```javascript
+```js
 import englishMessages from '../en.js';
 
 const asyncMessages = {
@@ -52,15 +53,19 @@ const asyncMessages = {
 };
 
 const i18nProvider = locale => {
-    if (asyncMessages[params.locale]) {
-        // Returns a promise
-        return asyncMessages[params.locale]();
+    if (locale === 'en') {
+        // initial call, must return synchronously
+        return englishMessages;
     }
-
-    // Always fallback to english
-    // Note that we must not return a promise here
-    return englishMessages;
+    // change of locale after initial call returns a promise
+    return asyncMessages[params.locale]();
 }
+
+const App = () => (
+    <Admin locale="en" i18nProvider={i18nProvider}>
+        ...
+    </Admin>
+);
 ```
 
 ## Available Locales
@@ -118,9 +123,10 @@ const messages = {
     fr: frenchMessages,
     en: englishMessages,
 };
+const i18nProvider = locale => messages[locale];
 
 const App = () => (
-    <Admin locale="en" messages={messages}>
+    <Admin locale="en" i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
@@ -169,9 +175,10 @@ const messages = {
     fr: frenchMessages,
     en: englishMessages,
 };
+const i18nProvider = locale => messages[locale];
 
 const App = () => (
-    <Admin locale={resolveBrowserLocale()} messages={messages}>
+    <Admin locale={resolveBrowserLocale()} i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
@@ -181,38 +188,22 @@ export default App;
 
 ## Translation Messages
 
-The `message` value should be a dictionary with one entry per language supported. For a given language, the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
+The `message` returned by the `i18nProvider` value should be a dictionary where the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
 
 ```jsx
 {
-    en: {
-        ra: {
-            action: {
-                delete: 'Delete',
-                show: 'Show',
-                list: 'List',
-                save: 'Save',
-                create: 'Create',
-                edit: 'Edit',
-                cancel: 'Cancel',
-            },
-            ...
+    ra: {
+        action: {
+            delete: 'Delete',
+            show: 'Show',
+            list: 'List',
+            save: 'Save',
+            create: 'Create',
+            edit: 'Edit',
+            cancel: 'Cancel',
         },
+        ...
     },
-    fr: {
-        ra: {
-            action: {
-                delete: 'Supprimer',
-                show: 'Afficher',
-                list: 'Liste',
-                save: 'Enregistrer',
-                create: 'Créer',
-                edit: 'Éditer',
-                cancel: 'Quitter',
-            },
-            ...
-        }
-    }
 }
 ```
 
@@ -233,23 +224,21 @@ This lets you translate your own resource and field names by passing a `messages
 
 ```jsx
 {
-    en: {
-        resources: {
-            shoe: {
-                name: 'Shoe |||| Shoes',
-                fields: {
-                    model: 'Model',
-                    stock: 'Nb in stock',
-                    color: 'Color',
-                },
+    resources: {
+        shoe: {
+            name: 'Shoe |||| Shoes',
+            fields: {
+                model: 'Model',
+                stock: 'Nb in stock',
+                color: 'Color',
             },
-            customer: {
-                name: 'Customer |||| Customers',
-                fields: {
-                    first_name: 'First name',
-                    last_name: 'Last name',
-                    dob: 'Date of birth',
-                }
+        },
+        customer: {
+            name: 'Customer |||| Customers',
+            fields: {
+                first_name: 'First name',
+                last_name: 'Last name',
+                dob: 'Date of birth',
             }
         }
     },
@@ -277,9 +266,10 @@ const messages = {
     fr: { ...frenchMessages, ...domainMessages.fr },
     en: { ...englishMessages, ...domainMessages.en },
 };
+const i18nProvider = locale => messages[locale];
 
 const App = () => (
-    <Admin messages={messages}>
+    <Admin i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
