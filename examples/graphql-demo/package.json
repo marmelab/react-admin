@@ -6,7 +6,7 @@
     "fetch-mock": "~5.5.0",
     "json-graphql-server": "~2.0.1",        
     "material-ui-icons": "1.0.0-beta.17",
-    "material-ui": "1.0.0-beta.27",
+    "material-ui": "1.0.0-beta.30",
     "ra-data-graphql-simple": "~2.0.0-beta1",
     "ra-input-rich-text": "^2.0.0-beta1",
     "ra-language-english": "^2.0.0-beta1",

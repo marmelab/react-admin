@@ -1,4 +1,7 @@
+import englishMessages from 'ra-language-english';
+
 export default {
+    ...englishMessages,
     pos: {
         search: 'Search',
         configuration: 'Configuration',

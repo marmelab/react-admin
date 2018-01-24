@@ -1,4 +1,7 @@
+import englishMessages from 'ra-language-english';
+
 export default {
+    ...englishMessages,
     pos: {
         search: 'Search',
         configuration: 'Configuration',
@@ -35,9 +38,6 @@ export default {
                 groups: 'Segments',
                 last_seen_gte: 'Visited Since',
                 name: 'Name',
-                latest_purchase: 'Latest Purchase',
-                has_ordered: 'Has Ordered',
-                has_newsletter: 'Has Newsletter',
             },
             tabs: {
                 identity: 'Identity',
