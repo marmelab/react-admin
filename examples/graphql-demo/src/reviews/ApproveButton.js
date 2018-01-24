@@ -28,13 +28,13 @@ class ApproveButton extends Component {
                     onClick={this.handleApprove}
                     disabled={record.status === 'accepted'}
                 >
-                    <ThumbUp color="#00bcd4" />
+                    <ThumbUp color="action" />
                 </IconButton>
                 <IconButton
                     onClick={this.handleReject}
                     disabled={record.status === 'rejected'}
                 >
-                    <ThumbDown color="#00bcd4" />
+                    <ThumbDown color="action" />
                 </IconButton>
             </span>
         );

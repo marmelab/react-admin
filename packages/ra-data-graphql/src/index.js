@@ -91,10 +91,7 @@ export default async options => {
                 ...getOptions(otherOptions.query, aorFetchType, resource),
             };
 
-            return client
-                .query(apolloQuery)
-                .then(parseResponse)
-                .catch(error => console.error(error));
+            return client.query(apolloQuery).then(parseResponse);
         }
 
         const apolloQuery = {

@@ -206,7 +206,7 @@ export const buildVariables = introspectionResults => (
         case GET_LIST: {
             const filter = Object.keys(params.filter).reduce((acc, key) => {
                 if (key === 'ids') {
-                    return { ...acc, id_in: params.filter[key] };
+                    return { ...acc, ids: params.filter[key] };
                 }
 
                 if (typeof params.filter[key] === 'object') {
@@ -283,7 +283,7 @@ export const buildVariables = introspectionResults => (
         }
         case GET_MANY:
             return {
-                filter: { id_in: params.ids },
+                filter: { ids: params.ids },
             };
         case GET_MANY_REFERENCE: {
             const parts = params.target.split('.');

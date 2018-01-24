@@ -39,8 +39,8 @@ describe('buildVariables', () => {
                 )
             ).toEqual({
                 filter: {
-                    id_in: ['foo1', 'foo2'],
-                    tags_some: { id_in: ['tag1', 'tag2'] },
+                    ids: ['foo1', 'foo2'],
+                    tags_some: { ids: ['tag1', 'tag2'] },
                     author: { id: 'author1' },
                     views: 100,
                 },
@@ -121,7 +121,7 @@ describe('buildVariables', () => {
                     {}
                 )
             ).toEqual({
-                filter: { id_in: ['tag1', 'tag2'] },
+                filter: { ids: ['tag1', 'tag2'] },
             });
         });
     });

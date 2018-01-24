@@ -50,8 +50,6 @@ export const buildQueryFactory = (
             queryType
         );
 
-        console.log(query, { variables });
-
         return { query: gql`${query}`, variables, parseResponse };
     };
 };
