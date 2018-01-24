@@ -40,13 +40,14 @@ describe('buildVariables', () => {
             ).toEqual({
                 filter: {
                     ids: ['foo1', 'foo2'],
-                    tags_some: { ids: ['tag1', 'tag2'] },
+                    tags_some: { id_in: ['tag1', 'tag2'] },
                     author: { id: 'author1' },
                     views: 100,
                 },
-                first: 10,
-                orderBy: 'sortField_DESC',
-                skip: 90,
+                page: 9,
+                perPage: 10,
+                sortField: 'sortField',
+                sortOrder: 'DESC',
             });
         });
     });
