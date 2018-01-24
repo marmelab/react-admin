@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "fetch-mock": "~5.5.0",
-    "json-graphql-server": "~1.1.2",        
+    "json-graphql-server": "~2.0.1",        
     "material-ui-icons": "1.0.0-beta.17",
     "material-ui": "1.0.0-beta.27",
     "ra-data-graphql-simple": "~2.0.0-beta1",

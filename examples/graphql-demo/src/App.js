@@ -32,22 +32,20 @@ import { CategoryList, CategoryEdit, CategoryIcon } from './categories';
 import { ReviewList, ReviewEdit, ReviewIcon } from './reviews';
 import { SegmentList, SegmentIcon } from './segments';
 
-// NOTE: Commented for now, using FakeGraphQLServer with its command line
-// in order to debug/compare with graphiql
-// import fakeGraphQLServer from './graphqlServer';
+import fakeGraphQLServer from './graphqlServer';
 
 class App extends Component {
     state = { dataProvider: null };
 
     async componentWillMount() {
-        // this.restoreFetch = fakeGraphQLServer();
+        this.restoreFetch = fakeGraphQLServer();
         const dataProvider = await buildApolloDataProvider();
         this.setState({ dataProvider });
     }
 
-    // componentWillUnmount() {
-    //     this.restoreFetch();
-    // }
+    componentWillUnmount() {
+        this.restoreFetch();
+    }
 
     render() {
         const { dataProvider } = this.state;
