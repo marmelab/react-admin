@@ -20,6 +20,7 @@ import {
 import Icon from 'material-ui-icons/Collections';
 import Chip from 'material-ui/Chip';
 import RichTextInput from 'ra-input-rich-text';
+import withStyles from 'material-ui/styles/withStyles';
 
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
@@ -56,7 +57,18 @@ export const ProductList = props => (
     </List>
 );
 
-export const ProductCreate = props => (
+const createStyles = {
+    stock: { width: '5em' },
+    price: { width: '5em' },
+    width: { width: '5em' },
+    widthFormGroup: { display: 'inline-block' },
+    height: { width: '5em' },
+    heightFormGroup: { display: 'inline-block', marginLeft: 32 },
+};
+
+export const ProductCreate = withStyles(
+    createStyles
+)(({ classes, ...props }) => (
     <Create {...props}>
         <TabbedForm>
             <FormTab label="resources.products.tabs.image">
@@ -76,19 +88,19 @@ export const ProductCreate = props => (
                 <NumberInput
                     source="price"
                     validation={{ required: true }}
-                    elStyle={{ width: '5em' }}
+                    className={classes.price}
                 />
                 <NumberInput
                     source="width"
                     validation={{ required: true }}
-                    style={{ display: 'inline-block' }}
-                    elStyle={{ width: '5em' }}
+                    className={classes.width}
+                    formClassName={classes.widthFormGroup}
                 />
                 <NumberInput
                     source="height"
                     validation={{ required: true }}
-                    style={{ display: 'inline-block', marginLeft: 32 }}
-                    elStyle={{ width: '5em' }}
+                    className={classes.height}
+                    formClassName={classes.heightFormGroup}
                 />
                 <ReferenceInput
                     source="category_id"
@@ -100,7 +112,7 @@ export const ProductCreate = props => (
                 <NumberInput
                     source="stock"
                     validation={{ required: true }}
-                    elStyle={{ width: '5em' }}
+                    className={classes.stock}
                 />
             </FormTab>
             <FormTab label="resources.products.tabs.description">
@@ -108,10 +120,21 @@ export const ProductCreate = props => (
             </FormTab>
         </TabbedForm>
     </Create>
-);
+));
 
 const ProductTitle = ({ record }) => <span>Poster #{record.reference}</span>;
-export const ProductEdit = props => (
+
+const editStyles = {
+    ...createStyles,
+    comment: {
+        maxWidth: '20em',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+    },
+};
+
+export const ProductEdit = withStyles(editStyles)(({ classes, ...props }) => (
     <Edit {...props} title={<ProductTitle />}>
         <TabbedForm>
             <FormTab label="resources.products.tabs.image">
@@ -121,21 +144,21 @@ export const ProductEdit = props => (
             </FormTab>
             <FormTab label="resources.products.tabs.details">
                 <TextInput source="reference" />
-                <NumberInput source="price" elStyle={{ width: '5em' }} />
+                <NumberInput source="price" className={classes.price} />
                 <NumberInput
                     source="width"
-                    style={{ display: 'inline-block' }}
-                    elStyle={{ width: '5em' }}
+                    className={classes.width}
+                    formClassName={classes.widthFormGroup}
                 />
                 <NumberInput
                     source="height"
-                    style={{ display: 'inline-block', marginLeft: 32 }}
-                    elStyle={{ width: '5em' }}
+                    className={classes.height}
+                    formClassName={classes.heightFormGroup}
                 />
                 <ReferenceInput source="category_id" reference="categories">
                     <SelectInput source="name" />
                 </ReferenceInput>
-                <NumberInput source="stock" elStyle={{ width: '5em' }} />
+                <NumberInput source="stock" className={classes.stock} />
             </FormTab>
             <FormTab label="resources.products.tabs.description">
                 <RichTextInput source="description" addLabel={false} />
@@ -152,12 +175,7 @@ export const ProductEdit = props => (
                         <StarRatingField />
                         <TextField
                             source="comment"
-                            style={{
-                                maxWidth: '20em',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                            }}
+                            cellClassName={classes.comment}
                         />
                         <TextField source="status" />
                         <EditButton />
@@ -166,4 +184,4 @@ export const ProductEdit = props => (
             </FormTab>
         </TabbedForm>
     </Edit>
-);
+));

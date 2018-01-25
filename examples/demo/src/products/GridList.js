@@ -23,15 +23,7 @@ const styles = {
     },
 };
 
-const GridList = ({
-    classes,
-    ids,
-    isLoading,
-    data,
-    currentSort,
-    basePath,
-    rowStyle,
-}) => (
+const GridList = ({ classes, ids, data, basePath }) => (
     <div className={classes.root}>
         <MuiGridList cellHeight={180} cols={4} className={classes.gridList}>
             {ids.map(id => (
@@ -61,7 +53,7 @@ const GridList = ({
                                 record={data[id]}
                                 label=""
                                 classes={{
-                                    link: classes.link,
+                                    button: classes.link,
                                 }}
                             />
                         }

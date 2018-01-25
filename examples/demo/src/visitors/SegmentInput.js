@@ -1,24 +1,31 @@
 import React from 'react';
 import { translate, SelectInput } from 'react-admin';
+import withStyles from 'material-ui/styles/withStyles';
+import compose from 'recompose/compose';
 
 import segments from '../segments/data';
 
-const SegmentInput = ({ translate, ...rest }) => (
+const styles = {
+    input: { width: 150 },
+};
+
+const SegmentInput = ({ classes, translate, ...rest }) => (
     <SelectInput
         {...rest}
         choices={segments.map(segment => ({
             id: segment.id,
             name: translate(segment.name),
         }))}
-        elStyle={{ width: 150 }}
+        className={classes.input}
     />
 );
 
-const TranslatedSegmentInput = translate(SegmentInput);
+const TranslatedSegmentInput = compose(translate, withStyles(styles))(
+    SegmentInput
+);
 
 TranslatedSegmentInput.defaultProps = {
     addLabel: true,
-    addField: true,
     source: 'groups',
 };
 

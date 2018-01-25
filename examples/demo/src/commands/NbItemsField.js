@@ -3,12 +3,11 @@ import { FunctionField } from 'react-admin';
 
 const render = record => record.basket.length;
 
-const NbItemsField = (props) => <FunctionField {...props} render={render} />;
+const NbItemsField = props => <FunctionField {...props} render={render} />;
 
 NbItemsField.defaultProps = {
     label: 'Nb Items',
-    style: { textAlign: 'right' },
-    headerStyle: { textAlign: 'right' },
+    textAlign: 'right',
 };
 
 export default NbItemsField;
