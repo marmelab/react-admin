@@ -1,6 +1,5 @@
 import React from 'react';
-import {
-    GridList as MuiGridList,
+import MuiGridList, {
     GridListTile,
     GridListTileBar,
 } from 'material-ui/GridList';
