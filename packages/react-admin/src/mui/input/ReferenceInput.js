@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
 import compose from 'recompose/compose';
+import { createSelector } from 'reselect';
 
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
@@ -148,40 +149,43 @@ export class ReferenceInput extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.record.id !== nextProps.record.id) {
             this.fetchReferenceAndOptions(nextProps);
+        } else if (this.props.input.value !== nextProps.input.value) {
+            this.fetchReference(nextProps);
         }
     }
 
     setFilter = filter => {
         if (filter !== this.params.filter) {
             this.params.filter = this.props.filterToQuery(filter);
-            this.fetchReferenceAndOptions();
+            this.fetchOptions();
         }
     };
 
     setPagination = pagination => {
         if (pagination !== this.param.pagination) {
             this.param.pagination = pagination;
-            this.fetchReferenceAndOptions();
+            this.fetchOptions();
         }
     };
 
     setSort = sort => {
         if (sort !== this.params.sort) {
             this.params.sort = sort;
-            this.fetchReferenceAndOptions();
+            this.fetchOptions();
         }
     };
 
-    fetchReferenceAndOptions(
-        { input, reference, source, resource } = this.props
-    ) {
-        const { filter: filterFromProps } = this.props;
-        const { pagination, sort, filter } = this.params;
-
+    fetchReference = ({ input, reference } = this.props) => {
         const id = input.value;
         if (id) {
             this.props.crudGetOne(reference, id, null, false);
         }
+    };
+
+    fetchOptions = ({ reference, source, resource } = this.props) => {
+        const { filter: filterFromProps } = this.props;
+        const { pagination, sort, filter } = this.params;
+
         const finalFilter = { ...filterFromProps, ...filter };
         this.props.crudGetMatching(
             reference,
@@ -190,6 +194,11 @@ export class ReferenceInput extends Component {
             sort,
             finalFilter
         );
+    };
+
+    fetchReferenceAndOptions(nextProps) {
+        this.fetchReference(nextProps);
+        this.fetchOptions(nextProps);
     }
 
     render() {
@@ -241,6 +250,7 @@ export class ReferenceInput extends Component {
             resource,
             meta,
             source,
+            selectedItem: referenceRecord,
             choices: matchingReferences,
             basePath,
             onChange,
@@ -270,6 +280,7 @@ ReferenceInput.propTypes = {
     meta: PropTypes.object,
     onChange: PropTypes.func,
     perPage: PropTypes.number,
+    record: PropTypes.object,
     reference: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
     resource: PropTypes.string.isRequired,
@@ -288,21 +299,25 @@ ReferenceInput.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecord: null,
+    record: {},
 };
 
-function mapStateToProps(state, props) {
-    const referenceId = props.input.value;
-    return {
-        referenceRecord:
-            state.admin.resources[props.reference].data[referenceId],
+const mapStateToProps = createSelector(
+    (_, props) => props.input.value,
+    (state, { reference }) => state.admin.resources[reference],
+    (state, { resource, source }) =>
+        state.admin.references.possibleValues[
+            referenceSource(resource, source)
+        ],
+    (inputId, referenceState, possibleValues) => ({
+        referenceRecord: referenceState && referenceState.data[inputId],
         matchingReferences: getPossibleReferences(
-            state,
-            referenceSource(props.resource, props.source),
-            props.reference,
-            [referenceId]
+            referenceState,
+            possibleValues,
+            [inputId]
         ),
-    };
-}
+    })
+);
 
 export default compose(
     addField,

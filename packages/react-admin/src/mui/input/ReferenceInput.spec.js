@@ -225,4 +225,62 @@ describe('<ReferenceInput />', () => {
         const myComponent = wrapper.find('MyComponent');
         assert.notEqual(myComponent.prop('meta', undefined));
     });
+
+    it('should only call crudGetMatching when calling setFilter', () => {
+        const crudGetMatching = jest.fn();
+        const crudGetOne = jest.fn();
+        const wrapper = shallow(
+            <ReferenceInput
+                {...defaultProps}
+                allowEmpty
+                crudGetOne={crudGetOne}
+                crudGetMatching={crudGetMatching}
+            >
+                <MyComponent />
+            </ReferenceInput>
+        );
+        expect(crudGetMatching.mock.calls.length).toBe(1);
+
+        wrapper.instance().setFilter('bar');
+        expect(crudGetOne.mock.calls.length).toBe(0);
+        expect(crudGetMatching.mock.calls.length).toBe(2);
+    });
+
+    it('should call crudGetOne when input value changes', () => {
+        const crudGetOne = jest.fn();
+        const wrapper = shallow(
+            <ReferenceInput
+                {...defaultProps}
+                input={{ value: 5 }}
+                allowEmpty
+                crudGetOne={crudGetOne}
+            >
+                <MyComponent />
+            </ReferenceInput>
+        );
+        expect(crudGetOne.mock.calls.length).toBe(1);
+        wrapper.setProps({ input: { value: 6 } });
+        expect(crudGetOne.mock.calls.length).toBe(2);
+    });
+
+    it('should call crudGetOne and crudGetMatching when record changes', () => {
+        const crudGetOne = jest.fn();
+        const crudGetMatching = jest.fn();
+        const wrapper = shallow(
+            <ReferenceInput
+                {...defaultProps}
+                allowEmpty
+                input={{ value: 5 }}
+                crudGetOne={crudGetOne}
+                crudGetMatching={crudGetMatching}
+            >
+                <MyComponent />
+            </ReferenceInput>
+        );
+        expect(crudGetOne.mock.calls.length).toBe(1);
+        expect(crudGetMatching.mock.calls.length).toBe(1);
+        wrapper.setProps({ record: { id: 1 } });
+        expect(crudGetOne.mock.calls.length).toBe(2);
+        expect(crudGetMatching.mock.calls.length).toBe(2);
+    });
 });
