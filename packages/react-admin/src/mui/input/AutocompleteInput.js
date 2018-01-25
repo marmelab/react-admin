@@ -91,65 +91,54 @@ const styles = theme => ({
  */
 export class AutocompleteInput extends React.Component {
     state = {
-        firstLoad: true,
         searchText: '',
+        currentValueSuggestion: null,
         suggestions: [],
     };
 
     componentWillMount() {
-        const { input, choices, optionValue } = this.props;
+        const { choices } = this.props;
+        this.updateDisplayedText();
         this.setState({
-            searchText:
-                this.getSearchText(input.value, choices, optionValue) || '',
             suggestions: choices,
         });
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState(state => {
-            let newState = {};
-            if (!isEqual(this.props.choices, nextProps.choices)) {
-                newState.suggestions = nextProps.choices;
+        const { choices, input } = nextProps;
 
-                // This was the first time we loaded choices
-                newState.firstLoad = false;
-            }
+        if (input.value !== this.props.input.value && input.value) {
+            this.updateDisplayedText(nextProps, true);
+        }
+        if (!isEqual(choices, this.props.choices)) {
+            this.updateDisplayedText(nextProps);
 
-            // We must set the searchText once the choices have been loaded,
-            // otherwise we'll get an empty text even if there is a value
-            // and the page just loaded.
-            // However, choices are loaded asynchronously and will be received
-            // after we get the current record in an Edition view. We have to
-            // check whether its the first time we loaded choices and only set
-            // the searchText at that time, otherwise, when the user enter text,
-            // it will be overriden by the current value text.
-            if (
-                (this.props.input.value !== nextProps.input.value ||
-                    !isEqual(this.props.choices, nextProps.choices)) &&
-                state.firstLoad
-            ) {
-                newState.searchText = this.getSearchText(
-                    nextProps.input.value,
-                    nextProps.choices,
-                    nextProps.optionValue
-                );
-            }
-            return { ...state, ...newState };
-        });
+            this.setState({
+                suggestions: choices,
+            });
+        }
     }
 
-    getSearchText = (value, choices, optionValue) => {
-        const suggestion = choices.find(
-            choice => get(choice, optionValue) === value
-        );
-        return suggestion && this.getSuggestionLabel(suggestion);
+    updateDisplayedText = (nextProps = this.props, forceUpdate = false) => {
+        const choice = this.getSelectedChoice(nextProps);
+        this.setState(({ initializedSearchText, searchText }) => ({
+            searchText:
+                (!initializedSearchText || forceUpdate) && choice
+                    ? this.getSuggestionValue(choice)
+                    : searchText,
+            // If no choice is currently available (because of async choices), flag to expect it later
+            initializedSearchText:
+                !!choice || (initializedSearchText && !forceUpdate),
+            currentValueSuggestion: choice ? [choice] : null,
+        }));
     };
+
+    getSelectedChoice = ({ choices, input, optionValue }) =>
+        choices && input.value
+            ? choices.find(choice => get(choice, optionValue) === input.value)
+            : null;
 
     getSuggestionValue = suggestion => {
-        return get(suggestion, this.props.optionText);
-    };
-
-    getSuggestionLabel = suggestion => {
         const { optionText, translate, translateChoice } = this.props;
         const suggestionLabel =
             typeof optionText === 'function'
@@ -162,14 +151,30 @@ export class AutocompleteInput extends React.Component {
 
     handleSuggestionSelected = (event, { suggestion, method }) => {
         this.props.input.onChange(get(suggestion, this.props.optionValue));
+        this.setState({
+            currentValueSuggestion: [suggestion], // Make sure this is the only selectable option from now on
+        });
         if (method === 'enter') {
             event.preventDefault();
         }
     };
 
     handleSuggestionsFetchRequested = ({ value: searchText }) => {
-        const { setFilter } = this.props;
-        setFilter && setFilter(searchText);
+        const searchTextUpdated = this.state.searchText !== searchText;
+
+        this.setState(({ currentValueSuggestion }) => ({
+            currentValueSuggestion: !searchTextUpdated
+                ? currentValueSuggestion
+                : null,
+            suggestions:
+                !searchTextUpdated && currentValueSuggestion
+                    ? currentValueSuggestion
+                    : this.props.choices,
+        }));
+        if (searchTextUpdated) {
+            const { setFilter } = this.props;
+            setFilter && setFilter(searchText);
+        }
     };
 
     handleSuggestionsClearRequested = () => {
@@ -177,7 +182,11 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleChange = (event, { newValue }) => {
-        this.setState({ searchText: newValue });
+        this.setState({
+            suggesting: true,
+            searchText: newValue,
+            initializedSearchText: true, // Make sure it's not updated by a delayed choices fetch
+        });
     };
 
     renderInput = inputProps => {
@@ -240,7 +249,7 @@ export class AutocompleteInput extends React.Component {
     };
 
     renderSuggestion = (suggestion, { query, isHighlighted }) => {
-        const label = this.getSuggestionLabel(suggestion);
+        const label = this.getSuggestionValue(suggestion);
         const matches = match(label, query);
         const parts = parse(label, matches);
         const { classes = {} } = this.props;
