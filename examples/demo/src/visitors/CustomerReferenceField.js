@@ -3,7 +3,7 @@ import { ReferenceField } from 'react-admin';
 
 import FullNameField from './FullNameField';
 
-const CustomerReferenceField = (props) => (
+const CustomerReferenceField = props => (
     <ReferenceField source="customer_id" reference="customers" {...props}>
         <FullNameField />
     </ReferenceField>

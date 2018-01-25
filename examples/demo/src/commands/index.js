@@ -20,6 +20,7 @@ import {
     TextInput,
 } from 'react-admin';
 import Icon from 'material-ui-icons/AttachMoney';
+import withStyles from 'material-ui/styles/withStyles';
 
 import Basket from './Basket';
 import NbItemsField from './NbItemsField';
@@ -27,7 +28,11 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 
 export const CommandIcon = Icon;
 
-const CommandFilter = props => (
+const filterStyles = {
+    status: { width: 150 },
+};
+
+const CommandFilter = withStyles(filterStyles)(({ classes, ...props }) => (
     <Filter {...props}>
         <TextInput label="pos.search" source="q" alwaysOn />
         <ReferenceInput source="customer_id" reference="customers">
@@ -43,16 +48,20 @@ const CommandFilter = props => (
                 { id: 'ordered', name: 'ordered' },
                 { id: 'cancelled', name: 'cancelled' },
             ]}
-            elStyle={{ width: 150 }}
+            className={classes.status}
         />
         <DateInput source="date_gte" />
         <DateInput source="date_lte" />
         <TextInput source="total_gte" />
         <NullableBooleanInput source="returned" />
     </Filter>
-);
+));
 
-export const CommandList = props => (
+const listStyles = {
+    total: { fontWeight: 'bold' },
+};
+
+export const CommandList = withStyles(listStyles)(({ classes, ...props }) => (
     <List
         {...props}
         filters={<CommandFilter />}
@@ -67,14 +76,14 @@ export const CommandList = props => (
             <NumberField
                 source="total"
                 options={{ style: 'currency', currency: 'USD' }}
-                elStyle={{ fontWeight: 'bold' }}
+                className={classes.total}
             />
             <TextField source="status" />
             <BooleanField source="returned" />
             <EditButton />
         </Datagrid>
     </List>
-);
+));
 
 const CommandTitle = translate(({ record, translate }) => (
     <span>
@@ -82,8 +91,12 @@ const CommandTitle = translate(({ record, translate }) => (
     </span>
 ));
 
-export const CommandEdit = translate(({ translate, ...rest }) => (
-    <Edit title={<CommandTitle />} {...rest}>
+const editStyles = {
+    clear: { clear: 'both' },
+};
+
+export const CommandEdit = withStyles(editStyles)(({ classes, ...props }) => (
+    <Edit title={<CommandTitle />} {...props}>
         <SimpleForm>
             <Basket />
             <DateInput source="date" />
@@ -102,7 +115,7 @@ export const CommandEdit = translate(({ translate, ...rest }) => (
                 ]}
             />
             <BooleanInput source="returned" />
-            <div style={{ clear: 'both' }} />
+            <div className={classes.clear} />
         </SimpleForm>
     </Edit>
 ));

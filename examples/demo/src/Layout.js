@@ -9,4 +9,4 @@ const darkTheme = {
 
 export default connect(state => ({
     theme: state.theme === 'dark' ? darkTheme : {},
-}))(Layout);
+}), {})(Layout);

@@ -17,6 +17,7 @@ import {
     TextInput,
 } from 'react-admin';
 import Icon from 'material-ui-icons/Comment';
+import withStyles from 'material-ui/styles/withStyles';
 
 import ProductReferenceField from '../products/ProductReferenceField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
@@ -27,7 +28,13 @@ import rowStyle from './rowStyle';
 
 export const ReviewIcon = Icon;
 
-export const ReviewFilter = props => (
+const filterStyles = {
+    status: { width: 150 },
+};
+
+export const ReviewFilter = withStyles(
+    filterStyles
+)(({ classes, ...props }) => (
     <Filter {...props}>
         <TextInput label="pos.search" source="q" alwaysOn />
         <SelectInput
@@ -37,7 +44,7 @@ export const ReviewFilter = props => (
                 { id: 'pending', name: 'Pending' },
                 { id: 'rejected', name: 'Rejected' },
             ]}
-            elStyle={{ width: 150 }}
+            className={classes.status}
         />
         <ReferenceInput source="customer_id" reference="customers">
             <AutocompleteInput
@@ -51,9 +58,18 @@ export const ReviewFilter = props => (
         <DateInput source="date_gte" />
         <DateInput source="date_lte" />
     </Filter>
-);
+));
 
-export const ReviewList = props => (
+const listStyles = {
+    comment: {
+        maxWidth: '18em',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+    },
+};
+
+export const ReviewList = withStyles(listStyles)(({ classes, ...props }) => (
     <List
         {...props}
         filters={<ReviewFilter />}
@@ -65,43 +81,37 @@ export const ReviewList = props => (
             <CustomerReferenceField />
             <ProductReferenceField />
             <StarRatingField />
-            <TextField
-                source="comment"
-                style={{
-                    maxWidth: '18em',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                }}
-            />
+            <TextField source="comment" cellClassName={classes.comment} />
             <TextField source="status" />
-            <ApproveButton style={{ padding: 0 }} />
-            <EditButton style={{ padding: 0 }} />
+            <ApproveButton />
+            <EditButton />
         </Datagrid>
     </List>
-);
+));
 
-const detailStyle = {
-    display: 'inline-block',
-    verticalAlign: 'top',
-    marginRight: '2em',
-    minWidth: '8em',
+const editStyle = {
+    detail: {
+        display: 'inline-block',
+        verticalAlign: 'top',
+        marginRight: '2em',
+        minWidth: '8em',
+    },
 };
-export const ReviewEdit = props => (
+export const ReviewEdit = withStyles(editStyle)(({ classes, ...props }) => (
     <Edit {...props} actions={<ReviewEditActions />}>
         <SimpleForm>
-            <DateField source="date" style={detailStyle} />
-            <CustomerReferenceField style={detailStyle} />
-            <ProductReferenceField style={detailStyle} />
+            <DateField source="date" formClassName={classes.detail} />
+            <CustomerReferenceField formClassName={classes.detail} />
+            <ProductReferenceField formClassName={classes.detail} />
             <ReferenceField
                 source="command_id"
                 reference="commands"
                 addLabel
-                style={detailStyle}
+                formClassName={classes.detail}
             >
                 <TextField source="reference" />
             </ReferenceField>
-            <StarRatingField style={detailStyle} />
+            <StarRatingField formClassName={classes.detail} />
             <LongTextInput source="comment" />
             <SelectInput
                 source="status"
@@ -113,4 +123,4 @@ export const ReviewEdit = props => (
             />
         </SimpleForm>
     </Edit>
-);
+));

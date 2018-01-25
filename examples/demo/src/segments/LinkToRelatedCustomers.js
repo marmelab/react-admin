@@ -17,21 +17,21 @@ const styles = {
 };
 
 const LinkToRelatedCustomers = ({ classes, segment, translate }) => (
-    <Button color="primary">
-        <Link
-            to={{
-                pathname: '/customers',
-                search: stringify({
-                    page: 1,
-                    perPage: 25,
-                    filter: JSON.stringify({ groups: segment }),
-                }),
-            }}
-            className={classes.link}
-        >
-            <VisitorIcon className={classes.icon} />
-            {translate('resources.segments.fields.customers')}
-        </Link>
+    <Button
+        color="primary"
+        component={Link}
+        to={{
+            pathname: '/customers',
+            search: stringify({
+                page: 1,
+                perPage: 25,
+                filter: JSON.stringify({ groups: segment }),
+            }),
+        }}
+        className={classes.link}
+    >
+        <VisitorIcon className={classes.icon} />
+        {translate('resources.segments.fields.customers')}
     </Button>
 );
 

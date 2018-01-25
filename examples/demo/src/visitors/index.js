@@ -28,6 +28,7 @@ import FullNameField from './FullNameField';
 import SegmentsField from './SegmentsField';
 import SegmentInput from './SegmentInput';
 import SegmentsInput from './SegmentsInput';
+import withStyles from 'material-ui/styles/withStyles';
 
 export const VisitorIcon = Icon;
 
@@ -41,19 +42,29 @@ const VisitorFilter = props => (
     </Filter>
 );
 
-const colored = WrappedComponent => props =>
-    props.record[props.source] > 500 ? (
-        <span style={{ color: 'red' }}>
+const colored = WrappedComponent => {
+    const Colored = props =>
+        props.record[props.source] > 500 ? (
+            <span style={{ color: 'red' }}>
+                <WrappedComponent {...props} />
+            </span>
+        ) : (
             <WrappedComponent {...props} />
-        </span>
-    ) : (
-        <WrappedComponent {...props} />
-    );
+        );
+
+    Colored.displayName = `Colored(${WrappedComponent.displayName})`;
+
+    return Colored;
+};
 
 const ColoredNumberField = colored(NumberField);
 ColoredNumberField.defaultProps = NumberField.defaultProps;
 
-export const VisitorList = props => (
+const listStyles = {
+    nb_commands: { color: 'purple' },
+};
+
+export const VisitorList = withStyles(listStyles)(({ classes, ...props }) => (
     <List
         {...props}
         filters={<VisitorFilter />}
@@ -66,7 +77,7 @@ export const VisitorList = props => (
             <NumberField
                 source="nb_commands"
                 label="resources.customers.fields.commands"
-                style={{ color: 'purple' }}
+                className={classes.nb_commands}
             />
             <ColoredNumberField
                 source="total_spent"
@@ -78,42 +89,54 @@ export const VisitorList = props => (
             <EditButton />
         </Datagrid>
     </List>
-);
+));
 
 const VisitorTitle = ({ record }) =>
     record ? <FullNameField record={record} size={32} /> : null;
 
-export const VisitorEdit = props => (
+const editStyles = {
+    first_name: { display: 'inline-block' },
+    last_name: { display: 'inline-block', marginLeft: 32 },
+    email: { width: 544 },
+    address: { maxWidth: 544 },
+    zipcode: { display: 'inline-block' },
+    city: { display: 'inline-block', marginLeft: 32 },
+    comment: {
+        maxWidth: '20em',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+    },
+};
+
+export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
     <Edit title={<VisitorTitle />} {...props}>
         <TabbedForm>
             <FormTab label="resources.customers.tabs.identity">
                 <TextInput
                     source="first_name"
-                    style={{ display: 'inline-block' }}
+                    formClassName={classes.first_name}
                 />
                 <TextInput
                     source="last_name"
-                    style={{ display: 'inline-block', marginLeft: 32 }}
+                    formClassName={classes.last_name}
                 />
                 <TextInput
                     type="email"
                     source="email"
                     validation={{ email: true }}
                     options={{ fullWidth: true }}
-                    style={{ width: 544 }}
+                    formClassName={classes.email}
                 />
                 <DateInput source="birthday" />
             </FormTab>
             <FormTab label="resources.customers.tabs.address">
-                <LongTextInput source="address" style={{ maxWidth: 544 }} />
-                <TextInput
-                    source="zipcode"
-                    style={{ display: 'inline-block' }}
+                <LongTextInput
+                    source="address"
+                    formClassName={classes.address}
                 />
-                <TextInput
-                    source="city"
-                    style={{ display: 'inline-block', marginLeft: 32 }}
-                />
+                <TextInput source="zipcode" formClassName={classes.zipcode} />
+                <TextInput source="city" formClassName={classes.city} />
             </FormTab>
             <FormTab label="resources.customers.tabs.orders">
                 <ReferenceManyField
@@ -146,12 +169,7 @@ export const VisitorEdit = props => (
                         <StarRatingField />
                         <TextField
                             source="comment"
-                            style={{
-                                maxWidth: '20em',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                            }}
+                            cellClassName={classes.comment}
                         />
                         <EditButton style={{ padding: 0 }} />
                     </Datagrid>
@@ -175,7 +193,7 @@ export const VisitorEdit = props => (
             </FormTab>
         </TabbedForm>
     </Edit>
-);
+));
 
 const VisitorDeleteTitle = translate(({ record, translate }) => (
     <span>

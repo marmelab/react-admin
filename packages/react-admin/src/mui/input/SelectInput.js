@@ -10,6 +10,7 @@ import translate from '../../i18n/translate';
 import FieldTitle from '../../util/FieldTitle';
 
 const sanitizeRestProps = ({
+    addLabel,
     allowEmpty,
     basePath,
     choices,

@@ -12,6 +12,7 @@ import {
     TextInput,
 } from 'react-admin';
 import Icon from 'material-ui-icons/Bookmark';
+import withStyles from 'material-ui/styles/withStyles';
 
 import ThumbnailField from '../products/ThumbnailField';
 import ProductRefField from '../products/ProductRefField';
@@ -19,19 +20,23 @@ import LinkToRelatedProducts from './LinkToRelatedProducts';
 
 export const CategoryIcon = Icon;
 
-export const CategoryList = props => (
+const listStyles = {
+    name: { padding: '0 12px 0 25px' },
+};
+
+export const CategoryList = withStyles(listStyles)(({ classes, ...props }) => (
     <List {...props} sort={{ field: 'name', order: 'ASC' }}>
         <Datagrid>
-            <TextField source="name" style={{ padding: '0 12px 0 25px' }} />
+            <TextField source="name" className={classes.name} />
             <LinkToRelatedProducts />
             <EditButton />
         </Datagrid>
     </List>
-);
+));
 
 const CategoryTitle = translate(({ record, translate }) => (
     <span>
-        {translate('resources.categories.name', { smart_count: 1 })} "{record.name}"
+        {translate('resources.categories.name', { smart_count: 1 })} &quot;{record.name}&quot;
     </span>
 ));
 
