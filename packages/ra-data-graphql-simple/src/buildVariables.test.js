@@ -32,7 +32,7 @@ describe('buildVariables', () => {
 
             expect(
                 buildVariables(introspectionResult)(
-                    { type: { name: 'Post' } },
+                    { type: { name: 'Post', fields: [] } },
                     GET_LIST,
                     params,
                     {}
