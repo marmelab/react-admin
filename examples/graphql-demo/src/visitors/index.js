@@ -26,7 +26,8 @@ import NbItemsField from '../commands/NbItemsField';
 import ProductReferenceField from '../products/ProductReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
 import FullNameField from './FullNameField';
-import SegmentReferenceField from '../segments/SegmentReferenceField';
+import SegmentsField from './SegmentsField';
+import SegmentInput from './SegmentInput';
 
 export const VisitorIcon = Icon;
 
@@ -36,6 +37,7 @@ const VisitorFilter = props => (
         <DateInput source="last_seen_gte" />
         <NullableBooleanInput source="has_ordered" />
         <NullableBooleanInput source="has_newsletter" defaultValue />
+        <SegmentInput />
     </Filter>
 );
 
@@ -78,7 +80,7 @@ export const VisitorList = props => (
             />
             <DateField source="latest_purchase" showTime />
             <BooleanField source="has_newsletter" label="News." />
-            <SegmentReferenceField />
+            <SegmentsField />
             <EditButton />
         </Datagrid>
     </List>
@@ -111,7 +113,10 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                     source="first_name"
                     formClassName={classes.first_name}
                 />
-                <TextInput source="last_name" formClassName={classes.last_name} />
+                <TextInput
+                    source="last_name"
+                    formClassName={classes.last_name}
+                />
                 <TextInput
                     type="email"
                     source="email"

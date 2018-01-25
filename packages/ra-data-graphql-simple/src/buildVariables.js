@@ -8,6 +8,21 @@ import {
     DELETE,
 } from 'react-admin';
 
+import getFinalType from './getFinalType';
+import isList from './isList';
+
+const sanitizeValue = (type, value) => {
+    if (type.name === 'Int') {
+        return parseInt(value);
+    }
+
+    if (type.name === 'Float') {
+        return parseFloat(value);
+    }
+
+    return value;
+};
+
 const buildGetListVariables = introspectionResults => (
     resource,
     aorFetchType,
@@ -62,12 +77,28 @@ const buildGetListVariables = introspectionResults => (
             const resourceField = resource.type.fields.find(
                 f => f.name === parts[0]
             );
-            if (resourceField.type.name === 'Int') {
-                return { ...acc, [key]: parseInt(params.filter[key]) };
+            const type = getFinalType(resourceField.type);
+            return { ...acc, [key]: sanitizeValue(type, params.filter[key]) };
+        }
+
+        const resourceField = resource.type.fields.find(f => f.name === key);
+
+        if (resourceField) {
+            const type = getFinalType(resourceField.type);
+            const isAList = isList(resourceField.type);
+
+            if (isAList) {
+                return {
+                    ...acc,
+                    [key]: Array.isArray(params.filter[key])
+                        ? params.filter[key].map(value =>
+                              sanitizeValue(type, value)
+                          )
+                        : sanitizeValue(type, [params.filter[key]]),
+                };
             }
-            if (resourceField.type.name === 'Float') {
-                return { ...acc, [key]: parseFloat(params.filter[key]) };
-            }
+
+            return { ...acc, [key]: sanitizeValue(type, params.filter[key]) };
         }
 
         return { ...acc, [key]: params.filter[key] };

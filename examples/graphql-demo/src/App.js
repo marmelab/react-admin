@@ -30,7 +30,6 @@ import {
 } from './products';
 import { CategoryList, CategoryEdit, CategoryIcon } from './categories';
 import { ReviewList, ReviewEdit, ReviewIcon } from './reviews';
-import { SegmentList, SegmentIcon } from './segments';
 
 import fakeGraphQLServer from './graphqlServer';
 
@@ -114,11 +113,6 @@ class App extends Component {
                     edit={ReviewEdit}
                     remove={Delete}
                     icon={ReviewIcon}
-                />
-                <Resource
-                    name="Segment"
-                    list={SegmentList}
-                    icon={SegmentIcon}
                 />
                 <Resource name="CommandItem" />
             </Admin>
