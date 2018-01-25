@@ -9,21 +9,22 @@ import Table, {
 import { translate, ViewTitle } from 'react-admin';
 
 import LinkToRelatedCustomers from './LinkToRelatedCustomers';
+import segments from './data';
 
 export default translate(({ translate }) => (
     <Card>
-        <ViewTitle title={translate('resources.segments.name')} />
+        <ViewTitle title={translate('resources.Segment.name')} />
         <Table>
             <TableHead>
                 <TableRow>
                     <TableCell>
-                        {translate('resources.segments.fields.name')}
+                        {translate('resources.Segment.fields.name')}
                     </TableCell>
                     <TableCell />
                 </TableRow>
             </TableHead>
             <TableBody>
-                {[].map(segment => (
+                {segments.map(segment => (
                     <TableRow key={segment.id}>
                         <TableCell>{translate(segment.name)}</TableCell>
                         <TableCell>

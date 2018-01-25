@@ -16,7 +16,7 @@ const styles = {
     },
 };
 
-const LinkToRelatedCustomers = ({ classes, record, translate }) => (
+const LinkToRelatedCustomers = ({ classes, segment, translate }) => (
     <Button
         color="primary"
         component={Link}
@@ -25,7 +25,7 @@ const LinkToRelatedCustomers = ({ classes, record, translate }) => (
             search: stringify({
                 page: 1,
                 perPage: 25,
-                filter: JSON.stringify({ groups_some: { id: record.id } }),
+                filter: JSON.stringify({ groups: segment }),
             }),
         }}
         className={classes.link}

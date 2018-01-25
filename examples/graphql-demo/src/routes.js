@@ -4,6 +4,11 @@ import Configuration from './configuration/Configuration';
 import Segments from './segments/Segments';
 
 export default [
-    <Route exact path="/configuration" component={Configuration} />,
-    <Route exact path="/segments" component={Segments} />,
+    <Route
+        key="configuration"
+        exact
+        path="/configuration"
+        component={Configuration}
+    />,
+    <Route key="segments" exact path="/Segment" component={Segments} />,
 ];
