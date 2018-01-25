@@ -12,8 +12,9 @@ export const FieldTitle = ({
     label,
     isRequired,
     translate,
+    ...props
 }) => (
-    <span>
+    <span {...props}>
         {typeof label !== 'undefined'
             ? translate(label, { _: label })
             : typeof source !== 'undefined'

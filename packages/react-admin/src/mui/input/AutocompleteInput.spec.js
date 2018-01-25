@@ -13,7 +13,7 @@ describe('<AutocompleteInput />', () => {
         translate: x => x,
     };
 
-    it('should use a react Autosuggest', () => {
+    it('should use a Downshift component', () => {
         const wrapper = shallow(
             <AutocompleteInput
                 {...defaultProps}
@@ -21,11 +21,11 @@ describe('<AutocompleteInput />', () => {
                 choices={[{ id: 1, name: 'hello' }]}
             />
         );
-        const AutoCompleteElement = wrapper.find('Autosuggest');
-        assert.equal(AutoCompleteElement.length, 1);
+        const DownshiftElement = wrapper.find('Downshift');
+        assert.equal(DownshiftElement.length, 1);
     });
 
-    it('should use the input parameter value as the initial state and input searchText', () => {
+    it('should use the input parameter value as the initial state and inputValue searchText', () => {
         const wrapper = shallow(
             <AutocompleteInput
                 {...defaultProps}
@@ -33,26 +33,9 @@ describe('<AutocompleteInput />', () => {
                 choices={[{ id: 2, name: 'foo' }]}
             />
         );
-        const AutoCompleteElement = wrapper.find('Autosuggest').first();
-        assert.equal(AutoCompleteElement.prop('inputProps').value, 'foo');
+        const DownshiftElement = wrapper.find('Downshift').first();
+        assert.equal(DownshiftElement.prop('inputValue'), 'foo');
         assert.equal(wrapper.state('searchText'), 'foo');
-    });
-
-    it('should pass choices as suggestions', () => {
-        const wrapper = shallow(
-            <AutocompleteInput
-                {...defaultProps}
-                choices={[
-                    { id: 'M', name: 'Male' },
-                    { id: 'F', name: 'Female' },
-                ]}
-            />
-        );
-        const AutoCompleteElement = wrapper.find('Autosuggest').first();
-        assert.deepEqual(AutoCompleteElement.prop('suggestions'), [
-            { id: 'M', name: 'Male' },
-            { id: 'F', name: 'Female' },
-        ]);
     });
 
     it('should use optionValue as value identifier', () => {
@@ -64,8 +47,8 @@ describe('<AutocompleteInput />', () => {
                 choices={[{ foobar: 'M', name: 'Male' }]}
             />
         );
-        const AutoCompleteElement = wrapper.find('Autosuggest').first();
-        assert.equal(AutoCompleteElement.prop('inputProps').value, 'Male');
+        const DownshiftElement = wrapper.find('Autosuggest').first();
+        assert.equal(DownshiftElement.prop('inputProps').value, 'Male');
     });
 
     it('should use optionValue including "." as value identifier', () => {
@@ -77,8 +60,8 @@ describe('<AutocompleteInput />', () => {
                 choices={[{ foobar: { id: 'M' }, name: 'Male' }]}
             />
         );
-        const AutoCompleteElement = wrapper.find('Autosuggest').first();
-        assert.equal(AutoCompleteElement.prop('inputProps').value, 'Male');
+        const DownshiftElement = wrapper.find('Downshift').first();
+        assert.equal(DownshiftElement.prop('inputValue'), 'Male');
     });
 
     const context = {
@@ -169,8 +152,8 @@ describe('<AutocompleteInput />', () => {
                     meta={{ touched: false }}
                 />
             );
-            const AutoCompleteElement = wrapper.find('Autosuggest').first();
-            assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
+            const DownshiftElement = wrapper.find('Autosuggest').first();
+            assert.deepEqual(DownshiftElement.prop('inputProps').meta, {
                 touched: false,
             });
         });
@@ -182,8 +165,8 @@ describe('<AutocompleteInput />', () => {
                     meta={{ touched: true, error: false }}
                 />
             );
-            const AutoCompleteElement = wrapper.find('Autosuggest').first();
-            assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
+            const DownshiftElement = wrapper.find('Autosuggest').first();
+            assert.deepEqual(DownshiftElement.prop('inputProps').meta, {
                 touched: true,
                 error: false,
             });
@@ -196,8 +179,8 @@ describe('<AutocompleteInput />', () => {
                     meta={{ touched: true, error: 'Required field.' }}
                 />
             );
-            const AutoCompleteElement = wrapper.find('Autosuggest').first();
-            assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
+            const DownshiftElement = wrapper.find('Autosuggest').first();
+            assert.deepEqual(DownshiftElement.prop('inputProps').meta, {
                 touched: true,
                 error: 'Required field.',
             });
