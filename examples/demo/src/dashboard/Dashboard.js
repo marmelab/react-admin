@@ -21,13 +21,14 @@ class Dashboard extends Component {
     state = {};
 
     componentDidMount() {
-        const d = new Date();
-        d.setDate(d.getDate() - 30);
+        const aMonthAgo = new Date();
+        aMonthAgo.setDate(aMonthAgo.getDate() - 30);
+
         dataProviderFactory(
             process.env.REACT_APP_DATA_PROVIDER
         ).then(dataProvider => {
             dataProvider(GET_LIST, 'commands', {
-                filter: { date_gte: d.toISOString() },
+                filter: { date_gte: aMonthAgo.toISOString() },
                 sort: { field: 'date', order: 'DESC' },
                 pagination: { page: 1, perPage: 50 },
             })
@@ -109,7 +110,10 @@ class Dashboard extends Component {
                 );
 
             dataProvider(GET_LIST, 'customers', {
-                filter: { has_ordered: true, first_seen_gte: d.toISOString() },
+                filter: {
+                    has_ordered: true,
+                    first_seen_gte: aMonthAgo.toISOString(),
+                },
                 sort: { field: 'first_seen', order: 'DESC' },
                 pagination: { page: 1, perPage: 100 },
             })
