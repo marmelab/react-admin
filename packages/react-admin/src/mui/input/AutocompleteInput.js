@@ -110,24 +110,22 @@ export class AutocompleteInput extends React.Component {
         const { choices, input } = nextProps;
         if (input.value !== this.props.input.value) {
             const selectedItem = this.getSelectedItem(nextProps);
-            this.setState(({ dirty, searchText }) => ({
+            this.setState({
                 selectedItem,
-                searchText:
-                    dirty && !input.value
-                        ? searchText
-                        : this.getSuggestionText(selectedItem),
-                dirty: dirty && !input.value ? dirty : false,
+                searchText: this.getSuggestionText(selectedItem),
+                dirty: false,
                 suggestions: selectedItem ? [selectedItem] : this.props.choices,
-            }));
-        }
-        if (choices !== this.props.choices) {
+                prevSuggestions: false,
+            });
+        } else if (choices !== this.props.choices) {
             const selectedItem = this.getSelectedItem(nextProps);
             this.setState(({ dirty, searchText }) => ({
                 selectedItem,
                 searchText: dirty
                     ? searchText
                     : this.getSuggestionText(selectedItem),
-                suggestions: choices,
+                suggestions: !dirty && selectedItem ? [selectedItem] : choices,
+                prevSuggestions: false,
             }));
         }
     }
@@ -157,7 +155,11 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleSuggestionSelected = (event, { suggestion, method }) => {
-        this.props.input.onChange(this.getSuggestionValue(suggestion));
+        const { input } = this.props;
+
+        input &&
+            input.onChange &&
+            input.onChange(this.getSuggestionValue(suggestion));
 
         this.setState({
             dirty: false,
@@ -170,29 +172,60 @@ export class AutocompleteInput extends React.Component {
         }
     };
 
-    handleSuggestionsFetchRequested = ({ value: inputValue }) => {
-        const { dirty, searchText, suggestions } = this.state;
-        const { setFilter, choices } = this.props;
-
-        const changed = inputValue !== searchText;
-        this.setState({
-            searchText: inputValue,
-            dirty: changed ? true : dirty,
-            suggestions: changed
-                ? choices
-                : suggestions.length === 0 ? choices : suggestions,
-        });
-        changed && setFilter && setFilter(inputValue);
+    handleSuggestionsFetchRequested = () => {
+        this.setState(({ suggestions, prevSuggestions }) => ({
+            suggestions: prevSuggestions ? prevSuggestions : suggestions,
+        }));
     };
 
     handleSuggestionsClearRequested = () => {
-        this.setState({ suggestions: [] });
+        this.setState(prevState => ({
+            suggestions: [],
+            prevSuggestions: prevState.suggestions,
+        }));
     };
 
-    handleChange = () => {
-        this.props.allowEmpty &&
-            this.props.input.value &&
-            this.props.input.onChange(null);
+    handleMatchSuggestionOrFilter = inputValue => {
+        const { choices, inputValueMatcher, input, setFilter } = this.props;
+
+        const match =
+            inputValue &&
+            choices.find(it =>
+                inputValueMatcher(inputValue, it, this.getSuggestionText)
+            );
+        if (match) {
+            const nextId = this.getSuggestionValue(match);
+            if (input.value !== nextId) {
+                input.onChange(this.getSuggestionValue(match));
+                this.setState({
+                    suggestions: [match],
+                    searchText: this.getSuggestionText(match), // The searchText could be whatever the inputvalue matcher likes, so sanitize it
+                });
+            } else {
+                this.setState({
+                    dirty: false,
+                    suggestions: [match],
+                    searchText: this.getSuggestionText(match),
+                });
+            }
+        } else {
+            this.setState({
+                dirty: true,
+                searchText: inputValue,
+            });
+            setFilter && setFilter(inputValue);
+        }
+    };
+
+    handleChange = (event, { newValue, method }) => {
+        switch (method) {
+            case 'type':
+            case 'escape':
+                {
+                    this.handleMatchSuggestionOrFilter(newValue);
+                }
+                break;
+        }
     };
 
     renderInput = inputProps => {
@@ -286,14 +319,27 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleBlur = () => {
-        this.input && this.input.onBlur && this.input.onBlur(this.input.value);
-        this.setState({
-            dirty: false,
-            searchText: this.getSuggestionText(this.state.selectedItem),
-        });
+        const { dirty, searchText, selectedItem } = this.state;
+        const { allowEmpty, input } = this.props;
+        if (dirty) {
+            if (searchText === '' && allowEmpty) {
+                input && input.onBlur && input.onBlur(null);
+            } else {
+                input && input.onBlur && input.onBlur(input.value);
+                this.setState({
+                    dirty: false,
+                    searchText: this.getSuggestionText(selectedItem),
+                });
+            }
+        } else {
+            input && input.onBlur && input.onBlur(input.value);
+        }
     };
 
-    handleFocus = () => {};
+    handleFocus = () => {
+        const { input } = this.props;
+        input && input.onFocus && input.onFocus();
+    };
 
     shouldRenderSuggestions = () => true;
 
@@ -373,6 +419,9 @@ AutocompleteInput.propTypes = {
     selectedItem: PropTypes.object,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
+    disableInputValueMatching: PropTypes.bool,
+    inputValueMatcher: PropTypes.func,
+    inputValueMatchDelay: PropTypes.number,
 };
 
 AutocompleteInput.defaultProps = {
@@ -381,6 +430,13 @@ AutocompleteInput.defaultProps = {
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
+    disableInputValueMatching: false,
+    inputValueMatcher: (input, suggestion, getOptionText) =>
+        input.toLowerCase().trim() ===
+        getOptionText(suggestion)
+            .toLowerCase()
+            .trim(),
+    inputValueMatchDelay: 500,
 };
 
 export default compose(addField, translate, withStyles(styles))(

@@ -237,21 +237,30 @@ describe('<AutocompleteInput />', () => {
             });
             expect(wrapper.state('searchText')).toBe('foo');
         });
-        it('should allow input value to be cleared when allowEmpty is true', () => {
-            const onChange = jest.fn();
+        it('should allow input value to be cleared when allowEmpty is true and input text is empty', () => {
+            const onBlur = jest.fn();
             const wrapper = mount(
                 <AutocompleteInput
                     {...defaultProps}
                     allowEmpty
-                    input={{ value: 'M', onChange }}
+                    input={{ value: 'M', onBlur }}
                     choices={[{ id: 'M', name: 'Male' }]}
                 />
             );
             wrapper
                 .find('input')
                 .simulate('change', { target: { value: 'foo' } });
-            expect(onChange).toHaveBeenCalledTimes(1);
-            expect(onChange).toHaveBeenCalledWith(null);
+
+            wrapper.find('input').simulate('blur');
+            expect(onBlur).toHaveBeenCalledTimes(1);
+            expect(onBlur).toHaveBeenLastCalledWith('M');
+
+            expect(wrapper.state('searchText')).toBe('Male');
+            wrapper.find('input').simulate('change', { target: { value: '' } });
+            wrapper.find('input').simulate('blur');
+            expect(wrapper.state('searchText')).toBe('');
+            expect(onBlur).toHaveBeenCalledTimes(2);
+            expect(onBlur).toHaveBeenLastCalledWith(null);
         });
         it('should revert the searchText when allowEmpty is false', () => {
             const wrapper = mount(
@@ -280,6 +289,24 @@ describe('<AutocompleteInput />', () => {
             });
             wrapper.find('input').simulate('focus');
             expect(wrapper.find('ListItem')).toHaveLength(2);
+        });
+        it('should resolve value from input value', () => {
+            const onChange = jest.fn();
+            const wrapper = mount(
+                <AutocompleteInput
+                    {...defaultProps}
+                    input={{ value: '', onChange }}
+                />
+            );
+            wrapper.setProps({
+                choices: [{ id: 'M', name: 'Male' }],
+            });
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'male' } });
+            expect(wrapper.state('searchText')).toBe('Male');
+            expect(onChange).toHaveBeenCalledTimes(1);
+            expect(onChange).toHaveBeenCalledWith('M');
         });
     });
 
