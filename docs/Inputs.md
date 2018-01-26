@@ -509,7 +509,7 @@ import { RadioButtonGroupInput, ReferenceInput } from 'react-admin'
 
 ## `<ReferenceInput>`
 
-Use `<ReferenceInput>` for foreign-key values, i.e. to let users choose a value from another REST endpoint. This component fetches the possible values in the reference resource (using the `GET_LIST` REST method), then delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
+Use `<ReferenceInput>` for foreign-key values, i.e. to let users choose a value from another REST endpoint. This component fetches the possible values in the reference resource (using the `GET_LIST` REST method) and the referenced record (using the `GET_ONE` REST method), then delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute and the referenced record as `selectedItem`.
 
 This means you can use `<ReferenceInput>` with any of [`<SelectInput>`](#selectinput), [`<AutocompleteInput>`](#autocompleteinput), or [`<RadioButtonGroupInput>`](#radiobuttongroupinput), or even with the component of your choice, provided it supports the `choices` attribute.
 
@@ -600,6 +600,7 @@ The enclosed component may further filter results (that's the case, for instance
     <SelectInput optionText="title" />
 </ReferenceInput>
 ```
+  
 
 ## `<RichTextInput>`
 
