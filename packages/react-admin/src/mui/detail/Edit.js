@@ -30,6 +30,7 @@ const sanitizeRestProps = ({
     hasShow,
     id,
     isLoading,
+    resetForm,
     resource,
     title,
     translate,
