@@ -122,12 +122,12 @@ export class AutocompleteInput extends React.Component {
         }
         if (choices !== this.props.choices) {
             const selectedItem = this.getSelectedItem(nextProps);
-            this.setState(({ dirty, searchText, suggestions }) => ({
+            this.setState(({ dirty, searchText }) => ({
                 selectedItem,
                 searchText: dirty
                     ? searchText
                     : this.getSuggestionText(selectedItem),
-                suggestions: dirty ? choices : suggestions,
+                suggestions: choices,
             }));
         }
     }
