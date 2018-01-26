@@ -78,11 +78,7 @@ export class SelectArrayInput extends Component {
         }
     };
 
-    handleBlur = () => {
-        const extracted = this.extractIds(this.state.values);
-        this.props.onBlur(extracted);
-        this.props.input.onBlur(extracted);
-    };
+    handleBlur = () => {};
 
     handleFocus = () => {
         const extracted = this.extractIds(this.state.values);
@@ -92,14 +88,12 @@ export class SelectArrayInput extends Component {
 
     handleAdd = newValue => {
         const values = [...this.state.values, newValue];
-        this.setState({ values });
-        this.handleChange(values);
+        this.setState({ values }, this.handleChange(values));
     };
 
     handleDelete = newValue => {
         const values = this.state.values.filter(v => v.value !== newValue);
-        this.setState({ values });
-        this.handleChange(values);
+        this.setState({ values }, this.handleChange(values));
     };
 
     handleChange = eventOrValue => {
@@ -180,6 +174,8 @@ export class SelectArrayInput extends Component {
             <ChipInput
                 {...input}
                 value={this.state.values}
+                // Override onBlur so that redux-form does not try to handle it and miss
+                // updates from onRequestAdd
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
                 onClick={this.handleFocus}
