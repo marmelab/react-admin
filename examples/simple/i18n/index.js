@@ -1,2 +1,5 @@
-export en from './en';
-export fr from './fr';
+import enMessages from './en';
+import frMessages from './fr';
+
+export const en = enMessages;
+export const fr = frMessages;

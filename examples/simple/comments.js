@@ -34,7 +34,8 @@ import ChevronLeft from 'material-ui-icons/ChevronLeft';
 import ChevronRight from 'material-ui-icons/ChevronRight';
 import Grid from 'material-ui/Grid';
 import { withStyles } from 'material-ui/styles';
-export CommentIcon from 'material-ui-icons/ChatBubble';
+import ChatBubbleIcon from 'material-ui-icons/ChatBubble';
+export const CommentIcon = ChatBubbleIcon;
 
 const CommentFilter = ({ ...props }) => (
     <Filter {...props}>
