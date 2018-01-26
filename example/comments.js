@@ -30,9 +30,11 @@ import Avatar from 'material-ui/Avatar';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
+
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-export CommentIcon from 'material-ui/svg-icons/communication/chat-bubble';
+import ChatBubbleIcon from 'material-ui/svg-icons/communication/chat-bubble';
+export const CommentIcon = ChatBubbleIcon;
 
 const CommentFilter = ({ ...props }) => (
     <Filter {...props}>

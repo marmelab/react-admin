@@ -47,7 +47,8 @@ import {
 import RichTextInput from 'aor-rich-text-input';
 import Chip from 'material-ui/Chip';
 
-export PostIcon from 'material-ui/svg-icons/action/book';
+import BookIcon from 'material-ui/svg-icons/action/book';
+export const PostIcon = BookIcon;
 
 const QuickFilter = translate(({ label, translate }) => (
     <Chip style={{ marginBottom: 8 }}>{translate(label)}</Chip>

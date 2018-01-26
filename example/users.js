@@ -25,7 +25,8 @@ import {
     translate,
 } from 'admin-on-rest'; // eslint-disable-line import/no-unresolved
 
-export UserIcon from 'material-ui/svg-icons/social/people';
+import PeopleIcon from 'material-ui/svg-icons/social/people';
+export const UserIcon = PeopleIcon;
 
 const UserFilter = ({ ...props }) => (
     <Filter {...props}>

@@ -224,7 +224,6 @@ When displaying the posts list, the app now fetches related user records, and di
 
 ## Creation and Editing
 
-
 An admin interface is about displaying remote data, but also about editing and creating. Admin-on-REST provides `<Create>` and `<Edit>` components for that purpose. Add them to the `posts` script:
 
 ```jsx
