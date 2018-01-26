@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import assert from 'assert';
-import { shallow, render } from 'enzyme';
+import { shallow, render, mount } from 'enzyme';
 
 import { AutocompleteInput } from './AutocompleteInput';
 
@@ -38,7 +38,7 @@ describe('<AutocompleteInput />', () => {
         assert.equal(wrapper.state('searchText'), 'foo');
     });
 
-    it('should pass choices as suggestions', () => {
+    it('should extract suggestions from choices', () => {
         const wrapper = shallow(
             <AutocompleteInput
                 {...defaultProps}
@@ -48,8 +48,7 @@ describe('<AutocompleteInput />', () => {
                 ]}
             />
         );
-        const AutoCompleteElement = wrapper.find('Autosuggest').first();
-        assert.deepEqual(AutoCompleteElement.prop('suggestions'), [
+        expect(wrapper.state('suggestions')).toEqual([
             { id: 'M', name: 'Male' },
             { id: 'F', name: 'Female' },
         ]);
@@ -159,6 +158,116 @@ describe('<AutocompleteInput />', () => {
         );
         const MenuItem = wrapper.find('div[role="menuitem"]').first();
         assert.equal(MenuItem.text(), 'Male');
+    });
+
+    describe('Fix issue #1410', () => {
+        it('should not fail when value is null and new choices are applied', () => {
+            const wrapper = shallow(
+                <AutocompleteInput
+                    {...defaultProps}
+                    input={{ value: null }}
+                    choices={[{ id: 'M', name: 'Male' }]}
+                />
+            );
+            wrapper.setProps({
+                choices: [{ id: 'M', name: 'Male' }],
+            });
+            expect(wrapper.state('searchText')).toBe('');
+        });
+        it('should repopulate the suggestions after the suggestions are dismissed', () => {
+            const wrapper = mount(
+                <AutocompleteInput
+                    {...defaultProps}
+                    input={{ value: null }}
+                    choices={[{ id: 'M', name: 'Male' }]}
+                    alwaysRenderSuggestions
+                />
+            );
+            wrapper.find('input').simulate('focus');
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'foo' } });
+            expect(wrapper.state('searchText')).toBe('foo');
+            wrapper.find('input').simulate('blur');
+            expect(wrapper.state('suggestions')).toHaveLength(0);
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'foo' } });
+            expect(wrapper.state('suggestions')).toHaveLength(1);
+        });
+        it('should allow optionText to be a function', () => {
+            const optionText = jest.fn();
+            mount(
+                <AutocompleteInput
+                    {...defaultProps}
+                    input={{ value: 'M' }}
+                    choices={[{ id: 'M', name: 'Male' }]}
+                    optionText={v => {
+                        optionText(v);
+                        return v.name;
+                    }}
+                />
+            );
+            expect(optionText).toHaveBeenCalledTimes(1);
+            expect(optionText).toHaveBeenCalledWith({ id: 'M', name: 'Male' });
+        });
+        it('should not rerender searchtext while having focus and new choices arrive', () => {
+            const optionText = jest.fn();
+            const wrapper = mount(
+                <AutocompleteInput
+                    {...defaultProps}
+                    input={{ value: 'M' }}
+                    meta={{ active: true }}
+                    choices={[{ id: 'M', name: 'Male' }]}
+                    optionText={v => {
+                        optionText(v);
+                        return v.name;
+                    }}
+                />
+            );
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'foo' } });
+
+            wrapper.setProps({
+                choices: [
+                    { id: 'M', name: 'Male' },
+                    { id: 'F', name: 'Female' },
+                ],
+            });
+            expect(wrapper.state('searchText')).toBe('foo');
+        });
+        it('should allow input value to be cleared when allowEmpty is true', () => {
+            const onChange = jest.fn();
+            const wrapper = mount(
+                <AutocompleteInput
+                    {...defaultProps}
+                    allowEmpty
+                    input={{ value: 'M', onChange }}
+                    choices={[{ id: 'M', name: 'Male' }]}
+                />
+            );
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'foo' } });
+            expect(onChange).toHaveBeenCalledTimes(1);
+            expect(onChange).toHaveBeenCalledWith(null);
+        });
+        it('should revert the searchText when allowEmpty is false', () => {
+            const wrapper = mount(
+                <AutocompleteInput
+                    {...defaultProps}
+                    input={{ value: 'M' }}
+                    choices={[{ id: 'M', name: 'Male' }]}
+                />
+            );
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'foo' } });
+            expect(wrapper.state('searchText')).toBe('foo');
+            wrapper.find('input').simulate('blur');
+            expect(wrapper.state('searchText')).toBe('Male');
+        });
     });
 
     describe('error message', () => {

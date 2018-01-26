@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
-import isEqual from 'lodash.isequal';
 import Autosuggest from 'react-autosuggest';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
@@ -10,6 +9,7 @@ import { withStyles } from 'material-ui/styles';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import compose from 'recompose/compose';
+import classnames from 'classnames';
 
 import FieldTitle from '../../util/FieldTitle';
 import addField from '../form/addField';
@@ -91,54 +91,71 @@ const styles = theme => ({
  */
 export class AutocompleteInput extends React.Component {
     state = {
+        dirty: false,
         searchText: '',
-        currentValueSuggestion: null,
+        selectedItem: null,
         suggestions: [],
     };
 
     componentWillMount() {
-        const { choices } = this.props;
-        this.updateDisplayedText();
+        const selectedItem = this.getSelectedItem();
         this.setState({
-            suggestions: choices,
+            selectedItem,
+            searchText: this.getSuggestionText(selectedItem),
+            suggestions: selectedItem ? [selectedItem] : this.props.choices,
         });
     }
 
     componentWillReceiveProps(nextProps) {
         const { choices, input } = nextProps;
 
-        if (input.value !== this.props.input.value && input.value) {
-            this.updateDisplayedText(nextProps, true);
+        if (input.value !== this.props.input.value) {
+            const selectedItem = this.getSelectedItem(nextProps);
+            this.setState(({ dirty, searchText }) => ({
+                selectedItem,
+                searchText:
+                    dirty && !input.value
+                        ? searchText
+                        : this.getSuggestionText(selectedItem),
+                dirty: dirty && !input.value ? dirty : false,
+                suggestions: selectedItem ? [selectedItem] : this.props.choices,
+            }));
         }
-        if (!isEqual(choices, this.props.choices)) {
-            this.updateDisplayedText(nextProps);
-
-            this.setState({
-                suggestions: choices,
-            });
+        if (choices !== this.props.choices) {
+            if (!this.state.selectedItem) {
+                // SelectedItem needs to be resolved from the choices
+                const selectedItem = this.getSelectedItem(nextProps);
+                this.setState(({ dirty, searchText, suggestions }) => ({
+                    selectedItem,
+                    searchText: dirty
+                        ? searchText
+                        : this.getSuggestionText(selectedItem),
+                    suggestions:
+                        dirty && Array.isArray(choices) ? choices : suggestions,
+                }));
+            } else {
+                this.setState(({ dirty, suggestions }) => ({
+                    suggestions:
+                        dirty && Array.isArray(choices) ? choices : suggestions,
+                }));
+            }
         }
     }
 
-    updateDisplayedText = (nextProps = this.props, forceUpdate = false) => {
-        const choice = this.getSelectedChoice(nextProps);
-        this.setState(({ initializedSearchText, searchText }) => ({
-            searchText:
-                (!initializedSearchText || forceUpdate) && choice
-                    ? this.getSuggestionValue(choice)
-                    : searchText,
-            // If no choice is currently available (because of async choices), flag to expect it later
-            initializedSearchText:
-                !!choice || (initializedSearchText && !forceUpdate),
-            currentValueSuggestion: choice ? [choice] : null,
-        }));
-    };
+    getSelectedItem = ({ selectedItem, choices, input } = this.props) =>
+        selectedItem
+            ? selectedItem
+            : choices && input.value
+              ? choices.find(
+                    choice => this.getSuggestionValue(choice) === input.value
+                )
+              : null;
 
-    getSelectedChoice = ({ choices, input, optionValue }) =>
-        choices && input.value
-            ? choices.find(choice => get(choice, optionValue) === input.value)
-            : null;
+    getSuggestionValue = suggestion => get(suggestion, this.props.optionValue);
 
-    getSuggestionValue = suggestion => {
+    getSuggestionText = suggestion => {
+        if (!suggestion) return '';
+
         const { optionText, translate, translateChoice } = this.props;
         const suggestionLabel =
             typeof optionText === 'function'
@@ -150,30 +167,29 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleSuggestionSelected = (event, { suggestion, method }) => {
-        this.props.input.onChange(get(suggestion, this.props.optionValue));
+        this.props.input.onChange(this.getSuggestionValue(suggestion));
         this.setState({
-            currentValueSuggestion: [suggestion], // Make sure this is the only selectable option from now on
+            dirty: false,
+            selectedItem: suggestion,
+            searchText: this.getSuggestionText(suggestion),
+            suggestions: [suggestion],
         });
         if (method === 'enter') {
             event.preventDefault();
         }
     };
 
-    handleSuggestionsFetchRequested = ({ value: searchText }) => {
-        const searchTextUpdated = this.state.searchText !== searchText;
+    handleSuggestionsFetchRequested = ({ value: inputValue }) => {
+        const { searchText } = this.state;
+        const { setFilter } = this.props;
 
-        this.setState(({ currentValueSuggestion }) => ({
-            currentValueSuggestion: !searchTextUpdated
-                ? currentValueSuggestion
-                : null,
-            suggestions:
-                !searchTextUpdated && currentValueSuggestion
-                    ? currentValueSuggestion
-                    : this.props.choices,
-        }));
-        if (searchTextUpdated) {
-            const { setFilter } = this.props;
-            setFilter && setFilter(searchText);
+        if (inputValue !== searchText) {
+            this.setState({
+                searchText: inputValue,
+                dirty: true,
+                suggestions: this.props.choices,
+            });
+            setFilter && setFilter(inputValue);
         }
     };
 
@@ -181,17 +197,16 @@ export class AutocompleteInput extends React.Component {
         this.setState({ suggestions: [] });
     };
 
-    handleChange = (event, { newValue }) => {
-        this.setState({
-            suggesting: true,
-            searchText: newValue,
-            initializedSearchText: true, // Make sure it's not updated by a delayed choices fetch
-        });
+    handleChange = () => {
+        this.props.allowEmpty &&
+            this.props.input.value &&
+            this.props.input.onChange(null);
     };
 
     renderInput = inputProps => {
         const {
             autoFocus,
+            className,
             classes = {},
             isRequired,
             label,
@@ -209,7 +224,6 @@ export class AutocompleteInput extends React.Component {
             );
         }
         const { touched, error } = meta;
-
         return (
             <TextField
                 label={
@@ -224,7 +238,7 @@ export class AutocompleteInput extends React.Component {
                 onChange={onChange}
                 autoFocus={autoFocus}
                 margin="normal"
-                className={classes.root}
+                className={classnames(classes.root, className)}
                 inputRef={ref}
                 error={!!(touched && error)}
                 helperText={touched && error}
@@ -249,7 +263,7 @@ export class AutocompleteInput extends React.Component {
     };
 
     renderSuggestion = (suggestion, { query, isHighlighted }) => {
-        const label = this.getSuggestionValue(suggestion);
+        const label = this.getSuggestionText(suggestion);
         const matches = match(label, query);
         const parts = parse(label, matches);
         const { classes = {} } = this.props;
@@ -279,6 +293,16 @@ export class AutocompleteInput extends React.Component {
         );
     };
 
+    handleBlur = () => {
+        this.input && this.input.onBlur && this.input.onBlur(this.input.value);
+        this.setState({
+            dirty: false,
+            searchText: this.getSuggestionText(this.state.selectedItem),
+        });
+    };
+
+    handleFocus = () => {};
+
     shouldRenderSuggestions = () => true;
 
     render() {
@@ -290,6 +314,8 @@ export class AutocompleteInput extends React.Component {
             meta,
             resource,
             source,
+            className,
+            InputProps,
         } = this.props;
         const { suggestions, searchText } = this.state;
 
@@ -312,10 +338,11 @@ export class AutocompleteInput extends React.Component {
                     this.handleSuggestionsClearRequested
                 }
                 renderSuggestionsContainer={this.renderSuggestionsContainer}
-                getSuggestionValue={this.getSuggestionValue}
+                getSuggestionValue={this.getSuggestionText}
                 renderSuggestion={this.renderSuggestion}
                 shouldRenderSuggestions={this.shouldRenderSuggestions}
                 inputProps={{
+                    className,
                     classes,
                     isRequired,
                     label,
@@ -324,6 +351,9 @@ export class AutocompleteInput extends React.Component {
                     resource,
                     source,
                     value: searchText,
+                    onBlur: this.handleBlur,
+                    onFocus: this.handleFocus,
+                    ...InputProps,
                 }}
             />
         );
@@ -331,9 +361,12 @@ export class AutocompleteInput extends React.Component {
 }
 
 AutocompleteInput.propTypes = {
+    allowEmpty: PropTypes.bool,
     alwaysRenderSuggestions: PropTypes.bool, // used only for unit tests
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
+    className: PropTypes.string,
+    InputProps: PropTypes.object,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
@@ -345,6 +378,7 @@ AutocompleteInput.propTypes = {
     resource: PropTypes.string,
     setFilter: PropTypes.func,
     source: PropTypes.string,
+    selectedItem: PropTypes.object,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
 };
