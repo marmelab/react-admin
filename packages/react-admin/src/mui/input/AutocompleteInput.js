@@ -10,6 +10,8 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
+import warning from 'warning';
+
 import FieldTitle from '../../util/FieldTitle';
 import addField from '../form/addField';
 import translate from '../../i18n/translate';
@@ -145,9 +147,16 @@ export class AutocompleteInput extends React.Component {
             typeof optionText === 'function'
                 ? optionText(suggestion)
                 : get(suggestion, optionText);
-        return translateChoice
+        const result = translateChoice
             ? translate(suggestionLabel, { _: suggestionLabel })
             : suggestionLabel;
+
+        if (!(typeof result === 'string')) {
+            warning(`The optionText resolved from a suggestion should always be a string! 
+                Please check you code. If you want to render a customized container for the suggestion, 
+                please use the 'optionComponent' prop.`);
+        }
+        return result;
     };
 
     mapSearchTextToInputValue = searchText => {

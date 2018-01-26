@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Typography from 'material-ui/Typography';
+
 import assert from 'assert';
 import { mount, shallow, render } from 'enzyme';
 
@@ -304,6 +306,43 @@ describe('<AutocompleteInput />', () => {
                     .find('input')
                     .simulate('change', { target: { value: 'bar' } });
                 expect(setFilter).toHaveBeenCalledTimes(1);
+            });
+        });
+        describe('optionComponent', () => {
+            it('should receive suggestion record in optionComponent props', () => {
+                const optionComponent = jest.fn();
+                mount(
+                    <AutocompleteInput
+                        {...defaultProps}
+                        optionComponent={props => {
+                            optionComponent(props);
+                            return <div {...props} />;
+                        }}
+                        input={{ value: 1 }}
+                        choices={[{ id: 1, name: 'Airplane' }]}
+                        isOpen
+                    />
+                );
+                expect(optionComponent).toHaveBeenCalledTimes(1);
+                expect(optionComponent).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        suggestion: { id: 1, name: 'Airplane' },
+                    })
+                );
+            });
+            it('should render the optionComponent when supplied', () => {
+                const wrapper = mount(
+                    <AutocompleteInput
+                        {...defaultProps}
+                        optionComponent={({ suggestion, ...props }) => (
+                            <Typography {...props} />
+                        )}
+                        input={{ value: 1 }}
+                        choices={[{ id: 1, name: 'Airplane' }]}
+                        isOpen
+                    />
+                );
+                expect(wrapper.find('Typography')).toHaveLength(1);
             });
         });
     });
