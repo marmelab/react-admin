@@ -11,7 +11,11 @@ const formStyle = { padding: '0 1em 3em 1em' };
 
 export class SimpleForm extends Component {
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
-        this.props.handleSubmit(values => this.props.save(values, redirect));
+        // Ensure we don't pass our internal __aor_version__ used
+        // for refresh in the values
+        this.props.handleSubmit(({ __aor_version__, ...values }) =>
+            this.props.save(values, redirect)
+        );
 
     render() {
         const {
@@ -71,7 +75,11 @@ SimpleForm.defaultProps = {
 
 const enhance = compose(
     connect((state, props) => ({
-        initialValues: getDefaultValues(state, props),
+        initialValues: {
+            // Adds the version to force redux-form to reinitialize on refresh
+            __aor_version__: props.version,
+            ...getDefaultValues(state, props),
+        },
     })),
     reduxForm({
         form: 'record-form',
