@@ -15,10 +15,10 @@ run-tutorial: build ## run the tutorial example
 	@cd examples/tutorial && yarn start
 
 run-demo: build ## run the demo example
-	@cd examples/demo && yarn start
+	@cd examples/demo && REACT_APP_DATA_PROVIDER=rest yarn start
 
 run-graphql-demo: build ## run the demo example
-	@cd examples/graphql-demo && yarn start
+	@cd examples/demo && REACT_APP_DATA_PROVIDER=graphql yarn start
 
 run-graphcool-demo: build ## run the demo example
 	@cd examples/graphcool-demo && yarn start

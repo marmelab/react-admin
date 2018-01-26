@@ -30,8 +30,8 @@ import {
 import { CategoryList, CategoryEdit, CategoryIcon } from './categories';
 import { ReviewList, ReviewEdit, ReviewIcon } from './reviews';
 
-import dataProvider from './dataProvider';
-import fakeRestServer from './restServer';
+import dataProviderFactory from './dataProvider';
+import fakeServerFactory from './fakeServer';
 
 const i18nProvider = locale => {
     if (locale === 'fr') {
@@ -43,8 +43,18 @@ const i18nProvider = locale => {
 };
 
 class App extends Component {
-    componentWillMount() {
-        this.restoreFetch = fakeRestServer();
+    state = { dataProvider: null };
+
+    async componentWillMount() {
+        this.restoreFetch = await fakeServerFactory(
+            process.env.REACT_APP_DATA_PROVIDER
+        );
+
+        const dataProvider = await dataProviderFactory(
+            process.env.REACT_APP_DATA_PROVIDER
+        );
+
+        this.setState({ dataProvider });
     }
 
     componentWillUnmount() {
@@ -52,6 +62,12 @@ class App extends Component {
     }
 
     render() {
+        const { dataProvider } = this.state;
+
+        if (!dataProvider) {
+            return <div>Loading</div>;
+        }
+
         return (
             <Admin
                 title="Posters Galore Admin"

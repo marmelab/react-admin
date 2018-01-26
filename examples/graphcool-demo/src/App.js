@@ -4,7 +4,7 @@ import { Admin, Delete, Resource } from 'react-admin';
 
 import './App.css';
 
-import buildApolloDataProvider from './aorApolloClient';
+import buildDataProvider from './dataProvider';
 import authClient from './authClient';
 import sagas from './sagas';
 import themeReducer from './themeReducer';
@@ -45,7 +45,7 @@ class App extends Component {
     state = { dataProvider: null };
 
     async componentWillMount() {
-        const dataProvider = await buildApolloDataProvider();
+        const dataProvider = await buildDataProvider();
         this.setState({ dataProvider });
     }
 

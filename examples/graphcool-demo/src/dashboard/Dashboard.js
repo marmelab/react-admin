@@ -7,7 +7,7 @@ import NbNewOrders from './NbNewOrders';
 import PendingOrders from './PendingOrders';
 import PendingReviews from './PendingReviews';
 import NewCustomers from './NewCustomers';
-import buildApolloDataProvider from '../aorApolloClient';
+import buildDataProvider from '../dataProvider';
 
 const styles = {
     welcome: { marginBottom: '2em' },
@@ -21,11 +21,11 @@ class Dashboard extends Component {
     state = {};
 
     componentDidMount() {
-        const d = new Date();
-        d.setDate(d.getDate() - 30);
-        buildApolloDataProvider().then(dataProvider => {
+        const aMonthAgo = new Date();
+        aMonthAgo.setDate(aMonthAgo.getDate() - 30);
+        buildDataProvider().then(dataProvider => {
             dataProvider(GET_LIST, 'Command', {
-                filter: { date_gte: d.toISOString() },
+                filter: { date_gte: aMonthAgo.toISOString() },
                 sort: { field: 'date', order: 'DESC' },
                 pagination: { page: 1, perPage: 50 },
             })
@@ -107,7 +107,10 @@ class Dashboard extends Component {
                 );
 
             dataProvider(GET_LIST, 'Customer', {
-                filter: { hasOrdered: true, firstSeen_gte: d.toISOString() },
+                filter: {
+                    hasOrdered: true,
+                    firstSeen_gte: aMonthAgo.toISOString(),
+                },
                 sort: { field: 'firstSeen', order: 'DESC' },
                 pagination: { page: 1, perPage: 100 },
             })

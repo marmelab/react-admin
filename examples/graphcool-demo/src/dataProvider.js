@@ -42,6 +42,8 @@ const getOneCommandQuery = gql`
 export default () =>
     buildApolloClient({
         client,
+        // We need to override the default Command query because we
+        // to get the deeply nested products inside basket
         override: {
             Command: {
                 GET_ONE: () => ({

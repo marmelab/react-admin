@@ -1,6 +1,6 @@
-import fetchMock from 'fetch-mock';
 import JsonGraphqlServer from 'json-graphql-server';
 import generateData from 'data-generator';
+import fetchMock from 'fetch-mock';
 
 export default () => {
     const data = generateData();
