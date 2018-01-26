@@ -90,14 +90,19 @@ const styles = theme => ({
  */
 export class AutocompleteInput extends React.Component {
     state = {
+        selectedItem: null,
         searchText: '',
+        suggesting: false,
     };
 
     componentWillMount() {
         this.updateState();
     }
 
-    updateState = ({ selectedItem, choices, input } = this.props) => {
+    updateState = (
+        stateToMerge,
+        { selectedItem, choices, input, meta } = this.props
+    ) => {
         // The current selectedItem can be supplied with a prop or should be derived from the supplied choices
         selectedItem =
             selectedItem ||
@@ -108,23 +113,25 @@ export class AutocompleteInput extends React.Component {
                 )) ||
             null;
         // Remember the current selectedItem and make sure only to update the searchText if the user is not editing it
-        this.setState(prevState => ({
+        this.setState(({ searchText, suggesting }) => ({
+            ...stateToMerge,
             selectedItem,
             searchText:
-                this.hasFocus && this.isSuggesting
-                    ? prevState.searchText
+                meta.active && suggesting
+                    ? searchText
                     : this.getOptionText(selectedItem),
         }));
     };
 
     componentWillReceiveProps(nextProps) {
-        const { selectedItem, input } = nextProps;
+        const { selectedItem, input, choices } = nextProps;
         // If the selecteditem changed or the input value changed, reevaluate the current state
         if (
             selectedItem !== this.props.selectedItem ||
-            input.value !== this.props.input.value
+            input.value !== this.props.input.value ||
+            choices !== this.props.choices
         ) {
-            this.updateState(nextProps);
+            this.updateState(undefined, nextProps);
         }
     }
     getOptionValue = suggestion =>
@@ -157,22 +164,20 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleInputValueChange = searchText => {
-        if (this.hasFocus) {
+        if (this.props.meta.active) {
             const didChange =
                 this.getOptionText(this.state.selectedItem) !== searchText;
 
             const inputValue = this.mapSearchTextToInputValue(searchText);
-
             if (
                 this.props.input.value !== inputValue &&
                 (inputValue || (!inputValue && this.props.allowEmpty))
             ) {
                 this.props.input.onChange(inputValue);
             }
-
-            if (didChange || !inputValue) this.isSuggesting = true;
             this.setState({
                 searchText,
+                suggesting: !inputValue && didChange,
             });
 
             if (!inputValue) {
@@ -184,12 +189,12 @@ export class AutocompleteInput extends React.Component {
 
     handleFocus = () => {
         this.props.input.onFocus();
-        this.hasFocus = true;
     };
     handleBlur = () => {
-        this.hasFocus = this.isSuggesting = false;
         this.props.input.onBlur(this.props.input.value);
-        this.updateState();
+        this.updateState({
+            suggesting: false,
+        });
     };
 
     renderInput = (getInputProps, getLabelProps) => {
@@ -207,25 +212,27 @@ export class AutocompleteInput extends React.Component {
         const { touched, error } = meta;
         return (
             <TextField
-                label={
-                    <FieldTitle
-                        {...getLabelProps()}
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                }
-                autoFocus={autoFocus}
-                className={classnames(classes.root, className)}
-                error={!!(touched && error)}
-                margin="normal"
-                InputProps={{
-                    classes: {
-                        input: classes.input,
-                    },
-                }}
                 {...getInputProps({
+                    autoFocus,
+                    className: classnames(classes.root, className),
+                    error: !!(touched && error),
+                    helperText: touched && error,
+                    label: (
+                        <FieldTitle
+                            {...getLabelProps({
+                                label,
+                                source,
+                                resource,
+                                isRequired,
+                            })}
+                        />
+                    ),
+                    margin: 'normal',
+                    InputProps: {
+                        classes: {
+                            input: classes.input,
+                        },
+                    },
                     onFocus: this.handleFocus,
                     onBlur: this.handleBlur,
                 })}
@@ -293,12 +300,12 @@ export class AutocompleteInput extends React.Component {
         this.setState({
             selectedItem: suggestion,
             searchText: suggestionText,
+            suggesting: false,
         });
-        this.isSuggesting = false;
     };
 
     getChoices = () =>
-        !this.isSuggesting && this.props.input.value
+        !this.state.suggesting && this.props.input.value
             ? [this.state.selectedItem]
             : this.props.choices;
 
@@ -331,8 +338,10 @@ export class AutocompleteInput extends React.Component {
     };
 
     render() {
+        const { isOpen } = this.props;
         return (
             <Downshift
+                isOpen={isOpen}
                 onChange={this.handleAutosuggestChange}
                 onInputValueChange={this.handleInputValueChange}
                 inputValue={this.state.searchText}
@@ -344,11 +353,13 @@ export class AutocompleteInput extends React.Component {
 }
 
 AutocompleteInput.propTypes = {
+    allowEmpty: PropTypes.bool,
     alwaysRenderSuggestions: PropTypes.bool, // used only for unit tests
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
     className: PropTypes.string,
     input: PropTypes.object,
+    isOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
     meta: PropTypes.object,
