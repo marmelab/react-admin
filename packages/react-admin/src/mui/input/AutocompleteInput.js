@@ -108,7 +108,6 @@ export class AutocompleteInput extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const { choices, input } = nextProps;
-
         if (input.value !== this.props.input.value) {
             const selectedItem = this.getSelectedItem(nextProps);
             this.setState(({ dirty, searchText }) => ({
@@ -122,7 +121,7 @@ export class AutocompleteInput extends React.Component {
             }));
         }
         if (choices !== this.props.choices) {
-            const selectedItem = this.getSelectedItem(choices);
+            const selectedItem = this.getSelectedItem(nextProps);
             this.setState(({ dirty, searchText, suggestions }) => ({
                 selectedItem,
                 searchText: dirty
@@ -159,6 +158,7 @@ export class AutocompleteInput extends React.Component {
 
     handleSuggestionSelected = (event, { suggestion, method }) => {
         this.props.input.onChange(this.getSuggestionValue(suggestion));
+
         this.setState({
             dirty: false,
             selectedItem: suggestion,
@@ -171,17 +171,18 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleSuggestionsFetchRequested = ({ value: inputValue }) => {
-        const { searchText } = this.state;
-        const { setFilter } = this.props;
+        const { dirty, searchText, suggestions } = this.state;
+        const { setFilter, choices } = this.props;
 
-        if (inputValue !== searchText) {
-            this.setState({
-                searchText: inputValue,
-                dirty: true,
-                suggestions: this.props.choices,
-            });
-            setFilter && setFilter(inputValue);
-        }
+        const changed = inputValue !== searchText;
+        this.setState({
+            searchText: inputValue,
+            dirty: changed ? true : dirty,
+            suggestions: changed
+                ? choices
+                : suggestions.length === 0 ? choices : suggestions,
+        });
+        changed && setFilter && setFilter(inputValue);
     };
 
     handleSuggestionsClearRequested = () => {

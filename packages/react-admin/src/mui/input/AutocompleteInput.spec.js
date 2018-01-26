@@ -268,6 +268,19 @@ describe('<AutocompleteInput />', () => {
             wrapper.find('input').simulate('blur');
             expect(wrapper.state('searchText')).toBe('Male');
         });
+        it('should show the suggestions when the input value is null and the input is focussed and choices arrived late', () => {
+            const wrapper = mount(
+                <AutocompleteInput {...defaultProps} input={{ value: '' }} />
+            );
+            wrapper.setProps({
+                choices: [
+                    { id: 'M', name: 'Male' },
+                    { id: 'F', name: 'Female' },
+                ],
+            });
+            wrapper.find('input').simulate('focus');
+            expect(wrapper.find('ListItem')).toHaveLength(2);
+        });
     });
 
     describe('error message', () => {
