@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
+import { reset } from 'redux-form';
 import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
 import {
@@ -24,6 +25,7 @@ export class Edit extends Component {
             this.props.id !== nextProps.id ||
             nextProps.version !== this.props.version
         ) {
+            this.props.resetForm('record-form');
             this.updateData(nextProps.resource, nextProps.id);
         }
     }
@@ -161,6 +163,7 @@ const enhance = compose(
     connect(mapStateToProps, {
         crudGetOne: crudGetOneAction,
         crudUpdate: crudUpdateAction,
+        resetForm: reset,
     }),
     translate,
     withPermissionsFilteredChildren

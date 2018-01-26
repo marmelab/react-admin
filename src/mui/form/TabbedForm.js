@@ -33,11 +33,7 @@ export class TabbedForm extends Component {
     };
 
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
-        // Ensure we don't pass our internal __aor_version__ used
-        // for refresh in the values
-        this.props.handleSubmit(({ __aor_version__, ...values }) =>
-            this.props.save(values, redirect)
-        );
+        this.props.handleSubmit(values => this.props.save(values, redirect));
 
     render() {
         const {
@@ -171,11 +167,7 @@ const enhance = compose(
 
         return {
             tabsWithErrors: findTabsWithErrors(state, props),
-            initialValues: {
-                // Adds the version to force redux-form to reinitialize on refresh
-                __aor_version__: props.version,
-                ...getDefaultValues(state, { ...props, children }),
-            },
+            initialValues: getDefaultValues(state, { ...props, children }),
         };
     }),
     reduxForm({
