@@ -4,17 +4,10 @@ import { connect } from 'react-redux';
 import Card, { CardContent } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-<<<<<<< HEAD:packages/react-admin/src/mui/detail/Edit.js
 import classnames from 'classnames';
 import { reset } from 'redux-form';
 
 import Header from '../layout/Header';
-||||||| parent of 823350d... Review
-import { reset } from 'redux-form';
-import ViewTitle from '../layout/ViewTitle';
-=======
-import ViewTitle from '../layout/ViewTitle';
->>>>>>> 823350d... Review:src/mui/detail/Edit.js
 import Title from '../layout/Title';
 import {
     crudGetOne as crudGetOneAction,
@@ -102,6 +95,7 @@ export class Edit extends Component {
             this.props.id !== nextProps.id ||
             nextProps.version !== this.props.version
         ) {
+            this.props.resetForm('record-form');
             this.updateData(nextProps.resource, nextProps.id);
         }
     }
@@ -171,7 +165,6 @@ export class Edit extends Component {
         );
 
         return (
-<<<<<<< HEAD:packages/react-admin/src/mui/detail/Edit.js
             <div
                 className={classnames('edit-page', className)}
                 {...sanitizeRestProps(rest)}
@@ -181,17 +174,6 @@ export class Edit extends Component {
                         title={titleElement}
                         actions={actions}
                         actionProps={{
-||||||| parent of 823350d... Review
-            <div className="edit-page">
-                <Card key={key} style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    {actions &&
-                        React.cloneElement(actions, {
-=======
-            <div className="edit-page">
-                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    {actions &&
-                        React.cloneElement(actions, {
->>>>>>> 823350d... Review:src/mui/detail/Edit.js
                             basePath,
                             data,
                             hasDelete,
@@ -261,6 +243,7 @@ const enhance = compose(
     connect(mapStateToProps, {
         crudGetOne: crudGetOneAction,
         crudUpdate: crudUpdateAction,
+        resetForm: reset,
     }),
     translate
 );
