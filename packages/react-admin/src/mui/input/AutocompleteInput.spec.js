@@ -308,6 +308,26 @@ describe('<AutocompleteInput />', () => {
             expect(onChange).toHaveBeenCalledTimes(1);
             expect(onChange).toHaveBeenCalledWith('M');
         });
+        it('should reset filter when input value changed', () => {
+            const setFilter = jest.fn();
+            const wrapper = mount(
+                <AutocompleteInput
+                    {...defaultProps}
+                    input={{ value: 1 }}
+                    setFilter={setFilter}
+                />
+            );
+            wrapper
+                .find('input')
+                .simulate('change', { target: { value: 'de' } });
+            expect(setFilter).toHaveBeenCalledTimes(1);
+            expect(setFilter).toHaveBeenCalledWith('de');
+            wrapper.setProps({
+                input: { value: 2 },
+            });
+            expect(setFilter).toHaveBeenCalledTimes(2);
+            expect(setFilter).toHaveBeenLastCalledWith('');
+        });
     });
 
     describe('error message', () => {

@@ -107,7 +107,7 @@ export class AutocompleteInput extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { choices, input } = nextProps;
+        const { choices, input, setFilter } = nextProps;
         if (input.value !== this.props.input.value) {
             const selectedItem = this.getSelectedItem(nextProps);
             this.setState({
@@ -117,6 +117,8 @@ export class AutocompleteInput extends React.Component {
                 suggestions: selectedItem ? [selectedItem] : this.props.choices,
                 prevSuggestions: false,
             });
+            // Ensure to reset the filter
+            setFilter && setFilter('');
         } else if (choices !== this.props.choices) {
             const selectedItem = this.getSelectedItem(nextProps);
             this.setState(({ dirty, searchText }) => ({
