@@ -434,6 +434,7 @@ const App = () => (
 ```
 
 ## `initialState`
+
 The `initialState` prop lets you pass preloaded state to Redux. See the [Redux Documentation](http://redux.js.org/docs/api/createStore.html#createstorereducer-preloadedstate-enhancer) for more details.
 
 ## `history`
