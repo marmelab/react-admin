@@ -122,23 +122,14 @@ export class AutocompleteInput extends React.Component {
             }));
         }
         if (choices !== this.props.choices) {
-            if (!this.state.selectedItem) {
-                // SelectedItem needs to be resolved from the choices
-                const selectedItem = this.getSelectedItem(nextProps);
-                this.setState(({ dirty, searchText, suggestions }) => ({
-                    selectedItem,
-                    searchText: dirty
-                        ? searchText
-                        : this.getSuggestionText(selectedItem),
-                    suggestions:
-                        dirty && Array.isArray(choices) ? choices : suggestions,
-                }));
-            } else {
-                this.setState(({ dirty, suggestions }) => ({
-                    suggestions:
-                        dirty && Array.isArray(choices) ? choices : suggestions,
-                }));
-            }
+            const selectedItem = this.getSelectedItem(choices);
+            this.setState(({ dirty, searchText, suggestions }) => ({
+                selectedItem,
+                searchText: dirty
+                    ? searchText
+                    : this.getSuggestionText(selectedItem),
+                suggestions: dirty ? choices : suggestions,
+            }));
         }
     }
 

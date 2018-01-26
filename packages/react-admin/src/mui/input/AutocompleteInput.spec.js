@@ -268,6 +268,7 @@ describe('<AutocompleteInput />', () => {
             wrapper.find('input').simulate('blur');
             expect(wrapper.state('searchText')).toBe('Male');
         });
+
     });
 
     describe('error message', () => {
