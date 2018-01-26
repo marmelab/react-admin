@@ -4,10 +4,17 @@ import { connect } from 'react-redux';
 import Card, { CardContent } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
+<<<<<<< HEAD:packages/react-admin/src/mui/detail/Edit.js
 import classnames from 'classnames';
 import { reset } from 'redux-form';
 
 import Header from '../layout/Header';
+||||||| parent of 823350d... Review
+import { reset } from 'redux-form';
+import ViewTitle from '../layout/ViewTitle';
+=======
+import ViewTitle from '../layout/ViewTitle';
+>>>>>>> 823350d... Review:src/mui/detail/Edit.js
 import Title from '../layout/Title';
 import {
     crudGetOne as crudGetOneAction,
@@ -86,31 +93,11 @@ const sanitizeRestProps = ({
  *     export default App;
  */
 export class Edit extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            key: 0,
-            record: props.data,
-        };
-        this.previousKey = 0;
-    }
-
     componentDidMount() {
         this.updateData();
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.data !== nextProps.data) {
-            this.setState({ record: nextProps.data });
-
-            // As a refresh of the current record won't actually change the record values,
-            // we need to explicitly ask redux-form to reset the form
-            this.props.resetForm('record-form');
-            if (this.fullRefresh) {
-                this.fullRefresh = false;
-                this.setState({ key: this.state.key + 1 });
-            }
-        }
         if (
             this.props.id !== nextProps.id ||
             nextProps.version !== this.props.version
@@ -164,8 +151,6 @@ export class Edit extends Component {
             ...rest
         } = this.props;
 
-        const { key } = this.state;
-
         if (!children) return null;
 
         const basePath = this.getBasePath();
@@ -186,6 +171,7 @@ export class Edit extends Component {
         );
 
         return (
+<<<<<<< HEAD:packages/react-admin/src/mui/detail/Edit.js
             <div
                 className={classnames('edit-page', className)}
                 {...sanitizeRestProps(rest)}
@@ -195,6 +181,17 @@ export class Edit extends Component {
                         title={titleElement}
                         actions={actions}
                         actionProps={{
+||||||| parent of 823350d... Review
+            <div className="edit-page">
+                <Card key={key} style={{ opacity: isLoading ? 0.8 : 1 }}>
+                    {actions &&
+                        React.cloneElement(actions, {
+=======
+            <div className="edit-page">
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                    {actions &&
+                        React.cloneElement(actions, {
+>>>>>>> 823350d... Review:src/mui/detail/Edit.js
                             basePath,
                             data,
                             hasDelete,
@@ -242,7 +239,6 @@ Edit.propTypes = {
     location: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
-    resetForm: PropTypes.func.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
     version: PropTypes.number.isRequired,
@@ -265,7 +261,6 @@ const enhance = compose(
     connect(mapStateToProps, {
         crudGetOne: crudGetOneAction,
         crudUpdate: crudUpdateAction,
-        resetForm: reset,
     }),
     translate
 );
