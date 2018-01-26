@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Card, CardText } from 'material-ui/Card';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
+import { reset } from 'redux-form';
 import ViewTitle from '../layout/ViewTitle';
 import Title from '../layout/Title';
 import {
@@ -15,31 +16,16 @@ import translate from '../../i18n/translate';
 import withPermissionsFilteredChildren from '../../auth/withPermissionsFilteredChildren';
 
 export class Edit extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            key: 0,
-            record: props.data,
-        };
-        this.previousKey = 0;
-    }
-
     componentDidMount() {
         this.updateData();
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.data !== nextProps.data) {
-            this.setState({ record: nextProps.data }); // FIXME: erases user entry when fetch response arrives late
-            if (this.fullRefresh) {
-                this.fullRefresh = false;
-                this.setState({ key: this.state.key + 1 });
-            }
-        }
         if (
             this.props.id !== nextProps.id ||
             nextProps.version !== this.props.version
         ) {
+            this.props.resetForm('record-form');
             this.updateData(nextProps.resource, nextProps.id);
         }
     }
@@ -177,6 +163,7 @@ const enhance = compose(
     connect(mapStateToProps, {
         crudGetOne: crudGetOneAction,
         crudUpdate: crudUpdateAction,
+        resetForm: reset,
     }),
     translate,
     withPermissionsFilteredChildren
