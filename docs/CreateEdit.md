@@ -358,6 +358,7 @@ Admin-on-rest already bundles a few validator functions, that you can just requi
 * `maxValue(max, message)` to specify a maximum value for integers,
 * `minLength(min, message)` to specify a minimum length for strings,
 * `maxLength(max, message)` to specify a maximum length for strings,
+* `number` to check that the input is a valid number,
 * `email` to check that the input is a valid email address,
 * `regex(pattern, message)` to validate that the input matches a regex,
 * `choices(list, message)` to validate that the input is within a given list,
