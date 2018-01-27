@@ -107,7 +107,7 @@ export class AutocompleteInput extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { choices, input, setFilter } = nextProps;
+        const { choices, input } = nextProps;
         if (input.value !== this.props.input.value) {
             const selectedItem = this.getSelectedItem(nextProps);
             this.setState({
@@ -118,7 +118,7 @@ export class AutocompleteInput extends React.Component {
                 prevSuggestions: false,
             });
             // Ensure to reset the filter
-            setFilter && setFilter('');
+            this.updateFilter('');
         } else if (choices !== this.props.choices) {
             const selectedItem = this.getSelectedItem(nextProps);
             this.setState(({ dirty, searchText }) => ({
@@ -188,7 +188,7 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleMatchSuggestionOrFilter = inputValue => {
-        const { choices, inputValueMatcher, input, setFilter } = this.props;
+        const { choices, inputValueMatcher, input } = this.props;
 
         const match =
             inputValue &&
@@ -215,7 +215,7 @@ export class AutocompleteInput extends React.Component {
                 dirty: true,
                 searchText: inputValue,
             });
-            setFilter && setFilter(inputValue);
+            this.updateFilter(inputValue);
         }
     };
 
@@ -243,6 +243,7 @@ export class AutocompleteInput extends React.Component {
             source,
             value,
             ref,
+            options: { InputProps, ...options },
             ...other
         } = inputProps;
         if (typeof meta === 'undefined') {
@@ -269,10 +270,12 @@ export class AutocompleteInput extends React.Component {
                 inputRef={ref}
                 error={!!(touched && error)}
                 helperText={touched && error}
+                {...options}
                 InputProps={{
                     classes: {
                         input: classes.input,
                     },
+                    ...InputProps,
                     ...other,
                 }}
             />
@@ -289,14 +292,29 @@ export class AutocompleteInput extends React.Component {
         );
     };
 
+    renderSuggestionComponent = ({
+        suggestion,
+        query,
+        isHighlighted,
+        ...props
+    }) => <div {...props} />;
+
     renderSuggestion = (suggestion, { query, isHighlighted }) => {
         const label = this.getSuggestionText(suggestion);
         const matches = match(label, query);
         const parts = parse(label, matches);
-        const { classes = {} } = this.props;
+        const { classes = {}, suggestionComponent } = this.props;
 
         return (
-            <MenuItem selected={isHighlighted} component="div">
+            <MenuItem
+                selected={isHighlighted}
+                component={
+                    suggestionComponent || this.renderSuggestionComponent
+                }
+                suggestion={suggestion}
+                query={query}
+                isHighlighted={isHighlighted}
+            >
                 <div>
                     {parts.map((part, index) => {
                         return part.highlight ? (
@@ -343,6 +361,14 @@ export class AutocompleteInput extends React.Component {
         input && input.onFocus && input.onFocus();
     };
 
+    updateFilter = value => {
+        const { setFilter } = this.props;
+        if (this.previousFilterValue !== value) {
+            setFilter && setFilter(value);
+        }
+        this.previousFilterValue = value;
+    };
+
     shouldRenderSuggestions = () => true;
 
     render() {
@@ -355,7 +381,7 @@ export class AutocompleteInput extends React.Component {
             resource,
             source,
             className,
-            InputProps,
+            options,
         } = this.props;
         const { suggestions, searchText } = this.state;
 
@@ -393,7 +419,7 @@ export class AutocompleteInput extends React.Component {
                     value: searchText,
                     onBlur: this.handleBlur,
                     onFocus: this.handleFocus,
-                    ...InputProps,
+                    options,
                 }}
             />
         );
@@ -419,11 +445,10 @@ AutocompleteInput.propTypes = {
     setFilter: PropTypes.func,
     source: PropTypes.string,
     selectedItem: PropTypes.object,
+    suggestionComponent: PropTypes.func,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
-    disableInputValueMatching: PropTypes.bool,
     inputValueMatcher: PropTypes.func,
-    inputValueMatchDelay: PropTypes.number,
 };
 
 AutocompleteInput.defaultProps = {
@@ -432,13 +457,11 @@ AutocompleteInput.defaultProps = {
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
-    disableInputValueMatching: false,
     inputValueMatcher: (input, suggestion, getOptionText) =>
         input.toLowerCase().trim() ===
         getOptionText(suggestion)
             .toLowerCase()
             .trim(),
-    inputValueMatchDelay: 500,
 };
 
 export default compose(addField, translate, withStyles(styles))(

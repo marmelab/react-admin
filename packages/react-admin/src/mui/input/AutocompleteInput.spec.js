@@ -328,6 +328,26 @@ describe('<AutocompleteInput />', () => {
             expect(setFilter).toHaveBeenCalledTimes(2);
             expect(setFilter).toHaveBeenLastCalledWith('');
         });
+        it('should allow customized rendering of suggesting item', () => {
+            const wrapper = mount(
+                <AutocompleteInput
+                    {...defaultProps}
+                    input={{ value: 1 }}
+                    choices={[
+                        { id: 'M', name: 'Male' },
+                        { id: 'F', name: 'Female' },
+                    ]}
+                    alwaysRenderSuggestions
+                    suggestionComponent={({
+                        suggestion,
+                        query,
+                        isHighlighted,
+                        ...props
+                    }) => <div {...props} dataField={suggestion.name} />}
+                />
+            );
+            expect(wrapper.find('div[dataField]')).toHaveLength(2);
+        });
     });
 
     describe('error message', () => {
