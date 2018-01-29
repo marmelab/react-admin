@@ -90,8 +90,9 @@ export class WithPermissionComponent extends Component {
         if (Children.count(children) > 1) {
             return (
                 <span>
-                    {Children.map(children, child =>
-                        cloneElement(child, props)
+                    {Children.map(
+                        children,
+                        child => (child ? cloneElement(child, props) : null)
                     )}
                 </span>
             );

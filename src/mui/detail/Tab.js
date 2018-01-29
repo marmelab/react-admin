@@ -6,7 +6,7 @@ const Tab = ({ label, icon, children, ...rest }) => (
         {React.Children.map(
             children,
             field =>
-                field && (
+                field ? (
                     <div
                         key={field.props.source}
                         style={field.props.style}
@@ -26,7 +26,7 @@ const Tab = ({ label, icon, children, ...rest }) => (
                             React.cloneElement(field, rest)
                         )}
                     </div>
-                )
+                ) : null
         )}
     </span>
 );
