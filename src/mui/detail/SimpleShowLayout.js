@@ -12,7 +12,8 @@ const SimpleShowLayout = ({
     version,
 }) => (
     <div style={style} key={version}>
-        {Children.map(children, field => (
+        {Children.map(children, field => 
+        field ? (
             <div
                 key={field.props.source}
                 style={field.props.style}
@@ -39,7 +40,8 @@ const SimpleShowLayout = ({
                     })
                 )}
             </div>
-        ))}
+        ) : null
+     )}
     </div>
 );
 
