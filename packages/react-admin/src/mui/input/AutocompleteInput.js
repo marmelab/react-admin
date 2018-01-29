@@ -92,6 +92,7 @@ const styles = theme => ({
 export class AutocompleteInput extends React.Component {
     state = {
         dirty: false,
+        inputValue: null,
         searchText: '',
         selectedItem: null,
         suggestions: [],
@@ -101,6 +102,7 @@ export class AutocompleteInput extends React.Component {
         const selectedItem = this.getSelectedItem();
         this.setState({
             selectedItem,
+            inputValue: this.props.input.value,
             searchText: this.getSuggestionText(selectedItem),
             suggestions: selectedItem ? [selectedItem] : this.props.choices,
         });
@@ -108,10 +110,11 @@ export class AutocompleteInput extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const { choices, input } = nextProps;
-        if (input.value !== this.props.input.value) {
+        if (input.value !== this.state.inputValue) {
             const selectedItem = this.getSelectedItem(nextProps);
             this.setState({
                 selectedItem,
+                inputValue: input.value,
                 searchText: this.getSuggestionText(selectedItem),
                 dirty: false,
                 suggestions: selectedItem ? [selectedItem] : this.props.choices,
@@ -132,12 +135,14 @@ export class AutocompleteInput extends React.Component {
         }
     }
 
-    getSelectedItem = ({ selectedItem, choices, input } = this.props) =>
+    getSelectedItem = ({ selectedItem, choices } = this.props) =>
         selectedItem
             ? selectedItem
-            : choices && input.value
+            : choices && this.state.inputValue
               ? choices.find(
-                    choice => this.getSuggestionValue(choice) === input.value
+                    choice =>
+                        this.getSuggestionValue(choice) ===
+                        this.state.inputValue
                 )
               : null;
 
@@ -159,16 +164,17 @@ export class AutocompleteInput extends React.Component {
     handleSuggestionSelected = (event, { suggestion, method }) => {
         const { input } = this.props;
 
-        input &&
-            input.onChange &&
-            input.onChange(this.getSuggestionValue(suggestion));
-
+        const inputValue = this.getSuggestionValue(suggestion);
         this.setState({
             dirty: false,
+            inputValue,
             selectedItem: suggestion,
             searchText: this.getSuggestionText(suggestion),
             suggestions: [suggestion],
         });
+
+        input && input.onChange && input.onChange(inputValue);
+
         if (method === 'enter') {
             event.preventDefault();
         }
@@ -197,7 +203,7 @@ export class AutocompleteInput extends React.Component {
             );
         if (match) {
             const nextId = this.getSuggestionValue(match);
-            if (input.value !== nextId) {
+            if (this.state.inputValue !== nextId) {
                 input.onChange(this.getSuggestionValue(match));
                 this.setState({
                     suggestions: [match],
@@ -345,14 +351,14 @@ export class AutocompleteInput extends React.Component {
             if (searchText === '' && allowEmpty) {
                 input && input.onBlur && input.onBlur(null);
             } else {
-                input && input.onBlur && input.onBlur(input.value);
+                input && input.onBlur && input.onBlur(this.state.inputValue);
                 this.setState({
                     dirty: false,
                     searchText: this.getSuggestionText(selectedItem),
                 });
             }
         } else {
-            input && input.onBlur && input.onBlur(input.value);
+            input && input.onBlur && input.onBlur(this.state.inputValue);
         }
     };
 
