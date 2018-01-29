@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
+import isEqual from 'lodash.isequal';
 import Autosuggest from 'react-autosuggest';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
@@ -125,7 +126,7 @@ export class AutocompleteInput extends React.Component {
             });
             // Ensure to reset the filter
             this.updateFilter('');
-        } else if (choices !== this.props.choices) {
+        } else if (!isEqual(choices, this.props.choices)) {
             const selectedItem = this.getSelectedItem(
                 nextProps,
                 this.state.inputValue
@@ -192,9 +193,9 @@ export class AutocompleteInput extends React.Component {
     };
 
     handleSuggestionsClearRequested = () => {
-        this.setState(prevState => ({
+        this.setState(({ suggestions, prevSuggestions }) => ({
             suggestions: [],
-            prevSuggestions: prevState.suggestions,
+            prevSuggestions: prevSuggestions || suggestions,
         }));
     };
 
