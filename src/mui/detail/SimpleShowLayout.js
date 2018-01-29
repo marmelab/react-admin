@@ -12,34 +12,38 @@ const SimpleShowLayout = ({
     version,
 }) => (
     <div style={style} key={version}>
-        {Children.map(children, field => (
-            <div
-                key={field.props.source}
-                style={field.props.style}
-                className={`aor-field aor-field-${field.props.source}`}
-            >
-                {field.props.addLabel ? (
-                    <Labeled
-                        record={record}
-                        resource={resource}
-                        basePath={basePath}
-                        label={field.props.label}
-                        source={field.props.source}
-                        disabled={false}
+        {Children.map(
+            children,
+            field =>
+                field ? (
+                    <div
+                        key={field.props.source}
+                        style={field.props.style}
+                        className={`aor-field aor-field-${field.props.source}`}
                     >
-                        {field}
-                    </Labeled>
-                ) : typeof field.type === 'string' ? (
-                    field
-                ) : (
-                    React.cloneElement(field, {
-                        record,
-                        resource,
-                        basePath,
-                    })
-                )}
-            </div>
-        ))}
+                        {field.props.addLabel ? (
+                            <Labeled
+                                record={record}
+                                resource={resource}
+                                basePath={basePath}
+                                label={field.props.label}
+                                source={field.props.source}
+                                disabled={false}
+                            >
+                                {field}
+                            </Labeled>
+                        ) : typeof field.type === 'string' ? (
+                            field
+                        ) : (
+                            React.cloneElement(field, {
+                                record,
+                                resource,
+                                basePath,
+                            })
+                        )}
+                    </div>
+                ) : null
+        )}
     </div>
 );
 
