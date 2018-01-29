@@ -99,7 +99,10 @@ export class AutocompleteInput extends React.Component {
     };
 
     componentWillMount() {
-        const selectedItem = this.getSelectedItem();
+        const selectedItem = this.getSelectedItem(
+            this.props,
+            this.props.input.value
+        );
         this.setState({
             selectedItem,
             inputValue: this.props.input.value,
@@ -111,7 +114,7 @@ export class AutocompleteInput extends React.Component {
     componentWillReceiveProps(nextProps) {
         const { choices, input } = nextProps;
         if (input.value !== this.state.inputValue) {
-            const selectedItem = this.getSelectedItem(nextProps);
+            const selectedItem = this.getSelectedItem(nextProps, input.value);
             this.setState({
                 selectedItem,
                 inputValue: input.value,
@@ -123,7 +126,10 @@ export class AutocompleteInput extends React.Component {
             // Ensure to reset the filter
             this.updateFilter('');
         } else if (choices !== this.props.choices) {
-            const selectedItem = this.getSelectedItem(nextProps);
+            const selectedItem = this.getSelectedItem(
+                nextProps,
+                this.state.inputValue
+            );
             this.setState(({ dirty, searchText }) => ({
                 selectedItem,
                 searchText: dirty
@@ -135,14 +141,12 @@ export class AutocompleteInput extends React.Component {
         }
     }
 
-    getSelectedItem = ({ selectedItem, choices } = this.props) =>
+    getSelectedItem = ({ selectedItem, choices }, inputValue) =>
         selectedItem
             ? selectedItem
-            : choices && this.state.inputValue
+            : choices && inputValue
               ? choices.find(
-                    choice =>
-                        this.getSuggestionValue(choice) ===
-                        this.state.inputValue
+                    choice => this.getSuggestionValue(choice) === inputValue
                 )
               : null;
 
