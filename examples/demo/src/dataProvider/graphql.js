@@ -1,13 +1,6 @@
-import { ApolloClient, createNetworkInterface } from 'apollo-client';
 import buildApolloClient from 'ra-data-graphql-simple';
 
 export default () => {
-    const client = new ApolloClient({
-        networkInterface: createNetworkInterface({
-            uri: 'http://localhost:4000/graphql',
-        }),
-    });
-
     const getGqlResource = resource => {
         switch (resource) {
             case 'customers':
@@ -28,7 +21,9 @@ export default () => {
     };
 
     return buildApolloClient({
-        client,
+        clientOptions: {
+            uri: 'http://localhost:4000/graphql',
+        },
     }).then(dataProvider => (type, resource, params) =>
         dataProvider(type, getGqlResource(resource), params)
     );

@@ -24,8 +24,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "graphql": "~0.11.7",
-    "graphql-tag": "~2.4.2",
+    "graphql": "^0.12.3",
+    "graphql-tag": "^2.6.1",
     "lodash.merge": "~4.6.0",
     "pluralize": "~7.0.0",
     "ra-data-graphql": "^2.0.0-beta1"
