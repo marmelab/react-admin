@@ -31,8 +31,11 @@ export class AdminRoutes extends Component {
             });
         } else {
             const resources =
-                React.Children.map(children, ({ props }) => props) || [];
-            this.props.declareResources(resources);
+                React.Children.map(
+                    children,
+                    child => (child ? child.props : false)
+                ) || [];
+            this.props.declareResources(resources.filter(r => r));
         }
     }
 

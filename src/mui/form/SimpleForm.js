@@ -28,14 +28,18 @@ export class SimpleForm extends Component {
         return (
             <form className="simple-form">
                 <div style={formStyle} key={version}>
-                    {Children.map(children, input => (
-                        <FormInput
-                            basePath={basePath}
-                            input={input}
-                            record={record}
-                            resource={resource}
-                        />
-                    ))}
+                    {Children.map(
+                        children,
+                        input =>
+                            input ? (
+                                <FormInput
+                                    basePath={basePath}
+                                    input={input}
+                                    record={record}
+                                    resource={resource}
+                                />
+                            ) : null
+                    )}
                 </div>
                 {toolbar &&
                     React.cloneElement(toolbar, {

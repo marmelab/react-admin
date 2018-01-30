@@ -32,12 +32,15 @@ export class SwitchPermissionsComponent extends Component {
         const mappings =
             React.Children.map(
                 children,
-                ({ props: { value, resolve, children, exact } }) => ({
-                    permissions: value,
-                    resolve,
-                    view: children,
-                    exact,
-                })
+                child =>
+                    child
+                        ? {
+                              permissions: child.props.value,
+                              resolve: child.props.resolve,
+                              view: child.props.children,
+                              exact: child.props.exact,
+                          }
+                        : false
             ) || [];
 
         const permissions = await authClient(AUTH_GET_PERMISSIONS, {
@@ -45,7 +48,7 @@ export class SwitchPermissionsComponent extends Component {
             resource,
         });
         const match = await resolvePermissions({
-            mappings,
+            mappings: mappings.filter(m => m),
             permissions,
             record,
             resource,
@@ -85,8 +88,8 @@ export class SwitchPermissionsComponent extends Component {
             return null;
         }
 
-        if (!match && loading) {
-            return createElement(loading);
+        if (!match) {
+            return loading ? createElement(loading) : null;
         }
 
         if (Array.isArray(match)) {
@@ -95,11 +98,11 @@ export class SwitchPermissionsComponent extends Component {
                     {React.Children.map(
                         match,
                         child =>
-                            child.props.source ? (
+                            child ? child.props.source ? (
                                 this.renderSourceChild(child)
                             ) : (
                                 <FormField input={child} {...props} />
-                            )
+                            ) : null
                     )}
                 </div>
             );
