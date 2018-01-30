@@ -1,13 +1,21 @@
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getContext } from 'recompose';
 
 const translate = BaseComponent => {
-    const TranslatedComponent = getContext({
+    class TranslatedComponent extends Component {
+        render() {
+            const props = { ...this.context, ...this.props };
+            return <BaseComponent {...props} />;
+        }
+    }
+
+    const { translate, ...defaultProps } = BaseComponent.defaultProps || {};
+    TranslatedComponent.defaultProps = defaultProps;
+    TranslatedComponent.contextTypes = {
         translate: PropTypes.func.isRequired,
         locale: PropTypes.string.isRequired,
-    })(BaseComponent);
-
-    TranslatedComponent.defaultProps = BaseComponent.defaultProps;
+    };
+    TranslatedComponent.displayName = `TranslatedComponent(${BaseComponent.displayName})`;
 
     return TranslatedComponent;
 };
