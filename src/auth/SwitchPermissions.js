@@ -88,8 +88,8 @@ export class SwitchPermissionsComponent extends Component {
             return null;
         }
 
-        if (!match && loading) {
-            return createElement(loading);
+        if (!match) {
+            return loading ? createElement(loading) : null;
         }
 
         if (Array.isArray(match)) {

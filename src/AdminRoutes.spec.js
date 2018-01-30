@@ -2,10 +2,12 @@ import React from 'react';
 import { Route, MemoryRouter } from 'react-router-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { render } from 'enzyme';
+import { render, shallow } from 'enzyme';
 import assert from 'assert';
+import sinon from 'sinon';
 
 import { AdminRoutes } from './AdminRoutes';
+import Resource from './Resource';
 
 describe('<AdminRoutes>', () => {
     const Dashboard = () => <div>Dashboard</div>;
@@ -90,5 +92,56 @@ describe('<AdminRoutes>', () => {
             </Provider>
         );
         assert.equal(wrapper.html(), '<div>Custom</div>');
+    });
+    it('should filter null children', () => {
+        const condition = false;
+        const declareResources = sinon.spy();
+        shallow(
+            <AdminRoutes declareResources={declareResources}>
+                <Resource name="product" />
+                {condition && <Resource name="product1" />}
+                {condition ? <Resource name="product2" /> : null}
+            </AdminRoutes>,
+            { lifecycleExperimental: true }
+        );
+        assert(
+            declareResources.called,
+            'declareResources should have been called'
+        );
+
+        assert.equal(declareResources.args[0][0].length, 1);
+        assert.equal(declareResources.args[0][0][0].name, 'product');
+    });
+    it('should filter null children from children function', () => {
+        const condition = false;
+        const declareResources = sinon.spy();
+        const authClient = sinon.spy(() => Promise.resolve());
+        shallow(
+            <AdminRoutes
+                authClient={authClient}
+                declareResources={declareResources}
+            >
+                {() => [
+                    <Resource key="product" name="product" />,
+                    condition && <Resource name="product1" />,
+                    condition ? <Resource name="product2" /> : null,
+                ]}
+            </AdminRoutes>,
+            { lifecycleExperimental: true }
+        );
+
+        // We need a timeout because of the authClient returning a promise
+        return new Promise(resolve => {
+            setTimeout(() => {
+                assert(
+                    declareResources.called,
+                    'declareResources should have been called'
+                );
+
+                assert.equal(declareResources.args[0][0].length, 1);
+                assert.equal(declareResources.args[0][0][0].name, 'product');
+                resolve();
+            }, 100);
+        });
     });
 });
