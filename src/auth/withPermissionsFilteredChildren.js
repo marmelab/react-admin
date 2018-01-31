@@ -6,7 +6,7 @@ import getMissingAuthClientError from '../util/getMissingAuthClientError';
 
 export default BaseComponent => {
     class WithPermissionsFilteredChildren extends Component {
-        state = { children: null };
+        state = { children: [] };
 
         static propTypes = {
             authClient: PropTypes.func,
@@ -32,18 +32,17 @@ export default BaseComponent => {
                         const allowedChildren = children(permissions);
                         this.setState({ children: allowedChildren });
                     });
-            } else {
-                this.setState({ children });
             }
         }
 
         render() {
-            const { children } = this.state;
-            const { authClient, ...props } = this.props;
+            const { children: childrenFromState = [] } = this.state;
+            const { authClient, children, ...props } = this.props;
+
             return (
                 <BaseComponent {...props}>
-                    {children && Array.isArray(children) ? (
-                        children.map(
+                    {typeof children === 'function' ? (
+                        childrenFromState.map(
                             child =>
                                 child
                                     ? cloneElement(child, {

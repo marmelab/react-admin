@@ -124,9 +124,9 @@ export const UserCreate = ({ ...props }) =>
                 toolbar={<UserCreateToolbar permissions={permissions} />}
                 defaultValue={{ role: 'user' }}
             >
-                <TextInput source="name" validate={[required]} />
+                <TextInput source="name" validate={required} />
                 {permissions === 'admin' &&
-                    <TextInput source="role" validate={[required]} />}
+                    <TextInput source="role" validate={required} />}
             </SimpleForm>}
     </Create>;
 ```
