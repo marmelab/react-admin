@@ -67,6 +67,8 @@ export const CommentEdit = ({ ...props }) => (
 );
 ```
 
+This is related to [redux-form](https://github.com/erikras/redux-form/issues/3288).
+
 ## How can I customize the UI depending on the user permissions?
 
 Some fairly common use cases which may be dependent on the user permissions:
