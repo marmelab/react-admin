@@ -20,7 +20,7 @@ const styles = theme => ({
 
 const WithBadge = ({ show, children, ...rest }) =>
     show ? (
-        <Badge color="accent" {...rest}>
+        <Badge color="secondary" {...rest}>
             {children}
         </Badge>
     ) : (
