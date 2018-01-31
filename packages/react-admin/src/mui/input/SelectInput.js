@@ -37,6 +37,7 @@ const sanitizeRestProps = ({
     reference,
     resource,
     setFilter,
+    selectedItem, // Passed on from ReferenceInput
     setPagination,
     setSort,
     sort,
