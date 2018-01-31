@@ -236,7 +236,6 @@ export class List extends Component {
         );
         const muiTheme = getMuiTheme(theme);
         const prefix = autoprefixer(muiTheme);
-
         return (
             <div className="list-page">
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>

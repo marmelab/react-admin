@@ -167,7 +167,7 @@ const UserFilter = ({ ...props }) =>
                 alwaysOn
             />,
             <TextInput key="name" source="name" />,
-            permissions === 'admin' ? <TextInput source="role" /> : null,
+            permissions === 'admin' ? <TextInput key="role" source="role" /> : null,
         ]}
     </Filter>;
 

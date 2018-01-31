@@ -1,4 +1,4 @@
-import React, { cloneElement, Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import getContext from 'recompose/getContext';
 import { AUTH_GET_PERMISSIONS } from './types';
@@ -6,7 +6,7 @@ import getMissingAuthClientError from '../util/getMissingAuthClientError';
 
 export default BaseComponent => {
     class WithPermissionsFilteredChildren extends Component {
-        state = { children: [] };
+        state = { children: null };
 
         static propTypes = {
             authClient: PropTypes.func,
@@ -29,30 +29,23 @@ export default BaseComponent => {
                 this.props
                     .authClient(AUTH_GET_PERMISSIONS)
                     .then(permissions => {
-                        const allowedChildren = children(permissions);
+                        let allowedChildren = children(permissions);
+                        allowedChildren = Array.isArray(allowedChildren)
+                            ? allowedChildren.filter(child => !!child)
+                            : allowedChildren;
                         this.setState({ children: allowedChildren });
                     });
             }
         }
 
         render() {
-            const { children: childrenFromState = [] } = this.state;
+            const { children: childrenFromState } = this.state;
             const { authClient, children, ...props } = this.props;
 
             return (
                 <BaseComponent {...props}>
                     {typeof children === 'function' ? (
-                        childrenFromState.map(
-                            child =>
-                                child
-                                    ? cloneElement(child, {
-                                          key:
-                                              child.props.name ||
-                                              child.props.source ||
-                                              child.props.label,
-                                      })
-                                    : null
-                        )
+                        childrenFromState
                     ) : (
                         children
                     )}
