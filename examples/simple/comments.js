@@ -23,6 +23,7 @@ import {
     Show,
     ShowButton,
     SimpleShowLayout,
+    required,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import PersonIcon from 'material-ui-icons/Person';
@@ -37,7 +38,7 @@ import { withStyles } from 'material-ui/styles';
 import ChatBubbleIcon from 'material-ui-icons/ChatBubble';
 export const CommentIcon = ChatBubbleIcon;
 
-const CommentFilter = ({ ...props }) => (
+const CommentFilter = props => (
     <Filter {...props}>
         <ReferenceInput source="post_id" reference="posts">
             <SelectInput optionText="title" />
@@ -169,7 +170,7 @@ const CommentMobileList = props => (
     />
 );
 
-export const CommentList = ({ ...props }) => (
+export const CommentList = props => (
     <List
         {...props}
         perPage={6}
@@ -180,7 +181,7 @@ export const CommentList = ({ ...props }) => (
     </List>
 );
 
-export const CommentEdit = ({ ...props }) => (
+export const CommentEdit = props => (
     <Edit {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
@@ -199,14 +200,15 @@ export const CommentEdit = ({ ...props }) => (
     </Edit>
 );
 
-export const CommentCreate = ({ ...props }) => (
+const defaultValue = { created_at: new Date() };
+export const CommentCreate = props => (
     <Create {...props}>
-        <SimpleForm defaultValue={{ created_at: new Date() }}>
+        <SimpleForm defaultValue={defaultValue}>
             <ReferenceInput
                 source="post_id"
                 reference="posts"
                 allowEmpty
-                validation={{ required: true }}
+                validate={required}
             >
                 <SelectInput optionText="title" />
             </ReferenceInput>
@@ -216,7 +218,7 @@ export const CommentCreate = ({ ...props }) => (
     </Create>
 );
 
-export const CommentShow = ({ ...props }) => (
+export const CommentShow = props => (
     <Show {...props}>
         <SimpleShowLayout>
             <TextField source="id" />

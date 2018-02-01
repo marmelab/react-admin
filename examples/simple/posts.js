@@ -53,7 +53,7 @@ const QuickFilter = translate(({ label, translate }) => (
     <Chip style={{ marginBottom: 8 }} label={translate(label)} />
 ));
 
-const PostFilter = ({ ...props }) => (
+const PostFilter = props => (
     <Filter {...props}>
         <TextInput label="post.list.search" source="q" alwaysOn />
         <TextInput
@@ -77,7 +77,8 @@ const styles = {
     },
     publishedAt: { fontStyle: 'italic' },
 };
-export const PostList = withStyles(styles)(({ classes, ...props }) => (
+
+export const PostList = props => (
     <List
         {...props}
         filters={<PostFilter />}
@@ -144,7 +145,10 @@ const PostCreateToolbar = props => (
     </Toolbar>
 );
 
-export const PostCreate = ({ ...props }) => (
+const getDefaultDate = () => new Date();
+
+
+export const PostCreate = props => (
     <Create {...props}>
         <SimpleForm
             toolbar={<PostCreateToolbar />}
@@ -175,7 +179,7 @@ export const PostCreate = ({ ...props }) => (
     </Create>
 );
 
-export const PostEdit = ({ ...props }) => (
+export const PostEdit = props => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label="post.form.summary">
@@ -236,7 +240,7 @@ export const PostEdit = ({ ...props }) => (
     </Edit>
 );
 
-export const PostShow = ({ ...props }) => (
+export const PostShow = props => (
     <Show title={<PostTitle />} {...props}>
         <TabbedShowLayout>
             <Tab label="post.form.summary">
