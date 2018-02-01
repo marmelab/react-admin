@@ -8,7 +8,7 @@ import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
-
+import lodashSet from 'lodash.set';
 import translate from '../../i18n/translate';
 
 const styles = ({ palette: { primary1Color } }) => ({
@@ -161,11 +161,12 @@ export const mergeInitialValuesWithDefaultValues = ({
                     filterElement.props.defaultValue
             )
             .reduce(
-                (acc, filterElement) => ({
-                    ...acc,
-                    [filterElement.props.source]:
-                        filterElement.props.defaultValue,
-                }),
+                (acc, filterElement) =>
+                    lodashSet(
+                        { ...acc },
+                        filterElement.props.source,
+                        filterElement.props.defaultValue
+                    ),
                 {}
             ),
         ...initialValues,
