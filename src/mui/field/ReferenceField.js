@@ -4,8 +4,16 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LinearProgress from 'material-ui/LinearProgress';
 import get from 'lodash.get';
+import muiThemeable from 'material-ui/styles/muiThemeable';
+import compose from 'recompose/compose';
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
 import linkToRecord from '../../util/linkToRecord';
+
+const getStyles = muiTheme => ({
+    link: {
+        color: muiTheme.palette.accent1Color,
+    },
+});
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -65,6 +73,7 @@ export class ReferenceField extends Component {
             children,
             elStyle,
             linkType,
+            muiTheme,
         } = this.props;
         if (React.Children.count(children) !== 1) {
             throw new Error('<ReferenceField> only accepts a single child');
@@ -80,6 +89,8 @@ export class ReferenceField extends Component {
             `${rootPath}/${reference}`,
             get(record, source)
         );
+        const linkStyle = { ...getStyles(muiTheme).link, ...elStyle };
+
         const child = React.cloneElement(children, {
             record: referenceRecord,
             resource: reference,
@@ -87,16 +98,17 @@ export class ReferenceField extends Component {
             basePath,
             translateChoice: false,
         });
+
         if (linkType === 'edit' || linkType === true) {
             return (
-                <Link style={elStyle} to={href}>
+                <Link style={linkStyle} to={href}>
                     {child}
                 </Link>
             );
         }
         if (linkType === 'show') {
             return (
-                <Link style={elStyle} to={`${href}/show`}>
+                <Link style={linkStyle} to={`${href}/show`}>
                     {child}
                 </Link>
             );
@@ -137,9 +149,12 @@ function mapStateToProps(state, props) {
     };
 }
 
-const ConnectedReferenceField = connect(mapStateToProps, {
-    crudGetManyAccumulate: crudGetManyAccumulateAction,
-})(ReferenceField);
+const ConnectedReferenceField = compose(
+    connect(mapStateToProps, {
+        crudGetManyAccumulate: crudGetManyAccumulateAction,
+    }),
+    muiThemeable()
+)(ReferenceField);
 
 ConnectedReferenceField.defaultProps = {
     addLabel: true,

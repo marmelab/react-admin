@@ -7,6 +7,10 @@ import { ReferenceField } from './ReferenceField';
 import TextField from './TextField';
 
 describe('<ReferenceField />', () => {
+    const muiTheme = {
+        palette: {},
+    };
+
     it('should call crudGetManyAccumulate on componentDidMount if reference source is defined', () => {
         const crudGetManyAccumulate = sinon.spy();
         shallow(
@@ -17,6 +21,7 @@ describe('<ReferenceField />', () => {
                 reference="bar"
                 basePath=""
                 crudGetManyAccumulate={crudGetManyAccumulate}
+                muiTheme={muiTheme}
             >
                 <TextField source="title" />
             </ReferenceField>,
@@ -34,6 +39,7 @@ describe('<ReferenceField />', () => {
                 reference="bar"
                 basePath=""
                 crudGetManyAccumulate={crudGetManyAccumulate}
+                muiTheme={muiTheme}
             >
                 <TextField source="title" />
             </ReferenceField>,
@@ -50,6 +56,7 @@ describe('<ReferenceField />', () => {
                 reference="bar"
                 basePath=""
                 crudGetManyAccumulate={() => {}}
+                muiTheme={muiTheme}
             >
                 <TextField source="title" />
             </ReferenceField>
@@ -67,6 +74,7 @@ describe('<ReferenceField />', () => {
                 basePath=""
                 linkType="show"
                 crudGetManyAccumulate={() => {}}
+                muiTheme={muiTheme}
             >
                 <TextField source="title" />
             </ReferenceField>
@@ -84,6 +92,7 @@ describe('<ReferenceField />', () => {
                 basePath=""
                 linkType={false}
                 crudGetManyAccumulate={() => {}}
+                muiTheme={muiTheme}
             >
                 <TextField source="title" />
             </ReferenceField>
