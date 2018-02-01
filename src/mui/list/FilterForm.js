@@ -8,6 +8,7 @@ import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import autoprefixer from 'material-ui/utils/autoprefixer';
 import muiThemeable from 'material-ui/styles/muiThemeable';
+import lodashSet from 'lodash.set';
 
 import translate from '../../i18n/translate';
 
@@ -122,11 +123,12 @@ export const mergeInitialValuesWithDefaultValues = ({
                     filterElement.props.defaultValue
             )
             .reduce(
-                (acc, filterElement) => ({
-                    ...acc,
-                    [filterElement.props.source]:
-                        filterElement.props.defaultValue,
-                }),
+                (acc, filterElement) =>
+                    lodashSet(
+                        { ...acc },
+                        filterElement.props.source,
+                        filterElement.props.defaultValue
+                    ),
                 {}
             ),
         ...initialValues,
