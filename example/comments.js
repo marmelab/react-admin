@@ -36,7 +36,7 @@ import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import ChatBubbleIcon from 'material-ui/svg-icons/communication/chat-bubble';
 export const CommentIcon = ChatBubbleIcon;
 
-const CommentFilter = ({ ...props }) => (
+const CommentFilter = props => (
     <Filter {...props}>
         <ReferenceInput source="post_id" reference="posts">
             <SelectInput optionText="title" />
@@ -145,7 +145,7 @@ const CommentMobileList = props => (
     />
 );
 
-export const CommentList = ({ ...props }) => (
+export const CommentList = props => (
     <List
         {...props}
         perPage={6}
@@ -157,7 +157,7 @@ export const CommentList = ({ ...props }) => (
 );
 
 const validateMinLength = minLength(10);
-export const CommentEdit = ({ ...props }) => (
+export const CommentEdit = props => (
     <Edit {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
@@ -177,7 +177,7 @@ export const CommentEdit = ({ ...props }) => (
 );
 
 const defaultValue = { created_at: new Date() };
-export const CommentCreate = ({ ...props }) => (
+export const CommentCreate = props => (
     <Create {...props}>
         <SimpleForm defaultValue={defaultValue}>
             <ReferenceInput
@@ -194,7 +194,7 @@ export const CommentCreate = ({ ...props }) => (
     </Create>
 );
 
-export const CommentShow = ({ ...props }) => (
+export const CommentShow = props => (
     <Show {...props}>
         <SimpleShowLayout>
             <TextField source="id" />
