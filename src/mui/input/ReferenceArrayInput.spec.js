@@ -12,17 +12,81 @@ describe('<ReferenceArrayInput />', () => {
         reference: 'tags',
         resource: 'posts',
         source: 'tag_ids',
+        matchingReferences: [{ id: 1 }],
+        referenceRecord: [{ id: 2 }],
+        allowEmpty: true,
     };
     const MyComponent = () => <span id="mycomponent" />;
 
-    it('should not render anything if there is no referenceRecord and allowEmpty is false', () => {
+    it('should only render a spinner as long as there are no references fetched', () => {
         const wrapper = shallow(
-            <ReferenceArrayInput {...defaultProps}>
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: null,
+                }}
+            >
                 <MyComponent />
             </ReferenceArrayInput>
         );
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 0);
+        const SpinnerElement = wrapper.find('LinearProgress');
+        assert.equal(SpinnerElement.length, 1);
+    });
+
+    it('should display an error in case of references fetch error', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: { error: 'fetch error' },
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 0);
+        const ErrorElement = wrapper.find('TextField');
+        assert.equal(ErrorElement.length, 1);
+        assert.equal(ErrorElement.prop('disabled'), true);
+        assert.equal(ErrorElement.prop('errorText'), 'fetch error');
+    });
+
+    it('should not render anything if there is no referenceRecord and allowEmpty is false', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    referenceRecord: [],
+                    allowEmpty: false,
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 0);
+    });
+
+    it('should render enclosed component even if the references are empty', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: [],
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const SpinnerElement = wrapper.find('LinearProgress');
+        assert.equal(SpinnerElement.length, 0);
+        const ErrorElement = wrapper.find('TextField');
+        assert.equal(ErrorElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
     });
 
     it('should not render enclosed component if allowEmpty is true', () => {

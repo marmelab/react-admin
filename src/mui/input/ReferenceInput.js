@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
+import LinearProgress from 'material-ui/LinearProgress';
+import TextField from 'material-ui/TextField';
+
 import Labeled from './Labeled';
 import {
     crudGetOne as crudGetOneAction,
@@ -11,6 +14,15 @@ import { getPossibleReferences } from '../../reducer/admin/references/possibleVa
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 const noFilter = () => true;
+
+export const progessContainerStyle = {
+    padding: '2em 0',
+    height: 'auto',
+};
+export const progessStyle = {
+    width: '16em',
+    margin: '1em 0',
+};
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -157,7 +169,6 @@ export class ReferenceInput extends Component {
             resource,
             label,
             source,
-            referenceRecord,
             allowEmpty,
             matchingReferences,
             basePath,
@@ -165,7 +176,14 @@ export class ReferenceInput extends Component {
             children,
             meta,
         } = this.props;
-        if (!referenceRecord && !allowEmpty) {
+
+        if (React.Children.count(children) !== 1) {
+            throw new Error(
+                '<ReferenceInput> only accepts a single child (like <SelectInput>)'
+            );
+        }
+
+        if (matchingReferences === null) {
             return (
                 <Labeled
                     label={
@@ -175,8 +193,29 @@ export class ReferenceInput extends Component {
                             label
                         )
                     }
-                    source={source}
-                    resource={resource}
+                >
+                    <span style={progessContainerStyle}>
+                        <LinearProgress
+                            mode="indeterminate"
+                            style={progessStyle}
+                        />
+                    </span>
+                </Labeled>
+            );
+        }
+
+        if (matchingReferences.error) {
+            return (
+                <TextField
+                    disabled={true}
+                    hintText={
+                        typeof label === 'undefined' ? (
+                            `resources.${resource}.fields.${source}`
+                        ) : (
+                            label
+                        )
+                    }
+                    errorText={matchingReferences.error}
                 />
             );
         }
@@ -219,7 +258,6 @@ ReferenceInput.propTypes = {
     onChange: PropTypes.func,
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
-    referenceRecord: PropTypes.object,
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
@@ -233,7 +271,7 @@ ReferenceInput.defaultProps = {
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
-    matchingReferences: [],
+    matchingReferences: null,
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecord: null,

@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
+import LinearProgress from 'material-ui/LinearProgress';
+import TextField from 'material-ui/TextField';
+
 import Labeled from '../input/Labeled';
 import {
     crudGetMany as crudGetManyAction,
     crudGetMatching as crudGetMatchingAction,
 } from '../../actions/dataActions';
 import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
+import { progessStyle, progessContainerStyle } from './ReferenceInput';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
@@ -172,6 +176,43 @@ export class ReferenceArrayInput extends Component {
             );
         }
 
+        if (matchingReferences === null) {
+            return (
+                <Labeled
+                    label={
+                        typeof label === 'undefined' ? (
+                            `resources.${resource}.fields.${source}`
+                        ) : (
+                            label
+                        )
+                    }
+                >
+                    <span style={progessContainerStyle}>
+                        <LinearProgress
+                            mode="indeterminate"
+                            style={progessStyle}
+                        />
+                    </span>
+                </Labeled>
+            );
+        }
+
+        if (matchingReferences.error) {
+            return (
+                <TextField
+                    disabled={true}
+                    hintText={
+                        typeof label === 'undefined' ? (
+                            `resources.${resource}.fields.${source}`
+                        ) : (
+                            label
+                        )
+                    }
+                    errorText={matchingReferences.error}
+                />
+            );
+        }
+
         if (!(referenceRecords && referenceRecords.length > 0) && !allowEmpty) {
             return (
                 <Labeled
@@ -238,7 +279,7 @@ ReferenceArrayInput.defaultProps = {
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
-    matchingReferences: [],
+    matchingReferences: null,
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecords: [],
