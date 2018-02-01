@@ -1,3 +1,4 @@
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -111,7 +112,8 @@ export class List extends Component {
             nextProps.isLoading === this.props.isLoading &&
             nextProps.width === this.props.width &&
             nextProps.version === this.props.version &&
-            nextState === this.state
+            nextState === this.state &&
+            nextProps.data === this.props.data
         ) {
             return false;
         }
@@ -236,6 +238,7 @@ export class List extends Component {
             theme,
             ...rest
         } = this.props;
+
         const query = this.getQuery();
 
         const queryFilterValues = query.filter || {};
@@ -286,7 +289,8 @@ export class List extends Component {
                         })}
                     {isLoading || total > 0 ? (
                         <div key={version}>
-                            {children &&
+                            {ids.length > 0 &&
+                                children &&
                                 React.cloneElement(children, {
                                     resource,
                                     ids,
@@ -299,6 +303,19 @@ export class List extends Component {
                                     isLoading,
                                     setSort: this.setSort,
                                 })}
+                            {!isLoading &&
+                                !ids.length && (
+                                    <CardContent style={styles.noResults}>
+                                        <Typography type="body1">
+                                            {translate(
+                                                'ra.navigation.no_more_results',
+                                                {
+                                                    page: query.page,
+                                                }
+                                            )}
+                                        </Typography>
+                                    </CardContent>
+                                )}
                             {pagination &&
                                 React.cloneElement(pagination, {
                                     total,
