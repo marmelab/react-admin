@@ -1,3 +1,4 @@
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -80,6 +81,16 @@ export class List extends Component {
     state = {};
 
     componentDidMount() {
+        if (
+            !this.props.query.page &&
+            !this.props.ids.length &&
+            this.props.params.page > 1 &&
+            this.props.total > 0
+        ) {
+            this.setPage(this.props.params.page - 1);
+            return;
+        }
+
         this.updateData();
         if (Object.keys(this.props.query).length > 0) {
             this.props.changeListParams(this.props.resource, this.props.query);
@@ -110,7 +121,8 @@ export class List extends Component {
             nextProps.isLoading === this.props.isLoading &&
             nextProps.width === this.props.width &&
             nextProps.version === this.props.version &&
-            nextState === this.state
+            nextState === this.state &&
+            nextProps.data === this.props.data
         ) {
             return false;
         }
@@ -195,7 +207,7 @@ export class List extends Component {
 
     refresh = () => {
         if (process.env !== 'production') {
-            console.warn( // eslint-disable-line
+            console.warn(
                 'Deprecation warning: The preferred way to refresh the List view is to connect your custom button with redux and dispatch the `refreshView` action.'
             );
         }
@@ -220,6 +232,7 @@ export class List extends Component {
             theme,
             version,
         } = this.props;
+
         const query = this.getQuery();
         const filterValues = query.filter;
         const basePath = this.getBasePath();
@@ -266,7 +279,8 @@ export class List extends Component {
                         })}
                     {isLoading || total > 0 ? (
                         <div key={version}>
-                            {children &&
+                            {ids.length > 0 &&
+                                children &&
                                 React.cloneElement(children, {
                                     resource,
                                     ids,
@@ -279,6 +293,17 @@ export class List extends Component {
                                     isLoading,
                                     setSort: this.setSort,
                                 })}
+                            {!isLoading &&
+                            !ids.length && (
+                                <CardText style={styles.noResults}>
+                                    {translate(
+                                        'aor.navigation.no_more_results',
+                                        {
+                                            page: query.page,
+                                        }
+                                    )}
+                                </CardText>
+                            )}
                             {pagination &&
                                 React.cloneElement(pagination, {
                                     total,
