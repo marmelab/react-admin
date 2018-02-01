@@ -7,7 +7,7 @@ import { withStyles } from 'material-ui/styles';
 const styles = theme => ({
     link: {
         textDecoration: 'none',
-        color: theme.palette.primary.main,
+        color: theme.palette.secondary.main,
     },
 });
 const Link = ({ to, children, className, classes }) => (
