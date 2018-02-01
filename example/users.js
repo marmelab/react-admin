@@ -31,9 +31,11 @@ export const UserIcon = PeopleIcon;
 const UserFilter = ({ ...props }) => (
     <Filter {...props}>
         {permissions => [
-            <TextInput label="user.list.search" source="q" alwaysOn />,
-            <TextInput source="name" />,
-            permissions === 'admin' ? <TextInput source="role" /> : null,
+            <TextInput key="q" label="user.list.search" source="q" alwaysOn />,
+            <TextInput key="name" source="name" />,
+            permissions === 'admin' ? (
+                <TextInput key="role" source="role" />
+            ) : null,
         ]}
     </Filter>
 );
@@ -52,11 +54,12 @@ export const UserList = ({ ...props }) => (
     >
         {permissions => (
             <Responsive
+                key="userList"
                 small={
                     <SimpleList
                         primaryText={record => record.name}
                         secondaryText={record =>
-                            permissions === 'admin' ? record.role : null}
+                            permissions === 'admin' ? record.role : ''}
                     />
                 }
                 medium={

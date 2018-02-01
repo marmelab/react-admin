@@ -145,6 +145,8 @@ const PostCreateToolbar = props => (
     </Toolbar>
 );
 
+const getDefaultDate = () => new Date();
+
 export const PostCreate = ({ ...props }) => (
     <Create {...props}>
         <SimpleForm
@@ -169,7 +171,7 @@ export const PostCreate = ({ ...props }) => (
             <TextInput source="password" type="password" />
             <TextInput source="teaser" options={{ multiLine: true }} />
             <RichTextInput source="body" />
-            <DateInput source="published_at" defaultValue={() => new Date()} />
+            <DateInput source="published_at" defaultValue={getDefaultDate} />
             <NumberInput source="average_note" />
             <BooleanInput source="commentable" defaultValue />
         </SimpleForm>
@@ -177,6 +179,7 @@ export const PostCreate = ({ ...props }) => (
 );
 
 const emptyKeycode = [];
+const validateAverageNote = [required, number, minValue(0)];
 
 export const PostEdit = ({ ...props }) => (
     <Edit title={<PostTitle />} {...props}>
@@ -225,7 +228,7 @@ export const PostEdit = ({ ...props }) => (
                 />
                 <NumberInput
                     source="average_note"
-                    validate={[required, number, minValue(0)]}
+                    validate={validateAverageNote}
                 />
                 <BooleanInput source="commentable" defaultValue />
                 <DisabledInput source="views" />

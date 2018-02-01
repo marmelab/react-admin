@@ -1,4 +1,4 @@
-import React, { cloneElement, Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import getContext from 'recompose/getContext';
 import { AUTH_GET_PERMISSIONS } from './types';
@@ -29,31 +29,23 @@ export default BaseComponent => {
                 this.props
                     .authClient(AUTH_GET_PERMISSIONS)
                     .then(permissions => {
-                        const allowedChildren = children(permissions);
+                        let allowedChildren = children(permissions);
+                        allowedChildren = Array.isArray(allowedChildren)
+                            ? allowedChildren.filter(child => !!child)
+                            : allowedChildren;
                         this.setState({ children: allowedChildren });
                     });
-            } else {
-                this.setState({ children });
             }
         }
 
         render() {
-            const { children } = this.state;
-            const { authClient, ...props } = this.props;
+            const { children: childrenFromState } = this.state;
+            const { authClient, children, ...props } = this.props;
+
             return (
                 <BaseComponent {...props}>
-                    {children && Array.isArray(children) ? (
-                        children.map(
-                            child =>
-                                child
-                                    ? cloneElement(child, {
-                                          key:
-                                              child.props.name ||
-                                              child.props.source ||
-                                              child.props.label,
-                                      })
-                                    : null
-                        )
+                    {typeof children === 'function' ? (
+                        childrenFromState
                     ) : (
                         children
                     )}

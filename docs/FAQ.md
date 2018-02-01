@@ -6,6 +6,7 @@ title: "FAQ"
 # FAQ
 
 - [Can I have custom identifiers/primary keys for my resources?](#can-i-have-custom-identifiers-primary-keys-for-my-resources)
+- [A form with validation freezes when rendering](#a_form_with_validation_freezes_when_rendering)
 - [How can I customize the UI depending on the user permissions?](#how-can-i-customize-the-ui-depending-on-the-user-permissions)
 - [How can I customize forms depending on its inputs values?](#how-can-i-customize-forms-depending-on-its-inputs-values)
 
@@ -33,6 +34,40 @@ const convertHTTPResponseToREST = (response, type, resource, params) => {
     }
 };
 ```
+
+## A form with validation freezes when rendering
+
+You're probably using validator factories directly in the render method of your component:
+
+```jsx
+export const CommentEdit = ({ ...props }) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <DisabledInput source="id" />
+            <DateInput source="created_at" />
+            <LongTextInput source="body" validate={minLength(10)} />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+Avoid calling functions directly inside the render method:
+
+```jsx
+const validateMinLength = minLength(10);
+
+export const CommentEdit = ({ ...props }) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <DisabledInput source="id" />
+            <DateInput source="created_at" />
+            <LongTextInput source="body" validate={validateMinLength} />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+This is related to [redux-form](https://github.com/erikras/redux-form/issues/3288).
 
 ## How can I customize the UI depending on the user permissions?
 

@@ -194,6 +194,8 @@ Here are all the props accepted by the `<TabbedForm>` component:
 ```jsx
 import { TabbedForm, FormTab } from 'admin-on-rest'
 
+const validateAverageNote = [number, minValue(0)];
+
 export const PostEdit = (props) => (
     <Edit {...props}>
         <TabbedForm>
@@ -208,7 +210,7 @@ export const PostEdit = (props) => (
             <FormTab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
                 <DateInput label="Publication date" source="published_at" />
-                <NumberInput source="average_note" validate={[ number, minValue(0) ]} />
+                <NumberInput source="average_note" validate={validateAverageNote} />
                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
                 <DisabledInput label="Nb views" source="views" />
             </FormTab>
@@ -327,17 +329,22 @@ const ageValidation = (value, allValues) => {
     return [];
 }
 
+const validateFirstName = [required, maxLength(15)];
+const validateAge = [number, ageValidation];
+
 export const UserCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput label="First Name" source="firstName" validate={[ required, maxLength(15) ]} />
-            <TextInput label="Age" source="age" validate={[ required, number, minValue(18), ageValidation ]}/>
+            <TextInput label="First Name" source="firstName" validate={validateFirstName} />
+            <TextInput label="Age" source="age" validate={validateAge}/>
         </SimpleForm>
     </Create>
 );
 ```
 
 Input validation functions receive the current field value, and the values of all fields of the current record. This allows for complex validation scenarios (e.g. validate that two passwords are the same).
+
+**Note**: Be sure to declare any validation which uses validator factories (such as `minValue` or `minLength`) **outside** the render function, otherwise it will make your component rerender indefinitely.
 
 **Tip**: Validator functions receive the form `props` as third parameter, including the `translate` function. This lets you build internationalized validators:
 
@@ -368,21 +375,28 @@ Example usage:
 ```jsx
 import { required, minLength, maxLength, minValue, maxValue, number, regex, email, choices } from 'admin-on-rest';
 
+const validateFirstName = [required, minLength(2), maxLength(15)];
+const validateAge = [number, minValue(18)];
+const validateZipCode = regex(/^\d{5}$/, 'Must be a valid Zip Code');
+const validateSex = choices(['m', 'f'], 'Must be Male or Female');
+
 export const UserCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput label="First Name" source="firstName" validate={[ required, minLength(2), maxLength(15) ]} />
+            <TextInput label="First Name" source="firstName" validate={validateFirstName} />
             <TextInput label="Email" source="email" validate={email} />
-            <TextInput label="Age" source="age" validate={[ number, minValue(18) ]}/>
-            <TextInput label="Zip Code" source="zip" validate={regex(/^\d{5}$/, 'Must be a valid Zip Code')}/>
+            <TextInput label="Age" source="age" validate={validateAge}/>
+            <TextInput label="Zip Code" source="zip" validate={validateZipCode}/>
             <SelectInput label="Sex" source="sex" choices={[
                 { id: 'm', name: 'Male' },
                 { id: 'f', name: 'Female' },
-            ]} validate={choices(['m', 'f'], 'Must be Male or Female')}/>
+            ]} validate={validateSex}/>
         </SimpleForm>
     </Create>
 );
 ```
+
+**Note**: Be sure to declare any validation which uses validator factories (such as `minValue` or `minLength`) **outside** the render function, otherwise it will make your component rerender indefinitely.
 
 ## Submit On Enter
 
