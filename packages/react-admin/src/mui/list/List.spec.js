@@ -6,6 +6,7 @@ import { List } from './List';
 
 describe('<List />', () => {
     const defaultProps = {
+        ids: [],
         resource: 'post',
         hasCreate: false,
         hasEdit: false,
