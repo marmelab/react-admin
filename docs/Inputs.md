@@ -294,6 +294,43 @@ You can override any of Material UI's `<DatePicker>` attributes by setting the `
 
 Refer to [Material UI Datepicker documentation](http://www.material-ui.com/#/components/date-picker) for more details.
 
+#### `<DateInput>` and time zone
+The `<DateInput>` component will *transmit* the input's value to redux-form with `toISOString()` method. This method takes into account the **user's time zone**.
+
+That's means that if a user with a local time UTC+2 selects `2017-10-31` in the datePicker, the value transmitted to the redux-form will be `2017-10-30T22:00:00.000Z`.
+
+It's not a problem if you manage this date as a `dateTime` (with timezone) but if you store this date as *simple* `date`, you could save `2017-10-30` without reference to the user time zone...
+
+You can fix that type of problem using a <a href="#transforming-input-value-tofrom-record">`parser` function</a> :
+```jsx
+const _tz_offset = new Date().getTimezoneOffset() / 60;
+export const dateParser = v => {
+  const regexp = /(\d{4})-(\d{2})-(\d{2})/
+  var match = regexp.exec(v);
+  if (match === null) return;
+  
+  var year = match[1];
+  var month = match[2];
+  var day = match[3];
+
+  if (_tz_offset < 0) {
+    // negative offset means our picked UTC date got converted to previous day
+    var date = new Date(v);
+    date.setDate(date.getDate() + 1);
+    match = regexp.exec(date.toISOString())
+    year = match[1];
+    month = match[2];
+    day = match[3];
+  }
+  const d = [year, month, day].join("-");
+  return d;
+};
+
+...
+
+<DateInput parse={dateParser} source="date_start" label="Start date" />
+```
+
 ## `<DisabledInput>`
 
 When you want to display a record property in an `<Edit>` form without letting users update it (such as for auto-incremented primary keys), use the `<DisabledInput>`:
