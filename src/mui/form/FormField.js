@@ -29,6 +29,23 @@ export class FormFieldComponent extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (
+            nextProps.input.props.defaultValue !==
+            this.props.input.props.defaultValue
+        ) {
+            let defaultValue = nextProps.input.props.defaultValue;
+
+            if (typeof defaultValue === 'function') {
+                defaultValue = nextProps.input.props.defaultValue();
+            }
+
+            nextProps.initializeForm({
+                [nextProps.input.props.source]: defaultValue,
+            });
+        }
+    }
+
     render() {
         const { input, ...rest } = this.props;
 
