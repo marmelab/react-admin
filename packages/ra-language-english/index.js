@@ -52,7 +52,7 @@ module.exports = {
         navigation: {
             no_results: 'No results found',
             no_more_results:
-                'The page number %{page} is now out of boundaries. Try the previous page.',
+                'The page number %{page} is out of boundaries. Try the previous page.',
             page_out_of_boundaries: 'Page number %{page} out of boundaries',
             page_out_from_end: 'Cannot go after last page',
             page_out_from_begin: 'Cannot go before page 1',

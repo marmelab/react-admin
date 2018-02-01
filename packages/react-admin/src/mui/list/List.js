@@ -81,11 +81,14 @@ export class List extends Component {
     state = {};
 
     componentDidMount() {
-        const currentPage = this.props.query.page
-            ? parseInt(this.props.query.page, 10)
-            : parseInt(this.props.params.page, 10);
-        if (!this.props.ids.length && currentPage > 1 && this.props.total > 0) {
-            this.setPage(currentPage - 1);
+        if (
+            !this.props.query.page &&
+            !this.props.ids.length &&
+            this.props.params.page > 1 &&
+            this.props.total > 0
+        ) {
+            this.setPage(this.props.params.page - 1);
+            return;
         }
 
         this.updateData();
@@ -110,17 +113,6 @@ export class List extends Component {
         }
         if (nextProps.version !== this.props.version) {
             this.updateData();
-        }
-        const currentPage = nextProps.query.page
-            ? parseInt(nextProps.query.page, 10)
-            : parseInt(nextProps.params.page, 10);
-        if (
-            !nextProps.ids.length &&
-            currentPage > 1 &&
-            nextProps.total > 0 &&
-            nextProps.ids.length !== this.props.ids.length
-        ) {
-            this.setPage(currentPage - 1);
         }
     }
 
