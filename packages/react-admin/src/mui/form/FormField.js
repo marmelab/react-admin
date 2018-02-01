@@ -37,6 +37,22 @@ export class FormField extends Component {
         });
     }
 
+    componentWillReceiveProps(nextProps) {
+        const { defaultValue, input, initializeForm, source } = nextProps;
+        if (!defaultValue || input) {
+            return;
+        }
+
+        if (defaultValue !== this.props.defaultValue) {
+            initializeForm({
+                [source]:
+                    typeof defaultValue === 'function'
+                        ? defaultValue()
+                        : defaultValue,
+            });
+        }
+    }
+
     render() {
         const { input, validate, component, ...props } = this.props;
         return input ? ( // An ancestor is already decorated by Field
