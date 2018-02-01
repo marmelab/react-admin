@@ -2,12 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash.get';
+import { withStyles } from 'material-ui/styles';
+import compose from 'recompose/compose';
+import classenames from 'classnames';
 
 import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
 import linkToRecord from '../../util/linkToRecord';
 import sanitizeRestProps from './sanitizeRestProps';
+
+const styles = theme => ({
+    link: {
+        color: theme.palette.secondary.main,
+    },
+});
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -59,6 +68,7 @@ export class ReferenceField extends Component {
     render() {
         const {
             basePath,
+            classes,
             className,
             record,
             source,
@@ -87,7 +97,7 @@ export class ReferenceField extends Component {
         if (linkType === 'edit' || linkType === true) {
             return (
                 <Link
-                    className={className}
+                    className={classenames(classes.link, className)}
                     to={href}
                     {...sanitizeRestProps(rest)}
                 >
@@ -104,7 +114,7 @@ export class ReferenceField extends Component {
         if (linkType === 'show') {
             return (
                 <Link
-                    className={className}
+                    className={classenames(classes.link, className)}
                     to={`${href}/show`}
                     {...sanitizeRestProps(rest)}
                 >
@@ -135,6 +145,7 @@ ReferenceField.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
+    classes: PropTypes.object,
     className: PropTypes.string,
     cellClassName: PropTypes.string,
     headerClassName: PropTypes.string,
@@ -163,9 +174,12 @@ const mapStateToProps = (state, props) => ({
         ],
 });
 
-const ConnectedReferenceField = connect(mapStateToProps, {
-    crudGetManyAccumulate: crudGetManyAccumulateAction,
-})(ReferenceField);
+const ConnectedReferenceField = compose(
+    connect(mapStateToProps, {
+        crudGetManyAccumulate: crudGetManyAccumulateAction,
+    }),
+    withStyles(styles)
+)(ReferenceField);
 
 ConnectedReferenceField.defaultProps = {
     addLabel: true,

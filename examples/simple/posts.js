@@ -78,7 +78,7 @@ const styles = {
     publishedAt: { fontStyle: 'italic' },
 };
 
-export const PostList = props => (
+export const PostList = withStyles(styles)(({ classes, ...props }) => (
     <List
         {...props}
         filters={<PostFilter />}
@@ -147,7 +147,6 @@ const PostCreateToolbar = props => (
 
 const getDefaultDate = () => new Date();
 
-
 export const PostCreate = props => (
     <Create {...props}>
         <SimpleForm
@@ -172,7 +171,7 @@ export const PostCreate = props => (
             <TextInput source="password" type="password" />
             <LongTextInput source="teaser" />
             <RichTextInput source="body" />
-            <DateInput source="published_at" defaultValue={() => new Date()} />
+            <DateInput source="published_at" defaultValue={getDefaultDate} />
             <NumberInput source="average_note" />
             <BooleanInput source="commentable" defaultValue />
         </SimpleForm>
