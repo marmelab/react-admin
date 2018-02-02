@@ -9,6 +9,7 @@ const DisabledInput = ({
     resource,
     source,
     elStyle,
+    options,
 }) => (
     <TextField
         value={value}
@@ -17,6 +18,7 @@ const DisabledInput = ({
         }
         style={elStyle}
         disabled
+        {...options}
     />
 );
 
