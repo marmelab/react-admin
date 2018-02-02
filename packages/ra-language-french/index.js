@@ -49,7 +49,7 @@ module.exports = {
             not_found:
                 "L'URL saisie est incorrecte, ou vous avez suivi un mauvais lien.",
             loading:
-                "La page est en cours de chargement, juste un moment s'il vous plaît.",
+                'La page est en cours de chargement, merci de bien vouloir patienter.',
         },
         navigation: {
             no_results: 'Aucun résultat',
@@ -71,7 +71,7 @@ module.exports = {
             updated: 'Élément mis à jour',
             created: 'Élément créé',
             deleted: 'Élément supprimé',
-            bad_item: 'Élément incorrect',
+            bad_item: 'Élément inconnu',
             item_doesnt_exist: "L'élément n'existe pas",
             http_error: 'Erreur de communication avec le serveur',
         },
