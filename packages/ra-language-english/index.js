@@ -2,6 +2,7 @@ module.exports = {
     ra: {
         action: {
             delete: 'Delete',
+            bulk_action: 'Action',
             show: 'Show',
             list: 'List',
             save: 'Save',
@@ -26,6 +27,7 @@ module.exports = {
             dashboard: 'Dashboard',
             not_found: 'Not Found',
             loading: 'Loading',
+            bulk_update: 'Bulk update %{count} items',
         },
         input: {
             file: {
@@ -70,6 +72,18 @@ module.exports = {
             created: 'Element created',
             deleted: 'Element deleted',
             bad_item: 'Incorrect element',
+            bulk_action: {
+                delete: {
+                    success:
+                        '%{smart_count} element removed |||| %{smart_count} elements removed',
+                    failed: 'Element %{id} could not be removed',
+                },
+                update: {
+                    success:
+                        '%{smart_count} element updated |||| %{smart_count} elements updated',
+                    failed: 'Element %{id} could not be updated',
+                },
+            },
             item_doesnt_exist: 'Element does not exist',
             http_error: 'Server communication error',
         },

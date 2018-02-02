@@ -111,6 +111,7 @@ export class List extends Component {
             nextProps.isLoading === this.props.isLoading &&
             nextProps.width === this.props.width &&
             nextProps.version === this.props.version &&
+            nextProps.selection === this.props.selection &&
             nextState === this.state
         ) {
             return false;
@@ -219,6 +220,10 @@ export class List extends Component {
             title,
             data,
             ids,
+            selection,
+            selectionData,
+            selectable,
+            selectionMode,
             total,
             isLoading,
             translate,
@@ -251,7 +256,6 @@ export class List extends Component {
         const titleElement = (
             <Title title={title} defaultTitle={defaultTitle} />
         );
-
         return (
             <div
                 className={classnames('list-page', classes.root, className)}
@@ -270,6 +274,9 @@ export class List extends Component {
                             filterValues: queryFilterValues,
                             basePath,
                             hasCreate,
+                            selectable,
+                            selection,
+                            selectionData,
                             displayedFilters: this.state,
                             showFilter: this.showFilter,
                             refresh: this.refresh,
@@ -290,6 +297,9 @@ export class List extends Component {
                                 React.cloneElement(children, {
                                     resource,
                                     ids,
+                                    selection,
+                                    selectable,
+                                    selectionMode,
                                     data,
                                     currentSort: {
                                         field: query.sort,
@@ -347,6 +357,10 @@ List.propTypes = {
     hasList: PropTypes.bool.isRequired,
     hasShow: PropTypes.bool.isRequired,
     ids: PropTypes.array,
+    selectable: PropTypes.bool,
+    selectionMode: PropTypes.oneOf(['single', 'page', 'bulk']),
+    selection: PropTypes.array,
+    selectionData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     path: PropTypes.string,
@@ -364,6 +378,7 @@ List.defaultProps = {
     filter: {},
     filterValues: {},
     perPage: 10,
+    selectionMode: 'bulk',
     sort: {
         field: 'id',
         order: SORT_DESC,
@@ -393,6 +408,15 @@ const getQuery = createSelector(
     }
 );
 
+const selectionData = createSelector(
+    state => state.data,
+    state => state.list.selection.ids,
+    (data, ids) =>
+        ids.reduce((acc, id) => {
+            acc[id] = data[id];
+            return acc;
+        }, {})
+);
 function mapStateToProps(state, props) {
     const resourceState = state.admin.resources[props.resource];
     return {
@@ -401,6 +425,8 @@ function mapStateToProps(state, props) {
         ids: resourceState.list.ids,
         total: resourceState.list.total,
         data: resourceState.data,
+        selection: resourceState.list.selection.ids,
+        selectionData: selectionData(resourceState),
         isLoading: state.admin.loading > 0,
         filterValues: resourceState.list.params.filter,
         version: state.admin.ui.viewVersion,

@@ -2,6 +2,7 @@ import { all, put, takeEvery } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { reset } from 'redux-form';
 import {
+    CRUD_BULK_ACTION_SUCCESS,
     CRUD_CREATE_FAILURE,
     CRUD_CREATE_SUCCESS,
     CRUD_DELETE_FAILURE,
@@ -9,12 +10,13 @@ import {
     CRUD_GET_LIST_FAILURE,
     CRUD_GET_MANY_FAILURE,
     CRUD_GET_MANY_REFERENCE_FAILURE,
-    CRUD_GET_ONE_SUCCESS,
     CRUD_GET_ONE_FAILURE,
+    CRUD_GET_ONE_SUCCESS,
     CRUD_UPDATE_FAILURE,
     CRUD_UPDATE_SUCCESS,
-} from '../../actions/dataActions';
-import { showNotification } from '../../actions/notificationActions';
+    showNotification,
+    refreshView,
+} from '../../actions';
 import resolveRedirectTo from '../../util/resolveRedirectTo';
 
 /**
@@ -22,7 +24,7 @@ import resolveRedirectTo from '../../util/resolveRedirectTo';
  *
  * Mostly redirects and notifications
  */
-function* handleResponse({ type, requestPayload, error, payload }) {
+function* handleResponse({ type, requestPayload, error, payload, meta }) {
     switch (type) {
         case CRUD_UPDATE_SUCCESS:
             return requestPayload.redirectTo
@@ -38,7 +40,7 @@ function* handleResponse({ type, requestPayload, error, payload }) {
                           )
                       ),
                   ])
-                : yield [put(showNotification('ra.notification.updated'))];
+                : yield put(showNotification('ra.notification.updated'));
         case CRUD_CREATE_SUCCESS:
             return requestPayload.redirectTo
                 ? yield all([
@@ -71,7 +73,47 @@ function* handleResponse({ type, requestPayload, error, payload }) {
                           )
                       ),
                   ])
-                : yield [put(showNotification('ra.notification.deleted'))];
+                : yield put(showNotification('ra.notification.deleted'));
+        case CRUD_BULK_ACTION_SUCCESS: {
+            const { resolved, rejected } = payload.data.reduce(
+                (grouped, response) => {
+                    response.resolved
+                        ? grouped.resolved.push(response.resolved)
+                        : grouped.rejected.push(response.rejected);
+                    return grouped;
+                },
+                { resolved: [], rejected: [] }
+            );
+            // Handle notification
+            const {
+                success,
+                failed,
+                failedArgs = request => ({ id: request.id }),
+            } = meta.notification;
+
+            if (resolved.length > 0) {
+                yield put(
+                    showNotification(success, 'info', {
+                        messageArgs: {
+                            smart_count: resolved.length,
+                        },
+                    })
+                );
+            }
+            if (rejected.length > 0) {
+                for (const rejection of rejected) {
+                    yield put(
+                        showNotification(failed, 'warning', {
+                            messageArgs: failedArgs(requestPayload, rejection),
+                        })
+                    );
+                }
+            }
+            if (meta.refreshList) {
+                yield put(refreshView());
+            }
+            break;
+        }
         case CRUD_GET_ONE_SUCCESS:
             if (
                 !('id' in payload.data) ||

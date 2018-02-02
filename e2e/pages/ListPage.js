@@ -7,7 +7,7 @@ export default url => driver => ({
         displayedRecords: By.css('.displayed-records'),
         filter: name => By.css(`.filter-field[data-source='${name}'] input`),
         filterMenuItems: By.css(`.new-filter-item`),
-        menuItems: By.css(`[role=menuitem`),
+        menuItems: By.css(`[class^=Menu-main] [role=menuitem`),
         filterMenuItem: source =>
             By.css(`.new-filter-item[data-key="${source}"]`),
         hideFilterButton: source =>

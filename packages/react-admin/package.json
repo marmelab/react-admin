@@ -50,6 +50,7 @@
         "ra-language-english": "^2.0.0-beta1",
         "react-autosuggest": "^9.3.2",
         "react-dropzone": "~4.0.1",
+        "react-popper": "~0.7.4",
         "react-redux": "~5.0.4",
         "react-router": "~4.2.0",
         "react-router-dom": "~4.2.2",

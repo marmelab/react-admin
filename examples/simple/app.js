@@ -7,6 +7,7 @@ import { Admin, Resource, Delete } from 'react-admin'; // eslint-disable-line im
 import jsonRestDataProvider from 'ra-data-fakerest';
 
 import addUploadFeature from './addUploadFeature';
+import addBulkActionFeature from './addBulkActionFeature';
 
 import { PostList, PostCreate, PostEdit, PostShow, PostIcon } from './posts';
 import {
@@ -23,14 +24,18 @@ import authClient from './authClient';
 import i18nProvider from './i18nProvider';
 
 const dataProvider = jsonRestDataProvider(data, true);
-const uploadCapableDataProvider = addUploadFeature(dataProvider);
-const delayedDataProvider = (type, resource, params) =>
-    new Promise(resolve =>
+const bulkActionCapableDataProvider = addBulkActionFeature(dataProvider);
+const uploadCapableDataProvider = addUploadFeature(
+    bulkActionCapableDataProvider
+);
+const delayedDataProvider = (type, resource, params) => {
+    return new Promise(resolve =>
         setTimeout(
             () => resolve(uploadCapableDataProvider(type, resource, params)),
             1000
         )
     );
+};
 
 render(
     <Admin

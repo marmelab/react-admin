@@ -6,6 +6,7 @@ import {
     DELETE,
     GET_MANY,
     GET_MANY_REFERENCE,
+    BULK_ACTION,
 } from '../dataFetchActions';
 
 export const CRUD_GET_LIST = 'RA/CRUD_GET_LIST';
@@ -141,6 +142,38 @@ export const crudGetManyReference = (
         resource: reference,
         relatedTo,
         fetch: GET_MANY_REFERENCE,
+        cancelPrevious: false,
+    },
+});
+
+export const CRUD_BULK_ACTION = 'RA/CRUD_BULK_ACTION';
+export const CRUD_BULK_ACTION_LOADING = 'RA/CRUD_BULK_ACTION_LOADING';
+export const CRUD_BULK_ACTION_FAILURE = 'RA/CRUD_BULK_ACTION_FAILURE';
+export const CRUD_BULK_ACTION_SUCCESS = 'RA/CRUD_BULK_ACTION_SUCCESS';
+
+export const crudExecuteBulkAction = ({
+    resource,
+    action,
+    ids,
+    data,
+    previousData,
+    actionMeta: {
+        cacheAction = UPDATE,
+        selection,
+        notification,
+        refreshList,
+        ...actionMeta
+    } = {},
+}) => ({
+    type: CRUD_BULK_ACTION,
+    payload: { data, action, actionMeta, ids, previousData },
+    meta: {
+        resource,
+        fetch: BULK_ACTION,
+        cacheAction,
+        selection,
+        notification,
+        refreshList,
         cancelPrevious: false,
     },
 });

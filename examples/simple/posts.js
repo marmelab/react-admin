@@ -2,6 +2,9 @@ import React from 'react';
 import {
     BooleanField,
     BooleanInput,
+    BulkActions,
+    BulkActionDelete,
+    BulkActionUpdate,
     CheckboxGroupInput,
     ChipField,
     Create,
@@ -16,6 +19,7 @@ import {
     ImageField,
     ImageInput,
     List,
+    ListActions,
     LongTextInput,
     NumberField,
     NumberInput,
@@ -76,11 +80,31 @@ const styles = {
     },
     publishedAt: { fontStyle: 'italic' },
 };
+
+const PostActions = props => (
+    <ListActions
+        bulkActions={
+            <BulkActions>
+                <BulkActionUpdate>
+                    <SimpleForm>
+                        <TextInput source="title" />
+                        <BooleanInput source="commentable" />
+                    </SimpleForm>
+                </BulkActionUpdate>
+                <BulkActionDelete />
+            </BulkActions>
+        }
+        {...props}
+    />
+);
 export const PostList = withStyles(styles)(({ classes, ...props }) => (
     <List
         {...props}
+        actions={<PostActions />}
         filters={<PostFilter />}
         sort={{ field: 'published_at', order: 'DESC' }}
+        selectable
+        selectionMode="bulk"
     >
         <Responsive
             small={

@@ -6,6 +6,7 @@ import {
     GET_MANY_REFERENCE,
     CREATE,
     UPDATE,
+    BULK_ACTION,
 } from '../../../dataFetchActions';
 
 import getFetchedAt from '../../../util/getFetchedAt';
@@ -73,6 +74,15 @@ export default resource => (
         case UPDATE:
         case CREATE:
             return addRecords([payload.data], previousState);
+        case BULK_ACTION:
+            return UPDATE === meta.cacheAction
+                ? addRecords(
+                      payload.data
+                          .filter(r => r.resolved && r.resolved.data)
+                          .map(r => r.resolved.data),
+                      previousState
+                  )
+                : previousState;
         default:
             return previousState;
     }
