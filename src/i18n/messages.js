@@ -71,6 +71,7 @@ export default {
             deleted: 'Element deleted',
             item_doesnt_exist: 'Element does not exist',
             http_error: 'Server communication error',
+            bad_item: 'Incorrect element',
         },
         validation: {
             required: 'Required',
