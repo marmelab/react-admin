@@ -65,12 +65,10 @@ class Layout extends Component {
     render() {
         const {
             children,
-            customRoutes,
             dashboard,
             isLoading,
             logout,
             menu,
-            catchAll,
             theme,
             title,
             width,
@@ -144,8 +142,6 @@ const componentPropType = PropTypes.oneOfType([
 
 Layout.propTypes = {
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-    catchAll: componentPropType,
-    customRoutes: PropTypes.array,
     dashboard: componentPropType,
     isLoading: PropTypes.bool.isRequired,
     logout: PropTypes.oneOfType([
