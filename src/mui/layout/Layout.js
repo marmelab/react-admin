@@ -8,7 +8,6 @@ import CircularProgress from 'material-ui/CircularProgress';
 import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
 
-import AdminRoutes from '../../AdminRoutes';
 import AppBar from './AppBar';
 import Sidebar from './Sidebar';
 import Menu from './Menu';
@@ -112,13 +111,7 @@ class Layout extends Component {
                                     )
                                 }
                             >
-                                <AdminRoutes
-                                    customRoutes={customRoutes}
-                                    dashboard={dashboard}
-                                    catchAll={catchAll}
-                                >
-                                    {children}
-                                </AdminRoutes>
+                                {children}
                             </div>
                             <Sidebar theme={theme}>
                                 {createElement(menu || Menu, {

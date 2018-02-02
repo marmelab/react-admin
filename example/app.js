@@ -6,6 +6,7 @@ import { render } from 'react-dom';
 import { Admin, Resource, Delete, englishMessages } from 'admin-on-rest'; // eslint-disable-line import/no-unresolved
 import jsonRestClient from 'aor-json-rest-client';
 import frenchMessages from 'aor-language-french';
+import { Route } from 'react-router';
 
 import addUploadFeature from './addUploadFeature';
 
@@ -18,7 +19,8 @@ import {
     CommentIcon,
 } from './comments';
 import { UserList, UserEdit, UserCreate, UserIcon, UserShow } from './users';
-
+import CustomRouteNoLayout from './customRouteNoLayout';
+import CustomRouteLayout from './customRouteLayout';
 import data from './data';
 import * as customMessages from './i18n';
 import authClient from './authClient';
@@ -45,6 +47,15 @@ render(
         title="Example Admin"
         locale="en"
         messages={messages}
+        customRoutes={[
+            <Route
+                exact
+                path="/custom"
+                component={CustomRouteNoLayout}
+                noLayout
+            />,
+            <Route exact path="/custom2" component={CustomRouteLayout} />,
+        ]}
     >
         {permissions => [
             <Resource
