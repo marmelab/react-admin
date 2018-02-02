@@ -201,18 +201,19 @@ describe('<ReferenceArrayInput />', () => {
         const wrapper = shallow(
             <ReferenceArrayInput
                 {...defaultProps}
-                allowEmpty
+                input={{ value: [5] }}
                 crudGetMany={crudGetMany}
                 crudGetMatching={crudGetMatching}
             >
                 <MyComponent />
             </ReferenceArrayInput>
         );
-        expect(crudGetMatching.mock.calls.length).toBe(1);
+        expect(crudGetMatching).toHaveBeenCalledTimes(1);
+        expect(crudGetMany).toHaveBeenCalledTimes(1);
 
         wrapper.instance().setFilter('bar');
-        expect(crudGetMany.mock.calls.length).toBe(0);
-        expect(crudGetMatching.mock.calls.length).toBe(2);
+        expect(crudGetMatching).toHaveBeenCalledTimes(2);
+        expect(crudGetMany).toHaveBeenCalledTimes(1);
     });
 
     it('should call crudGetMany when input value changes', () => {

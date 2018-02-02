@@ -141,21 +141,21 @@ export class ReferenceArrayInput extends Component {
     setFilter = filter => {
         if (filter !== this.params.filter) {
             this.params.filter = this.props.filterToQuery(filter);
-            this.fetchReferencesAndOptions();
+            this.fetchOptions();
         }
     };
 
     setPagination = pagination => {
         if (pagination !== this.param.pagination) {
             this.param.pagination = pagination;
-            this.fetchReferencesAndOptions();
+            this.fetchOptions();
         }
     };
 
     setSort = sort => {
         if (sort !== this.params.sort) {
             this.params.sort = sort;
-            this.fetchReferencesAndOptions();
+            this.fetchOptions();
         }
     };
 

@@ -233,17 +233,19 @@ describe('<ReferenceInput />', () => {
             <ReferenceInput
                 {...defaultProps}
                 allowEmpty
+                input={{ value: 5 }}
                 crudGetOne={crudGetOne}
                 crudGetMatching={crudGetMatching}
             >
                 <MyComponent />
             </ReferenceInput>
         );
-        expect(crudGetMatching.mock.calls.length).toBe(1);
+        expect(crudGetMatching).toHaveBeenCalledTimes(1);
+        expect(crudGetOne).toHaveBeenCalledTimes(1);
 
         wrapper.instance().setFilter('bar');
-        expect(crudGetOne.mock.calls.length).toBe(0);
         expect(crudGetMatching.mock.calls.length).toBe(2);
+        expect(crudGetOne).toHaveBeenCalledTimes(1);
     });
 
     it('should call crudGetOne when input value changes', () => {
