@@ -1,0 +1,17 @@
+{
+  "name": "ra-data-loopback3-rest",
+  "version": "0.1.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ra-data-loopback3-rest"
+  ],
+  "author": "toannt",
+  "license": "ISC",
+  "dependencies": {
+    "query-string": "^5.1.0"
+  }
+}

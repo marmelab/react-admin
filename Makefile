@@ -23,6 +23,10 @@ run-graphql-demo: build ## run the demo example
 run-graphcool-demo: build ## run the demo example
 	@cd examples/graphcool-demo && yarn start
 
+build-ra-data-loopback3-rest:
+	@rm -rf ./packages/ra-data-loopback3-rest/lib
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-loopback3-rest/src -d ./packages/ra-data-loopback3-rest/lib --ignore '*.spec.js' --ignore '*.test.js'
+
 build-react-admin:
 	@rm -rf ./packages/react-admin/lib
 	@NODE_ENV=production ./node_modules/.bin/babel ./packages/react-admin/src -d ./packages/react-admin/lib --ignore '*.spec.js' --ignore '*.test.js'

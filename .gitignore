@@ -7,3 +7,4 @@ examples/**/static
 packages/ra-example-shop
 
 .idea
+package-lock.json
