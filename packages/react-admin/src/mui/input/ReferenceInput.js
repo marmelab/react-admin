@@ -12,7 +12,11 @@ import {
     crudGetOne as crudGetOneAction,
     crudGetMatching as crudGetMatchingAction,
 } from '../../actions/dataActions';
-import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
+import {
+    getPossibleReferences,
+    getPossibleReferenceValues,
+    getResource,
+} from '../../reducer/';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
@@ -250,7 +254,6 @@ export class ReferenceInput extends Component {
             resource,
             meta,
             source,
-            selectedItem: referenceRecord,
             choices: matchingReferences,
             basePath,
             onChange,
@@ -304,11 +307,9 @@ ReferenceInput.defaultProps = {
 
 const mapStateToProps = createSelector(
     (_, props) => props.input.value,
-    (state, { reference }) => state.admin.resources[reference],
+    (state, { reference }) => getResource(state, reference),
     (state, { resource, source }) =>
-        state.admin.references.possibleValues[
-            referenceSource(resource, source)
-        ],
+        getPossibleReferenceValues(state, referenceSource(resource, source)),
     (inputId, referenceState, possibleValues) => ({
         referenceRecord: referenceState && referenceState.data[inputId],
         matchingReferences: getPossibleReferences(

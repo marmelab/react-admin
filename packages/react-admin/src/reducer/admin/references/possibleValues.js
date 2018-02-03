@@ -15,7 +15,7 @@ export default (previousState = initialState, { type, payload, meta }) => {
 };
 
 export const getPossibleReferences = (
-    state,
+    referenceState,
     possibleValues,
     selectedIds = []
 ) => {
@@ -26,6 +26,6 @@ export const getPossibleReferences = (
             possibleValues.unshift(id)
     );
     return possibleValues
-        .map(id => state.data[id])
+        .map(id => referenceState.data[id])
         .filter(r => typeof r !== 'undefined');
 };
