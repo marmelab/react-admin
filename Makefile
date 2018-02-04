@@ -23,9 +23,9 @@ run-graphql-demo: build ## run the demo example
 run-graphcool-demo: build ## run the demo example
 	@cd examples/graphcool-demo && yarn start
 
-build-ra-data-loopback3-rest:
+build-ra-data-loopback3:
 	@rm -rf ./packages/ra-data-loopback3-rest/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-loopback3-rest/src -d ./packages/ra-data-loopback3-rest/lib --ignore '*.spec.js' --ignore '*.test.js'
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-loopback3/src -d ./packages/ra-data-loopback3/lib --ignore '*.spec.js' --ignore '*.test.js'
 
 build-react-admin:
 	@rm -rf ./packages/react-admin/lib
@@ -64,7 +64,7 @@ build-data-generator:
 	@rm -rf ./examples/data-generator/lib
 	@NODE_ENV=production ./node_modules/.bin/babel ./examples/data-generator/src -d ./examples/data-generator/lib
 
-build: build-ra-data-loopback3-rest build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-input-rich-text build-ra-data-graphql build-ra-data-graphcool build-ra-dependent-input build-ra-data-graphql-simple build-data-generator ## compile ES6 files to JS
+build: build-ra-data-loopback3 build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-input-rich-text build-ra-data-graphql build-ra-data-graphcool build-ra-dependent-input build-ra-data-graphql-simple build-data-generator ## compile ES6 files to JS
 
 watch: ## continuously compile ES6 files to JS
 	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore '*.spec.js' --ignore '*.test.js' --watch

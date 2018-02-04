@@ -1,5 +1,5 @@
 {
-  "name": "ra-data-loopback3-rest",
+  "name": "ra-data-loopback3",
   "version": "0.1.0",
   "description": "",
   "main": "lib/index.js",
@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "ra-data-loopback3-rest"
+    "ra-data-loopback3"
   ],
   "author": "toannt",
   "license": "ISC",
