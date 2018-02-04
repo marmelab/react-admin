@@ -46,7 +46,16 @@ export const RestClient = (apiUrl, httpClient = fetchUtils.fetchJson) => {
                 const { field, order } = params.sort;
                 const query = {};
                 query.where = { ...params.filter };
-                if (field) query.order = [`${field} ${order}`];
+                if (field) {
+                    if (field.constructor === Array) {
+                        query.order = [];
+                        for (let i = 0; i < field.lenght; i++) {
+                            query.order.push(`${field[i]} ${order[i]}`);
+                        }
+                    } else {
+                        query.order = [`${field} ${order}`];
+                    }
+                }
                 if (perPage > 0) {
                     query.limit = perPage;
                     if (page >= 0) {
