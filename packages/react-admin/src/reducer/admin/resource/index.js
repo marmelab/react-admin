@@ -66,7 +66,5 @@ export default (
     return newState;
 };
 
-export const getResource = (state, resource) => state[resource];
-
 export const getResources = state =>
     Object.keys(state).map(key => state[key].props);

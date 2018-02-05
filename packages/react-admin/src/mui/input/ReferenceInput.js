@@ -15,8 +15,8 @@ import {
 import {
     getPossibleReferences,
     getPossibleReferenceValues,
-    getResource,
-} from '../../reducer/';
+    getReferenceResource,
+} from '../../reducer';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
@@ -306,7 +306,7 @@ ReferenceInput.defaultProps = {
 
 const mapStateToProps = createSelector(
     (_, props) => props.input.value,
-    (state, { reference }) => getResource(state, reference),
+    getReferenceResource,
     (state, { resource, source }) =>
         getPossibleReferenceValues(state, referenceSource(resource, source)),
     (inputId, referenceState, possibleValues) => ({

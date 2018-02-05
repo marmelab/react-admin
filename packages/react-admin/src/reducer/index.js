@@ -2,8 +2,8 @@ import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import { routerReducer } from 'react-router-redux';
 import admin, {
-    getResource as getAdminResource,
     getResources as getAdminResources,
+    getReferenceResource as getAdminReferenceResource,
     getPossibleReferenceValues as getAdminPossibleReferenceValues,
     isLoggedIn as adminIsLoggedIn,
 } from './admin';
@@ -20,9 +20,9 @@ export default (customReducers, locale, messages) =>
 
 export const getPossibleReferenceValues = (state, resource) =>
     getAdminPossibleReferenceValues(state.admin, resource);
-export const getResource = (state, resource) =>
-    getAdminResource(state.admin, resource);
 export const getResources = state => getAdminResources(state.admin);
+export const getReferenceResource = (state, props) =>
+    getAdminReferenceResource(state.admin, props);
 export const isLoggedIn = state => adminIsLoggedIn(state.admin);
 export const getLocale = state => adminGetLocale(state.i18n);
 export { getPossibleReferences } from './admin';

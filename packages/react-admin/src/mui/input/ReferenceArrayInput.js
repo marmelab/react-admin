@@ -14,8 +14,8 @@ import {
 import {
     getPossibleReferences,
     getPossibleReferenceValues,
-    getResource,
-} from '../../reducer/admin';
+    getReferenceResource,
+} from '../../reducer';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
@@ -290,9 +290,10 @@ ReferenceArrayInput.defaultProps = {
     sort: { field: 'id', order: 'DESC' },
     referenceRecords: [],
 };
+
 const mapStateToProps = createSelector(
     (_, { input: { value: referenceIds } }) => referenceIds || [],
-    (state, { reference }) => getResource(state, reference),
+    getReferenceResource,
     (state, { resource, source }) =>
         getPossibleReferenceValues(state, referenceSource(resource, source)),
     (inputIds, referenceState, possibleValues) => ({
