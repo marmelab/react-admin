@@ -55,7 +55,7 @@ class Sidebar extends PureComponent {
             <Responsive
                 small={
                     <Drawer
-                        type="temporary"
+                        variant="temporary"
                         open={open}
                         onClose={this.toggleSidebar}
                         classes={{
@@ -70,12 +70,12 @@ class Sidebar extends PureComponent {
                 }
                 medium={
                     <Drawer
-                        type="persistent"
+                        variant="persistent"
                         open={open}
                         classes={{
                             paper: classes.drawerPaper,
                         }}
-                        onClose={setSidebarVisibility}
+                        onClose={this.toggleSidebar}
                         {...rest}
                     >
                         <div className={classes.drawerHeader}>

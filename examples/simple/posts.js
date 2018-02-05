@@ -140,7 +140,7 @@ const PostCreateToolbar = props => (
             label="post.action.save_and_add"
             redirect={false}
             submitOnEnter={false}
-            raised={false}
+            variant="flat"
         />
     </Toolbar>
 );

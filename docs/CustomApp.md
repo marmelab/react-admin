@@ -87,7 +87,7 @@ const App = () => (
                 <MuiThemeProvider>
                     <AppBar position="static" color="default">
                         <Toolbar>
-                            <Typography type="title" color="inherit">
+                            <Typography variant="title" color="inherit">
                                 My admin
                             </Typography>
                         </Toolbar>

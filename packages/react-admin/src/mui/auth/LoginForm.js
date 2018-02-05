@@ -64,7 +64,7 @@ const LoginForm = ({ classes, isLoading, handleSubmit, translate }) => (
         </div>
         <CardActions>
             <Button
-                raised
+                variant="raised"
                 type="submit"
                 color="primary"
                 disabled={isLoading}
