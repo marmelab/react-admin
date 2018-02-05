@@ -9,6 +9,19 @@ const styles = {
     root: { padding: '0 1em 1em 1em' },
 };
 
+const sanitizeRestProps = ({
+    children,
+    className,
+    classes,
+    record,
+    resource,
+    basePath,
+    version,
+    initialValues,
+    translate,
+    ...rest
+}) => rest;
+
 /**
  * Simple Layout for a Show view, showing fields in one column.
  * 
@@ -54,7 +67,7 @@ export const SimpleShowLayout = ({
     <div
         className={classnames(classes.root, className)}
         key={version}
-        {...rest}
+        {...sanitizeRestProps(rest)}
     >
         {Children.map(
             children,
