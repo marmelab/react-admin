@@ -5,6 +5,7 @@ import {
     CheckboxGroupInput,
     ChipField,
     Create,
+    CreateButton,
     Datagrid,
     DateField,
     DateInput,
@@ -22,6 +23,7 @@ import {
     ReferenceArrayField,
     ReferenceManyField,
     ReferenceArrayInput,
+    RefreshButton,
     Responsive,
     RichTextField,
     SaveButton,
@@ -44,10 +46,11 @@ import {
     required,
     translate,
 } from 'admin-on-rest'; // eslint-disable-line import/no-unresolved
+import { CardActions } from 'material-ui/Card';
 import RichTextInput from 'aor-rich-text-input';
 import Chip from 'material-ui/Chip';
+import BookIcon from 'material-ui/svg-icons/action/book'; // eslint-disable-line import/no-unresolved
 
-import BookIcon from 'material-ui/svg-icons/action/book';
 export const PostIcon = BookIcon;
 
 const QuickFilter = translate(({ label, translate }) => (
@@ -78,9 +81,39 @@ const titleFieldStyle = {
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
 };
+
+const cardActionStyle = {
+    zIndex: 2,
+    display: 'inline-block',
+    float: 'right',
+};
+
+const PostActions = ({
+    resource,
+    filters,
+    displayedFilters,
+    filterValues,
+    basePath,
+    showFilter,
+}) => (
+    <CardActions style={cardActionStyle}>
+        {filters &&
+            React.cloneElement(filters, {
+                resource,
+                showFilter,
+                displayedFilters,
+                filterValues,
+                context: 'button',
+            })}
+        <CreateButton basePath={basePath} />
+        <RefreshButton />
+    </CardActions>
+);
+
 export const PostList = props => (
     <List
         {...props}
+        actions={<PostActions />}
         filters={<PostFilter />}
         sort={{ field: 'published_at', order: 'DESC' }}
     >
