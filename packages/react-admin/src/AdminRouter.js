@@ -103,7 +103,7 @@ export class AdminRouter extends Component {
                     cloneElement(child, {
                         key: child.props.name,
                         // The context prop instructs the Resource component to not render anything
-                        // but simply register itself as a known resource
+                        // but simply to register itself as a known resource
                         context: 'registration',
                     })
                 )}
