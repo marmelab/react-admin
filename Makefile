@@ -25,36 +25,36 @@ run-graphcool-demo: build ## run the demo example
 
 build-react-admin:
 	@rm -rf ./packages/react-admin/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/react-admin/src -d ./packages/react-admin/lib --ignore '*.spec.js' --ignore '*.test.js'
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/react-admin/src -d ./packages/react-admin/lib --ignore spec.js,test.js
 
 build-ra-data-json-server:
 	@rm -rf ./packages/ra-data-json-server/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-json-server/src -d ./packages/ra-data-json-server/lib --ignore '*.spec.js' --ignore '*.test.js'
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-json-server/src -d ./packages/ra-data-json-server/lib --ignore spec.js,test.js
 
 build-ra-data-simple-rest:
 	@rm -rf ./packages/ra-data-simple-rest/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-simple-rest/src -d ./packages/ra-data-simple-rest/lib --ignore '*.spec.js' --ignore '*.test.js'
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-simple-rest/src -d ./packages/ra-data-simple-rest/lib --ignore spec.js,test.js
 
 build-ra-input-rich-text:
 	@rm -rf ./packages/ra-input-rich-text/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-input-rich-text/src -d ./packages/ra-input-rich-text/lib --ignore '*.spec.js' --ignore '*.test.js'
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-input-rich-text/src -d ./packages/ra-input-rich-text/lib --ignore spec.js,test.js
 	@cd packages/ra-input-rich-text/src && rsync -R `find . -name *.css` ../lib
 
 build-ra-data-graphql:
 	@rm -rf ./packages/ra-data-graphql/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-graphql/src -d ./packages/ra-data-graphql/lib --ignore '*.spec.js' --ignore '*.test.js'
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-graphql/src -d ./packages/ra-data-graphql/lib --ignore spec.js,test.js
 
 build-ra-data-graphcool:
 	@rm -rf ./packages/ra-data-graphcool/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-graphcool/src -d ./packages/ra-data-graphcool/lib --ignore '*.spec.js' --ignore '*.test.js'
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-graphcool/src -d ./packages/ra-data-graphcool/lib --ignore spec.js,test.js
 
 build-ra-data-graphql-simple:
 	@rm -rf ./packages/ra-data-graphql-simple/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-graphql-simple/src -d ./packages/ra-data-graphql-simple/lib --ignore '*.spec.js' --ignore '*.test.js'
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-graphql-simple/src -d ./packages/ra-data-graphql-simple/lib --ignore spec.js,test.js
 
 build-ra-dependent-input:
 	@rm -rf ./packages/ra-dependent-input/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-dependent-input/src -d ./packages/ra-dependent-input/lib --ignore '*.spec.js' --ignore '*.test.js'
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-dependent-input/src -d ./packages/ra-dependent-input/lib --ignore spec.js,test.js
 
 build-data-generator:
 	@rm -rf ./examples/data-generator/lib
@@ -63,7 +63,7 @@ build-data-generator:
 build: build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-input-rich-text build-ra-data-graphql build-ra-data-graphcool build-ra-dependent-input build-ra-data-graphql-simple build-data-generator ## compile ES6 files to JS
 
 watch: ## continuously compile ES6 files to JS
-	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore '*.spec.js' --ignore '*.test.js' --watch
+	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore spec.js,test.js --watch
 
 doc: ## compile doc as html and launch doc web server
 	@cd docs && jekyll server . --watch
