@@ -102,7 +102,7 @@ export class AdminRouter extends Component {
                 Children.map(childrenToRender, child =>
                     cloneElement(child, {
                         key: child.props.name,
-                        // The context prop instruct the Resource component to not render anything
+                        // The context prop instructs the Resource component to not render anything
                         // but simply register itself as a known resource
                         context: 'registration',
                     })
