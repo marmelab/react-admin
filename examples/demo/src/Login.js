@@ -105,7 +105,7 @@ class Login extends Component {
                         </div>
                         <CardActions>
                             <Button
-                                raised
+                                variant="raised"
                                 type="submit"
                                 color="primary"
                                 disabled={isLoading}

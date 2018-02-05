@@ -646,7 +646,7 @@ const UserCreateToolbar = ({ permissions, ...props }) =>
                 label="user.action.save_and_add"
                 redirect={false}
                 submitOnEnter={false}
-                raised={false}
+                variant="flat"
             />}
     </Toolbar>;
 
@@ -676,7 +676,7 @@ const UserCreateToolbar = ({ permissions, ...props }) =>
                 label="user.action.save_and_add"
                 redirect={false}
                 submitOnEnter={false}
-                raised={false}
+                variant="flat"
             />}
     </Toolbar>;
 

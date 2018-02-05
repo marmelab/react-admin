@@ -26,7 +26,7 @@ const sanitizeRestProps = ({
     saving,
     label,
     invalid,
-    raised,
+    variant,
     translate,
     handleSubmitWithRedirect,
     submitOnEnter,
@@ -56,7 +56,7 @@ export class SaveButton extends Component {
             classes = {},
             saving,
             label = 'ra.action.save',
-            raised = true,
+            variant = 'raised',
             translate,
             submitOnEnter,
             redirect,
@@ -66,7 +66,7 @@ export class SaveButton extends Component {
         return (
             <Button
                 className={classnames(classes.button, className)}
-                raised={raised}
+                variant={variant}
                 type={type}
                 onClick={this.handleClick}
                 color={saving ? 'default' : 'primary'}
@@ -94,7 +94,7 @@ SaveButton.propTypes = {
     label: PropTypes.string,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     invalid: PropTypes.bool,
-    raised: PropTypes.bool,
+    variant: PropTypes.oneOf(['raised', 'flat', 'fab']),
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
     translate: PropTypes.func.isRequired,

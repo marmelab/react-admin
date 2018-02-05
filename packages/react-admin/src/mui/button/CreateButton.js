@@ -46,7 +46,7 @@ const CreateButton = ({
         small={
             <Button
                 component={Link}
-                fab
+                variant="fab"
                 color="primary"
                 className={classnames(classes.floating, className)}
                 to={`${basePath}/create`}

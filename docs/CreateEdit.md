@@ -467,7 +467,7 @@ import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
 
 const PostCreateToolbar = props => <Toolbar {...props} >
     <SaveButton label="post.action.save_and_show" redirect="show" submitOnEnter={true} />
-    <SaveButton label="post.action.save_and_add" redirect={false} submitOnEnter={false} raised={false} />
+    <SaveButton label="post.action.save_and_add" redirect={false} submitOnEnter={false} variant="flat" />
 </Toolbar>;
 
 export const PostEdit = (props) => (
@@ -536,7 +536,7 @@ const UserCreateToolbar = ({ permissions, ...props }) =>
                 label="user.action.save_and_add"
                 redirect={false}
                 submitOnEnter={false}
-                raised={false}
+                variant="flat"
             />}
     </Toolbar>;
 

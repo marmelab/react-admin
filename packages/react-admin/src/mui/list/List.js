@@ -316,7 +316,7 @@ export class List extends Component {
                             {!isLoading &&
                                 !ids.length && (
                                     <CardContent style={styles.noResults}>
-                                        <Typography type="body1">
+                                        <Typography variant="body1">
                                             {translate(
                                                 'ra.navigation.no_more_results',
                                                 {
@@ -336,7 +336,7 @@ export class List extends Component {
                         </div>
                     ) : (
                         <CardContent className={classes.noResults}>
-                            <Typography type="body1">
+                            <Typography variant="body1">
                                 {translate('ra.navigation.no_results')}
                             </Typography>
                         </CardContent>
