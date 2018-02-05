@@ -46,13 +46,14 @@ import RichTextInput from 'ra-input-rich-text';
 import Chip from 'material-ui/Chip';
 import { withStyles } from 'material-ui/styles';
 
-export PostIcon from 'material-ui-icons/Book';
+import BookIcon from 'material-ui-icons/Book';
+export const PostIcon = BookIcon;
 
 const QuickFilter = translate(({ label, translate }) => (
     <Chip style={{ marginBottom: 8 }} label={translate(label)} />
 ));
 
-const PostFilter = ({ ...props }) => (
+const PostFilter = props => (
     <Filter {...props}>
         <TextInput label="post.list.search" source="q" alwaysOn />
         <TextInput
@@ -76,6 +77,7 @@ const styles = {
     },
     publishedAt: { fontStyle: 'italic' },
 };
+
 export const PostList = withStyles(styles)(({ classes, ...props }) => (
     <List
         {...props}
@@ -143,7 +145,9 @@ const PostCreateToolbar = props => (
     </Toolbar>
 );
 
-export const PostCreate = ({ ...props }) => (
+const getDefaultDate = () => new Date();
+
+export const PostCreate = props => (
     <Create {...props}>
         <SimpleForm
             toolbar={<PostCreateToolbar />}
@@ -167,14 +171,14 @@ export const PostCreate = ({ ...props }) => (
             <TextInput source="password" type="password" />
             <LongTextInput source="teaser" />
             <RichTextInput source="body" />
-            <DateInput source="published_at" defaultValue={() => new Date()} />
+            <DateInput source="published_at" defaultValue={getDefaultDate} />
             <NumberInput source="average_note" />
             <BooleanInput source="commentable" defaultValue />
         </SimpleForm>
     </Create>
 );
 
-export const PostEdit = ({ ...props }) => (
+export const PostEdit = props => (
     <Edit title={<PostTitle />} {...props}>
         <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label="post.form.summary">
@@ -235,7 +239,7 @@ export const PostEdit = ({ ...props }) => (
     </Edit>
 );
 
-export const PostShow = ({ ...props }) => (
+export const PostShow = props => (
     <Show title={<PostTitle />} {...props}>
         <TabbedShowLayout>
             <Tab label="post.form.summary">

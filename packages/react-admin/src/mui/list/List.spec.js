@@ -6,6 +6,7 @@ import { List } from './List';
 
 describe('<List />', () => {
     const defaultProps = {
+        ids: [],
         resource: 'post',
         hasCreate: false,
         hasEdit: false,
@@ -21,6 +22,8 @@ describe('<List />', () => {
         crudGetList: () => {},
         push: () => {},
         translate: () => {},
+        refreshView: () => {},
+        version: 1,
     };
 
     it('should display a no results text when there is no result', () => {
@@ -48,6 +51,7 @@ describe('<List />', () => {
                 {...defaultProps}
                 translate={x => x}
                 total={1}
+                ids={[1]}
                 changeFormValue={() => true}
                 changeListParams={() => true}
             >
@@ -56,5 +60,24 @@ describe('<List />', () => {
         );
         const textElement = wrapper.find('CardText');
         assert.equal(textElement.length, 0);
+    });
+
+    it('should display a no more results text on an empty paginated page', () => {
+        const wrapper = shallow(
+            <List
+                {...defaultProps}
+                translate={x => x}
+                total={10}
+                ids={[]}
+                page={2}
+                perPage={10}
+                changeFormValue={() => true}
+                changeListParams={() => true}
+            >
+                <div />
+            </List>
+        );
+        const textElement = wrapper.find('WithStyles(Typography)').children();
+        assert.equal(textElement.text(), 'ra.navigation.no_more_results');
     });
 });

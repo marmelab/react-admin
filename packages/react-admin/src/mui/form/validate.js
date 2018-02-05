@@ -10,22 +10,34 @@ export const required = (value, _, props) =>
 
 export const minLength = (min, message) => (value, _, props) =>
     !isEmpty(value) && value.length < min
-        ? props.translate(message || 'ra.validation.minLength', { min })
+        ? props.translate(message || 'ra.validation.minLength', {
+              min,
+              _: message,
+          })
         : undefined;
 
 export const maxLength = (max, message) => (value, _, props) =>
     !isEmpty(value) && value.length > max
-        ? props.translate(message || 'ra.validation.maxLength', { max })
+        ? props.translate(message || 'ra.validation.maxLength', {
+              max,
+              _: message,
+          })
         : undefined;
 
 export const minValue = (min, message) => (value, _, props) =>
     !isEmpty(value) && value < min
-        ? props.translate(message || 'ra.validation.minValue', { min })
+        ? props.translate(message || 'ra.validation.minValue', {
+              min,
+              _: message,
+          })
         : undefined;
 
 export const maxValue = (max, message) => (value, _, props) =>
     !isEmpty(value) && value > max
-        ? props.translate(message || 'ra.validation.maxValue', { max })
+        ? props.translate(message || 'ra.validation.maxValue', {
+              max,
+              _: message,
+          })
         : undefined;
 
 export const number = (value, _, props) =>
@@ -35,12 +47,12 @@ export const number = (value, _, props) =>
 
 export const regex = (pattern, message) => (value, _, props) =>
     !isEmpty(value) && typeof value === 'string' && !pattern.test(value)
-        ? props.translate(message)
+        ? props.translate(message, { _: message })
         : undefined;
 
 export const email = regex(EMAIL_REGEX, 'ra.validation.email');
 
 export const choices = (list, message) => (value, _, props) =>
     !isEmpty(value) && list.indexOf(value) === -1
-        ? props.translate(message)
+        ? props.translate(message, { _: message })
         : undefined;

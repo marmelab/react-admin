@@ -1,7 +1,6 @@
 import assert from 'assert';
 import { shallow } from 'enzyme';
 import React from 'react';
-
 import { FormField } from './FormField';
 
 describe('<FormField>', () => {
@@ -48,5 +47,38 @@ describe('<FormField>', () => {
         );
         const component = wrapper.find('Field');
         assert.equal(component.length, 0);
+    });
+
+    it('should call initializeForm if a defaultValue is set', () => {
+        const initializeForm = jest.fn();
+        shallow(
+            <FormField
+                component={Foo}
+                source="bar"
+                defaultValue="foo"
+                initializeForm={initializeForm}
+            />
+        );
+        assert.equal(initializeForm.mock.calls.length, 1);
+        assert.deepEqual(initializeForm.mock.calls[0][0], { bar: 'foo' });
+    });
+
+    it('should call initializeForm if a defaultValue changes', () => {
+        const initializeForm = jest.fn();
+        const wrapper = shallow(
+            <FormField
+                component={Foo}
+                source="bar"
+                defaultValue="foo"
+                initializeForm={initializeForm}
+            />
+        );
+        assert.equal(initializeForm.mock.calls.length, 1);
+        assert.deepEqual(initializeForm.mock.calls[0][0], { bar: 'foo' });
+
+        wrapper.setProps({ defaultValue: 'bar', initializeForm });
+
+        assert.equal(initializeForm.mock.calls.length, 2);
+        assert.deepEqual(initializeForm.mock.calls[1][0], { bar: 'bar' });
     });
 });

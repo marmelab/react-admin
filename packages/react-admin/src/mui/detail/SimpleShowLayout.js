@@ -9,6 +9,19 @@ const styles = {
     root: { padding: '0 1em 1em 1em' },
 };
 
+const sanitizeRestProps = ({
+    children,
+    className,
+    classes,
+    record,
+    resource,
+    basePath,
+    version,
+    initialValues,
+    translate,
+    ...rest
+}) => rest;
+
 /**
  * Simple Layout for a Show view, showing fields in one column.
  * 
@@ -54,38 +67,42 @@ export const SimpleShowLayout = ({
     <div
         className={classnames(classes.root, className)}
         key={version}
-        {...rest}
+        {...sanitizeRestProps(rest)}
     >
-        {Children.map(children, field => (
-            <div
-                key={field.props.source}
-                className={classnames(
-                    `ra-field ra-field-${field.props.source}`,
-                    field.props.className
-                )}
-            >
-                {field.props.addLabel ? (
-                    <Labeled
-                        record={record}
-                        resource={resource}
-                        basePath={basePath}
-                        label={field.props.label}
-                        source={field.props.source}
-                        disabled={false}
+        {Children.map(
+            children,
+            field =>
+                field ? (
+                    <div
+                        key={field.props.source}
+                        className={classnames(
+                            `ra-field ra-field-${field.props.source}`,
+                            field.props.className
+                        )}
                     >
-                        {field}
-                    </Labeled>
-                ) : typeof field.type === 'string' ? (
-                    field
-                ) : (
-                    React.cloneElement(field, {
-                        record,
-                        resource,
-                        basePath,
-                    })
-                )}
-            </div>
-        ))}
+                        {field.props.addLabel ? (
+                            <Labeled
+                                record={record}
+                                resource={resource}
+                                basePath={basePath}
+                                label={field.props.label}
+                                source={field.props.source}
+                                disabled={false}
+                            >
+                                {field}
+                            </Labeled>
+                        ) : typeof field.type === 'string' ? (
+                            field
+                        ) : (
+                            React.cloneElement(field, {
+                                record,
+                                resource,
+                                basePath,
+                            })
+                        )}
+                    </div>
+                ) : null
+        )}
     </div>
 );
 
