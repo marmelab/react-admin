@@ -461,7 +461,7 @@ class MyLayout extends Component {
 }
 
 MyLayout.propTypes = {
-    authClient: PropTypes.func,
+    authProvider: PropTypes.func,
     customRoutes: PropTypes.array,
     dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     isLoading: PropTypes.bool.isRequired,
