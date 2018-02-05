@@ -40,7 +40,11 @@ export const DatagridCell = ({
         )}
         {...sanitizeRestProps(rest)}
     >
-        {React.cloneElement(field, { record, basePath, resource })}
+        {React.cloneElement(field, {
+            record,
+            basePath: field.props.basePath || basePath,
+            resource,
+        })}
     </TableCell>
 );
 
