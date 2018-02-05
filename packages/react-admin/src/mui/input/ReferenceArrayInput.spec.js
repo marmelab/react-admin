@@ -8,6 +8,7 @@ describe('<ReferenceArrayInput />', () => {
         crudGetMatching: () => true,
         crudGetMany: () => true,
         input: {},
+        record: {},
         reference: 'tags',
         resource: 'posts',
         source: 'tag_ids',

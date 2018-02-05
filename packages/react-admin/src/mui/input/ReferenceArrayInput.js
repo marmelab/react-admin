@@ -289,7 +289,6 @@ ReferenceArrayInput.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecords: [],
-    record: {},
 };
 const mapStateToProps = createSelector(
     (_, { input: { value: referenceIds } }) => referenceIds || [],

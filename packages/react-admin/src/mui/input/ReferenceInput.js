@@ -302,7 +302,6 @@ ReferenceInput.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecord: null,
-    record: {},
 };
 
 const mapStateToProps = createSelector(

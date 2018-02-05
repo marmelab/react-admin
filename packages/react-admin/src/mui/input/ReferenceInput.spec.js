@@ -8,6 +8,7 @@ describe('<ReferenceInput />', () => {
         crudGetMatching: () => true,
         crudGetOne: () => true,
         input: {},
+        record: {},
         reference: 'posts',
         resource: 'comments',
         source: 'post_id',
