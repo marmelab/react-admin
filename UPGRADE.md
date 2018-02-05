@@ -65,6 +65,26 @@ import { jsonServerRestClient } from 'admin-on-rest';
 import jsonServerRestClient from 'ra-data-json-server';
 ```
 
+## `authClient` Prop Renamed To `authProvider` in `<Admin>` Component
+
+In the `<Admin>` component, the `authClient` prop is now called `authProvider`:
+
+```jsx
+// before
+import authClient from './authClient';
+<Admin authClient={authClient}>
+   ...
+</Admin>
+
+// after
+import authProvider from './authProvider';
+<Admin authProvider={authProvider}>
+   ...
+</Admin>
+```
+
+The signature of the authorizations provider function is the same as the authorizations client function, so you shouldn't need to change anything in your previous authorizations client function.
+
 ## Default (English) Messages Moved To Standalone Package
 
 The English messages have moved to another package, `ra-language-english`. The core package still displays the interface messages in English by default (by using `ra-language-english` as a dependency), but if you overrode some of the messages, you'll need to update the package name:
@@ -513,7 +533,7 @@ export default withRouter(MyPage);
 
 ## Authorization: `<WithPermission>` and `<SwitchPermissions>` replaced by `<WithPermissions>`
 
-We removed the `WithPermission` and `SwitchPermissions` in favor of a more versatile component: `WithPermissions`. The `WithPermissions` component retrieves permissions by calling the `authClient` with the `AUTH_GET_PERMISSIONS` type. It then passes the permissions to the render callback. 
+We removed the `WithPermission` and `SwitchPermissions` in favor of a more versatile component: `WithPermissions`. The `WithPermissions` component retrieves permissions by calling the `authProvider` with the `AUTH_GET_PERMISSIONS` type. It then passes the permissions to the render callback. 
 
 This component follows the [render callback pattern](https://cdb.reacttraining.com/use-a-render-prop-50de598f11ce). Just like the [React Router `Route`](https://reacttraining.com/react-router/web/api/Route) component, you can pass a render callback to `<WithPermissions>` either as its only child, or via its `render` prop (if both are passed, the `render` prop is used).
 
@@ -839,7 +859,7 @@ export default ({ permissions }) => (
 );
 ```
 
-Finally, you won't need the now deprecated `<WithPermission>` or `<SwitchPermissions>` in custom routes either if you want access to permissions. Much like you can restrict access to authenticated users only with the [`Authenticated`](Authentication.html#restricting-access-to-a-custom-page) component, you may decorate your custom route with the `WithPermissions` component. It will ensure the user is authenticated then call the `authClient` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
+Finally, you won't need the now deprecated `<WithPermission>` or `<SwitchPermissions>` in custom routes either if you want access to permissions. Much like you can restrict access to authenticated users only with the [`Authenticated`](Authentication.html#restricting-access-to-a-custom-page) component, you may decorate your custom route with the `WithPermissions` component. It will ensure the user is authenticated then call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
 
 {% raw %}
 ```jsx
