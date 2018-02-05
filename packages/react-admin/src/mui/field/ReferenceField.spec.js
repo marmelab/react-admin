@@ -6,10 +6,6 @@ import { ReferenceField } from './ReferenceField';
 import TextField from './TextField';
 
 describe('<ReferenceField />', () => {
-    const classes = {
-        link: '',
-    };
-
     it('should call crudGetManyAccumulate on componentDidMount if reference source is defined', () => {
         const crudGetManyAccumulate = jest.fn();
         shallow(
@@ -20,7 +16,6 @@ describe('<ReferenceField />', () => {
                 reference="bar"
                 basePath=""
                 crudGetManyAccumulate={crudGetManyAccumulate}
-                classes={classes}
             >
                 <TextField source="title" />
             </ReferenceField>
@@ -37,7 +32,6 @@ describe('<ReferenceField />', () => {
                 reference="bar"
                 basePath=""
                 crudGetManyAccumulate={crudGetManyAccumulate}
-                classes={classes}
             >
                 <TextField source="title" />
             </ReferenceField>
@@ -53,7 +47,6 @@ describe('<ReferenceField />', () => {
                 reference="bar"
                 basePath=""
                 crudGetManyAccumulate={() => {}}
-                classes={classes}
             >
                 <TextField source="title" />
             </ReferenceField>
@@ -71,7 +64,6 @@ describe('<ReferenceField />', () => {
                 basePath=""
                 linkType="show"
                 crudGetManyAccumulate={() => {}}
-                classes={classes}
             >
                 <TextField source="title" />
             </ReferenceField>
@@ -89,7 +81,6 @@ describe('<ReferenceField />', () => {
                 basePath=""
                 linkType={false}
                 crudGetManyAccumulate={() => {}}
-                classes={classes}
             >
                 <TextField source="title" />
             </ReferenceField>

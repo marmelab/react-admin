@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import get from 'lodash.get';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
-import classenames from 'classnames';
+import classnames from 'classnames';
 
 import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
@@ -97,7 +97,7 @@ export class ReferenceField extends Component {
         if (linkType === 'edit' || linkType === true) {
             return (
                 <Link
-                    className={classenames(classes.link, className)}
+                    className={classnames(classes.link, className)}
                     to={href}
                     {...sanitizeRestProps(rest)}
                 >
@@ -114,7 +114,7 @@ export class ReferenceField extends Component {
         if (linkType === 'show') {
             return (
                 <Link
-                    className={classenames(classes.link, className)}
+                    className={classnames(classes.link, className)}
                     to={`${href}/show`}
                     {...sanitizeRestProps(rest)}
                 >
@@ -161,10 +161,11 @@ ReferenceField.propTypes = {
 };
 
 ReferenceField.defaultProps = {
+    allowEmpty: false,
+    classes: {},
+    linkType: 'edit',
     referenceRecord: null,
     record: {},
-    allowEmpty: false,
-    linkType: 'edit',
 };
 
 const mapStateToProps = (state, props) => ({
