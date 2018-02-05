@@ -369,7 +369,6 @@ import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import CircularProgress from 'material-ui/CircularProgress';
 import {
-    AdminRoutes,
     AppBar,
     Menu,
     Notification,
@@ -416,7 +415,6 @@ class MyLayout extends Component {
     render() {
         const {
             children,
-            customRoutes,
             dashboard,
             isLoading,
             logout,
@@ -430,12 +428,7 @@ class MyLayout extends Component {
                         <AppBar title={title} />
                         <div className="body" style={styles.body}>
                             <div style={styles.content}>
-                                <AdminRoutes
-                                    customRoutes={customRoutes}
-                                    dashboard={dashboard}
-                                >
-                                    {children}
-                                </AdminRoutes>
+                                {children}
                             </div>
                             <Sidebar>
                                 {createElement(menu || Menu, {
@@ -461,12 +454,10 @@ class MyLayout extends Component {
 }
 
 MyLayout.propTypes = {
-    authProvider: PropTypes.func,
-    customRoutes: PropTypes.array,
+    children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     isLoading: PropTypes.bool.isRequired,
     menu: PropTypes.element,
-    resources: PropTypes.array,
     setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
 };
