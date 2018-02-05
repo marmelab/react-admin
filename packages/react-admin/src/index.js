@@ -11,5 +11,6 @@ export * from './sideEffect/saga';
 export * as fetchUtils from './util/fetch';
 export FieldTitle from './util/FieldTitle';
 export Admin from './Admin';
-export AdminRoutes from './AdminRoutes';
+export AdminRouter from './AdminRouter';
+export RoutesWithLayout from './RoutesWithLayout';
 export Resource from './Resource';

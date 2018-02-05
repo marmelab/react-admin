@@ -6,9 +6,9 @@ import { render } from 'enzyme';
 import { html } from 'cheerio';
 import assert from 'assert';
 
-import AdminRoutes from './AdminRoutes';
+import RoutesWithLayout from './RoutesWithLayout';
 
-describe('<AdminRoutes>', () => {
+describe('<RoutesWithLayout>', () => {
     const Dashboard = () => <div>Dashboard</div>;
     const Custom = () => <div>Custom</div>;
     // the Provider is required because the dashboard is wrapped by <Authenticated>, which is a connected component
@@ -20,12 +20,12 @@ describe('<AdminRoutes>', () => {
         const wrapper = render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/']}>
-                    <AdminRoutes
+                    <RoutesWithLayout
                         dashboard={Dashboard}
                         declareResources={() => true}
                     >
                         <div />
-                    </AdminRoutes>
+                    </RoutesWithLayout>
                 </MemoryRouter>
             </Provider>
         );
@@ -37,9 +37,9 @@ describe('<AdminRoutes>', () => {
         const wrapper = render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/custom']}>
-                    <AdminRoutes customRoutes={customRoutes}>
+                    <RoutesWithLayout customRoutes={customRoutes}>
                         <div />
-                    </AdminRoutes>
+                    </RoutesWithLayout>
                 </MemoryRouter>
             </Provider>
         );

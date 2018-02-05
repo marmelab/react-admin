@@ -8,7 +8,7 @@ import getContext from 'recompose/getContext';
 import Loading from './mui/layout/Loading';
 import { AUTH_GET_PERMISSIONS } from './auth/types';
 import { isLoggedIn } from './reducer';
-import AdminRoutes from './AdminRoutes';
+import RoutesWithLayout from './RoutesWithLayout';
 
 export class AdminRouter extends Component {
     state = { children: [] };
@@ -23,9 +23,9 @@ export class AdminRouter extends Component {
         }
     };
     initializeResourcesAsync = async nextProps => {
-        const { authClient } = nextProps;
+        const { authProvider } = nextProps;
         try {
-            const permissions = await authClient(AUTH_GET_PERMISSIONS);
+            const permissions = await authProvider(AUTH_GET_PERMISSIONS);
             const { children } = nextProps;
 
             const childrenFuncResult = children(permissions);
@@ -62,6 +62,21 @@ export class AdminRouter extends Component {
             );
         }
     }
+
+    renderCustomRoutesWithoutLayout = (route, props) => {
+        if (route.props.render) {
+            return route.props.render({
+                ...props,
+                title: this.props.title,
+            });
+        }
+        if (route.props.component) {
+            return createElement(route.props.component, {
+                ...props,
+                title: this.props.title,
+            });
+        }
+    };
 
     render() {
         const {
@@ -115,23 +130,11 @@ export class AdminRouter extends Component {
                                 key={index}
                                 exact={route.props.exact}
                                 path={route.props.path}
-                                render={props => {
-                                    if (route.props.render) {
-                                        return route.props.render({
-                                            ...props,
-                                            title,
-                                        });
-                                    }
-                                    if (route.props.component) {
-                                        return createElement(
-                                            route.props.component,
-                                            {
-                                                ...props,
-                                                title,
-                                            }
-                                        );
-                                    }
-                                }}
+                                render={props =>
+                                    this.renderCustomRoutesWithoutLayout(
+                                        route,
+                                        props
+                                    )}
                             />
                         ))}
                     <Route
@@ -139,7 +142,7 @@ export class AdminRouter extends Component {
                         render={() =>
                             createElement(appLayout, {
                                 children: (
-                                    <AdminRoutes
+                                    <RoutesWithLayout
                                         catchAll={catchAll}
                                         children={childrenToRender} // eslint-disable-line react/no-children-prop
                                         customRoutes={customRoutes.filter(
@@ -169,7 +172,7 @@ const componentPropType = PropTypes.oneOfType([
 
 AdminRouter.propTypes = {
     appLayout: componentPropType,
-    authClient: PropTypes.func,
+    authProvider: PropTypes.func,
     catchAll: componentPropType,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     customRoutes: PropTypes.array,
@@ -187,7 +190,7 @@ const mapStateToProps = state => ({
 
 export default compose(
     getContext({
-        authClient: PropTypes.func,
+        authProvider: PropTypes.func,
     }),
     connect(mapStateToProps, {})
 )(AdminRouter);
