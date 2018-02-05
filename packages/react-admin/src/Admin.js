@@ -21,7 +21,7 @@ import { TranslationProvider, defaultI18nProvider } from './i18n';
 
 const Admin = ({
     appLayout,
-    authClient,
+    authProvider,
     children,
     customReducers = {},
     customSagas = [],
@@ -47,7 +47,7 @@ const Admin = ({
     const saga = function* rootSaga() {
         yield all(
             [
-                crudSaga(dataProvider, authClient, i18nProvider),
+                crudSaga(dataProvider, authProvider, i18nProvider),
                 ...customSagas,
             ].map(fork)
         );
@@ -66,7 +66,7 @@ const Admin = ({
     );
     sagaMiddleware.run(saga);
 
-    const logout = authClient ? createElement(logoutButton || Logout) : null;
+    const logout = authProvider ? createElement(logoutButton || Logout) : null;
 
     return (
         <Provider store={store}>
@@ -140,7 +140,7 @@ const componentPropType = PropTypes.oneOfType([
 
 Admin.propTypes = {
     appLayout: componentPropType,
-    authClient: PropTypes.func,
+    authProvider: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     catchAll: componentPropType,
     customSagas: PropTypes.array,
@@ -161,7 +161,7 @@ Admin.propTypes = {
 
 export default withContext(
     {
-        authClient: PropTypes.func,
+        authProvider: PropTypes.func,
     },
-    ({ authClient }) => ({ authClient })
+    ({ authProvider }) => ({ authProvider })
 )(Admin);

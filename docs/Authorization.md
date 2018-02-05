@@ -7,17 +7,17 @@ title: "Authorization"
 
 Some applications may require to determine what level of access a particular authenticated user should have to secured resources. Since there are many different possible strategies (single role, multiple roles or rights, etc.), react-admin simply provides hooks to execute your own authorization code.
 
-By default, a react-admin app doesn't require authorization. However, if needed, it will rely on the `authClient` introduced in the [Authentication](./Authentication.html) section.
+By default, a react-admin app doesn't require authorization. However, if needed, it will rely on the `authProvider` introduced in the [Authentication](./Authentication.html) section.
 
 ## Configuring the Auth Client
 
-A call to the `authClient` with the `AUTH_GET_PERMISSIONS` type will be made each time a component requires to check the user's permissions.
+A call to the `authProvider` with the `AUTH_GET_PERMISSIONS` type will be made each time a component requires to check the user's permissions.
 
-Following is an example where the `authClient` stores the user's role upon authentication, and returns it when called for a permissions check:
+Following is an example where the `authProvider` stores the user's role upon authentication, and returns it when called for a permissions check:
 
 {% raw %}
 ```jsx
-// in src/authClient.js
+// in src/authProvider.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_GET_PERMISSIONS } from 'react-admin';
 import decodeJwt from 'jwt-decode';
 
@@ -69,13 +69,13 @@ export default (type, params) => {
 
 ## Restricting Access to Resources or Views
 
-It's possible to restrict access to resources or their views inside the `Admin` component. To do so, you must specify a function as the `Admin` only child. This function will be called with the permissions returned by the `authClient`.
+It's possible to restrict access to resources or their views inside the `Admin` component. To do so, you must specify a function as the `Admin` only child. This function will be called with the permissions returned by the `authProvider`.
 
 {% raw %}
 ```jsx
 <Admin
     dataProvider={dataProvider}
-    authClient={authClient}
+    authProvider={authProvider}
 >
     {permissions => [
         // Restrict access to the edit and remove views to admin only
@@ -103,7 +103,7 @@ Note that the function returns an array of React elements. This is required to a
 
 You might want to display some fields or inputs only to users with specific permissions. Those permissions are retrieved for each route and will provided to your component as a `permissions` prop.
 
-Each route will call the `authClient` with the `AUTH_GET_PERMISSIONS` type and some parameters including the current location and route parameters. It's up to you to return whatever you need to check inside your component such as the user's role, etc.
+Each route will call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and some parameters including the current location and route parameters. It's up to you to return whatever you need to check inside your component such as the user's role, etc.
 
 Here's an example inside a `Create` view with a `SimpleForm` and a custom `Toolbar`:
 
@@ -232,7 +232,7 @@ export default ({ permissions }) => (
 
 ## Restricting Access to Content Inside Custom Pages
 
-You might want to check user permissions inside a [custom pages](./Admin.md#customroutes). You'll have to use the `WithPermissions` component for that. It will ensure the user is authenticated then call the `authClient` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
+You might want to check user permissions inside a [custom pages](./Admin.md#customroutes). You'll have to use the `WithPermissions` component for that. It will ensure the user is authenticated then call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
 
 {% raw %}
 ```jsx

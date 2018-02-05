@@ -518,7 +518,7 @@ export const UserEdit = withStyles(editStyles)(({ classes, ...props }) => (
 
 You might want to display some fields, inputs or filters only to users with specific permissions. Those permissions are retrieved for each route and will provided to your component as a `permissions` prop.
 
-Each route will call the `authClient` with the `AUTH_GET_PERMISSIONS` type and some parameters including the current location and route parameters. It's up to you to return whatever you need to check inside your component such as the user's role, etc.
+Each route will call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and some parameters including the current location and route parameters. It's up to you to return whatever you need to check inside your component such as the user's role, etc.
 
 Here's an example inside a `Create` view with a `SimpleForm` and a custom `Toolbar`:
 

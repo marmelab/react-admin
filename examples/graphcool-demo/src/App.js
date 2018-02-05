@@ -5,7 +5,7 @@ import { Admin, Delete, Resource } from 'react-admin';
 import './App.css';
 
 import buildDataProvider from './dataProvider';
-import authClient from './authClient';
+import authProvider from './authProvider';
 import sagas from './sagas';
 import themeReducer from './themeReducer';
 import Login from './Login';
@@ -63,7 +63,7 @@ class App extends Component {
                 customReducers={{ theme: themeReducer }}
                 customSagas={sagas}
                 customRoutes={customRoutes}
-                authClient={authClient}
+                authProvider={authProvider}
                 dashboard={Dashboard}
                 loginPage={Login}
                 appLayout={Layout}

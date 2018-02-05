@@ -17,12 +17,12 @@ By default, the `/login` route renders a special component called `Login`, which
 
 ![Default Login Form](./img/login-form.png)
 
-What this form does upon submission depends on the `authClient` prop of the `<Admin>` component. This function receives authentication requests `(type, params)`, and should return a Promise. `Login` calls `authClient` with the `AUTH_LOGIN` type, and `{ login, password }` as parameters. It's the ideal place to authenticate the user, and store their credentials.
+What this form does upon submission depends on the `authProvider` prop of the `<Admin>` component. This function receives authentication requests `(type, params)`, and should return a Promise. `Login` calls `authProvider` with the `AUTH_LOGIN` type, and `{ login, password }` as parameters. It's the ideal place to authenticate the user, and store their credentials.
 
-For instance, to query an authentication route via HTTPS and store the credentials (a token) in local storage, configure `authClient` as follows:
+For instance, to query an authentication route via HTTPS and store the credentials (a token) in local storage, configure `authProvider` as follows:
 
 ```jsx
-// in src/authClient.js
+// in src/authProvider.js
 import { AUTH_LOGIN } from 'react-admin';
 
 export default (type, params) => {
@@ -54,16 +54,16 @@ Then, pass this client to the `<Admin>` component:
 
 ```jsx
 // in src/App.js
-import authClient from './authClient';
+import authProvider from './authProvider';
 
 const App = () => (
-    <Admin authClient={authClient}>
+    <Admin authProvider={authProvider}>
         ...
     </Admin>
 );
 ```
 
-Upon receiving a 403 response, the admin app shows the Login page. `authClient` is now called when the user submits the login form. Once the promise resolves, the login form redirects to the previous page, or to the admin index if the user just arrived.
+Upon receiving a 403 response, the admin app shows the Login page. `authProvider` is now called when the user submits the login form. Once the promise resolves, the login form redirects to the previous page, or to the admin index if the user just arrived.
 
 ## Sending Credentials to the API
 
@@ -86,7 +86,7 @@ const httpClient = (url, options = {}) => {
 const dataProvider = simpleRestProvider('http://localhost:3000', httpClient);
 
 const App = () => (
-    <Admin dataProvider={dataProvider} authClient={authClient}>
+    <Admin dataProvider={dataProvider} authProvider={authProvider}>
         ...
     </Admin>
 );
@@ -96,12 +96,12 @@ If you have a custom REST client, don't forget to add credentials yourself.
 
 ## Adding a Logout Button
 
-If you provide an `authClient` prop to `<Admin>`, react-admin displays a logout button in the sidebar. When the user clicks on the logout button, this calls the `authClient` with the `AUTH_LOGOUT` type and removes potentially sensitive data from the redux store. When resolved, the user gets redirected to the login page.
+If you provide an `authProvider` prop to `<Admin>`, react-admin displays a logout button in the sidebar. When the user clicks on the logout button, this calls the `authProvider` with the `AUTH_LOGOUT` type and removes potentially sensitive data from the redux store. When resolved, the user gets redirected to the login page.
 
 For instance, to remove the token from local storage upon logout:
 
 ```jsx
-// in src/authClient.js
+// in src/authProvider.js
 import { AUTH_LOGIN, AUTH_LOGOUT } from 'react-admin';
 
 export default (type, params) => {
@@ -118,18 +118,18 @@ export default (type, params) => {
 
 ![Logout button](./img/logout.gif)
 
-The `authClient` is also a good place to notify the authentication API that the user credentials are no longer valid after logout.
+The `authProvider` is also a good place to notify the authentication API that the user credentials are no longer valid after logout.
 
 ## Catching Authentication Errors On The API
 
 Even though a user may be authenticated on the client-side, their credentials may no longer be valid server-side (e.g. if the token is only valid for a couple weeks). In that case, the API usually answers to all REST requests with an error code 401 or 403 - but what about *your* API?
 
-Fortunately, each time the API returns an error, the `authClient` is called with the `AUTH_ERROR` type. Once again, it's up to you to decide which HTTP status codes should let the user continue (by returning a resolved promise) or log them out (by returning a rejected promise).
+Fortunately, each time the API returns an error, the `authProvider` is called with the `AUTH_ERROR` type. Once again, it's up to you to decide which HTTP status codes should let the user continue (by returning a resolved promise) or log them out (by returning a rejected promise).
 
 For instance, to redirect the user to the login page for both 401 and 403 codes:
 
 ```jsx
-// in src/authClient.js
+// in src/authProvider.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR } from 'react-admin';
 
 export default (type, params) => {
@@ -155,12 +155,12 @@ export default (type, params) => {
 
 Redirecting to the login page whenever a REST response uses a 401 status code is usually not enough, because react-admin keeps data on the client side, and could display stale data while contacting the server - even after the credentials are no longer valid.
 
-Fortunately, each time the user navigates, react-admin calls the `authClient` with the `AUTH_CHECK` type, so it's the ideal place to check for credentials.
+Fortunately, each time the user navigates, react-admin calls the `authProvider` with the `AUTH_CHECK` type, so it's the ideal place to check for credentials.
 
 For instance, to check for the existence of the token in local storage:
 
 ```jsx
-// in src/authClient.js
+// in src/authProvider.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
 
 export default (type, params) => {
@@ -183,7 +183,7 @@ export default (type, params) => {
 If the promise is rejected, react-admin redirects by default to the `/login` page. You can override where to redirect the user by passing an argument with a `redirectTo` property to the rejected promise:
 
 ```jsx
-// in src/authClient.js
+// in src/authProvider.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
 
 export default (type, params) => {
@@ -206,7 +206,7 @@ export default (type, params) => {
 **Tip**: For the `AUTH_CHECK` call, the `params` argument contains the `resource` name, so you can implement different checks for different resources:
 
 ```jsx
-// in src/authClient.js
+// in src/authProvider.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
 
 export default (type, params) => {
@@ -232,11 +232,11 @@ export default (type, params) => {
 };
 ```
 
-**Tip**: The `authClient` can only be called with `AUTH_LOGIN`, `AUTH_LOGOUT`, `AUTH_ERROR`, or `AUTH_CHECK`; that's why the final return is a rejected promise.
+**Tip**: The `authProvider` can only be called with `AUTH_LOGIN`, `AUTH_LOGOUT`, `AUTH_ERROR`, or `AUTH_CHECK`; that's why the final return is a rejected promise.
 
 ## Customizing The Login and Logout Components
 
-Using `authClient` and `checkCredentials` is enough to implement a full-featured authorization system if the authentication relies on a username and password.
+Using `authProvider` and `checkCredentials` is enough to implement a full-featured authorization system if the authentication relies on a username and password.
 
 But what if you want to use an email instead of a username? What if you want to use a Single-Sign-On (SSO) with a third-party authentication service? What if you want to use two-factor authentication?
 
@@ -286,7 +286,7 @@ import MyLoginPage from './MyLoginPage';
 import MyLogoutButton from './MyLogoutButton';
 
 const App = () => (
-    <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton} authClient={authClient}>
+    <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton} authProvider={authProvider}>
     ...
     </Admin>
 );
@@ -314,7 +314,7 @@ export default withRouter(MyPage);
 ```
 {% endraw %}
 
-The `<Authenticated>` component calls the `authClient` function with `AUTH_CHECK` and `authParams`. If the response is a fulfilled promise, the child component is rendered. If the response is a rejected promise, `<Authenticated>` redirects to the login form. Upon successful login, the user is redirected to the initial location (that's why it's necessary to get the location from the router).
+The `<Authenticated>` component calls the `authProvider` function with `AUTH_CHECK` and `authParams`. If the response is a fulfilled promise, the child component is rendered. If the response is a rejected promise, `<Authenticated>` redirects to the login form. Upon successful login, the user is redirected to the initial location (that's why it's necessary to get the location from the router).
 
 
 ## Redirect After Logout

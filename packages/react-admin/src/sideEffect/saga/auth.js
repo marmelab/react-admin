@@ -19,8 +19,8 @@ const nextPathnameSelector = state => {
     const locationState = state.routing.location.state;
     return locationState && locationState.nextPathname;
 };
-export default authClient => {
-    if (!authClient) return () => null;
+export default authProvider => {
+    if (!authProvider) return () => null;
     function* handleAuth(action) {
         const { type, payload, error, meta } = action;
         switch (type) {
@@ -28,7 +28,7 @@ export default authClient => {
                 try {
                     yield put({ type: USER_LOGIN_LOADING });
                     const authPayload = yield call(
-                        authClient,
+                        authProvider,
                         AUTH_LOGIN,
                         payload
                     );
@@ -57,9 +57,9 @@ export default authClient => {
             }
             case USER_CHECK: {
                 try {
-                    yield call(authClient, AUTH_CHECK, payload);
+                    yield call(authProvider, AUTH_CHECK, payload);
                 } catch (error) {
-                    yield call(authClient, AUTH_LOGOUT);
+                    yield call(authProvider, AUTH_LOGOUT);
                     yield put(
                         replace({
                             pathname: (error && error.redirectTo) || '/login',
@@ -76,14 +76,14 @@ export default authClient => {
                             '/login'
                     )
                 );
-                yield call(authClient, AUTH_LOGOUT);
+                yield call(authProvider, AUTH_LOGOUT);
                 break;
             }
             case FETCH_ERROR:
                 try {
-                    yield call(authClient, AUTH_ERROR, error);
+                    yield call(authProvider, AUTH_ERROR, error);
                 } catch (e) {
-                    yield call(authClient, AUTH_LOGOUT);
+                    yield call(authProvider, AUTH_LOGOUT);
                     yield put(push('/login'));
                     yield put(hideNotification());
                 }

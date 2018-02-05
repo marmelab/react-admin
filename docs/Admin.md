@@ -37,7 +37,7 @@ Here are all the props accepted by the component:
 * [`customReducers`](#customreducers)
 * [`customSagas`](#customsagas)
 * [`customRoutes`](#customroutes)
-* [`authClient`](#authclient)
+* [`authProvider`](#authprovider)
 * [`loginPage`](#loginpage)
 * [`logoutButton`](#logoutbutton)
 * [`locale`](#internationalization)
@@ -389,21 +389,21 @@ const Foo = () => (
 export default Foo;
 ```
 
-## `authClient`
+## `authProvider`
 
-The `authClient` prop expect a function returning a Promise, to control the application authentication strategy:
+The `authProvider` prop expect a function returning a Promise, to control the application authentication strategy:
 
 ```jsx
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
 
-const authClient(type, params) {
+const authProvider(type, params) {
     // type can be any of AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, and AUTH_CHECK
     // ...
     return Promise.resolve();
 };
 
 const App = () => (
-    <Admin authClient={authClient} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin authProvider={authProvider} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         ...
     </Admin>
 );
@@ -470,7 +470,7 @@ The `locale` and `messages` props let you translate the GUI. The [Translation Do
 
 ## Declaring resources at runtime
 
-You might want to dynamically define the resources when the app starts. The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authClient`, the function will receive the result of a call to `authClient` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
+You might want to dynamically define the resources when the app starts. The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the function will receive the result of a call to `authProvider` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
 
 For instance, getting the resource from an API might look like:
 
