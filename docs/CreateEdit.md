@@ -115,8 +115,7 @@ You can replace the list of default actions by your own element using the `actio
 ```jsx
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import { ListButton, ShowButton, DeleteButton } from 'admin-on-rest';
+import { DeleteButton, ListButton, RefreshButton, ShowButton } from 'admin-on-rest';
 
 const cardActionStyle = {
     zIndex: 2,
@@ -124,12 +123,12 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const PostEditActions = ({ basePath, data, refresh }) => (
+const PostEditActions = ({ basePath, data }) => (
     <CardActions style={cardActionStyle}>
         <ShowButton basePath={basePath} record={data} />
         <ListButton basePath={basePath} />
         <DeleteButton basePath={basePath} record={data} />
-        <FlatButton primary label="Refresh" onClick={refresh} icon={<NavigationRefresh />} />
+        <RefreshButton />
         {/* Add your custom actions */}
         <FlatButton primary label="Custom Action" onClick={customAction} />
     </CardActions>
