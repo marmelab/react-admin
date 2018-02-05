@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 
-const styles = {
+const styles = theme => ({
+    active: { color: theme.palette.secondary.main },
     iconPaddingStyle: { paddingRight: '0.5em' },
-};
+});
 
 export class MenuItemLink extends Component {
     static propTypes = {
@@ -20,6 +21,7 @@ export class MenuItemLink extends Component {
 
     render() {
         const {
+            activeClassName,
             classes,
             className,
             primaryText,
@@ -31,7 +33,8 @@ export class MenuItemLink extends Component {
         return (
             <MenuItem
                 className={className}
-                component={Link}
+                activeClassName={activeClassName || classes.active}
+                component={NavLink}
                 {...props}
                 onClick={this.handleMenuTap}
             >
