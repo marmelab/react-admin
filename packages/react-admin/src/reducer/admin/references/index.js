@@ -6,3 +6,8 @@ export default combineReducers({
     oneToMany,
     possibleValues,
 });
+
+export const getPossibleValues = (state, referenceSource) =>
+    state.possibleValues[referenceSource];
+
+export { getPossibleReferences } from './possibleValues';

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
 import compose from 'recompose/compose';
+import { createSelector } from 'reselect';
 
 import addField from '../form/addField';
 import Labeled from '../input/Labeled';
@@ -10,7 +11,11 @@ import {
     crudGetMany as crudGetManyAction,
     crudGetMatching as crudGetMatchingAction,
 } from '../../actions/dataActions';
-import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
+import {
+    getPossibleReferences,
+    getPossibleReferenceValues,
+    getResource,
+} from '../../reducer/admin';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
@@ -126,40 +131,39 @@ export class ReferenceArrayInput extends Component {
     }
 
     componentDidMount() {
-        this.fetchReferenceAndOptions();
+        this.fetchReferencesAndOptions();
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.record.id !== nextProps.record.id) {
-            this.fetchReferenceAndOptions(nextProps);
+            this.fetchReferencesAndOptions(nextProps);
+        } else if (this.props.input.value !== nextProps.input.value) {
+            this.fetchReferences(nextProps);
         }
     }
 
     setFilter = filter => {
         if (filter !== this.params.filter) {
             this.params.filter = this.props.filterToQuery(filter);
-            this.fetchReferenceAndOptions();
+            this.fetchOptions();
         }
     };
 
     setPagination = pagination => {
         if (pagination !== this.param.pagination) {
             this.param.pagination = pagination;
-            this.fetchReferenceAndOptions();
+            this.fetchOptions();
         }
     };
 
     setSort = sort => {
         if (sort !== this.params.sort) {
             this.params.sort = sort;
-            this.fetchReferenceAndOptions();
+            this.fetchOptions();
         }
     };
 
-    fetchReferenceAndOptions(
-        { input, reference, source, resource } = this.props
-    ) {
-        const { pagination, sort, filter } = this.params;
+    fetchReferences = ({ input, reference } = this.props) => {
         const ids = input.value;
         if (ids) {
             if (!Array.isArray(ids)) {
@@ -169,6 +173,10 @@ export class ReferenceArrayInput extends Component {
             }
             this.props.crudGetMany(reference, ids);
         }
+    };
+
+    fetchOptions = ({ reference, source, resource } = this.props) => {
+        const { pagination, sort, filter } = this.params;
         this.props.crudGetMatching(
             reference,
             referenceSource(resource, source),
@@ -176,6 +184,11 @@ export class ReferenceArrayInput extends Component {
             sort,
             filter
         );
+    };
+
+    fetchReferencesAndOptions(nextProps) {
+        this.fetchReferences(nextProps);
+        this.fetchOptions(nextProps);
     }
 
     render() {
@@ -277,25 +290,27 @@ ReferenceArrayInput.defaultProps = {
     sort: { field: 'id', order: 'DESC' },
     referenceRecords: [],
 };
-
-function mapStateToProps(state, props) {
-    const referenceIds = props.input.value || [];
-    const data = state.admin.resources[props.reference].data;
-    return {
-        referenceRecords: referenceIds.reduce((references, referenceId) => {
-            if (data[referenceId]) {
-                references.push(data[referenceId]);
-            }
-            return references;
-        }, []),
+const mapStateToProps = createSelector(
+    (_, { input: { value: referenceIds } }) => referenceIds || [],
+    (state, { reference }) => getResource(state, reference),
+    (state, { resource, source }) =>
+        getPossibleReferenceValues(state, referenceSource(resource, source)),
+    (inputIds, referenceState, possibleValues) => ({
+        referenceRecords:
+            referenceState &&
+            inputIds.reduce((references, referenceId) => {
+                if (referenceState.data[referenceId]) {
+                    references.push(referenceState.data[referenceId]);
+                }
+                return references;
+            }, []),
         matchingReferences: getPossibleReferences(
-            state,
-            referenceSource(props.resource, props.source),
-            props.reference,
-            referenceIds
+            referenceState,
+            possibleValues,
+            inputIds
         ),
-    };
-}
+    })
+);
 
 export default compose(
     addField,

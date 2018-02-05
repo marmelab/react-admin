@@ -15,23 +15,17 @@ export default (previousState = initialState, { type, payload, meta }) => {
 };
 
 export const getPossibleReferences = (
-    state,
-    referenceSource,
-    reference,
+    referenceState,
+    possibleValues,
     selectedIds = []
 ) => {
-    const possibleValues = state.admin.references.possibleValues[
-        referenceSource
-    ]
-        ? Array.from(state.admin.references.possibleValues[referenceSource])
-        : [];
+    possibleValues = possibleValues ? Array.from(possibleValues) : [];
     selectedIds.forEach(
         id =>
             possibleValues.some(value => value == id) ||
             possibleValues.unshift(id)
     );
-
     return possibleValues
-        .map(id => state.admin.resources[reference].data[id])
+        .map(id => referenceState.data[id])
         .filter(r => typeof r !== 'undefined');
 };
