@@ -1,13 +1,13 @@
 import React from 'react';
-import FormInput from './FormInput';
+import PropTypes from 'prop-types';
+import SimpleFormLayoutFactory from './SimpleFormLayoutFactory';
+import FormTabLayout from './FormTabLayout';
 
-const FormTab = ({ label, icon, children, ...rest }) => (
-    <span>
-        {React.Children.map(
-            children,
-            input => input && <FormInput input={input} {...rest} />
-        )}
-    </span>
+const FormTab = ({ render = FormTabLayout, ...rest }) => (
+    <SimpleFormLayoutFactory render={render} {...rest} />
 );
+FormTab.propTypes = {
+    render: PropTypes.func,
+};
 
 export default FormTab;

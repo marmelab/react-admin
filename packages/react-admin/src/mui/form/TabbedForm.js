@@ -2,18 +2,17 @@ import React, { Children, Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import {
-    reduxForm,
     getFormAsyncErrors,
-    getFormSyncErrors,
     getFormSubmitErrors,
+    getFormSyncErrors,
+    reduxForm,
 } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import Divider from 'material-ui/Divider';
-import Tabs, { Tab } from 'material-ui/Tabs';
 import { withStyles } from 'material-ui/styles';
 
-import Toolbar from './Toolbar';
+import TabbedFormLayoutFactory from './TabbedFormLayoutFactory';
+import FormWrapper from './FormWrapper';
 import getDefaultValues from './getDefaultValues';
 
 const styles = theme => ({
@@ -27,43 +26,6 @@ const styles = theme => ({
     },
     errorTabButton: { color: theme.palette.error.main },
 });
-
-const sanitizeRestProps = ({
-    anyTouched,
-    asyncValidate,
-    asyncValidating,
-    clearSubmit,
-    dirty,
-    handleSubmit,
-    initialized,
-    initialValues,
-    pristine,
-    submitting,
-    submitFailed,
-    submitSucceeded,
-    valid,
-    pure,
-    triggerSubmit,
-    clearSubmitErrors,
-    clearAsyncError,
-    blur,
-    change,
-    destroy,
-    dispatch,
-    initialize,
-    reset,
-    touch,
-    untouch,
-    validate,
-    save,
-    translate,
-    autofill,
-    submit,
-    redirect,
-    array,
-    form,
-    ...props
-}) => props;
 
 export class TabbedForm extends Component {
     constructor(props) {
@@ -82,78 +44,30 @@ export class TabbedForm extends Component {
 
     render() {
         const {
-            basePath,
-            children,
             className,
-            classes = {},
-            invalid,
-            record,
-            resource,
-            submitOnEnter,
+            renderWrapper,
+            renderLayout,
             tabsWithErrors,
             toolbar,
-            translate,
-            version,
             ...rest
         } = this.props;
 
         return (
-            <form
+            <FormWrapper
                 className={classnames('tabbed-form', className)}
-                key={version}
-                {...sanitizeRestProps(rest)}
+                render={renderWrapper}
+                {...rest}
             >
-                <Tabs
-                    scrollable
+                <TabbedFormLayoutFactory
                     value={this.state.value}
-                    onChange={this.handleChange}
-                >
-                    {Children.map(
-                        children,
-                        (tab, index) =>
-                            tab ? (
-                                <Tab
-                                    key={tab.props.label}
-                                    label={translate(tab.props.label, {
-                                        _: tab.props.label,
-                                    })}
-                                    value={index}
-                                    icon={tab.props.icon}
-                                    className={classnames(
-                                        'form-tab',
-                                        tabsWithErrors.includes(
-                                            tab.props.label
-                                        ) && this.state.value !== index
-                                            ? classes.errorTabButton
-                                            : null
-                                    )}
-                                />
-                            ) : null
-                    )}
-                </Tabs>
-                <Divider />
-                <div className={classes.form}>
-                    {Children.map(
-                        children,
-                        (tab, index) =>
-                            tab &&
-                            this.state.value === index &&
-                            React.cloneElement(tab, {
-                                resource,
-                                record,
-                                basePath,
-                            })
-                    )}
-                    {toolbar &&
-                        React.cloneElement(toolbar, {
-                            className: 'toolbar',
-                            handleSubmitWithRedirect: this
-                                .handleSubmitWithRedirect,
-                            invalid,
-                            submitOnEnter,
-                        })}
-                </div>
-            </form>
+                    toolbar={toolbar}
+                    tabsWithErrors={tabsWithErrors}
+                    handleSubmitWithRedirect={this.handleSubmitWithRedirect}
+                    handleChange={this.handleChange}
+                    render={renderLayout}
+                    {...rest}
+                />
+            </FormWrapper>
         );
     }
 }
@@ -167,20 +81,17 @@ TabbedForm.propTypes = {
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
     record: PropTypes.object,
+    renderLayout: PropTypes.func,
+    renderWrapper: PropTypes.func,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     submitOnEnter: PropTypes.bool,
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
     toolbar: PropTypes.element,
-    translate: PropTypes.func,
+    translate: PropTypes.func.isRequired,
     validate: PropTypes.func,
     version: PropTypes.number,
-};
-
-TabbedForm.defaultProps = {
-    submitOnEnter: true,
-    toolbar: <Toolbar />,
 };
 
 const collectErrors = state => {
