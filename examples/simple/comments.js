@@ -54,7 +54,7 @@ const CommentPagination = translate(
                 <Toolbar>
                     {page > 1 && (
                         <Button
-                            variant="primary"
+                            color="primary"
                             key="prev"
                             onClick={() => setPage(page - 1)}
                         >
@@ -64,7 +64,7 @@ const CommentPagination = translate(
                     )}
                     {page !== nbPages && (
                         <Button
-                            variant="primary"
+                            color="primary"
                             key="next"
                             onClick={() => setPage(page + 1)}
                         >
