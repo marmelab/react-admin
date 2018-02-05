@@ -15,6 +15,8 @@ import {
     getReferenceResource,
 } from '../../reducer';
 
+const referenceSource = (resource, source) => `${resource}@${source}`;
+
 const sanitizeRestProps = ({
     allowEmpty,
     basePath,
@@ -306,6 +308,7 @@ ReferenceInput.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecord: null,
+    referenceSource, // used in tests
 };
 
 const makeMapStateToProps = () =>
@@ -334,7 +337,7 @@ const ConnectedReferenceInput = compose(
 )(ReferenceInput);
 
 ConnectedReferenceInput.defaultProps = {
-    referenceSource: (resource, source) => `${resource}@${source}`,
+    referenceSource, // used in real apps
 };
 
 export default ConnectedReferenceInput;

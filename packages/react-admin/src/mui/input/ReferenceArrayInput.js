@@ -17,6 +17,8 @@ import {
     getReferenceResource,
 } from '../../reducer';
 
+const referenceSource = (resource, source) => `${resource}@${source}`;
+
 const sanitizeRestProps = ({
     alwaysOn,
     basePath,
@@ -297,6 +299,7 @@ ReferenceArrayInput.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecords: [],
+    referenceSource, // used in unit tests
 };
 
 const makeMapStateToProps = () =>
@@ -332,7 +335,7 @@ const ConnectedReferenceArrayInput = compose(
 )(ReferenceArrayInput);
 
 ConnectedReferenceArrayInput.defaultProps = {
-    referenceSource: (resource, source) => `${resource}@${source}`,
+    referenceSource, // used in real apps
 };
 
 export default ConnectedReferenceArrayInput;
