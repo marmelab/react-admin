@@ -5,7 +5,10 @@ import { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 
 const styles = theme => ({
-    active: { color: theme.palette.secondary.main },
+    active: {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+    },
     iconPaddingStyle: { paddingRight: '0.5em' },
 });
 
