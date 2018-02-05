@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
-import resources, { getResources as resourcesGetResources } from './resource';
+import resources, {
+    getResources as resourceGetResources,
+    getReferenceResource as resourceGetReferenceResource,
+} from './resource';
 import loading from './loading';
 import notifications from './notifications';
 import record from './record';
 import references, {
     getPossibleReferenceValues as referencesGetPossibleReferenceValues,
-    getReferenceResource as referencesGetReferenceResource,
 } from './references';
 import saving from './saving';
 import ui from './ui';
@@ -25,10 +27,10 @@ export default combineReducers({
 export const getPossibleReferenceValues = (state, props) =>
     referencesGetPossibleReferenceValues(state.references, props);
 
-export const getResources = state => resourcesGetResources(state.resources);
+export const getResources = state => resourceGetResources(state.resources);
 
 export const getReferenceResource = (state, props) =>
-    referencesGetReferenceResource(state.resources, props);
+    resourceGetReferenceResource(state.resources, props);
 
 export const isLoggedIn = state => authIsLoggedIn(state.auth);
 
