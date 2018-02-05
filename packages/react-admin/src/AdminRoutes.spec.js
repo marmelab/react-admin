@@ -6,7 +6,7 @@ import { render } from 'enzyme';
 import { html } from 'cheerio';
 import assert from 'assert';
 
-import { AdminRoutes } from './AdminRoutes';
+import AdminRoutes from './AdminRoutes';
 
 describe('<AdminRoutes>', () => {
     const Dashboard = () => <div>Dashboard</div>;
@@ -29,10 +29,7 @@ describe('<AdminRoutes>', () => {
                 </MemoryRouter>
             </Provider>
         );
-        assert.equal(
-            html(wrapper),
-            '<div><div context="registration"></div><div>Dashboard</div></div>'
-        );
+        assert.equal(html(wrapper), '<div>Dashboard</div>');
     });
 
     it('should accept custom routes', () => {
@@ -46,9 +43,6 @@ describe('<AdminRoutes>', () => {
                 </MemoryRouter>
             </Provider>
         );
-        assert.equal(
-            html(wrapper),
-            '<div><div context="registration"></div><div>Custom</div></div>'
-        );
+        assert.equal(html(wrapper), '<div>Custom</div>');
     });
 });

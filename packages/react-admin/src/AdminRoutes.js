@@ -1,15 +1,8 @@
-import React, { Children, Component, cloneElement } from 'react';
+import React, { Children, cloneElement, createElement } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import compose from 'recompose/compose';
-import getContext from 'recompose/getContext';
 
-import Loading from './mui/layout/Loading';
-import NotFound from './mui/layout/NotFound';
 import WithPermissions from './auth/WithPermissions';
-import { AUTH_GET_PERMISSIONS } from './auth/types';
-import { isLoggedIn } from './reducer';
 
 export class AdminRoutes extends Component {
     state = { childrenToRender: [] };
@@ -68,85 +61,60 @@ export class AdminRoutes extends Component {
         if (!childrenToRender || childrenToRender.length === 0) {
             return (
                 <Route
+                    key={index}
+                    exact={route.props.exact}
+                    path={route.props.path}
+                    component={route.props.component}
+                    render={route.props.render}
+                    children={route.props.children} // eslint-disable-line react/no-children-prop
+                />
+            ))}
+        {Children.map(children, child => (
+            <Route
+                key={child.props.name}
+                path={`/${child.props.name}`}
+                render={props =>
+                    cloneElement(child, {
+                        // The context prop instruct the Resource component to
+                        // render itself as a standard component
+                        context: 'route',
+                        ...props,
+                    })}
+            />
+        ))}
+        {dashboard ? (
+            <Route
+                exact
+                path="/"
+                render={routeProps => (
+                    <WithPermissions
+                        authParams={{
+                            route: 'dashboard',
+                        }}
+                        {...routeProps}
+                        render={props => createElement(dashboard, props)}
+                    />
+                )}
+            />
+        ) : (
+            children[0] && (
+                <Route
+                    exact
                     path="/"
-                    key="loading"
                     render={() => (
-                        <Loading
-                            loadingPrimary="ra.page.loading"
-                            loadingSecondary="ra.message.loading"
-                        />
+                        <Redirect to={`/${children[0].props.name}`} />
                     )}
                 />
-            );
-        }
-
-        return (
-            <div>
-                {Children.map(childrenToRender, child =>
-                    cloneElement(child, {
-                        context: 'registration',
-                    })
-                )}
-                <Switch>
-                    {customRoutes &&
-                        customRoutes.map((route, index) => (
-                            <Route
-                                key={index}
-                                exact={route.props.exact}
-                                path={route.props.path}
-                                component={route.props.component}
-                                render={route.props.render}
-                                children={route.props.children} // eslint-disable-line react/no-children-prop
-                            />
-                        ))}
-                    {Children.map(childrenToRender, child => (
-                        <Route
-                            path={`/${child.props.name}`}
-                            render={props =>
-                                cloneElement(child, {
-                                    context: 'route',
-                                    ...props,
-                                })}
-                        />
-                    ))}
-                    {dashboard ? (
-                        <Route
-                            exact
-                            path="/"
-                            render={routeProps => (
-                                <WithPermissions
-                                    authParams={{ route: 'dashboard' }}
-                                    {...routeProps}
-                                    render={props =>
-                                        React.createElement(dashboard, props)}
-                                />
-                            )}
-                        />
-                    ) : (
-                        childrenToRender[0] && (
-                            <Route
-                                exact
-                                path="/"
-                                render={() => (
-                                    <Redirect
-                                        to={`/${childrenToRender[0].props
-                                            .name}`}
-                                    />
-                                )}
-                            />
-                        )
-                    )}
-                    <Route
-                        render={() =>
-                            React.createElement(catchAll || NotFound, {
-                                title,
-                            })}
-                    />
-                </Switch>
-            </div>
-        );
-    }
-}
+            )
+        )}
+        <Route
+            render={() =>
+                createElement(catchAll, {
+                    title,
+                })}
+        />
+    </Switch>
+);
 
 const componentPropType = PropTypes.oneOfType([
     PropTypes.func,
@@ -154,15 +122,22 @@ const componentPropType = PropTypes.oneOfType([
 ]);
 
 AdminRoutes.propTypes = {
+<<<<<<< HEAD
     authProvider: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
+||||||| merged common ancestors
+    authClient: PropTypes.func,
+    children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
+=======
+>>>>>>> [RFR] Refactor resources handling
     catchAll: componentPropType,
+    children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     customRoutes: PropTypes.array,
-    isLoggedIn: PropTypes.bool,
-    title: PropTypes.string,
     dashboard: componentPropType,
+    title: PropTypes.string,
 };
 
+<<<<<<< HEAD
 const mapStateToProps = state => ({
     isLoggedIn: isLoggedIn(state),
 });
@@ -173,3 +148,17 @@ export default compose(
     }),
     connect(mapStateToProps, {})
 )(AdminRoutes);
+||||||| merged common ancestors
+const mapStateToProps = state => ({
+    isLoggedIn: isLoggedIn(state),
+});
+
+export default compose(
+    getContext({
+        authClient: PropTypes.func,
+    }),
+    connect(mapStateToProps, {})
+)(AdminRoutes);
+=======
+export default AdminRoutes;
+>>>>>>> [RFR] Refactor resources handling
