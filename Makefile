@@ -56,11 +56,15 @@ build-ra-dependent-input:
 	@rm -rf ./packages/ra-dependent-input/lib
 	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-dependent-input/src -d ./packages/ra-dependent-input/lib --ignore spec.js,test.js
 
+build-ra-realtime:
+	@rm -rf ./packages/ra-realtime/lib
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-realtime/src -d ./packages/ra-realtime/lib --ignore spec.js,test.js
+
 build-data-generator:
 	@rm -rf ./examples/data-generator/lib
 	@NODE_ENV=production ./node_modules/.bin/babel ./examples/data-generator/src -d ./examples/data-generator/lib
 
-build: build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-input-rich-text build-ra-data-graphql build-ra-data-graphcool build-ra-dependent-input build-ra-data-graphql-simple build-data-generator ## compile ES6 files to JS
+build: build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-input-rich-text build-ra-data-graphql build-ra-data-graphcool build-ra-dependent-input build-ra-data-graphql-simple build-data-generator build-ra-realtime ## compile ES6 files to JS
 
 watch: ## continuously compile ES6 files to JS
 	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore spec.js,test.js --watch
