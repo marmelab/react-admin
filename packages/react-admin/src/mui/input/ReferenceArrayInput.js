@@ -34,6 +34,7 @@ const sanitizeRestProps = ({
     optionText,
     optionValue,
     record,
+    referenceSource,
     resource,
     allowEmpty,
     source,
@@ -175,9 +176,16 @@ export class ReferenceArrayInput extends Component {
         }
     };
 
-    fetchOptions = ({ reference, source, resource } = this.props) => {
+    fetchOptions = (props = this.props) => {
+        const {
+            crudGetMatching,
+            reference,
+            source,
+            resource,
+            referenceSource,
+        } = props;
         const { pagination, sort, filter } = this.params;
-        this.props.crudGetMatching(
+        crudGetMatching(
             reference,
             referenceSource(resource, source),
             pagination,
@@ -273,6 +281,7 @@ ReferenceArrayInput.propTypes = {
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
     referenceRecords: PropTypes.array,
+    referenceSource: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
@@ -289,13 +298,13 @@ ReferenceArrayInput.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecords: [],
+    referenceSource,
 };
 
 const mapStateToProps = createSelector(
     (_, { input: { value: referenceIds } }) => referenceIds || [],
     getReferenceResource,
-    (state, { resource, source }) =>
-        getPossibleReferenceValues(state, referenceSource(resource, source)),
+    getPossibleReferenceValues,
     (inputIds, referenceState, possibleValues) => ({
         referenceRecords:
             referenceState &&

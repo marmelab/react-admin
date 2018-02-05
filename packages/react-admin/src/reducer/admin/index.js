@@ -1,15 +1,15 @@
 import { combineReducers } from 'redux';
-import resources, { getResources as innerGetResources } from './resource';
+import resources, { getResources as resourcesGetResources } from './resource';
 import loading from './loading';
 import notifications from './notifications';
 import record from './record';
 import references, {
-    getPossibleValues,
-    getReferenceResource as innerGetReferenceResource,
+    getPossibleReferenceValues as referencesGetPossibleReferenceValues,
+    getReferenceResource as referencesGetReferenceResource,
 } from './references';
 import saving from './saving';
 import ui from './ui';
-import auth, { isLoggedIn as innerIsLoggedIn } from './auth';
+import auth, { isLoggedIn as authIsLoggedIn } from './auth';
 
 export default combineReducers({
     resources,
@@ -22,14 +22,14 @@ export default combineReducers({
     auth,
 });
 
-export const getPossibleReferenceValues = (state, resource) =>
-    getPossibleValues(state.references, resource);
+export const getPossibleReferenceValues = (state, props) =>
+    referencesGetPossibleReferenceValues(state.references, props);
 
-export const getResources = state => innerGetResources(state.resources);
+export const getResources = state => resourcesGetResources(state.resources);
 
 export const getReferenceResource = (state, props) =>
-    innerGetReferenceResource(state.resources, props);
+    referencesGetReferenceResource(state.resources, props);
 
-export const isLoggedIn = state => innerIsLoggedIn(state.auth);
+export const isLoggedIn = state => authIsLoggedIn(state.auth);
 
 export { getPossibleReferences } from './references';

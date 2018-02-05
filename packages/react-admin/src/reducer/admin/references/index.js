@@ -9,7 +9,7 @@ export default combineReducers({
 
 export const getReferenceResource = (state, props) => state[props.reference];
 
-export const getPossibleValues = (state, referenceSource) =>
-    state.possibleValues[referenceSource];
+export const getPossibleReferenceValues = (state, props) =>
+    state.possibleValues[props.referenceSource(props.resource, props.source)];
 
 export { getPossibleReferences } from './possibleValues';

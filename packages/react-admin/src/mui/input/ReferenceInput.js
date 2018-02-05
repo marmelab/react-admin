@@ -45,6 +45,7 @@ const sanitizeRestProps = ({
     perPage,
     record,
     reference,
+    referenceSource,
     resource,
     setFilter,
     setPagination,
@@ -186,23 +187,29 @@ export class ReferenceInput extends Component {
         }
     };
 
-    fetchOptions = ({ reference, source, resource } = this.props) => {
-        const { filter: filterFromProps } = this.props;
+    fetchOptions = (props = this.props) => {
+        const {
+            crudGetMatching,
+            filter: filterFromProps,
+            reference,
+            referenceSource,
+            resource,
+            source,
+        } = props;
         const { pagination, sort, filter } = this.params;
 
-        const finalFilter = { ...filterFromProps, ...filter };
-        this.props.crudGetMatching(
+        crudGetMatching(
             reference,
             referenceSource(resource, source),
             pagination,
             sort,
-            finalFilter
+            { ...filterFromProps, ...filter }
         );
     };
 
-    fetchReferenceAndOptions(nextProps) {
-        this.fetchReference(nextProps);
-        this.fetchOptions(nextProps);
+    fetchReferenceAndOptions(props) {
+        this.fetchReference(props);
+        this.fetchOptions(props);
     }
 
     render() {
@@ -286,6 +293,7 @@ ReferenceInput.propTypes = {
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
+    referenceSource: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
@@ -302,13 +310,13 @@ ReferenceInput.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecord: null,
+    referenceSource,
 };
 
 const mapStateToProps = createSelector(
     (_, props) => props.input.value,
     getReferenceResource,
-    (state, { resource, source }) =>
-        getPossibleReferenceValues(state, referenceSource(resource, source)),
+    getPossibleReferenceValues,
     (inputId, referenceState, possibleValues) => ({
         referenceRecord: referenceState && referenceState.data[inputId],
         matchingReferences: getPossibleReferences(
