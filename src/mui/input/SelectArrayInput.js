@@ -88,12 +88,12 @@ export class SelectArrayInput extends Component {
 
     handleAdd = newValue => {
         const values = [...this.state.values, newValue];
-        this.setState({ values }, this.handleChange(values));
+        this.setState({ values }, () => this.handleChange(this.state.values));
     };
 
     handleDelete = newValue => {
         const values = this.state.values.filter(v => v.value !== newValue);
-        this.setState({ values }, this.handleChange(values));
+        this.setState({ values }, () => this.handleChange(this.state.values));
     };
 
     handleChange = eventOrValue => {
