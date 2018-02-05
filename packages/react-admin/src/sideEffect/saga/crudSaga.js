@@ -8,11 +8,11 @@ import i18n from './i18n';
 /**
  * @param {Object} dataProvider A Data Provider function
  */
-export default (dataProvider, authClient, i18nProvider) =>
+export default (dataProvider, authProvider, i18nProvider) =>
     function* crudSaga() {
         yield all([
             i18n(i18nProvider)(),
-            auth(authClient)(),
+            auth(authProvider)(),
             crudFetch(dataProvider)(),
             crudResponse(),
             referenceFetch(),

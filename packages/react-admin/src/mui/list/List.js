@@ -363,7 +363,7 @@ List.propTypes = {
     }),
     title: PropTypes.any,
     // the props managed by react-admin
-    authClient: PropTypes.func,
+    authProvider: PropTypes.func,
     changeListParams: PropTypes.func.isRequired,
     crudGetList: PropTypes.func.isRequired,
     data: PropTypes.object, // eslint-disable-line react/forbid-prop-types

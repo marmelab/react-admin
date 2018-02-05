@@ -26,9 +26,9 @@ export class AdminRoutes extends Component {
         }
     };
     initializeResourcesAsync = async nextProps => {
-        const { authClient } = nextProps;
+        const { authProvider } = nextProps;
         try {
-            const permissions = await authClient(AUTH_GET_PERMISSIONS);
+            const permissions = await authProvider(AUTH_GET_PERMISSIONS);
             const { children } = nextProps;
 
             const childrenFuncResult = children(permissions);
@@ -154,7 +154,7 @@ const componentPropType = PropTypes.oneOfType([
 ]);
 
 AdminRoutes.propTypes = {
-    authClient: PropTypes.func,
+    authProvider: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     catchAll: componentPropType,
     customRoutes: PropTypes.array,
@@ -169,7 +169,7 @@ const mapStateToProps = state => ({
 
 export default compose(
     getContext({
-        authClient: PropTypes.func,
+        authProvider: PropTypes.func,
     }),
     connect(mapStateToProps, {})
 )(AdminRoutes);
