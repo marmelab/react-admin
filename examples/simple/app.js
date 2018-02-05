@@ -19,7 +19,7 @@ import {
 import { UserList, UserEdit, UserCreate, UserIcon, UserShow } from './users';
 
 import data from './data';
-import authClient from './authClient';
+import authProvider from './authProvider';
 import i18nProvider from './i18nProvider';
 
 const dataProvider = jsonRestDataProvider(data, true);
@@ -34,7 +34,7 @@ const delayedDataProvider = (type, resource, params) =>
 
 render(
     <Admin
-        authClient={authClient}
+        authProvider={authProvider}
         dataProvider={delayedDataProvider}
         i18nProvider={i18nProvider}
         title="Example Admin"
