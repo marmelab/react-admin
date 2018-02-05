@@ -5,7 +5,9 @@ title: "FAQ"
 
 # FAQ
 
-- [Can I have custom identifiers/primary keys for my resources?](#can-i-have-custom-identifiers-primary-keys-for-my-resources)
+- [Can I have custom identifiers/primary keys for my resources?](#can-i-have-custom-identifiersprimary-keys-for-my-resources)
+- [I get warning about unique key for child in array](#i-get-warning-about-unique-key-for-child-in-array)
+- [A form with validation freezes when rendering](#a-form-with-validation-freezes-when-rendering)
 - [How can I customize the UI depending on the user permissions?](#how-can-i-customize-the-ui-depending-on-the-user-permissions)
 - [How can I customize forms depending on its inputs values?](#how-can-i-customize-forms-depending-on-its-inputs-values)
 
@@ -33,6 +35,49 @@ const convertHTTPResponse = (response, type, resource, params) => {
     }
 };
 ```
+
+## I get warning about unique key for child in array
+
+When displaying a `Datagrid` component, you get the following warning:
+
+> Warning: Each child in an array or iterator should have a unique "key" prop.
+> Check the render method of `DatagridBody`.
+
+This is most probably because the resource does not have an `id` property as expected by `admin-on-rest`. See the previous FAQ to see how to resolve this: [Can I have custom identifiers/primary keys for my resources?](#can-i-have-custom-identifiersprimary-keys-for-my-resources)
+
+## A form with validation freezes when rendering
+
+You're probably using validator factories directly in the render method of your component:
+
+```jsx
+export const CommentEdit = ({ ...props }) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <DisabledInput source="id" />
+            <DateInput source="created_at" />
+            <LongTextInput source="body" validate={minLength(10)} />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+Avoid calling functions directly inside the render method:
+
+```jsx
+const validateMinLength = minLength(10);
+
+export const CommentEdit = ({ ...props }) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <DisabledInput source="id" />
+            <DateInput source="created_at" />
+            <LongTextInput source="body" validate={validateMinLength} />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+This is related to [redux-form](https://github.com/erikras/redux-form/issues/3288).
 
 ## How can I customize the UI depending on the user permissions?
 

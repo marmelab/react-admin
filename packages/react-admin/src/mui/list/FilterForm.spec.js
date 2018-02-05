@@ -67,6 +67,13 @@ describe('<FilterForm />', () => {
                         defaultValue: 'default url',
                     },
                 },
+                {
+                    props: {
+                        source: 'author.name',
+                        alwaysOn: true,
+                        defaultValue: 'default author',
+                    },
+                },
                 { props: { source: 'notMe', defaultValue: 'default url' } },
                 { props: { source: 'notMeEither' } },
             ];
@@ -77,6 +84,7 @@ describe('<FilterForm />', () => {
                     initialValues: {
                         title: 'initial title',
                         url: 'default url',
+                        author: { name: 'default author' },
                     },
                 }
             );

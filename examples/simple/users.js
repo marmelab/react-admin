@@ -24,7 +24,8 @@ import {
     required,
     translate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-export UserIcon from 'material-ui-icons/People';
+import PeopleIcon from 'material-ui-icons/People';
+export const UserIcon = PeopleIcon;
 
 const UserFilter = ({ permissions, ...props }) => (
     <Filter {...props}>
