@@ -17,8 +17,6 @@ import {
     getReferenceResource,
 } from '../../reducer';
 
-const referenceSource = (resource, source) => `${resource}@${source}`;
-
 const sanitizeRestProps = ({
     alwaysOn,
     basePath,
@@ -164,7 +162,8 @@ export class ReferenceArrayInput extends Component {
         }
     };
 
-    fetchReferences = ({ input, reference } = this.props) => {
+    fetchReferences = (props = this.props) => {
+        const { crudGetMany, input, reference } = props;
         const ids = input.value;
         if (ids) {
             if (!Array.isArray(ids)) {
@@ -172,7 +171,7 @@ export class ReferenceArrayInput extends Component {
                     'The value of ReferenceArrayInput should be an array'
                 );
             }
-            this.props.crudGetMany(reference, ids);
+            crudGetMany(reference, ids);
         }
     };
 
@@ -298,34 +297,42 @@ ReferenceArrayInput.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecords: [],
-    referenceSource,
 };
 
-const mapStateToProps = createSelector(
-    (_, { input: { value: referenceIds } }) => referenceIds || [],
-    getReferenceResource,
-    getPossibleReferenceValues,
-    (inputIds, referenceState, possibleValues) => ({
-        referenceRecords:
-            referenceState &&
-            inputIds.reduce((references, referenceId) => {
-                if (referenceState.data[referenceId]) {
-                    references.push(referenceState.data[referenceId]);
-                }
-                return references;
-            }, []),
-        matchingReferences: getPossibleReferences(
-            referenceState,
-            possibleValues,
-            inputIds
-        ),
-    })
-);
+const makeMapStateToProps = () =>
+    createSelector(
+        [
+            getReferenceResource,
+            getPossibleReferenceValues,
+            (_, { input: { value: referenceIds } }) => referenceIds || [],
+        ],
+        (referenceState, possibleValues, inputIds) => ({
+            matchingReferences: getPossibleReferences(
+                referenceState,
+                possibleValues,
+                inputIds
+            ),
+            referenceRecords:
+                referenceState &&
+                inputIds.reduce((references, referenceId) => {
+                    if (referenceState.data[referenceId]) {
+                        references.push(referenceState.data[referenceId]);
+                    }
+                    return references;
+                }, []),
+        })
+    );
 
-export default compose(
+const ConnectedReferenceArrayInput = compose(
     addField,
-    connect(mapStateToProps, {
+    connect(makeMapStateToProps(), {
         crudGetMany: crudGetManyAction,
         crudGetMatching: crudGetMatchingAction,
     })
 )(ReferenceArrayInput);
+
+ConnectedReferenceArrayInput.defaultProps = {
+    referenceSource: (resource, source) => `${resource}@${source}`,
+};
+
+export default ConnectedReferenceArrayInput;

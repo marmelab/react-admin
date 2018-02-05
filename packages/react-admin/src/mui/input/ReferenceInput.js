@@ -8,17 +8,12 @@ import { createSelector } from 'reselect';
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
 import addField from '../form/addField';
-import {
-    crudGetOne as crudGetOneAction,
-    crudGetMatching as crudGetMatchingAction,
-} from '../../actions/dataActions';
+import { crudGetOne, crudGetMatching } from '../../actions/dataActions';
 import {
     getPossibleReferences,
     getPossibleReferenceValues,
     getReferenceResource,
 } from '../../reducer';
-
-const referenceSource = (resource, source) => `${resource}@${source}`;
 
 const sanitizeRestProps = ({
     allowEmpty,
@@ -180,10 +175,11 @@ export class ReferenceInput extends Component {
         }
     };
 
-    fetchReference = ({ input, reference } = this.props) => {
+    fetchReference = (props = this.props) => {
+        const { crudGetOne, input, reference } = props;
         const id = input.value;
         if (id) {
-            this.props.crudGetOne(reference, id, null, false);
+            crudGetOne(reference, id, null, false);
         }
     };
 
@@ -310,27 +306,35 @@ ReferenceInput.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecord: null,
-    referenceSource,
 };
 
-const mapStateToProps = createSelector(
-    (_, props) => props.input.value,
-    getReferenceResource,
-    getPossibleReferenceValues,
-    (inputId, referenceState, possibleValues) => ({
-        referenceRecord: referenceState && referenceState.data[inputId],
-        matchingReferences: getPossibleReferences(
-            referenceState,
-            possibleValues,
-            [inputId]
-        ),
-    })
-);
+const makeMapStateToProps = () =>
+    createSelector(
+        [
+            getReferenceResource,
+            getPossibleReferenceValues,
+            (_, props) => props.input.value,
+        ],
+        (referenceState, possibleValues, inputId) => ({
+            matchingReferences: getPossibleReferences(
+                referenceState,
+                possibleValues,
+                [inputId]
+            ),
+            referenceRecord: referenceState && referenceState.data[inputId],
+        })
+    );
 
-export default compose(
+const ConnectedReferenceInput = compose(
     addField,
-    connect(mapStateToProps, {
-        crudGetOne: crudGetOneAction,
-        crudGetMatching: crudGetMatchingAction,
+    connect(makeMapStateToProps(), {
+        crudGetOne,
+        crudGetMatching,
     })
 )(ReferenceInput);
+
+ConnectedReferenceInput.defaultProps = {
+    referenceSource: (resource, source) => `${resource}@${source}`,
+};
+
+export default ConnectedReferenceInput;
