@@ -8,7 +8,7 @@ import Resource from './Resource';
 
 describe('<AdminRouter>', () => {
     const defaultProps = {
-        authClient: () => Promise.resolve(),
+        authProvider: () => Promise.resolve(),
         customRoutes: [],
     };
 
@@ -43,7 +43,7 @@ describe('<AdminRouter>', () => {
                 </AdminRouter>
             );
 
-            // Timeout needed because of the authClient call
+            // Timeout needed because of the authProvider call
             await new Promise(resolve => {
                 setTimeout(resolve, 10);
             });
