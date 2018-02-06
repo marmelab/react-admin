@@ -327,10 +327,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { MenuItemLink } from 'react-admin';
 
-const Menu = ({ onMenuTap, logout, permissions }) => (
+const Menu = ({ onMenuClick, logout, permissions }) => (
     <div>
-        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
-        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
+        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuClick} />
+        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuClick} />
         {React.cloneElement(logout,{
             redirectTo:'/'
         })}

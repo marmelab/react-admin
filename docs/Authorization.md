@@ -291,14 +291,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { MenuItemLink, WithPermissions } from 'react-admin';
 
-const Menu = ({ onMenuTap, logout, permissions }) => (
+const Menu = ({ onMenuClick, logout, permissions }) => (
     <div>
-        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
-        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
+        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuClick} />
+        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuClick} />
         <WithPermissions
             render={({ permissions }) => (
                 permissions === '
-                    ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+                    ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
                     : null
             )}
         />

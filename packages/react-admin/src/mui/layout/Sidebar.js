@@ -64,7 +64,7 @@ class Sidebar extends PureComponent {
                         {...rest}
                     >
                         {React.cloneElement(children, {
-                            onMenuTap: this.handleClose,
+                            onMenuClick: this.handleClose,
                         })}
                     </Drawer>
                 }

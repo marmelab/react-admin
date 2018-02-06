@@ -36,14 +36,14 @@ const Menu = ({
     classes,
     className,
     hasDashboard,
-    onMenuTap,
+    onMenuClick,
     resources,
     translate,
     logout,
     ...rest
 }) => (
     <div className={classnames(classes.main, className)} {...rest}>
-        {hasDashboard && <DashboardMenuItem onClick={onMenuTap} />}
+        {hasDashboard && <DashboardMenuItem onClick={onMenuClick} />}
         {resources
             .filter(r => r.hasList)
             .map(resource => (
@@ -52,7 +52,7 @@ const Menu = ({
                     to={`/${resource.name}`}
                     primaryText={translatedResourceName(resource, translate)}
                     leftIcon={<resource.icon />}
-                    onClick={onMenuTap}
+                    onClick={onMenuClick}
                 />
             ))}
         {logout}
@@ -64,13 +64,13 @@ Menu.propTypes = {
     className: PropTypes.string,
     hasDashboard: PropTypes.bool,
     logout: PropTypes.element,
-    onMenuTap: PropTypes.func,
+    onMenuClick: PropTypes.func,
     resources: PropTypes.array.isRequired,
     translate: PropTypes.func.isRequired,
 };
 
 Menu.defaultProps = {
-    onMenuTap: () => null,
+    onMenuClick: () => null,
 };
 
 const mapStateToProps = state => ({

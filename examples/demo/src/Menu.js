@@ -30,9 +30,9 @@ const styles = {
     },
 };
 
-const Menu = ({ onMenuTap, translate, logout }) => (
+const Menu = ({ onMenuClick, translate, logout }) => (
     <div style={styles.main}>
-        <DashboardMenuItem onClick={onMenuTap} />
+        <DashboardMenuItem onClick={onMenuClick} />
         {items.map(item => (
             <MenuItemLink
                 key={item.name}
@@ -41,14 +41,14 @@ const Menu = ({ onMenuTap, translate, logout }) => (
                     smart_count: 2,
                 })}
                 leftIcon={item.icon}
-                onClick={onMenuTap}
+                onClick={onMenuClick}
             />
         ))}
         <MenuItemLink
             to="/configuration"
             primaryText={translate('pos.configuration')}
             leftIcon={<SettingsIcon />}
-            onClick={onMenuTap}
+            onClick={onMenuClick}
         />
         {logout}
     </div>

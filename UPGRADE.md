@@ -544,12 +544,12 @@ If you were using `WithPermission` before, here's how to migrate to `WithPermiss
 import React from 'react';
 import { MenuItemLink, WithPermission } from 'admin-on-rest';
 
-export default ({ onMenuTap, logout }) => (
+export default ({ onMenuClick, logout }) => (
     <div>
-        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
-        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
+        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuClick} />
+        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuClick} />
         <WithPermission value="admin">
-            <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+            <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
         </WithPermission>
         {logout}
     </div>
@@ -559,15 +559,15 @@ export default ({ onMenuTap, logout }) => (
 import React from 'react';
 import { MenuItemLink, WithPermissions } from 'react-admin';
 
-export default ({ onMenuTap, logout }) => (
+export default ({ onMenuClick, logout }) => (
     <div>
-        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuTap} />
-        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuTap} />
+        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuClick} />
+        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuClick} />
         <WithPermissions
             render={
             permissions =>
                 permissions === 'admin'
-                ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+                ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
                 : null
             }
         />
@@ -575,7 +575,7 @@ export default ({ onMenuTap, logout }) => (
         <WithPermissions>
             {permissions =>
                 permissions === 'admin'
-                ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+                ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
                 : null
             }
         />
@@ -1125,6 +1125,54 @@ MyLayout.propTypes = {
 
 const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
 export default connect(mapStateToProps, { setSidebarVisibility })(MyLayout);
+```
+
+## Menu `onMenuTap` prop has been renamed `onMenuClick`
+
+Material-ui renamed all `xxxTap` props to `xxxClick`, so did we.
+
+```js
+// Before
+import React from 'react';
+import { connect } from 'react-redux';
+import { MenuItemLink, getResources } from 'react-admin';
+
+const Menu = ({ resources, onMenuTap, logout }) => (
+    <div>
+        {resources.map(resource => (
+            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuTap} />
+        ))}
+        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+        {logout}
+    </div>
+);
+
+const mapStateToProps = state => ({
+    resources: getResources(state),
+});
+
+export default connect(mapStateToProps)(Menu);
+
+// After
+import React from 'react';
+import { connect } from 'react-redux';
+import { MenuItemLink, getResources } from 'react-admin';
+
+const Menu = ({ resources, onMenuClick, logout }) => (
+    <div>
+        {resources.map(resource => (
+            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+        ))}
+        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
+        {logout}
+    </div>
+);
+
+const mapStateToProps = state => ({
+    resources: getResources(state),
+});
+
+export default connect(mapStateToProps)(Menu);
 ```
 
 ## react-admin addon packages renamed with ra prefix and moved into root repository
