@@ -142,14 +142,12 @@ export class AutocompleteInput extends React.Component {
         }
     }
 
-    getSelectedItem = ({ selectedItem, choices }, inputValue) =>
-        selectedItem
-            ? selectedItem
-            : choices && inputValue
-              ? choices.find(
-                    choice => this.getSuggestionValue(choice) === inputValue
-                )
-              : null;
+    getSelectedItem = ({ choices }, inputValue) =>
+        choices && inputValue
+            ? choices.find(
+                  choice => this.getSuggestionValue(choice) === inputValue
+              )
+            : null;
 
     getSuggestionValue = suggestion => get(suggestion, this.props.optionValue);
 
@@ -456,7 +454,6 @@ AutocompleteInput.propTypes = {
     resource: PropTypes.string,
     setFilter: PropTypes.func,
     source: PropTypes.string,
-    selectedItem: PropTypes.object,
     suggestionComponent: PropTypes.func,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,

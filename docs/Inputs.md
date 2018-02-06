@@ -127,6 +127,7 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 
 
 By default the component matches choices with the current input searchText, if it finds a match this choice will be selected. For example, using the `choices`: `[{id:'M',name:'Male',id:'F',name:'Female'}]` and the user enters the text `male` then the component will set the input value to `M`. Using the `inputValueMatcher` prop the component allows you to change how choices are matched. For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]` you can create the following `inputValueMatcher` to match choices on the iso2 code: 
+
 ```javascript
 <AutocompleteInput inputValueMatcher={
     (input,suggestion,getOptionText) => 
@@ -171,7 +172,6 @@ Prop | Required/Optional | Type | Default | Description
 `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value 
 `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the currect record as argument (`(record)=> {string}`)
 `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`. 
-`selectedItem` | Optional | `Object` | null | The current selectedItem. If this value is not supplied, it will be reduced from the `choices` list.
 `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered. 
 
 ## `<BooleanInput>` and `<NullableBooleanInput>`
