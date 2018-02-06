@@ -122,12 +122,7 @@ export class SelectArrayInput extends Component {
     };
 
     renderMenuItem = choice => {
-        const {
-            optionText,
-            optionValue,
-            translate,
-            translateChoice,
-        } = this.props;
+        const { optionText, optionValue, translate } = this.props;
         const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
             ? React.cloneElement(optionText, { record: choice })
             : typeof optionText === 'function'
@@ -138,9 +133,7 @@ export class SelectArrayInput extends Component {
                 key={get(choice, optionValue)}
                 value={get(choice, optionValue)}
             >
-                {translateChoice
-                    ? translate(choiceName, { _: choiceName })
-                    : choiceName}
+                {translate(choiceName, { _: choiceName })}
             </MenuItem>
         );
     };
@@ -211,7 +204,6 @@ SelectArrayInput.propTypes = {
     resource: PropTypes.string,
     source: PropTypes.string,
     translate: PropTypes.func.isRequired,
-    translateChoice: PropTypes.bool.isRequired,
 };
 
 SelectArrayInput.defaultProps = {
@@ -220,7 +212,6 @@ SelectArrayInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
-    translateChoice: true,
 };
 
 const EnhancedSelectArrayInput = compose(addField, translate)(SelectArrayInput);
