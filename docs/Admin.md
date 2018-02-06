@@ -157,6 +157,7 @@ If you want to add or remove menu items, for instance to link to non-resources p
 import React from 'react';
 import { connect } from 'react-redux';
 import { MenuItemLink, getResources } from 'react-admin';
+import { withRouter } from 'react-router-dom';
 
 const Menu = ({ resources, onMenuTap, logout }) => (
     <div>
@@ -172,10 +173,12 @@ const mapStateToProps = state => ({
     resources: getResources(state),
 });
 
-export default connect(mapStateToProps)(Menu);
+export default withRouter(connect(mapStateToProps)(Menu));
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
+
+**Tip**: Note that we use React Router [`withRouter`](https://reacttraining.com/react-router/web/api/withRouter) Higher Order Component and that it is used **before** Redux [`connect](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options). This is required if you want the active menu item to be highlighted.
 
 Then, pass it to the `<Admin>` component as the `menu` prop:
 
@@ -191,6 +194,41 @@ const App = () => (
 ```
 
 **Tip**: If you use authentication, don't forget to render the `logout` prop in your custom menu component. Also, the `onMenuTap` function passed as prop is used to close the sidebar on mobile.
+
+The `MenuItemLink` component make use of React Router [`NavLink`](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize its style when it targets the current page.
+
+If the default active style does not suit your tastes, you can override it by passing your own `classes`:
+
+```jsx
+// in src/Menu.js
+import React from 'react';
+import { connect } from 'react-redux';
+import { MenuItemLink, getResources } from 'react-admin';
+import { withStyles } from 'material-ui/styles';
+import { withRouter } from 'react-router-dom';
+
+const styles = {
+    root: {}, // Style applied to the MenuItem from material-ui
+    active: { fontWeight: 'bold' }, // Style applied when the menu item is the active one
+    icon: {}, // Style applied to the icon
+};
+
+const Menu = ({ classes, resources, onMenuTap, logout }) => (
+    <div>
+        {resources.map(resource => (
+            <MenuItemLink classes={classes} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuTap} />
+        ))}
+        <MenuItemLink classes={classes} to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+        {logout}
+    </div>
+);
+
+const mapStateToProps = state => ({
+    resources: getResources(state),
+});
+
+export default withRouter(connect(mapStateToProps)(withStyles(styles)(Menu)));
+```
 
 ## `theme`
 
@@ -365,7 +403,7 @@ Now, when a user browses to `/foo` or `/bar`, the components you defined will ap
 When a user browses to `/baz`, the component will appear outside of the defined Layout, leaving you the freedom
 to design the screen the way you want.
 
-**Tip**: It's up to you to create a [custom menu](#applayout) entry, or custom buttons, to lead to your custom pages.
+**Tip**: It's up to you to create a [custom menu](#menu) entry, or custom buttons, to lead to your custom pages.
 
 **Tip**: Your custom pages take precedence over react-admin's own routes. That means that `customRoutes` lets you override any route you want! If you want to add routes *after* all the react-admin routes, use the [`catchAll` prop](#catchall) instead.
 

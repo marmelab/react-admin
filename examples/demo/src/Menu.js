@@ -4,6 +4,7 @@ import compose from 'recompose/compose';
 import SettingsIcon from 'material-ui-icons/Settings';
 import LabelIcon from 'material-ui-icons/Label';
 import { translate, DashboardMenuItem, MenuItemLink } from 'react-admin';
+import { withRouter } from 'react-router-dom';
 
 import { VisitorIcon } from './visitors';
 import { CommandIcon } from './commands';
@@ -54,10 +55,14 @@ const Menu = ({ onMenuTap, translate, logout }) => (
 );
 
 const enhance = compose(
-    connect(state => ({
-        theme: state.theme,
-        locale: state.i18n.locale,
-    })),
+    withRouter,
+    connect(
+        state => ({
+            theme: state.theme,
+            locale: state.i18n.locale,
+        }),
+        {}
+    ),
     translate
 );
 
