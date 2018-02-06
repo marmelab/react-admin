@@ -1,3 +1,3 @@
 export { RestClient } from './RestClient';
-export { AuthClient } from './AuthClient';
+export { AuthProvider } from './AuthProvider';
 export * from './utils';

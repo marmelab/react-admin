@@ -1,7 +1,7 @@
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK, AUTH_GET_PERMISSIONS } from 'react-admin';
 import { Storage } from './utils';
 
-export const AuthClient = (loginUrl = '/api/users/login') => {
+export const AuthProvider = (loginUrl = '/api/users/login') => {
     return (type, params) => {
         if (type === AUTH_LOGIN) {
             const { username, password } = params;
