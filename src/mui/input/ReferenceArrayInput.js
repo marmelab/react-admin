@@ -161,7 +161,6 @@ export class ReferenceArrayInput extends Component {
             resource,
             label,
             source,
-            referenceRecords,
             allowEmpty,
             matchingReferences,
             basePath,
@@ -213,22 +212,6 @@ export class ReferenceArrayInput extends Component {
             );
         }
 
-        if (!(referenceRecords && referenceRecords.length > 0) && !allowEmpty) {
-            return (
-                <Labeled
-                    label={
-                        typeof label === 'undefined' ? (
-                            `resources.${resource}.fields.${source}`
-                        ) : (
-                            label
-                        )
-                    }
-                    source={source}
-                    resource={resource}
-                />
-            );
-        }
-
         return React.cloneElement(children, {
             allowEmpty,
             input,
@@ -266,7 +249,6 @@ ReferenceArrayInput.propTypes = {
     onChange: PropTypes.func,
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
-    referenceRecords: PropTypes.array,
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
@@ -282,19 +264,11 @@ ReferenceArrayInput.defaultProps = {
     matchingReferences: null,
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
-    referenceRecords: [],
 };
 
 function mapStateToProps(state, props) {
     const referenceIds = props.input.value || [];
-    const data = state.admin.resources[props.reference].data;
     return {
-        referenceRecords: referenceIds.reduce((references, referenceId) => {
-            if (data[referenceId]) {
-                references.push(data[referenceId]);
-            }
-            return references;
-        }, []),
         matchingReferences: getPossibleReferences(
             state,
             referenceSource(props.resource, props.source),

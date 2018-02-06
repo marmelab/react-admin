@@ -274,14 +274,11 @@ ReferenceInput.defaultProps = {
     matchingReferences: null,
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
-    referenceRecord: null,
 };
 
 function mapStateToProps(state, props) {
     const referenceId = props.input.value;
     return {
-        referenceRecord:
-            state.admin.resources[props.reference].data[referenceId],
         matchingReferences: getPossibleReferences(
             state,
             referenceSource(props.resource, props.source),

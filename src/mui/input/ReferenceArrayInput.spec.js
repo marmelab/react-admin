@@ -13,7 +13,6 @@ describe('<ReferenceArrayInput />', () => {
         resource: 'posts',
         source: 'tag_ids',
         matchingReferences: [{ id: 1 }],
-        referenceRecord: [{ id: 2 }],
         allowEmpty: true,
     };
     const MyComponent = () => <span id="mycomponent" />;
@@ -52,22 +51,6 @@ describe('<ReferenceArrayInput />', () => {
         assert.equal(ErrorElement.length, 1);
         assert.equal(ErrorElement.prop('disabled'), true);
         assert.equal(ErrorElement.prop('errorText'), 'fetch error');
-    });
-
-    it('should not render anything if there is no referenceRecord and allowEmpty is false', () => {
-        const wrapper = shallow(
-            <ReferenceArrayInput
-                {...{
-                    ...defaultProps,
-                    referenceRecord: [],
-                    allowEmpty: false,
-                }}
-            >
-                <MyComponent />
-            </ReferenceArrayInput>
-        );
-        const MyComponentElement = wrapper.find('MyComponent');
-        assert.equal(MyComponentElement.length, 0);
     });
 
     it('should render enclosed component even if the references are empty', () => {
