@@ -23,7 +23,7 @@ const Configuration = ({
         <CardContent>
             <div style={styles.label}>{translate('pos.theme.name')}</div>
             <Button
-                raised
+                variant="raised"
                 style={styles.button}
                 color={theme === 'light' ? 'primary' : 'default'}
                 onClick={() => changeTheme('light')}
@@ -31,7 +31,7 @@ const Configuration = ({
                 {translate('pos.theme.light')}
             </Button>
             <Button
-                raised
+                variant="raised"
                 style={styles.button}
                 color={theme === 'dark' ? 'primary' : 'default'}
                 onClick={() => changeTheme('dark')}
@@ -42,7 +42,7 @@ const Configuration = ({
         <CardContent>
             <div style={styles.label}>{translate('pos.language')}</div>
             <Button
-                raised
+                variant="raised"
                 style={styles.button}
                 color={locale === 'en' ? 'primary' : 'default'}
                 onClick={() => changeLocale('en')}
@@ -50,7 +50,7 @@ const Configuration = ({
                 en
             </Button>
             <Button
-                raised
+                variant="raised"
                 style={styles.button}
                 color={locale === 'fr' ? 'primary' : 'default'}
                 onClick={() => changeLocale('fr')}

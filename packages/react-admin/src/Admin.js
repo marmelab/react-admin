@@ -17,18 +17,20 @@ import DefaultLayout from './mui/layout/Layout';
 import Menu from './mui/layout/Menu';
 import Login from './mui/auth/Login';
 import Logout from './mui/auth/Logout';
+import NotFound from './mui/layout/NotFound';
 import { TranslationProvider, defaultI18nProvider } from './i18n';
+import AdminRouter from './AdminRouter';
 
 const Admin = ({
     appLayout,
-    authClient,
+    authProvider,
     children,
     customReducers = {},
     customSagas = [],
     customRoutes = [],
     dashboard,
     history,
-    menu = Menu,
+    menu,
     catchAll,
     dataProvider,
     i18nProvider = defaultI18nProvider,
@@ -47,7 +49,7 @@ const Admin = ({
     const saga = function* rootSaga() {
         yield all(
             [
-                crudSaga(dataProvider, authClient, i18nProvider),
+                crudSaga(dataProvider, authProvider, i18nProvider),
                 ...customSagas,
             ].map(fork)
         );
@@ -66,67 +68,42 @@ const Admin = ({
     );
     sagaMiddleware.run(saga);
 
-    const logout = authClient ? createElement(logoutButton || Logout) : null;
+    const logout = authProvider ? createElement(logoutButton || Logout) : null;
 
     return (
         <Provider store={store}>
             <TranslationProvider>
                 <ConnectedRouter history={routerHistory}>
-                    <div>
-                        <Switch>
-                            <Route
-                                exact
-                                path="/login"
-                                render={props =>
-                                    createElement(loginPage || Login, {
-                                        ...props,
-                                        title,
-                                    })}
-                            />
-                            {customRoutes
-                                .filter(route => route.props.noLayout)
-                                .map((route, index) => (
-                                    <Route
-                                        key={index}
-                                        exact={route.props.exact}
-                                        path={route.props.path}
-                                        render={props => {
-                                            if (route.props.render) {
-                                                return route.props.render({
-                                                    ...props,
-                                                    title,
-                                                });
-                                            }
-                                            if (route.props.component) {
-                                                return createElement(
-                                                    route.props.component,
-                                                    {
-                                                        ...props,
-                                                        title,
-                                                    }
-                                                );
-                                            }
-                                        }}
-                                    />
-                                ))}
-                            <Route
-                                path="/"
-                                render={() =>
-                                    createElement(appLayout || DefaultLayout, {
-                                        children,
-                                        dashboard,
-                                        customRoutes: customRoutes.filter(
-                                            route => !route.props.noLayout
-                                        ),
-                                        logout,
-                                        menu,
-                                        catchAll,
-                                        theme,
-                                        title,
-                                    })}
-                            />
-                        </Switch>
-                    </div>
+                    <Switch>
+                        <Route
+                            exact
+                            path="/login"
+                            render={props =>
+                                createElement(loginPage, {
+                                    ...props,
+                                    title,
+                                })}
+                        />
+                        <Route
+                            path="/"
+                            render={props => (
+                                <AdminRouter
+                                    appLayout={appLayout}
+                                    catchAll={catchAll}
+                                    customRoutes={customRoutes}
+                                    dashboard={dashboard}
+                                    loginPage={loginPage}
+                                    logout={logout}
+                                    menu={menu}
+                                    theme={theme}
+                                    title={title}
+                                    {...props}
+                                >
+                                    {children}
+                                </AdminRouter>
+                            )}
+                        />
+                    </Switch>
                 </ConnectedRouter>
             </TranslationProvider>
         </Provider>
@@ -140,7 +117,7 @@ const componentPropType = PropTypes.oneOfType([
 
 Admin.propTypes = {
     appLayout: componentPropType,
-    authClient: PropTypes.func,
+    authProvider: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     catchAll: componentPropType,
     customSagas: PropTypes.array,
@@ -159,9 +136,17 @@ Admin.propTypes = {
     initialState: PropTypes.object,
 };
 
+Admin.defaultProps = {
+    appLayout: DefaultLayout,
+    catchAll: NotFound,
+    loginPage: Login,
+    logoutButton: Logout,
+    menu: Menu,
+};
+
 export default withContext(
     {
-        authClient: PropTypes.func,
+        authProvider: PropTypes.func,
     },
-    ({ authClient }) => ({ authClient })
+    ({ authProvider }) => ({ authProvider })
 )(Admin);

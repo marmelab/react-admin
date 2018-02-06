@@ -420,14 +420,14 @@ const App = () => (
 
 Most admin apps require authentication. React-admin can check user credentials before displaying a page, and redirect to a login form when the REST API returns a 403 error code.
 
-*What* those credentials are, and *how* to get them, are questions that you must answer. React-admin makes no assumption about your authentication strategy (basic auth, OAuth, custom route, etc), but gives you the hooks to plug your logic at the right place - by calling an `authClient` function.
+*What* those credentials are, and *how* to get them, are questions that you must answer. React-admin makes no assumption about your authentication strategy (basic auth, OAuth, custom route, etc), but gives you the hooks to plug your logic at the right place - by calling an `authProvider` function.
 
 For this tutorial, since there is no public authentication API we can use, let's use a fake authentication provider that accepts every login request, and stores the `username` in `localStorage`. Each page change will require that `localStorage` contains a `username` item.
 
-The `authClient` is a simple function, which must return a `Promise`:
+The `authProvider` is a simple function, which must return a `Promise`:
 
 ```jsx
-// in src/authClient.js
+// in src/authProvider.js
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
 
 export default (type, params) => {
@@ -462,15 +462,15 @@ export default (type, params) => {
 
 **Tip**: As the `dataProvider` response is asynchronous, you can easily fetch an authentication server in there.
 
-To enable this authentication strategy, pass the client as the `authClient` prop in the `<Admin>` component:
+To enable this authentication strategy, pass the client as the `authProvider` prop in the `<Admin>` component:
 
 ```jsx
 // in src/App.js
 import Dashboard from './Dashboard';
-import authClient from './authClient';
+import authProvider from './authProvider';
 
 const App = () => (
-    <Admin authClient={authClient} dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+    <Admin authProvider={authProvider} dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         // ...
     </Admin>
 );

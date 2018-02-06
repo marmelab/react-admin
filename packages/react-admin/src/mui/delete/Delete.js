@@ -204,7 +204,7 @@ export class Delete extends Component {
                         </CardContent>
                         <Toolbar disableGutters={true}>
                             <Button
-                                raised
+                                variant="raised"
                                 type="submit"
                                 color="primary"
                                 className={classes.button}
@@ -216,7 +216,7 @@ export class Delete extends Component {
                             </Button>
                             &nbsp;
                             <Button
-                                raised
+                                variant="raised"
                                 onClick={this.goBack}
                                 className={classes.button}
                             >

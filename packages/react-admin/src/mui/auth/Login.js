@@ -49,7 +49,7 @@ const sanitizeRestProps = ({
  * A standalone login page, to serve as authentication gate to the admin
  *
  * Expects the user to enter a login and a password, which will be checked
- * by the `authClient` using the AUTH_LOGIN verb. Redirects to the root page
+ * by the `authProvider` using the AUTH_LOGIN verb. Redirects to the root page
  * (/) upon success, otherwise displays an authentication error message.
  *
  * Copy and adapt this component to implement your own login logic
@@ -58,7 +58,7 @@ const sanitizeRestProps = ({
  * @example
  *     import MyLoginPage from './MyLoginPage';
  *     const App = () => (
- *         <Admin loginPage={MyLoginPage} authClient={authClient}>
+ *         <Admin loginPage={MyLoginPage} authProvider={authProvider}>
  *             ...
  *        </Admin>
  *     );
@@ -87,7 +87,7 @@ const Login = ({
 
 Login.propTypes = {
     className: PropTypes.string,
-    authClient: PropTypes.func,
+    authProvider: PropTypes.func,
     classes: PropTypes.object,
     input: PropTypes.object,
     meta: PropTypes.object,

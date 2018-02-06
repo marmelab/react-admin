@@ -10,7 +10,6 @@ import {
 import Hidden from 'material-ui/Hidden';
 import compose from 'recompose/compose';
 
-import AdminRoutes from '../../AdminRoutes';
 import AppBar from './AppBar';
 import Sidebar, { DRAWER_WIDTH } from './Sidebar';
 import LoadingIndicator from './LoadingIndicator';
@@ -65,8 +64,9 @@ const styles = theme => ({
     },
 });
 
+const sanitizeRestProps = ({ staticContext, ...props }) => props;
+
 const Layout = ({
-    catchAll,
     children,
     classes,
     className,
@@ -77,10 +77,13 @@ const Layout = ({
     open,
     theme,
     title,
-    ...rest
+    ...props
 }) => (
     <MuiThemeProvider theme={createMuiTheme(theme)}>
-        <div className={classnames(classes.root, className)} {...rest}>
+        <div
+            className={classnames('layout', classes.root, className)}
+            {...sanitizeRestProps(props)}
+        >
             <div className={classes.appFrame}>
                 <Hidden xsDown>
                     <AppBar title={title} open={open} />
@@ -97,14 +100,7 @@ const Layout = ({
                         open && classes.contentShift
                     )}
                 >
-                    <AdminRoutes
-                        customRoutes={customRoutes}
-                        dashboard={dashboard}
-                        catchAll={catchAll}
-                        title={title}
-                    >
-                        {children}
-                    </AdminRoutes>
+                    {children}
                 </main>
                 <Notification />
                 <LoadingIndicator />
@@ -122,7 +118,6 @@ Layout.propTypes = {
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     classes: PropTypes.object,
     className: PropTypes.string,
-    catchAll: componentPropType,
     customRoutes: PropTypes.array,
     dashboard: componentPropType,
     logout: PropTypes.oneOfType([

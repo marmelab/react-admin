@@ -62,7 +62,7 @@ const AppBar = ({
             >
                 <MenuIcon />
             </IconButton>
-            <Typography type="title" color="inherit">
+            <Typography variant="title" color="inherit">
                 {title}
             </Typography>
         </Toolbar>

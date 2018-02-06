@@ -65,6 +65,26 @@ import { jsonServerRestClient } from 'admin-on-rest';
 import jsonServerRestClient from 'ra-data-json-server';
 ```
 
+## `authClient` Prop Renamed To `authProvider` in `<Admin>` Component
+
+In the `<Admin>` component, the `authClient` prop is now called `authProvider`:
+
+```jsx
+// before
+import authClient from './authClient';
+<Admin authClient={authClient}>
+   ...
+</Admin>
+
+// after
+import authProvider from './authProvider';
+<Admin authProvider={authProvider}>
+   ...
+</Admin>
+```
+
+The signature of the authorizations provider function is the same as the authorizations client function, so you shouldn't need to change anything in your previous authorizations client function.
+
 ## Default (English) Messages Moved To Standalone Package
 
 The English messages have moved to another package, `ra-language-english`. The core package still displays the interface messages in English by default (by using `ra-language-english` as a dependency), but if you overrode some of the messages, you'll need to update the package name:
@@ -513,7 +533,7 @@ export default withRouter(MyPage);
 
 ## Authorization: `<WithPermission>` and `<SwitchPermissions>` replaced by `<WithPermissions>`
 
-We removed the `WithPermission` and `SwitchPermissions` in favor of a more versatile component: `WithPermissions`. The `WithPermissions` component retrieves permissions by calling the `authClient` with the `AUTH_GET_PERMISSIONS` type. It then passes the permissions to the render callback. 
+We removed the `WithPermission` and `SwitchPermissions` in favor of a more versatile component: `WithPermissions`. The `WithPermissions` component retrieves permissions by calling the `authProvider` with the `AUTH_GET_PERMISSIONS` type. It then passes the permissions to the render callback. 
 
 This component follows the [render callback pattern](https://cdb.reacttraining.com/use-a-render-prop-50de598f11ce). Just like the [React Router `Route`](https://reacttraining.com/react-router/web/api/Route) component, you can pass a render callback to `<WithPermissions>` either as its only child, or via its `render` prop (if both are passed, the `render` prop is used).
 
@@ -626,7 +646,7 @@ const UserCreateToolbar = ({ permissions, ...props }) =>
                 label="user.action.save_and_add"
                 redirect={false}
                 submitOnEnter={false}
-                raised={false}
+                variant="flat"
             />}
     </Toolbar>;
 
@@ -656,7 +676,7 @@ const UserCreateToolbar = ({ permissions, ...props }) =>
                 label="user.action.save_and_add"
                 redirect={false}
                 submitOnEnter={false}
-                raised={false}
+                variant="flat"
             />}
     </Toolbar>;
 
@@ -839,7 +859,7 @@ export default ({ permissions }) => (
 );
 ```
 
-Finally, you won't need the now deprecated `<WithPermission>` or `<SwitchPermissions>` in custom routes either if you want access to permissions. Much like you can restrict access to authenticated users only with the [`Authenticated`](Authentication.html#restricting-access-to-a-custom-page) component, you may decorate your custom route with the `WithPermissions` component. It will ensure the user is authenticated then call the `authClient` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
+Finally, you won't need the now deprecated `<WithPermission>` or `<SwitchPermissions>` in custom routes either if you want access to permissions. Much like you can restrict access to authenticated users only with the [`Authenticated`](Authentication.html#restricting-access-to-a-custom-page) component, you may decorate your custom route with the `WithPermissions` component. It will ensure the user is authenticated then call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
 
 {% raw %}
 ```jsx
@@ -884,6 +904,227 @@ export default [
     <Route exact path="/baz" component={Baz} noLayout />,
     <Route exact path="/baz" component={MyPageWithPermissions} />,
 ];
+```
+
+## Custom Layouts
+
+The default layout has been simplified and this results in a simplified custom layout too. You don't need to pass the `AdminRoutes` anymore as you'll receive the component to render as the standard `children` prop:
+
+```js
+// Before
+import React, { createElement, Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import CircularProgress from 'material-ui/CircularProgress';
+import {
+    AdminRoutes,
+    AppBar,
+    Menu,
+    Notification,
+    Sidebar,
+    setSidebarVisibility,
+} from 'react-admin';
+
+const styles = {
+    wrapper: {
+        // Avoid IE bug with Flexbox, see #467
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    main: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+    },
+    body: {
+        backgroundColor: '#edecec',
+        display: 'flex',
+        flex: 1,
+        overflowY: 'hidden',
+        overflowX: 'scroll',
+    },
+    content: {
+        flex: 1,
+        padding: '2em',
+    },
+    loader: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        margin: 16,
+        zIndex: 1200,
+    },
+};
+
+class MyLayout extends Component {
+    componentWillMount() {
+        this.props.setSidebarVisibility(true);
+    }
+
+    render() {
+        const {
+            children,
+            customRoutes,
+            dashboard,
+            isLoading,
+            logout,
+            menu,
+            title,
+        } = this.props;
+        return (
+            <MuiThemeProvider>
+                <div style={styles.wrapper}>
+                    <div style={styles.main}>
+                        <AppBar title={title} />
+                        <div className="body" style={styles.body}>
+                            <div style={styles.content}>
+                                <AdminRoutes
+                                    customRoutes={customRoutes}
+                                    dashboard={dashboard}
+                                >
+                                    {children}
+                                </AdminRoutes>
+                            </div>
+                            <Sidebar>
+                                {createElement(menu || Menu, {
+                                    logout,
+                                    hasDashboard: !!dashboard,
+                                })}
+                            </Sidebar>
+                        </div>
+                        <Notification />
+                        {isLoading && (
+                            <CircularProgress
+                                color="#fff"
+                                size={30}
+                                thickness={2}
+                                style={styles.loader}
+                            />
+                        )}
+                    </div>
+                </div>
+            </MuiThemeProvider>
+        );
+    }
+}
+
+MyLayout.propTypes = {
+    authClient: PropTypes.func,
+    customRoutes: PropTypes.array,
+    dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+    isLoading: PropTypes.bool.isRequired,
+    menu: PropTypes.element,
+    resources: PropTypes.array,
+    setSidebarVisibility: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
+export default connect(mapStateToProps, { setSidebarVisibility })(MyLayout);
+
+// After
+import React, { createElement, Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import CircularProgress from 'material-ui/CircularProgress';
+import {
+    AdminRoutes,
+    AppBar,
+    Menu,
+    Notification,
+    Sidebar,
+    setSidebarVisibility,
+} from 'react-admin';
+
+const styles = {
+    wrapper: {
+        // Avoid IE bug with Flexbox, see #467
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    main: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+    },
+    body: {
+        backgroundColor: '#edecec',
+        display: 'flex',
+        flex: 1,
+        overflowY: 'hidden',
+        overflowX: 'scroll',
+    },
+    content: {
+        flex: 1,
+        padding: '2em',
+    },
+    loader: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        margin: 16,
+        zIndex: 1200,
+    },
+};
+
+class MyLayout extends Component {
+    componentWillMount() {
+        this.props.setSidebarVisibility(true);
+    }
+
+    render() {
+        const {
+            children,
+            dashboard,
+            isLoading,
+            logout,
+            menu,
+            title,
+        } = this.props;
+        return (
+            <MuiThemeProvider>
+                <div style={styles.wrapper}>
+                    <div style={styles.main}>
+                        <AppBar title={title} />
+                        <div className="body" style={styles.body}>
+                            <div style={styles.content}>
+                                {children}
+                            </div>
+                            <Sidebar>
+                                {createElement(menu || Menu, {
+                                    logout,
+                                    hasDashboard: !!dashboard,
+                                })}
+                            </Sidebar>
+                        </div>
+                        <Notification />
+                        {isLoading && (
+                            <CircularProgress
+                                color="#fff"
+                                size={30}
+                                thickness={2}
+                                style={styles.loader}
+                            />
+                        )}
+                    </div>
+                </div>
+            </MuiThemeProvider>
+        );
+    }
+}
+
+MyLayout.propTypes = {
+    dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+    isLoading: PropTypes.bool.isRequired,
+    menu: PropTypes.element,
+    setSidebarVisibility: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
+export default connect(mapStateToProps, { setSidebarVisibility })(MyLayout);
 ```
 
 ## react-admin addon packages renamed with ra prefix and moved into root repository

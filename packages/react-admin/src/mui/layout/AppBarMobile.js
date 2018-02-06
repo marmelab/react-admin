@@ -53,7 +53,11 @@ const AppBarMobile = ({
             >
                 <MenuIcon />
             </IconButton>
-            <Typography className={classes.title} type="title" color="inherit">
+            <Typography
+                className={classes.title}
+                variant="title"
+                color="inherit"
+            >
                 {title}
             </Typography>
         </Toolbar>

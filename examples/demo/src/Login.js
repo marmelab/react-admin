@@ -69,7 +69,7 @@ class Login extends Component {
             auth,
             this.props.location.state
                 ? this.props.location.state.nextPathname
-                : '/',
+                : '/'
         );
 
     render() {
@@ -105,7 +105,7 @@ class Login extends Component {
                         </div>
                         <CardActions>
                             <Button
-                                raised
+                                variant="raised"
                                 type="submit"
                                 color="primary"
                                 disabled={isLoading}
@@ -127,7 +127,7 @@ class Login extends Component {
 
 Login.propTypes = {
     ...propTypes,
-    authClient: PropTypes.func,
+    authProvider: PropTypes.func,
     classes: PropTypes.object,
     previousRoute: PropTypes.string,
     translate: PropTypes.func.isRequired,
@@ -153,7 +153,7 @@ const enhance = compose(
         },
     }),
     connect(mapStateToProps, { userLogin }),
-    withStyles(styles),
+    withStyles(styles)
 );
 
 export default enhance(Login);

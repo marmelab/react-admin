@@ -41,7 +41,7 @@ const Toolbar = ({
                     <SaveButton
                         handleSubmitWithRedirect={handleSubmitWithRedirect}
                         invalid={invalid}
-                        raised={false}
+                        variant="flat"
                         submitOnEnter={submitOnEnter}
                     />
                 ) : (
@@ -52,7 +52,7 @@ const Toolbar = ({
                                 ? React.cloneElement(button, {
                                       invalid,
                                       handleSubmitWithRedirect,
-                                      raised: false,
+                                      variant: 'flat',
                                       submitOnEnter: valueOrDefault(
                                           button.props.submitOnEnter,
                                           submitOnEnter

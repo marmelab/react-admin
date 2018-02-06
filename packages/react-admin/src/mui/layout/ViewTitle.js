@@ -18,7 +18,7 @@ const ViewTitle = ({ className, title, ...rest }) => (
         }
         medium={
             <CardContent className={classnames('title', className)} {...rest}>
-                <Typography type="headline">{title}</Typography>
+                <Typography variant="headline">{title}</Typography>
             </CardContent>
         }
     />

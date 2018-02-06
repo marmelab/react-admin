@@ -11,26 +11,26 @@ import { isLoggedIn } from '../reducer';
 
 const isEmptyChildren = children => Children.count(children) === 0;
 /**
- * After checking that the user is authenticated, 
+ * After checking that the user is authenticated,
  * retrieves the user's permissions for a specific context.
  *
  * Useful for Route components ; used internally by Resource.
- * Use it to decorate your custom page components to require 
+ * Use it to decorate your custom page components to require
  * a custom role. It will pass the permissions as a prop to your
  * component.
- * 
+ *
  * Pass the `location` from the `routeParams` as `location` prop.
- * You can set additional `authParams` at will if your authClient
+ * You can set additional `authParams` at will if your authProvider
  * requires it.
  *
  * @example
  *     import { WithPermissions } from 'react-admin';
- * 
+ *
  *     const Foo = ({ permissions }) => (
  *         {permissions === 'admin' ? <p>Sensitive data</p> : null}
  *         <p>Not sensitive data</p>
  *     );
- * 
+ *
  *     const customRoutes = [
  *         <Route path="/foo" render={routeParams =>
  *             <WithPermissions location={routeParams.location} authParams={{ foo: 'bar' }}>
@@ -46,7 +46,7 @@ const isEmptyChildren = children => Children.count(children) === 0;
  */
 export class WithPermissions extends Component {
     static propTypes = {
-        authClient: PropTypes.func,
+        authProvider: PropTypes.func,
         authParams: PropTypes.object,
         children: PropTypes.func,
         location: PropTypes.object,
@@ -92,9 +92,9 @@ export class WithPermissions extends Component {
     }
 
     async checkPermissions(params) {
-        const { authClient, authParams, location, match } = params;
+        const { authProvider, authParams, location, match } = params;
         try {
-            const permissions = await authClient(AUTH_GET_PERMISSIONS, {
+            const permissions = await authProvider(AUTH_GET_PERMISSIONS, {
                 ...authParams,
                 routeParams: match ? match.params : undefined,
                 location: location ? location.pathname : undefined,
@@ -110,7 +110,7 @@ export class WithPermissions extends Component {
     // isn't finished (optimistic rendering)
     render() {
         const {
-            authClient,
+            authProvider,
             userCheck,
             isLoggedIn,
             render,
@@ -135,7 +135,7 @@ const mapStateToProps = state => ({
 
 export default compose(
     getContext({
-        authClient: PropTypes.func,
+        authProvider: PropTypes.func,
     }),
     connect(mapStateToProps, { userCheck })
 )(WithPermissions);

@@ -152,7 +152,10 @@ export class Pagination extends Component {
                                 <ChevronLeft />
                             </IconButton>
                         )}
-                        <Typography type="body1" className="displayed-records">
+                        <Typography
+                            variant="body1"
+                            className="displayed-records"
+                        >
                             {translate('ra.navigation.page_range_info', {
                                 offsetBegin,
                                 offsetEnd,
@@ -168,7 +171,10 @@ export class Pagination extends Component {
                 }
                 medium={
                     <Toolbar className={className} {...rest}>
-                        <Typography type="body1" className="displayed-records">
+                        <Typography
+                            variant="body1"
+                            className="displayed-records"
+                        >
                             {translate('ra.navigation.page_range_info', {
                                 offsetBegin,
                                 offsetEnd,
