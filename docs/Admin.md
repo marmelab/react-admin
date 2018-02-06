@@ -159,12 +159,12 @@ import { connect } from 'react-redux';
 import { MenuItemLink, getResources } from 'react-admin';
 import { withRouter } from 'react-router-dom';
 
-const Menu = ({ resources, onMenuTap, logout }) => (
+const Menu = ({ resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
-            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuTap} />
+            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
         ))}
-        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
         {logout}
     </div>
 );
@@ -193,7 +193,7 @@ const App = () => (
 );
 ```
 
-**Tip**: If you use authentication, don't forget to render the `logout` prop in your custom menu component. Also, the `onMenuTap` function passed as prop is used to close the sidebar on mobile.
+**Tip**: If you use authentication, don't forget to render the `logout` prop in your custom menu component. Also, the `onMenuClick` function passed as prop is used to close the sidebar on mobile.
 
 The `MenuItemLink` component make use of React Router [`NavLink`](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize its style when it targets the current page.
 
@@ -213,12 +213,12 @@ const styles = {
     icon: {}, // Style applied to the icon
 };
 
-const Menu = ({ classes, resources, onMenuTap, logout }) => (
+const Menu = ({ classes, resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
-            <MenuItemLink classes={classes} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuTap} />
+            <MenuItemLink classes={classes} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
         ))}
-        <MenuItemLink classes={classes} to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
+        <MenuItemLink classes={classes} to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
         {logout}
     </div>
 );
