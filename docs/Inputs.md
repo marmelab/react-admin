@@ -728,6 +728,69 @@ import { SelectInput, ReferenceInput } from 'react-admin'
 
 If, instead of showing choices as a dropdown list, you prefer to display them as a list of radio buttons, try the [`<RadioButtonGroupInput>`](#radiobuttongroupinput). And if the list is too big, prefer the [`<AutocompleteInput>`](#autocompleteinput).
 
+## `<SelectArrayInput>`
+
+To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](http://www.material-ui.com/#/components/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+
+```js
+import { SelectArrayInput } from 'admin-on-rest';
+
+<SelectArrayInput label="Tags" source="categories" choices={[
+    { id: 'music', name: 'Music' },
+    { id: 'photography', name: 'Photo' },
+    { id: 'programming', name: 'Code' },
+    { id: 'tech', name: 'Technology' },
+    { id: 'sport', name: 'Sport' },
+]} />
+```
+
+![SelectArrayInput](./img/select-array-input.gif)
+
+You can also customize the properties to use for the option name and value,
+thanks to the `optionText` and `optionValue` attributes.
+
+```js
+const choices = [
+   { _id: '1', name: 'Book', plural_name: 'Books' },
+   { _id: '2', name: 'Video', plural_name: 'Videos' },
+   { _id: '3', name: 'Audio', plural_name: 'Audios' },
+];
+<SelectArrayInput source="categories" choices={choices} optionText="plural_name" optionValue="_id" />
+```
+
+`optionText` also accepts a function, so you can shape the option text at will:
+
+```js
+const choices = [
+   { id: '1', name: 'Book', quantity: 23 },
+   { id: '2', name: 'Video', quantity: 56 },
+   { id: '3', name: 'Audio', quantity: 12 },
+];
+const optionRenderer = choice => `${choice.name} (${choice.quantity})`;
+<SelectArrayInput source="categories" choices={choices} optionText={optionRenderer} />
+```
+
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```js
+const choices = [
+   { id: 'books', name: 'myroot.category.books' },
+   { id: 'sport', name: 'myroot.category.sport' },
+];
+```
+
+Lastly, use the `options` attribute if you want to override any of the `<Select>` attributes:
+
+{% raw %}
+```js
+<SelectArrayInput source="category" options={{ fullWidth: true }} />
+```
+{% endraw %}
+
+Refer to [the Select documentation](http://www.material-ui.com/#/components/select) for more details.
+
+**Tip**: The `SelectArrayInput` component **cannot** be used inside a `ReferenceInput`.
+
 ## `<TextInput>`
 
 `<TextInput>` is the most common input. It is used for texts, emails, URL or passwords. In translates to an HTML `<input>` tag.

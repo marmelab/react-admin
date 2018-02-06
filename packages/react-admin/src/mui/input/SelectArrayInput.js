@@ -5,7 +5,10 @@ import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl, FormHelperText } from 'material-ui/Form';
+import { withStyles } from 'material-ui/styles';
+import Chip from 'material-ui/Chip';
 import compose from 'recompose/compose';
+import classnames from 'classnames';
 
 import addField from '../form/addField';
 import translate from '../../i18n/translate';
@@ -48,6 +51,21 @@ const sanitizeRestProps = ({
     validation,
     ...rest
 }) => rest;
+
+const styles = theme => ({
+    root: {},
+    chips: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    chip: {
+        margin: theme.spacing.unit / 4,
+    },
+    select: {
+        height: 'auto',
+        overflow: 'auto',
+    },
+});
 
 /**
  * An Input component for a select box allowing multiple selections, using an array of objects for the options
@@ -141,6 +159,7 @@ export class SelectArrayInput extends Component {
     render() {
         const {
             choices,
+            classes,
             className,
             isRequired,
             label,
@@ -148,6 +167,8 @@ export class SelectArrayInput extends Component {
             options,
             resource,
             source,
+            optionText,
+            optionValue,
             ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
@@ -158,7 +179,10 @@ export class SelectArrayInput extends Component {
         const { touched, error } = meta;
 
         return (
-            <FormControl>
+            <FormControl
+                className={classnames(classes.root, className)}
+                {...sanitizeRestProps(rest)}
+            >
                 <InputLabel htmlFor={source}>
                     <FieldTitle
                         label={label}
@@ -169,14 +193,26 @@ export class SelectArrayInput extends Component {
                 </InputLabel>
                 <Select
                     autoWidth
-                    fullWidth
                     multiple
                     input={<Input id={source} />}
                     value={this.state.value}
-                    className={className}
                     error={!!(touched && error)}
+                    renderValue={selected => (
+                        <div className={classes.chips}>
+                            {choices
+                                .filter(choice =>
+                                    selected.includes(get(choice, optionValue))
+                                )
+                                .map(choice => (
+                                    <Chip
+                                        key={get(choice, optionValue)}
+                                        label={get(choice, optionText)}
+                                        className={classes.chip}
+                                    />
+                                ))}
+                        </div>
+                    )}
                     {...options}
-                    {...sanitizeRestProps(rest)}
                     onChange={this.handleChange}
                 >
                     {choices.map(this.renderMenuItem)}
@@ -189,6 +225,7 @@ export class SelectArrayInput extends Component {
 
 SelectArrayInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
+    classes: PropTypes.object,
     className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
@@ -208,16 +245,15 @@ SelectArrayInput.propTypes = {
 
 SelectArrayInput.defaultProps = {
     choices: [],
-    fullWidth: true,
     options: {},
     optionText: 'name',
     optionValue: 'id',
 };
 
-const EnhancedSelectArrayInput = compose(addField, translate)(SelectArrayInput);
-
-EnhancedSelectArrayInput.defaultProps = {
-    fullWidth: true,
-};
+const EnhancedSelectArrayInput = compose(
+    addField,
+    translate,
+    withStyles(styles)
+)(SelectArrayInput);
 
 export default EnhancedSelectArrayInput;
