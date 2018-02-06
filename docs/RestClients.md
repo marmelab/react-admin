@@ -30,21 +30,19 @@ const restClient = (type, resource, params) => new Promise();
 You can find a REST client example implementation in [`src/rest/simple.js`](https://github.com/marmelab/admin-on-rest/blob/master/src/rest/simple.js);
 
 The `restClient` is also the ideal place to add custom HTTP headers, authentication, etc.
-
 ## Available Clients
 
-Admin-on-rest includes 4 REST clients by default:
+Admin-on-rest ships 2 REST client by default:
 
-* Simple REST: [marmelab/ra-data-simple-rest](https://github.com/marmelab/tree/master/packages/ra-data-simple-rest) ([read more below](#simple-rest)). It serves mostly as an example. Incidentally, it is compatible with the [FakeRest](https://github.com/marmelab/FakeRest) API.
-* **[JSON server](https://github.com/typicode/json-server)**: [marmelab/ra-data-json-server](https://github.com/marmelab/tree/master/packages/ra-data-json-server). Great for prototyping an admin over a yet-to-be-developed REST API.
-* [Graphcool](https://www.graph.cool/): [marmelab/ra-data-graphcool](https://github.com/marmelab/tree/master/packages/ra-data-graphcool). A provider for GraphQL servers following the Graphcool convention. Incidentally, this package builds up on [marmelab/ra-data-graphql](https://github.com/marmelab/tree/master/packages/ra-data-graphql), which lets you develop providers for other GraphQL conventions.
-* Local JSON: [marmelab/ra-data-fakerest](https://github.com/marmelab/tree/master/packages/ra-data-fakerest). Based on a local object, it doesn't even use HTTP. Use it for testing purposes.
+* simple REST: [simpleRestClient](#simple-rest) serves mostly as an example. Incidentally, it is compatible with the [FakeRest](https://github.com/marmelab/FakeRest) API.
+* **[JSON server](https://github.com/typicode/json-server)**: [jsonServerRestClient](#json-server-rest)
 
 You can find REST clients for various backends in third-party repositories:
 
 * **[Epilogue](https://github.com/dchester/epilogue)**: [dunghuynh/aor-epilogue-client](https://github.com/dunghuynh/aor-epilogue-client)
 * **[Feathersjs](http://www.feathersjs.com/)**: [josx/aor-feathers-client](https://github.com/josx/aor-feathers-client)
 * **[Firebase](https://firebase.google.com/)**: [sidferreira/aor-firebase-client](https://github.com/sidferreira/aor-firebase-client)
+* **[GraphQL](http://graphql.org/)**: [marmelab/aor-graphql](https://github.com/marmelab/aor-graphql) (uses [Apollo](http://www.apollodata.com/))
 * **[JSON API](http://jsonapi.org/)**: [moonlight-labs/aor-jsonapi-client](https://github.com/moonlight-labs/aor-jsonapi-client)
 * Local JSON: [marmelab/aor-json-rest-client](https://github.com/marmelab/aor-json-rest-client). It doesn't even use HTTP. Use it for testing purposes.
 * **[Loopback](http://loopback.io/)**: [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback)
@@ -55,15 +53,31 @@ If you've written a REST client for another backend, and open-sourced it, please
 
 ### Usage
 
-As an example, let's focus on the Simple REST client. It fits APIs using simple GET parameters for filters and sorting.
+This REST client fits APIs using simple GET parameters for filters and sorting. This is the dialect used for instance in [FakeRest](https://github.com/marmelab/FakeRest).
 
-Install the `ra-data-simple-rest` package to use this provider.
+| REST verb            | API calls
+|----------------------|----------------------------------------------------------------
+| `GET_LIST`           | `GET http://my.api.url/posts?sort=["title","ASC"]&range=[0, 24]&filter={"title":"bar"}`
+| `GET_ONE`            | `GET http://my.api.url/posts/123`
+| `CREATE`             | `POST http://my.api.url/posts/123`
+| `UPDATE`             | `PUT http://my.api.url/posts/123`
+| `DELETE`             | `DELETE http://my.api.url/posts/123`
+| `GET_MANY`           | `GET http://my.api.url/posts?filter={ids:[123,456,789]}`
+| `GET_MANY_REFERENCE` | `GET http://my.api.url/posts?filter={author_id:345}`
 
-```sh
-npm install ra-data-simple-rest
+**Note**: The simple REST client expects the API to include a `Content-Range` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows admin-on-rest to know how many pages of resources there are in total, and build the pagination controls.
+
+```
+Content-Range: posts 0-24/319
 ```
 
-Then, initialize the client with the REST backend URL, and pass the result to the `restClient` prop of the `<Admin>` component:
+If your API is on another domain as the JS code, you'll need to whitelist this header with an `Access-Control-Expose-Headers` [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) header.
+
+```
+Access-Control-Expose-Headers: Content-Range
+```
+
+Initialize the client with the REST backend URL, and pass the result to the `restClient` prop of the `<Admin>` component:
 
 ```jsx
 // in src/App.js
