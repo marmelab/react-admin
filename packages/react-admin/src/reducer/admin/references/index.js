@@ -1,13 +1,16 @@
 import { combineReducers } from 'redux';
 import oneToMany from './oneToMany';
-import possibleValues from './possibleValues';
+import possibleValues, {
+    getPossibleReferences as pvGetPossibleReferences,
+    getPossibleReferenceValues as pvGetPossibleReferenceValues,
+} from './possibleValues';
 
 export default combineReducers({
     oneToMany,
     possibleValues,
 });
 
-export const getPossibleValues = (state, referenceSource) =>
-    state.possibleValues[referenceSource];
+export const getPossibleReferenceValues = (state, props) =>
+    pvGetPossibleReferenceValues(state.possibleValues, props);
 
-export { getPossibleReferences } from './possibleValues';
+export const getPossibleReferences = pvGetPossibleReferences;
