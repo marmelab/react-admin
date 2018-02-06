@@ -249,11 +249,12 @@ const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 
+const required = value => (value ? undefined : 'Required');
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
-            <ReferenceInput label="User" source="userId" reference="users">
+            <ReferenceInput label="User" source="userId" reference="users" validate={[required]}>
                 <SelectInput optionText="name" />
             </ReferenceInput>
             <TextInput source="title" />
@@ -265,7 +266,7 @@ export const PostEdit = (props) => (
 export const PostCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
-            <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
+            <ReferenceInput label="User" source="userId" reference="users" validate={[required]}>
                 <SelectInput optionText="name" />
             </ReferenceInput>
             <TextInput source="title" />
@@ -281,7 +282,6 @@ If you've understood the `<List>` component, the `<Edit>` and `<Create>` compone
 
 As for the `<ReferenceInput>`, it takes the same props as the `<ReferenceField>` (used earlier in the list page). `<ReferenceInput>` uses these props to fetch the API for possible references related to the current record (in this case, possible `users` for the current `post`). It then passes these possible references to the child component (`<SelectInput>`), which is responsible for displaying them (via their `name` in that case), and letting the user select one. `<SelectInput>` renders as a `<select>` tag in HTML.
 
-**Tip**: The `<Edit>` and the `<Create>` components use the same `<ReferenceInput>` configuration, except for the `allowEmpty` attribute, which is required in `<Create>`.
 
 To use the new `<PostEdit>` and `<PostCreate>` components in the posts resource, just add them as `edit` and `create` attributes in the `<Resource>` component:
 
@@ -341,7 +341,7 @@ import { Filter, ReferenceInput, SelectInput, TextInput } from 'admin-on-rest';
 const PostFilter = (props) => (
     <Filter {...props}>
         <TextInput label="Search" source="q" alwaysOn />
-        <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
+        <ReferenceInput label="User" source="userId" reference="users">
             <SelectInput optionText="name" />
         </ReferenceInput>
     </Filter>
