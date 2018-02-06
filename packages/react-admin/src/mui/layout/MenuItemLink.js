@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import classnames from 'classnames';
+import { NavLink } from 'react-router-dom';
 import { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 
-const styles = {
-    iconPaddingStyle: { paddingRight: '0.5em' },
-};
+const styles = theme => ({
+    root: {},
+    active: {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+    },
+    icon: { paddingRight: '0.5em' },
+});
 
 export class MenuItemLink extends Component {
     static propTypes = {
+        classes: PropTypes.object.isRequired,
+        className: PropTypes.string,
+        leftIcon: PropTypes.node,
         onClick: PropTypes.func,
+        primaryText: PropTypes.string,
+        staticContext: PropTypes.object,
         to: PropTypes.string.isRequired,
     };
 
@@ -30,14 +41,13 @@ export class MenuItemLink extends Component {
 
         return (
             <MenuItem
-                className={className}
-                component={Link}
+                className={classnames(classes.root, className)}
+                activeClassName={classes.active}
+                component={NavLink}
                 {...props}
                 onClick={this.handleMenuTap}
             >
-                {leftIcon && (
-                    <span className={classes.iconPaddingStyle}>{leftIcon}</span>
-                )}
+                {leftIcon && <span className={classes.icon}>{leftIcon}</span>}
                 {primaryText}
             </MenuItem>
         );
