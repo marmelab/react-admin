@@ -244,6 +244,7 @@ SelectArrayInput.propTypes = {
 };
 
 SelectArrayInput.defaultProps = {
+    classes: {},
     choices: [],
     options: {},
     optionText: 'name',
