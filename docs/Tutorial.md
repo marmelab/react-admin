@@ -254,7 +254,7 @@ export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
-            <ReferenceInput label="User" source="userId" reference="users" validate={[required]}>
+            <ReferenceInput label="User" source="userId" reference="users" validate={required}>
                 <SelectInput optionText="name" />
             </ReferenceInput>
             <TextInput source="title" />
@@ -266,7 +266,7 @@ export const PostEdit = (props) => (
 export const PostCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
-            <ReferenceInput label="User" source="userId" reference="users" validate={[required]}>
+            <ReferenceInput label="User" source="userId" reference="users" validate={required}>
                 <SelectInput optionText="name" />
             </ReferenceInput>
             <TextInput source="title" />

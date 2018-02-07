@@ -2,16 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
-import LinearProgress from 'material-ui/LinearProgress';
-import TextField from 'material-ui/TextField';
 
-import Labeled from '../input/Labeled';
 import {
     crudGetMany as crudGetManyAction,
     crudGetMatching as crudGetMatchingAction,
 } from '../../actions/dataActions';
 import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
-import { progessStyle, progessContainerStyle } from './ReferenceInput';
+import ReferenceLoadingProgress from './ReferenceLoadingProgress';
+import ReferenceError from './ReferenceError';
+import translate from '../../i18n/translate';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
@@ -167,6 +166,7 @@ export class ReferenceArrayInput extends Component {
             onChange,
             children,
             meta,
+            translate,
         } = this.props;
 
         if (React.Children.count(children) !== 1) {
@@ -175,39 +175,26 @@ export class ReferenceArrayInput extends Component {
             );
         }
 
+        const finalLabel =
+            typeof label === 'undefined'
+                ? `resources.${resource}.fields.${source}`
+                : label;
+
         if (matchingReferences === null) {
             return (
-                <Labeled
-                    label={
-                        typeof label === 'undefined' ? (
-                            `resources.${resource}.fields.${source}`
-                        ) : (
-                            label
-                        )
-                    }
-                >
-                    <span style={progessContainerStyle}>
-                        <LinearProgress
-                            mode="indeterminate"
-                            style={progessStyle}
-                        />
-                    </span>
-                </Labeled>
+                <ReferenceLoadingProgress
+                    label={translate(finalLabel, { _: finalLabel })}
+                />
             );
         }
 
         if (matchingReferences.error) {
             return (
-                <TextField
-                    disabled={true}
-                    hintText={
-                        typeof label === 'undefined' ? (
-                            `resources.${resource}.fields.${source}`
-                        ) : (
-                            label
-                        )
-                    }
-                    errorText={matchingReferences.error}
+                <ReferenceError
+                    label={translate(finalLabel, { _: finalLabel })}
+                    error={translate(matchingReferences.error, {
+                        _: matchingReferences.error,
+                    })}
                 />
             );
         }
@@ -255,6 +242,7 @@ ReferenceArrayInput.propTypes = {
         order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
     source: PropTypes.string,
+    translate: PropTypes.func.isRequired,
 };
 
 ReferenceArrayInput.defaultProps = {
@@ -278,13 +266,13 @@ function mapStateToProps(state, props) {
     };
 }
 
-const ConnectedReferenceInput = connect(mapStateToProps, {
+const ConnectedReferenceArrayInput = connect(mapStateToProps, {
     crudGetMany: crudGetManyAction,
     crudGetMatching: crudGetMatchingAction,
 })(ReferenceArrayInput);
 
-ConnectedReferenceInput.defaultProps = {
+ConnectedReferenceArrayInput.defaultProps = {
     addField: true,
 };
 
-export default ConnectedReferenceInput;
+export default translate(ConnectedReferenceArrayInput);

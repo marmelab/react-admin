@@ -186,12 +186,12 @@ export const CommentCreate = props => (
                 label="Post"
                 source="post_id"
                 reference="posts"
-                validate={[required]}
+                validate={required}
             >
                 <SelectInput optionText="title" />
             </ReferenceInput>
             <DateInput source="created_at" />
-            <LongTextInput source="body" validate={[required]} />
+            <LongTextInput source="body" validate={required} />
         </SimpleForm>
     </Create>
 );

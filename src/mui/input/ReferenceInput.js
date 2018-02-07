@@ -2,27 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
-import LinearProgress from 'material-ui/LinearProgress';
-import TextField from 'material-ui/TextField';
 
-import Labeled from './Labeled';
 import {
     crudGetOne as crudGetOneAction,
     crudGetMatching as crudGetMatchingAction,
 } from '../../actions/dataActions';
 import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
+import ReferenceLoadingProgress from './ReferenceLoadingProgress';
+import ReferenceError from './ReferenceError';
+import translate from '../../i18n/translate';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 const noFilter = () => true;
-
-export const progessContainerStyle = {
-    padding: '2em 0',
-    height: 'auto',
-};
-export const progessStyle = {
-    width: '16em',
-    margin: '1em 0',
-};
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -175,49 +166,31 @@ export class ReferenceInput extends Component {
             onChange,
             children,
             meta,
+            translate,
         } = this.props;
 
+        const finalLabel =
+            typeof label === 'undefined'
+                ? `resources.${resource}.fields.${source}`
+                : label;
+        const translatedLabel = translate(finalLabel, { _: finalLabel });
+        const error =
+            matchingReferences && matchingReferences.error
+                ? translate(matchingReferences.error, {
+                      _: matchingReferences.error,
+                  })
+                : null;
+
         if (React.Children.count(children) !== 1) {
-            throw new Error(
-                '<ReferenceInput> only accepts a single child (like <SelectInput>)'
-            );
+            throw new Error('<ReferenceInput> only accepts a single child');
         }
 
         if (matchingReferences === null) {
-            return (
-                <Labeled
-                    label={
-                        typeof label === 'undefined' ? (
-                            `resources.${resource}.fields.${source}`
-                        ) : (
-                            label
-                        )
-                    }
-                >
-                    <span style={progessContainerStyle}>
-                        <LinearProgress
-                            mode="indeterminate"
-                            style={progessStyle}
-                        />
-                    </span>
-                </Labeled>
-            );
+            return <ReferenceLoadingProgress label={translatedLabel} />;
         }
 
-        if (matchingReferences.error) {
-            return (
-                <TextField
-                    disabled={true}
-                    hintText={
-                        typeof label === 'undefined' ? (
-                            `resources.${resource}.fields.${source}`
-                        ) : (
-                            label
-                        )
-                    }
-                    errorText={matchingReferences.error}
-                />
-            );
+        if (error) {
+            return <ReferenceError label={translatedLabel} error={error} />;
         }
 
         return React.cloneElement(children, {
@@ -264,6 +237,7 @@ ReferenceInput.propTypes = {
         order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
     source: PropTypes.string,
+    translate: PropTypes.func.isRequired,
 };
 
 ReferenceInput.defaultProps = {
@@ -297,4 +271,4 @@ ConnectedReferenceInput.defaultProps = {
     addField: true,
 };
 
-export default ConnectedReferenceInput;
+export default translate(ConnectedReferenceInput);

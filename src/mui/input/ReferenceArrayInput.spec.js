@@ -14,6 +14,7 @@ describe('<ReferenceArrayInput />', () => {
         source: 'tag_ids',
         matchingReferences: [{ id: 1 }],
         allowEmpty: true,
+        translate: x => `*${x}*`,
     };
     const MyComponent = () => <span id="mycomponent" />;
 
@@ -30,7 +31,7 @@ describe('<ReferenceArrayInput />', () => {
         );
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 0);
-        const SpinnerElement = wrapper.find('LinearProgress');
+        const SpinnerElement = wrapper.find('ReferenceLoadingProgress');
         assert.equal(SpinnerElement.length, 1);
     });
 
@@ -47,10 +48,9 @@ describe('<ReferenceArrayInput />', () => {
         );
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 0);
-        const ErrorElement = wrapper.find('TextField');
+        const ErrorElement = wrapper.find('ReferenceError');
         assert.equal(ErrorElement.length, 1);
-        assert.equal(ErrorElement.prop('disabled'), true);
-        assert.equal(ErrorElement.prop('errorText'), 'fetch error');
+        assert.equal(ErrorElement.prop('error'), '*fetch error*');
     });
 
     it('should render enclosed component even if the references are empty', () => {
@@ -64,9 +64,9 @@ describe('<ReferenceArrayInput />', () => {
                 <MyComponent />
             </ReferenceArrayInput>
         );
-        const SpinnerElement = wrapper.find('LinearProgress');
+        const SpinnerElement = wrapper.find('ReferenceLoadingProgress');
         assert.equal(SpinnerElement.length, 0);
-        const ErrorElement = wrapper.find('TextField');
+        const ErrorElement = wrapper.find('ReferenceError');
         assert.equal(ErrorElement.length, 0);
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 1);

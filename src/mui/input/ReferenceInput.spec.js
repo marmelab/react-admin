@@ -13,10 +13,11 @@ describe('<ReferenceInput />', () => {
         resource: 'comments',
         source: 'post_id',
         matchingReferences: [{ id: 1 }],
+        translate: x => `*${x}*`,
     };
     const MyComponent = () => <span id="mycomponent" />;
 
-    it('should only render a spinner as long as there are no references fetched', () => {
+    it('should only render a ReferenceLoadingProgress as long as there are no references fetched', () => {
         const wrapper = shallow(
             <ReferenceInput
                 {...{
@@ -29,8 +30,10 @@ describe('<ReferenceInput />', () => {
         );
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 0);
-        const SpinnerElement = wrapper.find('LinearProgress');
-        assert.equal(SpinnerElement.length, 1);
+        const ReferenceLoadingProgressElement = wrapper.find(
+            'ReferenceLoadingProgress'
+        );
+        assert.equal(ReferenceLoadingProgressElement.length, 1);
     });
 
     it('should display an error in case of references fetch error', () => {
@@ -46,10 +49,9 @@ describe('<ReferenceInput />', () => {
         );
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 0);
-        const ErrorElement = wrapper.find('TextField');
+        const ErrorElement = wrapper.find('ReferenceError');
         assert.equal(ErrorElement.length, 1);
-        assert.equal(ErrorElement.prop('disabled'), true);
-        assert.equal(ErrorElement.prop('errorText'), 'fetch error');
+        assert.equal(ErrorElement.prop('error'), '*fetch error*');
     });
 
     it('should render enclosed component even if the references are empty', () => {
@@ -63,9 +65,11 @@ describe('<ReferenceInput />', () => {
                 <MyComponent />
             </ReferenceInput>
         );
-        const SpinnerElement = wrapper.find('LinearProgress');
-        assert.equal(SpinnerElement.length, 0);
-        const ErrorElement = wrapper.find('TextField');
+        const ReferenceLoadingProgressElement = wrapper.find(
+            'ReferenceLoadingProgress'
+        );
+        assert.equal(ReferenceLoadingProgressElement.length, 0);
+        const ErrorElement = wrapper.find('ReferenceError');
         assert.equal(ErrorElement.length, 0);
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 1);
