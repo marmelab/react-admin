@@ -12,7 +12,26 @@ describe('<SingleFieldList />', () => {
                 ids={[1, 2]}
                 data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
                 resource="bar"
-                basePath=""
+                basePath="/bar"
+            >
+                <ChipField source="title" />
+            </SingleFieldList>
+        );
+        const linkElements = wrapper.find('WithStyles(Link)');
+        assert.equal(linkElements.length, 2);
+        assert.deepEqual(linkElements.map(link => link.prop('to')), [
+            '/bar/1',
+            '/bar/2',
+        ]);
+    });
+
+    it('should render a link to the Edit page of the related record when the resource contains slashes', () => {
+        const wrapper = shallow(
+            <SingleFieldList
+                ids={[1, 2]}
+                data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
+                resource="bar"
+                basePath="/bar"
             >
                 <ChipField source="title" />
             </SingleFieldList>
@@ -33,8 +52,8 @@ describe('<SingleFieldList />', () => {
                     1: { id: 1, title: 'foo' },
                     2: { id: 2, title: 'bar' },
                 }}
-                resource="bar"
-                basePath=""
+                resource="prefix/bar"
+                basePath="/prefix/bar"
                 linkType="show"
             >
                 <ChipField source="title" />
@@ -44,8 +63,8 @@ describe('<SingleFieldList />', () => {
         const linkElements = wrapper.find('WithStyles(Link)');
         assert.equal(linkElements.length, 2);
         assert.deepEqual(linkElements.map(link => link.prop('to')), [
-            '/bar/1/show',
-            '/bar/2/show',
+            '/prefix/bar/1/show',
+            '/prefix/bar/2/show',
         ]);
     });
 
@@ -55,7 +74,7 @@ describe('<SingleFieldList />', () => {
                 ids={[1, 2]}
                 data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
                 resource="bar"
-                basePath=""
+                basePath="/bar"
                 linkType={false}
             >
                 <ChipField source="title" />

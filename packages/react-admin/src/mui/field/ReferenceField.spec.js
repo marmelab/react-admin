@@ -54,6 +54,23 @@ describe('<ReferenceField />', () => {
         const linkElement = wrapper.find('WithStyles(Link)');
         assert.equal(linkElement.prop('to'), '/bar/123');
     });
+    it('should render a link to the Edit page of the related record even if the resouce contains slashes', () => {
+        const wrapper = shallow(
+            <ReferenceField
+                record={{ fooId: 123 }}
+                source="fooId"
+                referenceRecord={{ id: 123, title: 'foo' }}
+                reference="prefix/bar"
+                resource="prefix/foo"
+                basePath="/prefix/foo"
+                crudGetManyAccumulate={() => {}}
+            >
+                <TextField source="title" />
+            </ReferenceField>
+        );
+        const linkElement = wrapper.find('WithStyles(Link)');
+        assert.equal(linkElement.prop('to'), '/prefix/bar/123');
+    });
     it('should render a link to the Show page of the related record when the linkType is show', () => {
         const wrapper = shallow(
             <ReferenceField
