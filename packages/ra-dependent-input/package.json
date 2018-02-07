@@ -1,6 +1,6 @@
 {
   "name": "ra-dependent-input",
-  "version": "2.0.0-beta1",
+  "version": "2.0.0-beta2",
   "description": "A component for displaying input depending on other inputs values in react-admin",
   "main": "./lib/index.js",
   "repository": "https://github.com/marmelab/react-admin.git",
@@ -14,7 +14,7 @@
   },
   "peerDependencies": {
     "react": "^15.6.2",
-    "react-dom": "^15.6.2",
-    "react-admin": "^2.0.0-beta1"
+    "react-admin": "^2.0.0-beta1",
+    "react-dom": "^15.6.2"
   }
 }

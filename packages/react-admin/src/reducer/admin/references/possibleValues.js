@@ -14,6 +14,9 @@ export default (previousState = initialState, { type, payload, meta }) => {
     }
 };
 
+export const getPossibleReferenceValues = (state, props) =>
+    state[props.referenceSource(props.resource, props.source)];
+
 export const getPossibleReferences = (
     referenceState,
     possibleValues,

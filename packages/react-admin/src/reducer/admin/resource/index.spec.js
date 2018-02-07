@@ -1,5 +1,5 @@
 import assert from 'assert';
-import reducer from './index';
+import reducer, { getReferenceResource } from './index';
 import { REGISTER_RESOURCE, UNREGISTER_RESOURCE } from '../../../actions';
 
 describe('Resources Reducer', () => {
@@ -133,5 +133,18 @@ describe('Resources Reducer', () => {
 
         assert.equal(dataReducer.mock.calls[0][0], 'posts');
         assert.equal(listReducer.mock.calls[0][0], 'posts');
+    });
+
+    describe('getReferenceResource selector', () => {
+        it('should return the reference resource', () => {
+            const state = {
+                posts: 'POSTS',
+                comments: 'COMMENTS',
+            };
+            const props = {
+                reference: 'comments',
+            };
+            expect(getReferenceResource(state, props)).toEqual('COMMENTS');
+        });
     });
 });

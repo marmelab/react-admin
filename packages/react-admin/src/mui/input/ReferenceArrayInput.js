@@ -14,8 +14,8 @@ import {
 import {
     getPossibleReferences,
     getPossibleReferenceValues,
-    getResource,
-} from '../../reducer/admin';
+    getReferenceResource,
+} from '../../reducer';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
@@ -34,6 +34,7 @@ const sanitizeRestProps = ({
     optionText,
     optionValue,
     record,
+    referenceSource,
     resource,
     allowEmpty,
     source,
@@ -163,7 +164,8 @@ export class ReferenceArrayInput extends Component {
         }
     };
 
-    fetchReferences = ({ input, reference } = this.props) => {
+    fetchReferences = (props = this.props) => {
+        const { crudGetMany, input, reference } = props;
         const ids = input.value;
         if (ids) {
             if (!Array.isArray(ids)) {
@@ -171,13 +173,20 @@ export class ReferenceArrayInput extends Component {
                     'The value of ReferenceArrayInput should be an array'
                 );
             }
-            this.props.crudGetMany(reference, ids);
+            crudGetMany(reference, ids);
         }
     };
 
-    fetchOptions = ({ reference, source, resource } = this.props) => {
+    fetchOptions = (props = this.props) => {
+        const {
+            crudGetMatching,
+            reference,
+            source,
+            resource,
+            referenceSource,
+        } = props;
         const { pagination, sort, filter } = this.params;
-        this.props.crudGetMatching(
+        crudGetMatching(
             reference,
             referenceSource(resource, source),
             pagination,
@@ -273,6 +282,7 @@ ReferenceArrayInput.propTypes = {
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
     referenceRecords: PropTypes.array,
+    referenceSource: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
@@ -289,33 +299,43 @@ ReferenceArrayInput.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecords: [],
+    referenceSource, // used in unit tests
 };
-const mapStateToProps = createSelector(
-    (_, { input: { value: referenceIds } }) => referenceIds || [],
-    (state, { reference }) => getResource(state, reference),
-    (state, { resource, source }) =>
-        getPossibleReferenceValues(state, referenceSource(resource, source)),
-    (inputIds, referenceState, possibleValues) => ({
-        referenceRecords:
-            referenceState &&
-            inputIds.reduce((references, referenceId) => {
-                if (referenceState.data[referenceId]) {
-                    references.push(referenceState.data[referenceId]);
-                }
-                return references;
-            }, []),
-        matchingReferences: getPossibleReferences(
-            referenceState,
-            possibleValues,
-            inputIds
-        ),
-    })
-);
 
-export default compose(
+const makeMapStateToProps = () =>
+    createSelector(
+        [
+            getReferenceResource,
+            getPossibleReferenceValues,
+            (_, { input: { value: referenceIds } }) => referenceIds || [],
+        ],
+        (referenceState, possibleValues, inputIds) => ({
+            matchingReferences: getPossibleReferences(
+                referenceState,
+                possibleValues,
+                inputIds
+            ),
+            referenceRecords:
+                referenceState &&
+                inputIds.reduce((references, referenceId) => {
+                    if (referenceState.data[referenceId]) {
+                        references.push(referenceState.data[referenceId]);
+                    }
+                    return references;
+                }, []),
+        })
+    );
+
+const ConnectedReferenceArrayInput = compose(
     addField,
-    connect(mapStateToProps, {
+    connect(makeMapStateToProps(), {
         crudGetMany: crudGetManyAction,
         crudGetMatching: crudGetMatchingAction,
     })
 )(ReferenceArrayInput);
+
+ConnectedReferenceArrayInput.defaultProps = {
+    referenceSource, // used in real apps
+};
+
+export default ConnectedReferenceArrayInput;

@@ -8,15 +8,12 @@ import { createSelector } from 'reselect';
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
 import addField from '../form/addField';
-import {
-    crudGetOne as crudGetOneAction,
-    crudGetMatching as crudGetMatchingAction,
-} from '../../actions/dataActions';
+import { crudGetOne, crudGetMatching } from '../../actions/dataActions';
 import {
     getPossibleReferences,
     getPossibleReferenceValues,
-    getResource,
-} from '../../reducer/';
+    getReferenceResource,
+} from '../../reducer';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
@@ -45,6 +42,7 @@ const sanitizeRestProps = ({
     perPage,
     record,
     reference,
+    referenceSource,
     resource,
     setFilter,
     setPagination,
@@ -179,30 +177,37 @@ export class ReferenceInput extends Component {
         }
     };
 
-    fetchReference = ({ input, reference } = this.props) => {
+    fetchReference = (props = this.props) => {
+        const { crudGetOne, input, reference } = props;
         const id = input.value;
         if (id) {
-            this.props.crudGetOne(reference, id, null, false);
+            crudGetOne(reference, id, null, false);
         }
     };
 
-    fetchOptions = ({ reference, source, resource } = this.props) => {
-        const { filter: filterFromProps } = this.props;
+    fetchOptions = (props = this.props) => {
+        const {
+            crudGetMatching,
+            filter: filterFromProps,
+            reference,
+            referenceSource,
+            resource,
+            source,
+        } = props;
         const { pagination, sort, filter } = this.params;
 
-        const finalFilter = { ...filterFromProps, ...filter };
-        this.props.crudGetMatching(
+        crudGetMatching(
             reference,
             referenceSource(resource, source),
             pagination,
             sort,
-            finalFilter
+            { ...filterFromProps, ...filter }
         );
     };
 
-    fetchReferenceAndOptions(nextProps) {
-        this.fetchReference(nextProps);
-        this.fetchOptions(nextProps);
+    fetchReferenceAndOptions(props) {
+        this.fetchReference(props);
+        this.fetchOptions(props);
     }
 
     render() {
@@ -286,6 +291,7 @@ ReferenceInput.propTypes = {
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
+    referenceSource: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
@@ -302,27 +308,36 @@ ReferenceInput.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecord: null,
+    referenceSource, // used in tests
 };
 
-const mapStateToProps = createSelector(
-    (_, props) => props.input.value,
-    (state, { reference }) => getResource(state, reference),
-    (state, { resource, source }) =>
-        getPossibleReferenceValues(state, referenceSource(resource, source)),
-    (inputId, referenceState, possibleValues) => ({
-        referenceRecord: referenceState && referenceState.data[inputId],
-        matchingReferences: getPossibleReferences(
-            referenceState,
-            possibleValues,
-            [inputId]
-        ),
-    })
-);
+const makeMapStateToProps = () =>
+    createSelector(
+        [
+            getReferenceResource,
+            getPossibleReferenceValues,
+            (_, props) => props.input.value,
+        ],
+        (referenceState, possibleValues, inputId) => ({
+            matchingReferences: getPossibleReferences(
+                referenceState,
+                possibleValues,
+                [inputId]
+            ),
+            referenceRecord: referenceState && referenceState.data[inputId],
+        })
+    );
 
-export default compose(
+const ConnectedReferenceInput = compose(
     addField,
-    connect(mapStateToProps, {
-        crudGetOne: crudGetOneAction,
-        crudGetMatching: crudGetMatchingAction,
+    connect(makeMapStateToProps(), {
+        crudGetOne,
+        crudGetMatching,
     })
 )(ReferenceInput);
+
+ConnectedReferenceInput.defaultProps = {
+    referenceSource, // used in real apps
+};
+
+export default ConnectedReferenceInput;
