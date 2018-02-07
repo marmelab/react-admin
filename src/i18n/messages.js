@@ -38,6 +38,9 @@ export default {
                 upload_single:
                     'Drop a picture to upload, or click to select it.',
             },
+            references: {
+                missing: 'Unable to find reference data.',
+            },
         },
         message: {
             yes: 'Yes',

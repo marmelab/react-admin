@@ -15,6 +15,7 @@ describe('<ReferenceArrayInput />', () => {
         matchingReferences: [{ id: 1 }],
         allowEmpty: true,
         translate: x => `*${x}*`,
+        referenceRecords: [],
     };
     const MyComponent = () => <span id="mycomponent" />;
 
@@ -51,6 +52,45 @@ describe('<ReferenceArrayInput />', () => {
         const ErrorElement = wrapper.find('ReferenceError');
         assert.equal(ErrorElement.length, 1);
         assert.equal(ErrorElement.prop('error'), '*fetch error*');
+    });
+
+    it('should display an error if references present in input are not available in state', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    input: { value: [1] },
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 0);
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 1);
+        assert.equal(
+            ErrorElement.prop('error'),
+            '*aor.input.references.missing*'
+        );
+    });
+
+    it('should render enclosed component if references present in input are available in state', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    input: { value: [1] },
+                    referenceRecords: [1],
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
     });
 
     it('should render enclosed component even if the references are empty', () => {

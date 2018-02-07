@@ -167,6 +167,7 @@ export class ReferenceArrayInput extends Component {
             children,
             meta,
             translate,
+            referenceRecords,
         } = this.props;
 
         if (React.Children.count(children) !== 1) {
@@ -179,24 +180,28 @@ export class ReferenceArrayInput extends Component {
             typeof label === 'undefined'
                 ? `resources.${resource}.fields.${source}`
                 : label;
-
-        if (matchingReferences === null) {
-            return (
-                <ReferenceLoadingProgress
-                    label={translate(finalLabel, { _: finalLabel })}
-                />
-            );
+        const translatedLabel = translate(finalLabel, { _: finalLabel });
+        let error =
+            matchingReferences && matchingReferences.error
+                ? translate(matchingReferences.error, {
+                      _: matchingReferences.error,
+                  })
+                : null;
+        if (
+            !error &&
+            input.value &&
+            input.value.length > 0 &&
+            !referenceRecords.length
+        ) {
+            error = translate('aor.input.references.missing');
         }
 
-        if (matchingReferences.error) {
-            return (
-                <ReferenceError
-                    label={translate(finalLabel, { _: finalLabel })}
-                    error={translate(matchingReferences.error, {
-                        _: matchingReferences.error,
-                    })}
-                />
-            );
+        if (matchingReferences === null) {
+            return <ReferenceLoadingProgress label={translatedLabel} />;
+        }
+
+        if (error) {
+            return <ReferenceError label={translatedLabel} error={error} />;
         }
 
         return React.cloneElement(children, {
@@ -236,6 +241,7 @@ ReferenceArrayInput.propTypes = {
     onChange: PropTypes.func,
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
+    referenceRecords: PropTypes.array,
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
@@ -251,11 +257,13 @@ ReferenceArrayInput.defaultProps = {
     filterToQuery: searchText => ({ q: searchText }),
     matchingReferences: null,
     perPage: 25,
+    referenceRecords: [],
     sort: { field: 'id', order: 'DESC' },
 };
 
 function mapStateToProps(state, props) {
     const referenceIds = props.input.value || [];
+    const data = state.admin.resources[props.reference].data;
     return {
         matchingReferences: getPossibleReferences(
             state,
@@ -263,6 +271,12 @@ function mapStateToProps(state, props) {
             props.reference,
             referenceIds
         ),
+        referenceRecords: referenceIds.reduce((references, referenceId) => {
+            if (data[referenceId]) {
+                references.push(data[referenceId]);
+            }
+            return references;
+        }, []),
     };
 }
 
