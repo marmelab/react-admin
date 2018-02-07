@@ -67,16 +67,17 @@ export class ReferenceField extends Component {
 
     render() {
         const {
+            allowEmpty,
             basePath,
-            classes,
+            children,
             className,
+            classes,
+            linkType,
             record,
-            source,
             reference,
             referenceRecord,
-            allowEmpty,
-            children,
-            linkType,
+            resource,
+            source,
             translateChoice,
             ...rest
         } = this.props;
@@ -86,36 +87,23 @@ export class ReferenceField extends Component {
         if (!referenceRecord && !allowEmpty) {
             return <LinearProgress />;
         }
-        const rootPath = basePath
-            .split('/')
-            .slice(0, -1)
-            .join('/');
+        const rootPath = basePath.replace(`/${resource}`, '');
+
         const href = linkToRecord(
             `${rootPath}/${reference}`,
             get(record, source)
         );
-        if (linkType === 'edit' || linkType === true) {
+
+        let resourceLinkPath =
+            linkType === 'edit' || linkType === true
+                ? href
+                : linkType === 'show' ? `${href}/show` : false;
+
+        if (linkType === 'edit' || linkType === true || linkType === 'show') {
             return (
                 <Link
                     className={classnames(classes.link, className)}
-                    to={href}
-                    {...sanitizeRestProps(rest)}
-                >
-                    {React.cloneElement(children, {
-                        record: referenceRecord,
-                        resource: reference,
-                        allowEmpty,
-                        basePath,
-                        translateChoice: false,
-                    })}
-                </Link>
-            );
-        }
-        if (linkType === 'show') {
-            return (
-                <Link
-                    className={classnames(classes.link, className)}
-                    to={`${href}/show`}
+                    to={resourceLinkPath}
                     {...sanitizeRestProps(rest)}
                 >
                     {React.cloneElement(children, {
@@ -154,6 +142,7 @@ ReferenceField.propTypes = {
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
+    resource: PropTypes.string,
     source: PropTypes.string.isRequired,
     translateChoice: PropTypes.func,
     linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
