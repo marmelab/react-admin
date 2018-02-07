@@ -10,65 +10,66 @@ const RoutesWithLayout = ({
     customRoutes,
     dashboard,
     title,
-}) => (
-    <Switch>
-        {customRoutes &&
-            customRoutes.map((route, index) => (
+}) => {
+    const childrenAsArray = React.Children.toArray(children);
+    const firstChild = childrenAsArray.length > 0 ? childrenAsArray[0] : null;
+
+    return (
+        <Switch>
+            {customRoutes &&
+                customRoutes.map((route, index) => (
+                    <Route
+                        key={index}
+                        exact={route.props.exact}
+                        path={route.props.path}
+                        component={route.props.component}
+                        render={route.props.render}
+                        children={route.props.children} // eslint-disable-line react/no-children-prop
+                    />
+                ))}
+            {Children.map(children, child => (
                 <Route
-                    key={index}
-                    exact={route.props.exact}
-                    path={route.props.path}
-                    component={route.props.component}
-                    render={route.props.render}
-                    children={route.props.children} // eslint-disable-line react/no-children-prop
+                    key={child.props.name}
+                    path={`/${child.props.name}`}
+                    render={props =>
+                        cloneElement(child, {
+                            // The context prop instruct the Resource component to
+                            // render itself as a standard component
+                            context: 'route',
+                            ...props,
+                        })}
                 />
             ))}
-        {Children.map(children, child => (
-            <Route
-                key={child.props.name}
-                path={`/${child.props.name}`}
-                render={props =>
-                    cloneElement(child, {
-                        // The context prop instruct the Resource component to
-                        // render itself as a standard component
-                        context: 'route',
-                        ...props,
-                    })}
-            />
-        ))}
-        {dashboard ? (
-            <Route
-                exact
-                path="/"
-                render={routeProps => (
-                    <WithPermissions
-                        authParams={{
-                            route: 'dashboard',
-                        }}
-                        {...routeProps}
-                        render={props => createElement(dashboard, props)}
-                    />
-                )}
-            />
-        ) : (
-            children[0] && (
+            {dashboard ? (
                 <Route
                     exact
                     path="/"
-                    render={() => (
-                        <Redirect to={`/${children[0].props.name}`} />
+                    render={routeProps => (
+                        <WithPermissions
+                            authParams={{
+                                route: 'dashboard',
+                            }}
+                            {...routeProps}
+                            render={props => createElement(dashboard, props)}
+                        />
                     )}
                 />
-            )
-        )}
-        <Route
-            render={() =>
-                createElement(catchAll, {
-                    title,
-                })}
-        />
-    </Switch>
-);
+            ) : firstChild ? (
+                <Route
+                    exact
+                    path="/"
+                    render={() => <Redirect to={`/${firstChild.props.name}`} />}
+                />
+            ) : null}
+            <Route
+                render={() =>
+                    createElement(catchAll, {
+                        title,
+                    })}
+            />
+        </Switch>
+    );
+};
 
 const componentPropType = PropTypes.oneOfType([
     PropTypes.func,
