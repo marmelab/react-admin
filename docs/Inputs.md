@@ -286,7 +286,7 @@ You can override any of Material UI's `<DatePicker>` attributes by setting the `
     hintText: 'Choisissez une date',
     DateTimeFormat,
     okLabel: 'OK',
-    cancelLabel: 'Annuler'
+    cancelLabel: 'Annuler',
     locale: 'fr'
 }} />
 ```
