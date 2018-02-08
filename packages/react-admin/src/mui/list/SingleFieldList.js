@@ -69,18 +69,11 @@ export class SingleFieldList extends Component {
                 {...sanitizeRestProps(rest)}
             >
                 {ids.map(id => {
-                    const href = linkToRecord(basePath, id);
+                    const resourceLinkPath = !linkType
+                        ? false
+                        : linkToRecord(basePath, id, linkType);
 
-                    let resourceLinkPath =
-                        linkType === 'edit' || linkType === true
-                            ? href
-                            : linkType === 'show' ? `${href}/show` : false;
-
-                    if (
-                        linkType === 'edit' ||
-                        linkType === true ||
-                        linkType === 'show'
-                    ) {
+                    if (resourceLinkPath) {
                         return (
                             <Link
                                 className={classnames(classes.link, className)}

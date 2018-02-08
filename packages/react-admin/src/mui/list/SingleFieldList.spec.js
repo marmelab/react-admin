@@ -44,6 +44,42 @@ describe('<SingleFieldList />', () => {
         ]);
     });
 
+    it('should render a link to the Edit page of the related record when the resource is named edit or show', () => {
+        let wrapper = shallow(
+            <SingleFieldList
+                ids={[1, 2]}
+                data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
+                resource="edit"
+                basePath="/edit"
+            >
+                <ChipField source="title" />
+            </SingleFieldList>
+        );
+        let linkElements = wrapper.find('WithStyles(Link)');
+        assert.equal(linkElements.length, 2);
+        assert.deepEqual(linkElements.map(link => link.prop('to')), [
+            '/edit/1',
+            '/edit/2',
+        ]);
+
+        wrapper = shallow(
+            <SingleFieldList
+                ids={[1, 2]}
+                data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
+                resource="show"
+                basePath="/show"
+            >
+                <ChipField source="title" />
+            </SingleFieldList>
+        );
+        linkElements = wrapper.find('WithStyles(Link)');
+        assert.equal(linkElements.length, 2);
+        assert.deepEqual(linkElements.map(link => link.prop('to')), [
+            '/show/1',
+            '/show/2',
+        ]);
+    });
+
     it('should render a link to the Show page of the related record when the linkType is show', () => {
         const wrapper = shallow(
             <SingleFieldList
@@ -65,6 +101,44 @@ describe('<SingleFieldList />', () => {
         assert.deepEqual(linkElements.map(link => link.prop('to')), [
             '/prefix/bar/1/show',
             '/prefix/bar/2/show',
+        ]);
+    });
+
+    it('should render a link to the Edit page of the related record when the resource is named edit or show and linkType is show', () => {
+        let wrapper = shallow(
+            <SingleFieldList
+                ids={[1, 2]}
+                data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
+                resource="edit"
+                basePath="/edit"
+                linkType="show"
+            >
+                <ChipField source="title" />
+            </SingleFieldList>
+        );
+        let linkElements = wrapper.find('WithStyles(Link)');
+        assert.equal(linkElements.length, 2);
+        assert.deepEqual(linkElements.map(link => link.prop('to')), [
+            '/edit/1/show',
+            '/edit/2/show',
+        ]);
+
+        wrapper = shallow(
+            <SingleFieldList
+                ids={[1, 2]}
+                data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
+                resource="show"
+                basePath="/show"
+                linkType="show"
+            >
+                <ChipField source="title" />
+            </SingleFieldList>
+        );
+        linkElements = wrapper.find('WithStyles(Link)');
+        assert.equal(linkElements.length, 2);
+        assert.deepEqual(linkElements.map(link => link.prop('to')), [
+            '/show/1/show',
+            '/show/2/show',
         ]);
     });
 

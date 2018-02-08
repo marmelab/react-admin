@@ -45,7 +45,8 @@ describe('<ReferenceField />', () => {
                 source="fooId"
                 referenceRecord={{ id: 123, title: 'foo' }}
                 reference="bar"
-                basePath=""
+                resource="foo"
+                basePath="/foo"
                 crudGetManyAccumulate={() => {}}
             >
                 <TextField source="title" />
@@ -54,7 +55,7 @@ describe('<ReferenceField />', () => {
         const linkElement = wrapper.find('WithStyles(Link)');
         assert.equal(linkElement.prop('to'), '/bar/123');
     });
-    it('should render a link to the Edit page of the related record even if the resource contains slashes', () => {
+    it('should render a link to the Edit page of the related record when the resource contains slashes', () => {
         const wrapper = shallow(
             <ReferenceField
                 record={{ fooId: 123 }}
@@ -71,14 +72,48 @@ describe('<ReferenceField />', () => {
         const linkElement = wrapper.find('WithStyles(Link)');
         assert.equal(linkElement.prop('to'), '/prefix/bar/123');
     });
+    it('should render a link to the Edit page of the related record when the resource is named edit or show', () => {
+        let wrapper = shallow(
+            <ReferenceField
+                record={{ fooId: 123 }}
+                source="fooId"
+                referenceRecord={{ id: 123, title: 'foo' }}
+                reference="edit"
+                resource="show"
+                basePath="/edit"
+                crudGetManyAccumulate={() => {}}
+            >
+                <TextField source="title" />
+            </ReferenceField>
+        );
+        let linkElement = wrapper.find('WithStyles(Link)');
+        assert.equal(linkElement.prop('to'), '/edit/123');
+
+        wrapper = shallow(
+            <ReferenceField
+                record={{ fooId: 123 }}
+                source="fooId"
+                referenceRecord={{ id: 123, title: 'foo' }}
+                reference="show"
+                resource="edit"
+                basePath="/edit"
+                crudGetManyAccumulate={() => {}}
+            >
+                <TextField source="title" />
+            </ReferenceField>
+        );
+        linkElement = wrapper.find('WithStyles(Link)');
+        assert.equal(linkElement.prop('to'), '/show/123');
+    });
     it('should render a link to the Show page of the related record when the linkType is show', () => {
         const wrapper = shallow(
             <ReferenceField
                 record={{ fooId: 123 }}
                 source="fooId"
                 referenceRecord={{ id: 123, title: 'foo' }}
+                resource="foo"
                 reference="bar"
-                basePath=""
+                basePath="/foo"
                 linkType="show"
                 crudGetManyAccumulate={() => {}}
             >
@@ -88,6 +123,41 @@ describe('<ReferenceField />', () => {
         const linkElement = wrapper.find('WithStyles(Link)');
         assert.equal(linkElement.prop('to'), '/bar/123/show');
     });
+    it('should render a link to the Show page of the related record when the resource is named edit or show and linkType is show', () => {
+        let wrapper = shallow(
+            <ReferenceField
+                record={{ fooId: 123 }}
+                source="fooId"
+                referenceRecord={{ id: 123, title: 'foo' }}
+                reference="edit"
+                resource="show"
+                basePath="/edit"
+                linkType="show"
+                crudGetManyAccumulate={() => {}}
+            >
+                <TextField source="title" />
+            </ReferenceField>
+        );
+        let linkElement = wrapper.find('WithStyles(Link)');
+        assert.equal(linkElement.prop('to'), '/edit/123/show');
+
+        wrapper = shallow(
+            <ReferenceField
+                record={{ fooId: 123 }}
+                source="fooId"
+                referenceRecord={{ id: 123, title: 'foo' }}
+                reference="show"
+                resource="edit"
+                basePath="/edit"
+                linkType="show"
+                crudGetManyAccumulate={() => {}}
+            >
+                <TextField source="title" />
+            </ReferenceField>
+        );
+        linkElement = wrapper.find('WithStyles(Link)');
+        assert.equal(linkElement.prop('to'), '/show/123/show');
+    });
     it('should render no link when the linkType is false', () => {
         const wrapper = shallow(
             <ReferenceField
@@ -95,7 +165,7 @@ describe('<ReferenceField />', () => {
                 source="fooId"
                 referenceRecord={{ id: 123, title: 'foo' }}
                 reference="bar"
-                basePath=""
+                basePath="/foo"
                 linkType={false}
                 crudGetManyAccumulate={() => {}}
             >

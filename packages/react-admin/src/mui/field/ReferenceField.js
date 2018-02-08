@@ -87,19 +87,12 @@ export class ReferenceField extends Component {
         if (!referenceRecord && !allowEmpty) {
             return <LinearProgress />;
         }
-        const rootPath = basePath.replace(`/${resource}`, '');
+        const rootPath = basePath.replace(resource, reference);
+        const resourceLinkPath = !linkType
+            ? false
+            : linkToRecord(rootPath, get(record, source), linkType);
 
-        const href = linkToRecord(
-            `${rootPath}/${reference}`,
-            get(record, source)
-        );
-
-        let resourceLinkPath =
-            linkType === 'edit' || linkType === true
-                ? href
-                : linkType === 'show' ? `${href}/show` : false;
-
-        if (linkType === 'edit' || linkType === true || linkType === 'show') {
+        if (resourceLinkPath) {
             return (
                 <Link
                     className={classnames(classes.link, className)}
