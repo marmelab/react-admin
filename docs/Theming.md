@@ -367,7 +367,9 @@ import React, { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import CircularProgress from 'material-ui/CircularProgress';
+import createMuiTheme from 'material-ui/styles/createMuiTheme';
+
+import { CircularProgress } from 'material-ui/Progress';
 import {
     AppBar,
     Menu,
@@ -375,6 +377,12 @@ import {
     Sidebar,
     setSidebarVisibility,
 } from 'react-admin';
+
+const theme = createMuiTheme({
+    palette: {
+        type: 'light',
+    },
+});
 
 const styles = {
     wrapper: {
@@ -391,6 +399,7 @@ const styles = {
         backgroundColor: '#edecec',
         display: 'flex',
         flex: 1,
+        marginTop: '2em',
         overflowY: 'hidden',
         overflowX: 'scroll',
     },
@@ -422,14 +431,12 @@ class MyLayout extends Component {
             title,
         } = this.props;
         return (
-            <MuiThemeProvider>
+            <MuiThemeProvider theme={theme}>
                 <div style={styles.wrapper}>
                     <div style={styles.main}>
                         <AppBar title={title} />
                         <div className="body" style={styles.body}>
-                            <div style={styles.content}>
-                                {children}
-                            </div>
+                            <div style={styles.content}>{children}</div>
                             <Sidebar>
                                 {createElement(menu || Menu, {
                                     logout,
@@ -440,7 +447,7 @@ class MyLayout extends Component {
                         <Notification />
                         {isLoading && (
                             <CircularProgress
-                                color="#fff"
+                                color="primary"
                                 size={30}
                                 thickness={2}
                                 style={styles.loader}
@@ -457,7 +464,8 @@ MyLayout.propTypes = {
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     isLoading: PropTypes.bool.isRequired,
-    menu: PropTypes.element,
+    logout: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+    menu: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
     setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
 };
