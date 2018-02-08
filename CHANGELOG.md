@@ -1,5 +1,35 @@
 # Changelog
 
+## v1.4.0
+
+* Documentation: change extraction of status for AUTH_ERROR ([zifnab87](https://github.com/zifnab87))
+* Add Slovak translation ([zavadpe](https://github.com/zavadpe))
+* Documentation: Use standard es6 in docs and example ([djhi](https://github.com/djhi))
+* Fix: Ensure validation custom messages without translation don't add warnings ([djhi](https://github.com/djhi))
+* Fix: Ensure children are filtered when mapping on them ([djhi](https://github.com/djhi))
+* Fix: Redirect to correct page after Delete ([alexisjanvier](https://github.com/alexisjanvier))
+* Fix warnings in React 16 ([djhi](https://github.com/djhi))
+* Documentation: Update CreateEdit.md for 'number' validation ([afilp](https://github.com/afilp))
+* Fix Edit view refresh does not cancel changes ([djhi](https://github.com/djhi))
+* Fix form default values can't be changed once mounted ([djhi](https://github.com/djhi))
+* Documentation: Add a FAQ entry about unique child key in datagrid ([djhi](https://github.com/djhi))
+* Documentation: Add explanation about dateInput and timezone ([alexisjanvier](https://github.com/alexisjanvier))
+* Fix link color in reference field ([djhi](https://github.com/djhi))
+* Fix: Cleanup example app code ([djhi](https://github.com/djhi))
+* Fix default value for filter when source is a path with dot ([djhi](https://github.com/djhi))
+* Fix WithPermissionsFilteredChildren should not put regular children in state ([djhi](https://github.com/djhi))
+* Fix SimpleShowLayout should handle null children ([afilp](https://github.com/afilp))
+* Fix Handle element cannot be fetched error ([alexisjanvier](https://github.com/alexisjanvier))
+* Add 'options' to DisabledInput too ([afilp](https://github.com/afilp))
+* Documentation: update example about addUploadCapabilities ([alexisjanvier](https://github.com/alexisjanvier))
+* Fix List default pagination to avoid displaying NaN ([afilp](https://github.com/afilp))
+* Fix SelectArrayInput ([djhi](https://github.com/djhi))
+* Fix setState typo in SelectArrayInput ([natrim](https://github.com/natrim))
+* Fix Example validation ([alauper](https://github.com/alauper))
+* Documentation: update RefreshButton usage ([alexisjanvier](https://github.com/alexisjanvier))
+* Fix - Refactor resources handling so that they are available for custom routes ([djhi](https://github.com/djhi))
+* Documentation: Fix typo in example ([clementtalleu](https://github.com/clementtalleu))
+
 ## v1.3.4
 
 * Add Croatian translation ([ariskemper](https://github.com/ariskemper))
