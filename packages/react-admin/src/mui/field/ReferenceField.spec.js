@@ -54,7 +54,7 @@ describe('<ReferenceField />', () => {
         const linkElement = wrapper.find('WithStyles(Link)');
         assert.equal(linkElement.prop('to'), '/bar/123');
     });
-    it('should render a link to the Edit page of the related record even if the resouce contains slashes', () => {
+    it('should render a link to the Edit page of the related record even if the resource contains slashes', () => {
         const wrapper = shallow(
             <ReferenceField
                 record={{ fooId: 123 }}
