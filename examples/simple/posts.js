@@ -20,11 +20,13 @@ import {
     NumberField,
     NumberInput,
     ReferenceArrayField,
+    ReferenceArrayInput,
     ReferenceManyField,
     Responsive,
     RichTextField,
     SaveButton,
     SelectField,
+    SelectArrayInput,
     SelectInput,
     Show,
     ShowButton,
@@ -206,6 +208,11 @@ export const PostEdit = props => (
                 />
             </FormTab>
             <FormTab label="post.form.miscellaneous">
+                <ReferenceArrayInput reference="tags" source="tags">
+                    <SelectArrayInput>
+                        <ChipField source="name" />
+                    </SelectArrayInput>
+                </ReferenceArrayInput>
                 <DateInput source="published_at" options={{ locale: 'pt' }} />
                 <SelectInput
                     source="category"

@@ -789,7 +789,38 @@ Lastly, use the `options` attribute if you want to override any of the `<Select>
 
 Refer to [the Select documentation](http://www.material-ui.com/#/components/select) for more details.
 
-**Tip**: The `SelectArrayInput` component **cannot** be used inside a `ReferenceInput`.
+The `SelectArrayInput` component **cannot** be used inside a `ReferenceInput` but can be used inside a `ReferenceArrayInput`.
+
+```jsx
+import React from 'react';
+import {
+    ChipField,
+    Create,
+    DateInput,
+    LongTextInput,
+    ReferenceArrayInput,
+    SelectArrayInput,
+    TextInput,
+} from 'react-admin';
+
+export const PostCreate = props => (
+    <Create {...props}>
+        <SimpleForm>
+            <TextInput source="title" />
+            <LongTextInput source="body" />
+            <DateInput source="published_at" />
+
+            <ReferenceArrayInput reference="tags" source="tags">
+                <SelectArrayInput>
+                    <ChipField source="name" />
+                </SelectArrayInput>
+            </ReferenceArrayInput>
+        </SimpleForm>
+    </Create>
+);
+```
+
+**Tip**: As it does not provide autocompletion, the `SelectArrayInput` might not be suited when the referenced resource has a lot of items.
 
 ## `<TextInput>`
 
