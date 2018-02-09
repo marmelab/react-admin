@@ -43,7 +43,7 @@ You can find REST clients for various backends in third-party repositories:
 * **[Epilogue](https://github.com/dchester/epilogue)**: [dunghuynh/aor-epilogue-client](https://github.com/dunghuynh/aor-epilogue-client)
 * **[Feathersjs](http://www.feathersjs.com/)**: [josx/aor-feathers-client](https://github.com/josx/aor-feathers-client)
 * **[Firebase](https://firebase.google.com/)**: [sidferreira/aor-firebase-client](https://github.com/sidferreira/aor-firebase-client)
-* **[GraphQL](http://graphql.org/)**: [marmelab/aor-simple-graphql-client](https://github.com/marmelab/aor-simple-graphql-client) (uses [Apollo](http://www.apollodata.com/))
+* **[GraphQL](http://graphql.org/)**: [marmelab/aor-graphql](https://github.com/marmelab/aor-graphql) (uses [Apollo](http://www.apollodata.com/))
 * **[JSON API](http://jsonapi.org/)**: [moonlight-labs/aor-jsonapi-client](https://github.com/moonlight-labs/aor-jsonapi-client)
 * Local JSON: [marmelab/aor-json-rest-client](https://github.com/marmelab/aor-json-rest-client). It doesn't even use HTTP. Use it for testing purposes.
 * **[Loopback](http://loopback.io/)**: [kimkha/aor-loopback](https://github.com/kimkha/aor-loopback)
