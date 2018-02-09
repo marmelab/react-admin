@@ -11,8 +11,8 @@ describe('<SingleFieldList />', () => {
             <SingleFieldList
                 ids={[1, 2]}
                 data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
-                resource="bar"
-                basePath="/bar"
+                resource="posts"
+                basePath="/posts"
             >
                 <ChipField source="title" />
             </SingleFieldList>
@@ -20,8 +20,8 @@ describe('<SingleFieldList />', () => {
         const linkElements = wrapper.find('WithStyles(Link)');
         assert.equal(linkElements.length, 2);
         assert.deepEqual(linkElements.map(link => link.prop('to')), [
-            '/bar/1',
-            '/bar/2',
+            '/posts/1',
+            '/posts/2',
         ]);
     });
 
@@ -30,8 +30,8 @@ describe('<SingleFieldList />', () => {
             <SingleFieldList
                 ids={[1, 2]}
                 data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
-                resource="bar"
-                basePath="/bar"
+                resource="posts"
+                basePath="/posts"
             >
                 <ChipField source="title" />
             </SingleFieldList>
@@ -39,8 +39,8 @@ describe('<SingleFieldList />', () => {
         const linkElements = wrapper.find('WithStyles(Link)');
         assert.equal(linkElements.length, 2);
         assert.deepEqual(linkElements.map(link => link.prop('to')), [
-            '/bar/1',
-            '/bar/2',
+            '/posts/1',
+            '/posts/2',
         ]);
     });
 
