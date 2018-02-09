@@ -21,7 +21,6 @@ const styles = theme => ({
     root: {
         width: '100%',
         zIndex: 1,
-        overflow: 'hidden',
     },
     appFrame: {
         position: 'relative',
