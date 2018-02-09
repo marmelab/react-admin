@@ -87,6 +87,7 @@ export class TabbedForm extends Component {
             className,
             classes = {},
             invalid,
+            pristine,
             record,
             resource,
             submitOnEnter,
@@ -150,6 +151,7 @@ export class TabbedForm extends Component {
                             handleSubmitWithRedirect: this
                                 .handleSubmitWithRedirect,
                             invalid,
+                            pristine,
                             submitOnEnter,
                         })}
                 </div>
@@ -166,6 +168,7 @@ TabbedForm.propTypes = {
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
+    pristine: PropTypes.bool,
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,

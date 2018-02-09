@@ -50,6 +50,7 @@ module.exports = {
                 "L'URL saisie est incorrecte, ou vous avez suivi un mauvais lien.",
             loading:
                 'La page est en cours de chargement, merci de bien vouloir patienter.',
+            invalid_form: `Le formulaire n'est pas valide. Veuillez vérifier les champs en erreur.`,
         },
         navigation: {
             no_results: 'Aucun résultat',

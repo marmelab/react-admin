@@ -22,12 +22,13 @@ const valueOrDefault = (value, defaultValue) =>
     typeof value === 'undefined' ? defaultValue : value;
 
 const Toolbar = ({
+    children,
     classes,
     className,
-    invalid,
-    submitOnEnter,
     handleSubmitWithRedirect,
-    children,
+    invalid,
+    pristine,
+    submitOnEnter,
     ...rest
 }) => (
     <Responsive
@@ -51,6 +52,7 @@ const Toolbar = ({
                             button
                                 ? React.cloneElement(button, {
                                       invalid,
+                                      pristine,
                                       handleSubmitWithRedirect,
                                       variant: 'flat',
                                       submitOnEnter: valueOrDefault(
@@ -79,6 +81,7 @@ const Toolbar = ({
                                 ? React.cloneElement(button, {
                                       handleSubmitWithRedirect,
                                       invalid,
+                                      pristine,
                                       submitOnEnter: valueOrDefault(
                                           button.props.submitOnEnter,
                                           submitOnEnter
@@ -98,6 +101,7 @@ Toolbar.propTypes = {
     className: PropTypes.string,
     handleSubmitWithRedirect: PropTypes.func,
     invalid: PropTypes.bool,
+    pristine: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
 };
 

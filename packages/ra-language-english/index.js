@@ -48,6 +48,7 @@ module.exports = {
             not_found:
                 'Either you typed a wrong URL, or you followed a bad link.',
             loading: 'The page is loading, just a moment please',
+            invalid_form: 'The form is not valid. Please check for errors',
         },
         navigation: {
             no_results: 'No results found',
