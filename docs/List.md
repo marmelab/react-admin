@@ -458,6 +458,21 @@ When you want to display only one property of a list of records, instead of usin
 
 ![ReferenceManyFieldSingleFieldList](./img/reference-many-field-single-field-list.png)
 
+**Tip**: The `<SingleFieldList>` items link to the edition page by default. You can set the `linkType` prop to `show` to link to the `<Show>` page instead.
+
+```jsx
+// Display all the tags for the current post
+<ReferenceArrayField
+    label="Tags"
+    reference="tags"
+    source="tags"
+>
+    <SingleFieldList linkType="show">
+        <ChipField source="name" />
+    </SingleFieldList>
+</ReferenceArrayField>
+```
+
 ## Using a Custom Iterator
 
 A `<List>` can delegate to any iterator component - `<Datagrid>` is just one example. An iterator component must accept at least two props:
