@@ -507,6 +507,99 @@ import { RadioButtonGroupInput, ReferenceInput } from 'react-admin'
 </ReferenceInput>
 ```
 
+## `<ReferenceArrayInput>`
+
+Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let users choose a list of values (usually foreign keys) from another REST endpoint.
+
+`<ReferenceArrayInput>` fetches the related resources (using the `CRUD_GET_MANY` REST method) as well as possible resources (using the 
+`CRUD_GET_MATCHING` REST method) in the reference endpoint.
+
+For instance, if the post object has many tags, a post resource may look like:
+
+```js
+{
+    id: 1234,
+    tag_ids: [1, 23, 4]
+}
+```
+
+Then `<ReferenceArrayInput>` would fetch a list of tag resources from these two calls:
+
+```
+http://myapi.com/tags?id=[1,23,4]
+http://myapi.com/tags?page=1&perPage=25
+```
+
+Once it receives the deduplicated reference resources, this component delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
+
+This means you can use `<ReferenceArrayInput>` with [`<SelectArrayInput>`](#selectarrayinput), or with the component of your choice, provided it supports the `choices` attribute.
+
+The component expects a `source` and a `reference` attributes. For instance, to make the `tag_ids` for a `post` editable:
+
+```js
+import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
+
+<ReferenceArrayInput source="tag_ids" reference="tags">
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+```
+
+![SelectArrayInput](./img/select-array-input.gif)
+
+**Note**: You **must** add a `<Resource>` for the reference resource - react-admin needs it to fetch the reference data. You can omit the list prop in this reference if you want to hide it in the sidebar menu.
+
+```js
+<Admin dataProvider={myDataProvider}>
+    <Resource name="posts" list={PostList} edit={PostEdit} />
+    <Resource name="tags" />
+</Admin>
+```
+
+Set the `allowEmpty` prop when the empty value is allowed.
+
+```js
+import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
+
+<ReferenceArrayInput source="tag_ids" reference="tags" allowEmpty>
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+```
+
+**Tip**: `allowEmpty` is set by default for all Input components children of the `<Filter>` component
+
+You can tweak how this component fetches the possible values using the `perPage`, `sort`, and `filter` props.
+
+{% raw %}
+```js
+// by default, fetches only the first 25 values. You can extend this limit
+// by setting the `perPage` prop.
+<ReferenceArrayInput
+     source="tag_ids"
+     reference="tags"
+     perPage={100}>
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+
+// by default, orders the possible values by id desc. You can change this order
+// by setting the `sort` prop (an object with `field` and `order` properties).
+<ReferenceArrayInput
+     source="tag_ids"
+     reference="tags"
+     sort={{ field: 'title', order: 'ASC' }}>
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+
+// you can filter the query used to populate the possible values. Use the
+// `filter` prop for that.
+<ReferenceArrayInput
+     source="tag_ids"
+     reference="tags"
+     filter={{ is_published: true }}>
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+```
+{% endraw %}
+
 ## `<ReferenceInput>`
 
 Use `<ReferenceInput>` for foreign-key values, i.e. to let users choose a value from another REST endpoint. This component fetches the possible values in the reference resource (using the `GET_LIST` REST method) and the referenced record (using the `GET_ONE` REST method), then delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
