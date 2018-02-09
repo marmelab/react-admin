@@ -223,9 +223,9 @@ const dateParser = v => { // from input to record
 
 Material-ui 1.0 doesn't provide a real date picker, so the `options` prop of the `<DateInput>` is no longer supported.
 
-## `<SelectArrayInput>` has been removed
+## `<SelectArrayInput>` does not support autocompletion anymore.
 
-This component relied on [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input) which is not yet fully ported to Material-ui 1.0: it doesn't support the autocomplete feature we need. We will add this component back when `material-ui-chip-input` is ported.
+This component relied on [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input) which is not yet fully ported to Material-ui 1.0: it doesn't support the autocomplete feature we need. We will add another component for this when `material-ui-chip-input` is ported.
 
 ## CSS Classes Changed
 

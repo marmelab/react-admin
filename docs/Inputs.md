@@ -507,6 +507,99 @@ import { RadioButtonGroupInput, ReferenceInput } from 'react-admin'
 </ReferenceInput>
 ```
 
+## `<ReferenceArrayInput>`
+
+Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let users choose a list of values (usually foreign keys) from another REST endpoint.
+
+`<ReferenceArrayInput>` fetches the related resources (using the `CRUD_GET_MANY` REST method) as well as possible resources (using the 
+`CRUD_GET_MATCHING` REST method) in the reference endpoint.
+
+For instance, if the post object has many tags, a post resource may look like:
+
+```js
+{
+    id: 1234,
+    tag_ids: [1, 23, 4]
+}
+```
+
+Then `<ReferenceArrayInput>` would fetch a list of tag resources from these two calls:
+
+```
+http://myapi.com/tags?id=[1,23,4]
+http://myapi.com/tags?page=1&perPage=25
+```
+
+Once it receives the deduplicated reference resources, this component delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
+
+This means you can use `<ReferenceArrayInput>` with [`<SelectArrayInput>`](#selectarrayinput), or with the component of your choice, provided it supports the `choices` attribute.
+
+The component expects a `source` and a `reference` attributes. For instance, to make the `tag_ids` for a `post` editable:
+
+```js
+import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
+
+<ReferenceArrayInput source="tag_ids" reference="tags">
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+```
+
+![SelectArrayInput](./img/select-array-input.gif)
+
+**Note**: You **must** add a `<Resource>` for the reference resource - react-admin needs it to fetch the reference data. You can omit the list prop in this reference if you want to hide it in the sidebar menu.
+
+```js
+<Admin dataProvider={myDataProvider}>
+    <Resource name="posts" list={PostList} edit={PostEdit} />
+    <Resource name="tags" />
+</Admin>
+```
+
+Set the `allowEmpty` prop when the empty value is allowed.
+
+```js
+import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
+
+<ReferenceArrayInput source="tag_ids" reference="tags" allowEmpty>
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+```
+
+**Tip**: `allowEmpty` is set by default for all Input components children of the `<Filter>` component
+
+You can tweak how this component fetches the possible values using the `perPage`, `sort`, and `filter` props.
+
+{% raw %}
+```js
+// by default, fetches only the first 25 values. You can extend this limit
+// by setting the `perPage` prop.
+<ReferenceArrayInput
+     source="tag_ids"
+     reference="tags"
+     perPage={100}>
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+
+// by default, orders the possible values by id desc. You can change this order
+// by setting the `sort` prop (an object with `field` and `order` properties).
+<ReferenceArrayInput
+     source="tag_ids"
+     reference="tags"
+     sort={{ field: 'title', order: 'ASC' }}>
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+
+// you can filter the query used to populate the possible values. Use the
+// `filter` prop for that.
+<ReferenceArrayInput
+     source="tag_ids"
+     reference="tags"
+     filter={{ is_published: true }}>
+    <SelectArrayInput optionText="name" />
+</ReferenceArrayInput>
+```
+{% endraw %}
+
 ## `<ReferenceInput>`
 
 Use `<ReferenceInput>` for foreign-key values, i.e. to let users choose a value from another REST endpoint. This component fetches the possible values in the reference resource (using the `GET_LIST` REST method) and the referenced record (using the `GET_ONE` REST method), then delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
@@ -727,6 +820,100 @@ import { SelectInput, ReferenceInput } from 'react-admin'
 ```
 
 If, instead of showing choices as a dropdown list, you prefer to display them as a list of radio buttons, try the [`<RadioButtonGroupInput>`](#radiobuttongroupinput). And if the list is too big, prefer the [`<AutocompleteInput>`](#autocompleteinput).
+
+## `<SelectArrayInput>`
+
+To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](http://www.material-ui.com/#/components/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
+
+```js
+import { SelectArrayInput } from 'admin-on-rest';
+
+<SelectArrayInput label="Tags" source="categories" choices={[
+    { id: 'music', name: 'Music' },
+    { id: 'photography', name: 'Photo' },
+    { id: 'programming', name: 'Code' },
+    { id: 'tech', name: 'Technology' },
+    { id: 'sport', name: 'Sport' },
+]} />
+```
+
+![SelectArrayInput](./img/select-array-input.gif)
+
+You can also customize the properties to use for the option name and value,
+thanks to the `optionText` and `optionValue` attributes.
+
+```js
+const choices = [
+   { _id: '1', name: 'Book', plural_name: 'Books' },
+   { _id: '2', name: 'Video', plural_name: 'Videos' },
+   { _id: '3', name: 'Audio', plural_name: 'Audios' },
+];
+<SelectArrayInput source="categories" choices={choices} optionText="plural_name" optionValue="_id" />
+```
+
+`optionText` also accepts a function, so you can shape the option text at will:
+
+```js
+const choices = [
+   { id: '1', name: 'Book', quantity: 23 },
+   { id: '2', name: 'Video', quantity: 56 },
+   { id: '3', name: 'Audio', quantity: 12 },
+];
+const optionRenderer = choice => `${choice.name} (${choice.quantity})`;
+<SelectArrayInput source="categories" choices={choices} optionText={optionRenderer} />
+```
+
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```js
+const choices = [
+   { id: 'books', name: 'myroot.category.books' },
+   { id: 'sport', name: 'myroot.category.sport' },
+];
+```
+
+Lastly, use the `options` attribute if you want to override any of the `<Select>` attributes:
+
+{% raw %}
+```js
+<SelectArrayInput source="category" options={{ fullWidth: true }} />
+```
+{% endraw %}
+
+Refer to [the Select documentation](http://www.material-ui.com/#/components/select) for more details.
+
+The `SelectArrayInput` component **cannot** be used inside a `ReferenceInput` but can be used inside a `ReferenceArrayInput`.
+
+```jsx
+import React from 'react';
+import {
+    ChipField,
+    Create,
+    DateInput,
+    LongTextInput,
+    ReferenceArrayInput,
+    SelectArrayInput,
+    TextInput,
+} from 'react-admin';
+
+export const PostCreate = props => (
+    <Create {...props}>
+        <SimpleForm>
+            <TextInput source="title" />
+            <LongTextInput source="body" />
+            <DateInput source="published_at" />
+
+            <ReferenceArrayInput reference="tags" source="tags">
+                <SelectArrayInput>
+                    <ChipField source="name" />
+                </SelectArrayInput>
+            </ReferenceArrayInput>
+        </SimpleForm>
+    </Create>
+);
+```
+
+**Tip**: As it does not provide autocompletion, the `SelectArrayInput` might not be suited when the referenced resource has a lot of items.
 
 ## `<TextInput>`
 
