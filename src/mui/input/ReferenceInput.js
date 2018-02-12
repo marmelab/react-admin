@@ -162,6 +162,7 @@ export class ReferenceInput extends Component {
             source,
             allowEmpty,
             matchingReferences,
+            referenceRecord,
             basePath,
             onChange,
             children,
@@ -169,28 +170,45 @@ export class ReferenceInput extends Component {
             translate,
         } = this.props;
 
+        if (React.Children.count(children) !== 1) {
+            throw new Error('<ReferenceInput> only accepts a single child');
+        }
+
         const finalLabel =
             typeof label === 'undefined'
                 ? `resources.${resource}.fields.${source}`
                 : label;
         const translatedLabel = translate(finalLabel, { _: finalLabel });
-        const error =
+        const matchingReferencesError =
             matchingReferences && matchingReferences.error
                 ? translate(matchingReferences.error, {
                       _: matchingReferences.error,
                   })
                 : null;
+        const selectedReferenceError =
+            !input.value || (input.value && !referenceRecord)
+                ? translate('aor.input.references.missing', {
+                      _: 'aor.input.references.missing',
+                  })
+                : null;
 
-        if (React.Children.count(children) !== 1) {
-            throw new Error('<ReferenceInput> only accepts a single child');
-        }
-
-        if (matchingReferences === null) {
+        if (selectedReferenceError && !matchingReferences) {
             return <ReferenceLoadingProgress label={translatedLabel} />;
         }
 
-        if (error) {
-            return <ReferenceError label={translatedLabel} error={error} />;
+        if (selectedReferenceError && matchingReferencesError) {
+            return (
+                <ReferenceError
+                    label={translatedLabel}
+                    error={
+                        input.value ? (
+                            selectedReferenceError
+                        ) : (
+                            matchingReferencesError
+                        )
+                    }
+                />
+            );
         }
 
         return React.cloneElement(children, {
@@ -203,7 +221,7 @@ export class ReferenceInput extends Component {
             resource,
             meta,
             source,
-            choices: matchingReferences,
+            choices: matchingReferences || [referenceRecord],
             basePath,
             onChange,
             filter: noFilter, // for AutocompleteInput
@@ -231,6 +249,7 @@ ReferenceInput.propTypes = {
     onChange: PropTypes.func,
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
+    referenceRecord: PropTypes.object,
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
@@ -247,6 +266,7 @@ ReferenceInput.defaultProps = {
     filterToQuery: searchText => ({ q: searchText }),
     matchingReferences: null,
     perPage: 25,
+    referenceRecord: null,
     sort: { field: 'id', order: 'DESC' },
 };
 
@@ -259,6 +279,8 @@ function mapStateToProps(state, props) {
             props.reference,
             [referenceId]
         ),
+        referenceRecord:
+            state.admin.resources[props.reference].data[referenceId],
     };
 }
 

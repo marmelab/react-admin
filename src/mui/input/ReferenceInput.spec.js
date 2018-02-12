@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import { ReferenceInput } from './ReferenceInput';
 
-describe('<ReferenceInput />', () => {
+describe.only('<ReferenceInput />', () => {
     const defaultProps = {
         crudGetMatching: () => true,
         crudGetOne: () => true,
@@ -17,12 +17,14 @@ describe('<ReferenceInput />', () => {
     };
     const MyComponent = () => <span id="mycomponent" />;
 
-    it('should only render a ReferenceLoadingProgress as long as there are no references fetched', () => {
+    it('should render a ReferenceLoadingProgress if the references are being searched and a selected reference does not have data', () => {
         const wrapper = shallow(
             <ReferenceInput
                 {...{
                     ...defaultProps,
                     matchingReferences: null,
+                    referenceRecord: null,
+                    input: { value: 1 },
                 }}
             >
                 <MyComponent />
@@ -36,12 +38,101 @@ describe('<ReferenceInput />', () => {
         assert.equal(ReferenceLoadingProgressElement.length, 1);
     });
 
-    it('should display an error in case of references fetch error', () => {
+    it('should render a ReferenceLoadingProgress if the references are being searched and there is no reference already selected', () => {
+        const wrapper = shallow(
+            <ReferenceInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: null,
+                    referenceRecord: null,
+                }}
+            >
+                <MyComponent />
+            </ReferenceInput>
+        );
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 0);
+        const ReferenceLoadingProgressElement = wrapper.find(
+            'ReferenceLoadingProgress'
+        );
+        assert.equal(ReferenceLoadingProgressElement.length, 1);
+    });
+
+    it('should not render a ReferenceLoadingProgress if the references are being searched but a selected reference have data', () => {
+        const wrapper = shallow(
+            <ReferenceInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: null,
+                    referenceRecord: { id: 1 },
+                    input: { value: 1 },
+                }}
+            >
+                <MyComponent />
+            </ReferenceInput>
+        );
+        const ReferenceLoadingProgressElement = wrapper.find(
+            'ReferenceLoadingProgress'
+        );
+        assert.equal(ReferenceLoadingProgressElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+        assert.deepEqual(MyComponentElement.prop('choices'), [{ id: 1 }]);
+    });
+
+    it('should not render a ReferenceLoadingProgress if the references were found but a selected reference does not have data', () => {
+        const wrapper = shallow(
+            <ReferenceInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: [{ id: 2 }],
+                    referenceRecord: null,
+                    input: { value: 1 },
+                }}
+            >
+                <MyComponent />
+            </ReferenceInput>
+        );
+        const ReferenceLoadingProgressElement = wrapper.find(
+            'ReferenceLoadingProgress'
+        );
+        assert.equal(ReferenceLoadingProgressElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+        assert.deepEqual(MyComponentElement.prop('choices'), [{ id: 2 }]);
+    });
+
+    it('should display an error in case of references fetch error and selected reference does not have data', () => {
         const wrapper = shallow(
             <ReferenceInput
                 {...{
                     ...defaultProps,
                     matchingReferences: { error: 'fetch error' },
+                    referenceRecord: null,
+                    input: { value: 1 },
+                }}
+            >
+                <MyComponent />
+            </ReferenceInput>
+        );
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 0);
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 1);
+        assert.equal(
+            ErrorElement.prop('error'),
+            '*aor.input.references.missing*'
+        );
+    });
+
+    it('should display an error in case of references fetch error and there is no reference already selected', () => {
+        const wrapper = shallow(
+            <ReferenceInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: { error: 'fetch error' },
+                    referenceRecord: null,
+                    input: {},
                 }}
             >
                 <MyComponent />
@@ -52,6 +143,53 @@ describe('<ReferenceInput />', () => {
         const ErrorElement = wrapper.find('ReferenceError');
         assert.equal(ErrorElement.length, 1);
         assert.equal(ErrorElement.prop('error'), '*fetch error*');
+    });
+
+    it('should not display an error in case of references fetch error but selected reference have data', () => {
+        const wrapper = shallow(
+            <ReferenceInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: { error: 'fetch error' },
+                    referenceRecord: { id: 1 },
+                    input: { value: 1 },
+                }}
+            >
+                <MyComponent />
+            </ReferenceInput>
+        );
+
+        const ReferenceLoadingProgressElement = wrapper.find(
+            'ReferenceLoadingProgress'
+        );
+        assert.equal(ReferenceLoadingProgressElement.length, 0);
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+    });
+
+    it('should not render an error if the references are empty (but fetched without error) and a selected reference does not have data', () => {
+        const wrapper = shallow(
+            <ReferenceInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: [],
+                    referenceRecord: null,
+                    input: { value: 1 },
+                }}
+            >
+                <MyComponent />
+            </ReferenceInput>
+        );
+        const ReferenceLoadingProgressElement = wrapper.find(
+            'ReferenceLoadingProgress'
+        );
+        assert.equal(ReferenceLoadingProgressElement.length, 0);
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
     });
 
     it('should render enclosed component even if the references are empty', () => {
