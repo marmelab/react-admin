@@ -5,7 +5,7 @@ import { SaveButton } from './SaveButton';
 
 const translate = label => label;
 
-describe.only('<SaveButton />', () => {
+describe('<SaveButton />', () => {
     it('should render <Button raised={true}/> when raised is true', () => {
         const wrapper = shallow(
             <SaveButton raised={true} translate={translate} />
