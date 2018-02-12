@@ -12,6 +12,7 @@ import compose from 'recompose/compose';
 
 import { toggleSidebar as toggleSidebarAction } from '../../actions';
 import { DRAWER_WIDTH } from './Sidebar';
+import LoadingIndicator from './LoadingIndicator';
 
 const styles = theme => ({
     appBar: {
@@ -34,6 +35,17 @@ const styles = theme => ({
     },
     hide: {
         display: 'none',
+    },
+    loadingIndicator: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        left: 0,
+        zIndex: 1200,
+        marginBottom: 16,
+        marginTop: 16,
+        marginLeft: 'auto',
+        marginRight: 'auto',
     },
 });
 
@@ -66,6 +78,7 @@ const AppBar = ({
                 {title}
             </Typography>
         </Toolbar>
+        <LoadingIndicator className={classes.loadingIndicator} />
     </MuiAppBar>
 );
 

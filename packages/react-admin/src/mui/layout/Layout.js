@@ -12,7 +12,6 @@ import compose from 'recompose/compose';
 
 import AppBar from './AppBar';
 import Sidebar, { DRAWER_WIDTH } from './Sidebar';
-import LoadingIndicator from './LoadingIndicator';
 import Menu from './Menu';
 import Notification from './Notification';
 import defaultTheme from '../defaultTheme';
@@ -102,7 +101,6 @@ const Layout = ({
                     {children}
                 </main>
                 <Notification />
-                <LoadingIndicator />
             </div>
         </div>
     </MuiThemeProvider>
