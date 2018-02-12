@@ -56,7 +56,7 @@ const Menu = ({
                     onClick={onMenuClick}
                 />
             ))}
-        <Responsive small={logout} medium={<div />} />
+        <Responsive small={logout} medium={null} />
     </div>
 );
 

@@ -168,7 +168,7 @@ const Menu = ({ resources, onMenuClick, logout }) => (
         <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
         <Responsive
             small={logout}
-            medium={<div />} // We must define something to not fallback on small
+            medium={null} // Pass null to render nothing on larger devices
         />
     </div>
 );
@@ -226,7 +226,10 @@ const Menu = ({ classes, resources, onMenuClick, logout }) => (
             <MenuItemLink classes={classes} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
         ))}
         <MenuItemLink classes={classes} to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-        {logout}
+        <Responsive
+            small={logout}
+            medium={null} // Pass null to render nothing on larger devices
+        />
     </div>
 );
 
