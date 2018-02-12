@@ -1232,7 +1232,7 @@ const mapStateToProps = state => ({
 export default withRouter(connect(mapStateToProps)(Menu));
 ```
 
-It also impacts custom layouts if you're using the default `AppBar` in it. You now have to pass the `logout` prop to the `AppBar`:
+It also impacts custom layouts if you're using the default `AppBar`. You now have to pass the `logout` prop to the `AppBar`:
 
 ```jsx
 // in src/MyLayout.js
