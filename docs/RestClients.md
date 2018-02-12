@@ -621,6 +621,6 @@ export default (type, resource, params) => {
 
 When the API backend returns an error, the REST client should `throw` an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). Admin-on-rest inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, Admin-on-rest displays the error `message` on screen in a temporary notification.
 
-### Example implementation
+### Example Implementation
 
 Check the code from the [simple REST client](https://github.com/marmelab/admin-on-rest/blob/master/src/rest/simple.js): it's a good starting point for a custom rest client implementation.
