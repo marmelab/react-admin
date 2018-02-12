@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import { ReferenceInput } from './ReferenceInput';
 
-describe.only('<ReferenceInput />', () => {
+describe('<ReferenceInput />', () => {
     const defaultProps = {
         crudGetMatching: () => true,
         crudGetOne: () => true,

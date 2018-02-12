@@ -13,6 +13,10 @@ import ReferenceError from './ReferenceError';
 import translate from '../../i18n/translate';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
+export const getSelectedReferencesStatus = (input, referenceRecords) =>
+    !input.value || input.value.length === referenceRecords.length
+        ? 'ready'
+        : referenceRecords.length > 0 ? 'incomplete' : 'empty';
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -181,27 +185,41 @@ export class ReferenceArrayInput extends Component {
                 ? `resources.${resource}.fields.${source}`
                 : label;
         const translatedLabel = translate(finalLabel, { _: finalLabel });
-        let error =
+
+        const selectedReferencesData = getSelectedReferencesStatus(
+            input,
+            referenceRecords
+        );
+
+        if (
+            (!matchingReferences &&
+                input.value &&
+                selectedReferencesData === 'empty') ||
+            (!matchingReferences && !input.value)
+        ) {
+            return <ReferenceLoadingProgress label={translatedLabel} />;
+        }
+
+        const matchingReferencesError =
             matchingReferences && matchingReferences.error
                 ? translate(matchingReferences.error, {
                       _: matchingReferences.error,
                   })
                 : null;
+
         if (
-            !error &&
-            input.value &&
-            input.value.length > 0 &&
-            !referenceRecords.length
+            matchingReferencesError &&
+            (!input.value ||
+                (input.value && selectedReferencesData === 'empty'))
         ) {
-            error = translate('aor.input.references.missing');
-        }
-
-        if (matchingReferences === null) {
-            return <ReferenceLoadingProgress label={translatedLabel} />;
-        }
-
-        if (error) {
-            return <ReferenceError label={translatedLabel} error={error} />;
+            return (
+                <ReferenceError
+                    label={translatedLabel}
+                    error={translate('aor.input.references.missing', {
+                        _: 'aor.input.references.missing',
+                    })}
+                />
+            );
         }
 
         return React.cloneElement(children, {
@@ -214,7 +232,9 @@ export class ReferenceArrayInput extends Component {
             resource,
             meta,
             source,
-            choices: matchingReferences,
+            choices: Array.isArray(matchingReferences)
+                ? matchingReferences
+                : referenceRecords,
             basePath,
             onChange,
             setFilter: this.debouncedSetFilter,
