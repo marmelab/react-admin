@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -12,6 +12,7 @@ import compose from 'recompose/compose';
 
 import { toggleSidebar as toggleSidebarAction } from '../../actions';
 import { DRAWER_WIDTH } from './Sidebar';
+import LoadingIndicator from './LoadingIndicator';
 
 const styles = theme => ({
     appBar: {
@@ -35,11 +36,29 @@ const styles = theme => ({
     hide: {
         display: 'none',
     },
+    title: {
+        flex: 1,
+    },
+    loadingIndicator: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        left: 0,
+        zIndex: 1200,
+        marginBottom: 16,
+        marginTop: 16,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
+    logout: {
+        color: theme.palette.primary.contrastText,
+    },
 });
 
 const AppBar = ({
     classes,
     className,
+    logout,
     open,
     title,
     toggleSidebar,
@@ -62,16 +81,25 @@ const AppBar = ({
             >
                 <MenuIcon />
             </IconButton>
-            <Typography variant="title" color="inherit">
+            <Typography
+                variant="title"
+                color="inherit"
+                className={classes.title}
+            >
                 {title}
             </Typography>
+            {cloneElement(logout, {
+                className: classes.logout,
+            })}
         </Toolbar>
+        <LoadingIndicator className={classes.loadingIndicator} />
     </MuiAppBar>
 );
 
 AppBar.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
+    logout: PropTypes.element,
     open: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,

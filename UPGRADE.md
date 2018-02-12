@@ -1175,6 +1175,156 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps)(Menu);
 ```
 
+## Logout is now displayed in the AppBar on desktop
+
+The Logout button is now displayed in the AppBar on desktop but is still displayed as a menu item on small devices.
+
+This impacts how you build a custom menu, as you'll now have to check whether you are on small devices before displaying the logout:
+
+```jsx
+// in src/Menu.js
+// before
+import React from 'react';
+import { connect } from 'react-redux';
+import { MenuItemLink, getResources } from 'react-admin';
+import { withRouter } from 'react-router-dom';
+
+const Menu = ({ resources, onMenuClick, logout }) => (
+    <div>
+        {resources.map(resource => (
+            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+        ))}
+        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
+        {logout}
+    </div>
+);
+
+const mapStateToProps = state => ({
+    resources: getResources(state),
+});
+
+export default withRouter(connect(mapStateToProps)(Menu));
+
+// after
+import React from 'react';
+import { connect } from 'react-redux';
+import { MenuItemLink, getResources } from 'react-admin';
+import { withRouter } from 'react-router-dom';
+import Responsive from '../layout/Responsive';
+
+const Menu = ({ resources, onMenuClick, logout }) => (
+    <div>
+        {resources.map(resource => (
+            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+        ))}
+        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
+        <Responsive
+            small={logout}
+            medium={<div />} // We must define something to not fallback on small
+        />
+    </div>
+);
+
+const mapStateToProps = state => ({
+    resources: getResources(state),
+});
+
+export default withRouter(connect(mapStateToProps)(Menu));
+```
+
+It also impacts custom layouts if you're using the default `AppBar`. You now have to pass the `logout` prop to the `AppBar`:
+
+```jsx
+// in src/MyLayout.js
+// Before
+import React, { createElement, Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import createMuiTheme from 'material-ui/styles/createMuiTheme';
+import { AppBar, Menu, Notification, Sidebar } from 'react-admin';
+
+const theme = createMuiTheme({
+    palette: {
+        type: 'light',
+    },
+});
+
+const styles = {
+    ...
+};
+
+const MyLayout () => ({
+    children,
+    dashboard,
+    logout,
+    menu,
+    title,
+}) => (
+    <MuiThemeProvider theme={theme}>
+        <div style={styles.wrapper}>
+            <div style={styles.main}>
+                <AppBar title={title} />
+                <div className="body" style={styles.body}>
+                    <div style={styles.content}>{children}</div>
+                    <Sidebar>
+                        {createElement(menu || Menu, {
+                            logout,
+                            hasDashboard: !!dashboard,
+                        })}
+                    </Sidebar>
+                </div>
+                <Notification />
+            </div>
+        </div>
+    </MuiThemeProvider>
+);
+
+// After
+import React, { createElement, Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import createMuiTheme from 'material-ui/styles/createMuiTheme';
+import { AppBar, Menu, Notification, Sidebar } from 'react-admin';
+
+const theme = createMuiTheme({
+    palette: {
+        type: 'light',
+    },
+});
+
+const styles = {
+    ...
+};
+
+const MyLayout () => ({
+    children,
+    dashboard,
+    logout,
+    menu,
+    title,
+}) => (
+    <MuiThemeProvider theme={theme}>
+        <div style={styles.wrapper}>
+            <div style={styles.main}>
+                <AppBar title={title} logout={logout} />
+                <div className="body" style={styles.body}>
+                    <div style={styles.content}>{children}</div>
+                    <Sidebar>
+                        {createElement(menu || Menu, {
+                            logout,
+                            hasDashboard: !!dashboard,
+                        })}
+                    </Sidebar>
+                </div>
+                <Notification />
+            </div>
+        </div>
+    </MuiThemeProvider>
+);
+```
+
 ## react-admin addon packages renamed with ra prefix and moved into root repository
 
 `aor-graphql` `aor-realtime` and `aor-dependent-input` packages have been migrated into the main `react-admin` repository and renamed with the new prefix. Besides, `aor-graphql-client` and `aor-graphql-client-graphcool` follow the new dataProvider packages naming.

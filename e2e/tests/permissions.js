@@ -28,7 +28,6 @@ describe('Permissions', () => {
             assert.deepEqual(await ListPage.getResources(), [
                 'Posts',
                 'Comments',
-                'Logout',
             ]);
         });
 
@@ -40,7 +39,6 @@ describe('Permissions', () => {
                 'Posts',
                 'Comments',
                 'Users',
-                'Logout',
             ]);
         });
     });

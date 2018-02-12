@@ -6,20 +6,30 @@ export const Responsive = ({ small, medium, large, width, ...rest }) => {
     let element;
     switch (width) {
         case 'xs':
-            element = small ? small : medium ? medium : large;
+            element =
+                typeof small !== 'undefined'
+                    ? small
+                    : typeof medium !== 'undefined' ? medium : large;
             break;
         case 'sm':
         case 'md':
-            element = medium ? medium : large ? large : small;
+            element =
+                typeof medium !== 'undefined'
+                    ? medium
+                    : typeof large !== 'undefined' ? large : small;
             break;
         case 'lg':
         case 'xl':
-            element = large ? large : medium ? medium : small;
+            element =
+                typeof large !== 'undefined'
+                    ? large
+                    : typeof medium !== 'undefined' ? medium : small;
             break;
         default:
             throw new Error(`Unknown width ${width}`);
     }
-    return React.cloneElement(element, rest);
+
+    return element ? React.cloneElement(element, rest) : null;
 };
 
 Responsive.propTypes = {

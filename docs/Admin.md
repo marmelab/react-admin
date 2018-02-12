@@ -158,6 +158,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { MenuItemLink, getResources } from 'react-admin';
 import { withRouter } from 'react-router-dom';
+import Responsive from '../layout/Responsive';
 
 const Menu = ({ resources, onMenuClick, logout }) => (
     <div>
@@ -165,7 +166,10 @@ const Menu = ({ resources, onMenuClick, logout }) => (
             <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
         ))}
         <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-        {logout}
+        <Responsive
+            small={logout}
+            medium={null} // Pass null to render nothing on larger devices
+        />
     </div>
 );
 
@@ -174,9 +178,12 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(connect(mapStateToProps)(Menu));
+
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
+
+**Tip**: Note that we include the `logout` item only on small devices. Indeed, the `logout` button is already displayed in the AppBar on larger devices.
 
 **Tip**: Note that we use React Router [`withRouter`](https://reacttraining.com/react-router/web/api/withRouter) Higher Order Component and that it is used **before** Redux [`connect](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options). This is required if you want the active menu item to be highlighted.
 
@@ -219,7 +226,10 @@ const Menu = ({ classes, resources, onMenuClick, logout }) => (
             <MenuItemLink classes={classes} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
         ))}
         <MenuItemLink classes={classes} to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-        {logout}
+        <Responsive
+            small={logout}
+            medium={null} // Pass null to render nothing on larger devices
+        />
     </div>
 );
 

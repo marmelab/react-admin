@@ -12,7 +12,6 @@ import compose from 'recompose/compose';
 
 import AppBar from './AppBar';
 import Sidebar, { DRAWER_WIDTH } from './Sidebar';
-import LoadingIndicator from './LoadingIndicator';
 import Menu from './Menu';
 import Notification from './Notification';
 import defaultTheme from '../defaultTheme';
@@ -85,7 +84,7 @@ const Layout = ({
         >
             <div className={classes.appFrame}>
                 <Hidden xsDown>
-                    <AppBar title={title} open={open} />
+                    <AppBar title={title} open={open} logout={logout} />
                 </Hidden>
                 <Sidebar>
                     {createElement(menu || Menu, {
@@ -102,7 +101,6 @@ const Layout = ({
                     {children}
                 </main>
                 <Notification />
-                <LoadingIndicator />
             </div>
         </div>
     </MuiThemeProvider>

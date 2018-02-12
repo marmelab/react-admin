@@ -9,11 +9,7 @@ import compose from 'recompose/compose';
 
 const styles = {
     loader: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
         margin: 16,
-        zIndex: 1200,
         color: 'white',
     },
 };

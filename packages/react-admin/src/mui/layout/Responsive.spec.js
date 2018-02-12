@@ -21,6 +21,17 @@ describe('<Responsive>', () => {
         const component = wrapper.find('Small');
         assert.equal(component.length, 1);
     });
+    it('should render the small component on small screens and small is null', () => {
+        const wrapper = shallow(
+            <Responsive
+                small={null}
+                medium={<Medium />}
+                large={<Large />}
+                width="xs"
+            />
+        );
+        assert.equal(wrapper.get(0), null);
+    });
     it('should render the medium component on medium screens', () => {
         const wrapper = shallow(
             <Responsive
@@ -33,6 +44,17 @@ describe('<Responsive>', () => {
         const component = wrapper.find('Medium');
         assert.equal(component.length, 1);
     });
+    it('should render the medium component on medium screens and medium is null', () => {
+        const wrapper = shallow(
+            <Responsive
+                small={<Small />}
+                medium={null}
+                large={<Large />}
+                width="sm"
+            />
+        );
+        assert.equal(wrapper.get(0), null);
+    });
     it('should render the large component on large screens', () => {
         const wrapper = shallow(
             <Responsive
@@ -44,6 +66,17 @@ describe('<Responsive>', () => {
         );
         const component = wrapper.find('Large');
         assert.equal(component.length, 1);
+    });
+    it('should render the large component on large screens and large is null', () => {
+        const wrapper = shallow(
+            <Responsive
+                small={<Small />}
+                medium={<Medium />}
+                large={null}
+                width="lg"
+            />
+        );
+        assert.equal(wrapper.get(0), null);
     });
     it('should render the small component on all screens when no other component is passed', () => {
         assert.equal(

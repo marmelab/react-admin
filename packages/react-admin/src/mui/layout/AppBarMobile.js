@@ -11,6 +11,7 @@ import compose from 'recompose/compose';
 import classnames from 'classnames';
 
 import { toggleSidebar } from '../../actions';
+import LoadingIndicator from './LoadingIndicator';
 
 const styles = {
     bar: {
@@ -33,6 +34,12 @@ const styles = {
     link: {
         color: '#fff',
         textDecoration: 'none',
+    },
+    loadingIndicator: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        zIndex: 1200,
     },
 };
 
@@ -60,6 +67,7 @@ const AppBarMobile = ({
             >
                 {title}
             </Typography>
+            <LoadingIndicator className={classes.loadingIndicator} />
         </Toolbar>
     </MuiAppBar>
 );

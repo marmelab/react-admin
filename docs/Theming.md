@@ -260,6 +260,8 @@ export const PostList = (props) => (
 
 **Tip**: If you only provide `small` and `medium`, the `medium` element will also be used on large screens. The same kind of smart default exists for when you omit `small` or `medium`.
 
+**Tip**: You can specify `null` as the value for `small`, `medium` or `large` to avoid rendering something on a specific size without falling back to others.
+
 **Tip**: You can also use [material-ui's `withWidth()` higher order component](https://github.com/callemall/material-ui/blob/master/src/utils/withWidth.js) to have the `with` prop injected in your own components.
 
 ## Using a Predefined Theme
@@ -434,7 +436,7 @@ class MyLayout extends Component {
             <MuiThemeProvider theme={theme}>
                 <div style={styles.wrapper}>
                     <div style={styles.main}>
-                        <AppBar title={title} />
+                        <AppBar title={title} logout={logout} />
                         <div className="body" style={styles.body}>
                             <div style={styles.content}>{children}</div>
                             <Sidebar>
