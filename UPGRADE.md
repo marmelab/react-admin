@@ -1177,7 +1177,7 @@ export default connect(mapStateToProps)(Menu);
 
 ## Logout is now displayed in the AppBar on desktop
 
-The Logout button is now displayed in the AppBar on desktop but is still displayed as a menu item on small devices. This impacts how you build a custom menu as you'll now have to check whether you are on small devices before displaying the logout:
+The Logout button is now displayed in the AppBar on desktop but is still displayed as a menu item on small devices. This impacts how you build a custom menu, as you'll now have to check whether you are on small devices before displaying the logout:
 
 ```jsx
 // in src/Menu.js
