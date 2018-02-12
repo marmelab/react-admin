@@ -9,8 +9,8 @@ import translate from '../../i18n/translate';
 
 export class SaveButton extends Component {
     handleClick = e => {
-        if (this.props.saving) {
-            // prevent double submission
+        if (this.props.saving || this.props.disabled) {
+            // prevent double submission and deal with disabled button
             e.preventDefault();
         } else {
             // always submit form explicitly regardless of button type
@@ -30,11 +30,13 @@ export class SaveButton extends Component {
             translate,
             submitOnEnter,
             redirect,
+            disabled,
         } = this.props;
         const type = submitOnEnter ? 'submit' : 'button';
         const ButtonComponent = raised ? RaisedButton : FlatButton;
         return (
             <ButtonComponent
+                disabled={disabled}
                 type={type}
                 label={label && translate(label, { _: label })}
                 icon={
@@ -63,10 +65,12 @@ SaveButton.propTypes = {
     submitOnEnter: PropTypes.bool,
     handleSubmitWithRedirect: PropTypes.func,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    disabled: PropTypes.bool,
 };
 
 SaveButton.defaultProps = {
     handleSubmitWithRedirect: () => () => {},
+    disabled: false,
 };
 
 const mapStateToProps = state => ({
