@@ -1175,6 +1175,61 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps)(Menu);
 ```
 
+## Logout is now displayed in the AppBar on desktop
+
+The Logout button is now displayed in the AppBar on desktop but is still displayed as a menu item on small devices. This impact how you build a custom menu as you'll now have to check whether you are on small devices before displaying the logout:
+
+```jsx
+// in src/Menu.js
+// before
+import React from 'react';
+import { connect } from 'react-redux';
+import { MenuItemLink, getResources } from 'react-admin';
+import { withRouter } from 'react-router-dom';
+
+const Menu = ({ resources, onMenuClick, logout }) => (
+    <div>
+        {resources.map(resource => (
+            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+        ))}
+        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
+        {logout}
+    </div>
+);
+
+const mapStateToProps = state => ({
+    resources: getResources(state),
+});
+
+export default withRouter(connect(mapStateToProps)(Menu));
+
+// after
+import React from 'react';
+import { connect } from 'react-redux';
+import { MenuItemLink, getResources } from 'react-admin';
+import { withRouter } from 'react-router-dom';
+import Responsive from '../layout/Responsive';
+
+const Menu = ({ resources, onMenuClick, logout }) => (
+    <div>
+        {resources.map(resource => (
+            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+        ))}
+        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
+        <Responsive
+            small={logout}
+            medium={<div />} // We must define something to not fallback on small
+        />
+    </div>
+);
+
+const mapStateToProps = state => ({
+    resources: getResources(state),
+});
+
+export default withRouter(connect(mapStateToProps)(Menu));
+```
+
 ## react-admin addon packages renamed with ra prefix and moved into root repository
 
 `aor-graphql` `aor-realtime` and `aor-dependent-input` packages have been migrated into the main `react-admin` repository and renamed with the new prefix. Besides, `aor-graphql-client` and `aor-graphql-client-graphcool` follow the new dataProvider packages naming.

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -36,6 +36,9 @@ const styles = theme => ({
     hide: {
         display: 'none',
     },
+    title: {
+        flex: 1,
+    },
     loadingIndicator: {
         position: 'absolute',
         top: 0,
@@ -47,11 +50,15 @@ const styles = theme => ({
         marginLeft: 'auto',
         marginRight: 'auto',
     },
+    logout: {
+        color: theme.palette.primary.contrastText,
+    },
 });
 
 const AppBar = ({
     classes,
     className,
+    logout,
     open,
     title,
     toggleSidebar,
@@ -74,9 +81,16 @@ const AppBar = ({
             >
                 <MenuIcon />
             </IconButton>
-            <Typography variant="title" color="inherit">
+            <Typography
+                variant="title"
+                color="inherit"
+                className={classes.title}
+            >
                 {title}
             </Typography>
+            {cloneElement(logout, {
+                className: classes.logout,
+            })}
         </Toolbar>
         <LoadingIndicator className={classes.loadingIndicator} />
     </MuiAppBar>
@@ -85,6 +99,7 @@ const AppBar = ({
 AppBar.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
+    logout: PropTypes.element,
     open: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,

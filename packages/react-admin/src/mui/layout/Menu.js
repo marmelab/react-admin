@@ -10,6 +10,7 @@ import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 import translate from '../../i18n/translate';
 import { getResources } from '../../reducer';
+import Responsive from '../layout/Responsive';
 
 const styles = {
     main: {
@@ -55,7 +56,7 @@ const Menu = ({
                     onClick={onMenuClick}
                 />
             ))}
-        {logout}
+        <Responsive small={logout} medium={<div />} />
     </div>
 );
 
