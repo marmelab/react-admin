@@ -8,6 +8,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 
+import { showNotification } from '../../actions';
 import translate from '../../i18n/translate';
 
 const styles = {
@@ -37,12 +38,22 @@ const sanitizeRestProps = ({
 
 export class SaveButton extends Component {
     handleClick = e => {
-        if (this.props.saving) {
+        const {
+            handleSubmitWithRedirect,
+            invalid,
+            redirect,
+            saving,
+            showNotification,
+        } = this.props;
+
+        if (saving) {
             // prevent double submission
             e.preventDefault();
         } else {
+            if (invalid) {
+                showNotification('ra.message.invalid_form', 'error');
+            }
             // always submit form explicitly regardless of button type
-            const { handleSubmitWithRedirect, redirect } = this.props;
             if (e) {
                 e.preventDefault();
             }
@@ -54,14 +65,17 @@ export class SaveButton extends Component {
         const {
             className,
             classes = {},
-            saving,
+            invalid,
             label = 'ra.action.save',
-            variant = 'raised',
-            translate,
-            submitOnEnter,
+            pristine,
             redirect,
+            saving,
+            submitOnEnter,
+            translate,
+            variant = 'raised',
             ...rest
         } = this.props;
+
         const type = submitOnEnter ? 'submit' : 'button';
         return (
             <Button
@@ -91,13 +105,15 @@ SaveButton.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
     handleSubmitWithRedirect: PropTypes.func,
-    label: PropTypes.string,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     invalid: PropTypes.bool,
-    variant: PropTypes.oneOf(['raised', 'flat', 'fab']),
+    label: PropTypes.string,
+    pristine: PropTypes.bool,
+    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    showNotification: PropTypes.func,
     submitOnEnter: PropTypes.bool,
     translate: PropTypes.func.isRequired,
+    variant: PropTypes.oneOf(['raised', 'flat', 'fab']),
 };
 
 SaveButton.defaultProps = {
@@ -111,10 +127,7 @@ const mapStateToProps = state => ({
 
 const enhance = compose(
     translate,
-    connect(
-        mapStateToProps,
-        {} // Avoid connect passing dispatch in props
-    ),
+    connect(mapStateToProps, { showNotification }),
     withStyles(styles)
 );
 

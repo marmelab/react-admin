@@ -117,4 +117,35 @@ describe('<SaveButton />', () => {
 
         expect(onSubmit.mock.calls.length).toEqual(0);
     });
+    it('should show a notification if the form is not valid', () => {
+        const onSubmit = jest.fn();
+        const showNotification = jest.fn();
+        const event = { preventDefault: jest.fn() };
+
+        const raisedButtonWrapper = shallow(
+            <SaveButton
+                raised={true}
+                translate={translate}
+                handleSubmitWithRedirect={() => onSubmit}
+                invalid={true}
+                showNotification={showNotification}
+            />
+        );
+        const flatButtonWrapper = shallow(
+            <SaveButton
+                raised={false}
+                translate={translate}
+                handleSubmitWithRedirect={() => onSubmit}
+                invalid={true}
+                showNotification={showNotification}
+            />
+        );
+
+        raisedButtonWrapper.simulate('click', event);
+        expect(showNotification.mock.calls.length).toEqual(1);
+        flatButtonWrapper.simulate('click', event);
+        expect(showNotification.mock.calls.length).toEqual(2);
+
+        expect(onSubmit.mock.calls.length).toEqual(2);
+    });
 });

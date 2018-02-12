@@ -69,6 +69,7 @@ export class SimpleForm extends Component {
             classes = {},
             className,
             invalid,
+            pristine,
             record,
             resource,
             submitOnEnter,
@@ -96,6 +97,7 @@ export class SimpleForm extends Component {
                     React.cloneElement(toolbar, {
                         handleSubmitWithRedirect: this.handleSubmitWithRedirect,
                         invalid,
+                        pristine,
                         submitOnEnter,
                     })}
             </form>
@@ -111,6 +113,7 @@ SimpleForm.propTypes = {
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
+    pristine: PropTypes.bool,
     record: PropTypes.object,
     resource: PropTypes.string,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
