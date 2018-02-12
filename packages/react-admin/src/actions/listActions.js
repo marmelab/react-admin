@@ -3,7 +3,7 @@ export const SET_LIST_SELECTED_IDS = 'RA/SET_LIST_SELECTED_IDS';
 export const TOGGLE_LIST_ITEM = 'RA/TOGGLE_LIST_ITEM';
 
 export const changeListParams = (resource, params) => ({
-    type: SET_LIST_SELECTED_IDS,
+    type: CRUD_CHANGE_LIST_PARAMS,
     payload: params,
     meta: { resource },
 });
