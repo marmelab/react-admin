@@ -8,6 +8,7 @@ import {
     CREATE,
     UPDATE,
     DELETE,
+    DELETE_MANY,
 } from 'react-admin';
 
 /**
@@ -136,6 +137,19 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
      * @returns {Promise} the Promise for a data response
      */
     return (type, resource, params) => {
+        // simple-rest doesn't handle filters on DELETE route, so we fallback to calling DELETE n times instead
+        if (type === DELETE_MANY) {
+            return Promise.all(
+                params.ids.map(id =>
+                    httpClient(`${apiUrl}/${resource}/${id}`, {
+                        method: 'DELETE',
+                    })
+                )
+            ).then(responses => ({
+                data: responses.map(response => response.json),
+            }));
+        }
+
         const { url, options } = convertDataRequestToHTTP(
             type,
             resource,

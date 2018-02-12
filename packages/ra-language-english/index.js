@@ -12,6 +12,7 @@ module.exports = {
             add_filter: 'Add filter',
             remove_filter: 'Remove this filter',
             back: 'Go Back',
+            bulk_actions: '%{count} selected',
         },
         boolean: {
             true: 'Yes',

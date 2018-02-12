@@ -7,6 +7,7 @@ import {
     CREATE,
     UPDATE,
     DELETE,
+    DELETE_MANY,
 } from 'react-admin';
 
 /* eslint-disable no-console */
@@ -98,6 +99,9 @@ export default (data, loggingEnabled = false) => {
                 };
             case DELETE:
                 return { data: restServer.removeOne(resource, params.id) };
+            case DELETE_MANY:
+                params.ids.forEach(id => restServer.removeOne(resource, id));
+                return { data: params.ids };
             default:
                 return false;
         }

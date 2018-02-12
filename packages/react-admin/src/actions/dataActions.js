@@ -4,6 +4,7 @@ import {
     CREATE,
     UPDATE,
     DELETE,
+    DELETE_MANY,
     GET_MANY,
     GET_MANY_REFERENCE,
 } from '../dataFetchActions';
@@ -80,6 +81,17 @@ export const crudDelete = (
     type: CRUD_DELETE,
     payload: { id, previousData, basePath, redirectTo },
     meta: { resource, fetch: DELETE, cancelPrevious: false },
+});
+
+export const CRUD_DELETE_MANY = 'RA/CRUD_DELETE_MANY';
+export const CRUD_DELETE_MANY_LOADING = 'RA/CRUD_DELETE_MANY_LOADING';
+export const CRUD_DELETE_MANY_FAILURE = 'RA/CRUD_DELETE_MANY_FAILURE';
+export const CRUD_DELETE_MANY_SUCCESS = 'RA/CRUD_DELETE_MANY_SUCCESS';
+
+export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
+    type: CRUD_DELETE_MANY,
+    payload: { ids, basePath },
+    meta: { resource, fetch: DELETE_MANY, cancelPrevious: false, refresh },
 });
 
 export const CRUD_GET_MANY = 'RA/CRUD_GET_MANY';

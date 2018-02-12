@@ -4,8 +4,10 @@ import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 
 import { CreateButton, RefreshButton } from '../button';
 import CardActions from '../layout/CardActions';
+import BulkActions from './BulkActions';
 
 const Actions = ({
+    bulkActions,
     className,
     resource,
     filters,
@@ -13,12 +15,25 @@ const Actions = ({
     filterValues,
     hasCreate,
     basePath,
-    selectedIds = [],
+    selectedIds,
+    onUnselectItems,
     showFilter,
     ...rest
 }) => {
     return (
         <CardActions className={className} {...rest}>
+            {selectedIds &&
+                selectedIds.length > 0 && (
+                    <BulkActions
+                        basePath={basePath}
+                        filterValues={filterValues}
+                        resource={resource}
+                        selectedIds={selectedIds}
+                        onUnselectItems={onUnselectItems}
+                    >
+                        {bulkActions}
+                    </BulkActions>
+                )}
             {filters &&
                 React.cloneElement(filters, {
                     resource,
@@ -34,6 +49,7 @@ const Actions = ({
 };
 
 Actions.propTypes = {
+    bulkActions: PropTypes.node,
     basePath: PropTypes.string,
     className: PropTypes.string,
     displayedFilters: PropTypes.object,
@@ -41,8 +57,13 @@ Actions.propTypes = {
     filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,
     resource: PropTypes.string,
+    onUnselectItems: PropTypes.func.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     showFilter: PropTypes.func,
+};
+
+Actions.defaultProps = {
+    selectedIds: [],
 };
 
 export default onlyUpdateForKeys([
@@ -50,4 +71,5 @@ export default onlyUpdateForKeys([
     'filters',
     'displayedFilters',
     'filterValues',
+    'selectedIds',
 ])(Actions);

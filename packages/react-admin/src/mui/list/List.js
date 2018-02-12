@@ -248,6 +248,10 @@ export class List extends Component {
         this.props.setSelectedIds(this.props.resource, ids);
     };
 
+    handleUnselectItems = () => {
+        this.props.setSelectedIds(this.props.resource, []);
+    };
+
     handleToggleItem = id => {
         this.props.toggleItem(this.props.resource, id);
     };
@@ -322,6 +326,7 @@ export class List extends Component {
                             hasCreate,
                             displayedFilters: this.state,
                             selectedIds,
+                            onUnselectItems: this.handleUnselectItems,
                             showFilter: this.showFilter,
                             refresh: this.refresh,
                         }}

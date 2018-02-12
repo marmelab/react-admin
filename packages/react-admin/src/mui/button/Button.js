@@ -16,6 +16,9 @@ const styles = {
     label: {
         paddingLeft: '0.5em',
     },
+    labelRightIcon: {
+        paddingRight: '0.5em',
+    },
 };
 
 const Button = ({
@@ -25,6 +28,7 @@ const Button = ({
     color = 'primary',
     label,
     translate,
+    alignIcon = 'left',
     ...rest
 }) => (
     <MuiButton
@@ -32,19 +36,26 @@ const Button = ({
         color={color}
         {...rest}
     >
-        {children}
+        {alignIcon === 'left' && children}
         <Responsive
             small={<span />}
             medium={
-                <span className={classes.label}>
-                    {label && translate(label)}
+                <span
+                    className={classnames({
+                        [classes.label]: alignIcon === 'left',
+                        [classes.labelRightIcon]: alignIcon !== 'left',
+                    })}
+                >
+                    {label && translate(label, { _: label })}
                 </span>
             }
         />
+        {alignIcon === 'right' && children}
     </MuiButton>
 );
 
 Button.propTypes = {
+    alignIcon: PropTypes.string,
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
     classes: PropTypes.object,

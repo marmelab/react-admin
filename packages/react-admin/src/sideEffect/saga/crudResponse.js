@@ -6,6 +6,8 @@ import {
     CRUD_CREATE_SUCCESS,
     CRUD_DELETE_FAILURE,
     CRUD_DELETE_SUCCESS,
+    CRUD_DELETE_MANY_FAILURE,
+    CRUD_DELETE_MANY_SUCCESS,
     CRUD_GET_LIST_FAILURE,
     CRUD_GET_MANY_FAILURE,
     CRUD_GET_MANY_REFERENCE_FAILURE,
@@ -15,6 +17,7 @@ import {
     CRUD_UPDATE_SUCCESS,
 } from '../../actions/dataActions';
 import { showNotification } from '../../actions/notificationActions';
+import { refreshView } from '../../actions/uiActions';
 import resolveRedirectTo from '../../util/resolveRedirectTo';
 
 /**
@@ -22,7 +25,7 @@ import resolveRedirectTo from '../../util/resolveRedirectTo';
  *
  * Mostly redirects and notifications
  */
-function* handleResponse({ type, requestPayload, error, payload }) {
+function* handleResponse({ type, requestPayload, error, payload, meta }) {
     switch (type) {
         case CRUD_UPDATE_SUCCESS:
             return requestPayload.redirectTo
@@ -72,6 +75,13 @@ function* handleResponse({ type, requestPayload, error, payload }) {
                       ),
                   ])
                 : yield [put(showNotification('ra.notification.deleted'))];
+        case CRUD_DELETE_MANY_SUCCESS:
+            return meta.refresh
+                ? yield all([
+                      put(showNotification('ra.notification.deleted')),
+                      put(refreshView()),
+                  ])
+                : yield [put(showNotification('ra.notification.deleted'))];
         case CRUD_GET_ONE_SUCCESS:
             if (
                 !('id' in payload.data) ||
@@ -99,7 +109,8 @@ function* handleResponse({ type, requestPayload, error, payload }) {
         case CRUD_GET_MANY_REFERENCE_FAILURE:
         case CRUD_CREATE_FAILURE:
         case CRUD_UPDATE_FAILURE:
-        case CRUD_DELETE_FAILURE: {
+        case CRUD_DELETE_FAILURE:
+        case CRUD_DELETE_MANY_FAILURE: {
             console.error(error); // eslint-disable-line no-console
             const errorMessage =
                 typeof error === 'string'
