@@ -186,6 +186,9 @@ export class ReferenceArrayInput extends Component {
                 : label;
         const translatedLabel = translate(finalLabel, { _: finalLabel });
 
+        // selectedReferencesData can be "empty" (no data was found for references from input.value)
+        // or "incomplete" (Not all of the reference data was found)
+        // or "ready" (all references data was found or there is no references from input.value)
         const selectedReferencesData = getSelectedReferencesStatus(
             input,
             referenceRecords
@@ -215,12 +218,21 @@ export class ReferenceArrayInput extends Component {
             return (
                 <ReferenceError
                     label={translatedLabel}
-                    error={translate('aor.input.references.missing', {
-                        _: 'aor.input.references.missing',
+                    error={translate('aor.input.references.all_missing', {
+                        _: 'aor.input.references.all_missing',
                     })}
                 />
             );
         }
+
+        const childrenError =
+            matchingReferencesError ||
+            (input.value && selectedReferencesData !== 'ready')
+                ? matchingReferencesError ||
+                  translate('aor.input.references.many_missing', {
+                      _: 'aor.input.references.many_missing',
+                  })
+                : null;
 
         return React.cloneElement(children, {
             allowEmpty,
@@ -230,7 +242,11 @@ export class ReferenceArrayInput extends Component {
                     ? `resources.${resource}.fields.${source}`
                     : label,
             resource,
-            meta,
+            meta: {
+                ...meta,
+                error: childrenError,
+                touched: !!childrenError,
+            },
             source,
             choices: Array.isArray(matchingReferences)
                 ? matchingReferences

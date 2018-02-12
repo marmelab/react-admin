@@ -121,7 +121,7 @@ describe('<ReferenceInput />', () => {
         assert.equal(ErrorElement.length, 1);
         assert.equal(
             ErrorElement.prop('error'),
-            '*aor.input.references.missing*'
+            '*aor.input.references.single_missing*'
         );
     });
 
@@ -190,6 +190,87 @@ describe('<ReferenceInput />', () => {
         assert.equal(ErrorElement.length, 0);
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 1);
+    });
+
+    it('should send an error to the children in case of references fetch error and there selected reference with data', () => {
+        const wrapper = shallow(
+            <ReferenceInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: { error: 'fetch error' },
+                    referenceRecord: [{ id: 1 }],
+                    input: { value: 1 },
+                }}
+            >
+                <MyComponent />
+            </ReferenceInput>
+        );
+        const ReferenceLoadingProgressElement = wrapper.find(
+            'ReferenceLoadingProgress'
+        );
+        assert.equal(ReferenceLoadingProgressElement.length, 0);
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+        assert.deepEqual(MyComponentElement.prop('meta'), {
+            error: '*fetch error*',
+            touched: true,
+        });
+    });
+
+    it('should send an error to the children if references were found but not the already selected one', () => {
+        const wrapper = shallow(
+            <ReferenceInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: [],
+                    referenceRecord: null,
+                    input: { value: 1 },
+                }}
+            >
+                <MyComponent />
+            </ReferenceInput>
+        );
+        const ReferenceLoadingProgressElement = wrapper.find(
+            'ReferenceLoadingProgress'
+        );
+        assert.equal(ReferenceLoadingProgressElement.length, 0);
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+        assert.deepEqual(MyComponentElement.prop('meta'), {
+            error: '*aor.input.references.single_missing*',
+            touched: true,
+        });
+    });
+
+    it('should not send an error to the children if all references were found', () => {
+        const wrapper = shallow(
+            <ReferenceInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: [{ id: 1 }, { id: 2 }],
+                    referenceRecord: { id: 1 },
+                    input: { value: 1 },
+                }}
+            >
+                <MyComponent />
+            </ReferenceInput>
+        );
+        const ReferenceLoadingProgressElement = wrapper.find(
+            'ReferenceLoadingProgress'
+        );
+        assert.equal(ReferenceLoadingProgressElement.length, 0);
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+        assert.deepEqual(MyComponentElement.prop('meta'), {
+            error: null,
+            touched: false,
+        });
     });
 
     it('should render enclosed component even if the references are empty', () => {

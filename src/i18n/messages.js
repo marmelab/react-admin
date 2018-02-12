@@ -39,7 +39,11 @@ export default {
                     'Drop a picture to upload, or click to select it.',
             },
             references: {
-                missing: 'Unable to find reference data.',
+                all_missing: 'Unable to find references data.',
+                many_missing:
+                    'At least one of the associated references no longer appears to be available.',
+                single_missing:
+                    'Associated reference no longer appears to be available',
             },
         },
         message: {

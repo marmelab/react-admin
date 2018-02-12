@@ -186,17 +186,25 @@ export class ReferenceInput extends Component {
                   })
                 : null;
         const selectedReferenceError =
-            !input.value || (input.value && !referenceRecord)
-                ? translate('aor.input.references.missing', {
-                      _: 'aor.input.references.missing',
+            input.value && !referenceRecord
+                ? translate('aor.input.references.single_missing', {
+                      _: 'aor.input.references.single_missing',
                   })
                 : null;
 
-        if (selectedReferenceError && !matchingReferences) {
+        if (
+            (input.value && selectedReferenceError && !matchingReferences) ||
+            (!input.value && !matchingReferences)
+        ) {
             return <ReferenceLoadingProgress label={translatedLabel} />;
         }
 
-        if (selectedReferenceError && matchingReferencesError) {
+        if (
+            (input.value &&
+                selectedReferenceError &&
+                matchingReferencesError) ||
+            (!input.value && matchingReferencesError)
+        ) {
             return (
                 <ReferenceError
                     label={translatedLabel}
@@ -219,9 +227,15 @@ export class ReferenceInput extends Component {
                     ? `resources.${resource}.fields.${source}`
                     : label,
             resource,
-            meta,
+            meta: {
+                ...meta,
+                error: selectedReferenceError || matchingReferencesError,
+                touched: !!(selectedReferenceError || matchingReferencesError),
+            },
             source,
-            choices: matchingReferences || [referenceRecord],
+            choices: Array.isArray(matchingReferences)
+                ? matchingReferences
+                : [referenceRecord],
             basePath,
             onChange,
             filter: noFilter, // for AutocompleteInput
@@ -229,6 +243,7 @@ export class ReferenceInput extends Component {
             setPagination: this.setPagination,
             setSort: this.setSort,
             translateChoice: false,
+            errorText: 'plop',
         });
     }
 }
