@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import Table, { TableHead, TableRow } from 'material-ui/Table';
+import Table, { TableCell, TableHead, TableRow } from 'material-ui/Table';
+import Checkbox from 'material-ui/Checkbox';
+
 import classnames from 'classnames';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
@@ -76,25 +78,42 @@ class Datagrid extends Component {
         this.props.setSort(event.currentTarget.dataset.sort);
     };
 
+    handleSelectAll = () => {
+        if (this.props.selectedIds.length > 0) {
+            return this.props.onSelect([]);
+        }
+        this.props.onSelect(this.props.ids);
+    };
+
     render() {
         const {
-            resource,
+            basePath,
+            data,
             children,
             classes,
             className,
+            currentSort,
             ids,
             isLoading,
-            data,
-            currentSort,
-            basePath,
+            resource,
             rowStyle,
+            selectedIds,
             setSort,
+            onSelect,
+            onToggleItem,
             ...rest
         } = this.props;
+
         return (
             <Table className={classnames(classes.table, className)} {...rest}>
                 <TableHead>
                     <TableRow className={classes.row}>
+                        <TableCell padding="checkbox">
+                            <Checkbox
+                                checked={selectedIds.length === ids.length}
+                                onChange={this.handleSelectAll}
+                            />
+                        </TableCell>
                         {React.Children.map(
                             children,
                             (field, index) =>
@@ -118,11 +137,13 @@ class Datagrid extends Component {
                 <DatagridBody
                     resource={resource}
                     ids={ids}
+                    selectedIds={selectedIds}
                     data={data}
                     basePath={basePath}
                     classes={classes}
                     isLoading={isLoading}
                     rowStyle={rowStyle}
+                    onToggleItem={onToggleItem}
                 >
                     {children}
                 </DatagridBody>
@@ -133,24 +154,28 @@ class Datagrid extends Component {
 
 Datagrid.propTypes = {
     basePath: PropTypes.string,
+    children: PropTypes.node.isRequired,
+    classes: PropTypes.object,
+    className: PropTypes.string,
     currentSort: PropTypes.shape({
         sort: PropTypes.string,
         order: PropTypes.string,
     }),
-    children: PropTypes.node.isRequired,
     data: PropTypes.object.isRequired,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     isLoading: PropTypes.bool,
+    onSelect: PropTypes.func.isRequired,
+    onToggleItem: PropTypes.func.isRequired,
     resource: PropTypes.string,
     rowStyle: PropTypes.func,
+    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     setSort: PropTypes.func,
-    classes: PropTypes.object,
-    className: PropTypes.string,
 };
 
 Datagrid.defaultProps = {
     data: {},
     ids: [],
+    selectedIds: [],
 };
 
 export default withStyles(styles)(Datagrid);

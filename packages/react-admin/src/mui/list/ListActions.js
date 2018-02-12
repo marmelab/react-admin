@@ -13,6 +13,7 @@ const Actions = ({
     filterValues,
     hasCreate,
     basePath,
+    selectedIds = [],
     showFilter,
     ...rest
 }) => {
@@ -40,6 +41,7 @@ Actions.propTypes = {
     filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,
     resource: PropTypes.string,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
     showFilter: PropTypes.func,
 };
 
