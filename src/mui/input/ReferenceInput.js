@@ -14,6 +14,47 @@ import translate from '../../i18n/translate';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 const noFilter = () => true;
+const getFinalLabel = (label, resource, source) =>
+    typeof label === 'undefined'
+        ? `resources.${resource}.fields.${source}`
+        : label;
+
+export const getDataStatus = ({
+    input,
+    matchingReferences,
+    referenceRecord,
+    translate,
+}) => {
+    const matchingReferencesError =
+        matchingReferences && matchingReferences.error
+            ? translate(matchingReferences.error, {
+                  _: matchingReferences.error,
+              })
+            : null;
+    const selectedReferenceError =
+        input.value && !referenceRecord
+            ? translate('aor.input.references.single_missing', {
+                  _: 'aor.input.references.single_missing',
+              })
+            : null;
+
+    return {
+        waiting:
+            (input.value && selectedReferenceError && !matchingReferences) ||
+            (!input.value && !matchingReferences),
+        error:
+            (input.value &&
+                selectedReferenceError &&
+                matchingReferencesError) ||
+            (!input.value && matchingReferencesError)
+                ? input.value ? selectedReferenceError : matchingReferencesError
+                : null,
+        warning: selectedReferenceError || matchingReferencesError,
+        choices: Array.isArray(matchingReferences)
+            ? matchingReferences
+            : [referenceRecord].filter(choice => choice),
+    };
+};
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -174,47 +215,25 @@ export class ReferenceInput extends Component {
             throw new Error('<ReferenceInput> only accepts a single child');
         }
 
-        const finalLabel =
-            typeof label === 'undefined'
-                ? `resources.${resource}.fields.${source}`
-                : label;
-        const translatedLabel = translate(finalLabel, { _: finalLabel });
-        const matchingReferencesError =
-            matchingReferences && matchingReferences.error
-                ? translate(matchingReferences.error, {
-                      _: matchingReferences.error,
-                  })
-                : null;
-        const selectedReferenceError =
-            input.value && !referenceRecord
-                ? translate('aor.input.references.single_missing', {
-                      _: 'aor.input.references.single_missing',
-                  })
-                : null;
+        const translatedLabel = translate(
+            getFinalLabel(label, resource, source)
+        );
+        const dataStatus = getDataStatus({
+            input,
+            matchingReferences,
+            referenceRecord,
+            translate,
+        });
 
-        if (
-            (input.value && selectedReferenceError && !matchingReferences) ||
-            (!input.value && !matchingReferences)
-        ) {
+        if (dataStatus.waiting) {
             return <ReferenceLoadingProgress label={translatedLabel} />;
         }
 
-        if (
-            (input.value &&
-                selectedReferenceError &&
-                matchingReferencesError) ||
-            (!input.value && matchingReferencesError)
-        ) {
+        if (dataStatus.error) {
             return (
                 <ReferenceError
                     label={translatedLabel}
-                    error={
-                        input.value ? (
-                            selectedReferenceError
-                        ) : (
-                            matchingReferencesError
-                        )
-                    }
+                    error={dataStatus.error}
                 />
             );
         }
@@ -222,20 +241,15 @@ export class ReferenceInput extends Component {
         return React.cloneElement(children, {
             allowEmpty,
             input,
-            label:
-                typeof label === 'undefined'
-                    ? `resources.${resource}.fields.${source}`
-                    : label,
+            label: translatedLabel,
             resource,
             meta: {
                 ...meta,
-                error: selectedReferenceError || matchingReferencesError,
-                touched: !!(selectedReferenceError || matchingReferencesError),
+                error: dataStatus.warning,
+                touched: !!dataStatus.warning,
             },
             source,
-            choices: Array.isArray(matchingReferences)
-                ? matchingReferences
-                : [referenceRecord],
+            choices: dataStatus.choices,
             basePath,
             onChange,
             filter: noFilter, // for AutocompleteInput

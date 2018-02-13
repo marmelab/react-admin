@@ -4,6 +4,7 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import {
     getSelectedReferencesStatus,
+    getDataStatus,
     ReferenceArrayInput,
 } from './ReferenceArrayInput';
 
@@ -46,6 +47,214 @@ describe('Reference Array Input', () => {
             );
         });
     });
+
+    describe('getDataStatus', () => {
+        const data = {
+            input: {},
+            matchingReferences: null,
+            referenceRecords: [],
+            translate: x => `*${x}*`,
+        };
+
+        it('should indicate whether the data are ready or not', () => {
+            const test = (data, waiting, explanation) =>
+                assert.equal(getDataStatus(data).waiting, waiting, explanation);
+            test(
+                data,
+                true,
+                'we must wait until the references fetch is finished and there is no reference already associated with the resource.'
+            );
+            test(
+                { ...data, input: { value: [1, 2] } },
+                true,
+                'we must wait until the references fetch is finished and linked references data are not found.'
+            );
+            test(
+                {
+                    ...data,
+                    input: { value: [1, 2] },
+                    referenceRecords: [{ id: 1 }],
+                },
+                false,
+                'it is ready if the references fetch is not finished but at least one linked reference data are found.'
+            );
+            test(
+                { ...data, input: { value: [1, 2] }, matchingReferences: [] },
+                false,
+                'it is ready if none linked reference data are not found, but the references fetch is finished.'
+            );
+            test(
+                {
+                    ...data,
+                    input: { value: [1, 2] },
+                    matchingReferences: { error: 'error' },
+                },
+                false,
+                'it is ready if linked reference data are not found, but the references fetch is finished with error.'
+            );
+        });
+
+        it('should claim an error if needed', () => {
+            const test = (data, error, explanation) => {
+                const status = getDataStatus(data);
+                assert.equal(status.waiting, false);
+                assert.equal(status.error, error, explanation);
+            };
+            test(
+                {
+                    ...data,
+                    matchingReferences: { error: 'error' },
+                },
+                '*aor.input.references.all_missing*',
+                'there is an error if the references fetch fails and there is no linked reference'
+            );
+            test(
+                {
+                    ...data,
+                    matchingReferences: { error: 'error' },
+                    input: { value: [1] },
+                },
+                '*aor.input.references.all_missing*',
+                'there is an error if the references fetch fails and there is all linked reference without data'
+            );
+            test(
+                {
+                    ...data,
+                    matchingReferences: { error: 'error' },
+                    input: { value: [1, 2] },
+                    referenceRecords: [{ id: 1 }],
+                },
+                null,
+                'there is no error if the references fetch fails but there is at least one linked reference with data'
+            );
+            test(
+                {
+                    ...data,
+                    matchingReferences: [{ id: 2 }],
+                    input: { value: [1, 2] },
+                    referenceRecords: [],
+                },
+                null,
+                'there is no error if there is all linked references without data but the references fetch succeeds'
+            );
+            test(
+                {
+                    ...data,
+                    matchingReferences: [],
+                    input: { value: [1, 2] },
+                    referenceRecords: [],
+                },
+                null,
+                'there is no error if there is a linked reference without data but the references fetch succeeds  even empty'
+            );
+            test(
+                {
+                    ...data,
+                    matchingReferences: [{ id: 1 }],
+                },
+                null,
+                'there is no error if the references fetch succeeds and there is no linked reference'
+            );
+        });
+
+        it('should claim a warning if needed', () => {
+            const test = (data, warning, explanation) => {
+                const status = getDataStatus(data);
+                assert.equal(status.waiting, false);
+                assert.equal(status.error, null);
+                assert.equal(status.warning, warning, explanation);
+            };
+
+            test(
+                {
+                    ...data,
+                    matchingReferences: { error: 'error on fetch' },
+                    input: { value: [1] },
+                    referenceRecords: [{ id: 1 }],
+                },
+                '*error on fetch*',
+                'there is a warning if the references fetch fails but there is linked references with data'
+            );
+            test(
+                {
+                    ...data,
+                    matchingReferences: [{ id: 3 }],
+                    input: { value: [1, 2] },
+                    referenceRecords: [{ id: 2 }],
+                },
+                '*aor.input.references.many_missing*',
+                'there is a warning if there is at least one linked reference without data but the references fetch succeeds'
+            );
+            test(
+                {
+                    ...data,
+                    matchingReferences: [],
+                    input: { value: [1, 2] },
+                    referenceRecords: [{ id: 1 }, { id: 2 }],
+                },
+                null,
+                'there is no warning if there is all linked references with data and the references fetch succeeds even empty'
+            );
+            test(
+                {
+                    ...data,
+                    matchingReferences: [],
+                },
+                null,
+                'there is no warning if the references fetch succeeds and there is no linked references'
+            );
+        });
+
+        it('should return choices consistent with the data status', () => {
+            const test = (data, warning, choices, explanation) => {
+                const status = getDataStatus(data);
+                assert.equal(status.waiting, false);
+                assert.equal(status.error, null);
+                assert.equal(status.warning, warning);
+                assert.deepEqual(status.choices, choices, explanation);
+            };
+
+            test(
+                {
+                    ...data,
+                    matchingReferences: { error: 'error on fetch' },
+                    input: { value: [1, 2] },
+                    referenceRecords: [{ id: 1 }, { id: 2 }],
+                },
+                '*error on fetch*',
+                [{ id: 1 }, { id: 2 }],
+                'if the references fetch fails the choices are the linked references'
+            );
+            test(
+                {
+                    ...data,
+                    matchingReferences: [{ id: 3 }],
+                    input: { value: [1, 2] },
+                    referenceRecords: [],
+                },
+                '*aor.input.references.many_missing*',
+                [{ id: 3 }],
+                'if there is no data for the linked references, the choices are those returned by fetch'
+            );
+            test(
+                {
+                    ...data,
+                    matchingReferences: [
+                        { id: 1 },
+                        { id: 2 },
+                        { id: 3 },
+                        { id: 4 },
+                    ],
+                    input: { value: [1, 2] },
+                    referenceRecords: [{ id: 1 }, { id: 2 }],
+                },
+                null,
+                [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }],
+                'if there is data for the linked reference and the references fetch succeeds, we use the choices returned by fetch (that will include the linked reference, but this is not managed at getDataStatus method level.)'
+            );
+        });
+    });
+
     describe('<ReferenceArrayInput />', () => {
         const defaultProps = {
             addField: true,

@@ -13,10 +13,63 @@ import ReferenceError from './ReferenceError';
 import translate from '../../i18n/translate';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
+const getFinalLabel = (label, resource, source) =>
+    typeof label === 'undefined'
+        ? `resources.${resource}.fields.${source}`
+        : label;
 export const getSelectedReferencesStatus = (input, referenceRecords) =>
     !input.value || input.value.length === referenceRecords.length
         ? 'ready'
         : referenceRecords.length > 0 ? 'incomplete' : 'empty';
+
+export const getDataStatus = ({
+    input,
+    matchingReferences,
+    referenceRecords,
+    translate,
+}) => {
+    // selectedReferencesData can be "empty" (no data was found for references from input.value)
+    // or "incomplete" (Not all of the reference data was found)
+    // or "ready" (all references data was found or there is no references from input.value)
+    const selectedReferencesData = getSelectedReferencesStatus(
+        input,
+        referenceRecords
+    );
+
+    const matchingReferencesError =
+        matchingReferences && matchingReferences.error
+            ? translate(matchingReferences.error, {
+                  _: matchingReferences.error,
+              })
+            : null;
+
+    return {
+        waiting:
+            (!matchingReferences &&
+                input.value &&
+                selectedReferencesData === 'empty') ||
+            (!matchingReferences && !input.value),
+        error:
+            matchingReferencesError &&
+            (!input.value ||
+                (input.value && selectedReferencesData === 'empty'))
+                ? translate('aor.input.references.all_missing', {
+                      _: 'aor.input.references.all_missing',
+                  })
+                : null,
+        warning:
+            matchingReferencesError ||
+            (input.value && selectedReferencesData !== 'ready')
+                ? matchingReferencesError ||
+                  translate('aor.input.references.many_missing', {
+                      _: 'aor.input.references.many_missing',
+                  })
+                : null,
+        choices: Array.isArray(matchingReferences)
+            ? matchingReferences
+            : referenceRecords,
+    };
+};
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -180,41 +233,22 @@ export class ReferenceArrayInput extends Component {
             );
         }
 
-        const finalLabel =
-            typeof label === 'undefined'
-                ? `resources.${resource}.fields.${source}`
-                : label;
-        const translatedLabel = translate(finalLabel, { _: finalLabel });
-
-        // selectedReferencesData can be "empty" (no data was found for references from input.value)
-        // or "incomplete" (Not all of the reference data was found)
-        // or "ready" (all references data was found or there is no references from input.value)
-        const selectedReferencesData = getSelectedReferencesStatus(
-            input,
-            referenceRecords
+        const translatedLabel = translate(
+            getFinalLabel(label, resource, source)
         );
 
-        if (
-            (!matchingReferences &&
-                input.value &&
-                selectedReferencesData === 'empty') ||
-            (!matchingReferences && !input.value)
-        ) {
+        const dataStatus = getDataStatus({
+            input,
+            matchingReferences,
+            referenceRecords,
+            translate,
+        });
+
+        if (dataStatus.waiting) {
             return <ReferenceLoadingProgress label={translatedLabel} />;
         }
 
-        const matchingReferencesError =
-            matchingReferences && matchingReferences.error
-                ? translate(matchingReferences.error, {
-                      _: matchingReferences.error,
-                  })
-                : null;
-
-        if (
-            matchingReferencesError &&
-            (!input.value ||
-                (input.value && selectedReferencesData === 'empty'))
-        ) {
+        if (dataStatus.error) {
             return (
                 <ReferenceError
                     label={translatedLabel}
@@ -225,32 +259,18 @@ export class ReferenceArrayInput extends Component {
             );
         }
 
-        const childrenError =
-            matchingReferencesError ||
-            (input.value && selectedReferencesData !== 'ready')
-                ? matchingReferencesError ||
-                  translate('aor.input.references.many_missing', {
-                      _: 'aor.input.references.many_missing',
-                  })
-                : null;
-
         return React.cloneElement(children, {
             allowEmpty,
             input,
-            label:
-                typeof label === 'undefined'
-                    ? `resources.${resource}.fields.${source}`
-                    : label,
+            label: translatedLabel,
             resource,
             meta: {
                 ...meta,
-                error: childrenError,
-                touched: !!childrenError,
+                error: dataStatus.warning,
+                touched: !!dataStatus.warning,
             },
             source,
-            choices: Array.isArray(matchingReferences)
-                ? matchingReferences
-                : referenceRecords,
+            choices: dataStatus.choices,
             basePath,
             onChange,
             setFilter: this.debouncedSetFilter,
