@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 
 import { CreateButton, RefreshButton } from '../button';
 import CardActions from '../layout/CardActions';
-import BulkActions from './BulkActions';
 
 const Actions = ({
     bulkActions,
@@ -23,19 +22,16 @@ const Actions = ({
     return (
         <CardActions className={className} {...rest}>
             {selectedIds &&
-                selectedIds.length > 0 && (
-                    <BulkActions
-                        basePath={basePath}
-                        filterValues={filterValues}
-                        resource={resource}
-                        selectedIds={selectedIds}
-                        onUnselectItems={onUnselectItems}
-                    >
-                        {bulkActions}
-                    </BulkActions>
-                )}
+                selectedIds.length > 0 &&
+                cloneElement(bulkActions, {
+                    basePath,
+                    filterValues,
+                    resource,
+                    selectedIds,
+                    onUnselectItems,
+                })}
             {filters &&
-                React.cloneElement(filters, {
+                cloneElement(filters, {
                     resource,
                     showFilter,
                     displayedFilters,

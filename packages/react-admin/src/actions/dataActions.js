@@ -3,6 +3,7 @@ import {
     GET_ONE,
     CREATE,
     UPDATE,
+    UPDATE_MANY,
     DELETE,
     DELETE_MANY,
     GET_MANY,
@@ -66,6 +67,24 @@ export const crudUpdate = (
     meta: { resource, fetch: UPDATE, cancelPrevious: false },
 });
 
+export const CRUD_UPDATE_MANY = 'RA/CRUD_UPDATE_MANY';
+export const CRUD_UPDATE_MANY_LOADING = 'RA/CRUD_UPDATE_MANY_LOADING';
+export const CRUD_UPDATE_MANY_FAILURE = 'RA/CRUD_UPDATE_MANY_FAILURE';
+export const CRUD_UPDATE_MANY_SUCCESS = 'RA/CRUD_UPDATE_MANY_SUCCESS';
+
+export const crudUpdateMany = (
+    resource,
+    ids,
+    data,
+    basePath,
+    refresh = true,
+    unselectAll = true
+) => ({
+    type: CRUD_UPDATE_MANY,
+    payload: { ids, data, basePath, refresh, unselectAll },
+    meta: { resource, fetch: UPDATE_MANY, cancelPrevious: false },
+});
+
 export const CRUD_DELETE = 'RA/CRUD_DELETE';
 export const CRUD_DELETE_LOADING = 'RA/CRUD_DELETE_LOADING';
 export const CRUD_DELETE_FAILURE = 'RA/CRUD_DELETE_FAILURE';
@@ -88,10 +107,16 @@ export const CRUD_DELETE_MANY_LOADING = 'RA/CRUD_DELETE_MANY_LOADING';
 export const CRUD_DELETE_MANY_FAILURE = 'RA/CRUD_DELETE_MANY_FAILURE';
 export const CRUD_DELETE_MANY_SUCCESS = 'RA/CRUD_DELETE_MANY_SUCCESS';
 
-export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
+export const crudDeleteMany = (
+    resource,
+    ids,
+    basePath,
+    refresh = true,
+    unselectAll = true
+) => ({
     type: CRUD_DELETE_MANY,
-    payload: { ids, basePath },
-    meta: { resource, fetch: DELETE_MANY, cancelPrevious: false, refresh },
+    payload: { ids, basePath, refresh, unselectAll },
+    meta: { resource, fetch: DELETE_MANY, cancelPrevious: false },
 });
 
 export const CRUD_GET_MANY = 'RA/CRUD_GET_MANY';

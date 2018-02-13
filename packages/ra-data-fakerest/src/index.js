@@ -6,6 +6,7 @@ import {
     GET_MANY_REFERENCE,
     CREATE,
     UPDATE,
+    UPDATE_MANY,
     DELETE,
     DELETE_MANY,
 } from 'react-admin';
@@ -93,6 +94,13 @@ export default (data, loggingEnabled = false) => {
                         ...params.data,
                     }),
                 };
+            case UPDATE_MANY:
+                params.ids.forEach(id =>
+                    restServer.updateOne(resource, id, {
+                        ...params.data,
+                    })
+                );
+                return { data: params.ids };
             case CREATE:
                 return {
                     data: restServer.addOne(resource, { ...params.data }),

@@ -2,9 +2,10 @@ import React, { cloneElement, Children, Component } from 'react';
 import PropTypes from 'prop-types';
 import MoreVertIcon from 'material-ui-icons/MoreVert';
 import Menu from 'material-ui/Menu';
+import classnames from 'classnames';
 
-import Button from '../../button/Button';
-import translate from '../../../i18n/translate';
+import Button from '../button/Button';
+import translate from '../../i18n/translate';
 import BulkDeleteMenuItem from './BulkDeleteMenuItem';
 
 const sanitizeRestProps = ({
@@ -24,11 +25,8 @@ class BulkActions extends Component {
         this.setState({ anchorElement: event.currentTarget });
     };
 
-    handleCloseAfterAction = unselectItems => {
+    handleCloseAfterAction = () => {
         this.setState({ anchorElement: null });
-        if (unselectItems) {
-            this.props.onUnselectItems();
-        }
     };
 
     handleClose = () => {
@@ -39,6 +37,7 @@ class BulkActions extends Component {
         const {
             basePath,
             children,
+            className,
             filterValues,
             label,
             resource,
@@ -51,6 +50,7 @@ class BulkActions extends Component {
         return (
             <div>
                 <Button
+                    className={classnames('bulk-actions-button', className)}
                     alignIcon="right"
                     aria-owns={anchorElement ? 'bulk-actions-menu' : null}
                     aria-haspopup="true"
@@ -71,6 +71,10 @@ class BulkActions extends Component {
                 >
                     {Children.map(children, child =>
                         cloneElement(child, {
+                            className: classnames(
+                                'bulk-actions-menu-item',
+                                child.props.className
+                            ),
                             basePath,
                             filterValues,
                             onClick: this.handleCloseAfterAction,
@@ -78,13 +82,6 @@ class BulkActions extends Component {
                             selectedIds,
                         })
                     )}
-                    <BulkDeleteMenuItem
-                        basePath={basePath}
-                        filterValues={filterValues}
-                        onClick={this.handleCloseAfterAction}
-                        resource={resource}
-                        selectedIds={selectedIds}
-                    />
                 </Menu>
             </div>
         );
@@ -93,16 +90,17 @@ class BulkActions extends Component {
 
 BulkActions.propTypes = {
     basePath: PropTypes.string,
+    className: PropTypes.string,
     children: PropTypes.node,
     filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
-    onUnselectItems: PropTypes.func.isRequired,
     translate: PropTypes.func.isRequired,
 };
 
 BulkActions.defaultProps = {
+    children: <BulkDeleteMenuItem />,
     label: 'ra.action.bulk_actions',
 };
 

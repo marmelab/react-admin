@@ -15,9 +15,12 @@ import {
     CRUD_GET_ONE_FAILURE,
     CRUD_UPDATE_FAILURE,
     CRUD_UPDATE_SUCCESS,
+    CRUD_UPDATE_MANY_FAILURE,
+    CRUD_UPDATE_MANY_SUCCESS,
 } from '../../actions/dataActions';
 import { showNotification } from '../../actions/notificationActions';
 import { refreshView } from '../../actions/uiActions';
+import { setListSelectedIds } from '../../actions/listActions';
 import resolveRedirectTo from '../../util/resolveRedirectTo';
 
 /**
@@ -42,6 +45,17 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
                       ),
                   ])
                 : yield [put(showNotification('ra.notification.updated'))];
+        case CRUD_UPDATE_MANY_SUCCESS: {
+            const actions = [put(showNotification('ra.notification.updated'))];
+            if (requestPayload.refresh) {
+                actions.push(put(refreshView()));
+            }
+            if (requestPayload.unselectAll) {
+                actions.push(put(setListSelectedIds(meta.resource, [])));
+            }
+
+            return yield all(actions);
+        }
         case CRUD_CREATE_SUCCESS:
             return requestPayload.redirectTo
                 ? yield all([
@@ -75,13 +89,17 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
                       ),
                   ])
                 : yield [put(showNotification('ra.notification.deleted'))];
-        case CRUD_DELETE_MANY_SUCCESS:
-            return meta.refresh
-                ? yield all([
-                      put(showNotification('ra.notification.deleted')),
-                      put(refreshView()),
-                  ])
-                : yield [put(showNotification('ra.notification.deleted'))];
+        case CRUD_DELETE_MANY_SUCCESS: {
+            const actions = [put(showNotification('ra.notification.deleted'))];
+            if (requestPayload.refresh) {
+                actions.push(put(refreshView()));
+            }
+            if (requestPayload.unselectAll) {
+                actions.push(put(setListSelectedIds(meta.resource, [])));
+            }
+
+            return yield all(actions);
+        }
         case CRUD_GET_ONE_SUCCESS:
             if (
                 !('id' in payload.data) ||
@@ -109,6 +127,7 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
         case CRUD_GET_MANY_REFERENCE_FAILURE:
         case CRUD_CREATE_FAILURE:
         case CRUD_UPDATE_FAILURE:
+        case CRUD_UPDATE_MANY_FAILURE:
         case CRUD_DELETE_FAILURE:
         case CRUD_DELETE_MANY_FAILURE: {
             console.error(error); // eslint-disable-line no-console

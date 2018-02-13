@@ -4,13 +4,11 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { MenuItem } from 'material-ui/Menu';
 
-import { crudDeleteMany as crudDeleteManyAction } from '../../../actions';
-
-import translate from '../../../i18n/translate';
+import { translate, crudUpdateMany as crudUpdateManyAction } from 'react-admin';
 
 const sanitizeRestProps = ({
     basePath,
-    crudDeleteMany,
+    crudUpdateMany,
     filterValues,
     onClick,
     resource,
@@ -21,14 +19,14 @@ class BulkDeleteMenuItem extends Component {
     handleClick = () => {
         const {
             basePath,
-            crudDeleteMany,
+            crudUpdateMany,
             onClick,
             resource,
             selectedIds,
         } = this.props;
 
         onClick(true);
-        crudDeleteMany(resource, selectedIds, basePath);
+        crudUpdateMany(resource, selectedIds, { views: 0 }, basePath);
     };
 
     render() {
@@ -43,7 +41,7 @@ class BulkDeleteMenuItem extends Component {
 
 BulkDeleteMenuItem.propTypes = {
     basePath: PropTypes.string,
-    crudDeleteMany: PropTypes.func.isRequired,
+    crudUpdateMany: PropTypes.func.isRequired,
     label: PropTypes.string,
     onClick: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
@@ -52,11 +50,11 @@ BulkDeleteMenuItem.propTypes = {
 };
 
 BulkDeleteMenuItem.defaultProps = {
-    label: 'ra.action.delete',
+    label: 'simple.action.resetViews',
 };
 
 const EnhancedBulkDeleteMenuItem = compose(
-    connect(undefined, { crudDeleteMany: crudDeleteManyAction }),
+    connect(undefined, { crudUpdateMany: crudUpdateManyAction }),
     translate
 )(BulkDeleteMenuItem);
 

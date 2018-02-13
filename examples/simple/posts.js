@@ -1,5 +1,7 @@
 import React from 'react';
 import {
+    BulkActions,
+    BulkDeleteMenuItem,
     BooleanField,
     BooleanInput,
     CheckboxGroupInput,
@@ -50,6 +52,7 @@ import { withStyles } from 'material-ui/styles';
 
 import BookIcon from 'material-ui-icons/Book';
 export const PostIcon = BookIcon;
+import UpdateCommentableMenuItem from './customBulkAction';
 
 const QuickFilter = translate(({ label, translate }) => (
     <Chip style={{ marginBottom: 8 }} label={translate(label)} />
@@ -80,9 +83,17 @@ const styles = {
     publishedAt: { fontStyle: 'italic' },
 };
 
+const PostListBulkActions = props => (
+    <BulkActions {...props}>
+        <UpdateCommentableMenuItem />
+        <BulkDeleteMenuItem />
+    </BulkActions>
+);
+
 export const PostList = withStyles(styles)(({ classes, ...props }) => (
     <List
         {...props}
+        bulkActions={<PostListBulkActions />}
         filters={<PostFilter />}
         sort={{ field: 'published_at', order: 'DESC' }}
     >

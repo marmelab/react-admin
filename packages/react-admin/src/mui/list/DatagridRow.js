@@ -49,7 +49,11 @@ class DatagridRow extends Component {
                 {...sanitizeRestProps(rest)}
             >
                 <TableCell padding="checkbox">
-                    <Checkbox checked={selected} onClick={this.handleToggle} />
+                    <Checkbox
+                        className="select-item"
+                        checked={selected}
+                        onClick={this.handleToggle}
+                    />
                 </TableCell>
                 {React.Children.map(
                     children,

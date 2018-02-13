@@ -22,6 +22,7 @@ import queryReducer, {
 import Header from '../layout/Header';
 import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
+import DefaultBulkActions from './BulkActions';
 import DefaultActions from './ListActions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
 import {
@@ -270,6 +271,7 @@ export class List extends Component {
 
     render() {
         const {
+            bulkActions = <DefaultBulkActions />,
             children,
             classes = {},
             className,
@@ -319,6 +321,7 @@ export class List extends Component {
                             className: classes.actions,
                         })}
                         actionProps={{
+                            bulkActions,
                             resource,
                             filters,
                             filterValues: queryFilterValues,
@@ -395,6 +398,7 @@ export class List extends Component {
 
 List.propTypes = {
     // the props you can change
+    bulkActions: PropTypes.element,
     actions: PropTypes.element,
     children: PropTypes.node,
     classes: PropTypes.object,
