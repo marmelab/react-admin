@@ -1325,6 +1325,14 @@ const MyLayout () => ({
 );
 ```
 
+## Data providers should support two more types for bulk actions
+
+The `List` component now support bulk actions. The consequence is that data providers should support them too. We introduced two new types: `DELETE_MANY` and `UPDATE_MANY`.
+
+Both will be called with an `ids` property in their params containing an array of resource ids. In addition, `UPDATE_MANY` will also get a `data` property in its params defining how to update the resources.
+
+Please refer to the `dataProvider` documentation for more information.
+
 ## react-admin addon packages renamed with ra prefix and moved into root repository
 
 `aor-graphql` `aor-realtime` and `aor-dependent-input` packages have been migrated into the main `react-admin` repository and renamed with the new prefix. Besides, `aor-graphql-client` and `aor-graphql-client-graphcool` follow the new dataProvider packages naming.

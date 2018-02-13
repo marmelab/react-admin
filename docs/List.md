@@ -19,6 +19,7 @@ Here are all the props accepted by the `<List>` component:
 
 * [`title`](#page-title)
 * [`actions`](#actions)
+* [`bulkActions`](#bulk-actions)
 * [`filters`](#filters) (a React element used to display the filter form)
 * [`perPage`](#records-per-page)
 * [`sort`](#default-sort-field)
@@ -107,6 +108,106 @@ export const PostList = (props) => (
         ...
     </List>
 );
+```
+
+### Bulk Actions
+
+You can replace the list of default bulk actions by your own element using the `bulkActions` prop:
+
+```jsx
+import Button from 'material-ui/Button';
+import { BulkActions, BulkDeleteMenuItem } from 'react-admin';
+import CustomBulkMenuItem from './CustomBulkMenuItem';
+
+const PostBulkActions = props => (
+    <BulkActions {...props}>
+        <CustomBulkMenuItem />
+        {/* Add the default bulk delete action */}
+        <BulkDeleteMenuItem />
+    </BulkActions>
+);
+
+export const PostList = (props) => (
+    <List {...props} bulkActions={<PostBulkActions />}>
+        ...
+    </List>
+);
+```
+
+A custom bulk action, is a material-ui [`MenuItem`](http://www.material-ui.com/#/components/menu), for which you are entirely responsible. It will receive several props allowing it to perform its work:
+
+* `resource`: the currently displayed resource (eg `posts`, `comments`, etc.)
+* `basePath`: the current router base path for the resource (eg `/posts`, `/comments`, etc.)
+* `filterValues`: the filter values. This can be useful if you want to apply your action on all items matching the filter.
+* `selectedIds`: the identifiers of the currently selected items.
+* `onCloseMenu`: an event handler you should call to close the menu.
+
+Here is an example leveraging the new `UPDATE_MANY` crud action, which will set the `views` property of all posts to `0`:
+
+```jsx
+// in ./CustomBulkMenuItem.js
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import { MenuItem } from 'material-ui/Menu';
+
+import { translate, crudUpdateMany as crudUpdateManyAction } from 'react-admin';
+
+const sanitizeRestProps = ({
+    basePath,
+    crudUpdateMany,
+    filterValues,
+    onCloseMenu,
+    resource,
+    selectedIds,
+    ...props
+}) => props;
+class BulkUpdateMenuItem extends Component {
+    handleClick = () => {
+        const {
+            basePath,
+            crudUpdateMany,
+            onCloseMenu,
+            resource,
+            selectedIds,
+        } = this.props;
+
+        onCloseMenu();
+        crudUpdateMany(resource, selectedIds, { views: 0 }, basePath);
+    };
+
+    render() {
+        const { label, translate, ...rest } = this.props;
+        return (
+            <MenuItem onClick={this.handleClick} {...sanitizeRestProps(rest)}>
+                {translate(label)}
+            </MenuItem>
+        );
+    }
+}
+
+BulkUpdateMenuItem.propTypes = {
+    basePath: PropTypes.string,
+    crudUpdateMany: PropTypes.func.isRequired,
+    label: PropTypes.string,
+    onCloseMenu: PropTypes.func.isRequired,
+    resource: PropTypes.string.isRequired,
+    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    translate: PropTypes.func.isRequired,
+};
+
+BulkUpdateMenuItem.defaultProps = {
+    label: 'simple.action.resetViews',
+};
+
+const EnhancedBulkUpdateMenuItem = compose(
+    connect(undefined, { crudUpdateMany: crudUpdateManyAction }),
+    translate
+)(BulkUpdateMenuItem);
+
+export default EnhancedBulkUpdateMenuItem;
+
 ```
 
 ### Filters
