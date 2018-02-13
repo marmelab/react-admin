@@ -108,12 +108,15 @@ export class AutocompleteInput extends React.Component {
             selectedItem,
             inputValue: this.props.input.value,
             searchText: this.getSuggestionText(selectedItem),
-            suggestions: selectedItem ? [selectedItem] : this.props.choices,
+            suggestions:
+                this.props.limitChoicesToValue && selectedItem
+                    ? [selectedItem]
+                    : this.props.choices,
         });
     }
 
     componentWillReceiveProps(nextProps) {
-        const { choices, input } = nextProps;
+        const { choices, input, limitChoicesToValue } = nextProps;
         if (input.value !== this.state.inputValue) {
             const selectedItem = this.getSelectedItem(nextProps, input.value);
             this.setState({
@@ -121,7 +124,10 @@ export class AutocompleteInput extends React.Component {
                 inputValue: input.value,
                 searchText: this.getSuggestionText(selectedItem),
                 dirty: false,
-                suggestions: selectedItem ? [selectedItem] : this.props.choices,
+                suggestions:
+                    limitChoicesToValue && selectedItem
+                        ? [selectedItem]
+                        : this.props.choices,
                 prevSuggestions: false,
             });
             // Ensure to reset the filter
@@ -136,7 +142,10 @@ export class AutocompleteInput extends React.Component {
                 searchText: dirty
                     ? searchText
                     : this.getSuggestionText(selectedItem),
-                suggestions: !dirty && selectedItem ? [selectedItem] : choices,
+                suggestions:
+                    limitChoicesToValue && !dirty && selectedItem
+                        ? [selectedItem]
+                        : choices,
                 prevSuggestions: false,
             }));
         }
@@ -446,6 +455,7 @@ AutocompleteInput.propTypes = {
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
+    limitChoicesToValue: PropTypes.bool,
     meta: PropTypes.object,
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
@@ -465,6 +475,7 @@ AutocompleteInput.defaultProps = {
     options: {},
     optionText: 'name',
     optionValue: 'id',
+    limitChoicesToValue: false,
     translateChoice: true,
     inputValueMatcher: (input, suggestion, getOptionText) =>
         input.toLowerCase().trim() ===

@@ -136,6 +136,8 @@ By default the component matches choices with the current input searchText, if i
 }/>
 ```
 
+If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.  
+
 Lastly, use the `options` attribute if you want to override any of Material UI's `<AutoComplete>` attributes:
 
 {% raw %}
