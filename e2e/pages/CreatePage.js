@@ -11,6 +11,12 @@ export default url => driver => ({
             ".create-page form>div:last-child button[type='button']"
         ),
         descInput: By.css('.ql-editor'),
+        modalYes: By.css(
+            '[class^=MuiModal-root]:not([class*=MuiModal-hidden]) button[type=button]'
+        ),
+        modalNo: By.css(
+            '[class^=MuiModal-root]:not([class*=MuiModal-hidden]) button[type=submit]'
+        ),
     },
 
     navigate() {
@@ -83,6 +89,15 @@ export default url => driver => ({
                 )
             )
         );
+    },
+
+    submitModalYes() {
+        driver.findElement(this.elements.modalYes).click();
+        return this.waitUntilDataLoaded();
+    },
+    submitModalNo() {
+        driver.findElement(this.elements.modalNo).click();
+        return this.waitUntilDataLoaded();
     },
 
     submit() {

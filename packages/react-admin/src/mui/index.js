@@ -6,6 +6,7 @@ export * from './field';
 export * from './input';
 export * from './layout';
 export * from './list';
+export * from './modals';
 export * from './delete';
 export Link from './Link';
 export defaultTheme from './defaultTheme';

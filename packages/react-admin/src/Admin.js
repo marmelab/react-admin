@@ -8,6 +8,7 @@ import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import withContext from 'recompose/withContext';
+import { modalsMiddleware } from 'redux-promising-modals';
 
 import { USER_LOGOUT } from './actions/authActions';
 
@@ -28,6 +29,7 @@ const Admin = ({
     customReducers = {},
     customSagas = [],
     customRoutes = [],
+    customModals = [],
     dashboard,
     history,
     menu,
@@ -60,7 +62,11 @@ const Admin = ({
         resettableAppReducer,
         initialState,
         compose(
-            applyMiddleware(sagaMiddleware, routerMiddleware(routerHistory)),
+            applyMiddleware(
+                modalsMiddleware,
+                sagaMiddleware,
+                routerMiddleware(routerHistory)
+            ),
             typeof window !== 'undefined' && window.devToolsExtension
                 ? window.devToolsExtension()
                 : f => f
@@ -91,6 +97,7 @@ const Admin = ({
                                     appLayout={appLayout}
                                     catchAll={catchAll}
                                     customRoutes={customRoutes}
+                                    customModals={customModals}
                                     dashboard={dashboard}
                                     loginPage={loginPage}
                                     logout={logout}
@@ -123,6 +130,7 @@ Admin.propTypes = {
     customSagas: PropTypes.array,
     customReducers: PropTypes.object,
     customRoutes: PropTypes.array,
+    customModals: PropTypes.array,
     dashboard: componentPropType,
     history: PropTypes.object,
     loginPage: componentPropType,

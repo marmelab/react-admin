@@ -71,6 +71,7 @@ export class SaveButton extends Component {
             redirect,
             saving,
             submitOnEnter,
+            showNotification,
             translate,
             variant = 'raised',
             ...rest

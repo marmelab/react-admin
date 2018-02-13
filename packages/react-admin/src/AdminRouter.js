@@ -84,6 +84,7 @@ export class AdminRouter extends Component {
             catchAll,
             children,
             customRoutes,
+            customModals,
             dashboard,
             logout,
             menu,
@@ -152,6 +153,7 @@ export class AdminRouter extends Component {
                                         title={title}
                                     />
                                 ),
+                                customModals,
                                 dashboard,
                                 logout,
                                 menu,
@@ -176,6 +178,7 @@ AdminRouter.propTypes = {
     catchAll: componentPropType,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     customRoutes: PropTypes.array,
+    customModals: PropTypes.array,
     dashboard: componentPropType,
     isLoggedIn: PropTypes.bool,
     logout: PropTypes.node,

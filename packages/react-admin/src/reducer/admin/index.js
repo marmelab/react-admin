@@ -12,11 +12,13 @@ import references, {
 import saving from './saving';
 import ui from './ui';
 import auth, { isLoggedIn as authIsLoggedIn } from './auth';
+import modals from './modals';
 
 export default combineReducers({
     resources,
     loading,
     notifications,
+    modals,
     record,
     references,
     saving,
