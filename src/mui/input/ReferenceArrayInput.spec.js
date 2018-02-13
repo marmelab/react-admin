@@ -94,7 +94,7 @@ describe('Reference Array Input', () => {
             );
         });
 
-        it('should claim an error if needed', () => {
+        it('should return an error if needed', () => {
             const test = (data, error, explanation) => {
                 const status = getDataStatus(data);
                 assert.equal(status.waiting, false);
@@ -157,7 +157,7 @@ describe('Reference Array Input', () => {
             );
         });
 
-        it('should claim a warning if needed', () => {
+        it('should return a warning if needed', () => {
             const test = (data, warning, explanation) => {
                 const status = getDataStatus(data);
                 assert.equal(status.waiting, false);
@@ -417,7 +417,7 @@ describe('Reference Array Input', () => {
             });
         });
 
-        it('should send an error to the children if references were found and but selected references are not complete', () => {
+        it('should send an error to the children if references were found but selected references are not complete', () => {
             const wrapper = shallow(
                 <ReferenceArrayInput
                     {...{
@@ -440,7 +440,7 @@ describe('Reference Array Input', () => {
             });
         });
 
-        it('should send an error to the children if references were found and but selected references are empty', () => {
+        it('should send an error to the children if references were found but selected references are empty', () => {
             const wrapper = shallow(
                 <ReferenceArrayInput
                     {...{
@@ -523,7 +523,7 @@ describe('Reference Array Input', () => {
             assert.equal(MyComponentElement.length, 1);
         });
 
-        it('should not render enclosed component if allowEmpty is true', () => {
+        it('should render enclosed component if allowEmpty is true', () => {
             const wrapper = shallow(
                 <ReferenceArrayInput {...defaultProps} allowEmpty>
                     <MyComponent />
@@ -696,7 +696,10 @@ describe('Reference Array Input', () => {
             );
 
             const myComponent = wrapper.find('MyComponent');
-            assert.notEqual(myComponent.prop('meta', undefined));
+            assert.deepEqual(myComponent.prop('meta'), {
+                error: null,
+                touched: false,
+            });
         });
     });
 });

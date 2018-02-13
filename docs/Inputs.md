@@ -581,7 +581,7 @@ import { ReferenceInput, SelectInput } from 'admin-on-rest'
 ```
 
 Set the `allowEmpty` prop when you want to add an empty choice with a value of null in the choices list.
-Be careful, disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.html#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
+Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.html#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
 
 ```jsx
 import { ReferenceInput, SelectInput } from 'admin-on-rest'
@@ -697,7 +697,7 @@ import { ReferenceArrayInput, SelectArrayInput } from 'admin-on-rest'
 ```
 
 Set the `allowEmpty` prop when you want to add an empty choice with a value of null in the choices list.
-Be careful, disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.html#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
+Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.html#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
 
 ```js
 import { ReferenceArrayInput, SelectArrayInput } from 'admin-on-rest'

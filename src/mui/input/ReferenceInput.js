@@ -14,10 +14,6 @@ import translate from '../../i18n/translate';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 const noFilter = () => true;
-const getFinalLabel = (label, resource, source) =>
-    typeof label === 'undefined'
-        ? `resources.${resource}.fields.${source}`
-        : label;
 
 export const getDataStatus = ({
     input,
@@ -216,7 +212,7 @@ export class ReferenceInput extends Component {
         }
 
         const translatedLabel = translate(
-            getFinalLabel(label, resource, source)
+            label || `resources.${resource}.fields.${source}`
         );
         const dataStatus = getDataStatus({
             input,
@@ -257,7 +253,6 @@ export class ReferenceInput extends Component {
             setPagination: this.setPagination,
             setSort: this.setSort,
             translateChoice: false,
-            errorText: 'plop',
         });
     }
 }

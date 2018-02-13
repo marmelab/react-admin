@@ -13,10 +13,7 @@ import ReferenceError from './ReferenceError';
 import translate from '../../i18n/translate';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
-const getFinalLabel = (label, resource, source) =>
-    typeof label === 'undefined'
-        ? `resources.${resource}.fields.${source}`
-        : label;
+
 export const getSelectedReferencesStatus = (input, referenceRecords) =>
     !input.value || input.value.length === referenceRecords.length
         ? 'ready'
@@ -234,7 +231,7 @@ export class ReferenceArrayInput extends Component {
         }
 
         const translatedLabel = translate(
-            getFinalLabel(label, resource, source)
+            label || `resources.${resource}.fields.${source}`
         );
 
         const dataStatus = getDataStatus({

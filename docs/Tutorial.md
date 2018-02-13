@@ -229,7 +229,7 @@ An admin interface is about displaying remote data, but also about editing and c
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'admin-on-rest';
+import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, required, SelectInput, SimpleForm, TextInput } from 'admin-on-rest';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -249,7 +249,6 @@ const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 
-const required = value => (value ? undefined : 'Required');
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
         <SimpleForm>

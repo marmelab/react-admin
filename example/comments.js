@@ -19,6 +19,7 @@ import {
     TextField,
     TextInput,
     minLength,
+    required,
     translate,
     Show,
     ShowButton,
@@ -178,7 +179,6 @@ export const CommentEdit = props => (
 );
 
 const defaultValue = { created_at: new Date() };
-const required = value => (value ? undefined : 'Required');
 export const CommentCreate = props => (
     <Create {...props}>
         <SimpleForm defaultValue={defaultValue}>
