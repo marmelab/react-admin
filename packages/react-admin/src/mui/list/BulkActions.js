@@ -77,7 +77,7 @@ class BulkActions extends Component {
                             ),
                             basePath,
                             filterValues,
-                            onClick: this.handleCloseAfterAction,
+                            onCloseMenu: this.handleCloseAfterAction,
                             resource,
                             selectedIds,
                         })

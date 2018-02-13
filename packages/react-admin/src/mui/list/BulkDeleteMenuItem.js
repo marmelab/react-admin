@@ -12,7 +12,7 @@ const sanitizeRestProps = ({
     basePath,
     crudDeleteMany,
     filterValues,
-    onClick,
+    onCloseMenu,
     resource,
     selectedIds,
     ...props
@@ -22,12 +22,12 @@ class BulkDeleteMenuItem extends Component {
         const {
             basePath,
             crudDeleteMany,
-            onClick,
+            onCloseMenu,
             resource,
             selectedIds,
         } = this.props;
 
-        onClick();
+        onCloseMenu();
         crudDeleteMany(resource, selectedIds, basePath);
     };
 
@@ -45,7 +45,7 @@ BulkDeleteMenuItem.propTypes = {
     basePath: PropTypes.string,
     crudDeleteMany: PropTypes.func.isRequired,
     label: PropTypes.string,
-    onClick: PropTypes.func.isRequired,
+    onCloseMenu: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     translate: PropTypes.func.isRequired,

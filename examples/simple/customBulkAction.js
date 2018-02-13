@@ -10,22 +10,22 @@ const sanitizeRestProps = ({
     basePath,
     crudUpdateMany,
     filterValues,
-    onClick,
+    onCloseMenu,
     resource,
     selectedIds,
     ...props
 }) => props;
-class BulkDeleteMenuItem extends Component {
+class BulkUpdateMenuItem extends Component {
     handleClick = () => {
         const {
             basePath,
             crudUpdateMany,
-            onClick,
+            onCloseMenu,
             resource,
             selectedIds,
         } = this.props;
 
-        onClick(true);
+        onCloseMenu();
         crudUpdateMany(resource, selectedIds, { views: 0 }, basePath);
     };
 
@@ -39,23 +39,23 @@ class BulkDeleteMenuItem extends Component {
     }
 }
 
-BulkDeleteMenuItem.propTypes = {
+BulkUpdateMenuItem.propTypes = {
     basePath: PropTypes.string,
     crudUpdateMany: PropTypes.func.isRequired,
     label: PropTypes.string,
-    onClick: PropTypes.func.isRequired,
+    onCloseMenu: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     translate: PropTypes.func.isRequired,
 };
 
-BulkDeleteMenuItem.defaultProps = {
+BulkUpdateMenuItem.defaultProps = {
     label: 'simple.action.resetViews',
 };
 
-const EnhancedBulkDeleteMenuItem = compose(
+const EnhancedBulkUpdateMenuItem = compose(
     connect(undefined, { crudUpdateMany: crudUpdateManyAction }),
     translate
-)(BulkDeleteMenuItem);
+)(BulkUpdateMenuItem);
 
-export default EnhancedBulkDeleteMenuItem;
+export default EnhancedBulkUpdateMenuItem;
