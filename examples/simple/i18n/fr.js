@@ -3,7 +3,7 @@ import frenchMessages from 'ra-language-french';
 export default {
     simple: {
         action: {
-            resetViews: 'Reset des vues',
+            resetViews: 'Réinitialiser des vues',
         },
     },
     ...frenchMessages,
