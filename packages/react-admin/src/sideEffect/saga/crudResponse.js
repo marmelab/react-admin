@@ -46,7 +46,15 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
                   ])
                 : yield [put(showNotification('ra.notification.updated'))];
         case CRUD_UPDATE_MANY_SUCCESS: {
-            const actions = [put(showNotification('ra.notification.updated'))];
+            const actions = [
+                put(
+                    showNotification('ra.notification.updated', 'info', {
+                        messageArgs: {
+                            smart_count: payload.data.length,
+                        },
+                    })
+                ),
+            ];
             if (requestPayload.refresh) {
                 actions.push(put(refreshView()));
             }
@@ -90,7 +98,15 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
                   ])
                 : yield [put(showNotification('ra.notification.deleted'))];
         case CRUD_DELETE_MANY_SUCCESS: {
-            const actions = [put(showNotification('ra.notification.deleted'))];
+            const actions = [
+                put(
+                    showNotification('ra.notification.deleted', 'info', {
+                        messageArgs: {
+                            smart_count: payload.data.length,
+                        },
+                    })
+                ),
+            ];
             if (requestPayload.refresh) {
                 actions.push(put(refreshView()));
             }

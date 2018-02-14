@@ -58,7 +58,7 @@ class BulkActions extends Component {
                     aria-haspopup="true"
                     label={translate(label, {
                         _: label,
-                        count: selectedIds.length,
+                        smart_count: selectedIds.length,
                     })}
                     onClick={this.handleClick}
                     {...sanitizeRestProps(rest)}
