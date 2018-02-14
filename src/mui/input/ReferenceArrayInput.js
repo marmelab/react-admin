@@ -14,10 +14,15 @@ import translate from '../../i18n/translate';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
+export const REFERENCES_STATUS_READY = 'REFERENCES_STATUS_READY';
+export const REFERENCES_STATUS_INCOMPLETE = 'REFERENCES_STATUS_INCOMPLETE';
+export const REFERENCES_STATUS_EMPTY = 'REFERENCES_STATUS_EMPTY';
 export const getSelectedReferencesStatus = (input, referenceRecords) =>
     !input.value || input.value.length === referenceRecords.length
-        ? 'ready'
-        : referenceRecords.length > 0 ? 'incomplete' : 'empty';
+        ? REFERENCES_STATUS_READY
+        : referenceRecords.length > 0
+          ? REFERENCES_STATUS_INCOMPLETE
+          : REFERENCES_STATUS_EMPTY;
 
 export const getDataStatus = ({
     input,
@@ -44,19 +49,20 @@ export const getDataStatus = ({
         waiting:
             (!matchingReferences &&
                 input.value &&
-                selectedReferencesData === 'empty') ||
+                selectedReferencesData === REFERENCES_STATUS_EMPTY) ||
             (!matchingReferences && !input.value),
         error:
             matchingReferencesError &&
             (!input.value ||
-                (input.value && selectedReferencesData === 'empty'))
+                (input.value &&
+                    selectedReferencesData === REFERENCES_STATUS_EMPTY))
                 ? translate('aor.input.references.all_missing', {
                       _: 'aor.input.references.all_missing',
                   })
                 : null,
         warning:
             matchingReferencesError ||
-            (input.value && selectedReferencesData !== 'ready')
+            (input.value && selectedReferencesData !== REFERENCES_STATUS_READY)
                 ? matchingReferencesError ||
                   translate('aor.input.references.many_missing', {
                       _: 'aor.input.references.many_missing',
@@ -261,11 +267,13 @@ export class ReferenceArrayInput extends Component {
             input,
             label: translatedLabel,
             resource,
-            meta: {
-                ...meta,
-                error: dataStatus.warning,
-                touched: !!dataStatus.warning,
-            },
+            meta: dataStatus.warning
+                ? {
+                      ...meta,
+                      error: dataStatus.warning,
+                      touched: true,
+                  }
+                : meta,
             source,
             choices: dataStatus.choices,
             basePath,
@@ -336,10 +344,10 @@ function mapStateToProps(state, props) {
 const ConnectedReferenceArrayInput = connect(mapStateToProps, {
     crudGetMany: crudGetManyAction,
     crudGetMatching: crudGetMatchingAction,
-})(ReferenceArrayInput);
+})(translate(ReferenceArrayInput));
 
 ConnectedReferenceArrayInput.defaultProps = {
     addField: true,
 };
 
-export default translate(ConnectedReferenceArrayInput);
+export default ConnectedReferenceArrayInput;

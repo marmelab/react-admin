@@ -213,6 +213,7 @@ describe('Reference Input', () => {
             source: 'post_id',
             matchingReferences: [{ id: 1 }],
             translate: x => `*${x}*`,
+            meta: {},
         };
         const MyComponent = () => <span id="mycomponent" />;
 
@@ -466,10 +467,7 @@ describe('Reference Input', () => {
             assert.equal(ErrorElement.length, 0);
             const MyComponentElement = wrapper.find('MyComponent');
             assert.equal(MyComponentElement.length, 1);
-            assert.deepEqual(MyComponentElement.prop('meta'), {
-                error: null,
-                touched: false,
-            });
+            assert.deepEqual(MyComponentElement.prop('meta'), {});
         });
 
         it('should render enclosed component even if the references are empty', () => {

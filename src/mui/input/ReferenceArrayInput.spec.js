@@ -6,6 +6,9 @@ import {
     getSelectedReferencesStatus,
     getDataStatus,
     ReferenceArrayInput,
+    REFERENCES_STATUS_READY,
+    REFERENCES_STATUS_INCOMPLETE,
+    REFERENCES_STATUS_EMPTY,
 } from './ReferenceArrayInput';
 
 describe('Reference Array Input', () => {
@@ -14,7 +17,7 @@ describe('Reference Array Input', () => {
             const test = (input, referenceRecords) =>
                 assert.equal(
                     getSelectedReferencesStatus(input, referenceRecords),
-                    'ready'
+                    REFERENCES_STATUS_READY
                 );
 
             test({}, []);
@@ -26,14 +29,14 @@ describe('Reference Array Input', () => {
         it('should return empty if there is some input values but the referenceRecords is empty', () => {
             assert.equal(
                 getSelectedReferencesStatus({ value: [1, 2] }, []),
-                'empty'
+                REFERENCES_STATUS_EMPTY
             );
         });
 
         it('should return incomplete if there is less data in the referenceRecords than values in the input value', () => {
             assert.equal(
                 getSelectedReferencesStatus({ value: [1, 2] }, [{ id: 1 }]),
-                'incomplete'
+                REFERENCES_STATUS_INCOMPLETE
             );
         });
 
@@ -43,7 +46,7 @@ describe('Reference Array Input', () => {
                     { id: 1 },
                     { id: 2 },
                 ]),
-                'ready'
+                REFERENCES_STATUS_READY
             );
         });
     });
@@ -268,6 +271,7 @@ describe('Reference Array Input', () => {
             allowEmpty: true,
             translate: x => `*${x}*`,
             referenceRecords: [],
+            meta: {},
         };
         const MyComponent = () => <span id="mycomponent" />;
 
@@ -480,10 +484,7 @@ describe('Reference Array Input', () => {
             assert.equal(ErrorElement.length, 0);
             const MyComponentElement = wrapper.find('MyComponent');
             assert.equal(MyComponentElement.length, 1);
-            assert.deepEqual(MyComponentElement.prop('meta'), {
-                error: null,
-                touched: false,
-            });
+            assert.deepEqual(MyComponentElement.prop('meta'), {});
         });
 
         it('should render enclosed component if references present in input are available in state', () => {
@@ -696,10 +697,7 @@ describe('Reference Array Input', () => {
             );
 
             const myComponent = wrapper.find('MyComponent');
-            assert.deepEqual(myComponent.prop('meta'), {
-                error: null,
-                touched: false,
-            });
+            assert.deepEqual(myComponent.prop('meta'), { touched: false });
         });
     });
 });

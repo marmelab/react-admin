@@ -239,11 +239,13 @@ export class ReferenceInput extends Component {
             input,
             label: translatedLabel,
             resource,
-            meta: {
-                ...meta,
-                error: dataStatus.warning,
-                touched: !!dataStatus.warning,
-            },
+            meta: dataStatus.warning
+                ? {
+                      ...meta,
+                      error: dataStatus.warning,
+                      touched: true,
+                  }
+                : meta,
             source,
             choices: dataStatus.choices,
             basePath,
