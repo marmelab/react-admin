@@ -6,18 +6,21 @@ export default options => {
         return new ApolloClient();
     }
 
-    const { uri, ...otherOptions } = options;
+    const { cache, link, uri, ...otherOptions } = options;
+    let finalLink = otherOptions.link;
+    let finalCache = otherOptions.cache;
 
-    if (uri) {
-        const link = new HttpLink({ uri });
-        const cache = new InMemoryCache().restore({});
-
-        return new ApolloClient({
-            link,
-            cache,
-            ...otherOptions,
-        });
+    if (!link && uri) {
+        finalLink = new HttpLink({ uri });
     }
 
-    return new ApolloClient(options);
+    if (!cache) {
+        finalCache = new InMemoryCache().restore({});
+    }
+
+    return new ApolloClient({
+        link: finalLink,
+        cache: finalCache,
+        ...otherOptions,
+    });
 };

@@ -59,6 +59,7 @@ export default async (client, options) => {
                 ...acc,
                 [aorFetchType]: queries.find(
                     query =>
+                        options.operationNames[aorFetchType] &&
                         query.name == options.operationNames[aorFetchType](type)
                 ),
             }),
