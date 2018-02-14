@@ -27,6 +27,9 @@ export default {
             not_found: 'Not Found',
         },
         input: {
+            autocomplete: {
+                none: 'None',
+            },
             file: {
                 upload_several:
                     'Drop some files to upload, or click to select one.',
