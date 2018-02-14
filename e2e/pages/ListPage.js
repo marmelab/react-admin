@@ -16,9 +16,20 @@ export default url => driver => ({
         pageNumber: n => By.css(`.page-number[data-page='${n}']`),
         previousPage: By.css('.previous-page'),
         recordRows: By.css('.datagrid-body tr'),
+        viewsColumn: By.css('.datagrid-body tr td:nth-child(6)'),
         datagridHeaders: By.css('th'),
         title: By.css('.title'),
         logout: By.css('.logout'),
+        bulkActionsButton: By.css('.bulk-actions-button'),
+        customBulkActionsButtonMenuItem: By.css(
+            '.bulk-actions-menu-item:first-child'
+        ),
+        deleteBulkActionsButtonMenuItem: By.css(
+            '.bulk-actions-menu-item:last-child'
+        ),
+        selectAll: By.css('.select-all'),
+        selectedItem: By.css('.select-item input:checked'),
+        selectItem: By.css('.select-item input'),
     },
 
     navigate() {
@@ -59,6 +70,14 @@ export default url => driver => ({
         return driver
             .findElements(this.elements.datagridHeaders)
             .then(ths => Promise.all(ths.map(th => th.getText())));
+    },
+
+    getViewsColumnValues() {
+        return driver
+            .findElements(this.elements.viewsColumn)
+            .then(columns =>
+                Promise.all(columns.map(column => column.getText()))
+            );
     },
 
     getResources() {
@@ -167,5 +186,65 @@ export default url => driver => ({
 
     logout() {
         driver.findElement(this.elements.logout).click();
+    },
+
+    toggleSelectAll() {
+        return driver
+            .findElement(this.elements.selectAll)
+            .click()
+            .then(
+                () => driver.sleep(1000) // wait until animations end
+            );
+    },
+
+    toggleSelectSomeItems(count) {
+        return driver
+            .findElements(this.elements.selectItem)
+            .then(elements =>
+                Promise.all(
+                    [...Array(count).keys()].map(index => {
+                        elements[index].click();
+                    })
+                )
+            )
+            .then(() => driver.sleep(1000)); // wait until animations end
+    },
+
+    getSelectedItemsCount() {
+        return driver
+            .findElements(this.elements.selectedItem)
+            .then(items => items.length);
+    },
+
+    applyUpdateBulkAction() {
+        return driver
+            .findElement(this.elements.bulkActionsButton)
+            .click()
+            .then(() => driver.sleep(500)) // wait until animations end
+            .then(() =>
+                driver
+                    .findElement(this.elements.customBulkActionsButtonMenuItem)
+                    .click()
+            )
+            .then(() => driver.sleep(500)) // wait until animations end
+            .then(() => this.waitUntilDataLoaded())
+            .then(() => driver.sleep(500)) // wait until animations end
+            .then(() => this.waitUntilDataLoaded());
+    },
+
+    applyDeleteBulkAction() {
+        return driver
+            .findElement(this.elements.bulkActionsButton)
+            .click()
+            .then(() => driver.sleep(500)) // wait until animations end
+            .then(() =>
+                driver
+                    .findElement(this.elements.deleteBulkActionsButtonMenuItem)
+                    .click()
+            )
+            .then(() => driver.sleep(500)) // wait until animations end
+            .then(() => this.waitUntilDataLoaded())
+            .then(() => driver.sleep(500)) // wait until animations end
+            .then(() => this.waitUntilDataLoaded());
     },
 });

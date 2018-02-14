@@ -22,9 +22,14 @@ import queryReducer, {
 import Header from '../layout/Header';
 import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
+import DefaultBulkActions from './BulkActions';
 import DefaultActions from './ListActions';
 import { crudGetList as crudGetListAction } from '../../actions/dataActions';
-import { changeListParams as changeListParamsAction } from '../../actions/listActions';
+import {
+    changeListParams as changeListParamsAction,
+    setListSelectedIds as setListSelectedIdsAction,
+    toggleListItem as toggleListItemAction,
+} from '../../actions/listActions';
 import translate from '../../i18n/translate';
 import removeKey from '../../util/removeKey';
 import defaultTheme from '../defaultTheme';
@@ -35,6 +40,48 @@ const styles = {
     header: {},
     noResults: { padding: 20 },
 };
+
+const sanitizeRestProps = ({
+    children,
+    classes,
+    className,
+    filters,
+    pagination,
+    actions,
+    resource,
+    hasCreate,
+    hasEdit,
+    hasDelete,
+    hasList,
+    hasShow,
+    filter,
+    filterValues,
+    crudGetList,
+    changeListParams,
+    perPage,
+    title,
+    data,
+    ids,
+    total,
+    isLoading,
+    translate,
+    version,
+    push,
+    history,
+    locale,
+    location,
+    match,
+    options,
+    params,
+    permissions,
+    query: q,
+    selectedIds,
+    setSelectedIds,
+    sort,
+    theme,
+    toggleItem,
+    ...rest
+}) => rest;
 
 /**
  * List page component
@@ -123,7 +170,8 @@ export class List extends Component {
             nextProps.width === this.props.width &&
             nextProps.version === this.props.version &&
             nextState === this.state &&
-            nextProps.data === this.props.data
+            nextProps.data === this.props.data &&
+            nextProps.selectedIds === this.props.selectedIds
         ) {
             return false;
         }
@@ -197,6 +245,18 @@ export class List extends Component {
         this.setFilters(newFilters);
     };
 
+    handleSelect = ids => {
+        this.props.setSelectedIds(this.props.resource, ids);
+    };
+
+    handleUnselectItems = () => {
+        this.props.setSelectedIds(this.props.resource, []);
+    };
+
+    handleToggleItem = id => {
+        this.props.toggleItem(this.props.resource, id);
+    };
+
     changeParams(action) {
         const newParams = queryReducer(this.getQuery(), action);
         this.props.push({
@@ -211,6 +271,7 @@ export class List extends Component {
 
     render() {
         const {
+            bulkActions = <DefaultBulkActions />,
             children,
             classes = {},
             className,
@@ -219,14 +280,6 @@ export class List extends Component {
             actions = <DefaultActions />,
             resource,
             hasCreate,
-            hasEdit,
-            hasDelete,
-            hasList,
-            hasShow,
-            filter,
-            filterValues,
-            crudGetList,
-            changeListParams,
             perPage,
             title,
             data,
@@ -235,20 +288,10 @@ export class List extends Component {
             isLoading,
             translate,
             version,
-            push,
-            history,
-            locale,
-            location,
-            match,
-            options,
-            params,
-            permissions,
             query: q,
-            sort,
-            theme,
+            selectedIds,
             ...rest
         } = this.props;
-
         const query = this.getQuery();
 
         const queryFilterValues = query.filter || {};
@@ -268,7 +311,7 @@ export class List extends Component {
         return (
             <div
                 className={classnames('list-page', classes.root, className)}
-                {...rest}
+                {...sanitizeRestProps(rest)}
             >
                 <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
                     <Header
@@ -278,12 +321,15 @@ export class List extends Component {
                             className: classes.actions,
                         })}
                         actionProps={{
+                            bulkActions,
                             resource,
                             filters,
                             filterValues: queryFilterValues,
                             basePath,
                             hasCreate,
                             displayedFilters: this.state,
+                            selectedIds,
+                            onUnselectItems: this.handleUnselectItems,
                             showFilter: this.showFilter,
                             refresh: this.refresh,
                         }}
@@ -302,15 +348,19 @@ export class List extends Component {
                             {ids.length > 0 &&
                                 children &&
                                 React.cloneElement(children, {
-                                    resource,
-                                    ids,
-                                    data,
+                                    basePath,
                                     currentSort: {
                                         field: query.sort,
                                         order: query.order,
                                     },
-                                    basePath,
+                                    data,
+                                    hasBulkActions: !!bulkActions,
+                                    ids,
                                     isLoading,
+                                    onSelect: this.handleSelect,
+                                    onToggleItem: this.handleToggleItem,
+                                    resource,
+                                    selectedIds,
                                     setSort: this.setSort,
                                 })}
                             {!isLoading &&
@@ -350,6 +400,7 @@ export class List extends Component {
 List.propTypes = {
     // the props you can change
     actions: PropTypes.element,
+    bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -374,6 +425,7 @@ List.propTypes = {
     hasList: PropTypes.bool.isRequired,
     hasShow: PropTypes.bool.isRequired,
     ids: PropTypes.array,
+    selectedIds: PropTypes.array,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     path: PropTypes.string,
@@ -381,6 +433,8 @@ List.propTypes = {
     push: PropTypes.func.isRequired,
     query: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
+    setSelectedIds: PropTypes.func.isRequired,
+    toggleItem: PropTypes.func.isRequired,
     total: PropTypes.number.isRequired,
     translate: PropTypes.func.isRequired,
     theme: PropTypes.object.isRequired,
@@ -422,10 +476,12 @@ const getQuery = createSelector(
 
 function mapStateToProps(state, props) {
     const resourceState = state.admin.resources[props.resource];
+
     return {
         query: getQuery(props),
         params: resourceState.list.params,
         ids: resourceState.list.ids,
+        selectedIds: resourceState.list.selectedIds,
         total: resourceState.list.total,
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
@@ -438,6 +494,8 @@ const enhance = compose(
     connect(mapStateToProps, {
         crudGetList: crudGetListAction,
         changeListParams: changeListParamsAction,
+        setSelectedIds: setListSelectedIdsAction,
+        toggleItem: toggleListItemAction,
         push: pushAction,
     }),
     translate,

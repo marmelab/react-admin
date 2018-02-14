@@ -2,6 +2,7 @@ import uniq from 'lodash.uniq';
 import {
     CRUD_GET_LIST_SUCCESS,
     CRUD_DELETE_SUCCESS,
+    CRUD_DELETE_MANY_SUCCESS,
     CRUD_GET_MANY_SUCCESS,
     CRUD_GET_MANY_REFERENCE_SUCCESS,
     CRUD_GET_ONE_SUCCESS,
@@ -61,6 +62,19 @@ export default resource => (
                 ...previousState.slice(0, index),
                 ...previousState.slice(index + 1),
             ];
+
+            Object.defineProperty(
+                newState,
+                'fetchedAt',
+                previousState.fetchedAt
+            );
+
+            return newState;
+        }
+        case CRUD_DELETE_MANY_SUCCESS: {
+            const newState = previousState.filter(
+                el => !requestPayload.ids.includes(el)
+            );
 
             Object.defineProperty(
                 newState,

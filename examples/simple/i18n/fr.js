@@ -1,6 +1,11 @@
 import frenchMessages from 'ra-language-french';
 
 export default {
+    simple: {
+        action: {
+            resetViews: 'Réinitialiser des vues',
+        },
+    },
     ...frenchMessages,
     resources: {
         posts: {

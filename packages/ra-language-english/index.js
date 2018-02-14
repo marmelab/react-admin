@@ -12,6 +12,7 @@ module.exports = {
             add_filter: 'Add filter',
             remove_filter: 'Remove this filter',
             back: 'Go Back',
+            bulk_actions: '%{smart_count} selected',
         },
         boolean: {
             true: 'Yes',
@@ -69,9 +70,9 @@ module.exports = {
             logout: 'Logout',
         },
         notification: {
-            updated: 'Element updated',
+            updated: 'Element updated |||| %{smart_count} elements updated',
             created: 'Element created',
-            deleted: 'Element deleted',
+            deleted: 'Element deleted |||| %{smart_count} elements deleted',
             bad_item: 'Incorrect element',
             item_doesnt_exist: 'Element does not exist',
             http_error: 'Server communication error',

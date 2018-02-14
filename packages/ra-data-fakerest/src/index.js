@@ -6,7 +6,9 @@ import {
     GET_MANY_REFERENCE,
     CREATE,
     UPDATE,
+    UPDATE_MANY,
     DELETE,
+    DELETE_MANY,
 } from 'react-admin';
 
 /* eslint-disable no-console */
@@ -92,12 +94,22 @@ export default (data, loggingEnabled = false) => {
                         ...params.data,
                     }),
                 };
+            case UPDATE_MANY:
+                params.ids.forEach(id =>
+                    restServer.updateOne(resource, id, {
+                        ...params.data,
+                    })
+                );
+                return { data: params.ids };
             case CREATE:
                 return {
                     data: restServer.addOne(resource, { ...params.data }),
                 };
             case DELETE:
                 return { data: restServer.removeOne(resource, params.id) };
+            case DELETE_MANY:
+                params.ids.forEach(id => restServer.removeOne(resource, id));
+                return { data: params.ids };
             default:
                 return false;
         }

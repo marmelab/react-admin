@@ -6,6 +6,8 @@ import {
     CRUD_CREATE_SUCCESS,
     CRUD_DELETE_FAILURE,
     CRUD_DELETE_SUCCESS,
+    CRUD_DELETE_MANY_FAILURE,
+    CRUD_DELETE_MANY_SUCCESS,
     CRUD_GET_LIST_FAILURE,
     CRUD_GET_MANY_FAILURE,
     CRUD_GET_MANY_REFERENCE_FAILURE,
@@ -13,8 +15,12 @@ import {
     CRUD_GET_ONE_FAILURE,
     CRUD_UPDATE_FAILURE,
     CRUD_UPDATE_SUCCESS,
+    CRUD_UPDATE_MANY_FAILURE,
+    CRUD_UPDATE_MANY_SUCCESS,
 } from '../../actions/dataActions';
 import { showNotification } from '../../actions/notificationActions';
+import { refreshView } from '../../actions/uiActions';
+import { setListSelectedIds } from '../../actions/listActions';
 import resolveRedirectTo from '../../util/resolveRedirectTo';
 
 /**
@@ -22,7 +28,7 @@ import resolveRedirectTo from '../../util/resolveRedirectTo';
  *
  * Mostly redirects and notifications
  */
-function* handleResponse({ type, requestPayload, error, payload }) {
+function* handleResponse({ type, requestPayload, error, payload, meta }) {
     switch (type) {
         case CRUD_UPDATE_SUCCESS:
             return requestPayload.redirectTo
@@ -39,6 +45,25 @@ function* handleResponse({ type, requestPayload, error, payload }) {
                       ),
                   ])
                 : yield [put(showNotification('ra.notification.updated'))];
+        case CRUD_UPDATE_MANY_SUCCESS: {
+            const actions = [
+                put(
+                    showNotification('ra.notification.updated', 'info', {
+                        messageArgs: {
+                            smart_count: payload.data.length,
+                        },
+                    })
+                ),
+            ];
+            if (requestPayload.refresh) {
+                actions.push(put(refreshView()));
+            }
+            if (requestPayload.unselectAll) {
+                actions.push(put(setListSelectedIds(meta.resource, [])));
+            }
+
+            return yield all(actions);
+        }
         case CRUD_CREATE_SUCCESS:
             return requestPayload.redirectTo
                 ? yield all([
@@ -72,6 +97,25 @@ function* handleResponse({ type, requestPayload, error, payload }) {
                       ),
                   ])
                 : yield [put(showNotification('ra.notification.deleted'))];
+        case CRUD_DELETE_MANY_SUCCESS: {
+            const actions = [
+                put(
+                    showNotification('ra.notification.deleted', 'info', {
+                        messageArgs: {
+                            smart_count: payload.data.length,
+                        },
+                    })
+                ),
+            ];
+            if (requestPayload.refresh) {
+                actions.push(put(refreshView()));
+            }
+            if (requestPayload.unselectAll) {
+                actions.push(put(setListSelectedIds(meta.resource, [])));
+            }
+
+            return yield all(actions);
+        }
         case CRUD_GET_ONE_SUCCESS:
             if (
                 !('id' in payload.data) ||
@@ -99,7 +143,9 @@ function* handleResponse({ type, requestPayload, error, payload }) {
         case CRUD_GET_MANY_REFERENCE_FAILURE:
         case CRUD_CREATE_FAILURE:
         case CRUD_UPDATE_FAILURE:
-        case CRUD_DELETE_FAILURE: {
+        case CRUD_UPDATE_MANY_FAILURE:
+        case CRUD_DELETE_FAILURE:
+        case CRUD_DELETE_MANY_FAILURE: {
             console.error(error); // eslint-disable-line no-console
             const errorMessage =
                 typeof error === 'string'

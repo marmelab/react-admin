@@ -1,69 +1,70 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
-import { TableBody, TableRow } from 'material-ui/Table';
+import { TableBody } from 'material-ui/Table';
 import classnames from 'classnames';
 
-import DatagridCell from './DatagridCell';
+import DatagridRow from './DatagridRow';
 
 const DatagridBody = ({
+    basePath,
     classes,
     className,
     resource,
     children,
+    hasBulkActions,
     ids,
     isLoading,
     data,
-    basePath,
+    selectedIds,
     styles,
     rowStyle,
+    onToggleItem,
     ...rest
 }) => (
     <TableBody className={classnames('datagrid-body', className)} {...rest}>
         {ids.map((id, rowIndex) => (
-            <TableRow
+            <DatagridRow
+                basePath={basePath}
+                classes={classes}
                 className={classnames(classes.row, {
                     [classes.rowEven]: rowIndex % 2 === 0,
                     [classes.rowOdd]: rowIndex % 2 !== 0,
                 })}
+                hasBulkActions={hasBulkActions}
+                id={id}
                 key={id}
+                onToggleItem={onToggleItem}
+                record={data[id]}
+                resource={resource}
+                selected={selectedIds.includes(id)}
                 style={rowStyle ? rowStyle(data[id], rowIndex) : null}
             >
-                {React.Children.map(
-                    children,
-                    (field, index) =>
-                        field ? (
-                            <DatagridCell
-                                key={`${id}-${field.props.source || index}`}
-                                className={classnames(
-                                    `column-${field.props.source}`,
-                                    classes.rowCell
-                                )}
-                                record={data[id]}
-                                {...{ field, basePath, resource }}
-                            />
-                        ) : null
-                )}
-            </TableRow>
+                {children}
+            </DatagridRow>
         ))}
     </TableBody>
 );
 
 DatagridBody.propTypes = {
+    basePath: PropTypes.string,
     classes: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.node,
+    data: PropTypes.object.isRequired,
+    hasBulkActions: PropTypes.bool.isRequired,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     isLoading: PropTypes.bool,
+    onToggleItem: PropTypes.func.isRequired,
     resource: PropTypes.string,
-    data: PropTypes.object.isRequired,
-    basePath: PropTypes.string,
     rowStyle: PropTypes.func,
+    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     styles: PropTypes.object,
 };
 
 DatagridBody.defaultProps = {
     data: {},
+    hasBulkActions: false,
     ids: [],
 };
 

@@ -7,7 +7,9 @@ import {
     GET_MANY_REFERENCE,
     CREATE,
     UPDATE,
+    UPDATE_MANY,
     DELETE,
+    DELETE_MANY,
 } from 'react-admin';
 
 /**
@@ -128,6 +130,31 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
         if (type === GET_MANY) {
             return Promise.all(
                 params.ids.map(id => httpClient(`${apiUrl}/${resource}/${id}`))
+            ).then(responses => ({
+                data: responses.map(response => response.json),
+            }));
+        }
+        // json-server doesn't handle filters on UPDATE route, so we fallback to calling UPDATE n times instead
+        if (type === UPDATE_MANY) {
+            return Promise.all(
+                params.ids.map(id =>
+                    httpClient(`${apiUrl}/${resource}/${id}`, {
+                        method: 'PATCH',
+                        body: JSON.stringify(params.data),
+                    })
+                )
+            ).then(responses => ({
+                data: responses.map(response => response.json),
+            }));
+        }
+        // json-server doesn't handle filters on DELETE route, so we fallback to calling DELETE n times instead
+        if (type === DELETE_MANY) {
+            return Promise.all(
+                params.ids.map(id =>
+                    httpClient(`${apiUrl}/${resource}/${id}`, {
+                        method: 'DELETE',
+                    })
+                )
             ).then(responses => ({
                 data: responses.map(response => response.json),
             }));

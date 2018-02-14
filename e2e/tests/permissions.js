@@ -53,6 +53,7 @@ describe('Permissions', () => {
         it('in List page with DataGrid', async () => {
             await ListPage.navigate();
             assert.deepEqual(await ListPage.getColumns(), [
+                '', // Checkbox column
                 'ID',
                 'NAME',
                 '',
@@ -92,6 +93,7 @@ describe('Permissions', () => {
         it('in List page with DataGrid', async () => {
             await ListPage.navigate();
             assert.deepEqual(await ListPage.getColumns(), [
+                '', // Checkbox column
                 'ID',
                 'NAME',
                 'ROLE',

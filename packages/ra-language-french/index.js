@@ -12,6 +12,8 @@ module.exports = {
             add_filter: 'Ajouter un filtre',
             remove_filter: 'Supprimer ce filtre',
             back: 'Retour',
+            bulk_actions:
+                '%{smart_count} selectionné |||| %{smart_count} selectionnés',
         },
         boolean: {
             true: 'Oui',
@@ -69,9 +71,10 @@ module.exports = {
             logout: 'Déconnexion',
         },
         notification: {
-            updated: 'Élément mis à jour',
+            updated:
+                'Élément mis à jour |||| %{smart_count} élements mis à jour',
             created: 'Élément créé',
-            deleted: 'Élément supprimé',
+            deleted: 'Élément supprimé |||| %{smart_count} élements supprimés',
             bad_item: 'Élément inconnu',
             item_doesnt_exist: "L'élément n'existe pas",
             http_error: 'Erreur de communication avec le serveur',
