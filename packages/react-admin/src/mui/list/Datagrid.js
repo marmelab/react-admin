@@ -93,6 +93,7 @@ class Datagrid extends Component {
             classes,
             className,
             currentSort,
+            hasBulkActions,
             ids,
             isLoading,
             resource,
@@ -108,43 +109,46 @@ class Datagrid extends Component {
             <Table className={classnames(classes.table, className)} {...rest}>
                 <TableHead>
                     <TableRow className={classes.row}>
-                        <TableCell padding="checkbox">
-                            <Checkbox
-                                className="select-all"
-                                checked={selectedIds.length === ids.length}
-                                onChange={this.handleSelectAll}
-                            />
-                        </TableCell>
+                        {hasBulkActions && (
+                            <TableCell padding="checkbox">
+                                <Checkbox
+                                    className="select-all"
+                                    checked={selectedIds.length === ids.length}
+                                    onChange={this.handleSelectAll}
+                                />
+                            </TableCell>
+                        )}
                         {React.Children.map(
                             children,
                             (field, index) =>
                                 field ? (
                                     <DatagridHeaderCell
-                                        key={field.props.source || index}
-                                        field={field}
                                         className={classes.headerCell}
                                         currentSort={currentSort}
+                                        field={field}
                                         isSorting={
                                             field.props.source ===
                                             currentSort.field
                                         }
-                                        updateSort={this.updateSort}
+                                        key={field.props.source || index}
                                         resource={resource}
+                                        updateSort={this.updateSort}
                                     />
                                 ) : null
                         )}
                     </TableRow>
                 </TableHead>
                 <DatagridBody
-                    resource={resource}
-                    ids={ids}
-                    selectedIds={selectedIds}
-                    data={data}
                     basePath={basePath}
                     classes={classes}
+                    data={data}
+                    hasBulkActions={hasBulkActions}
+                    ids={ids}
                     isLoading={isLoading}
-                    rowStyle={rowStyle}
                     onToggleItem={onToggleItem}
+                    resource={resource}
+                    rowStyle={rowStyle}
+                    selectedIds={selectedIds}
                 >
                     {children}
                 </DatagridBody>
@@ -163,6 +167,7 @@ Datagrid.propTypes = {
         order: PropTypes.string,
     }),
     data: PropTypes.object.isRequired,
+    hasBulkActions: PropTypes.bool.isRequired,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     isLoading: PropTypes.bool,
     onSelect: PropTypes.func.isRequired,
@@ -175,6 +180,7 @@ Datagrid.propTypes = {
 
 Datagrid.defaultProps = {
     data: {},
+    hasBulkActions: false,
     ids: [],
     selectedIds: [],
 };

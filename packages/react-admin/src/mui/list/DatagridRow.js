@@ -29,16 +29,17 @@ class DatagridRow extends Component {
 
     render() {
         const {
+            basePath,
+            children,
             classes,
             className,
-            resource,
-            children,
+            hasBulkActions,
             id,
             record,
-            basePath,
+            resource,
             selected,
-            styles,
             style,
+            styles,
             ...rest
         } = this.props;
         return (
@@ -48,13 +49,15 @@ class DatagridRow extends Component {
                 style={style}
                 {...sanitizeRestProps(rest)}
             >
-                <TableCell padding="checkbox">
-                    <Checkbox
-                        className="select-item"
-                        checked={selected}
-                        onClick={this.handleToggle}
-                    />
-                </TableCell>
+                {hasBulkActions && (
+                    <TableCell padding="checkbox">
+                        <Checkbox
+                            className="select-item"
+                            checked={selected}
+                            onClick={this.handleToggle}
+                        />
+                    </TableCell>
+                )}
                 {React.Children.map(
                     children,
                     (field, index) =>
@@ -77,20 +80,22 @@ class DatagridRow extends Component {
 }
 
 DatagridRow.propTypes = {
+    basePath: PropTypes.string,
+    children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
-    children: PropTypes.node,
+    hasBulkActions: PropTypes.bool.isRequired,
     id: PropTypes.any,
-    resource: PropTypes.string,
+    onToggleItem: PropTypes.func,
     record: PropTypes.object.isRequired,
-    basePath: PropTypes.string,
+    resource: PropTypes.string,
     selected: PropTypes.bool,
     style: PropTypes.func,
     styles: PropTypes.object,
-    onToggleItem: PropTypes.func,
 };
 
 DatagridRow.defaultProps = {
+    hasBulkActions: false,
     record: {},
     selected: false,
 };

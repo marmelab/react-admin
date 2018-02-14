@@ -112,7 +112,7 @@ export const PostList = (props) => (
 
 ### Bulk Actions
 
-You can replace the list of default bulk actions by your own element using the `bulkActions` prop:
+Bulk actions are actions that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, bulk actions are triggered by ticking the checkboxes in the first column of the table, then choosing an action from the bulk action menu. By default, all list views have a single bulk action, the bulk delete action. You can add other bulk actions by passing a custom element as the `bulkActions` prop of the `<List>` component:
 
 ```jsx
 import Button from 'material-ui/Button';
@@ -134,7 +134,7 @@ export const PostList = (props) => (
 );
 ```
 
-A custom bulk action, is a material-ui [`MenuItem`](http://www.material-ui.com/#/components/menu), for which you are entirely responsible. It will receive several props allowing it to perform its work:
+A custom bulk action is a material-ui [`MenuItem`](http://www.material-ui.com/#/components/menu), for which you are entirely responsible. The component receives several props allowing it to perform its job:
 
 * `resource`: the currently displayed resource (eg `posts`, `comments`, etc.)
 * `basePath`: the current router base path for the resource (eg `/posts`, `/comments`, etc.)
@@ -142,7 +142,7 @@ A custom bulk action, is a material-ui [`MenuItem`](http://www.material-ui.com/#
 * `selectedIds`: the identifiers of the currently selected items.
 * `onCloseMenu`: an event handler you should call to close the menu.
 
-Here is an example leveraging the new `UPDATE_MANY` crud action, which will set the `views` property of all posts to `0`:
+Here is an example leveraging the `UPDATE_MANY` crud action, which will set the `views` property of all posts to `0`:
 
 ```jsx
 // in ./CustomBulkMenuItem.js
@@ -207,8 +207,9 @@ const EnhancedBulkUpdateMenuItem = compose(
 )(BulkUpdateMenuItem);
 
 export default EnhancedBulkUpdateMenuItem;
-
 ```
+
+You can also disable bulk actions altogether by passing `false` to the `bulkActions` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
 
 ### Filters
 

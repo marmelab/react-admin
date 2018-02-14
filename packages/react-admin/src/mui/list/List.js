@@ -348,18 +348,19 @@ export class List extends Component {
                             {ids.length > 0 &&
                                 children &&
                                 React.cloneElement(children, {
-                                    resource,
-                                    ids,
-                                    data,
+                                    basePath,
                                     currentSort: {
                                         field: query.sort,
                                         order: query.order,
                                     },
-                                    basePath,
+                                    data,
+                                    hasBulkActions: !!bulkActions,
+                                    ids,
                                     isLoading,
-                                    selectedIds,
                                     onSelect: this.handleSelect,
                                     onToggleItem: this.handleToggleItem,
+                                    resource,
+                                    selectedIds,
                                     setSort: this.setSort,
                                 })}
                             {!isLoading &&
@@ -398,8 +399,8 @@ export class List extends Component {
 
 List.propTypes = {
     // the props you can change
-    bulkActions: PropTypes.element,
     actions: PropTypes.element,
+    bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,

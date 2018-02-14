@@ -1,4 +1,5 @@
 import React, { cloneElement, Children, Component } from 'react';
+
 import PropTypes from 'prop-types';
 import MoreVertIcon from 'material-ui-icons/MoreVert';
 import Menu from 'material-ui/Menu';
@@ -18,19 +19,19 @@ const sanitizeRestProps = ({
 
 class BulkActions extends Component {
     state = {
-        anchorElement: null,
+        isOpen: false,
     };
 
-    handleClick = event => {
-        this.setState({ anchorElement: event.currentTarget });
+    storeButtonRef = node => {
+        this.anchorElement = node;
     };
 
-    handleCloseAfterAction = () => {
-        this.setState({ anchorElement: null });
+    handleClick = () => {
+        this.setState({ isOpen: true });
     };
 
     handleClose = () => {
-        this.setState({ anchorElement: null });
+        this.setState({ isOpen: false });
     };
 
     render() {
@@ -45,14 +46,15 @@ class BulkActions extends Component {
             translate,
             ...rest
         } = this.props;
-        const { anchorElement } = this.state;
+        const { isOpen } = this.state;
 
         return (
             <div>
                 <Button
+                    buttonRef={this.storeButtonRef}
                     className={classnames('bulk-actions-button', className)}
                     alignIcon="right"
-                    aria-owns={anchorElement ? 'bulk-actions-menu' : null}
+                    aria-owns={isOpen ? 'bulk-actions-menu' : null}
                     aria-haspopup="true"
                     label={translate(label, {
                         _: label,
@@ -65,9 +67,9 @@ class BulkActions extends Component {
                 </Button>
                 <Menu
                     id="bulk-actions-menu"
-                    anchorEl={anchorElement}
+                    anchorEl={this.anchorElement}
                     onClose={this.handleClose}
-                    open={!!anchorElement}
+                    open={isOpen}
                 >
                     {Children.map(children, child =>
                         cloneElement(child, {
@@ -77,7 +79,7 @@ class BulkActions extends Component {
                             ),
                             basePath,
                             filterValues,
-                            onCloseMenu: this.handleCloseAfterAction,
+                            onCloseMenu: this.handleClose,
                             resource,
                             selectedIds,
                         })

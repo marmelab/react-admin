@@ -12,6 +12,7 @@ const DatagridBody = ({
     className,
     resource,
     children,
+    hasBulkActions,
     ids,
     isLoading,
     data,
@@ -24,17 +25,18 @@ const DatagridBody = ({
     <TableBody className={classnames('datagrid-body', className)} {...rest}>
         {ids.map((id, rowIndex) => (
             <DatagridRow
+                basePath={basePath}
+                classes={classes}
                 className={classnames(classes.row, {
                     [classes.rowEven]: rowIndex % 2 === 0,
                     [classes.rowOdd]: rowIndex % 2 !== 0,
                 })}
-                basePath={basePath}
-                classes={classes}
-                key={id}
-                record={data[id]}
+                hasBulkActions={hasBulkActions}
                 id={id}
-                resource={resource}
+                key={id}
                 onToggleItem={onToggleItem}
+                record={data[id]}
+                resource={resource}
                 selected={selectedIds.includes(id)}
                 style={rowStyle ? rowStyle(data[id], rowIndex) : null}
             >
@@ -50,6 +52,7 @@ DatagridBody.propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
     data: PropTypes.object.isRequired,
+    hasBulkActions: PropTypes.bool.isRequired,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     isLoading: PropTypes.bool,
     onToggleItem: PropTypes.func.isRequired,
@@ -61,6 +64,7 @@ DatagridBody.propTypes = {
 
 DatagridBody.defaultProps = {
     data: {},
+    hasBulkActions: false,
     ids: [],
 };
 
