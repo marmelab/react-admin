@@ -15,6 +15,7 @@ import { withStyles } from 'material-ui/styles';
 
 import Toolbar from './Toolbar';
 import getDefaultValues from './getDefaultValues';
+import DirtyBlocker from './DirtyBlocker';
 
 const styles = theme => ({
     form: {
@@ -95,6 +96,7 @@ export class TabbedForm extends Component {
             toolbar,
             translate,
             version,
+            dirty,
             ...rest
         } = this.props;
 
@@ -104,6 +106,7 @@ export class TabbedForm extends Component {
                 key={version}
                 {...sanitizeRestProps(rest)}
             >
+                <DirtyBlocker dirty={dirty} />
                 <Tabs
                     scrollable
                     value={this.state.value}
@@ -167,6 +170,7 @@ TabbedForm.propTypes = {
     classes: PropTypes.object,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
+    dirty: PropTypes.bool,
     invalid: PropTypes.bool,
     pristine: PropTypes.bool,
     record: PropTypes.object,

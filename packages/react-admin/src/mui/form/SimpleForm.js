@@ -9,6 +9,7 @@ import classnames from 'classnames';
 import getDefaultValues from './getDefaultValues';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
+import DirtyBlocker from './DirtyBlocker';
 
 const styles = theme => ({
     form: {
@@ -26,7 +27,6 @@ const sanitizeRestProps = ({
     asyncValidate,
     asyncValidating,
     clearSubmit,
-    dirty,
     handleSubmit,
     initialized,
     initialValues,
@@ -83,6 +83,7 @@ export class SimpleForm extends Component {
                 className={classnames('simple-form', className)}
                 {...sanitizeRestProps(rest)}
             >
+                <DirtyBlocker dirty={!pristine} />
                 <div className={classes.form} key={version}>
                     {Children.map(children, input => (
                         <FormInput

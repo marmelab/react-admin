@@ -15,6 +15,7 @@ import Sidebar, { DRAWER_WIDTH } from './Sidebar';
 import Menu from './Menu';
 import Notification from './Notification';
 import defaultTheme from '../defaultTheme';
+import { YesNoModal } from '../modals';
 
 const styles = theme => ({
     root: {
@@ -69,6 +70,7 @@ const Layout = ({
     classes,
     className,
     customRoutes,
+    customModals,
     dashboard,
     logout,
     menu,
@@ -101,6 +103,12 @@ const Layout = ({
                     {children}
                 </main>
                 <Notification />
+                <YesNoModal />
+                {customModals.map((modal, index) =>
+                    React.createElement(modal, {
+                        key: modal.type || `custom-modal-${index}`,
+                    })
+                )}
             </div>
         </div>
     </MuiThemeProvider>
@@ -116,6 +124,7 @@ Layout.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     customRoutes: PropTypes.array,
+    customModals: PropTypes.array,
     dashboard: componentPropType,
     logout: PropTypes.oneOfType([
         PropTypes.node,

@@ -46,10 +46,18 @@ module.exports = {
             no: 'No',
             are_you_sure: 'Are you sure?',
             about: 'About',
+            discard_changes:
+                'There are changes pending, are you sure you want to continue?',
             not_found:
                 'Either you typed a wrong URL, or you followed a bad link.',
             loading: 'The page is loading, just a moment please',
             invalid_form: 'The form is not valid. Please check for errors',
+        },
+        modals: {
+            confirm: {
+                title: 'Please confirm',
+                message: 'Are you sure you want to continue?',
+            },
         },
         navigation: {
             no_results: 'No results found',

@@ -3,6 +3,7 @@ import { until } from 'selenium-webdriver';
 import driver from '../chromeDriver';
 import createPageFactory from '../pages/CreatePage';
 import deletePageFactory from '../pages/DeletePage';
+import listPageFactory from '../pages/ListPage';
 
 describe('Create Page', () => {
     const CreatePage = createPageFactory(
@@ -11,6 +12,7 @@ describe('Create Page', () => {
     const DeletePage = deletePageFactory(
         'http://localhost:8083/#/posts/14/delete'
     )(driver);
+    const ListPage = listPageFactory('http://localhost:8083/#/posts')(driver);
 
     beforeEach(async () => await CreatePage.navigate());
 
@@ -76,5 +78,39 @@ describe('Create Page', () => {
         ];
         await CreatePage.setValues(values);
         await CreatePage.submit();
+        assert.equal(
+            await CreatePage.getInputValue('teaser', 'textarea'),
+            'Test teaser'
+        );
+    });
+
+    describe('navigate away with dirty values', () => {
+        it('should show modal and stay is no clicked', async () => {
+            const values = [
+                {
+                    type: 'textarea',
+                    name: 'teaser',
+                    value: 'Test teaser',
+                },
+            ];
+            await CreatePage.setValues(values);
+            await ListPage.navigate();
+            await driver.sleep(100);
+            await CreatePage.submitModalNo();
+        });
+        it('should show modal and continue is yes clicked', async () => {
+            const values = [
+                {
+                    type: 'textarea',
+                    name: 'teaser',
+                    value: 'Test teaser',
+                },
+            ];
+            await CreatePage.setValues(values);
+            await ListPage.navigate();
+            await driver.sleep(100);
+            await CreatePage.submitModalYes();
+            await driver.wait(until.urlIs('http://localhost:8083/#/posts'));
+        });
     });
 });

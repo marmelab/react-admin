@@ -65,6 +65,8 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
             return yield all(actions);
         }
         case CRUD_CREATE_SUCCESS:
+            yield put(reset('record-form'));
+
             return requestPayload.redirectTo
                 ? yield all([
                       put(showNotification('ra.notification.created')),
@@ -78,10 +80,7 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
                           )
                       ),
                   ])
-                : yield all([
-                      put(showNotification('ra.notification.created')),
-                      put(reset('record-form')),
-                  ]);
+                : yield all([put(showNotification('ra.notification.created'))]);
         case CRUD_DELETE_SUCCESS:
             return requestPayload.redirectTo
                 ? yield all([
