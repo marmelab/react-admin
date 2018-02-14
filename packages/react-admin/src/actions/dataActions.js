@@ -107,15 +107,9 @@ export const CRUD_DELETE_MANY_LOADING = 'RA/CRUD_DELETE_MANY_LOADING';
 export const CRUD_DELETE_MANY_FAILURE = 'RA/CRUD_DELETE_MANY_FAILURE';
 export const CRUD_DELETE_MANY_SUCCESS = 'RA/CRUD_DELETE_MANY_SUCCESS';
 
-export const crudDeleteMany = (
-    resource,
-    ids,
-    basePath,
-    refresh = true,
-    unselectAll = true
-) => ({
+export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
     type: CRUD_DELETE_MANY,
-    payload: { ids, basePath, refresh, unselectAll },
+    payload: { ids, basePath, refresh, unselectAll: true },
     meta: { resource, fetch: DELETE_MANY, cancelPrevious: false },
 });
 
