@@ -2,15 +2,55 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
-import Labeled from './Labeled';
+
 import {
     crudGetOne as crudGetOneAction,
     crudGetMatching as crudGetMatchingAction,
 } from '../../actions/dataActions';
 import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
+import ReferenceLoadingProgress from './ReferenceLoadingProgress';
+import ReferenceError from './ReferenceError';
+import translate from '../../i18n/translate';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 const noFilter = () => true;
+
+export const getDataStatus = ({
+    input,
+    matchingReferences,
+    referenceRecord,
+    translate,
+}) => {
+    const matchingReferencesError =
+        matchingReferences && matchingReferences.error
+            ? translate(matchingReferences.error, {
+                  _: matchingReferences.error,
+              })
+            : null;
+    const selectedReferenceError =
+        input.value && !referenceRecord
+            ? translate('aor.input.references.single_missing', {
+                  _: 'aor.input.references.single_missing',
+              })
+            : null;
+
+    return {
+        waiting:
+            (input.value && selectedReferenceError && !matchingReferences) ||
+            (!input.value && !matchingReferences),
+        error:
+            (input.value &&
+                selectedReferenceError &&
+                matchingReferencesError) ||
+            (!input.value && matchingReferencesError)
+                ? input.value ? selectedReferenceError : matchingReferencesError
+                : null,
+        warning: selectedReferenceError || matchingReferencesError,
+        choices: Array.isArray(matchingReferences)
+            ? matchingReferences
+            : [referenceRecord].filter(choice => choice),
+    };
+};
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -157,26 +197,39 @@ export class ReferenceInput extends Component {
             resource,
             label,
             source,
-            referenceRecord,
             allowEmpty,
             matchingReferences,
+            referenceRecord,
             basePath,
             onChange,
             children,
             meta,
+            translate,
         } = this.props;
-        if (!referenceRecord && !allowEmpty) {
+
+        if (React.Children.count(children) !== 1) {
+            throw new Error('<ReferenceInput> only accepts a single child');
+        }
+
+        const translatedLabel = translate(
+            label || `resources.${resource}.fields.${source}`
+        );
+        const dataStatus = getDataStatus({
+            input,
+            matchingReferences,
+            referenceRecord,
+            translate,
+        });
+
+        if (dataStatus.waiting) {
+            return <ReferenceLoadingProgress label={translatedLabel} />;
+        }
+
+        if (dataStatus.error) {
             return (
-                <Labeled
-                    label={
-                        typeof label === 'undefined' ? (
-                            `resources.${resource}.fields.${source}`
-                        ) : (
-                            label
-                        )
-                    }
-                    source={source}
-                    resource={resource}
+                <ReferenceError
+                    label={translatedLabel}
+                    error={dataStatus.error}
                 />
             );
         }
@@ -184,14 +237,17 @@ export class ReferenceInput extends Component {
         return React.cloneElement(children, {
             allowEmpty,
             input,
-            label:
-                typeof label === 'undefined'
-                    ? `resources.${resource}.fields.${source}`
-                    : label,
+            label: translatedLabel,
             resource,
-            meta,
+            meta: dataStatus.warning
+                ? {
+                      ...meta,
+                      error: dataStatus.warning,
+                      touched: true,
+                  }
+                : meta,
             source,
-            choices: matchingReferences,
+            choices: dataStatus.choices,
             basePath,
             onChange,
             filter: noFilter, // for AutocompleteInput
@@ -226,6 +282,7 @@ ReferenceInput.propTypes = {
         order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
     source: PropTypes.string,
+    translate: PropTypes.func.isRequired,
 };
 
 ReferenceInput.defaultProps = {
@@ -233,23 +290,23 @@ ReferenceInput.defaultProps = {
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
-    matchingReferences: [],
+    matchingReferences: null,
     perPage: 25,
-    sort: { field: 'id', order: 'DESC' },
     referenceRecord: null,
+    sort: { field: 'id', order: 'DESC' },
 };
 
 function mapStateToProps(state, props) {
     const referenceId = props.input.value;
     return {
-        referenceRecord:
-            state.admin.resources[props.reference].data[referenceId],
         matchingReferences: getPossibleReferences(
             state,
             referenceSource(props.resource, props.source),
             props.reference,
             [referenceId]
         ),
+        referenceRecord:
+            state.admin.resources[props.reference].data[referenceId],
     };
 }
 
@@ -262,4 +319,4 @@ ConnectedReferenceInput.defaultProps = {
     addField: true,
 };
 
-export default ConnectedReferenceInput;
+export default translate(ConnectedReferenceInput);

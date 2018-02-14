@@ -19,6 +19,7 @@ import {
     TextField,
     TextInput,
     minLength,
+    required,
     translate,
     Show,
     ShowButton,
@@ -162,6 +163,7 @@ export const CommentEdit = props => (
         <SimpleForm>
             <DisabledInput source="id" />
             <ReferenceInput
+                label="Post"
                 source="post_id"
                 reference="posts"
                 perPage={5}
@@ -181,15 +183,15 @@ export const CommentCreate = props => (
     <Create {...props}>
         <SimpleForm defaultValue={defaultValue}>
             <ReferenceInput
+                label="Post"
                 source="post_id"
                 reference="posts"
-                allowEmpty
-                validation={{ required: true }}
+                validate={required}
             >
                 <SelectInput optionText="title" />
             </ReferenceInput>
             <DateInput source="created_at" />
-            <LongTextInput source="body" />
+            <LongTextInput source="body" validate={required} />
         </SimpleForm>
     </Create>
 );

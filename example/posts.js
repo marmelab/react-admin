@@ -180,25 +180,27 @@ const PostCreateToolbar = props => (
 
 const getDefaultDate = () => new Date();
 
+const validate = values => {
+    const errors = {};
+    ['title', 'teaser'].forEach(field => {
+        if (!values[field]) {
+            errors[field] = ['Required field'];
+        }
+    });
+
+    if (values.average_note < 0 || values.average_note > 5) {
+        errors.average_note = ['Should be between 0 and 5'];
+    }
+
+    return errors;
+};
+
 export const PostCreate = props => (
     <Create {...props}>
         <SimpleForm
             toolbar={<PostCreateToolbar />}
             defaultValue={{ average_note: 0 }}
-            validate={values => {
-                const errors = {};
-                ['title', 'teaser'].forEach(field => {
-                    if (!values[field]) {
-                        errors[field] = ['Required field'];
-                    }
-                });
-
-                if (values.average_note < 0 || values.average_note > 5) {
-                    errors.average_note = ['Should be between 0 and 5'];
-                }
-
-                return errors;
-            }}
+            validate={validate}
         >
             <TextInput source="title" />
             <TextInput source="password" type="password" />

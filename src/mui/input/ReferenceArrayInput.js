@@ -2,14 +2,77 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
-import Labeled from '../input/Labeled';
+
 import {
     crudGetMany as crudGetManyAction,
     crudGetMatching as crudGetMatchingAction,
 } from '../../actions/dataActions';
 import { getPossibleReferences } from '../../reducer/admin/references/possibleValues';
+import ReferenceLoadingProgress from './ReferenceLoadingProgress';
+import ReferenceError from './ReferenceError';
+import translate from '../../i18n/translate';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
+
+export const REFERENCES_STATUS_READY = 'REFERENCES_STATUS_READY';
+export const REFERENCES_STATUS_INCOMPLETE = 'REFERENCES_STATUS_INCOMPLETE';
+export const REFERENCES_STATUS_EMPTY = 'REFERENCES_STATUS_EMPTY';
+export const getSelectedReferencesStatus = (input, referenceRecords) =>
+    !input.value || input.value.length === referenceRecords.length
+        ? REFERENCES_STATUS_READY
+        : referenceRecords.length > 0
+          ? REFERENCES_STATUS_INCOMPLETE
+          : REFERENCES_STATUS_EMPTY;
+
+export const getDataStatus = ({
+    input,
+    matchingReferences,
+    referenceRecords,
+    translate,
+}) => {
+    // selectedReferencesData can be "empty" (no data was found for references from input.value)
+    // or "incomplete" (Not all of the reference data was found)
+    // or "ready" (all references data was found or there is no references from input.value)
+    const selectedReferencesData = getSelectedReferencesStatus(
+        input,
+        referenceRecords
+    );
+
+    const matchingReferencesError =
+        matchingReferences && matchingReferences.error
+            ? translate(matchingReferences.error, {
+                  _: matchingReferences.error,
+              })
+            : null;
+
+    return {
+        waiting:
+            (!matchingReferences &&
+                input.value &&
+                selectedReferencesData === REFERENCES_STATUS_EMPTY) ||
+            (!matchingReferences && !input.value),
+        error:
+            matchingReferencesError &&
+            (!input.value ||
+                (input.value &&
+                    selectedReferencesData === REFERENCES_STATUS_EMPTY))
+                ? translate('aor.input.references.all_missing', {
+                      _: 'aor.input.references.all_missing',
+                  })
+                : null,
+        warning:
+            matchingReferencesError ||
+            (input.value && selectedReferencesData !== REFERENCES_STATUS_READY)
+                ? matchingReferencesError ||
+                  translate('aor.input.references.many_missing', {
+                      _: 'aor.input.references.many_missing',
+                  })
+                : null,
+        choices: Array.isArray(matchingReferences)
+            ? matchingReferences
+            : referenceRecords,
+    };
+};
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -157,13 +220,14 @@ export class ReferenceArrayInput extends Component {
             resource,
             label,
             source,
-            referenceRecords,
             allowEmpty,
             matchingReferences,
             basePath,
             onChange,
             children,
             meta,
+            translate,
+            referenceRecords,
         } = this.props;
 
         if (React.Children.count(children) !== 1) {
@@ -172,18 +236,28 @@ export class ReferenceArrayInput extends Component {
             );
         }
 
-        if (!(referenceRecords && referenceRecords.length > 0) && !allowEmpty) {
+        const translatedLabel = translate(
+            label || `resources.${resource}.fields.${source}`
+        );
+
+        const dataStatus = getDataStatus({
+            input,
+            matchingReferences,
+            referenceRecords,
+            translate,
+        });
+
+        if (dataStatus.waiting) {
+            return <ReferenceLoadingProgress label={translatedLabel} />;
+        }
+
+        if (dataStatus.error) {
             return (
-                <Labeled
-                    label={
-                        typeof label === 'undefined' ? (
-                            `resources.${resource}.fields.${source}`
-                        ) : (
-                            label
-                        )
-                    }
-                    source={source}
-                    resource={resource}
+                <ReferenceError
+                    label={translatedLabel}
+                    error={translate('aor.input.references.all_missing', {
+                        _: 'aor.input.references.all_missing',
+                    })}
                 />
             );
         }
@@ -191,14 +265,17 @@ export class ReferenceArrayInput extends Component {
         return React.cloneElement(children, {
             allowEmpty,
             input,
-            label:
-                typeof label === 'undefined'
-                    ? `resources.${resource}.fields.${source}`
-                    : label,
+            label: translatedLabel,
             resource,
-            meta,
+            meta: dataStatus.warning
+                ? {
+                      ...meta,
+                      error: dataStatus.warning,
+                      touched: true,
+                  }
+                : meta,
             source,
-            choices: matchingReferences,
+            choices: dataStatus.choices,
             basePath,
             onChange,
             setFilter: this.debouncedSetFilter,
@@ -232,44 +309,45 @@ ReferenceArrayInput.propTypes = {
         order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
     source: PropTypes.string,
+    translate: PropTypes.func.isRequired,
 };
 
 ReferenceArrayInput.defaultProps = {
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
-    matchingReferences: [],
+    matchingReferences: null,
     perPage: 25,
-    sort: { field: 'id', order: 'DESC' },
     referenceRecords: [],
+    sort: { field: 'id', order: 'DESC' },
 };
 
 function mapStateToProps(state, props) {
     const referenceIds = props.input.value || [];
     const data = state.admin.resources[props.reference].data;
     return {
-        referenceRecords: referenceIds.reduce((references, referenceId) => {
-            if (data[referenceId]) {
-                references.push(data[referenceId]);
-            }
-            return references;
-        }, []),
         matchingReferences: getPossibleReferences(
             state,
             referenceSource(props.resource, props.source),
             props.reference,
             referenceIds
         ),
+        referenceRecords: referenceIds.reduce((references, referenceId) => {
+            if (data[referenceId]) {
+                references.push(data[referenceId]);
+            }
+            return references;
+        }, []),
     };
 }
 
-const ConnectedReferenceInput = connect(mapStateToProps, {
+const ConnectedReferenceArrayInput = connect(mapStateToProps, {
     crudGetMany: crudGetManyAction,
     crudGetMatching: crudGetMatchingAction,
-})(ReferenceArrayInput);
+})(translate(ReferenceArrayInput));
 
-ConnectedReferenceInput.defaultProps = {
+ConnectedReferenceArrayInput.defaultProps = {
     addField: true,
 };
 
-export default ConnectedReferenceInput;
+export default ConnectedReferenceArrayInput;
