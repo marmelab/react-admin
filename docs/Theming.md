@@ -287,12 +287,7 @@ class MyLayout extends Component {
                         <AppBar title={title} />
                         <div className="body" style={styles.body}>
                             <div style={styles.content}>
-                                <AdminRoutes
-                                    customRoutes={customRoutes}
-                                    dashboard={dashboard}
-                                >
-                                    {children}
-                                </AdminRoutes>
+                                {children}
                             </div>
                             <Sidebar>
                                 {createElement(menu || Menu, {
