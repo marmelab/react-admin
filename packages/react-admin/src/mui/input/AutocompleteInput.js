@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
-import isEqual from 'lodash.isequal';
 import Autosuggest from 'react-autosuggest';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
@@ -91,16 +90,14 @@ const styles = theme => ({
  */
 export class AutocompleteInput extends React.Component {
     state = {
-        firstLoad: true,
         searchText: '',
         suggestions: [],
     };
 
     componentWillMount() {
-        const { input, choices, optionValue } = this.props;
+        const { input, choices } = this.props;
         this.setState({
-            searchText:
-                this.getSearchText(input.value, choices, optionValue) || '',
+            searchText: this.getSearchText(input.value) || '',
             suggestions: choices,
         });
     }
@@ -108,37 +105,18 @@ export class AutocompleteInput extends React.Component {
     componentWillReceiveProps(nextProps) {
         this.setState(state => {
             let newState = {};
-            if (!isEqual(this.props.choices, nextProps.choices)) {
-                newState.suggestions = nextProps.choices;
-
-                // This was the first time we loaded choices
-                newState.firstLoad = false;
+            if (this.props.input.value !== nextProps.input.value) {
+                newState.searchText = this.getSearchText(nextProps.input.value);
             }
-
-            // We must set the searchText once the choices have been loaded,
-            // otherwise we'll get an empty text even if there is a value
-            // and the page just loaded.
-            // However, choices are loaded asynchronously and will be received
-            // after we get the current record in an Edition view. We have to
-            // check whether its the first time we loaded choices and only set
-            // the searchText at that time, otherwise, when the user enter text,
-            // it will be overriden by the current value text.
-            if (
-                (this.props.input.value !== nextProps.input.value ||
-                    !isEqual(this.props.choices, nextProps.choices)) &&
-                state.firstLoad
-            ) {
-                newState.searchText = this.getSearchText(
-                    nextProps.input.value,
-                    nextProps.choices,
-                    nextProps.optionValue
-                );
+            if (this.props.choices !== nextProps.choices) {
+                newState.suggestions = nextProps.choices;
             }
             return { ...state, ...newState };
         });
     }
 
-    getSearchText = (value, choices, optionValue) => {
+    getSearchText = value => {
+        const { choices, optionValue } = this.props;
         const suggestion = choices.find(
             choice => get(choice, optionValue) === value
         );
@@ -167,7 +145,11 @@ export class AutocompleteInput extends React.Component {
         }
     };
 
-    handleSuggestionsFetchRequested = ({ value: searchText }) => {
+    handleSuggestionsFetchRequested = ({ value: searchText, reason }) => {
+        if (reason === 'input-focused') {
+            // do not fetch on focus, the data is prefeteched already
+            return;
+        }
         const { setFilter } = this.props;
         setFilter && setFilter(searchText);
     };
