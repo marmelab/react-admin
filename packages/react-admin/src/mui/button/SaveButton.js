@@ -33,6 +33,7 @@ const sanitizeRestProps = ({
     submitOnEnter,
     redirect,
     locale,
+    showNotification,
     ...rest
 }) => rest;
 
