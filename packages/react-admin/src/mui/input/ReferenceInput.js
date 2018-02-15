@@ -14,7 +14,7 @@ import {
     getPossibleReferenceValues,
     getReferenceResource,
 } from '../../reducer';
-import { getStatusForInput as getDataStatus } from './ReferenceDataStatus';
+import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import ReferenceError from './ReferenceError';
 import translate from '../../i18n/translate';
 

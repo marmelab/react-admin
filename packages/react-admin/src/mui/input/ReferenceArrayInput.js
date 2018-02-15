@@ -17,7 +17,7 @@ import {
     getPossibleReferenceValues,
     getReferenceResource,
 } from '../../reducer';
-import { getStatusForArrayInput as getDataStatus } from './ReferenceDataStatus';
+import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
 import ReferenceError from './ReferenceError';
 import translate from '../../i18n/translate';
 

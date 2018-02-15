@@ -6,7 +6,7 @@ import {
     REFERENCES_STATUS_READY,
     REFERENCES_STATUS_INCOMPLETE,
     REFERENCES_STATUS_EMPTY,
-} from './ReferenceDataStatus';
+} from './referenceDataStatus';
 
 describe('References data status', () => {
     describe('getStatusForInput', () => {
