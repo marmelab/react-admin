@@ -42,6 +42,7 @@ The react-admin project includes 4 Data Providers:
 
 You can find Data Providers for various backends in third-party repositories:
 
+* **[DynamoDb](https://github.com/abiglobalhealth/aor-dynamodb-client)**: [abiglobalhealth/aor-dynamodb-client](https://github.com/abiglobalhealth/aor-dynamodb-client)
 * **[Epilogue](https://github.com/dchester/epilogue)**: [dunghuynh/aor-epilogue-client](https://github.com/dunghuynh/aor-epilogue-client)
 * **[Feathersjs](http://www.feathersjs.com/)**: [josx/aor-feathers-client](https://github.com/josx/aor-feathers-client)
 * **[Firebase](https://firebase.google.com/)**: [sidferreira/aor-firebase-client](https://github.com/sidferreira/aor-firebase-client)
@@ -167,7 +168,7 @@ For instance, if you want to use upload components (such as `<ImageInput />` one
  */
 const convertFileToBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file.rawFile);
 
     reader.onload = () => resolve(reader.result);
     reader.onerror = reject;
@@ -181,8 +182,8 @@ const addUploadFeature = requestHandler => (type, resource, params) => {
     if (type === 'UPDATE' && resource === 'posts') {
         if (params.data.pictures && params.data.pictures.length) {
             // only freshly dropped pictures are instance of File
-            const formerPictures = params.data.pictures.filter(p => !(p instanceof File));
-            const newPictures = params.data.pictures.filter(p => p instanceof File);
+            const formerPictures = params.data.pictures.filter(p.rawFile => !(p instanceof File));
+            const newPictures = params.data.pictures.filter(p.rawFile => p instanceof File);
 
             return Promise.all(newPictures.map(convertFileToBase64))
                 .then(base64Pictures => base64Pictures.map(picture64 => ({

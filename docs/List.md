@@ -84,7 +84,6 @@ You can replace the list of default actions by your own element using the `actio
 
 ```jsx
 import Button from 'material-ui/Button';
-import NavigationRefresh from 'material-ui-icons/Refresh';
 import { CardActions, CreateButton, RefreshButton } from 'react-admin';
 
 const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter }) => (

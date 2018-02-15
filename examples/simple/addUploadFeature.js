@@ -1,7 +1,7 @@
 const convertFileToBase64 = file =>
     new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(file.rawFile);
 
         reader.onload = () => resolve(reader.result);
         reader.onerror = reject;
@@ -12,10 +12,10 @@ const addUploadCapabilities = requestHandler => (type, resource, params) => {
         if (params.data.pictures && params.data.pictures.length) {
             // only freshly dropped pictures are instance of File
             const formerPictures = params.data.pictures.filter(
-                p => !(p instanceof File)
+                p => !(p.rawFile instanceof File)
             );
             const newPictures = params.data.pictures.filter(
-                p => p instanceof File
+                p => p.rawFile instanceof File
             );
 
             return Promise.all(newPictures.map(convertFileToBase64))
