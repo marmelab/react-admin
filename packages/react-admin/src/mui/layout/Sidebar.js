@@ -18,7 +18,6 @@ const styles = theme => ({
     drawerPaper: {
         height: '100%',
         width: DRAWER_WIDTH,
-        backgroundColor: theme.palette.secondary.light,
     },
     drawerHeader: {
         display: 'flex',

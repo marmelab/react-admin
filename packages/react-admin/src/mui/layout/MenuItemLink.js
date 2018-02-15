@@ -7,11 +7,10 @@ import { withStyles } from 'material-ui/styles';
 
 const styles = theme => ({
     root: {
-        color: theme.palette.secondary.dark,
+        color: theme.palette.text.primary,
     },
     active: {
-        backgroundColor: theme.palette.secondary.main,
-        color: theme.palette.secondary.contrastText,
+        backgroundColor: theme.palette.background.default,
     },
     icon: { paddingRight: '0.5em' },
 });
