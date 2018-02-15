@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
-import { FormControlLabel } from 'material-ui/Form';
+import { FormControlLabel, FormHelperText } from 'material-ui/Form';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import compose from 'recompose/compose';
 
@@ -108,8 +108,16 @@ export class RadioButtonGroupInput extends Component {
             isRequired,
             choices,
             options,
+            meta,
             ...rest
         } = this.props;
+        if (typeof meta === 'undefined') {
+            throw new Error(
+                "The RadioButtonGroupInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
+            );
+        }
+
+        const { touched, error, helperText = false } = meta;
 
         return (
             <Labeled
@@ -129,6 +137,8 @@ export class RadioButtonGroupInput extends Component {
                 >
                     {choices.map(this.renderRadioButton)}
                 </RadioGroup>
+                {touched && error && <FormHelperText>{error}</FormHelperText>}
+                {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </Labeled>
         );
     }
@@ -151,6 +161,7 @@ RadioButtonGroupInput.propTypes = {
     source: PropTypes.string,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
+    meta: PropTypes.object,
 };
 
 RadioButtonGroupInput.defaultProps = {
