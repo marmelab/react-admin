@@ -38,6 +38,24 @@ const styles = theme => ({
     },
 });
 
+const sanitizeRestProps = ({
+    allowEmpty,
+    basePath,
+    choices,
+    component,
+    inputValueMatcher,
+    initializeForm,
+    limitChoicesToValue,
+    optionValue,
+    optionText,
+    setFilter,
+    setPagination,
+    setSort,
+    translate,
+    translateChoice,
+    ...rest
+}) => rest;
+
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
  *
@@ -249,20 +267,19 @@ export class AutocompleteInput extends React.Component {
 
     renderInput = inputProps => {
         const {
-            autoFocus,
             className,
             classes = {},
             isRequired,
             label,
+            input,
             meta,
-            onChange,
+            options,
             resource,
             source,
-            value,
             ref,
-            options: { InputProps, ...options },
-            ...other
+            ...rest
         } = inputProps;
+
         if (typeof meta === 'undefined') {
             throw new Error(
                 "The TextInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
@@ -273,6 +290,7 @@ export class AutocompleteInput extends React.Component {
 
         return (
             <TextField
+                margin="normal"
                 label={
                     <FieldTitle
                         label={label}
@@ -281,22 +299,13 @@ export class AutocompleteInput extends React.Component {
                         isRequired={isRequired}
                     />
                 }
-                value={value}
-                onChange={onChange}
-                autoFocus={autoFocus}
-                margin="normal"
-                className={classnames(classes.root, className)}
-                inputRef={ref}
                 error={!!(touched && error)}
                 helperText={(touched && error) || helperText}
+                className={classnames(classes.root, className)}
                 {...options}
-                InputProps={{
-                    classes: {
-                        input: classes.input,
-                    },
-                    ...InputProps,
-                    ...other,
-                }}
+                {...input}
+                {...sanitizeRestProps(rest)}
+                inputRef={ref}
             />
         );
     };
@@ -394,13 +403,8 @@ export class AutocompleteInput extends React.Component {
         const {
             alwaysRenderSuggestions,
             classes = {},
-            isRequired,
-            label,
-            meta,
-            resource,
-            source,
-            className,
-            options,
+            InputProps,
+            ...rest
         } = this.props;
         const { suggestions, searchText } = this.state;
 
@@ -427,18 +431,12 @@ export class AutocompleteInput extends React.Component {
                 renderSuggestion={this.renderSuggestion}
                 shouldRenderSuggestions={this.shouldRenderSuggestions}
                 inputProps={{
-                    className,
                     classes,
-                    isRequired,
-                    label,
-                    meta,
-                    onChange: this.handleChange,
-                    resource,
-                    source,
+                    ...rest,
                     value: searchText,
+                    onChange: this.handleChange,
                     onBlur: this.handleBlur,
                     onFocus: this.handleFocus,
-                    options,
                 }}
             />
         );
