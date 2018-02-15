@@ -36,6 +36,7 @@ const translatedResourceName = (resource, translate) =>
 const Menu = ({
     classes,
     className,
+    dense,
     hasDashboard,
     onMenuClick,
     resources,
@@ -54,6 +55,7 @@ const Menu = ({
                     primaryText={translatedResourceName(resource, translate)}
                     leftIcon={<resource.icon />}
                     onClick={onMenuClick}
+                    dense={dense}
                 />
             ))}
         <Responsive small={logout} medium={null} />
@@ -63,6 +65,7 @@ const Menu = ({
 Menu.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
+    dense: PropTypes.bool,
     hasDashboard: PropTypes.bool,
     logout: PropTypes.element,
     onMenuClick: PropTypes.func,
