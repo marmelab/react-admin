@@ -5,6 +5,7 @@ import debounce from 'lodash.debounce';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 
+import LinearProgress from '../layout/LinearProgress';
 import addField from '../form/addField';
 import Labeled from '../input/Labeled';
 import {
@@ -16,6 +17,9 @@ import {
     getPossibleReferenceValues,
     getReferenceResource,
 } from '../../reducer';
+import { getStatusForArrayInput as getDataStatus } from './ReferenceDataStatus';
+import ReferenceError from './ReferenceError';
+import translate from '../../i18n/translate';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
@@ -216,6 +220,7 @@ export class ReferenceArrayInput extends Component {
             meta,
             record,
             options,
+            translate,
             ...rest
         } = this.props;
 
@@ -225,18 +230,36 @@ export class ReferenceArrayInput extends Component {
             );
         }
 
-        if (!(referenceRecords && referenceRecords.length > 0) && !allowEmpty) {
+        const translatedLabel = translate(
+            label || `resources.${resource}.fields.${source}`
+        );
+
+        const dataStatus = getDataStatus({
+            input,
+            matchingReferences,
+            referenceRecords,
+            translate,
+        });
+
+        if (dataStatus.waiting) {
             return (
                 <Labeled
-                    label={
-                        typeof label === 'undefined'
-                            ? `resources.${resource}.fields.${source}`
-                            : label
-                    }
+                    label={translatedLabel}
                     source={source}
                     resource={resource}
                     className={className}
                     {...sanitizeRestProps(rest)}
+                >
+                    <LinearProgress />
+                </Labeled>
+            );
+        }
+
+        if (dataStatus.error) {
+            return (
+                <ReferenceError
+                    label={translatedLabel}
+                    error={dataStatus.error}
                 />
             );
         }
@@ -245,14 +268,14 @@ export class ReferenceArrayInput extends Component {
             className,
             allowEmpty,
             input,
-            label:
-                typeof label === 'undefined'
-                    ? `resources.${resource}.fields.${source}`
-                    : label,
+            label: translatedLabel,
             resource,
-            meta,
+            meta: {
+                ...meta,
+                helperText: dataStatus.warning || false,
+            },
             source,
-            choices: matchingReferences,
+            choices: dataStatus.choices,
             basePath,
             onChange,
             setFilter: this.debouncedSetFilter,
@@ -289,13 +312,14 @@ ReferenceArrayInput.propTypes = {
         order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
     source: PropTypes.string,
+    translate: PropTypes.func.isRequired,
 };
 
 ReferenceArrayInput.defaultProps = {
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
-    matchingReferences: [],
+    matchingReferences: null,
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecords: [],
@@ -328,6 +352,7 @@ const makeMapStateToProps = () =>
 
 const ConnectedReferenceArrayInput = compose(
     addField,
+    translate,
     connect(makeMapStateToProps(), {
         crudGetMany: crudGetManyAction,
         crudGetMatching: crudGetMatchingAction,
