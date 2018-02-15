@@ -167,6 +167,18 @@ describe('<SelectArrayInput />', () => {
         assert.equal(MenuItemElement1.childAt(0).text(), '**Male**');
     });
 
+    it('should displayed helperText if prop is present in meta', () => {
+        const wrapper = shallow(
+            <SelectArrayInput
+                {...defaultProps}
+                meta={{ helperText: 'Can i help you?' }}
+            />
+        );
+        const helperText = wrapper.find('WithStyles(FormHelperText)');
+        assert.equal(helperText.length, 1);
+        assert.equal(helperText.childAt(0).text(), 'Can i help you?');
+    });
+
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             const wrapper = shallow(
@@ -197,6 +209,35 @@ describe('<SelectArrayInput />', () => {
             const helperText = wrapper.find('WithStyles(FormHelperText)');
             assert.equal(helperText.length, 1);
             assert.equal(helperText.childAt(0).text(), 'Required field.');
+        });
+
+        it('should be displayed with an helper Text', () => {
+            const wrapper = shallow(
+                <SelectArrayInput
+                    {...defaultProps}
+                    meta={{
+                        touched: true,
+                        error: 'Required field.',
+                        helperText: 'Can i help you?',
+                    }}
+                />
+            );
+            const helperText = wrapper.find('WithStyles(FormHelperText)');
+            assert.equal(helperText.length, 2);
+            assert.equal(
+                helperText
+                    .at(0)
+                    .childAt(0)
+                    .text(),
+                'Required field.'
+            );
+            assert.equal(
+                helperText
+                    .at(1)
+                    .childAt(0)
+                    .text(),
+                'Can i help you?'
+            );
         });
     });
 });

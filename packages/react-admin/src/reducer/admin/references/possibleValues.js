@@ -1,4 +1,7 @@
-import { CRUD_GET_MATCHING_SUCCESS } from '../../../actions/dataActions';
+import {
+    CRUD_GET_MATCHING_SUCCESS,
+    CRUD_GET_MATCHING_FAILURE,
+} from '../../../actions/dataActions';
 
 const initialState = {};
 
@@ -8,6 +11,11 @@ export default (previousState = initialState, { type, payload, meta }) => {
             return {
                 ...previousState,
                 [meta.relatedTo]: payload.data.map(record => record.id),
+            };
+        case CRUD_GET_MATCHING_FAILURE:
+            return {
+                ...previousState,
+                [meta.relatedTo]: { error: payload.error },
             };
         default:
             return previousState;
@@ -22,7 +30,14 @@ export const getPossibleReferences = (
     possibleValues,
     selectedIds = []
 ) => {
-    possibleValues = possibleValues ? Array.from(possibleValues) : [];
+    if (!possibleValues) {
+        return null;
+    }
+
+    if (possibleValues.error) {
+        return possibleValues;
+    }
+    possibleValues = Array.from(possibleValues);
     selectedIds.forEach(
         id =>
             possibleValues.some(value => value == id) ||

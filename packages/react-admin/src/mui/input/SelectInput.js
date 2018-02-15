@@ -175,7 +175,7 @@ export class SelectInput extends Component {
                 "The SelectInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
             );
         }
-        const { touched, error } = meta;
+        const { touched, error, helperText = false } = meta;
 
         return (
             <TextField
@@ -192,7 +192,7 @@ export class SelectInput extends Component {
                 }
                 className={className}
                 error={!!(touched && error)}
-                helperText={touched && error}
+                helperText={(touched && error) || helperText}
                 {...options}
                 {...sanitizeRestProps(rest)}
                 onChange={this.handleChange}

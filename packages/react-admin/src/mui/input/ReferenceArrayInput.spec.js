@@ -8,24 +8,273 @@ describe('<ReferenceArrayInput />', () => {
         crudGetMatching: () => true,
         crudGetMany: () => true,
         input: {},
+        matchingReferences: [],
+        meta: {},
         record: {},
         reference: 'tags',
         resource: 'posts',
         source: 'tag_ids',
+        translate: x => `*${x}*`,
     };
     const MyComponent = () => <span id="mycomponent" />;
 
-    it('should not render anything if there is no referenceRecord and allowEmpty is false', () => {
+    it('should render a LinearProgress as long as there are no references fetched and no selected references', () => {
         const wrapper = shallow(
-            <ReferenceArrayInput {...defaultProps}>
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: null,
+                    input: {},
+                }}
+            >
                 <MyComponent />
             </ReferenceArrayInput>
         );
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 0);
+        const LinearProgressElement = wrapper.find(
+            'WithStyles(LinearProgress)'
+        );
+        assert.equal(LinearProgressElement.length, 1);
     });
 
-    it('should not render enclosed component if allowEmpty is true', () => {
+    it('should render a LinearProgress as long as there are no references fetched and there are no data found for the references already selected', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: null,
+                    input: { value: [1, 2] },
+                    referenceRecords: [],
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 0);
+        const LinearProgressElement = wrapper.find(
+            'WithStyles(LinearProgress)'
+        );
+        assert.equal(LinearProgressElement.length, 1);
+    });
+
+    it('should not render a LinearProgress if the references are being searched but data from at least one selected reference was found', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: null,
+                    input: { value: [1, 2] },
+                    referenceRecords: [{ id: 1 }],
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const LinearProgressElement = wrapper.find(
+            'WithStyles(LinearProgress)'
+        );
+        assert.equal(LinearProgressElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+        assert.deepEqual(MyComponentElement.prop('choices'), [{ id: 1 }]);
+    });
+
+    it('should display an error in case of references fetch error and there are no selected reference in the input value', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: { error: 'fetch error' },
+                    input: {},
+                    referenceRecords: [],
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 0);
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 1);
+        assert.equal(
+            ErrorElement.prop('error'),
+            '*ra.input.references.all_missing*'
+        );
+    });
+
+    it('should display an error in case of references fetch error and there are no data found for the references already selected', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: { error: 'fetch error' },
+                    input: { value: [1] },
+                    referenceRecords: [],
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 0);
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 1);
+        assert.equal(
+            ErrorElement.prop('error'),
+            '*ra.input.references.all_missing*'
+        );
+    });
+
+    it('should not display an error in case of references fetch error but data from at least one selected reference was found', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: { error: 'fetch error' },
+                    input: { value: [1, 2] },
+                    referenceRecords: [{ id: 2 }],
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+        assert.deepEqual(MyComponentElement.prop('choices'), [{ id: 2 }]);
+    });
+
+    it('should send an error to the children if references fetch fails but selected references are not empty', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: { error: 'fetch error' },
+                    input: { value: [1, 2] },
+                    referenceRecords: [{ id: 2 }],
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+        assert.deepEqual(MyComponentElement.prop('meta'), {
+            helperText: '*fetch error*',
+        });
+    });
+
+    it('should send an error to the children if references were found but selected references are not complete', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: [],
+                    input: { value: [1, 2] },
+                    referenceRecords: [{ id: 2 }],
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+        assert.deepEqual(MyComponentElement.prop('meta'), {
+            helperText: '*ra.input.references.many_missing*',
+        });
+    });
+
+    it('should send an error to the children if references were found but selected references are empty', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: [],
+                    input: { value: [1, 2] },
+                    referenceRecords: [],
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+        assert.deepEqual(MyComponentElement.prop('meta'), {
+            helperText: '*ra.input.references.many_missing*',
+        });
+    });
+
+    it('should not send an error to the children if all references were found', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: [],
+                    input: { value: [1, 2] },
+                    referenceRecords: [{ id: 1 }, { id: 2 }],
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+        assert.deepEqual(MyComponentElement.prop('meta'), {
+            helperText: false,
+        });
+    });
+
+    it('should render enclosed component if references present in input are available in state', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    input: { value: [1] },
+                    referenceRecords: [1],
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+    });
+
+    it('should render enclosed component even if the references are empty', () => {
+        const wrapper = shallow(
+            <ReferenceArrayInput
+                {...{
+                    ...defaultProps,
+                    matchingReferences: [],
+                }}
+            >
+                <MyComponent />
+            </ReferenceArrayInput>
+        );
+        const LinearProgressElement = wrapper.find(
+            'WithStyles(LinearProgress)'
+        );
+        assert.equal(LinearProgressElement.length, 0);
+        const ErrorElement = wrapper.find('ReferenceError');
+        assert.equal(ErrorElement.length, 0);
+        const MyComponentElement = wrapper.find('MyComponent');
+        assert.equal(MyComponentElement.length, 1);
+    });
+
+    it('should render enclosed component if allowEmpty is true', () => {
         const wrapper = shallow(
             <ReferenceArrayInput {...defaultProps} allowEmpty>
                 <MyComponent />

@@ -270,7 +270,9 @@ export class AutocompleteInput extends React.Component {
                 "The TextInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
             );
         }
-        const { touched, error } = meta;
+
+        const { touched, error, helperText = false } = meta;
+
         return (
             <TextField
                 label={
@@ -288,7 +290,7 @@ export class AutocompleteInput extends React.Component {
                 className={classnames(classes.root, className)}
                 inputRef={ref}
                 error={!!(touched && error)}
-                helperText={touched && error}
+                helperText={(touched && error) || helperText}
                 {...options}
                 InputProps={{
                     classes: {

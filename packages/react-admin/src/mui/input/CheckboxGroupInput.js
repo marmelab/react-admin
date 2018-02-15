@@ -6,6 +6,7 @@ import {
     FormControl,
     FormGroup,
     FormControlLabel,
+    FormHelperText,
 } from 'material-ui/Form';
 import Checkbox from 'material-ui/Checkbox';
 import { withStyles } from 'material-ui/styles';
@@ -139,11 +140,19 @@ export class CheckboxGroupInput extends Component {
             classes = {},
             isRequired,
             label,
+            meta,
             resource,
             source,
             input,
             ...rest
         } = this.props;
+        if (typeof meta === 'undefined') {
+            throw new Error(
+                "The CheckboxGroupInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
+            );
+        }
+
+        const { touched, error, helperText = false } = meta;
 
         return (
             <FormControl
@@ -161,6 +170,8 @@ export class CheckboxGroupInput extends Component {
                     />
                 </FormLabel>
                 <FormGroup row>{choices.map(this.renderCheckbox)}</FormGroup>
+                {touched && error && <FormHelperText>{error}</FormHelperText>}
+                {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         );
     }
@@ -186,6 +197,7 @@ CheckboxGroupInput.propTypes = {
     resource: PropTypes.string,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,
+    meta: PropTypes.object,
 };
 
 CheckboxGroupInput.defaultProps = {

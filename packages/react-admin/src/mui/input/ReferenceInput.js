@@ -14,6 +14,9 @@ import {
     getPossibleReferenceValues,
     getReferenceResource,
 } from '../../reducer';
+import { getStatusForInput as getDataStatus } from './referenceDataStatus';
+import ReferenceError from './ReferenceError';
+import translate from '../../i18n/translate';
 
 const referenceSource = (resource, source) => `${resource}@${source}`;
 
@@ -226,17 +229,29 @@ export class ReferenceInput extends Component {
             children,
             meta,
             options,
+            translate,
             ...rest
         } = this.props;
 
-        if (!referenceRecord && !allowEmpty) {
+        if (React.Children.count(children) !== 1) {
+            throw new Error('<ReferenceInput> only accepts a single child');
+        }
+
+        const dataStatus = getDataStatus({
+            input,
+            matchingReferences,
+            referenceRecord,
+            translate,
+        });
+
+        const translatedLabel = translate(
+            label || `resources.${resource}.fields.${source}`
+        );
+
+        if (dataStatus.waiting) {
             return (
                 <Labeled
-                    label={
-                        typeof label === 'undefined'
-                            ? `resources.${resource}.fields.${source}`
-                            : label
-                    }
+                    label={translatedLabel}
                     source={source}
                     resource={resource}
                     className={className}
@@ -247,19 +262,28 @@ export class ReferenceInput extends Component {
             );
         }
 
+        if (dataStatus.error) {
+            return (
+                <ReferenceError
+                    label={translatedLabel}
+                    error={dataStatus.error}
+                />
+            );
+        }
+
         return React.cloneElement(children, {
             allowEmpty,
             classes,
             className,
             input,
-            label:
-                typeof label === 'undefined'
-                    ? `resources.${resource}.fields.${source}`
-                    : label,
+            label: translatedLabel,
             resource,
-            meta,
+            meta: {
+                ...meta,
+                helperText: dataStatus.warning || false,
+            },
             source,
-            choices: matchingReferences,
+            choices: dataStatus.choices,
             basePath,
             onChange,
             setFilter: this.debouncedSetFilter,
@@ -298,13 +322,14 @@ ReferenceInput.propTypes = {
         order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
     source: PropTypes.string,
+    translate: PropTypes.func.isRequired,
 };
 
 ReferenceInput.defaultProps = {
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
-    matchingReferences: [],
+    matchingReferences: null,
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     referenceRecord: null,
@@ -330,6 +355,7 @@ const makeMapStateToProps = () =>
 
 const ConnectedReferenceInput = compose(
     addField,
+    translate,
     connect(makeMapStateToProps(), {
         crudGetOne,
         crudGetMatching,

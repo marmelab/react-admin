@@ -42,6 +42,13 @@ module.exports = {
                 upload_single:
                     "Déposez l'image à uploader, ou cliquez pour la sélectionner.",
             },
+            references: {
+                all_missing: 'Impossible de trouver des données de références.',
+                many_missing:
+                    'Au moins une des références associées semble ne plus être disponible.',
+                single_missing:
+                    'La référence associée ne semble plus disponible.',
+            },
         },
         message: {
             yes: 'Oui',

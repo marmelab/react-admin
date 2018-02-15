@@ -204,6 +204,17 @@ describe('<SelectInput />', () => {
         assert.equal(MenuItemElement1.childAt(0).text(), 'Male');
     });
 
+    it('should displayed helperText if prop is present in meta', () => {
+        const wrapper = shallow(
+            <SelectInput
+                {...defaultProps}
+                meta={{ helperText: 'Can i help you?' }}
+            />
+        );
+        const SelectFieldElement = wrapper.find('TextField');
+        assert.equal(SelectFieldElement.prop('helperText'), 'Can i help you?');
+    });
+
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             const wrapper = shallow(
@@ -229,6 +240,24 @@ describe('<SelectInput />', () => {
                 <SelectInput
                     {...defaultProps}
                     meta={{ touched: true, error: 'Required field.' }}
+                />
+            );
+            const SelectFieldElement = wrapper.find('TextField');
+            assert.equal(
+                SelectFieldElement.prop('helperText'),
+                'Required field.'
+            );
+        });
+
+        it('should display the error even if helperText is present', () => {
+            const wrapper = shallow(
+                <SelectInput
+                    {...defaultProps}
+                    meta={{
+                        touched: true,
+                        error: 'Required field.',
+                        helperText: 'Can i help you?',
+                    }}
                 />
             );
             const SelectFieldElement = wrapper.find('TextField');
