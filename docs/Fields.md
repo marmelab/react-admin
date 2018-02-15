@@ -390,6 +390,16 @@ With this configuration, `<ReferenceField>` wraps the comment title in a link to
 </Admin>
 ```
 
+Set the `allowEmpty` prop when the empty value is allowed.
+
+```jsx
+import { ReferenceField, TextField } from 'admin-on-rest'
+
+<ReferenceField label="Post" source="post_id" reference="posts" allowEmpty>
+    <TextField optionText="title" />
+</ReferenceField>
+```
+
 To change the link from the `<Edit>` page to the `<Show>` page, set the `linkType` prop to "show".
 
 ```jsx
