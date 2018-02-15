@@ -109,6 +109,8 @@ const App = () => (
 
 ![Custom home page](./img/dashboard.png)
 
+**Tip**: Adding the `<ViewTitle>` component will also allow the header to be displayed in mobile resolutions.
+
 ## `catchAll`
 
 When users type URLs that don't match any of the children `<Resource>` components, they see a default "Not Found" page. 
