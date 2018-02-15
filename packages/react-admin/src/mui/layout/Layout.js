@@ -25,10 +25,10 @@ const styles = theme => ({
         position: 'relative',
         display: 'flex',
         width: '100%',
-        height: '100%',
     },
     content: {
         width: '100%',
+        minHeight: '100vh',
         marginLeft: 0,
         flexGrow: 1,
         backgroundColor: theme.palette.background.default,
