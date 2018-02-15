@@ -24,7 +24,8 @@ describe('FieldTitle', () => {
             ).html(),
             '<span>bar</span>'
         ));
-    it('should use the humanized source when given', () =>
+
+    it('should use the humanized source when given', () => {
         assert.equal(
             shallow(
                 <FieldTitle
@@ -34,7 +35,31 @@ describe('FieldTitle', () => {
                 />
             ).html(),
             '<span>Title</span>'
-        ));
+        );
+
+        assert.equal(
+            shallow(
+                <FieldTitle
+                    resource="posts"
+                    source="title_with_underscore"
+                    translate={translateMock({})}
+                />
+            ).html(),
+            '<span>Title with underscore</span>'
+        );
+
+        assert.equal(
+            shallow(
+                <FieldTitle
+                    resource="posts"
+                    source="titleWithCamelCase"
+                    translate={translateMock({})}
+                />
+            ).html(),
+            '<span>Title with camel case</span>'
+        );
+    });
+
     it('should use the source and resource as translate key when translation is available', () =>
         assert.equal(
             shallow(

@@ -18,7 +18,7 @@ export const FieldTitle = ({
             ? translate(label, { _: label })
             : typeof source !== 'undefined'
               ? translate(`resources.${resource}.fields.${source}`, {
-                    _: inflection.humanize(source),
+                    _: inflection.transform(source, ['underscore', 'humanize']),
                 })
               : ''}
         {isRequired && ' *'}
