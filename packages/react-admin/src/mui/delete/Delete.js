@@ -21,6 +21,17 @@ const styles = theme => ({
     button: {
         margin: theme.spacing.unit * 2,
     },
+    buttonDelete: {
+        backgroundColor: theme.palette.error.main,
+        color: theme.palette.error.contrastText,
+        '&:hover': {
+            backgroundColor: theme.palette.error.dark,
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: theme.palette.error.main,
+            },
+        },
+    },
     iconPaddingStyle: {
         paddingRight: '0.5em',
     },
@@ -206,8 +217,7 @@ export class Delete extends Component {
                             <Button
                                 variant="raised"
                                 type="submit"
-                                color="primary"
-                                className={classes.button}
+                                className={`${classes.button} ${classes.buttonDelete}`}
                             >
                                 <ActionCheck
                                     className={classes.iconPaddingStyle}
