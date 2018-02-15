@@ -248,5 +248,23 @@ describe('<SelectInput />', () => {
                 'Required field.'
             );
         });
+
+        it('should display the error even if helperText is present', () => {
+            const wrapper = shallow(
+                <SelectInput
+                    {...defaultProps}
+                    meta={{
+                        touched: true,
+                        error: 'Required field.',
+                        helperText: 'Can i help you?',
+                    }}
+                />
+            );
+            const SelectFieldElement = wrapper.find('TextField');
+            assert.equal(
+                SelectFieldElement.prop('helperText'),
+                'Required field.'
+            );
+        });
     });
 });
