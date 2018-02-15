@@ -1,3 +1,4 @@
+export AutocompleteArrayInput from './AutocompleteArrayInput';
 export AutocompleteInput from './AutocompleteInput';
 export BooleanInput from './BooleanInput';
 export CheckboxGroupInput from './CheckboxGroupInput';

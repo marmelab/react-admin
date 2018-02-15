@@ -1,5 +1,6 @@
 import React, { Children, cloneElement } from 'react';
 import {
+    AutocompleteArrayInput,
     BulkActions,
     BulkDeleteAction,
     BooleanField,
@@ -210,8 +211,13 @@ export const PostCreate = props => (
             <TextInput source="password" type="password" />
             <LongTextInput source="teaser" />
             <RichTextInput source="body" />
+            <ReferenceArrayInput reference="tags" source="tags">
+                <AutocompleteArrayInput>
+                    <ChipField source="name" />
+                </AutocompleteArrayInput>
+            </ReferenceArrayInput>
             <DateInput source="published_at" defaultValue={getDefaultDate} />
-            <NumberInput source="average_note" />
+            <NumberInput source="average_note" fullWidth />
             <BooleanInput source="commentable" defaultValue />
         </SimpleForm>
     </Create>
