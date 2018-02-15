@@ -4,11 +4,9 @@ import {
     BulkDeleteMenuItem,
     BooleanField,
     BooleanInput,
-    CardActions,
     CheckboxGroupInput,
     ChipField,
     Create,
-    CreateButton,
     Datagrid,
     DateField,
     DateInput,
@@ -43,7 +41,6 @@ import {
     TextField,
     TextInput,
     Toolbar,
-    RefreshButton,
     minValue,
     number,
     required,
@@ -86,28 +83,6 @@ const styles = {
     publishedAt: { fontStyle: 'italic' },
 };
 
-const PostActions = ({
-    resource,
-    filters,
-    displayedFilters,
-    filterValues,
-    basePath,
-    showFilter,
-}) => (
-    <CardActions>
-        {filters &&
-            React.cloneElement(filters, {
-                resource,
-                showFilter,
-                displayedFilters,
-                filterValues,
-                context: 'button',
-            })}
-        <CreateButton basePath={basePath} />
-        <RefreshButton />
-    </CardActions>
-);
-
 const PostListBulkActions = props => (
     <BulkActions {...props}>
         <UpdateCommentableMenuItem />
@@ -118,7 +93,6 @@ const PostListBulkActions = props => (
 export const PostList = withStyles(styles)(({ classes, ...props }) => (
     <List
         {...props}
-        actions={<PostActions />}
         bulkActions={<PostListBulkActions />}
         filters={<PostFilter />}
         sort={{ field: 'published_at', order: 'DESC' }}
