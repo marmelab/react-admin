@@ -8,9 +8,8 @@ import classnames from 'classnames';
 
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
-import translate from '../../i18n/translate';
-import { getResources } from '../../reducer';
 import Responsive from '../layout/Responsive';
+import { getResources, translate } from 'react-admin-core';
 
 const styles = {
     main: {

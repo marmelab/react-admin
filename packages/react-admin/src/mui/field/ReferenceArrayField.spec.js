@@ -1,14 +1,14 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { ReferenceArrayField } from './ReferenceArrayField';
+import { InnerReferenceArrayField } from './ReferenceArrayField';
 import TextField from './TextField';
 import SingleFieldList from '../list/SingleFieldList';
 
-describe('<ReferenceArrayField />', () => {
+describe('<InnerReferenceArrayField />', () => {
     it('should render a loading indicator when related records are not yet fetched', () => {
         const wrapper = shallow(
-            <ReferenceArrayField
+            <InnerReferenceArrayField
                 record={{ barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
@@ -16,12 +16,12 @@ describe('<ReferenceArrayField />', () => {
                 basePath=""
                 data={{}}
                 ids={[1, 2]}
-                crudGetManyAccumulate={() => {}}
+                isLoading
             >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceArrayField>
+            </InnerReferenceArrayField>
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 1);
@@ -35,7 +35,7 @@ describe('<ReferenceArrayField />', () => {
             2: { id: 2, title: 'world' },
         };
         const wrapper = shallow(
-            <ReferenceArrayField
+            <InnerReferenceArrayField
                 record={{ barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
@@ -43,12 +43,11 @@ describe('<ReferenceArrayField />', () => {
                 basePath=""
                 data={data}
                 ids={[1, 2]}
-                crudGetManyAccumulate={() => {}}
             >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceArrayField>
+            </InnerReferenceArrayField>
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
@@ -63,7 +62,7 @@ describe('<ReferenceArrayField />', () => {
 
     it('should render nothing when there are no related records', () => {
         const wrapper = shallow(
-            <ReferenceArrayField
+            <InnerReferenceArrayField
                 record={{ barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
@@ -71,12 +70,11 @@ describe('<ReferenceArrayField />', () => {
                 basePath=""
                 data={{}}
                 ids={[]}
-                crudGetManyAccumulate={() => {}}
             >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceArrayField>
+            </InnerReferenceArrayField>
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
@@ -95,7 +93,7 @@ describe('<ReferenceArrayField />', () => {
             'abc-2': { id: 'abc-2', title: 'world' },
         };
         const wrapper = shallow(
-            <ReferenceArrayField
+            <InnerReferenceArrayField
                 record={{ barIds: ['abc-1', 'abc-2'] }}
                 resource="foo"
                 reference="bar"
@@ -103,12 +101,11 @@ describe('<ReferenceArrayField />', () => {
                 basePath=""
                 data={data}
                 ids={['abc-1', 'abc-2']}
-                crudGetManyAccumulate={() => {}}
             >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceArrayField>
+            </InnerReferenceArrayField>
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
@@ -130,7 +127,7 @@ describe('<ReferenceArrayField />', () => {
             2: { id: 2, title: 'world' },
         };
         const wrapper = shallow(
-            <ReferenceArrayField
+            <InnerReferenceArrayField
                 record={{ barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
@@ -138,12 +135,11 @@ describe('<ReferenceArrayField />', () => {
                 basePath=""
                 data={data}
                 ids={[1, 2]}
-                crudGetManyAccumulate={() => {}}
             >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceArrayField>
+            </InnerReferenceArrayField>
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
@@ -162,7 +158,7 @@ describe('<ReferenceArrayField />', () => {
             2: { id: 2, title: 'world' },
         };
         const wrapper = shallow(
-            <ReferenceArrayField
+            <InnerReferenceArrayField
                 record={{ barIds: [1, 2] }}
                 className="myClass"
                 resource="foo"
@@ -171,12 +167,11 @@ describe('<ReferenceArrayField />', () => {
                 basePath=""
                 data={data}
                 ids={[1, 2]}
-                crudGetManyAccumulate={() => {}}
             >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceArrayField>
+            </InnerReferenceArrayField>
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);

@@ -1,6 +1,5 @@
 import React, { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
-import ViewListIcon from 'material-ui-icons/ViewList';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import WithPermissions from './auth/WithPermissions';
@@ -165,7 +164,6 @@ Resource.propTypes = {
 
 Resource.defaultProps = {
     context: 'route',
-    icon: ViewListIcon,
     options: {},
 };
 

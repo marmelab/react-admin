@@ -4,7 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 import { CircularProgress } from 'material-ui/Progress';
-import translate from '../../i18n/translate';
+import { translate } from 'react-admin-core';
 
 const styles = theme => ({
     container: {

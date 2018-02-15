@@ -1,15 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import get from 'lodash.get';
 import { withStyles } from 'material-ui/styles';
-import compose from 'recompose/compose';
 import classnames from 'classnames';
+import { CoreReferenceField } from 'react-admin-core';
 
 import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
-import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
-import linkToRecord from '../../util/linkToRecord';
 import sanitizeRestProps from './sanitizeRestProps';
 
 const styles = theme => ({
@@ -17,6 +13,54 @@ const styles = theme => ({
         color: theme.palette.secondary.main,
     },
 });
+
+export const InnerReferenceField = ({
+    allowEmpty,
+    basePath,
+    children,
+    className,
+    classes = {},
+    isLoading,
+    reference,
+    referenceRecord,
+    resourceLinkPath,
+    ...rest
+}) => {
+    if (React.Children.count(children) !== 1) {
+        throw new Error('<ReferenceField> only accepts a single child');
+    }
+
+    if (isLoading) {
+        return <LinearProgress />;
+    }
+
+    if (resourceLinkPath) {
+        return (
+            <Link
+                className={classnames(classes.link, className)}
+                to={resourceLinkPath}
+                {...sanitizeRestProps(rest)}
+            >
+                {React.cloneElement(children, {
+                    record: referenceRecord,
+                    resource: reference,
+                    allowEmpty,
+                    basePath,
+                    translateChoice: false,
+                })}
+            </Link>
+        );
+    }
+
+    return React.cloneElement(children, {
+        record: referenceRecord,
+        resource: reference,
+        allowEmpty,
+        basePath,
+        translateChoice: false,
+        ...sanitizeRestProps(rest),
+    });
+};
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -47,79 +91,49 @@ const styles = theme => ({
  *     <TextField source="name" />
  * </ReferenceField>
  */
-export class ReferenceField extends Component {
-    componentDidMount() {
-        this.fetchReference(this.props);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.record.id !== nextProps.record.id) {
-            this.fetchReference(nextProps);
-        }
-    }
-
-    fetchReference(props) {
-        const source = get(props.record, props.source);
-        if (source !== null && typeof source !== 'undefined') {
-            this.props.crudGetManyAccumulate(props.reference, [source]);
-        }
-    }
-
-    render() {
-        const {
+export const ReferenceField = ({
+    allowEmpty,
+    basePath,
+    children,
+    className,
+    classes,
+    linkType,
+    record,
+    reference,
+    resource,
+    source,
+    translateChoice,
+    ...rest
+}) => (
+    <CoreReferenceField
+        {...{
             allowEmpty,
             basePath,
-            children,
-            className,
-            classes,
             linkType,
             record,
             reference,
-            referenceRecord,
             resource,
             source,
-            translateChoice,
-            ...rest
-        } = this.props;
-        if (React.Children.count(children) !== 1) {
-            throw new Error('<ReferenceField> only accepts a single child');
-        }
-        if (!referenceRecord && !allowEmpty) {
-            return <LinearProgress />;
-        }
-        const rootPath = basePath.replace(resource, reference);
-        const resourceLinkPath = !linkType
-            ? false
-            : linkToRecord(rootPath, get(record, source), linkType);
-
-        if (resourceLinkPath) {
-            return (
-                <Link
-                    className={classnames(classes.link, className)}
-                    to={resourceLinkPath}
-                    {...sanitizeRestProps(rest)}
-                >
-                    {React.cloneElement(children, {
-                        record: referenceRecord,
-                        resource: reference,
-                        allowEmpty,
-                        basePath,
-                        translateChoice: false,
-                    })}
-                </Link>
-            );
-        }
-
-        return React.cloneElement(children, {
-            record: referenceRecord,
-            resource: reference,
-            allowEmpty,
-            basePath,
-            translateChoice: false,
-            ...sanitizeRestProps(rest),
-        });
-    }
-}
+        }}
+    >
+        {({ isLoading, referenceRecord, resourceLinkPath }) => (
+            <InnerReferenceField
+                {...{
+                    allowEmpty,
+                    basePath,
+                    children,
+                    className,
+                    classes,
+                    isLoading,
+                    reference,
+                    referenceRecord,
+                    resourceLinkPath,
+                    ...rest,
+                }}
+            />
+        )}
+    </CoreReferenceField>
+);
 
 ReferenceField.propTypes = {
     addLabel: PropTypes.bool,
@@ -130,11 +144,9 @@ ReferenceField.propTypes = {
     className: PropTypes.string,
     cellClassName: PropTypes.string,
     headerClassName: PropTypes.string,
-    crudGetManyAccumulate: PropTypes.func.isRequired,
     label: PropTypes.string,
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
-    referenceRecord: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string.isRequired,
     translateChoice: PropTypes.func,
@@ -146,26 +158,13 @@ ReferenceField.defaultProps = {
     allowEmpty: false,
     classes: {},
     linkType: 'edit',
-    referenceRecord: null,
     record: {},
 };
 
-const mapStateToProps = (state, props) => ({
-    referenceRecord:
-        state.admin.resources[props.reference].data[
-            get(props.record, props.source)
-        ],
-});
+const EnhancedReferenceField = withStyles(styles)(ReferenceField);
 
-const ConnectedReferenceField = compose(
-    connect(mapStateToProps, {
-        crudGetManyAccumulate: crudGetManyAccumulateAction,
-    }),
-    withStyles(styles)
-)(ReferenceField);
-
-ConnectedReferenceField.defaultProps = {
+EnhancedReferenceField.defaultProps = {
     addLabel: true,
 };
 
-export default ConnectedReferenceField;
+export default EnhancedReferenceField;

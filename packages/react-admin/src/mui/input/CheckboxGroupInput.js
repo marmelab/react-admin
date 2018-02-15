@@ -11,10 +11,8 @@ import {
 import Checkbox from 'material-ui/Checkbox';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
+import { addField, translate, FieldTitle } from 'react-admin-core';
 
-import addField from '../form/addField';
-import FieldTitle from '../../util/FieldTitle';
-import translate from '../../i18n/translate';
 import sanitizeRestProps from './sanitizeRestProps';
 
 const styles = theme => ({

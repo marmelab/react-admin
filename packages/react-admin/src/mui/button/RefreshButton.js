@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NavigationRefresh from 'material-ui-icons/Refresh';
 
-import { refreshView as refreshViewAction } from '../../actions/uiActions';
+import { refreshView as refreshViewAction } from 'react-admin-core';
 import Button from './Button';
 
 class RefreshButton extends Component {

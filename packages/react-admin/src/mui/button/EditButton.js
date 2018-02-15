@@ -4,7 +4,7 @@ import shouldUpdate from 'recompose/shouldUpdate';
 import ContentCreate from 'material-ui-icons/Create';
 
 import Link from '../Link';
-import linkToRecord from '../../util/linkToRecord';
+import { linkToRecord } from 'react-admin-core';
 import Button from './Button';
 
 const EditButton = ({

@@ -16,6 +16,14 @@ module.exports = {
     },
     resolve: {
         alias: {
+            'react-admin-core': path.join(
+                __dirname,
+                '..',
+                '..',
+                'packages',
+                'react-admin-core',
+                'src'
+            ),
             'react-admin': path.join(
                 __dirname,
                 '..',

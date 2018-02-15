@@ -6,7 +6,7 @@ import { withStyles } from 'material-ui/styles';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
-import removeEmpty from '../../util/removeEmpty';
+import { removeEmpty } from 'react-admin-core';
 
 const styles = {
     button: {},

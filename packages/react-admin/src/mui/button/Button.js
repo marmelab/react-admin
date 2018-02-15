@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import MuiButton from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
-
-import translate from '../../i18n/translate';
 import classnames from 'classnames';
+
+import { translate } from 'react-admin-core';
 import Responsive from '../layout/Responsive';
 
 const styles = {

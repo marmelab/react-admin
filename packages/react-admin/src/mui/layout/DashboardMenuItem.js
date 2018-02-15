@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DashboardIcon from 'material-ui-icons/Dashboard';
 
-import translate from '../../i18n/translate';
+import { translate } from 'react-admin-core';
 import MenuItemLink from './MenuItemLink';
 
 const DashboardMenuItem = ({ className, onClick, translate, ...props }) => (

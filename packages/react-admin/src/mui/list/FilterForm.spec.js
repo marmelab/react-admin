@@ -4,7 +4,7 @@ import React from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
-import TranslationProvider from '../../i18n/TranslationProvider';
+import { TranslationProvider } from 'react-admin-core';
 import FilterForm, { mergeInitialValuesWithDefaultValues } from './FilterForm';
 import TextInput from '../input/TextInput';
 

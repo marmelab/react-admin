@@ -1,23 +1,38 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { LinearProgress } from 'material-ui/Progress';
 import { withStyles } from 'material-ui/styles';
-import compose from 'recompose/compose';
-
-import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions/dataActions';
-import {
-    getIds,
-    getReferences,
-    nameRelatedTo,
-} from '../../reducer/admin/references/oneToMany';
-import {
-    SORT_ASC,
-    SORT_DESC,
-} from '../../reducer/admin/resource/list/queryReducer';
+import { CoreReferenceManyField } from 'react-admin-core';
 
 const styles = {
     progress: { marginTop: '1em' },
+};
+
+export const InnerReferenceManyField = ({
+    children,
+    classes = {},
+    className,
+    currentSort,
+    data,
+    ids,
+    isLoading,
+    reference,
+    referenceBasePath,
+    setSort,
+}) => {
+    if (isLoading) {
+        return <LinearProgress className={classes.progress} />;
+    }
+
+    return React.cloneElement(children, {
+        className,
+        resource: reference,
+        ids,
+        data,
+        basePath: referenceBasePath,
+        currentSort,
+        setSort,
+    });
 };
 
 /**
@@ -66,88 +81,64 @@ const styles = {
  *    ...
  * </ReferenceManyField>
  */
-export class ReferenceManyField extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { sort: props.sort };
-    }
-
-    componentDidMount() {
-        this.fetchReferences();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.record.id !== nextProps.record.id) {
-            this.fetchReferences(nextProps);
-        }
-    }
-
-    setSort = field => {
-        const order =
-            this.state.sort.field === field &&
-            this.state.sort.order === SORT_ASC
-                ? SORT_DESC
-                : SORT_ASC;
-        this.setState({ sort: { field, order } }, this.fetchReferences);
-    };
-
-    fetchReferences(
-        { reference, record, resource, target, perPage, filter, source } = this
-            .props
-    ) {
-        const { crudGetManyReference } = this.props;
-        const pagination = { page: 1, perPage };
-        const relatedTo = nameRelatedTo(
-            reference,
-            record[source],
-            resource,
-            target,
-            filter
-        );
-        crudGetManyReference(
-            reference,
-            target,
-            record[source],
-            relatedTo,
-            pagination,
-            this.state.sort,
-            filter
+export const ReferenceManyField = ({
+    basePath,
+    children,
+    classes = {},
+    className,
+    filter,
+    perPage,
+    record,
+    resource,
+    reference,
+    source,
+    target,
+}) => {
+    if (React.Children.count(children) !== 1) {
+        throw new Error(
+            '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
         );
     }
 
-    render() {
-        const {
-            classes = {},
-            className,
-            resource,
-            reference,
-            data,
-            ids,
-            children,
-            basePath,
-            isLoading,
-        } = this.props;
-        if (React.Children.count(children) !== 1) {
-            throw new Error(
-                '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
-            );
-        }
-        if (typeof ids === 'undefined') {
-            return <LinearProgress className={classes.progress} />;
-        }
-        const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
-        return React.cloneElement(children, {
-            className,
-            resource: reference,
-            ids,
-            data,
-            isLoading,
-            basePath: referenceBasePath,
-            currentSort: this.state.sort,
-            setSort: this.setSort,
-        });
-    }
-}
+    return (
+        <CoreReferenceManyField
+            {...{
+                filter,
+                perPage,
+                record,
+                resource,
+                reference,
+                basePath,
+                source,
+                target,
+            }}
+        >
+            {({
+                data,
+                ids,
+                isLoading,
+                referenceBasePath,
+                currentSort,
+                setSort,
+            }) => (
+                <InnerReferenceManyField
+                    {...{
+                        children,
+                        classes,
+                        className,
+                        currentSort,
+                        data,
+                        ids,
+                        isLoading,
+                        reference,
+                        referenceBasePath,
+                        setSort,
+                    }}
+                />
+            )}
+        </CoreReferenceManyField>
+    );
+};
 
 ReferenceManyField.propTypes = {
     addLabel: PropTypes.bool,
@@ -155,22 +146,14 @@ ReferenceManyField.propTypes = {
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
-    crudGetManyReference: PropTypes.func.isRequired,
     filter: PropTypes.object,
-    ids: PropTypes.array,
     label: PropTypes.string,
     perPage: PropTypes.number,
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
-    data: PropTypes.object,
     resource: PropTypes.string.isRequired,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC']),
-    }),
     source: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
-    isLoading: PropTypes.bool,
 };
 
 ReferenceManyField.defaultProps = {
@@ -180,31 +163,11 @@ ReferenceManyField.defaultProps = {
     source: 'id',
 };
 
-function mapStateToProps(state, props) {
-    const relatedTo = nameRelatedTo(
-        props.reference,
-        props.record[props.source],
-        props.resource,
-        props.target,
-        props.filter
-    );
-    return {
-        data: getReferences(state, props.reference, relatedTo),
-        ids: getIds(state, relatedTo),
-        isLoading: state.admin.loading > 0,
-    };
-}
+const EnhancedReferenceManyField = withStyles(styles)(ReferenceManyField);
 
-const ComposedReferenceManyField = compose(
-    connect(mapStateToProps, {
-        crudGetManyReference: crudGetManyReferenceAction,
-    }),
-    withStyles(styles)
-)(ReferenceManyField);
-
-ComposedReferenceManyField.defaultProps = {
+EnhancedReferenceManyField.defaultProps = {
     addLabel: true,
     source: 'id',
 };
 
-export default ComposedReferenceManyField;
+export default EnhancedReferenceManyField;

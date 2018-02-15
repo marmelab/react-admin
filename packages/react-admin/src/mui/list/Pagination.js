@@ -10,9 +10,9 @@ import Toolbar from 'material-ui/Toolbar';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
+import { translate } from 'react-admin-core';
 
 import Responsive from '../layout/Responsive';
-import translate from '../../i18n/translate';
 
 const styles = {
     pageInfo: {

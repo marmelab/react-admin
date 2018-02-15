@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tab as MuiTab } from 'material-ui/Tabs';
+import { translate } from 'react-admin-core';
 
 import Labeled from '../input/Labeled';
-import translate from '../../i18n/translate';
 import classnames from 'classnames';
 
 /**

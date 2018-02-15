@@ -10,8 +10,8 @@ import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
-import { toggleSidebar } from '../../actions';
 import LoadingIndicator from './LoadingIndicator';
+import { toggleSidebar } from 'react-admin-core';
 
 const styles = {
     bar: {

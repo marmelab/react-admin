@@ -7,8 +7,8 @@ import { withStyles } from 'material-ui/styles';
 import ContentFilter from 'material-ui-icons/FilterList';
 import classnames from 'classnames';
 import compose from 'recompose/compose';
+import { translate } from 'react-admin-core';
 
-import translate from '../../i18n/translate';
 import FilterButtonMenuItem from './FilterButtonMenuItem';
 import Button from '../button/Button';
 

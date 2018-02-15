@@ -55,7 +55,7 @@ DatagridBody.propTypes = {
     hasBulkActions: PropTypes.bool.isRequired,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     isLoading: PropTypes.bool,
-    onToggleItem: PropTypes.func.isRequired,
+    onToggleItem: PropTypes.func,
     resource: PropTypes.string,
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,

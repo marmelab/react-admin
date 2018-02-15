@@ -1,12 +1,8 @@
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
 import Tabs from 'material-ui/Tabs';
 import Divider from 'material-ui/Divider';
 import { withStyles } from 'material-ui/styles';
-
-import getDefaultValues from '../form/getDefaultValues';
 
 const styles = {
     tab: { padding: '0 1em 1em 1em' },
@@ -136,17 +132,8 @@ TabbedShowLayout.propTypes = {
     basePath: PropTypes.string,
     version: PropTypes.number,
     translate: PropTypes.func,
-    initialValues: PropTypes.object,
 };
 
-const enhance = compose(
-    connect(
-        (state, props) => ({
-            initialValues: getDefaultValues(state, props),
-        }),
-        {} // Avoid connect passing dispatch in props
-    ),
-    withStyles(styles)
-);
+const enhance = withStyles(styles);
 
 export default enhance(TabbedShowLayout);

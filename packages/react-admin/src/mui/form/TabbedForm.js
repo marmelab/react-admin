@@ -12,9 +12,9 @@ import compose from 'recompose/compose';
 import Divider from 'material-ui/Divider';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import { withStyles } from 'material-ui/styles';
+import { getDefaultValues, translate } from 'react-admin-core';
 
 import Toolbar from './Toolbar';
-import getDefaultValues from './getDefaultValues';
 
 const styles = theme => ({
     form: {
@@ -228,6 +228,7 @@ const enhance = compose(
             initialValues: getDefaultValues(state, { ...props, children }),
         };
     }),
+    translate, // Must be before reduxForm so that it can be used in validation
     reduxForm({
         form: 'record-form',
         enableReinitialize: true,

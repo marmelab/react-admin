@@ -1,8 +1,7 @@
 import compose from 'recompose/compose';
 import { withStyles } from 'material-ui/styles';
+import { addField, translate } from 'react-admin-core';
 
-import addField from '../form/addField';
-import translate from '../../i18n/translate';
 import { FileInput } from './FileInput';
 
 const styles = {

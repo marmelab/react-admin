@@ -2,8 +2,8 @@ import React, { cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withStyles } from 'material-ui/styles';
+import { linkToRecord } from 'react-admin-core';
 
-import linkToRecord from '../../util/linkToRecord';
 import Link from '../Link';
 
 const styles = {

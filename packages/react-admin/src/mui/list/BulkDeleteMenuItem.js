@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { MenuItem } from 'material-ui/Menu';
-
-import { crudDeleteMany as crudDeleteManyAction } from '../../actions';
-
-import translate from '../../i18n/translate';
+import {
+    crudDeleteMany as crudDeleteManyAction,
+    translate,
+} from 'react-admin-core';
 
 const sanitizeRestProps = ({
     basePath,

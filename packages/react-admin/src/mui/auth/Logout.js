@@ -9,8 +9,7 @@ import classnames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 import Responsive from '../layout/Responsive';
 
-import translate from '../../i18n/translate';
-import { userLogout as userLogoutAction } from '../../actions/authActions';
+import { translate, userLogout as userLogoutAction } from 'react-admin-core';
 
 const styles = {
     iconPaddingStyle: { paddingRight: '0.5em' },

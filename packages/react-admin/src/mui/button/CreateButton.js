@@ -9,7 +9,7 @@ import classnames from 'classnames';
 
 import Responsive from '../layout/Responsive';
 import Link from '../Link';
-import translate from '../../i18n/translate';
+import { translate } from 'react-admin-core';
 
 const styles = theme => ({
     floating: {

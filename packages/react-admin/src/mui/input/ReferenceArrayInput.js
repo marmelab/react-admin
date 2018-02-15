@@ -1,27 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import debounce from 'lodash.debounce';
 import compose from 'recompose/compose';
-import { createSelector } from 'reselect';
 
 import LinearProgress from '../layout/LinearProgress';
-import addField from '../form/addField';
 import Labeled from '../input/Labeled';
-import {
-    crudGetMany as crudGetManyAction,
-    crudGetMatching as crudGetMatchingAction,
-} from '../../actions/dataActions';
-import {
-    getPossibleReferences,
-    getPossibleReferenceValues,
-    getReferenceResource,
-} from '../../reducer';
-import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
 import ReferenceError from './ReferenceError';
-import translate from '../../i18n/translate';
-
-const referenceSource = (resource, source) => `${resource}@${source}`;
+import { addField, translate, CoreReferenceArrayInput } from 'react-admin-core';
 
 const sanitizeRestProps = ({
     alwaysOn,
@@ -47,6 +31,75 @@ const sanitizeRestProps = ({
     translateChoice,
     ...rest
 }) => rest;
+
+export const InnerReferenceArrayInput = ({
+    allowEmpty,
+    basePath,
+    children,
+    choices,
+    className,
+    error,
+    input,
+    isLoading,
+    label = '',
+    meta,
+    onChange,
+    options,
+    resource,
+    setFilter,
+    setPagination,
+    setSort,
+    source,
+    translate,
+    warning,
+    ...rest
+}) => {
+    const translatedLabel = translate(
+        label || `resources.${resource}.fields.${source}`,
+        { _: label }
+    );
+
+    if (isLoading) {
+        return (
+            <Labeled
+                label={translatedLabel}
+                source={source}
+                resource={resource}
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                <LinearProgress />
+            </Labeled>
+        );
+    }
+
+    if (error) {
+        return <ReferenceError label={translatedLabel} error={error} />;
+    }
+
+    return React.cloneElement(children, {
+        allowEmpty,
+        basePath,
+        choices,
+        className,
+        error,
+        input,
+        label: translatedLabel,
+        meta: {
+            ...meta,
+            helperText: warning || false,
+        },
+        onChange,
+        options,
+        resource,
+        setFilter,
+        setPagination,
+        setSort,
+        source,
+        translateChoice: false,
+        ...sanitizeRestProps(rest),
+    });
+};
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -126,186 +179,99 @@ const sanitizeRestProps = ({
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-export class ReferenceArrayInput extends Component {
-    constructor(props) {
-        super(props);
-        const { perPage, sort, filter } = props;
-        // stored as a property rather than state because we don't want redraw of async updates
-        this.params = { pagination: { page: 1, perPage }, sort, filter };
-        this.debouncedSetFilter = debounce(this.setFilter.bind(this), 500);
-    }
-
-    componentDidMount() {
-        this.fetchReferencesAndOptions();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.record.id !== nextProps.record.id) {
-            this.fetchReferencesAndOptions(nextProps);
-        } else if (this.props.input.value !== nextProps.input.value) {
-            this.fetchReferences(nextProps);
-        }
-    }
-
-    setFilter = filter => {
-        if (filter !== this.params.filter) {
-            this.params.filter = this.props.filterToQuery(filter);
-            this.fetchOptions();
-        }
-    };
-
-    setPagination = pagination => {
-        if (pagination !== this.param.pagination) {
-            this.param.pagination = pagination;
-            this.fetchOptions();
-        }
-    };
-
-    setSort = sort => {
-        if (sort !== this.params.sort) {
-            this.params.sort = sort;
-            this.fetchOptions();
-        }
-    };
-
-    fetchReferences = (props = this.props) => {
-        const { crudGetMany, input, reference } = props;
-        const ids = input.value;
-        if (ids) {
-            if (!Array.isArray(ids)) {
-                throw Error(
-                    'The value of ReferenceArrayInput should be an array'
-                );
-            }
-            crudGetMany(reference, ids);
-        }
-    };
-
-    fetchOptions = (props = this.props) => {
-        const {
-            crudGetMatching,
-            reference,
-            source,
-            resource,
-            referenceSource,
-        } = props;
-        const { pagination, sort, filter } = this.params;
-        crudGetMatching(
-            reference,
-            referenceSource(resource, source),
-            pagination,
-            sort,
-            filter
+export const ReferenceArrayInput = ({
+    allowEmpty,
+    basePath,
+    children,
+    className,
+    filter,
+    filterToQuery,
+    input,
+    label,
+    meta,
+    options,
+    perPage,
+    record,
+    reference,
+    resource,
+    sort,
+    source,
+    translate,
+    ...rest
+}) => {
+    if (React.Children.count(children) !== 1) {
+        throw new Error(
+            '<ReferenceArrayInput> only accepts a single child (like <Datagrid>)'
         );
-    };
-
-    fetchReferencesAndOptions(nextProps) {
-        this.fetchReferences(nextProps);
-        this.fetchOptions(nextProps);
     }
 
-    render() {
-        const {
-            className,
-            input,
-            resource,
-            label,
-            source,
-            referenceRecords,
-            allowEmpty,
-            matchingReferences,
-            basePath,
-            onChange,
-            children,
-            meta,
-            record,
-            options,
-            translate,
-            ...rest
-        } = this.props;
-
-        if (React.Children.count(children) !== 1) {
-            throw new Error(
-                '<ReferenceArrayInput> only accepts a single child (like <Datagrid>)'
-            );
-        }
-
-        const translatedLabel = translate(
-            label || `resources.${resource}.fields.${source}`
-        );
-
-        const dataStatus = getDataStatus({
-            input,
-            matchingReferences,
-            referenceRecords,
-            translate,
-        });
-
-        if (dataStatus.waiting) {
-            return (
-                <Labeled
-                    label={translatedLabel}
-                    source={source}
-                    resource={resource}
-                    className={className}
-                    {...sanitizeRestProps(rest)}
-                >
-                    <LinearProgress />
-                </Labeled>
-            );
-        }
-
-        if (dataStatus.error) {
-            return (
-                <ReferenceError
-                    label={translatedLabel}
-                    error={dataStatus.error}
+    return (
+        <CoreReferenceArrayInput
+            {...{
+                allowEmpty,
+                basePath,
+                filter,
+                filterToQuery,
+                input,
+                perPage,
+                record,
+                reference,
+                resource,
+                sort,
+                source,
+            }}
+        >
+            {({
+                choices,
+                error,
+                isLoading,
+                onChange,
+                setFilter,
+                setPagination,
+                setSort,
+                warning,
+            }) => (
+                <InnerReferenceArrayInput
+                    {...{
+                        allowEmpty,
+                        basePath,
+                        children,
+                        choices,
+                        className,
+                        error,
+                        input,
+                        isLoading,
+                        label,
+                        meta,
+                        onChange,
+                        options,
+                        resource,
+                        setFilter,
+                        setPagination,
+                        setSort,
+                        source,
+                        translate,
+                        warning,
+                        ...rest,
+                    }}
                 />
-            );
-        }
-
-        return React.cloneElement(children, {
-            className,
-            allowEmpty,
-            input,
-            label: translatedLabel,
-            resource,
-            meta: {
-                ...meta,
-                helperText: dataStatus.warning || false,
-            },
-            source,
-            choices: dataStatus.choices,
-            basePath,
-            onChange,
-            setFilter: this.debouncedSetFilter,
-            setPagination: this.setPagination,
-            setSort: this.setSort,
-            translateChoice: false,
-            options,
-            ...sanitizeRestProps(rest),
-        });
-    }
-}
+            )}
+        </CoreReferenceArrayInput>
+    );
+};
 
 ReferenceArrayInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
-    crudGetMatching: PropTypes.func.isRequired,
-    crudGetMany: PropTypes.func.isRequired,
     filter: PropTypes.object,
     filterToQuery: PropTypes.func.isRequired,
     input: PropTypes.object.isRequired,
     label: PropTypes.string,
-    matchingReferences: PropTypes.array,
     meta: PropTypes.object,
-    onChange: PropTypes.func,
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
-    referenceRecords: PropTypes.array,
-    referenceSource: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
@@ -319,48 +285,12 @@ ReferenceArrayInput.defaultProps = {
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
-    matchingReferences: null,
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
-    referenceRecords: [],
-    referenceSource, // used in unit tests
 };
 
-const makeMapStateToProps = () =>
-    createSelector(
-        [
-            getReferenceResource,
-            getPossibleReferenceValues,
-            (_, { input: { value: referenceIds } }) => referenceIds || [],
-        ],
-        (referenceState, possibleValues, inputIds) => ({
-            matchingReferences: getPossibleReferences(
-                referenceState,
-                possibleValues,
-                inputIds
-            ),
-            referenceRecords:
-                referenceState &&
-                inputIds.reduce((references, referenceId) => {
-                    if (referenceState.data[referenceId]) {
-                        references.push(referenceState.data[referenceId]);
-                    }
-                    return references;
-                }, []),
-        })
-    );
+const EnhancedReferenceArrayInput = compose(addField, translate)(
+    ReferenceArrayInput
+);
 
-const ConnectedReferenceArrayInput = compose(
-    addField,
-    translate,
-    connect(makeMapStateToProps(), {
-        crudGetMany: crudGetManyAction,
-        crudGetMatching: crudGetMatchingAction,
-    })
-)(ReferenceArrayInput);
-
-ConnectedReferenceArrayInput.defaultProps = {
-    referenceSource, // used in real apps
-};
-
-export default ConnectedReferenceArrayInput;
+export default EnhancedReferenceArrayInput;

@@ -4,7 +4,9 @@ import resources, {
     getReferenceResource as resourceGetReferenceResource,
 } from './resource';
 import loading from './loading';
-import notifications from './notifications';
+import notifications, {
+    getNotification as innerGetNotification,
+} from './notifications';
 import record from './record';
 import references, {
     getPossibleReferenceValues as referencesGetPossibleReferenceValues,
@@ -29,9 +31,13 @@ export const getPossibleReferenceValues = (state, props) =>
 
 export const getResources = state => resourceGetResources(state.resources);
 
-export const getReferenceResource = (state, props) =>
-    resourceGetReferenceResource(state.resources, props);
+export const getReferenceResource = (state, props) => {
+    return resourceGetReferenceResource(state.resources, props);
+};
 
 export const isLoggedIn = state => authIsLoggedIn(state.auth);
+
+export const getNotification = state =>
+    innerGetNotification(state.notifications);
 
 export { getPossibleReferences } from './references';

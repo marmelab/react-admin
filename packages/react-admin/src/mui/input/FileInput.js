@@ -5,11 +5,10 @@ import Dropzone from 'react-dropzone';
 import compose from 'recompose/compose';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
+import { addField, translate } from 'react-admin-core';
 
 import Labeled from './Labeled';
-import addField from '../form/addField';
 import FileInputPreview from './FileInputPreview';
-import translate from '../../i18n/translate';
 import sanitizeRestProps from './sanitizeRestProps';
 
 const styles = {

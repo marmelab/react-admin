@@ -12,9 +12,7 @@ import match from 'autosuggest-highlight/match';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
-import FieldTitle from '../../util/FieldTitle';
-import addField from '../form/addField';
-import translate from '../../i18n/translate';
+import { addField, translate, FieldTitle } from 'react-admin-core';
 
 const styles = theme => ({
     container: {

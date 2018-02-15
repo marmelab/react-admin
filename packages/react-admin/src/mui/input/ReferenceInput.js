@@ -1,24 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import debounce from 'lodash.debounce';
 import compose from 'recompose/compose';
-import { createSelector } from 'reselect';
 
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
-import addField from '../form/addField';
-import { crudGetOne, crudGetMatching } from '../../actions/dataActions';
-import {
-    getPossibleReferences,
-    getPossibleReferenceValues,
-    getReferenceResource,
-} from '../../reducer';
-import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import ReferenceError from './ReferenceError';
-import translate from '../../i18n/translate';
-
-const referenceSource = (resource, source) => `${resource}@${source}`;
+import { addField, translate, CoreReferenceInput } from 'react-admin-core';
 
 const sanitizeRestProps = ({
     allowEmpty,
@@ -58,6 +45,71 @@ const sanitizeRestProps = ({
     validation,
     ...rest
 }) => rest;
+
+export const InnerReferenceInput = ({
+    basePath,
+    allowEmpty,
+    children,
+    choices,
+    classes,
+    className,
+    error,
+    input,
+    label,
+    isLoading,
+    meta,
+    onChange,
+    options,
+    resource,
+    setFilter,
+    setPagination,
+    setSort,
+    source,
+    translate,
+    warning,
+    ...rest
+}) => {
+    if (isLoading) {
+        return (
+            <Labeled
+                label={label}
+                source={source}
+                resource={resource}
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                <LinearProgress />
+            </Labeled>
+        );
+    }
+
+    if (error) {
+        return <ReferenceError label={label} error={error} />;
+    }
+
+    return React.cloneElement(children, {
+        allowEmpty,
+        classes,
+        className,
+        input,
+        label,
+        resource,
+        meta: {
+            ...meta,
+            helperText: warning || false,
+        },
+        source,
+        choices,
+        basePath,
+        onChange,
+        setFilter,
+        setPagination,
+        setSort,
+        translateChoice: false,
+        options,
+        ...sanitizeRestProps(rest),
+    });
+};
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -138,163 +190,87 @@ const sanitizeRestProps = ({
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  */
-export class ReferenceInput extends Component {
-    constructor(props) {
-        super(props);
-        const { perPage, sort, filter } = props;
-        // stored as a property rather than state because we don't want redraw of async updates
-        this.params = { pagination: { page: 1, perPage }, sort, filter };
-        this.debouncedSetFilter = debounce(this.setFilter.bind(this), 500);
+export const ReferenceInput = ({
+    basePath,
+    allowEmpty,
+    children,
+    classes,
+    className,
+    filter,
+    input,
+    label,
+    matchingReferences,
+    meta,
+    perPage,
+    onChange,
+    options,
+    record,
+    reference,
+    referenceRecord,
+    resource,
+    sort,
+    source,
+    translate,
+    ...rest
+}) => {
+    if (React.Children.count(children) !== 1) {
+        throw new Error('<ReferenceInput> only accepts a single child');
     }
 
-    componentDidMount() {
-        this.fetchReferenceAndOptions();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.record.id !== nextProps.record.id) {
-            this.fetchReferenceAndOptions(nextProps);
-        } else if (this.props.input.value !== nextProps.input.value) {
-            this.fetchReference(nextProps);
-        }
-    }
-
-    setFilter = filter => {
-        if (filter !== this.params.filter) {
-            this.params.filter = this.props.filterToQuery(filter);
-            this.fetchOptions();
-        }
-    };
-
-    setPagination = pagination => {
-        if (pagination !== this.param.pagination) {
-            this.param.pagination = pagination;
-            this.fetchOptions();
-        }
-    };
-
-    setSort = sort => {
-        if (sort !== this.params.sort) {
-            this.params.sort = sort;
-            this.fetchOptions();
-        }
-    };
-
-    fetchReference = (props = this.props) => {
-        const { crudGetOne, input, reference } = props;
-        const id = input.value;
-        if (id) {
-            crudGetOne(reference, id, null, false);
-        }
-    };
-
-    fetchOptions = (props = this.props) => {
-        const {
-            crudGetMatching,
-            filter: filterFromProps,
-            reference,
-            referenceSource,
-            resource,
-            source,
-        } = props;
-        const { pagination, sort, filter } = this.params;
-
-        crudGetMatching(
-            reference,
-            referenceSource(resource, source),
-            pagination,
-            sort,
-            { ...filterFromProps, ...filter }
-        );
-    };
-
-    fetchReferenceAndOptions(props) {
-        this.fetchReference(props);
-        this.fetchOptions(props);
-    }
-
-    render() {
-        const {
-            classes,
-            className,
-            input,
-            resource,
-            label,
-            source,
-            referenceRecord,
-            allowEmpty,
-            matchingReferences,
-            basePath,
-            onChange,
-            children,
-            meta,
-            options,
-            translate,
-            ...rest
-        } = this.props;
-
-        if (React.Children.count(children) !== 1) {
-            throw new Error('<ReferenceInput> only accepts a single child');
-        }
-
-        const dataStatus = getDataStatus({
-            input,
-            matchingReferences,
-            referenceRecord,
-            translate,
-        });
-
-        const translatedLabel = translate(
-            label || `resources.${resource}.fields.${source}`
-        );
-
-        if (dataStatus.waiting) {
-            return (
-                <Labeled
-                    label={translatedLabel}
-                    source={source}
-                    resource={resource}
-                    className={className}
-                    {...sanitizeRestProps(rest)}
-                >
-                    <LinearProgress />
-                </Labeled>
-            );
-        }
-
-        if (dataStatus.error) {
-            return (
-                <ReferenceError
-                    label={translatedLabel}
-                    error={dataStatus.error}
+    return (
+        <CoreReferenceInput
+            {...{
+                allowEmpty,
+                basePath,
+                filter,
+                input,
+                perPage,
+                record,
+                reference,
+                resource,
+                sort,
+                source,
+            }}
+        >
+            {({
+                choices,
+                error,
+                label,
+                isLoading,
+                setFilter,
+                setPagination,
+                setSort,
+                warning,
+            }) => (
+                <InnerReferenceInput
+                    {...{
+                        basePath,
+                        allowEmpty,
+                        children,
+                        choices,
+                        classes,
+                        className,
+                        error,
+                        input,
+                        label,
+                        isLoading,
+                        meta,
+                        onChange,
+                        options,
+                        resource,
+                        setFilter,
+                        setPagination,
+                        setSort,
+                        source,
+                        translate,
+                        warning,
+                        ...rest,
+                    }}
                 />
-            );
-        }
-
-        return React.cloneElement(children, {
-            allowEmpty,
-            classes,
-            className,
-            input,
-            label: translatedLabel,
-            resource,
-            meta: {
-                ...meta,
-                helperText: dataStatus.warning || false,
-            },
-            source,
-            choices: dataStatus.choices,
-            basePath,
-            onChange,
-            setFilter: this.debouncedSetFilter,
-            setPagination: this.setPagination,
-            setSort: this.setSort,
-            translateChoice: false,
-            options,
-            ...sanitizeRestProps(rest),
-        });
-    }
-}
+            )}
+        </CoreReferenceInput>
+    );
+};
 
 ReferenceInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
@@ -302,20 +278,15 @@ ReferenceInput.propTypes = {
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     classes: PropTypes.object,
-    crudGetMatching: PropTypes.func.isRequired,
-    crudGetOne: PropTypes.func.isRequired,
     filter: PropTypes.object,
     filterToQuery: PropTypes.func.isRequired,
     input: PropTypes.object.isRequired,
     label: PropTypes.string,
-    matchingReferences: PropTypes.array,
     meta: PropTypes.object,
     onChange: PropTypes.func,
     perPage: PropTypes.number,
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
-    referenceRecord: PropTypes.object,
-    referenceSource: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,
@@ -329,41 +300,10 @@ ReferenceInput.defaultProps = {
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
-    matchingReferences: null,
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
-    referenceRecord: null,
-    referenceSource, // used in tests
 };
 
-const makeMapStateToProps = () =>
-    createSelector(
-        [
-            getReferenceResource,
-            getPossibleReferenceValues,
-            (_, props) => props.input.value,
-        ],
-        (referenceState, possibleValues, inputId) => ({
-            matchingReferences: getPossibleReferences(
-                referenceState,
-                possibleValues,
-                [inputId]
-            ),
-            referenceRecord: referenceState && referenceState.data[inputId],
-        })
-    );
+const EnhancedReferenceInput = compose(addField, translate)(ReferenceInput);
 
-const ConnectedReferenceInput = compose(
-    addField,
-    translate,
-    connect(makeMapStateToProps(), {
-        crudGetOne,
-        crudGetMatching,
-    })
-)(ReferenceInput);
-
-ConnectedReferenceInput.defaultProps = {
-    referenceSource, // used in real apps
-};
-
-export default ConnectedReferenceInput;
+export default EnhancedReferenceInput;

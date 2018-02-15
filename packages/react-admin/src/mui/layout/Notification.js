@@ -6,9 +6,11 @@ import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
-import { hideNotification as hideNotificationAction } from '../../actions/notificationActions';
-import { getNotification } from '../../reducer/admin/notifications';
-import translate from '../../i18n/translate';
+import {
+    hideNotification as hideNotificationAction,
+    getNotification,
+    translate,
+} from 'react-admin-core';
 
 const styles = theme => {
     const confirm = theme.palette.background.default;

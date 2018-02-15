@@ -1,24 +1,23 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { ReferenceManyField } from './ReferenceManyField';
+import { InnerReferenceManyField } from './ReferenceManyField';
 import TextField from './TextField';
 import SingleFieldList from '../list/SingleFieldList';
 
 describe('<ReferenceManyField />', () => {
-    it('should render a loading indicator when related records are not yet fetched', () => {
+    it('should render a loading indicator when isLoading is true', () => {
         const wrapper = shallow(
-            <ReferenceManyField
+            <InnerReferenceManyField
                 resource="foo"
                 reference="bar"
-                target="foo_id"
                 basePath=""
-                crudGetManyReference={() => {}}
+                isLoading={true}
             >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceManyField>,
+            </InnerReferenceManyField>,
             { disableLifecycleMethods: true }
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
@@ -35,19 +34,17 @@ describe('<ReferenceManyField />', () => {
             2: { id: 2, title: 'world' },
         };
         const wrapper = shallow(
-            <ReferenceManyField
+            <InnerReferenceManyField
                 resource="foo"
                 reference="bar"
-                target="foo_id"
                 basePath=""
                 data={data}
                 ids={[1, 2]}
-                crudGetManyReference={() => {}}
             >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceManyField>,
+            </InnerReferenceManyField>,
             { disableLifecycleMethods: true }
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
@@ -63,19 +60,17 @@ describe('<ReferenceManyField />', () => {
 
     it('should render nothing when there are no related records', () => {
         const wrapper = shallow(
-            <ReferenceManyField
+            <InnerReferenceManyField
                 resource="foo"
                 reference="bar"
-                target="foo_id"
                 basePath=""
                 data={{}}
                 ids={[]}
-                crudGetManyReference={() => {}}
             >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceManyField>,
+            </InnerReferenceManyField>,
             { disableLifecycleMethods: true }
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
@@ -95,19 +90,17 @@ describe('<ReferenceManyField />', () => {
             'abc-2': { id: 'abc-2', title: 'world' },
         };
         const wrapper = shallow(
-            <ReferenceManyField
+            <InnerReferenceManyField
                 resource="foo"
                 reference="bar"
-                target="foo_id"
                 basePath=""
                 data={data}
                 ids={['abc-1', 'abc-2']}
-                crudGetManyReference={() => {}}
             >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceManyField>,
+            </InnerReferenceManyField>,
             { disableLifecycleMethods: true }
         );
         const ProgressElements = wrapper.find('widthStyles(LinearProgress)');
@@ -130,19 +123,17 @@ describe('<ReferenceManyField />', () => {
             2: { id: 2, title: 'world' },
         };
         const wrapper = shallow(
-            <ReferenceManyField
+            <InnerReferenceManyField
                 resource="foo"
                 reference="bar"
-                target="foo_id"
                 basePath=""
                 data={data}
                 ids={[1, 2]}
-                crudGetManyReference={() => {}}
             >
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </ReferenceManyField>,
+            </InnerReferenceManyField>,
             { disableLifecycleMethods: true }
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
@@ -154,27 +145,5 @@ describe('<ReferenceManyField />', () => {
         assert.equal(SingleFieldListElement.at(0).prop('resource'), 'bar');
         assert.deepEqual(SingleFieldListElement.at(0).prop('data'), data);
         assert.deepEqual(SingleFieldListElement.at(0).prop('ids'), [1, 2]);
-    });
-
-    it('should support custom source', () => {
-        const crudGetManyReference = jest.fn(() => {});
-
-        shallow(
-            <ReferenceManyField
-                resource="posts"
-                reference="comments"
-                target="post_id"
-                basePath=""
-                record={{ id: 'not me', customId: 1 }}
-                source="customId"
-                crudGetManyReference={crudGetManyReference}
-            >
-                <SingleFieldList>
-                    <TextField source="title" />
-                </SingleFieldList>
-            </ReferenceManyField>
-        );
-
-        assert.equal(crudGetManyReference.mock.calls[0][2], 1);
     });
 });

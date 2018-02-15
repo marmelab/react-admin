@@ -5,7 +5,6 @@ import { Route, Switch } from 'react-router-dom';
 import compose from 'recompose/compose';
 import getContext from 'recompose/getContext';
 
-import Loading from './mui/layout/Loading';
 import { AUTH_GET_PERMISSIONS } from './auth/types';
 import { isLoggedIn } from './reducer';
 import RoutesWithLayout from './RoutesWithLayout';
@@ -85,6 +84,7 @@ export class AdminRouter extends Component {
             children,
             customRoutes,
             dashboard,
+            loading,
             logout,
             menu,
             theme,
@@ -96,18 +96,7 @@ export class AdminRouter extends Component {
             typeof children === 'function' ? childrenFromState : children;
 
         if (!childrenToRender || childrenToRender.length === 0) {
-            return (
-                <Route
-                    path="/"
-                    key="loading"
-                    render={() => (
-                        <Loading
-                            loadingPrimary="ra.page.loading"
-                            loadingSecondary="ra.message.loading"
-                        />
-                    )}
-                />
-            );
+            return <Route path="/" key="loading" component={loading} />;
         }
 
         return (
@@ -178,6 +167,7 @@ AdminRouter.propTypes = {
     customRoutes: PropTypes.array,
     dashboard: componentPropType,
     isLoggedIn: PropTypes.bool,
+    loading: componentPropType,
     logout: PropTypes.node,
     menu: componentPropType,
     theme: PropTypes.object,

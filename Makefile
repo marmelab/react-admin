@@ -23,7 +23,11 @@ run-graphql-demo: build ## run the demo example
 run-graphcool-demo: build ## run the demo example
 	@cd examples/graphcool-demo && yarn start
 
-build-react-admin:
+build-react-admin-core:
+	@rm -rf ./packages/react-admin-core/lib
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/react-admin-core/src -d ./packages/react-admin-core/lib --ignore spec.js,test.js
+
+build-react-admin: build-react-admin-core
 	@rm -rf ./packages/react-admin/lib
 	@NODE_ENV=production ./node_modules/.bin/babel ./packages/react-admin/src -d ./packages/react-admin/lib --ignore spec.js,test.js
 
@@ -74,7 +78,7 @@ doc: ## compile doc as html and launch doc web server
 
 lint: ## lint the code and check coding conventions
 	@echo "Running linter..."
-	@"./node_modules/.bin/eslint" ./packages/react-admin/src/
+	@"./node_modules/.bin/eslint" ./packages/react-admin/src/ ./packages/react-admin-core/src/
 
 prettier: ## prettify the source code using prettier
 	@./node_modules/.bin/prettier-eslint --write --list-different  "packages/react-admin/src/**/*.js" "examples/**/*.js"

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import translate from '../../i18n/translate';
+import { translate } from 'react-admin-core';
 
 const Title = ({
     className,

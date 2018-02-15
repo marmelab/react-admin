@@ -1,0 +1,1 @@
+export CoreDelete from './Delete';

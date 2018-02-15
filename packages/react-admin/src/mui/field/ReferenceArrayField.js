@@ -1,16 +1,36 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { LinearProgress } from 'material-ui/Progress';
-import get from 'lodash.get';
 import { withStyles } from 'material-ui/styles';
-import compose from 'recompose/compose';
-
-import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
-import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
+import { CoreReferenceArrayField } from 'react-admin-core';
 
 const styles = {
     progress: { marginTop: '1em' },
+};
+
+export const InnerReferenceArrayField = ({
+    children,
+    className,
+    classes = {},
+    data,
+    ids,
+    isLoading,
+    reference,
+    referenceBasePath,
+}) => {
+    if (isLoading) {
+        return <LinearProgress className={classes.progress} />;
+    }
+
+    return React.cloneElement(children, {
+        className,
+        resource: reference,
+        ids,
+        data,
+        isLoading,
+        basePath: referenceBasePath,
+        currentSort: {},
+    });
 };
 
 /**
@@ -45,56 +65,43 @@ const styles = {
  * </ReferenceArrayField>
  *
  */
-export class ReferenceArrayField extends Component {
-    componentDidMount() {
-        this.fetchReferences();
+export const ReferenceArrayField = ({
+    basePath,
+    children,
+    classes = {},
+    className,
+    record,
+    resource,
+    reference,
+    source,
+}) => {
+    if (React.Children.count(children) !== 1) {
+        throw new Error(
+            '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
+        );
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.record.id !== nextProps.record.id) {
-            this.fetchReferences(nextProps);
-        }
-    }
-
-    fetchReferences({ crudGetManyAccumulate, reference, ids } = this.props) {
-        crudGetManyAccumulate(reference, ids);
-    }
-
-    render() {
-        const {
-            classes = {},
-            className,
-            resource,
-            reference,
-            data,
-            ids,
-            children,
-            basePath,
-            isLoading,
-        } = this.props;
-
-        if (React.Children.count(children) !== 1) {
-            throw new Error(
-                '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
-            );
-        }
-
-        if (ids.length !== 0 && Object.keys(data).length !== ids.length) {
-            return <LinearProgress className={classes.progress} />;
-        }
-
-        const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
-        return React.cloneElement(children, {
-            className,
-            resource: reference,
-            ids,
-            data,
-            isLoading,
-            basePath: referenceBasePath,
-            currentSort: {},
-        });
-    }
-}
+    return (
+        <CoreReferenceArrayField
+            {...{ basePath, record, reference, resource, source }}
+        >
+            {({ data, ids, isLoading, referenceBasePath }) => (
+                <InnerReferenceArrayField
+                    {...{
+                        children,
+                        className,
+                        classes,
+                        data,
+                        ids,
+                        isLoading,
+                        reference,
+                        referenceBasePath,
+                    }}
+                />
+            )}
+        </CoreReferenceArrayField>
+    );
+};
 
 ReferenceArrayField.propTypes = {
     addLabel: PropTypes.bool,
@@ -102,10 +109,6 @@ ReferenceArrayField.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.element.isRequired,
-    crudGetManyAccumulate: PropTypes.func.isRequired,
-    data: PropTypes.object,
-    ids: PropTypes.array.isRequired,
-    isLoading: PropTypes.bool,
     label: PropTypes.string,
     record: PropTypes.object.isRequired,
     reference: PropTypes.string.isRequired,
@@ -113,27 +116,10 @@ ReferenceArrayField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const emptyIds = [];
+const EnhancedReferenceArrayField = withStyles(styles)(ReferenceArrayField);
 
-const mapStateToProps = (state, props) => {
-    const { record, source, reference } = props;
-    const ids = get(record, source) || emptyIds;
-    return {
-        data: getReferencesByIds(state, reference, ids),
-        ids,
-        isLoading: state.admin.loading > 0,
-    };
-};
-
-const ComposedReferenceArrayField = compose(
-    connect(mapStateToProps, {
-        crudGetManyAccumulate: crudGetManyAccumulateAction,
-    }),
-    withStyles(styles)
-)(ReferenceArrayField);
-
-ComposedReferenceArrayField.defaultProps = {
+EnhancedReferenceArrayField.defaultProps = {
     addLabel: true,
 };
 
-export default ComposedReferenceArrayField;
+export default EnhancedReferenceArrayField;

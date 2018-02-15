@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
-
-import getDefaultValues from './getDefaultValues';
+import { getDefaultValues, translate } from 'react-admin-core';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
 
@@ -133,6 +132,7 @@ const enhance = compose(
     connect((state, props) => ({
         initialValues: getDefaultValues(state, props),
     })),
+    translate, // Must be before reduxForm so that it can be used in validation
     reduxForm({
         form: 'record-form',
         enableReinitialize: true,

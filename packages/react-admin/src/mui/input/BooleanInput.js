@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormControlLabel, FormGroup } from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
+import { addField, FieldTitle } from 'react-admin-core';
 
-import addField from '../form/addField';
-import FieldTitle from '../../util/FieldTitle';
 import sanitizeRestProps from './sanitizeRestProps';
 
 export class BooleanInput extends Component {

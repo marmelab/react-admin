@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from 'material-ui-icons/Delete';
+import { linkToRecord } from 'react-admin-core';
 
 import Link from '../Link';
-import linkToRecord from '../../util/linkToRecord';
 import Button from './Button';
 
 const DeleteButton = ({

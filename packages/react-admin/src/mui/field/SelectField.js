@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import pure from 'recompose/pure';
 import compose from 'recompose/compose';
-import translate from '../../i18n/translate';
+import { translate } from 'react-admin-core';
+
 import sanitizeRestProps from './sanitizeRestProps';
 
 /**

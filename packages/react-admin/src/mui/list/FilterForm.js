@@ -9,7 +9,7 @@ import withProps from 'recompose/withProps';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 import lodashSet from 'lodash.set';
-import translate from '../../i18n/translate';
+import { translate } from 'react-admin-core';
 
 const styles = ({ palette: { primary1Color } }) => ({
     card: {
