@@ -44,6 +44,26 @@ describe('<AutocompleteInput />', () => {
         assert.equal(wrapper.state('searchText'), 'foo');
     });
 
+    it('should use the input parameter value as the initial state and input searchText when value is empty', () => {
+        const wrapper = shallow(
+            <AutocompleteInput
+                {...defaultProps}
+                allowEmpty
+                input={{ value: '' }}
+                choices={[{ id: 2, name: 'foo' }]}
+            />
+        );
+        const AutoCompleteElement = wrapper.find('AutoComplete').first();
+        assert.equal(
+            AutoCompleteElement.prop('searchText'),
+            'aor.input.autocomplete.none'
+        );
+        assert.equal(
+            wrapper.state('searchText'),
+            'aor.input.autocomplete.none'
+        );
+    });
+
     it('should pass choices as dataSource', () => {
         const wrapper = shallow(
             <AutocompleteInput
@@ -57,6 +77,26 @@ describe('<AutocompleteInput />', () => {
         );
         const AutoCompleteElement = wrapper.find('AutoComplete').first();
         assert.deepEqual(AutoCompleteElement.prop('dataSource'), [
+            { value: 'M', text: 'Male' },
+            { value: 'F', text: 'Female' },
+        ]);
+    });
+
+    it('should add an empty choice when allowEmpty is true', () => {
+        const wrapper = shallow(
+            <AutocompleteInput
+                allowEmpty
+                {...defaultProps}
+                choices={[
+                    { id: 'M', name: 'Male' },
+                    { id: 'F', name: 'Female' },
+                ]}
+                options={{ open: true }}
+            />
+        );
+        const AutoCompleteElement = wrapper.find('AutoComplete').first();
+        assert.deepEqual(AutoCompleteElement.prop('dataSource'), [
+            { value: '', text: 'aor.input.autocomplete.none' },
             { value: 'M', text: 'Male' },
             { value: 'F', text: 'Female' },
         ]);
