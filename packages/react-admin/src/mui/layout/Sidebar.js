@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Drawer from 'material-ui/Drawer';
-import Divider from 'material-ui/Divider';
 import { withStyles } from 'material-ui/styles';
 import withWidth from 'material-ui/utils/withWidth';
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
-import IconButton from 'material-ui/IconButton';
 
 import Responsive from './Responsive';
 import { setSidebarVisibility } from '../../actions';
