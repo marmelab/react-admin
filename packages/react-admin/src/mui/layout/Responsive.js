@@ -2,16 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withWidth from 'material-ui/utils/withWidth';
 
-export const Responsive = ({ small, medium, large, width, ...rest }) => {
+export const Responsive = ({
+    xsmall,
+    small,
+    medium,
+    large,
+    width,
+    ...rest
+}) => {
     let element;
     switch (width) {
         case 'xs':
+            element =
+                typeof xsmall !== 'undefined'
+                    ? xsmall
+                    : typeof small !== 'undefined'
+                      ? small
+                      : typeof medium !== 'undefined' ? medium : large;
+            break;
+        case 'sm':
             element =
                 typeof small !== 'undefined'
                     ? small
                     : typeof medium !== 'undefined' ? medium : large;
             break;
-        case 'sm':
         case 'md':
             element =
                 typeof medium !== 'undefined'
@@ -33,6 +47,7 @@ export const Responsive = ({ small, medium, large, width, ...rest }) => {
 };
 
 Responsive.propTypes = {
+    xsmall: PropTypes.element,
     small: PropTypes.element,
     medium: PropTypes.element,
     large: PropTypes.element,

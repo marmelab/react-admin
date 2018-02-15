@@ -19,12 +19,13 @@ const styles = theme => ({
         height: '100%',
         width: DRAWER_WIDTH,
         backgroundColor: theme.palette.background.default,
-        border: 'none',
         paddingTop: '5em',
-    },
-    drawerPaperMobile: {
-        height: '100%',
-        width: DRAWER_WIDTH,
+        [theme.breakpoints.up('md')]: {
+            border: 'none',
+        },
+        [theme.breakpoints.down('xs')]: {
+            paddingTop: 0,
+        },
     },
 });
 
@@ -48,19 +49,35 @@ class Sidebar extends PureComponent {
             classes,
             open,
             setSidebarVisibility,
+            width,
             ...rest
         } = this.props;
 
         return (
             <Responsive
-                small={
+                xsmall={
                     <Drawer
                         variant="temporary"
                         open={open}
-                        onClose={this.toggleSidebar}
                         classes={{
-                            paper: classes.drawerPaperMobile,
+                            paper: classes.drawerPaper,
                         }}
+                        onClose={this.toggleSidebar}
+                        {...rest}
+                    >
+                        {React.cloneElement(children, {
+                            onMenuClick: this.handleClose,
+                        })}
+                    </Drawer>
+                }
+                small={
+                    <Drawer
+                        variant="persistent"
+                        open={open}
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                        onClose={this.toggleSidebar}
                         {...rest}
                     >
                         {React.cloneElement(children, {

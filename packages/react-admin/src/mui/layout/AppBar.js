@@ -23,8 +23,8 @@ const styles = theme => ({
         zIndex: 1300,
     },
     menuButton: {
-        marginLeft: 12,
-        marginRight: 20,
+        marginLeft: '0.5em',
+        marginRight: '0.5em',
     },
     menuButtonIconClosed: {
         transition: theme.transitions.create(['transform'], {
