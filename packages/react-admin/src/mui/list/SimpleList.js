@@ -39,22 +39,25 @@ const LinkOrNot = withStyles(styles)(
 );
 
 const SimpleList = ({
+    basePath,
     classes = {},
     className,
     currentSort,
-    isLoading,
-    setSort,
-    ids,
     data,
-    basePath,
-    primaryText,
-    secondaryText,
-    tertiaryText,
+    hasBulkActions,
+    ids,
+    isLoading,
     leftAvatar,
     leftIcon,
+    linkType,
+    onToggleItem,
+    primaryText,
     rightAvatar,
     rightIcon,
-    linkType,
+    secondaryText,
+    selectedIds,
+    setSort,
+    tertiaryText,
     ...rest
 }) => (
     <List className={className} {...rest}>
@@ -101,24 +104,29 @@ const SimpleList = ({
 );
 
 SimpleList.propTypes = {
+    basePath: PropTypes.string,
     classes: PropTypes.object,
     className: PropTypes.string,
-    ids: PropTypes.array,
     data: PropTypes.object,
-    basePath: PropTypes.string,
-    primaryText: PropTypes.func,
-    secondaryText: PropTypes.func,
-    tertiaryText: PropTypes.func,
+    hasBulkActions: PropTypes.bool.isRequired,
+    ids: PropTypes.array,
     leftAvatar: PropTypes.func,
     leftIcon: PropTypes.func,
-    rightAvatar: PropTypes.func,
-    rightIcon: PropTypes.func,
     linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
         .isRequired,
+    onToggleItem: PropTypes.func.isRequired,
+    primaryText: PropTypes.func,
+    rightAvatar: PropTypes.func,
+    rightIcon: PropTypes.func,
+    secondaryText: PropTypes.func,
+    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    tertiaryText: PropTypes.func,
 };
 
 SimpleList.defaultProps = {
     linkType: 'edit',
+    hasBulkActions: false,
+    selectedIds: [],
 };
 
 export default withStyles(styles)(SimpleList);
