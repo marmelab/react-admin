@@ -79,7 +79,7 @@ export class ReferenceArrayField extends Component {
             );
         }
 
-        if (ids.length !== 0 && Object.keys(data).length !== ids.length) {
+        if (ids.length !== 0 && !data) {
             return <LinearProgress className={classes.progress} />;
         }
 
@@ -113,11 +113,9 @@ ReferenceArrayField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const emptyIds = [];
-
 const mapStateToProps = (state, props) => {
     const { record, source, reference } = props;
-    const ids = get(record, source) || emptyIds;
+    const ids = get(record, source) || [];
     return {
         data: getReferencesByIds(state, reference, ids),
         ids,

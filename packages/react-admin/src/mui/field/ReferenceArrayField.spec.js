@@ -14,7 +14,7 @@ describe('<ReferenceArrayField />', () => {
                 reference="bar"
                 source="barIds"
                 basePath=""
-                data={{}}
+                data={null}
                 ids={[1, 2]}
                 crudGetManyAccumulate={() => {}}
             >
@@ -27,6 +27,31 @@ describe('<ReferenceArrayField />', () => {
         assert.equal(ProgressElements.length, 1);
         const SingleFieldListElement = wrapper.find('SingleFieldList');
         assert.equal(SingleFieldListElement.length, 0);
+    });
+
+    it('should not render a loading indicator if at least one related record is found', () => {
+        const wrapper = shallow(
+            <ReferenceArrayField
+                record={{ barIds: [1, 2] }}
+                resource="foo"
+                reference="bar"
+                source="barIds"
+                basePath=""
+                data={{ 1: { id: 1 } }}
+                ids={[1, 2]}
+                crudGetManyAccumulate={() => {}}
+            >
+                <SingleFieldList>
+                    <TextField source="title" />
+                </SingleFieldList>
+            </ReferenceArrayField>
+        );
+        const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
+        assert.equal(ProgressElements.length, 0);
+        const SingleFieldListElement = wrapper.find(
+            'WithStyles(SingleFieldList)'
+        );
+        assert.equal(SingleFieldListElement.length, 1);
     });
 
     it('should render a list of the child component', () => {
