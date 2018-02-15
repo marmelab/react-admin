@@ -50,7 +50,11 @@ const AppBarMobile = ({
     toggleSidebar,
     ...rest
 }) => (
-    <MuiAppBar className={classnames(classes.bar, className)} {...rest}>
+    <MuiAppBar
+        className={classnames(classes.bar, className)}
+        color="secondary"
+        {...rest}
+    >
         <Toolbar>
             <IconButton
                 color="inherit"

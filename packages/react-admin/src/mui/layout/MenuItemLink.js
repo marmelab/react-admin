@@ -6,10 +6,12 @@ import { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 
 const styles = theme => ({
-    root: {},
+    root: {
+        color: theme.palette.secondary.dark,
+    },
     active: {
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.primary.contrastText,
+        backgroundColor: theme.palette.secondary.main,
+        color: theme.palette.secondary.contrastText,
     },
     icon: { paddingRight: '0.5em' },
 });

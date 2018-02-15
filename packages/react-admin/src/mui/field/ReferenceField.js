@@ -14,7 +14,7 @@ import sanitizeRestProps from './sanitizeRestProps';
 
 const styles = theme => ({
     link: {
-        color: theme.palette.secondary.main,
+        color: theme.palette.primary.main,
     },
 });
 

@@ -51,7 +51,7 @@ const styles = theme => ({
         marginRight: 'auto',
     },
     logout: {
-        color: theme.palette.primary.contrastText,
+        color: theme.palette.secondary.contrastText,
     },
 });
 
@@ -70,6 +70,7 @@ const AppBar = ({
             open && classes.appBarShift,
             className
         )}
+        color="secondary"
         {...rest}
     >
         <Toolbar disableGutters={!open}>
