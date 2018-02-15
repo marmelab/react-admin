@@ -162,7 +162,6 @@ const CommentMobileList = props => (
     <SimpleList
         primaryText={record => record.author.name}
         secondaryText={record => record.body}
-        secondaryTextLines={2}
         tertiaryText={record =>
             new Date(record.created_at).toLocaleDateString()}
         leftAvatar={() => <PersonIcon />}
