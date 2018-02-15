@@ -1,69 +1,44 @@
+import { combineReducers } from 'redux';
 import { REGISTER_RESOURCE, UNREGISTER_RESOURCE } from '../../../actions';
 
+import props from './props';
 import data from './data';
 import list from './list';
+
+const defaultResourceReducer = combineReducers({
+    props,
+    data,
+    list,
+});
 
 const initialState = {};
 export default (
     previousState = initialState,
     action,
-    dataReducer = data,
-    listReducer = list
+    resourceReducer = defaultResourceReducer
 ) => {
     if (action.type === REGISTER_RESOURCE) {
-        const newState = {
+        return {
             ...previousState,
-            [action.payload.name]: {
-                props: action.payload,
-                data: dataReducer(action.payload.name)(undefined, action),
-                list: listReducer(action.payload.name)(undefined, action),
-            },
+            [action.payload.name]: resourceReducer(undefined, action),
         };
-        return newState;
     }
-
     if (action.type === UNREGISTER_RESOURCE) {
-        const newState = Object.keys(previousState).reduce((acc, key) => {
-            if (key === action.payload) {
-                return acc;
-            }
-
-            return { ...acc, [key]: previousState[key] };
+        return Object.keys(previousState).reduce((nextState, key) => {
+            if (key !== action.payload) nextState[key] = previousState[key];
+            return nextState;
         }, {});
-        return newState;
     }
 
     if (!action.meta || !action.meta.resource) {
         return previousState;
     }
+    const resourceState = previousState[action.meta.resource];
+    const nextResourceState = resourceReducer(resourceState, action);
 
-    const resources = Object.keys(previousState);
-    const newState = resources.reduce(
-        (acc, resource) => ({
-            ...acc,
-            [resource]:
-                action.meta.resource === resource
-                    ? {
-                          props: previousState[resource].props,
-                          data: dataReducer(resource)(
-                              previousState[resource].data,
-                              action
-                          ),
-                          list: listReducer(resource)(
-                              previousState[resource].list,
-                              action
-                          ),
-                      }
-                    : {
-                          props: previousState[resource].props,
-                          data: previousState[resource].data,
-                          list: previousState[resource].list,
-                      },
-        }),
-        {}
-    );
-
-    return newState;
+    return resourceState !== nextResourceState
+        ? { ...previousState, [action.meta.resource]: nextResourceState }
+        : previousState;
 };
 
 export const getResources = state =>

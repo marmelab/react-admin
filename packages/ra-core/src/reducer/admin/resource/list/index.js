@@ -4,10 +4,9 @@ import params from './params';
 import selectedIds from './selectedIds';
 import total from './total';
 
-export default resource =>
-    combineReducers({
-        ids: ids(resource),
-        params: params(resource),
-        selectedIds,
-        total: total(resource),
-    });
+export default combineReducers({
+    ids,
+    params,
+    selectedIds,
+    total,
+});
