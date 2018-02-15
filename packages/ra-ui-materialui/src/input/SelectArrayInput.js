@@ -6,7 +6,6 @@ import { MenuItem } from 'material-ui/Menu';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 import { withStyles } from 'material-ui/styles';
-import Chip from 'material-ui/Chip';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 import { addField, translate, FieldTitle } from 'ra-core';
@@ -156,6 +155,7 @@ export class SelectArrayInput extends Component {
 
     render() {
         const {
+            children,
             choices,
             classes,
             className,
@@ -201,13 +201,13 @@ export class SelectArrayInput extends Component {
                                 .filter(choice =>
                                     selected.includes(get(choice, optionValue))
                                 )
-                                .map(choice => (
-                                    <Chip
-                                        key={get(choice, optionValue)}
-                                        label={get(choice, optionText)}
-                                        className={classes.chip}
-                                    />
-                                ))}
+                                .map(choice =>
+                                    React.cloneElement(children, {
+                                        key: get(choice, optionValue),
+                                        record: choice,
+                                        className: classes.chip,
+                                    })
+                                )}
                         </div>
                     )}
                     {...options}
