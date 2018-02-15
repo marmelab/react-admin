@@ -23,7 +23,7 @@ See the [translation](./Translation.md#available-locales) page.
 
 ## Rest clients
 
-- [marmelab/aor-simple-graphql-client](https://github.com/marmelab/aor-simple-graphql-client): a GraphQL client using [Apollo](http://www.apollodata.com/)
+- [marmelab/aor-graphql](https://github.com/marmelab/aor-graphql): a GraphQL client using [Apollo](http://www.apollodata.com/)
 - [marmelab/aor-json-rest-client](https://github.com/marmelab/aor-json-rest-client): a local REST client based on a JavaScript object. It doesn't even use HTTP. Use it for testing purposes.
 - [tomberek/aor-postgrest-client](https://github.com/tomberek/aor-postgrest-client): a REST client for [Postgrest](http://postgrest.com/en/v0.4/) client
 - [josx/aor-feathers-client](https://github.com/josx/aor-feathers-client): a REST client using [Feathersjs](http://www.feathersjs.com/)
