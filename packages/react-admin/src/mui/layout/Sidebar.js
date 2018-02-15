@@ -18,13 +18,13 @@ const styles = theme => ({
     drawerPaper: {
         height: '100%',
         width: DRAWER_WIDTH,
+        backgroundColor: theme.palette.background.default,
+        border: 'none',
+        paddingTop: '5em',
     },
-    drawerHeader: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: '0 8px',
-        ...theme.mixins.toolbar,
+    drawerPaperMobile: {
+        height: '100%',
+        width: DRAWER_WIDTH,
     },
 });
 
@@ -59,7 +59,7 @@ class Sidebar extends PureComponent {
                         open={open}
                         onClose={this.toggleSidebar}
                         classes={{
-                            paper: classes.drawerPaper,
+                            paper: classes.drawerPaperMobile,
                         }}
                         {...rest}
                     >
@@ -78,12 +78,6 @@ class Sidebar extends PureComponent {
                         onClose={this.toggleSidebar}
                         {...rest}
                     >
-                        <div className={classes.drawerHeader}>
-                            <IconButton onClick={this.toggleSidebar}>
-                                <ChevronLeftIcon />
-                            </IconButton>
-                        </div>
-                        <Divider />
                         {children}
                     </Drawer>
                 }

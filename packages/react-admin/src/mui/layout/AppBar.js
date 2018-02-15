@@ -20,21 +20,25 @@ const styles = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-    },
-    appBarShift: {
-        marginLeft: DRAWER_WIDTH,
-        width: `calc(100% - ${DRAWER_WIDTH}px)`,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
+        zIndex: 1300,
     },
     menuButton: {
         marginLeft: 12,
         marginRight: 20,
     },
-    hide: {
-        display: 'none',
+    menuButtonIconClosed: {
+        transition: theme.transitions.create(['transform'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        transform: 'rotate(0deg)',
+    },
+    menuButtonIconOpen: {
+        transition: theme.transitions.create(['transform'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        transform: 'rotate(180deg)',
     },
     title: {
         flex: 1,
@@ -65,22 +69,24 @@ const AppBar = ({
     ...rest
 }) => (
     <MuiAppBar
-        className={classNames(
-            classes.appBar,
-            open && classes.appBarShift,
-            className
-        )}
+        className={classNames(classes.appBar, className)}
         color="secondary"
         {...rest}
     >
-        <Toolbar disableGutters={!open}>
+        <Toolbar disableGutters>
             <IconButton
                 color="inherit"
                 aria-label="open drawer"
                 onClick={toggleSidebar}
-                className={classNames(classes.menuButton, open && classes.hide)}
+                className={classNames(classes.menuButton)}
             >
-                <MenuIcon />
+                <MenuIcon
+                    classes={{
+                        root: open
+                            ? classes.menuButtonIconOpen
+                            : classes.menuButtonIconClosed,
+                    }}
+                />
             </IconButton>
             <Typography
                 variant="title"
