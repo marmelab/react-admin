@@ -1208,9 +1208,8 @@ export default withRouter(connect(mapStateToProps)(Menu));
 // after
 import React from 'react';
 import { connect } from 'react-redux';
-import { MenuItemLink, getResources } from 'react-admin';
+import { MenuItemLink, getResources, Responsive } from 'react-admin';
 import { withRouter } from 'react-router-dom';
-import Responsive from '../layout/Responsive';
 
 const Menu = ({ resources, onMenuClick, logout }) => (
     <div>
