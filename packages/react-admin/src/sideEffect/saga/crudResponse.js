@@ -30,21 +30,33 @@ import resolveRedirectTo from '../../util/resolveRedirectTo';
  */
 function* handleResponse({ type, requestPayload, error, payload, meta }) {
     switch (type) {
-        case CRUD_UPDATE_SUCCESS:
-            return requestPayload.redirectTo
-                ? yield all([
-                      put(showNotification('ra.notification.updated')),
-                      put(
-                          push(
-                              resolveRedirectTo(
-                                  requestPayload.redirectTo,
-                                  requestPayload.basePath,
-                                  requestPayload.id
-                              )
-                          )
-                      ),
-                  ])
-                : yield [put(showNotification('ra.notification.updated'))];
+        case CRUD_UPDATE_SUCCESS: {
+            const actions = [
+                put(
+                    showNotification('ra.notification.updated', 'info', {
+                        messageArgs: {
+                            smart_count: 1,
+                        },
+                    })
+                ),
+            ];
+
+            if (requestPayload.redirectTo) {
+                actions.push(
+                    put(
+                        push(
+                            resolveRedirectTo(
+                                requestPayload.redirectTo,
+                                requestPayload.basePath,
+                                requestPayload.id
+                            )
+                        )
+                    )
+                );
+            }
+
+            return yield all(actions);
+        }
         case CRUD_UPDATE_MANY_SUCCESS: {
             const actions = [
                 put(
@@ -82,21 +94,32 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
                       put(showNotification('ra.notification.created')),
                       put(reset('record-form')),
                   ]);
-        case CRUD_DELETE_SUCCESS:
-            return requestPayload.redirectTo
-                ? yield all([
-                      put(showNotification('ra.notification.deleted')),
-                      put(
-                          push(
-                              resolveRedirectTo(
-                                  requestPayload.redirectTo,
-                                  requestPayload.basePath,
-                                  requestPayload.id
-                              )
-                          )
-                      ),
-                  ])
-                : yield [put(showNotification('ra.notification.deleted'))];
+        case CRUD_DELETE_SUCCESS: {
+            const actions = [
+                put(
+                    showNotification('ra.notification.deleted', 'info', {
+                        messageArgs: {
+                            smart_count: 1,
+                        },
+                    })
+                ),
+            ];
+            if (requestPayload.redirectTo) {
+                actions.push(
+                    put(
+                        push(
+                            resolveRedirectTo(
+                                requestPayload.redirectTo,
+                                requestPayload.basePath,
+                                requestPayload.id
+                            )
+                        )
+                    )
+                );
+            }
+
+            return yield all(actions);
+        }
         case CRUD_DELETE_MANY_SUCCESS: {
             const actions = [
                 put(
