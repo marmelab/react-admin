@@ -14,6 +14,9 @@ run-simple: ## run the simple example
 run-tutorial: build ## run the tutorial example
 	@cd examples/tutorial && yarn start
 
+run-create-button-reference-many: build ## run the tutorial example
+	@cd examples/create-button-reference-many && yarn start
+
 run-demo: build ## run the demo example
 	@cd examples/demo && REACT_APP_DATA_PROVIDER=rest yarn start
 
