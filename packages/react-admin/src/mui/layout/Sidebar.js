@@ -22,12 +22,14 @@ const styles = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: 'transparent',
+        borderRight: 'none',
         marginTop: '4.5em',
         [theme.breakpoints.only('xs')]: {
             marginTop: 0,
             height: '100vh',
             position: 'inherit',
+            backgroundColor: theme.palette.background.default,
         },
         [theme.breakpoints.up('md')]: {
             border: 'none',
