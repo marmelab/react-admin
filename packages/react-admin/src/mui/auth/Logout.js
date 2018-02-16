@@ -13,7 +13,7 @@ import translate from '../../i18n/translate';
 import { userLogout as userLogoutAction } from '../../actions/authActions';
 
 const styles = {
-    iconPaddingStyle: { paddingRight: '0.5em' },
+    iconPaddingStyle: { paddingRight: '1.2em' },
 };
 
 const sanitizeRestProps = ({

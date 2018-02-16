@@ -11,13 +11,14 @@ import MenuItemLink from './MenuItemLink';
 import translate from '../../i18n/translate';
 import { getResources } from '../../reducer';
 import Responsive from '../layout/Responsive';
+import { DRAWER_WIDTH } from './Sidebar';
 
 const styles = {
     main: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        height: '100%',
+        width: DRAWER_WIDTH,
     },
 };
 
@@ -36,6 +37,7 @@ const translatedResourceName = (resource, translate) =>
 const Menu = ({
     classes,
     className,
+    dense,
     hasDashboard,
     onMenuClick,
     resources,
@@ -54,15 +56,17 @@ const Menu = ({
                     primaryText={translatedResourceName(resource, translate)}
                     leftIcon={<resource.icon />}
                     onClick={onMenuClick}
+                    dense={dense}
                 />
             ))}
-        <Responsive small={logout} medium={null} />
+        <Responsive xsmall={logout} medium={null} />
     </div>
 );
 
 Menu.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
+    dense: PropTypes.bool,
     hasDashboard: PropTypes.bool,
     logout: PropTypes.element,
     onMenuClick: PropTypes.func,

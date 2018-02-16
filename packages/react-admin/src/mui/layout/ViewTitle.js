@@ -9,7 +9,7 @@ import AppBarMobile from './AppBarMobile';
 
 const ViewTitle = ({ className, title, ...rest }) => (
     <Responsive
-        small={
+        xsmall={
             <AppBarMobile
                 className={classnames('title', className)}
                 title={title}

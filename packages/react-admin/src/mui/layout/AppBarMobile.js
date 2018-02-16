@@ -16,7 +16,6 @@ import LoadingIndicator from './LoadingIndicator';
 const styles = {
     bar: {
         height: '3em',
-        position: 'absolute',
         top: 0,
     },
     title: {
@@ -50,7 +49,12 @@ const AppBarMobile = ({
     toggleSidebar,
     ...rest
 }) => (
-    <MuiAppBar className={classnames(classes.bar, className)} {...rest}>
+    <MuiAppBar
+        className={classnames(classes.bar, className)}
+        color="secondary"
+        position="fixed"
+        {...rest}
+    >
         <Toolbar>
             <IconButton
                 color="inherit"
