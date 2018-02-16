@@ -34,7 +34,7 @@ const sanitizeRestProps = ({
  */
 const Logout = ({ classes, className, translate, userLogout, ...rest }) => (
     <Responsive
-        small={
+        xsmall={
             <MenuItem
                 className={classnames('logout', classes.menuItem, className)}
                 onClick={userLogout}
