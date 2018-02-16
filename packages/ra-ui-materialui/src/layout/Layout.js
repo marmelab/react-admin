@@ -18,19 +18,26 @@ import defaultTheme from '../defaultTheme';
 
 const styles = theme => ({
     root: {
-        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
         zIndex: 1,
         minHeight: '100vh',
         backgroundColor: theme.palette.background.default,
+        position: 'relative',
     },
     appFrame: {
-        position: 'relative',
         display: 'flex',
-        width: '100%',
+        flexDirection: 'column',
+        overflowX: 'auto',
+    },
+    contentWithSidebar: {
+        display: 'flex',
+        flexGrow: 1,
     },
     content: {
-        width: '100%',
-        flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 2,
         padding: theme.spacing.unit * 3,
         [theme.breakpoints.up('xs')]: {
             marginTop: '4em',
@@ -67,13 +74,15 @@ const Layout = ({
             <Hidden xsDown>
                 <AppBar title={title} open={open} logout={logout} />
             </Hidden>
-            <Sidebar>
-                {createElement(menu || Menu, {
-                    logout,
-                    hasDashboard: !!dashboard,
-                })}
-            </Sidebar>
-            <main className={classes.content}>{children}</main>
+            <main className={classes.contentWithSidebar}>
+                <Sidebar>
+                    {createElement(menu || Menu, {
+                        logout,
+                        hasDashboard: !!dashboard,
+                    })}
+                </Sidebar>
+                <div className={classes.content}>{children}</div>
+            </main>
             <Notification />
         </div>
     </div>
