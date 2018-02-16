@@ -14,7 +14,7 @@ import {
 
 const styles = theme => {
     const confirm = theme.palette.background.default;
-    const warning = theme.palette.error.A100;
+    const warning = theme.palette.error.light;
     return {
         confirm: {
             backgroundColor: confirm,
@@ -71,10 +71,12 @@ class Notification extends React.Component {
                 }
                 onExited={this.handleExited}
                 onClose={this.handleRequestClose}
-                className={classnames(
-                    classes[(notification && notification.type) || type],
-                    className
-                )}
+                SnackbarContentProps={{
+                    className: classnames(
+                        classes[(notification && notification.type) || type],
+                        className
+                    ),
+                }}
                 {...rest}
             />
         );

@@ -51,7 +51,7 @@ export class SaveButton extends Component {
             e.preventDefault();
         } else {
             if (invalid) {
-                showNotification('ra.message.invalid_form', 'error');
+                showNotification('ra.message.invalid_form', 'warning');
             }
             // always submit form explicitly regardless of button type
             if (e) {
