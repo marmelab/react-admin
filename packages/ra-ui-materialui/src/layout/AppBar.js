@@ -95,9 +95,10 @@ const AppBar = ({
             >
                 {title}
             </Typography>
-            {cloneElement(logout, {
-                className: classes.logout,
-            })}
+            {logout &&
+                cloneElement(logout, {
+                    className: classes.logout,
+                })}
         </Toolbar>
         <LoadingIndicator className={classes.loadingIndicator} />
     </MuiAppBar>
