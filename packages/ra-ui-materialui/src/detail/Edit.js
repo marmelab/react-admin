@@ -36,49 +36,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-/**
- * Page component for the Edit view
- * 
- * The `<Edit>` component renders the page title and actions,
- * fetches the record from the data provider.
- * It is not responsible for rendering the actual form -
- * that's the job of its child component (usually `<SimpleForm>`),
- * to which it passes pass the `record` as prop.
- *
- * The `<Edit>` component accepts the following props:
- *
- * - title
- * - actions
- * 
- * Both expect an element for value.
- * 
- * @example     
- *     // in src/posts.js
- *     import React from 'react';
- *     import { Edit, SimpleForm, TextInput } from 'react-admin';
- *     
- *     export const PostEdit = (props) => (
- *         <Edit {...props}>
- *             <SimpleForm>
- *                 <TextInput source="title" />
- *             </SimpleForm>
- *         </Edit>
- *     );
- *
- *     // in src/App.js
- *     import React from 'react';
- *     import { Admin, Resource } from 'react-admin';
- *     
- *     import { PostEdit } from './posts';
- *     
- *     const App = () => (
- *         <Admin dataProvider={...}>
- *             <Resource name="posts" edit={PostEdit} />
- *         </Admin>
- *     );
- *     export default App;
- */
-const InnerEdit = ({
+const EditView = ({
     actions = <DefaultActions />,
     basePath,
     children,
@@ -140,9 +98,51 @@ const InnerEdit = ({
     </div>
 );
 
+/**
+ * Page component for the Edit view
+ * 
+ * The `<Edit>` component renders the page title and actions,
+ * fetches the record from the data provider.
+ * It is not responsible for rendering the actual form -
+ * that's the job of its child component (usually `<SimpleForm>`),
+ * to which it passes pass the `record` as prop.
+ *
+ * The `<Edit>` component accepts the following props:
+ *
+ * - title
+ * - actions
+ * 
+ * Both expect an element for value.
+ * 
+ * @example     
+ *     // in src/posts.js
+ *     import React from 'react';
+ *     import { Edit, SimpleForm, TextInput } from 'react-admin';
+ *     
+ *     export const PostEdit = (props) => (
+ *         <Edit {...props}>
+ *             <SimpleForm>
+ *                 <TextInput source="title" />
+ *             </SimpleForm>
+ *         </Edit>
+ *     );
+ *
+ *     // in src/App.js
+ *     import React from 'react';
+ *     import { Admin, Resource } from 'react-admin';
+ *     
+ *     import { PostEdit } from './posts';
+ *     
+ *     const App = () => (
+ *         <Admin dataProvider={...}>
+ *             <Resource name="posts" edit={PostEdit} />
+ *         </Admin>
+ *     );
+ *     export default App;
+ */
 const Edit = props => (
     <EditController {...props}>
-        {controllerProps => <InnerEdit {...props} {...controllerProps} />}
+        {controllerProps => <EditView {...props} {...controllerProps} />}
     </EditController>
 );
 

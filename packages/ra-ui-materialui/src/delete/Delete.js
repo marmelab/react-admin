@@ -48,7 +48,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const InnerDelete = ({
+const DeleteView = ({
     actions = <DefaultActions />,
     basePath,
     classes = {},
@@ -158,7 +158,7 @@ const InnerDelete = ({
  */
 const Delete = props => (
     <DeleteController {...props}>
-        {controllerProps => <InnerDelete {...props} {...controllerProps} />}
+        {controllerProps => <DeleteView {...props} {...controllerProps} />}
     </DeleteController>
 );
 
