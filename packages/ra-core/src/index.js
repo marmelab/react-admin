@@ -3,7 +3,8 @@ export * from './actions';
 export * from './auth';
 export * from './i18n';
 export * from './util';
-export * from './ui';
+export * from './controller';
+export * from './form';
 export createAppReducer, {
     getResources,
     getReferenceResource,
