@@ -15,6 +15,7 @@ import {
     NullableBooleanInput,
     NumberField,
     ReferenceManyField,
+    Responsive,
     TabbedForm,
     TextField,
     TextInput,
@@ -29,6 +30,7 @@ import SegmentsField from './SegmentsField';
 import SegmentInput from './SegmentInput';
 import SegmentsInput from './SegmentsInput';
 import withStyles from 'material-ui/styles/withStyles';
+import MobileGrid from './MobileGrid';
 
 export const VisitorIcon = Icon;
 
@@ -57,7 +59,7 @@ const colored = WrappedComponent => {
     return Colored;
 };
 
-const ColoredNumberField = colored(NumberField);
+export const ColoredNumberField = colored(NumberField);
 ColoredNumberField.defaultProps = NumberField.defaultProps;
 
 const listStyles = {
@@ -71,23 +73,28 @@ export const VisitorList = withStyles(listStyles)(({ classes, ...props }) => (
         sort={{ field: 'last_seen', order: 'DESC' }}
         perPage={25}
     >
-        <Datagrid>
-            <FullNameField />
-            <DateField source="last_seen" type="date" />
-            <NumberField
-                source="nb_commands"
-                label="resources.customers.fields.commands"
-                className={classes.nb_commands}
-            />
-            <ColoredNumberField
-                source="total_spent"
-                options={{ style: 'currency', currency: 'USD' }}
-            />
-            <DateField source="latest_purchase" showTime />
-            <BooleanField source="has_newsletter" label="News." />
-            <SegmentsField />
-            <EditButton />
-        </Datagrid>
+        <Responsive
+            xsmall={<MobileGrid />}
+            medium={
+                <Datagrid>
+                    <FullNameField />
+                    <DateField source="last_seen" type="date" />
+                    <NumberField
+                        source="nb_commands"
+                        label="resources.customers.fields.commands"
+                        className={classes.nb_commands}
+                    />
+                    <ColoredNumberField
+                        source="total_spent"
+                        options={{ style: 'currency', currency: 'USD' }}
+                    />
+                    <DateField source="latest_purchase" showTime />
+                    <BooleanField source="has_newsletter" label="News." />
+                    <SegmentsField />
+                    <EditButton />
+                </Datagrid>
+            }
+        />
     </List>
 ));
 

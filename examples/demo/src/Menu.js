@@ -3,7 +3,12 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import SettingsIcon from 'material-ui-icons/Settings';
 import LabelIcon from 'material-ui-icons/Label';
-import { translate, DashboardMenuItem, MenuItemLink } from 'react-admin';
+import {
+    translate,
+    DashboardMenuItem,
+    MenuItemLink,
+    Responsive,
+} from 'react-admin';
 import { withRouter } from 'react-router-dom';
 
 import { VisitorIcon } from './visitors';
@@ -50,7 +55,7 @@ const Menu = ({ onMenuClick, translate, logout }) => (
             leftIcon={<SettingsIcon />}
             onClick={onMenuClick}
         />
-        {logout}
+        <Responsive xsmall={logout} medium={null} />
     </div>
 );
 

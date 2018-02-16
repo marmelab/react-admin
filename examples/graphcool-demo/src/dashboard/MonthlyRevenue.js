@@ -7,9 +7,9 @@ const styles = {
     card: { borderLeft: 'solid 4px #31708f', flex: '1', marginRight: '1em' },
     icon: {
         float: 'right',
-        width: 64,
-        height: 64,
-        padding: 16,
+        width: 54,
+        height: 54,
+        padding: 14,
         color: '#31708f',
     },
 };

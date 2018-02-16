@@ -15,6 +15,7 @@ import {
     NullableBooleanInput,
     NumberField,
     ReferenceManyField,
+    Responsive,
     TabbedForm,
     TextField,
     TextInput,
@@ -27,6 +28,7 @@ import ProductReferenceField from '../products/ProductReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
 import FullNameField from './FullNameField';
 import SegmentReferenceField from '../segments/SegmentReferenceField';
+import MobileGrid from './MobileGrid';
 
 export const VisitorIcon = Icon;
 
@@ -54,7 +56,7 @@ const colored = WrappedComponent => {
     return component;
 };
 
-const ColoredNumberField = colored(NumberField);
+export const ColoredNumberField = colored(NumberField);
 ColoredNumberField.defaultProps = NumberField.defaultProps;
 
 export const VisitorList = props => (
@@ -64,23 +66,28 @@ export const VisitorList = props => (
         sort={{ field: 'lastSeen', order: 'DESC' }}
         perPage={25}
     >
-        <Datagrid>
-            <FullNameField />
-            <DateField source="lastSeen" type="date" />
-            <NumberField
-                source="nbCommands"
-                label="resources.Customer.fields.commands"
-                style={{ color: 'purple' }}
-            />
-            <ColoredNumberField
-                source="totalSpent"
-                options={{ style: 'currency', currency: 'USD' }}
-            />
-            <DateField source="latestPurchase" showTime />
-            <BooleanField source="hasNewsletter" label="News." />
-            <SegmentReferenceField />
-            <EditButton />
-        </Datagrid>
+        <Responsive
+            xsmall={<MobileGrid />}
+            medium={
+                <Datagrid>
+                    <FullNameField />
+                    <DateField source="lastSeen" type="date" />
+                    <NumberField
+                        source="nbCommands"
+                        label="resources.Customer.fields.commands"
+                        style={{ color: 'purple' }}
+                    />
+                    <ColoredNumberField
+                        source="totalSpent"
+                        options={{ style: 'currency', currency: 'USD' }}
+                    />
+                    <DateField source="latestPurchase" showTime />
+                    <BooleanField source="hasNewsletter" label="News." />
+                    <SegmentReferenceField />
+                    <EditButton />
+                </Datagrid>
+            }
+        />
     </List>
 );
 
