@@ -3,28 +3,41 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Drawer from 'material-ui/Drawer';
-import Divider from 'material-ui/Divider';
 import { withStyles } from 'material-ui/styles';
 import withWidth from 'material-ui/utils/withWidth';
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
-import IconButton from 'material-ui/IconButton';
+import classnames from 'classnames';
+import { setSidebarVisibility } from 'ra-core';
 
 import Responsive from './Responsive';
-import { setSidebarVisibility } from 'ra-core';
 
 export const DRAWER_WIDTH = 240;
 
 const styles = theme => ({
     drawerPaper: {
-        height: '100%',
+        position: 'relative',
+        height: 'auto',
         width: DRAWER_WIDTH,
+        overflowX: 'hidden',
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        backgroundColor: 'transparent',
+        borderRight: 'none',
+        marginTop: '4.5em',
+        [theme.breakpoints.only('xs')]: {
+            marginTop: 0,
+            height: '100vh',
+            position: 'inherit',
+            backgroundColor: theme.palette.background.default,
+        },
+        [theme.breakpoints.up('md')]: {
+            border: 'none',
+            marginTop: '5.5em',
+        },
     },
-    drawerHeader: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: '0 8px',
-        ...theme.mixins.toolbar,
+    drawerPaperClose: {
+        width: 55,
     },
 });
 
@@ -48,19 +61,20 @@ class Sidebar extends PureComponent {
             classes,
             open,
             setSidebarVisibility,
+            width,
             ...rest
         } = this.props;
 
         return (
             <Responsive
-                small={
+                xsmall={
                     <Drawer
                         variant="temporary"
                         open={open}
-                        onClose={this.toggleSidebar}
                         classes={{
                             paper: classes.drawerPaper,
                         }}
+                        onClose={this.toggleSidebar}
                         {...rest}
                     >
                         {React.cloneElement(children, {
@@ -68,23 +82,41 @@ class Sidebar extends PureComponent {
                         })}
                     </Drawer>
                 }
-                medium={
+                small={
                     <Drawer
-                        variant="persistent"
+                        variant="permanent"
                         open={open}
                         classes={{
-                            paper: classes.drawerPaper,
+                            paper: classnames(
+                                classes.drawerPaper,
+                                !open && classes.drawerPaperClose
+                            ),
                         }}
                         onClose={this.toggleSidebar}
                         {...rest}
                     >
-                        <div className={classes.drawerHeader}>
-                            <IconButton onClick={this.toggleSidebar}>
-                                <ChevronLeftIcon />
-                            </IconButton>
-                        </div>
-                        <Divider />
-                        {children}
+                        {React.cloneElement(children, {
+                            dense: true,
+                            onMenuClick: this.handleClose,
+                        })}
+                    </Drawer>
+                }
+                medium={
+                    <Drawer
+                        variant="permanent"
+                        open={open}
+                        classes={{
+                            paper: classnames(
+                                classes.drawerPaper,
+                                !open && classes.drawerPaperClose
+                            ),
+                        }}
+                        onClose={this.toggleSidebar}
+                        {...rest}
+                    >
+                        {React.cloneElement(children, {
+                            dense: true,
+                        })}
                     </Drawer>
                 }
             />
