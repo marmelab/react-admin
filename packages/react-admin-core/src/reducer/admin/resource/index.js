@@ -69,6 +69,4 @@ export default (
 export const getResources = state =>
     Object.keys(state).map(key => state[key].props);
 
-export const getReferenceResource = (state, props) => {
-    return state[props.reference];
-};
+export const getReferenceResource = (state, props) => state[props.reference];
