@@ -41,6 +41,7 @@ export default {
                 latestPurchase: 'Latest Purchase',
                 hasOrdered: 'Has Ordered',
                 hasNewsletter: 'Has Newsletter',
+                totalSpent: 'Total spent',
             },
             tabs: {
                 identity: 'Identity',

@@ -19,7 +19,6 @@ import {
     TabbedForm,
     TextField,
     TextInput,
-    SimpleList,
 } from 'react-admin';
 import Icon from 'material-ui-icons/Person';
 
@@ -31,6 +30,7 @@ import SegmentsField from './SegmentsField';
 import SegmentInput from './SegmentInput';
 import SegmentsInput from './SegmentsInput';
 import withStyles from 'material-ui/styles/withStyles';
+import MobileGrid from './MobileGrid';
 
 export const VisitorIcon = Icon;
 
@@ -59,7 +59,7 @@ const colored = WrappedComponent => {
     return Colored;
 };
 
-const ColoredNumberField = colored(NumberField);
+export const ColoredNumberField = colored(NumberField);
 ColoredNumberField.defaultProps = NumberField.defaultProps;
 
 const listStyles = {
@@ -74,12 +74,7 @@ export const VisitorList = withStyles(listStyles)(({ classes, ...props }) => (
         perPage={25}
     >
         <Responsive
-            small={
-                <SimpleList
-                    primaryText={record =>
-                        `${record.first_name} ${record.last_name}`}
-                />
-            }
+            small={<MobileGrid />}
             medium={
                 <Datagrid>
                     <FullNameField />

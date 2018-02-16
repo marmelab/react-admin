@@ -16,7 +16,6 @@ import {
     NumberField,
     ReferenceManyField,
     Responsive,
-    SimpleList,
     TabbedForm,
     TextField,
     TextInput,
@@ -29,6 +28,7 @@ import ProductReferenceField from '../products/ProductReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
 import FullNameField from './FullNameField';
 import SegmentReferenceField from '../segments/SegmentReferenceField';
+import MobileGrid from './MobileGrid';
 
 export const VisitorIcon = Icon;
 
@@ -56,7 +56,7 @@ const colored = WrappedComponent => {
     return component;
 };
 
-const ColoredNumberField = colored(NumberField);
+export const ColoredNumberField = colored(NumberField);
 ColoredNumberField.defaultProps = NumberField.defaultProps;
 
 export const VisitorList = props => (
@@ -67,12 +67,7 @@ export const VisitorList = props => (
         perPage={25}
     >
         <Responsive
-            small={
-                <SimpleList
-                    primaryText={record =>
-                        `${record.firstName} ${record.lastName}`}
-                />
-            }
+            small={<MobileGrid />}
             medium={
                 <Datagrid>
                     <FullNameField />
