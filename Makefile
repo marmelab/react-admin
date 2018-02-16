@@ -23,6 +23,14 @@ run-graphql-demo: build ## run the demo example
 run-graphcool-demo: build ## run the demo example
 	@cd examples/graphcool-demo && yarn start
 
+build-ra-core:
+	@rm -rf ./packages/ra-core/lib
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-core/src -d ./packages/ra-core/lib --ignore spec.js,test.js
+
+build-ra-ui-materialui:
+	@rm -rf ./packages/ra-ui-materialui/lib
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-ui-materialui/src -d ./packages/ra-ui-materialui/lib --ignore spec.js,test.js
+
 build-react-admin:
 	@rm -rf ./packages/react-admin/lib
 	@NODE_ENV=production ./node_modules/.bin/babel ./packages/react-admin/src -d ./packages/react-admin/lib --ignore spec.js,test.js
@@ -64,7 +72,7 @@ build-data-generator:
 	@rm -rf ./examples/data-generator/lib
 	@NODE_ENV=production ./node_modules/.bin/babel ./examples/data-generator/src -d ./examples/data-generator/lib
 
-build: build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-input-rich-text build-ra-data-graphql build-ra-data-graphcool build-ra-dependent-input build-ra-data-graphql-simple build-data-generator build-ra-realtime ## compile ES6 files to JS
+build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-input-rich-text build-ra-data-graphql build-ra-data-graphcool build-ra-dependent-input build-ra-data-graphql-simple build-data-generator build-ra-realtime ## compile ES6 files to JS
 
 watch: ## continuously compile ES6 files to JS
 	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore spec.js,test.js --watch
@@ -74,7 +82,7 @@ doc: ## compile doc as html and launch doc web server
 
 lint: ## lint the code and check coding conventions
 	@echo "Running linter..."
-	@"./node_modules/.bin/eslint" ./packages/react-admin/src/
+	@"./node_modules/.bin/eslint" ./packages/react-admin/src/ ./packages/ra-core/src/ ./packages/ra-ui-materialui/src
 
 prettier: ## prettify the source code using prettier
 	@./node_modules/.bin/prettier-eslint --write --list-different  "packages/react-admin/src/**/*.js" "examples/**/*.js"
