@@ -1,7 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
 
 import { crudGetManyReference as crudGetManyReferenceAction } from '../../actions';
 import {
@@ -60,7 +59,7 @@ import {
  *    ...
  * </ReferenceManyField>
  */
-export class ReferenceManyField extends Component {
+export class CoreReferenceManyField extends Component {
     constructor(props) {
         super(props);
         this.state = { sort: props.sort };
@@ -133,7 +132,7 @@ export class ReferenceManyField extends Component {
     }
 }
 
-ReferenceManyField.propTypes = {
+CoreReferenceManyField.propTypes = {
     basePath: PropTypes.string.isRequired,
     children: PropTypes.func.isRequired,
     crudGetManyReference: PropTypes.func.isRequired,
@@ -153,7 +152,7 @@ ReferenceManyField.propTypes = {
     isLoading: PropTypes.bool,
 };
 
-ReferenceManyField.defaultProps = {
+CoreReferenceManyField.defaultProps = {
     filter: {},
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
@@ -175,10 +174,8 @@ function mapStateToProps(state, props) {
     };
 }
 
-const ComposedReferenceManyField = compose(
-    connect(mapStateToProps, {
-        crudGetManyReference: crudGetManyReferenceAction,
-    })
-)(ReferenceManyField);
+const EnhancedCoreReferenceManyField = connect(mapStateToProps, {
+    crudGetManyReference: crudGetManyReferenceAction,
+})(CoreReferenceManyField);
 
-export default ComposedReferenceManyField;
+export default EnhancedCoreReferenceManyField;

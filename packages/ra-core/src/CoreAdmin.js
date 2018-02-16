@@ -14,7 +14,7 @@ import { USER_LOGOUT } from './actions/authActions';
 import createAppReducer from './reducer';
 import { crudSaga } from './sideEffect/saga';
 import { TranslationProvider, defaultI18nProvider } from './i18n';
-import CoreAdminRouter from './AdminRouter';
+import CoreAdminRouter from './CoreAdminRouter';
 
 const CoreAdmin = ({
     appLayout,

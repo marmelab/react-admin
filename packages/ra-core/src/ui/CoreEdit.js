@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
 import { reset } from 'redux-form';
-import translate from '../../i18n/translate';
+import translate from '../i18n/translate';
 import {
     crudGetOne as crudGetOneAction,
     crudUpdate as crudUpdateAction,
-} from 'ra-core';
+} from '../actions';
 
 /**
  * Page component for the Edit view
@@ -52,7 +52,7 @@ import {
  *     );
  *     export default App;
  */
-export class Edit extends Component {
+export class CoreEdit extends Component {
     componentDidMount() {
         this.updateData();
     }
@@ -132,7 +132,7 @@ export class Edit extends Component {
     }
 }
 
-Edit.propTypes = {
+CoreEdit.propTypes = {
     children: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,
     crudUpdate: PropTypes.func.isRequired,
@@ -166,7 +166,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-const enhance = compose(
+const EnhancedCoreEdit = compose(
     connect(mapStateToProps, {
         crudGetOne: crudGetOneAction,
         crudUpdate: crudUpdateAction,
@@ -175,4 +175,4 @@ const enhance = compose(
     translate
 );
 
-export default enhance(Edit);
+export default EnhancedCoreEdit(CoreEdit);

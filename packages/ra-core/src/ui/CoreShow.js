@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-import translate from '../../i18n/translate';
-import { crudGetOne as crudGetOneAction } from '../../actions';
+import translate from '../i18n/translate';
+import { crudGetOne as crudGetOneAction } from '../actions';
 
 /**
  * Page component for the Show view
@@ -48,7 +48,7 @@ import { crudGetOne as crudGetOneAction } from '../../actions';
  *     );
  *     export default App;
  */
-export class Show extends Component {
+export class CoreShow extends Component {
     componentDidMount() {
         this.updateData();
     }
@@ -121,7 +121,7 @@ export class Show extends Component {
     }
 }
 
-Show.propTypes = {
+CoreShow.propTypes = {
     children: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,
     record: PropTypes.object,
@@ -153,9 +153,9 @@ function mapStateToProps(state, props) {
     };
 }
 
-const enhance = compose(
+const EnhancedCoreShow = compose(
     connect(mapStateToProps, { crudGetOne: crudGetOneAction }),
     translate
 );
 
-export default enhance(Show);
+export default EnhancedCoreShow(CoreShow);

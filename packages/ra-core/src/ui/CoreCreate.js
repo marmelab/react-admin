@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-import translate from '../../i18n/translate';
-import { crudCreate as crudCreateAction } from '../../actions';
+import translate from '../i18n/translate';
+import { crudCreate as crudCreateAction } from '../actions';
 
 /**
  * Page component for the Create view
@@ -47,7 +47,7 @@ import { crudCreate as crudCreateAction } from '../../actions';
  *     );
  *     export default App;
  */
-class Create extends Component {
+class CoreCreate extends Component {
     getBasePath() {
         const { match } = this.props;
         return match.url
@@ -97,7 +97,7 @@ class Create extends Component {
     }
 }
 
-Create.propTypes = {
+CoreCreate.propTypes = {
     children: PropTypes.func.isRequired,
     crudCreate: PropTypes.func.isRequired,
     hasCreate: PropTypes.bool,
@@ -114,7 +114,7 @@ Create.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-Create.defaultProps = {
+CoreCreate.defaultProps = {
     record: {},
 };
 
@@ -124,9 +124,9 @@ function mapStateToProps(state) {
     };
 }
 
-const enhance = compose(
+const EnhancedCoreCreate = compose(
     connect(mapStateToProps, { crudCreate: crudCreateAction }),
     translate
 );
 
-export default enhance(Create);
+export default EnhancedCoreCreate(CoreCreate);

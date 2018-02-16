@@ -1,7 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { CoreReferenceArrayInput } from './ReferenceArrayInput';
+import { CoreReferenceArrayInput } from './CoreReferenceArrayInput';
 
 describe('<CoreReferenceArrayInput />', () => {
     const defaultProps = {

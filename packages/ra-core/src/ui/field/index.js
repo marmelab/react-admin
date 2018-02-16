@@ -1,3 +1,3 @@
-export CoreReferenceArrayField from './ReferenceArrayField';
-export CoreReferenceField from './ReferenceField';
-export CoreReferenceManyField from './ReferenceManyField';
+export CoreReferenceArrayField from './CoreReferenceArrayField';
+export CoreReferenceField from './CoreReferenceField';
+export CoreReferenceManyField from './CoreReferenceManyField';

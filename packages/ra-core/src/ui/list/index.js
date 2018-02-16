@@ -1,1 +1,0 @@
-export CoreList from './List';

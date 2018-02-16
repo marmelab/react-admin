@@ -24,7 +24,7 @@ export {
 } from './reducer/admin/references/oneToMany';
 
 export * from './sideEffect/saga';
-export CoreAdmin from './Admin';
-export CoreAdminRouter from './AdminRouter';
+export CoreAdmin from './CoreAdmin';
+export CoreAdminRouter from './CoreAdminRouter';
 export RoutesWithLayout from './RoutesWithLayout';
 export Resource from './Resource';

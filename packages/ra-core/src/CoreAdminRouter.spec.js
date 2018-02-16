@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import assert from 'assert';
 import { Route } from 'react-router-dom';
 
-import { CoreAdminRouter } from './AdminRouter';
+import { CoreAdminRouter } from './CoreAdminRouter';
 import Resource from './Resource';
 
 describe('<AdminRouter>', () => {

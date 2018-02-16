@@ -1,7 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { CoreReferenceArrayField } from './ReferenceArrayField';
+import { CoreReferenceArrayField } from './CoreReferenceArrayField';
 
 describe('<CoreReferenceArrayField />', () => {
     it('should set the isLoading prop to true when related records are not yet fetched', () => {

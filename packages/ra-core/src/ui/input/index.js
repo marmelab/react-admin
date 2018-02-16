@@ -1,2 +1,2 @@
-export CoreReferenceArrayInput from './ReferenceArrayInput';
-export CoreReferenceInput from './ReferenceInput';
+export CoreReferenceArrayInput from './CoreReferenceArrayInput';
+export CoreReferenceInput from './CoreReferenceInput';

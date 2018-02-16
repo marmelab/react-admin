@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-import translate from '../../i18n/translate';
-import { crudGetOne, crudDelete } from '../../actions';
+import translate from '../i18n/translate';
+import { crudGetOne, crudDelete } from '../actions';
 
 /**
  * Page component for the Delete view
@@ -48,7 +48,7 @@ import { crudGetOne, crudDelete } from '../../actions';
  *         </Admin>
  *     );
  */
-export class Delete extends Component {
+export class CoreDelete extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -134,7 +134,7 @@ export class Delete extends Component {
     }
 }
 
-Delete.propTypes = {
+CoreDelete.propTypes = {
     children: PropTypes.func.isRequired,
     crudDelete: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,
@@ -166,9 +166,9 @@ function mapStateToProps(state, props) {
     };
 }
 
-const enhance = compose(
+const EnhancedCoreDelete = compose(
     connect(mapStateToProps, { crudGetOne, crudDelete }),
     translate
 );
 
-export default enhance(Delete);
+export default EnhancedCoreDelete(CoreDelete);

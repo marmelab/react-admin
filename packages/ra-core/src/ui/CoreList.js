@@ -14,15 +14,15 @@ import queryReducer, {
     SET_PAGE,
     SET_FILTER,
     SORT_DESC,
-} from '../../reducer/admin/resource/list/queryReducer';
-import { crudGetList as crudGetListAction } from '../../actions/dataActions';
+} from '../reducer/admin/resource/list/queryReducer';
+import { crudGetList as crudGetListAction } from '../actions/dataActions';
 import {
     changeListParams as changeListParamsAction,
     setListSelectedIds as setListSelectedIdsAction,
     toggleListItem as toggleListItemAction,
-} from '../../actions/listActions';
-import translate from '../../i18n/translate';
-import removeKey from '../../util/removeKey';
+} from '../actions/listActions';
+import translate from '../i18n/translate';
+import removeKey from '../util/removeKey';
 
 /**
  * List page component
@@ -65,7 +65,7 @@ import removeKey from '../../util/removeKey';
  *         </List>
  *     );
  */
-export class List extends Component {
+export class CoreList extends Component {
     state = {};
 
     componentDidMount() {
@@ -267,7 +267,7 @@ export class List extends Component {
     }
 }
 
-List.propTypes = {
+CoreList.propTypes = {
     // the props you can change
     children: PropTypes.func.isRequired,
     filter: PropTypes.object,
@@ -305,7 +305,7 @@ List.propTypes = {
     version: PropTypes.number,
 };
 
-List.defaultProps = {
+CoreList.defaultProps = {
     filter: {},
     filterValues: {},
     perPage: 10,
@@ -353,7 +353,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-const enhance = compose(
+const EnhancedCoreList = compose(
     connect(mapStateToProps, {
         crudGetList: crudGetListAction,
         changeListParams: changeListParamsAction,
@@ -364,4 +364,4 @@ const enhance = compose(
     translate
 );
 
-export default enhance(List);
+export default EnhancedCoreList(CoreList);

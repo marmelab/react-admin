@@ -2,7 +2,6 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash.get';
-import compose from 'recompose/compose';
 
 import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions';
 import { linkToRecord } from '../../util';
@@ -114,10 +113,8 @@ const mapStateToProps = (state, props) => ({
         ],
 });
 
-const ConnectedReferenceField = compose(
-    connect(mapStateToProps, {
-        crudGetManyAccumulate: crudGetManyAccumulateAction,
-    })
-)(CoreReferenceField);
+const EnhancedCoreReferenceField = connect(mapStateToProps, {
+    crudGetManyAccumulate: crudGetManyAccumulateAction,
+})(CoreReferenceField);
 
-export default ConnectedReferenceField;
+export default EnhancedCoreReferenceField;

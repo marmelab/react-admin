@@ -2,7 +2,7 @@ import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
 
-import { CoreReferenceField } from './ReferenceField';
+import { CoreReferenceField } from './CoreReferenceField';
 
 describe('<CoreReferenceField />', () => {
     it('should call crudGetManyAccumulate on componentDidMount if reference source is defined', () => {

@@ -107,8 +107,8 @@ const mapStateToProps = (state, props) => {
     };
 };
 
-const ComposedReferenceArrayField = connect(mapStateToProps, {
+const EnhancedReferenceArrayField = connect(mapStateToProps, {
     crudGetManyAccumulate: crudGetManyAccumulateAction,
 })(CoreReferenceArrayField);
 
-export default ComposedReferenceArrayField;
+export default EnhancedReferenceArrayField;
