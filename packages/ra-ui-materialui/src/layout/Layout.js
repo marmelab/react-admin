@@ -56,30 +56,27 @@ const Layout = ({
     logout,
     menu,
     open,
-    theme,
     title,
     ...props
 }) => (
-    <MuiThemeProvider theme={createMuiTheme(theme)}>
-        <div
-            className={classnames('layout', classes.root, className)}
-            {...sanitizeRestProps(props)}
-        >
-            <div className={classes.appFrame}>
-                <Hidden xsDown>
-                    <AppBar title={title} open={open} logout={logout} />
-                </Hidden>
-                <Sidebar>
-                    {createElement(menu || Menu, {
-                        logout,
-                        hasDashboard: !!dashboard,
-                    })}
-                </Sidebar>
-                <main className={classes.content}>{children}</main>
-                <Notification />
-            </div>
+    <div
+        className={classnames('layout', classes.root, className)}
+        {...sanitizeRestProps(props)}
+    >
+        <div className={classes.appFrame}>
+            <Hidden xsDown>
+                <AppBar title={title} open={open} logout={logout} />
+            </Hidden>
+            <Sidebar>
+                {createElement(menu || Menu, {
+                    logout,
+                    hasDashboard: !!dashboard,
+                })}
+            </Sidebar>
+            <main className={classes.content}>{children}</main>
+            <Notification />
         </div>
-    </MuiThemeProvider>
+    </div>
 );
 
 const componentPropType = PropTypes.oneOfType([
@@ -101,22 +98,28 @@ Layout.propTypes = {
     menu: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     open: PropTypes.bool,
     title: PropTypes.node.isRequired,
-    theme: PropTypes.object.isRequired,
-};
-
-Layout.defaultProps = {
-    theme: defaultTheme,
 };
 
 const mapStateToProps = state => ({
     open: state.admin.ui.sidebarOpen,
 });
-const enhance = compose(
+
+const EnhancedLayout = compose(
     connect(
         mapStateToProps,
         {} // Avoid connect passing dispatch in props
     ),
     withStyles(styles)
+)(Layout);
+
+const LayoutWithTheme = ({ theme, ...rest }) => (
+    <MuiThemeProvider theme={createMuiTheme(theme)}>
+        <EnhancedLayout {...rest} />
+    </MuiThemeProvider>
 );
 
-export default enhance(Layout);
+LayoutWithTheme.defaultProps = {
+    theme: defaultTheme,
+};
+
+export default LayoutWithTheme;
