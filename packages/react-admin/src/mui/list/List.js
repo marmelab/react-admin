@@ -243,8 +243,10 @@ export const List = ({
     hasShow,
     location,
     match,
+    params,
     pagination = <DefaultPagination />,
     perPage,
+    query,
     resource,
     sort,
     title,
@@ -262,7 +264,9 @@ export const List = ({
                 hasShow,
                 location,
                 match,
+                params,
                 perPage,
+                query,
                 resource,
                 sort,
             }}
@@ -371,7 +375,6 @@ List.propTypes = {
 
 List.defaultProps = {
     filter: {},
-    filterValues: {},
     perPage: 10,
     theme: defaultTheme,
 };
