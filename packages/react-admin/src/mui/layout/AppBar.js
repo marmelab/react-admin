@@ -10,7 +10,7 @@ import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 
-import { toggleSidebar as toggleSidebarAction } from 'react-admin-core';
+import { toggleSidebar as toggleSidebarAction } from 'ra-core';
 import { DRAWER_WIDTH } from './Sidebar';
 import LoadingIndicator from './LoadingIndicator';
 

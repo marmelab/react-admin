@@ -48,7 +48,7 @@
         "prop-types": "~15.5.7",
         "query-string": "~5.0.0",
         "ra-language-english": "^2.0.0-beta2",
-        "react-admin-core": "^2.0.0-beta2",
+        "ra-core": "^2.0.0-beta2",
         "react-autosuggest": "^9.3.2",
         "react-dropzone": "~4.0.1",
         "react-redux": "~5.0.4",

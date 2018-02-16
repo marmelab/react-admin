@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
 import { withStyles } from 'material-ui/styles';
-import { FieldTitle } from 'react-admin-core';
+import { FieldTitle } from 'ra-core';
 
 const styles = theme => ({
     label: {

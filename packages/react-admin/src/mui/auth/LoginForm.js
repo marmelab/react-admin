@@ -8,7 +8,7 @@ import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import { CircularProgress } from 'material-ui/Progress';
 import { withStyles } from 'material-ui/styles';
-import { translate, userLogin } from 'react-admin-core';
+import { translate, userLogin } from 'ra-core';
 
 const styles = () => ({
     form: {

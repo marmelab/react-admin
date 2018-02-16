@@ -8,7 +8,7 @@ import translate from '../../i18n/translate';
 import {
     crudGetOne as crudGetOneAction,
     crudUpdate as crudUpdateAction,
-} from 'react-admin-core';
+} from 'ra-core';
 
 /**
  * Page component for the Edit view

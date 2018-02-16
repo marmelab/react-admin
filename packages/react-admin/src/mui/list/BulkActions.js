@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import MoreVertIcon from 'material-ui-icons/MoreVert';
 import Menu from 'material-ui/Menu';
 import classnames from 'classnames';
-import { translate } from 'react-admin-core';
+import { translate } from 'ra-core';
 
 import Button from '../button/Button';
 import BulkDeleteMenuItem from './BulkDeleteMenuItem';

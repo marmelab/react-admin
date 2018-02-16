@@ -8,7 +8,7 @@ import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import ActionCheck from 'material-ui-icons/CheckCircle';
 import AlertError from 'material-ui-icons/ErrorOutline';
-import { CoreDelete, translate } from 'react-admin-core';
+import { CoreDelete, translate } from 'ra-core';
 
 import Header from '../layout/Header';
 import Title from '../layout/Title';

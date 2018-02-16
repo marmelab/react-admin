@@ -12,7 +12,7 @@ import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
 import DefaultBulkActions from './BulkActions';
 import DefaultActions from './ListActions';
-import { translate, CoreList } from 'react-admin-core';
+import { translate, CoreList } from 'ra-core';
 import defaultTheme from '../defaultTheme';
 
 const styles = {

@@ -10,7 +10,7 @@ import {
     hideNotification as hideNotificationAction,
     getNotification,
     translate,
-} from 'react-admin-core';
+} from 'ra-core';
 
 const styles = theme => {
     const confirm = theme.palette.background.default;

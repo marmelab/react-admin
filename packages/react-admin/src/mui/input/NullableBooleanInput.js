@@ -5,7 +5,7 @@ import { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
-import { addField, translate, FieldTitle } from 'react-admin-core';
+import { addField, translate, FieldTitle } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 

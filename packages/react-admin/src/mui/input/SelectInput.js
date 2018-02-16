@@ -4,7 +4,7 @@ import get from 'lodash.get';
 import TextField from 'material-ui/TextField';
 import { MenuItem } from 'material-ui/Menu';
 import compose from 'recompose/compose';
-import { addField, translate, FieldTitle } from 'react-admin-core';
+import { addField, translate, FieldTitle } from 'ra-core';
 
 const sanitizeRestProps = ({
     addLabel,

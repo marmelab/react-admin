@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-admin-core';
+import { translate } from 'ra-core';
 
 const Title = ({
     className,

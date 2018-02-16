@@ -8,7 +8,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 
-import { showNotification, translate } from 'react-admin-core';
+import { showNotification, translate } from 'ra-core';
 
 const styles = {
     button: {

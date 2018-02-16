@@ -12,7 +12,7 @@ import match from 'autosuggest-highlight/match';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
-import { addField, translate, FieldTitle } from 'react-admin-core';
+import { addField, translate, FieldTitle } from 'ra-core';
 
 const styles = theme => ({
     container: {

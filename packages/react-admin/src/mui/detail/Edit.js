@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card, { CardContent } from 'material-ui/Card';
 import classnames from 'classnames';
-import { CoreEdit } from 'react-admin-core';
+import { CoreEdit } from 'ra-core';
 
 import Header from '../layout/Header';
 import Title from '../layout/Title';

@@ -10,7 +10,7 @@ import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import IconButton from 'material-ui/IconButton';
 
 import Responsive from './Responsive';
-import { setSidebarVisibility } from 'react-admin-core';
+import { setSidebarVisibility } from 'ra-core';
 
 export const DRAWER_WIDTH = 240;
 

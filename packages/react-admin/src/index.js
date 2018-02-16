@@ -1,3 +1,3 @@
-export * from 'react-admin-core';
+export * from 'ra-core';
 export * from './mui';
 export Admin from './Admin';

@@ -11,7 +11,7 @@ import compose from 'recompose/compose';
 import classnames from 'classnames';
 
 import LoadingIndicator from './LoadingIndicator';
-import { toggleSidebar } from 'react-admin-core';
+import { toggleSidebar } from 'ra-core';
 
 const styles = {
     bar: {

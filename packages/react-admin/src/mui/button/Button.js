@@ -5,7 +5,7 @@ import MuiButton from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 
-import { translate } from 'react-admin-core';
+import { translate } from 'ra-core';
 import Responsive from '../layout/Responsive';
 
 const styles = {

@@ -9,7 +9,7 @@ import classnames from 'classnames';
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
 import Responsive from '../layout/Responsive';
-import { getResources, translate } from 'react-admin-core';
+import { getResources, translate } from 'ra-core';
 
 const styles = {
     main: {

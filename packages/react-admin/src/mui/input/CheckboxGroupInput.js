@@ -11,7 +11,7 @@ import {
 import Checkbox from 'material-ui/Checkbox';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
-import { addField, translate, FieldTitle } from 'react-admin-core';
+import { addField, translate, FieldTitle } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 

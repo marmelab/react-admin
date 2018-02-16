@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from '../input/Labeled';
 import ReferenceError from './ReferenceError';
-import { addField, translate, CoreReferenceArrayInput } from 'react-admin-core';
+import { addField, translate, CoreReferenceArrayInput } from 'ra-core';
 
 const sanitizeRestProps = ({
     alwaysOn,

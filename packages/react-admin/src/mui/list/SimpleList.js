@@ -10,7 +10,7 @@ import List, {
 } from 'material-ui/List';
 import { withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';
-import { linkToRecord } from 'react-admin-core';
+import { linkToRecord } from 'ra-core';
 
 const styles = {
     link: {

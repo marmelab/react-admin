@@ -9,7 +9,7 @@ import classnames from 'classnames';
 
 import Responsive from '../layout/Responsive';
 import Link from '../Link';
-import { translate } from 'react-admin-core';
+import { translate } from 'ra-core';
 
 const styles = theme => ({
     floating: {

@@ -8,7 +8,7 @@ import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
 import ContentSort from 'material-ui-icons/Sort';
 
-import { FieldTitle } from 'react-admin-core';
+import { FieldTitle } from 'ra-core';
 
 const styles = {
     cellRightAligned: { textAlign: 'right' },

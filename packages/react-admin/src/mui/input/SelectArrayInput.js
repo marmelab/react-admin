@@ -9,7 +9,7 @@ import { withStyles } from 'material-ui/styles';
 import Chip from 'material-ui/Chip';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
-import { addField, translate, FieldTitle } from 'react-admin-core';
+import { addField, translate, FieldTitle } from 'ra-core';
 
 const sanitizeRestProps = ({
     addLabel,

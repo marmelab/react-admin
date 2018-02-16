@@ -1,4 +1,4 @@
-import { CoreAdminRouter } from 'react-admin-core';
+import { CoreAdminRouter } from 'ra-core';
 import Loading from './mui/layout/Loading';
 
 const AdminRouter = CoreAdminRouter;

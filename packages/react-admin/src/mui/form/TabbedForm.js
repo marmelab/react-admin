@@ -12,7 +12,7 @@ import compose from 'recompose/compose';
 import Divider from 'material-ui/Divider';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import { withStyles } from 'material-ui/styles';
-import { getDefaultValues, translate } from 'react-admin-core';
+import { getDefaultValues, translate } from 'ra-core';
 
 import Toolbar from './Toolbar';
 

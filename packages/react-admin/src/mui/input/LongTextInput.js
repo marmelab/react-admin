@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
-import { addField, FieldTitle } from 'react-admin-core';
+import { addField, FieldTitle } from 'ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 

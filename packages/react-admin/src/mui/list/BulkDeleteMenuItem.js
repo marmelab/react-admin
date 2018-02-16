@@ -6,7 +6,7 @@ import { MenuItem } from 'material-ui/Menu';
 import {
     crudDeleteMany as crudDeleteManyAction,
     translate,
-} from 'react-admin-core';
+} from 'ra-core';
 
 const sanitizeRestProps = ({
     basePath,

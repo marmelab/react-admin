@@ -1,6 +1,6 @@
 import compose from 'recompose/compose';
 import { withStyles } from 'material-ui/styles';
-import { addField, translate } from 'react-admin-core';
+import { addField, translate } from 'ra-core';
 
 import { FileInput } from './FileInput';
 

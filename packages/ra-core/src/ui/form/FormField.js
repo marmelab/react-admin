@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 
-import { initializeForm } from 'react-admin-core';
+import { initializeForm } from 'ra-core';
 import { required } from './validate';
 
 const isRequired = validate => {

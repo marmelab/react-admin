@@ -4,7 +4,7 @@ import get from 'lodash.get';
 import { FormControlLabel, FormHelperText } from 'material-ui/Form';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import compose from 'recompose/compose';
-import { addField, translate } from 'react-admin-core';
+import { addField, translate } from 'ra-core';
 
 import Labeled from './Labeled';
 import sanitizeRestProps from './sanitizeRestProps';

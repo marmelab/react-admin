@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
-import { getDefaultValues, translate } from 'react-admin-core';
+import { getDefaultValues, translate } from 'ra-core';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
 

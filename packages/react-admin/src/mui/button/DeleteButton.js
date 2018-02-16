@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from 'material-ui-icons/Delete';
-import { linkToRecord } from 'react-admin-core';
+import { linkToRecord } from 'ra-core';
 
 import Link from '../Link';
 import Button from './Button';

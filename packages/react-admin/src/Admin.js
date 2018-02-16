@@ -1,4 +1,4 @@
-import { CoreAdmin } from 'react-admin-core';
+import { CoreAdmin } from 'ra-core';
 
 import DefaultLayout from './mui/layout/Layout';
 import Loading from './mui/layout/Loading';

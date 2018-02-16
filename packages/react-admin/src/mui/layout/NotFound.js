@@ -9,7 +9,7 @@ import compose from 'recompose/compose';
 import classnames from 'classnames';
 
 import AppBarMobile from './AppBarMobile';
-import { translate } from 'react-admin-core';
+import { translate } from 'ra-core';
 
 const styles = theme => ({
     container: {
