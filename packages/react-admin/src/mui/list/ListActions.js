@@ -21,15 +21,13 @@ const Actions = ({
 }) => {
     return (
         <CardActions className={className} {...rest}>
-            {selectedIds &&
-                selectedIds.length > 0 &&
-                cloneElement(bulkActions, {
-                    basePath,
-                    filterValues,
-                    resource,
-                    selectedIds,
-                    onUnselectItems,
-                })}
+            {cloneElement(bulkActions, {
+                basePath,
+                filterValues,
+                resource,
+                selectedIds,
+                onUnselectItems,
+            })}
             {filters &&
                 cloneElement(filters, {
                     resource,

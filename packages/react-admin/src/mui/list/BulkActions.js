@@ -1,16 +1,33 @@
 import React, { cloneElement, Children, Component } from 'react';
-
 import PropTypes from 'prop-types';
 import MoreVertIcon from 'material-ui-icons/MoreVert';
 import Menu from 'material-ui/Menu';
+import { withStyles } from 'material-ui/styles';
+import compose from 'recompose/compose';
 import classnames from 'classnames';
 
 import Button from '../button/Button';
 import translate from '../../i18n/translate';
 import BulkDeleteMenuItem from './BulkDeleteMenuItem';
 
+const styles = theme => ({
+    bulkActionsButton: {
+        transition: theme.transitions.create('opacity', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+    },
+    unselected: {
+        opacity: 0,
+    },
+    selected: {
+        opacity: 1,
+    },
+});
+
 const sanitizeRestProps = ({
     basePath,
+    classes,
     filterValues,
     resource,
     onUnselectItems,
@@ -38,6 +55,7 @@ class BulkActions extends Component {
         const {
             basePath,
             children,
+            classes,
             className,
             filterValues,
             label,
@@ -52,7 +70,15 @@ class BulkActions extends Component {
             <div>
                 <Button
                     buttonRef={this.storeButtonRef}
-                    className={classnames('bulk-actions-button', className)}
+                    className={classnames(
+                        'bulk-actions-button',
+                        className,
+                        classes.bulkActionsButton,
+                        {
+                            [classes.selected]: selectedIds.length > 0,
+                            [classes.unselected]: selectedIds.length === 0,
+                        }
+                    )}
                     alignIcon="right"
                     aria-owns={isOpen ? 'bulk-actions-menu' : null}
                     aria-haspopup="true"
@@ -92,20 +118,22 @@ class BulkActions extends Component {
 
 BulkActions.propTypes = {
     basePath: PropTypes.string,
+    classes: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.node,
     filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
     resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
+    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     translate: PropTypes.func.isRequired,
 };
 
 BulkActions.defaultProps = {
     children: <BulkDeleteMenuItem />,
     label: 'ra.action.bulk_actions',
+    selectedIds: [],
 };
 
-const EnhancedButton = translate(BulkActions);
+const enhance = compose(withStyles(styles), translate);
 
-export default EnhancedButton;
+export default enhance(BulkActions);
