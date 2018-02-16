@@ -138,8 +138,7 @@ export const ListView = ({
                     })}
                 {isLoading || total > 0 ? (
                     <div key={version}>
-                        {ids.length > 0 &&
-                            children &&
+                        {children &&
                             React.cloneElement(children, {
                                 basePath,
                                 currentSort,
