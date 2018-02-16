@@ -59,7 +59,7 @@ import {
  *    ...
  * </ReferenceManyField>
  */
-export class CoreReferenceManyField extends Component {
+export class ReferenceManyFieldController extends Component {
     constructor(props) {
         super(props);
         this.state = { sort: props.sort };
@@ -132,7 +132,7 @@ export class CoreReferenceManyField extends Component {
     }
 }
 
-CoreReferenceManyField.propTypes = {
+ReferenceManyFieldController.propTypes = {
     basePath: PropTypes.string.isRequired,
     children: PropTypes.func.isRequired,
     crudGetManyReference: PropTypes.func.isRequired,
@@ -152,7 +152,7 @@ CoreReferenceManyField.propTypes = {
     isLoading: PropTypes.bool,
 };
 
-CoreReferenceManyField.defaultProps = {
+ReferenceManyFieldController.defaultProps = {
     filter: {},
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
@@ -174,8 +174,6 @@ function mapStateToProps(state, props) {
     };
 }
 
-const EnhancedCoreReferenceManyField = connect(mapStateToProps, {
+export default connect(mapStateToProps, {
     crudGetManyReference: crudGetManyReferenceAction,
-})(CoreReferenceManyField);
-
-export default EnhancedCoreReferenceManyField;
+})(ReferenceManyFieldController);

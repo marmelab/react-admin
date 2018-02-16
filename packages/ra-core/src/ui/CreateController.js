@@ -47,7 +47,7 @@ import { crudCreate as crudCreateAction } from '../actions';
  *     );
  *     export default App;
  */
-class CoreCreate extends Component {
+class CreateController extends Component {
     getBasePath() {
         const { location } = this.props;
         return location.pathname
@@ -93,11 +93,12 @@ class CoreCreate extends Component {
             basePath,
             record,
             redirect: this.defaultRedirectRoute(),
+            translate,
         });
     }
 }
 
-CoreCreate.propTypes = {
+CreateController.propTypes = {
     children: PropTypes.func.isRequired,
     crudCreate: PropTypes.func.isRequired,
     hasCreate: PropTypes.bool,
@@ -114,7 +115,7 @@ CoreCreate.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-CoreCreate.defaultProps = {
+CreateController.defaultProps = {
     record: {},
 };
 
@@ -124,9 +125,7 @@ function mapStateToProps(state) {
     };
 }
 
-const EnhancedCoreCreate = compose(
+export default compose(
     connect(mapStateToProps, { crudCreate: crudCreateAction }),
     translate
-);
-
-export default EnhancedCoreCreate(CoreCreate);
+)(CreateController);

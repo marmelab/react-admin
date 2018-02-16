@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card, { CardContent } from 'material-ui/Card';
 import classnames from 'classnames';
-import { CoreEdit } from 'ra-core';
+import { EditController } from 'ra-core';
 
 import Header from '../layout/Header';
 import DefaultActions from './EditActions';
@@ -78,86 +78,73 @@ const sanitizeRestProps = ({
  *     );
  *     export default App;
  */
-const Edit = ({
+const InnerEdit = ({
     actions = <DefaultActions />,
+    basePath,
     children,
     className,
+    defaultTitle,
     hasDelete,
     hasList,
     hasShow,
+    isLoading,
     location,
     match,
+    record,
+    redirect,
     resource,
+    save,
     title,
+    version,
     ...rest
-}) => {
-    if (!children) return null;
-
-    return (
-        <CoreEdit
-            {...{
-                hasDelete,
-                hasList,
-                location,
-                match,
-                resource,
-            }}
-        >
-            {({
-                basePath,
-                defaultTitle,
-                isLoading,
-                record,
-                redirect,
-                save,
-                title,
-                version,
-            }) => (
-                <div
-                    className={classnames('edit-page', className)}
-                    {...sanitizeRestProps(rest)}
-                >
-                    <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                        <Header
-                            title={
-                                <RecordTitle
-                                    title={title}
-                                    record={record}
-                                    defaultTitle={defaultTitle}
-                                />
-                            }
-                            actions={actions}
-                            actionProps={{
-                                basePath,
-                                data: record,
-                                hasDelete,
-                                hasShow,
-                                hasList,
-                                resource,
-                            }}
-                        />
-                        {record ? (
-                            React.cloneElement(children, {
-                                save,
-                                resource,
-                                basePath,
-                                record,
-                                version,
-                                redirect:
-                                    typeof children.props.redirect ===
-                                    'undefined'
-                                        ? redirect
-                                        : children.props.redirect,
-                            })
-                        ) : (
-                            <CardContent>&nbsp;</CardContent>
-                        )}
-                    </Card>
-                </div>
+}) => (
+    <div
+        className={classnames('edit-page', className)}
+        {...sanitizeRestProps(rest)}
+    >
+        <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+            <Header
+                title={
+                    <RecordTitle
+                        title={title}
+                        record={record}
+                        defaultTitle={defaultTitle}
+                    />
+                }
+                actions={actions}
+                actionProps={{
+                    basePath,
+                    data: record,
+                    hasDelete,
+                    hasShow,
+                    hasList,
+                    resource,
+                }}
+            />
+            {record ? (
+                React.cloneElement(children, {
+                    save,
+                    resource,
+                    basePath,
+                    record,
+                    version,
+                    redirect:
+                        typeof children.props.redirect === 'undefined'
+                            ? redirect
+                            : children.props.redirect,
+                })
+            ) : (
+                <CardContent>&nbsp;</CardContent>
             )}
-        </CoreEdit>
-    );
-};
+        </Card>
+    </div>
+);
+
+const Edit = props => (
+    <EditController {...props}>
+        {controllerProps => <InnerEdit {...props} {...controllerProps} />}
+    </EditController>
+);
 
 Edit.propTypes = {
     actions: PropTypes.element,

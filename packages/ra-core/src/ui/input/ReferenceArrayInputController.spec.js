@@ -1,9 +1,9 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { CoreReferenceArrayInput } from './CoreReferenceArrayInput';
+import { ReferenceArrayInputController } from './ReferenceArrayInputController';
 
-describe('<CoreReferenceArrayInput />', () => {
+describe('<ReferenceArrayInputController />', () => {
     const defaultProps = {
         children: jest.fn(),
         crudGetMatching: () => true,
@@ -21,7 +21,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should set isLoading to true as long as there are no references fetched and no selected references', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: null,
@@ -29,7 +29,7 @@ describe('<CoreReferenceArrayInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceArrayInput>
+            </ReferenceArrayInputController>
         );
 
         assert.equal(children.mock.calls[0][0].isLoading, true);
@@ -38,7 +38,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should set isLoading to true as long as there are no references fetched and there are no data found for the references already selected', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: null,
@@ -47,7 +47,7 @@ describe('<CoreReferenceArrayInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceArrayInput>
+            </ReferenceArrayInputController>
         );
         assert.equal(children.mock.calls[0][0].isLoading, true);
     });
@@ -55,7 +55,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should set isLoading to false if the references are being searched but data from at least one selected reference was found', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: null,
@@ -64,7 +64,7 @@ describe('<CoreReferenceArrayInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceArrayInput>
+            </ReferenceArrayInputController>
         );
         assert.equal(children.mock.calls[0][0].isLoading, false);
         assert.deepEqual(children.mock.calls[0][0].choices, [{ id: 1 }]);
@@ -73,7 +73,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should set error in case of references fetch error and there are no selected reference in the input value', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: { error: 'fetch error' },
@@ -82,7 +82,7 @@ describe('<CoreReferenceArrayInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceArrayInput>
+            </ReferenceArrayInputController>
         );
         assert.equal(
             children.mock.calls[0][0].error,
@@ -93,7 +93,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should set error in case of references fetch error and there are no data found for the references already selected', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: { error: 'fetch error' },
@@ -102,7 +102,7 @@ describe('<CoreReferenceArrayInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceArrayInput>
+            </ReferenceArrayInputController>
         );
         assert.equal(
             children.mock.calls[0][0].error,
@@ -113,7 +113,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should not display an error in case of references fetch error but data from at least one selected reference was found', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: { error: 'fetch error' },
@@ -122,7 +122,7 @@ describe('<CoreReferenceArrayInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceArrayInput>
+            </ReferenceArrayInputController>
         );
         assert.equal(children.mock.calls[0][0].error, undefined);
         assert.deepEqual(children.mock.calls[0][0].choices, [{ id: 2 }]);
@@ -131,7 +131,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should set warning if references fetch fails but selected references are not empty', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: { error: 'fetch error' },
@@ -140,7 +140,7 @@ describe('<CoreReferenceArrayInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceArrayInput>
+            </ReferenceArrayInputController>
         );
         assert.equal(children.mock.calls[0][0].warning, '*fetch error*');
     });
@@ -148,7 +148,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should set warning if references were found but selected references are not complete', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: [],
@@ -157,7 +157,7 @@ describe('<CoreReferenceArrayInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceArrayInput>
+            </ReferenceArrayInputController>
         );
         assert.equal(
             children.mock.calls[0][0].warning,
@@ -168,7 +168,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should set warning if references were found but selected references are empty', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: [],
@@ -177,7 +177,7 @@ describe('<CoreReferenceArrayInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceArrayInput>
+            </ReferenceArrayInputController>
         );
         assert.equal(
             children.mock.calls[0][0].warning,
@@ -188,7 +188,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should not set warning if all references were found', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: [],
@@ -197,7 +197,7 @@ describe('<CoreReferenceArrayInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceArrayInput>
+            </ReferenceArrayInputController>
         );
         assert.equal(children.mock.calls[0][0].warning, undefined);
     });
@@ -206,13 +206,13 @@ describe('<CoreReferenceArrayInput />', () => {
         const onChange = jest.fn();
         const children = jest.fn();
         shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...defaultProps}
                 allowEmpty
                 onChange={onChange}
             >
                 {children}
-            </CoreReferenceArrayInput>
+            </ReferenceArrayInputController>
         );
         assert.equal(children.mock.calls[0][0].onChange, onChange);
     });
@@ -220,7 +220,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should call crudGetMatching on mount with default fetch values', () => {
         const crudGetMatching = jest.fn();
         shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...defaultProps}
                 allowEmpty
                 crudGetMatching={crudGetMatching}
@@ -244,7 +244,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should allow to customize crudGetMatching arguments with perPage, sort, and filter props', () => {
         const crudGetMatching = jest.fn();
         shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...defaultProps}
                 allowEmpty
                 crudGetMatching={crudGetMatching}
@@ -273,7 +273,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should call crudGetMatching when setFilter is called', () => {
         const crudGetMatching = jest.fn();
         const wrapper = shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...defaultProps}
                 allowEmpty
                 crudGetMatching={crudGetMatching}
@@ -300,7 +300,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should use custom filterToQuery function prop', () => {
         const crudGetMatching = jest.fn();
         const wrapper = shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...defaultProps}
                 allowEmpty
                 crudGetMatching={crudGetMatching}
@@ -328,7 +328,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should call crudGetMany on mount if value is set', () => {
         const crudGetMany = jest.fn();
         shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...defaultProps}
                 allowEmpty
                 crudGetMany={crudGetMany}
@@ -342,7 +342,7 @@ describe('<CoreReferenceArrayInput />', () => {
         const crudGetMatching = jest.fn();
         const crudGetMany = jest.fn();
         const wrapper = shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...defaultProps}
                 input={{ value: [5] }}
                 crudGetMany={crudGetMany}
@@ -360,7 +360,7 @@ describe('<CoreReferenceArrayInput />', () => {
     it('should call crudGetMany when input value changes', () => {
         const crudGetMany = jest.fn();
         const wrapper = shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...defaultProps}
                 input={{ value: [5] }}
                 allowEmpty
@@ -376,7 +376,7 @@ describe('<CoreReferenceArrayInput />', () => {
         const crudGetMany = jest.fn();
         const crudGetMatching = jest.fn();
         const wrapper = shallow(
-            <CoreReferenceArrayInput
+            <ReferenceArrayInputController
                 {...defaultProps}
                 allowEmpty
                 input={{ value: [5] }}

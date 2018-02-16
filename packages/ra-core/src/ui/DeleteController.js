@@ -48,7 +48,7 @@ import { crudGetOne, crudDelete } from '../actions';
  *         </Admin>
  *     );
  */
-export class CoreDelete extends Component {
+export class DeleteController extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -126,15 +126,16 @@ export class CoreDelete extends Component {
         return children({
             basePath,
             defaultTitle,
+            goBack: this.goBack,
             handleSubmit: this.handleSubmit,
             isLoading,
             record,
-            goBack: this.goBack,
+            translate,
         });
     }
 }
 
-CoreDelete.propTypes = {
+DeleteController.propTypes = {
     children: PropTypes.func.isRequired,
     crudDelete: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,
@@ -166,9 +167,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-const EnhancedCoreDelete = compose(
+export default compose(
     connect(mapStateToProps, { crudGetOne, crudDelete }),
     translate
-);
-
-export default EnhancedCoreDelete(CoreDelete);
+)(DeleteController);

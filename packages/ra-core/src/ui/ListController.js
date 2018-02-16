@@ -65,7 +65,7 @@ import removeKey from '../util/removeKey';
  *         </List>
  *     );
  */
-export class CoreList extends Component {
+export class ListController extends Component {
     state = {};
 
     componentDidMount() {
@@ -261,13 +261,14 @@ export class CoreList extends Component {
             setPage: this.setPage,
             setSort: this.setSort,
             showFilter: this.showFilter,
+            translate,
             total,
             version,
         });
     }
 }
 
-CoreList.propTypes = {
+ListController.propTypes = {
     // the props you can change
     children: PropTypes.func.isRequired,
     filter: PropTypes.object,
@@ -305,7 +306,7 @@ CoreList.propTypes = {
     version: PropTypes.number,
 };
 
-CoreList.defaultProps = {
+ListController.defaultProps = {
     filter: {},
     filterValues: {},
     perPage: 10,
@@ -353,7 +354,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-const EnhancedCoreList = compose(
+export default compose(
     connect(mapStateToProps, {
         crudGetList: crudGetListAction,
         changeListParams: changeListParamsAction,
@@ -362,6 +363,4 @@ const EnhancedCoreList = compose(
         push: pushAction,
     }),
     translate
-);
-
-export default EnhancedCoreList(CoreList);
+)(ListController);

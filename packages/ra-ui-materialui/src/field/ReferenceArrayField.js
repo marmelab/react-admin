@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { LinearProgress } from 'material-ui/Progress';
 import { withStyles } from 'material-ui/styles';
-import { CoreReferenceArrayField } from 'ra-core';
+import { ReferenceArrayFieldController } from 'ra-core';
 
 const styles = {
     progress: { marginTop: '1em' },
 };
 
-export const InnerReferenceArrayField = ({
+export const ReferenceArrayFieldView = ({
     children,
     className,
     classes = {},
@@ -65,16 +65,7 @@ export const InnerReferenceArrayField = ({
  * </ReferenceArrayField>
  *
  */
-export const ReferenceArrayField = ({
-    basePath,
-    children,
-    classes = {},
-    className,
-    record,
-    resource,
-    reference,
-    source,
-}) => {
+export const ReferenceArrayField = ({ children, ...props }) => {
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
@@ -82,24 +73,14 @@ export const ReferenceArrayField = ({
     }
 
     return (
-        <CoreReferenceArrayField
-            {...{ basePath, record, reference, resource, source }}
-        >
-            {({ data, ids, isLoading, referenceBasePath }) => (
-                <InnerReferenceArrayField
-                    {...{
-                        children,
-                        className,
-                        classes,
-                        data,
-                        ids,
-                        isLoading,
-                        reference,
-                        referenceBasePath,
-                    }}
+        <ReferenceArrayFieldController {...props}>
+            {controllerProps => (
+                <ReferenceArrayFieldView
+                    {...props}
+                    {...{ children, ...controllerProps }}
                 />
             )}
-        </CoreReferenceArrayField>
+        </ReferenceArrayFieldController>
     );
 };
 

@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from '../input/Labeled';
 import ReferenceError from './ReferenceError';
-import { addField, translate, CoreReferenceArrayInput } from 'ra-core';
+import { addField, translate, ReferenceArrayInputController } from 'ra-core';
 
 const sanitizeRestProps = ({
     alwaysOn,
@@ -32,7 +32,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const InnerReferenceArrayInput = ({
+export const ReferenceArrayInputView = ({
     allowEmpty,
     basePath,
     children,
@@ -179,26 +179,7 @@ export const InnerReferenceArrayInput = ({
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-export const ReferenceArrayInput = ({
-    allowEmpty,
-    basePath,
-    children,
-    className,
-    filter,
-    filterToQuery,
-    input,
-    label,
-    meta,
-    options,
-    perPage,
-    record,
-    reference,
-    resource,
-    sort,
-    source,
-    translate,
-    ...rest
-}) => {
+export const ReferenceArrayInput = ({ children, ...props }) => {
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayInput> only accepts a single child (like <Datagrid>)'
@@ -206,57 +187,14 @@ export const ReferenceArrayInput = ({
     }
 
     return (
-        <CoreReferenceArrayInput
-            {...{
-                allowEmpty,
-                basePath,
-                filter,
-                filterToQuery,
-                input,
-                perPage,
-                record,
-                reference,
-                resource,
-                sort,
-                source,
-            }}
-        >
-            {({
-                choices,
-                error,
-                isLoading,
-                onChange,
-                setFilter,
-                setPagination,
-                setSort,
-                warning,
-            }) => (
-                <InnerReferenceArrayInput
-                    {...{
-                        allowEmpty,
-                        basePath,
-                        children,
-                        choices,
-                        className,
-                        error,
-                        input,
-                        isLoading,
-                        label,
-                        meta,
-                        onChange,
-                        options,
-                        resource,
-                        setFilter,
-                        setPagination,
-                        setSort,
-                        source,
-                        translate,
-                        warning,
-                        ...rest,
-                    }}
+        <ReferenceArrayInputController {...props}>
+            {controllerProps => (
+                <ReferenceArrayInputView
+                    {...props}
+                    {...{ children, ...controllerProps }}
                 />
             )}
-        </CoreReferenceArrayInput>
+        </ReferenceArrayInputController>
     );
 };
 

@@ -2,7 +2,7 @@ import assert from 'assert';
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { InnerList } from './List';
+import { ListView } from './List';
 
 describe('<List />', () => {
     const defaultProps = {
@@ -23,7 +23,7 @@ describe('<List />', () => {
 
     it('should display a no results text when there is no result', () => {
         const wrapper = shallow(
-            <InnerList
+            <ListView
                 {...defaultProps}
                 translate={x => x}
                 total={0}
@@ -31,7 +31,7 @@ describe('<List />', () => {
                 changeListParams={() => true}
             >
                 <div />
-            </InnerList>
+            </ListView>
         );
         const textElement = wrapper
             .find('WithStyles(CardContent)')
@@ -42,7 +42,7 @@ describe('<List />', () => {
 
     it('should not display a no results text when there are results', () => {
         const wrapper = shallow(
-            <InnerList
+            <ListView
                 {...defaultProps}
                 translate={x => x}
                 total={1}
@@ -51,7 +51,7 @@ describe('<List />', () => {
                 changeListParams={() => true}
             >
                 <div />
-            </InnerList>
+            </ListView>
         );
         const textElement = wrapper.find('CardText');
         assert.equal(textElement.length, 0);
@@ -59,7 +59,7 @@ describe('<List />', () => {
 
     it('should display a no more results text on an empty paginated page', () => {
         const wrapper = shallow(
-            <InnerList
+            <ListView
                 {...defaultProps}
                 translate={x => x}
                 total={10}
@@ -70,7 +70,7 @@ describe('<List />', () => {
                 changeListParams={() => true}
             >
                 <div />
-            </InnerList>
+            </ListView>
         );
         const textElement = wrapper.find('WithStyles(Typography)').children();
         assert.equal(textElement.text(), 'ra.navigation.no_more_results');

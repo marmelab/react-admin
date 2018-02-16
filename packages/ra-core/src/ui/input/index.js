@@ -1,2 +1,2 @@
-export CoreReferenceArrayInput from './CoreReferenceArrayInput';
-export CoreReferenceInput from './CoreReferenceInput';
+export ReferenceArrayInputController from './ReferenceArrayInputController';
+export ReferenceInputController from './ReferenceInputController';

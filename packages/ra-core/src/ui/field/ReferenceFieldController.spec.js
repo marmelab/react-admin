@@ -2,13 +2,13 @@ import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
 
-import { CoreReferenceField } from './CoreReferenceField';
+import { ReferenceFieldController } from './ReferenceFieldController';
 
-describe('<CoreReferenceField />', () => {
+describe('<ReferenceFieldController />', () => {
     it('should call crudGetManyAccumulate on componentDidMount if reference source is defined', () => {
         const crudGetManyAccumulate = jest.fn();
         shallow(
-            <CoreReferenceField
+            <ReferenceFieldController
                 children={jest.fn()} // eslint-disable-line react/no-children-prop
                 record={{ postId: 123 }}
                 source="postId"
@@ -23,7 +23,7 @@ describe('<CoreReferenceField />', () => {
     it('should not call crudGetManyAccumulate on componentDidMount if reference source is null or undefined', () => {
         const crudGetManyAccumulate = jest.fn();
         shallow(
-            <CoreReferenceField
+            <ReferenceFieldController
                 children={jest.fn()} // eslint-disable-line react/no-children-prop
                 record={{ postId: null }}
                 source="postId"
@@ -38,7 +38,7 @@ describe('<CoreReferenceField />', () => {
     it('should render a link to the Edit page of the related record by default', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceField
+            <ReferenceFieldController
                 record={{ postId: 123 }}
                 source="postId"
                 referenceRecord={{ id: 123, title: 'foo' }}
@@ -48,14 +48,14 @@ describe('<CoreReferenceField />', () => {
                 crudGetManyAccumulate={() => {}}
             >
                 {children}
-            </CoreReferenceField>
+            </ReferenceFieldController>
         );
         assert.equal(children.mock.calls[0][0].resourceLinkPath, '/posts/123');
     });
     it('should render a link to the Edit page of the related record when the resource contains slashes', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceField
+            <ReferenceFieldController
                 record={{ postId: 123 }}
                 source="postId"
                 referenceRecord={{ id: 123, title: 'foo' }}
@@ -65,7 +65,7 @@ describe('<CoreReferenceField />', () => {
                 crudGetManyAccumulate={() => {}}
             >
                 {children}
-            </CoreReferenceField>
+            </ReferenceFieldController>
         );
         assert.equal(
             children.mock.calls[0][0].resourceLinkPath,
@@ -75,7 +75,7 @@ describe('<CoreReferenceField />', () => {
     it('should render a link to the Edit page of the related record when the resource is named edit or show', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceField
+            <ReferenceFieldController
                 record={{ fooId: 123 }}
                 source="fooId"
                 referenceRecord={{ id: 123, title: 'foo' }}
@@ -85,12 +85,12 @@ describe('<CoreReferenceField />', () => {
                 crudGetManyAccumulate={() => {}}
             >
                 {children}
-            </CoreReferenceField>
+            </ReferenceFieldController>
         );
         assert.equal(children.mock.calls[0][0].resourceLinkPath, '/edit/123');
 
         shallow(
-            <CoreReferenceField
+            <ReferenceFieldController
                 record={{ fooId: 123 }}
                 source="fooId"
                 referenceRecord={{ id: 123, title: 'foo' }}
@@ -100,14 +100,14 @@ describe('<CoreReferenceField />', () => {
                 crudGetManyAccumulate={() => {}}
             >
                 {children}
-            </CoreReferenceField>
+            </ReferenceFieldController>
         );
         assert.equal(children.mock.calls[1][0].resourceLinkPath, '/show/123');
     });
     it('should render a link to the Show page of the related record when the linkType is show', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceField
+            <ReferenceFieldController
                 record={{ postId: 123 }}
                 source="postId"
                 referenceRecord={{ id: 123, title: 'foo' }}
@@ -118,7 +118,7 @@ describe('<CoreReferenceField />', () => {
                 crudGetManyAccumulate={() => {}}
             >
                 {children}
-            </CoreReferenceField>
+            </ReferenceFieldController>
         );
         assert.equal(
             children.mock.calls[0][0].resourceLinkPath,
@@ -128,7 +128,7 @@ describe('<CoreReferenceField />', () => {
     it('should render a link to the Show page of the related record when the resource is named edit or show and linkType is show', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceField
+            <ReferenceFieldController
                 record={{ fooId: 123 }}
                 source="fooId"
                 referenceRecord={{ id: 123, title: 'foo' }}
@@ -139,7 +139,7 @@ describe('<CoreReferenceField />', () => {
                 crudGetManyAccumulate={() => {}}
             >
                 {children}
-            </CoreReferenceField>
+            </ReferenceFieldController>
         );
         assert.equal(
             children.mock.calls[0][0].resourceLinkPath,
@@ -147,7 +147,7 @@ describe('<CoreReferenceField />', () => {
         );
 
         shallow(
-            <CoreReferenceField
+            <ReferenceFieldController
                 record={{ fooId: 123 }}
                 source="fooId"
                 referenceRecord={{ id: 123, title: 'foo' }}
@@ -158,7 +158,7 @@ describe('<CoreReferenceField />', () => {
                 crudGetManyAccumulate={() => {}}
             >
                 {children}
-            </CoreReferenceField>
+            </ReferenceFieldController>
         );
 
         assert.equal(
@@ -169,7 +169,7 @@ describe('<CoreReferenceField />', () => {
     it('should render no link when the linkType is false', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceField
+            <ReferenceFieldController
                 record={{ fooId: 123 }}
                 source="fooId"
                 referenceRecord={{ id: 123, title: 'foo' }}
@@ -179,7 +179,7 @@ describe('<CoreReferenceField />', () => {
                 crudGetManyAccumulate={() => {}}
             >
                 {children}
-            </CoreReferenceField>
+            </ReferenceFieldController>
         );
         assert.equal(children.mock.calls[0][0].resourceLinkPath, false);
     });

@@ -1,14 +1,14 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { CoreReferenceArrayField } from './CoreReferenceArrayField';
+import { ReferenceArrayFieldController } from './ReferenceArrayFieldController';
 
-describe('<CoreReferenceArrayField />', () => {
+describe('<ReferenceArrayFieldController />', () => {
     it('should set the isLoading prop to true when related records are not yet fetched', () => {
         const children = jest.fn();
 
         shallow(
-            <CoreReferenceArrayField
+            <ReferenceArrayFieldController
                 record={{ barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
@@ -19,7 +19,7 @@ describe('<CoreReferenceArrayField />', () => {
                 crudGetManyAccumulate={() => {}}
             >
                 {children}
-            </CoreReferenceArrayField>
+            </ReferenceArrayFieldController>
         );
         assert.equal(children.mock.calls[0][0].isLoading, true);
     });
@@ -31,7 +31,7 @@ describe('<CoreReferenceArrayField />', () => {
             2: { id: 2, title: 'world' },
         };
         shallow(
-            <CoreReferenceArrayField
+            <ReferenceArrayFieldController
                 record={{ barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
@@ -42,7 +42,7 @@ describe('<CoreReferenceArrayField />', () => {
                 crudGetManyAccumulate={() => {}}
             >
                 {children}
-            </CoreReferenceArrayField>
+            </ReferenceArrayFieldController>
         );
         assert.equal(children.mock.calls[0][0].isLoading, false);
         assert.deepEqual(children.mock.calls[0][0].data, data);
@@ -56,7 +56,7 @@ describe('<CoreReferenceArrayField />', () => {
             'abc-2': { id: 'abc-2', title: 'world' },
         };
         shallow(
-            <CoreReferenceArrayField
+            <ReferenceArrayFieldController
                 record={{ barIds: ['abc-1', 'abc-2'] }}
                 resource="foo"
                 reference="bar"
@@ -67,7 +67,7 @@ describe('<CoreReferenceArrayField />', () => {
                 crudGetManyAccumulate={() => {}}
             >
                 {children}
-            </CoreReferenceArrayField>
+            </ReferenceArrayFieldController>
         );
         assert.equal(children.mock.calls[0][0].isLoading, false);
         assert.deepEqual(children.mock.calls[0][0].data, data);
@@ -81,7 +81,7 @@ describe('<CoreReferenceArrayField />', () => {
             2: { id: 2, title: 'world' },
         };
         shallow(
-            <CoreReferenceArrayField
+            <ReferenceArrayFieldController
                 record={{ barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
@@ -92,7 +92,7 @@ describe('<CoreReferenceArrayField />', () => {
                 crudGetManyAccumulate={() => {}}
             >
                 {children}
-            </CoreReferenceArrayField>
+            </ReferenceArrayFieldController>
         );
         assert.equal(children.mock.calls[0][0].isLoading, false);
         assert.deepEqual(children.mock.calls[0][0].data, data);

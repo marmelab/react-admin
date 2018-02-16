@@ -95,7 +95,7 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  */
-export class CoreReferenceInput extends Component {
+export class ReferenceInputController extends Component {
     constructor(props) {
         super(props);
         const { perPage, sort, filter } = props;
@@ -200,7 +200,7 @@ export class CoreReferenceInput extends Component {
     }
 }
 
-CoreReferenceInput.propTypes = {
+ReferenceInputController.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string,
     children: PropTypes.func.isRequired,
@@ -230,7 +230,7 @@ CoreReferenceInput.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-CoreReferenceInput.defaultProps = {
+ReferenceInputController.defaultProps = {
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
@@ -258,16 +258,16 @@ const makeMapStateToProps = () =>
         })
     );
 
-const EnhancedCoreReferenceInput = compose(
+const EnhancedReferenceInputController = compose(
     translate,
     connect(makeMapStateToProps(), {
         crudGetOne,
         crudGetMatching,
     })
-)(CoreReferenceInput);
+)(ReferenceInputController);
 
-EnhancedCoreReferenceInput.defaultProps = {
-    referenceSource, // used in real apps
+EnhancedReferenceInputController.defaultProps = {
+    referenceSource, // used in makeMapStateToProps
 };
 
-export default EnhancedCoreReferenceInput;
+export default EnhancedReferenceInputController;

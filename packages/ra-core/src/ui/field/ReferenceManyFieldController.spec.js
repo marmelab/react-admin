@@ -1,13 +1,13 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { CoreReferenceManyField } from './CoreReferenceManyField';
+import { ReferenceManyFieldController } from './ReferenceManyFieldController';
 
-describe('<CoreReferenceManyField />', () => {
+describe('<ReferenceManyFieldController />', () => {
     it('should set isLoading to true when related records are not yet fetched', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceManyField
+            <ReferenceManyFieldController
                 resource="foo"
                 reference="bar"
                 target="foo_id"
@@ -15,7 +15,7 @@ describe('<CoreReferenceManyField />', () => {
                 crudGetManyReference={() => {}}
             >
                 {children}
-            </CoreReferenceManyField>,
+            </ReferenceManyFieldController>,
             { disableLifecycleMethods: true }
         );
         assert.equal(children.mock.calls[0][0].isLoading, true);
@@ -28,7 +28,7 @@ describe('<CoreReferenceManyField />', () => {
             2: { id: 2, title: 'world' },
         };
         shallow(
-            <CoreReferenceManyField
+            <ReferenceManyFieldController
                 resource="foo"
                 reference="bar"
                 target="foo_id"
@@ -38,7 +38,7 @@ describe('<CoreReferenceManyField />', () => {
                 crudGetManyReference={() => {}}
             >
                 {children}
-            </CoreReferenceManyField>,
+            </ReferenceManyFieldController>,
             { disableLifecycleMethods: true }
         );
         assert.deepEqual(children.mock.calls[0][0].data, data);
@@ -52,7 +52,7 @@ describe('<CoreReferenceManyField />', () => {
             'abc-2': { id: 'abc-2', title: 'world' },
         };
         shallow(
-            <CoreReferenceManyField
+            <ReferenceManyFieldController
                 resource="foo"
                 reference="bar"
                 target="foo_id"
@@ -62,7 +62,7 @@ describe('<CoreReferenceManyField />', () => {
                 crudGetManyReference={() => {}}
             >
                 {children}
-            </CoreReferenceManyField>,
+            </ReferenceManyFieldController>,
             { disableLifecycleMethods: true }
         );
         assert.deepEqual(children.mock.calls[0][0].data, data);
@@ -76,7 +76,7 @@ describe('<CoreReferenceManyField />', () => {
             2: { id: 2, title: 'world' },
         };
         shallow(
-            <CoreReferenceManyField
+            <ReferenceManyFieldController
                 resource="foo"
                 reference="bar"
                 target="foo_id"
@@ -86,7 +86,7 @@ describe('<CoreReferenceManyField />', () => {
                 crudGetManyReference={() => {}}
             >
                 {children}
-            </CoreReferenceManyField>,
+            </ReferenceManyFieldController>,
             { disableLifecycleMethods: true }
         );
         assert.deepEqual(children.mock.calls[0][0].data, data);
@@ -98,7 +98,7 @@ describe('<CoreReferenceManyField />', () => {
         const crudGetManyReference = jest.fn(() => {});
 
         shallow(
-            <CoreReferenceManyField
+            <ReferenceManyFieldController
                 resource="posts"
                 reference="comments"
                 target="post_id"
@@ -108,7 +108,7 @@ describe('<CoreReferenceManyField />', () => {
                 crudGetManyReference={crudGetManyReference}
             >
                 {children}
-            </CoreReferenceManyField>
+            </ReferenceManyFieldController>
         );
 
         assert.equal(crudGetManyReference.mock.calls[0][2], 1);

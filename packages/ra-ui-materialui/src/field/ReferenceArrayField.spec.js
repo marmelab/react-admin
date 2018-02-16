@@ -1,14 +1,14 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { InnerReferenceArrayField } from './ReferenceArrayField';
+import { ReferenceArrayFieldView } from './ReferenceArrayField';
 import TextField from './TextField';
 import SingleFieldList from '../list/SingleFieldList';
 
-describe('<InnerReferenceArrayField />', () => {
+describe('<ReferenceArrayField />', () => {
     it('should render a loading indicator when related records are not yet fetched', () => {
         const wrapper = shallow(
-            <InnerReferenceArrayField
+            <ReferenceArrayFieldView
                 record={{ barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
@@ -21,7 +21,7 @@ describe('<InnerReferenceArrayField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </InnerReferenceArrayField>
+            </ReferenceArrayFieldView>
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 1);
@@ -35,7 +35,7 @@ describe('<InnerReferenceArrayField />', () => {
             2: { id: 2, title: 'world' },
         };
         const wrapper = shallow(
-            <InnerReferenceArrayField
+            <ReferenceArrayFieldView
                 record={{ barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
@@ -47,7 +47,7 @@ describe('<InnerReferenceArrayField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </InnerReferenceArrayField>
+            </ReferenceArrayFieldView>
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
@@ -62,7 +62,7 @@ describe('<InnerReferenceArrayField />', () => {
 
     it('should render nothing when there are no related records', () => {
         const wrapper = shallow(
-            <InnerReferenceArrayField
+            <ReferenceArrayFieldView
                 record={{ barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
@@ -74,7 +74,7 @@ describe('<InnerReferenceArrayField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </InnerReferenceArrayField>
+            </ReferenceArrayFieldView>
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
@@ -93,7 +93,7 @@ describe('<InnerReferenceArrayField />', () => {
             'abc-2': { id: 'abc-2', title: 'world' },
         };
         const wrapper = shallow(
-            <InnerReferenceArrayField
+            <ReferenceArrayFieldView
                 record={{ barIds: ['abc-1', 'abc-2'] }}
                 resource="foo"
                 reference="bar"
@@ -105,7 +105,7 @@ describe('<InnerReferenceArrayField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </InnerReferenceArrayField>
+            </ReferenceArrayFieldView>
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
@@ -127,7 +127,7 @@ describe('<InnerReferenceArrayField />', () => {
             2: { id: 2, title: 'world' },
         };
         const wrapper = shallow(
-            <InnerReferenceArrayField
+            <ReferenceArrayFieldView
                 record={{ barIds: [1, 2] }}
                 resource="foo"
                 reference="bar"
@@ -139,7 +139,7 @@ describe('<InnerReferenceArrayField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </InnerReferenceArrayField>
+            </ReferenceArrayFieldView>
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);
@@ -158,7 +158,7 @@ describe('<InnerReferenceArrayField />', () => {
             2: { id: 2, title: 'world' },
         };
         const wrapper = shallow(
-            <InnerReferenceArrayField
+            <ReferenceArrayFieldView
                 record={{ barIds: [1, 2] }}
                 className="myClass"
                 resource="foo"
@@ -171,7 +171,7 @@ describe('<InnerReferenceArrayField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </InnerReferenceArrayField>
+            </ReferenceArrayFieldView>
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
         assert.equal(ProgressElements.length, 0);

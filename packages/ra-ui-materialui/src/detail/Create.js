@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
 import classnames from 'classnames';
-import { CoreCreate } from 'ra-core';
+import { CreateController } from 'ra-core';
 
 import Header from '../layout/Header';
-import Title from '../layout/Title';
 import DefaultActions from './CreateActions';
+import RecordTitle from '../layout/RecordTitle';
 
 const sanitizeRestProps = ({
     actions,
@@ -72,80 +72,63 @@ const sanitizeRestProps = ({
  *     export default App;
  */
 
-const Create = ({
+const InnerCreate = ({
     actions = <DefaultActions />,
+    basePath,
     children,
     className,
+    defaultTitle,
     hasDelete,
     hasList,
     hasShow,
+    isLoading,
     match,
+    record = {},
+    redirect,
     resource,
+    save,
     title,
     ...rest
-}) => {
-    if (!children) return null;
-
-    return (
-        <CoreCreate
-            {...{
-                hasDelete,
-                hasList,
-                location,
-                match,
-                resource,
-            }}
-        >
-            {({
-                basePath,
-                defaultTitle,
-                isLoading,
-                record,
-                redirect,
-                save,
-                title,
-            }) => {
-                const titleElement = (
-                    <Title
+}) => (
+    <div
+        className={classnames('create-page', className)}
+        {...sanitizeRestProps(rest)}
+    >
+        <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+            <Header
+                title={
+                    <RecordTitle
                         title={title}
                         record={record}
                         defaultTitle={defaultTitle}
                     />
-                );
+                }
+                actions={actions}
+                actionProps={{
+                    basePath,
+                    resource,
+                    hasList,
+                }}
+            />
+            {React.cloneElement(children, {
+                save,
+                resource,
+                basePath,
+                record,
+                redirect:
+                    typeof children.props.redirect === 'undefined'
+                        ? redirect
+                        : children.props.redirect,
+            })}
+        </Card>
+    </div>
+);
 
-                return (
-                    <div
-                        className={classnames('create-page', className)}
-                        {...sanitizeRestProps(rest)}
-                    >
-                        <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                            <Header
-                                title={titleElement}
-                                actions={actions}
-                                actionProps={{
-                                    basePath,
-                                    resource,
-                                    hasList,
-                                }}
-                            />
-                            {React.cloneElement(children, {
-                                save,
-                                resource,
-                                basePath,
-                                record,
-                                redirect:
-                                    typeof children.props.redirect ===
-                                    'undefined'
-                                        ? redirect
-                                        : children.props.redirect,
-                            })}
-                        </Card>
-                    </div>
-                );
-            }}
-        </CoreCreate>
-    );
-};
+const Create = props => (
+    <CreateController {...props}>
+        {controllerProps => <InnerCreate {...props} {...controllerProps} />}
+    </CreateController>
+);
 
 Create.propTypes = {
     actions: PropTypes.element,
@@ -161,10 +144,6 @@ Create.propTypes = {
     title: PropTypes.any,
     record: PropTypes.object,
     hasList: PropTypes.bool,
-};
-
-Create.defaultProps = {
-    record: {},
 };
 
 export default Create;

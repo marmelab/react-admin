@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
-import { addField, translate, CoreReferenceInput } from 'ra-core';
+import { addField, translate, ReferenceInputController } from 'ra-core';
 
 const sanitizeRestProps = ({
     allowEmpty,
@@ -46,7 +46,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const InnerReferenceInput = ({
+export const ReferenceInputView = ({
     basePath,
     allowEmpty,
     children,
@@ -190,85 +190,20 @@ export const InnerReferenceInput = ({
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  */
-export const ReferenceInput = ({
-    basePath,
-    allowEmpty,
-    children,
-    classes,
-    className,
-    filter,
-    input,
-    label,
-    matchingReferences,
-    meta,
-    perPage,
-    onChange,
-    options,
-    record,
-    reference,
-    referenceRecord,
-    resource,
-    sort,
-    source,
-    translate,
-    ...rest
-}) => {
+export const ReferenceInput = ({ children, ...props }) => {
     if (React.Children.count(children) !== 1) {
         throw new Error('<ReferenceInput> only accepts a single child');
     }
 
     return (
-        <CoreReferenceInput
-            {...{
-                allowEmpty,
-                basePath,
-                filter,
-                input,
-                perPage,
-                record,
-                reference,
-                resource,
-                sort,
-                source,
-            }}
-        >
-            {({
-                choices,
-                error,
-                label,
-                isLoading,
-                setFilter,
-                setPagination,
-                setSort,
-                warning,
-            }) => (
-                <InnerReferenceInput
-                    {...{
-                        basePath,
-                        allowEmpty,
-                        children,
-                        choices,
-                        classes,
-                        className,
-                        error,
-                        input,
-                        label,
-                        isLoading,
-                        meta,
-                        onChange,
-                        options,
-                        resource,
-                        setFilter,
-                        setPagination,
-                        setSort,
-                        source,
-                        translate,
-                        warning,
-                        ...rest,
-                    }}
+        <ReferenceInputController {...props}>
+            {controllerProps => (
+                <ReferenceInputView
+                    {...props}
+                    {...{ children, ...controllerProps }}
                 />
             )}
-        </CoreReferenceInput>
+        </ReferenceInputController>
     );
 };
 

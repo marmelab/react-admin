@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card, { CardContent } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
-import compose from 'recompose/compose';
 import classnames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 
@@ -12,7 +11,7 @@ import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
 import DefaultBulkActions from './BulkActions';
 import DefaultActions from './ListActions';
-import { translate, CoreList } from 'ra-core';
+import { ListController } from 'ra-core';
 import defaultTheme from '../defaultTheme';
 
 const styles = {
@@ -64,7 +63,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-export const InnerList = ({
+export const ListView = ({
     actions = <DefaultActions />,
     basePath,
     bulkActions = <DefaultBulkActions />,
@@ -228,115 +227,11 @@ export const InnerList = ({
  *         </List>
  *     );
  */
-export const List = ({
-    actions = <DefaultActions />,
-    bulkActions = <DefaultBulkActions />,
-    children,
-    classes = {},
-    className,
-    filter,
-    filters,
-    hasCreate,
-    hasDelete,
-    hasEdit,
-    hasList,
-    hasShow,
-    location,
-    match,
-    params,
-    pagination = <DefaultPagination />,
-    perPage,
-    query,
-    resource,
-    sort,
-    title,
-    translate,
-    ...rest
-}) => {
-    return (
-        <CoreList
-            {...{
-                filter,
-                hasCreate,
-                hasDelete,
-                hasEdit,
-                hasList,
-                hasShow,
-                location,
-                match,
-                params,
-                perPage,
-                query,
-                resource,
-                sort,
-            }}
-        >
-            {({
-                basePath,
-                currentSort,
-                data,
-                defaultTitle,
-                displayedFilters,
-                filterValues,
-                hideFilter,
-                ids,
-                isLoading,
-                onSelect,
-                onToggleItem,
-                onUnselectItems,
-                page,
-                perPage,
-                refresh,
-                selectedIds,
-                setFilters,
-                setPage,
-                setSort,
-                showFilter,
-                total,
-                version,
-            }) => (
-                <InnerList
-                    {...{
-                        actions,
-                        basePath,
-                        bulkActions,
-                        children,
-                        className,
-                        classes,
-                        currentSort,
-                        data,
-                        defaultTitle,
-                        displayedFilters,
-                        filters,
-                        filterValues,
-                        hasCreate,
-                        hideFilter,
-                        ids,
-                        isLoading,
-                        onSelect,
-                        onToggleItem,
-                        onUnselectItems,
-                        page,
-                        pagination,
-                        perPage,
-                        refresh,
-                        resource,
-                        selectedIds,
-                        setFilters,
-                        setPage,
-                        setSort,
-                        showFilter,
-                        title,
-                        total,
-                        translate,
-                        version,
-                        ...rest,
-                    }}
-                />
-            )}
-        </CoreList>
-    );
-};
+const List = props => (
+    <ListController {...props}>
+        {controllerProps => <ListView {...props} {...controllerProps} />}
+    </ListController>
+);
 
 List.propTypes = {
     // the props you can change
@@ -356,20 +251,15 @@ List.propTypes = {
     title: PropTypes.any,
     // the props managed by react-admin
     authProvider: PropTypes.func,
-    data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     hasCreate: PropTypes.bool.isRequired,
     hasEdit: PropTypes.bool.isRequired,
     hasDelete: PropTypes.bool.isRequired,
     hasList: PropTypes.bool.isRequired,
     hasShow: PropTypes.bool.isRequired,
-    ids: PropTypes.array,
-    selectedIds: PropTypes.array,
     location: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     path: PropTypes.string,
     resource: PropTypes.string.isRequired,
-    translate: PropTypes.func.isRequired,
     theme: PropTypes.object.isRequired,
 };
 
@@ -379,6 +269,4 @@ List.defaultProps = {
     theme: defaultTheme,
 };
 
-const EnhancedList = compose(translate, withStyles(styles));
-
-export default EnhancedList(List);
+export default withStyles(styles)(List);

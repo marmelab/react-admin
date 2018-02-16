@@ -35,7 +35,7 @@ import { linkToRecord } from '../../util';
  *     <TextField source="name" />
  * </ReferenceField>
  */
-export class CoreReferenceField extends Component {
+export class ReferenceFieldController extends Component {
     componentDidMount() {
         this.fetchReference(this.props);
     }
@@ -77,7 +77,7 @@ export class CoreReferenceField extends Component {
     }
 }
 
-CoreReferenceField.propTypes = {
+ReferenceFieldController.propTypes = {
     addLabel: PropTypes.bool,
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string.isRequired,
@@ -98,7 +98,7 @@ CoreReferenceField.propTypes = {
         .isRequired,
 };
 
-CoreReferenceField.defaultProps = {
+ReferenceFieldController.defaultProps = {
     allowEmpty: false,
     classes: {},
     linkType: 'edit',
@@ -113,8 +113,6 @@ const mapStateToProps = (state, props) => ({
         ],
 });
 
-const EnhancedCoreReferenceField = connect(mapStateToProps, {
+export default connect(mapStateToProps, {
     crudGetManyAccumulate: crudGetManyAccumulateAction,
-})(CoreReferenceField);
-
-export default EnhancedCoreReferenceField;
+})(ReferenceFieldController);

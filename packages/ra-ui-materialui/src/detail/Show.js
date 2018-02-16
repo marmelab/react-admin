@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
 import classnames from 'classnames';
-import { CoreShow } from 'ra-core';
+import { ShowController } from 'ra-core';
 
 import Header from '../layout/Header';
 import DefaultActions from './ShowActions';
@@ -76,75 +76,63 @@ const sanitizeRestProps = ({
  *     );
  *     export default App;
  */
-const Show = ({
+const InnerShow = ({
+    basePath,
     actions = <DefaultActions />,
     children,
     className,
+    defaultTitle,
     hasDelete,
     hasEdit,
     hasList,
+    isLoading,
     location,
     match,
+    record,
     resource,
+    title,
+    version,
     ...rest
-}) => {
-    if (!children) return null;
+}) => (
+    <div
+        className={classnames('show-page', className)}
+        {...sanitizeRestProps(rest)}
+    >
+        <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+            <Header
+                title={
+                    <RecordTitle
+                        title={title}
+                        record={record}
+                        defaultTitle={defaultTitle}
+                    />
+                }
+                actions={actions}
+                actionProps={{
+                    basePath,
+                    data: record,
+                    hasList,
+                    hasDelete,
+                    hasEdit,
+                    resource,
+                }}
+            />
+            {record &&
+                React.cloneElement(children, {
+                    resource,
+                    basePath,
+                    record,
+                    version,
+                })}
+        </Card>
+    </div>
+);
 
-    return (
-        <CoreShow
-            {...{
-                hasDelete,
-                hasEdit,
-                hasList,
-                location,
-                match,
-                resource,
-            }}
-        >
-            {({
-                basePath,
-                defaultTitle,
-                isLoading,
-                record,
-                title,
-                version,
-            }) => (
-                <div
-                    className={classnames('show-page', className)}
-                    {...sanitizeRestProps(rest)}
-                >
-                    <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                        <Header
-                            title={
-                                <RecordTitle
-                                    title={title}
-                                    record={record}
-                                    defaultTitle={defaultTitle}
-                                />
-                            }
-                            actions={actions}
-                            actionProps={{
-                                basePath,
-                                data: record,
-                                hasList,
-                                hasDelete,
-                                hasEdit,
-                                resource,
-                            }}
-                        />
-                        {record &&
-                            React.cloneElement(children, {
-                                resource,
-                                basePath,
-                                record,
-                                version,
-                            })}
-                    </Card>
-                </div>
-            )}
-        </CoreShow>
-    );
-};
+const Show = props => (
+    <ShowController {...props}>
+        {controllerProps => <InnerShow {...props} {...controllerProps} />}
+    </ShowController>
+);
 
 Show.propTypes = {
     actions: PropTypes.element,

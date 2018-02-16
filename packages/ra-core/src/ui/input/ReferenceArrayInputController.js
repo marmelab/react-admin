@@ -97,7 +97,7 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-export class CoreReferenceArrayInput extends Component {
+export class ReferenceArrayInputController extends Component {
     constructor(props) {
         super(props);
         const { perPage, sort, filter } = props;
@@ -205,7 +205,7 @@ export class CoreReferenceArrayInput extends Component {
     }
 }
 
-CoreReferenceArrayInput.propTypes = {
+ReferenceArrayInputController.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string,
     children: PropTypes.func.isRequired,
@@ -235,7 +235,7 @@ CoreReferenceArrayInput.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-CoreReferenceArrayInput.defaultProps = {
+ReferenceArrayInputController.defaultProps = {
     allowEmpty: false,
     filter: {},
     filterToQuery: searchText => ({ q: searchText }),
@@ -270,16 +270,16 @@ const makeMapStateToProps = () =>
         })
     );
 
-const EnhancedCoreReferenceArrayInput = compose(
+const EnhancedReferenceArrayInputController = compose(
     translate,
     connect(makeMapStateToProps(), {
         crudGetMany: crudGetManyAction,
         crudGetMatching: crudGetMatchingAction,
     })
-)(CoreReferenceArrayInput);
+)(ReferenceArrayInputController);
 
-EnhancedCoreReferenceArrayInput.defaultProps = {
-    referenceSource, // used in real apps
+EnhancedReferenceArrayInputController.defaultProps = {
+    referenceSource, // used in makeMapStateToProps
 };
 
-export default EnhancedCoreReferenceArrayInput;
+export default EnhancedReferenceArrayInputController;

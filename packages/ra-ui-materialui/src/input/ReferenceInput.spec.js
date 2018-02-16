@@ -1,7 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { InnerReferenceInput } from './ReferenceInput';
+import { ReferenceInputView } from './ReferenceInput';
 
 describe('<ReferenceInput />', () => {
     const defaultProps = {
@@ -18,7 +18,7 @@ describe('<ReferenceInput />', () => {
 
     it('should render a LinearProgress if isLoading is true', () => {
         const wrapper = shallow(
-            <InnerReferenceInput
+            <ReferenceInputView
                 {...{
                     ...defaultProps,
                     input: { value: 1 },
@@ -26,7 +26,7 @@ describe('<ReferenceInput />', () => {
                 }}
             >
                 <MyComponent />
-            </InnerReferenceInput>
+            </ReferenceInputView>
         );
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 0);
@@ -38,7 +38,7 @@ describe('<ReferenceInput />', () => {
 
     it('should not render a LinearProgress if isLoading is false', () => {
         const wrapper = shallow(
-            <InnerReferenceInput
+            <ReferenceInputView
                 {...{
                     ...defaultProps,
                     choices: [{ id: 1 }],
@@ -46,7 +46,7 @@ describe('<ReferenceInput />', () => {
                 }}
             >
                 <MyComponent />
-            </InnerReferenceInput>
+            </ReferenceInputView>
         );
         const LinearProgressElement = wrapper.find(
             'WithStyles(LinearProgress)'
@@ -59,7 +59,7 @@ describe('<ReferenceInput />', () => {
 
     it('should display an error if error is defined', () => {
         const wrapper = shallow(
-            <InnerReferenceInput
+            <ReferenceInputView
                 {...{
                     ...defaultProps,
                     error: 'fetch error',
@@ -67,7 +67,7 @@ describe('<ReferenceInput />', () => {
                 }}
             >
                 <MyComponent />
-            </InnerReferenceInput>
+            </ReferenceInputView>
         );
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 0);
@@ -78,7 +78,7 @@ describe('<ReferenceInput />', () => {
 
     it('should pass warning as helperText to the children if defined', () => {
         const wrapper = shallow(
-            <InnerReferenceInput
+            <ReferenceInputView
                 {...{
                     ...defaultProps,
                     warning: 'fetch error',
@@ -87,7 +87,7 @@ describe('<ReferenceInput />', () => {
                 }}
             >
                 <MyComponent />
-            </InnerReferenceInput>
+            </ReferenceInputView>
         );
         const ReferenceLoadingProgressElement = wrapper.find(
             'ReferenceLoadingProgress'
@@ -106,13 +106,13 @@ describe('<ReferenceInput />', () => {
     it('should pass onChange down to child component', () => {
         const onChange = jest.fn();
         const wrapper = shallow(
-            <InnerReferenceInput
+            <ReferenceInputView
                 {...defaultProps}
                 allowEmpty
                 onChange={onChange}
             >
                 <MyComponent />
-            </InnerReferenceInput>
+            </ReferenceInputView>
         );
         wrapper.find('MyComponent').simulate('change', 'foo');
         assert.deepEqual(onChange.mock.calls[0], ['foo']);
@@ -120,13 +120,13 @@ describe('<ReferenceInput />', () => {
 
     it('should pass meta down to child component', () => {
         const wrapper = shallow(
-            <InnerReferenceInput
+            <ReferenceInputView
                 {...defaultProps}
                 allowEmpty
                 meta={{ touched: false }}
             >
                 <MyComponent />
-            </InnerReferenceInput>
+            </ReferenceInputView>
         );
 
         const myComponent = wrapper.find('MyComponent');

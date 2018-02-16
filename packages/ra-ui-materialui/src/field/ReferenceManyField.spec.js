@@ -1,14 +1,14 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { InnerReferenceManyField } from './ReferenceManyField';
+import { ReferenceManyFieldView } from './ReferenceManyField';
 import TextField from './TextField';
 import SingleFieldList from '../list/SingleFieldList';
 
 describe('<ReferenceManyField />', () => {
     it('should render a loading indicator when isLoading is true', () => {
         const wrapper = shallow(
-            <InnerReferenceManyField
+            <ReferenceManyFieldView
                 resource="foo"
                 reference="bar"
                 basePath=""
@@ -17,7 +17,7 @@ describe('<ReferenceManyField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </InnerReferenceManyField>,
+            </ReferenceManyFieldView>,
             { disableLifecycleMethods: true }
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
@@ -34,7 +34,7 @@ describe('<ReferenceManyField />', () => {
             2: { id: 2, title: 'world' },
         };
         const wrapper = shallow(
-            <InnerReferenceManyField
+            <ReferenceManyFieldView
                 resource="foo"
                 reference="bar"
                 basePath=""
@@ -44,7 +44,7 @@ describe('<ReferenceManyField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </InnerReferenceManyField>,
+            </ReferenceManyFieldView>,
             { disableLifecycleMethods: true }
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
@@ -60,7 +60,7 @@ describe('<ReferenceManyField />', () => {
 
     it('should render nothing when there are no related records', () => {
         const wrapper = shallow(
-            <InnerReferenceManyField
+            <ReferenceManyFieldView
                 resource="foo"
                 reference="bar"
                 basePath=""
@@ -70,7 +70,7 @@ describe('<ReferenceManyField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </InnerReferenceManyField>,
+            </ReferenceManyFieldView>,
             { disableLifecycleMethods: true }
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');
@@ -90,7 +90,7 @@ describe('<ReferenceManyField />', () => {
             'abc-2': { id: 'abc-2', title: 'world' },
         };
         const wrapper = shallow(
-            <InnerReferenceManyField
+            <ReferenceManyFieldView
                 resource="foo"
                 reference="bar"
                 basePath=""
@@ -100,7 +100,7 @@ describe('<ReferenceManyField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </InnerReferenceManyField>,
+            </ReferenceManyFieldView>,
             { disableLifecycleMethods: true }
         );
         const ProgressElements = wrapper.find('widthStyles(LinearProgress)');
@@ -123,7 +123,7 @@ describe('<ReferenceManyField />', () => {
             2: { id: 2, title: 'world' },
         };
         const wrapper = shallow(
-            <InnerReferenceManyField
+            <ReferenceManyFieldView
                 resource="foo"
                 reference="bar"
                 basePath=""
@@ -133,7 +133,7 @@ describe('<ReferenceManyField />', () => {
                 <SingleFieldList>
                     <TextField source="title" />
                 </SingleFieldList>
-            </InnerReferenceManyField>,
+            </ReferenceManyFieldView>,
             { disableLifecycleMethods: true }
         );
         const ProgressElements = wrapper.find('WithStyles(LinearProgress)');

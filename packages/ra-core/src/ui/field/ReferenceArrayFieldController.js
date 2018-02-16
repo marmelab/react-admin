@@ -38,7 +38,7 @@ import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
  * </ReferenceArrayField>
  *
  */
-export class CoreReferenceArrayField extends Component {
+export class ReferenceArrayFieldController extends Component {
     componentDidMount() {
         this.fetchReferences();
     }
@@ -78,7 +78,7 @@ export class CoreReferenceArrayField extends Component {
     }
 }
 
-CoreReferenceArrayField.propTypes = {
+ReferenceArrayFieldController.propTypes = {
     addLabel: PropTypes.bool,
     basePath: PropTypes.string.isRequired,
     classes: PropTypes.object,
@@ -107,8 +107,6 @@ const mapStateToProps = (state, props) => {
     };
 };
 
-const EnhancedReferenceArrayField = connect(mapStateToProps, {
+export default connect(mapStateToProps, {
     crudGetManyAccumulate: crudGetManyAccumulateAction,
-})(CoreReferenceArrayField);
-
-export default EnhancedReferenceArrayField;
+})(ReferenceArrayFieldController);

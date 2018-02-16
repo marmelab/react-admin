@@ -1,7 +1,7 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { InnerReferenceArrayInput } from './ReferenceArrayInput';
+import { ReferenceArrayInputView } from './ReferenceArrayInput';
 
 describe('<ReferenceArrayInput />', () => {
     const defaultProps = {
@@ -17,7 +17,7 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should render a LinearProgress if isLoading is true', () => {
         const wrapper = shallow(
-            <InnerReferenceArrayInput
+            <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
                     isLoading: true,
@@ -25,7 +25,7 @@ describe('<ReferenceArrayInput />', () => {
                 }}
             >
                 <MyComponent />
-            </InnerReferenceArrayInput>
+            </ReferenceArrayInputView>
         );
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 0);
@@ -37,7 +37,7 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should display an error if error is defined', () => {
         const wrapper = shallow(
-            <InnerReferenceArrayInput
+            <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
                     error: 'ra.input.references.all_missing',
@@ -45,7 +45,7 @@ describe('<ReferenceArrayInput />', () => {
                 }}
             >
                 <MyComponent />
-            </InnerReferenceArrayInput>
+            </ReferenceArrayInputView>
         );
         const MyComponentElement = wrapper.find('MyComponent');
         assert.equal(MyComponentElement.length, 0);
@@ -59,7 +59,7 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should send an error to the children if warning is defined', () => {
         const wrapper = shallow(
-            <InnerReferenceArrayInput
+            <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
                     warning: 'fetch error',
@@ -68,7 +68,7 @@ describe('<ReferenceArrayInput />', () => {
                 }}
             >
                 <MyComponent />
-            </InnerReferenceArrayInput>
+            </ReferenceArrayInputView>
         );
         const ErrorElement = wrapper.find('ReferenceError');
         assert.equal(ErrorElement.length, 0);
@@ -81,7 +81,7 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should not send an error to the children if warning is not defined', () => {
         const wrapper = shallow(
-            <InnerReferenceArrayInput
+            <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
                     input: { value: [1, 2] },
@@ -89,7 +89,7 @@ describe('<ReferenceArrayInput />', () => {
                 }}
             >
                 <MyComponent />
-            </InnerReferenceArrayInput>
+            </ReferenceArrayInputView>
         );
         const ErrorElement = wrapper.find('ReferenceError');
         assert.equal(ErrorElement.length, 0);
@@ -102,7 +102,7 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should render enclosed component if references present in input are available in state', () => {
         const wrapper = shallow(
-            <InnerReferenceArrayInput
+            <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
                     input: { value: [1] },
@@ -110,7 +110,7 @@ describe('<ReferenceArrayInput />', () => {
                 }}
             >
                 <MyComponent />
-            </InnerReferenceArrayInput>
+            </ReferenceArrayInputView>
         );
         const ErrorElement = wrapper.find('ReferenceError');
         assert.equal(ErrorElement.length, 0);
@@ -121,14 +121,14 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should render enclosed component even if the choices are empty', () => {
         const wrapper = shallow(
-            <InnerReferenceArrayInput
+            <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
                     choices: [],
                 }}
             >
                 <MyComponent />
-            </InnerReferenceArrayInput>
+            </ReferenceArrayInputView>
         );
         const LinearProgressElement = wrapper.find(
             'WithStyles(LinearProgress)'
@@ -144,13 +144,13 @@ describe('<ReferenceArrayInput />', () => {
     it('should pass onChange down to child component', () => {
         const onChange = jest.fn();
         const wrapper = shallow(
-            <InnerReferenceArrayInput
+            <ReferenceArrayInputView
                 {...defaultProps}
                 allowEmpty
                 onChange={onChange}
             >
                 <MyComponent />
-            </InnerReferenceArrayInput>
+            </ReferenceArrayInputView>
         );
         wrapper.find('MyComponent').simulate('change', 'foo');
         assert.deepEqual(onChange.mock.calls[0], ['foo']);
@@ -158,13 +158,13 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should pass meta down to child component', () => {
         const wrapper = shallow(
-            <InnerReferenceArrayInput
+            <ReferenceArrayInputView
                 {...defaultProps}
                 allowEmpty
                 meta={{ touched: false }}
             >
                 <MyComponent />
-            </InnerReferenceArrayInput>
+            </ReferenceArrayInputView>
         );
 
         const myComponent = wrapper.find('MyComponent');

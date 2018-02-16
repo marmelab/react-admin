@@ -3,23 +3,19 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
-import { reset } from 'redux-form';
 import translate from '../i18n/translate';
-import {
-    crudGetOne as crudGetOneAction,
-    crudUpdate as crudUpdateAction,
-} from '../actions';
+import { crudGetOne as crudGetOneAction } from '../actions';
 
 /**
- * Page component for the Edit view
+ * Page component for the Show view
  * 
- * The `<Edit>` component renders the page title and actions,
+ * The `<Show>` component renders the page title and actions,
  * fetches the record from the data provider.
  * It is not responsible for rendering the actual form -
- * that's the job of its child component (usually `<SimpleForm>`),
+ * that's the job of its child component (usually `<SimpleShowLayout>`),
  * to which it passes pass the `record` as prop.
  *
- * The `<Edit>` component accepts the following props:
+ * The `<Show>` component accepts the following props:
  *
  * - title
  * - actions
@@ -29,30 +25,30 @@ import {
  * @example     
  *     // in src/posts.js
  *     import React from 'react';
- *     import { Edit, SimpleForm, TextInput } from 'react-admin';
+ *     import { Show, SimpleShowLayout, TextField } from 'react-admin';
  *     
- *     export const PostEdit = (props) => (
- *         <Edit {...props}>
- *             <SimpleForm>
- *                 <TextInput source="title" />
- *             </SimpleForm>
- *         </Edit>
+ *     export const PostShow = (props) => (
+ *         <Show {...props}>
+ *             <SimpleShowLayout>
+ *                 <TextField source="title" />
+ *             </SimpleShowLayout>
+ *         </Show>
  *     );
  *
  *     // in src/App.js
  *     import React from 'react';
  *     import { Admin, Resource } from 'react-admin';
  *     
- *     import { PostEdit } from './posts';
+ *     import { PostShow } from './posts';
  *     
  *     const App = () => (
  *         <Admin dataProvider={...}>
- *             <Resource name="posts" edit={PostEdit} />
+ *             <Resource name="posts" show={PostShow} />
  *         </Admin>
  *     );
  *     export default App;
  */
-export class CoreEdit extends Component {
+export class ShowController extends Component {
     componentDidMount() {
         this.updateData();
     }
@@ -62,7 +58,6 @@ export class CoreEdit extends Component {
             this.props.id !== nextProps.id ||
             nextProps.version !== this.props.version
         ) {
-            this.props.resetForm('record-form');
             this.updateData(nextProps.resource, nextProps.id);
         }
     }
@@ -71,34 +66,20 @@ export class CoreEdit extends Component {
         const { location } = this.props;
         return location.pathname
             .split('/')
-            .slice(0, -1)
+            .slice(0, -2)
             .join('/');
-    }
-
-    defaultRedirectRoute() {
-        return 'list';
     }
 
     updateData(resource = this.props.resource, id = this.props.id) {
         this.props.crudGetOne(resource, id, this.getBasePath());
     }
 
-    save = (data, redirect) => {
-        this.props.crudUpdate(
-            this.props.resource,
-            this.props.id,
-            data,
-            this.props.record,
-            this.getBasePath(),
-            redirect
-        );
-    };
-
     render() {
         const {
+            title,
             children,
-            record,
             id,
+            record,
             isLoading,
             resource,
             translate,
@@ -106,47 +87,43 @@ export class CoreEdit extends Component {
         } = this.props;
 
         if (!children) return null;
-
         const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
             _: inflection.humanize(inflection.singularize(resource)),
         });
-        const defaultTitle = translate('ra.page.edit', {
+        const defaultTitle = translate('ra.page.show', {
             name: `${resourceName}`,
             id,
             record,
         });
-
         return children({
             isLoading,
+            title,
             defaultTitle,
-            save: this.save,
             resource,
             basePath,
             record,
-            redirect: this.defaultRedirectRoute(),
+            translate,
             version,
         });
     }
 }
 
-CoreEdit.propTypes = {
+ShowController.propTypes = {
     children: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,
-    crudUpdate: PropTypes.func.isRequired,
     record: PropTypes.object,
     hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
     hasDelete: PropTypes.bool,
-    hasShow: PropTypes.bool,
+    hasEdit: PropTypes.bool,
     hasList: PropTypes.bool,
+    hasShow: PropTypes.bool,
     id: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
-    resetForm: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
@@ -166,13 +143,7 @@ function mapStateToProps(state, props) {
     };
 }
 
-const EnhancedCoreEdit = compose(
-    connect(mapStateToProps, {
-        crudGetOne: crudGetOneAction,
-        crudUpdate: crudUpdateAction,
-        resetForm: reset,
-    }),
+export default compose(
+    connect(mapStateToProps, { crudGetOne: crudGetOneAction }),
     translate
-);
-
-export default EnhancedCoreEdit(CoreEdit);
+)(ShowController);

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
-import { CoreReferenceField } from 'ra-core';
+import { ReferenceFieldController } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';
@@ -14,22 +14,23 @@ const styles = theme => ({
     },
 });
 
-export const InnerReferenceField = ({
+export const ReferenceFieldView = ({
     allowEmpty,
     basePath,
     children,
     className,
     classes = {},
     isLoading,
+    linkType,
+    record,
     reference,
     referenceRecord,
+    resource,
     resourceLinkPath,
+    source,
+    translateChoice,
     ...rest
 }) => {
-    if (React.Children.count(children) !== 1) {
-        throw new Error('<ReferenceField> only accepts a single child');
-    }
-
     if (isLoading) {
         return <LinearProgress />;
     }
@@ -91,49 +92,22 @@ export const InnerReferenceField = ({
  *     <TextField source="name" />
  * </ReferenceField>
  */
-export const ReferenceField = ({
-    allowEmpty,
-    basePath,
-    children,
-    className,
-    classes,
-    linkType,
-    record,
-    reference,
-    resource,
-    source,
-    translateChoice,
-    ...rest
-}) => (
-    <CoreReferenceField
-        {...{
-            allowEmpty,
-            basePath,
-            linkType,
-            record,
-            reference,
-            resource,
-            source,
-        }}
-    >
-        {({ isLoading, referenceRecord, resourceLinkPath }) => (
-            <InnerReferenceField
-                {...{
-                    allowEmpty,
-                    basePath,
-                    children,
-                    className,
-                    classes,
-                    isLoading,
-                    reference,
-                    referenceRecord,
-                    resourceLinkPath,
-                    ...rest,
-                }}
-            />
-        )}
-    </CoreReferenceField>
-);
+const ReferenceField = ({ children, ...props }) => {
+    if (React.Children.count(children) !== 1) {
+        throw new Error('<ReferenceField> only accepts a single child');
+    }
+
+    return (
+        <ReferenceFieldController {...props}>
+            {controllerProps => (
+                <ReferenceFieldView
+                    {...props}
+                    {...{ children, ...controllerProps }}
+                />
+            )}
+        </ReferenceFieldController>
+    );
+};
 
 ReferenceField.propTypes = {
     addLabel: PropTypes.bool,

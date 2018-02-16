@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { LinearProgress } from 'material-ui/Progress';
 import { withStyles } from 'material-ui/styles';
-import { CoreReferenceManyField } from 'ra-core';
+import { ReferenceManyFieldController } from 'ra-core';
 
 const styles = {
     progress: { marginTop: '1em' },
 };
 
-export const InnerReferenceManyField = ({
+export const ReferenceManyFieldView = ({
     children,
     classes = {},
     className,
@@ -81,19 +81,7 @@ export const InnerReferenceManyField = ({
  *    ...
  * </ReferenceManyField>
  */
-export const ReferenceManyField = ({
-    basePath,
-    children,
-    classes = {},
-    className,
-    filter,
-    perPage,
-    record,
-    resource,
-    reference,
-    source,
-    target,
-}) => {
+export const ReferenceManyField = ({ children, ...props }) => {
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
@@ -101,42 +89,14 @@ export const ReferenceManyField = ({
     }
 
     return (
-        <CoreReferenceManyField
-            {...{
-                filter,
-                perPage,
-                record,
-                resource,
-                reference,
-                basePath,
-                source,
-                target,
-            }}
-        >
-            {({
-                data,
-                ids,
-                isLoading,
-                referenceBasePath,
-                currentSort,
-                setSort,
-            }) => (
-                <InnerReferenceManyField
-                    {...{
-                        children,
-                        classes,
-                        className,
-                        currentSort,
-                        data,
-                        ids,
-                        isLoading,
-                        reference,
-                        referenceBasePath,
-                        setSort,
-                    }}
+        <ReferenceManyFieldController {...props}>
+            {controllerProps => (
+                <ReferenceManyFieldView
+                    {...props}
+                    {...{ children, ...controllerProps }}
                 />
             )}
-        </CoreReferenceManyField>
+        </ReferenceManyFieldController>
     );
 };
 

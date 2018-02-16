@@ -1,9 +1,9 @@
 import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
-import { CoreReferenceInput } from './CoreReferenceInput';
+import { ReferenceInputController } from './ReferenceInputController';
 
-describe('<CoreReferenceInput />', () => {
+describe('<ReferenceInputController />', () => {
     const defaultProps = {
         children: jest.fn(),
         crudGetOne: jest.fn(),
@@ -20,7 +20,7 @@ describe('<CoreReferenceInput />', () => {
     it('should set isLoading to true if the references are being searched and a selected reference does not have data', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...{
                     ...defaultProps,
                     input: { value: 1 },
@@ -28,7 +28,7 @@ describe('<CoreReferenceInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceInput>
+            </ReferenceInputController>
         );
 
         assert.equal(children.mock.calls[0][0].isLoading, true);
@@ -37,7 +37,7 @@ describe('<CoreReferenceInput />', () => {
     it('should set isLoading to true if the references are being searched and there is no reference already selected', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: null,
@@ -45,7 +45,7 @@ describe('<CoreReferenceInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceInput>
+            </ReferenceInputController>
         );
         assert.equal(children.mock.calls[0][0].isLoading, true);
     });
@@ -53,7 +53,7 @@ describe('<CoreReferenceInput />', () => {
     it('should set isLoading to false if the references are being searched but a selected reference have data', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: null,
@@ -62,7 +62,7 @@ describe('<CoreReferenceInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceInput>
+            </ReferenceInputController>
         );
         assert.equal(children.mock.calls[0][0].isLoading, false);
         assert.deepEqual(children.mock.calls[0][0].choices, [{ id: 1 }]);
@@ -71,7 +71,7 @@ describe('<CoreReferenceInput />', () => {
     it('should set isLoading to false if the references were found but a selected reference does not have data', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: [{ id: 2 }],
@@ -80,7 +80,7 @@ describe('<CoreReferenceInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceInput>
+            </ReferenceInputController>
         );
         assert.equal(children.mock.calls[0][0].isLoading, false);
         assert.deepEqual(children.mock.calls[0][0].choices, [{ id: 2 }]);
@@ -89,7 +89,7 @@ describe('<CoreReferenceInput />', () => {
     it('should set error in case of references fetch error and selected reference does not have data', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: { error: 'fetch error' },
@@ -98,7 +98,7 @@ describe('<CoreReferenceInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceInput>
+            </ReferenceInputController>
         );
         assert.equal(
             children.mock.calls[0][0].error,
@@ -109,7 +109,7 @@ describe('<CoreReferenceInput />', () => {
     it('should set error in case of references fetch error and there is no reference already selected', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: { error: 'fetch error' },
@@ -118,7 +118,7 @@ describe('<CoreReferenceInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceInput>
+            </ReferenceInputController>
         );
         assert.equal(children.mock.calls[0][0].error, '*fetch error*');
     });
@@ -126,7 +126,7 @@ describe('<CoreReferenceInput />', () => {
     it('should not set error in case of references fetch error but selected reference have data', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: { error: 'fetch error' },
@@ -135,7 +135,7 @@ describe('<CoreReferenceInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceInput>
+            </ReferenceInputController>
         );
 
         assert.equal(children.mock.calls[0][0].error, undefined);
@@ -144,7 +144,7 @@ describe('<CoreReferenceInput />', () => {
     it('should not set error if the references are empty (but fetched without error) and a selected reference does not have data', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: [],
@@ -153,7 +153,7 @@ describe('<CoreReferenceInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceInput>
+            </ReferenceInputController>
         );
         assert.equal(children.mock.calls[0][0].error, undefined);
     });
@@ -161,7 +161,7 @@ describe('<CoreReferenceInput />', () => {
     it('should set warning in case of references fetch error and there selected reference with data', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: { error: 'fetch error' },
@@ -170,7 +170,7 @@ describe('<CoreReferenceInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceInput>
+            </ReferenceInputController>
         );
         assert.equal(children.mock.calls[0][0].warning, '*fetch error*');
     });
@@ -178,7 +178,7 @@ describe('<CoreReferenceInput />', () => {
     it('should set warning if references were found but not the already selected one', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: [],
@@ -187,7 +187,7 @@ describe('<CoreReferenceInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceInput>
+            </ReferenceInputController>
         );
         assert.equal(
             children.mock.calls[0][0].warning,
@@ -198,7 +198,7 @@ describe('<CoreReferenceInput />', () => {
     it('should not set warning if all references were found', () => {
         const children = jest.fn();
         shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...{
                     ...defaultProps,
                     matchingReferences: [{ id: 1 }, { id: 2 }],
@@ -207,7 +207,7 @@ describe('<CoreReferenceInput />', () => {
                 }}
             >
                 {children}
-            </CoreReferenceInput>
+            </ReferenceInputController>
         );
         assert.equal(children.mock.calls[0][0].warning, undefined);
     });
@@ -215,7 +215,7 @@ describe('<CoreReferenceInput />', () => {
     it('should call crudGetMatching on mount with default fetch values', () => {
         const crudGetMatching = jest.fn();
         shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
                 crudGetMatching={crudGetMatching}
@@ -239,7 +239,7 @@ describe('<CoreReferenceInput />', () => {
     it('should allow to customize crudGetMatching arguments with perPage, sort, and filter props', () => {
         const crudGetMatching = jest.fn();
         shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
                 crudGetMatching={crudGetMatching}
@@ -268,7 +268,7 @@ describe('<CoreReferenceInput />', () => {
     it('should allow to customize crudGetMatching arguments with perPage, sort, and filter props without loosing original default filter', () => {
         const crudGetMatching = jest.fn();
         const wrapper = shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
                 crudGetMatching={crudGetMatching}
@@ -301,7 +301,7 @@ describe('<CoreReferenceInput />', () => {
     it('should call crudGetMatching when setFilter is called', () => {
         const crudGetMatching = jest.fn();
         const wrapper = shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
                 crudGetMatching={crudGetMatching}
@@ -328,7 +328,7 @@ describe('<CoreReferenceInput />', () => {
     it('should use custom filterToQuery function prop', () => {
         const crudGetMatching = jest.fn();
         const wrapper = shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
                 crudGetMatching={crudGetMatching}
@@ -356,7 +356,7 @@ describe('<CoreReferenceInput />', () => {
     it('should call crudGetOne on mount if value is set', () => {
         const crudGetOne = jest.fn();
         shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
                 crudGetOne={crudGetOne}
@@ -370,13 +370,13 @@ describe('<CoreReferenceInput />', () => {
         const children = jest.fn();
         const onChange = jest.fn();
         shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
                 onChange={onChange}
             >
                 {children}
-            </CoreReferenceInput>
+            </ReferenceInputController>
         );
         assert.deepEqual(children.mock.calls[0][0].onChange, onChange);
     });
@@ -385,7 +385,7 @@ describe('<CoreReferenceInput />', () => {
         const crudGetMatching = jest.fn();
         const crudGetOne = jest.fn();
         const wrapper = shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
                 input={{ value: 5 }}
@@ -404,7 +404,7 @@ describe('<CoreReferenceInput />', () => {
     it('should call crudGetOne when input value changes', () => {
         const crudGetOne = jest.fn();
         const wrapper = shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...defaultProps}
                 input={{ value: 5 }}
                 allowEmpty
@@ -420,7 +420,7 @@ describe('<CoreReferenceInput />', () => {
         const crudGetOne = jest.fn();
         const crudGetMatching = jest.fn();
         const wrapper = shallow(
-            <CoreReferenceInput
+            <ReferenceInputController
                 {...defaultProps}
                 allowEmpty
                 input={{ value: 5 }}
