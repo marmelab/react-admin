@@ -17,6 +17,7 @@ const styles = theme => ({
         position: 'relative',
         height: 'auto',
         width: DRAWER_WIDTH,
+        overflowX: 'hidden',
         transition: theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
