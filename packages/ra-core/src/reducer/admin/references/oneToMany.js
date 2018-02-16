@@ -20,8 +20,28 @@ export const getIds = (state, relatedTo) =>
 export const getReferences = (state, reference, relatedTo) => {
     const ids = getIds(state, relatedTo);
     if (typeof ids === 'undefined') return undefined;
+
+    if (!state.admin.resources[reference]) {
+        // eslint-disable-next-line no-console
+        console.error(
+            `Invalid Resource "${reference}"\n` +
+                `You are trying to display or edit a field of a resource called "${reference}", ` +
+                'but it has not been declared.\n' +
+                "Declare this resource in the Admin or check the 'reference' prop of ReferenceArrayField and ReferenceManyField.",
+            { ids }
+        );
+    }
+
     return ids
-        .map(id => state.admin.resources[reference].data[id])
+        .map(id => {
+            const resource = state.admin.resources[reference];
+
+            if (!resource) {
+                return;
+            }
+
+            return resource.data[id];
+        })
         .filter(r => typeof r !== 'undefined')
         .reduce((prev, record) => {
             prev[record.id] = record; // eslint-disable-line no-param-reassign
@@ -31,8 +51,28 @@ export const getReferences = (state, reference, relatedTo) => {
 
 export const getReferencesByIds = (state, reference, ids) => {
     if (ids.length === 0) return {};
+
+    if (!state.admin.resources[reference]) {
+        // eslint-disable-next-line no-console
+        console.error(
+            `Invalid Resource "${reference}"\n` +
+                `You are trying to display or edit a field of a resource called "${reference}", ` +
+                'but it has not been declared.\n' +
+                "Declare this resource in the Admin or check the 'reference' prop of ReferenceArrayField.",
+            { ids }
+        );
+    }
+
     return ids
-        .map(id => state.admin.resources[reference].data[id])
+        .map(id => {
+            const resource = state.admin.resources[reference];
+
+            if (!resource) {
+                return;
+            }
+
+            return resource.data[id];
+        })
         .filter(r => typeof r !== 'undefined')
         .reduce((prev, record) => {
             prev[record.id] = record; // eslint-disable-line no-param-reassign
