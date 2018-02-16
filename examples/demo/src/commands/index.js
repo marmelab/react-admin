@@ -71,7 +71,7 @@ export const CommandList = withStyles(listStyles)(({ classes, ...props }) => (
         perPage={25}
     >
         <Responsive
-            small={
+            xsmall={
                 <SimpleList
                     primaryText={record => record.reference}
                     secondaryText={record =>

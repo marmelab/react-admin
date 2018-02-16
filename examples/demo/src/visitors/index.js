@@ -74,7 +74,7 @@ export const VisitorList = withStyles(listStyles)(({ classes, ...props }) => (
         perPage={25}
     >
         <Responsive
-            small={<MobileGrid />}
+            xsmall={<MobileGrid />}
             medium={
                 <Datagrid>
                     <FullNameField />

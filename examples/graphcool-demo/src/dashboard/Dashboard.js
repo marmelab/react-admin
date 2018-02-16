@@ -139,7 +139,7 @@ class Dashboard extends Component {
         } = this.state;
         return (
             <Responsive
-                small={
+                xsmall={
                     <Card>
                         <ViewTitle title="Posters Galore Admin" />
                         <CardContent>

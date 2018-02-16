@@ -56,7 +56,7 @@ const Menu = ({ onMenuClick, translate, logout }) => (
             onClick={onMenuClick}
         />
         <Responsive
-            small={logout}
+            xsmall={logout}
             medium={<div />} // We must define something to not fallback on small
         />
     </div>

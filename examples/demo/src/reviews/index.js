@@ -79,7 +79,7 @@ export const ReviewList = withStyles(listStyles)(({ classes, ...props }) => (
         sort={{ field: 'date', order: 'DESC' }}
     >
         <Responsive
-            small={
+            xsmall={
                 <SimpleList
                     primaryText={record =>
                         new Date(record.date).toLocaleDateString()}
