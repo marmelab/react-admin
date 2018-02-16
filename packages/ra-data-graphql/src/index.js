@@ -1,6 +1,5 @@
 import merge from 'lodash.merge';
 import get from 'lodash.get';
-import { ApolloClient } from 'apollo-client';
 import pluralize from 'pluralize';
 import {
     GET_LIST,
