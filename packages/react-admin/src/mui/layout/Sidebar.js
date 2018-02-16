@@ -5,6 +5,7 @@ import compose from 'recompose/compose';
 import Drawer from 'material-ui/Drawer';
 import { withStyles } from 'material-ui/styles';
 import withWidth from 'material-ui/utils/withWidth';
+import classnames from 'classnames';
 
 import Responsive from './Responsive';
 import { setSidebarVisibility } from '../../actions';
@@ -13,16 +14,27 @@ export const DRAWER_WIDTH = 240;
 
 const styles = theme => ({
     drawerPaper: {
-        height: '100%',
+        position: 'relative',
+        height: 'auto',
         width: DRAWER_WIDTH,
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
         backgroundColor: theme.palette.background.default,
-        paddingTop: '5em',
+        marginTop: '4.5em',
+        [theme.breakpoints.only('xs')]: {
+            marginTop: 0,
+            height: '100vh',
+            position: 'inherit',
+        },
         [theme.breakpoints.up('md')]: {
             border: 'none',
+            marginTop: '5.5em',
         },
-        [theme.breakpoints.down('xs')]: {
-            paddingTop: 0,
-        },
+    },
+    drawerPaperClose: {
+        width: 55,
     },
 });
 
@@ -69,10 +81,13 @@ class Sidebar extends PureComponent {
                 }
                 small={
                     <Drawer
-                        variant="persistent"
+                        variant="permanent"
                         open={open}
                         classes={{
-                            paper: classes.drawerPaper,
+                            paper: classnames(
+                                classes.drawerPaper,
+                                !open && classes.drawerPaperClose
+                            ),
                         }}
                         onClose={this.toggleSidebar}
                         {...rest}
@@ -85,10 +100,13 @@ class Sidebar extends PureComponent {
                 }
                 medium={
                     <Drawer
-                        variant="persistent"
+                        variant="permanent"
                         open={open}
                         classes={{
-                            paper: classes.drawerPaper,
+                            paper: classnames(
+                                classes.drawerPaper,
+                                !open && classes.drawerPaperClose
+                            ),
                         }}
                         onClose={this.toggleSidebar}
                         {...rest}

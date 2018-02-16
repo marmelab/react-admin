@@ -11,13 +11,14 @@ import MenuItemLink from './MenuItemLink';
 import translate from '../../i18n/translate';
 import { getResources } from '../../reducer';
 import Responsive from '../layout/Responsive';
+import { DRAWER_WIDTH } from './Sidebar';
 
 const styles = {
     main: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        height: '100%',
+        width: DRAWER_WIDTH,
     },
 };
 
@@ -58,7 +59,7 @@ const Menu = ({
                     dense={dense}
                 />
             ))}
-        <Responsive small={logout} medium={null} />
+        <Responsive xsmall={logout} medium={null} />
     </div>
 );
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
@@ -8,11 +8,13 @@ import { withStyles } from 'material-ui/styles';
 const styles = theme => ({
     root: {
         color: theme.palette.text.secondary,
+        display: 'flex',
+        alignItems: 'flex-start',
     },
     active: {
         color: theme.palette.text.primary,
     },
-    icon: { paddingRight: '0.5em' },
+    icon: { paddingRight: '1.2em' },
 });
 
 export class MenuItemLink extends Component {
@@ -48,7 +50,11 @@ export class MenuItemLink extends Component {
                 {...props}
                 onClick={this.handleMenuTap}
             >
-                {leftIcon && <span className={classes.icon}>{leftIcon}</span>}
+                {leftIcon && (
+                    <span className={classes.icon}>
+                        {cloneElement(leftIcon, { titleAccess: primaryText })}
+                    </span>
+                )}
                 {primaryText}
             </MenuItem>
         );

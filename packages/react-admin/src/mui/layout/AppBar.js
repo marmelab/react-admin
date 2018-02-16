@@ -70,6 +70,7 @@ const AppBar = ({
     <MuiAppBar
         className={classNames(classes.appBar, className)}
         color="secondary"
+        position="absolute"
         {...rest}
     >
         <Toolbar disableGutters>

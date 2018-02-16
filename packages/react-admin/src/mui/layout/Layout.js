@@ -11,7 +11,7 @@ import Hidden from 'material-ui/Hidden';
 import compose from 'recompose/compose';
 
 import AppBar from './AppBar';
-import Sidebar, { DRAWER_WIDTH } from './Sidebar';
+import Sidebar from './Sidebar';
 import Menu from './Menu';
 import Notification from './Notification';
 import defaultTheme from '../defaultTheme';
@@ -20,6 +20,8 @@ const styles = theme => ({
     root: {
         width: '100%',
         zIndex: 1,
+        minHeight: '100vh',
+        backgroundColor: theme.palette.background.default,
     },
     appFrame: {
         position: 'relative',
@@ -28,36 +30,17 @@ const styles = theme => ({
     },
     content: {
         width: '100%',
-        minHeight: '100vh',
-        marginLeft: 0,
         flexGrow: 1,
-        backgroundColor: theme.palette.background.default,
         padding: theme.spacing.unit * 3,
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        height: 'calc(100% - 56px)',
-        [theme.breakpoints.up('md')]: {
-            content: {
-                height: 'calc(100% - 64px)',
-                marginTop: 64,
-            },
-        },
         [theme.breakpoints.up('xs')]: {
             marginTop: '4em',
+            paddingLeft: 5,
         },
         [theme.breakpoints.down('sm')]: {
             padding: 0,
         },
-    },
-    contentShift: {
-        [theme.breakpoints.up('md')]: {
-            marginLeft: DRAWER_WIDTH,
-            transition: theme.transitions.create('margin', {
-                easing: theme.transitions.easing.easeOut,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
+        [theme.breakpoints.down('xs')]: {
+            marginTop: '3em',
         },
     },
 });
@@ -92,14 +75,7 @@ const Layout = ({
                         hasDashboard: !!dashboard,
                     })}
                 </Sidebar>
-                <main
-                    className={classnames(
-                        classes.content,
-                        open && classes.contentShift
-                    )}
-                >
-                    {children}
-                </main>
+                <main className={classes.content}>{children}</main>
                 <Notification />
             </div>
         </div>
