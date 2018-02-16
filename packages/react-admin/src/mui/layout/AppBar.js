@@ -11,7 +11,6 @@ import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 
 import { toggleSidebar as toggleSidebarAction } from '../../actions';
-import { DRAWER_WIDTH } from './Sidebar';
 import LoadingIndicator from './LoadingIndicator';
 
 const styles = theme => ({
