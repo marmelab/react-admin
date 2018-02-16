@@ -10,7 +10,6 @@ import compose from 'recompose/compose';
 const styles = {
     loader: {
         margin: 16,
-        color: 'white',
     },
 };
 
@@ -24,8 +23,9 @@ export const LoadingIndicator = ({
     isLoading ? (
         <CircularProgress
             className={classNames('app-loader', classes.loader, className)}
+            color="inherit"
             size={width === 'xs' || width === 'sm' ? 20 : 30}
-            thickness={2}
+            thickness={3}
             {...rest}
         />
     ) : null;

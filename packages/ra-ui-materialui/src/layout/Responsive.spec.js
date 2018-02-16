@@ -38,7 +38,7 @@ describe('<Responsive>', () => {
                 small={<Small />}
                 medium={<Medium />}
                 large={<Large />}
-                width="sm"
+                width="md"
             />
         );
         const component = wrapper.find('Medium');
@@ -50,7 +50,7 @@ describe('<Responsive>', () => {
                 small={<Small />}
                 medium={null}
                 large={<Large />}
-                width="sm"
+                width="md"
             />
         );
         assert.equal(wrapper.get(0), null);
@@ -134,7 +134,7 @@ describe('<Responsive>', () => {
     });
     it('should fallback to the large component on medium screens', () => {
         const wrapper = shallow(
-            <Responsive small={<Small />} large={<Large />} width="sm" />
+            <Responsive small={<Small />} large={<Large />} width="md" />
         );
         const component = wrapper.find('Large');
         assert.equal(component.length, 1);

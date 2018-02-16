@@ -40,7 +40,7 @@ const Loading = ({
 }) => (
     <div className={classnames(classes.container, className)}>
         <div className={classes.message}>
-            <CircularProgress className={classes.icon} />
+            <CircularProgress className={classes.icon} color="primary" />
             <h1>{translate(loadingPrimary)}</h1>
             <div>{translate(loadingSecondary)}.</div>
         </div>
