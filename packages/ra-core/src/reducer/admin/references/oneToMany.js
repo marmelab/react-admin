@@ -63,7 +63,7 @@ export const getReferencesByIds = (state, reference, ids) => {
         );
     }
 
-    return ids
+    const references = ids
         .map(id => {
             const resource = state.admin.resources[reference];
 
@@ -78,6 +78,8 @@ export const getReferencesByIds = (state, reference, ids) => {
             prev[record.id] = record; // eslint-disable-line no-param-reassign
             return prev;
         }, {});
+
+    return Object.keys(references).length > 0 ? references : null;
 };
 
 export const nameRelatedTo = (reference, id, resource, target, filter = {}) => {

@@ -67,9 +67,7 @@ export class ReferenceArrayFieldController extends Component {
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
 
         return children({
-            isLoading:
-                isLoading ||
-                (ids.length !== 0 && Object.keys(data).length !== ids.length),
+            isLoading: isLoading || (ids.length !== 0 && !data),
             ids,
             data,
             referenceBasePath,
@@ -95,11 +93,9 @@ ReferenceArrayFieldController.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const emptyIds = [];
-
 const mapStateToProps = (state, props) => {
     const { record, source, reference } = props;
-    const ids = get(record, source) || emptyIds;
+    const ids = get(record, source) || [];
     return {
         data: getReferencesByIds(state, reference, ids),
         ids,
