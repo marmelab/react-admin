@@ -11,9 +11,12 @@ import Responsive from '../layout/Responsive';
 
 import { translate, userLogout as userLogoutAction } from 'ra-core';
 
-const styles = {
+const styles = theme => ({
+    menuItem: {
+        color: theme.palette.text.secondary,
+    },
     iconPaddingStyle: { paddingRight: '1.2em' },
-};
+});
 
 const sanitizeRestProps = ({
     classes,
@@ -33,7 +36,7 @@ const Logout = ({ classes, className, translate, userLogout, ...rest }) => (
     <Responsive
         small={
             <MenuItem
-                className={classnames('logout', className)}
+                className={classnames('logout', classes.menuItem, className)}
                 onClick={userLogout}
                 {...sanitizeRestProps(rest)}
             >
