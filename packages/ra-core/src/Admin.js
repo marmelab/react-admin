@@ -14,9 +14,9 @@ import { USER_LOGOUT } from './actions/authActions';
 import createAppReducer from './reducer';
 import { crudSaga } from './sideEffect/saga';
 import { TranslationProvider, defaultI18nProvider } from './i18n';
-import AdminRouter from './AdminRouter';
+import CoreAdminRouter from './AdminRouter';
 
-const Admin = ({
+const CoreAdmin = ({
     appLayout,
     authProvider,
     children,
@@ -83,7 +83,7 @@ const Admin = ({
                         <Route
                             path="/"
                             render={props => (
-                                <AdminRouter
+                                <CoreAdminRouter
                                     appLayout={appLayout}
                                     catchAll={catchAll}
                                     customRoutes={customRoutes}
@@ -97,7 +97,7 @@ const Admin = ({
                                     {...props}
                                 >
                                     {children}
-                                </AdminRouter>
+                                </CoreAdminRouter>
                             )}
                         />
                     </Switch>
@@ -112,7 +112,7 @@ const componentPropType = PropTypes.oneOfType([
     PropTypes.string,
 ]);
 
-Admin.propTypes = {
+CoreAdmin.propTypes = {
     appLayout: componentPropType,
     authProvider: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
@@ -122,6 +122,7 @@ Admin.propTypes = {
     customRoutes: PropTypes.array,
     dashboard: componentPropType,
     history: PropTypes.object,
+    loading: componentPropType,
     loginPage: componentPropType,
     logoutButton: componentPropType,
     menu: componentPropType,
@@ -138,4 +139,4 @@ export default withContext(
         authProvider: PropTypes.func,
     },
     ({ authProvider }) => ({ authProvider })
-)(Admin);
+)(CoreAdmin);

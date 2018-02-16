@@ -24,6 +24,14 @@ module.exports = {
                 'ra-core',
                 'src'
             ),
+            'ra-ui-materialui': path.join(
+                __dirname,
+                '..',
+                '..',
+                'packages',
+                'ra-ui-materialui',
+                'src'
+            ),
             'react-admin': path.join(
                 __dirname,
                 '..',

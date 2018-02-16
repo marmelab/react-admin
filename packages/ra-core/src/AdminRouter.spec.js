@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import assert from 'assert';
 import { Route } from 'react-router-dom';
 
-import { AdminRouter } from './AdminRouter';
+import { CoreAdminRouter } from './AdminRouter';
 import Resource from './Resource';
 
 describe('<AdminRouter>', () => {
@@ -15,10 +15,10 @@ describe('<AdminRouter>', () => {
     describe('With resources as regular children', () => {
         it('should render all resources with a registration context', () => {
             const wrapper = shallow(
-                <AdminRouter {...defaultProps}>
+                <CoreAdminRouter {...defaultProps}>
                     <Resource name="posts" />
                     <Resource name="comments" />
-                </AdminRouter>
+                </CoreAdminRouter>
             );
 
             const resources = wrapper.find('Connect(Resource)');
@@ -34,13 +34,13 @@ describe('<AdminRouter>', () => {
     describe('With resources returned from a function as children', () => {
         it('should render all resources with a registration context', async () => {
             const wrapper = shallow(
-                <AdminRouter {...defaultProps}>
+                <CoreAdminRouter {...defaultProps}>
                     {() => [
                         <Resource key="posts" name="posts" />,
                         <Resource key="comments" name="comments" />,
                         null,
                     ]}
-                </AdminRouter>
+                </CoreAdminRouter>
             );
 
             // Timeout needed because of the authProvider call
@@ -62,7 +62,7 @@ describe('<AdminRouter>', () => {
         const Bar = () => <div>Bar</div>;
 
         const wrapper = shallow(
-            <AdminRouter
+            <CoreAdminRouter
                 customRoutes={[
                     <Route
                         key="custom"
@@ -83,7 +83,7 @@ describe('<AdminRouter>', () => {
             >
                 <Resource name="posts" />
                 <Resource name="comments" />
-            </AdminRouter>
+            </CoreAdminRouter>
         );
 
         const routes = wrapper.find('Route');

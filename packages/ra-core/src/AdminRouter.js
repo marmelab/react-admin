@@ -9,7 +9,7 @@ import { AUTH_GET_PERMISSIONS } from './auth/types';
 import { isLoggedIn } from './reducer';
 import RoutesWithLayout from './RoutesWithLayout';
 
-export class AdminRouter extends Component {
+export class CoreAdminRouter extends Component {
     state = { children: [] };
 
     componentWillMount() {
@@ -159,7 +159,7 @@ const componentPropType = PropTypes.oneOfType([
     PropTypes.string,
 ]);
 
-AdminRouter.propTypes = {
+CoreAdminRouter.propTypes = {
     appLayout: componentPropType,
     authProvider: PropTypes.func,
     catchAll: componentPropType,
@@ -183,4 +183,4 @@ export default compose(
         authProvider: PropTypes.func,
     }),
     connect(mapStateToProps, {})
-)(AdminRouter);
+)(CoreAdminRouter);
