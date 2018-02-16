@@ -1,6 +1,8 @@
 # ra-ui-material
 
-UI Components for [react-admin](https://marmelab.com/admin-on-rest/) with [MaterialUI](https://material-ui-next.com/).
+Core components of [react-admin](https://marmelab.com/admin-on-rest/), a frontend Framework for building admin applications on top of REST services, using ES6, React.
+
+This package does not include any UI components. We also provide a default UI in the `ra-mui-materialui` package.
 
 ## License
 
