@@ -113,7 +113,10 @@ class Datagrid extends Component {
                             <TableCell padding="none">
                                 <Checkbox
                                     className="select-all"
-                                    checked={selectedIds.length === ids.length}
+                                    checked={
+                                        ids.length > 0 &&
+                                        selectedIds.length === ids.length
+                                    }
                                     onChange={this.handleSelectAll}
                                 />
                             </TableCell>
