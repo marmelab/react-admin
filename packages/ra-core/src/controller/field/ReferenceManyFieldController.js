@@ -116,7 +116,6 @@ export class ReferenceManyFieldController extends Component {
             ids,
             children,
             basePath,
-            isLoading,
         } = this.props;
 
         const referenceBasePath = basePath.replace(resource, reference);
@@ -125,7 +124,7 @@ export class ReferenceManyFieldController extends Component {
             currentSort: this.state.sort,
             data,
             ids,
-            isLoading: isLoading || typeof ids === 'undefined',
+            isLoading: typeof ids === 'undefined',
             referenceBasePath,
             setSort: this.setSort,
         });
@@ -170,7 +169,6 @@ function mapStateToProps(state, props) {
     return {
         data: getReferences(state, props.reference, relatedTo),
         ids: getIds(state, relatedTo),
-        isLoading: state.admin.loading > 0,
     };
 }
 
