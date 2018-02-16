@@ -46,16 +46,16 @@ const sanitizeRestProps = ({
 const ShowActions = ({
     basePath,
     className,
-    record,
+    data,
     hasDelete,
     hasEdit,
     hasList,
     ...rest
 }) => (
     <CardActions className={className} {...sanitizeRestProps(rest)}>
-        {hasEdit && <EditButton basePath={basePath} record={record} />}
+        {hasEdit && <EditButton basePath={basePath} record={data} />}
         {hasList && <ListButton basePath={basePath} />}
-        {hasDelete && <DeleteButton basePath={basePath} record={record} />}
+        {hasDelete && <DeleteButton basePath={basePath} record={data} />}
         <RefreshButton />
     </CardActions>
 );
@@ -63,7 +63,7 @@ const ShowActions = ({
 ShowActions.propTypes = {
     basePath: PropTypes.string,
     className: PropTypes.string,
-    record: PropTypes.object,
+    data: PropTypes.object,
     hasDelete: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasList: PropTypes.bool,

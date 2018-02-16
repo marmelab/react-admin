@@ -4,9 +4,7 @@ import resources, {
     getReferenceResource as resourceGetReferenceResource,
 } from './resource';
 import loading from './loading';
-import notifications, {
-    getNotification as innerGetNotification,
-} from './notifications';
+import notifications from './notifications';
 import record from './record';
 import references, {
     getPossibleReferenceValues as referencesGetPossibleReferenceValues,
@@ -36,8 +34,5 @@ export const getReferenceResource = (state, props) => {
 };
 
 export const isLoggedIn = state => authIsLoggedIn(state.auth);
-
-export const getNotification = state =>
-    innerGetNotification(state.notifications);
 
 export { getPossibleReferences } from './references';

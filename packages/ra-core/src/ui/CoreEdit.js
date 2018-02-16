@@ -68,8 +68,8 @@ export class CoreEdit extends Component {
     }
 
     getBasePath() {
-        const { match } = this.props;
-        return match.url
+        const { location } = this.props;
+        return location.pathname
             .split('/')
             .slice(0, -1)
             .join('/');

@@ -120,7 +120,7 @@ export class CoreDelete extends Component {
         const defaultTitle = translate('ra.page.delete', {
             name: `${resourceName}`,
             id,
-            record,
+            data: record,
         });
 
         return children({

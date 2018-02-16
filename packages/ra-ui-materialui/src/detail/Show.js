@@ -5,8 +5,8 @@ import classnames from 'classnames';
 import { CoreShow } from 'ra-core';
 
 import Header from '../layout/Header';
-import Title from '../layout/Title';
 import DefaultActions from './ShowActions';
+import RecordTitle from '../layout/RecordTitle';
 
 const sanitizeRestProps = ({
     actions,
@@ -108,46 +108,40 @@ const Show = ({
                 record,
                 title,
                 version,
-            }) => {
-                const titleElement = record ? (
-                    <Title
-                        title={title}
-                        record={record}
-                        defaultTitle={defaultTitle}
-                    />
-                ) : (
-                    ''
-                );
-
-                return (
-                    <div
-                        className={classnames('show-page', className)}
-                        {...sanitizeRestProps(rest)}
-                    >
-                        <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                            <Header
-                                title={titleElement}
-                                actions={actions}
-                                actionProps={{
-                                    basePath,
-                                    record,
-                                    hasList,
-                                    hasDelete,
-                                    hasEdit,
-                                    resource,
-                                }}
-                            />
-                            {record &&
-                                React.cloneElement(children, {
-                                    resource,
-                                    basePath,
-                                    record,
-                                    version,
-                                })}
-                        </Card>
-                    </div>
-                );
-            }}
+            }) => (
+                <div
+                    className={classnames('show-page', className)}
+                    {...sanitizeRestProps(rest)}
+                >
+                    <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                        <Header
+                            title={
+                                <RecordTitle
+                                    title={title}
+                                    record={record}
+                                    defaultTitle={defaultTitle}
+                                />
+                            }
+                            actions={actions}
+                            actionProps={{
+                                basePath,
+                                data: record,
+                                hasList,
+                                hasDelete,
+                                hasEdit,
+                                resource,
+                            }}
+                        />
+                        {record &&
+                            React.cloneElement(children, {
+                                resource,
+                                basePath,
+                                record,
+                                version,
+                            })}
+                    </Card>
+                </div>
+            )}
         </CoreShow>
     );
 };

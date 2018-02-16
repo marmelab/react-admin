@@ -63,8 +63,8 @@ export class CoreShow extends Component {
     }
 
     getBasePath() {
-        const { match } = this.props;
-        return match.url
+        const { location } = this.props;
+        return location.pathname
             .split('/')
             .slice(0, -2)
             .join('/');
@@ -82,9 +82,6 @@ export class CoreShow extends Component {
             record,
             isLoading,
             resource,
-            hasDelete,
-            hasEdit,
-            hasList,
             translate,
             version,
         } = this.props;
@@ -102,14 +99,6 @@ export class CoreShow extends Component {
             record,
         });
         return children({
-            actionProps: {
-                basePath,
-                record,
-                hasList,
-                hasDelete,
-                hasEdit,
-                resource,
-            },
             isLoading,
             title,
             defaultTitle,

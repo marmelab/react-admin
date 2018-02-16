@@ -5,8 +5,8 @@ import classnames from 'classnames';
 import { CoreEdit } from 'ra-core';
 
 import Header from '../layout/Header';
-import Title from '../layout/Title';
 import DefaultActions from './EditActions';
+import RecordTitle from '../layout/RecordTitle';
 
 const sanitizeRestProps = ({
     actions,
@@ -85,6 +85,7 @@ const Edit = ({
     hasDelete,
     hasList,
     hasShow,
+    location,
     match,
     resource,
     title,
@@ -111,55 +112,49 @@ const Edit = ({
                 save,
                 title,
                 version,
-            }) => {
-                const titleElement = record ? (
-                    <Title
-                        title={title}
-                        record={record}
-                        defaultTitle={defaultTitle}
-                    />
-                ) : (
-                    ''
-                );
-
-                return (
-                    <div
-                        className={classnames('edit-page', className)}
-                        {...sanitizeRestProps(rest)}
-                    >
-                        <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                            <Header
-                                title={titleElement}
-                                actions={actions}
-                                actionProps={{
-                                    basePath,
-                                    record,
-                                    hasDelete,
-                                    hasShow,
-                                    hasList,
-                                    resource,
-                                }}
-                            />
-                            {record ? (
-                                React.cloneElement(children, {
-                                    save,
-                                    resource,
-                                    basePath,
-                                    record,
-                                    version,
-                                    redirect:
-                                        typeof children.props.redirect ===
-                                        'undefined'
-                                            ? redirect
-                                            : children.props.redirect,
-                                })
-                            ) : (
-                                <CardContent>&nbsp;</CardContent>
-                            )}
-                        </Card>
-                    </div>
-                );
-            }}
+            }) => (
+                <div
+                    className={classnames('edit-page', className)}
+                    {...sanitizeRestProps(rest)}
+                >
+                    <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                        <Header
+                            title={
+                                <RecordTitle
+                                    title={title}
+                                    record={record}
+                                    defaultTitle={defaultTitle}
+                                />
+                            }
+                            actions={actions}
+                            actionProps={{
+                                basePath,
+                                data: record,
+                                hasDelete,
+                                hasShow,
+                                hasList,
+                                resource,
+                            }}
+                        />
+                        {record ? (
+                            React.cloneElement(children, {
+                                save,
+                                resource,
+                                basePath,
+                                record,
+                                version,
+                                redirect:
+                                    typeof children.props.redirect ===
+                                    'undefined'
+                                        ? redirect
+                                        : children.props.redirect,
+                            })
+                        ) : (
+                            <CardContent>&nbsp;</CardContent>
+                        )}
+                    </Card>
+                </div>
+            )}
         </CoreEdit>
     );
 };

@@ -11,8 +11,8 @@ import AlertError from 'material-ui-icons/ErrorOutline';
 import { CoreDelete, translate } from 'ra-core';
 
 import Header from '../layout/Header';
-import Title from '../layout/Title';
 import DefaultActions from './DeleteActions';
+import RecordTitle from '../layout/RecordTitle';
 
 const styles = theme => ({
     button: {
@@ -124,67 +124,60 @@ export const Delete = ({
             goBack,
             handleSubmit,
             isLoading,
-        }) => {
-            const rest = sanitizeRestProps(props);
-            const titleElement = data ? (
-                <Title
-                    title={title}
-                    record={data}
-                    defaultTitle={defaultTitle}
-                />
-            ) : (
-                ''
-            );
-
-            return (
-                <div className={className} {...rest}>
-                    <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                        <Header
-                            title={titleElement}
-                            actions={actions}
-                            actionProps={{
-                                basePath,
-                                data,
-                                hasEdit,
-                                hasList,
-                                hasShow,
-                            }}
-                        />
-                        <form onSubmit={handleSubmit}>
-                            <CardContent>
-                                <Typography>
-                                    {translate('ra.message.are_you_sure')}
-                                </Typography>
-                            </CardContent>
-                            <Toolbar disableGutters={true}>
-                                <Button
-                                    variant="raised"
-                                    type="submit"
-                                    color="primary"
-                                    className={classes.button}
-                                >
-                                    <ActionCheck
-                                        className={classes.iconPaddingStyle}
-                                    />
-                                    {translate('ra.action.delete')}
-                                </Button>
-                                &nbsp;
-                                <Button
-                                    variant="raised"
-                                    onClick={goBack}
-                                    className={classes.button}
-                                >
-                                    <AlertError
-                                        className={classes.iconPaddingStyle}
-                                    />
-                                    {translate('ra.action.cancel')}
-                                </Button>
-                            </Toolbar>
-                        </form>
-                    </Card>
-                </div>
-            );
-        }}
+        }) => (
+            <div className={className} {...sanitizeRestProps(props)}>
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                    <Header
+                        title={
+                            <RecordTitle
+                                title={title}
+                                record={data}
+                                defaultTitle={defaultTitle}
+                            />
+                        }
+                        actions={actions}
+                        actionProps={{
+                            basePath,
+                            data,
+                            hasEdit,
+                            hasList,
+                            hasShow,
+                        }}
+                    />
+                    <form onSubmit={handleSubmit}>
+                        <CardContent>
+                            <Typography>
+                                {translate('ra.message.are_you_sure')}
+                            </Typography>
+                        </CardContent>
+                        <Toolbar disableGutters={true}>
+                            <Button
+                                variant="raised"
+                                type="submit"
+                                color="primary"
+                                className={classes.button}
+                            >
+                                <ActionCheck
+                                    className={classes.iconPaddingStyle}
+                                />
+                                {translate('ra.action.delete')}
+                            </Button>
+                            &nbsp;
+                            <Button
+                                variant="raised"
+                                onClick={goBack}
+                                className={classes.button}
+                            >
+                                <AlertError
+                                    className={classes.iconPaddingStyle}
+                                />
+                                {translate('ra.action.cancel')}
+                            </Button>
+                        </Toolbar>
+                    </form>
+                </Card>
+            </div>
+        )}
     </CoreDelete>
 );
 
