@@ -15,9 +15,11 @@ import {
     NullableBooleanInput,
     NumberField,
     ReferenceManyField,
+    Responsive,
     TabbedForm,
     TextField,
     TextInput,
+    SimpleList,
 } from 'react-admin';
 import Icon from 'material-ui-icons/Person';
 
@@ -71,23 +73,33 @@ export const VisitorList = withStyles(listStyles)(({ classes, ...props }) => (
         sort={{ field: 'last_seen', order: 'DESC' }}
         perPage={25}
     >
-        <Datagrid>
-            <FullNameField />
-            <DateField source="last_seen" type="date" />
-            <NumberField
-                source="nb_commands"
-                label="resources.customers.fields.commands"
-                className={classes.nb_commands}
-            />
-            <ColoredNumberField
-                source="total_spent"
-                options={{ style: 'currency', currency: 'USD' }}
-            />
-            <DateField source="latest_purchase" showTime />
-            <BooleanField source="has_newsletter" label="News." />
-            <SegmentsField />
-            <EditButton />
-        </Datagrid>
+        <Responsive
+            small={
+                <SimpleList
+                    primaryText={record =>
+                        `${record.first_name} ${record.last_name}`}
+                />
+            }
+            medium={
+                <Datagrid>
+                    <FullNameField />
+                    <DateField source="last_seen" type="date" />
+                    <NumberField
+                        source="nb_commands"
+                        label="resources.customers.fields.commands"
+                        className={classes.nb_commands}
+                    />
+                    <ColoredNumberField
+                        source="total_spent"
+                        options={{ style: 'currency', currency: 'USD' }}
+                    />
+                    <DateField source="latest_purchase" showTime />
+                    <BooleanField source="has_newsletter" label="News." />
+                    <SegmentsField />
+                    <EditButton />
+                </Datagrid>
+            }
+        />
     </List>
 ));
 

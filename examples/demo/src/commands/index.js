@@ -14,8 +14,10 @@ import {
     NullableBooleanInput,
     NumberField,
     ReferenceInput,
+    Responsive,
     SelectInput,
     SimpleForm,
+    SimpleList,
     TextField,
     TextInput,
 } from 'react-admin';
@@ -68,20 +70,31 @@ export const CommandList = withStyles(listStyles)(({ classes, ...props }) => (
         sort={{ field: 'date', order: 'DESC' }}
         perPage={25}
     >
-        <Datagrid>
-            <DateField source="date" showTime />
-            <TextField source="reference" />
-            <CustomerReferenceField />
-            <NbItemsField />
-            <NumberField
-                source="total"
-                options={{ style: 'currency', currency: 'USD' }}
-                className={classes.total}
-            />
-            <TextField source="status" />
-            <BooleanField source="returned" />
-            <EditButton />
-        </Datagrid>
+        <Responsive
+            small={
+                <SimpleList
+                    primaryText={record => record.reference}
+                    secondaryText={record =>
+                        new Date(record.date).toLocaleDateString()}
+                />
+            }
+            medium={
+                <Datagrid>
+                    <DateField source="date" showTime />
+                    <TextField source="reference" />
+                    <CustomerReferenceField />
+                    <NbItemsField />
+                    <NumberField
+                        source="total"
+                        options={{ style: 'currency', currency: 'USD' }}
+                        className={classes.total}
+                    />
+                    <TextField source="status" />
+                    <BooleanField source="returned" />
+                    <EditButton />
+                </Datagrid>
+            }
+        />
     </List>
 ));
 

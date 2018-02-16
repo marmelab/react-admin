@@ -15,6 +15,8 @@ import {
     NullableBooleanInput,
     NumberField,
     ReferenceManyField,
+    Responsive,
+    SimpleList,
     TabbedForm,
     TextField,
     TextInput,
@@ -64,23 +66,33 @@ export const VisitorList = props => (
         sort={{ field: 'lastSeen', order: 'DESC' }}
         perPage={25}
     >
-        <Datagrid>
-            <FullNameField />
-            <DateField source="lastSeen" type="date" />
-            <NumberField
-                source="nbCommands"
-                label="resources.Customer.fields.commands"
-                style={{ color: 'purple' }}
-            />
-            <ColoredNumberField
-                source="totalSpent"
-                options={{ style: 'currency', currency: 'USD' }}
-            />
-            <DateField source="latestPurchase" showTime />
-            <BooleanField source="hasNewsletter" label="News." />
-            <SegmentReferenceField />
-            <EditButton />
-        </Datagrid>
+        <Responsive
+            small={
+                <SimpleList
+                    primaryText={record =>
+                        `${record.firstName} ${record.lastName}`}
+                />
+            }
+            medium={
+                <Datagrid>
+                    <FullNameField />
+                    <DateField source="lastSeen" type="date" />
+                    <NumberField
+                        source="nbCommands"
+                        label="resources.Customer.fields.commands"
+                        style={{ color: 'purple' }}
+                    />
+                    <ColoredNumberField
+                        source="totalSpent"
+                        options={{ style: 'currency', currency: 'USD' }}
+                    />
+                    <DateField source="latestPurchase" showTime />
+                    <BooleanField source="hasNewsletter" label="News." />
+                    <SegmentReferenceField />
+                    <EditButton />
+                </Datagrid>
+            }
+        />
     </List>
 );
 

@@ -11,8 +11,10 @@ import {
     LongTextInput,
     ReferenceField,
     ReferenceInput,
+    Responsive,
     SelectInput,
     SimpleForm,
+    SimpleList,
     TextField,
     TextInput,
 } from 'react-admin';
@@ -76,16 +78,31 @@ export const ReviewList = withStyles(listStyles)(({ classes, ...props }) => (
         perPage={25}
         sort={{ field: 'date', order: 'DESC' }}
     >
-        <Datagrid rowStyle={rowStyle}>
-            <DateField source="date" />
-            <CustomerReferenceField />
-            <ProductReferenceField />
-            <StarRatingField />
-            <TextField source="comment" cellClassName={classes.comment} />
-            <TextField source="status" />
-            <ApproveButton />
-            <EditButton />
-        </Datagrid>
+        <Responsive
+            small={
+                <SimpleList
+                    primaryText={record =>
+                        new Date(record.date).toLocaleDateString()}
+                    secondaryText={record => record.comment}
+                    tertiaryText={record => record.rating}
+                />
+            }
+            medium={
+                <Datagrid rowStyle={rowStyle}>
+                    <DateField source="date" />
+                    <CustomerReferenceField />
+                    <ProductReferenceField />
+                    <StarRatingField />
+                    <TextField
+                        source="comment"
+                        cellClassName={classes.comment}
+                    />
+                    <TextField source="status" />
+                    <ApproveButton />
+                    <EditButton />
+                </Datagrid>
+            }
+        />
     </List>
 ));
 
