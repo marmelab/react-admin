@@ -67,7 +67,6 @@ export class ReferenceField extends Component {
 
     render() {
         const {
-            allowEmpty,
             basePath,
             children,
             className,
@@ -84,7 +83,7 @@ export class ReferenceField extends Component {
         if (React.Children.count(children) !== 1) {
             throw new Error('<ReferenceField> only accepts a single child');
         }
-        if (!referenceRecord && !allowEmpty) {
+        if (!referenceRecord) {
             return <LinearProgress />;
         }
         const rootPath = basePath.replace(resource, reference);
@@ -102,7 +101,6 @@ export class ReferenceField extends Component {
                     {React.cloneElement(children, {
                         record: referenceRecord,
                         resource: reference,
-                        allowEmpty,
                         basePath,
                         translateChoice: false,
                     })}
@@ -113,7 +111,6 @@ export class ReferenceField extends Component {
         return React.cloneElement(children, {
             record: referenceRecord,
             resource: reference,
-            allowEmpty,
             basePath,
             translateChoice: false,
             ...sanitizeRestProps(rest),
@@ -123,7 +120,6 @@ export class ReferenceField extends Component {
 
 ReferenceField.propTypes = {
     addLabel: PropTypes.bool,
-    allowEmpty: PropTypes.bool.isRequired,
     basePath: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
@@ -143,7 +139,6 @@ ReferenceField.propTypes = {
 };
 
 ReferenceField.defaultProps = {
-    allowEmpty: false,
     classes: {},
     linkType: 'edit',
     referenceRecord: null,
