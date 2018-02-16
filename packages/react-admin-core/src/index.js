@@ -25,6 +25,6 @@ export {
 
 export * from './sideEffect/saga';
 export CoreAdmin from './Admin';
-export AdminRouter from './AdminRouter';
+export CoreAdminRouter from './AdminRouter';
 export RoutesWithLayout from './RoutesWithLayout';
 export Resource from './Resource';

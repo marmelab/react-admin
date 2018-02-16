@@ -31,6 +31,7 @@ const Admin = ({
     i18nProvider = defaultI18nProvider,
     theme,
     title = 'React Admin',
+    loading,
     loginPage,
     logoutButton,
     initialState,
@@ -87,6 +88,7 @@ const Admin = ({
                                     catchAll={catchAll}
                                     customRoutes={customRoutes}
                                     dashboard={dashboard}
+                                    loading={loading}
                                     loginPage={loginPage}
                                     logout={logout}
                                     menu={menu}

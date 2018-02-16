@@ -55,6 +55,11 @@ Loading.propTypes = {
     loadingSecondary: PropTypes.string,
 };
 
+Loading.defaultProps = {
+    loadingPrimary: 'ra.page.loading',
+    loadingSecondary: 'ra.message.loading',
+};
+
 const enhance = compose(withStyles(styles), translate);
 
 export default enhance(Loading);
