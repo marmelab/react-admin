@@ -14,7 +14,7 @@ describe('<ReferenceArrayFieldController />', () => {
                 reference="bar"
                 source="barIds"
                 basePath=""
-                data={{}}
+                data={null}
                 ids={[1, 2]}
                 crudGetManyAccumulate={() => {}}
             >
@@ -22,6 +22,27 @@ describe('<ReferenceArrayFieldController />', () => {
             </ReferenceArrayFieldController>
         );
         assert.equal(children.mock.calls[0][0].isLoading, true);
+    });
+
+    it('should set the isLoading prop to false when at least one related record is found', () => {
+        const children = jest.fn();
+
+        shallow(
+            <ReferenceArrayFieldController
+                record={{ barIds: [1, 2] }}
+                resource="foo"
+                reference="bar"
+                source="barIds"
+                basePath=""
+                data={{ 1: { id: 1 } }}
+                ids={[1, 2]}
+                crudGetManyAccumulate={() => {}}
+            >
+                {children}
+            </ReferenceArrayFieldController>
+        );
+
+        assert.equal(children.mock.calls[0][0].isLoading, false);
     });
 
     it('should set the data prop to the loaded data when it has been fetched', () => {

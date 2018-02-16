@@ -59,7 +59,6 @@ export class ReferenceArrayFieldController extends Component {
             reference,
             data,
             ids,
-            isLoading,
             children,
             basePath,
         } = this.props;
@@ -67,9 +66,7 @@ export class ReferenceArrayFieldController extends Component {
         const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
 
         return children({
-            isLoading:
-                isLoading ||
-                (ids.length !== 0 && Object.keys(data).length !== ids.length),
+            isLoading: ids.length !== 0 && !data,
             ids,
             data,
             referenceBasePath,
@@ -87,7 +84,6 @@ ReferenceArrayFieldController.propTypes = {
     crudGetManyAccumulate: PropTypes.func.isRequired,
     data: PropTypes.object,
     ids: PropTypes.array.isRequired,
-    isLoading: PropTypes.bool,
     label: PropTypes.string,
     record: PropTypes.object.isRequired,
     reference: PropTypes.string.isRequired,
@@ -95,15 +91,12 @@ ReferenceArrayFieldController.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const emptyIds = [];
-
 const mapStateToProps = (state, props) => {
     const { record, source, reference } = props;
-    const ids = get(record, source) || emptyIds;
+    const ids = get(record, source) || [];
     return {
         data: getReferencesByIds(state, reference, ids),
         ids,
-        isLoading: state.admin.loading > 0,
     };
 };
 
