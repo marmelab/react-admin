@@ -18,15 +18,15 @@ import defaultTheme from '../defaultTheme';
 
 const styles = theme => ({
     root: {
-        width: '100%',
+        display: 'flex',
         zIndex: 1,
         minHeight: '100vh',
         backgroundColor: theme.palette.background.default,
+        position: 'relative',
     },
     appFrame: {
-        position: 'relative',
         display: 'flex',
-        width: '100%',
+        overflowX: 'auto',
     },
     content: {
         width: '100%',
