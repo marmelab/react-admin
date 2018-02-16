@@ -1,6 +1,6 @@
-# ra-ui-material
+# ra-core
 
-Core components of [react-admin](https://marmelab.com/admin-on-rest/), a frontend Framework for building admin applications on top of REST services, using ES6, React.
+Core components of [react-admin](https://marmelab.com/admin-on-rest/), a frontend Framework for building admin applications on top of REST/GraphQL services, using ES6, React.
 
 This package does not include any UI components. We also provide a default UI in the `ra-mui-materialui` package.
 
