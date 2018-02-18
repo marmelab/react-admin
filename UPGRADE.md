@@ -578,7 +578,7 @@ export default ({ onMenuClick, logout }) => (
                 ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
                 : null
             }
-        />
+        </WithPermissions>
         {logout}
     </div>
 );
