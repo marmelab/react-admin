@@ -48,6 +48,7 @@ const Logout = ({ classes, className, translate, userLogout, ...rest }) => (
             <Button
                 className={classnames('logout', className)}
                 onClick={userLogout}
+                size="small"
                 {...sanitizeRestProps(rest)}
             >
                 <ExitIcon className={classes.iconPaddingStyle} />

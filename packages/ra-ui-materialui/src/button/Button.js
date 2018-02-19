@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import MuiButton from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 
@@ -22,24 +23,34 @@ const styles = {
 };
 
 const Button = ({
+    alignIcon = 'left',
     children,
-    className,
     classes = {},
+    className,
     color = 'primary',
     label,
+    size = 'small',
     translate,
-    alignIcon = 'left',
     ...rest
 }) => (
-    <MuiButton
-        className={classnames(classes.button, className)}
-        color={color}
-        {...rest}
-    >
-        {alignIcon === 'left' && children}
-        <Responsive
-            small={<span />}
-            medium={
+    <Responsive
+        small={
+            <IconButton
+                arial-label={label && translate(label, { _: label })}
+                color={color}
+                {...rest}
+            >
+                {children}
+            </IconButton>
+        }
+        medium={
+            <MuiButton
+                className={classnames(classes.button, className)}
+                color={color}
+                size={size}
+                {...rest}
+            >
+                {alignIcon === 'left' && children}
                 <span
                     className={classnames({
                         [classes.label]: alignIcon === 'left',
@@ -48,19 +59,20 @@ const Button = ({
                 >
                     {label && translate(label, { _: label })}
                 </span>
-            }
-        />
-        {alignIcon === 'right' && children}
-    </MuiButton>
+                {alignIcon === 'right' && children}
+            </MuiButton>
+        }
+    />
 );
 
 Button.propTypes = {
     alignIcon: PropTypes.string,
     children: PropTypes.node.isRequired,
-    className: PropTypes.string,
     classes: PropTypes.object,
+    className: PropTypes.string,
     color: PropTypes.string,
     label: PropTypes.string,
+    size: PropTypes.string,
     translate: PropTypes.func.isRequired,
 };
 
