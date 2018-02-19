@@ -24,11 +24,11 @@ const sanitizeRestProps = ({
  *     import Button from 'material-ui/Button';
  *     import { CardActions, ListButton, ShowButton, DeleteButton, RefreshButton, Edit } from 'react-admin';
  *     
- *     const PostEditActions = ({ basePath, record }) => (
+ *     const PostEditActions = ({ basePath, record, rseource }) => (
  *         <CardActions>
  *             <ShowButton basePath={basePath} record={record} />
  *             <ListButton basePath={basePath} />
- *             <DeleteButton basePath={basePath} record={record} />
+ *             <DeleteButton basePath={basePath} record={record} resource={resource} />
  *             <RefreshButton />
  *             // Add your custom actions here //
  *             <Button color="primary" onClick={customAction}>Custom Action</Button>
@@ -51,10 +51,8 @@ const EditActions = ({
     ...rest
 }) => (
     <CardActions className={className} {...sanitizeRestProps(rest)}>
-        {hasShow && (
-            <ShowButton basePath={basePath} record={data} resource={resource} />
-        )}
-        {hasList && <ListButton basePath={basePath} resource={resource} />}
+        {hasShow && <ShowButton basePath={basePath} record={data} />}
+        {hasList && <ListButton basePath={basePath} />}
         <DeleteButton basePath={basePath} record={data} resource={resource} />
         <RefreshButton />
     </CardActions>
