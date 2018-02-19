@@ -21,6 +21,9 @@ const styles = theme => ({
         }),
         zIndex: 1300,
     },
+    toolbar: {
+        paddingRight: 24,
+    },
     menuButton: {
         marginLeft: '0.5em',
         marginRight: '0.5em',
@@ -73,7 +76,7 @@ const AppBar = ({
         position="absolute"
         {...rest}
     >
-        <Toolbar disableGutters>
+        <Toolbar disableGutters className={classes.toolbar}>
             <IconButton
                 color="inherit"
                 aria-label="open drawer"
