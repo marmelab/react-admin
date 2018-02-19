@@ -1,7 +1,7 @@
 // in src/comments.js
 import React from 'react';
 import { DateField, EditButton, translate, NumberField } from 'react-admin';
-import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
+import Card, { CardHeader, CardContent } from 'material-ui/Card';
 import { withStyles } from 'material-ui/styles';
 import AvatarField from './AvatarField';
 import { ColoredNumberField } from './index';
@@ -13,12 +13,16 @@ const listStyles = theme => ({
         flexDirection: 'column',
         margin: '0.5rem 0',
     },
-    cardContent: theme.typography.body1,
-    cardContentItem: {
-        padding: '0 2rem',
+    cardTitleContent: {
+        display: 'flex',
+        flexDirection: 'rows',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
-    cardActions: {
-        justifyContent: 'flex-end',
+    cardContent: {
+        ...theme.typography.body1,
+        display: 'flex',
+        flexDirection: 'column',
     },
 });
 
@@ -28,23 +32,21 @@ const MobileGrid = withStyles(listStyles)(
             {ids.map(id => (
                 <Card key={id} className={classes.card}>
                     <CardHeader
-                        title={`${data[id].firstName} ${data[id].lastName}`}
-                        subheader={
-                            <span>
-                                {translate(
-                                    'resources.customers.fields.lastSeen_gte'
-                                )}&nbsp;
-                                <DateField
+                        title={
+                            <div className={classes.cardTitleContent}>
+                                <h2>{`${data[id].firstName} ${data[id]
+                                    .lastName}`}</h2>
+                                <EditButton
+                                    resource="visitors"
+                                    basePath={basePath}
                                     record={data[id]}
-                                    source="lastSeen"
-                                    type="date"
                                 />
-                            </span>
+                            </div>
                         }
                         avatar={<AvatarField record={data[id]} size="45" />}
                     />
                     <CardContent className={classes.cardContent}>
-                        <span className={classes.cardContentItem}>
+                        <div>
                             {translate(
                                 'resources.commands.name',
                                 parseInt(data[id].nbCommands, 10) || 1
@@ -54,23 +56,18 @@ const MobileGrid = withStyles(listStyles)(
                                 label="resources.customers.fields.commands"
                                 className={classes.nb_commands}
                             />
-                        </span>
-                        {translate(
-                            'resources.customers.fields.totalSpent'
-                        )}&nbsp; :{' '}
-                        <ColoredNumberField
-                            record={data[id]}
-                            source="totalSpent"
-                            options={{ style: 'currency', currency: 'USD' }}
-                        />
+                        </div>
+                        <div>
+                            {translate(
+                                'resources.customers.fields.totalSpent'
+                            )}&nbsp; :{' '}
+                            <ColoredNumberField
+                                record={data[id]}
+                                source="totalSpent"
+                                options={{ style: 'currency', currency: 'USD' }}
+                            />
+                        </div>
                     </CardContent>
-                    <CardActions className={classes.cardActions}>
-                        <EditButton
-                            resource="visitors"
-                            basePath={basePath}
-                            record={data[id]}
-                        />
-                    </CardActions>
                 </Card>
             ))}
         </div>

@@ -17,7 +17,6 @@ import {
     Responsive,
     SelectInput,
     SimpleForm,
-    SimpleList,
     TextField,
     TextInput,
 } from 'react-admin';
@@ -27,6 +26,7 @@ import withStyles from 'material-ui/styles/withStyles';
 import Basket from './Basket';
 import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
+import MobileGrid from './MobileGrid';
 
 export const CommandIcon = Icon;
 
@@ -71,13 +71,7 @@ export const CommandList = withStyles(listStyles)(({ classes, ...props }) => (
         perPage={25}
     >
         <Responsive
-            xsmall={
-                <SimpleList
-                    primaryText={record => record.reference}
-                    secondaryText={record =>
-                        new Date(record.date).toLocaleDateString()}
-                />
-            }
+            xsmall={<MobileGrid />}
             medium={
                 <Datagrid>
                     <DateField source="date" showTime />
