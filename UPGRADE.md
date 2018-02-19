@@ -1,5 +1,30 @@
 # Upgrade to 2.0
 
+- [Admin-on-rest Renamed to React-Admin](#admin-on-rest-renamed-to-react-admin)
+- [`restClient` Prop Renamed To `dataProvider` in `<Admin>` Component](#restclient-prop-renamed-to-dataprovider-in-admin-component)
+- [Default REST Clients Moved to Standalone Packages](#default-rest-clients-moved-to-standalone-packages)
+- [`authClient` Prop Renamed To `authProvider` in `<Admin>` Component](#authclient-prop-renamed-to-authprovider-in-admin-component)
+- [Default (English) Messages Moved To Standalone Package](#default-english-messages-moved-to-standalone-package)
+- [Message Hash Main Key Changed ("aor" => "ra")](#message-hash-main-key-changed-aor--ra)
+- [Replaced `messages` by `i18nProvider` in `<Admin>`](#replaced-messages-by-i18nprovider-in-admin)
+- [`<AutocompleteInput>` no longer accepts a `filter` prop](#autocompleteinput-no-longer-accepts-a-filter-prop)
+- [`<Datagrid>` No Longer Accepts `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props](#datagrid-no-longer-accepts-options-headeroptions-bodyoptions-and-rowoptions-props)
+- [`<DateInput>` Stores a Date String Instead Of a Date Object](#dateinput-stores-a-date-string-instead-of-a-date-object)
+- [Removed `<DateInput>` `options` props](#removed-dateinput-options-props)
+- [`<SelectArrayInput>` does not support autocompletion anymore.](#selectarrayinput-does-not-support-autocompletion-anymore)
+- [CSS Classes Changed](#css-classes-changed)
+- [`addField` Prop Replaced By `addField` HOC](#addfield-prop-replaced-by-addfield-hoc)
+- [No More `refresh` Prop Passed To `<List>` Actions](#no-more-refresh-prop-passed-to-list-actions)
+- [Customizing styles](#customizing-styles)
+- [Authentication: `<Restricted>` renamed to `<Authenticated>`](#authentication-restricted-renamed-to-authenticated)
+- [Authorization: `<WithPermission>` and `<SwitchPermissions>` replaced by `<WithPermissions>`](#authorization-withpermission-and-switchpermissions-replaced-by-withpermissions)
+- [Custom Layouts](#custom-layouts)
+- [Menu `onMenuTap` prop has been renamed `onMenuClick`](#menu-onmenutap-prop-has-been-renamed-onmenuclick)
+- [Logout is now displayed in the AppBar on desktop](#logout-is-now-displayed-in-the-appbar-on-desktop)
+- [Data providers should support two more types for bulk actions](#data-providers-should-support-two-more-types-for-bulk-actions)
+- [react-admin addon packages renamed with ra prefix and moved into root repository](#react-admin-addon-packages-renamed-with-ra-prefix-and-moved-into-root-repository)
+
+
 ## Admin-on-rest Renamed to React-Admin
 
 We've chosen to remove term REST from the project name, to emphasize the fact that it can adapt to any type of backend - including GraphQL.
