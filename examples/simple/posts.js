@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Children, cloneElement } from 'react';
 import {
     BulkActions,
     BulkDeleteMenuItem,
@@ -49,7 +49,6 @@ import {
 import RichTextInput from 'ra-input-rich-text';
 import Chip from 'material-ui/Chip';
 import { withStyles } from 'material-ui/styles';
-import MuiToolbar from 'material-ui/Toolbar';
 import BookIcon from 'material-ui-icons/Book';
 export const PostIcon = BookIcon;
 import UpdateCommentableMenuItem from './customBulkAction';
@@ -80,9 +79,6 @@ const styles = {
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
     },
-    gridButtons: {
-        minHeight: 'auto',
-    },
     publishedAt: { fontStyle: 'italic' },
 };
 
@@ -92,6 +88,17 @@ const PostListBulkActions = props => (
         <BulkDeleteMenuItem />
     </BulkActions>
 );
+
+const PostListActionToolbar = withStyles({
+    toolbar: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+})(({ classes, children, ...props }) => (
+    <div className={classes.toolbar}>
+        {Children.map(children, button => cloneElement(button, props))}
+    </div>
+));
 
 export const PostList = withStyles(styles)(({ classes, ...props }) => (
     <List
@@ -131,10 +138,10 @@ export const PostList = withStyles(styles)(({ classes, ...props }) => (
                             <ChipField source="name" />
                         </SingleFieldList>
                     </ReferenceArrayField>
-                    <MuiToolbar disableGutters className={classes.gridButtons}>
+                    <PostListActionToolbar>
                         <EditButton />
                         <ShowButton />
-                    </MuiToolbar>
+                    </PostListActionToolbar>
                 </Datagrid>
             }
         />
