@@ -70,6 +70,8 @@ export default {
                 date_gte: 'Passed Since',
                 date_lte: 'Passed Before',
                 total_gte: 'Min amount',
+                status: 'Status',
+                returned: 'Returned',
             },
         },
         Product: {
