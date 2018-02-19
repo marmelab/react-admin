@@ -49,7 +49,7 @@ import {
 import RichTextInput from 'ra-input-rich-text';
 import Chip from 'material-ui/Chip';
 import { withStyles } from 'material-ui/styles';
-
+import MuiToolbar from 'material-ui/Toolbar';
 import BookIcon from 'material-ui-icons/Book';
 export const PostIcon = BookIcon;
 import UpdateCommentableMenuItem from './customBulkAction';
@@ -79,6 +79,9 @@ const styles = {
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
+    },
+    gridButtons: {
+        minHeight: 'auto',
     },
     publishedAt: { fontStyle: 'italic' },
 };
@@ -128,8 +131,10 @@ export const PostList = withStyles(styles)(({ classes, ...props }) => (
                             <ChipField source="name" />
                         </SingleFieldList>
                     </ReferenceArrayField>
-                    <EditButton />
-                    <ShowButton />
+                    <MuiToolbar disableGutters className={classes.gridButtons}>
+                        <EditButton />
+                        <ShowButton />
+                    </MuiToolbar>
                 </Datagrid>
             }
         />
