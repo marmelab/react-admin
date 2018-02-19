@@ -7,7 +7,10 @@ title: "My First Project Tutorial"
 
 This 15 minutes tutorial will expose how to create a new admin app based on an existing REST API.
 
-![react-admin blog demo](http://static.marmelab.com/react-admin.gif)
+<video width="800" height="600" controls>
+  <source src="http://static.marmelab.com/react-admin/react-admin.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
 
 ## Installation
 
@@ -371,8 +374,8 @@ The sidebar menu shows the same icon for both posts and users. Fortunately, cust
 
 ```jsx
 // in src/App.js
-import PostIcon from 'material-ui/svg-icons/action/book';
-import UserIcon from 'material-ui/svg-icons/social/group';
+import PostIcon from 'material-ui-icons/Book';
+import UserIcon from 'material-ui-icons/Group';
 
 const App = () => (
     <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
@@ -382,7 +385,7 @@ const App = () => (
 );
 ```
 
-![custom menu icons](./img/custom-menu.png)
+![custom menu icons](./img/custom-menu.gif)
 
 ## Using a Custom Home Page
 
