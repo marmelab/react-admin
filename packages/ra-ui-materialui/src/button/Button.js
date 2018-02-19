@@ -37,6 +37,7 @@ const Button = ({
         small={
             <IconButton
                 arial-label={label && translate(label, { _: label })}
+                className={className}
                 color={color}
                 {...rest}
             >
