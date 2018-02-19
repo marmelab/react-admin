@@ -62,6 +62,10 @@ module.exports = {
             delete_title: 'Supprimer %{name} #%{id}',
             delete_content:
                 'Êtes-vous sur(e) de vouloir supprimer cet élément ?',
+            bulk_delete_title:
+                'Supprimer %{name} |||| Supprimer %{smart_count} %{name} éléments',
+            bulk_delete_content:
+                'Êtes-vous sur(e) de vouloir supprimer cet élément ? |||| Êtes-vous sur(e) de vouloir supprimer ces %{smart_count} éléments ?',
         },
         navigation: {
             no_results: 'Aucun résultat',

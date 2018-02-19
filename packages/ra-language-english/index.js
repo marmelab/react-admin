@@ -58,6 +58,10 @@ module.exports = {
             invalid_form: 'The form is not valid. Please check for errors',
             delete_title: 'Delete %{name} #%{id}',
             delete_content: 'Are you sure you want to delete this item?',
+            bulk_delete_title:
+                'Delete %{name} |||| Delete %{smart_count} %{name} items',
+            bulk_delete_content:
+                'Are you sure you want to delete this %{name}? |||| Are you sure you want to delete these %{smart_count} items?',
         },
         navigation: {
             no_results: 'No results found',
