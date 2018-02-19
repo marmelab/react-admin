@@ -22,6 +22,9 @@ const styles = {
             padding: '0 0 0 12px',
         },
     },
+    checkbox: {
+        height: 'auto',
+    },
     row: {},
     rowEven: {},
     rowOdd: {},
