@@ -287,7 +287,6 @@ ListController.propTypes = {
     filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     hasCreate: PropTypes.bool.isRequired,
     hasEdit: PropTypes.bool.isRequired,
-    hasDelete: PropTypes.bool.isRequired,
     hasList: PropTypes.bool.isRequired,
     hasShow: PropTypes.bool.isRequired,
     ids: PropTypes.array,

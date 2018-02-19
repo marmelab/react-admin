@@ -125,11 +125,11 @@ import {
     RefreshButton,
 } from 'react-admin';
 
-const PostEditActions = ({ basePath, data }) => (
+const PostEditActions = ({ basePath, data, resource }) => (
     <CardActions>
         <ShowButton basePath={basePath} record={data} />
-        <ListButton basePath={basePath} />
-        <DeleteButton basePath={basePath} record={data} />
+        <ListButton basePath={basePath} record={record} resource={resource} />
+        <DeleteButton basePath={basePath} record={data} resource={resource} />
         <RefreshButton />
         {/* Add your custom actions */}
         <Button color="primary" onClick={customAction}>Custom Action</Button>

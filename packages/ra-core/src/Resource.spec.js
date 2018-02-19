@@ -8,7 +8,6 @@ const PostList = () => <div>PostList</div>;
 const PostEdit = () => <div>PostEdit</div>;
 const PostCreate = () => <div>PostCreate</div>;
 const PostShow = () => <div>PostShow</div>;
-const PostDelete = () => <div>PostDelete</div>;
 const PostIcon = () => <div>PostIcon</div>;
 
 const resource = {
@@ -18,7 +17,6 @@ const resource = {
     edit: PostEdit,
     create: PostCreate,
     show: PostShow,
-    remove: PostDelete,
     icon: PostIcon,
 };
 
@@ -43,7 +41,6 @@ describe('<Resource>', () => {
             hasEdit: true,
             hasShow: true,
             hasCreate: true,
-            hasDelete: true,
             icon: PostIcon,
         });
     });
@@ -110,20 +107,6 @@ describe('<Resource>', () => {
         );
         assert.ok(
             wrapper.containsMatchingElement(<Route path="posts/:id/show" />)
-        );
-    });
-    it('renders delete route if specified', () => {
-        const wrapper = shallow(
-            <Resource
-                {...resource}
-                context="route"
-                match={{ url: 'posts' }}
-                registerResource={registerResource}
-                unregisterResource={unregisterResource}
-            />
-        );
-        assert.ok(
-            wrapper.containsMatchingElement(<Route path="posts/:id/delete" />)
         );
     });
 });

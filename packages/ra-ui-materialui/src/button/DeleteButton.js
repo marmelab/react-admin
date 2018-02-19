@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ActionDelete from 'material-ui-icons/Delete';
-import { linkToRecord } from 'ra-core';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import Dialog, {
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+} from 'material-ui/Dialog';
+import MuiButton from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
 import { fade } from 'material-ui/styles/colorManipulator';
+import ActionDelete from 'material-ui-icons/Delete';
+import ActionCheck from 'material-ui-icons/CheckCircle';
+import AlertError from 'material-ui-icons/ErrorOutline';
 import classnames from 'classnames';
+import { translate, crudDelete } from 'ra-core';
 
-import { Link } from 'react-router-dom';
 import Button from './Button';
 
 const styles = theme => ({
@@ -20,33 +30,112 @@ const styles = theme => ({
             },
         },
     },
+    buttonConfirm: {
+        backgroundColor: theme.palette.error.main,
+        color: theme.palette.error.contrastText,
+        '&:hover': {
+            backgroundColor: theme.palette.error.dark,
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: theme.palette.error.main,
+            },
+        },
+    },
+    iconPaddingStyle: {
+        paddingRight: '0.5em',
+    },
 });
 
-const DeleteButton = ({
-    basePath = '',
-    label = 'ra.action.delete',
-    record = {},
-    classes = {},
-    className,
-    ...rest
-}) => (
-    <Button
-        component={Link}
-        to={`${linkToRecord(basePath, record.id)}/delete`}
-        label={label}
-        className={classnames(classes.deleteButton, className)}
-        {...rest}
-    >
-        <ActionDelete />
-    </Button>
-);
+class DeleteButton extends Component {
+    state = { dialogOpen: false };
+
+    handleClick = () => {
+        this.setState({ dialogOpen: true });
+    };
+
+    handleDialogClose = () => {
+        this.setState({ dialogOpen: false });
+    };
+
+    handleDelete = event => {
+        event.preventDefault();
+        this.props.crudDelete(
+            this.props.resource,
+            this.props.record.id,
+            this.props.record,
+            this.props.basePath,
+            this.props.redirect
+        );
+        this.setState({ dialogOpen: false });
+    };
+
+    render() {
+        const {
+            label = 'ra.action.delete',
+            classes = {},
+            className,
+            translate,
+        } = this.props;
+        return [
+            <Button
+                onClick={this.handleClick}
+                label={label}
+                className={classnames(classes.deleteButton, className)}
+                key="button"
+            >
+                <ActionDelete />
+            </Button>,
+            <Dialog
+                open={this.state.dialogOpen}
+                onClose={this.handleDialogClose}
+                aria-labelledby="alert-dialog-title"
+                key="dialog"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Confirm deletion
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to delete this item?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <MuiButton
+                        onClick={this.handleDelete}
+                        className={classes.buttonConfirm}
+                        autoFocus
+                    >
+                        <ActionCheck className={classes.iconPaddingStyle} />
+                        {translate('ra.action.delete')}
+                    </MuiButton>
+                    <MuiButton onClick={this.handleDialogClose}>
+                        <AlertError className={classes.iconPaddingStyle} />
+                        {translate('ra.action.cancel')}
+                    </MuiButton>
+                </DialogActions>
+            </Dialog>,
+        ];
+    }
+}
 
 DeleteButton.propTypes = {
     basePath: PropTypes.string,
     classes: PropTypes.object,
     className: PropTypes.string,
+    crudDelete: PropTypes.func,
     label: PropTypes.string,
     record: PropTypes.object,
+    redirect: PropTypes.string,
+    resource: PropTypes.string.isRequired,
+    translate: PropTypes.func,
 };
 
-export default withStyles(styles)(DeleteButton);
+DeleteButton.defaultProps = {
+    redirect: 'list',
+};
+
+export default compose(
+    connect(null, { crudDelete }),
+    translate,
+    withStyles(styles)
+)(DeleteButton);

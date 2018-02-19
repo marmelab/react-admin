@@ -116,7 +116,6 @@ ShowController.propTypes = {
     crudGetOne: PropTypes.func.isRequired,
     record: PropTypes.object,
     hasCreate: PropTypes.bool,
-    hasDelete: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,

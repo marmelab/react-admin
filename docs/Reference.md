@@ -28,7 +28,6 @@ title: "Reference"
 * `<DatagridHeaderCell>`
 * [`<DateField>`](./Fields.md#datefield)
 * [`<DateInput>`](./Inputs.md#dateinput)
-* `<Delete>`
 * `<DeleteButton>`
 * [`<DisabledInput>`](./Inputs.md#disabledinput)
 * [`<Edit>`](./CreateEdit.md#the-create-and-edit-components)

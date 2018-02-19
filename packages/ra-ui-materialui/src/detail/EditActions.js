@@ -8,10 +8,8 @@ const sanitizeRestProps = ({
     basePath,
     className,
     record,
-    hasDelete,
     hasShow,
     hasList,
-    resource,
     ...rest
 }) => rest;
 
@@ -47,15 +45,17 @@ const EditActions = ({
     basePath,
     className,
     data,
-    hasDelete,
     hasShow,
     hasList,
+    resource,
     ...rest
 }) => (
     <CardActions className={className} {...sanitizeRestProps(rest)}>
-        {hasShow && <ShowButton basePath={basePath} record={data} />}
-        {hasList && <ListButton basePath={basePath} />}
-        {hasDelete && <DeleteButton basePath={basePath} record={data} />}
+        {hasShow && (
+            <ShowButton basePath={basePath} record={data} resource={resource} />
+        )}
+        {hasList && <ListButton basePath={basePath} resource={resource} />}
+        <DeleteButton basePath={basePath} record={data} resource={resource} />
         <RefreshButton />
     </CardActions>
 );
@@ -64,9 +64,9 @@ EditActions.propTypes = {
     basePath: PropTypes.string,
     className: PropTypes.string,
     data: PropTypes.object,
-    hasDelete: PropTypes.bool,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
+    resource: PropTypes.string,
 };
 
 export default EditActions;
