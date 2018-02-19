@@ -14,7 +14,6 @@ import {
     Responsive,
     SelectInput,
     SimpleForm,
-    SimpleList,
     TextField,
     TextInput,
 } from 'react-admin';
@@ -27,6 +26,7 @@ import StarRatingField from './StarRatingField';
 import ApproveButton from './ApproveButton';
 import ReviewEditActions from './ReviewEditActions';
 import rowStyle from './rowStyle';
+import MobileGrid from './MobileGrid';
 
 export const ReviewIcon = Icon;
 
@@ -79,14 +79,7 @@ export const ReviewList = withStyles(listStyles)(({ classes, ...props }) => (
         sort={{ field: 'date', order: 'DESC' }}
     >
         <Responsive
-            xsmall={
-                <SimpleList
-                    primaryText={record =>
-                        new Date(record.date).toLocaleDateString()}
-                    secondaryText={record => record.comment}
-                    tertiaryText={record => record.rating}
-                />
-            }
+            xsmall={<MobileGrid />}
             medium={
                 <Datagrid rowStyle={rowStyle}>
                     <DateField source="date" />
