@@ -8,7 +8,7 @@ import {
     TextField,
     BooleanField,
 } from 'react-admin';
-import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
+import Card, { CardHeader, CardContent } from 'material-ui/Card';
 import { withStyles } from 'material-ui/styles';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import NbItemsField from './NbItemsField';
@@ -20,18 +20,18 @@ const listStyles = theme => ({
         flexDirection: 'column',
         margin: '0.5rem 0',
     },
+    cardTitleContent: {
+        display: 'flex',
+        flexDirection: 'rows',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
     cardContent: theme.typography.body1,
-    cardContentItem: {
-        padding: '0 2rem',
-    },
-    cardActions: {
-        justifyContent: 'flex-end',
-    },
     cardContentRow: {
         display: 'flex',
         flexDirection: 'rows',
         alignItems: 'center',
-        margin: '0.5rem',
+        margin: '0.5rem 0',
     },
 });
 
@@ -42,13 +42,23 @@ const MobileGrid = withStyles(listStyles)(
                 <Card key={id} className={classes.card}>
                     <CardHeader
                         title={
-                            <span>
-                                {translate('resources.commands.name', 1)}:&nbsp;
-                                <TextField
+                            <div className={classes.cardTitleContent}>
+                                <span>
+                                    {translate(
+                                        'resources.commands.name',
+                                        1
+                                    )}:&nbsp;
+                                    <TextField
+                                        record={data[id]}
+                                        source="reference"
+                                    />
+                                </span>
+                                <EditButton
+                                    resource="commands"
+                                    basePath={basePath}
                                     record={data[id]}
-                                    source="reference"
                                 />
-                            </span>
+                            </div>
                         }
                     />
                     <CardContent className={classes.cardContent}>
@@ -66,12 +76,6 @@ const MobileGrid = withStyles(listStyles)(
                                 source="date"
                                 showTime
                             />
-                        </span>
-                        <span className={classes.cardContentRow}>
-                            {translate(
-                                'resources.commands.fields.basket.quantity'
-                            )}:&nbsp;
-                            <NbItemsField record={data[id]} />
                         </span>
                         <span className={classes.cardContentRow}>
                             {translate(
@@ -97,13 +101,6 @@ const MobileGrid = withStyles(listStyles)(
                             <BooleanField record={data[id]} source="returned" />
                         </span>
                     </CardContent>
-                    <CardActions className={classes.cardActions}>
-                        <EditButton
-                            resource="commands"
-                            basePath={basePath}
-                            record={data[id]}
-                        />
-                    </CardActions>
                 </Card>
             ))}
         </div>
