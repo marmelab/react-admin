@@ -6,6 +6,7 @@ import compose from 'recompose/compose';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 import { getResources, translate } from 'ra-core';
+import DefaultIcon from 'material-ui-icons/Grain';
 
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
@@ -53,7 +54,9 @@ const Menu = ({
                     key={resource.name}
                     to={`/${resource.name}`}
                     primaryText={translatedResourceName(resource, translate)}
-                    leftIcon={<resource.icon />}
+                    leftIcon={
+                        resource.icon ? <resource.icon /> : <DefaultIcon />
+                    }
                     onClick={onMenuClick}
                     dense={dense}
                 />
