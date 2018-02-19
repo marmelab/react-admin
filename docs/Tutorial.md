@@ -7,7 +7,10 @@ title: "My First Project Tutorial"
 
 This 15 minutes tutorial will expose how to create a new admin app based on an existing REST API.
 
-![react-admin blog demo](http://static.marmelab.com/react-admin.gif)
+<video width="800" height="600" controls>
+  <source src="http://static.marmelab.com/react-admin/react-admin.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
 
 ## Installation
 
