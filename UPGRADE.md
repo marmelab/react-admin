@@ -6,6 +6,7 @@
 - [`authClient` Prop Renamed To `authProvider` in `<Admin>` Component](#authclient-prop-renamed-to-authprovider-in-admin-component)
 - [Default (English) Messages Moved To Standalone Package](#default-english-messages-moved-to-standalone-package)
 - [Message Hash Main Key Changed ("aor" => "ra")](#message-hash-main-key-changed-aor--ra)
+- [Removed the Delete view in Resource](#removed-the-delete-view-in-resources)
 - [Replaced `messages` by `i18nProvider` in `<Admin>`](#replaced-messages-by-i18nprovider-in-admin)
 - [`<AutocompleteInput>` no longer accepts a `filter` prop](#autocompleteinput-no-longer-accepts-a-filter-prop)
 - [`<Datagrid>` No Longer Accepts `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props](#datagrid-no-longer-accepts-options-headeroptions-bodyoptions-and-rowoptions-props)
@@ -136,14 +137,22 @@ module.exports = {
             delete: 'Delete',
             show: 'Show',
             ...
-// after
-module.exports = {
-    ra: {
-        action: {
-            delete: 'Delete',
-            show: 'Show',
-            ...
 ```
+
+## Removed the Delete view in Resource
+
+Admin-on-rest used to have a special Delete view, accessible with a special URL, to display a confirmation message after a user clicked on the Delete button. This view added complexity to the early stages of development with admin-on-rest. Besides, it provided a mediocre user experience.
+
+In react-admin, the deletion confirmation is now a Dialog that opens on top of the page where the user currently is.
+
+As a consequence, you no longer need to pass a value to the `remove` prop in Resources:
+
+```diff
+-  <Resource name="posts" list={PostList} edit={PostEdit} show={PostShow} remove={Delete} />
++  <Resource name="posts" list={PostList} edit={PostEdit} show={PostShow} />
+```
+
+That also means that if you disabled deletion on a Resource by not passing a `remove` prop, you will be surprised by Delete buttons popping in the Edit views. The way to remove this button is to [Customize the Edit Toolbar](https://marmelab.com/react-admin/CreateEdit.html#actions).
 
 ## Replaced `messages` by `i18nProvider` in `<Admin>`
 

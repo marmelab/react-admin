@@ -128,7 +128,7 @@ import {
 const PostEditActions = ({ basePath, data, resource }) => (
     <CardActions>
         <ShowButton basePath={basePath} record={data} />
-        <ListButton basePath={basePath} record={record} resource={resource} />
+        <ListButton basePath={basePath} />
         <DeleteButton basePath={basePath} record={data} resource={resource} />
         <RefreshButton />
         {/* Add your custom actions */}
@@ -142,6 +142,8 @@ export const PostEdit = (props) => (
     </Edit>
 );
 ```
+
+Using a custom `EditActions` component also allow to remove the `<DeleteButton>` if you want to prevent deletions from the admin.
 
 ## The `<SimpleForm>` component
 
