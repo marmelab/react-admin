@@ -91,8 +91,8 @@ const PostListBulkActions = props => (
 
 const PostListActionToolbar = withStyles({
     toolbar: {
-        display: 'flex',
         alignItems: 'center',
+        display: 'flex',
     },
 })(({ classes, children, ...props }) => (
     <div className={classes.toolbar}>
