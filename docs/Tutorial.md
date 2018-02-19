@@ -374,8 +374,8 @@ The sidebar menu shows the same icon for both posts and users. Fortunately, cust
 
 ```jsx
 // in src/App.js
-import PostIcon from 'material-ui/svg-icons/action/book';
-import UserIcon from 'material-ui/svg-icons/social/group';
+import PostIcon from 'material-ui-icons/Book';
+import UserIcon from 'material-ui-icons/Group';
 
 const App = () => (
     <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
@@ -385,7 +385,7 @@ const App = () => (
 );
 ```
 
-![custom menu icons](./img/custom-menu.png)
+![custom menu icons](./img/custom-menu.gif)
 
 ## Using a Custom Home Page
 
