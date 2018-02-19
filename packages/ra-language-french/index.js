@@ -24,7 +24,6 @@ module.exports = {
             edit: '%{name} #%{id}',
             show: '%{name} #%{id}',
             create: 'Créer %{name}',
-            delete: 'Supprimer %{name} #%{id}',
             dashboard: 'Tableau de bord',
             not_found: 'Page manquante',
             loading: 'Chargement',
@@ -60,6 +59,9 @@ module.exports = {
             loading:
                 'La page est en cours de chargement, merci de bien vouloir patienter.',
             invalid_form: `Le formulaire n'est pas valide.`,
+            delete_title: 'Supprimer %{name} #%{id}',
+            delete_content:
+                'Êtes-vous sur(e) de vouloir supprimer cet élément ?',
         },
         navigation: {
             no_results: 'Aucun résultat',

@@ -15,6 +15,7 @@ import ActionDelete from 'material-ui-icons/Delete';
 import ActionCheck from 'material-ui-icons/CheckCircle';
 import AlertError from 'material-ui-icons/ErrorOutline';
 import classnames from 'classnames';
+import inflection from 'inflection';
 import { translate, crudDelete } from 'ra-core';
 
 import Button from './Button';
@@ -74,8 +75,14 @@ class DeleteButton extends Component {
             label = 'ra.action.delete',
             classes = {},
             className,
+            record,
+            resource,
             translate,
         } = this.props;
+        const resourceName = translate(`resources.${resource}.name`, {
+            smart_count: 1,
+            _: inflection.humanize(inflection.singularize(resource)),
+        });
         return [
             <Button
                 onClick={this.handleClick}
@@ -92,11 +99,19 @@ class DeleteButton extends Component {
                 key="dialog"
             >
                 <DialogTitle id="alert-dialog-title">
-                    Confirm deletion
+                    {translate('ra.message.delete_title', {
+                        name: resourceName,
+                        id: record && record.id,
+                        data: record,
+                    })}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Are you sure you want to delete this item?
+                        {translate('ra.message.delete_content', {
+                            name: resourceName,
+                            id: record && record.id,
+                            data: record,
+                        })}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
