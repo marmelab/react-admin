@@ -24,55 +24,67 @@ run-graphcool-demo: build ## run the demo example
 	@cd examples/graphcool-demo && yarn start
 
 build-ra-core:
+	@echo "Transpiling ra-core files...";
 	@rm -rf ./packages/ra-core/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-core/src -d ./packages/ra-core/lib --ignore spec.js,test.js
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-core/src -d ./packages/ra-core/lib --ignore spec.js,test.js
 
 build-ra-ui-materialui:
+	@echo "Transpiling ra-ui-materialui files...";
 	@rm -rf ./packages/ra-ui-materialui/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-ui-materialui/src -d ./packages/ra-ui-materialui/lib --ignore spec.js,test.js
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-ui-materialui/src -d ./packages/ra-ui-materialui/lib --ignore spec.js,test.js
 
 build-react-admin:
+	@echo "Transpiling react-admin files...";
 	@rm -rf ./packages/react-admin/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/react-admin/src -d ./packages/react-admin/lib --ignore spec.js,test.js
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/react-admin/src -d ./packages/react-admin/lib --ignore spec.js,test.js
 
 build-ra-data-json-server:
+	@echo "Transpiling ra-data-json-server files...";
 	@rm -rf ./packages/ra-data-json-server/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-json-server/src -d ./packages/ra-data-json-server/lib --ignore spec.js,test.js
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-data-json-server/src -d ./packages/ra-data-json-server/lib --ignore spec.js,test.js
 
 build-ra-data-simple-rest:
+	@echo "Transpiling ra-data-simple-rest files...";
 	@rm -rf ./packages/ra-data-simple-rest/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-simple-rest/src -d ./packages/ra-data-simple-rest/lib --ignore spec.js,test.js
-
-build-ra-input-rich-text:
-	@rm -rf ./packages/ra-input-rich-text/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-input-rich-text/src -d ./packages/ra-input-rich-text/lib --ignore spec.js,test.js
-	@cd packages/ra-input-rich-text/src && rsync -R `find . -name *.css` ../lib
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-data-simple-rest/src -d ./packages/ra-data-simple-rest/lib --ignore spec.js,test.js
 
 build-ra-data-graphql:
+	@echo "Transpiling ra-data-graphql files...";
 	@rm -rf ./packages/ra-data-graphql/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-graphql/src -d ./packages/ra-data-graphql/lib --ignore spec.js,test.js
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-data-graphql/src -d ./packages/ra-data-graphql/lib --ignore spec.js,test.js
 
 build-ra-data-graphcool:
+	@echo "Transpiling ra-data-graphcool files...";
 	@rm -rf ./packages/ra-data-graphcool/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-graphcool/src -d ./packages/ra-data-graphcool/lib --ignore spec.js,test.js
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-data-graphcool/src -d ./packages/ra-data-graphcool/lib --ignore spec.js,test.js
 
 build-ra-data-graphql-simple:
+	@echo "Transpiling ra-data-graphql-simple files...";
 	@rm -rf ./packages/ra-data-graphql-simple/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-graphql-simple/src -d ./packages/ra-data-graphql-simple/lib --ignore spec.js,test.js
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-data-graphql-simple/src -d ./packages/ra-data-graphql-simple/lib --ignore spec.js,test.js
 
 build-ra-dependent-input:
+	@echo "Transpiling ra-dependent-input files...";
 	@rm -rf ./packages/ra-dependent-input/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-dependent-input/src -d ./packages/ra-dependent-input/lib --ignore spec.js,test.js
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-dependent-input/src -d ./packages/ra-dependent-input/lib --ignore spec.js,test.js
+
+build-ra-input-rich-text:
+	@echo "Transpiling ra-input-rich-text files...";
+	@rm -rf ./packages/ra-input-rich-text/lib
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-input-rich-text/src -d ./packages/ra-input-rich-text/lib --ignore spec.js,test.js
+	@cd packages/ra-input-rich-text/src && rsync -R `find . -name *.css` ../lib
 
 build-ra-realtime:
+	@echo "Transpiling ra-realtime files...";
 	@rm -rf ./packages/ra-realtime/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-realtime/src -d ./packages/ra-realtime/lib --ignore spec.js,test.js
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-realtime/src -d ./packages/ra-realtime/lib --ignore spec.js,test.js
 
 build-data-generator:
+	@echo "Transpiling data-generator files...";
 	@rm -rf ./examples/data-generator/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./examples/data-generator/src -d ./examples/data-generator/lib
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./examples/data-generator/src -d ./examples/data-generator/lib
 
-build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-input-rich-text build-ra-data-graphql build-ra-data-graphcool build-ra-dependent-input build-ra-data-graphql-simple build-data-generator build-ra-realtime ## compile ES6 files to JS
+build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-dependent-input build-ra-input-rich-text build-ra-realtime build-data-generator ## compile ES6 files to JS
 
 watch: ## continuously compile ES6 files to JS
 	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore spec.js,test.js --watch
