@@ -365,7 +365,7 @@ translate('not_yet_translated', { _: 'Default translation' })
 
 To find more detailed examples, please refer to [http://airbnb.io/polyglot.js/](http://airbnb.io/polyglot.js/)
 
-## Variables with notifications
+## Notifications With Variables
 
 It is possible to pass variables for polyglot interpolation with custom notifications. For example:
 
