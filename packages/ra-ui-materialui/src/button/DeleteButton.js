@@ -2,22 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import Dialog, {
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-} from 'material-ui/Dialog';
-import MuiButton from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
 import { fade } from 'material-ui/styles/colorManipulator';
 import ActionDelete from 'material-ui-icons/Delete';
-import ActionCheck from 'material-ui-icons/CheckCircle';
-import AlertError from 'material-ui-icons/ErrorOutline';
 import classnames from 'classnames';
 import inflection from 'inflection';
 import { translate, crudDelete } from 'ra-core';
 
+import Confirm from '../layout/Confirm';
 import Button from './Button';
 
 const styles = theme => ({
@@ -30,20 +22,6 @@ const styles = theme => ({
                 backgroundColor: 'transparent',
             },
         },
-    },
-    buttonConfirm: {
-        backgroundColor: theme.palette.error.main,
-        color: theme.palette.error.contrastText,
-        '&:hover': {
-            backgroundColor: theme.palette.error.dark,
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: theme.palette.error.main,
-            },
-        },
-    },
-    iconPaddingStyle: {
-        paddingRight: '0.5em',
     },
 });
 
@@ -96,46 +74,25 @@ class DeleteButton extends Component {
             >
                 <ActionDelete />
             </Button>,
-            <Dialog
-                open={this.state.dialogOpen}
+            <Confirm
+                isOpen={this.state.dialogOpen}
+                title={translate('ra.message.delete_title', {
+                    name: resourceName,
+                    id: record && record.id,
+                    data: record,
+                })}
+                content={translate('ra.message.delete_content', {
+                    name: resourceName,
+                    id: record && record.id,
+                    data: record,
+                })}
+                confirm={translate('ra.action.delete')}
+                confirmColor="warning"
+                cancel={translate('ra.action.cancel')}
+                onConfirm={this.handleDelete}
                 onClose={this.handleDialogClose}
-                aria-labelledby="alert-dialog-title"
                 key="dialog"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {translate('ra.message.delete_title', {
-                        name: resourceName,
-                        id: record && record.id,
-                        data: record,
-                    })}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        {translate('ra.message.delete_content', {
-                            name: resourceName,
-                            id: record && record.id,
-                            data: record,
-                        })}
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <MuiButton
-                        onClick={this.handleDelete}
-                        className={classnames(
-                            'ra-confirm',
-                            classes.buttonConfirm
-                        )}
-                        autoFocus
-                    >
-                        <ActionCheck className={classes.iconPaddingStyle} />
-                        {translate('ra.action.delete')}
-                    </MuiButton>
-                    <MuiButton onClick={this.handleDialogClose}>
-                        <AlertError className={classes.iconPaddingStyle} />
-                        {translate('ra.action.cancel')}
-                    </MuiButton>
-                </DialogActions>
-            </Dialog>,
+            />,
         ];
     }
 }
