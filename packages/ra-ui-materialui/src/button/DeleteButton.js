@@ -87,7 +87,11 @@ class DeleteButton extends Component {
             <Button
                 onClick={this.handleClick}
                 label={label}
-                className={classnames(classes.deleteButton, className)}
+                className={classnames(
+                    'ra-delete-button',
+                    classes.deleteButton,
+                    className
+                )}
                 key="button"
             >
                 <ActionDelete />
@@ -117,7 +121,10 @@ class DeleteButton extends Component {
                 <DialogActions>
                     <MuiButton
                         onClick={this.handleDelete}
-                        className={classes.buttonConfirm}
+                        className={classnames(
+                            'ra-confirm',
+                            classes.buttonConfirm
+                        )}
                         autoFocus
                     >
                         <ActionCheck className={classes.iconPaddingStyle} />
