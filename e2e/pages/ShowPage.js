@@ -80,14 +80,14 @@ export default (url, initialField = 'title') => driver => ({
         return driver
             .findElement(this.elements.deleteButton)
             .then(button => button.click())
-            .then(() => driver.findElement(this.elements.deleteConfirmButton))
-            .then(confirmButton => confirmButton.click())
+            .then(() =>
+                driver.findElement(this.elements.deleteConfirmButton).click()
+            )
             .then(() => driver.sleep(200))
             .then(() =>
                 driver.wait(until.elementLocated(this.elements.snackbar), 3000)
             )
-            .then(() => driver.findElement(this.elements.body))
-            .then(body => body.click()) // dismiss notification
+            .then(() => driver.findElement(this.elements.body).click()) // dismiss notification
             .then(() => driver.sleep(200)); // let the notification disappear (could block further submits)
     },
 });

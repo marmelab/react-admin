@@ -4,6 +4,7 @@ export default url => driver => ({
     elements: {
         addFilterButton: By.css('.add-filter'),
         appLoader: By.css('.app-loader'),
+        confirmButton: By.css('.ra-confirm'),
         displayedRecords: By.css('.displayed-records'),
         filter: name => By.css(`.filter-field[data-source='${name}'] input`),
         filterMenuItems: By.css(`.new-filter-item`),
@@ -220,13 +221,26 @@ export default url => driver => ({
         return driver
             .findElement(this.elements.bulkActionsButton)
             .click()
-            .then(() => driver.sleep(500)) // wait until animations end
+            .then(() =>
+                driver.wait(
+                    until.elementLocated(
+                        this.elements.customBulkActionsButtonMenuItem
+                    ),
+                    500
+                )
+            ) // wait until animations end
             .then(() =>
                 driver
                     .findElement(this.elements.customBulkActionsButtonMenuItem)
                     .click()
             )
-            .then(() => driver.sleep(500)) // wait until animations end
+            .then(() =>
+                driver.wait(
+                    until.elementLocated(this.elements.confirmButton),
+                    500
+                )
+            ) // wait until animations end
+            .then(() => driver.findElement(this.elements.confirmButton).click())
             .then(() => this.waitUntilDataLoaded())
             .then(() => driver.sleep(500)) // wait until animations end
             .then(() => this.waitUntilDataLoaded());
@@ -236,12 +250,26 @@ export default url => driver => ({
         return driver
             .findElement(this.elements.bulkActionsButton)
             .click()
-            .then(() => driver.sleep(500)) // wait until animations end
+            .then(() =>
+                driver.wait(
+                    until.elementLocated(
+                        this.elements.deleteBulkActionsButtonMenuItem
+                    ),
+                    500
+                )
+            ) // wait until animations end
             .then(() =>
                 driver
                     .findElement(this.elements.deleteBulkActionsButtonMenuItem)
                     .click()
             )
+            .then(() =>
+                driver.wait(
+                    until.elementLocated(this.elements.confirmButton),
+                    500
+                )
+            ) // wait until animations end
+            .then(() => driver.findElement(this.elements.confirmButton).click())
             .then(() => driver.sleep(500)) // wait until animations end
             .then(() => this.waitUntilDataLoaded())
             .then(() => driver.sleep(500)) // wait until animations end

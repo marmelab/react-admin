@@ -73,7 +73,7 @@ class BulkDeleteAction extends Component {
                 <DialogActions>
                     <Button
                         onClick={this.handleDelete}
-                        className={classes.buttonConfirm}
+                        className={`ra-confirm ${classes.buttonConfirm}`}
                         autoFocus
                     >
                         <ActionCheck className={classes.iconPaddingStyle} />

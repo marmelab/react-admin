@@ -53,6 +53,7 @@ class ResetViewsAction extends Component {
                         autoFocus
                         color="primary"
                         onClick={this.handleConfirm}
+                        className="ra-confirm"
                     >
                         <ActionCheck className={classes.icon} />
                         Confirm
