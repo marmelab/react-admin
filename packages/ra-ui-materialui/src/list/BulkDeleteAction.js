@@ -2,16 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import Button from 'material-ui/Button';
-import Dialog, {
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-} from 'material-ui/Dialog';
-import { withStyles } from 'material-ui/styles';
-import ActionCheck from 'material-ui-icons/CheckCircle';
-import AlertError from 'material-ui-icons/ErrorOutline';
 import inflection from 'inflection';
 import { crudDeleteMany as crudDeleteManyAction, translate } from 'ra-core';
 
