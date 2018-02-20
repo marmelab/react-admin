@@ -365,3 +365,25 @@ translate('not_yet_translated', { _: 'Default translation' })
 
 To find more detailed examples, please refer to [http://airbnb.io/polyglot.js/](http://airbnb.io/polyglot.js/)
 
+## Variables with notifications
+
+It is possible to pass variables for polyglot interpolation with custom notifications. For example:
+
+```js
+showNotification('myroot.hello.world', 'info', { messageArgs: { name: 'Planet Earth' } });
+```
+
+Assuming you have the following in your custom messages:
+
+```js
+// in src/App.js
+const messages = {
+    en: {
+        myroot: {
+            hello: {
+                world: 'Hello, %{name}!',
+            },
+        },
+    },
+};
+```
