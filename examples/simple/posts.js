@@ -1,7 +1,7 @@
 import React, { Children, cloneElement } from 'react';
 import {
     BulkActions,
-    BulkDeleteMenuItem,
+    BulkDeleteAction,
     BooleanField,
     BooleanInput,
     CheckboxGroupInput,
@@ -51,7 +51,7 @@ import Chip from 'material-ui/Chip';
 import { withStyles } from 'material-ui/styles';
 import BookIcon from 'material-ui-icons/Book';
 export const PostIcon = BookIcon;
-import UpdateCommentableMenuItem from './customBulkAction';
+import ResetViewsAction from './ResetViewsAction';
 
 const QuickFilter = translate(({ label, translate }) => (
     <Chip style={{ marginBottom: 8 }} label={translate(label)} />
@@ -84,8 +84,8 @@ const styles = {
 
 const PostListBulkActions = props => (
     <BulkActions {...props}>
-        <UpdateCommentableMenuItem />
-        <BulkDeleteMenuItem />
+        <ResetViewsAction label="simple.action.resetViews" />
+        <BulkDeleteAction />
     </BulkActions>
 );
 
