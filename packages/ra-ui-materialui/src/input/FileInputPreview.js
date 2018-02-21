@@ -50,7 +50,7 @@ FileInputPreview.propTypes = {
     className: PropTypes.string,
     file: PropTypes.object,
     onRemove: PropTypes.func.isRequired,
-    revokeObjectUrl: PropTypes.func,
+    revokeObjectURL: PropTypes.func,
 };
 
 FileInputPreview.defaultProps = {

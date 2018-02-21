@@ -38,15 +38,16 @@ const LinkOrNot = withStyles(styles)(
         )
 );
 
+const sanitizeRestProps = ({ currentSort, isLoading, setSort, ...rest }) =>
+    rest;
+
 const SimpleList = ({
     basePath,
     classes = {},
     className,
-    currentSort,
     data,
     hasBulkActions,
     ids,
-    isLoading,
     leftAvatar,
     leftIcon,
     linkType,
@@ -56,11 +57,10 @@ const SimpleList = ({
     rightIcon,
     secondaryText,
     selectedIds,
-    setSort,
     tertiaryText,
     ...rest
 }) => (
-    <List className={className} {...rest}>
+    <List className={className} {...sanitizeRestProps(rest)}>
         {ids.map(id => (
             <LinkOrNot linkType={linkType} basePath={basePath} id={id} key={id}>
                 <ListItem button>

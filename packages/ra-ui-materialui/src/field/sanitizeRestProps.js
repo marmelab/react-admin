@@ -7,6 +7,7 @@ export default ({
     formClassName,
     headerClassName,
     label,
+    linkType,
     locale,
     record,
     resource,

@@ -310,7 +310,7 @@ export const PostShow = props => (
                     target="post_id"
                     sort={{ field: 'created_at', order: 'DESC' }}
                 >
-                    <Datagrid selectable={false}>
+                    <Datagrid>
                         <DateField source="created_at" />
                         <TextField source="author.name" />
                         <TextField source="body" />

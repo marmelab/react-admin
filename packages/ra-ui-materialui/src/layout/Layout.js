@@ -127,6 +127,10 @@ const LayoutWithTheme = ({ theme, ...rest }) => (
     </MuiThemeProvider>
 );
 
+LayoutWithTheme.propTypes = {
+    theme: PropTypes.object,
+};
+
 LayoutWithTheme.defaultProps = {
     theme: defaultTheme,
 };

@@ -223,6 +223,7 @@ ReferenceArrayInputController.propTypes = {
     meta: PropTypes.object,
     onChange: PropTypes.func,
     perPage: PropTypes.number,
+    record: PropTypes.object,
     reference: PropTypes.string.isRequired,
     referenceRecords: PropTypes.array,
     referenceSource: PropTypes.func.isRequired,

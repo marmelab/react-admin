@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
+import { addField, translate, ReferenceInputController } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from './Labeled';
 import ReferenceError from './ReferenceError';
-import { addField, translate, ReferenceInputController } from 'ra-core';
 
 const sanitizeRestProps = ({
     allowEmpty,
@@ -47,16 +47,16 @@ const sanitizeRestProps = ({
 }) => rest;
 
 export const ReferenceInputView = ({
-    basePath,
     allowEmpty,
+    basePath,
     children,
     choices,
     classes,
     className,
     error,
     input,
-    label,
     isLoading,
+    label,
     meta,
     onChange,
     options,
@@ -109,6 +109,29 @@ export const ReferenceInputView = ({
         options,
         ...sanitizeRestProps(rest),
     });
+};
+
+ReferenceInputView.propTypes = {
+    allowEmpty: PropTypes.bool,
+    basePath: PropTypes.string,
+    children: PropTypes.element,
+    choices: PropTypes.array,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    error: PropTypes.string,
+    input: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool,
+    label: PropTypes.string,
+    meta: PropTypes.object,
+    onChange: PropTypes.func,
+    options: PropTypes.object,
+    resource: PropTypes.string.isRequired,
+    setFilter: PropTypes.func,
+    setPagination: PropTypes.func,
+    setSort: PropTypes.func,
+    source: PropTypes.string,
+    translate: PropTypes.func.isRequired,
+    warning: PropTypes.string,
 };
 
 /**

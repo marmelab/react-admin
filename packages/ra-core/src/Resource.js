@@ -133,6 +133,12 @@ export class Resource extends Component {
 
 Resource.propTypes = {
     context: PropTypes.oneOf(['route', 'registration']).isRequired,
+    match: PropTypes.shape({
+        isExact: PropTypes.bool,
+        params: PropTypes.object,
+        path: PropTypes.string,
+        url: PropTypes.string,
+    }),
     name: PropTypes.string.isRequired,
     list: componentPropType,
     create: componentPropType,

@@ -33,6 +33,17 @@ export const ReferenceArrayFieldView = ({
     });
 };
 
+ReferenceArrayFieldView.propTypes = {
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    data: PropTypes.object,
+    ids: PropTypes.array,
+    isLoading: PropTypes.bool,
+    children: PropTypes.element.isRequired,
+    reference: PropTypes.string.isRequired,
+    referenceBasePath: PropTypes.string,
+};
+
 /**
  * A container component that fetches records from another resource specified
  * by an array of *ids* in current record.

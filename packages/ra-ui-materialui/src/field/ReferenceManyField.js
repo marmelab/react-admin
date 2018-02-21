@@ -35,6 +35,22 @@ export const ReferenceManyFieldView = ({
     });
 };
 
+ReferenceManyFieldView.propTypes = {
+    children: PropTypes.element,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    currentSort: PropTypes.shape({
+        field: PropTypes.string,
+        order: PropTypes.string,
+    }),
+    data: PropTypes.object,
+    ids: PropTypes.array,
+    isLoading: PropTypes.bool,
+    reference: PropTypes.string,
+    referenceBasePath: PropTypes.string,
+    setSort: PropTypes.func,
+};
+
 /**
  * Render related records to the current one.
  *
@@ -113,6 +129,10 @@ ReferenceManyField.propTypes = {
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string.isRequired,
     source: PropTypes.string.isRequired,
+    sort: PropTypes.shape({
+        field: PropTypes.string,
+        order: PropTypes.string,
+    }),
     target: PropTypes.string.isRequired,
 };
 
