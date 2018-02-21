@@ -18,6 +18,7 @@ const Link = ({ to, children, className, classes }) => (
 Link.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
+    children: PropTypes.node,
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 

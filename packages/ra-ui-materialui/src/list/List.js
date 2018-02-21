@@ -184,6 +184,45 @@ export const ListView = ({
     );
 };
 
+ListView.propTypes = {
+    actions: PropTypes.element,
+    basePath: PropTypes.string,
+    bulkActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
+    children: PropTypes.element,
+    className: PropTypes.string,
+    classes: PropTypes.object,
+    currentSort: PropTypes.shape({
+        field: PropTypes.string,
+        order: PropTypes.string,
+    }),
+    data: PropTypes.object,
+    defaultTitle: PropTypes.string,
+    displayedFilters: PropTypes.object,
+    filters: PropTypes.element,
+    filterValues: PropTypes.object,
+    hasCreate: PropTypes.bool,
+    hideFilter: PropTypes.func,
+    ids: PropTypes.array,
+    isLoading: PropTypes.bool,
+    onSelect: PropTypes.func,
+    onToggleItem: PropTypes.func,
+    onUnselectItems: PropTypes.func,
+    page: PropTypes.number,
+    pagination: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
+    perPage: PropTypes.number,
+    refresh: PropTypes.func,
+    resource: PropTypes.string,
+    selectedIds: PropTypes.array,
+    setFilters: PropTypes.func,
+    setPage: PropTypes.func,
+    setSort: PropTypes.func,
+    showFilter: PropTypes.func,
+    title: PropTypes.any,
+    total: PropTypes.number,
+    translate: PropTypes.func,
+    version: PropTypes.number,
+};
+
 /**
  * List page component
  *

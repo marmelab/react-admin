@@ -104,11 +104,15 @@ export class SingleFieldList extends Component {
 }
 
 SingleFieldList.propTypes = {
+    basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
+    data: PropTypes.object,
+    ids: PropTypes.array,
     linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
         .isRequired,
+    resource: PropTypes.string,
 };
 
 SingleFieldList.defaultProps = {

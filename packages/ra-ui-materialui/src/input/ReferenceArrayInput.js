@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
+import { addField, translate, ReferenceArrayInputController } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
 import Labeled from '../input/Labeled';
 import ReferenceError from './ReferenceError';
-import { addField, translate, ReferenceArrayInputController } from 'ra-core';
 
 const sanitizeRestProps = ({
     alwaysOn,
     basePath,
     component,
     defaultValue,
+    filterToQuery,
     formClassName,
     initializeForm,
     input,
@@ -21,6 +22,7 @@ const sanitizeRestProps = ({
     meta,
     optionText,
     optionValue,
+    perPage,
     record,
     referenceSource,
     resource,
@@ -99,6 +101,28 @@ export const ReferenceArrayInputView = ({
         translateChoice: false,
         ...sanitizeRestProps(rest),
     });
+};
+
+ReferenceArrayInputView.propTypes = {
+    allowEmpty: PropTypes.bool,
+    basePath: PropTypes.string,
+    children: PropTypes.element,
+    choices: PropTypes.array,
+    className: PropTypes.string,
+    error: PropTypes.string,
+    isLoading: PropTypes.bool,
+    input: PropTypes.object.isRequired,
+    label: PropTypes.string,
+    meta: PropTypes.object,
+    onChange: PropTypes.func,
+    options: PropTypes.object,
+    resource: PropTypes.string.isRequired,
+    setFilter: PropTypes.func,
+    setPagination: PropTypes.func,
+    setSort: PropTypes.func,
+    source: PropTypes.string,
+    translate: PropTypes.func.isRequired,
+    warning: PropTypes.string,
 };
 
 /**

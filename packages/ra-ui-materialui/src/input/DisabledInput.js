@@ -32,10 +32,11 @@ DisabledInput.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     label: PropTypes.string,
+    input: PropTypes.object,
+    options: PropTypes.object,
     record: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-    input: PropTypes.object,
 };
 
 export default addField(DisabledInput);
