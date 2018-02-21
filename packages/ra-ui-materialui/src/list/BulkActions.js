@@ -1,8 +1,6 @@
 import React, { cloneElement, Children, Component } from 'react';
-
 import PropTypes from 'prop-types';
 import FilterNoneIcon from 'material-ui-icons/FilterNone';
-import Popover from 'material-ui/Popover';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
