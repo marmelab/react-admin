@@ -11,6 +11,7 @@ export default ({
     locale,
     record,
     resource,
+    sortable,
     source,
     textAlign,
     translateChoice,

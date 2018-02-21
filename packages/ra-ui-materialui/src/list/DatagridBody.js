@@ -13,6 +13,7 @@ const DatagridBody = ({
     resource,
     children,
     hasBulkActions,
+    hover,
     ids,
     isLoading,
     data,
@@ -38,6 +39,7 @@ const DatagridBody = ({
                 record={data[id]}
                 resource={resource}
                 selected={selectedIds.includes(id)}
+                hover={hover}
                 style={rowStyle ? rowStyle(data[id], rowIndex) : null}
             >
                 {children}
@@ -53,6 +55,7 @@ DatagridBody.propTypes = {
     children: PropTypes.node,
     data: PropTypes.object.isRequired,
     hasBulkActions: PropTypes.bool.isRequired,
+    hover: PropTypes.bool,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     isLoading: PropTypes.bool,
     onToggleItem: PropTypes.func,

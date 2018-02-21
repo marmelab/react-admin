@@ -1,16 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TableCell } from 'material-ui/Table';
-import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
-
-const styles = {
-    cellRightAligned: { textAlign: 'right' },
-};
 
 const sanitizeRestProps = ({
     cellClassName,
-    classes,
     className,
     field,
     formClassName,
@@ -22,7 +16,6 @@ const sanitizeRestProps = ({
 }) => rest;
 
 export const DatagridCell = ({
-    classes = {},
     className,
     field,
     record,
@@ -31,13 +24,9 @@ export const DatagridCell = ({
     ...rest
 }) => (
     <TableCell
-        className={classnames(
-            {
-                [classes.cellRightAligned]: field.props.textAlign === 'right',
-            },
-            className,
-            field.props.cellClassName
-        )}
+        className={classnames(className, field.props.cellClassName)}
+        numeric={field.props.textAlign === 'right'}
+        padding="none"
         {...sanitizeRestProps(rest)}
     >
         {React.cloneElement(field, {
@@ -49,7 +38,6 @@ export const DatagridCell = ({
 );
 
 DatagridCell.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
     field: PropTypes.element,
     record: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -57,4 +45,4 @@ DatagridCell.propTypes = {
     resource: PropTypes.string,
 };
 
-export default withStyles(styles)(DatagridCell);
+export default DatagridCell;
