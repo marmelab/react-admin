@@ -21,14 +21,13 @@ export const ReferenceFieldView = ({
     className,
     classes = {},
     isLoading,
-    linkType,
     record,
     reference,
     referenceRecord,
     resource,
     resourceLinkPath,
     source,
-    translateChoice,
+    translateChoice = false,
     ...rest
 }) => {
     if (isLoading) {
@@ -40,14 +39,14 @@ export const ReferenceFieldView = ({
             <Link
                 className={classnames(classes.link, className)}
                 to={resourceLinkPath}
-                {...sanitizeRestProps(rest)}
             >
                 {React.cloneElement(children, {
                     record: referenceRecord,
                     resource: reference,
                     allowEmpty,
                     basePath,
-                    translateChoice: false,
+                    translateChoice,
+                    ...sanitizeRestProps(rest),
                 })}
             </Link>
         );
@@ -58,9 +57,25 @@ export const ReferenceFieldView = ({
         resource: reference,
         allowEmpty,
         basePath,
-        translateChoice: false,
+        translateChoice,
         ...sanitizeRestProps(rest),
     });
+};
+
+ReferenceFieldView.propTypes = {
+    allowEmpty: PropTypes.bool,
+    basePath: PropTypes.string,
+    children: PropTypes.element,
+    className: PropTypes.string,
+    classes: PropTypes.object,
+    isLoading: PropTypes.bool,
+    record: PropTypes.object,
+    reference: PropTypes.string,
+    referenceRecord: PropTypes.object,
+    resource: PropTypes.string,
+    resourceLinkPath: PropTypes.string,
+    source: PropTypes.string,
+    translateChoice: PropTypes.bool,
 };
 
 /**

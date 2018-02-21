@@ -44,8 +44,6 @@ const EditView = ({
     hasList,
     hasShow,
     isLoading,
-    location,
-    match,
     record,
     redirect,
     resource,
@@ -94,6 +92,23 @@ const EditView = ({
         </Card>
     </div>
 );
+
+EditView.propTypes = {
+    actions: PropTypes.element,
+    basePath: PropTypes.string,
+    children: PropTypes.element,
+    className: PropTypes.string,
+    defaultTitle: PropTypes.any,
+    hasList: PropTypes.bool,
+    hasShow: PropTypes.bool,
+    isLoading: PropTypes.bool,
+    record: PropTypes.object,
+    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    resource: PropTypes.string,
+    save: PropTypes.func,
+    title: PropTypes.any,
+    version: PropTypes.number,
+};
 
 /**
  * Page component for the Edit view

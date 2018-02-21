@@ -34,16 +34,14 @@ const sanitizeRestProps = ({
 }) => rest;
 
 const ShowView = ({
-    basePath,
     actions = <DefaultActions />,
+    basePath,
     children,
     className,
     defaultTitle,
     hasEdit,
     hasList,
     isLoading,
-    location,
-    match,
     record,
     resource,
     title,
@@ -82,6 +80,21 @@ const ShowView = ({
         </Card>
     </div>
 );
+
+ShowView.propTypes = {
+    actions: PropTypes.element,
+    basePath: PropTypes.string,
+    children: PropTypes.element,
+    className: PropTypes.string,
+    defaultTitle: PropTypes.any,
+    hasEdit: PropTypes.bool,
+    hasList: PropTypes.bool,
+    isLoading: PropTypes.bool,
+    record: PropTypes.object,
+    resource: PropTypes.string,
+    title: PropTypes.any,
+    version: PropTypes.number,
+};
 
 /**
  * Page component for the Show view
