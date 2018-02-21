@@ -108,6 +108,7 @@ export class TabbedForm extends Component {
                     scrollable
                     value={this.state.value}
                     onChange={this.handleChange}
+                    indicatorColor="primary"
                 >
                     {Children.map(
                         children,
