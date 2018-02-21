@@ -108,7 +108,6 @@ export class ListController extends Component {
         if (
             nextProps.translate === this.props.translate &&
             nextProps.isLoading === this.props.isLoading &&
-            nextProps.width === this.props.width &&
             nextProps.version === this.props.version &&
             nextState === this.state &&
             nextProps.data === this.props.data &&
