@@ -2,14 +2,14 @@ import React, { cloneElement, Children, Component } from 'react';
 
 import PropTypes from 'prop-types';
 import MoreVertIcon from 'material-ui-icons/MoreVert';
-import Menu from 'material-ui/Menu';
+import Menu, { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 import { translate } from 'ra-core';
 
 import Button from '../button/Button';
-import BulkDeleteMenuItem from './BulkDeleteMenuItem';
+import BulkDeleteAction from './BulkDeleteAction';
 
 const styles = theme => ({
     bulkActionsButton: {
@@ -38,6 +38,7 @@ const sanitizeRestProps = ({
 class BulkActions extends Component {
     state = {
         isOpen: false,
+        activeAction: null,
     };
 
     storeButtonRef = node => {
@@ -50,6 +51,14 @@ class BulkActions extends Component {
 
     handleClose = () => {
         this.setState({ isOpen: false });
+    };
+
+    handleLaunchAction = action => {
+        this.setState({ activeAction: action, isOpen: false });
+    };
+
+    handleExitAction = () => {
+        this.setState({ activeAction: null });
     };
 
     render() {
@@ -98,20 +107,32 @@ class BulkActions extends Component {
                     onClose={this.handleClose}
                     open={isOpen}
                 >
-                    {Children.map(children, child =>
-                        cloneElement(child, {
-                            className: classnames(
+                    {Children.map(children, (child, index) => (
+                        <MenuItem
+                            key={index}
+                            className={classnames(
                                 'bulk-actions-menu-item',
                                 child.props.className
-                            ),
+                            )}
+                            onClick={() => this.handleLaunchAction(index)}
+                            {...sanitizeRestProps(rest)}
+                        >
+                            {translate(child.props.label)}
+                        </MenuItem>
+                    ))}
+                </Menu>
+                {Children.map(
+                    children,
+                    (child, index) =>
+                        this.state.activeAction === index &&
+                        cloneElement(child, {
                             basePath,
                             filterValues,
-                            onCloseMenu: this.handleClose,
+                            onExit: this.handleExitAction,
                             resource,
                             selectedIds,
                         })
-                    )}
-                </Menu>
+                )}
             </div>
         );
     }
@@ -130,7 +151,7 @@ BulkActions.propTypes = {
 };
 
 BulkActions.defaultProps = {
-    children: <BulkDeleteMenuItem />,
+    children: <BulkDeleteAction />,
     label: 'ra.action.bulk_actions',
     selectedIds: [],
 };

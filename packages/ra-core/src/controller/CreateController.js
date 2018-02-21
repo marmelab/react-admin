@@ -102,7 +102,6 @@ CreateController.propTypes = {
     children: PropTypes.func.isRequired,
     crudCreate: PropTypes.func.isRequired,
     hasCreate: PropTypes.bool,
-    hasDelete: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,

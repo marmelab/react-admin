@@ -140,7 +140,6 @@ EditController.propTypes = {
     record: PropTypes.object,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
-    hasDelete: PropTypes.bool,
     hasShow: PropTypes.bool,
     hasList: PropTypes.bool,
     id: PropTypes.string.isRequired,

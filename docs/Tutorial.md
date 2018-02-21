@@ -316,25 +316,7 @@ The form rendered in the create and edit pages is already functional. It issues 
 
 **Note**: JSONPlaceholder is a read-only API; although it seems to accept `POST` and `PUT` requests, it doesn't take into account the creations and edits - that's why, in this particular case, you will see errors after creation, and you won't see your edits after you save them. It's just an artifact of JSONPlaceholder.
 
-## Deletion
-
-There is not much to configure in a deletion view. To add removal abilities to a `Resource`, simply use the bundled `<Delete>` component from react-admin, and register it using the `remove` prop ('delete' is a reserved word in JavaScript):
-
-```jsx
-// in src/App.js
-import { Admin, Resource, Delete } from 'react-admin';
-
-const App = () => (
-    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
-        <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} />
-        // ...
-    </Admin>
-);
-```
-
-In the edit view, a new "delete" button appears. And you can also use the `<DeleteButton>` as a field in the list.
-
-![post deletion view](./img/post-deletion.png)
+**Note**: When you add the ability to edit an item, you also add the ability to delete it. The "Delete" button in the edit view is fully working out of the box.
 
 ## Filters
 
@@ -379,7 +361,7 @@ import UserIcon from 'material-ui-icons/Group';
 
 const App = () => (
     <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
-        <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} remove={Delete} icon={PostIcon} />
+        <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} />
         <Resource name="users" list={UserList} icon={UserIcon} />
     </Admin>
 );

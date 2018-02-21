@@ -5,7 +5,6 @@ import {
     Datagrid,
     DateField,
     DateInput,
-    Delete,
     Edit,
     EditButton,
     Filter,
@@ -185,17 +184,3 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
         </TabbedForm>
     </Edit>
 ));
-
-const VisitorDeleteTitle = translate(({ record, translate }) => (
-    <span>
-        {translate('resources.Customer.page.delete')}&nbsp;
-        {record && (
-            <img src={`${record.avatar}?size=25x25`} width="25" alt="" />
-        )}
-        {record && `${record.firstName} ${record.lastName}`}
-    </span>
-));
-
-export const VisitorDelete = props => (
-    <Delete {...props} title={<VisitorDeleteTitle />} />
-);

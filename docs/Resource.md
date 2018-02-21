@@ -30,7 +30,6 @@ const App = () => (
 * `create`
 * `edit`
 * `show`
-* `remove`
 
 Here is a more complete admin, with components for all the CRUD operations:
 
@@ -45,9 +44,9 @@ import { CommentList, CommentEdit, CommentCreate, CommentIcon } from './comments
 
 const App = () => (
     <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
-        <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={Delete} icon={PostIcon} />
+        <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} icon={PostIcon} />
         <Resource name="users" list={UserList} />
-        <Resource name="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} remove={Delete} icon={CommentIcon} />
+        <Resource name="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} icon={CommentIcon} />
         <Resource name="tags" />
     </Admin>
 );
@@ -59,7 +58,6 @@ const App = () => (
 * `/create` maps to the `create` component
 * `/:id` maps to the `edit` component
 * `/:id/show` maps to the `show` component
-* `/:id/delete` maps to the `remove` component
 
 **Tip**: You must add a `<Resource>` when you declare a reference (via `<ReferenceField>`, `<ReferenceArrayField>`, `<ReferenceManyField>`, `<ReferenceInput>` or `<ReferenceArrayInput>`), because react-admin uses resources to define the data store structure. That's why there is an empty `tag` resource in the example above.
 
@@ -74,7 +72,7 @@ const App = () => (
 React-admin uses the `name` prop both to determine the API endpoint (passed to the `dataProvider`), and to form the URL for the resource.
 
 ```jsx
-<Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} remove={PostRemove} />
+<Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} />
 ```
 
 For this resource react-admin will fetch the `http://jsonplaceholder.typicode.com/posts` endpoint for data.
@@ -85,7 +83,6 @@ The routing will map the component as follows:
 * `/posts/create` maps to `PostCreate`
 * `/posts/:id` maps to `PostEdit`
 * `/posts/:id/show` maps to `PostShow`
-* `/posts/:id/delete` maps to `PostRemove`
 
 **Tip**: If you want to use a special API endpoint (e.g. 'http://jsonplaceholder.typicode.com/my-custom-posts-endpoint') without altering the URL in the react-admin application (so still use `/posts`), write the mapping from the resource `name` (`posts`) to the API endpoint (`my-custom-posts-endpoint`) in your own [`dataProvider`](./Admin.md#dataprovider)
 

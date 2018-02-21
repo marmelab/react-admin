@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import React, { Component } from 'react';
-import { Admin, Delete, Resource } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
 
 import './App.css';
 
@@ -15,12 +15,7 @@ import { Dashboard } from './dashboard';
 import customRoutes from './routes';
 import englishMessages from './i18n/en';
 
-import {
-    VisitorList,
-    VisitorEdit,
-    VisitorDelete,
-    VisitorIcon,
-} from './visitors';
+import { VisitorList, VisitorEdit, VisitorIcon } from './visitors';
 import { CommandList, CommandEdit, CommandIcon } from './commands';
 import {
     ProductList,
@@ -75,14 +70,12 @@ class App extends Component {
                     name="Customer"
                     list={VisitorList}
                     edit={VisitorEdit}
-                    remove={VisitorDelete}
                     icon={VisitorIcon}
                 />
                 <Resource
                     name="Command"
                     list={CommandList}
                     edit={CommandEdit}
-                    remove={Delete}
                     icon={CommandIcon}
                     options={{ label: 'Orders' }}
                 />
@@ -91,21 +84,18 @@ class App extends Component {
                     list={ProductList}
                     create={ProductCreate}
                     edit={ProductEdit}
-                    remove={Delete}
                     icon={ProductIcon}
                 />
                 <Resource
                     name="Category"
                     list={CategoryList}
                     edit={CategoryEdit}
-                    remove={Delete}
                     icon={CategoryIcon}
                 />
                 <Resource
                     name="Review"
                     list={ReviewList}
                     edit={ReviewEdit}
-                    remove={Delete}
                     icon={ReviewIcon}
                 />
                 <Resource

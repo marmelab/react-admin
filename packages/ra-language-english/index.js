@@ -23,7 +23,6 @@ module.exports = {
             edit: '%{name} #%{id}',
             show: '%{name} #%{id}',
             create: 'Create %{name}',
-            delete: 'Delete %{name} #%{id}',
             dashboard: 'Dashboard',
             not_found: 'Not Found',
             loading: 'Loading',
@@ -57,6 +56,12 @@ module.exports = {
                 'Either you typed a wrong URL, or you followed a bad link.',
             loading: 'The page is loading, just a moment please',
             invalid_form: 'The form is not valid. Please check for errors',
+            delete_title: 'Delete %{name} #%{id}',
+            delete_content: 'Are you sure you want to delete this item?',
+            bulk_delete_title:
+                'Delete %{name} |||| Delete %{smart_count} %{name} items',
+            bulk_delete_content:
+                'Are you sure you want to delete this %{name}? |||| Are you sure you want to delete these %{smart_count} items?',
         },
         navigation: {
             no_results: 'No results found',

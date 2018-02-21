@@ -6,6 +6,7 @@
 - [`authClient` Prop Renamed To `authProvider` in `<Admin>` Component](#authclient-prop-renamed-to-authprovider-in-admin-component)
 - [Default (English) Messages Moved To Standalone Package](#default-english-messages-moved-to-standalone-package)
 - [Message Hash Main Key Changed ("aor" => "ra")](#message-hash-main-key-changed-aor--ra)
+- [Removed the Delete view in Resource](#removed-the-delete-view-in-resources)
 - [Replaced `messages` by `i18nProvider` in `<Admin>`](#replaced-messages-by-i18nprovider-in-admin)
 - [`<AutocompleteInput>` no longer accepts a `filter` prop](#autocompleteinput-no-longer-accepts-a-filter-prop)
 - [`<Datagrid>` No Longer Accepts `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props](#datagrid-no-longer-accepts-options-headeroptions-bodyoptions-and-rowoptions-props)
@@ -38,11 +39,9 @@ npm install react-admin
 
 As well as all your files depending on the 'admin-on-rest' package:
 
-```js
-// before
-import { BooleanField, NumberField, Show } from 'admin-on-rest'; 
-// after
-import { BooleanField, NumberField, Show } from 'react-admin'; 
+```diff
+- import { BooleanField, NumberField, Show } from 'admin-on-rest'; 
++ import { BooleanField, NumberField, Show } from 'react-admin'; 
 ```
 
 A global search and replace on the string "admin-on-rest" should do the trick in no time.
@@ -51,16 +50,10 @@ A global search and replace on the string "admin-on-rest" should do the trick in
 
 In the `<Admin>` component, the `restClient` prop is now called `dataProvider`:
 
-```jsx
-// before
+```diff
 import restClient from './restClient';
-<Admin restClient={restClient}>
-   ...
-</Admin>
-
-// after
-import restClient from './restClient';
-<Admin dataProvider={restClient}>
+- <Admin restClient={restClient}>
++ <Admin dataProvider={restClient}>
    ...
 </Admin>
 ```
@@ -78,32 +71,23 @@ Once again, this change de-emphasizes the "REST" term in admin-on-rest.
 
 Update your `import` statements accordingly:
 
-```js
-// before
-import { simpleRestClient } from 'admin-on-rest';
-// after
-import simpleRestClient from 'ra-data-simple-rest';
+```diff
+- import { simpleRestClient } from 'admin-on-rest';
++ import simpleRestClient from 'ra-data-simple-rest';
 
-// before
-import { jsonServerRestClient } from 'admin-on-rest';
-// after
-import jsonServerRestClient from 'ra-data-json-server';
+- import { jsonServerRestClient } from 'admin-on-rest';
++ import jsonServerRestClient from 'ra-data-json-server';
 ```
 
 ## `authClient` Prop Renamed To `authProvider` in `<Admin>` Component
 
 In the `<Admin>` component, the `authClient` prop is now called `authProvider`:
 
-```jsx
-// before
-import authClient from './authClient';
-<Admin authClient={authClient}>
-   ...
-</Admin>
-
-// after
-import authProvider from './authProvider';
-<Admin authProvider={authProvider}>
+```diff
+- import authClient from './authClient';
++ import authProvider from './authProvider';
+- <Admin authClient={authClient}>
++ <Admin authProvider={authProvider}>
    ...
 </Admin>
 ```
@@ -114,13 +98,9 @@ The signature of the authorizations provider function is the same as the authori
 
 The English messages have moved to another package, `ra-language-english`. The core package still displays the interface messages in English by default (by using `ra-language-english` as a dependency), but if you overrode some of the messages, you'll need to update the package name:
 
-```js
-// before
-import { enMessages } from 'admin-on-rest';
-const messages = { 'en': enMessages };
-
-// after
-import enMessages from 'ra-language-english';
+```diff
+- import { enMessages } from 'admin-on-rest';
++ import enMessages from 'ra-language-english';
 const messages = { 'en': enMessages };
 ```
 
@@ -128,52 +108,50 @@ const messages = { 'en': enMessages };
 
 The main key of translation message objects was renamed from "aor" ro "ra". You must update your custom messages accordingly if you overrode core interface messages. If you're a language package author, you must also update and  republish your package to have it work with react-admin 2.0.
 
-```js
-// before
+```diff
 module.exports = {
-    aor: {
-        action: {
-            delete: 'Delete',
-            show: 'Show',
-            ...
-// after
-module.exports = {
-    ra: {
+-    aor: {
++    ra: {
         action: {
             delete: 'Delete',
             show: 'Show',
             ...
 ```
 
+## Removed the Delete view in Resource
+
+Admin-on-rest used to have a special Delete view, accessible with a special URL, to display a confirmation message after a user clicked on the Delete button. This view added complexity to the early stages of development with admin-on-rest. Besides, it provided a mediocre user experience.
+
+In react-admin, the deletion confirmation is now a Dialog that opens on top of the page where the user currently is.
+
+As a consequence, you no longer need to pass a value to the `remove` prop in Resources:
+
+```diff
+-  <Resource name="posts" list={PostList} edit={PostEdit} show={PostShow} remove={Delete} />
++  <Resource name="posts" list={PostList} edit={PostEdit} show={PostShow} />
+```
+
+That also means that if you disabled deletion on a Resource by not passing a `remove` prop, you will be surprised by Delete buttons popping in the Edit views. The way to remove this button is to [Customize the Edit Toolbar](https://marmelab.com/react-admin/CreateEdit.html#actions).
+
 ## Replaced `messages` by `i18nProvider` in `<Admin>`
 
 In admin-on-rest, localization messages were passed as an object literal in the `messages` props of the `<Admin>` component. To do the same in react-admin, you must now use a slightly more lengthy syntax, and pass a function in the `i18nProvider` prop instead.
 
-```jsx
-// before
-import { Admin, enMessages } from 'admin-on-rest';
-import frMessages from 'aor-language-french';
+```diff
+- import { Admin, enMessages } from 'admin-on-rest';
+- import frMessages from 'aor-language-french';
++ import { Admin } from 'react-admin';
++ import enMessages from 'ra-language-english';
++ import frMessages from 'ra-language-french';
 
 const messages = {
     en: enMessages,
     fr: frMessages,
 };
 
-const App = () => <Admin locale="en" messages={messages} />;
-
-// after
-import { Admin } from 'react-admin';
-import enMessages from 'ra-language-english';
-import frMessages from 'ra-language-french';
-
-const messages = {
-    fr: frenchMessages,
-    en: englishMessages,
-}
-
-const i18nProvider = locale => messages[locale];
-
-const App = () => <Admin locale="en" i18nProvider={i18nProvider} />;
+- const App = () => <Admin locale="en" messages={messages} />;
++ const i18nProvider = locale => messages[locale];
++ const App = () => <Admin locale="en" i18nProvider={i18nProvider} />;
 ```
 
 The new `i18nProvider` allows to load the messages asynchronously - see [the `i18nProvider` documentation](./Translation.md#i18nProvider) for details.
@@ -192,56 +170,50 @@ If you need a fixed header, row hover, multi-row selection, or any other materia
 
 The value of the `<DateInput>` used to be a `Date` object. It's now a `String`, i.e. a stringified date. If you used `format` and `parse` to convert a string to a `Date`, you can now remove these props:
 
-```jsx
-// before
-const dateFormatter = v => { // from record to input
-  // v is a string of "YYYY-MM-DD" format
-  const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
-  if (match === null) return;
-  const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
-  if (isNaN(d)) return;
-  return d;
-};
-const dateParser = v => { // from input to record
-  // v is a `Date` object
-  if (!(v instanceof Date) || isNaN(v)) return;
-  const pad = '00';
-  const yy = v.getFullYear().toString();
-  const mm = (v.getMonth() + 1).toString();
-  const dd = v.getDate().toString();
-  return `${yy}-${(pad + mm).slice(-2)}-${(pad + dd).slice(-2)}`;
-};
-<DateInput source="isodate" format={dateFormatter} parse={dateParser} label="ISO date" />
-
-// after
-<DateInput source="isodate" label="ISO date" />
+```diff
+- const dateFormatter = v => { // from record to input
+-   // v is a string of "YYYY-MM-DD" format
+-   const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
+-   if (match === null) return;
+-   const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
+-   if (isNaN(d)) return;
+-   return d;
+- };
+- const dateParser = v => { // from input to record
+-   // v is a `Date` object
+-   if (!(v instanceof Date) || isNaN(v)) return;
+-   const pad = '00';
+-   const yy = v.getFullYear().toString();
+-   const mm = (v.getMonth() + 1).toString();
+-   const dd = v.getDate().toString();
+-   return `${yy}-${(pad + mm).slice(-2)}-${(pad + dd).slice(-2)}`;
+- };
+- <DateInput source="isodate" format={dateFormatter} parse={dateParser} label="ISO date" />
++ <DateInput source="isodate" label="ISO date" />
 ```
 
 On the other way around, if your data provider expects JavaScript `Date` objects for value, you now need to do the conversion to and from strings using `format` and `parse`:
 
-```jsx
-// before
-<DateInput source="isodate" label="ISO date" />
-
-// after
-const dateFormatter = v => { // from record to input
-  // v is a `Date` object
-  if (!(v instanceof Date) || isNaN(v)) return;
-  const pad = '00';
-  const yy = v.getFullYear().toString();
-  const mm = (v.getMonth() + 1).toString();
-  const dd = v.getDate().toString();
-  return `${yy}-${(pad + mm).slice(-2)}-${(pad + dd).slice(-2)}`;
-};
-const dateParser = v => { // from input to record
-  // v is a string of "YYYY-MM-DD" format
-  const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
-  if (match === null) return;
-  const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
-  if (isNaN(d)) return;
-  return d;
-};
-<DateInput source="isodate" format={dateFormatter} parse={dateParser} label="ISO date" />
+```diff
+- <DateInput source="isodate" label="ISO date" />
++ const dateFormatter = v => { // from record to input
++   // v is a `Date` object
++   if (!(v instanceof Date) || isNaN(v)) return;
++   const pad = '00';
++   const yy = v.getFullYear().toString();
++   const mm = (v.getMonth() + 1).toString();
++   const dd = v.getDate().toString();
++   return `${yy}-${(pad + mm).slice(-2)}-${(pad + dd).slice(-2)}`;
++ };
++ const dateParser = v => { // from input to record
++   // v is a string of "YYYY-MM-DD" format
++   const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
++   if (match === null) return;
++   const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
++   if (isNaN(d)) return;
++   return d;
++ };
++ <DateInput source="isodate" format={dateFormatter} parse={dateParser} label="ISO date" />
 ```
 
 ## Removed `<DateInput>` `options` props
@@ -267,10 +239,10 @@ If you used CSS to customize the look and feel of these components, please updat
 
 Adding the `addField` prop to a component used to automatically add a redux-form `<Field>` component around an input component that you wanted to bind to the edit or create form. This feature was moved to a Higher-order component (HOC):
 
-```jsx
-// before
+```diff
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
++ import { addField } from 'react-admin';
 const SexInput = ({ input, meta: { touched, error } }) => (
     <SelectField
         floatingLabelText="Sex"
@@ -281,50 +253,26 @@ const SexInput = ({ input, meta: { touched, error } }) => (
         <MenuItem value="F" primaryText="Female" />
     </SelectField>
 );
-SexInput.defaultProps = {
-    addField: true, // require a <Field> decoration
-}
-export default SexInput;
-
-// after
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import { addField } from 'react-admin';
-const SexInput = ({ input, meta: { touched, error } }) => (
-    <SelectField
-        floatingLabelText="Sex"
-        errorText={touched && error}
-        {...input}
-    >
-        <MenuItem value="M" primaryText="Male" />
-        <MenuItem value="F" primaryText="Female" />
-    </SelectField>
-);
-export default addField(SexInput); // require a <Field> decoration
+- SexInput.defaultProps = {
+-     addField: true, // require a <Field> decoration
+- }
+- export default SexInput;
++ export default addField(SexInput);
 ```
 
 Admin-on-rest input components all use the new `addField` HOC. This means that it's no longer necessary to set the `addField` prop when you compose one of admin-on-rest's components:
 
-```jsx
-// before
-import { SelectInput } from 'admin-on-rest';
+```diff
+- import { SelectInput } from 'admin-on-rest';
++ import { SelectInput } from 'react-admin';
 const choices = [
     { id: 'M', name: 'Male' },
     { id: 'F', name: 'Female' },
 ]
 const SexInput = props => <SelectInput {...props} choices={choices}/>;
-SexInput.defaultProps = {
-    addField: true;
-}
-export default SexInput;
-
-// after
-import { SelectInput } from 'react-admin';
-const choices = [
-    { id: 'M', name: 'Male' },
-    { id: 'F', name: 'Female' },
-]
-const SexInput = props => <SelectInput {...props} choices={choices}/>;
+- SexInput.defaultProps = {
+-     addField: true;
+- }
 export default SexInput;
 ```
 
@@ -332,36 +280,20 @@ export default SexInput;
 
 The Refresh button now uses Redux to force a refetch of the data. As a consequence, the List view no longer passes the `refresh` prop to the `<Actions>` component. If you relied on that prop to refresh the list, you must now use the new `<RefreshButton>` component.
 
-```jsx
-// before
+```diff
 import { CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import { CreateButton } from 'admin-on-rest';
+- import FlatButton from 'material-ui/FlatButton';
+- import { CreateButton } from 'admin-on-rest';
+- import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
++ import { CreateButton, RefreshButton } from 'react-admin';
 
-const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
+- const PostListActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
++ const PostListActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter }) => (
     <CardActions>
         {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         <CreateButton basePath={basePath} />
-        <FlatButton primary label="refresh" onClick={refresh} icon={<NavigationRefresh />} />
-        {/* Add your custom actions */}
-        <FlatButton primary label="Custom Action" onClick={customAction} />
-    </CardActions>
-);
-
-// after
-import { CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import { CreateButton, RefreshButton } from 'react-admin';
-
-const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter }) => (
-    <CardActions>
-        {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
-        <CreateButton basePath={basePath} />
-        <RefreshButton />
-        {/* Add your custom actions */}
-        <FlatButton primary label="Custom Action" onClick={customAction} />
+-         <FlatButton primary label="refresh" onClick={refresh} icon={<NavigationRefresh />} />
++         <RefreshButton />
     </CardActions>
 );
 ```
@@ -372,48 +304,37 @@ Following the same path as Material UI, react-admin now uses [JSS](https://githu
 
 All react-admin components now accept a `className` prop instead of the `elStyle` prop. But it expects a CSS *class name* instead of a CSS object. To set custom styles through a class name, you must use the [`withStyles` Higher Order Component](https://material-ui-next.com/customization/css-in-js/#api) supplied by Material-UI.
 
-```jsx
-// before
-import { EmailField, List, Datagrid } from 'react-admin';
-
-const UserList = props => (
-    <List {...props}
->
-        <Datagrid>
-            ...
-            <EmailField source="email" elStyle={{ textDecoration: 'none' }} />
-        </Datagrid>
-    </List>
-);
-export default UserList;
+```diff
+- import { EmailField, List, Datagrid } from 'admin-on-rest';
+- const UserList = props => (
+-     <List {...props}>
+-         <Datagrid>
+-             ...
+-             <EmailField source="email" elStyle={{ textDecoration: 'none' }} />
+-         </Datagrid>
+-     </List>
+- );
+- export default UserList;
 // renders in the datagrid as
 //<td>
 //    <a style="text-decoration:none" href="mailto:foo@example.com">foo@example.com</a>
 //</td>
-
-// after
-import { EmailField, List, Datagrid } from 'react-admin';
-import { withStyles } from 'material-ui/styles';
-
-const styles = {
-    field: {
-        textDecoration: 'none',
-    },
-};
-
-const UserList = ({ classes, ...props }) => (
-    <List {...props}>
-        <Datagrid>
-           ...
-            <EmailField source="email" className={classes.field} />
-        </Datagrid>
-    </List>
-);
-export default withStyles(styles)(UserList);
-// renders the same in the datagrid 
-// <td>
-//    <a style="text-decoration:none" href="mailto:foo@example.com">foo@example.com</a>
-//</td>
++ import { EmailField, List, Datagrid } from 'react-admin';
++ import { withStyles } from 'material-ui/styles';
++ const styles = {
++     field: {
++         textDecoration: 'none',
++     },
++ };
++ const UserList = ({ classes, ...props }) => (
++     <List {...props}>
++         <Datagrid>
++            ...
++             <EmailField source="email" className={classes.field} />
++         </Datagrid>
++     </List>
++ );
++ export default withStyles(styles)(UserList);
 ```
 
 In addition to `elStyle`, Field and Input components used to support a `style` prop to override the styles of the *container element* (the `<td>` in a datagrid). This prop is no longer supported in react-admin. Instead, the `Datagrid` component will check if its children have a `headerClassName` and `cellClassName` props. If they do, it will apply those classes to the table header and cells respectively.

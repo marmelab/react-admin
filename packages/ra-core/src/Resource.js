@@ -20,7 +20,6 @@ export class Resource extends Component {
             create,
             edit,
             show,
-            remove,
             options,
             icon,
             registerResource,
@@ -34,7 +33,6 @@ export class Resource extends Component {
                 hasEdit: !!edit,
                 hasShow: !!show,
                 hasCreate: !!create,
-                hasDelete: !!remove,
                 icon,
             };
 
@@ -58,7 +56,6 @@ export class Resource extends Component {
             create,
             edit,
             show,
-            remove,
             options,
         } = this.props;
 
@@ -73,7 +70,6 @@ export class Resource extends Component {
             hasEdit: !!edit,
             hasShow: !!show,
             hasCreate: !!create,
-            hasDelete: !!remove,
         };
 
         return (
@@ -98,19 +94,6 @@ export class Resource extends Component {
                         render={routeProps => (
                             <WithPermissions
                                 render={props => createElement(show, props)}
-                                {...routeProps}
-                                {...resource}
-                            />
-                        )}
-                    />
-                )}
-                {remove && (
-                    <Route
-                        exact
-                        path={`${match.url}/:id/delete`}
-                        render={routeProps => (
-                            <WithPermissions
-                                render={props => createElement(remove, props)}
                                 {...routeProps}
                                 {...resource}
                             />
@@ -155,7 +138,6 @@ Resource.propTypes = {
     create: componentPropType,
     edit: componentPropType,
     show: componentPropType,
-    remove: componentPropType,
     icon: componentPropType,
     options: PropTypes.object,
     registerResource: PropTypes.func.isRequired,

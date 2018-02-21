@@ -18,6 +18,7 @@ title: "Reference"
 * [`<BooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
 * [`<CheckboxGroupInput>`](./Inputs.md#checkboxgroupinput)
 * [`<ChipField>`](./Fields.md#chipfield)
+* `<Confirm>`
 * [`<Create>`](./CreateEdit.md#the-create-and-edit-components)
 * `<CreateActions>`
 * `<CreateButton>`
@@ -28,7 +29,6 @@ title: "Reference"
 * `<DatagridHeaderCell>`
 * [`<DateField>`](./Fields.md#datefield)
 * [`<DateInput>`](./Inputs.md#dateinput)
-* `<Delete>`
 * `<DeleteButton>`
 * [`<DisabledInput>`](./Inputs.md#disabledinput)
 * [`<Edit>`](./CreateEdit.md#the-create-and-edit-components)

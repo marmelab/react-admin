@@ -8,7 +8,6 @@ const sanitizeRestProps = ({
     basePath,
     className,
     record,
-    hasDelete,
     hasEdit,
     hasList,
     resource,
@@ -26,11 +25,11 @@ const sanitizeRestProps = ({
  *     import Button from 'material-ui/Button';
  *     import { CardActions, ListButton, EditButton, DeleteButton, RefreshButton, Show } from 'react-admin';
  *     
- *     const PostShowActions = ({ basePath, record }) => (
+ *     const PostShowActions = ({ basePath, record, resource }) => (
  *         <CardActions>
  *             <EditButton basePath={basePath} record={record} />
  *             <ListButton basePath={basePath} />
- *             <DeleteButton basePath={basePath} record={record} />
+ *             <DeleteButton basePath={basePath} record={record} resource={resource} />
  *             <RefreshButton />
  *             // Add your custom actions here //
  *             <Button color="primary" onClick={customAction}>Custom Action</Button>
@@ -47,15 +46,21 @@ const ShowActions = ({
     basePath,
     className,
     data,
-    hasDelete,
     hasEdit,
     hasList,
+    resource,
     ...rest
 }) => (
     <CardActions className={className} {...sanitizeRestProps(rest)}>
         {hasEdit && <EditButton basePath={basePath} record={data} />}
         {hasList && <ListButton basePath={basePath} />}
-        {hasDelete && <DeleteButton basePath={basePath} record={data} />}
+        {hasEdit && (
+            <DeleteButton
+                basePath={basePath}
+                record={data}
+                resource={resource}
+            />
+        )}
         <RefreshButton />
     </CardActions>
 );
@@ -64,9 +69,9 @@ ShowActions.propTypes = {
     basePath: PropTypes.string,
     className: PropTypes.string,
     data: PropTypes.object,
-    hasDelete: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasList: PropTypes.bool,
+    resource: PropTypes.string,
 };
 
 export default ShowActions;

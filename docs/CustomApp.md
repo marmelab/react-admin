@@ -38,7 +38,6 @@ import {
     adminReducer,
     localeReducer,
     crudSaga,
-    Delete,
     TranslationProvider,
     declareResources,
 } from 'react-admin';
@@ -96,17 +95,14 @@ const App = () => (
                         <Route exact path="/" component={Dashboard} />
                         <Route exact path="/posts" hasCreate render={(routeProps) => <PostList resource="posts" {...routeProps} />} />
                         <Route exact path="/posts/create" render={(routeProps) => <PostCreate resource="posts" {...routeProps} />} />
-                        <Route exact path="/posts/:id" hasShow hasDelete render={(routeProps) => <PostEdit resource="posts" {...routeProps} />} />
+                        <Route exact path="/posts/:id" hasShow render={(routeProps) => <PostEdit resource="posts" {...routeProps} />} />
                         <Route exact path="/posts/:id/show" hasEdit render={(routeProps) => <PostShow resource="posts" {...routeProps} />} />
-                        <Route exact path="/posts/:id/delete" render={(routeProps) => <Delete resource="posts" {...routeProps} />} />
                         <Route exact path="/comments" hasCreate render={(routeProps) => <CommentList resource="comments" {...routeProps} />} />
                         <Route exact path="/comments/create" render={(routeProps) => <CommentCreate resource="comments" {...routeProps} />} />
-                        <Route exact path="/comments/:id" hasDelete render={(routeProps) => <CommentEdit resource="comments" {...routeProps} />} />
-                        <Route exact path="/comments/:id/delete" render={(routeProps) => <Delete resource="comments" {...routeProps} />} />
+                        <Route exact path="/comments/:id" render={(routeProps) => <CommentEdit resource="comments" {...routeProps} />} />
                         <Route exact path="/users" hasCreate render={(routeProps) => <UsersList resource="users" {...routeProps} />} />
                         <Route exact path="/users/create" render={(routeProps) => <UsersCreate resource="users" {...routeProps} />} />
-                        <Route exact path="/users/:id" hasDelete render={(routeProps) => <UsersEdit resource="users" {...routeProps} />} />
-                        <Route exact path="/users/:id/delete" render={(routeProps) => <Delete resource="users" {...routeProps} />} />
+                        <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" {...routeProps} />} />
                     </Switch>
                 </MuiThemeProvider>
             </ConnectedRouter>

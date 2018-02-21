@@ -91,11 +91,11 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const CommentEditActions = ({ basePath, data }) => (
+const CommentEditActions = ({ basePath, data, resource }) => (
     <CardActions style={cardActionStyle}>
         <ApproveButton record={data} />
         <ListButton basePath={basePath} />
-        <DeleteButton basePath={basePath} record={data} />
+        <DeleteButton basePath={basePath} record={data} resource={resource} />
     </CardActions>
 );
 

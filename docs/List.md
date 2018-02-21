@@ -115,14 +115,14 @@ Bulk actions are actions that affect several records at once, like mass deletion
 
 ```jsx
 import Button from 'material-ui/Button';
-import { BulkActions, BulkDeleteMenuItem } from 'react-admin';
-import CustomBulkMenuItem from './CustomBulkMenuItem';
+import { BulkActions, BulkDeleteAction } from 'react-admin';
+import ResetViewsAction from './ResetViewsAction';
 
 const PostBulkActions = props => (
     <BulkActions {...props}>
-        <CustomBulkMenuItem />
+        <ResetViewsAction label="Reset Views" />
         {/* Add the default bulk delete action */}
-        <BulkDeleteMenuItem />
+        <BulkDeleteAction />
     </BulkActions>
 );
 
@@ -133,82 +133,97 @@ export const PostList = (props) => (
 );
 ```
 
-A custom bulk action is a material-ui [`MenuItem`](http://www.material-ui.com/#/components/menu), for which you are entirely responsible. The component receives several props allowing it to perform its job:
+**Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActions` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
+
+React-admin uses the `label` prop of the bulk action components to display the bulk action menu items. 
+
+Bulk action components are regular React component that gets mounted when the related menu item is clicked. The component receives several props allowing it to perform its job:
 
 * `resource`: the currently displayed resource (eg `posts`, `comments`, etc.)
 * `basePath`: the current router base path for the resource (eg `/posts`, `/comments`, etc.)
 * `filterValues`: the filter values. This can be useful if you want to apply your action on all items matching the filter.
 * `selectedIds`: the identifiers of the currently selected items.
-* `onCloseMenu`: an event handler you should call to close the menu.
+* `onExit`: an event handler you should call when the bulk action ends.
 
 Here is an example leveraging the `UPDATE_MANY` crud action, which will set the `views` property of all posts to `0`:
 
 ```jsx
-// in ./CustomBulkMenuItem.js
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// in ./ResetViewsAction.js
+import { Component } from 'react';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import { MenuItem } from 'material-ui/Menu';
+import { crudUpdateMany } from 'react-admin';
 
-import { translate, crudUpdateMany as crudUpdateManyAction } from 'react-admin';
-
-const sanitizeRestProps = ({
-    basePath,
-    crudUpdateMany,
-    filterValues,
-    onCloseMenu,
-    resource,
-    selectedIds,
-    ...props
-}) => props;
-class BulkUpdateMenuItem extends Component {
-    handleClick = () => {
+class ResetViewsAction extends Component {
+    componentDidMount = () => {
         const {
-            basePath,
-            crudUpdateMany,
-            onCloseMenu,
             resource,
+            basePath,
             selectedIds,
+            onExit,
+            crudUpdateMany,
         } = this.props;
 
-        onCloseMenu();
         crudUpdateMany(resource, selectedIds, { views: 0 }, basePath);
+        onExit();
     };
 
     render() {
-        const { label, translate, ...rest } = this.props;
+        return null;
+    }
+}
+
+export default connect(undefined, { crudUpdateMany })(ResetViewsAction);
+```
+
+This component renders nothing - it just dispatches an action when mounted. Once finished, it also calls the `onExit()` method passed by the main bulk actions component, which has the effect of unmounting the `ResetViewsAction` component.
+
+But most of the time, bulk actions are mini-applications with a standalone user interface (in a Dialog), so the `render()` method is useful. Here is the same `ResetViewsAction` implemented behind a confirmation dialog:
+
+```jsx
+// in ./ResetViewsAction.js
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Confirm } from 'react-admin';
+import { crudUpdateMany } from 'ra-core';
+
+class ResetViewsAction extends Component {
+    handleDialogClose = () => {
+        this.props.onExit();
+    };
+
+    handleConfirm = () => {
+        const { basePath, crudUpdateMany, resource, selectedIds } = this.props;
+        crudUpdateMany(resource, selectedIds, { views: 0 }, basePath);
+        this.props.onExit();
+    };
+
+    render() {
         return (
-            <MenuItem onClick={this.handleClick} {...sanitizeRestProps(rest)}>
-                {translate(label)}
-            </MenuItem>
+            <Confirm
+                isOpen={true}
+                title="Update View Count"
+                content="Are you sure you want to reset the views for these items?"
+                onConfirm={this.handleConfirm}
+                onClose={this.handleDialogClose}
+            />
         );
     }
 }
 
-BulkUpdateMenuItem.propTypes = {
+ResetViewsAction.propTypes = {
     basePath: PropTypes.string,
     crudUpdateMany: PropTypes.func.isRequired,
     label: PropTypes.string,
-    onCloseMenu: PropTypes.func.isRequired,
+    onExit: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
-    translate: PropTypes.func.isRequired,
 };
 
-BulkUpdateMenuItem.defaultProps = {
-    label: 'simple.action.resetViews',
-};
-
-const EnhancedBulkUpdateMenuItem = compose(
-    connect(undefined, { crudUpdateMany: crudUpdateManyAction }),
-    translate
-)(BulkUpdateMenuItem);
-
-export default EnhancedBulkUpdateMenuItem;
+export default connect(undefined, { crudUpdateMany })(ResetViewsAction);
 ```
 
-You can also disable bulk actions altogether by passing `false` to the `bulkActions` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
+**Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
 ### Filters
 

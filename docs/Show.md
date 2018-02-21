@@ -101,11 +101,11 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const PostShowActions = ({ basePath, data }) => (
+const PostShowActions = ({ basePath, data, resource }) => (
     <CardActions style={cardActionStyle}>
         <EditButton basePath={basePath} record={data} />
         <ListButton basePath={basePath} />
-        <DeleteButton basePath={basePath} record={data} />
+        <DeleteButton basePath={basePath} record={data} resource={resource} />
         <RefreshButton />
         {/* Add your custom actions */}
         <Button color="primary" onClick={customAction}>Custom Action</Button>
@@ -223,12 +223,12 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const PostShowActions = ({ permissions, basePath, data }) => (
+const PostShowActions = ({ permissions, basePath, data, resource }) => (
     <CardActions style={cardActionStyle}>
         <EditButton basePath={basePath} record={data} />
         <ListButton basePath={basePath} />
         {permissions === 'admin' &&
-            <DeleteButton basePath={basePath} record={data} />
+            <DeleteButton basePath={basePath} record={data} resource={resource} />
         }
     </CardActions>
 );

@@ -1,5 +1,5 @@
 export BulkActions from './BulkActions';
-export BulkDeleteMenuItem from './BulkDeleteMenuItem';
+export BulkDeleteAction from './BulkDeleteAction';
 export Datagrid from './Datagrid';
 export Filter from './Filter';
 export FilterButton from './FilterButton';
