@@ -3,7 +3,7 @@ import React, { cloneElement, Children, Component } from 'react';
 import PropTypes from 'prop-types';
 import MoreVertIcon from 'material-ui-icons/MoreVert';
 import Popover from 'material-ui/Popover';
-import Menu, { MenuList, MenuItem } from 'material-ui/Menu';
+import { MenuList, MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
