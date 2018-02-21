@@ -1,6 +1,6 @@
 {
   "name": "ra-realtime",
-  "version": "2.0.0-beta2",
+  "version": "2.0.0-beta3",
   "description": "A saga enabling realtime updates for react-admin",
   "main": "./lib/index.js",
   "repository": {
@@ -30,13 +30,13 @@
     "lodash.pickby": "~4.6.0"
   },
   "peerDependencies": {
-    "react-admin": "^2.0.0-beta2",
+    "react-admin": "^2.0.0-beta3",
     "react-router": "~4.2.0",
     "react-router-redux": "~5.0.0-alpha.6",
     "redux-saga": "~0.15.6"
   },
   "devDependencies": {
-    "react-admin": "^2.0.0-beta2",
+    "react-admin": "^2.0.0-beta3",
     "react-router": "~4.2.0",
     "react-router-redux": "~5.0.0-alpha.6",
     "redux-saga": "~0.15.6"
