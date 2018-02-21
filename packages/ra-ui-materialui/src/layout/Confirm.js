@@ -68,6 +68,10 @@ const Confirm = ({
             <DialogContentText>{content}</DialogContentText>
         </DialogContent>
         <DialogActions>
+            <Button onClick={onClose}>
+                <AlertError className={classes.iconPaddingStyle} />
+                {cancel}
+            </Button>
             <Button
                 onClick={onConfirm}
                 className={classnames('ra-confirm', {
@@ -78,10 +82,6 @@ const Confirm = ({
             >
                 <ActionCheck className={classes.iconPaddingStyle} />
                 {confirm}
-            </Button>
-            <Button onClick={onClose}>
-                <AlertError className={classes.iconPaddingStyle} />
-                {cancel}
             </Button>
         </DialogActions>
     </Dialog>
