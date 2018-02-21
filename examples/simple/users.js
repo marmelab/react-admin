@@ -24,12 +24,25 @@ import {
     required,
     translate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import { InputAdornment } from 'material-ui/Input';
 import PeopleIcon from 'material-ui-icons/People';
+import SearchIcon from 'material-ui-icons/Search';
 export const UserIcon = PeopleIcon;
 
 const UserFilter = ({ permissions, ...props }) => (
     <Filter {...props}>
-        <TextInput label="user.list.search" source="q" alwaysOn />
+        <TextInput
+            label="user.list.search"
+            source="q"
+            alwaysOn
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment position="end">
+                        <SearchIcon color="disabled" />
+                    </InputAdornment>
+                ),
+            }}
+        />
         <TextInput source="name" />
         {permissions === 'admin' ? <TextInput source="role" /> : null}
     </Filter>
