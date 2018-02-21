@@ -50,7 +50,7 @@ export const UserList = ({ permissions, ...props }) => (
                 />
             }
             medium={
-                <Datagrid>
+                <Datagrid hover={false}>
                     <TextField source="id" />
                     <TextField source="name" />
                     {permissions === 'admin' && <TextField source="role" />}

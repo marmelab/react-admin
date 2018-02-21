@@ -127,6 +127,7 @@ export const PostList = withStyles(styles)(({ classes, ...props }) => (
                     <BooleanField
                         source="commentable"
                         label="resources.posts.fields.commentable_short"
+                        sortable={false}
                     />
                     <NumberField source="views" />
                     <ReferenceArrayField
