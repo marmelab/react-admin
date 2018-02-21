@@ -1,9 +1,9 @@
 import React, { cloneElement, Children, Component } from 'react';
 
 import PropTypes from 'prop-types';
-import MoreVertIcon from 'material-ui-icons/MoreVert';
+import FilterNoneIcon from 'material-ui-icons/FilterNone';
 import Popover from 'material-ui/Popover';
-import { MenuList, MenuItem } from 'material-ui/Menu';
+import Menu, { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
@@ -18,6 +18,9 @@ const styles = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
+    },
+    icon: {
+        marginRight: theme.spacing.unit,
     },
     unselected: {
         opacity: 0,
@@ -93,41 +96,35 @@ class BulkActions extends Component {
                     alignIcon="right"
                     aria-owns={isOpen ? 'bulk-actions-menu' : null}
                     aria-haspopup="true"
-                    label={translate(label, {
-                        _: label,
-                        smart_count: selectedIds.length,
-                    })}
                     onClick={this.handleClick}
                     {...sanitizeRestProps(rest)}
                 >
-                    <MoreVertIcon />
+                    <FilterNoneIcon className={classes.icon} />
+                    {translate(label, {
+                        _: label,
+                        smart_count: selectedIds.length,
+                    })}
                 </Button>
-                <Popover
+                <Menu
                     id="bulk-actions-menu"
                     anchorEl={this.anchorElement}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
                     onClose={this.handleClose}
                     open={isOpen}
                 >
-                    <MenuList>
-                        {Children.map(children, (child, index) => (
-                            <MenuItem
-                                key={index}
-                                className={classnames(
-                                    'bulk-actions-menu-item',
-                                    child.props.className
-                                )}
-                                onClick={() => this.handleLaunchAction(index)}
-                                {...sanitizeRestProps(rest)}
-                            >
-                                {translate(child.props.label)}
-                            </MenuItem>
-                        ))}
-                    </MenuList>
-                </Popover>
+                    {Children.map(children, (child, index) => (
+                        <MenuItem
+                            key={index}
+                            className={classnames(
+                                'bulk-actions-menu-item',
+                                child.props.className
+                            )}
+                            onClick={() => this.handleLaunchAction(index)}
+                            {...sanitizeRestProps(rest)}
+                        >
+                            {translate(child.props.label)}
+                        </MenuItem>
+                    ))}
+                </Menu>
                 {Children.map(
                     children,
                     (child, index) =>
