@@ -181,7 +181,8 @@ describe('<AutocompleteInput />', () => {
                     input={{ value: null }}
                     choices={[{ id: 'M', name: 'Male' }]}
                     alwaysRenderSuggestions
-                />
+                />,
+                { context, childContextTypes }
             );
             wrapper.find('input').simulate('focus');
             wrapper
@@ -206,7 +207,8 @@ describe('<AutocompleteInput />', () => {
                         optionText(v);
                         return v.name;
                     }}
-                />
+                />,
+                { context, childContextTypes }
             );
             expect(optionText).toHaveBeenCalledTimes(1);
             expect(optionText).toHaveBeenCalledWith({ id: 'M', name: 'Male' });
@@ -223,7 +225,8 @@ describe('<AutocompleteInput />', () => {
                         optionText(v);
                         return v.name;
                     }}
-                />
+                />,
+                { context, childContextTypes }
             );
             wrapper
                 .find('input')
@@ -245,7 +248,8 @@ describe('<AutocompleteInput />', () => {
                     allowEmpty
                     input={{ value: 'M', onBlur }}
                     choices={[{ id: 'M', name: 'Male' }]}
-                />
+                />,
+                { context, childContextTypes }
             );
             wrapper
                 .find('input')
@@ -268,7 +272,8 @@ describe('<AutocompleteInput />', () => {
                     {...defaultProps}
                     input={{ value: 'M' }}
                     choices={[{ id: 'M', name: 'Male' }]}
-                />
+                />,
+                { context, childContextTypes }
             );
             wrapper
                 .find('input')
@@ -279,7 +284,8 @@ describe('<AutocompleteInput />', () => {
         });
         it('should show the suggestions when the input value is null and the input is focussed and choices arrived late', () => {
             const wrapper = mount(
-                <AutocompleteInput {...defaultProps} input={{ value: '' }} />
+                <AutocompleteInput {...defaultProps} input={{ value: '' }} />,
+                { context, childContextTypes }
             );
             wrapper.setProps({
                 choices: [
@@ -296,7 +302,8 @@ describe('<AutocompleteInput />', () => {
                 <AutocompleteInput
                     {...defaultProps}
                     input={{ value: '', onChange }}
-                />
+                />,
+                { context, childContextTypes }
             );
             wrapper.setProps({
                 choices: [{ id: 'M', name: 'Male' }],
@@ -315,7 +322,8 @@ describe('<AutocompleteInput />', () => {
                     {...defaultProps}
                     input={{ value: 1 }}
                     setFilter={setFilter}
-                />
+                />,
+                { context, childContextTypes }
             );
             wrapper
                 .find('input')
@@ -343,10 +351,11 @@ describe('<AutocompleteInput />', () => {
                         query,
                         isHighlighted,
                         ...props
-                    }) => <div {...props} dataField={suggestion.name} />}
-                />
+                    }) => <div {...props} data-field={suggestion.name} />}
+                />,
+                { context, childContextTypes }
             );
-            expect(wrapper.find('div[dataField]')).toHaveLength(2);
+            expect(wrapper.find('div[data-field]')).toHaveLength(2);
         });
     });
 
