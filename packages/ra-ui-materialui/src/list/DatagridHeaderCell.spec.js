@@ -18,9 +18,10 @@ describe('<DatagridHeaderCell />', () => {
                     currentSort={{}}
                     field={<Field source="title" />}
                     updateSort={() => true}
+                    translate={() => ''}
                 />
             );
-            assert.equal(wrapper.find('WithStyles(Button)').length, 1);
+            assert.equal(wrapper.find('WithStyles(TableSortLabel)').length, 1);
         });
 
         it('should be disabled when field has no source', () => {
@@ -29,10 +30,11 @@ describe('<DatagridHeaderCell />', () => {
                     currentSort={{}}
                     field={<Field />}
                     updateSort={() => true}
+                    translate={() => ''}
                 />
             );
 
-            assert.equal(wrapper.find('WithStyles(Button)').length, 0);
+            assert.equal(wrapper.find('WithStyles(TableSortLabel)').length, 0);
         });
 
         it('should be disabled when sortable prop is explicitly set to false', () => {
@@ -41,10 +43,11 @@ describe('<DatagridHeaderCell />', () => {
                     currentSort={{}}
                     field={<Field source="title" sortable={false} />}
                     updateSort={() => true}
+                    translate={() => ''}
                 />
             );
 
-            assert.equal(wrapper.find('WithStyles(Button)').length, 0);
+            assert.equal(wrapper.find('WithStyles(TableSortLabel)').length, 0);
         });
 
         it('should use cell className if specified', () => {
@@ -52,6 +55,7 @@ describe('<DatagridHeaderCell />', () => {
                 <DatagridHeaderCell
                     currentSort={{}}
                     updateSort={() => true}
+                    translate={() => ''}
                     field={<Field />}
                     className="blue"
                 />
