@@ -10,7 +10,10 @@ describe('<SingleFieldList />', () => {
         const wrapper = shallow(
             <SingleFieldList
                 ids={[1, 2]}
-                data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
+                data={{
+                    1: { id: 1, title: 'foo' },
+                    2: { id: 2, title: 'bar' },
+                }}
                 resource="posts"
                 basePath="/posts"
             >
@@ -29,7 +32,10 @@ describe('<SingleFieldList />', () => {
         const wrapper = shallow(
             <SingleFieldList
                 ids={[1, 2]}
-                data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
+                data={{
+                    1: { id: 1, title: 'foo' },
+                    2: { id: 2, title: 'bar' },
+                }}
                 resource="posts"
                 basePath="/posts"
             >
@@ -48,7 +54,10 @@ describe('<SingleFieldList />', () => {
         let wrapper = shallow(
             <SingleFieldList
                 ids={[1, 2]}
-                data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
+                data={{
+                    1: { id: 1, title: 'foo' },
+                    2: { id: 2, title: 'bar' },
+                }}
                 resource="edit"
                 basePath="/edit"
             >
@@ -65,7 +74,10 @@ describe('<SingleFieldList />', () => {
         wrapper = shallow(
             <SingleFieldList
                 ids={[1, 2]}
-                data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
+                data={{
+                    1: { id: 1, title: 'foo' },
+                    2: { id: 2, title: 'bar' },
+                }}
                 resource="show"
                 basePath="/show"
             >
@@ -108,7 +120,10 @@ describe('<SingleFieldList />', () => {
         let wrapper = shallow(
             <SingleFieldList
                 ids={[1, 2]}
-                data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
+                data={{
+                    1: { id: 1, title: 'foo' },
+                    2: { id: 2, title: 'bar' },
+                }}
                 resource="edit"
                 basePath="/edit"
                 linkType="show"
@@ -126,7 +141,10 @@ describe('<SingleFieldList />', () => {
         wrapper = shallow(
             <SingleFieldList
                 ids={[1, 2]}
-                data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
+                data={{
+                    1: { id: 1, title: 'foo' },
+                    2: { id: 2, title: 'bar' },
+                }}
                 resource="show"
                 basePath="/show"
                 linkType="show"
@@ -146,7 +164,10 @@ describe('<SingleFieldList />', () => {
         const wrapper = shallow(
             <SingleFieldList
                 ids={[1, 2]}
-                data={[{ id: 1, title: 'foo' }, { id: 2, title: 'bar' }]}
+                data={{
+                    1: { id: 1, title: 'foo' },
+                    2: { id: 2, title: 'bar' },
+                }}
                 resource="bar"
                 basePath="/bar"
                 linkType={false}

@@ -73,7 +73,7 @@ ReferenceFieldView.propTypes = {
     reference: PropTypes.string,
     referenceRecord: PropTypes.object,
     resource: PropTypes.string,
-    resourceLinkPath: PropTypes.string,
+    resourceLinkPath: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     source: PropTypes.string,
     translateChoice: PropTypes.bool,
 };
