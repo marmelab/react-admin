@@ -79,12 +79,22 @@ build-ra-realtime:
 	@rm -rf ./packages/ra-realtime/lib
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-realtime/src -d ./packages/ra-realtime/lib --ignore spec.js,test.js
 
+build-ra-data-loopback3:
+    @echo "Transpiling ra-data-loopback3 files...";
+	@rm -rf ./packages/ra-data-loopback3/lib
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-loopback3/src -d ./packages/ra-data-loopback3/lib --ignore '*.spec.js' --ignore '*.test.js'
+
+build-react-admin-ext:
+    @echo "Transpiling react-admin-ext files...";
+	@rm -rf ./packages/react-admin-ext/lib
+	@NODE_ENV=production ./node_modules/.bin/babel ./packages/react-admin-ext/src -d ./packages/react-admin-ext/lib --ignore spec.js,test.js
+
 build-data-generator:
 	@echo "Transpiling data-generator files...";
 	@rm -rf ./examples/data-generator/lib
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./examples/data-generator/src -d ./examples/data-generator/lib
 
-build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-dependent-input build-ra-input-rich-text build-ra-realtime build-data-generator ## compile ES6 files to JS
+build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-dependent-input build-ra-input-rich-text build-ra-realtime build-ra-data-loopback3 build-react-admin-ext build-data-generator ## compile ES6 files to JS
 
 watch: ## continuously compile ES6 files to JS
 	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore spec.js,test.js --watch

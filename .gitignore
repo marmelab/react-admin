@@ -8,3 +8,4 @@ packages/ra-example-shop
 
 .idea
 package-lock.json
+.DS_Store
