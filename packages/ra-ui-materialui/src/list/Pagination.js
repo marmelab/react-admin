@@ -18,6 +18,9 @@ const styles = {
     pageInfo: {
         padding: '1.2em',
     },
+    desktopToolbar: {
+        justifyContent: 'flex-end',
+    },
     mobileToolbar: {
         justifyContent: 'center',
     },
@@ -170,7 +173,13 @@ export class Pagination extends Component {
                     </Toolbar>
                 }
                 medium={
-                    <Toolbar className={className} {...rest}>
+                    <Toolbar
+                        className={classnames(
+                            className,
+                            classes.desktopToolbar
+                        )}
+                        {...rest}
+                    >
                         <Typography
                             variant="body1"
                             className="displayed-records"

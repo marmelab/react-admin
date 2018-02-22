@@ -34,6 +34,7 @@ class DatagridRow extends Component {
             classes,
             className,
             hasBulkActions,
+            hover,
             id,
             record,
             resource,
@@ -47,6 +48,7 @@ class DatagridRow extends Component {
                 className={className}
                 key={id}
                 style={style}
+                hover={hover}
                 {...sanitizeRestProps(rest)}
             >
                 {hasBulkActions && (
@@ -85,6 +87,7 @@ DatagridRow.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     hasBulkActions: PropTypes.bool.isRequired,
+    hover: PropTypes.bool,
     id: PropTypes.any,
     onToggleItem: PropTypes.func,
     record: PropTypes.object.isRequired,
@@ -96,6 +99,7 @@ DatagridRow.propTypes = {
 
 DatagridRow.defaultProps = {
     hasBulkActions: false,
+    hover: true,
     record: {},
     selected: false,
 };

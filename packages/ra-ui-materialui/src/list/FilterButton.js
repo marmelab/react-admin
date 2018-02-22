@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
-import Popover from 'material-ui/Popover';
-import { MenuList } from 'material-ui/Menu';
+import Menu from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import ContentFilter from 'material-ui-icons/FilterList';
 import classnames from 'classnames';
@@ -93,30 +92,20 @@ export class FilterButton extends Component {
                     >
                         <ContentFilter />
                     </Button>
-                    <Popover
+                    <Menu
                         open={open}
                         anchorEl={anchorEl}
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'left',
-                        }}
                         onClose={this.handleRequestClose}
                     >
-                        <MenuList>
-                            {hiddenFilters.map(filterElement => (
-                                <FilterButtonMenuItem
-                                    key={filterElement.props.source}
-                                    filter={filterElement.props}
-                                    resource={resource}
-                                    onShow={this.handleShow}
-                                />
-                            ))}
-                        </MenuList>
-                    </Popover>
+                        {hiddenFilters.map(filterElement => (
+                            <FilterButtonMenuItem
+                                key={filterElement.props.source}
+                                filter={filterElement.props}
+                                resource={resource}
+                                onShow={this.handleShow}
+                            />
+                        ))}
+                    </Menu>
                 </div>
             )
         );

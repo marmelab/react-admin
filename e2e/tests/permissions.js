@@ -54,8 +54,8 @@ describe('Permissions', () => {
             await ListPage.navigate();
             assert.deepEqual(await ListPage.getColumns(), [
                 '', // Checkbox column
-                'ID',
-                'NAME',
+                'Id',
+                'Name',
                 '',
                 '',
             ]);
@@ -94,9 +94,9 @@ describe('Permissions', () => {
             await ListPage.navigate();
             assert.deepEqual(await ListPage.getColumns(), [
                 '', // Checkbox column
-                'ID',
-                'NAME',
-                'ROLE',
+                'Id',
+                'Name',
+                'Role',
                 '',
                 '',
             ]);

@@ -17,10 +17,7 @@ const styles = {
         height: 'inherit',
     },
     headerCell: {
-        padding: 0,
-        '&:first-child': {
-            padding: '0 0 0 12px',
-        },
+        padding: '0 12px',
     },
     checkbox: {
         height: 'auto',
@@ -31,13 +28,6 @@ const styles = {
     rowCell: {
         padding: '0 12px',
         whiteSpace: 'normal',
-        '&:first-child': {
-            padding: '0 12px 0 16px',
-            whiteSpace: 'normal',
-        },
-        '&:last-child': {
-            padding: '0 12px',
-        },
     },
 };
 
@@ -100,6 +90,7 @@ class Datagrid extends Component {
             className,
             currentSort,
             hasBulkActions,
+            hover,
             ids,
             isLoading,
             resource,
@@ -152,6 +143,7 @@ class Datagrid extends Component {
                     classes={classes}
                     data={data}
                     hasBulkActions={hasBulkActions}
+                    hover={hover}
                     ids={ids}
                     isLoading={isLoading}
                     onToggleItem={onToggleItem}
@@ -177,6 +169,7 @@ Datagrid.propTypes = {
     }),
     data: PropTypes.object.isRequired,
     hasBulkActions: PropTypes.bool.isRequired,
+    hover: PropTypes.bool,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     isLoading: PropTypes.bool,
     onSelect: PropTypes.func,
