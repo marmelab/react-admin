@@ -29,10 +29,7 @@ export const addRecordIdsFactory = getFetchedAt => (
 
 const addRecordIds = addRecordIdsFactory(getFetchedAt);
 
-export default resource => (
-    previousState = [],
-    { type, payload, requestPayload, meta }
-) => {
+export default resource => (previousState = [], { type, payload, meta }) => {
     if (!meta || meta.resource !== resource) {
         return previousState;
     }

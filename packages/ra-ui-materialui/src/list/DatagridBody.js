@@ -64,6 +64,7 @@ DatagridBody.propTypes = {
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     styles: PropTypes.object,
+    version: PropTypes.number,
 };
 
 DatagridBody.defaultProps = {
