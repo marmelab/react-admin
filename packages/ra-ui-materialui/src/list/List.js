@@ -150,6 +150,7 @@ export const ListView = ({
                                 resource,
                                 selectedIds,
                                 setSort,
+                                version,
                             })}
                         {!isLoading &&
                             !ids.length && (

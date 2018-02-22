@@ -4,7 +4,6 @@ import { reset } from 'redux-form';
 import {
     CRUD_CREATE_FAILURE,
     CRUD_CREATE_SUCCESS,
-    CRUD_DELETE,
     CRUD_DELETE_FAILURE,
     CRUD_DELETE_SUCCESS,
     CRUD_DELETE_MANY_FAILURE,
@@ -14,7 +13,6 @@ import {
     CRUD_GET_MANY_REFERENCE_FAILURE,
     CRUD_GET_ONE_SUCCESS,
     CRUD_GET_ONE_FAILURE,
-    CRUD_UPDATE,
     CRUD_UPDATE_FAILURE,
     CRUD_UPDATE_SUCCESS,
     CRUD_UPDATE_MANY_FAILURE,
@@ -24,21 +22,6 @@ import { showNotification } from '../../actions/notificationActions';
 import { refreshView } from '../../actions/uiActions';
 import { setListSelectedIds } from '../../actions/listActions';
 import resolveRedirectTo from '../../util/resolveRedirectTo';
-
-function* handleOptimisticRedirect({ payload }) {
-    if (payload.redirectTo) {
-        return yield put(
-            push(
-                resolveRedirectTo(
-                    payload.redirectTo,
-                    payload.basePath,
-                    payload.id
-                )
-            )
-        );
-    }
-    return;
-}
 
 /**
  * Side effects for fetch responses
@@ -168,12 +151,8 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
 }
 
 export default function*() {
-    yield all([
-        takeEvery(CRUD_DELETE, handleOptimisticRedirect),
-        takeEvery(CRUD_UPDATE, handleOptimisticRedirect),
-        takeEvery(
-            action => action.meta && action.meta.fetchResponse,
-            handleResponse
-        ),
-    ]);
+    yield takeEvery(
+        action => action.meta && action.meta.fetchResponse,
+        handleResponse
+    );
 }
