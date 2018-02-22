@@ -174,7 +174,11 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
                 typeof error === 'string'
                     ? error
                     : error.message || 'ra.notification.http_error';
-            return yield put(showNotification(errorMessage, 'warning'));
+
+            return yield [
+                put(refreshView()),
+                put(showNotification(errorMessage, 'warning')),
+            ];
         }
         default:
             return yield all([]);
