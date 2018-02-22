@@ -4,7 +4,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Route } from 'react-router';
 
-import { Admin, Resource, Delete } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import { Admin, Resource } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import jsonRestDataProvider from 'ra-data-fakerest';
 
 import addUploadFeature from './addUploadFeature';
@@ -59,7 +59,6 @@ render(
                 create={PostCreate}
                 edit={PostEdit}
                 show={PostShow}
-                remove={Delete}
                 icon={PostIcon}
             />,
             <Resource
@@ -68,7 +67,6 @@ render(
                 create={CommentCreate}
                 edit={CommentEdit}
                 show={CommentShow}
-                remove={Delete}
                 icon={CommentIcon}
             />,
             permissions ? (
@@ -77,7 +75,6 @@ render(
                     list={UserList}
                     create={UserCreate}
                     edit={UserEdit}
-                    remove={Delete}
                     icon={UserIcon}
                     show={UserShow}
                 />

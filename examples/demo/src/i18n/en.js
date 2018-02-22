@@ -38,6 +38,7 @@ export default {
                 groups: 'Segments',
                 last_seen_gte: 'Visited Since',
                 name: 'Name',
+                total_spent: 'Total spent',
             },
             tabs: {
                 identity: 'Identity',
@@ -66,6 +67,8 @@ export default {
                 date_gte: 'Passed Since',
                 date_lte: 'Passed Before',
                 total_gte: 'Min amount',
+                status: 'Status',
+                returned: 'Returned',
             },
         },
         products: {

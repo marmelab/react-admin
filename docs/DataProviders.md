@@ -42,6 +42,7 @@ The react-admin project includes 4 Data Providers:
 
 You can find Data Providers for various backends in third-party repositories:
 
+* **[DynamoDb](https://github.com/abiglobalhealth/aor-dynamodb-client)**: [abiglobalhealth/aor-dynamodb-client](https://github.com/abiglobalhealth/aor-dynamodb-client)
 * **[Epilogue](https://github.com/dchester/epilogue)**: [dunghuynh/aor-epilogue-client](https://github.com/dunghuynh/aor-epilogue-client)
 * **[Feathersjs](http://www.feathersjs.com/)**: [josx/aor-feathers-client](https://github.com/josx/aor-feathers-client)
 * **[Firebase](https://firebase.google.com/)**: [sidferreira/aor-firebase-client](https://github.com/sidferreira/aor-firebase-client)
@@ -90,7 +91,9 @@ Here is how this provider maps request types to API calls:
 | `GET_ONE`            | `GET http://my.api.url/posts/123`
 | `CREATE`             | `POST http://my.api.url/posts/123`
 | `UPDATE`             | `PUT http://my.api.url/posts/123`
+| `UPDATE_MANY`        | Multiple calls to `PUT http://my.api.url/posts/123`
 | `DELETE`             | `DELETE http://my.api.url/posts/123`
+| `DELETE_MANY`        | Multiple calls to `DELETE http://my.api.url/posts/123`
 | `GET_MANY`           | `GET http://my.api.url/posts?filter={ids:[123,456,789]}`
 | `GET_MANY_REFERENCE` | `GET http://my.api.url/posts?filter={author_id:345}`
 
@@ -165,7 +168,7 @@ For instance, if you want to use upload components (such as `<ImageInput />` one
  */
 const convertFileToBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file.rawFile);
 
     reader.onload = () => resolve(reader.result);
     reader.onerror = reject;
@@ -179,8 +182,8 @@ const addUploadFeature = requestHandler => (type, resource, params) => {
     if (type === 'UPDATE' && resource === 'posts') {
         if (params.data.pictures && params.data.pictures.length) {
             // only freshly dropped pictures are instance of File
-            const formerPictures = params.data.pictures.filter(p => !(p instanceof File));
-            const newPictures = params.data.pictures.filter(p => p instanceof File);
+            const formerPictures = params.data.pictures.filter(p.rawFile => !(p instanceof File));
+            const newPictures = params.data.pictures.filter(p.rawFile => p instanceof File);
 
             return Promise.all(newPictures.map(convertFileToBase64))
                 .then(base64Pictures => base64Pictures.map(picture64 => ({
@@ -223,7 +226,7 @@ const App = () => (
 
 Quite often, there is no Data Provider that suits you API - either in the core providers, or in the third-party providers. In such cases, you'll have to write your own Data Provider.
 
-A Data Provider is a function that receives a request, and returns a promise for a response. Both the request and the response format are standardized. 
+A Data Provider is a function that receives a request, and returns a promise for a response. Both the request and the response format are standardized.
 
 ```jsx
 /**
@@ -257,7 +260,9 @@ Type                 | Usage                                           | Params 
 `GET_ONE`            | Read a single resource, by id                   | `{ id: {mixed} }`
 `CREATE`             | Create a single resource                        | `{ data: {Object} }`
 `UPDATE`             | Update a single resource                        | `{ id: {mixed}, data: {Object}, previousData: {Object} }`
+`UPDATE_MANY`        | Update multiple resources                       | `{ ids: {mixed[]}, data: {Object} }`
 `DELETE`             | Delete a single resource                        | `{ id: {mixed}, previousData: {Object} }`
+`DELETE_MANY`        | Delete multiple resources                       | `{ ids: {mixed[]} }`
 `GET_MANY`           | Read a list of resource, by ids                 | `{ ids: {mixed[]} }`
 `GET_MANY_REFERENCE` | Read a list of resources related to another one | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`
 
@@ -276,10 +281,15 @@ dataProvider(UPDATE, 'posts', {
     data: { title: "hello, world!" },
     previousData: { title: "previous title" }
 });
+dataProvider(UPDATE_MANY, 'posts', {
+    ids: [123, 234],
+    data: { views: 0 },
+});
 dataProvider(DELETE, 'posts', {
     id: 123,
     previousData: { title: "hello, world" }
 });
+dataProvider(DELETE_MANY, 'posts', { ids: [123, 234] });
 dataProvider(GET_MANY, 'posts', { ids: [123, 124, 125] });
 dataProvider(GET_MANY_REFERENCE, 'comments', {
     target: 'post_id',
@@ -292,12 +302,14 @@ dataProvider(GET_MANY_REFERENCE, 'comments', {
 
 Let's say that you want to map the Data Provider requests to a REST backend, like so:
 
- * `GET_LIST  => GET http://path.to.my.api/posts?sort=["title","ASC"]&range=[0, 24]&filter={"author_id":12}`
- * `GET_ONE   => GET http://path.to.my.api/posts/123`
- * `CREATE    => POST http://path.to.my.api/posts`
- * `UPDATE    => PUT http://path.to.my.api/posts/123`
- * `DELETE    => DELETE http://path.to.my.api/posts/123`
- * `GET_MANY  => GET http://path.to.my.api/posts?filter={"ids":[123,124,125]}`
+ * `GET_LIST => GET http://path.to.my.api/posts?sort=["title","ASC"]&range=[0, 24]&filter={"author_id":12}`
+ * `GET_ONE => GET http://path.to.my.api/posts/123`
+ * `CREATE => POST http://path.to.my.api/posts`
+ * `UPDATE => PUT http://path.to.my.api/posts/123`
+ * `UPDATE_MANY => PUT http://path.to.my.api/posts?filter={"ids":[123,124,125]}`
+ * `DELETE => DELETE http://path.to.my.api/posts/123`
+ * `DELETE_MANY => DELETE http://path.to.my.api/posts?filter={"ids":[123,124,125]}`
+ * `GET_MANY => GET http://path.to.my.api/posts?filter={"ids":[123,124,125]}`
  * `GET_MANY_REFERENCE  => GET http://path.to.my.api/comments?sort=["created_at","DESC"]&range=[0, 24]&filter={"post_id":123}`
 
 Data Providers often use a `switch` statement, and finish by a call to `fetch()`. Here is an example implementation:
@@ -360,8 +372,23 @@ export default (type, resource, params) => {
             options.method = 'PUT';
             options.body = JSON.stringify(params.data);
             break;
+        case UPDATE_MANY:
+            const query = {
+                filter: JSON.stringify({ id: params.ids }),
+            };
+            url = `${apiUrl}/${resource}?${stringify(query)}`;
+            options.method = 'PATCH';
+            options.body = JSON.stringify(params.data);
+            break;
         case DELETE:
             url = `${apiUrl}/${resource}/${params.id}`;
+            options.method = 'DELETE';
+            break;
+        case DELETE_MANY:
+            const query = {
+                filter: JSON.stringify({ id: params.ids }),
+            };
+            url = `${apiUrl}/${resource}?${stringify(query)}`;
             options.method = 'DELETE';
             break;
         case GET_MANY: {
@@ -411,7 +438,9 @@ Request Type         | Response format
 `GET_ONE`            | `{ data: {Record} }`
 `CREATE`             | `{ data: {Record} }`
 `UPDATE`             | `{ data: {Record} }`
+`UPDATE_MANY`        | `{ data: {mixed[]} }` The ids which have been updated
 `DELETE`             | `{ data: {Record} }`
+`DELETE_MANY`        | `{ data: {mixed[]} }` The ids which have been deleted
 `GET_MANY`           | `{ data: {Record[]} }`
 `GET_MANY_REFERENCE` | `{ data: {Record[]}, total: {int} }`
 
@@ -459,6 +488,15 @@ dataProvider(UPDATE, 'posts', {
 //     data: { id: 123, title: "hello, world!" }
 // }
 
+dataProvider(UPDATE_MANY, 'posts', {
+    ids: [123, 234],
+    data: { views: 0 },
+})
+.then(response => console.log(response));
+// {
+//     data: [123, 234]
+// }
+
 dataProvider(DELETE, 'posts', {
     id: 123,
     previousData: { title: "hello, world!" }
@@ -466,6 +504,12 @@ dataProvider(DELETE, 'posts', {
 .then(response => console.log(response));
 // {
 //     data: { id: 123, title: "hello, world" }
+// }
+
+dataProvider(DELETE_MANY, 'posts', { ids: [123, 234] })
+.then(response => console.log(response));
+// {
+//     data: [123, 234]
 // }
 
 dataProvider(GET_MANY, 'posts', { ids: [123, 124, 125] })
@@ -517,8 +561,14 @@ POST http://path.to.my.api/posts
 PUT http://path.to.my.api/posts/123
 { "id": 123, "title": "hello, world", "author_id": 12 }
 
+PATCH http://path.to.my.api/posts?filter={ids:[123,124,125]}
+[123, 124, 125]
+
 DELETE http://path.to.my.api/posts/123
 { "id": 123, "title": "hello, world", "author_id": 12 }
+
+DELETE http://path.to.my.api/posts?filter={ids:[123,124,125]}
+[123, 124, 125]
 
 GET http://path.to.my.api/posts?filter={ids:[123,124,125]}
 [
@@ -545,7 +595,9 @@ import {
     GET_ONE,
     CREATE,
     UPDATE,
+    UPDATE_MANY,
     DELETE,
+    DELETE_MANY,
     GET_MANY,
     GET_MANY_REFERENCE,
 } from 'react-admin';

@@ -12,6 +12,8 @@ module.exports = {
             add_filter: 'Ajouter un filtre',
             remove_filter: 'Supprimer ce filtre',
             back: 'Retour',
+            bulk_actions:
+                '%{smart_count} selectionné |||| %{smart_count} selectionnés',
         },
         boolean: {
             true: 'Oui',
@@ -22,7 +24,6 @@ module.exports = {
             edit: '%{name} #%{id}',
             show: '%{name} #%{id}',
             create: 'Créer %{name}',
-            delete: 'Supprimer %{name} #%{id}',
             dashboard: 'Tableau de bord',
             not_found: 'Page manquante',
             loading: 'Chargement',
@@ -40,6 +41,13 @@ module.exports = {
                 upload_single:
                     "Déposez l'image à uploader, ou cliquez pour la sélectionner.",
             },
+            references: {
+                all_missing: 'Impossible de trouver des données de références.',
+                many_missing:
+                    'Au moins une des références associées semble ne plus être disponible.',
+                single_missing:
+                    'La référence associée ne semble plus disponible.',
+            },
         },
         message: {
             yes: 'Oui',
@@ -50,6 +58,14 @@ module.exports = {
                 "L'URL saisie est incorrecte, ou vous avez suivi un mauvais lien.",
             loading:
                 'La page est en cours de chargement, merci de bien vouloir patienter.',
+            invalid_form: `Le formulaire n'est pas valide.`,
+            delete_title: 'Supprimer %{name} #%{id}',
+            delete_content:
+                'Êtes-vous sur(e) de vouloir supprimer cet élément ?',
+            bulk_delete_title:
+                'Supprimer %{name} |||| Supprimer %{smart_count} %{name} éléments',
+            bulk_delete_content:
+                'Êtes-vous sur(e) de vouloir supprimer cet élément ? |||| Êtes-vous sur(e) de vouloir supprimer ces %{smart_count} éléments ?',
         },
         navigation: {
             no_results: 'Aucun résultat',
@@ -68,9 +84,10 @@ module.exports = {
             logout: 'Déconnexion',
         },
         notification: {
-            updated: 'Élément mis à jour',
+            updated:
+                'Élément mis à jour |||| %{smart_count} élements mis à jour',
             created: 'Élément créé',
-            deleted: 'Élément supprimé',
+            deleted: 'Élément supprimé |||| %{smart_count} élements supprimés',
             bad_item: 'Élément inconnu',
             item_doesnt_exist: "L'élément n'existe pas",
             http_error: 'Erreur de communication avec le serveur',

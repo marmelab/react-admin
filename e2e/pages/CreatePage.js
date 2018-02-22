@@ -3,9 +3,11 @@ import { By, until } from 'selenium-webdriver';
 export default url => driver => ({
     elements: {
         appLoader: By.css('.app-loader'),
+        body: By.css('body'),
         input: (name, type = 'input') =>
             By.css(`.create-page ${type}[name='${name}']`),
         inputs: By.css(`.ra-input`),
+        snackbar: By.css('div[role="alertdialog"]'),
         submitButton: By.css(".create-page button[type='submit']"),
         submitAndAddButton: By.css(
             ".create-page form>div:last-child button[type='button']"
@@ -91,7 +93,14 @@ export default url => driver => ({
     },
 
     submitAndAdd() {
-        driver.findElement(this.elements.submitAndAddButton).click();
-        return this.waitUntilDataLoaded();
+        return driver
+            .findElement(this.elements.submitAndAddButton)
+            .then(button => button.click())
+            .then(() =>
+                driver.wait(until.elementLocated(this.elements.snackbar), 2000)
+            )
+            .then(() => driver.findElement(this.elements.body))
+            .then(body => body.click()) // dismiss notification
+            .then(this.waitUntilDataLoaded());
     },
 });

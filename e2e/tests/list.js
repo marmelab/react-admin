@@ -82,4 +82,47 @@ describe('List Page', () => {
             assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
         });
     });
+
+    describe('Bulk Actions', () => {
+        it('should allow to select all items on the current page', async () => {
+            await ListPagePosts.toggleSelectAll();
+            assert.equal(await ListPagePosts.getSelectedItemsCount(), 10);
+        });
+
+        it('should allow to unselect all items on the current page', async () => {
+            await ListPagePosts.toggleSelectAll();
+            assert.equal(await ListPagePosts.getSelectedItemsCount(), 0);
+        });
+
+        it('should allow to trigger a custom bulk action on selected items', async () => {
+            await ListPagePosts.toggleSelectAll();
+            await ListPagePosts.applyUpdateBulkAction();
+            assert.deepEqual(await ListPagePosts.getViewsColumnValues(), [
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+            ]);
+        });
+
+        it('should have unselected all items after bulk action', async () => {
+            assert.equal(await ListPagePosts.getSelectedItemsCount(), 0);
+        });
+
+        it('should allow to select multiple items on the current page', async () => {
+            await ListPagePosts.toggleSelectSomeItems(3);
+            assert.equal(await ListPagePosts.getSelectedItemsCount(), 3);
+        });
+
+        it('should allow to trigger the delete bulk action on selected items', async () => {
+            await ListPagePosts.applyDeleteBulkAction();
+            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 10');
+        });
+    });
 });

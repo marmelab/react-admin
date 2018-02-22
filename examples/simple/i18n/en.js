@@ -1,4 +1,12 @@
+import englishMessages from 'ra-language-english';
+
 export const messages = {
+    simple: {
+        action: {
+            resetViews: 'Reset views',
+        },
+    },
+    ...englishMessages,
     resources: {
         posts: {
             name: 'Post |||| Posts',

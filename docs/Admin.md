@@ -65,7 +65,7 @@ The only required prop, it must be a function returning a promise, with the foll
 const dataProvider = (type, resource, params) => new Promise();
 ```
 
-The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc. The [Data Providers Chapter](./DataProviders.md) of the documentation lists available data providers, and explains how to build your own.
+The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc. The [Data Providers Chapter](./DataProviders.html) of the documentation lists available data providers, and explains how to build your own.
 
 ## `title`
 
@@ -108,6 +108,8 @@ const App = () => (
 ```
 
 ![Custom home page](./img/dashboard.png)
+
+**Tip**: Adding the `<ViewTitle>` component will also allow the header to be displayed in mobile resolutions.
 
 ## `catchAll`
 
@@ -158,6 +160,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { MenuItemLink, getResources } from 'react-admin';
 import { withRouter } from 'react-router-dom';
+import Responsive from '../layout/Responsive';
 
 const Menu = ({ resources, onMenuClick, logout }) => (
     <div>
@@ -165,7 +168,10 @@ const Menu = ({ resources, onMenuClick, logout }) => (
             <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
         ))}
         <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-        {logout}
+        <Responsive
+            small={logout}
+            medium={null} // Pass null to render nothing on larger devices
+        />
     </div>
 );
 
@@ -174,11 +180,14 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(connect(mapStateToProps)(Menu));
+
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
 
-**Tip**: Note that we use React Router [`withRouter`](https://reacttraining.com/react-router/web/api/withRouter) Higher Order Component and that it is used **before** Redux [`connect](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options). This is required if you want the active menu item to be highlighted.
+**Tip**: Note that we include the `logout` item only on small devices. Indeed, the `logout` button is already displayed in the AppBar on larger devices.
+
+**Tip**: Note that we use React Router [`withRouter`](https://reacttraining.com/react-router/web/api/withRouter) Higher Order Component and that it is used **before** Redux [`connect](https://github.com/reactjs/react-redux/blob/master/docs/api.html#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options). This is required if you want the active menu item to be highlighted.
 
 Then, pass it to the `<Admin>` component as the `menu` prop:
 
@@ -219,7 +228,10 @@ const Menu = ({ classes, resources, onMenuClick, logout }) => (
             <MenuItemLink classes={classes} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
         ))}
         <MenuItemLink classes={classes} to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-        {logout}
+        <Responsive
+            small={logout}
+            medium={null} // Pass null to render nothing on larger devices
+        />
     </div>
 );
 
@@ -258,7 +270,7 @@ For more details on predefined themes and custom themes, refer to the [Material 
 
 If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<MuiThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
 
-Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/react-admin/src/mui/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
+Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/react-admin/src/mui/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.html#using-a-custom-layout) for examples.
 
 ```jsx
 // in src/App.js
@@ -447,7 +459,7 @@ const App = () => (
 );
 ```
 
-The [Authentication documentation](./Authentication.md) explains how to implement these functions in detail.
+The [Authentication documentation](./Authentication.html) explains how to implement these functions in detail.
 
 ## `loginPage`
 
@@ -463,7 +475,7 @@ const App = () => (
 );
 ```
 
-See The [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
+See The [Authentication documentation](./Authentication.html#customizing-the-login-and-logout-components) for more details.
 
 ## `logoutButton`
 
@@ -504,11 +516,11 @@ const App = () => (
 
 ## Internationalization
 
-The `locale` and `messages` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
+The `locale` and `messages` props let you translate the GUI. The [Translation Documentation](./Translation.html) details this process.
 
 ## Declaring resources at runtime
 
-You might want to dynamically define the resources when the app starts. The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the function will receive the result of a call to `authProvider` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.md) chapter).
+You might want to dynamically define the resources when the app starts. The `<Admin>` component accepts a function as its child and this function can return a Promise. If you also defined an `authProvider`, the function will receive the result of a call to `authProvider` with the `AUTH_GET_PERMISSIONS` type (you can read more about this in the [Authorization](./Authorization.html) chapter).
 
 For instance, getting the resource from an API might look like:
 
@@ -546,4 +558,4 @@ const App = () => (
 
 ## Using react-admin without `<Admin>` and `<Resource>`
 
-Using `<Admin>` and `<Resource>` is completely optional. If you feel like bootstrapping a redux app yourself, it's totally possible. Head to [Including in another app](./CustomApp.md) for a detailed how-to.
+Using `<Admin>` and `<Resource>` is completely optional. If you feel like bootstrapping a redux app yourself, it's totally possible. Head to [Including in another app](./CustomApp.html) for a detailed how-to.

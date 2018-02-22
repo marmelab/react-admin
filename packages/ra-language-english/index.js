@@ -12,6 +12,7 @@ module.exports = {
             add_filter: 'Add filter',
             remove_filter: 'Remove this filter',
             back: 'Go Back',
+            bulk_actions: '%{smart_count} selected',
         },
         boolean: {
             true: 'Yes',
@@ -22,7 +23,6 @@ module.exports = {
             edit: '%{name} #%{id}',
             show: '%{name} #%{id}',
             create: 'Create %{name}',
-            delete: 'Delete %{name} #%{id}',
             dashboard: 'Dashboard',
             not_found: 'Not Found',
             loading: 'Loading',
@@ -39,6 +39,13 @@ module.exports = {
                 upload_single:
                     'Drop a picture to upload, or click to select it.',
             },
+            references: {
+                all_missing: 'Unable to find references data.',
+                many_missing:
+                    'At least one of the associated references no longer appears to be available.',
+                single_missing:
+                    'Associated reference no longer appears to be available.',
+            },
         },
         message: {
             yes: 'Yes',
@@ -48,6 +55,13 @@ module.exports = {
             not_found:
                 'Either you typed a wrong URL, or you followed a bad link.',
             loading: 'The page is loading, just a moment please',
+            invalid_form: 'The form is not valid. Please check for errors',
+            delete_title: 'Delete %{name} #%{id}',
+            delete_content: 'Are you sure you want to delete this item?',
+            bulk_delete_title:
+                'Delete %{name} |||| Delete %{smart_count} %{name} items',
+            bulk_delete_content:
+                'Are you sure you want to delete this %{name}? |||| Are you sure you want to delete these %{smart_count} items?',
         },
         navigation: {
             no_results: 'No results found',
@@ -68,9 +82,9 @@ module.exports = {
             logout: 'Logout',
         },
         notification: {
-            updated: 'Element updated',
+            updated: 'Element updated |||| %{smart_count} elements updated',
             created: 'Element created',
-            deleted: 'Element deleted',
+            deleted: 'Element deleted |||| %{smart_count} elements deleted',
             bad_item: 'Incorrect element',
             item_doesnt_exist: 'Element does not exist',
             http_error: 'Server communication error',

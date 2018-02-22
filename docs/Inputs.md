@@ -30,7 +30,7 @@ All input components accept the following attributes:
 
 * `source`: Property name of your entity to view/edit. This attribute is required.
 * `defaultValue`: Value to be set when the property is `null` or `undefined`.
-* `validate`: Validation rules for the current property (see the [Validation Documentation](./CreateEdit.md#validation))
+* `validate`: Validation rules for the current property (see the [Validation Documentation](./CreateEdit.html#validation))
 * `label`: Used as a table header of an input label. Defaults to the `source` when omitted.
 * `style`: A style object to customize the look and feel of the field container (e.g. the `<div>` in a form).
 * `elStyle`: A style object to customize the look and feel of the field element itself
@@ -68,7 +68,7 @@ Then you can display a text input to edit the author first name as follows:
 
 ## `<AutocompleteInput>`
 
-To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`. It renders using [Material ui's `<AutoComplete>` component](http://www.material-ui.com/#/components/auto-complete) and a `fuzzySearch` filter. Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
+To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`. It renders using [react-autosuggest](http://react-autosuggest.js.org/) and a `fuzzySearch` filter. Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
 
 ```jsx
 import { AutocompleteInput } from 'react-admin';
@@ -125,6 +125,19 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
+
+By default the component matches choices with the current input searchText, if it finds a match this choice will be selected. For example, using the `choices`: `[{id:'M',name:'Male',id:'F',name:'Female'}]` and the user enters the text `male` then the component will set the input value to `M`. Using the `inputValueMatcher` prop the component allows you to change how choices are matched. For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]` you can create the following `inputValueMatcher` to match choices on the iso2 code: 
+
+```javascript
+<AutocompleteInput inputValueMatcher={
+    (input,suggestion,getOptionText) => 
+        input.toUpperCase().trim() === suggestion.iso2 || 
+        input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()
+}/>
+```
+
+If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.  
+
 Lastly, use the `options` attribute if you want to override any of Material UI's `<AutoComplete>` attributes:
 
 {% raw %}
@@ -135,8 +148,6 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 }} />
 ```
 {% endraw %}
-
-Refer to [Material UI Autocomplete documentation](http://www.material-ui.com/#/components/auto-complete) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
@@ -152,6 +163,19 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin'
 
 **Tip**: React-admin's `<AutocompleteInput>` has only a capital A, while material-ui's `<AutoComplete>` has a capital A and a capital C. Don't mix up the components!
 
+### Properties
+Prop | Required/Optional | Type | Default | Description
+---|---|---|---|---
+`choices` | Required | `Object[]` | - | List of items to autosuggest
+`resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.  
+`source` | Required |  `string` | - | Name of field to edit, it's type should correspond to the type retrieved from `optionValue` 
+`allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`.
+`inputValueMatcher` | Optional | `Function` | `(input, suggestion, getOptionText) => input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()` | Allows to define how choices are matched with the searchText while typing.   
+`optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value 
+`optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the currect record as argument (`(record)=> {string}`)
+`setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`. 
+`suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered. 
+
 ## `<BooleanInput>` and `<NullableBooleanInput>`
 
 `<BooleanInput />` is a toggle button allowing you to attribute a `true` or `false` value to a record field.
@@ -161,6 +185,7 @@ import { BooleanInput } from 'react-admin';
 
 <BooleanInput label="Commentable" source="commentable" />
 ```
+
 
 ![BooleanInput](./img/boolean-input.png)
 
@@ -555,7 +580,8 @@ import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
 </Admin>
 ```
 
-Set the `allowEmpty` prop when the empty value is allowed.
+Set the `allowEmpty` prop when you want to add an empty choice with a value of null in the choices list.
+Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.html#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
 
 ```js
 import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
@@ -627,7 +653,8 @@ import { ReferenceInput, SelectInput } from 'react-admin'
 </Admin>
 ```
 
-Set the `allowEmpty` prop when the empty value is allowed.
+Set the `allowEmpty` prop when you want to add an empty choice with a value of null in the choices list.
+Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.html#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
 
 ```jsx
 import { ReferenceInput, SelectInput } from 'react-admin'

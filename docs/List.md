@@ -19,6 +19,7 @@ Here are all the props accepted by the `<List>` component:
 
 * [`title`](#page-title)
 * [`actions`](#actions)
+* [`bulkActions`](#bulk-actions)
 * [`filters`](#filters) (a React element used to display the filter form)
 * [`perPage`](#records-per-page)
 * [`sort`](#default-sort-field)
@@ -83,7 +84,6 @@ You can replace the list of default actions by your own element using the `actio
 
 ```jsx
 import Button from 'material-ui/Button';
-import NavigationRefresh from 'material-ui-icons/Refresh';
 import { CardActions, CreateButton, RefreshButton } from 'react-admin';
 
 const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter }) => (
@@ -108,6 +108,122 @@ export const PostList = (props) => (
     </List>
 );
 ```
+
+### Bulk Actions
+
+Bulk actions are actions that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, bulk actions are triggered by ticking the checkboxes in the first column of the table, then choosing an action from the bulk action menu. By default, all list views have a single bulk action, the bulk delete action. You can add other bulk actions by passing a custom element as the `bulkActions` prop of the `<List>` component:
+
+```jsx
+import Button from 'material-ui/Button';
+import { BulkActions, BulkDeleteAction } from 'react-admin';
+import ResetViewsAction from './ResetViewsAction';
+
+const PostBulkActions = props => (
+    <BulkActions {...props}>
+        <ResetViewsAction label="Reset Views" />
+        {/* Add the default bulk delete action */}
+        <BulkDeleteAction />
+    </BulkActions>
+);
+
+export const PostList = (props) => (
+    <List {...props} bulkActions={<PostBulkActions />}>
+        ...
+    </List>
+);
+```
+
+**Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActions` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
+
+React-admin uses the `label` prop of the bulk action components to display the bulk action menu items. 
+
+Bulk action components are regular React component that gets mounted when the related menu item is clicked. The component receives several props allowing it to perform its job:
+
+* `resource`: the currently displayed resource (eg `posts`, `comments`, etc.)
+* `basePath`: the current router base path for the resource (eg `/posts`, `/comments`, etc.)
+* `filterValues`: the filter values. This can be useful if you want to apply your action on all items matching the filter.
+* `selectedIds`: the identifiers of the currently selected items.
+* `onExit`: an event handler you should call when the bulk action ends.
+
+Here is an example leveraging the `UPDATE_MANY` crud action, which will set the `views` property of all posts to `0`:
+
+```jsx
+// in ./ResetViewsAction.js
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import { crudUpdateMany } from 'react-admin';
+
+class ResetViewsAction extends Component {
+    componentDidMount = () => {
+        const {
+            resource,
+            basePath,
+            selectedIds,
+            onExit,
+            crudUpdateMany,
+        } = this.props;
+
+        crudUpdateMany(resource, selectedIds, { views: 0 }, basePath);
+        onExit();
+    };
+
+    render() {
+        return null;
+    }
+}
+
+export default connect(undefined, { crudUpdateMany })(ResetViewsAction);
+```
+
+This component renders nothing - it just dispatches an action when mounted. Once finished, it also calls the `onExit()` method passed by the main bulk actions component, which has the effect of unmounting the `ResetViewsAction` component.
+
+But most of the time, bulk actions are mini-applications with a standalone user interface (in a Dialog), so the `render()` method is useful. Here is the same `ResetViewsAction` implemented behind a confirmation dialog:
+
+```jsx
+// in ./ResetViewsAction.js
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Confirm } from 'react-admin';
+import { crudUpdateMany } from 'ra-core';
+
+class ResetViewsAction extends Component {
+    handleDialogClose = () => {
+        this.props.onExit();
+    };
+
+    handleConfirm = () => {
+        const { basePath, crudUpdateMany, resource, selectedIds } = this.props;
+        crudUpdateMany(resource, selectedIds, { views: 0 }, basePath);
+        this.props.onExit();
+    };
+
+    render() {
+        return (
+            <Confirm
+                isOpen={true}
+                title="Update View Count"
+                content="Are you sure you want to reset the views for these items?"
+                onConfirm={this.handleConfirm}
+                onClose={this.handleDialogClose}
+            />
+        );
+    }
+}
+
+ResetViewsAction.propTypes = {
+    basePath: PropTypes.string,
+    crudUpdateMany: PropTypes.func.isRequired,
+    label: PropTypes.string,
+    onExit: PropTypes.func.isRequired,
+    resource: PropTypes.string.isRequired,
+    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+};
+
+export default connect(undefined, { crudUpdateMany })(ResetViewsAction);
+```
+
+**Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
 ### Filters
 

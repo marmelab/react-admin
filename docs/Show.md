@@ -91,8 +91,9 @@ You can replace the list of default actions by your own element using the `actio
 
 ```jsx
 import { CardActions } from 'material-ui/Card';
+
 import Button from 'material-ui/Button';
-import { ListButton, EditButton, DeleteButton } from 'react-admin';
+import { ListButton, EditButton, DeleteButton, RefreshButton } from 'react-admin';
 
 const cardActionStyle = {
     zIndex: 2,
@@ -100,11 +101,12 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const PostShowActions = ({ basePath, data }) => (
+const PostShowActions = ({ basePath, data, resource }) => (
     <CardActions style={cardActionStyle}>
         <EditButton basePath={basePath} record={data} />
         <ListButton basePath={basePath} />
-        <DeleteButton basePath={basePath} record={data} />
+        <DeleteButton basePath={basePath} record={data} resource={resource} />
+        <RefreshButton />
         {/* Add your custom actions */}
         <Button color="primary" onClick={customAction}>Custom Action</Button>
     </CardActions>
@@ -221,12 +223,12 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const PostShowActions = ({ permissions, basePath, data }) => (
+const PostShowActions = ({ permissions, basePath, data, resource }) => (
     <CardActions style={cardActionStyle}>
         <EditButton basePath={basePath} record={data} />
         <ListButton basePath={basePath} />
         {permissions === 'admin' &&
-            <DeleteButton basePath={basePath} record={data} />
+            <DeleteButton basePath={basePath} record={data} resource={resource} />
         }
     </CardActions>
 );

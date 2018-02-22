@@ -91,11 +91,11 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const CommentEditActions = ({ basePath, data }) => (
+const CommentEditActions = ({ basePath, data, resource }) => (
     <CardActions style={cardActionStyle}>
         <ApproveButton record={data} />
         <ListButton basePath={basePath} />
-        <DeleteButton basePath={basePath} record={data} />
+        <DeleteButton basePath={basePath} record={data} resource={resource} />
     </CardActions>
 );
 
@@ -361,6 +361,16 @@ export default App;
 {% endraw %}
 
 **Tip**: You can avoid storing data in the Redux state by storing data in a component state instead. It's much less complicated to deal with, and more performant, too. Use the global state only when you really need to.
+
+## List Bulk Actions
+
+Almost everything we saw before is true for custom `List` bulk actions too, with the following few differences:
+
+* They receive the following props: `resource`, `selectedIds` and `filterValues`
+* They do not receive the current record in the `record` prop as there are many of them.
+* They must render as a material-ui [`MenuItem`](http://www.material-ui.com/#/components/menu).
+
+You can find a complete example in the `List` documentation, in the [`bulk-actions`](/List.html#bulk-actions) section.
 
 ## Conclusion
 

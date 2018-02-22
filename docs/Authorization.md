@@ -83,12 +83,11 @@ It's possible to restrict access to resources or their views inside the `Admin` 
             name="customers"
             list={VisitorList}
             edit={permissions === 'admin' ? VisitorEdit : null}
-            remove={permissions === 'admin' ? VisitorDelete : null}
             icon={VisitorIcon}
         />,
         // Only include the categories resource for admin users
         permissions === 'admin'
-            ? <Resource name="categories" list={CategoryList} edit={CategoryEdit} remove={Delete} icon={CategoryIcon} />
+            ? <Resource name="categories" list={CategoryList} edit={CategoryEdit} icon={CategoryIcon} />
             : null,
     ]}
 </Admin>

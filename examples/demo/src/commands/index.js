@@ -14,6 +14,7 @@ import {
     NullableBooleanInput,
     NumberField,
     ReferenceInput,
+    Responsive,
     SelectInput,
     SimpleForm,
     TextField,
@@ -25,6 +26,7 @@ import withStyles from 'material-ui/styles/withStyles';
 import Basket from './Basket';
 import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
+import MobileGrid from './MobileGrid';
 
 export const CommandIcon = Icon;
 
@@ -68,20 +70,25 @@ export const CommandList = withStyles(listStyles)(({ classes, ...props }) => (
         sort={{ field: 'date', order: 'DESC' }}
         perPage={25}
     >
-        <Datagrid>
-            <DateField source="date" showTime />
-            <TextField source="reference" />
-            <CustomerReferenceField />
-            <NbItemsField />
-            <NumberField
-                source="total"
-                options={{ style: 'currency', currency: 'USD' }}
-                className={classes.total}
-            />
-            <TextField source="status" />
-            <BooleanField source="returned" />
-            <EditButton />
-        </Datagrid>
+        <Responsive
+            xsmall={<MobileGrid />}
+            medium={
+                <Datagrid>
+                    <DateField source="date" showTime />
+                    <TextField source="reference" />
+                    <CustomerReferenceField />
+                    <NbItemsField />
+                    <NumberField
+                        source="total"
+                        options={{ style: 'currency', currency: 'USD' }}
+                        className={classes.total}
+                    />
+                    <TextField source="status" />
+                    <BooleanField source="returned" />
+                    <EditButton />
+                </Datagrid>
+            }
+        />
     </List>
 ));
 
