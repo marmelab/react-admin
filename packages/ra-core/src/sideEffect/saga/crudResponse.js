@@ -14,6 +14,7 @@ import {
     CRUD_GET_MANY_REFERENCE_FAILURE,
     CRUD_GET_ONE_SUCCESS,
     CRUD_GET_ONE_FAILURE,
+    CRUD_UPDATE,
     CRUD_UPDATE_FAILURE,
     CRUD_UPDATE_SUCCESS,
     CRUD_UPDATE_MANY_FAILURE,
@@ -24,10 +25,7 @@ import { refreshView } from '../../actions/uiActions';
 import { setListSelectedIds } from '../../actions/listActions';
 import resolveRedirectTo from '../../util/resolveRedirectTo';
 
-/**
- * Optimistic redirection side effect for deletion
- */
-function* handleDelete({ payload }) {
+function* handleOptimisticRedirect({ payload }) {
     if (payload.redirectTo) {
         return yield put(
             push(
@@ -50,31 +48,13 @@ function* handleDelete({ payload }) {
 function* handleResponse({ type, requestPayload, error, payload, meta }) {
     switch (type) {
         case CRUD_UPDATE_SUCCESS: {
-            const actions = [
-                put(
-                    showNotification('ra.notification.updated', 'info', {
-                        messageArgs: {
-                            smart_count: 1,
-                        },
-                    })
-                ),
-            ];
-
-            if (requestPayload.redirectTo) {
-                actions.push(
-                    put(
-                        push(
-                            resolveRedirectTo(
-                                requestPayload.redirectTo,
-                                requestPayload.basePath,
-                                requestPayload.id
-                            )
-                        )
-                    )
-                );
-            }
-
-            return yield all(actions);
+            return yield put(
+                showNotification('ra.notification.updated', 'info', {
+                    messageArgs: {
+                        smart_count: 1,
+                    },
+                })
+            );
         }
         case CRUD_UPDATE_MANY_SUCCESS: {
             const actions = [
@@ -189,7 +169,8 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
 
 export default function*() {
     yield all([
-        takeEvery(CRUD_DELETE, handleDelete),
+        takeEvery(CRUD_DELETE, handleOptimisticRedirect),
+        takeEvery(CRUD_UPDATE, handleOptimisticRedirect),
         takeEvery(
             action => action.meta && action.meta.fetchResponse,
             handleResponse

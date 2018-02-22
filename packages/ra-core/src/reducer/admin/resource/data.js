@@ -7,6 +7,7 @@ import {
     CREATE,
     UPDATE,
 } from '../../../dataFetchActions';
+import { CRUD_UPDATE } from '../../../actions/dataActions';
 
 import getFetchedAt from '../../../util/getFetchedAt';
 
@@ -56,10 +57,13 @@ Object.defineProperty(initialState, 'fetchedAt', { value: {} }); // non enumerab
 
 export default resource => (
     previousState = initialState,
-    { payload, meta }
+    { type, payload, meta }
 ) => {
     if (!meta || meta.resource !== resource) {
         return previousState;
+    }
+    if (type === CRUD_UPDATE) {
+        return addRecords([payload.data], previousState);
     }
     if (!meta.fetchResponse || meta.fetchStatus !== FETCH_END) {
         return previousState;
