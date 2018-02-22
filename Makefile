@@ -74,20 +74,20 @@ build-ra-input-rich-text:
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-input-rich-text/src -d ./packages/ra-input-rich-text/lib --ignore spec.js,test.js
 	@cd packages/ra-input-rich-text/src && rsync -R `find . -name *.css` ../lib
 
+build-ra-data-loopback3:
+	@echo "Transpiling ra-data-loopback3 files...";
+	@rm -rf ./packages/ra-data-loopback3/lib
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-data-loopback3/src -d ./packages/ra-data-loopback3/lib --ignore spec.js,test.js
+
+build-react-admin-ext:
+	@echo "Transpiling react-admin-ext files...";
+	@rm -rf ./packages/react-admin-ext/lib
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/react-admin-ext/src -d ./packages/react-admin-ext/lib --ignore spec.js,test.js
+
 build-ra-realtime:
 	@echo "Transpiling ra-realtime files...";
 	@rm -rf ./packages/ra-realtime/lib
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-realtime/src -d ./packages/ra-realtime/lib --ignore spec.js,test.js
-
-build-ra-data-loopback3:
-    @echo "Transpiling ra-data-loopback3 files...";
-	@rm -rf ./packages/ra-data-loopback3/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/ra-data-loopback3/src -d ./packages/ra-data-loopback3/lib --ignore '*.spec.js' --ignore '*.test.js'
-
-build-react-admin-ext:
-    @echo "Transpiling react-admin-ext files...";
-	@rm -rf ./packages/react-admin-ext/lib
-	@NODE_ENV=production ./node_modules/.bin/babel ./packages/react-admin-ext/src -d ./packages/react-admin-ext/lib --ignore spec.js,test.js
 
 build-data-generator:
 	@echo "Transpiling data-generator files...";
