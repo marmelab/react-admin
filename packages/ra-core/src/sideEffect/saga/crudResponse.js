@@ -4,6 +4,7 @@ import { reset } from 'redux-form';
 import {
     CRUD_CREATE_FAILURE,
     CRUD_CREATE_SUCCESS,
+    CRUD_DELETE,
     CRUD_DELETE_FAILURE,
     CRUD_DELETE_SUCCESS,
     CRUD_DELETE_MANY_FAILURE,
@@ -22,6 +23,24 @@ import { showNotification } from '../../actions/notificationActions';
 import { refreshView } from '../../actions/uiActions';
 import { setListSelectedIds } from '../../actions/listActions';
 import resolveRedirectTo from '../../util/resolveRedirectTo';
+
+/**
+ * Optimistic redirection side effect for deletion
+ */
+function* handleDelete({ payload }) {
+    if (payload.redirectTo) {
+        return yield put(
+            push(
+                resolveRedirectTo(
+                    payload.redirectTo,
+                    payload.basePath,
+                    payload.id
+                )
+            )
+        );
+    }
+    return;
+}
 
 /**
  * Side effects for fetch responses
@@ -95,30 +114,13 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
                       put(reset('record-form')),
                   ]);
         case CRUD_DELETE_SUCCESS: {
-            const actions = [
-                put(
-                    showNotification('ra.notification.deleted', 'info', {
-                        messageArgs: {
-                            smart_count: 1,
-                        },
-                    })
-                ),
-            ];
-            if (requestPayload.redirectTo) {
-                actions.push(
-                    put(
-                        push(
-                            resolveRedirectTo(
-                                requestPayload.redirectTo,
-                                requestPayload.basePath,
-                                requestPayload.id
-                            )
-                        )
-                    )
-                );
-            }
-
-            return yield all(actions);
+            return yield put(
+                showNotification('ra.notification.deleted', 'info', {
+                    messageArgs: {
+                        smart_count: 1,
+                    },
+                })
+            );
         }
         case CRUD_DELETE_MANY_SUCCESS: {
             const actions = [
@@ -186,8 +188,11 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
 }
 
 export default function*() {
-    yield takeEvery(
-        action => action.meta && action.meta.fetchResponse,
-        handleResponse
-    );
+    yield all([
+        takeEvery(CRUD_DELETE, handleDelete),
+        takeEvery(
+            action => action.meta && action.meta.fetchResponse,
+            handleResponse
+        ),
+    ]);
 }

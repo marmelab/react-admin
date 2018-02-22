@@ -1,7 +1,7 @@
 import uniq from 'lodash.uniq';
 import {
     CRUD_GET_LIST_SUCCESS,
-    CRUD_DELETE_SUCCESS,
+    CRUD_DELETE,
     CRUD_DELETE_MANY,
     CRUD_GET_MANY_SUCCESS,
     CRUD_GET_MANY_REFERENCE_SUCCESS,
@@ -51,9 +51,10 @@ export default resource => (
         case CRUD_CREATE_SUCCESS:
         case CRUD_UPDATE_SUCCESS:
             return addRecordIds([payload.data.id], previousState);
-        case CRUD_DELETE_SUCCESS: {
+        case CRUD_DELETE: {
+            // optimistic delete
             const index = previousState
-                .map(el => el == requestPayload.id) // eslint-disable-line eqeqeq
+                .map(el => el == payload.id) // eslint-disable-line eqeqeq
                 .indexOf(true);
             if (index === -1) {
                 return previousState;
