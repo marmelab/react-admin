@@ -64,7 +64,8 @@ export default resource => (
     }
     if (type === CRUD_UPDATE) {
         // optimistic update
-        return addRecords([payload.data], previousState);
+        const updatedRecord = { ...previousState[payload.id], ...payload.data };
+        return addRecords([updatedRecord], previousState);
     }
     if (type === CRUD_UPDATE_MANY) {
         // optimistic update
