@@ -1,6 +1,6 @@
 {
   "name": "react-admin-ext",
-  "version": "2.0.0-beta1",
+  "version": "2.0.0-beta3",
   "description": "Extension method, layout for react-admin",
   "main": "lib/index.js",
   "scripts": {
