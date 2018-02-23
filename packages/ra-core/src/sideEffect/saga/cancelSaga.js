@@ -4,6 +4,7 @@ import { push } from 'react-router-redux';
 
 import {
     CRUD_UPDATE,
+    CRUD_UPDATE_MANY,
     CRUD_DELETE,
     CRUD_DELETE_MANY,
 } from '../../actions/dataActions';
@@ -34,6 +35,23 @@ function* handleCancelRace(cancellableAction) {
                     cancellable: true,
                 })
             );
+            break;
+        }
+        case CRUD_UPDATE_MANY: {
+            const actions = [
+                put(
+                    showNotification('ra.notification.updated', 'info', {
+                        messageArgs: {
+                            smart_count: action.payload.ids.length,
+                        },
+                        cancellable: true,
+                    })
+                ),
+            ];
+            if (action.payload.unselectAll) {
+                actions.push(put(setListSelectedIds(action.meta.resource, [])));
+            }
+            yield all(actions);
             break;
         }
         case CRUD_DELETE: {
@@ -90,7 +108,6 @@ function* handleCancelRace(cancellableAction) {
     yield put(hideNotification());
     // if not cancelled, redispatch the action, this time immediate
     if (timeout) {
-        console.log(action);
         yield put(action);
     } else {
         yield put(refreshView());

@@ -30,24 +30,12 @@ import resolveRedirectTo from '../../util/resolveRedirectTo';
  */
 function* handleResponse({ type, requestPayload, error, payload, meta }) {
     switch (type) {
+        case CRUD_UPDATE_SUCCESS:
         case CRUD_UPDATE_MANY_SUCCESS: {
-            const actions = [
-                put(
-                    showNotification('ra.notification.updated', 'info', {
-                        messageArgs: {
-                            smart_count: payload.data.length,
-                        },
-                    })
-                ),
-            ];
             if (requestPayload.refresh) {
-                actions.push(put(refreshView()));
+                return yield push(put(refreshView()));
             }
-            if (requestPayload.unselectAll) {
-                actions.push(put(setListSelectedIds(meta.resource, [])));
-            }
-
-            return yield all(actions);
+            return;
         }
         case CRUD_CREATE_SUCCESS:
             return requestPayload.redirectTo
