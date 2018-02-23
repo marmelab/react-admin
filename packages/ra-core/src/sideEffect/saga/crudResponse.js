@@ -76,30 +76,12 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
                       put(showNotification('ra.notification.created')),
                       put(reset('record-form')),
                   ]);
-        case CRUD_DELETE_SUCCESS: {
+        case CRUD_DELETE_SUCCESS:
+        case CRUD_DELETE_MANY_SUCCESS: {
             if (requestPayload.refresh) {
                 return yield put(refreshView());
             }
             return;
-        }
-        case CRUD_DELETE_MANY_SUCCESS: {
-            const actions = [
-                put(
-                    showNotification('ra.notification.deleted', 'info', {
-                        messageArgs: {
-                            smart_count: payload.data.length,
-                        },
-                    })
-                ),
-            ];
-            if (requestPayload.refresh) {
-                actions.push(put(refreshView()));
-            }
-            if (requestPayload.unselectAll) {
-                actions.push(put(setListSelectedIds(meta.resource, [])));
-            }
-
-            return yield all(actions);
         }
         case CRUD_GET_ONE_SUCCESS:
             if (

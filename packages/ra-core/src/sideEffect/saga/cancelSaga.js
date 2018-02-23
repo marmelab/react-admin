@@ -1,8 +1,8 @@
-import { call, take, takeEvery, put, race } from 'redux-saga/effects';
+import { all, call, take, takeEvery, put, race } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { push } from 'react-router-redux';
 
-import { CRUD_DELETE } from '../../actions/dataActions';
+import { CRUD_DELETE, CRUD_DELETE_MANY } from '../../actions/dataActions';
 import {
     showNotification,
     hideNotification,
@@ -15,6 +15,7 @@ import {
 } from '../../actions/cancelActions';
 import { refreshView } from '../../actions/uiActions';
 import resolveRedirectTo from '../../util/resolveRedirectTo';
+import { setListSelectedIds } from '../../actions/listActions';
 
 function* handleCancelRace(cancellableAction) {
     const { payload: { action, delay: cancelDelay } } = cancellableAction;
@@ -29,6 +30,24 @@ function* handleCancelRace(cancellableAction) {
                     cancellable: true,
                 })
             );
+            break;
+        }
+        case CRUD_DELETE_MANY: {
+            const actions = [
+                put(
+                    showNotification('ra.notification.deleted', 'info', {
+                        messageArgs: {
+                            smart_count: action.payload.ids.length,
+                        },
+                        cancellable: true,
+                    })
+                ),
+            ];
+            if (action.payload.unselectAll) {
+                actions.push(put(setListSelectedIds(action.meta.resource, [])));
+            }
+            yield all(actions);
+            break;
         }
     }
     yield put(startOptimisticMode());
@@ -56,6 +75,7 @@ function* handleCancelRace(cancellableAction) {
     yield put(hideNotification());
     // if not cancelled, redispatch the action, this time immediate
     if (timeout) {
+        console.log(action);
         yield put(action);
     } else {
         yield put(refreshView());
