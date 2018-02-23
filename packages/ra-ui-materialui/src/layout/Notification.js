@@ -2,15 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
+import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
-import {
-    hideNotification as hideNotificationAction,
-    getNotification,
-    translate,
-} from 'ra-core';
+import { hideNotification, getNotification, translate, cancel } from 'ra-core';
 
 const styles = theme => {
     const confirm = theme.palette.background.default;
@@ -47,6 +44,7 @@ class Notification extends React.Component {
 
     render() {
         const {
+            cancel,
             classes,
             className,
             type,
@@ -77,6 +75,13 @@ class Notification extends React.Component {
                         className
                     ),
                 }}
+                action={
+                    notification && notification.cancellable ? (
+                        <Button color="primary" size="small" onClick={cancel}>
+                            {translate('cancel')}
+                        </Button>
+                    ) : null
+                }
                 {...rest}
             />
         );
@@ -84,6 +89,7 @@ class Notification extends React.Component {
 }
 
 Notification.propTypes = {
+    cancel: PropTypes.func,
     classes: PropTypes.object,
     className: PropTypes.string,
     notification: PropTypes.shape({
@@ -111,6 +117,7 @@ export default compose(
     translate,
     withStyles(styles),
     connect(mapStateToProps, {
-        hideNotification: hideNotificationAction,
+        hideNotification,
+        cancel,
     })
 )(Notification);

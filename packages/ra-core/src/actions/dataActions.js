@@ -64,7 +64,7 @@ export const crudUpdate = (
 ) => ({
     type: CRUD_UPDATE,
     payload: { id, data, previousData, basePath, redirectTo },
-    meta: { resource, fetch: UPDATE, cancelPrevious: false },
+    meta: { resource, fetch: UPDATE, cancelPrevious: false, cancellable: 5000 },
 });
 
 export const CRUD_UPDATE_MANY = 'RA/CRUD_UPDATE_MANY';

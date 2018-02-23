@@ -104,7 +104,6 @@ class Datagrid extends Component {
             version,
             ...rest
         } = this.props;
-
         return (
             <Table className={classnames(classes.table, className)} {...rest}>
                 <TableHead>

@@ -7,7 +7,11 @@ import { fade } from 'material-ui/styles/colorManipulator';
 import ActionDelete from 'material-ui-icons/Delete';
 import classnames from 'classnames';
 import inflection from 'inflection';
-import { translate, crudDelete } from 'ra-core';
+import {
+    translate,
+    crudDelete as crudDeleteAction,
+    startCancellable,
+} from 'ra-core';
 
 import Confirm from '../layout/Confirm';
 import Button from './Button';
@@ -26,26 +30,27 @@ const styles = theme => ({
 });
 
 class DeleteButton extends Component {
-    state = { dialogOpen: false };
-
-    handleClick = () => {
-        this.setState({ dialogOpen: true });
-    };
-
-    handleDialogClose = () => {
-        this.setState({ dialogOpen: false });
-    };
-
     handleDelete = event => {
         event.preventDefault();
-        this.props.crudDelete(
-            this.props.resource,
-            this.props.record.id,
-            this.props.record,
-            this.props.basePath,
-            this.props.redirect
-        );
-        this.setState({ dialogOpen: false });
+        if (this.props.cancellable) {
+            this.props.startCancellable(
+                crudDeleteAction(
+                    this.props.resource,
+                    this.props.record.id,
+                    this.props.record,
+                    this.props.basePath,
+                    this.props.redirect
+                )
+            );
+        } else {
+            this.props.crudDelete(
+                this.props.resource,
+                this.props.record.id,
+                this.props.record,
+                this.props.basePath,
+                this.props.redirect
+            );
+        }
     };
 
     render() {
@@ -53,17 +58,10 @@ class DeleteButton extends Component {
             label = 'ra.action.delete',
             classes = {},
             className,
-            record,
-            resource,
-            translate,
         } = this.props;
-        const resourceName = translate(`resources.${resource}.name`, {
-            smart_count: 1,
-            _: inflection.humanize(inflection.singularize(resource)),
-        });
-        return [
+        return (
             <Button
-                onClick={this.handleClick}
+                onClick={this.handleDelete}
                 label={label}
                 className={classnames(
                     'ra-delete-button',
@@ -73,32 +71,14 @@ class DeleteButton extends Component {
                 key="button"
             >
                 <ActionDelete />
-            </Button>,
-            <Confirm
-                isOpen={this.state.dialogOpen}
-                title={translate('ra.message.delete_title', {
-                    name: resourceName,
-                    id: record && record.id,
-                    data: record,
-                })}
-                content={translate('ra.message.delete_content', {
-                    name: resourceName,
-                    id: record && record.id,
-                    data: record,
-                })}
-                confirm={translate('ra.action.delete')}
-                confirmColor="warning"
-                cancel={translate('ra.action.cancel')}
-                onConfirm={this.handleDelete}
-                onClose={this.handleDialogClose}
-                key="dialog"
-            />,
-        ];
+            </Button>
+        );
     }
 }
 
 DeleteButton.propTypes = {
     basePath: PropTypes.string,
+    cancellable: PropTypes.bool.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
     crudDelete: PropTypes.func,
@@ -106,15 +86,17 @@ DeleteButton.propTypes = {
     record: PropTypes.object,
     redirect: PropTypes.string,
     resource: PropTypes.string.isRequired,
+    startCancellable: PropTypes.func,
     translate: PropTypes.func,
 };
 
 DeleteButton.defaultProps = {
+    cancellable: true,
     redirect: 'list',
 };
 
 export default compose(
-    connect(null, { crudDelete }),
+    connect(null, { crudDelete: crudDeleteAction, startCancellable }),
     translate,
     withStyles(styles)
 )(DeleteButton);

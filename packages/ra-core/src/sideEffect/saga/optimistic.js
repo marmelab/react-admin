@@ -6,11 +6,13 @@ import {
     CRUD_UPDATE,
     CRUD_UPDATE_MANY,
 } from '../../actions/dataActions';
+import { showNotification } from '../../actions/notificationActions';
 import { refreshView } from '../../actions/uiActions';
 import resolveRedirectTo from '../../util/resolveRedirectTo';
 
 function* handleOptimisticRedirect({ payload }) {
     const actions = [put(refreshView())];
+    // FIXME don't redirect if this was a cancellable action (because teh redirection has already taken place)
     if (payload.redirectTo) {
         actions.push(
             put(

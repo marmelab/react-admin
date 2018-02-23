@@ -1,5 +1,6 @@
 import { all } from 'redux-saga/effects';
 import auth from './auth';
+import cancelSaga from './cancelSaga';
 import crudFetch from './crudFetch';
 import crudResponse from './crudResponse';
 import optimistic from './optimistic';
@@ -14,6 +15,7 @@ export default (dataProvider, authProvider, i18nProvider) =>
         yield all([
             i18n(i18nProvider)(),
             auth(authProvider)(),
+            cancelSaga(),
             crudFetch(dataProvider)(),
             crudResponse(),
             referenceFetch(),

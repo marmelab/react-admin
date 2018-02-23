@@ -77,13 +77,10 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
                       put(reset('record-form')),
                   ]);
         case CRUD_DELETE_SUCCESS: {
-            return yield put(
-                showNotification('ra.notification.deleted', 'info', {
-                    messageArgs: {
-                        smart_count: 1,
-                    },
-                })
-            );
+            if (requestPayload.refresh) {
+                return yield put(refreshView());
+            }
+            return;
         }
         case CRUD_DELETE_MANY_SUCCESS: {
             const actions = [

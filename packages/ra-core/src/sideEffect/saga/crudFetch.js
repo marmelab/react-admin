@@ -6,6 +6,7 @@ import {
     cancelled,
     fork,
     take,
+    select,
 } from 'redux-saga/effects';
 import {
     FETCH_START,
@@ -71,6 +72,16 @@ const crudFetch = dataProvider => {
 
         while (true) {
             const action = yield take(takeFetchAction);
+
+            const isOptimistic = yield select(
+                state => state.admin.ui.optimistic
+            );
+            if (isOptimistic) {
+                // in optimistic mode, all fetch actions are canceled,
+                // so the admin uses the store without synchronization
+                continue;
+            }
+
             const { cancelPrevious, resource } = action.meta;
 
             if (cancelPrevious && runningTasks[resource]) {

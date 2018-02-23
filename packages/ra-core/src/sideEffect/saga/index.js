@@ -1,4 +1,5 @@
 export auth from './auth';
+export cancelSaga from './cancelSaga';
 export crudFetch from './crudFetch';
 export crudResponse from './crudResponse';
 export crudSaga from './crudSaga';
