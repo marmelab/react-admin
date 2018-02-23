@@ -35,7 +35,13 @@ const styles = theme => ({
         justifyContent: 'center',
     },
     icon: {
-        backgroundColor: theme.palette.secondary[500],
+        backgroundColor: theme.palette.secondary.main,
+    },
+    hint: {
+        marginTop: '1em',
+        display: 'flex',
+        justifyContent: 'center',
+        color: theme.palette.grey[500],
     },
     form: {
         padding: '0 1em 1em 1em',
@@ -43,8 +49,8 @@ const styles = theme => ({
     input: {
         marginTop: '1em',
     },
-    button: {
-        width: '100%',
+    actions: {
+        padding: '0 1em 1em 1em',
     },
 });
 
@@ -83,7 +89,7 @@ class Login extends Component {
                         </Avatar>
                     </div>
                     <form onSubmit={handleSubmit(this.login)}>
-                        <p>Hint: demo / demo</p>
+                        <div className={classes.hint}>Hint: demo / demo</div>
                         <div className={classes.form}>
                             <div className={classes.input}>
                                 <Field
@@ -103,13 +109,14 @@ class Login extends Component {
                                 />
                             </div>
                         </div>
-                        <CardActions>
+                        <CardActions className={classes.actions}>
                             <Button
                                 variant="raised"
                                 type="submit"
                                 color="primary"
                                 disabled={isLoading}
                                 className={classes.button}
+                                fullWidth
                             >
                                 {isLoading && (
                                     <CircularProgress size={25} thickness={2} />

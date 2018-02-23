@@ -4,6 +4,7 @@ import withStyles from 'material-ui/styles/withStyles';
 
 const styles = {
     root: { display: 'inline-block', marginTop: '1em', zIndex: 2 },
+    content: { padding: 0, '&:last-child': { padding: 0 } },
     img: {
         width: 'initial',
         minWidth: 'initial',
@@ -14,7 +15,7 @@ const styles = {
 
 const Poster = withStyles(styles)(({ classes, record }) => (
     <Card className={classes.root}>
-        <CardContent>
+        <CardContent className={classes.content}>
             <img src={record.image} alt="" className={classes.img} />
         </CardContent>
     </Card>

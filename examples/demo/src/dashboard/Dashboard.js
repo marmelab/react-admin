@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { GET_LIST, GET_MANY, Responsive, ViewTitle } from 'react-admin';
-import Card, { CardContent } from 'material-ui/Card';
 
 import Welcome from './Welcome';
 import MonthlyRevenue from './MonthlyRevenue';
@@ -11,11 +10,11 @@ import NewCustomers from './NewCustomers';
 import dataProviderFactory from '../dataProvider';
 
 const styles = {
-    welcome: { marginBottom: '2em' },
     flex: { display: 'flex' },
+    flexColumn: { display: 'flex', flexDirection: 'column' },
     leftCol: { flex: 1, marginRight: '1em' },
     rightCol: { flex: 1, marginLeft: '1em' },
-    singleCol: { marginTop: '2em' },
+    singleCol: { marginTop: '2em', marginBottom: '2em' },
 };
 
 class Dashboard extends Component {
@@ -143,10 +142,12 @@ class Dashboard extends Component {
         return (
             <Responsive
                 xsmall={
-                    <Card>
+                    <div>
                         <ViewTitle title="Posters Galore Admin" />
-                        <CardContent>
-                            <Welcome style={styles.welcome} />
+                        <div style={styles.flexColumn}>
+                            <div style={{ marginBottom: '2em' }}>
+                                <Welcome />
+                            </div>
                             <div style={styles.flex}>
                                 <MonthlyRevenue value={revenue} />
                                 <NbNewOrders value={nbNewOrders} />
@@ -157,42 +158,57 @@ class Dashboard extends Component {
                                     customers={pendingOrdersCustomers}
                                 />
                             </div>
-                        </CardContent>
-                    </Card>
+                        </div>
+                    </div>
+                }
+                small={
+                    <div style={styles.flexColumn}>
+                        <div style={styles.singleCol}>
+                            <Welcome />
+                        </div>
+                        <div style={styles.flex}>
+                            <MonthlyRevenue value={revenue} />
+                            <NbNewOrders value={nbNewOrders} />
+                        </div>
+                        <div style={styles.singleCol}>
+                            <PendingOrders
+                                orders={pendingOrders}
+                                customers={pendingOrdersCustomers}
+                            />
+                        </div>
+                    </div>
                 }
                 medium={
-                    <Card>
-                        <CardContent>
-                            <Welcome style={styles.welcome} />
+                    <div style={styles.flex}>
+                        <div style={styles.leftCol}>
                             <div style={styles.flex}>
-                                <div style={styles.leftCol}>
-                                    <div style={styles.flex}>
-                                        <MonthlyRevenue value={revenue} />
-                                        <NbNewOrders value={nbNewOrders} />
-                                    </div>
-                                    <div style={styles.singleCol}>
-                                        <PendingOrders
-                                            orders={pendingOrders}
-                                            customers={pendingOrdersCustomers}
-                                        />
-                                    </div>
-                                </div>
-                                <div style={styles.rightCol}>
-                                    <div style={styles.flex}>
-                                        <PendingReviews
-                                            nb={nbPendingReviews}
-                                            reviews={pendingReviews}
-                                            customers={pendingReviewsCustomers}
-                                        />
-                                        <NewCustomers
-                                            nb={nbNewCustomers}
-                                            visitors={newCustomers}
-                                        />
-                                    </div>
-                                </div>
+                                <MonthlyRevenue value={revenue} />
+                                <NbNewOrders value={nbNewOrders} />
                             </div>
-                        </CardContent>
-                    </Card>
+                            <div style={styles.singleCol}>
+                                <Welcome />
+                            </div>
+                            <div style={styles.singleCol}>
+                                <PendingOrders
+                                    orders={pendingOrders}
+                                    customers={pendingOrdersCustomers}
+                                />
+                            </div>
+                        </div>
+                        <div style={styles.rightCol}>
+                            <div style={styles.flex}>
+                                <PendingReviews
+                                    nb={nbPendingReviews}
+                                    reviews={pendingReviews}
+                                    customers={pendingReviewsCustomers}
+                                />
+                                <NewCustomers
+                                    nb={nbNewCustomers}
+                                    visitors={newCustomers}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 }
             />
         );
