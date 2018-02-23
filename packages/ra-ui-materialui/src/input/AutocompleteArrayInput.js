@@ -1,23 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
-import classnames from 'classnames';
 import compose from 'recompose/compose';
 import { withStyles } from 'material-ui/styles';
-import AutocompleteInput from './AutocompleteInput';
-import translate from '../../i18n/translate';
+import { AutocompleteInput } from './AutocompleteInput';
+import { addField, translate } from 'ra-core';
 
-const styles = () => ({
-    root: {},
+const styles = theme => ({
     chips: {
         display: 'flex',
+    },
+    container: {
+        flexGrow: 1,
+        position: 'relative',
+    },
+    root: {},
+    suggestionsContainerOpen: {
+        position: 'absolute',
+        marginBottom: theme.spacing.unit * 3,
+        zIndex: 2,
+    },
+    suggestion: {
+        display: 'block',
+        fontFamily: theme.typography.fontFamily,
+    },
+    suggestionText: { fontWeight: 300 },
+    highlightedSuggestionText: { fontWeight: 500 },
+    suggestionsList: {
+        margin: 0,
+        padding: 0,
+        listStyleType: 'none',
     },
 });
 
 class AutocompleteArrayInput extends React.Component {
     static propTypes = {
         choices: PropTypes.arrayOf(PropTypes.object),
+        children: PropTypes.element,
         classes: PropTypes.object,
+        input: PropTypes.shape({
+            value: PropTypes.array,
+        }),
         optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
         optionValue: PropTypes.string,
         onChipAdded: PropTypes.func,
@@ -30,6 +53,8 @@ class AutocompleteArrayInput extends React.Component {
     };
     static defaultProps = {
         addField: true,
+        choices: [],
+        classes: {},
         optionValue: 'id',
         optionText: 'name',
         fullWidth: true,
@@ -41,16 +66,18 @@ class AutocompleteArrayInput extends React.Component {
             chipData: [],
             choices: [],
             input: {
+                value: [],
                 ...this.props.input,
-                value: '',
                 onChange: this.handleChipAdd,
                 onBlur: this.handleBlur,
             },
         };
     }
+
     componentWillMount() {
         this.updateItems();
     }
+
     componentWillReceiveProps(nextProps) {
         const { input, choices } = this.props;
         if (
@@ -128,11 +155,11 @@ class AutocompleteArrayInput extends React.Component {
     };
 
     render() {
-        const { children, classes, className, ...props } = this.props;
+        const { children, classes, ...props } = this.props;
         const { chipData } = this.state;
         return (
             <AutocompleteInput
-                className={classnames(classes.root, className)}
+                classes={classes}
                 {...props}
                 choices={this.state.choices}
                 input={this.state.input}
@@ -158,6 +185,6 @@ class AutocompleteArrayInput extends React.Component {
     }
 }
 
-const enhance = compose(translate, withStyles(styles));
+const enhance = compose(addField, translate, withStyles(styles));
 export { AutocompleteArrayInput };
 export default enhance(AutocompleteArrayInput);

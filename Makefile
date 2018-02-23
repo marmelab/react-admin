@@ -124,3 +124,7 @@ test-e2e: ## launch end-to-end tests
 		--timeout 15000 \
 		./e2e/tests/server.js \
 		./e2e/tests/*.js
+
+test-update-snapshots:
+	NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/jest \
+		--updateSnapshot

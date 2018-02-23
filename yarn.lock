@@ -2802,6 +2802,12 @@ enzyme-adapter-utils@^1.1.0:
     object.assign "^4.0.4"
     prop-types "^15.6.0"
 
+enzyme-to-json@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/enzyme-to-json/-/enzyme-to-json-3.3.1.tgz#64239dcd417e2fb552f4baa6632de4744b9b5b93"
+  dependencies:
+    lodash "^4.17.4"
+
 enzyme@~3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/enzyme/-/enzyme-3.1.1.tgz#c6948dfccd055d75fbd8627ad1c96a024d0e247b"

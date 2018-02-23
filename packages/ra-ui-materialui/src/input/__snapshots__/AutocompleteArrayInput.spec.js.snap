@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutocompleteArrayInput /> should render chips of input value and choices for the rest 1`] = `
+<AutocompleteInput
+  addField={true}
+  choices={
+    Array [
+      Object {
+        "id": "lifestyle",
+        "name": "Lifestyle",
+      },
+      Object {
+        "id": "photography",
+        "name": "Photography",
+      },
+    ]
+  }
+  classes={Object {}}
+  fullWidth={true}
+  input={
+    Object {
+      "onBlur": [Function],
+      "onChange": [Function],
+      "value": Array [
+        "programming",
+      ],
+    }
+  }
+  inputValueMatcher={[Function]}
+  limitChoicesToValue={false}
+  meta={Object {}}
+  optionText="name"
+  optionValue="id"
+  options={
+    Object {
+      "InputProps": Object {
+        "startAdornment": <div
+          className={undefined}
+    >
+          <WithStyles(pure(ChipField))
+                onClick={[Function]}
+                onDelete={[Function]}
+                record={
+                      Object {
+                            "id": "programming",
+                            "name": "Programming",
+                          }
+                }
+                source="name"
+          />
+    </div>,
+      },
+    }
+  }
+  setFilter={[Function]}
+  source="foo"
+  translate={[Function]}
+  translateChoice={true}
+/>
+`;
+
+exports[`<AutocompleteArrayInput /> should render choices 1`] = `
+<AutocompleteInput
+  addField={true}
+  choices={
+    Array [
+      Object {
+        "id": "programming",
+        "name": "Programming",
+      },
+      Object {
+        "id": "lifestyle",
+        "name": "Lifestyle",
+      },
+      Object {
+        "id": "photography",
+        "name": "Photography",
+      },
+    ]
+  }
+  classes={Object {}}
+  fullWidth={true}
+  input={
+    Object {
+      "onBlur": [Function],
+      "onChange": [Function],
+      "value": Array [],
+    }
+  }
+  inputValueMatcher={[Function]}
+  limitChoicesToValue={false}
+  meta={Object {}}
+  optionText="name"
+  optionValue="id"
+  options={
+    Object {
+      "InputProps": Object {
+        "startAdornment": <div
+          className={undefined}
+    >
+          
+    </div>,
+      },
+    }
+  }
+  setFilter={[Function]}
+  source="foo"
+  translate={[Function]}
+  translateChoice={true}
+/>
+`;
