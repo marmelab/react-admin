@@ -9,18 +9,17 @@ import classnames from 'classnames';
 
 import { hideNotification, getNotification, translate, cancel } from 'ra-core';
 
-const styles = theme => {
-    const confirm = theme.palette.background.default;
-    const warning = theme.palette.error.light;
-    return {
-        confirm: {
-            backgroundColor: confirm,
-        },
-        warning: {
-            backgroundColor: warning,
-        },
-    };
-};
+const styles = theme => ({
+    confirm: {
+        backgroundColor: theme.palette.background.default,
+    },
+    warning: {
+        backgroundColor: theme.palette.error.light,
+    },
+    undo: {
+        color: theme.palette.primary.light,
+    },
+});
 
 class Notification extends React.Component {
     state = {
@@ -77,8 +76,13 @@ class Notification extends React.Component {
                 }}
                 action={
                     notification && notification.cancellable ? (
-                        <Button color="primary" size="small" onClick={cancel}>
-                            {translate('cancel')}
+                        <Button
+                            color="primary"
+                            className={classes.undo}
+                            size="small"
+                            onClick={cancel}
+                        >
+                            {translate('ra.action.undo')}
                         </Button>
                     ) : null
                 }

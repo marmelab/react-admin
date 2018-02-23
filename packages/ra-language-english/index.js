@@ -9,6 +9,7 @@ module.exports = {
             edit: 'Edit',
             sort: 'Sort',
             cancel: 'Cancel',
+            undo: 'Undo',
             refresh: 'Refresh',
             add_filter: 'Add filter',
             remove_filter: 'Remove this filter',
