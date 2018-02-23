@@ -13,17 +13,17 @@ function* handleOptimisticRedirect({ payload }) {
     const actions = [put(refreshView())];
     // FIXME don't redirect if this was a cancellable action (because teh redirection has already taken place)
     if (payload.redirectTo) {
-        actions.push(
-            put(
-                push(
-                    resolveRedirectTo(
-                        payload.redirectTo,
-                        payload.basePath,
-                        payload.id
-                    )
-                )
-            )
-        );
+        // actions.push(
+        //     put(
+        //         push(
+        //             resolveRedirectTo(
+        //                 payload.redirectTo,
+        //                 payload.basePath,
+        //                 payload.id
+        //             )
+        //         )
+        //     )
+        // );
     }
     return yield all(actions);
 }
