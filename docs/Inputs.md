@@ -66,6 +66,25 @@ Then you can display a text input to edit the author first name as follows:
 
 **Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
 
+## `<AutocompleteArrayInput>`
+
+To let users choose multiple values in a list using a dropdown with autocompletion and render the input values as chips.
+```jsx
+import { AutocompleteArrayInput, ChipField } from 'react-admin';
+
+<AutocompleteArrayInput source="category" choices={[
+    { id: 'programming', name: 'Programming' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'photography', name: 'Photography' },
+]} >
+  <ChipField source="name" />
+</AutocompleteArrayInput>
+```
+ 
+![AutocompleteArrayInput](./img/autocomplete-array-input.gif)
+
+The component accepts all properties of `<AutocompleteInput>`. 
+
 ## `<AutocompleteInput>`
 
 To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`. It renders using [react-autosuggest](http://react-autosuggest.js.org/) and a `fuzzySearch` filter. Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
@@ -940,7 +959,8 @@ export const PostCreate = props => (
 );
 ```
 
-**Tip**: As it does not provide autocompletion, the `SelectArrayInput` might not be suited when the referenced resource has a lot of items.
+**Tip**: As it does not provide autocompletion, the `SelectArrayInput` might not be suited when the referenced resource has a lot of items, `AutocompleteArrayInput` can be used for this.
+
 
 ## `<TextInput>`
 
