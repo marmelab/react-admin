@@ -38,7 +38,6 @@ const CreateView = ({
     defaultTitle,
     hasList,
     hasShow,
-    isLoading,
     record = {},
     redirect,
     resource,
@@ -50,7 +49,7 @@ const CreateView = ({
         className={classnames('create-page', className)}
         {...sanitizeRestProps(rest)}
     >
-        <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+        <Card>
             <Header
                 title={
                     <RecordTitle
@@ -88,7 +87,6 @@ CreateView.propTypes = {
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
-    isLoading: PropTypes.bool,
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
