@@ -21,6 +21,7 @@ const DatagridBody = ({
     styles,
     rowStyle,
     onToggleItem,
+    version,
     ...rest
 }) => (
     <TableBody className={classnames('datagrid-body', className)} {...rest}>
@@ -63,6 +64,7 @@ DatagridBody.propTypes = {
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     styles: PropTypes.object,
+    version: PropTypes.number,
 };
 
 DatagridBody.defaultProps = {
@@ -72,7 +74,8 @@ DatagridBody.defaultProps = {
 };
 
 const PureDatagridBody = shouldUpdate(
-    (props, nextProps) => nextProps.isLoading === false
+    (props, nextProps) =>
+        props.version !== nextProps.version || nextProps.isLoading === false
 )(DatagridBody);
 
 // trick material-ui Table into thinking this is one of the child type it supports

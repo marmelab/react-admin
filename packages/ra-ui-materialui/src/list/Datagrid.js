@@ -99,6 +99,7 @@ class Datagrid extends Component {
             setSort,
             onSelect,
             onToggleItem,
+            version,
             ...rest
         } = this.props;
 
@@ -150,6 +151,7 @@ class Datagrid extends Component {
                     resource={resource}
                     rowStyle={rowStyle}
                     selectedIds={selectedIds}
+                    version={version}
                 >
                     {children}
                 </DatagridBody>
@@ -178,6 +180,7 @@ Datagrid.propTypes = {
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     setSort: PropTypes.func,
+    version: PropTypes.number,
 };
 
 Datagrid.defaultProps = {
