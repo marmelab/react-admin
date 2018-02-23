@@ -30,15 +30,6 @@ import resolveRedirectTo from '../../util/resolveRedirectTo';
  */
 function* handleResponse({ type, requestPayload, error, payload, meta }) {
     switch (type) {
-        case CRUD_UPDATE_SUCCESS: {
-            return yield put(
-                showNotification('ra.notification.updated', 'info', {
-                    messageArgs: {
-                        smart_count: 1,
-                    },
-                })
-            );
-        }
         case CRUD_UPDATE_MANY_SUCCESS: {
             const actions = [
                 put(

@@ -5,10 +5,7 @@ import compose from 'recompose/compose';
 import inflection from 'inflection';
 import { reset } from 'redux-form';
 import translate from '../i18n/translate';
-import {
-    crudGetOne as crudGetOneAction,
-    crudUpdate as crudUpdateAction,
-} from '../actions';
+import { crudGetOne, crudUpdate, startCancellable } from '../actions';
 
 /**
  * Page component for the Edit view
@@ -84,13 +81,15 @@ export class EditController extends Component {
     }
 
     save = (data, redirect) => {
-        this.props.crudUpdate(
-            this.props.resource,
-            this.props.id,
-            data,
-            this.props.record,
-            this.getBasePath(),
-            redirect
+        this.props.startCancellable(
+            crudUpdate(
+                this.props.resource,
+                this.props.id,
+                data,
+                this.props.record,
+                this.getBasePath(),
+                redirect
+            )
         );
     };
 
@@ -136,7 +135,6 @@ export class EditController extends Component {
 EditController.propTypes = {
     children: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,
-    crudUpdate: PropTypes.func.isRequired,
     record: PropTypes.object,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
@@ -148,6 +146,7 @@ EditController.propTypes = {
     match: PropTypes.object.isRequired,
     resetForm: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
+    startCancellable: PropTypes.func.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
     version: PropTypes.number.isRequired,
@@ -168,8 +167,8 @@ function mapStateToProps(state, props) {
 
 export default compose(
     connect(mapStateToProps, {
-        crudGetOne: crudGetOneAction,
-        crudUpdate: crudUpdateAction,
+        crudGetOne,
+        startCancellable,
         resetForm: reset,
     }),
     translate

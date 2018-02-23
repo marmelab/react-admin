@@ -2,7 +2,11 @@ import { all, call, take, takeEvery, put, race } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { push } from 'react-router-redux';
 
-import { CRUD_DELETE, CRUD_DELETE_MANY } from '../../actions/dataActions';
+import {
+    CRUD_UPDATE,
+    CRUD_DELETE,
+    CRUD_DELETE_MANY,
+} from '../../actions/dataActions';
 import {
     showNotification,
     hideNotification,
@@ -21,6 +25,17 @@ function* handleCancelRace(cancellableAction) {
     const { payload: { action, delay: cancelDelay } } = cancellableAction;
     // display cancellable notification
     switch (action.type) {
+        case CRUD_UPDATE: {
+            yield put(
+                showNotification('ra.notification.updated', 'info', {
+                    messageArgs: {
+                        smart_count: 1,
+                    },
+                    cancellable: true,
+                })
+            );
+            break;
+        }
         case CRUD_DELETE: {
             yield put(
                 showNotification('ra.notification.deleted', 'info', {

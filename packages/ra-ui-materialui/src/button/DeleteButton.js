@@ -8,7 +8,6 @@ import ActionDelete from 'material-ui-icons/Delete';
 import classnames from 'classnames';
 import { translate, crudDelete, startCancellable } from 'ra-core';
 
-import Confirm from '../layout/Confirm';
 import Button from './Button';
 
 const styles = theme => ({
