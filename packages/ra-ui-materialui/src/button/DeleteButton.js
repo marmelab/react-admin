@@ -6,12 +6,7 @@ import { withStyles } from 'material-ui/styles';
 import { fade } from 'material-ui/styles/colorManipulator';
 import ActionDelete from 'material-ui-icons/Delete';
 import classnames from 'classnames';
-import inflection from 'inflection';
-import {
-    translate,
-    crudDelete as crudDeleteAction,
-    startCancellable,
-} from 'ra-core';
+import { translate, crudDelete, startCancellable } from 'ra-core';
 
 import Confirm from '../layout/Confirm';
 import Button from './Button';
@@ -32,25 +27,16 @@ const styles = theme => ({
 class DeleteButton extends Component {
     handleDelete = event => {
         event.preventDefault();
-        if (this.props.cancellable) {
-            this.props.startCancellable(
-                crudDeleteAction(
-                    this.props.resource,
-                    this.props.record.id,
-                    this.props.record,
-                    this.props.basePath,
-                    this.props.redirect
-                )
-            );
-        } else {
-            this.props.crudDelete(
-                this.props.resource,
-                this.props.record.id,
-                this.props.record,
-                this.props.basePath,
-                this.props.redirect
-            );
-        }
+        const {
+            startCancellable,
+            resource,
+            record,
+            basePath,
+            redirect,
+        } = this.props;
+        startCancellable(
+            crudDelete(resource, record.id, record, basePath, redirect)
+        );
     };
 
     render() {
@@ -78,10 +64,8 @@ class DeleteButton extends Component {
 
 DeleteButton.propTypes = {
     basePath: PropTypes.string,
-    cancellable: PropTypes.bool.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
-    crudDelete: PropTypes.func,
     label: PropTypes.string,
     record: PropTypes.object,
     redirect: PropTypes.string,
@@ -91,12 +75,11 @@ DeleteButton.propTypes = {
 };
 
 DeleteButton.defaultProps = {
-    cancellable: true,
     redirect: 'list',
 };
 
 export default compose(
-    connect(null, { crudDelete: crudDeleteAction, startCancellable }),
+    connect(null, { startCancellable }),
     translate,
     withStyles(styles)
 )(DeleteButton);

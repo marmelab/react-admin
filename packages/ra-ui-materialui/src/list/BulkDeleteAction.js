@@ -2,11 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import {
-    crudDeleteMany as crudDeleteManyAction,
-    startCancellable,
-    translate,
-} from 'ra-core';
+import { crudDeleteMany, startCancellable, translate } from 'ra-core';
 
 class BulkDeleteAction extends Component {
     componentDidMount = () => {
@@ -16,7 +12,7 @@ class BulkDeleteAction extends Component {
             selectedIds,
             startCancellable,
         } = this.props;
-        startCancellable(crudDeleteManyAction(resource, selectedIds, basePath));
+        startCancellable(crudDeleteMany(resource, selectedIds, basePath));
         this.props.onExit();
     };
 
@@ -27,7 +23,6 @@ class BulkDeleteAction extends Component {
 
 BulkDeleteAction.propTypes = {
     basePath: PropTypes.string,
-    crudDeleteMany: PropTypes.func.isRequired,
     label: PropTypes.string,
     onExit: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
@@ -38,7 +33,6 @@ BulkDeleteAction.propTypes = {
 
 const EnhancedBulkDeleteAction = compose(
     connect(undefined, {
-        crudDeleteMany: crudDeleteManyAction,
         startCancellable,
     }),
     translate
