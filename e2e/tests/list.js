@@ -74,15 +74,13 @@ describe('List Page', () => {
                 ListPagePosts.elements.filter('title')
             );
             assert.equal(filters.length, 0);
-            await ListPagePosts.setFilterValue('q', 'quis culpa impedit');
-            assert.equal(await ListPagePosts.getNbRows(), 1);
-            assert.equal(await ListPagePosts.getNbPagesText(), '1-1 of 1');
+            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
         });
 
         it('should have correctly reset filters after navigating', async () => {
             await ListPageComments.navigate();
             await ListPagePosts.navigate();
-            assert.equal(await ListPagePosts.getNbPagesText(), '1-1 of 1');
+            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
         });
 
         it('should not filter when field validation fails', async () => {
@@ -92,6 +90,7 @@ describe('List Page', () => {
                 await ListPagePosts.getFilterError('title'),
                 'Must be 2 characters at least'
             );
+            await ListPagePosts.hideFilter('title');
         });
     });
 
