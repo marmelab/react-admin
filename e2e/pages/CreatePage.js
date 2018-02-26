@@ -88,8 +88,15 @@ export default url => driver => ({
     },
 
     submit() {
-        driver.findElement(this.elements.submitButton).click();
-        return this.waitUntilDataLoaded();
+        return driver
+            .findElement(this.elements.submitButton)
+            .click()
+            .then(() =>
+                driver.wait(until.elementLocated(this.elements.snackbar), 3000)
+            )
+            .then(() => driver.findElement(this.elements.body).click()) // dismiss notification
+            .then(() => driver.sleep(200)) // let the notification disappear (could block further submits)
+            .then(() => this.waitUntilDataLoaded());
     },
 
     submitAndAdd() {

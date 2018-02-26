@@ -511,7 +511,7 @@ export default ({ onMenuClick, logout }) => (
         <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuClick} />
         <WithPermissions
             render={
-            permissions =>
+            ({permissions}) =>
                 permissions === 'admin'
                 ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
                 : null
@@ -519,7 +519,7 @@ export default ({ onMenuClick, logout }) => (
         />
         {/* OR */}
         <WithPermissions>
-            {permissions =>
+            {({permissions}) =>
                 permissions === 'admin'
                 ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
                 : null
@@ -561,7 +561,7 @@ import { ViewTitle, WithPermissions } from 'react-admin';
 export default () => (
     <div>
         <WithPermissions
-            render={permissions => {
+            render={({permissions}) => {
                 if (permissions === 'associate') {
                     return <BenefitsSummary />;
                 }

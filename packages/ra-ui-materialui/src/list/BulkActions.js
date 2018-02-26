@@ -1,7 +1,6 @@
 import React, { cloneElement, Children, Component } from 'react';
-
 import PropTypes from 'prop-types';
-import MoreVertIcon from 'material-ui-icons/MoreVert';
+import FilterNoneIcon from 'material-ui-icons/FilterNone';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
@@ -17,6 +16,9 @@ const styles = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
+    },
+    icon: {
+        marginRight: theme.spacing.unit,
     },
     unselected: {
         opacity: 0,
@@ -92,14 +94,14 @@ class BulkActions extends Component {
                     alignIcon="right"
                     aria-owns={isOpen ? 'bulk-actions-menu' : null}
                     aria-haspopup="true"
-                    label={translate(label, {
-                        _: label,
-                        smart_count: selectedIds.length,
-                    })}
                     onClick={this.handleClick}
                     {...sanitizeRestProps(rest)}
                 >
-                    <MoreVertIcon />
+                    <FilterNoneIcon className={classes.icon} />
+                    {translate(label, {
+                        _: label,
+                        smart_count: selectedIds.length,
+                    })}
                 </Button>
                 <Menu
                     id="bulk-actions-menu"

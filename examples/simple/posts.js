@@ -48,8 +48,10 @@ import {
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import RichTextInput from 'ra-input-rich-text';
 import Chip from 'material-ui/Chip';
+import { InputAdornment } from 'material-ui/Input';
 import { withStyles } from 'material-ui/styles';
 import BookIcon from 'material-ui-icons/Book';
+import SearchIcon from 'material-ui-icons/Search';
 export const PostIcon = BookIcon;
 import ResetViewsAction from './ResetViewsAction';
 
@@ -59,7 +61,18 @@ const QuickFilter = translate(({ label, translate }) => (
 
 const PostFilter = props => (
     <Filter {...props}>
-        <TextInput label="post.list.search" source="q" alwaysOn />
+        <TextInput
+            label="post.list.search"
+            source="q"
+            alwaysOn
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment position="end">
+                        <SearchIcon color="disabled" />
+                    </InputAdornment>
+                ),
+            }}
+        />
         <TextInput
             source="title"
             defaultValue="Qui tempore rerum et voluptates"
@@ -127,6 +140,7 @@ export const PostList = withStyles(styles)(({ classes, ...props }) => (
                     <BooleanField
                         source="commentable"
                         label="resources.posts.fields.commentable_short"
+                        sortable={false}
                     />
                     <NumberField source="views" />
                     <ReferenceArrayField

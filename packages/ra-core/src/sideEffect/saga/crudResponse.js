@@ -31,31 +31,13 @@ import resolveRedirectTo from '../../util/resolveRedirectTo';
 function* handleResponse({ type, requestPayload, error, payload, meta }) {
     switch (type) {
         case CRUD_UPDATE_SUCCESS: {
-            const actions = [
-                put(
-                    showNotification('ra.notification.updated', 'info', {
-                        messageArgs: {
-                            smart_count: 1,
-                        },
-                    })
-                ),
-            ];
-
-            if (requestPayload.redirectTo) {
-                actions.push(
-                    put(
-                        push(
-                            resolveRedirectTo(
-                                requestPayload.redirectTo,
-                                requestPayload.basePath,
-                                requestPayload.id
-                            )
-                        )
-                    )
-                );
-            }
-
-            return yield all(actions);
+            return yield put(
+                showNotification('ra.notification.updated', 'info', {
+                    messageArgs: {
+                        smart_count: 1,
+                    },
+                })
+            );
         }
         case CRUD_UPDATE_MANY_SUCCESS: {
             const actions = [
@@ -95,30 +77,13 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
                       put(reset('record-form')),
                   ]);
         case CRUD_DELETE_SUCCESS: {
-            const actions = [
-                put(
-                    showNotification('ra.notification.deleted', 'info', {
-                        messageArgs: {
-                            smart_count: 1,
-                        },
-                    })
-                ),
-            ];
-            if (requestPayload.redirectTo) {
-                actions.push(
-                    put(
-                        push(
-                            resolveRedirectTo(
-                                requestPayload.redirectTo,
-                                requestPayload.basePath,
-                                requestPayload.id
-                            )
-                        )
-                    )
-                );
-            }
-
-            return yield all(actions);
+            return yield put(
+                showNotification('ra.notification.deleted', 'info', {
+                    messageArgs: {
+                        smart_count: 1,
+                    },
+                })
+            );
         }
         case CRUD_DELETE_MANY_SUCCESS: {
             const actions = [
@@ -174,7 +139,11 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
                 typeof error === 'string'
                     ? error
                     : error.message || 'ra.notification.http_error';
-            return yield put(showNotification(errorMessage, 'warning'));
+
+            return yield [
+                put(refreshView()),
+                put(showNotification(errorMessage, 'warning')),
+            ];
         }
         default:
             return yield all([]);

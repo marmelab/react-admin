@@ -13,6 +13,7 @@ const DatagridBody = ({
     resource,
     children,
     hasBulkActions,
+    hover,
     ids,
     isLoading,
     data,
@@ -20,6 +21,7 @@ const DatagridBody = ({
     styles,
     rowStyle,
     onToggleItem,
+    version,
     ...rest
 }) => (
     <TableBody className={classnames('datagrid-body', className)} {...rest}>
@@ -38,6 +40,7 @@ const DatagridBody = ({
                 record={data[id]}
                 resource={resource}
                 selected={selectedIds.includes(id)}
+                hover={hover}
                 style={rowStyle ? rowStyle(data[id], rowIndex) : null}
             >
                 {children}
@@ -53,6 +56,7 @@ DatagridBody.propTypes = {
     children: PropTypes.node,
     data: PropTypes.object.isRequired,
     hasBulkActions: PropTypes.bool.isRequired,
+    hover: PropTypes.bool,
     ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     isLoading: PropTypes.bool,
     onToggleItem: PropTypes.func,
@@ -60,6 +64,7 @@ DatagridBody.propTypes = {
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     styles: PropTypes.object,
+    version: PropTypes.number,
 };
 
 DatagridBody.defaultProps = {
@@ -69,7 +74,8 @@ DatagridBody.defaultProps = {
 };
 
 const PureDatagridBody = shouldUpdate(
-    (props, nextProps) => nextProps.isLoading === false
+    (props, nextProps) =>
+        props.version !== nextProps.version || nextProps.isLoading === false
 )(DatagridBody);
 
 // trick material-ui Table into thinking this is one of the child type it supports

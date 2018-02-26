@@ -7,6 +7,7 @@ module.exports = {
             save: 'Save',
             create: 'Create',
             edit: 'Edit',
+            sort: 'Sort',
             cancel: 'Cancel',
             refresh: 'Refresh',
             add_filter: 'Add filter',

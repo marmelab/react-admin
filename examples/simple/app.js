@@ -5,9 +5,6 @@ import { render } from 'react-dom';
 import { Route } from 'react-router';
 
 import { Admin, Resource } from 'react-admin'; // eslint-disable-line import/no-unresolved
-import jsonRestDataProvider from 'ra-data-fakerest';
-
-import addUploadFeature from './addUploadFeature';
 
 import { PostList, PostCreate, PostEdit, PostShow, PostIcon } from './posts';
 import {
@@ -21,24 +18,14 @@ import { UserList, UserEdit, UserCreate, UserIcon, UserShow } from './users';
 import CustomRouteNoLayout from './customRouteNoLayout';
 import CustomRouteLayout from './customRouteLayout';
 
-import data from './data';
 import authProvider from './authProvider';
+import dataProvider from './dataProvider';
 import i18nProvider from './i18nProvider';
-
-const dataProvider = jsonRestDataProvider(data, true);
-const uploadCapableDataProvider = addUploadFeature(dataProvider);
-const delayedDataProvider = (type, resource, params) =>
-    new Promise(resolve =>
-        setTimeout(
-            () => resolve(uploadCapableDataProvider(type, resource, params)),
-            1000
-        )
-    );
 
 render(
     <Admin
         authProvider={authProvider}
-        dataProvider={delayedDataProvider}
+        dataProvider={dataProvider}
         i18nProvider={i18nProvider}
         title="Example Admin"
         locale="en"
