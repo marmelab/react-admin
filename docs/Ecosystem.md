@@ -32,11 +32,8 @@ See the [translation](./Translation.md#available-locales) page.
 - [moonlight-labs/aor-jsonapi-client](https://github.com/moonlight-labs/aor-jsonapi-client): a REST client for [JSON API](http://jsonapi.org/)
 - [mhdsyrwan/aor-rest-client-router](https://github.com/MhdSyrwan/aor-rest-client-router): a REST client that enables routing to many REST clients based on resource name.
 
-## Command Line Interface
-
-- [aymendhaya/aor-cli](https://github.com/aymendhaya/aor-cli): Command Line Interface for admin-on-rest Framework to generate pre-configured aor modules.
-
 ## Miscellaneous
 
 - [marmelab/aor-realtime](https://github.com/marmelab/aor-realtime): enable realtime updates
 - [zifnab87/ra-component-factory](https://github.com/zifnab87/ra-component-factory): centralized configuration of immutability/visibility of fields/menu-links/action buttons, easy re-ordering of fields/properties and tab reorganization based on permission roles
+- [aymendhaya/aor-cli](https://github.com/aymendhaya/aor-cli): Command Line Interface for admin-on-rest Framework to generate pre-configured aor modules.
