@@ -1,0 +1,17 @@
+{
+  "name": "ra-data-loopback3",
+  "version": "2.0.0-beta3",
+  "description": "Rest, auth client for loopback3",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ra-data-loopback3"
+  ],
+  "author": "toannt",
+  "license": "ISC",
+  "dependencies": {
+    "query-string": "^5.1.0"
+  }
+}

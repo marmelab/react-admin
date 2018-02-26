@@ -5,3 +5,7 @@ es6
 docs/_site/
 examples/**/static
 packages/ra-example-shop
+
+.idea
+package-lock.json
+.DS_Store

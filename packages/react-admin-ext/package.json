@@ -1,0 +1,11 @@
+{
+  "name": "react-admin-ext",
+  "version": "2.0.0-beta3",
+  "description": "Extension method, layout for react-admin",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
