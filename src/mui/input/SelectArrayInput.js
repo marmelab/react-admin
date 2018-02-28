@@ -87,8 +87,8 @@ export class SelectArrayInput extends Component {
     };
 
     handleAdd = newValue => {
-        const allowToAdd = this.props.onBeforeAdd(this.state.values, newValue);
-        if (!allowToAdd) return;
+        const isAllowed = this.props.onBeforeAdd(this.state.values, newValue);
+        if (!isAllowed) return;
         const values = [...this.state.values, newValue];
         this.setState({ values }, () => this.handleChange(this.state.values));
     };
