@@ -4,7 +4,7 @@ export CardActions from './CardActions';
 export Confirm from './Confirm';
 export DashboardMenuItem from './DashboardMenuItem';
 export Header from './Header';
-export Layout from './Layout';
+export Layout, { layoutWithTheme, layoutWithThemeAndState } from './Layout';
 export Loading from './Loading';
 export LinearProgress from './LinearProgress';
 export LoadingIndicator from './LoadingIndicator';

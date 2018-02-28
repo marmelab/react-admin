@@ -109,44 +109,43 @@ Layout.propTypes = {
     title: PropTypes.node.isRequired,
 };
 
+export const layoutWithTheme = Layout =>
+    class LayoutWithTheme extends Component {
+        static propTypes = {
+            theme: PropTypes.object,
+        };
+        static defaultProps = {
+            theme: defaultTheme,
+        };
+        constructor(props) {
+            super(props);
+            this.theme = createMuiTheme(props.theme);
+        }
+        componentWillReceiveProps(nextProps) {
+            if (nextProps.theme !== this.props.theme) {
+                this.theme = createMuiTheme(nextProps.theme);
+            }
+        }
+        render() {
+            const { theme, ...rest } = this.props;
+            return (
+                <MuiThemeProvider theme={this.theme}>
+                    <Layout {...rest} />
+                </MuiThemeProvider>
+            );
+        }
+    };
+
 const mapStateToProps = state => ({
     open: state.admin.ui.sidebarOpen,
 });
 
-const EnhancedLayout = compose(
+export const layoutWithThemeAndState = compose(
+    layoutWithTheme,
     connect(
         mapStateToProps,
         {} // Avoid connect passing dispatch in props
     ),
     withStyles(styles)
-)(Layout);
-
-class LayoutWithTheme extends Component {
-    constructor(props) {
-        super(props);
-        this.theme = createMuiTheme(props.theme);
-    }
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.theme !== this.props.theme) {
-            this.theme = createMuiTheme(nextProps.theme);
-        }
-    }
-    render() {
-        const { theme, ...rest } = this.props;
-        return (
-            <MuiThemeProvider theme={this.theme}>
-                <EnhancedLayout {...rest} />
-            </MuiThemeProvider>
-        );
-    }
-}
-
-LayoutWithTheme.propTypes = {
-    theme: PropTypes.object,
-};
-
-LayoutWithTheme.defaultProps = {
-    theme: defaultTheme,
-};
-
-export default LayoutWithTheme;
+);
+export default layoutWithThemeAndState(Layout);
