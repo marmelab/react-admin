@@ -87,6 +87,8 @@ export class SelectArrayInput extends Component {
     };
 
     handleAdd = newValue => {
+        const allowToAdd = this.props.onBeforeAdd(this.state.values, newValue);
+        if (!allowToAdd) return;
         const values = [...this.state.values, newValue];
         this.setState({ values }, () => this.handleChange(this.state.values));
     };
@@ -213,6 +215,7 @@ SelectArrayInput.propTypes = {
     onBlur: PropTypes.func,
     onChange: PropTypes.func,
     onFocus: PropTypes.func,
+    onBeforeAdd: PropTypes.func,
     setFilter: PropTypes.func,
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
@@ -230,6 +233,7 @@ SelectArrayInput.defaultProps = {
     onBlur: () => true,
     onChange: () => true,
     onFocus: () => true,
+    onBeforeAdd: () => true,
     options: {},
     optionText: 'name',
     optionValue: 'id',
