@@ -113,10 +113,13 @@ class Datagrid extends Component {
                         {hasBulkActions && (
                             <TableCell
                                 padding="none"
-                                className={classes.selectCell}
+                                className={classnames(
+                                    'select-all',
+                                    classes.selectCell
+                                )}
                             >
                                 <Checkbox
-                                    className="select-all"
+                                    className={classes.checkbox}
                                     checked={
                                         ids.length > 0 &&
                                         selectedIds.length === ids.length

@@ -55,8 +55,8 @@ class DatagridRow extends Component {
                     <TableCell
                         padding="none"
                         className={classnames(
-                            'column-selectitem',
-                            `${resource}-column-selectitem`,
+                            'column-select-item',
+                            `${resource}-column-select-item`,
                             classes.selectCell
                         )}
                     >
