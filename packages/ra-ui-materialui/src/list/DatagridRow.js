@@ -52,9 +52,16 @@ class DatagridRow extends Component {
                 {...sanitizeRestProps(rest)}
             >
                 {hasBulkActions && (
-                    <TableCell padding="none">
+                    <TableCell
+                        padding="none"
+                        className={classnames(
+                            'column-selectitem',
+                            `${resource}-column-selectitem`,
+                            classes.selectCell
+                        )}
+                    >
                         <Checkbox
-                            className={`select-item ${classes.checkbox}`}
+                            className={classes.checkbox}
                             checked={selected}
                             onClick={this.handleToggle}
                         />
@@ -68,6 +75,7 @@ class DatagridRow extends Component {
                                 key={`${id}-${field.props.source || index}`}
                                 className={classnames(
                                     `column-${field.props.source}`,
+                                    `${resource}-column-${field.props.source}`,
                                     classes.rowCell
                                 )}
                                 record={record}
