@@ -114,8 +114,10 @@ class Datagrid extends Component {
                                 <Checkbox
                                     className="select-all"
                                     checked={
+                                        selectedIds.length > 0 &&
+                                        ids.length > 0 &&
                                         !ids.find(
-                                            it => selectedIds.indexOf(it) == -1
+                                            it => selectedIds.indexOf(it) === -1
                                         )
                                     }
                                     onChange={this.handleSelectAll}
