@@ -674,7 +674,7 @@ export const UserEdit = ({ permissions, ...props }) =>
     </Edit>;
 ```
 
-Here's how to migrate a `List` component. Note that the `<Filter>` component does not support the child as a function pattern anymore. If you need permissions within it, just pass them from the `List` component.
+Here's how to migrate a `List` component. Note that the `<Filter>` component does not support the function as a child pattern anymore. If you need permissions within it, just pass them from the `List` component.
 
 ```jsx
 // before
