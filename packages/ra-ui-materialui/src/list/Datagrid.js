@@ -74,11 +74,13 @@ class Datagrid extends Component {
         this.props.setSort(event.currentTarget.dataset.sort);
     };
 
-    handleSelectAll = () => {
-        if (this.props.selectedIds.length > 0) {
-            return this.props.onSelect([]);
+    handleSelectAll = event => {
+        const { onSelect, ids, selectedIds } = this.props;
+        if (event.target.checked) {
+            onSelect(selectedIds.concat(ids));
+        } else {
+            onSelect([]);
         }
-        this.props.onSelect(this.props.ids);
     };
 
     render() {
@@ -112,8 +114,11 @@ class Datagrid extends Component {
                                 <Checkbox
                                     className="select-all"
                                     checked={
+                                        selectedIds.length > 0 &&
                                         ids.length > 0 &&
-                                        selectedIds.length === ids.length
+                                        !ids.find(
+                                            it => selectedIds.indexOf(it) === -1
+                                        )
                                     }
                                     onChange={this.handleSelectAll}
                                 />
