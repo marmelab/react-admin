@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import lolex from 'lolex';
+import { setDisplayName } from 'recompose';
 
 import { ListController } from './ListController';
 import TextField from 'material-ui/TextField/TextField';
@@ -31,8 +32,13 @@ describe('ListController', () => {
 
     describe('setFilters', () => {
         let clock;
+        let fakeComponent;
+
         beforeEach(() => {
             clock = lolex.install();
+            fakeComponent = setDisplayName(
+                'FakeComponent' // for eslint
+            )(({ setFilters }) => <TextField onChange={setFilters} />);
         });
 
         it('should take only last change in case of a burst of changes (case of inputs being currently edited)', () => {
@@ -40,9 +46,7 @@ describe('ListController', () => {
                 ...defaultProps,
                 debounce: 200,
                 changeListParams: jest.fn(),
-                children: ({ setFilters }) => (
-                    <TextField onChange={setFilters} />
-                ),
+                children: fakeComponent,
             };
 
             const wrapper = shallow(<ListController {...props} />);
@@ -66,9 +70,7 @@ describe('ListController', () => {
                 debounce: 200,
                 changeListParams: jest.fn(),
                 filterValues: { q: 'hello' },
-                children: ({ setFilters }) => (
-                    <TextField onChange={setFilters} />
-                ),
+                children: fakeComponent,
             };
 
             const wrapper = shallow(<ListController {...props} />);
@@ -86,9 +88,7 @@ describe('ListController', () => {
                 debounce: 200,
                 changeListParams: jest.fn(),
                 filterValues: { q: 'hello' },
-                children: ({ setFilters }) => (
-                    <TextField onChange={setFilters} />
-                ),
+                children: fakeComponent,
             };
 
             const wrapper = shallow(<ListController {...props} />);

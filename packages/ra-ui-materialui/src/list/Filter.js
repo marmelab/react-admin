@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import debounce from 'lodash.debounce';
-import isEqual from 'lodash.isequal';
 import { withStyles } from 'material-ui/styles';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
-import { removeEmpty } from 'ra-core';
 
 const styles = {
     button: {},
