@@ -88,6 +88,10 @@ export class ListController extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.setFilters.cancel();
+    }
+
     componentWillReceiveProps(nextProps) {
         if (
             nextProps.resource !== this.props.resource ||
