@@ -2,7 +2,10 @@ import { call, take, takeEvery, put, race } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { push } from 'react-router-redux';
 
-import { hideNotification } from '../../actions/notificationActions';
+import {
+    showNotification,
+    hideNotification,
+} from '../../actions/notificationActions';
 import {
     CANCELLABLE,
     CANCEL,
@@ -52,6 +55,7 @@ function* handleCancelRace(cancellableAction) {
             meta: metaWithoutNotification,
         });
     } else {
+        yield put(showNotification('ra.notification.canceled'));
         yield put(refreshView());
     }
 }

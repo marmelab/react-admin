@@ -90,6 +90,7 @@ module.exports = {
             bad_item: 'Incorrect element',
             item_doesnt_exist: 'Element does not exist',
             http_error: 'Server communication error',
+            canceled: 'Action cancelled',
         },
         validation: {
             required: 'Required',

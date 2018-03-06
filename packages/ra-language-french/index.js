@@ -93,6 +93,7 @@ module.exports = {
             bad_item: 'Élément inconnu',
             item_doesnt_exist: "L'élément n'existe pas",
             http_error: 'Erreur de communication avec le serveur',
+            canceled: 'Action annulée',
         },
         validation: {
             required: 'Ce champ est requis',
