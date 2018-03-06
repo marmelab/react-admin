@@ -69,7 +69,7 @@ export const crudUpdate = (
         resource,
         fetch: UPDATE,
         cancelPrevious: false,
-        notification: {
+        successNotification: {
             body: 'ra.notification.updated',
             level: 'info',
             messageArgs: {
@@ -99,7 +99,7 @@ export const crudUpdateMany = (
         resource,
         fetch: UPDATE_MANY,
         cancelPrevious: false,
-        notification: {
+        successNotification: {
             body: 'ra.notification.updated',
             level: 'info',
             messageArgs: {
@@ -128,7 +128,7 @@ export const crudDelete = (
         resource,
         fetch: DELETE,
         cancelPrevious: false,
-        notification: {
+        successNotification: {
             body: 'ra.notification.deleted',
             level: 'info',
             messageArgs: {
@@ -151,7 +151,7 @@ export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
         resource,
         fetch: DELETE_MANY,
         cancelPrevious: false,
-        notification: {
+        successNotification: {
             body: 'ra.notification.deleted',
             level: 'info',
             messageArgs: {

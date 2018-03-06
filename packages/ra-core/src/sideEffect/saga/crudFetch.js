@@ -40,6 +40,7 @@ export function* handleFetch(dataProvider, action) {
             requestPayload: payload,
             meta: {
                 ...meta,
+                notification: meta.successNotification,
                 fetchResponse: restType,
                 fetchStatus: FETCH_END,
             },
