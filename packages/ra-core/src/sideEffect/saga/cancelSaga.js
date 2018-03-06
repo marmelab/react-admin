@@ -85,7 +85,10 @@ function* handleCancelRace(cancellableAction) {
     }
     yield put(startOptimisticMode());
     // dispatch action in optimistic mode (no fetch)
-    yield put(action);
+    yield put({
+        ...action,
+        type: `${action.type}_OPTIMISTIC`,
+    });
     if (action.payload.redirectTo) {
         yield put(
             push(
