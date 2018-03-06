@@ -20,7 +20,6 @@ import {
 } from '../../actions/cancelActions';
 import { refreshView } from '../../actions/uiActions';
 import resolveRedirectTo from '../../util/resolveRedirectTo';
-import { setListSelectedIds } from '../../actions/listActions';
 
 function* handleCancelRace(cancellableAction) {
     const { payload: { action, delay: cancelDelay } } = cancellableAction;
@@ -38,20 +37,14 @@ function* handleCancelRace(cancellableAction) {
             break;
         }
         case CRUD_UPDATE_MANY: {
-            const actions = [
-                put(
-                    showNotification('ra.notification.updated', 'info', {
-                        messageArgs: {
-                            smart_count: action.payload.ids.length,
-                        },
-                        cancellable: true,
-                    })
-                ),
-            ];
-            if (action.payload.unselectAll) {
-                actions.push(put(setListSelectedIds(action.meta.resource, [])));
-            }
-            yield all(actions);
+            yield put(
+                showNotification('ra.notification.updated', 'info', {
+                    messageArgs: {
+                        smart_count: action.payload.ids.length,
+                    },
+                    cancellable: true,
+                })
+            );
             break;
         }
         case CRUD_DELETE: {
@@ -66,21 +59,14 @@ function* handleCancelRace(cancellableAction) {
             break;
         }
         case CRUD_DELETE_MANY: {
-            const actions = [
-                put(
-                    showNotification('ra.notification.deleted', 'info', {
-                        messageArgs: {
-                            smart_count: action.payload.ids.length,
-                        },
-                        cancellable: true,
-                    })
-                ),
-            ];
-            if (action.payload.unselectAll) {
-                actions.push(put(setListSelectedIds(action.meta.resource, [])));
-            }
-            yield all(actions);
-            break;
+            yield put(
+                showNotification('ra.notification.deleted', 'info', {
+                    messageArgs: {
+                        smart_count: action.payload.ids.length,
+                    },
+                    cancellable: true,
+                })
+            );
         }
     }
     yield put(startOptimisticMode());
