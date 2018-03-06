@@ -13,17 +13,6 @@ const styles = {
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        this.filters = this.props.filterValues;
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.filters = nextProps.filterValues;
-    }
-
-    componentWillUnmount() {
-        if (this.props.setFilters) {
-            this.setFilters.cancel();
-        }
     }
 
     renderButton() {
