@@ -96,7 +96,7 @@ const AppBar = ({
                 color="inherit"
                 className={classes.title}
             >
-                {title}
+                {typeof title === 'string' ? title : React.cloneElement(title)}
             </Typography>
             {logout &&
                 cloneElement(logout, {
