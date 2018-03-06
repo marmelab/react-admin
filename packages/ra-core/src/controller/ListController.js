@@ -7,8 +7,11 @@ import { push as pushAction } from 'react-router-redux';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import inflection from 'inflection';
+import debounce from 'lodash.debounce';
+import isEqual from 'lodash.isequal';
 import pickBy from 'lodash.pickby';
 
+import removeEmpty from '../util/removeEmpty';
 import queryReducer, {
     SET_SORT,
     SET_PAGE,
@@ -71,7 +74,7 @@ export class ListController extends Component {
     componentDidMount() {
         if (
             !this.props.query.page &&
-            !this.props.ids.length &&
+            !(this.props.ids || []).length &&
             this.props.params.page > 1 &&
             this.props.total > 0
         ) {
@@ -166,8 +169,15 @@ export class ListController extends Component {
 
     setPage = page => this.changeParams({ type: SET_PAGE, payload: page });
 
-    setFilters = filters =>
-        this.changeParams({ type: SET_FILTER, payload: filters });
+    setFilters = debounce(filters => {
+        if (isEqual(filters, this.props.filterValues)) {
+            return;
+        }
+
+        // fix for redux-form bug with onChange and enableReinitialize
+        const filtersWithoutEmpty = removeEmpty(filters);
+        this.changeParams({ type: SET_FILTER, payload: filtersWithoutEmpty });
+    }, this.props.debounce);
 
     showFilter = (filterName, defaultValue) => {
         this.setState({ [filterName]: true });
@@ -283,6 +293,7 @@ ListController.propTypes = {
     changeListParams: PropTypes.func.isRequired,
     crudGetList: PropTypes.func.isRequired,
     data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    debounce: PropTypes.number,
     filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     hasCreate: PropTypes.bool.isRequired,
     hasEdit: PropTypes.bool.isRequired,
@@ -305,6 +316,7 @@ ListController.propTypes = {
 };
 
 ListController.defaultProps = {
+    debounce: 500,
     filter: {},
     filterValues: {},
     perPage: 10,

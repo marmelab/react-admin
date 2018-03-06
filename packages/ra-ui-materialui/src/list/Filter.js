@@ -29,15 +29,6 @@ export class Filter extends Component {
         }
     }
 
-    setFilters = debounce(filters => {
-        if (!isEqual(filters, this.filters)) {
-            // fix for redux-form bug with onChange and enableReinitialize
-            const filtersWithoutEmpty = removeEmpty(filters);
-            this.props.setFilters(filtersWithoutEmpty);
-            this.filters = filtersWithoutEmpty;
-        }
-    }, this.props.debounce);
-
     renderButton() {
         const {
             classes = {},
@@ -88,7 +79,7 @@ export class Filter extends Component {
                 hideFilter={hideFilter}
                 displayedFilters={displayedFilters}
                 initialValues={filterValues}
-                setFilters={this.setFilters}
+                setFilters={setFilters}
                 {...rest}
             />
         );
