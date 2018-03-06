@@ -3,6 +3,7 @@ import auth from './auth';
 import cancelSaga from './cancelSaga';
 import crudFetch from './crudFetch';
 import crudResponse from './crudResponse';
+import notificationSaga from './notificationSaga';
 import referenceFetch from './referenceFetch';
 import i18n from './i18n';
 
@@ -18,5 +19,6 @@ export default (dataProvider, authProvider, i18nProvider) =>
             crudFetch(dataProvider)(),
             crudResponse(),
             referenceFetch(),
+            notificationSaga(),
         ]);
     };

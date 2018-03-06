@@ -65,7 +65,18 @@ export const crudUpdate = (
 ) => ({
     type: CRUD_UPDATE,
     payload: { id, data, previousData, basePath, redirectTo },
-    meta: { resource, fetch: UPDATE, cancelPrevious: false },
+    meta: {
+        resource,
+        fetch: UPDATE,
+        cancelPrevious: false,
+        notification: {
+            body: 'ra.notification.updated',
+            level: 'info',
+            messageArgs: {
+                smart_count: 1,
+            },
+        },
+    },
 });
 
 export const CRUD_UPDATE_MANY = 'RA/CRUD_UPDATE_MANY';
@@ -84,7 +95,18 @@ export const crudUpdateMany = (
 ) => ({
     type: CRUD_UPDATE_MANY,
     payload: { ids, data, basePath, refresh, unselectAll },
-    meta: { resource, fetch: UPDATE_MANY, cancelPrevious: false },
+    meta: {
+        resource,
+        fetch: UPDATE_MANY,
+        cancelPrevious: false,
+        notification: {
+            body: 'ra.notification.updated',
+            level: 'info',
+            messageArgs: {
+                smart_count: ids.length,
+            },
+        },
+    },
 });
 
 export const CRUD_DELETE = 'RA/CRUD_DELETE';
@@ -102,7 +124,18 @@ export const crudDelete = (
 ) => ({
     type: CRUD_DELETE,
     payload: { id, previousData, basePath, redirectTo },
-    meta: { resource, fetch: DELETE, cancelPrevious: false },
+    meta: {
+        resource,
+        fetch: DELETE,
+        cancelPrevious: false,
+        notification: {
+            body: 'ra.notification.deleted',
+            level: 'info',
+            messageArgs: {
+                smart_count: 1,
+            },
+        },
+    },
 });
 
 export const CRUD_DELETE_MANY = 'RA/CRUD_DELETE_MANY';
@@ -114,7 +147,18 @@ export const CRUD_DELETE_MANY_OPTIMISTIC = 'RA/CRUD_DELETE_MANY_OPTIMISTIC';
 export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
     type: CRUD_DELETE_MANY,
     payload: { ids, basePath, refresh, unselectAll: true },
-    meta: { resource, fetch: DELETE_MANY, cancelPrevious: false },
+    meta: {
+        resource,
+        fetch: DELETE_MANY,
+        cancelPrevious: false,
+        notification: {
+            body: 'ra.notification.deleted',
+            level: 'info',
+            messageArgs: {
+                smart_count: ids.length,
+            },
+        },
+    },
 });
 
 export const CRUD_GET_MANY = 'RA/CRUD_GET_MANY';

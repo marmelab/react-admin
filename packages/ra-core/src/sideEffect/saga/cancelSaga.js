@@ -1,17 +1,8 @@
-import { all, call, take, takeEvery, put, race } from 'redux-saga/effects';
+import { call, take, takeEvery, put, race } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { push } from 'react-router-redux';
 
-import {
-    CRUD_UPDATE,
-    CRUD_UPDATE_MANY,
-    CRUD_DELETE,
-    CRUD_DELETE_MANY,
-} from '../../actions/dataActions';
-import {
-    showNotification,
-    hideNotification,
-} from '../../actions/notificationActions';
+import { hideNotification } from '../../actions/notificationActions';
 import {
     CANCELLABLE,
     CANCEL,
@@ -23,57 +14,15 @@ import resolveRedirectTo from '../../util/resolveRedirectTo';
 
 function* handleCancelRace(cancellableAction) {
     const { payload: { action, delay: cancelDelay } } = cancellableAction;
-    // display cancellable notification
-    switch (action.type) {
-        case CRUD_UPDATE: {
-            yield put(
-                showNotification('ra.notification.updated', 'info', {
-                    messageArgs: {
-                        smart_count: 1,
-                    },
-                    cancellable: true,
-                })
-            );
-            break;
-        }
-        case CRUD_UPDATE_MANY: {
-            yield put(
-                showNotification('ra.notification.updated', 'info', {
-                    messageArgs: {
-                        smart_count: action.payload.ids.length,
-                    },
-                    cancellable: true,
-                })
-            );
-            break;
-        }
-        case CRUD_DELETE: {
-            yield put(
-                showNotification('ra.notification.deleted', 'info', {
-                    messageArgs: {
-                        smart_count: 1,
-                    },
-                    cancellable: true,
-                })
-            );
-            break;
-        }
-        case CRUD_DELETE_MANY: {
-            yield put(
-                showNotification('ra.notification.deleted', 'info', {
-                    messageArgs: {
-                        smart_count: action.payload.ids.length,
-                    },
-                    cancellable: true,
-                })
-            );
-        }
-    }
     yield put(startOptimisticMode());
-    // dispatch action in optimistic mode (no fetch)
+    // dispatch action in optimistic mode (no fetch), and make notification cancellable
     yield put({
         ...action,
         type: `${action.type}_OPTIMISTIC`,
+        meta: {
+            ...action.meta,
+            notification: { ...action.meta.notification, cancellable: true },
+        },
     });
     if (action.payload.redirectTo) {
         yield put(
@@ -92,12 +41,16 @@ function* handleCancelRace(cancellableAction) {
         cancel: take(CANCEL),
         timeout: call(delay, cancelDelay),
     });
-    // whether the notification times out or is canceled, hide it
     yield put(stopOptimisticMode());
+    // whether the notification times out or is canceled, hide it
     yield put(hideNotification());
-    // if not cancelled, redispatch the action, this time immediate
     if (timeout) {
-        yield put(action);
+        // if not cancelled, redispatch the action, this time immediate, and without notification
+        const { notification, ...metaWithoutNotification } = action.meta;
+        yield put({
+            ...action,
+            meta: metaWithoutNotification,
+        });
     } else {
         yield put(refreshView());
     }
