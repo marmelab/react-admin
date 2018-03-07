@@ -13,7 +13,7 @@ import undo from './undo';
  * @param {Object} dataProvider A Data Provider function
  */
 export default (dataProvider, authProvider, i18nProvider) =>
-    function* crudSaga() {
+    function* admin() {
         yield all([
             i18n(i18nProvider)(),
             auth(authProvider)(),

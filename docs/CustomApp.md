@@ -37,7 +37,7 @@ import Typography from 'material-ui/Typography';
 import {
     adminReducer,
     localeReducer,
-    crudSaga,
+    adminSaga,
     TranslationProvider,
     declareResources,
 } from 'react-admin';
@@ -76,7 +76,7 @@ const store = createStore(reducer, undefined, compose(
 ));
 store.dispatch(declareResources([{ name: 'posts' }, { name: 'comments' }, { name: 'users' }]));
 const dataProvider = simpleRestClient('http://path.to.my.api/');
-sagaMiddleware.run(crudSaga(dataProvider, i18nProvider));
+sagaMiddleware.run(adminSaga(dataProvider, i18nProvider));
 
 // bootstrap redux and the routes
 const App = () => (

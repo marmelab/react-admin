@@ -8,6 +8,7 @@
 - [Message Hash Main Key Changed ("aor" => "ra")](#message-hash-main-key-changed-aor--ra)
 - [Removed the Delete view in Resource](#removed-the-delete-view-in-resources)
 - [Replaced `messages` by `i18nProvider` in `<Admin>`](#replaced-messages-by-i18nprovider-in-admin)
+- [`crudSaga` renamed to `adminSaga`](#crudsaga-renamed-to-adminsaga)
 - [`<AutocompleteInput>` no longer accepts a `filter` prop](#autocompleteinput-no-longer-accepts-a-filter-prop)
 - [`<Datagrid>` No Longer Accepts `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props](#datagrid-no-longer-accepts-options-headeroptions-bodyoptions-and-rowoptions-props)
 - [`<DateInput>` Stores a Date String Instead Of a Date Object](#dateinput-stores-a-date-string-instead-of-a-date-object)
@@ -155,6 +156,20 @@ const messages = {
 ```
 
 The new `i18nProvider` allows to load the messages asynchronously - see [the `i18nProvider` documentation](./Translation.md#i18nProvider) for details.
+
+## `crudSaga` renamed to `adminSaga`
+
+If you don't use the `<Admin>` component, but prefer to implement your administration inside another root component, you probably followed the Custom App documentation, and used the `crudSaga`. This property was renamed to `adminSaga`
+
+```diff
+// in src/App.js
+- import { crudSaga, ... } from 'admin-on-rest';
++ import { adminSaga, ... } from 'react-admin';
+
+// ...
+- sagaMiddleware.run(crudSaga(dataProvider, i18nProvider));
++ sagaMiddleware.run(adminSaga(dataProvider, i18nProvider));
+```
 
 ## `<AutocompleteInput>` no longer accepts a `filter` prop
 

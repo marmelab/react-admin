@@ -1,6 +1,6 @@
+export adminSaga from './admin';
 export auth from './auth';
 export crudFetch from './crudFetch';
-export crudSaga from './crudSaga';
 export error from './error';
 export notification from './notification';
 export redirection from './redirection';
