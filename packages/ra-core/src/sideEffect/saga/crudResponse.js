@@ -5,18 +5,14 @@ import {
     CRUD_CREATE_FAILURE,
     CRUD_CREATE_SUCCESS,
     CRUD_DELETE_FAILURE,
-    CRUD_DELETE_SUCCESS,
     CRUD_DELETE_MANY_FAILURE,
-    CRUD_DELETE_MANY_SUCCESS,
     CRUD_GET_LIST_FAILURE,
     CRUD_GET_MANY_FAILURE,
     CRUD_GET_MANY_REFERENCE_FAILURE,
     CRUD_GET_ONE_SUCCESS,
     CRUD_GET_ONE_FAILURE,
     CRUD_UPDATE_FAILURE,
-    CRUD_UPDATE_SUCCESS,
     CRUD_UPDATE_MANY_FAILURE,
-    CRUD_UPDATE_MANY_SUCCESS,
 } from '../../actions/dataActions';
 import { showNotification } from '../../actions/notificationActions';
 import { refreshView } from '../../actions/uiActions';

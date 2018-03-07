@@ -1,6 +1,5 @@
 import { call, take, takeEvery, put, race } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-import { push } from 'react-router-redux';
 
 import {
     showNotification,
