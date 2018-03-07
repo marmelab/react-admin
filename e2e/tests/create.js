@@ -36,6 +36,7 @@ describe('Create Page', () => {
                 value: 'Test teaser',
             },
         ];
+
         await CreatePage.setValues(values);
         await CreatePage.submit();
         await ShowPage.waitUntilVisible();

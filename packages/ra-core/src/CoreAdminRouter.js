@@ -171,7 +171,7 @@ CoreAdminRouter.propTypes = {
     logout: PropTypes.node,
     menu: componentPropType,
     theme: PropTypes.object,
-    title: PropTypes.string,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
 
 const mapStateToProps = state => ({

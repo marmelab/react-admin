@@ -81,7 +81,7 @@ RoutesWithLayout.propTypes = {
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     customRoutes: PropTypes.array,
     dashboard: componentPropType,
-    title: PropTypes.string,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 };
 
 export default RoutesWithLayout;
