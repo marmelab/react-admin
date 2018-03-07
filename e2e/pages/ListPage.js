@@ -38,6 +38,10 @@ export default url => driver => ({
         return this.waitUntilDataLoaded();
     },
 
+    async waitForDebounce() {
+        await driver.sleep(501); // filter debounce is of 500ms
+    },
+
     waitUntilVisible() {
         return driver.wait(until.elementLocated(this.elements.title));
     },
@@ -156,18 +160,22 @@ export default url => driver => ({
             .then(() => this.waitUntilDataLoaded());
     },
 
-    setFilterValue(name, value, clearPreviousValue = true) {
-        const filterField = driver.findElement(this.elements.filter(name));
+    async setFilterValue(name, value, clearPreviousValue = true) {
+        const filterField = await driver.findElement(
+            this.elements.filter(name)
+        );
         if (clearPreviousValue) {
-            filterField.clear();
+            await filterField.clear();
         }
 
-        filterField.sendKeys(value);
+        await filterField.sendKeys(value);
 
         // Filling an input with no value doesn't trigger key events.
         // Hence, let's blur it!
-        const body = driver.findElement(By.css('body'));
-        body.click();
+        const body = await driver.findElement(By.css('body'));
+        await body.click();
+
+        await this.waitForDebounce();
 
         return this.waitUntilDataLoaded();
     },
@@ -195,15 +203,18 @@ export default url => driver => ({
         );
         await menuItem.click();
 
+        await this.waitForDebounce();
         await this.waitUntilDataLoaded();
     },
 
-    hideFilter(name) {
-        const hideFilterButton = driver.findElement(
+    async hideFilter(name) {
+        const hideFilterButton = await driver.findElement(
             this.elements.hideFilterButton(name)
         );
-        hideFilterButton.click();
-        return this.waitUntilDataLoaded(); // wait for debounce and reload
+        await hideFilterButton.click();
+
+        await this.waitForDebounce();
+        await this.waitUntilDataLoaded();
     },
 
     logout() {
