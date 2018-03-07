@@ -79,7 +79,7 @@ export class ListController extends Component {
             return;
         }
 
-        this.updateData(this.getQuery(), true);
+        this.updateData();
         if (Object.keys(this.props.query).length > 0) {
             this.props.changeListParams(this.props.resource, this.props.query);
         }
@@ -146,28 +146,19 @@ export class ListController extends Component {
         return query;
     }
 
-    updateData(query, resetFilters = false) {
+    updateData(query) {
         const params = query || this.getQuery();
         const { sort, order, page = 1, perPage, filter } = params;
         const pagination = {
             page: parseInt(page, 10),
             perPage: parseInt(perPage, 10),
         };
-
         const permanentFilter = this.props.filter;
-        let appliedFilters = { ...permanentFilter };
-        if (!resetFilters) {
-            appliedFilters = {
-                ...appliedFilters,
-                ...filter,
-            };
-        }
-
         this.props.crudGetList(
             this.props.resource,
             pagination,
             { field: sort, order },
-            appliedFilters
+            { ...filter, ...permanentFilter }
         );
     }
 

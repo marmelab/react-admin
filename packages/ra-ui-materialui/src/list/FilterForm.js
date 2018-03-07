@@ -71,6 +71,7 @@ const sanitizeRestProps = ({
 export class FilterForm extends Component {
     getShownFilters() {
         const { filters, displayedFilters, initialValues } = this.props;
+
         return filters.filter(
             filterElement =>
                 filterElement.props.alwaysOn ||
@@ -180,6 +181,7 @@ const enhance = compose(
     reduxForm({
         form: 'filterForm',
         enableReinitialize: true,
+        destroyOnUnmount: false, // do not destroy to preserve state across navigation
         onChange: (values, dispatch, props) =>
             props && props.setFilters(values),
     })

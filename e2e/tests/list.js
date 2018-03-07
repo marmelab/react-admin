@@ -11,7 +11,9 @@ describe('List Page', () => {
         'http://localhost:8083/#/comments'
     )(driver);
 
-    beforeEach(async () => await ListPagePosts.navigate());
+    beforeEach(async () => {
+        await ListPagePosts.navigate();
+    });
 
     describe('Pagination', () => {
         it('should display paginated list of available posts', async () => {
@@ -30,7 +32,7 @@ describe('List Page', () => {
         });
     });
 
-    describe.only('Filtering', () => {
+    describe('Filtering', () => {
         it('should display `alwaysOn` filters by default', async () => {
             await driver.wait(
                 until.elementLocated(ListPagePosts.elements.filter('q'))
@@ -51,11 +53,11 @@ describe('List Page', () => {
             const title = await displayedPosts[0].findElement(
                 By.css('.column-title')
             );
+
             assert.equal(
                 await title.getText(),
                 'Omnis voluptate enim similique est possimus'
             );
-            await ListPagePosts.setFilterValue('q', '');
         });
 
         it('should display new filter when clicking on "Add Filter"', async () => {
@@ -78,12 +80,15 @@ describe('List Page', () => {
             assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
         });
 
-        it('should reset filters when navigating away', async () => {
+        it('should keep filters when navigating away and going back on given page', async () => {
             await ListPagePosts.setFilterValue('q', 'quis culpa impedit');
+
             await ListPageComments.navigate();
             await ListPagePosts.navigate();
 
-            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
+            const filterValue = await ListPagePosts.getFilterValue('q');
+            assert.equal(filterValue, 'quis culpa impedit');
+            assert.equal(await ListPagePosts.getNbPagesText(), '1-1 of 1');
         });
     });
 
@@ -130,5 +135,9 @@ describe('List Page', () => {
             await ListPagePosts.applyDeleteBulkAction();
             assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 10');
         });
+    });
+
+    afterEach(async () => {
+        await ListPagePosts.setFilterValue('q', '');
     });
 });

@@ -94,7 +94,7 @@ export default url => driver => ({
             this.elements.addFilterButton
         );
         addFilterButton.click();
-        driver.sleep(500); // wait until the dropdown animation ends
+
         driver.wait(until.elementLocated(this.elements.filterMenuItems));
 
         return driver
@@ -161,9 +161,23 @@ export default url => driver => ({
         if (clearPreviousValue) {
             filterField.clear();
         }
+
         filterField.sendKeys(value);
-        driver.sleep(500);
+
+        // Filling an input with no value doesn't trigger key events.
+        // Hence, let's blur it!
+        const body = driver.findElement(By.css('body'));
+        body.click();
+
         return this.waitUntilDataLoaded();
+    },
+
+    async getFilterValue(name) {
+        const filterField = await driver.findElement(
+            this.elements.filter(name)
+        );
+
+        return await filterField.getAttribute('value');
     },
 
     async showFilter(name) {
