@@ -78,7 +78,7 @@ describe('List Page', () => {
             assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
         });
 
-        it.only('should have correctly reset filters after navigating', async () => {
+        it('should reset filters when navigating away', async () => {
             await ListPagePosts.setFilterValue('q', 'quis culpa impedit');
             await ListPageComments.navigate();
             await ListPagePosts.navigate();
