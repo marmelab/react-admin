@@ -176,7 +176,7 @@ export class AutocompleteInput extends Component {
 
         return (
             <AutoComplete
-                searchText={this.state.searchText}
+                searchText={this.state.searchText || ''}
                 dataSource={dataSource}
                 floatingLabelText={
                     <FieldTitle
