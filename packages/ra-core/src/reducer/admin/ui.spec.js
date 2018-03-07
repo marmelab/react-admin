@@ -9,7 +9,7 @@ import reducer from './ui';
 describe('ui reducer', () => {
     it('should return hidden sidebar by default', () => {
         assert.deepEqual(
-            { sidebarOpen: false, viewVersion: 0 },
+            { optimistic: false, sidebarOpen: false, viewVersion: 0 },
             reducer(undefined, {})
         );
     });
@@ -43,7 +43,7 @@ describe('ui reducer', () => {
     });
     it('should increment the viewVersion upon REFRESH_VIEW', () => {
         assert.deepEqual(
-            { sidebarOpen: false, viewVersion: 1 },
+            { optimistic: false, sidebarOpen: false, viewVersion: 1 },
             reducer(undefined, refreshView())
         );
     });

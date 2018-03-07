@@ -46,7 +46,20 @@ export const CRUD_CREATE_SUCCESS = 'RA/CRUD_CREATE_SUCCESS';
 export const crudCreate = (resource, data, basePath, redirectTo = 'edit') => ({
     type: CRUD_CREATE,
     payload: { data, basePath, redirectTo },
-    meta: { resource, fetch: CREATE, cancelPrevious: false },
+    meta: {
+        resource,
+        fetch: CREATE,
+        cancelPrevious: false,
+        onSuccess: {
+            notification: {
+                body: 'ra.notification.created',
+                level: 'info',
+                messageArgs: {
+                    smart_count: 1,
+                },
+            },
+        },
+    },
 });
 
 export const CRUD_UPDATE = 'RA/CRUD_UPDATE';
@@ -69,11 +82,13 @@ export const crudUpdate = (
         resource,
         fetch: UPDATE,
         cancelPrevious: false,
-        successNotification: {
-            body: 'ra.notification.updated',
-            level: 'info',
-            messageArgs: {
-                smart_count: 1,
+        onSuccess: {
+            notification: {
+                body: 'ra.notification.updated',
+                level: 'info',
+                messageArgs: {
+                    smart_count: 1,
+                },
             },
         },
     },
@@ -99,11 +114,13 @@ export const crudUpdateMany = (
         resource,
         fetch: UPDATE_MANY,
         cancelPrevious: false,
-        successNotification: {
-            body: 'ra.notification.updated',
-            level: 'info',
-            messageArgs: {
-                smart_count: ids.length,
+        onSuccess: {
+            notification: {
+                body: 'ra.notification.updated',
+                level: 'info',
+                messageArgs: {
+                    smart_count: ids.length,
+                },
             },
         },
     },
@@ -128,11 +145,13 @@ export const crudDelete = (
         resource,
         fetch: DELETE,
         cancelPrevious: false,
-        successNotification: {
-            body: 'ra.notification.deleted',
-            level: 'info',
-            messageArgs: {
-                smart_count: 1,
+        onSuccess: {
+            notification: {
+                body: 'ra.notification.deleted',
+                level: 'info',
+                messageArgs: {
+                    smart_count: 1,
+                },
             },
         },
     },
@@ -151,11 +170,13 @@ export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
         resource,
         fetch: DELETE_MANY,
         cancelPrevious: false,
-        successNotification: {
-            body: 'ra.notification.deleted',
-            level: 'info',
-            messageArgs: {
-                smart_count: ids.length,
+        onSuccess: {
+            notification: {
+                body: 'ra.notification.deleted',
+                level: 'info',
+                messageArgs: {
+                    smart_count: ids.length,
+                },
             },
         },
     },

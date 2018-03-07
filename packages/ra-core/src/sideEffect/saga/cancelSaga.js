@@ -24,10 +24,7 @@ function* handleCancelRace(cancellableAction) {
         type: `${action.type}_OPTIMISTIC`,
         meta: {
             ...action.meta,
-            notification: {
-                ...action.meta.successNotification,
-                cancellable: true,
-            },
+            ...action.meta.onSuccess,
         },
     });
     if (action.payload.redirectTo) {
@@ -52,10 +49,10 @@ function* handleCancelRace(cancellableAction) {
     yield put(hideNotification());
     if (timeout) {
         // if not cancelled, redispatch the action, this time immediate, and without notification
-        const { successNotification, ...metaWithoutNotification } = action.meta;
+        const { onSuccess, ...metaWithoutSuccessSideEffects } = action.meta;
         yield put({
             ...action,
-            meta: metaWithoutNotification,
+            meta: metaWithoutSuccessSideEffects,
         });
     } else {
         yield put(showNotification('ra.notification.canceled'));

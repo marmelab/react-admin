@@ -17,7 +17,11 @@ import {
 
 export const takeFetchAction = action => action.meta && action.meta.fetch;
 export function* handleFetch(dataProvider, action) {
-    const { type, payload, meta: { fetch: fetchMeta, ...meta } } = action;
+    const {
+        type,
+        payload,
+        meta: { fetch: fetchMeta, onSuccess, ...meta },
+    } = action;
     const restType = fetchMeta;
 
     try {
@@ -40,7 +44,7 @@ export function* handleFetch(dataProvider, action) {
             requestPayload: payload,
             meta: {
                 ...meta,
-                notification: meta.successNotification,
+                ...onSuccess,
                 fetchResponse: restType,
                 fetchStatus: FETCH_END,
             },

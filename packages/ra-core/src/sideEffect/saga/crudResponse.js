@@ -20,7 +20,6 @@ import {
 } from '../../actions/dataActions';
 import { showNotification } from '../../actions/notificationActions';
 import { refreshView } from '../../actions/uiActions';
-import { setListSelectedIds } from '../../actions/listActions';
 import resolveRedirectTo from '../../util/resolveRedirectTo';
 
 /**
@@ -39,22 +38,16 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
         }
         case CRUD_CREATE_SUCCESS:
             return requestPayload.redirectTo
-                ? yield all([
-                      put(showNotification('ra.notification.created')),
-                      put(
-                          push(
-                              resolveRedirectTo(
-                                  requestPayload.redirectTo,
-                                  requestPayload.basePath,
-                                  payload.data.id
-                              )
+                ? yield put(
+                      push(
+                          resolveRedirectTo(
+                              requestPayload.redirectTo,
+                              requestPayload.basePath,
+                              payload.data.id
                           )
-                      ),
-                  ])
-                : yield all([
-                      put(showNotification('ra.notification.created')),
-                      put(reset('record-form')),
-                  ]);
+                      )
+                  )
+                : yield put(reset('record-form'));
         case CRUD_DELETE_SUCCESS:
         case CRUD_DELETE_MANY_SUCCESS: {
             if (requestPayload.refresh) {

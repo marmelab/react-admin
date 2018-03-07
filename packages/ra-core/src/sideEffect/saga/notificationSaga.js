@@ -4,17 +4,12 @@ import { showNotification } from '../../actions/notificationActions';
 /**
  * Notification Side Effects
  */
-function* handleNotification({ meta: { notification } }) {
-    const {
-        body,
-        level = 'info',
-        messageArgs = {},
-        cancellable = false,
-    } = notification;
+function* handleNotification({ type, meta: { notification } }) {
+    const { body, level = 'info', messageArgs = {} } = notification;
     yield put(
         showNotification(body, level, {
             messageArgs,
-            cancellable,
+            cancellable: type.indexOf('_OPTIMISTIC') !== -1,
         })
     );
 }
