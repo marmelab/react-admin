@@ -11,7 +11,7 @@ describe('List Page', () => {
         'http://localhost:8083/#/comments'
     )(driver);
 
-    beforeEach(async () => {
+    before(async () => {
         await ListPagePosts.navigate();
     });
 
@@ -58,6 +58,8 @@ describe('List Page', () => {
                 await title.getText(),
                 'Omnis voluptate enim similique est possimus'
             );
+
+            await ListPagePosts.setFilterValue('q', '');
         });
 
         it('should display new filter when clicking on "Add Filter"', async () => {
@@ -69,10 +71,14 @@ describe('List Page', () => {
 
             assert.equal(filters.length, 1);
             assert.equal(await ListPagePosts.getNbPagesText(), '1-1 of 1');
+
+            await ListPagePosts.hideFilter('title');
         });
 
         it('should hide filter when clicking on hide button', async () => {
+            await ListPagePosts.showFilter('title');
             await ListPagePosts.hideFilter('title');
+
             const filters = await driver.findElements(
                 ListPagePosts.elements.filter('title')
             );
@@ -89,6 +95,8 @@ describe('List Page', () => {
             const filterValue = await ListPagePosts.getFilterValue('q');
             assert.equal(filterValue, 'quis culpa impedit');
             assert.equal(await ListPagePosts.getNbPagesText(), '1-1 of 1');
+
+            await ListPagePosts.setFilterValue('q', '');
         });
     });
 
@@ -96,6 +104,7 @@ describe('List Page', () => {
         it('should allow to select all items on the current page', async () => {
             await ListPagePosts.toggleSelectAll();
             assert.equal(await ListPagePosts.getSelectedItemsCount(), 10);
+            await ListPagePosts.toggleSelectAll();
         });
 
         it('should allow to unselect all items on the current page', async () => {
@@ -122,12 +131,17 @@ describe('List Page', () => {
         });
 
         it('should have unselected all items after bulk action', async () => {
+            await ListPagePosts.toggleSelectAll();
+            await ListPagePosts.applyUpdateBulkAction();
             assert.equal(await ListPagePosts.getSelectedItemsCount(), 0);
         });
 
         it('should allow to select multiple items on the current page', async () => {
             await ListPagePosts.toggleSelectSomeItems(3);
             assert.equal(await ListPagePosts.getSelectedItemsCount(), 3);
+
+            await ListPagePosts.toggleSelectAll();
+            await ListPagePosts.toggleSelectAll();
         });
 
         it('should allow to trigger the delete bulk action on selected items', async () => {
@@ -135,9 +149,5 @@ describe('List Page', () => {
             await ListPagePosts.applyDeleteBulkAction();
             assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 10');
         });
-    });
-
-    afterEach(async () => {
-        await ListPagePosts.setFilterValue('q', '');
     });
 });
