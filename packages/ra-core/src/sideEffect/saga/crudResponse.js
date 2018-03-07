@@ -20,7 +20,6 @@ import {
 } from '../../actions/dataActions';
 import { showNotification } from '../../actions/notificationActions';
 import { refreshView } from '../../actions/uiActions';
-import resolveRedirectTo from '../../util/resolveRedirectTo';
 
 /**
  * Side effects for fetch responses
@@ -37,17 +36,7 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
             return;
         }
         case CRUD_CREATE_SUCCESS:
-            return requestPayload.redirectTo
-                ? yield put(
-                      push(
-                          resolveRedirectTo(
-                              requestPayload.redirectTo,
-                              requestPayload.basePath,
-                              payload.data.id
-                          )
-                      )
-                  )
-                : yield put(reset('record-form'));
+            return yield put(reset('record-form'));
         case CRUD_DELETE_SUCCESS:
         case CRUD_DELETE_MANY_SUCCESS: {
             if (requestPayload.refresh) {
@@ -66,7 +55,7 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
             }
             break;
         case CRUD_GET_ONE_FAILURE:
-            return requestPayload.basePath
+            return meta.basePath
                 ? yield all([
                       put(
                           showNotification(
@@ -74,7 +63,7 @@ function* handleResponse({ type, requestPayload, error, payload, meta }) {
                               'warning'
                           )
                       ),
-                      put(push(requestPayload.basePath)),
+                      put(push(meta.basePath)),
                   ])
                 : yield all([]);
         case CRUD_GET_LIST_FAILURE:

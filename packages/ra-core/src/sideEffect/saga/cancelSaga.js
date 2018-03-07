@@ -13,7 +13,6 @@ import {
     stopOptimisticMode,
 } from '../../actions/cancelActions';
 import { refreshView } from '../../actions/uiActions';
-import resolveRedirectTo from '../../util/resolveRedirectTo';
 
 function* handleCancelRace(cancellableAction) {
     const { payload: { action, delay: cancelDelay } } = cancellableAction;
@@ -27,17 +26,6 @@ function* handleCancelRace(cancellableAction) {
             ...action.meta.onSuccess,
         },
     });
-    if (action.payload.redirectTo) {
-        yield put(
-            push(
-                resolveRedirectTo(
-                    action.payload.redirectTo,
-                    action.payload.basePath,
-                    action.payload.id
-                )
-            )
-        );
-    }
     yield put(refreshView());
     // launch cancellable race
     const { timeout } = yield race({
@@ -48,7 +36,7 @@ function* handleCancelRace(cancellableAction) {
     // whether the notification times out or is canceled, hide it
     yield put(hideNotification());
     if (timeout) {
-        // if not cancelled, redispatch the action, this time immediate, and without notification
+        // if not cancelled, redispatch the action, this time immediate, and without success side effect
         const { onSuccess, ...metaWithoutSuccessSideEffects } = action.meta;
         yield put({
             ...action,

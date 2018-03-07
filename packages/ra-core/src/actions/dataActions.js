@@ -34,8 +34,8 @@ export const CRUD_GET_ONE_SUCCESS = 'RA/CRUD_GET_ONE_SUCCESS';
 
 export const crudGetOne = (resource, id, basePath, cancelPrevious = true) => ({
     type: CRUD_GET_ONE,
-    payload: { id, basePath },
-    meta: { resource, fetch: GET_ONE, cancelPrevious },
+    payload: { id },
+    meta: { resource, fetch: GET_ONE, cancelPrevious, basePath },
 });
 
 export const CRUD_CREATE = 'RA/CRUD_CREATE';
@@ -45,7 +45,7 @@ export const CRUD_CREATE_SUCCESS = 'RA/CRUD_CREATE_SUCCESS';
 
 export const crudCreate = (resource, data, basePath, redirectTo = 'edit') => ({
     type: CRUD_CREATE,
-    payload: { data, basePath, redirectTo },
+    payload: { data },
     meta: {
         resource,
         fetch: CREATE,
@@ -58,6 +58,8 @@ export const crudCreate = (resource, data, basePath, redirectTo = 'edit') => ({
                     smart_count: 1,
                 },
             },
+            redirectTo,
+            basePath,
         },
     },
 });
@@ -77,7 +79,7 @@ export const crudUpdate = (
     redirectTo = 'show'
 ) => ({
     type: CRUD_UPDATE,
-    payload: { id, data, previousData, basePath, redirectTo },
+    payload: { id, data, previousData },
     meta: {
         resource,
         fetch: UPDATE,
@@ -90,6 +92,8 @@ export const crudUpdate = (
                     smart_count: 1,
                 },
             },
+            redirectTo,
+            basePath,
         },
     },
 });
@@ -109,7 +113,7 @@ export const crudUpdateMany = (
     unselectAll = true
 ) => ({
     type: CRUD_UPDATE_MANY,
-    payload: { ids, data, basePath, refresh, unselectAll },
+    payload: { ids, data, refresh, unselectAll },
     meta: {
         resource,
         fetch: UPDATE_MANY,
@@ -122,6 +126,7 @@ export const crudUpdateMany = (
                     smart_count: ids.length,
                 },
             },
+            basePath,
         },
     },
 });
@@ -140,7 +145,7 @@ export const crudDelete = (
     redirectTo = 'list'
 ) => ({
     type: CRUD_DELETE,
-    payload: { id, previousData, basePath, redirectTo },
+    payload: { id, previousData },
     meta: {
         resource,
         fetch: DELETE,
@@ -153,6 +158,8 @@ export const crudDelete = (
                     smart_count: 1,
                 },
             },
+            redirectTo,
+            basePath,
         },
     },
 });
@@ -165,7 +172,7 @@ export const CRUD_DELETE_MANY_OPTIMISTIC = 'RA/CRUD_DELETE_MANY_OPTIMISTIC';
 
 export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
     type: CRUD_DELETE_MANY,
-    payload: { ids, basePath, refresh, unselectAll: true },
+    payload: { ids, refresh, unselectAll: true },
     meta: {
         resource,
         fetch: DELETE_MANY,
@@ -178,6 +185,7 @@ export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
                     smart_count: ids.length,
                 },
             },
+            basePath,
         },
     },
 });
