@@ -13,9 +13,9 @@ import {
     CRUD_GET_ONE_FAILURE,
     CRUD_UPDATE_FAILURE,
     CRUD_UPDATE_MANY_FAILURE,
-} from '../../actions/dataActions';
-import { showNotification } from '../../actions/notificationActions';
-import { refreshView } from '../../actions/uiActions';
+} from '../actions/dataActions';
+import { showNotification } from '../actions/notificationActions';
+import { refreshView } from '../actions/uiActions';
 
 /**
  * Side effects for fetch responses
@@ -24,6 +24,7 @@ import { refreshView } from '../../actions/uiActions';
  */
 function* handleResponse({ type, requestPayload, error, payload, meta }) {
     switch (type) {
+        // FIXME this one is not at the right place in a response saga
         case CRUD_CREATE_SUCCESS:
             return yield put(reset('record-form'));
         case CRUD_GET_ONE_SUCCESS:

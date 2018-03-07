@@ -3,7 +3,7 @@ import {
     CHANGE_LOCALE,
     changeLocaleSuccess,
     changeLocaleFailure,
-} from '../../actions';
+} from '../actions';
 
 export default i18nProvider => {
     function* loadMessages(action) {

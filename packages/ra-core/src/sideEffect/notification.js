@@ -1,5 +1,5 @@
 import { put, takeEvery } from 'redux-saga/effects';
-import { showNotification } from '../../actions/notificationActions';
+import { showNotification } from '../actions/notificationActions';
 
 /**
  * Notification Side Effects

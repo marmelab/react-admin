@@ -4,7 +4,7 @@ import { push, replace } from 'react-router-redux';
 import {
     showNotification,
     hideNotification,
-} from '../../actions/notificationActions';
+} from '../actions/notificationActions';
 import {
     USER_LOGIN,
     USER_LOGIN_LOADING,
@@ -12,9 +12,9 @@ import {
     USER_LOGIN_FAILURE,
     USER_CHECK,
     USER_LOGOUT,
-} from '../../actions/authActions';
-import { FETCH_ERROR } from '../../actions/fetchActions';
-import { AUTH_LOGIN, AUTH_CHECK, AUTH_ERROR, AUTH_LOGOUT } from '../../auth';
+} from '../actions/authActions';
+import { FETCH_ERROR } from '../actions/fetchActions';
+import { AUTH_LOGIN, AUTH_CHECK, AUTH_ERROR, AUTH_LOGOUT } from '../auth';
 const nextPathnameSelector = state => {
     const locationState = state.routing.location.state;
     return locationState && locationState.nextPathname;

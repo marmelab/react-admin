@@ -1,6 +1,7 @@
 import { put, takeEvery } from 'redux-saga/effects';
-import resolveRedirectTo from '../../util/resolveRedirectTo';
 import { push } from 'react-router-redux';
+
+import resolveRedirectTo from '../util/resolveRedirectTo';
 
 /**
  * Redirection Side Effects

@@ -13,7 +13,7 @@ import {
     FETCH_END,
     FETCH_ERROR,
     FETCH_CANCEL,
-} from '../../actions/fetchActions';
+} from '../actions/fetchActions';
 
 export const takeFetchAction = action => action.meta && action.meta.fetch;
 export function* handleFetch(dataProvider, action) {

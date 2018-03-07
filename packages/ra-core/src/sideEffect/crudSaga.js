@@ -1,13 +1,13 @@
 import { all } from 'redux-saga/effects';
 import auth from './auth';
-import cancelSaga from './cancelSaga';
 import crudFetch from './crudFetch';
-import crudResponse from './crudResponse';
-import notificationSaga from './notificationSaga';
-import redirectionSaga from './redirectionSaga';
-import referenceFetch from './referenceFetch';
-import refreshSaga from './refreshSaga';
+import error from './error';
 import i18n from './i18n';
+import notification from './notification';
+import redirection from './redirection';
+import referenceFetch from './referenceFetch';
+import refresh from './refresh';
+import undo from './undo';
 
 /**
  * @param {Object} dataProvider A Data Provider function
@@ -17,12 +17,12 @@ export default (dataProvider, authProvider, i18nProvider) =>
         yield all([
             i18n(i18nProvider)(),
             auth(authProvider)(),
-            cancelSaga(),
+            undo(),
             crudFetch(dataProvider)(),
-            crudResponse(),
+            error(),
             referenceFetch(),
-            redirectionSaga(),
-            refreshSaga(),
-            notificationSaga(),
+            redirection(),
+            refresh(),
+            notification(),
         ]);
     };

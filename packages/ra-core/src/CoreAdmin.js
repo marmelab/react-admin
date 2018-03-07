@@ -12,7 +12,7 @@ import withContext from 'recompose/withContext';
 import { USER_LOGOUT } from './actions/authActions';
 
 import createAppReducer from './reducer';
-import { crudSaga } from './sideEffect/saga';
+import { crudSaga } from './sideEffect';
 import { TranslationProvider, defaultI18nProvider } from './i18n';
 import CoreAdminRouter from './CoreAdminRouter';
 

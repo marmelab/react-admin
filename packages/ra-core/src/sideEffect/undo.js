@@ -4,14 +4,14 @@ import { delay } from 'redux-saga';
 import {
     showNotification,
     hideNotification,
-} from '../../actions/notificationActions';
+} from '../actions/notificationActions';
 import {
     CANCELLABLE,
     CANCEL,
     startOptimisticMode,
     stopOptimisticMode,
-} from '../../actions/cancelActions';
-import { refreshView } from '../../actions/uiActions';
+} from '../actions/cancelActions';
+import { refreshView } from '../actions/uiActions';
 
 function* handleCancelRace(cancellableAction) {
     const { payload: { action, delay: cancelDelay } } = cancellableAction;

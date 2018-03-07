@@ -1,5 +1,5 @@
 import { put, takeEvery } from 'redux-saga/effects';
-import { refreshView } from '../../actions/uiActions';
+import { refreshView } from '../actions/uiActions';
 
 /**
  * Redirection Side Effects
