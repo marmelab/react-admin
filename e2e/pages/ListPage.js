@@ -38,6 +38,10 @@ export default url => driver => ({
         return this.waitUntilDataLoaded();
     },
 
+    async waitForDebounce() {
+        await driver.sleep(501); // filter debounce is of 500ms
+    },
+
     waitUntilVisible() {
         return driver.wait(until.elementLocated(this.elements.title));
     },
@@ -94,7 +98,7 @@ export default url => driver => ({
             this.elements.addFilterButton
         );
         addFilterButton.click();
-        driver.sleep(500); // wait until the dropdown animation ends
+
         driver.wait(until.elementLocated(this.elements.filterMenuItems));
 
         return driver
@@ -156,33 +160,61 @@ export default url => driver => ({
             .then(() => this.waitUntilDataLoaded());
     },
 
-    setFilterValue(name, value, clearPreviousValue = true) {
-        const filterField = driver.findElement(this.elements.filter(name));
+    async setFilterValue(name, value, clearPreviousValue = true) {
+        const filterField = await driver.findElement(
+            this.elements.filter(name)
+        );
         if (clearPreviousValue) {
-            filterField.clear();
+            await filterField.clear();
         }
-        filterField.sendKeys(value);
-        driver.sleep(500);
+
+        await filterField.sendKeys(value);
+
+        // Filling an input with no value doesn't trigger key events.
+        // Hence, let's blur it!
+        const body = await driver.findElement(By.css('body'));
+        await body.click();
+
+        await this.waitForDebounce();
+
         return this.waitUntilDataLoaded();
     },
 
-    showFilter(name) {
-        const addFilterButton = driver.findElement(
+    async getFilterValue(name) {
+        const filterField = await driver.findElement(
+            this.elements.filter(name)
+        );
+
+        return await filterField.getAttribute('value');
+    },
+
+    async showFilter(name) {
+        const addFilterButton = await driver.findElement(
             this.elements.addFilterButton
         );
-        addFilterButton.click();
-        driver.sleep(500); // wait until the dropdown animation ends
-        driver.wait(until.elementLocated(this.elements.filterMenuItem(name)));
-        driver.findElement(this.elements.filterMenuItem(name)).click();
-        return this.waitUntilDataLoaded();
+        await addFilterButton.click();
+
+        await driver.wait(
+            until.elementLocated(this.elements.filterMenuItem(name))
+        );
+
+        const menuItem = await driver.findElement(
+            this.elements.filterMenuItem(name)
+        );
+        await menuItem.click();
+
+        await this.waitForDebounce();
+        await this.waitUntilDataLoaded();
     },
 
-    hideFilter(name) {
-        const hideFilterButton = driver.findElement(
+    async hideFilter(name) {
+        const hideFilterButton = await driver.findElement(
             this.elements.hideFilterButton(name)
         );
-        hideFilterButton.click();
-        return this.waitUntilDataLoaded(); // wait for debounce and reload
+        await hideFilterButton.click();
+
+        await this.waitForDebounce();
+        await this.waitUntilDataLoaded();
     },
 
     logout() {
