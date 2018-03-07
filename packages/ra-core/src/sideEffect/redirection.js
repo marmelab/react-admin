@@ -7,7 +7,10 @@ import resolveRedirectTo from '../util/resolveRedirectTo';
 /**
  * Redirection Side Effects
  */
-function* handleRedirection({ payload, meta: { basePath, redirectTo } }) {
+export function* handleRedirection({
+    payload,
+    meta: { basePath, redirectTo },
+}) {
     return redirectTo
         ? yield put(
               push(

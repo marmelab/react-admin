@@ -13,16 +13,17 @@ import {
 } from '../actions/cancelActions';
 import { refreshView } from '../actions/uiActions';
 
-function* handleCancelRace(cancellableAction) {
+export function* handleCancelRace(cancellableAction) {
     const { payload: { action, delay: cancelDelay } } = cancellableAction;
+    const { onSuccess, ...metaWithoutSuccessSideEffects } = action.meta;
     yield put(startOptimisticMode());
     // dispatch action in optimistic mode (no fetch), and make notification cancellable
     yield put({
         ...action,
         type: `${action.type}_OPTIMISTIC`,
         meta: {
-            ...action.meta,
-            ...action.meta.onSuccess,
+            ...metaWithoutSuccessSideEffects,
+            ...onSuccess,
         },
     });
     // launch cancellable race
@@ -35,7 +36,6 @@ function* handleCancelRace(cancellableAction) {
     yield put(hideNotification());
     if (timeout) {
         // if not cancelled, redispatch the action, this time immediate, and without success side effect
-        const { onSuccess, ...metaWithoutSuccessSideEffects } = action.meta;
         yield put({
             ...action,
             meta: metaWithoutSuccessSideEffects,
