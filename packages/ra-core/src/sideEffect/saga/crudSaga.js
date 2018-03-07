@@ -6,6 +6,7 @@ import crudResponse from './crudResponse';
 import notificationSaga from './notificationSaga';
 import redirectionSaga from './redirectionSaga';
 import referenceFetch from './referenceFetch';
+import refreshSaga from './refreshSaga';
 import i18n from './i18n';
 
 /**
@@ -21,6 +22,7 @@ export default (dataProvider, authProvider, i18nProvider) =>
             crudResponse(),
             referenceFetch(),
             redirectionSaga(),
+            refreshSaga(),
             notificationSaga(),
         ]);
     };

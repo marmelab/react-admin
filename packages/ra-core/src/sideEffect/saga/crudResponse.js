@@ -24,26 +24,12 @@ import { refreshView } from '../../actions/uiActions';
 /**
  * Side effects for fetch responses
  *
- * Mostly redirects and notifications
+ * Mostly error handling
  */
 function* handleResponse({ type, requestPayload, error, payload, meta }) {
     switch (type) {
-        case CRUD_UPDATE_SUCCESS:
-        case CRUD_UPDATE_MANY_SUCCESS: {
-            if (requestPayload.refresh) {
-                return yield push(put(refreshView()));
-            }
-            return;
-        }
         case CRUD_CREATE_SUCCESS:
             return yield put(reset('record-form'));
-        case CRUD_DELETE_SUCCESS:
-        case CRUD_DELETE_MANY_SUCCESS: {
-            if (requestPayload.refresh) {
-                return yield put(refreshView());
-            }
-            return;
-        }
         case CRUD_GET_ONE_SUCCESS:
             if (
                 !('id' in payload.data) ||

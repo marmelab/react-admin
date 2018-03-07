@@ -109,11 +109,10 @@ export const crudUpdateMany = (
     ids,
     data,
     basePath,
-    refresh = true,
-    unselectAll = true
+    refresh = true
 ) => ({
     type: CRUD_UPDATE_MANY,
-    payload: { ids, data, refresh, unselectAll },
+    payload: { ids, data },
     meta: {
         resource,
         fetch: UPDATE_MANY,
@@ -127,6 +126,8 @@ export const crudUpdateMany = (
                 },
             },
             basePath,
+            refresh,
+            unselectAll: true,
         },
     },
 });
@@ -172,7 +173,7 @@ export const CRUD_DELETE_MANY_OPTIMISTIC = 'RA/CRUD_DELETE_MANY_OPTIMISTIC';
 
 export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
     type: CRUD_DELETE_MANY,
-    payload: { ids, refresh, unselectAll: true },
+    payload: { ids },
     meta: {
         resource,
         fetch: DELETE_MANY,
@@ -186,6 +187,8 @@ export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
                 },
             },
             basePath,
+            refresh,
+            unselectAll: true,
         },
     },
 });

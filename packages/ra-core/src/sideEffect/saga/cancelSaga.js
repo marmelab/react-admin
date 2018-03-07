@@ -26,7 +26,6 @@ function* handleCancelRace(cancellableAction) {
             ...action.meta.onSuccess,
         },
     });
-    yield put(refreshView());
     // launch cancellable race
     const { timeout } = yield race({
         cancel: take(CANCEL),

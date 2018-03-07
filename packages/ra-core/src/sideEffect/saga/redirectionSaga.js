@@ -6,7 +6,15 @@ import { push } from 'react-router-redux';
  * Redirection Side Effects
  */
 function* handleRedirection({ payload, meta: { basePath, redirectTo } }) {
-    yield put(push(resolveRedirectTo(redirectTo, basePath, payload.data.id)));
+    yield put(
+        push(
+            resolveRedirectTo(
+                redirectTo,
+                basePath,
+                payload.id || payload.data.id
+            )
+        )
+    );
 }
 
 export default function*() {

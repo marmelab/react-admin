@@ -6,4 +6,5 @@ export crudSaga from './crudSaga';
 export notificationSaga from './notificationSaga';
 export redirectionSaga from './redirectionSaga';
 export referenceFetch from './referenceFetch';
+export refreshSaga from './refreshSaga';
 export i18n from './i18n';

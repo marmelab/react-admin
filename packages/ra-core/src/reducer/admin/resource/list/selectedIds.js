@@ -2,10 +2,6 @@ import {
     SET_LIST_SELECTED_IDS,
     TOGGLE_LIST_ITEM,
 } from '../../../../actions/listActions';
-import {
-    CRUD_DELETE_MANY_OPTIMISTIC,
-    CRUD_UPDATE_MANY_OPTIMISTIC,
-} from '../../../../actions/dataActions';
 
 const initialState = [];
 
@@ -24,10 +20,9 @@ export default (previousState = initialState, action) => {
                 return [...previousState, action.payload];
             }
         }
-        case CRUD_DELETE_MANY_OPTIMISTIC:
-        case CRUD_UPDATE_MANY_OPTIMISTIC:
-            return action.payload.unselectAll ? initialState : previousState;
         default:
-            return previousState;
+            return action.meta && action.meta.unselectAll
+                ? initialState
+                : previousState;
     }
 };
