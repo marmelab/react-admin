@@ -24,9 +24,6 @@ import { refreshView } from '../actions/uiActions';
  */
 function* handleResponse({ type, requestPayload, error, payload, meta }) {
     switch (type) {
-        // FIXME this one is not at the right place in a response saga
-        case CRUD_CREATE_SUCCESS:
-            return yield put(reset('record-form'));
         case CRUD_GET_ONE_SUCCESS:
             if (
                 !('id' in payload.data) ||
