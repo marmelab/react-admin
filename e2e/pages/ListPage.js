@@ -166,15 +166,22 @@ export default url => driver => ({
         return this.waitUntilDataLoaded();
     },
 
-    showFilter(name) {
-        const addFilterButton = driver.findElement(
+    async showFilter(name) {
+        const addFilterButton = await driver.findElement(
             this.elements.addFilterButton
         );
-        addFilterButton.click();
-        driver.sleep(500); // wait until the dropdown animation ends
-        driver.wait(until.elementLocated(this.elements.filterMenuItem(name)));
-        driver.findElement(this.elements.filterMenuItem(name)).click();
-        return this.waitUntilDataLoaded();
+        await addFilterButton.click();
+
+        await driver.wait(
+            until.elementLocated(this.elements.filterMenuItem(name))
+        );
+
+        const menuItem = await driver.findElement(
+            this.elements.filterMenuItem(name)
+        );
+        await menuItem.click();
+
+        await this.waitUntilDataLoaded();
     },
 
     hideFilter(name) {

@@ -11,7 +11,7 @@ describe('List Page', () => {
         'http://localhost:8083/#/comments'
     )(driver);
 
-    before(async () => await ListPagePosts.navigate());
+    beforeEach(async () => await ListPagePosts.navigate());
 
     describe('Pagination', () => {
         it('should display paginated list of available posts', async () => {
@@ -30,7 +30,7 @@ describe('List Page', () => {
         });
     });
 
-    describe('Filtering', () => {
+    describe.only('Filtering', () => {
         it('should display `alwaysOn` filters by default', async () => {
             await driver.wait(
                 until.elementLocated(ListPagePosts.elements.filter('q'))
@@ -60,9 +60,11 @@ describe('List Page', () => {
 
         it('should display new filter when clicking on "Add Filter"', async () => {
             await ListPagePosts.showFilter('title');
+
             const filters = await driver.findElements(
                 ListPagePosts.elements.filter('title')
             );
+
             assert.equal(filters.length, 1);
             assert.equal(await ListPagePosts.getNbPagesText(), '1-1 of 1');
         });
@@ -76,9 +78,11 @@ describe('List Page', () => {
             assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
         });
 
-        it('should have correctly reset filters after navigating', async () => {
+        it.only('should have correctly reset filters after navigating', async () => {
+            await ListPagePosts.setFilterValue('q', 'quis culpa impedit');
             await ListPageComments.navigate();
             await ListPagePosts.navigate();
+
             assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
         });
     });
@@ -90,6 +94,7 @@ describe('List Page', () => {
         });
 
         it('should allow to unselect all items on the current page', async () => {
+            await ListPagePosts.toggleSelectAll();
             await ListPagePosts.toggleSelectAll();
             assert.equal(await ListPagePosts.getSelectedItemsCount(), 0);
         });
@@ -121,6 +126,7 @@ describe('List Page', () => {
         });
 
         it('should allow to trigger the delete bulk action on selected items', async () => {
+            await ListPagePosts.toggleSelectSomeItems(3);
             await ListPagePosts.applyDeleteBulkAction();
             assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 10');
         });
