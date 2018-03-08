@@ -71,8 +71,8 @@ export function* handleFetch(dataProvider, action) {
     }
 }
 
-const crudFetch = dataProvider => {
-    return function* watchCrudFetch() {
+const fetch = dataProvider => {
+    return function* watchFetch() {
         const runningTasks = {};
 
         while (true) {
@@ -101,4 +101,4 @@ const crudFetch = dataProvider => {
     };
 };
 
-export default crudFetch;
+export default fetch;

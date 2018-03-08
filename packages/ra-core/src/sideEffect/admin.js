@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects';
 import auth from './auth';
-import crudFetch from './crudFetch';
+import fetch from './fetch';
 import error from './error';
 import i18n from './i18n';
 import notification from './notification';
@@ -18,7 +18,7 @@ export default (dataProvider, authProvider, i18nProvider) =>
             i18n(i18nProvider)(),
             auth(authProvider)(),
             undo(),
-            crudFetch(dataProvider)(),
+            fetch(dataProvider)(),
             error(),
             referenceFetch(),
             redirection(),
