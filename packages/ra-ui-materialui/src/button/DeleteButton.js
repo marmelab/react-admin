@@ -27,15 +27,21 @@ class DeleteButton extends Component {
     handleDelete = event => {
         event.preventDefault();
         const {
+            dispatchCrudDelete,
             startUndoable,
             resource,
             record,
             basePath,
             redirect,
+            undoable,
         } = this.props;
-        startUndoable(
-            crudDelete(resource, record.id, record, basePath, redirect)
-        );
+        if (undoable) {
+            startUndoable(
+                crudDelete(resource, record.id, record, basePath, redirect)
+            );
+        } else {
+            dispatchCrudDelete(resource, record.id, record, basePath, redirect);
+        }
     };
 
     render() {
@@ -65,20 +71,23 @@ DeleteButton.propTypes = {
     basePath: PropTypes.string,
     classes: PropTypes.object,
     className: PropTypes.string,
+    dispatchCrudDelete: PropTypes.func.isRequired,
     label: PropTypes.string,
     record: PropTypes.object,
     redirect: PropTypes.string,
     resource: PropTypes.string.isRequired,
     startUndoable: PropTypes.func,
     translate: PropTypes.func,
+    undoable: PropTypes.bool,
 };
 
 DeleteButton.defaultProps = {
     redirect: 'list',
+    undoable: true,
 };
 
 export default compose(
-    connect(null, { startUndoable }),
+    connect(null, { startUndoable, dispatchCrudDelete: crudDelete }),
     translate,
     withStyles(styles)
 )(DeleteButton);

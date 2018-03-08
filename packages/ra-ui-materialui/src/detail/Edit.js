@@ -32,6 +32,7 @@ const sanitizeRestProps = ({
     options,
     locale,
     permissions,
+    undoable,
     ...rest
 }) => rest;
 
