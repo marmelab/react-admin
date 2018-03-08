@@ -57,7 +57,6 @@ describe('undo saga', () => {
             );
         });
         it('should display the notification', () => {
-            expect(generator.next().value).toEqual(put(hideNotification()));
             expect(generator.next().value).toEqual(
                 put(showNotification('ra.notification.canceled'))
             );
@@ -94,9 +93,6 @@ describe('undo saga', () => {
             expect(generator.next(delay(110)).value).toEqual(
                 put(stopOptimisticMode())
             );
-        });
-        it('should display the notification', () => {
-            expect(generator.next().value).toEqual(put(hideNotification()));
         });
         it('should put the action in non-optimistic mode', () => {
             expect(generator.next().value).toEqual(

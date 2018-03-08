@@ -17,7 +17,7 @@ export function* handleUndoRace(undoableAction) {
     const { payload: { action, delay: cancelDelay } } = undoableAction;
     const { onSuccess, ...metaWithoutSuccessSideEffects } = action.meta;
     yield put(startOptimisticMode());
-    // dispatch action in optimistic mode (no fetch), and make notification undoable
+    // dispatch action in optimistic mode (no fetch), with success side effects
     yield put({
         ...action,
         type: `${action.type}_OPTIMISTIC`,
@@ -32,8 +32,6 @@ export function* handleUndoRace(undoableAction) {
         timeout: call(delay, cancelDelay),
     });
     yield put(stopOptimisticMode());
-    // whether the notification times out or is canceled, hide it
-    yield put(hideNotification());
     if (timeout) {
         // if not cancelled, redispatch the action, this time immediate, and without success side effect
         yield put({

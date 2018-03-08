@@ -7,7 +7,7 @@ import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
-import { hideNotification, getNotification, translate, cancel } from 'ra-core';
+import { hideNotification, getNotification, translate, undo } from 'ra-core';
 
 const styles = theme => ({
     confirm: {
@@ -43,7 +43,7 @@ class Notification extends React.Component {
 
     render() {
         const {
-            cancel,
+            undo,
             classes,
             className,
             type,
@@ -80,7 +80,7 @@ class Notification extends React.Component {
                             color="primary"
                             className={classes.undo}
                             size="small"
-                            onClick={cancel}
+                            onClick={undo}
                         >
                             {translate('ra.action.undo')}
                         </Button>
@@ -93,7 +93,6 @@ class Notification extends React.Component {
 }
 
 Notification.propTypes = {
-    cancel: PropTypes.func,
     classes: PropTypes.object,
     className: PropTypes.string,
     notification: PropTypes.shape({
@@ -106,6 +105,7 @@ Notification.propTypes = {
     hideNotification: PropTypes.func.isRequired,
     autoHideDuration: PropTypes.number,
     translate: PropTypes.func.isRequired,
+    undo: PropTypes.func,
 };
 
 Notification.defaultProps = {
@@ -122,6 +122,6 @@ export default compose(
     withStyles(styles),
     connect(mapStateToProps, {
         hideNotification,
-        cancel,
+        undo,
     })
 )(Notification);
