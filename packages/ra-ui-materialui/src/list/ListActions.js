@@ -21,13 +21,14 @@ const Actions = ({
 }) => {
     return (
         <CardActions className={className} {...rest}>
-            {cloneElement(bulkActions, {
-                basePath,
-                filterValues,
-                resource,
-                selectedIds,
-                onUnselectItems,
-            })}
+            {bulkActions &&
+                cloneElement(bulkActions, {
+                    basePath,
+                    filterValues,
+                    resource,
+                    selectedIds,
+                    onUnselectItems,
+                })}
             {filters &&
                 cloneElement(filters, {
                     resource,
