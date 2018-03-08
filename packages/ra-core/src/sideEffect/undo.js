@@ -28,7 +28,7 @@ export function* handleUndoRace(undoableAction) {
     });
     // wait for undo or delay
     const { timeout } = yield race({
-        cancel: take(UNDO),
+        undo: take(UNDO),
         timeout: call(delay, cancelDelay),
     });
     yield put(stopOptimisticMode());

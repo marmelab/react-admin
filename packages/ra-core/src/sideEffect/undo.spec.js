@@ -1,10 +1,7 @@
 import { put } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 
-import {
-    showNotification,
-    hideNotification,
-} from '../actions/notificationActions';
+import { showNotification } from '../actions/notificationActions';
 import {
     startOptimisticMode,
     stopOptimisticMode,
@@ -52,7 +49,7 @@ describe('undo saga', () => {
             expect(generator.next().value).toHaveProperty('RACE');
         });
         it('should stop the optimistic mode', () => {
-            expect(generator.next({ type: 'UNDO' }).value).toEqual(
+            expect(generator.next({ undo: true }).value).toEqual(
                 put(stopOptimisticMode())
             );
         });
@@ -90,14 +87,14 @@ describe('undo saga', () => {
             expect(generator.next().value).toHaveProperty('RACE');
         });
         it('should stop the optimistic mode', () => {
-            expect(generator.next(delay(110)).value).toEqual(
+            expect(generator.next({ timeout: true }).value).toEqual(
                 put(stopOptimisticMode())
             );
         });
         it('should put the action in non-optimistic mode', () => {
             expect(generator.next().value).toEqual(
                 put({
-                    type: 'FOO_',
+                    type: 'FOO',
                     payload: { id: 123 },
                     meta: {
                         foo: 1,
