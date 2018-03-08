@@ -112,3 +112,32 @@ const App = () => (
 ```
 
 This application has no sidebar, no theming, no [auth control](./Authentication.md#restricting-access-to-a-custom-page) - it's up to you to add these. From then on, you can customize pretty much anything you want.
+
+## Layout 
+
+The package `ra-ui-materialui` exports two hocs `layoutWithTheme` and `layoutWithThemeAndState` to kick off your custom Layout. 
+
+### `layoutWithTheme`
+
+This hoc makes sure your layout is wrapped with a `material-ui` `ThemeProvider`. 
+
+```jsx
+import { layoutWithTheme } from 'ra-ui-materialui';
+
+const MyLayout = props => ...
+
+export default layoutWithTheme(MyLayout);
+```
+
+### `layoutWithThemeAndState`
+
+Same as `layoutWithTheme` but also adds default `styling` and a `open` state prop to indicate if the sidebar should be shown.  
+
+```jsx
+import { layoutWithThemeAndState } from 'ra-ui-materialui';
+
+const MyLayout = ({classes,open,...props}) => ...
+
+export default layoutWithThemeAndState(MyLayout);
+```
+
