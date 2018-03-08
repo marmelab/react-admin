@@ -1,6 +1,8 @@
 import React from 'react';
 import {
     AutocompleteInput,
+    BulkActions,
+    BulkDeleteAction,
     Datagrid,
     DateField,
     DateInput,
@@ -25,6 +27,8 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 import ApproveButton from './ApproveButton';
 import ReviewEditActions from './ReviewEditActions';
+import BulkApproveAction from './BulkApproveAction';
+import BulkRejectAction from './BulkRejectAction';
 import rowStyle from './rowStyle';
 import MobileGrid from './MobileGrid';
 
@@ -71,9 +75,18 @@ const listStyles = {
     },
 };
 
+const ReviewsBulkActions = props => (
+    <BulkActions {...props}>
+        <BulkApproveAction label="Approve" />
+        <BulkRejectAction label="Reject" />
+        <BulkDeleteAction />
+    </BulkActions>
+);
+
 export const ReviewList = withStyles(listStyles)(({ classes, ...props }) => (
     <List
         {...props}
+        bulkActions={<ReviewsBulkActions />}
         filters={<ReviewFilter />}
         perPage={25}
         sort={{ field: 'date', order: 'DESC' }}
