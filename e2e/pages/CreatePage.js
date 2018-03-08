@@ -102,12 +102,12 @@ export default url => driver => ({
     submitAndAdd() {
         return driver
             .findElement(this.elements.submitAndAddButton)
-            .then(button => button.click())
+            .click()
             .then(() =>
-                driver.wait(until.elementLocated(this.elements.snackbar), 2000)
+                driver.wait(until.elementLocated(this.elements.snackbar), 3000)
             )
-            .then(() => driver.findElement(this.elements.body))
-            .then(body => body.click()) // dismiss notification
-            .then(this.waitUntilDataLoaded());
+            .then(() => driver.findElement(this.elements.body).click()) // dismiss notification
+            .then(() => driver.sleep(200)) // let the notification disappear (could block further submits)
+            .then(() => this.waitUntilDataLoaded());
     },
 });
