@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-    translate,
     BooleanField,
+    Create,
     Datagrid,
     DateField,
     DateInput,
@@ -20,6 +20,7 @@ import {
     TextInput,
 } from 'react-admin';
 import Icon from 'material-ui-icons/Person';
+import withStyles from 'material-ui/styles/withStyles';
 
 import NbItemsField from '../commands/NbItemsField';
 import ProductReferenceField from '../products/ProductReferenceField';
@@ -28,7 +29,7 @@ import FullNameField from './FullNameField';
 import SegmentsField from './SegmentsField';
 import SegmentInput from './SegmentInput';
 import SegmentsInput from './SegmentsInput';
-import withStyles from 'material-ui/styles/withStyles';
+import CustomerLinkField from './CustomerLinkField';
 import MobileGrid from './MobileGrid';
 
 export const VisitorIcon = Icon;
@@ -76,7 +77,7 @@ export const VisitorList = withStyles(listStyles)(({ classes, ...props }) => (
             xsmall={<MobileGrid />}
             medium={
                 <Datagrid>
-                    <FullNameField />
+                    <CustomerLinkField />
                     <DateField source="last_seen" type="date" />
                     <NumberField
                         source="nb_commands"
@@ -199,4 +200,37 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
             </FormTab>
         </TabbedForm>
     </Edit>
+));
+
+export const VisitorCreate = withStyles(editStyles)(({ classes, ...props }) => (
+    <Create {...props}>
+        <TabbedForm>
+            <FormTab label="resources.customers.tabs.identity">
+                <TextInput
+                    source="first_name"
+                    formClassName={classes.first_name}
+                />
+                <TextInput
+                    source="last_name"
+                    formClassName={classes.last_name}
+                />
+                <TextInput
+                    type="email"
+                    source="email"
+                    validation={{ email: true }}
+                    options={{ fullWidth: true }}
+                    formClassName={classes.email}
+                />
+                <DateInput source="birthday" />
+            </FormTab>
+            <FormTab label="resources.customers.tabs.address">
+                <LongTextInput
+                    source="address"
+                    formClassName={classes.address}
+                />
+                <TextInput source="zipcode" formClassName={classes.zipcode} />
+                <TextInput source="city" formClassName={classes.city} />
+            </FormTab>
+        </TabbedForm>
+    </Create>
 ));

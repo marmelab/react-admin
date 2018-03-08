@@ -3,7 +3,7 @@ import { translate, SelectArrayInput } from 'react-admin';
 
 import segments from '../segments/data';
 
-const SegmentsInput = ({ translate, ...rest }) => (
+const SegmentsInput = ({ translate, addField, ...rest }) => (
     <SelectArrayInput
         {...rest}
         choices={segments.map(segment => ({

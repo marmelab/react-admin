@@ -65,7 +65,7 @@ const Configuration = ({
 
 const mapStateToProps = state => ({
     theme: state.theme,
-    locale: state.locale,
+    locale: state.i18n.locale,
 });
 
 export default compose(
