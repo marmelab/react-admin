@@ -1,4 +1,4 @@
-import React, { createElement } from 'react';
+import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -121,11 +121,25 @@ const EnhancedLayout = compose(
     withStyles(styles)
 )(Layout);
 
-const LayoutWithTheme = ({ theme, ...rest }) => (
-    <MuiThemeProvider theme={createMuiTheme(theme)}>
-        <EnhancedLayout {...rest} />
-    </MuiThemeProvider>
-);
+class LayoutWithTheme extends Component {
+    constructor(props) {
+        super(props);
+        this.theme = createMuiTheme(props.theme);
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.theme !== this.props.theme) {
+            this.theme = createMuiTheme(nextProps.theme);
+        }
+    }
+    render() {
+        const { theme, ...rest } = this.props;
+        return (
+            <MuiThemeProvider theme={this.theme}>
+                <EnhancedLayout {...rest} />
+            </MuiThemeProvider>
+        );
+    }
+}
 
 LayoutWithTheme.propTypes = {
     theme: PropTypes.object,

@@ -7,6 +7,11 @@ const darkTheme = {
     },
 };
 
-export default connect(state => ({
-    theme: state.theme === 'dark' ? darkTheme : {},
-}), {})(Layout);
+const lightTheme = {};
+
+export default connect(
+    state => ({
+        theme: state.theme === 'dark' ? darkTheme : lightTheme,
+    }),
+    {}
+)(Layout);
