@@ -77,8 +77,8 @@ const listStyles = {
 
 const ReviewsBulkActions = props => (
     <BulkActions {...props}>
-        <BulkApproveAction label="Approve" />
-        <BulkRejectAction label="Reject" />
+        <BulkApproveAction label="resources.reviews.action.accept" />
+        <BulkRejectAction label="resources.reviews.action.reject" />
         <BulkDeleteAction />
     </BulkActions>
 );
