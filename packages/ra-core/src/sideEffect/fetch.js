@@ -27,7 +27,7 @@ export function* handleFetch(dataProvider, action) {
     try {
         yield all([
             put({ type: `${type}_LOADING`, payload, meta }),
-            put({ type: FETCH_START }),
+            put({ type: FETCH_START, action }),
         ]);
         let response = yield call(
             dataProvider,
@@ -49,7 +49,7 @@ export function* handleFetch(dataProvider, action) {
                 fetchStatus: FETCH_END,
             },
         });
-        yield put({ type: FETCH_END });
+        yield put({ type: FETCH_END, action });
     } catch (error) {
         yield put({
             type: `${type}_FAILURE`,
@@ -62,10 +62,10 @@ export function* handleFetch(dataProvider, action) {
                 fetchStatus: FETCH_ERROR,
             },
         });
-        yield put({ type: FETCH_ERROR, error });
+        yield put({ type: FETCH_ERROR, error, action });
     } finally {
         if (yield cancelled()) {
-            yield put({ type: FETCH_CANCEL });
+            yield put({ type: FETCH_CANCEL, action });
             return; /* eslint no-unsafe-finally:0 */
         }
     }
