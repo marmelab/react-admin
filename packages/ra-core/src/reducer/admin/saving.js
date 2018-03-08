@@ -9,11 +9,13 @@ import {
     CRUD_UPDATE_FAILURE,
 } from '../../actions';
 
-export default (previousState = false, { type, payload }) => {
+export default (previousState = false, { type, meta }) => {
     switch (type) {
         case CRUD_CREATE:
         case CRUD_UPDATE:
-            return { redirect: payload.redirectTo };
+            return {
+                redirect: meta.onSuccess && meta.onSuccess.redirectTo,
+            };
         case LOCATION_CHANGE:
         case actionTypes.SET_SUBMIT_FAILED:
         case CRUD_CREATE_SUCCESS:
