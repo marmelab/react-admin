@@ -74,7 +74,7 @@ export const takeFetchAction = action => action.meta && action.meta.fetch;
 const fetch = dataProvider => {
     return function* watchFetch() {
         const runningTasks = {};
-        const fetchActionQueue = yield actionChannel(takeFetchAction)
+        const fetchActionQueue = yield actionChannel(takeFetchAction);
         while (true) {
             const action = yield take(fetchActionQueue);
 
