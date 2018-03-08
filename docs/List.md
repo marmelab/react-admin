@@ -239,7 +239,7 @@ class ResetViewsAction extends Component {
 export default connect(undefined, { startUndoable })(ResetViewsAction);
 ```
 
-Note that the `crudUpdateMany` action creator is *not* present in the `mapDispatchToProps` arcgument of `connect()` in that case. Only `startUndoable` needs to be dispatched in this case, using the result of the `crudUpdateMany()` call as parameter.
+Note that the `crudUpdateMany` action creator is *not* present in the `mapDispatchToProps` argument of `connect()` in that case. Only `startUndoable` needs to be dispatched in this case, using the result of the `crudUpdateMany()` call as parameter.
 
 ### Filters
 
