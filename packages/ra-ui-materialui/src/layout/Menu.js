@@ -40,6 +40,7 @@ const Menu = ({
     dense,
     hasDashboard,
     onMenuClick,
+    pathname,
     resources,
     translate,
     logout,
@@ -72,6 +73,7 @@ Menu.propTypes = {
     hasDashboard: PropTypes.bool,
     logout: PropTypes.element,
     onMenuClick: PropTypes.func,
+    pathname: PropTypes.string,
     resources: PropTypes.array.isRequired,
     translate: PropTypes.func.isRequired,
 };
@@ -82,13 +84,21 @@ Menu.defaultProps = {
 
 const mapStateToProps = state => ({
     resources: getResources(state),
+    pathname: state.routing.location.pathname, // used to force redraw on navigation
 });
 
 const enhance = compose(
     translate,
     connect(
         mapStateToProps,
-        {} // Avoid connect passing dispatch in props
+        {}, // Avoid connect passing dispatch in props,
+        null,
+        {
+            areStatePropsEqual: (prev, next) =>
+                prev.resources.every(
+                    (value, index) => value === next.resources[index] // shallow compare resources
+                ) && prev.pathname == next.pathname,
+        }
     ),
     withStyles(styles)
 );
