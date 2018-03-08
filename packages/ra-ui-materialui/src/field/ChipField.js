@@ -13,7 +13,7 @@ const styles = {
 
 export const ChipField = ({
     className,
-    classes,
+    classes = {},
     source,
     record = {},
     ...rest
