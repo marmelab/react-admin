@@ -1,5 +1,4 @@
 import { put } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
 
 import { showNotification } from '../actions/notificationActions';
 import {

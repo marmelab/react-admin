@@ -1,10 +1,7 @@
 import { call, take, takeEvery, put, race } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 
-import {
-    showNotification,
-    hideNotification,
-} from '../actions/notificationActions';
+import { showNotification } from '../actions/notificationActions';
 import {
     UNDOABLE,
     UNDO,
