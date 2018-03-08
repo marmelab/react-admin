@@ -16,8 +16,11 @@ describe('fetch saga', () => {
         expect(generator.next().value).toEqual(take(takeFetchAction));
     });
 
+    it('should select the optimistic status', () => {
+        expect(generator.next(action).value).toHaveProperty('SELECT');
+    });
     it('should fork a handleFetch', () => {
-        expect(generator.next(action).value).toEqual(
+        expect(generator.next(false).value).toEqual(
             fork(handleFetch, dataProvider, action)
         );
     });
