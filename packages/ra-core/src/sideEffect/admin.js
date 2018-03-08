@@ -5,7 +5,7 @@ import error from './error';
 import i18n from './i18n';
 import notification from './notification';
 import redirection from './redirection';
-import referenceFetch from './referenceFetch';
+import accumulate from './accumulate';
 import refresh from './refresh';
 import undo from './undo';
 
@@ -20,7 +20,7 @@ export default (dataProvider, authProvider, i18nProvider) =>
             undo(),
             fetch(dataProvider)(),
             error(),
-            referenceFetch(),
+            accumulate(),
             redirection(),
             refresh(),
             notification(),
