@@ -40,6 +40,7 @@ describe('undo saga', () => {
                     meta: {
                         foo: 1,
                         bar: 2,
+                        optimistic: true,
                     },
                 })
             );
@@ -78,6 +79,7 @@ describe('undo saga', () => {
                     meta: {
                         foo: 1,
                         bar: 2,
+                        optimistic: true,
                     },
                 })
             );

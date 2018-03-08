@@ -21,6 +21,7 @@ export function* handleUndoRace(undoableAction) {
         meta: {
             ...metaWithoutSuccessSideEffects,
             ...onSuccess,
+            optimistic: true,
         },
     });
     // wait for undo or delay

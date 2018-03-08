@@ -4,12 +4,12 @@ import { showNotification } from '../actions/notificationActions';
 /**
  * Notification Side Effects
  */
-function* handleNotification({ type, meta: { notification } }) {
+function* handleNotification({ meta: { notification, optimistic } }) {
     const { body, level = 'info', messageArgs = {} } = notification;
     yield put(
         showNotification(body, level, {
             messageArgs,
-            undoable: type.indexOf('_OPTIMISTIC') !== -1,
+            undoable: optimistic,
         })
     );
 }
