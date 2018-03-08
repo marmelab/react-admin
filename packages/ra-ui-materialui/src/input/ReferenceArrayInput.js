@@ -70,7 +70,6 @@ export const ReferenceArrayInputView = ({
                 source={source}
                 resource={resource}
                 className={className}
-                {...sanitizeRestProps(rest)}
             >
                 <LinearProgress />
             </Labeled>
