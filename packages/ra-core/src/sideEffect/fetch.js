@@ -1,4 +1,5 @@
 import {
+    actionChannel,
     all,
     put,
     call,
@@ -15,7 +16,6 @@ import {
     FETCH_CANCEL,
 } from '../actions/fetchActions';
 
-export const takeFetchAction = action => action.meta && action.meta.fetch;
 export function* handleFetch(dataProvider, action) {
     const {
         type,
@@ -70,13 +70,13 @@ export function* handleFetch(dataProvider, action) {
         }
     }
 }
-
+export const takeFetchAction = action => action.meta && action.meta.fetch;
 const fetch = dataProvider => {
     return function* watchFetch() {
         const runningTasks = {};
-
+        const fetchActionQueue = yield actionChannel(takeFetchAction)
         while (true) {
-            const action = yield take(takeFetchAction);
+            const action = yield take(fetchActionQueue);
 
             const isOptimistic = yield select(
                 state => state.admin.ui.optimistic
