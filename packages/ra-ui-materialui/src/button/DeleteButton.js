@@ -6,10 +6,8 @@ import { withStyles } from 'material-ui/styles';
 import { fade } from 'material-ui/styles/colorManipulator';
 import ActionDelete from 'material-ui-icons/Delete';
 import classnames from 'classnames';
-import inflection from 'inflection';
-import { translate, crudDelete } from 'ra-core';
+import { translate, crudDelete, startUndoable } from 'ra-core';
 
-import Confirm from '../layout/Confirm';
 import Button from './Button';
 
 const styles = theme => ({
@@ -26,26 +24,24 @@ const styles = theme => ({
 });
 
 class DeleteButton extends Component {
-    state = { dialogOpen: false };
-
-    handleClick = () => {
-        this.setState({ dialogOpen: true });
-    };
-
-    handleDialogClose = () => {
-        this.setState({ dialogOpen: false });
-    };
-
     handleDelete = event => {
         event.preventDefault();
-        this.props.crudDelete(
-            this.props.resource,
-            this.props.record.id,
-            this.props.record,
-            this.props.basePath,
-            this.props.redirect
-        );
-        this.setState({ dialogOpen: false });
+        const {
+            dispatchCrudDelete,
+            startUndoable,
+            resource,
+            record,
+            basePath,
+            redirect,
+            undoable,
+        } = this.props;
+        if (undoable) {
+            startUndoable(
+                crudDelete(resource, record.id, record, basePath, redirect)
+            );
+        } else {
+            dispatchCrudDelete(resource, record.id, record, basePath, redirect);
+        }
     };
 
     render() {
@@ -53,17 +49,10 @@ class DeleteButton extends Component {
             label = 'ra.action.delete',
             classes = {},
             className,
-            record,
-            resource,
-            translate,
         } = this.props;
-        const resourceName = translate(`resources.${resource}.name`, {
-            smart_count: 1,
-            _: inflection.humanize(inflection.singularize(resource)),
-        });
-        return [
+        return (
             <Button
-                onClick={this.handleClick}
+                onClick={this.handleDelete}
                 label={label}
                 className={classnames(
                     'ra-delete-button',
@@ -73,27 +62,8 @@ class DeleteButton extends Component {
                 key="button"
             >
                 <ActionDelete />
-            </Button>,
-            <Confirm
-                isOpen={this.state.dialogOpen}
-                title={translate('ra.message.delete_title', {
-                    name: resourceName,
-                    id: record && record.id,
-                    data: record,
-                })}
-                content={translate('ra.message.delete_content', {
-                    name: resourceName,
-                    id: record && record.id,
-                    data: record,
-                })}
-                confirm={translate('ra.action.delete')}
-                confirmColor="warning"
-                cancel={translate('ra.action.cancel')}
-                onConfirm={this.handleDelete}
-                onClose={this.handleDialogClose}
-                key="dialog"
-            />,
-        ];
+            </Button>
+        );
     }
 }
 
@@ -101,20 +71,23 @@ DeleteButton.propTypes = {
     basePath: PropTypes.string,
     classes: PropTypes.object,
     className: PropTypes.string,
-    crudDelete: PropTypes.func,
+    dispatchCrudDelete: PropTypes.func.isRequired,
     label: PropTypes.string,
     record: PropTypes.object,
     redirect: PropTypes.string,
     resource: PropTypes.string.isRequired,
+    startUndoable: PropTypes.func,
     translate: PropTypes.func,
+    undoable: PropTypes.bool,
 };
 
 DeleteButton.defaultProps = {
     redirect: 'list',
+    undoable: true,
 };
 
 export default compose(
-    connect(null, { crudDelete }),
+    connect(null, { startUndoable, dispatchCrudDelete: crudDelete }),
     translate,
     withStyles(styles)
 )(DeleteButton);

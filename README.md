@@ -10,7 +10,8 @@ A frontend Framework for building admin applications running in the browser on t
 
 * Adapts to any backend (REST, GraphQL, SOAP, etc.)
 * Complete documentation
-* Optimistic rendering (renders before the server returns)
+* Super-fast UI thanks to optimistic rendering (renders before the server returns)
+* Undo updates and deletes for a few seconds
 * Relationships (many to one, one to many)
 * Internationalization (i18n)
 * Conditional formatting

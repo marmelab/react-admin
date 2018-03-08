@@ -182,7 +182,6 @@ But most of the time, bulk actions are mini-applications with a standalone user 
 ```jsx
 // in ./ResetViewsAction.js
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Confirm } from 'react-admin';
 import { crudUpdateMany } from 'ra-core';
@@ -211,19 +210,36 @@ class ResetViewsAction extends Component {
     }
 }
 
-ResetViewsAction.propTypes = {
-    basePath: PropTypes.string,
-    crudUpdateMany: PropTypes.func.isRequired,
-    label: PropTypes.string,
-    onExit: PropTypes.func.isRequired,
-    resource: PropTypes.string.isRequired,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
-};
-
 export default connect(undefined, { crudUpdateMany })(ResetViewsAction);
 ```
 
 **Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
+
+**Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `ResetViewsAction` by wrapping the `crudUpdateMany()` action creator inside a `startUndoable()` action creator, as follows:
+
+```jsx
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import { startUndoable, crudUpdateMany } from 'ra-core';
+
+class ResetViewsAction extends Component {
+    componentDidMount = () => {
+        const { basePath, startUndoable, resource, selectedIds } = this.props;
+        startUndoable(
+            crudUpdateMany(resource, selectedIds, { views: 0 }, basePath)
+        );
+        this.props.onExit();
+    };
+
+    render() {
+        return null;
+    }
+}
+
+export default connect(undefined, { startUndoable })(ResetViewsAction);
+```
+
+Note that the `crudUpdateMany` action creator is *not* present in the `mapDispatchToProps` argument of `connect()` in that case. Only `startUndoable` needs to be dispatched in this case, using the result of the `crudUpdateMany()` call as parameter.
 
 ### Filters
 

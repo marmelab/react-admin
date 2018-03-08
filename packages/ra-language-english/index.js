@@ -9,6 +9,7 @@ module.exports = {
             edit: 'Edit',
             sort: 'Sort',
             cancel: 'Cancel',
+            undo: 'Undo',
             refresh: 'Refresh',
             add_filter: 'Add filter',
             remove_filter: 'Remove this filter',
@@ -89,6 +90,7 @@ module.exports = {
             bad_item: 'Incorrect element',
             item_doesnt_exist: 'Element does not exist',
             http_error: 'Server communication error',
+            canceled: 'Action cancelled',
         },
         validation: {
             required: 'Required',

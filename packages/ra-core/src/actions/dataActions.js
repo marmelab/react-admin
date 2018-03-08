@@ -34,8 +34,8 @@ export const CRUD_GET_ONE_SUCCESS = 'RA/CRUD_GET_ONE_SUCCESS';
 
 export const crudGetOne = (resource, id, basePath, cancelPrevious = true) => ({
     type: CRUD_GET_ONE,
-    payload: { id, basePath },
-    meta: { resource, fetch: GET_ONE, cancelPrevious },
+    payload: { id },
+    meta: { resource, fetch: GET_ONE, cancelPrevious, basePath },
 });
 
 export const CRUD_CREATE = 'RA/CRUD_CREATE';
@@ -45,14 +45,30 @@ export const CRUD_CREATE_SUCCESS = 'RA/CRUD_CREATE_SUCCESS';
 
 export const crudCreate = (resource, data, basePath, redirectTo = 'edit') => ({
     type: CRUD_CREATE,
-    payload: { data, basePath, redirectTo },
-    meta: { resource, fetch: CREATE, cancelPrevious: false },
+    payload: { data },
+    meta: {
+        resource,
+        fetch: CREATE,
+        cancelPrevious: false,
+        onSuccess: {
+            notification: {
+                body: 'ra.notification.created',
+                level: 'info',
+                messageArgs: {
+                    smart_count: 1,
+                },
+            },
+            redirectTo,
+            basePath,
+        },
+    },
 });
 
 export const CRUD_UPDATE = 'RA/CRUD_UPDATE';
 export const CRUD_UPDATE_LOADING = 'RA/CRUD_UPDATE_LOADING';
 export const CRUD_UPDATE_FAILURE = 'RA/CRUD_UPDATE_FAILURE';
 export const CRUD_UPDATE_SUCCESS = 'RA/CRUD_UPDATE_SUCCESS';
+export const CRUD_UPDATE_OPTIMISTIC = 'RA/CRUD_UPDATE_OPTIMISTIC';
 
 export const crudUpdate = (
     resource,
@@ -63,32 +79,64 @@ export const crudUpdate = (
     redirectTo = 'show'
 ) => ({
     type: CRUD_UPDATE,
-    payload: { id, data, previousData, basePath, redirectTo },
-    meta: { resource, fetch: UPDATE, cancelPrevious: false },
+    payload: { id, data, previousData },
+    meta: {
+        resource,
+        fetch: UPDATE,
+        cancelPrevious: false,
+        onSuccess: {
+            notification: {
+                body: 'ra.notification.updated',
+                level: 'info',
+                messageArgs: {
+                    smart_count: 1,
+                },
+            },
+            redirectTo,
+            basePath,
+        },
+    },
 });
 
 export const CRUD_UPDATE_MANY = 'RA/CRUD_UPDATE_MANY';
 export const CRUD_UPDATE_MANY_LOADING = 'RA/CRUD_UPDATE_MANY_LOADING';
 export const CRUD_UPDATE_MANY_FAILURE = 'RA/CRUD_UPDATE_MANY_FAILURE';
 export const CRUD_UPDATE_MANY_SUCCESS = 'RA/CRUD_UPDATE_MANY_SUCCESS';
+export const CRUD_UPDATE_MANY_OPTIMISTIC = 'RA/CRUD_UPDATE_MANY_OPTIMISTIC';
 
 export const crudUpdateMany = (
     resource,
     ids,
     data,
     basePath,
-    refresh = true,
-    unselectAll = true
+    refresh = true
 ) => ({
     type: CRUD_UPDATE_MANY,
-    payload: { ids, data, basePath, refresh, unselectAll },
-    meta: { resource, fetch: UPDATE_MANY, cancelPrevious: false },
+    payload: { ids, data },
+    meta: {
+        resource,
+        fetch: UPDATE_MANY,
+        cancelPrevious: false,
+        onSuccess: {
+            notification: {
+                body: 'ra.notification.updated',
+                level: 'info',
+                messageArgs: {
+                    smart_count: ids.length,
+                },
+            },
+            basePath,
+            refresh,
+            unselectAll: true,
+        },
+    },
 });
 
 export const CRUD_DELETE = 'RA/CRUD_DELETE';
 export const CRUD_DELETE_LOADING = 'RA/CRUD_DELETE_LOADING';
 export const CRUD_DELETE_FAILURE = 'RA/CRUD_DELETE_FAILURE';
 export const CRUD_DELETE_SUCCESS = 'RA/CRUD_DELETE_SUCCESS';
+export const CRUD_DELETE_OPTIMISTIC = 'RA/CRUD_DELETE_OPTIMISTIC';
 
 export const crudDelete = (
     resource,
@@ -98,19 +146,51 @@ export const crudDelete = (
     redirectTo = 'list'
 ) => ({
     type: CRUD_DELETE,
-    payload: { id, previousData, basePath, redirectTo },
-    meta: { resource, fetch: DELETE, cancelPrevious: false },
+    payload: { id, previousData },
+    meta: {
+        resource,
+        fetch: DELETE,
+        cancelPrevious: false,
+        onSuccess: {
+            notification: {
+                body: 'ra.notification.deleted',
+                level: 'info',
+                messageArgs: {
+                    smart_count: 1,
+                },
+            },
+            redirectTo,
+            basePath,
+        },
+    },
 });
 
 export const CRUD_DELETE_MANY = 'RA/CRUD_DELETE_MANY';
 export const CRUD_DELETE_MANY_LOADING = 'RA/CRUD_DELETE_MANY_LOADING';
 export const CRUD_DELETE_MANY_FAILURE = 'RA/CRUD_DELETE_MANY_FAILURE';
 export const CRUD_DELETE_MANY_SUCCESS = 'RA/CRUD_DELETE_MANY_SUCCESS';
+export const CRUD_DELETE_MANY_OPTIMISTIC = 'RA/CRUD_DELETE_MANY_OPTIMISTIC';
 
 export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
     type: CRUD_DELETE_MANY,
-    payload: { ids, basePath, refresh, unselectAll: true },
-    meta: { resource, fetch: DELETE_MANY, cancelPrevious: false },
+    payload: { ids },
+    meta: {
+        resource,
+        fetch: DELETE_MANY,
+        cancelPrevious: false,
+        onSuccess: {
+            notification: {
+                body: 'ra.notification.deleted',
+                level: 'info',
+                messageArgs: {
+                    smart_count: ids.length,
+                },
+            },
+            basePath,
+            refresh,
+            unselectAll: true,
+        },
+    },
 });
 
 export const CRUD_GET_MANY = 'RA/CRUD_GET_MANY';

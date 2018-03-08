@@ -7,7 +7,10 @@ import {
     CREATE,
     UPDATE,
 } from '../../../dataFetchActions';
-import { CRUD_UPDATE, CRUD_UPDATE_MANY } from '../../../actions/dataActions';
+import {
+    CRUD_UPDATE_OPTIMISTIC,
+    CRUD_UPDATE_MANY_OPTIMISTIC,
+} from '../../../actions/dataActions';
 
 import getFetchedAt from '../../../util/getFetchedAt';
 
@@ -62,13 +65,11 @@ export default resource => (
     if (!meta || meta.resource !== resource) {
         return previousState;
     }
-    if (type === CRUD_UPDATE) {
-        // optimistic update
+    if (type === CRUD_UPDATE_OPTIMISTIC) {
         const updatedRecord = { ...previousState[payload.id], ...payload.data };
         return addRecords([updatedRecord], previousState);
     }
-    if (type === CRUD_UPDATE_MANY) {
-        // optimistic update
+    if (type === CRUD_UPDATE_MANY_OPTIMISTIC) {
         const updatedRecords = payload.ids
             .reduce((records, id) => records.concat(previousState[id]), [])
             .map(record => ({ ...record, ...payload.data }));

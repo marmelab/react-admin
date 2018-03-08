@@ -2,28 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
+import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
-import {
-    hideNotification as hideNotificationAction,
-    getNotification,
-    translate,
-} from 'ra-core';
+import { hideNotification, getNotification, translate, undo } from 'ra-core';
 
-const styles = theme => {
-    const confirm = theme.palette.background.default;
-    const warning = theme.palette.error.light;
-    return {
-        confirm: {
-            backgroundColor: confirm,
-        },
-        warning: {
-            backgroundColor: warning,
-        },
-    };
-};
+const styles = theme => ({
+    confirm: {
+        backgroundColor: theme.palette.background.default,
+    },
+    warning: {
+        backgroundColor: theme.palette.error.light,
+    },
+    undo: {
+        color: theme.palette.primary.light,
+    },
+});
 
 class Notification extends React.Component {
     state = {
@@ -47,6 +43,7 @@ class Notification extends React.Component {
 
     render() {
         const {
+            undo,
             classes,
             className,
             type,
@@ -77,6 +74,18 @@ class Notification extends React.Component {
                         className
                     ),
                 }}
+                action={
+                    notification && notification.undoable ? (
+                        <Button
+                            color="primary"
+                            className={classes.undo}
+                            size="small"
+                            onClick={undo}
+                        >
+                            {translate('ra.action.undo')}
+                        </Button>
+                    ) : null
+                }
                 {...rest}
             />
         );
@@ -96,6 +105,7 @@ Notification.propTypes = {
     hideNotification: PropTypes.func.isRequired,
     autoHideDuration: PropTypes.number,
     translate: PropTypes.func.isRequired,
+    undo: PropTypes.func,
 };
 
 Notification.defaultProps = {
@@ -111,6 +121,7 @@ export default compose(
     translate,
     withStyles(styles),
     connect(mapStateToProps, {
-        hideNotification: hideNotificationAction,
+        hideNotification,
+        undo,
     })
 )(Notification);

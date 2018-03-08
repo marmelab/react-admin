@@ -5,7 +5,6 @@ export default (url, initialField = 'title') => driver => ({
         appLoader: By.css('.app-loader'),
         body: By.css('body'),
         deleteButton: By.css('.ra-delete-button'),
-        deleteConfirmButton: By.css('.ra-confirm'),
         field: name => By.css(`.ra-field-${name} > div > div > span`),
         fields: By.css(`.ra-field`),
         snackbar: By.css('div[role="alertdialog"]'),
@@ -76,17 +75,15 @@ export default (url, initialField = 'title') => driver => ({
         return driver.sleep(200);
     },
 
-    async delete() {
-        const deleteButton = await driver.findElement(
-            this.elements.deleteButton
-        );
-        await deleteButton.click();
-
-        const deleteConfirmationButton = await driver.findElement(
-            this.elements.deleteConfirmButton
-        );
-        await deleteConfirmationButton.click();
-
-        await this.waitUntilDataLoaded();
+    delete() {
+        return driver
+            .findElement(this.elements.deleteButton)
+            .click()
+            .then(() =>
+                driver.wait(until.elementLocated(this.elements.snackbar), 3000)
+            )
+            .then(() => driver.findElement(this.elements.body).click()) // dismiss notification
+            .then(() => driver.sleep(200)) // let the notification disappear (could block further submits)
+            .then(() => this.waitUntilDataLoaded());
     },
 });

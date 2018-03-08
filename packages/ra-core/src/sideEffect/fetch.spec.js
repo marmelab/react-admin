@@ -1,9 +1,9 @@
 import { cancel, fork, take } from 'redux-saga/effects';
 import { createMockTask } from 'redux-saga/utils';
 
-import crudFetch, { handleFetch, takeFetchAction } from './crudFetch';
+import crudFetch, { handleFetch, takeFetchAction } from './fetch';
 
-describe('crudFetch', () => {
+describe('fetch saga', () => {
     const dataProvider = jest.fn();
     const action = {
         meta: { fetch: 'FETCH_ONE', resource: 'test', cancelPrevious: true },
@@ -16,8 +16,11 @@ describe('crudFetch', () => {
         expect(generator.next().value).toEqual(take(takeFetchAction));
     });
 
+    it('should select the optimistic status', () => {
+        expect(generator.next(action).value).toHaveProperty('SELECT');
+    });
     it('should fork a handleFetch', () => {
-        expect(generator.next(action).value).toEqual(
+        expect(generator.next(false).value).toEqual(
             fork(handleFetch, dataProvider, action)
         );
     });
@@ -25,8 +28,10 @@ describe('crudFetch', () => {
     it('waits for another fetch action', () => {
         expect(generator.next(task).value).toEqual(take(takeFetchAction));
     });
-
+    it('should select the optimistic status', () => {
+        expect(generator.next(action).value).toHaveProperty('SELECT');
+    });
     it('should cancel previous task of same resource', () => {
-        expect(generator.next(action).value).toEqual(cancel(task));
+        expect(generator.next(false).value).toEqual(cancel(task));
     });
 });

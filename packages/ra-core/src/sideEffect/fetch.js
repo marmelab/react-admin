@@ -6,17 +6,22 @@ import {
     cancelled,
     fork,
     take,
+    select,
 } from 'redux-saga/effects';
 import {
     FETCH_START,
     FETCH_END,
     FETCH_ERROR,
     FETCH_CANCEL,
-} from '../../actions/fetchActions';
+} from '../actions/fetchActions';
 
 export const takeFetchAction = action => action.meta && action.meta.fetch;
 export function* handleFetch(dataProvider, action) {
-    const { type, payload, meta: { fetch: fetchMeta, ...meta } } = action;
+    const {
+        type,
+        payload,
+        meta: { fetch: fetchMeta, onSuccess, ...meta },
+    } = action;
     const restType = fetchMeta;
 
     try {
@@ -39,6 +44,7 @@ export function* handleFetch(dataProvider, action) {
             requestPayload: payload,
             meta: {
                 ...meta,
+                ...onSuccess,
                 fetchResponse: restType,
                 fetchStatus: FETCH_END,
             },
@@ -65,12 +71,22 @@ export function* handleFetch(dataProvider, action) {
     }
 }
 
-const crudFetch = dataProvider => {
-    return function* watchCrudFetch() {
+const fetch = dataProvider => {
+    return function* watchFetch() {
         const runningTasks = {};
 
         while (true) {
             const action = yield take(takeFetchAction);
+
+            const isOptimistic = yield select(
+                state => state.admin.ui.optimistic
+            );
+            if (isOptimistic) {
+                // in optimistic mode, all fetch actions are canceled,
+                // so the admin uses the store without synchronization
+                continue;
+            }
+
             const { cancelPrevious, resource } = action.meta;
 
             if (cancelPrevious && runningTasks[resource]) {
@@ -85,4 +101,4 @@ const crudFetch = dataProvider => {
     };
 };
 
-export default crudFetch;
+export default fetch;

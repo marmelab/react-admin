@@ -105,7 +105,7 @@ export const ListView = ({
             className={classnames('list-page', classes.root, className)}
             {...sanitizeRestProps(rest)}
         >
-            <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+            <Card>
                 <Header
                     className={classes.header}
                     title={titleElement}

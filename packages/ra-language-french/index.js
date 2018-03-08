@@ -8,7 +8,8 @@ module.exports = {
             create: 'Créer',
             edit: 'Éditer',
             sort: 'Trier',
-            cancel: 'Quitter',
+            cancel: 'Annuler',
+            undo: 'Annuler',
             refresh: 'Actualiser',
             add_filter: 'Ajouter un filtre',
             remove_filter: 'Supprimer ce filtre',
@@ -92,6 +93,7 @@ module.exports = {
             bad_item: 'Élément inconnu',
             item_doesnt_exist: "L'élément n'existe pas",
             http_error: 'Erreur de communication avec le serveur',
+            canceled: 'Action annulée',
         },
         validation: {
             required: 'Ce champ est requis',

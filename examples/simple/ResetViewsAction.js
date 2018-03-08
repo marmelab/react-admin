@@ -1,40 +1,29 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Confirm } from 'react-admin';
-import { crudUpdateMany } from 'ra-core';
+import { startUndoable, crudUpdateMany } from 'ra-core';
 
 class ResetViewsAction extends Component {
-    handleDialogClose = () => {
-        this.props.onExit();
-    };
-
-    handleConfirm = () => {
-        const { basePath, crudUpdateMany, resource, selectedIds } = this.props;
-        crudUpdateMany(resource, selectedIds, { views: 0 }, basePath);
+    componentDidMount = () => {
+        const { basePath, startUndoable, resource, selectedIds } = this.props;
+        startUndoable(
+            crudUpdateMany(resource, selectedIds, { views: 0 }, basePath)
+        );
         this.props.onExit();
     };
 
     render() {
-        return (
-            <Confirm
-                isOpen={true}
-                title="Update View Count"
-                content="Are you sure you want to reset the views for these items?"
-                onConfirm={this.handleConfirm}
-                onClose={this.handleDialogClose}
-            />
-        );
+        return null;
     }
 }
 
 ResetViewsAction.propTypes = {
     basePath: PropTypes.string,
-    crudUpdateMany: PropTypes.func.isRequired,
     label: PropTypes.string,
     onExit: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    startUndoable: PropTypes.func.isRequired,
 };
 
-export default connect(undefined, { crudUpdateMany })(ResetViewsAction);
+export default connect(undefined, { startUndoable })(ResetViewsAction);
