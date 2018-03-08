@@ -28,8 +28,10 @@ describe('fetch saga', () => {
     it('waits for another fetch action', () => {
         expect(generator.next(task).value).toEqual(take(takeFetchAction));
     });
-
+    it('should select the optimistic status', () => {
+        expect(generator.next(action).value).toHaveProperty('SELECT');
+    });
     it('should cancel previous task of same resource', () => {
-        expect(generator.next(action).value).toEqual(cancel(task));
+        expect(generator.next(false).value).toEqual(cancel(task));
     });
 });
