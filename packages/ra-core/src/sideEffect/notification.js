@@ -9,7 +9,7 @@ function* handleNotification({ type, meta: { notification } }) {
     yield put(
         showNotification(body, level, {
             messageArgs,
-            cancellable: type.indexOf('_OPTIMISTIC') !== -1,
+            undoable: type.indexOf('_OPTIMISTIC') !== -1,
         })
     );
 }

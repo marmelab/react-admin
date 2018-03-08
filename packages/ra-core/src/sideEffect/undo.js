@@ -6,18 +6,18 @@ import {
     hideNotification,
 } from '../actions/notificationActions';
 import {
-    CANCELLABLE,
-    CANCEL,
+    UNDOABLE,
+    UNDO,
     startOptimisticMode,
     stopOptimisticMode,
-} from '../actions/cancelActions';
+} from '../actions/undoActions';
 import { refreshView } from '../actions/uiActions';
 
-export function* handleCancelRace(cancellableAction) {
-    const { payload: { action, delay: cancelDelay } } = cancellableAction;
+export function* handleUndoRace(undoableAction) {
+    const { payload: { action, delay: cancelDelay } } = undoableAction;
     const { onSuccess, ...metaWithoutSuccessSideEffects } = action.meta;
     yield put(startOptimisticMode());
-    // dispatch action in optimistic mode (no fetch), and make notification cancellable
+    // dispatch action in optimistic mode (no fetch), and make notification undoable
     yield put({
         ...action,
         type: `${action.type}_OPTIMISTIC`,
@@ -26,9 +26,9 @@ export function* handleCancelRace(cancellableAction) {
             ...onSuccess,
         },
     });
-    // launch cancellable race
+    // wait for undo or delay
     const { timeout } = yield race({
-        cancel: take(CANCEL),
+        cancel: take(UNDO),
         timeout: call(delay, cancelDelay),
     });
     yield put(stopOptimisticMode());
@@ -46,6 +46,6 @@ export function* handleCancelRace(cancellableAction) {
     }
 }
 
-export default function* watchCancellable() {
-    yield takeEvery(CANCELLABLE, handleCancelRace);
+export default function* watchUndoable() {
+    yield takeEvery(UNDOABLE, handleUndoRace);
 }

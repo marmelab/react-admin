@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import inflection from 'inflection';
 import { reset } from 'redux-form';
 import translate from '../i18n/translate';
-import { crudGetOne, crudUpdate, startCancellable } from '../actions';
+import { crudGetOne, crudUpdate, startUndoable } from '../actions';
 
 /**
  * Page component for the Edit view
@@ -81,7 +81,7 @@ export class EditController extends Component {
     }
 
     save = (data, redirect) => {
-        this.props.startCancellable(
+        this.props.startUndoable(
             crudUpdate(
                 this.props.resource,
                 this.props.id,
@@ -146,7 +146,7 @@ EditController.propTypes = {
     match: PropTypes.object.isRequired,
     resetForm: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
-    startCancellable: PropTypes.func.isRequired,
+    startUndoable: PropTypes.func.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
     version: PropTypes.number.isRequired,
@@ -168,7 +168,7 @@ function mapStateToProps(state, props) {
 export default compose(
     connect(mapStateToProps, {
         crudGetOne,
-        startCancellable,
+        startUndoable,
         resetForm: reset,
     }),
     translate

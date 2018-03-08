@@ -2,17 +2,12 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { crudDeleteMany, startCancellable, translate } from 'ra-core';
+import { crudDeleteMany, startUndoable, translate } from 'ra-core';
 
 class BulkDeleteAction extends Component {
     componentDidMount = () => {
-        const {
-            basePath,
-            resource,
-            selectedIds,
-            startCancellable,
-        } = this.props;
-        startCancellable(crudDeleteMany(resource, selectedIds, basePath));
+        const { basePath, resource, selectedIds, startUndoable } = this.props;
+        startUndoable(crudDeleteMany(resource, selectedIds, basePath));
         this.props.onExit();
     };
 
@@ -26,14 +21,14 @@ BulkDeleteAction.propTypes = {
     label: PropTypes.string,
     onExit: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
-    startCancellable: PropTypes.func,
+    startUndoable: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
     translate: PropTypes.func.isRequired,
 };
 
 const EnhancedBulkDeleteAction = compose(
     connect(undefined, {
-        startCancellable,
+        startUndoable,
     }),
     translate
 )(BulkDeleteAction);

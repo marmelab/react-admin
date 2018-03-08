@@ -75,7 +75,7 @@ class Notification extends React.Component {
                     ),
                 }}
                 action={
-                    notification && notification.cancellable ? (
+                    notification && notification.undoable ? (
                         <Button
                             color="primary"
                             className={classes.undo}

@@ -1,4 +1,4 @@
-import { put, call } from 'redux-saga/effects';
+import { put } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 
 import {
@@ -8,14 +8,14 @@ import {
 import {
     startOptimisticMode,
     stopOptimisticMode,
-} from '../actions/cancelActions';
+} from '../actions/undoActions';
 import { refreshView } from '../actions/uiActions';
 
-import { handleCancelRace } from './undo';
+import { handleUndoRace } from './undo';
 
 describe('undo saga', () => {
     const action = {
-        type: 'CANCELLABLE',
+        type: 'UNDOABLE',
         payload: {
             action: {
                 type: 'FOO',
@@ -31,7 +31,7 @@ describe('undo saga', () => {
         },
     };
     describe('cancelled', () => {
-        const generator = handleCancelRace(action);
+        const generator = handleUndoRace(action);
 
         it('should start optimistic mode', () => {
             expect(generator.next().value).toEqual(put(startOptimisticMode()));
@@ -52,7 +52,7 @@ describe('undo saga', () => {
             expect(generator.next().value).toHaveProperty('RACE');
         });
         it('should stop the optimistic mode', () => {
-            expect(generator.next({ type: 'CANCEL' }).value).toEqual(
+            expect(generator.next({ type: 'UNDO' }).value).toEqual(
                 put(stopOptimisticMode())
             );
         });
@@ -70,7 +70,7 @@ describe('undo saga', () => {
         });
     });
     describe('timed out', () => {
-        const generator = handleCancelRace(action);
+        const generator = handleUndoRace(action);
 
         it('should start optimistic mode', () => {
             expect(generator.next().value).toEqual(put(startOptimisticMode()));

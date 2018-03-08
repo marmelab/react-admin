@@ -6,7 +6,7 @@ import { withStyles } from 'material-ui/styles';
 import { fade } from 'material-ui/styles/colorManipulator';
 import ActionDelete from 'material-ui-icons/Delete';
 import classnames from 'classnames';
-import { translate, crudDelete, startCancellable } from 'ra-core';
+import { translate, crudDelete, startUndoable } from 'ra-core';
 
 import Button from './Button';
 
@@ -27,13 +27,13 @@ class DeleteButton extends Component {
     handleDelete = event => {
         event.preventDefault();
         const {
-            startCancellable,
+            startUndoable,
             resource,
             record,
             basePath,
             redirect,
         } = this.props;
-        startCancellable(
+        startUndoable(
             crudDelete(resource, record.id, record, basePath, redirect)
         );
     };
@@ -69,7 +69,7 @@ DeleteButton.propTypes = {
     record: PropTypes.object,
     redirect: PropTypes.string,
     resource: PropTypes.string.isRequired,
-    startCancellable: PropTypes.func,
+    startUndoable: PropTypes.func,
     translate: PropTypes.func,
 };
 
@@ -78,7 +78,7 @@ DeleteButton.defaultProps = {
 };
 
 export default compose(
-    connect(null, { startCancellable }),
+    connect(null, { startUndoable }),
     translate,
     withStyles(styles)
 )(DeleteButton);
