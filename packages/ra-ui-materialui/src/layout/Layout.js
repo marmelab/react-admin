@@ -116,10 +116,10 @@ export const layoutWithTheme = PlainLayout => {
         </MuiThemeProvider>
     );
     LayoutWithTheme.propTypes = {
-        theme: PropTypes.object
+        theme: PropTypes.object,
     };
     LayoutWithTheme.defaultProps = {
-        theme: defaultTheme
+        theme: defaultTheme,
     };
     return LayoutWithTheme;
 };
@@ -130,7 +130,7 @@ export const layoutWithThemeAndAndStyle = (theme, styles, layout) => {
         connect(
             state => ({
                 open: state.admin.ui.sidebarOpen,
-                theme
+                theme,
             }),
             {} // Avoid connect passing dispatch in props
         ),
@@ -146,4 +146,3 @@ export const defaultLayoutWithThemeAndStyle = (
 };
 
 export default defaultLayoutWithThemeAndStyle();
-
