@@ -26,3 +26,16 @@ export const getReferenceResource = (state, props) =>
 export const isLoggedIn = state => adminIsLoggedIn(state.admin);
 export const getLocale = state => adminGetLocale(state.i18n);
 export { getPossibleReferences } from './admin';
+
+export const getResourceState = resource => state =>
+    state.admin.resources[resource];
+
+export const isListInitiated = resource => {
+    const resourceStateSelector = getResourceState(resource);
+    return state => {
+        const resourceState = resourceStateSelector(state);
+        return (
+            resourceState && resourceState.list && resourceState.list.initiated
+        );
+    };
+};
