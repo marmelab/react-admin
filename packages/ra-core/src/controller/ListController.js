@@ -221,6 +221,7 @@ export class ListController extends Component {
             translate,
             version,
             selectedIds,
+            maxPage,
         } = this.props;
         const query = this.getQuery();
 
@@ -249,6 +250,7 @@ export class ListController extends Component {
             hideFilter: this.hideFilter,
             ids,
             isLoading,
+            maxPage,
             onSelect: this.handleSelect,
             onToggleItem: this.handleToggleItem,
             onUnselectItems: this.handleUnselectItems,
@@ -274,6 +276,7 @@ ListController.propTypes = {
     filters: PropTypes.element,
     pagination: PropTypes.element,
     perPage: PropTypes.number.isRequired,
+    maxPage: PropTypes.number,
     sort: PropTypes.shape({
         field: PropTypes.string,
         order: PropTypes.string,
@@ -308,6 +311,7 @@ ListController.defaultProps = {
     filter: {},
     filterValues: {},
     perPage: 10,
+    maxPage: null,
     sort: {
         field: 'id',
         order: SORT_DESC,

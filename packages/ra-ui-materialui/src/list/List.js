@@ -82,6 +82,7 @@ export const ListView = ({
     onSelect,
     onToggleItem,
     onUnselectItems,
+    maxPage,
     page,
     pagination = <DefaultPagination />,
     perPage,
@@ -170,6 +171,7 @@ export const ListView = ({
                                 page,
                                 perPage,
                                 setPage,
+                                maxPage,
                                 total,
                             })}
                     </div>
@@ -205,6 +207,7 @@ ListView.propTypes = {
     hideFilter: PropTypes.func,
     ids: PropTypes.array,
     isLoading: PropTypes.bool,
+    maxPage: PropTypes.number,
     onSelect: PropTypes.func,
     onToggleItem: PropTypes.func,
     onUnselectItems: PropTypes.func,
@@ -280,6 +283,7 @@ List.propTypes = {
     className: PropTypes.string,
     filter: PropTypes.object,
     filters: PropTypes.element,
+    maxPage: PropTypes.number,
     pagination: PropTypes.element,
     perPage: PropTypes.number.isRequired,
     sort: PropTypes.shape({
@@ -302,6 +306,7 @@ List.propTypes = {
 
 List.defaultProps = {
     filter: {},
+    maxPage: null,
     perPage: 10,
     theme: defaultTheme,
 };

@@ -22,6 +22,7 @@ Here are all the props accepted by the `<List>` component:
 * [`bulkActions`](#bulk-actions)
 * [`filters`](#filters) (a React element used to display the filter form)
 * [`perPage`](#records-per-page)
+* [`maxPage`](#maximum-page-limit)
 * [`sort`](#default-sort-field)
 * [`filter`](#permanent-filter) (the permanent filter used in the REST request)
 * [`pagination`](#pagination)
@@ -135,7 +136,7 @@ export const PostList = (props) => (
 
 **Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActions` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
 
-React-admin uses the `label` prop of the bulk action components to display the bulk action menu items. 
+React-admin uses the `label` prop of the bulk action components to display the bulk action menu items.
 
 Bulk action components are regular React component that gets mounted when the related menu item is clicked. The component receives several props allowing it to perform its job:
 
@@ -289,6 +290,19 @@ export const PostList = (props) => (
 );
 ```
 
+### Maximum Page Limit
+
+By default, the list paginates all the results without limit. You can override this setting by specifying the `maxPage` prop:
+
+```jsx
+// in src/posts.js
+export const PostList = (props) => (
+    <List {...props} maxPage={10}>
+        ...
+    </List>
+);
+```
+
 ### Default Sort Field
 
 Pass an object literal as the `sort` prop to determine the default `field` and `order` used for sorting:
@@ -357,8 +371,13 @@ import ChevronLeft from 'material-ui-icons/ChevronLeft';
 import ChevronRight from 'material-ui-icons/ChevronRight';
 import Toolbar from 'material-ui/Toolbar';
 
-const PostPagination = ({ page, perPage, total, setPage }) => {
-    const nbPages = Math.ceil(total / perPage) || 1;
+const PostPagination = ({ page, perPage, total, setPage, maxPage }) => {
+    let nbPages = Math.ceil(total / perPage) || 1;
+
+    if (maxPage && nbPages > maxPage) {
+        nbPages = maxPage;
+    }
+
     return (
         nbPages > 1 &&
             <Toolbar>

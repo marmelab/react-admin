@@ -25,6 +25,7 @@ describe('<Pagination />', () => {
             const flatButtons = wrapper.find('WithStyles(Button)');
             assert.equal(flatButtons.length, 0);
         });
+
         it('should render only the text when no pagination is necessary', () => {
             const wrapper = shallow(
                 <Pagination
@@ -52,6 +53,7 @@ describe('<Pagination />', () => {
             );
         });
     });
+
     describe('desktop', () => {
         it('should render a normal <Toolbar>', () => {
             const wrapper = shallow(
@@ -72,6 +74,7 @@ describe('<Pagination />', () => {
             const flatButtons = wrapper.find('WithStyles(Button)');
             assert.equal(flatButtons.length, 5);
         });
+
         it('should render only the text when no pagination is necessary', () => {
             const wrapper = shallow(
                 <Pagination
@@ -96,6 +99,26 @@ describe('<Pagination />', () => {
                     .text(),
                 'ra.navigation.page_range_info'
             );
+        });
+
+        it('should limit the page number if maxPage prop is specified', () => {
+            const wrapper = shallow(
+                <Pagination
+                    page={1}
+                    perPage={10}
+                    total={100}
+                    maxPage={5}
+                    translate={x => x}
+                    width={1}
+                />
+            )
+                .shallow()
+                .shallow()
+                .shallow()
+                .shallow();
+
+            const lastPageNumber = wrapper.find('.page-number').last();
+            expect(lastPageNumber.prop('data-page')).toBe(5);
         });
     });
 });
