@@ -7,7 +7,13 @@ import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
-import { hideNotification, getNotification, translate, undo } from 'ra-core';
+import {
+    hideNotification,
+    getNotification,
+    translate,
+    undo,
+    complete,
+} from 'ra-core';
 
 const styles = theme => ({
     confirm: {
@@ -38,12 +44,17 @@ class Notification extends React.Component {
     };
 
     handleExited = () => {
-        this.props.hideNotification();
+        const { notification, hideNotification, complete } = this.props;
+        if (notification.undoable) {
+            complete();
+        }
+        hideNotification();
     };
 
     render() {
         const {
             undo,
+            complete,
             classes,
             className,
             type,
@@ -93,6 +104,7 @@ class Notification extends React.Component {
 }
 
 Notification.propTypes = {
+    complete: PropTypes.func,
     classes: PropTypes.object,
     className: PropTypes.string,
     notification: PropTypes.shape({
@@ -121,6 +133,7 @@ export default compose(
     translate,
     withStyles(styles),
     connect(mapStateToProps, {
+        complete,
         hideNotification,
         undo,
     })
