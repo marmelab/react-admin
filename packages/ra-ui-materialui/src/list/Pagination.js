@@ -30,9 +30,11 @@ const styles = {
 export class Pagination extends Component {
     range() {
         const input = [];
-        const { page, perPage, total } = this.props;
+        const { page } = this.props;
+
         if (isNaN(page)) return input;
-        const nbPages = Math.ceil(total / perPage) || 1;
+
+        const nbPages = this.getNbPages();
 
         // display page links around the current page
         if (page > 2) {
@@ -65,7 +67,10 @@ export class Pagination extends Component {
     }
 
     getNbPages() {
-        return Math.ceil(this.props.total / this.props.perPage) || 1;
+        const { total, perPage, maxPage } = this.props;
+        const nbPages = Math.ceil(total / perPage) || 1;
+
+        return maxPage && nbPages > maxPage ? maxPage : nbPages;
     }
 
     prevPage = event => {
@@ -137,6 +142,7 @@ export class Pagination extends Component {
             translate,
             ...rest
         } = this.props;
+
         if (total === 0) return null;
         const offsetEnd = Math.min(page * perPage, total);
         const offsetBegin = Math.min((page - 1) * perPage + 1, offsetEnd);
@@ -230,6 +236,11 @@ Pagination.propTypes = {
     setPage: PropTypes.func,
     translate: PropTypes.func.isRequired,
     total: PropTypes.number,
+    maxPage: PropTypes.number,
+};
+
+Pagination.defaultProps = {
+    maxPage: null,
 };
 
 const enhance = compose(pure, translate, withStyles(styles));
