@@ -1,17 +1,17 @@
-import { call, take, takeEvery, put, race } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
+import { take, takeEvery, put, race } from 'redux-saga/effects';
 
 import { showNotification } from '../actions/notificationActions';
 import {
     UNDOABLE,
     UNDO,
+    COMPLETE,
     startOptimisticMode,
     stopOptimisticMode,
 } from '../actions/undoActions';
 import { refreshView } from '../actions/uiActions';
 
 export function* handleUndoRace(undoableAction) {
-    const { payload: { action, delay: cancelDelay } } = undoableAction;
+    const { payload: { action } } = undoableAction;
     const { onSuccess, ...metaWithoutSuccessSideEffects } = action.meta;
     yield put(startOptimisticMode());
     // dispatch action in optimistic mode (no fetch), with success side effects
@@ -25,12 +25,12 @@ export function* handleUndoRace(undoableAction) {
         },
     });
     // wait for undo or delay
-    const { timeout } = yield race({
+    const { complete } = yield race({
         undo: take(UNDO),
-        timeout: call(delay, cancelDelay),
+        complete: take(COMPLETE),
     });
     yield put(stopOptimisticMode());
-    if (timeout) {
+    if (complete) {
         // if not cancelled, redispatch the action, this time immediate, and without success side effect
         yield put({
             ...action,

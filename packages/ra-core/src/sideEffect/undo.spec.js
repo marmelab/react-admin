@@ -23,7 +23,6 @@ describe('undo saga', () => {
                     },
                 },
             },
-            delay: 100,
         },
     };
     describe('cancelled', () => {
@@ -65,7 +64,7 @@ describe('undo saga', () => {
             expect(generator.next().done).toEqual(true);
         });
     });
-    describe('timed out', () => {
+    describe('complete', () => {
         const generator = handleUndoRace(action);
 
         it('should start optimistic mode', () => {
@@ -88,7 +87,7 @@ describe('undo saga', () => {
             expect(generator.next().value).toHaveProperty('RACE');
         });
         it('should stop the optimistic mode', () => {
-            expect(generator.next({ timeout: true }).value).toEqual(
+            expect(generator.next({ complete: true }).value).toEqual(
                 put(stopOptimisticMode())
             );
         });
