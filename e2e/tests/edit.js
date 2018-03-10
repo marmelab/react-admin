@@ -24,6 +24,10 @@ describe('Edit Page', () => {
             await EditPostPage.setInputValue('title', 'Lorem Ipsum');
             await EditPostPage.submit();
             await EditPostPage.navigate();
+            // We need to sleep a bit here because the navigation to a uninitialized list after submit triggers
+            // a get list and the store is set the previous state value. It's updated once the undoable action
+            // is handled.
+            await driver.sleep(3000);
             assert.equal(
                 await EditPostPage.getInputValue('title'),
                 'Lorem Ipsum'
