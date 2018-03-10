@@ -16,8 +16,10 @@ import {
 } from '../actions/fetchActions';
 
 import { isListInitiated } from '../reducer';
+import { stopOptimisticMode } from '../actions/undoActions';
 
-export const takeFetchAction = action => action.meta && action.meta.fetch;
+export const takeFetchAction = action =>
+    action.meta && action.meta.fetch && !action.meta.optimistic;
 export function* handleFetch(dataProvider, action) {
     const {
         type,
@@ -84,12 +86,16 @@ const fetch = dataProvider => {
                 state => state.admin.ui.optimistic
             );
             if (isOptimistic) {
-                const listInitiated = yield select(
+                // in optimistic mode, all fetch actions are canceled,
+                // so the admin uses the store without synchronization
+
+                // An exception is when the list to display is not initialized yet.
+                const initialized = yield select(
                     isListInitiated(action.meta.resource)
                 );
-                if (listInitiated) {
-                    // in optimistic mode, all fetch actions are canceled,
-                    // so the admin uses the store without synchronization
+                if (!initialized) {
+                    yield put(stopOptimisticMode());
+                } else {
                     continue;
                 }
             }
