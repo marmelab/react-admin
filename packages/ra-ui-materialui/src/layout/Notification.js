@@ -25,9 +25,16 @@ class Notification extends React.Component {
     state = {
         open: false,
     };
+    componentWillMount = () => {
+        this.setNextState();
+    };
     componentWillReceiveProps = nextProps => {
+        this.setNextState(nextProps);
+    };
+
+    setNextState = ({ notification } = this.props) => {
         this.setState({
-            open: !!nextProps.notification,
+            open: !!notification,
         });
     };
 
