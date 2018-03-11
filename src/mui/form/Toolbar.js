@@ -10,7 +10,7 @@ const styles = {
         bottom: 0,
         width: '100%',
         backgroundColor: 'white',
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-start',
         zIndex: 2,
     },
 };
