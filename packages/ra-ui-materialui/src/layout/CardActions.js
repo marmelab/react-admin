@@ -15,7 +15,7 @@ const styles = {
 
 const CardActions = ({ classes, className, children, ...rest }) => (
     <MuiCardActions
-        className={classnames(classes.cardAction, className)}
+        className={classnames(classes.cardActions, className)}
         {...rest}
     >
         {children}
