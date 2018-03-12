@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import debounce from 'lodash.debounce';
-import isEqual from 'lodash.isequal';
 import { withStyles } from 'material-ui/styles';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
-import { removeEmpty } from 'ra-core';
 
 const styles = {
     button: {},
@@ -16,27 +13,7 @@ const styles = {
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        this.filters = this.props.filterValues;
     }
-
-    componentWillReceiveProps(nextProps) {
-        this.filters = nextProps.filterValues;
-    }
-
-    componentWillUnmount() {
-        if (this.props.setFilters) {
-            this.setFilters.cancel();
-        }
-    }
-
-    setFilters = debounce(filters => {
-        if (!isEqual(filters, this.filters)) {
-            // fix for redux-form bug with onChange and enableReinitialize
-            const filtersWithoutEmpty = removeEmpty(filters);
-            this.props.setFilters(filtersWithoutEmpty);
-            this.filters = filtersWithoutEmpty;
-        }
-    }, this.props.debounce);
 
     renderButton() {
         const {
@@ -88,7 +65,7 @@ export class Filter extends Component {
                 hideFilter={hideFilter}
                 displayedFilters={displayedFilters}
                 initialValues={filterValues}
-                setFilters={this.setFilters}
+                setFilters={setFilters}
                 {...rest}
             />
         );
