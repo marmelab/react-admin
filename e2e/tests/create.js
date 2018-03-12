@@ -41,6 +41,7 @@ describe('Create Page', () => {
         await CreatePage.submit();
         await ShowPage.waitUntilVisible();
         await ShowPage.delete();
+        await driver.sleep(1000);
     });
 
     it('should stay at create page after create success with "Save and add"', async () => {
@@ -62,6 +63,7 @@ describe('Create Page', () => {
         assert.equal(await CreatePage.getInputValue('title'), ''); // new empty form
         await ShowPage.navigate();
         await ShowPage.delete();
+        await driver.sleep(1000);
     });
 
     it('should not accept creation without required fields', async () => {
