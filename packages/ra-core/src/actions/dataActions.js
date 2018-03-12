@@ -20,11 +20,11 @@ export const crudGetList = (
     pagination,
     sort,
     filter,
-    cancelPrevious = true
+    ignoreOptimistic = false
 ) => ({
     type: CRUD_GET_LIST,
     payload: { pagination, sort, filter },
-    meta: { resource, fetch: GET_LIST, cancelPrevious },
+    meta: { resource, fetch: GET_LIST, ignoreOptimistic },
 });
 
 export const CRUD_GET_ONE = 'RA/CRUD_GET_ONE';
@@ -32,10 +32,15 @@ export const CRUD_GET_ONE_LOADING = 'RA/CRUD_GET_ONE_LOADING';
 export const CRUD_GET_ONE_FAILURE = 'RA/CRUD_GET_ONE_FAILURE';
 export const CRUD_GET_ONE_SUCCESS = 'RA/CRUD_GET_ONE_SUCCESS';
 
-export const crudGetOne = (resource, id, basePath, cancelPrevious = true) => ({
+export const crudGetOne = (
+    resource,
+    id,
+    basePath,
+    ignoreOptimistic = false
+) => ({
     type: CRUD_GET_ONE,
     payload: { id },
-    meta: { resource, fetch: GET_ONE, cancelPrevious, basePath },
+    meta: { resource, fetch: GET_ONE, ignoreOptimistic, basePath },
 });
 
 export const CRUD_CREATE = 'RA/CRUD_CREATE';
@@ -49,7 +54,7 @@ export const crudCreate = (resource, data, basePath, redirectTo = 'edit') => ({
     meta: {
         resource,
         fetch: CREATE,
-        cancelPrevious: false,
+        ignoreOptimistic: true,
         onSuccess: {
             notification: {
                 body: 'ra.notification.created',
@@ -83,7 +88,7 @@ export const crudUpdate = (
     meta: {
         resource,
         fetch: UPDATE,
-        cancelPrevious: false,
+        ignoreOptimistic: true,
         onSuccess: {
             notification: {
                 body: 'ra.notification.updated',
@@ -150,7 +155,7 @@ export const crudDelete = (
     meta: {
         resource,
         fetch: DELETE,
-        cancelPrevious: false,
+        ignoreOptimistic: true,
         onSuccess: {
             notification: {
                 body: 'ra.notification.deleted',
@@ -177,7 +182,7 @@ export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
     meta: {
         resource,
         fetch: DELETE_MANY,
-        cancelPrevious: false,
+        ignoreOptimistic: true,
         onSuccess: {
             notification: {
                 body: 'ra.notification.deleted',
@@ -203,7 +208,11 @@ export const CRUD_GET_MANY_SUCCESS = 'RA/CRUD_GET_MANY_SUCCESS';
 export const crudGetMany = (resource, ids) => ({
     type: CRUD_GET_MANY,
     payload: { ids },
-    meta: { resource, fetch: GET_MANY, cancelPrevious: false },
+    meta: {
+        resource,
+        fetch: GET_MANY,
+        ignoreOptimistic: true,
+    },
 });
 
 export const CRUD_GET_MATCHING = 'RA/CRUD_GET_MATCHING';
@@ -216,7 +225,8 @@ export const crudGetMatching = (
     relatedTo,
     pagination,
     sort,
-    filter
+    filter,
+    ignoreOptimistic
 ) => ({
     type: CRUD_GET_MATCHING,
     payload: { pagination, sort, filter },
@@ -224,7 +234,7 @@ export const crudGetMatching = (
         resource: reference,
         relatedTo,
         fetch: GET_LIST,
-        cancelPrevious: false,
+        ignoreOptimistic,
     },
 });
 
@@ -244,7 +254,8 @@ export const crudGetManyReference = (
     pagination,
     sort,
     filter,
-    source
+    source,
+    ignoreOptimistic
 ) => ({
     type: CRUD_GET_MANY_REFERENCE,
     payload: { target, id, pagination, sort, filter, source },
@@ -252,6 +263,6 @@ export const crudGetManyReference = (
         resource: reference,
         relatedTo,
         fetch: GET_MANY_REFERENCE,
-        cancelPrevious: false,
+        ignoreOptimistic,
     },
 });

@@ -1,30 +1,35 @@
 import {
-    actionChannel,
     all,
-    put,
     call,
-    cancel,
     cancelled,
-    fork,
-    take,
+    put,
     select,
+    takeEvery,
 } from 'redux-saga/effects';
 import {
-    FETCH_START,
+    FETCH_CANCEL,
     FETCH_END,
     FETCH_ERROR,
-    FETCH_CANCEL,
+    FETCH_START,
 } from '../actions/fetchActions';
 
 export function* handleFetch(dataProvider, action) {
     const {
         type,
         payload,
-        meta: { fetch: fetchMeta, onSuccess, ...meta },
+        meta: { fetch: fetchMeta, onSuccess, ignoreOptimistic, ...meta },
     } = action;
     const restType = fetchMeta;
 
     try {
+        const isOptimistic = yield !ignoreOptimistic &&
+            select(state => state.admin.ui.optimistic);
+        if (isOptimistic) {
+            // in optimistic mode, all fetch actions are canceled,
+            // so the admin uses the store without synchronization
+            return;
+        }
+
         yield all([
             put({ type: `${type}_LOADING`, payload, meta }),
             put({ type: FETCH_START }),
@@ -73,31 +78,11 @@ export function* handleFetch(dataProvider, action) {
 export const takeFetchAction = action => action.meta && action.meta.fetch;
 const fetch = dataProvider => {
     return function* watchFetch() {
-        const runningTasks = {};
-        const fetchActionQueue = yield actionChannel(takeFetchAction);
-        while (true) {
-            const action = yield take(fetchActionQueue);
-
-            const isOptimistic = yield select(
-                state => state.admin.ui.optimistic
-            );
-            if (isOptimistic) {
-                // in optimistic mode, all fetch actions are canceled,
-                // so the admin uses the store without synchronization
-                continue;
-            }
-
-            const { cancelPrevious, resource } = action.meta;
-
-            if (cancelPrevious && runningTasks[resource]) {
-                runningTasks[resource] = yield cancel(runningTasks[resource]);
-            }
-            runningTasks[resource] = yield fork(
-                handleFetch,
-                dataProvider,
-                action
-            );
-        }
+        yield takeEvery(
+            action => action.meta && action.meta.fetch,
+            handleFetch,
+            dataProvider
+        );
     };
 };
 
