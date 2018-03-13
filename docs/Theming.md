@@ -506,7 +506,7 @@ Usage:
     <Loading loadingPrimary="app.page.loading" loadingSecondary="app.message.loading" />
 ``` 
 
-## LinearProgress
+### LinearProgress
 
 Display a linear progress component. Display the same loading component as `react-admin` on custom inputs for consistency. 
 
