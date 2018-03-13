@@ -16,6 +16,7 @@ import {
     TabbedForm,
     TextField,
     TextInput,
+    required,
 } from 'react-admin';
 import Icon from 'material-ui-icons/Collections';
 import Chip from 'material-ui/Chip';
@@ -75,30 +76,30 @@ export const ProductCreate = withStyles(
                 <TextInput
                     source="image"
                     options={{ fullWidth: true }}
-                    validation={{ required: true }}
+                    validate={required()}
                 />
                 <TextInput
                     source="thumbnail"
                     options={{ fullWidth: true }}
-                    validation={{ required: true }}
+                    validate={required()}
                 />
             </FormTab>
             <FormTab label="resources.products.tabs.details">
-                <TextInput source="reference" validation={{ required: true }} />
+                <TextInput source="reference" validate={required()} />
                 <NumberInput
                     source="price"
-                    validation={{ required: true }}
+                    validate={required()}
                     className={classes.price}
                 />
                 <NumberInput
                     source="width"
-                    validation={{ required: true }}
+                    validate={required()}
                     className={classes.width}
                     formClassName={classes.widthFormGroup}
                 />
                 <NumberInput
                     source="height"
-                    validation={{ required: true }}
+                    validate={required()}
                     className={classes.height}
                     formClassName={classes.heightFormGroup}
                 />
@@ -111,7 +112,7 @@ export const ProductCreate = withStyles(
                 </ReferenceInput>
                 <NumberInput
                     source="stock"
-                    validation={{ required: true }}
+                    validate={required()}
                     className={classes.stock}
                 />
             </FormTab>

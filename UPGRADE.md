@@ -618,9 +618,9 @@ export const UserCreate = ({ ...props }) =>
                 toolbar={<UserCreateToolbar permissions={permissions} />}
                 defaultValue={{ role: 'user' }}
             >
-                <TextInput source="name" validate={[required]} />
+                <TextInput source="name" validate={[required()]} />
                 {permissions === 'admin' &&
-                    <TextInput source="role" validate={[required]} />}
+                    <TextInput source="role" validate={[required()]} />}
             </SimpleForm>}
     </Create>;
 
@@ -647,9 +647,9 @@ export const UserCreate = ({ permissions, ...props }) =>
             toolbar={<UserCreateToolbar permissions={permissions} />}
             defaultValue={{ role: 'user' }}
         >
-            <TextInput source="name" validate={[required]} />
+            <TextInput source="name" validate={[required()]} />
             {permissions === 'admin' &&
-                <TextInput source="role" validate={[required]} />}
+                <TextInput source="role" validate={[required()]} />}
         </SimpleForm>
     </Create>;
 ```
@@ -664,11 +664,11 @@ export const UserEdit = ({ ...props }) =>
             <TabbedForm defaultValue={{ role: 'user' }}>
                 <FormTab label="user.form.summary">
                     {permissions === 'admin' && <DisabledInput source="id" />}
-                    <TextInput source="name" validate={required} />
+                    <TextInput source="name" validate={required()} />
                 </FormTab>
                 {permissions === 'admin' &&
                     <FormTab label="user.form.security">
-                        <TextInput source="role" validate={required} />
+                        <TextInput source="role" validate={required()} />
                     </FormTab>}
             </TabbedForm>}
     </Edit>;
@@ -679,11 +679,11 @@ export const UserEdit = ({ permissions, ...props }) =>
         <TabbedForm defaultValue={{ role: 'user' }}>
             <FormTab label="user.form.summary">
                 {permissions === 'admin' && <DisabledInput source="id" />}
-                <TextInput source="name" validate={required} />
+                <TextInput source="name" validate={required()} />
             </FormTab>
             {permissions === 'admin' &&
                 <FormTab label="user.form.security">
-                    <TextInput source="role" validate={required} />
+                    <TextInput source="role" validate={required()} />
                 </FormTab>}
         </TabbedForm>
     </Edit>;

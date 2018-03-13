@@ -22,10 +22,10 @@ describe('Validators', () => {
 
     describe('required', () => {
         it('should return undefined if the value is not empty', () => {
-            test(required, ['foo', 12], undefined);
+            test(required(), ['foo', 12], undefined);
         });
         it('should return an error message if the value is empty', () => {
-            test(required, [undefined, '', null], 'ra.validation.required');
+            test(required(), [undefined, '', null], 'ra.validation.required');
         });
     });
     describe('minLength', () => {
@@ -86,13 +86,13 @@ describe('Validators', () => {
     });
     describe('number', () => {
         it('should return undefined if the value is empty', () => {
-            test(number, [undefined, '', null], undefined);
+            test(number(), [undefined, '', null], undefined);
         });
         it('should return undefined if the value is a number', () => {
-            test(number, [123, '123', new Date(), 0, 2.5, -5], undefined);
+            test(number(), [123, '123', new Date(), 0, 2.5, -5], undefined);
         });
         it('should return an error message if the value is not a number', () => {
-            test(number, ['foo'], 'ra.validation.number');
+            test(number(), ['foo'], 'ra.validation.number');
         });
     });
     describe('regex', () => {
@@ -119,16 +119,20 @@ describe('Validators', () => {
     });
     describe('email', () => {
         it('should return undefined if the value is empty', () => {
-            test(email, [undefined, '', null], undefined);
+            test(email(), [undefined, '', null], undefined);
         });
         it('should return undefined if the value is not a string', () => {
-            test(email, [1234, new Date()], undefined);
+            test(email(), [1234, new Date()], undefined);
         });
         it('should return undefined if the value is a valid email', () => {
-            test(email, ['foo@bar.com', 'john.doe@mydomain.co.uk'], undefined);
+            test(
+                email(),
+                ['foo@bar.com', 'john.doe@mydomain.co.uk'],
+                undefined
+            );
         });
         it('should return an error if the value is not a valid email', () => {
-            test(email, ['foo@bar', 'hello, world'], 'ra.validation.email');
+            test(email(), ['foo@bar', 'hello, world'], 'ra.validation.email');
         });
     });
     describe('choices', () => {
