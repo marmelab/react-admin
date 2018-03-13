@@ -476,68 +476,6 @@ const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
 export default connect(mapStateToProps, { setSidebarVisibility })(MyLayout);
 ```
 
-## Using a Custom Style with default layout
-
-Instead of using the default style layout, you can use your own style as the admin style layout. 
-
-
-
-```jsx
-import { LayoutWithTheme } from 'ra-ui-materialui/lib/layout/Layout'
-import { connect } from 'react-redux'
-import { withStyles } from 'material-ui/styles'
-
-
-// My new layout style. Copy past default react-admin layout style and modify it
-const styles = theme => ({
-    LayoutContent: {
-        padding: 0,
-    },
-    appFrame: {
-        display: 'flex',
-        flex: 1,
-        flexDirection: 'column',
-        overflowX: 'auto',
-    },
-    content: {
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 2,
-        padding: 0,
-        [theme.breakpoints.up('xs')]: {
-            marginTop: '4em',
-            paddingLeft: 5,
-        },
-        [theme.breakpoints.down('sm')]: {
-            padding: 0,
-        },
-        [theme.breakpoints.down('xs')]: {
-            marginTop: '3em',
-        },
-    },
-    contentWithSidebar: {
-        display: 'flex',
-        flexGrow: 1,
-    },
-    desktopToolbar: {
-        minHeight: '22px',
-    },
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        zIndex: 1,
-        minHeight: '100vh',
-        backgroundColor: theme.palette.background.default,
-        position: 'relative',
-    },
-})
-
-// export your layout with new style injected
-export default withStyles(styles, { withTheme: true })(LayoutWithTheme)
-
-```
-
-
 ## Notifications
 
 If you use your own layout (or custom login page), then you probably use the `<Notification>` component.
