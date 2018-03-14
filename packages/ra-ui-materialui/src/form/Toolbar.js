@@ -32,7 +32,7 @@ const Toolbar = ({
     ...rest
 }) => (
     <Responsive
-        small={
+        xsmall={
             <MuiToolbar
                 className={classnames(classes.mobileToolbar, className)}
                 disableGutters
