@@ -220,6 +220,7 @@ However, before humanizing names, react-admin checks the `messages` dictionary f
 
 - `${locale}.resources.${resourceName}.name` for resource names (used for the menu and page titles)
 - `${locale}.resources.${resourceName}.fields.${fieldName}` for field names (used for datagrid header and form input labels)
+- `${locale}.common.fields.${fieldName}` for common field names (used for datagrid header and form input labels)
 
 This lets you translate your own resource and field names by passing a `messages` object with a `resources` key:
 
@@ -243,6 +244,11 @@ This lets you translate your own resource and field names by passing a `messages
             }
         }
     },
+    common: {
+       fields: {
+           id: 'Id'       
+       }
+    }
     ...
 }
 ```
@@ -336,6 +342,14 @@ export default translate(MyHelloButton);
 <TextField source="first_name" />
 // and translate the `resources.customers.fields.first_name` key
 ```
+
+## Fallback keys 
+
+`translate` allows to be called with multiple keys, they will be searched in order supplied, for example:
+ 
+```jsx
+<div>{translate(['mypage.title','app.title'],{_:'Default title'})}</div>
+``` 
 
 ## Using Specific Polyglot Features
 

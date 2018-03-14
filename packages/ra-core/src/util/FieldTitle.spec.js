@@ -3,10 +3,13 @@ import { shallow } from 'enzyme';
 import React from 'react';
 
 import { FieldTitle } from './FieldTitle';
+import { withFallbackTranslate } from '../i18n/TranslationProvider';
 
 describe('FieldTitle', () => {
-    const translateMock = dictionary => (term, options) =>
-        dictionary[term] || options._ || '';
+    const translateMock = dictionary =>
+        withFallbackTranslate(
+            (term, options) => dictionary[term] || options._ || ''
+        );
     it('should return empty span by default', () =>
         assert.equal(shallow(<FieldTitle />).html(), '<span></span>'));
     it('should use the label when given', () =>
