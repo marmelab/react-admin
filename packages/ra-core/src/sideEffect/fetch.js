@@ -17,13 +17,12 @@ export function* handleFetch(dataProvider, action) {
     const {
         type,
         payload,
-        meta: { fetch: fetchMeta, onSuccess, ignoreOptimistic, ...meta },
+        meta: { fetch: fetchMeta, onSuccess, ...meta },
     } = action;
     const restType = fetchMeta;
 
     try {
-        const isOptimistic = yield !ignoreOptimistic &&
-            select(state => state.admin.ui.optimistic);
+        const isOptimistic = yield select(state => state.admin.ui.optimistic);
         if (isOptimistic) {
             // in optimistic mode, all fetch actions are canceled,
             // so the admin uses the store without synchronization
@@ -78,11 +77,7 @@ export function* handleFetch(dataProvider, action) {
 export const takeFetchAction = action => action.meta && action.meta.fetch;
 const fetch = dataProvider => {
     return function* watchFetch() {
-        yield takeEvery(
-            action => action.meta && action.meta.fetch,
-            handleFetch,
-            dataProvider
-        );
+        yield takeEvery(takeFetchAction, handleFetch, dataProvider);
     };
 };
 
