@@ -21,7 +21,7 @@ const styles = {
     },
     headerCell1: {
         padding: '0 12px',
-
+        maxWidth: "80px"
     },
     checkbox: {
         height: 'auto',
@@ -33,10 +33,9 @@ const styles = {
         padding: '0 12px',
         whiteSpace: 'normal',
     },
-    rowCell1: {
-        padding: '0 12px',
-        whiteSpace: 'normal',
-
+    rowFirstCell: {
+        padding: "0 12px",
+        whiteSpace: "normal"
     },
 };
 

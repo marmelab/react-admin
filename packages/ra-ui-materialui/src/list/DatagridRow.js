@@ -52,7 +52,7 @@ class DatagridRow extends Component {
                 {...sanitizeRestProps(rest)}
             >
                 {hasBulkActions && (
-                    <TableCell padding="none" className={classes.rowCell1}>
+                    <TableCell padding="none" className={classes.rowFirstCell}>
                         <Checkbox
                             className={`select-item ${classes.checkbox}`}
                             checked={selected}
