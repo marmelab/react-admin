@@ -25,7 +25,7 @@
 - [Logout is now displayed in the AppBar on desktop](#logout-is-now-displayed-in-the-appbar-on-desktop)
 - [Data providers should support two more types for bulk actions](#data-providers-should-support-two-more-types-for-bulk-actions)
 - [react-admin addon packages renamed with ra prefix and moved into root repository](#react-admin-addon-packages-renamed-with-ra-prefix-and-moved-into-root-repository)
-
+- [require,number and email validation should be renamed to require(),number() and validation()](#validations-should-be-initialized)
 
 ## Admin-on-rest Renamed to React-Admin
 
@@ -1325,3 +1325,27 @@ import buildGraphcoolProvider from 'aor-graphql-client-graphcool';
 // after
 import buildGraphcoolProvider from 'ra-data-graphcool';
 ```
+
+## Validations should be initialized
+
+Previously the message of `required`,`number` and `email` weren't customizable.
+
+Update your `require`,`number` and `email` validations. 
+ 
+```jsx
+// before
+<TextInput source="foo" validate={required} />
+// after
+<TextInput source="foo" validate={required()} />
+
+// before
+<TextInput source="foo" validate={number} />
+// after
+<TextInput source="foo" validate={number()} />
+
+// before
+<TextInput source="foo" validate={email} />
+// after
+<TextInput source="foo" validate={email()} />
+```
+  

@@ -5,9 +5,15 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 const isEmpty = value =>
     typeof value === 'undefined' || value === null || value === '';
 
-const getMessage = (message, messageArgs, value, values, { translate }) =>
+const getMessage = (
+    message,
+    messageArgs,
+    value,
+    values,
+    { translate, ...props }
+) =>
     typeof message === 'function'
-        ? message(messageArgs, value, values)
+        ? message(messageArgs, value, values, translate, props)
         : translate(message, {
               _: message,
               ...messageArgs,
