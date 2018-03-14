@@ -207,7 +207,7 @@ export const CommentCreate = props => (
                 source="post_id"
                 reference="posts"
                 allowEmpty
-                validate={required}
+                validate={required()}
             >
                 <SelectInput optionText="title" />
             </ReferenceInput>

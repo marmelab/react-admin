@@ -4,12 +4,11 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 
 import { initializeForm } from '../actions';
-import { required } from './validate';
 
 const isRequired = validate => {
-    if (validate === required) return true;
+    if (validate && validate.isRequired) return true;
     if (Array.isArray(validate)) {
-        return validate.includes(required);
+        return !!validate.find(it => it.isRequired);
     }
     return false;
 };

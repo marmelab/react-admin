@@ -25,7 +25,7 @@
 - [Logout is now displayed in the AppBar on desktop](#logout-is-now-displayed-in-the-appbar-on-desktop)
 - [Data providers should support two more types for bulk actions](#data-providers-should-support-two-more-types-for-bulk-actions)
 - [react-admin addon packages renamed with ra prefix and moved into root repository](#react-admin-addon-packages-renamed-with-ra-prefix-and-moved-into-root-repository)
-
+- [The require,number and email validators should be renamed to require(),number() and validation()](#validators-should-be-initialized)
 
 ## Admin-on-rest Renamed to React-Admin
 
@@ -618,9 +618,9 @@ export const UserCreate = ({ ...props }) =>
                 toolbar={<UserCreateToolbar permissions={permissions} />}
                 defaultValue={{ role: 'user' }}
             >
-                <TextInput source="name" validate={[required]} />
+                <TextInput source="name" validate={[required()]} />
                 {permissions === 'admin' &&
-                    <TextInput source="role" validate={[required]} />}
+                    <TextInput source="role" validate={[required()]} />}
             </SimpleForm>}
     </Create>;
 
@@ -647,9 +647,9 @@ export const UserCreate = ({ permissions, ...props }) =>
             toolbar={<UserCreateToolbar permissions={permissions} />}
             defaultValue={{ role: 'user' }}
         >
-            <TextInput source="name" validate={[required]} />
+            <TextInput source="name" validate={[required()]} />
             {permissions === 'admin' &&
-                <TextInput source="role" validate={[required]} />}
+                <TextInput source="role" validate={[required()]} />}
         </SimpleForm>
     </Create>;
 ```
@@ -664,11 +664,11 @@ export const UserEdit = ({ ...props }) =>
             <TabbedForm defaultValue={{ role: 'user' }}>
                 <FormTab label="user.form.summary">
                     {permissions === 'admin' && <DisabledInput source="id" />}
-                    <TextInput source="name" validate={required} />
+                    <TextInput source="name" validate={required()} />
                 </FormTab>
                 {permissions === 'admin' &&
                     <FormTab label="user.form.security">
-                        <TextInput source="role" validate={required} />
+                        <TextInput source="role" validate={required()} />
                     </FormTab>}
             </TabbedForm>}
     </Edit>;
@@ -679,11 +679,11 @@ export const UserEdit = ({ permissions, ...props }) =>
         <TabbedForm defaultValue={{ role: 'user' }}>
             <FormTab label="user.form.summary">
                 {permissions === 'admin' && <DisabledInput source="id" />}
-                <TextInput source="name" validate={required} />
+                <TextInput source="name" validate={required()} />
             </FormTab>
             {permissions === 'admin' &&
                 <FormTab label="user.form.security">
-                    <TextInput source="role" validate={required} />
+                    <TextInput source="role" validate={required()} />
                 </FormTab>}
         </TabbedForm>
     </Edit>;
@@ -1325,3 +1325,21 @@ import buildGraphcoolProvider from 'aor-graphql-client-graphcool';
 // after
 import buildGraphcoolProvider from 'ra-data-graphcool';
 ```
+
+## Validators should be initialized
+
+The `required`,`number` and `email` validators must now be executed just like the other validators, not passed as function arguments.
+
+Update your `require`,`number` and `email` validations. 
+ 
+```diff
+-<TextInput source="foo" validate={[required,maxSize(2)]} />
++<TextInput source="foo" validate={[required(),maxSize(2)]} />
+
+-<TextInput source="foo" validate={number} />
++<TextInput source="foo" validate={number()} />
+
+-<TextInput source="foo" validate={email} />
++<TextInput source="foo" validate={email()} />
+```
+  
