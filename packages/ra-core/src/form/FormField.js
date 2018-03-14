@@ -25,7 +25,7 @@ export class FormField extends Component {
 
     componentDidMount() {
         const { defaultValue, input, initializeForm, source } = this.props;
-        if (!defaultValue || input) {
+        if (typeof defaultValue === 'undefined' || input) {
             return;
         }
         initializeForm({
@@ -38,7 +38,7 @@ export class FormField extends Component {
 
     componentWillReceiveProps(nextProps) {
         const { defaultValue, input, initializeForm, source } = nextProps;
-        if (!defaultValue || input) {
+        if (typeof defaultValue === 'undefined' || input) {
             return;
         }
 
