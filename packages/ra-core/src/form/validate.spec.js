@@ -38,13 +38,12 @@ describe('Validators', () => {
                 'ra.validation.required'
             );
             expect(message).toHaveBeenCalledTimes(3);
-            expect(message).toHaveBeenLastCalledWith(
-                undefined,
-                null,
-                null,
+            expect(message).toHaveBeenLastCalledWith({
+                args: undefined,
+                value: null,
+                values: null,
                 translate,
-                {}
-            );
+            });
         });
     });
     describe('minLength', () => {
@@ -68,13 +67,12 @@ describe('Validators', () => {
                 'ra.validation.minLength'
             );
             expect(message).toHaveBeenCalledTimes(2);
-            expect(message).toHaveBeenLastCalledWith(
-                { min: 5 },
-                '12',
-                null,
+            expect(message).toHaveBeenLastCalledWith({
+                args: { min: 5 },
+                value: '12',
+                values: null,
                 translate,
-                {}
-            );
+            });
         });
     });
     describe('maxLength', () => {
@@ -98,13 +96,12 @@ describe('Validators', () => {
                 'ra.validation.maxLength'
             );
             expect(message).toHaveBeenCalledTimes(1);
-            expect(message).toHaveBeenLastCalledWith(
-                { max: 10 },
-                '12345678901',
-                null,
+            expect(message).toHaveBeenLastCalledWith({
+                args: { max: 10 },
+                value: '12345678901',
+                values: null,
                 translate,
-                {}
-            );
+            });
         });
     });
     describe('minValue', () => {
@@ -124,13 +121,12 @@ describe('Validators', () => {
             const message = jest.fn(() => 'ra.validation.minValue');
             test(minValue(10, message), [0], 'ra.validation.minValue');
             expect(message).toHaveBeenCalledTimes(1);
-            expect(message).toHaveBeenLastCalledWith(
-                { min: 10 },
-                0,
-                null,
+            expect(message).toHaveBeenLastCalledWith({
+                args: { min: 10 },
+                value: 0,
+                values: null,
                 translate,
-                {}
-            );
+            });
         });
     });
     describe('maxValue', () => {
@@ -154,13 +150,12 @@ describe('Validators', () => {
                 'ra.validation.maxValue'
             );
             expect(message).toHaveBeenCalledTimes(3);
-            expect(message).toHaveBeenLastCalledWith(
-                { max: 10 },
-                '11',
-                null,
+            expect(message).toHaveBeenLastCalledWith({
+                args: { max: 10 },
+                value: '11',
+                values: null,
                 translate,
-                {}
-            );
+            });
         });
     });
     describe('number', () => {
@@ -177,13 +172,12 @@ describe('Validators', () => {
             const message = jest.fn(() => 'ra.validation.number');
             test(number(message), ['foo'], 'ra.validation.number');
             expect(message).toHaveBeenCalledTimes(1);
-            expect(message).toHaveBeenLastCalledWith(
-                undefined,
-                'foo',
-                null,
+            expect(message).toHaveBeenLastCalledWith({
+                args: undefined,
+                value: 'foo',
+                values: null,
                 translate,
-                {}
-            );
+            });
         });
     });
     describe('regex', () => {

@@ -386,7 +386,7 @@ React-admin already bundles a few validator functions, that you can just require
 * `minLength(min, message)` to specify a minimum length for strings,
 * `maxLength(max, message)` to specify a maximum length for strings,
 * `number(message)` to check that the input is a valid number,
-* `email` to check that the input is a valid email address,
+* `email(message)` to check that the input is a valid email address,
 * `regex(pattern, message)` to validate that the input matches a regex,
 * `choices(list, message)` to validate that the input is within a given list,
 
@@ -404,7 +404,7 @@ export const UserCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
             <TextInput label="First Name" source="firstName" validate={validateFirstName} />
-            <TextInput label="Email" source="email" validate={email} />
+            <TextInput label="Email" source="email" validate={email()} />
             <TextInput label="Age" source="age" validate={validateAge}/>
             <TextInput label="Zip Code" source="zip" validate={validateZipCode}/>
             <SelectInput label="Sex" source="sex" choices={[
@@ -415,6 +415,12 @@ export const UserCreate = (props) => (
     </Create>
 );
 ```
+
+**Tip**: You can pass a function as a message callback, for example: 
+```javascript
+<TextInput label="Email" source="email" validate={email(({translate})=>translate(''))} />
+```
+The callback signature is: `({args,value,values,translate,...props}) => String`
 
 ## Submit On Enter
 
