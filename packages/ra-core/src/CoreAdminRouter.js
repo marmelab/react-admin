@@ -7,6 +7,7 @@ import getContext from 'recompose/getContext';
 
 import { AUTH_GET_PERMISSIONS } from './auth/types';
 import { isLoggedIn } from './reducer';
+import { userLogout } from './actions/authActions';
 import RoutesWithLayout from './RoutesWithLayout';
 
 export class CoreAdminRouter extends Component {
@@ -21,11 +22,12 @@ export class CoreAdminRouter extends Component {
             this.initializeResourcesAsync(nextProps);
         }
     };
-    initializeResourcesAsync = async nextProps => {
-        const { authProvider } = nextProps;
+
+    initializeResourcesAsync = async props => {
+        const { authProvider } = props;
         try {
             const permissions = await authProvider(AUTH_GET_PERMISSIONS);
-            const { children } = nextProps;
+            const { children } = props;
 
             const childrenFuncResult = children(permissions);
             if (childrenFuncResult.then) {
@@ -48,9 +50,10 @@ export class CoreAdminRouter extends Component {
                 });
             }
         } catch (error) {
-            this.setState({ children: [] });
+            this.props.userLogout();
         }
     };
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.isLoggedIn !== this.props.isLoggedIn) {
             this.setState(
@@ -172,6 +175,7 @@ CoreAdminRouter.propTypes = {
     menu: componentPropType,
     theme: PropTypes.object,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    userLogout: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -182,5 +186,5 @@ export default compose(
     getContext({
         authProvider: PropTypes.func,
     }),
-    connect(mapStateToProps, {})
+    connect(mapStateToProps, { userLogout })
 )(CoreAdminRouter);
