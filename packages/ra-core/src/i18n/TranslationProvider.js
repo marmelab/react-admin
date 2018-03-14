@@ -33,6 +33,16 @@ const mapStateToProps = state => ({
     messages: state.i18n.messages,
 });
 
+export const withFallbackTranslate = translate => (message, options) =>
+    Array.isArray(message)
+        ? message.reverse().reduce((acc, item) => {
+              return translate(item, {
+                  ...options,
+                  _: acc || item,
+              });
+          }, options && options._)
+        : translate(message, options);
+
 const withI18nContext = withContext(
     {
         translate: PropTypes.func.isRequired,
@@ -46,7 +56,7 @@ const withI18nContext = withContext(
 
         return {
             locale,
-            translate: polyglot.t.bind(polyglot),
+            translate: withFallbackTranslate(polyglot.t.bind(polyglot)),
         };
     }
 );
