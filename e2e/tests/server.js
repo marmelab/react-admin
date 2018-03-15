@@ -10,7 +10,9 @@ before(
             const server = express();
             server.use(
                 '/',
-                express.static(path.join(__dirname, '../../examples/simple'))
+                express.static(
+                    path.join(__dirname, '../../examples/simple/dist')
+                )
             );
 
             listeningServer = server.listen(8083, err => {

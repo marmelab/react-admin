@@ -117,7 +117,7 @@ test-unit-watch: ## launch unit tests and watch for changes
 test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \
 		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
-		cd examples/simple && ./node_modules/.bin/webpack; \
+		cd examples/simple && yarn build; \
 	fi
 	@NODE_ENV=test node_modules/.bin/mocha \
 		--require babel-core/register \
