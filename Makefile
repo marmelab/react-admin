@@ -9,7 +9,7 @@ install: package.json ## install dependencies
 run: run-simple
 
 run-simple: ## run the simple example
-	@cd examples/simple && ./node_modules/.bin/webpack-dev-server -d --hot --inline --config ./webpack.config.js
+	@cd examples/simple && yarn start
 
 run-tutorial: build ## run the tutorial example
 	@cd examples/tutorial && yarn start

@@ -1,19 +1,21 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     devtool: 'cheap-module-source-map',
-    entry: './app.js',
-    output: {
-        path: path.join(__dirname, 'static'),
-        filename: 'bundle.js',
-        publicPath: '/static/',
-    },
     module: {
         rules: [
-            { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
+            { test: /\.js$/, exclude: /node_modules/, use: { loader: 'babel-loader' } },
             { test: /\.css$/, loader: 'style-loader!css-loader' },
+            { test: /\.html$/, use: { loader: 'html-loader' } }
         ],
     },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: './src/index.html',
+            filename: './index.html'
+        })
+    ],
     resolve: {
         alias: {
             'ra-core': path.join(
