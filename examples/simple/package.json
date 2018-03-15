@@ -27,7 +27,8 @@
         "react-admin": "^2.0.0-beta1",
         "react-dom": "~16.0.0",
         "style-loader": "~0.18.2",
-        "webpack": "~3.0.0",
-        "webpack-dev-server": "~2.5.0"
+        "webpack": "~4.1.1",
+        "webpack-cli": "~2.0.12",
+        "webpack-dev-server": "~3.1.1"
     }
 }
