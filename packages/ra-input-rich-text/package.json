@@ -1,17 +1,13 @@
 {
     "name": "ra-input-rich-text",
     "version": "2.0.0-beta3",
-    "description": "<RichTextInput> component for react-admin, useful for editing HTML code in admin GUIs.",
+    "description":
+        "<RichTextInput> component for react-admin, useful for editing HTML code in admin GUIs.",
     "main": "lib/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "files": [
-        "LICENSE",
-        "*.md",
-        "lib",
-        "src"
-    ],
+    "files": ["LICENSE", "*.md", "lib", "src"],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/marmelab/react-admin.git"
@@ -39,7 +35,7 @@
         "react-dom": "^15.4.0 || ~16.0.0"
     },
     "dependencies": {
-        "lodash.debounce": "~4.0.8",
+        "lodash": "~4.2.0",
         "prop-types": "~15.5.7",
         "quill": "~1.1.9"
     }

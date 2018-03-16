@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash.get';
+import get from 'lodash/get';
 import pure from 'recompose/pure';
 import Chip from 'material-ui/Chip';
 import { withStyles } from 'material-ui/styles';

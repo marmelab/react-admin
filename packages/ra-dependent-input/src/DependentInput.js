@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { formValueSelector, getFormValues } from 'redux-form';
-import get from 'lodash.get';
+import get from 'lodash/get';
 import { FormField } from 'react-admin';
 import getValue from './getValue';
 

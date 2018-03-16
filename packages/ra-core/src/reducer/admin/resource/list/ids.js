@@ -1,4 +1,4 @@
-import uniq from 'lodash.uniq';
+import uniq from 'lodash/uniq';
 import {
     CRUD_GET_LIST_SUCCESS,
     CRUD_DELETE_OPTIMISTIC,

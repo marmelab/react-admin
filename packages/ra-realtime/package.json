@@ -22,10 +22,7 @@
     ],
     "license": "MIT",
     "dependencies": {
-        "lodash.merge": "~4.6.0",
-        "lodash.omit": "~4.5.0",
-        "lodash.pick": "~4.4.0",
-        "lodash.pickby": "~4.6.0"
+        "lodash": "~4.2.0"
     },
     "peerDependencies": {
         "react-admin": "^2.0.0-beta3",
