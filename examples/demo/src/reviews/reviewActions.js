@@ -11,7 +11,6 @@ export const reviewApprove = (id, data, basePath) => ({
     meta: {
         resource: 'reviews',
         fetch: UPDATE,
-        cancelPrevious: false,
         onSuccess: {
             notification: {
                 body: 'resources.reviews.notification.approved_success',
@@ -34,7 +33,6 @@ export const reviewReject = (id, data, basePath) => ({
     meta: {
         resource: 'reviews',
         fetch: UPDATE,
-        cancelPrevious: false,
         onSuccess: {
             notification: {
                 body: 'resources.reviews.notification.rejected_success',
