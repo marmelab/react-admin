@@ -1,6 +1,6 @@
 import React from 'react';
 import assert from 'assert';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import { SelectArrayInput } from './SelectArrayInput';
 import { ChipField } from '../field/ChipField';
 
