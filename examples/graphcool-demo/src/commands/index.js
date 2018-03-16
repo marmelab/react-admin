@@ -115,7 +115,6 @@ export const CommandEdit = translate(({ translate, ...rest }) => (
                 ]}
             />
             <BooleanInput source="returned" />
-            <div style={{ clear: 'both' }} />
         </SimpleForm>
     </Edit>
 ));
