@@ -270,6 +270,57 @@ export default App;
 
 With this code, approving a review now displays the correct notification, and redirects to the comment list. And the side effects are [testable](https://redux-saga.github.io/redux-saga/docs/introduction/BeginnerTutorial.html#making-our-code-testable), too.
 
+## Simplifying side effects
+
+We can even further simplify the notifications handling in case of success by using the `onSuccess` meta property:
+
+```jsx
+// in src/comment/commentActions.js
+import { UPDATE } from 'react-admin';
+export const COMMENT_APPROVE = 'COMMENT_APPROVE';
+export const commentApprove = (id, data, basePath) => ({
+    type: COMMENT_APPROVE,
+    payload: { id, data: { ...data, is_approved: true } },
+    meta: {
+        resource: 'comments',
+        fetch: UPDATE,
+        cancelPrevious: false,
+        onSuccess: {
+            notification: {
+                body: 'resources.comments.notification.approved_success',
+                level: 'info',
+            },
+            redirectTo: '/comments',
+            basePath,
+        } },
+});
+```
+
+This `onSuccess` prop accepts three properties:
+
+- `notification`: an object describing the notification to display. The `body` can be a translation key. `level` can be either `info` or `warning`.
+- `redirectTo`: the path to redirect the user to
+- `basePath`: used internaly to compute redirection paths
+
+With this, we only have to eventually handle the failure case in our custom saga:
+
+```jsx
+// in src/comments/commentSaga.js
+import { put, takeEvery } from 'redux-saga/effects';
+import { showNotification } from 'react-admin';
+
+function* commentApproveFailure({ error }) {
+    yield put(showNotification('Error: comment not approved', 'warning'));
+    console.error(error);
+}
+
+export default function* commentSaga() {
+    yield takeEvery('COMMENT_APPROVE_FAILURE', commentApproveFailure));
+}
+```
+
+You can omit this if your `dataProvider` throws an `Error` object. See the [DataProviders documentation](./DataProviders.md#error-format)
+
 ## Bonus: Optimistic Rendering
 
 In this example, after clicking on the "Approve" button, users are redirected to the comments list. React-admin then fetches the `/comments` resource to grab the list of updated comments from the server. But react-admin doesn't wait for the response to this call to display the list of comments. In fact, it has an internal instance pool (in `state.admin.resources[resource]`) that is kept during navigation, and uses it to render the screen before the API calls are over - it's called *optimistic rendering*.
