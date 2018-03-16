@@ -19,6 +19,9 @@ const styles = {
     headerCell: {
         padding: '0 12px',
     },
+    selectCell: {
+        width: 48,
+    },
     checkbox: {
         height: 'auto',
     },
@@ -110,9 +113,15 @@ class Datagrid extends Component {
                 <TableHead>
                     <TableRow className={classes.row}>
                         {hasBulkActions && (
-                            <TableCell padding="none">
+                            <TableCell
+                                padding="none"
+                                className={classnames(
+                                    'select-all',
+                                    classes.selectCell
+                                )}
+                            >
                                 <Checkbox
-                                    className="select-all"
+                                    className={classes.checkbox}
                                     checked={
                                         selectedIds.length > 0 &&
                                         ids.length > 0 &&

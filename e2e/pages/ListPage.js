@@ -27,9 +27,9 @@ export default url => driver => ({
         deleteBulkActionsButtonMenuItem: By.css(
             '.bulk-actions-menu-item:last-child'
         ),
-        selectAll: By.css('.select-all'),
-        selectedItem: By.css('.select-item input:checked'),
-        selectItem: By.css('.select-item input'),
+        selectAll: By.css('.select-all input'),
+        selectedItem: By.css('.column-select-item input:checked'),
+        selectItem: By.css('.column-select-item input'),
     },
 
     navigate() {

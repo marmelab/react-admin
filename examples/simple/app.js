@@ -1,11 +1,11 @@
 /* eslint react/jsx-key: off */
 import 'babel-polyfill';
+import './app.css';
 import React from 'react';
 import { render } from 'react-dom';
 import { Route } from 'react-router';
 
 import { Admin, Resource } from 'react-admin'; // eslint-disable-line import/no-unresolved
-
 import { PostList, PostCreate, PostEdit, PostShow, PostIcon } from './posts';
 import {
     CommentList,

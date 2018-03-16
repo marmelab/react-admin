@@ -1,0 +1,11 @@
+/**
+ * React-admin allows overriding of styles using default stylesheets. The datagrid columns styles can
+ * be overriden using the `<resource>-column-<name>` selector or the generic <column>-<name> selector.
+ */
+.column-id{
+    width: 48px;
+    text-align: right!important;
+}
+.users-column-id{
+    text-align: left!important;
+}
