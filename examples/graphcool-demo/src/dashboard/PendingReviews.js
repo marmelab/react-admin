@@ -62,9 +62,9 @@ const PendingReviews = ({
                     component={Link}
                     to={`/reviews/${record.id}`}
                 >
-                    {customers[record.customer_id] ? (
+                    {record.customer && customers[record.customer.id] ? (
                         <Avatar
-                            src={`${customers[record.customer_id]
+                            src={`${customers[record.customer.id]
                                 .avatar}?size=32x32`}
                             className={classes.avatar}
                         />

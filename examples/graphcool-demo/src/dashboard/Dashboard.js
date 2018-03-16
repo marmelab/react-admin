@@ -61,7 +61,9 @@ class Dashboard extends Component {
                     return pendingOrders;
                 })
                 .then(pendingOrders =>
-                    pendingOrders.map(order => order.customer_id)
+                    pendingOrders
+                        .map(order => order.customer && order.customer.id)
+                        .filter(customer_id => customer_id)
                 )
                 .then(customerIds =>
                     dataProvider(GET_MANY, 'Customer', { ids: customerIds })
@@ -92,7 +94,14 @@ class Dashboard extends Component {
                     this.setState({ pendingReviews, nbPendingReviews });
                     return pendingReviews;
                 })
-                .then(reviews => reviews.map(review => review.customer.id))
+                .then(reviews =>
+                    reviews
+                        .map(
+                            review =>
+                                review.customer ? review.customer.id : null
+                        )
+                        .filter(customer_id => customer_id)
+                )
                 .then(customerIds =>
                     dataProvider(GET_MANY, 'Customer', { ids: customerIds })
                 )
