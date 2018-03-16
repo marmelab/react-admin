@@ -67,6 +67,10 @@ export default App;
 
 And that's it, `buildGraphcoolProvider` will create a default ApolloClient for you and run an [introspection](http://graphql.org/learn/introspection/) query on your graphcool endpoint, listing all potential resources.
 
+This works with any GraphCool endpoint, or any GraphQL endpoint modeled after [the GraphCool grammar](https://github.com/graphcool/graphcool-framework/blob/master/docs/0.x/02-Concepts/02-Database-%26-API/03-API-Capabilities.md):
+
+![GraphCool gammar](https://camo.githubusercontent.com/a58fc16d347122afd015c06a96591c5ecc1bed62/68747470733a2f2f696d6775722e636f6d2f4d6f496e665a4d2e706e67) 
+
 ## Options
 
 ### Customize the Apollo client
