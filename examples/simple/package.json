@@ -5,8 +5,9 @@
     "description": "",
     "main": "index.html",
     "scripts": {
-        "start": "./node_modules/.bin/webpack-dev-server --progress --color --hot --watch --mode development",
-        "build": "./node_modules/.bin/webpack --progress --color --mode production",
+        "start":
+            "./node_modules/.bin/webpack-dev-server --progress --color --hot --watch --mode development",
+        "build": "./node_modules/.bin/webpack --color --mode development",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
