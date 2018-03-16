@@ -11,7 +11,6 @@ import {
 import Card, { CardHeader, CardContent } from 'material-ui/Card';
 import { withStyles } from 'material-ui/styles';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
-import NbItemsField from './NbItemsField';
 
 const listStyles = theme => ({
     card: {

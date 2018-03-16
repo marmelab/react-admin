@@ -93,7 +93,7 @@ DatagridRow.propTypes = {
     record: PropTypes.object.isRequired,
     resource: PropTypes.string,
     selected: PropTypes.bool,
-    style: PropTypes.func,
+    style: PropTypes.object,
     styles: PropTypes.object,
 };
 
