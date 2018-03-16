@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    translate,
     BooleanField,
     Datagrid,
     DateField,
