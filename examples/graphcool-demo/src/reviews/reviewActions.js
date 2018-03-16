@@ -8,7 +8,18 @@ export const REVIEW_APPROVE_SUCCESS = 'REVIEW_APPROVE_SUCCESS';
 export const reviewApprove = (id, data, basePath) => ({
     type: REVIEW_APPROVE,
     payload: { id, data: { ...data, status: 'accepted' }, basePath },
-    meta: { resource: 'Review', fetch: UPDATE, cancelPrevious: false },
+    meta: {
+        resource: 'reviews',
+        fetch: UPDATE,
+        onSuccess: {
+            notification: {
+                body: 'resources.reviews.notification.approved_success',
+                level: 'info',
+            },
+            redirectTo: '/reviews',
+            basePath,
+        },
+    },
 });
 
 export const REVIEW_REJECT = 'REVIEW_REJECT';
@@ -19,5 +30,16 @@ export const REVIEW_REJECT_SUCCESS = 'REVIEW_REJECT_SUCCESS';
 export const reviewReject = (id, data, basePath) => ({
     type: REVIEW_REJECT,
     payload: { id, data: { ...data, status: 'rejected' }, basePath },
-    meta: { resource: 'Review', fetch: UPDATE, cancelPrevious: false },
+    meta: {
+        resource: 'reviews',
+        fetch: UPDATE,
+        onSuccess: {
+            notification: {
+                body: 'resources.reviews.notification.rejected_success',
+                level: 'info',
+            },
+            redirectTo: '/reviews',
+            basePath,
+        },
+    },
 });
