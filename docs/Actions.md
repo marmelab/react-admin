@@ -215,39 +215,61 @@ export default connect(null, {
 
 This works fine: when a user presses the "Approve" button, the API receives the `UPDATE` call, and that approves the comment. But it's not possible to call `push` or `showNotification` in `handleClick` anymore. This is because `commentApprove()` returns immediately, whether the API call succeeds or not. How can you run a function only when the action succeeds?
 
-## Handling Side Effects With a Custom Saga
+## Handling Side Effects
 
-`fetch`, `showNotification`, and `push` are called *side effects*. It's a functional programming term that describes functions that do more than just returning a value based on their input. React-admin promotes a programming style where side effects are decoupled from the rest of the code, which has the benefit of making them testable.
+After an action is executed, you usually want to trigger some *side effects* such as showing a notification or redirecting the user. Those two common side effects can be defined declaratively using the `onSuccess` meta property in the action creator:
 
-In react-admin, side effects are handled by Sagas. [Redux-saga](https://redux-saga.github.io/redux-saga/) is a side effect library built for Redux, where side effects are defined by generator functions. This may sound complicated, but it's not: Here is the generator function necessary to handle the side effects for the `COMMENT_APPROVE` action.
+```jsx
+// in src/comment/commentActions.js
+import { UPDATE } from 'react-admin';
+export const COMMENT_APPROVE = 'COMMENT_APPROVE';
+export const commentApprove = (id, data, basePath) => ({
+    type: COMMENT_APPROVE,
+    payload: { id, data: { ...data, is_approved: true } },
+    meta: {
+        resource: 'comments',
+        fetch: UPDATE,
+        cancelPrevious: false,
+        onSuccess: {
+            notification: {
+                body: 'resources.comments.notification.approved_success',
+                level: 'info',
+            },
+            redirectTo: '/comments',
+            basePath,
+        },
+    },
+});
+```
+
+`onSuccess` accepts three properties:
+
+- `notification`: an object describing the notification to display. The `body` can be a translation key. `level` can be either `info` or `warning`.
+- `redirectTo`: the path to redirect the user to
+- `basePath`: used internaly to compute redirection paths
+
+## Custom sagas
+
+Sometimes, you may want to trigger other *side effects*. React-admin promotes a programming style where side effects are decoupled from the rest of the code, which has the benefit of making them testable.
+
+In react-admin, side effects are handled by Sagas. [Redux-saga](https://redux-saga.github.io/redux-saga/) is a side effect library built for Redux, where side effects are defined by generator functions. This may sound complicated, but it's not: Here is the generator function necessary to handle the side effects for a failed `COMMENT_APPROVE` action which would log the error with an external service such as [Sentry](https://sentry.io):
 
 ```jsx
 // in src/comments/commentSaga.js
-import { put, takeEvery, all } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
-import { showNotification } from 'react-admin';
-
-function* commentApproveSuccess() {
-    yield put(showNotification('Comment approved'));
-    yield put(push('/comments'));
-}
+import { call, takeEvery } from 'redux-saga/effects';
 
 function* commentApproveFailure({ error }) {
-    yield put(showNotification('Error: comment not approved', 'warning'));
-    console.error(error);
+    yield call(Raven.captureException, error);
 }
 
 export default function* commentSaga() {
-    yield all([
-        takeEvery('COMMENT_APPROVE_SUCCESS', commentApproveSuccess),
-        takeEvery('COMMENT_APPROVE_FAILURE', commentApproveFailure),
-    ]);
+    yield takeEvery('COMMENT_APPROVE_FAILURE', commentApproveFailure);
 }
 ```
 
-Let's explain all of that, starting with the final `commentSaga` generator function. A [generator function](http://exploringjs.com/es6/ch_generators.html) (denoted by the `*` in the function name) gets paused on statements called by `yield` - until the yielded statement returns. `yield []` yields two commands [in parallel](https://redux-saga.github.io/redux-saga/docs/advanced/RunningTasksInParallel.html). `yield takeEvery([ACTION_NAME], callback)` executes the provided callback [every time the related action is called](https://redux-saga.github.io/redux-saga/docs/basics/UsingSagaHelpers.html). To summarize, this will execute `commentApproveSuccess` when the fetch initiated by `commentApprove()` succeeds, and `commentApproveFailure` otherwise.
+Let's explain all of that, starting with the final `commentSaga` generator function. A [generator function](http://exploringjs.com/es6/ch_generators.html) (denoted by the `*` in the function name) gets paused on statements called by `yield` - until the yielded statement returns. `yield takeEvery([ACTION_NAME], callback)` executes the provided callback [every time the related action is called](https://redux-saga.github.io/redux-saga/docs/basics/UsingSagaHelpers.html). To summarize, this will execute `commentApproveFailure` when the fetch initiated by `commentApprove()` fails.
 
-As for `commentApproveSuccess` and `commentApproveFailure`, they simply dispatch (`put()`) the side effects - the same side effects as in the initial version.
+As for `commentApproveFailure`, it just dispatch a [`call`](https://redux-saga.js.org/docs/api/#callfn-args) side effect to the `captureException` function from the global `Raven` object.
 
 To use this saga, pass it in the `customSagas` props of the `<Admin>` component:
 
