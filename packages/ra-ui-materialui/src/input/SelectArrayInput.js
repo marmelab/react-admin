@@ -226,6 +226,7 @@ SelectArrayInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     classes: PropTypes.object,
     className: PropTypes.string,
+    children: PropTypes.node,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
