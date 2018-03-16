@@ -20,7 +20,7 @@
         "babel-preset-stage-0": "~6.24.1",
         "babel-register": "~6.26.0",
         "cheerio": "~1.0.0-rc.2",
-        "chromedriver": "~2.36.0",
+        "chromedriver": "~2.33.0",
         "eslint": "~4.6.1",
         "eslint-config-prettier": "~2.4.0",
         "eslint-plugin-import": "~2.6.1",
@@ -37,8 +37,5 @@
         "raf": "~3.4.0",
         "selenium-webdriver": "~3.5.0"
     },
-    "workspaces": [
-        "packages/*",
-        "examples/*"
-    ]
+    "workspaces": ["packages/*", "examples/*"]
 }
