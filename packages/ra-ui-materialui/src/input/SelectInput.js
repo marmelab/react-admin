@@ -129,27 +129,30 @@ export class SelectInput extends Component {
 
         return choices;
     };
+    renderMenuItemOption = choice => {
+        const { optionText, translate, translateChoice } = this.props;
+        if (React.isValidElement(optionText))
+            return React.cloneElement(optionText, {
+                record: choice,
+                translate,
+            });
+        const choiceName =
+            typeof optionText === 'function'
+                ? optionText(choice)
+                : get(choice, optionText);
+        return translateChoice
+            ? translate(choiceName, { _: choiceName })
+            : choiceName;
+    };
 
     renderMenuItem = choice => {
-        const {
-            optionText,
-            optionValue,
-            translate,
-            translateChoice,
-        } = this.props;
-        const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
-            ? React.cloneElement(optionText, { record: choice })
-            : typeof optionText === 'function'
-              ? optionText(choice)
-              : get(choice, optionText);
+        const { optionValue } = this.props;
         return (
             <MenuItem
                 key={get(choice, optionValue)}
                 value={get(choice, optionValue)}
             >
-                {translateChoice
-                    ? translate(choiceName, { _: choiceName })
-                    : choiceName}
+                {this.renderMenuItemOption(choice)}
             </MenuItem>
         );
     };
@@ -218,7 +221,7 @@ SelectInput.propTypes = {
     resource: PropTypes.string,
     source: PropTypes.string,
     translate: PropTypes.func.isRequired,
-    translateChoice: PropTypes.bool.isRequired,
+    translateChoice: PropTypes.bool,
 };
 
 SelectInput.defaultProps = {
