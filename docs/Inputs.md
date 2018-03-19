@@ -35,15 +35,11 @@ All input components accept the following attributes:
 * `style`: A style object to customize the look and feel of the field container (e.g. the `<div>` in a form).
 * `elStyle`: A style object to customize the look and feel of the field element itself
 
-Some other props are progressively implemented. The `<TextInput />` and `<NumberInput />` inputs also accept following props:
-
-* `onBlur`: a function to call when the form field loses focus. It expects to either receive the [React SyntheticEvent](https://facebook.github.io/react/docs/events.html), or the current value of the field.
-* `onChange`: a function to call when the form field is changed. It expects to either receive the [React SyntheticEvent](https://facebook.github.io/react/docs/events.html), or the new value of the field.
-* `onFocus`: a function to call when the field receives focus. It takes the `event` as argument.
-
 ```jsx
 <TextInput source="zb_title" label="Title" />
 ```
+
+Additional props are passed down to the underlying component (usually a material-ui component). For instance, when setting the `fullWidth` prop on a `TextInput` component, the underlying material-ui `<TextField>` receives it, and goes full width.
 
 **Tip**: If you edit a record with a complex structure, you can use a path as the `source` parameter. For instance, if the API returns the following 'book' record:
 
