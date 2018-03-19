@@ -3,19 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { formValueSelector, getFormValues } from 'redux-form';
 import get from 'lodash.get';
-import { FormField } from 'react-admin';
 import getValue from './getValue';
 
 const REDUX_FORM_NAME = 'record-form';
 
-export const DependentInputComponent = ({
-    children,
-    show,
-    dependsOn,
-    value,
-    resolve,
-    ...props
-}) => {
+export const DependentInputComponent = ({ children, show }) => {
     if (!show) {
         return null;
     }
@@ -29,7 +21,7 @@ export const DependentInputComponent = ({
                         style={child.props.style}
                         className={`ra-input-${child.props.source}`}
                     >
-                        <FormField input={child} {...props} />
+                        {child}
                     </div>
                 ))}
             </div>
@@ -42,7 +34,7 @@ export const DependentInputComponent = ({
             style={children.props.style}
             className={`ra-input-${children.props.source}`}
         >
-            <FormField input={children} {...props} />
+            {children}
         </div>
     );
 };
