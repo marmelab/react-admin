@@ -9,7 +9,7 @@ Admin-on-rest can communicate with any REST server, regardless of the REST diale
 
 ![REST client architecture](./img/rest-client.png)
 
-The `restClient` parameter of the `<Admin>` component, must be a function with the following signature:
+The `restClient` parameter of the `<Admin>` component must be a function with the following signature:
 
 ```jsx
 /**
@@ -30,7 +30,6 @@ const restClient = (type, resource, params) => new Promise();
 You can find a REST client example implementation in [`src/rest/simple.js`](https://github.com/marmelab/admin-on-rest/blob/master/src/rest/simple.js);
 
 The `restClient` is also the ideal place to add custom HTTP headers, authentication, etc.
-
 ## Available Clients
 
 Admin-on-rest ships 2 REST client by default:
@@ -54,7 +53,7 @@ You can find REST clients for various backends in third-party repositories:
 
 If you've written a REST client for another backend, and open-sourced it, please help complete this list with your package.
 
-### Simple REST
+### Usage
 
 This REST client fits APIs using simple GET parameters for filters and sorting. This is the dialect used for instance in [FakeRest](https://github.com/marmelab/FakeRest).
 
@@ -80,7 +79,7 @@ If your API is on another domain as the JS code, you'll need to whitelist this h
 Access-Control-Expose-Headers: Content-Range
 ```
 
-Here is how to use it in your admin:
+Initialize the client with the REST backend URL, and pass the result to the `restClient` prop of the `<Admin>` component:
 
 ```jsx
 // in src/App.js
@@ -99,56 +98,35 @@ const App = () => (
 export default App;
 ```
 
-### JSON Server REST
-
-This REST client fits APIs powered by [JSON Server](https://github.com/typicode/json-server), such as [JSONPlaceholder](http://jsonplaceholder.typicode.com/).
+Here is how this client maps request types to API calls:
 
 | REST verb            | API calls
 |----------------------|----------------------------------------------------------------
-| `GET_LIST`           | `GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24&title=bar`
+| `GET_LIST`           | `GET http://my.api.url/posts?sort=['title','ASC']&range=[0, 24]&filter={title:'bar'}`
 | `GET_ONE`            | `GET http://my.api.url/posts/123`
 | `CREATE`             | `POST http://my.api.url/posts/123`
 | `UPDATE`             | `PUT http://my.api.url/posts/123`
 | `DELETE`             | `DELETE http://my.api.url/posts/123`
-| `GET_MANY`           | `GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789`
-| `GET_MANY_REFERENCE` | `GET http://my.api.url/posts?author_id=345`
+| `GET_MANY`           | `GET http://my.api.url/posts?filter={ids:[123,456,789]}`
+| `GET_MANY_REFERENCE` | `GET http://my.api.url/posts?filter={author_id:345}`
 
-**Note**: The jsonServer REST client expects the API to include a `X-Total-Count` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows admin-on-rest to know how many pages of resources there are in total, and build the pagination controls.
+**Note**: The simple REST client expects the API to include a `Content-Range` header in the response to `GET_LIST` calls. The value must be the total number of resources in the collection. This allows admin-on-rest to know how many pages of resources there are in total, and build the pagination controls.
 
 ```
-X-Total-Count: 319
+Content-Range: posts 0-24/319
 ```
 
 If your API is on another domain as the JS code, you'll need to whitelist this header with an `Access-Control-Expose-Headers` [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) header.
 
 ```
-Access-Control-Expose-Headers: X-Total-Count
+Access-Control-Expose-Headers: Content-Range
 ```
 
-Here is how to use it in your admin:
+## Adding Custom Headers
 
-```jsx
-// in src/App.js
-import React from 'react';
+Both the `simpleRestClient` and the `jsonServerRestClient` functions accept an HTTP client function as second argument. By default, they use admin-on-rest's `fetchUtils.fetchJson()` as http client. It's similar to HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
 
-import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
-
-import { PostList } from './posts';
-
-const App = () => (
-    <Admin restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
-        <Resource name="posts" list={PostList} />
-    </Admin>
-);
-
-export default App;
-```
-
-### Adding Custom Headers
-
-Both the `simpleRestClient` and the `jsonServerRestClient` functions accept an http client function as second argument. By default, they use admin-on-rest's `fetchUtils.fetchJson()` as http client. It's similar to HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
-
-That means that if you need to add custom headers to your requests, you just need to *wrap* the `fetchJson()` call inside your own function:
+That means that if you need to add custom headers to your requests, you can just *wrap* the `fetchJson()` call inside your own function:
 
 ```jsx
 import { simpleRestClient, fetchUtils, Admin, Resource } from 'admin-on-rest';
@@ -160,13 +138,12 @@ const httpClient = (url, options = {}) => {
     options.headers.set('X-Custom-Header', 'foobar');
     return fetchUtils.fetchJson(url, options);
 }
-const restClient = simpleRestClient('http://localhost:3000', httpClient);
+const restClient = simpleRestClient('http://path.to.my.api/', httpClient);
 
-render(
+const App = () => (
     <Admin restClient={restClient} title="Example Admin">
-       ...
-    </Admin>,
-    document.getElementById('root')
+      <Resource name="posts" list={PostList} />
+    </Admin>
 );
 ```
 
@@ -188,14 +165,16 @@ Now all the requests to the REST API will contain the `Authorization: SRTRDFVESG
 
 ## Decorating your REST Client (Example of File Upload)
 
-Instead of writing your own REST client or using a third-party one, you can enhance its capabilities on a given resource. For instance, if you want to use upload components (such as `<ImageInput />` one), you can decorate it the following way:
+Instead of writing your own REST client, you can enhance the capabilities of an existing REST client. You can even restrict the customization on a given resource.
+
+For instance, if you want to use upload components (such as `<ImageInput />` one), you can decorate the provider the following way:
 
 ```jsx
+// in addUploadFeature.js
 /**
- * Convert a `File` object returned by the upload input into
- * a base 64 string. That's easier to use on FakeRest, used on
- * the ng-admin example. But that's probably not the most optimized
- * way to do in a production database.
+ * Convert a `File` object returned by the upload input into a base 64 string. 
+ * That's not the most optimized way to store images in production, but it's
+ * enough to illustrate the idea of REST client decoration.
  */
 const convertFileToBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -209,7 +188,7 @@ const convertFileToBase64 = file => new Promise((resolve, reject) => {
  * For posts update only, convert uploaded image in base 64 and attach it to
  * the `picture` sent property, with `src` and `title` attributes.
  */
-const addUploadCapabilities = requestHandler => (type, resource, params) => {
+const addUploadFeature = requestHandler => (type, resource, params) => {
     if (type === 'UPDATE' && resource === 'posts') {
         if (params.data.pictures && params.data.pictures.length) {
             // only freshly dropped pictures are instance of File
@@ -230,34 +209,53 @@ const addUploadCapabilities = requestHandler => (type, resource, params) => {
                 }));
         }
     }
-
+    // for other request types and reources, fall back to the defautl request handler
     return requestHandler(type, resource, params);
 };
 
-export default addUploadCapabilities;
+export default addUploadFeature;
 ```
 
-This way, you can use simply your upload-capable client to your app calling this decorator:
+To enhance a client with the upload feature, compose the `addUploadFeature` function with the REST client function:
 
 ```jsx
 import jsonRestClient from 'aor-json-rest-client';
 import addUploadFeature from './addUploadFeature';
 
-const restClient = jsonRestClient(data, true);
+const restClient = jsonRestClient('http://path.to.my.api/');
 const uploadCapableClient = addUploadFeature(restClient);
 
-render(
+const App = () => (
     <Admin restClient={uploadCapableClient} title="Example Admin">
-        // [...]
-    </Admin>,
-    document.getElementById('root'),
+      <Resource name="posts" list={PostList} />
+    </Admin>
 );
 
 ```
 
 ## Writing Your Own REST Client
 
-Quite often, none of the the core REST clients match your API exactly. In such cases, you'll have to write your own REST client. But don't be afraid, it's easy!
+Quite often, there is no REST client that suits you API - either in the core clients, or in the third-party clients. In such cases, you'll have to write your own REST client.
+
+A REST client is a function that receives a request, and returns a promise for a response. Both the request and the response format are standardized.
+
+```jsx
+/**
+ * Query a REST client and return a promise for a response
+ *
+ * @example
+ * restClient(GET_ONE, 'posts', { id: 123 })
+ *  => Promise.resolve({ data: { id: 123, title: "hello, world" } })
+ *
+ * @param {string} type Request type, e.g GET_LIST
+ * @param {string} resource Resource name, e.g. "posts"
+ * @param {Object} payload Request parameters. Depends on the action type
+ * @returns {Promise} the Promise for a response
+ */
+const restClient = (type, resource, params) => new Promise();
+```
+
+When you write a REST client, your job is to route requests to your API backend(s), then transform their response to match the format returned by the REST client.
 
 ### Request Format
 
@@ -267,17 +265,17 @@ REST requests require a *type* (e.g. `GET_ONE`), a *resource* (e.g. 'posts') and
 
 Possible types are:
 
-Type                 | Params format
--------------------- | ----------------
-`GET_LIST`           | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`
-`GET_ONE`            | `{ id: {mixed} }`
-`CREATE`             | `{ data: {Object} }`
-`UPDATE`             | `{ id: {mixed}, data: {Object}, previousData: {Object} }`
-`DELETE`             | `{ id: {mixed}, previousData: {Object} }`
-`GET_MANY`           | `{ ids: {mixed[]} }`
-`GET_MANY_REFERENCE` | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`
+Type                 | Usage                                            | Params format
+-------------------- | ------------------------------------------------ | ----------------
+`GET_LIST`           | Search for resources                             | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`
+`GET_ONE`            | Read a single resource, by id                    | `{ id: {mixed} }`
+`CREATE`             | Create a single resource                         | `{ data: {Object} }`
+`UPDATE`             | Update a single resource                         | `{ id: {mixed}, data: {Object}, previousData: {Object} }`
+`DELETE`             | Delete a single resource                         | `{ id: {mixed}, previousData: {Object} }`
+`GET_MANY`           | Read a list of resource, by ids                  | `{ ids: {mixed[]} }`
+`GET_MANY_REFERENCE` | Read a list of resources related to another one  | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`
 
-Examples:
+Here are several examples of how Admin-on-rest can call the REST client with these types:
 
 ```jsx
 restClient(GET_LIST, 'posts', {
@@ -304,9 +302,122 @@ restClient(GET_MANY_REFERENCE, 'comments', {
 });
 ```
 
+### Example Request Processing
+
+Let's say that you want to map the REST client requests to a REST backend, like so:
+
+ * `GET_LIST  => GET http://path.to.my.api/posts?sort=['title','ASC']&range=[0, 24]&filter={author_id:12}`
+ * `GET_ONE   => GET http://path.to.my.api/posts/123`
+ * `CREATE    => POST http://path.to.my.api/posts`
+ * `UPDATE    => PUT http://path.to.my.api/posts/123`
+ * `DELETE    => DELETE http://path.to.my.api/posts/123`
+ * `GET_MANY  => GET http://path.to.my.api/posts?filter={ids:[123,124,125]}`
+ * `GET_MANY_REFERENCE  => GET http://path.to.my.api/comments?sort=['created_at','DESC']&range=[0, 24]&filter={post_id:123}`
+
+REST clients often use a `switch` statement, and finish by a call to `fetch()`. Here is an example implementation:
+
+```js
+// in myRestClient.js
+import { stringify } from 'query-string';
+import {
+    GET_LIST,
+    GET_ONE,
+    CREATE,
+    UPDATE,
+    DELETE,
+    GET_MANY,
+    GET_MANY_REFERENCE,
+} from 'admin-on-rest';
+
+const apiUrl = 'http://path.to.my.api/';
+
+/**
+ * Maps admin-on-rest queries to my REST API
+ *
+ * @param {string} type Request type, e.g GET_LIST
+ * @param {string} resource Resource name, e.g. "posts"
+ * @param {Object} payload Request parameters. Depends on the request type
+ * @returns {Promise} the Promise for a data response
+ */
+export default (type, resource, params) => {
+    let url = '';
+    const options = { 
+        headers : new Headers({
+            Accept: 'application/json',
+        }),
+    };
+    switch (type) {
+        case GET_LIST: {
+            const { page, perPage } = params.pagination;
+            const { field, order } = params.sort;
+            const query = {
+                sort: JSON.stringify([field, order]),
+                range: JSON.stringify([
+                    (page - 1) * perPage,
+                    page * perPage - 1,
+                ]),
+                filter: JSON.stringify(params.filter),
+            };
+            url = `${apiUrl}/${resource}?${stringify(query)}`;
+            break;
+        }
+        case GET_ONE:
+            url = `${apiUrl}/${resource}/${params.id}`;
+            break;
+        case CREATE:
+            url = `${apiUrl}/${resource}`;
+            options.method = 'POST';
+            options.body = JSON.stringify(params.data);
+            break;
+        case UPDATE:
+            url = `${apiUrl}/${resource}/${params.id}`;
+            options.method = 'PUT';
+            options.body = JSON.stringify(params.data);
+            break;
+        case DELETE:
+            url = `${apiUrl}/${resource}/${params.id}`;
+            options.method = 'DELETE';
+            break;
+        case GET_MANY: {
+            const query = {
+                filter: JSON.stringify({ id: params.ids }),
+            };
+            url = `${apiUrl}/${resource}?${stringify(query)}`;
+            break;
+        }
+        case GET_MANY_REFERENCE: {
+            const { page, perPage } = params.pagination;
+            const { field, order } = params.sort;
+            const query = {
+                sort: JSON.stringify([field, order]),
+                range: JSON.stringify([
+                    (page - 1) * perPage,
+                    page * perPage - 1,
+                ]),
+                filter: JSON.stringify({
+                    ...params.filter,
+                    [params.target]: params.id,
+                }),
+            };
+            url = `${apiUrl}/${resource}?${stringify(query)}`;
+            break;
+        }
+        default:
+            throw new Error(`Unsupported REST client request type ${type}`);
+    }
+
+    return fetch(url, options)
+        .then(res => res.json())
+        .then(response =>
+            /* Convert HTTP Response to REST client Response */
+            /* Covered in the next section */
+        );
+};
+```
+
 ### Response Format
 
-REST responses are objects. The format depends on the type.
+Admin-on-rest expects responses from REST clients to be objects with a `data` property. The data format depends on the request type.
 
 Type                 | Response format
 -------------------- | ----------------
@@ -320,7 +431,7 @@ Type                 | Response format
 
 A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 123, title: "hello, world" }`.
 
-Examples:
+Building up on the previous example, here are example responses matching the format expected by Admin-on-rest:
 
 ```jsx
 restClient(GET_LIST, 'posts', {
@@ -396,10 +507,122 @@ restClient(GET_MANY_REFERENCE, 'comments', {
 // }
 ```
 
+### Example Response Processing
+
+Let's continue with the REST backend example. This backend returns responses as follows:
+
+```
+GET http://path.to.my.api/posts?sort=['title','ASC']&range=[0, 4]&filter={author_id:12}
+Content-Range: posts 0-4/27
+[
+    { "id": 126, "title": "allo?", "author_id": 12 },
+    { "id": 127, "title": "bien le bonjour", "author_id": 12 },
+    { "id": 124, "title": "good day sunshine", "author_id": 12 },
+    { "id": 123, "title": "hello, world", "author_id": 12 },
+    { "id": 125, "title": "howdy partner", "author_id": 12 }
+]
+
+GET http://path.to.my.api/posts/123
+{ "id": 123, "title": "hello, world", "author_id": 12 }
+
+POST http://path.to.my.api/posts
+{ "id": 123, "title": "hello, world", "author_id": 12 }
+
+PUT http://path.to.my.api/posts/123
+{ "id": 123, "title": "hello, world", "author_id": 12 }
+
+DELETE http://path.to.my.api/posts/123
+{ "id": 123, "title": "hello, world", "author_id": 12 }
+
+GET http://path.to.my.api/posts?filter={ids:[123,124,125]}
+[
+    { "id": 123, "title": "hello, world", "author_id": 12 },
+    { "id": 124, "title": "good day sunshine", "author_id": 12 },
+    { "id": 125, "title": "howdy partner", "author_id": 12 }
+]
+
+GET http://path.to.my.api/comments?sort=['created_at','DESC']&range=[0, 24]&filter={post_id:123}
+Content-Range: comments 0-1/2
+[
+    { "id": 667, "title": "I agree", "post_id": 123 },
+    { "id": 895, "title": "I don't agree", "post_id": 123 }
+]
+```
+
+The REST client must therefore transform the response from the API backend to the expected response format.
+
+```js
+// in myRestClient.js
+import { stringify } from 'query-string';
+import {
+    GET_LIST,
+    GET_ONE,
+    CREATE,
+    UPDATE,
+    DELETE,
+    GET_MANY,
+    GET_MANY_REFERENCE,
+} from 'admin-on-rest';
+
+const apiUrl = 'http://path.to.my.api/';
+
+/**
+ * Maps admin-on-rest queries to my REST API
+ *
+ * @param {string} type Request type, e.g GET_LIST
+ * @param {string} resource Resource name, e.g. "posts"
+ * @param {Object} payload Request parameters. Depends on the request type
+ * @returns {Promise} the Promise for a data response
+ */
+export default (type, resource, params) => {
+    let url = '';
+    const options = { 
+        headers : new Headers({
+            Accept: 'application/json',
+        }),
+    };
+    switch (type) {
+        /* Prepare url and options as above */
+    }
+
+    let headers;
+    return fetch(url, options)
+        .then(res => {
+            headers = res.headers;
+            return res.json();
+        })
+        .then(json => {
+            switch (type) {
+                case GET_LIST:
+                case GET_MANY_REFERENCE:
+                    if (!headers.has('content-range')) {
+                        throw new Error(
+                            'The Content-Range header is missing in the HTTP Response. The simple REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare Content-Range in the Access-Control-Expose-Headers header?'
+                        );
+                    }
+                    return {
+                        data: json,
+                        total: parseInt(
+                            headers
+                                .get('content-range')
+                                .split('/')
+                                .pop(),
+                            10
+                        ),
+                    };
+                case CREATE:
+                    return { data: { ...params.data, id: json.id } };
+                default:
+                    return { data: json };
+            }
+        });
+};
+```
+
 ### Error Format
 
-When the REST API returns an error, the rest client should `throw` an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). Admin-on-rest inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors).
+When the API backend returns an error, the REST client should `throw` an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). Admin-on-rest inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, Admin-on-rest displays the error `message` on screen in a temporary notification.
 
-### Example implementation
+### Example Implementation
 
 Check the code from the [simple REST client](https://github.com/marmelab/admin-on-rest/blob/master/src/rest/simple.js): it's a good starting point for a custom rest client implementation.
