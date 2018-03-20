@@ -353,13 +353,54 @@ With this code, a failed review approval now sends the the correct signal to Sen
 
 **Tip**:  The side effects are [testable](https://redux-saga.github.io/redux-saga/docs/introduction/BeginnerTutorial.html#making-our-code-testable), too.
 
-## Bonus: Optimistic Rendering
+## Optimistic Rendering and Undo
 
-In this example, after clicking on the "Approve" button, users are redirected to the comments list. React-admin then fetches the `/comments` resource to grab the list of updated comments from the server. But react-admin doesn't wait for the response to this call to display the list of comments. In fact, it has an internal instance pool (in `state.admin.resources[resource]`) that is kept during navigation, and uses it to render the screen before the API calls are over - it's called *optimistic rendering*.
+In the previous example, after clicking on the "Approve" button, a spinner displays while the data provider is fetched. Then, users are redirected to the comments list. But in most cases, the server returns a success response, so the user waits for this response for nothing. 
 
-As the custom `COMMENT_APPROVE` action contains the `fetch: UPDATE` meta, react-admin will automatically update its instance pool with the response. That means that the initial rendering (before the `GET /comments` response arrives) will show the approved comment!
+For its own fetch actions, react-admin uses an approach called *optimistic rendering*. The idea is to handle the `fetch` actions on the client side first (i.e. updating entities in the Redux store), and re-render the screen immediately. The user sees the effect of their action with no delay. Then, react-admin applies the success side effects, and only after that it triggers the fetch to the data provider. If the fetch ends with a success, react-admin does nothing more than a refresh to grab the latest data from the server, but in most cases, the user sees no difference (the data in the Redux store and the data from the data provider are the same). If the fetch fails, react-admin shows an error notification, and forces a refresh, too.
 
-The fact that react-admin updates the instance pool if you use custom actions with the `fetch` meta should be another motivation to avoid using raw `fetch`.
+As a bonus, while the success notification is displayed, users have the ability to cancel the action *before* the data provider is even called.
+
+To make an action with a `fetch` meta optimistic, decorate it with the `startUndoable` action creator:
+
+```diff
+// in src/comments/ApproveButton.js
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Button from 'material-ui/Button';
++ import { startUndoable as startUndoableAction } from 'ra-core';
+- import { commentApprove as commentApproveAction } from './commentActions';
++ import { commentApprove } from './commentActions';
+
+class ApproveButton extends Component {
+    handleClick = () => {
+-        const { commentApprove, record } = this.props;
+-        commentApprove(record.id, record);
++        const { startUndoable, record } = this.props;
++        startUndoable(commentApprove(record.id, record));
+    }
+
+    render() {
+        return <Button onClick={this.handleClick}>Approve</Button>;
+    }
+}
+
+ApproveButton.propTypes = {
+-    commentApprove: PropTypes.func,
++    startUndoable: PropTypes.func,
+    record: PropTypes.object,
+};
+
+export default connect(null, {
+-    commentApprove: commentApproveAction,
++    startUndoable: startUndoableAction,
+})(ApproveButton);
+```
+
+And that's all it takes to make a fetch action optimistic. Note that the `startUndoable` action creator is passed to Redux `connect` as `mapDispatchToProp`, to be decorated with `dispatch` - but `commentApprove` is not. Only the first action must be decorated with dispatch.
+
+The fact that react-admin updates the internal store if you use custom actions with the `fetch` meta should be another motivation to avoid using raw `fetch`.
 
 ## Using a Custom Reducer
 
