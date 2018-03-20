@@ -307,8 +307,8 @@ import { CardActions } from 'material-ui/Card';
     <CardActions>
         {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         <CreateButton basePath={basePath} />
--         <FlatButton primary label="refresh" onClick={refresh} icon={<NavigationRefresh />} />
-+         <RefreshButton />
+-       <FlatButton primary label="refresh" onClick={refresh} icon={<NavigationRefresh />} />
++       <RefreshButton />
     </CardActions>
 );
 ```
@@ -352,59 +352,42 @@ All react-admin components now accept a `className` prop instead of the `elStyle
 + export default withStyles(styles)(UserList);
 ```
 
+Yes, it's way longer to write and it's a pain, but that's material-ui's choice of CSS-in-JS implementation - and there is nothing the react-admin team can do about it. If this is a consolation, we suffered to upgrade our own apps to JSS, too.
+
 In addition to `elStyle`, Field and Input components used to support a `style` prop to override the styles of the *container element* (the `<td>` in a datagrid). This prop is no longer supported in react-admin. Instead, the `Datagrid` component will check if its children have a `headerClassName` and `cellClassName` props. If they do, it will apply those classes to the table header and cells respectively.
 
-```jsx
-// before
-import { EmailField, List, Datagrid } from 'react-admin';
+```diff
+- import { EmailField, List, Datagrid } from 'admin-on-rest';
++ import { EmailField, List, Datagrid } from 'react-admin';
++ import { withStyles } from 'material-ui/styles';
 
-const UserList = props => (
++ const styles = {
++     cell: {
++         backgroundColor: 'lightgrey',
++     },
++     field: {
++         textDecoration: 'none',
++     },
++ };
+
+- const UserList = props => (
++ const UserList = ({ classes, ...props }) => (
     <List {...props}>
         <Datagrid>
-            <EmailField source="email" style={{ backgroundColor: 'lightgrey' }} elStyle={{ textDecoration: 'none' }} />
+-           <EmailField source="email" style={{ backgroundColor: 'lightgrey' }} elStyle={{ textDecoration: 'none' }} />
++           <EmailField source="email" cellClassName={classes.cell} className={classes.field} />
         </Datagrid>
     </List>
 );
-export default UserList;
+
+- export default UserList;
++ export default withStyles(styles)(UserList);
 // renders in the datagrid as
 // <td style="background-color:lightgrey">
 //     <a style="text-decoration:none" href="mailto:foo@example.com">
 //         foo@example.com
 //     </a>
 // </td>
-
-// after
-import { EmailField, List, Datagrid } from 'react-admin';
-import { withStyles } from 'material-ui/styles';
-
-const styles = {
-    cell: {
-        backgroundColor: 'lightgrey',
-    },
-    field: {
-        textDecoration: 'none',
-    },
-};
-
-const UserList = ({ classes, ...props }) => (
-    <List {...props}>
-        <Datagrid>
-            <EmailField
-                source="email"
-                cellClassName={classes.cell}
-                className={classes.field}
-            />
-        </Datagrid>
-    </List>
-);
-export default withStyles(styles)(UserList);
-// renders the same in the datagrid
-// <td style="background-color:lightgrey">
-//     <a style="text-decoration:none" href="mailto:foo@example.com">
-//         foo@example.com
-//     </a>
-// </td>
-
 ```
 
 Furthermore, some React-admin components such as the `List`, `Filter`, and `Datagrid` also accept a `classes` prop. This prop is injected by the [`withStyles` Higher Order Component](https://material-ui-next.com/customization/css-in-js/#api) and allows you to customize the style of some deep children. See the Theming documentation for details.
@@ -458,35 +441,22 @@ Finally, Field and Input components accept a `textAlign` prop, which can be eith
 
 ## Authentication: `<Restricted>` renamed to `<Authenticated>`
 
-The `Restricted` component has been renamed to `Authenticated`. update your `import` statements accordingly:
+The `Restricted` component has been renamed to `Authenticated`. Update your `import` statements accordingly:
 
-```jsx
-// before
+```diff
 // in src/MyPage.js
 import { withRouter } from 'react-router-dom';
-import { Restricted } from 'admin-on-rest';
+- import { Restricted } from 'admin-on-rest';
++ import { Authenticated } from 'react-admin';
 
 const MyPage = ({ location }) => (
-    <Restricted authParams={{ foo: 'bar' }} location={location}>
+-  <Restricted authParams={{ foo: 'bar' }} location={location}>
++  <Authenticated authParams={{ foo: 'bar' }} location={location}>
         <div>
             ...
         </div>
-    </Restricted>
-)
-
-export default withRouter(MyPage);
-
-// after
-// in src/MyPage.js
-import { withRouter } from 'react-router-dom';
-import { Authenticated } from 'react-admin';
-
-const MyPage = ({ location }) => (
-    <Authenticated authParams={{ foo: 'bar' }} location={location}>
-        <div>
-            ...
-        </div>
-    </Authenticated>
+-  </Restricted>
++  </Authenticated>
 )
 
 export default withRouter(MyPage);
@@ -500,46 +470,24 @@ This component follows the [render callback pattern](https://cdb.reacttraining.c
 
 If you were using `WithPermission` before, here's how to migrate to `WithPermissions`:
 
-```jsx
-// before
+```diff
 import React from 'react';
-import { MenuItemLink, WithPermission } from 'admin-on-rest';
+- import { MenuItemLink, WithPermission } from 'admin-on-rest';
++ import { MenuItemLink, WithPermissions } from 'react-admin';
 
 export default ({ onMenuClick, logout }) => (
     <div>
         <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuClick} />
         <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuClick} />
-        <WithPermission value="admin">
-            <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-        </WithPermission>
-        {logout}
-    </div>
-);
-
-// after
-import React from 'react';
-import { MenuItemLink, WithPermissions } from 'react-admin';
-
-export default ({ onMenuClick, logout }) => (
-    <div>
-        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuClick} />
-        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuClick} />
-        <WithPermissions
-            render={
-            ({permissions}) =>
-                permissions === 'admin'
-                ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-                : null
-            }
-        />
-        {/* OR */}
-        <WithPermissions>
-            {({permissions}) =>
-                permissions === 'admin'
-                ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-                : null
-            }
-        </WithPermissions>
+-       <WithPermission value="admin">
+-           <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
+-       </WithPermission>
++       <WithPermissions>
++           {({ permissions }) => permissions === 'admin'
++               ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
++               : null
++           }
++       </WithPermissions>
         {logout}
     </div>
 );
@@ -547,44 +495,34 @@ export default ({ onMenuClick, logout }) => (
 
 If you were using `SwitchPermissions` before, here's how to migrate to `WithPermissions`:
 
-```jsx
+```diff
 // before
 import React from 'react';
 import BenefitsSummary from './BenefitsSummary';
 import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
-import { ViewTitle, SwitchPermissions, Permission } from 'admin-on-rest';
+- import { ViewTitle, SwitchPermissions, Permission } from 'admin-on-rest';
++ import { ViewTitle, WithPermissions } from 'react-admin';
 
 export default () => (
     <div>
-        <SwitchPermissions>
-            <Permission value="associate">
-                <BenefitsSummary />
-            </Permission>
-            <Permission value="boss">
-                <BenefitsDetailsWithSensitiveData />
-            </Permission>
-        </SwitchPermissions>
-    </div>
-);
-
-// after
-import React from 'react';
-import BenefitsSummary from './BenefitsSummary';
-import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
-import { ViewTitle, WithPermissions } from 'react-admin';
-
-export default () => (
-    <div>
-        <WithPermissions
-            render={({permissions}) => {
-                if (permissions === 'associate') {
-                    return <BenefitsSummary />;
-                }
-                if (permissions === 'boss') {
-                    return <BenefitsDetailsWithSensitiveData />;
-                }
-            }}
-        />
+-         <SwitchPermissions>
+-             <Permission value="associate">
+-                 <BenefitsSummary />
+-             </Permission>
+-             <Permission value="boss">
+-                 <BenefitsDetailsWithSensitiveData />
+-             </Permission>
+-         </SwitchPermissions>
++         <WithPermissions>
++             {({ permissions }) => {
++                 if (permissions === 'associate') {
++                     return <BenefitsSummary />;
++                 }
++                 if (permissions === 'boss') {
++                     return <BenefitsDetailsWithSensitiveData />;
++                 }
++             }}
++         </WithPermissions>
     </div>
 );
 ```
@@ -593,8 +531,7 @@ We also reviewed how permissions are passed to the `List`, `Edit`, `Create`, `Sh
 
 Here's how to migrate a `Create` component:
 
-```jsx
-// before
+```diff
 const UserCreateToolbar = ({ permissions, ...props }) =>
     <Toolbar {...props}>
         <SaveButton
@@ -611,9 +548,10 @@ const UserCreateToolbar = ({ permissions, ...props }) =>
             />}
     </Toolbar>;
 
-export const UserCreate = ({ ...props }) =>
+- export const UserCreate = ({ ...props }) =>
++ export const UserCreate = ({ permissions, ...props }) =>
     <Create {...props}>
-        {permissions =>
+-       {permissions =>
             <SimpleForm
                 toolbar={<UserCreateToolbar permissions={permissions} />}
                 defaultValue={{ role: 'user' }}
@@ -621,46 +559,19 @@ export const UserCreate = ({ ...props }) =>
                 <TextInput source="name" validate={[required()]} />
                 {permissions === 'admin' &&
                     <TextInput source="role" validate={[required()]} />}
-            </SimpleForm>}
-    </Create>;
-
-// after
-const UserCreateToolbar = ({ permissions, ...props }) =>
-    <Toolbar {...props}>
-        <SaveButton
-            label="user.action.save_and_show"
-            redirect="show"
-            submitOnEnter={true}
-        />
-        {permissions === 'admin' &&
-            <SaveButton
-                label="user.action.save_and_add"
-                redirect={false}
-                submitOnEnter={false}
-                variant="flat"
-            />}
-    </Toolbar>;
-
-export const UserCreate = ({ permissions, ...props }) =>
-    <Create {...props}>
-        <SimpleForm
-            toolbar={<UserCreateToolbar permissions={permissions} />}
-            defaultValue={{ role: 'user' }}
-        >
-            <TextInput source="name" validate={[required()]} />
-            {permissions === 'admin' &&
-                <TextInput source="role" validate={[required()]} />}
-        </SimpleForm>
+            </SimpleForm>
+-       }
     </Create>;
 ```
 
 Here's how to migrate an `Edit` component:
 
-```jsx
+```diff
 // before
-export const UserEdit = ({ ...props }) =>
+- export const UserEdit = ({ ...props }) =>
++ export const UserEdit = ({ permissions, ...props }) =>
     <Edit title={<UserTitle />} {...props}>
-        {permissions =>
+-       {permissions =>
             <TabbedForm defaultValue={{ role: 'user' }}>
                 <FormTab label="user.form.summary">
                     {permissions === 'admin' && <DisabledInput source="id" />}
@@ -670,32 +581,18 @@ export const UserEdit = ({ ...props }) =>
                     <FormTab label="user.form.security">
                         <TextInput source="role" validate={required()} />
                     </FormTab>}
-            </TabbedForm>}
-    </Edit>;
-
-// after
-export const UserEdit = ({ permissions, ...props }) =>
-    <Edit title={<UserTitle />} {...props}>
-        <TabbedForm defaultValue={{ role: 'user' }}>
-            <FormTab label="user.form.summary">
-                {permissions === 'admin' && <DisabledInput source="id" />}
-                <TextInput source="name" validate={required()} />
-            </FormTab>
-            {permissions === 'admin' &&
-                <FormTab label="user.form.security">
-                    <TextInput source="role" validate={required()} />
-                </FormTab>}
-        </TabbedForm>
+            </TabbedForm>
+-       }
     </Edit>;
 ```
 
 Here's how to migrate a `List` component. Note that the `<Filter>` component does not support the function as a child pattern anymore. If you need permissions within it, just pass them from the `List` component.
 
-```jsx
-// before
-const UserFilter = ({ ...props }) =>
+```diff
+- const UserFilter = ({ ...props }) =>
++ const UserFilter = ({ permissions, ...props }) =>
     <Filter {...props}>
-        {permissions => [
+-       {permissions => [
             <TextInput
                 key="user.list.search"
                 label="user.list.search"
@@ -704,16 +601,18 @@ const UserFilter = ({ ...props }) =>
             />,
             <TextInput key="name" source="name" />,
             permissions === 'admin' ? <TextInput source="role" /> : null,
-        ]}
+-       ]}
     </Filter>;
 
-export const UserList = ({ ...props }) =>
+- export const UserList = ({ ...props }) =>
++ export const UserList = ({ permissions, ...props }) =>
     <List
         {...props}
-        filters={<UserFilter />}
+-       filters={<UserFilter />}
++       filters={<UserFilter permissions={permissions} />}
         sort={{ field: 'name', order: 'ASC' }}
     >
-        {permissions =>
+-       {permissions =>
             <Responsive
                 small={
                     <SimpleList
@@ -731,96 +630,40 @@ export const UserList = ({ ...props }) =>
                         <ShowButton />
                     </Datagrid>
                 }
-            />}
-    </List>;
-
-// after
-const UserFilter = ({ permissions, ...props }) =>
-    <Filter {...props}>
-        <TextInput
-            key="user.list.search"
-            label="user.list.search"
-            source="q"
-            alwaysOn
-        />
-        <TextInput key="name" source="name" />
-        {permissions === 'admin' ? <TextInput source="role" /> : null}
-    </Filter>;
-
-export const UserList = ({ permissions, ...props }) =>
-    <List
-        {...props}
-        filters={<UserFilter permissions={permissions} />}
-        sort={{ field: 'name', order: 'ASC' }}
-    >
-        <Responsive
-            small={
-                <SimpleList
-                    primaryText={record => record.name}
-                    secondaryText={record =>
-                        permissions === 'admin' ? record.role : null}
-                />
-            }
-            medium={
-                <Datagrid>
-                    <TextField source="id" />
-                    <TextField source="name" />
-                    {permissions === 'admin' && <TextField source="role" />}
-                    {permissions === 'admin' && <EditButton />}
-                    <ShowButton />
-                </Datagrid>
-            }
-        />
+            />
+-       }
     </List>;
 ```
 
 Moreover, you won't need the now deprecated `<WithPermission>` or `<SwitchPermissions>` components inside a `Dashboard` to access permissions anymore: react-admin injects `permissions` to the dashboard, too:
 
-```jsx
-// before
+```diff
 // in src/Dashboard.js
 import React from 'react';
 import BenefitsSummary from './BenefitsSummary';
 import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
-import { ViewTitle SwitchPermissions, Permission } from 'admin-on-rest';
+- import { ViewTitle, SwitchPermissions, Permission } from 'admin-on-rest';
++ import { ViewTitle } from 'react-admin';
 
-export default () => (
+- export default () => (
++ export default ({ permissions }) => (
     <Card>
         <ViewTitle title="Dashboard" />
-
-        <SwitchPermissions>
-            <Permission value="associate">
-                <BenefitsSummary />
-            </Permission>
-            <Permission value="boss">
-                <BenefitsDetailsWithSensitiveData />
-            </Permission>
-        </SwitchPermissions>
-    </Card>
-);
-
-// after
-// in src/Dashboard.js
-import React from 'react';
-import BenefitsSummary from './BenefitsSummary';
-import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
-import { ViewTitle } from 'react-admin';
-
-export default ({ permissions }) => (
-    <Card>
-        <ViewTitle title="Dashboard" />
-
-        {permissions === 'associate'
-            ? <BenefitsSummary />
-            : null}
-        {permissions === 'boss'
-            ? <BenefitsDetailsWithSensitiveData />
-            : null}
+-       <SwitchPermissions>
+-           <Permission value="associate">
+-               <BenefitsSummary />
+-           </Permission>
+-           <Permission value="boss">
+-               <BenefitsDetailsWithSensitiveData />
+-           </Permission>
+-       </SwitchPermissions>
++       {permissions === 'associate' && <BenefitsSummary />}
++       {permissions === 'boss' && <BenefitsDetailsWithSensitiveData />}
     </Card>
 );
 ```
 
-Finally, you won't need the now deprecated `<WithPermission>` or `<SwitchPermissions>` in custom routes either if you want access to permissions. Much like you can restrict access to authenticated users only with the [`Authenticated`](Authentication.html#restricting-access-to-a-custom-page) component, you may decorate your custom route with the `WithPermissions` component. It will ensure the user is authenticated then call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
+Finally, you won't need the now deprecated `<WithPermission>` or `<SwitchPermissions>` in custom routes either if you want access to permissions. Much like you can restrict access to authenticated users only with the [`Authenticated`](Authentication.html#restricting-access-to-a-custom-page) component, you may decorate your custom route with the `WithPermissions` component. It will ensure the user is authenticated and call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and the `authParams` you specify:
 
 {% raw %}
 ```jsx
@@ -869,100 +712,137 @@ export default [
 
 ## Custom Layouts
 
-The default layout has been simplified and this results in a simplified custom layout too. You don't need to pass the `AdminRoutes` anymore as you'll receive the component to render as the standard `children` prop:
+The default layout has been simplified, and this results in a simplified custom layout too. You don't need to pass the `AdminRoutes` anymore, as the layout receives the component to render as the standard `children` prop:
 
-```js
-// Before
+```diff
 import React, { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import CircularProgress from 'material-ui/CircularProgress';
+- import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
++ import { MuiThemeProvider, withStyles } from 'material-ui/styles';
+- import CircularProgress from 'material-ui/CircularProgress';
 import {
-    AdminRoutes,
+-   AdminRoutes,
     AppBar,
     Menu,
     Notification,
     Sidebar,
-    setSidebarVisibility,
-} from 'react-admin';
+-   setSidebarVisibility,
+- } from 'admin-on-rest';
++ } from 'react-admin';
 
-const styles = {
-    wrapper: {
-        // Avoid IE bug with Flexbox, see #467
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    main: {
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-    },
-    body: {
-        backgroundColor: '#edecec',
-        display: 'flex',
-        flex: 1,
-        overflowY: 'hidden',
-        overflowX: 'scroll',
-    },
-    content: {
-        flex: 1,
-        padding: '2em',
-    },
-    loader: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        margin: 16,
-        zIndex: 1200,
-    },
-};
+- const styles = {
+-     wrapper: {
+-         // Avoid IE bug with Flexbox, see #467
+-         display: 'flex',
+-         flexDirection: 'column',
+-     },
+-     main: {
+-         display: 'flex',
+-         flexDirection: 'column',
+-         minHeight: '100vh',
+-     },
+-     body: {
+-         backgroundColor: '#edecec',
+-         display: 'flex',
+-         flex: 1,
+-         overflowY: 'hidden',
+-         overflowX: 'scroll',
+-     },
+-     content: {
+-         flex: 1,
+-         padding: '2em',
+-     },
+-     loader: {
+-         position: 'absolute',
+-         top: 0,
+-         right: 0,
+-         margin: 16,
+-         zIndex: 1200,
+-     },
+- };
++ const styles = theme => ({
++     root: {
++         display: 'flex',
++         flexDirection: 'column',
++         zIndex: 1,
++         minHeight: '100vh',
++         backgroundColor: theme.palette.background.default,
++         position: 'relative',
++     },
++     appFrame: {
++         display: 'flex',
++         flexDirection: 'column',
++         overflowX: 'auto',
++     },
++     contentWithSidebar: {
++         display: 'flex',
++         flexGrow: 1,
++     },
++     content: {
++         display: 'flex',
++         flexDirection: 'column',
++         flexGrow: 2,
++         padding: theme.spacing.unit * 3,
++         marginTop: '4em',
++         paddingLeft: 5,
++     },
++ });
 
 class MyLayout extends Component {
-    componentWillMount() {
-        this.props.setSidebarVisibility(true);
-    }
+-   componentWillMount() {
+-       this.props.setSidebarVisibility(true);
+-   }
 
     render() {
         const {
             children,
-            customRoutes,
+-           customRoutes,
             dashboard,
             isLoading,
             logout,
             menu,
++           open,
             title,
         } = this.props;
+
         return (
             <MuiThemeProvider>
-                <div style={styles.wrapper}>
-                    <div style={styles.main}>
-                        <AppBar title={title} />
-                        <div className="body" style={styles.body}>
-                            <div style={styles.content}>
-                                <AdminRoutes
-                                    customRoutes={customRoutes}
-                                    dashboard={dashboard}
-                                >
-                                    {children}
-                                </AdminRoutes>
-                            </div>
+-               <div style={styles.wrapper}>
++               <div className={classes.root}>
+-                   <div style={styles.main}>
++                   <div className={classes.appFrame}>
+-                       <AppBar title={title} />
++                       <AppBar title={title} open={open} logout={logout} />
+-                       <div className="body" style={styles.body}>
++                       <main className={classes.contentWithSidebar}>
+-                           <div style={styles.content}>
+-                               <AdminRoutes
+-                                   customRoutes={customRoutes}
+-                                   dashboard={dashboard}
+-                               >
+-                                   {children}
+-                               </AdminRoutes>
                             <Sidebar>
                                 {createElement(menu || Menu, {
                                     logout,
                                     hasDashboard: !!dashboard,
                                 })}
                             </Sidebar>
-                        </div>
++                           <div className={classes.content}>
++                               {children}</div>
++                           </div>
+-                       </div>
++                       </main>
                         <Notification />
-                        {isLoading && (
-                            <CircularProgress
-                                color="#fff"
-                                size={30}
-                                thickness={2}
-                                style={styles.loader}
-                            />
-                        )}
+-                       {isLoading && (
+-                           <CircularProgress
+-                               color="#fff"
+-                               size={30}
+-                               thickness={2}
+-                               style={styles.loader}
+-                           />
+-                       )}
                     </div>
                 </div>
             </MuiThemeProvider>
@@ -971,160 +851,50 @@ class MyLayout extends Component {
 }
 
 MyLayout.propTypes = {
-    authClient: PropTypes.func,
-    customRoutes: PropTypes.array,
+-   authClient: PropTypes.func,
++   children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
++   classes: PropTypes.object,
+-   customRoutes: PropTypes.array,
     dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-    isLoading: PropTypes.bool.isRequired,
+-   isLoading: PropTypes.bool.isRequired,
++   logout: PropTypes.oneOfType([PropTypes.node PropTypes.func, PropTypes.string]),
     menu: PropTypes.element,
-    resources: PropTypes.array,
-    setSidebarVisibility: PropTypes.func.isRequired,
++   open: PropTypes.bool,
+-   resources: PropTypes.array,
+-   setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
-export default connect(mapStateToProps, { setSidebarVisibility })(MyLayout);
+const mapStateToProps = state => ({
+-   isLoading: state.admin.loading > 0
++   open: state.admin.ui.sidebarOpen,
+});
 
-// After
-import React, { createElement, Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import CircularProgress from 'material-ui/CircularProgress';
-import {
-    AdminRoutes,
-    AppBar,
-    Menu,
-    Notification,
-    Sidebar,
-    setSidebarVisibility,
-} from 'react-admin';
-
-const styles = {
-    wrapper: {
-        // Avoid IE bug with Flexbox, see #467
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    main: {
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-    },
-    body: {
-        backgroundColor: '#edecec',
-        display: 'flex',
-        flex: 1,
-        overflowY: 'hidden',
-        overflowX: 'scroll',
-    },
-    content: {
-        flex: 1,
-        padding: '2em',
-    },
-    loader: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        margin: 16,
-        zIndex: 1200,
-    },
-};
-
-class MyLayout extends Component {
-    componentWillMount() {
-        this.props.setSidebarVisibility(true);
-    }
-
-    render() {
-        const {
-            children,
-            dashboard,
-            isLoading,
-            logout,
-            menu,
-            title,
-        } = this.props;
-        return (
-            <MuiThemeProvider>
-                <div style={styles.wrapper}>
-                    <div style={styles.main}>
-                        <AppBar title={title} />
-                        <div className="body" style={styles.body}>
-                            <div style={styles.content}>
-                                {children}
-                            </div>
-                            <Sidebar>
-                                {createElement(menu || Menu, {
-                                    logout,
-                                    hasDashboard: !!dashboard,
-                                })}
-                            </Sidebar>
-                        </div>
-                        <Notification />
-                        {isLoading && (
-                            <CircularProgress
-                                color="#fff"
-                                size={30}
-                                thickness={2}
-                                style={styles.loader}
-                            />
-                        )}
-                    </div>
-                </div>
-            </MuiThemeProvider>
-        );
-    }
-}
-
-MyLayout.propTypes = {
-    dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-    isLoading: PropTypes.bool.isRequired,
-    menu: PropTypes.element,
-    setSidebarVisibility: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
-export default connect(mapStateToProps, { setSidebarVisibility })(MyLayout);
+- export default connect(mapStateToProps, { setSidebarVisibility })(MyLayout);
++ export default connect(mapStateToProps, {})(withStyles(styles)(MyLayout));
 ```
+
+**Tip**: React-admin's theme is a bot more complex than that, as it is reponsive. Check out the default layout source for details.
 
 ## Menu `onMenuTap` prop has been renamed `onMenuClick`
 
 Material-ui renamed all `xxxTap` props to `xxxClick`, so did we.
 
-```js
-// Before
+```diff
 import React from 'react';
 import { connect } from 'react-redux';
-import { MenuItemLink, getResources } from 'react-admin';
+- import { MenuItemLink, getResources } from 'admin-on-rest';
++ import { MenuItemLink, getResources } from 'react-admin';
 
-const Menu = ({ resources, onMenuTap, logout }) => (
+- const Menu = ({ resources, onMenuTap, logout }) => (
++ const Menu = ({ resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
-            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuTap} />
+-           <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuTap} />
++           <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
         ))}
-        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
-        {logout}
-    </div>
-);
-
-const mapStateToProps = state => ({
-    resources: getResources(state),
-});
-
-export default connect(mapStateToProps)(Menu);
-
-// After
-import React from 'react';
-import { connect } from 'react-redux';
-import { MenuItemLink, getResources } from 'react-admin';
-
-const Menu = ({ resources, onMenuClick, logout }) => (
-    <div>
-        {resources.map(resource => (
-            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
-        ))}
-        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
+-       <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuTap} />
++       <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
         {logout}
     </div>
 );
@@ -1136,18 +906,18 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps)(Menu);
 ```
 
-## Logout is now displayed in the AppBar on desktop
+## Logout is now displayed in the AppBar on Desktop
 
-The Logout button is now displayed in the AppBar on desktop but is still displayed as a menu item on small devices.
+The Logout button is now displayed in the AppBar on desktop, but is still displayed as a menu item on small devices.
 
 This impacts how you build a custom menu, as you'll now have to check whether you are on small devices before displaying the logout:
 
-```jsx
+```diff
 // in src/Menu.js
-// before
 import React from 'react';
 import { connect } from 'react-redux';
-import { MenuItemLink, getResources } from 'react-admin';
+- import { MenuItemLink, getResources } from 'admin-on-rest';
++ import { MenuItemLink, getResources, Responsive } from 'react-admin';
 import { withRouter } from 'react-router-dom';
 
 const Menu = ({ resources, onMenuClick, logout }) => (
@@ -1156,32 +926,8 @@ const Menu = ({ resources, onMenuClick, logout }) => (
             <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
         ))}
         <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-        {logout}
-    </div>
-);
-
-const mapStateToProps = state => ({
-    resources: getResources(state),
-});
-
-export default withRouter(connect(mapStateToProps)(Menu));
-
-// after
-import React from 'react';
-import { connect } from 'react-redux';
-import { MenuItemLink, getResources, Responsive } from 'react-admin';
-import { withRouter } from 'react-router-dom';
-
-const Menu = ({ resources, onMenuClick, logout }) => (
-    <div>
-        {resources.map(resource => (
-            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
-        ))}
-        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-        <Responsive
-            small={logout}
-            medium={<div />} // We must define something to not fallback on small
-        />
+-       {logout}
++        <Responsive xsmall={logout} medium={null} />
     </div>
 );
 
@@ -1194,93 +940,14 @@ export default withRouter(connect(mapStateToProps)(Menu));
 
 It also impacts custom layouts if you're using the default `AppBar`. You now have to pass the `logout` prop to the `AppBar`:
 
-```jsx
+```diff
 // in src/MyLayout.js
-// Before
-import React, { createElement, Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import createMuiTheme from 'material-ui/styles/createMuiTheme';
-import { AppBar, Menu, Notification, Sidebar } from 'react-admin';
-
-const theme = createMuiTheme({
-    palette: {
-        type: 'light',
-    },
-});
-
-const styles = {
-    ...
-};
-
-const MyLayout () => ({
-    children,
-    dashboard,
-    logout,
-    menu,
-    title,
-}) => (
-    <MuiThemeProvider theme={theme}>
-        <div style={styles.wrapper}>
-            <div style={styles.main}>
-                <AppBar title={title} />
-                <div className="body" style={styles.body}>
-                    <div style={styles.content}>{children}</div>
-                    <Sidebar>
-                        {createElement(menu || Menu, {
-                            logout,
-                            hasDashboard: !!dashboard,
-                        })}
-                    </Sidebar>
-                </div>
-                <Notification />
-            </div>
-        </div>
-    </MuiThemeProvider>
-);
-
-// After
-import React, { createElement, Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import createMuiTheme from 'material-ui/styles/createMuiTheme';
-import { AppBar, Menu, Notification, Sidebar } from 'react-admin';
-
-const theme = createMuiTheme({
-    palette: {
-        type: 'light',
-    },
-});
-
-const styles = {
-    ...
-};
-
-const MyLayout () => ({
-    children,
-    dashboard,
-    logout,
-    menu,
-    title,
-}) => (
-    <MuiThemeProvider theme={theme}>
-        <div style={styles.wrapper}>
-            <div style={styles.main}>
-                <AppBar title={title} logout={logout} />
-                <div className="body" style={styles.body}>
-                    <div style={styles.content}>{children}</div>
-                    <Sidebar>
-                        {createElement(menu || Menu, {
-                            logout,
-                            hasDashboard: !!dashboard,
-                        })}
-                    </Sidebar>
-                </div>
-                <Notification />
-            </div>
-        </div>
+const MyLayout () => ({ logout, ...props }) => (
+    <MuiThemeProvider>
+        ...
+-          <AppBar title={title} />
++          <AppBar title={title} logout={logout} />
+        ...
     </MuiThemeProvider>
 );
 ```
@@ -1304,26 +971,18 @@ Please refer to the `dataProvider` documentation for more information.
 
 Update your `import` statements accordingly:
 
-```js
-// before
-import realtimeSaga from 'aor-realtime';
-// after
-import realtimeSaga from 'ra-realtime';
+```diff
+- import realtimeSaga from 'aor-realtime';
++ import realtimeSaga from 'ra-realtime';
 
-// before
-import { DependentInput, DependentField } from 'aor-dependent-input';
-// after
-import { DependentInput, DependentField } from 'ra-dependent-input';
+- import { DependentInput, DependentField } from 'aor-dependent-input';
++ import { DependentInput, DependentField } from 'ra-dependent-input';
 
-// before
-import buildGraphQLProvider from 'aor-graphql-client';
-// after
-import buildGraphQLProvider from 'ra-data-graphql';
+- import buildGraphQLProvider from 'aor-graphql-client';
++ import buildGraphQLProvider from 'ra-data-graphql';
 
-// before
-import buildGraphcoolProvider from 'aor-graphql-client-graphcool';
-// after
-import buildGraphcoolProvider from 'ra-data-graphcool';
+- import buildGraphcoolProvider from 'aor-graphql-client-graphcool';
++ import buildGraphcoolProvider from 'ra-data-graphcool';
 ```
 
 ## Validators should be initialized
@@ -1342,4 +1001,3 @@ Update your `require`,`number` and `email` validations.
 -<TextInput source="foo" validate={email} />
 +<TextInput source="foo" validate={email()} />
 ```
-  
