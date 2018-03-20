@@ -4,10 +4,22 @@ import { showNotification } from '../actions/notificationActions';
 /**
  * Notification Side Effects
  */
-function* handleNotification({ meta: { notification, optimistic } }) {
-    const { body, level = 'info', messageArgs = {} } = notification;
+function* handleNotification({ error, meta: { notification, optimistic } }) {
+    const { body, level, messageArgs = {} } = notification;
+    if (error) {
+        return yield put(
+            showNotification(
+                typeof error === 'string' ? error : error.message || body,
+                level || 'warning',
+                {
+                    messageArgs,
+                    undoable: false,
+                }
+            )
+        );
+    }
     yield put(
-        showNotification(body, level, {
+        showNotification(body, level || 'info', {
             messageArgs,
             undoable: optimistic,
         })

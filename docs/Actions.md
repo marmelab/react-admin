@@ -175,7 +175,7 @@ export const COMMENT_APPROVE = 'COMMENT_APPROVE';
 export const commentApprove = (id, data, basePath) => ({
     type: COMMENT_APPROVE,
     payload: { id, data: { ...data, is_approved: true } },
-    meta: { resource: 'comments', fetch: UPDATE, cancelPrevious: false },
+    meta: { resource: 'comments', fetch: UPDATE },
 });
 ```
 
@@ -217,9 +217,11 @@ This works fine: when a user presses the "Approve" button, the API receives the 
 
 ## Handling Side Effects
 
-After an action is executed, you usually want to trigger some *side effects* such as showing a notification or redirecting the user. Those two common side effects can be defined declaratively using the `onSuccess` meta property in the action creator:
+Fetching data is called a *side effect*, since it calls the outside world, and is asynchronous. Usual actions may have other side effects, like showing a notification, or redirecting the user to another page. Just like for the `fetch` side effect, you can associate side effects to an action declaratively by setting the appropriate keys in the action `meta`. 
 
-```jsx
+For instance, to display a notification when the `COMMENT_APPROVE` action is dispatched, add the `notification` meta:
+
+```diff
 // in src/comment/commentActions.js
 import { UPDATE } from 'react-admin';
 export const COMMENT_APPROVE = 'COMMENT_APPROVE';
@@ -229,30 +231,87 @@ export const commentApprove = (id, data, basePath) => ({
     meta: {
         resource: 'comments',
         fetch: UPDATE,
-        cancelPrevious: false,
-        onSuccess: {
-            notification: {
-                body: 'resources.comments.notification.approved_success',
-                level: 'info',
-            },
-            redirectTo: '/comments',
-            basePath,
-        },
++        notification: {
++            body: 'resources.comments.notification.approved_success',
++            level: 'info',
++        },
++        redirectTo: '/comments',
++        basePath,
     },
 });
 ```
 
-`onSuccess` accepts three properties:
+React-admin can handle the following side effects metas:
 
-- `notification`: an object describing the notification to display. The `body` can be a translation key. `level` can be either `info` or `warning`.
-- `redirectTo`: the path to redirect the user to
-- `basePath`: used internaly to compute redirection paths
+- `notification`: Display a notification. The property value should be an object describing the notification to display. The `body` can be a translation key. `level` can be either `info` or `warning`.
+- `redirectTo`: Redirect the user to another page. The property value should be the path to redirect the user to.
+- `refresh`: Force a rerender of the current view (equivalent to pressing the Refresh button). Set to true to enable.
+- `unselectAll`: Unselect all lines in the current datagrid. Set to true to enable.
+- `basePath`: This is not a side effect, but it's used internaly to compute redirection paths. Set it when you have a redirection side effect.
+
+## Success and Failure Side Effects
+
+In the previous example, the "notification approved" notification appears when the `COMMENT_APPROVE` action is dispatched, i.e. *before* the server is even called. That's a bit too early: what if the server returns an error?
+
+In practice, most side effects must be triggered after the `fetch` side effect succeeds or fails. To support that, you can enclose side effects under the `onSuccess` and `onFailure` keys in the `meta` property of an action:
+
+```diff
+// in src/comment/commentActions.js
+import { UPDATE } from 'react-admin';
+export const COMMENT_APPROVE = 'COMMENT_APPROVE';
+export const commentApprove = (id, data, basePath) => ({
+    type: COMMENT_APPROVE,
+    payload: { id, data: { ...data, is_approved: true } },
+    meta: {
+        resource: 'comments',
+        fetch: UPDATE,
+-        notification: {
+-            body: 'resources.comments.notification.approved_success',
+-            level: 'info',
+-        },
+-        redirectTo: '/comments',
+-        basePath,
++        onSuccess: {
++            notification: {
++                body: 'resources.comments.notification.approved_success',
++                level: 'info',
++            },
++            redirectTo: '/comments',
++            basePath,
++        },
+    },
+});
+```
+
+In this case, no side effect is triggered when the `COMMENT_APPROVE` action is dispatched. However, when the `fetch` side effects returns successfully, react-admin dispatches a `COMMENT_APPROVE_SUCCESS` action, and copies the `onSuccess` side effects into the `meta` property. So it will dispatch an action looking like:
+
+```js
+{
+    type: COMMENT_APPROVE_SUCCESS,
+    payload: { data: { /* data returned by the server */ } },
+    meta: {
+        resource: 'comments',
+        notification: {
+            body: 'resources.comments.notification.approved_success',
+            level: 'info',
+        },
+        redirectTo: '/comments',
+        basePath,
+    },
+}
+```
+
+And then, the side effects will trigger. With this code, approving a review now displays the correct notification, and redirects to the comment list.
+
+You can use `onSuccess` and `onFailure` metas in your own actions to handle side effects.
 
 ## Custom sagas
 
 Sometimes, you may want to trigger other *side effects*. React-admin promotes a programming style where side effects are decoupled from the rest of the code, which has the benefit of making them testable.
 
-In react-admin, side effects are handled by Sagas. [Redux-saga](https://redux-saga.github.io/redux-saga/) is a side effect library built for Redux, where side effects are defined by generator functions. This may sound complicated, but it's not: Here is the generator function necessary to handle the side effects for a failed `COMMENT_APPROVE` action which would log the error with an external service such as [Sentry](https://sentry.io):
+In react-admin, side effects are handled by Sagas. [Redux-saga](https://redux-saga.github.io/redux-saga/) is a side effect library built for Redux, where side effects are defined by generator functions. If this is new to you, take a few minutes to go through the Saga documentation. 
+
+Here is the generator function necessary to handle the side effects for a failed `COMMENT_APPROVE` action which would log the error with an external service such as [Sentry](https://sentry.io):
 
 ```jsx
 // in src/comments/commentSaga.js
@@ -290,7 +349,9 @@ const App = () => (
 export default App;
 ```
 
-With this code, approving a review now displays the correct notification, and redirects to the comment list. And the side effects are [testable](https://redux-saga.github.io/redux-saga/docs/introduction/BeginnerTutorial.html#making-our-code-testable), too.
+With this code, a failed review approval now sends the the correct signal to Sentry.
+
+**Tip**:  The side effects are [testable](https://redux-saga.github.io/redux-saga/docs/introduction/BeginnerTutorial.html#making-our-code-testable), too.
 
 ## Bonus: Optimistic Rendering
 

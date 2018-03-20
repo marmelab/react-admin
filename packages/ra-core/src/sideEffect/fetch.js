@@ -17,7 +17,7 @@ export function* handleFetch(dataProvider, action) {
     const {
         type,
         payload,
-        meta: { fetch: fetchMeta, onSuccess, ...meta },
+        meta: { fetch: fetchMeta, onSuccess, onFailure, ...meta },
     } = action;
     const restType = fetchMeta;
 
@@ -62,6 +62,7 @@ export function* handleFetch(dataProvider, action) {
             requestPayload: payload,
             meta: {
                 ...meta,
+                ...onFailure,
                 fetchResponse: restType,
                 fetchStatus: FETCH_ERROR,
             },
