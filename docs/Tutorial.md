@@ -265,7 +265,7 @@ export const PostEdit = (props) => (
 export const PostCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
-            <ReferenceInput label="User" source="userId" reference="users" validate={required}>
+            <ReferenceInput label="User" source="userId" reference="users" validate={required} allowEmpty>
                 <SelectInput optionText="name" />
             </ReferenceInput>
             <TextInput source="title" />
@@ -281,6 +281,7 @@ If you've understood the `<List>` component, the `<Edit>` and `<Create>` compone
 
 As for the `<ReferenceInput>`, it takes the same props as the `<ReferenceField>` (used earlier in the list page). `<ReferenceInput>` uses these props to fetch the API for possible references related to the current record (in this case, possible `users` for the current `post`). It then passes these possible references to the child component (`<SelectInput>`), which is responsible for displaying them (via their `name` in that case), and letting the user select one. `<SelectInput>` renders as a `<select>` tag in HTML.
 
+Note that we added an `allowEmpty` prop to the `ReferenceInput` inside the `Create` component. This is required so that it does not try to load a referenced resource when it loads.
 
 To use the new `<PostEdit>` and `<PostCreate>` components in the posts resource, just add them as `edit` and `create` attributes in the `<Resource>` component:
 
