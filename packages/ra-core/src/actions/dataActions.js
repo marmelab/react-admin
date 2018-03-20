@@ -18,7 +18,17 @@ export const CRUD_GET_LIST_SUCCESS = 'RA/CRUD_GET_LIST_SUCCESS';
 export const crudGetList = (resource, pagination, sort, filter) => ({
     type: CRUD_GET_LIST,
     payload: { pagination, sort, filter },
-    meta: { resource, fetch: GET_LIST },
+    meta: {
+        resource,
+        fetch: GET_LIST,
+        onFailure: {
+            notification: {
+                body: 'ra.notification.http_error',
+                level: 'warning',
+            },
+            refresh: true,
+        },
+    },
 });
 
 export const CRUD_GET_ONE = 'RA/CRUD_GET_ONE';
@@ -29,7 +39,19 @@ export const CRUD_GET_ONE_SUCCESS = 'RA/CRUD_GET_ONE_SUCCESS';
 export const crudGetOne = (resource, id, basePath) => ({
     type: CRUD_GET_ONE,
     payload: { id },
-    meta: { resource, fetch: GET_ONE, basePath },
+    meta: {
+        resource,
+        fetch: GET_ONE,
+        basePath,
+        onFailure: {
+            notification: {
+                body: 'ra.notification.item_doesnt_exist',
+                level: 'warning',
+            },
+            redirectTo: 'list',
+            refresh: true,
+        },
+    },
 });
 
 export const CRUD_CREATE = 'RA/CRUD_CREATE';
@@ -53,6 +75,13 @@ export const crudCreate = (resource, data, basePath, redirectTo = 'edit') => ({
             },
             redirectTo,
             basePath,
+        },
+        onFailure: {
+            notification: {
+                body: 'ra.notification.http_error',
+                level: 'warning',
+            },
+            refresh: true,
         },
     },
 });
@@ -86,6 +115,13 @@ export const crudUpdate = (
             },
             redirectTo,
             basePath,
+        },
+        onFailure: {
+            notification: {
+                body: 'ra.notification.http_error',
+                level: 'warning',
+            },
+            refresh: true,
         },
     },
 });
@@ -121,6 +157,13 @@ export const crudUpdateMany = (
             refresh,
             unselectAll: true,
         },
+        onFailure: {
+            notification: {
+                body: 'ra.notification.http_error',
+                level: 'warning',
+            },
+            refresh: true,
+        },
     },
 });
 
@@ -153,6 +196,13 @@ export const crudDelete = (
             redirectTo,
             basePath,
         },
+        onFailure: {
+            notification: {
+                body: 'ra.notification.http_error',
+                level: 'warning',
+            },
+            refresh: true,
+        },
     },
 });
 
@@ -180,6 +230,13 @@ export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
             refresh,
             unselectAll: true,
         },
+        onFailure: {
+            notification: {
+                body: 'ra.notification.http_error',
+                level: 'warning',
+            },
+            refresh: true,
+        },
     },
 });
 
@@ -196,6 +253,13 @@ export const crudGetMany = (resource, ids) => ({
     meta: {
         resource,
         fetch: GET_MANY,
+        onFailure: {
+            notification: {
+                body: 'ra.notification.http_error',
+                level: 'warning',
+            },
+            refresh: true,
+        },
     },
 });
 
@@ -217,6 +281,13 @@ export const crudGetMatching = (
         resource: reference,
         relatedTo,
         fetch: GET_LIST,
+        onFailure: {
+            notification: {
+                body: 'ra.notification.http_error',
+                level: 'warning',
+            },
+            refresh: true,
+        },
     },
 });
 
@@ -244,5 +315,12 @@ export const crudGetManyReference = (
         resource: reference,
         relatedTo,
         fetch: GET_MANY_REFERENCE,
+        onFailure: {
+            notification: {
+                body: 'ra.notification.http_error',
+                level: 'warning',
+            },
+            refresh: true,
+        },
     },
 });

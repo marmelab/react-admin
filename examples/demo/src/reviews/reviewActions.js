@@ -19,6 +19,12 @@ export const reviewApprove = (id, data, basePath) => ({
             redirectTo: '/reviews',
             basePath,
         },
+        onFailure: {
+            notification: {
+                body: 'resources.reviews.notification.approved_error',
+                level: 'warning',
+            },
+        },
     },
 });
 
@@ -40,6 +46,12 @@ export const reviewReject = (id, data, basePath) => ({
             },
             redirectTo: '/reviews',
             basePath,
+        },
+        onFailure: {
+            notification: {
+                body: 'resources.reviews.notification.rejected_error',
+                level: 'warning',
+            },
         },
     },
 });
