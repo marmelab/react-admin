@@ -279,6 +279,12 @@ export const commentApprove = (id, data, basePath) => ({
 +            redirectTo: '/comments',
 +            basePath,
 +        },
++        onFailure: {
++            notification: {
++                body: 'resources.comments.notification.approved_failure',
++                level: 'warning',
++            },
++        },
     },
 });
 ```
