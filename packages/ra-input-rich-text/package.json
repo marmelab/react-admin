@@ -35,7 +35,7 @@
         "react-dom": "^15.4.0 || ~16.0.0"
     },
     "dependencies": {
-        "lodash": "~4.2.0",
+        "lodash": "~4.17.5",
         "prop-types": "~15.5.7",
         "quill": "~1.1.9"
     }

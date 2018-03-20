@@ -8,7 +8,7 @@
     "authors": ["Gildas Garcia"],
     "license": "MIT",
     "dependencies": {
-        "lodash": "~4.2.0",
+        "lodash": "~4.17.5",
         "prop-types": "~15.6.0"
     },
     "peerDependencies": {

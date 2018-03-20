@@ -22,7 +22,7 @@
     ],
     "license": "MIT",
     "dependencies": {
-        "lodash": "~4.2.0"
+        "lodash": "~4.17.5"
     },
     "peerDependencies": {
         "react-admin": "^2.0.0-beta3",
