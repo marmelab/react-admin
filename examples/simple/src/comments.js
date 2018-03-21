@@ -202,7 +202,7 @@ export const CommentEdit = withStyles(editStyles)(({ classes, ...props }) => (
             <div>
                 <div className={classes.header}>
                     <Typography variant="headline">
-                        Edit User {record && record.author.name}
+                        Comment #{record && record.id}
                     </Typography>
                     <EditActions
                         basePath={basePath}
