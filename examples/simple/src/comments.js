@@ -199,7 +199,7 @@ const editStyles = {
 export const CommentEdit = withStyles(editStyles)(({ classes, ...props }) => (
     <EditController {...props}>
         {({ resource, record, redirect, save, basePath, version }) => (
-            <div>
+            <div className="edit-page">
                 <div className={classes.header}>
                     <Typography variant="headline">
                         Comment #{record && record.id}
