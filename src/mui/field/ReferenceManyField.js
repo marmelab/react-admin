@@ -85,7 +85,8 @@ export class ReferenceManyField extends Component {
     };
 
     fetchReferences(
-        { reference, record, resource, target, perPage, filter } = this.props
+        { reference, record, resource, target, perPage, filter, idKey } = this
+            .props
     ) {
         const { crudGetManyReference } = this.props;
         const pagination = { page: 1, perPage };
@@ -99,7 +100,7 @@ export class ReferenceManyField extends Component {
         crudGetManyReference(
             reference,
             target,
-            record.id,
+            record[idKey],
             relatedTo,
             pagination,
             this.state.sort,
@@ -158,6 +159,7 @@ ReferenceManyField.propTypes = {
     source: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
     isLoading: PropTypes.bool,
+    idKey: PropTypes.string,
 };
 
 ReferenceManyField.defaultProps = {
@@ -165,6 +167,7 @@ ReferenceManyField.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     source: '',
+    idKey: 'id',
 };
 
 function mapStateToProps(state, props) {
