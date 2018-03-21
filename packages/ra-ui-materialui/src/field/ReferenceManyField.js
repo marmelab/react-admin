@@ -128,7 +128,7 @@ ReferenceManyField.propTypes = {
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
-    filter: PropTypes.oneOfType([PropTypes.object,PropTypes.func]),
+    filter: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     label: PropTypes.string,
     perPage: PropTypes.number,
     record: PropTypes.object,
