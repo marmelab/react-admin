@@ -90,12 +90,13 @@ export class ReferenceManyFieldController extends Component {
     ) {
         const { crudGetManyReference } = this.props;
         const pagination = { page: 1, perPage };
+        const filterData = getFilterData(filter, record);
         const relatedTo = nameRelatedTo(
             reference,
             record[source],
             resource,
             target,
-            filter
+            filterData
         );
         crudGetManyReference(
             reference,
@@ -104,7 +105,7 @@ export class ReferenceManyFieldController extends Component {
             relatedTo,
             pagination,
             this.state.sort,
-            filter
+            filterData
         );
     }
 
@@ -135,7 +136,7 @@ ReferenceManyFieldController.propTypes = {
     basePath: PropTypes.string.isRequired,
     children: PropTypes.func.isRequired,
     crudGetManyReference: PropTypes.func.isRequired,
-    filter: PropTypes.object,
+    filter: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     ids: PropTypes.array,
     perPage: PropTypes.number,
     record: PropTypes.object,
@@ -158,13 +159,16 @@ ReferenceManyFieldController.defaultProps = {
     source: 'id',
 };
 
+const getFilterData = (filter, record) =>
+    typeof filter === 'function' ? filter(record) : filter;
+
 function mapStateToProps(state, props) {
     const relatedTo = nameRelatedTo(
         props.reference,
         props.record[props.source],
         props.resource,
         props.target,
-        props.filter
+        getFilterData(props.filter, props.record)
     );
     return {
         data: getReferences(state, props.reference, relatedTo),
