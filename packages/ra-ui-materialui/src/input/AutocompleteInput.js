@@ -48,6 +48,7 @@ const sanitizeRestProps = ({
     limitChoicesToValue,
     optionValue,
     optionText,
+    suggestionComponent,
     setFilter,
     setPagination,
     setSort,
