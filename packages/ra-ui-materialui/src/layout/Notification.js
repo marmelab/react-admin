@@ -52,7 +52,7 @@ class Notification extends React.Component {
 
     handleExited = () => {
         const { notification, hideNotification, complete } = this.props;
-        if (notification.undoable) {
+        if (notification && notification.undoable) {
             complete();
         }
         hideNotification();
