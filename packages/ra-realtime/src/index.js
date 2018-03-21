@@ -6,7 +6,7 @@ import {
     FETCH_START,
     FETCH_END,
 } from 'react-admin';
-import omit from 'lodash.omit';
+import omit from 'lodash/omit';
 
 import buildAction from './buildAction';
 import createObserverChannel from './createObserverChannel';
@@ -29,7 +29,8 @@ export const watchCrudActionsFactory = observeRequest =>
         const realtimeChannel = yield call(createObserverChannel, observer);
 
         try {
-            while (true) { // eslint-disable-line
+            while (true) {
+                // eslint-disable-line
                 const payload = yield take(realtimeChannel);
                 const { type, payload: requestPayload, meta } = action;
 

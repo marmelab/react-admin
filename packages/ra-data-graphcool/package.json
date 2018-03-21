@@ -1,40 +1,38 @@
 {
-  "name": "ra-data-graphcool",
-  "version": "2.0.0-beta3",
-  "description": "A Graphcool data provider for react-admin",
-  "main": "./lib/index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/marmelab/react-admin.git"
-  },
-  "bugs": {
-    "url": "https://github.com/marmelab/react-admin/issues"
-  },
-  "homepage": "https://github.com/marmelab/react-admin#readme",
-  "authors": [
-    "Gildas Garcia"
-  ],
-  "keywords": [
-    "reactjs",
-    "react",
-    "react-admin",
-    "admin-on-rest",
-    "rest",
-    "graphql",
-    "graphcool"
-  ],
-  "license": "MIT",
-  "dependencies": {
-    "graphql": "^0.12.3",
-    "graphql-tag": "^2.6.1",
-    "lodash.merge": "~4.6.0",
-    "pluralize": "~7.0.0",
-    "ra-data-graphql": "^2.0.0-beta3"
-  },
-  "peerDependencies": {
-    "react-admin": "^2.0.0-beta3"
-  },
-  "devDependencies": {
-    "react-admin": "^2.0.0-beta3"
-  }
+    "name": "ra-data-graphcool",
+    "version": "2.0.0-beta3",
+    "description": "A Graphcool data provider for react-admin",
+    "main": "./lib/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/marmelab/react-admin.git"
+    },
+    "bugs": {
+        "url": "https://github.com/marmelab/react-admin/issues"
+    },
+    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "authors": ["Gildas Garcia"],
+    "keywords": [
+        "reactjs",
+        "react",
+        "react-admin",
+        "admin-on-rest",
+        "rest",
+        "graphql",
+        "graphcool"
+    ],
+    "license": "MIT",
+    "dependencies": {
+        "graphql": "^0.12.3",
+        "graphql-tag": "^2.6.1",
+        "lodash": "~4.17.5",
+        "pluralize": "~7.0.0",
+        "ra-data-graphql": "^2.0.0-beta3"
+    },
+    "peerDependencies": {
+        "react-admin": "^2.0.0-beta3"
+    },
+    "devDependencies": {
+        "react-admin": "^2.0.0-beta3"
+    }
 }

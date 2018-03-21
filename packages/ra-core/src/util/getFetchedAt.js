@@ -1,4 +1,4 @@
-import pickBy from 'lodash.pickby';
+import pickBy from 'lodash/pickBy';
 
 const defaultCacheDuration = 10 * 60 * 1000; // ten minutes
 

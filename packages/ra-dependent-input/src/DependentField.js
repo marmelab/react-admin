@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import get from 'lodash.get';
-import set from 'lodash.set';
+import get from 'lodash/get';
+import set from 'lodash/set';
 import { FormField } from 'react-admin';
 import getValue from './getValue';
 

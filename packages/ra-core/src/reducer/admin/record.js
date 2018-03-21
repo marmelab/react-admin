@@ -1,6 +1,6 @@
 import { INITIALIZE_FORM } from '../../actions/formActions';
 import { LOCATION_CHANGE } from 'react-router-redux';
-import set from 'lodash.set';
+import set from 'lodash/set';
 
 const initialState = {};
 

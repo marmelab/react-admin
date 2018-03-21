@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash.get';
+import get from 'lodash/get';
 import TextField from 'material-ui/TextField';
 import { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';

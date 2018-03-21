@@ -1,41 +1,38 @@
 {
-  "name": "ra-data-graphql",
-  "version": "2.0.0-beta3",
-  "description": "A GraphQL data provider for react-admin",
-  "main": "./lib/index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/marmelab/react-admin.git"
-  },
-  "bugs": {
-    "url": "https://github.com/marmelab/react-admin/issues"
-  },
-  "homepage": "https://github.com/marmelab/react-admin#readme",
-  "authors": [
-    "Gildas Garcia"
-  ],
-  "keywords": [
-    "reactjs",
-    "react",
-    "react-admin",
-    "admin-on-rest",
-    "rest",
-    "graphql"
-  ],
-  "license": "MIT",
-  "dependencies": {
-    "apollo-client": "^2.1.0",
-    "apollo-client-preset": "^1.0.6",
-    "graphql": "^0.12.3",
-    "graphql-tag": "^2.6.1",
-    "lodash.get": "~4.4.2",
-    "lodash.merge": "~4.6.0",
-    "pluralize": "~7.0.0"
-  },
-  "peerDependencies": {
-    "react-admin": "^2.0.0-beta3"
-  },
-  "devDependencies": {
-    "react-admin": "^2.0.0-beta3"
-  }
+    "name": "ra-data-graphql",
+    "version": "2.0.0-beta3",
+    "description": "A GraphQL data provider for react-admin",
+    "main": "./lib/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/marmelab/react-admin.git"
+    },
+    "bugs": {
+        "url": "https://github.com/marmelab/react-admin/issues"
+    },
+    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "authors": ["Gildas Garcia"],
+    "keywords": [
+        "reactjs",
+        "react",
+        "react-admin",
+        "admin-on-rest",
+        "rest",
+        "graphql"
+    ],
+    "license": "MIT",
+    "dependencies": {
+        "apollo-client": "^2.1.0",
+        "apollo-client-preset": "^1.0.6",
+        "graphql": "^0.12.3",
+        "graphql-tag": "^2.6.1",
+        "lodash": "~4.17.5",
+        "pluralize": "~7.0.0"
+    },
+    "peerDependencies": {
+        "react-admin": "^2.0.0-beta3"
+    },
+    "devDependencies": {
+        "react-admin": "^2.0.0-beta3"
+    }
 }
