@@ -72,7 +72,7 @@ const Layout = ({
     >
         <div className={classes.appFrame}>
             <Hidden xsDown>
-                <AppBar title={title} open={open} logout={logout} />
+                <AppBar classes={classes} title={title} open={open} logout={logout} />
             </Hidden>
             <main className={classes.contentWithSidebar}>
                 <Sidebar>
@@ -113,15 +113,12 @@ const mapStateToProps = state => ({
     open: state.admin.ui.sidebarOpen,
 });
 
-const EnhancedLayout = compose(
-    connect(
-        mapStateToProps,
-        {} // Avoid connect passing dispatch in props
-    ),
-    withStyles(styles)
+const EnhancedLayout = connect(
+    mapStateToProps,
+    {} // Avoid connect passing dispatch in props
 )(Layout);
 
-class LayoutWithTheme extends Component {
+export class LayoutWithTheme extends Component {
     constructor(props) {
         super(props);
         this.theme = createMuiTheme(props.theme);
@@ -149,4 +146,4 @@ LayoutWithTheme.defaultProps = {
     theme: defaultTheme,
 };
 
-export default LayoutWithTheme;
+export default withStyles(styles, { withTheme: true })(LayoutWithTheme);

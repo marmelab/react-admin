@@ -19,6 +19,10 @@ const styles = {
     headerCell: {
         padding: '0 12px',
     },
+    headerCell1: {
+        padding: '0 12px',
+        maxWidth: "80px"
+    },
     checkbox: {
         height: 'auto',
     },
@@ -28,6 +32,10 @@ const styles = {
     rowCell: {
         padding: '0 12px',
         whiteSpace: 'normal',
+    },
+    rowFirstCell: {
+        padding: "0 12px",
+        whiteSpace: "normal"
     },
 };
 
@@ -107,10 +115,10 @@ class Datagrid extends Component {
 
         return (
             <Table className={classnames(classes.table, className)} {...rest}>
-                <TableHead>
+                <TableHead className={classes.thead}>
                     <TableRow className={classes.row}>
                         {hasBulkActions && (
-                            <TableCell padding="none">
+                            <TableCell padding="none" className={classes.headerCell1}>
                                 <Checkbox
                                     className="select-all"
                                     checked={
@@ -147,6 +155,7 @@ class Datagrid extends Component {
                 <DatagridBody
                     basePath={basePath}
                     classes={classes}
+                    className={classes.tbody}
                     data={data}
                     hasBulkActions={hasBulkActions}
                     hover={hover}
