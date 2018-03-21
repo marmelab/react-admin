@@ -63,6 +63,7 @@ You can find translation packages for the following languages:
 - Slovak (`sk`): [zavadpe/aor-language-slovak](https://github.com/zavadpe/aor-language-slovak)
 - Slovenian (`sl`): [ariskemper/aor-language-slovenian](https://github.com/ariskemper/aor-language-slovenian)
 - Spanish (`es`): [blackboxvision/aor-language-spanish](https://github.com/BlackBoxVision/aor-language-spanish)
+- Catalan (`ca`): [behind-design/aor-language-catalan](https://github.com/behind-design/aor-language-catalan)
 - Swedish (`sv`): [StefanWallin/aor-language-swedish](https://github.com/StefanWallin/aor-language-swedish)
 - Thai (`th`): [liverbool/aor-language-thai](https://github.com/liverbool/aor-language-thai)
 - Turkish (`tr`): [ismailbaskin/aor-language-turkish](https://github.com/ismailbaskin/aor-language-turkish)
