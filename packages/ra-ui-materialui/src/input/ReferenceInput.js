@@ -26,7 +26,6 @@ const sanitizeRestProps = ({
     locale,
     meta,
     onChange,
-    options,
     optionValue,
     optionText,
     perPage,
@@ -59,7 +58,6 @@ export const ReferenceInputView = ({
     label,
     meta,
     onChange,
-    options,
     resource,
     setFilter,
     setPagination,
@@ -105,7 +103,6 @@ export const ReferenceInputView = ({
         setPagination,
         setSort,
         translateChoice: false,
-        options,
         ...sanitizeRestProps(rest),
     });
 };
@@ -123,7 +120,6 @@ ReferenceInputView.propTypes = {
     label: PropTypes.string,
     meta: PropTypes.object,
     onChange: PropTypes.func,
-    options: PropTypes.object,
     resource: PropTypes.string.isRequired,
     setFilter: PropTypes.func,
     setPagination: PropTypes.func,

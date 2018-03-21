@@ -5,7 +5,8 @@ import {
     DateField,
     DateInput,
     DisabledInput,
-    Edit,
+    EditActions,
+    EditController,
     EditButton,
     Filter,
     List,
@@ -31,6 +32,7 @@ import Avatar from 'material-ui/Avatar';
 import Card, { CardActions, CardHeader, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
 import ChevronLeft from 'material-ui-icons/ChevronLeft';
 import ChevronRight from 'material-ui-icons/ChevronRight';
 import Grid from 'material-ui/Grid';
@@ -180,24 +182,78 @@ export const CommentList = props => (
     </List>
 );
 
-export const CommentEdit = props => (
-    <Edit {...props}>
-        <SimpleForm>
-            <DisabledInput source="id" />
-            <ReferenceInput
-                source="post_id"
-                reference="posts"
-                perPage={15}
-                sort={{ field: 'title', order: 'ASC' }}
-            >
-                <AutocompleteInput optionText="title" />
-            </ReferenceInput>
-            <TextInput source="author.name" validate={minLength(10)} />
-            <DateInput source="created_at" />
-            <LongTextInput source="body" validate={minLength(10)} />
-        </SimpleForm>
-    </Edit>
-);
+const editStyles = {
+    header: {
+        display: 'flex',
+        justifyContent: 'space-between',
+    },
+    actions: {
+        height: 'auto',
+    },
+    card: {
+        marginTop: '1em',
+        maxWidth: '30em',
+    },
+};
+
+export const CommentEdit = withStyles(editStyles)(({ classes, ...props }) => (
+    <EditController {...props}>
+        {({ resource, record, redirect, save, basePath, version }) => (
+            <div>
+                <div className={classes.header}>
+                    <Typography variant="headline">
+                        Edit User {record && record.author.name}
+                    </Typography>
+                    <EditActions
+                        basePath={basePath}
+                        resource={resource}
+                        data={record}
+                        hasShow
+                        hasList
+                        className={classes.actions}
+                    />
+                </div>
+                <Card className={classes.card}>
+                    {record && (
+                        <SimpleForm
+                            basePath={basePath}
+                            redirect={redirect}
+                            resource={resource}
+                            record={record}
+                            save={save}
+                            version={version}
+                        >
+                            <DisabledInput source="id" fullWidth />
+                            <ReferenceInput
+                                source="post_id"
+                                reference="posts"
+                                perPage={15}
+                                sort={{ field: 'title', order: 'ASC' }}
+                                fullWidth
+                            >
+                                <AutocompleteInput
+                                    optionText="title"
+                                    options={{ fullWidth: true }}
+                                />
+                            </ReferenceInput>
+                            <TextInput
+                                source="author.name"
+                                validate={minLength(10)}
+                                fullWidth
+                            />
+                            <DateInput source="created_at" fullWidth />
+                            <LongTextInput
+                                source="body"
+                                validate={minLength(10)}
+                                fullWidth
+                            />
+                        </SimpleForm>
+                    )}
+                </Card>
+            </div>
+        )}
+    </EditController>
+));
 
 const defaultValue = { created_at: new Date() };
 export const CommentCreate = props => (
