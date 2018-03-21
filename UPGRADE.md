@@ -352,8 +352,6 @@ All react-admin components now accept a `className` prop instead of the `elStyle
 + export default withStyles(styles)(UserList);
 ```
 
-Yes, it's way longer to write and it's a pain, but that's material-ui's choice of CSS-in-JS implementation - and there is nothing the react-admin team can do about it. If this is a consolation, we suffered to upgrade our own apps to JSS, too.
-
 In addition to `elStyle`, Field and Input components used to support a `style` prop to override the styles of the *container element* (the `<td>` in a datagrid). This prop is no longer supported in react-admin. Instead, the `Datagrid` component will check if its children have a `headerClassName` and `cellClassName` props. If they do, it will apply those classes to the table header and cells respectively.
 
 ```diff
