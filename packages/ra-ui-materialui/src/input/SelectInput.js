@@ -134,7 +134,6 @@ export class SelectInput extends Component {
         if (React.isValidElement(optionText))
             return React.cloneElement(optionText, {
                 record: choice,
-                translate,
             });
         const choiceName =
             typeof optionText === 'function'
