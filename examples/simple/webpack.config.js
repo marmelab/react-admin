@@ -12,10 +12,12 @@ module.exports = {
             },
             {
                 test: /\.css$/,
+                exclude: /node_modules/,
                 use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
             },
             {
                 test: /\.html$/,
+                exclude: /node_modules/,
                 use: { loader: 'html-loader' },
             },
         ],
@@ -67,6 +69,13 @@ module.exports = {
                 'ra-input-rich-text',
                 'src'
             ),
+        },
+    },
+    devServer: {
+        stats: {
+            children: false,
+            chunks: false,
+            modules: false,
         },
     },
 };
