@@ -1,6 +1,6 @@
 {
     "name": "ra-data-graphcool",
-    "version": "2.0.0-beta3",
+    "version": "2.0.0-beta4",
     "description": "A Graphcool data provider for react-admin",
     "main": "./lib/index.js",
     "repository": {
@@ -11,7 +11,9 @@
         "url": "https://github.com/marmelab/react-admin/issues"
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
-    "authors": ["Gildas Garcia"],
+    "authors": [
+        "Gildas Garcia"
+    ],
     "keywords": [
         "reactjs",
         "react",
@@ -27,12 +29,12 @@
         "graphql-tag": "^2.6.1",
         "lodash": "~4.17.5",
         "pluralize": "~7.0.0",
-        "ra-data-graphql": "^2.0.0-beta3"
+        "ra-data-graphql": "^2.0.0-beta4"
     },
     "peerDependencies": {
-        "react-admin": "^2.0.0-beta3"
+        "react-admin": "^2.0.0-beta4"
     },
     "devDependencies": {
-        "react-admin": "^2.0.0-beta3"
+        "react-admin": "^2.0.0-beta4"
     }
 }

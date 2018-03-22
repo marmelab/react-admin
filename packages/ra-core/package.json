@@ -1,11 +1,17 @@
 {
     "name": "ra-core",
-    "version": "2.0.0-beta3",
-    "description":
-        "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
-    "files": ["*.md", "lib", "src"],
+    "version": "2.0.0-beta4",
+    "description": "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
+    "files": [
+        "*.md",
+        "lib",
+        "src"
+    ],
     "main": "lib/index",
-    "authors": ["François Zaninotto", "Gildas Garcia"],
+    "authors": [
+        "François Zaninotto",
+        "Gildas Garcia"
+    ],
     "repository": "marmelab/react-admin",
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "bugs": "https://github.com/marmelab/react-admin/issues",
@@ -30,7 +36,7 @@
         "node-polyglot": "2.2.2",
         "prop-types": "~15.5.7",
         "query-string": "~5.0.0",
-        "ra-language-english": "^2.0.0-beta3",
+        "ra-language-english": "^2.0.0-beta4",
         "react-redux": "~5.0.4",
         "react-router": "~4.2.0",
         "react-router-dom": "~4.2.2",
