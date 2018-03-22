@@ -1,17 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { formValueSelector, getFormValues } from 'redux-form';
+import { getFormValues } from 'redux-form';
 import get from 'lodash/get';
-import { FormField } from 'react-admin';
+import set from 'lodash/set';
+
+import FormField from '../form/FormField';
 import getValue from './getValue';
 
 const REDUX_FORM_NAME = 'record-form';
 
-export const DependentInputComponent = ({
+export const DependsOnView = ({
     children,
     show,
-    dependsOn,
+    source,
     value,
     resolve,
     ...props
@@ -47,10 +49,10 @@ export const DependentInputComponent = ({
     );
 };
 
-DependentInputComponent.propTypes = {
+DependsOnView.propTypes = {
     children: PropTypes.node.isRequired,
     show: PropTypes.bool.isRequired,
-    dependsOn: PropTypes.any,
+    source: PropTypes.any,
     value: PropTypes.any,
     resolve: PropTypes.func,
     formName: PropTypes.string,
@@ -58,57 +60,63 @@ DependentInputComponent.propTypes = {
 
 export const mapStateToProps = (
     state,
-    { resolve, dependsOn, value, formName = REDUX_FORM_NAME }
+    { source, formName = REDUX_FORM_NAME, record, resolve, value }
 ) => {
-    if (resolve && (dependsOn === null || typeof dependsOn === 'undefined')) {
-        const values = getFormValues(formName)(state);
+    const formValues = getFormValues(formName)(state);
+    const data = formValues || record;
+
+    if (resolve && (source === null || typeof source === 'undefined')) {
         return {
-            dependsOnValue: values,
-            show: resolve(values, dependsOn, value),
+            dependsOnValue: data,
+            show: resolve(data, source, value),
         };
     }
 
-    let formValue;
+    let dependsOnValue;
     // get the current form values from redux-form
-    if (Array.isArray(dependsOn)) {
-        // We have to destructure the array here as redux-form does not accept an array of fields
-        formValue = formValueSelector(formName)(state, ...dependsOn);
+    if (Array.isArray(source)) {
+        dependsOnValue = source.reduce(
+            (acc, dependsOnKey) =>
+                set(acc, dependsOnKey, get(data, dependsOnKey)),
+            {}
+        );
     } else {
-        formValue = formValueSelector(formName)(state, dependsOn);
+        dependsOnValue = get(data, source);
     }
 
     if (resolve) {
         return {
-            dependsOnValue: formValue,
-            show: resolve(formValue, dependsOn),
+            dependsOnValue,
+            show: resolve(dependsOnValue, source),
         };
     }
 
-    if (Array.isArray(dependsOn) && Array.isArray(value)) {
+    if (Array.isArray(source) && Array.isArray(value)) {
         return {
-            dependsOnValue: formValue,
-            show: dependsOn.reduce(
-                (acc, s, index) => acc && get(formValue, s) === value[index],
+            dependsOnValue,
+            show: source.reduce(
+                (acc, s, index) =>
+                    acc && get(dependsOnValue, s) === value[index],
                 true
             ),
         };
     }
 
     if (typeof value === 'undefined') {
-        if (Array.isArray(dependsOn)) {
+        if (Array.isArray(source)) {
             return {
-                dependsOnValue: formValue,
-                show: dependsOn.reduce(
-                    (acc, s) => acc && !!getValue(formValue, s),
+                dependsOnValue,
+                show: source.reduce(
+                    (acc, s) => acc && !!getValue(dependsOnValue, s),
                     true
                 ),
             };
         }
 
-        return { dependsOnValue: formValue, show: !!formValue };
+        return { dependsOnValue: dependsOnValue, show: !!dependsOnValue };
     }
 
-    return { dependsOnValue: formValue, show: formValue === value };
+    return { dependsOnValue: dependsOnValue, show: dependsOnValue === value };
 };
 
-export default connect(mapStateToProps)(DependentInputComponent);
+export default connect(mapStateToProps)(DependsOnView);

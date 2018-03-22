@@ -997,6 +997,182 @@ const dateParser = v => {
 <DateInput source="isodate" format={dateFormatter} parse={dateParser} />
 ```
 
+## Customize forms depending on its inputs values
+
+When you want to display inputs only when some other inputs are present or have a specific value, you can use the `DependsOn` component.
+
+The `DependsOn` component accepts the following props:
+
+* `source`: Either a string indicating the name of the field to check (eg: `hasEmail`) or an array of fields to check (eg: `['firstName', 'lastName']`). You can specify deep paths such as `author.firstName`.
+* `value`: If not specified, only check that the field(s) specified by `source` have a truthy value. You may specify a single value or an array of values. Deep paths will be correctly retrieved and compared to the specified values. 
+* `resolve`: The `resolve` prop accepts a function which must return either `true` to display the child input or `false` to hide it.
+
+If both `value` and `resolve` are specified, `value` will be ignored.
+
+If the `source` prop is specified, `resolve` will be called with either the value of the field specified by `source` (when a single field name was specified as `source`) or with an object matching the specified paths.
+
+**Note**: When specifying deep paths (eg: `author.firstName`), `resolve` will be called with an object matching the specified structure. For example, when passing `['author.firstName', 'author.lastName']` as `source`, the `resolve` function will be passed the following object:
+
+```js
+{ author: { firstName: 'bValue', lastName: 'cValue' } }
+```
+
+If `source` is not specified, `resolve` will be called with the current form values.
+
+### Check that the field specified by `source` has a value (a truthy value):
+
+```js
+import { Create, SimpleForm, TextInput, BooleanInput, DependsOn } from 'react-admin';
+
+export const UserCreate = (props) => (
+    <Create {...props}>
+        <SimpleForm>
+            <TextInput source="firstName" />
+            <TextInput source="lastName" />
+            <BooleanInput source="hasEmail" label="Has email ?" />
+            <DependsOn source="hasEmail">
+                <TextInput source="email" />
+            </DependsOn>
+        </SimpleForm>
+    </Create>
+);
+```
+
+### Check that the field specified by `source` has a specific value:
+
+```js
+import { Create, SimpleForm, TextInput, SelectInput, DependsOn } from 'react-admin';
+
+export const PostCreate = (props) => (
+    <Create {...props}>
+        <SimpleForm>
+            <TextInput source="title" />
+
+            <SelectInput source="category" choices={[
+                { id: 'programming', name: 'Programming' },
+                { id: 'lifestyle', name: 'Lifestyle' },
+                { id: 'photography', name: 'Photography' },
+            ]} />
+
+            <DependsOn source="category" value="programming">
+                <SelectInput source="subcategory" choices={[
+                    { id: 'js', name: 'JavaScript' },
+                    { id: 'net', name: '.NET' },
+                    { id: 'java', name: 'Java' },
+                ]} />
+            </DependsOn>
+
+            <DependsOn source="category" value="lifestyle">
+                <SelectInput source="subcategory" choices={[
+                    ...
+                ]} />
+            </DependsOn>
+
+            <DependsOn source="category" value="photography">
+                <SelectInput source="subcategory" choices={[
+                    ...
+                ]} />
+            </DependsOn>
+        </SimpleForm>
+    </Create>
+);
+```
+
+### Check that the field specified by `source` matches a custom constraint:
+
+```js
+import { Create, SimpleForm, TextInput, SelectInput, DependsOn } from 'react-admin';
+
+const checkCustomConstraint = (value) => value.startsWith('programming'));
+
+export const PostCreate = (props) => (
+    <Create {...props}>
+        <SimpleForm>
+            <TextInput source="title" />
+            <SelectInput source="category" choices={[
+                    { id: 'programming_js', name: 'JavaScript' },
+                    { id: 'programming_net', name: '.NET' },
+                    { id: 'programming_java', name: 'Java' },
+                    { id: 'lifestyle', name: 'Lifestyle' },
+                    { id: 'photography', name: 'Photography' },
+            ]} />
+
+            <DependsOn source="category" resolve={checkCustomConstraint}>
+                <SelectInput source="subcategory" choices={[
+                    { id: 'js', name: 'JavaScript' },
+                    { id: 'net', name: '.NET' },
+                    { id: 'java', name: 'Java' },
+                ]} />
+            </DependsOn>
+        </SimpleForm>
+    </Create>
+);
+```
+
+### All powers! Check whether the current full record matches your constraints:
+
+```js
+import { Create, SimpleForm, TextInput, EmailInput, DependsOn } from 'react-admin';
+
+const checkRecord = (record) => record.firstName && record.lastName);
+
+export const UserCreate = (props) => (
+    <Create {...props}>
+        <SimpleForm>
+            <TextInput source="firstName" />
+            <TextInput source="lastName" />
+
+            <DependsOn resolve={checkRecord}>
+                <EmailInput source="email" />
+            </DependsOn>
+        </SimpleForm>
+    </Create>
+);
+```
+
+### Re-rendering the DependsOn children when the values of the dependencies change
+
+This could be necessary to implement cascaded select. For example, a song may have a genre and a sub genre, which are retrieved with calls to an external service not hosted in our API.
+This is how we could display only the sub genres for the selected genre:
+
+```js
+// in SubGenreInput.js
+import React, { Component } from 'react';
+import { translate, SelectInput } from 'react-admin';
+import fetchSubGenres from './fetchSubGenres';
+
+class SubGenreInput extends Component {
+    state = {
+        subgenres: [],
+    }
+
+    componentDidMount() {
+        this.fetchData(this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.dependsOnValue !== this.props.dependsOnValue) {
+            this.fetchData(nextProps);
+        }
+    }
+
+    fetchData(props) {
+        fetchSubGenres(props.dependsOnValue).then(subgenres => {
+            this.setState({ subgenres });
+        })
+    }
+
+    render() {
+        return <SelectInput {...this.props} choices={this.state.subgenres} />
+    }
+}
+
+SubGenreInput.propTypes = SelectInput.propTypes;
+SubGenreInput.defaultProps = SelectInput.defaultProps;
+
+export default SubGenreInput;
+```
+
 ## Third-Party Components
 
 You can find components for react-admin in third-party repositories.

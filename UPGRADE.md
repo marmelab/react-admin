@@ -960,10 +960,9 @@ Please refer to the `dataProvider` documentation for more information.
 
 ## react-admin addon packages renamed with ra prefix and moved into root repository
 
-`aor-graphql` `aor-realtime` and `aor-dependent-input` packages have been migrated into the main `react-admin` repository and renamed with the new prefix. Besides, `aor-graphql-client` and `aor-graphql-client-graphcool` follow the new dataProvider packages naming.
+`aor-graphql` and `aor-realtime` packages have been migrated into the main `react-admin` repository and renamed with the new prefix. Besides, `aor-graphql-client` and `aor-graphql-client-graphcool` follow the new dataProvider packages naming.
 
 * `aor-realtime` => `ra-realtime`
-* `aor-dependent-input` => `ra-dependent-input`
 * `aor-graphql-client` => `ra-data-graphql`
 * `aor-graphql-client-graphcool` => `ra-data-graphcool`
 
@@ -973,14 +972,36 @@ Update your `import` statements accordingly:
 - import realtimeSaga from 'aor-realtime';
 + import realtimeSaga from 'ra-realtime';
 
-- import { DependentInput, DependentField } from 'aor-dependent-input';
-+ import { DependentInput, DependentField } from 'ra-dependent-input';
-
 - import buildGraphQLProvider from 'aor-graphql-client';
 + import buildGraphQLProvider from 'ra-data-graphql';
 
 - import buildGraphcoolProvider from 'aor-graphql-client-graphcool';
 + import buildGraphcoolProvider from 'ra-data-graphcool';
+```
+
+## aor-dependent-input integrated into core
+
+The `DependentInput` and `DependentField` components of `aor-dependent-input` have been merged into one named `DependsOn`. Besides, the `dependsOn` prop was renamed to `source`. Finally, this component is now bundled by default in the main `react-admin` package. 
+
+```diff
+- import { DependentInput } from 'aor-dependent-input';
++ import { DependsOn } from 'react-admin';
+
+export const UserCreate = (props) => (
+    <Create {...props}>
+        <SimpleForm>
+            <TextInput source="firstName" />
+            <TextInput source="lastName" />
+            <BooleanInput source="hasEmail" label="Has email ?" />
+-           <DependentInput dependsOn="hasEmail">
++           <DependsOn source="hasEmail">
+                <TextInput source="email" />
+-           </DependentInput>
++           </DependsOn>
+        </SimpleForm>
+    </Create>
+);
+
 ```
 
 ## Validators should be initialized

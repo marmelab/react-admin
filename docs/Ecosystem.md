@@ -14,7 +14,6 @@ title: "Ecosystem"
 
 - [dreinke/aor-color-input](https://github.com/dreinke/aor-color-input): a color input using [React Color](http://casesandberg.github.io/react-color/), a collection of color pickers.
 - [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
-- [marmelab/ra-dependent-input](https://github.com/marmelab/react-admin/tree/master/packages/ra-dependent-input): conditionnaly display inputs depending on other inputs values
 - [mhdsyrwan/aor-embedded-array](https://github.com/MhdSyrwan/aor-embedded-array): Field and Input for embedded arrays.
 
 ## Translations
