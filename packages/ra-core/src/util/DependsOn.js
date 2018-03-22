@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { getFormValues } from 'redux-form';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import { FormField } from 'react-admin';
 import getValue from './getValue';
 
-export const DependentFieldComponent = ({
+const REDUX_FORM_NAME = 'record-form';
+
+export const DependsOnView = ({
     children,
     show,
     dependsOn,
@@ -45,39 +48,54 @@ export const DependentFieldComponent = ({
     );
 };
 
-DependentFieldComponent.propTypes = {
+DependsOnView.propTypes = {
     children: PropTypes.node.isRequired,
-    dependsOn: PropTypes.any,
-    record: PropTypes.object,
-    resolve: PropTypes.func,
     show: PropTypes.bool.isRequired,
+    dependsOn: PropTypes.any,
     value: PropTypes.any,
+    resolve: PropTypes.func,
+    formName: PropTypes.string,
 };
 
 export const mapStateToProps = (
     state,
-    { record, resolve, dependsOn, value }
+    { dependsOn, formName = REDUX_FORM_NAME, record, resolve, value }
 ) => {
+    const formValues = getFormValues(formName)(state);
+    const data = formValues || record;
+
     if (resolve && (dependsOn === null || typeof dependsOn === 'undefined')) {
-        return { show: resolve(record, dependsOn, value) };
+        return {
+            dependsOnValue: data,
+            show: resolve(data, dependsOn, value),
+        };
     }
 
-    if (resolve && !Array.isArray(dependsOn)) {
-        return { show: resolve(getValue(record, dependsOn)) };
+    let dependsOnValue;
+    // get the current form values from redux-form
+    if (Array.isArray(dependsOn)) {
+        dependsOnValue = dependsOn.reduce(
+            (acc, dependsOnKey) =>
+                set(acc, dependsOnKey, get(data, dependsOnKey)),
+            {}
+        );
+    } else {
+        dependsOnValue = get(data, dependsOn);
     }
 
-    if (resolve && Array.isArray(dependsOn)) {
-        const obj = dependsOn.reduce((acc, path) => {
-            const value = get(record, path);
-            return set(acc, path, value);
-        }, {});
-        return { show: resolve(obj) };
+    if (resolve) {
+        return {
+            dependsOnValue,
+            show: resolve(dependsOnValue, dependsOn),
+        };
     }
 
     if (Array.isArray(dependsOn) && Array.isArray(value)) {
         return {
+            dependsOnValue,
             show: dependsOn.reduce(
-                (acc, s, index) => acc && getValue(record, s) === value[index],
+                (acc, s, index) =>
+                    acc && get(dependsOnValue, s) === value[index],
                 true
             ),
         };
@@ -86,17 +104,18 @@ export const mapStateToProps = (
     if (typeof value === 'undefined') {
         if (Array.isArray(dependsOn)) {
             return {
+                dependsOnValue,
                 show: dependsOn.reduce(
-                    (acc, s) => acc && !!getValue(record, s),
+                    (acc, s) => acc && !!getValue(dependsOnValue, s),
                     true
                 ),
             };
         }
 
-        return { show: !!getValue(record, dependsOn) };
+        return { dependsOnValue: dependsOnValue, show: !!dependsOnValue };
     }
 
-    return { show: getValue(record, dependsOn) === value };
+    return { dependsOnValue: dependsOnValue, show: dependsOnValue === value };
 };
 
-export default connect(mapStateToProps)(DependentFieldComponent);
+export default connect(mapStateToProps)(DependsOnView);
