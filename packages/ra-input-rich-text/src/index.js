@@ -1,4 +1,4 @@
-import debounce from 'lodash.debounce';
+import debounce from 'lodash/debounce';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Quill from 'quill';

@@ -1,7 +1,9 @@
 npm-debug.log
+yarn-error.log
 node_modules
 lib
 es6
 docs/_site/
 examples/**/static
+examples/**/dist
 packages/ra-example-shop

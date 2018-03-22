@@ -122,7 +122,6 @@ export const CommandEdit = withStyles(editStyles)(({ classes, ...props }) => (
                 ]}
             />
             <BooleanInput source="returned" />
-            <div className={classes.clear} />
         </SimpleForm>
     </Edit>
 ));

@@ -9,7 +9,7 @@ install: package.json ## install dependencies
 run: run-simple
 
 run-simple: ## run the simple example
-	@cd examples/simple && ./node_modules/.bin/webpack-dev-server -d --hot --inline --config ./webpack.config.js
+	@cd examples/simple && yarn start
 
 run-tutorial: build ## run the tutorial example
 	@cd examples/tutorial && yarn start
@@ -63,11 +63,6 @@ build-ra-data-graphql-simple:
 	@rm -rf ./packages/ra-data-graphql-simple/lib
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-data-graphql-simple/src -d ./packages/ra-data-graphql-simple/lib --ignore spec.js,test.js
 
-build-ra-dependent-input:
-	@echo "Transpiling ra-dependent-input files...";
-	@rm -rf ./packages/ra-dependent-input/lib
-	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-dependent-input/src -d ./packages/ra-dependent-input/lib --ignore spec.js,test.js
-
 build-ra-input-rich-text:
 	@echo "Transpiling ra-input-rich-text files...";
 	@rm -rf ./packages/ra-input-rich-text/lib
@@ -84,7 +79,7 @@ build-data-generator:
 	@rm -rf ./examples/data-generator/lib
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./examples/data-generator/src -d ./examples/data-generator/lib
 
-build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-dependent-input build-ra-input-rich-text build-ra-realtime build-data-generator ## compile ES6 files to JS
+build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-input-rich-text build-ra-realtime build-data-generator ## compile ES6 files to JS
 
 watch: ## continuously compile ES6 files to JS
 	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore spec.js,test.js --watch
@@ -117,7 +112,7 @@ test-unit-watch: ## launch unit tests and watch for changes
 test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \
 		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
-		cd examples/simple && ./node_modules/.bin/webpack; \
+		cd examples/simple && yarn build; \
 	fi
 	@NODE_ENV=test node_modules/.bin/mocha \
 		--require babel-core/register \

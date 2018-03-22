@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash.get';
+import get from 'lodash/get';
 import TextField from 'material-ui/TextField';
 import { MenuItem } from 'material-ui/Menu';
+import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import { addField, translate, FieldTitle } from 'ra-core';
 
@@ -44,6 +45,12 @@ const sanitizeRestProps = ({
     validation,
     ...rest
 }) => rest;
+
+const styles = theme => ({
+    input: {
+        minWidth: theme.spacing.unit * 20,
+    },
+});
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -129,27 +136,29 @@ export class SelectInput extends Component {
 
         return choices;
     };
+    renderMenuItemOption = choice => {
+        const { optionText, translate, translateChoice } = this.props;
+        if (React.isValidElement(optionText))
+            return React.cloneElement(optionText, {
+                record: choice,
+            });
+        const choiceName =
+            typeof optionText === 'function'
+                ? optionText(choice)
+                : get(choice, optionText);
+        return translateChoice
+            ? translate(choiceName, { _: choiceName })
+            : choiceName;
+    };
 
     renderMenuItem = choice => {
-        const {
-            optionText,
-            optionValue,
-            translate,
-            translateChoice,
-        } = this.props;
-        const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
-            ? React.cloneElement(optionText, { record: choice })
-            : typeof optionText === 'function'
-              ? optionText(choice)
-              : get(choice, optionText);
+        const { optionValue } = this.props;
         return (
             <MenuItem
                 key={get(choice, optionValue)}
                 value={get(choice, optionValue)}
             >
-                {translateChoice
-                    ? translate(choiceName, { _: choiceName })
-                    : choiceName}
+                {this.renderMenuItemOption(choice)}
             </MenuItem>
         );
     };
@@ -157,6 +166,7 @@ export class SelectInput extends Component {
     render() {
         const {
             choices,
+            classes,
             className,
             isRequired,
             label,
@@ -187,7 +197,7 @@ export class SelectInput extends Component {
                         isRequired={isRequired}
                     />
                 }
-                className={className}
+                className={`${classes.input} ${className}`}
                 error={!!(touched && error)}
                 helperText={(touched && error) || helperText}
                 {...options}
@@ -203,6 +213,7 @@ export class SelectInput extends Component {
 SelectInput.propTypes = {
     allowEmpty: PropTypes.bool.isRequired,
     choices: PropTypes.arrayOf(PropTypes.object),
+    classes: PropTypes.object,
     className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
@@ -218,11 +229,12 @@ SelectInput.propTypes = {
     resource: PropTypes.string,
     source: PropTypes.string,
     translate: PropTypes.func.isRequired,
-    translateChoice: PropTypes.bool.isRequired,
+    translateChoice: PropTypes.bool,
 };
 
 SelectInput.defaultProps = {
     allowEmpty: false,
+    classes: {},
     choices: [],
     options: {},
     optionText: 'name',
@@ -230,4 +242,4 @@ SelectInput.defaultProps = {
     translateChoice: true,
 };
 
-export default compose(addField, translate)(SelectInput);
+export default compose(addField, translate, withStyles(styles))(SelectInput);

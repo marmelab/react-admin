@@ -7,9 +7,9 @@ import { push as pushAction } from 'react-router-redux';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import inflection from 'inflection';
-import debounce from 'lodash.debounce';
-import isEqual from 'lodash.isequal';
-import pickBy from 'lodash.pickby';
+import debounce from 'lodash/debounce';
+import isEqual from 'lodash/isEqual';
+import pickBy from 'lodash/pickBy';
 
 import removeEmpty from '../util/removeEmpty';
 import queryReducer, {

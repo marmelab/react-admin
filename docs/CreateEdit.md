@@ -59,9 +59,9 @@ export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
             <DisabledInput label="Id" source="id" />
-            <TextInput source="title" validate={required} />
-            <LongTextInput source="teaser" validate={required} />
-            <RichTextInput source="body" validate={required} />
+            <TextInput source="title" validate={required()} />
+            <LongTextInput source="teaser" validate={required()} />
+            <RichTextInput source="body" validate={required()} />
             <DateInput label="Publication date" source="published_at" />
             <ReferenceManyField label="Comments" reference="comments" target="post_id">
                 <Datagrid>
@@ -202,16 +202,16 @@ export const PostEdit = (props) => (
         <TabbedForm>
             <FormTab label="summary">
                 <DisabledInput label="Id" source="id" />
-                <TextInput source="title" validate={required} />
-                <LongTextInput source="teaser" validate={required} />
+                <TextInput source="title" validate={required()} />
+                <LongTextInput source="teaser" validate={required()} />
             </FormTab>
             <FormTab label="body">
-                <RichTextInput source="body" validate={required} addLabel={false} />
+                <RichTextInput source="body" validate={required()} addLabel={false} />
             </FormTab>
             <FormTab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
                 <DateInput label="Publication date" source="published_at" />
-                <NumberInput source="average_note" validate={[ number, minValue(0) ]} />
+                <NumberInput source="average_note" validate={[ number(), minValue(0) ]} />
                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
                 <DisabledInput label="Nb views" source="views" />
             </FormTab>
@@ -330,8 +330,8 @@ const ageValidation = (value, allValues) => {
     return [];
 }
 
-const validateFirstName = [required, maxLength(15)];
-const validateAge = [required, number, ageValidation];
+const validateFirstName = [required(), maxLength(15)];
+const validateAge = [required(), number(), ageValidation];
 
 export const UserCreate = (props) => (
     <Create {...props}>
@@ -356,7 +356,7 @@ const required = (value, allValues, props) => value ? undefined : props.translat
 ```jsx
 import { Edit, SimpleForm, NumberInput, required, minValue, number } from 'react-admin';
 
-const validateStock = [required, number, minValue(0)];
+const validateStock = [required(), number(), minValue(0)];
 
 export const ProductEdit = ({ ...props }) => (
     <Edit {...props}>
@@ -380,13 +380,13 @@ export const ProductEdit = ({ ...props }) => (
 
 React-admin already bundles a few validator functions, that you can just require and use as field validators:
 
-* `required` if the field is mandatory,
+* `required(message)` if the field is mandatory,
 * `minValue(min, message)` to specify a minimum value for integers,
 * `maxValue(max, message)` to specify a maximum value for integers,
 * `minLength(min, message)` to specify a minimum length for strings,
 * `maxLength(max, message)` to specify a maximum length for strings,
-* `number` to check that the input is a valid number,
-* `email` to check that the input is a valid email address,
+* `number(message)` to check that the input is a valid number,
+* `email(message)` to check that the input is a valid email address,
 * `regex(pattern, message)` to validate that the input matches a regex,
 * `choices(list, message)` to validate that the input is within a given list,
 
@@ -396,7 +396,7 @@ Example usage:
 import { required, minLength, maxLength, minValue, maxValue, number, regex, email, choices } from 'react-admin';
 
 const validateFirstName = [required, minLength(2), maxLength(15)];
-const validateAge = [number, minValue(18)];
+const validateAge = [number(), minValue(18)];
 const validateZipCode = regex(/^\d{5}$/, 'Must be a valid Zip Code');
 const validateSex = choices(['m', 'f'], 'Must be Male or Female');
 
@@ -404,7 +404,7 @@ export const UserCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
             <TextInput label="First Name" source="firstName" validate={validateFirstName} />
-            <TextInput label="Email" source="email" validate={email} />
+            <TextInput label="Email" source="email" validate={email()} />
             <TextInput label="Age" source="age" validate={validateAge}/>
             <TextInput label="Zip Code" source="zip" validate={validateZipCode}/>
             <SelectInput label="Sex" source="sex" choices={[
@@ -415,6 +415,12 @@ export const UserCreate = (props) => (
     </Create>
 );
 ```
+
+**Tip**: You can pass a function as a message callback, for example: 
+```javascript
+<TextInput label="Email" source="email" validate={email(({translate})=>translate(''))} />
+```
+The callback signature is: `({args,value,values,translate,...props}) => String`
 
 ## Submit On Enter
 
@@ -548,9 +554,9 @@ export const UserCreate = ({ permissions, ...props }) =>
             toolbar={<UserCreateToolbar permissions={permissions} />}
             defaultValue={{ role: 'user' }}
         >
-            <TextInput source="name" validate={[required]} />
+            <TextInput source="name" validate={[required()]} />
             {permissions === 'admin' &&
-                <TextInput source="role" validate={[required]} />}
+                <TextInput source="role" validate={[required()]} />}
         </SimpleForm>
     </Create>;
 ```
@@ -567,11 +573,11 @@ export const UserEdit = ({ permissions, ...props }) =>
         <TabbedForm defaultValue={{ role: 'user' }}>
             <FormTab label="user.form.summary">
                 {permissions === 'admin' && <DisabledInput source="id" />}
-                <TextInput source="name" validate={required} />
+                <TextInput source="name" validate={required()} />
             </FormTab>
             {permissions === 'admin' &&
                 <FormTab label="user.form.security">
-                    <TextInput source="role" validate={required} />
+                    <TextInput source="role" validate={required()} />
                 </FormTab>}
         </TabbedForm>
     </Edit>;

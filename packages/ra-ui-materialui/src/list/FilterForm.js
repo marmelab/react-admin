@@ -8,7 +8,7 @@ import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
-import lodashSet from 'lodash.set';
+import lodashSet from 'lodash/set';
 import { translate } from 'ra-core';
 
 const styles = ({ palette: { primary1Color } }) => ({

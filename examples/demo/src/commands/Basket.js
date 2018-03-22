@@ -14,7 +14,12 @@ import compose from 'recompose/compose';
 import withStyles from 'material-ui/styles/withStyles';
 
 const styles = {
-    container: { width: '42em', float: 'right', zIndex: 2 },
+    container: {
+        width: '42em',
+        float: 'right',
+        zIndex: 2,
+        '&:after': { clear: 'both' },
+    },
     rightAlignedCell: { textAlign: 'right' },
     boldCell: { fontWeight: 'bold' },
 };

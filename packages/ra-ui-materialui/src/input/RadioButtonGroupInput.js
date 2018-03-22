@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash.get';
+import get from 'lodash/get';
 import { FormControlLabel, FormHelperText } from 'material-ui/Form';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import compose from 'recompose/compose';

@@ -1,5 +1,5 @@
-import merge from 'lodash.merge';
-import get from 'lodash.get';
+import merge from 'lodash/merge';
+import get from 'lodash/get';
 import pluralize from 'pluralize';
 import {
     GET_LIST,

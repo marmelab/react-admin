@@ -100,6 +100,8 @@ module.exports = {
             maxValue: 'Must be %{max} or less',
             number: 'Must be a number',
             email: 'Must be a valid email',
+            oneOf: 'Must be one of: %{options}',
+            regex: 'Must match a specific format (regexp): %{pattern}',
         },
     },
 };

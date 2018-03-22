@@ -14,7 +14,6 @@ import {
     Responsive,
     SelectInput,
     SimpleForm,
-    SimpleList,
     TextField,
     TextInput,
 } from 'react-admin';

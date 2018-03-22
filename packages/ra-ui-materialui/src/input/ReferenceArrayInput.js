@@ -45,7 +45,7 @@ export const ReferenceArrayInputView = ({
     error,
     input,
     isLoading,
-    label = '',
+    label,
     meta,
     onChange,
     options,

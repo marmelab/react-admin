@@ -23,6 +23,8 @@ yarn add ra-data-graphql-simple
 
 ## Usage
 
+The `ra-data-graphql-simple` package exposes a single function, which is a constructor for a `dataProvider` based on a GraphQL endpoint. When executed, this function calls the GraphQL endpoint, running an [introspection](http://graphql.org/learn/introspection/) query. It uses the result of this query (the GraphQL schema) to automatically configure the `dataProvider` accordingly.
+
 ```js
 // in App.js
 import React, { Component } from 'react';
@@ -61,7 +63,52 @@ class App extends Component {
 export default App;
 ```
 
-And that's it, `buildGraphQLProvider` will create a default ApolloClient for you and run an [introspection](http://graphql.org/learn/introspection/) query on your GraphQL endpoint, listing all potential resources.
+## Expected GraphQL Schema
+
+The `ra-data-graphql-simple` function works against GraphQL servers that respect a certain GraphQL grammar. For instance, to handle all the actions on a `Post` resource, the GraphQL endpoint should support the following schema:
+
+```gql
+type Query {
+  Post(id: ID!): Post
+  allPosts(page: Int, perPage: Int, sortField: String, sortOrder: String, filter: PostFilter): [Post]
+  _allPostsMeta(page: Int, perPage: Int, sortField: String, sortOrder: String, filter: PostFilter): ListMetadata
+}
+
+type Mutation {
+  createPost(data: String): Post
+  updatePost(data: String): Post
+  removePost(id: ID!): Boolean
+}
+
+type Post {
+    id: ID!
+    title: String!
+    views: Int!
+    user_id: ID!
+    User: User
+    Comments: [Comment]
+}
+
+type PostFilter {
+    q: String
+    id: ID
+    title: String
+    views: Int
+    views_lt: Int
+    views_lte: Int
+    views_gt: Int
+    views_gte: Int
+    user_id: ID    
+}
+
+type ListMetadata {
+    count: Int!
+}
+
+scalar Date
+```
+
+This is the grammar used e.g. by [marmelab/json-graphql-server](https://github.com/marmelab/json-graphql-server), a client-side GraphQL server used for test purposes.
 
 ## Options
 

@@ -10,12 +10,12 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const ReviewEditActions = ({ basePath, data, hasShow, refresh }) => (
+const ReviewEditActions = ({ basePath, data, hasShow, refresh, resource }) => (
     <CardActions style={cardActionStyle}>
         <AcceptButton record={data} />
         <RejectButton record={data} />
         <ListButton basePath={basePath} />
-        <DeleteButton basePath={basePath} record={data} />
+        <DeleteButton basePath={basePath} record={data} resource={resource} />
         <RefreshButton refresh={refresh} />
     </CardActions>
 );
