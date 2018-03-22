@@ -2,11 +2,12 @@ language: node_js
 sudo: required
 node_js:
   - '8.9.4'
+addons:
+  chrome: stable
 env:
-    global:
-        - CHROME_BIN="chromium-browser"
-        - DISPLAY=:99.0
-        - NODE_ENV=test
+  global:
+    - DISPLAY=:99.0
+    - NODE_ENV=test
 dist: trusty
 cache:
   yarn: true
