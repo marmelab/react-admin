@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { getFormValues } from 'redux-form';
 import get from 'lodash/get';
 import set from 'lodash/set';
-import { FormField } from 'react-admin';
+
+import FormField from '../form/FormField';
 import getValue from './getValue';
 
 const REDUX_FORM_NAME = 'record-form';
