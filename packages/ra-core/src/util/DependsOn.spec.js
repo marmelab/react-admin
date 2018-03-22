@@ -67,7 +67,7 @@ describe('DependsOn', () => {
                                 },
                             },
                             {
-                                dependsOn: 'firstName',
+                                source: 'firstName',
                             }
                         )
                     ).toEqual({ show: false, dependsOnValue: undefined });
@@ -85,7 +85,7 @@ describe('DependsOn', () => {
                                     },
                                 },
                             },
-                            { dependsOn: 'firstName' }
+                            { source: 'firstName' }
                         )
                     ).toEqual({ show: true, dependsOnValue: 'blublu' });
                 });
@@ -106,7 +106,7 @@ describe('DependsOn', () => {
                                     },
                                 },
                             },
-                            { dependsOn: 'author.firstName' }
+                            { source: 'author.firstName' }
                         )
                     ).toEqual({ show: false, dependsOnValue: undefined });
                 });
@@ -125,7 +125,7 @@ describe('DependsOn', () => {
                                     },
                                 },
                             },
-                            { dependsOn: 'author.firstName' }
+                            { source: 'author.firstName' }
                         )
                     ).toEqual({ show: true, dependsOnValue: 'blublu' });
                 });
@@ -144,7 +144,7 @@ describe('DependsOn', () => {
                                     },
                                 },
                             },
-                            { dependsOn: 'firstName', value: 'foo' }
+                            { source: 'firstName', value: 'foo' }
                         )
                     ).toEqual({ show: false, dependsOnValue: 'bar' });
                 });
@@ -161,7 +161,7 @@ describe('DependsOn', () => {
                                     },
                                 },
                             },
-                            { dependsOn: 'firstName', value: 'foo' }
+                            { source: 'firstName', value: 'foo' }
                         )
                     ).toEqual({ show: true, dependsOnValue: 'foo' });
                 });
@@ -181,7 +181,7 @@ describe('DependsOn', () => {
                                 },
                             },
                             {
-                                dependsOn: 'firstName',
+                                source: 'firstName',
                                 resolve: value => value === 'foo',
                             }
                         )
@@ -201,7 +201,7 @@ describe('DependsOn', () => {
                                 },
                             },
                             {
-                                dependsOn: 'firstName',
+                                source: 'firstName',
                                 resolve: value => value === 'foo',
                             }
                         )
@@ -222,7 +222,7 @@ describe('DependsOn', () => {
                                     },
                                 },
                             },
-                            { dependsOn: ['firstName', 'lastName'] }
+                            { source: ['firstName', 'lastName'] }
                         )
                     ).toEqual({
                         show: false,
@@ -245,7 +245,7 @@ describe('DependsOn', () => {
                                     },
                                 },
                             },
-                            { dependsOn: ['firstName', 'lastName'] }
+                            { source: ['firstName', 'lastName'] }
                         )
                     ).toEqual({
                         show: true,
@@ -275,7 +275,7 @@ describe('DependsOn', () => {
                                     },
                                 },
                             },
-                            { dependsOn: ['author.firstName', 'date'] }
+                            { source: ['author.firstName', 'date'] }
                         )
                     ).toEqual({
                         show: false,
@@ -301,7 +301,7 @@ describe('DependsOn', () => {
                                     },
                                 },
                             },
-                            { dependsOn: ['author.firstName', 'date'] }
+                            { source: ['author.firstName', 'date'] }
                         )
                     ).toEqual({
                         show: true,
@@ -332,7 +332,7 @@ describe('DependsOn', () => {
                                 },
                             },
                             {
-                                dependsOn: ['author.firstName', 'category'],
+                                source: ['author.firstName', 'category'],
                                 value: ['foo', 'bar'],
                             }
                         )
@@ -363,7 +363,7 @@ describe('DependsOn', () => {
                                 },
                             },
                             {
-                                dependsOn: ['author.firstName', 'category'],
+                                source: ['author.firstName', 'category'],
                                 value: ['foo', 'bar'],
                             }
                         )
@@ -396,7 +396,7 @@ describe('DependsOn', () => {
                                 },
                             },
                             {
-                                dependsOn: ['author.firstName', 'category'],
+                                source: ['author.firstName', 'category'],
                                 resolve: values => {
                                     return (
                                         values.author.firstName === 'foo' &&
@@ -432,7 +432,7 @@ describe('DependsOn', () => {
                                 },
                             },
                             {
-                                dependsOn: ['author.firstName', 'category'],
+                                source: ['author.firstName', 'category'],
                                 resolve: values => {
                                     return (
                                         values.author.firstName === 'foo' &&
@@ -485,7 +485,7 @@ describe('DependsOn', () => {
                                 },
                             },
                             {
-                                dependsOn: 'firstName',
+                                source: 'firstName',
                             }
                         )
                     ).toEqual({ show: false, dependsOnValue: undefined });
@@ -496,7 +496,7 @@ describe('DependsOn', () => {
                         mapStateToProps(
                             {},
                             {
-                                dependsOn: 'firstName',
+                                source: 'firstName',
                                 record: {
                                     firstName: 'blublu',
                                 },
@@ -512,7 +512,7 @@ describe('DependsOn', () => {
                         mapStateToProps(
                             {},
                             {
-                                dependsOn: 'author.firstName',
+                                source: 'author.firstName',
                                 record: {
                                     author: {
                                         lastName: 'blublu',
@@ -531,7 +531,7 @@ describe('DependsOn', () => {
                         mapStateToProps(
                             {},
                             {
-                                dependsOn: 'author.firstName',
+                                source: 'author.firstName',
                                 record: {
                                     author: {
                                         firstName: 'blublu',
@@ -549,7 +549,7 @@ describe('DependsOn', () => {
                         mapStateToProps(
                             {},
                             {
-                                dependsOn: 'firstName',
+                                source: 'firstName',
                                 value: 'foo',
                                 record: {
                                     firstName: 'bar',
@@ -564,7 +564,7 @@ describe('DependsOn', () => {
                         mapStateToProps(
                             {},
                             {
-                                dependsOn: 'firstName',
+                                source: 'firstName',
                                 value: 'foo',
                                 record: {
                                     firstName: 'foo',
@@ -581,7 +581,7 @@ describe('DependsOn', () => {
                         mapStateToProps(
                             {},
                             {
-                                dependsOn: ['firstName', 'lastName'],
+                                source: ['firstName', 'lastName'],
                                 record: {
                                     lastName: 'blublu',
                                 },
@@ -601,7 +601,7 @@ describe('DependsOn', () => {
                         mapStateToProps(
                             {},
                             {
-                                dependsOn: ['firstName', 'lastName'],
+                                source: ['firstName', 'lastName'],
                                 record: {
                                     firstName: 'blublu',
                                     lastName: 'blublu',
@@ -624,7 +624,7 @@ describe('DependsOn', () => {
                         mapStateToProps(
                             {},
                             {
-                                dependsOn: ['author.firstName', 'date'],
+                                source: ['author.firstName', 'date'],
                                 record: {
                                     date: new Date().toDateString(),
                                     author: {
@@ -647,7 +647,7 @@ describe('DependsOn', () => {
                         mapStateToProps(
                             {},
                             {
-                                dependsOn: ['author.firstName', 'date'],
+                                source: ['author.firstName', 'date'],
                                 record: {
                                     date: new Date().toDateString(),
                                     author: {
@@ -672,7 +672,7 @@ describe('DependsOn', () => {
                         mapStateToProps(
                             {},
                             {
-                                dependsOn: ['author.firstName', 'category'],
+                                source: ['author.firstName', 'category'],
                                 record: {
                                     category: 'bar',
                                     author: {
@@ -696,7 +696,7 @@ describe('DependsOn', () => {
                         mapStateToProps(
                             {},
                             {
-                                dependsOn: ['author.firstName', 'category'],
+                                source: ['author.firstName', 'category'],
                                 record: {
                                     category: 'bar',
                                     author: {
@@ -722,7 +722,7 @@ describe('DependsOn', () => {
                         mapStateToProps(
                             {},
                             {
-                                dependsOn: ['author.firstName', 'category'],
+                                source: ['author.firstName', 'category'],
                                 record: {
                                     category: 'bar',
                                     author: {
@@ -752,7 +752,7 @@ describe('DependsOn', () => {
                         mapStateToProps(
                             {},
                             {
-                                dependsOn: ['author.firstName', 'category'],
+                                source: ['author.firstName', 'category'],
                                 record: {
                                     category: 'bar',
                                     author: {

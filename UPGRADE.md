@@ -981,11 +981,27 @@ Update your `import` statements accordingly:
 
 ## aor-dependent-input integrated into core
 
-The `DependentInput` and `DependentField` components of `aor-dependent-input` have been merged into one named `DependsOn` which has been integrated into the `ra-core` package. Usage remains the same but you should rename your imports accordingly:
+The `DependentInput` and `DependentField` components of `aor-dependent-input` have been merged into one named `DependsOn`. Besides, the `dependsOn` prop was renamed to `source`. Finally, this component is now bundled by default in the main `react-admin` package. 
 
 ```diff
-- import { DependentInput, DependentField } from 'aor-dependent-input';
+- import { DependentInput } from 'aor-dependent-input';
 + import { DependsOn } from 'react-admin';
+
+export const UserCreate = (props) => (
+    <Create {...props}>
+        <SimpleForm>
+            <TextInput source="firstName" />
+            <TextInput source="lastName" />
+            <BooleanInput source="hasEmail" label="Has email ?" />
+-           <DependentInput dependsOn="hasEmail">
++           <DependsOn source="hasEmail">
+                <TextInput source="email" />
+-           </DependentInput>
++           </DependsOn>
+        </SimpleForm>
+    </Create>
+);
+
 ```
 
 ## Validators should be initialized

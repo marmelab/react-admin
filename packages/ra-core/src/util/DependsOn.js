@@ -12,7 +12,7 @@ const REDUX_FORM_NAME = 'record-form';
 export const DependsOnView = ({
     children,
     show,
-    dependsOn,
+    source,
     value,
     resolve,
     ...props
@@ -51,7 +51,7 @@ export const DependsOnView = ({
 DependsOnView.propTypes = {
     children: PropTypes.node.isRequired,
     show: PropTypes.bool.isRequired,
-    dependsOn: PropTypes.any,
+    source: PropTypes.any,
     value: PropTypes.any,
     resolve: PropTypes.func,
     formName: PropTypes.string,
@@ -59,41 +59,41 @@ DependsOnView.propTypes = {
 
 export const mapStateToProps = (
     state,
-    { dependsOn, formName = REDUX_FORM_NAME, record, resolve, value }
+    { source, formName = REDUX_FORM_NAME, record, resolve, value }
 ) => {
     const formValues = getFormValues(formName)(state);
     const data = formValues || record;
 
-    if (resolve && (dependsOn === null || typeof dependsOn === 'undefined')) {
+    if (resolve && (source === null || typeof source === 'undefined')) {
         return {
             dependsOnValue: data,
-            show: resolve(data, dependsOn, value),
+            show: resolve(data, source, value),
         };
     }
 
     let dependsOnValue;
     // get the current form values from redux-form
-    if (Array.isArray(dependsOn)) {
-        dependsOnValue = dependsOn.reduce(
+    if (Array.isArray(source)) {
+        dependsOnValue = source.reduce(
             (acc, dependsOnKey) =>
                 set(acc, dependsOnKey, get(data, dependsOnKey)),
             {}
         );
     } else {
-        dependsOnValue = get(data, dependsOn);
+        dependsOnValue = get(data, source);
     }
 
     if (resolve) {
         return {
             dependsOnValue,
-            show: resolve(dependsOnValue, dependsOn),
+            show: resolve(dependsOnValue, source),
         };
     }
 
-    if (Array.isArray(dependsOn) && Array.isArray(value)) {
+    if (Array.isArray(source) && Array.isArray(value)) {
         return {
             dependsOnValue,
-            show: dependsOn.reduce(
+            show: source.reduce(
                 (acc, s, index) =>
                     acc && get(dependsOnValue, s) === value[index],
                 true
@@ -102,10 +102,10 @@ export const mapStateToProps = (
     }
 
     if (typeof value === 'undefined') {
-        if (Array.isArray(dependsOn)) {
+        if (Array.isArray(source)) {
             return {
                 dependsOnValue,
-                show: dependsOn.reduce(
+                show: source.reduce(
                     (acc, s) => acc && !!getValue(dependsOnValue, s),
                     true
                 ),

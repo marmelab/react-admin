@@ -1003,23 +1003,23 @@ When you want to display inputs only when some other inputs are present or have 
 
 The `DependsOn` component accepts the following props:
 
-* `dependsOn`: Either a string indicating the name of the field to check (eg: `hasEmail`) or an array of fields to check (eg: `['firstName', 'lastName']`). You can specify deep paths such as `author.firstName`.
-* `value`: If not specified, only check that the field(s) specified by `dependsOn` have a truthy value. You may specify a single value or an array of values. Deep paths will be correctly retrieved and compared to the specified values. 
+* `source`: Either a string indicating the name of the field to check (eg: `hasEmail`) or an array of fields to check (eg: `['firstName', 'lastName']`). You can specify deep paths such as `author.firstName`.
+* `value`: If not specified, only check that the field(s) specified by `source` have a truthy value. You may specify a single value or an array of values. Deep paths will be correctly retrieved and compared to the specified values. 
 * `resolve`: The `resolve` prop accepts a function which must return either `true` to display the child input or `false` to hide it.
 
 If both `value` and `resolve` are specified, `value` will be ignored.
 
-If the `dependsOn` prop is specified, `resolve` will be called with either the value of the field specified by `dependsOn` (when a single field name was specified as `dependsOn`) or with an object matching the specified paths.
+If the `source` prop is specified, `resolve` will be called with either the value of the field specified by `source` (when a single field name was specified as `source`) or with an object matching the specified paths.
 
-**Note**: When specifying deep paths (eg: `author.firstName`), `resolve` will be called with an object matching the specified structure. For example, when passing `['author.firstName', 'author.lastName']` as `dependsOn`, the `resolve` function will be passed the following object:
+**Note**: When specifying deep paths (eg: `author.firstName`), `resolve` will be called with an object matching the specified structure. For example, when passing `['author.firstName', 'author.lastName']` as `source`, the `resolve` function will be passed the following object:
 
 ```js
 { author: { firstName: 'bValue', lastName: 'cValue' } }
 ```
 
-If `dependsOn` is not specified, `resolve` will be called with the current form values.
+If `source` is not specified, `resolve` will be called with the current form values.
 
-### Check that the field specified by `dependsOn` has a value (a truthy value):
+### Check that the field specified by `source` has a value (a truthy value):
 
 ```js
 import { Create, SimpleForm, TextInput, BooleanInput, DependsOn } from 'react-admin';
@@ -1030,7 +1030,7 @@ export const UserCreate = (props) => (
             <TextInput source="firstName" />
             <TextInput source="lastName" />
             <BooleanInput source="hasEmail" label="Has email ?" />
-            <DependsOn dependsOn="hasEmail">
+            <DependsOn source="hasEmail">
                 <TextInput source="email" />
             </DependsOn>
         </SimpleForm>
@@ -1038,7 +1038,7 @@ export const UserCreate = (props) => (
 );
 ```
 
-### Check that the field specified by `dependsOn` has a specific value:
+### Check that the field specified by `source` has a specific value:
 
 ```js
 import { Create, SimpleForm, TextInput, SelectInput, DependsOn } from 'react-admin';
@@ -1054,7 +1054,7 @@ export const PostCreate = (props) => (
                 { id: 'photography', name: 'Photography' },
             ]} />
 
-            <DependsOn dependsOn="category" value="programming">
+            <DependsOn source="category" value="programming">
                 <SelectInput source="subcategory" choices={[
                     { id: 'js', name: 'JavaScript' },
                     { id: 'net', name: '.NET' },
@@ -1062,13 +1062,13 @@ export const PostCreate = (props) => (
                 ]} />
             </DependsOn>
 
-            <DependsOn dependsOn="category" value="lifestyle">
+            <DependsOn source="category" value="lifestyle">
                 <SelectInput source="subcategory" choices={[
                     ...
                 ]} />
             </DependsOn>
 
-            <DependsOn dependsOn="category" value="photography">
+            <DependsOn source="category" value="photography">
                 <SelectInput source="subcategory" choices={[
                     ...
                 ]} />
@@ -1078,7 +1078,7 @@ export const PostCreate = (props) => (
 );
 ```
 
-### Check that the field specified by `dependsOn` matches a custom constraint:
+### Check that the field specified by `source` matches a custom constraint:
 
 ```js
 import { Create, SimpleForm, TextInput, SelectInput, DependsOn } from 'react-admin';
@@ -1097,7 +1097,7 @@ export const PostCreate = (props) => (
                     { id: 'photography', name: 'Photography' },
             ]} />
 
-            <DependsOn dependsOn="category" resolve={checkCustomConstraint}>
+            <DependsOn source="category" resolve={checkCustomConstraint}>
                 <SelectInput source="subcategory" choices={[
                     { id: 'js', name: 'JavaScript' },
                     { id: 'net', name: '.NET' },
