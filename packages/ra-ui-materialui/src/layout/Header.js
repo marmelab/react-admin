@@ -6,7 +6,10 @@ import classnames from 'classnames';
 import ViewTitle from './ViewTitle';
 
 const styles = theme => {
-    const backgroundColorDefault = theme.palette.type === 'paper' ? theme.palette.grey[100] : theme.palette.grey[900];
+    const backgroundColorDefault =
+        theme.palette.type === 'paper'
+            ? theme.palette.grey[100]
+            : theme.palette.grey[900];
 
     return {
         root: {
@@ -24,8 +27,8 @@ const styles = theme => {
         colorSecondary: {
             backgroundColor: theme.palette.secondary.main,
             color: theme.palette.secondary.contrastText,
-        }
-    }
+        },
+    };
 };
 
 export const Header = ({
