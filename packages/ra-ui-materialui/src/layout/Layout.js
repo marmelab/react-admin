@@ -72,7 +72,12 @@ const Layout = ({
     >
         <div className={classes.appFrame}>
             <Hidden xsDown>
-                <AppBar title={title} open={open} logout={logout} />
+                <AppBar
+                    classes={classes}
+                    title={title}
+                    open={open}
+                    logout={logout}
+                />
             </Hidden>
             <main className={classes.contentWithSidebar}>
                 <Sidebar>

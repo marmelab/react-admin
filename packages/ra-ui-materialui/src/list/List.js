@@ -108,6 +108,7 @@ export const ListView = ({
             <Card>
                 <Header
                     className={classes.header}
+                    classes={classes}
                     title={titleElement}
                     actions={React.cloneElement(actions, {
                         className: classes.actions,
