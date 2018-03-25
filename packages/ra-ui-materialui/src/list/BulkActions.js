@@ -69,6 +69,7 @@ class BulkActions extends Component {
             classes,
             children,
             className,
+            data,
             filterValues,
             label,
             resource,
@@ -132,6 +133,7 @@ class BulkActions extends Component {
                             filterValues,
                             onExit: this.handleExitAction,
                             resource,
+                            data,
                             selectedIds,
                         })
                 )}
@@ -145,6 +147,7 @@ BulkActions.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.node,
+    data: PropTypes.object,
     filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
     resource: PropTypes.string,

@@ -8,16 +8,26 @@ class BulkDeleteAction extends Component {
     componentDidMount = () => {
         const {
             basePath,
+            data,
             dispatchCrudDeleteMany,
             resource,
             selectedIds,
             startUndoable,
             undoable,
         } = this.props;
+
+        const selectedRecords = selectedIds.map(id => data[id]).filter(r => r);
         if (undoable) {
-            startUndoable(crudDeleteMany(resource, selectedIds, basePath));
+            startUndoable(
+                crudDeleteMany(resource, selectedIds, selectedRecords, basePath)
+            );
         } else {
-            dispatchCrudDeleteMany(resource, selectedIds, basePath);
+            dispatchCrudDeleteMany(
+                resource,
+                selectedIds,
+                selectedRecords,
+                basePath
+            );
         }
         this.props.onExit();
     };
@@ -30,6 +40,7 @@ class BulkDeleteAction extends Component {
 BulkDeleteAction.propTypes = {
     basePath: PropTypes.string,
     dispatchCrudDeleteMany: PropTypes.func.isRequired,
+    data: PropTypes.object,
     label: PropTypes.string,
     onExit: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,

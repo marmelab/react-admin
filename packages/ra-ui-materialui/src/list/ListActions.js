@@ -8,6 +8,7 @@ import CardActions from '../layout/CardActions';
 const Actions = ({
     bulkActions,
     className,
+    data,
     resource,
     filters,
     displayedFilters,
@@ -24,6 +25,7 @@ const Actions = ({
             {bulkActions &&
                 cloneElement(bulkActions, {
                     basePath,
+                    data,
                     filterValues,
                     resource,
                     selectedIds,
@@ -48,6 +50,7 @@ Actions.propTypes = {
     basePath: PropTypes.string,
     className: PropTypes.string,
     displayedFilters: PropTypes.object,
+    data: PropTypes.object,
     filters: PropTypes.element,
     filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,

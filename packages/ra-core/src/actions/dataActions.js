@@ -91,6 +91,7 @@ export const CRUD_UPDATE_LOADING = 'RA/CRUD_UPDATE_LOADING';
 export const CRUD_UPDATE_FAILURE = 'RA/CRUD_UPDATE_FAILURE';
 export const CRUD_UPDATE_SUCCESS = 'RA/CRUD_UPDATE_SUCCESS';
 export const CRUD_UPDATE_OPTIMISTIC = 'RA/CRUD_UPDATE_OPTIMISTIC';
+export const CRUD_UPDATE_OPTIMISTIC_UNDO = 'RA/CRUD_UPDATE_OPTIMISTIC_UNDO';
 
 export const crudUpdate = (
     resource,
@@ -131,6 +132,8 @@ export const CRUD_UPDATE_MANY_LOADING = 'RA/CRUD_UPDATE_MANY_LOADING';
 export const CRUD_UPDATE_MANY_FAILURE = 'RA/CRUD_UPDATE_MANY_FAILURE';
 export const CRUD_UPDATE_MANY_SUCCESS = 'RA/CRUD_UPDATE_MANY_SUCCESS';
 export const CRUD_UPDATE_MANY_OPTIMISTIC = 'RA/CRUD_UPDATE_MANY_OPTIMISTIC';
+export const CRUD_UPDATE_MANY_OPTIMISTIC_UNDO =
+    'RA/CRUD_UPDATE_MANY_OPTIMISTIC_UNDO';
 
 export const crudUpdateMany = (
     resource,
@@ -172,6 +175,7 @@ export const CRUD_DELETE_LOADING = 'RA/CRUD_DELETE_LOADING';
 export const CRUD_DELETE_FAILURE = 'RA/CRUD_DELETE_FAILURE';
 export const CRUD_DELETE_SUCCESS = 'RA/CRUD_DELETE_SUCCESS';
 export const CRUD_DELETE_OPTIMISTIC = 'RA/CRUD_DELETE_OPTIMISTIC';
+export const CRUD_DELETE_OPTIMISTIC_UNDO = 'RA/CRUD_DELETE_OPTIMISTIC_UNDO';
 
 export const crudDelete = (
     resource,
@@ -211,10 +215,18 @@ export const CRUD_DELETE_MANY_LOADING = 'RA/CRUD_DELETE_MANY_LOADING';
 export const CRUD_DELETE_MANY_FAILURE = 'RA/CRUD_DELETE_MANY_FAILURE';
 export const CRUD_DELETE_MANY_SUCCESS = 'RA/CRUD_DELETE_MANY_SUCCESS';
 export const CRUD_DELETE_MANY_OPTIMISTIC = 'RA/CRUD_DELETE_MANY_OPTIMISTIC';
+export const CRUD_DELETE_MANY_OPTIMISTIC_UNDO =
+    'RA/CRUD_DELETE_MANY_OPTIMISTIC_UNDO';
 
-export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
+export const crudDeleteMany = (
+    resource,
+    ids,
+    previousData,
+    basePath,
+    refresh = true
+) => ({
     type: CRUD_DELETE_MANY,
-    payload: { ids },
+    payload: { ids, previousData },
     meta: {
         resource,
         fetch: DELETE_MANY,

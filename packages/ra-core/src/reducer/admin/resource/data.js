@@ -6,10 +6,16 @@ import {
     GET_MANY_REFERENCE,
     CREATE,
     UPDATE,
+    DELETE,
+    DELETE_MANY,
 } from '../../../dataFetchActions';
 import {
     CRUD_UPDATE_OPTIMISTIC,
     CRUD_UPDATE_MANY_OPTIMISTIC,
+    CRUD_DELETE_OPTIMISTIC,
+    CRUD_DELETE_OPTIMISTIC_UNDO,
+    CRUD_DELETE_MANY_OPTIMISTIC,
+    CRUD_DELETE_MANY_OPTIMISTIC_UNDO,
 } from '../../../actions/dataActions';
 
 import getFetchedAt from '../../../util/getFetchedAt';
@@ -54,6 +60,14 @@ export const addRecordsFactory = getFetchedAt => (
 };
 
 const addRecords = addRecordsFactory(getFetchedAt);
+const removeRecords = (ids, state) => {
+    const nextState = { ...state };
+    ids && ids.forEach(id => delete nextState[id]);
+    Object.defineProperty(nextState, 'fetchedAt', {
+        value: state.fetchedAt,
+    });
+    return nextState;
+};
 
 const initialState = {};
 Object.defineProperty(initialState, 'fetchedAt', { value: {} }); // non enumerable by default
@@ -69,6 +83,18 @@ export default (previousState = initialState, { type, payload, meta }) => {
             .map(record => ({ ...record, ...payload.data }));
         return addRecords(updatedRecords, previousState);
     }
+    if (type === CRUD_DELETE_OPTIMISTIC) {
+        return removeRecords([payload.id], previousState);
+    }
+    if (type === CRUD_DELETE_OPTIMISTIC_UNDO) {
+        return addRecords([payload.previousData], previousState);
+    }
+    if (type === CRUD_DELETE_MANY_OPTIMISTIC) {
+        return removeRecords(payload.ids, previousState);
+    }
+    if (type === CRUD_DELETE_MANY_OPTIMISTIC_UNDO) {
+        return addRecords(payload.previousData, previousState);
+    }
     if (!meta || !meta.fetchResponse || meta.fetchStatus !== FETCH_END) {
         return previousState;
     }
@@ -81,6 +107,10 @@ export default (previousState = initialState, { type, payload, meta }) => {
         case UPDATE:
         case CREATE:
             return addRecords([payload.data], previousState);
+        case DELETE:
+            return removeRecords([payload.id], previousState);
+        case DELETE_MANY:
+            return removeRecords(payload.ids, previousState);
         default:
             return previousState;
     }

@@ -115,6 +115,7 @@ export const ListView = ({
                     actionProps={{
                         basePath,
                         bulkActions,
+                        data,
                         displayedFilters,
                         filters,
                         filterValues,

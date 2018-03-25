@@ -37,6 +37,13 @@ export function* handleUndoRace(undoableAction) {
             meta: metaWithoutSuccessSideEffects,
         });
     } else {
+        yield put({
+            ...action,
+            type: `${action.type}_OPTIMISTIC_UNDO`,
+            meta: {
+                resource: metaWithoutSuccessSideEffects.resource,
+            },
+        });
         yield put(showNotification('ra.notification.canceled'));
         yield put(refreshView());
     }

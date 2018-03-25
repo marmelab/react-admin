@@ -52,6 +52,17 @@ describe('undo saga', () => {
                 put(stopOptimisticMode())
             );
         });
+        it('should dispatch an optimistic undo event', () => {
+            expect(generator.next().value).toEqual(
+                put({
+                    type: 'FOO_OPTIMISTIC_UNDO',
+                    payload: { id: 123 },
+                    meta: {
+                        resource: undefined,
+                    },
+                })
+            );
+        });
         it('should display the notification', () => {
             expect(generator.next().value).toEqual(
                 put(showNotification('ra.notification.canceled'))
