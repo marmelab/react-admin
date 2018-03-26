@@ -78,7 +78,7 @@
         "react-router-redux": "~5.0.0-alpha.6",
         "recompose": "~0.25.0",
         "redux": "~3.7.2",
-        "redux-form": "~7.0.3",
+        "redux-form": "~7.1.1",
         "redux-saga": "~0.15.0",
         "reselect": "~3.0.0"
     }
