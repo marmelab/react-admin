@@ -619,6 +619,7 @@ describe('DependsOn', () => {
             });
 
             describe('with only dependsOn specified as an array with deep path strings', () => {
+                const date = new Date().toDateString();
                 test('returns { show: false } if the form does not have a truthy value for the fields matching dependsOn', () => {
                     expect(
                         mapStateToProps(
@@ -626,7 +627,7 @@ describe('DependsOn', () => {
                             {
                                 source: ['author.firstName', 'date'],
                                 record: {
-                                    date: new Date().toDateString(),
+                                    date: date,
                                     author: {
                                         lastName: 'blublu',
                                     },
@@ -637,7 +638,7 @@ describe('DependsOn', () => {
                         show: false,
                         dependsOnValue: {
                             author: { firstName: undefined },
-                            date: 'Thu Mar 22 2018',
+                            date: date,
                         },
                     });
                 });
@@ -649,7 +650,7 @@ describe('DependsOn', () => {
                             {
                                 source: ['author.firstName', 'date'],
                                 record: {
-                                    date: new Date().toDateString(),
+                                    date: date,
                                     author: {
                                         firstName: 'blublu',
                                     },
@@ -660,7 +661,7 @@ describe('DependsOn', () => {
                         show: true,
                         dependsOnValue: {
                             author: { firstName: 'blublu' },
-                            date: 'Thu Mar 22 2018',
+                            date: date,
                         },
                     });
                 });
