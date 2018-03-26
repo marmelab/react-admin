@@ -34,9 +34,9 @@
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "peerDependencies": {
-        "react": "^15.4.0 || ~16.0.0",
+        "react": "~16.0.0 || ~16.1.0 || ~16.2.0",
         "react-admin": "^2.0.0-beta1",
-        "react-dom": "^15.4.0 || ~16.0.0"
+        "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0"
     },
     "dependencies": {
         "lodash": "~4.17.5",
