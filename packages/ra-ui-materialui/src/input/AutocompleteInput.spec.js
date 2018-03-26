@@ -359,17 +359,15 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
-    it('should displayed helperText if prop is present in meta', () => {
+    it('should displayed helperText if prop is present', () => {
         const wrapper = shallow(
-            <AutocompleteInput
-                {...defaultProps}
-                meta={{ helperText: 'Can i help you?' }}
-            />
+            <AutocompleteInput {...defaultProps} helperText="Can i help you?" />
         );
         const AutoCompleteElement = wrapper.find('Autosuggest').first();
-        assert.deepEqual(AutoCompleteElement.prop('inputProps').meta, {
-            helperText: 'Can i help you?',
-        });
+        assert.deepEqual(
+            AutoCompleteElement.prop('inputProps').helperText,
+            'Can i help you?'
+        );
     });
 
     describe('error message', () => {

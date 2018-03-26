@@ -273,6 +273,7 @@ export class AutocompleteInput extends React.Component {
             isRequired,
             label,
             input,
+            helperText,
             meta,
             options,
             resource,
@@ -287,7 +288,7 @@ export class AutocompleteInput extends React.Component {
             );
         }
 
-        const { touched, error, helperText = false } = meta;
+        const { touched, error } = meta;
 
         return (
             <TextField
@@ -401,12 +402,7 @@ export class AutocompleteInput extends React.Component {
     shouldRenderSuggestions = () => true;
 
     render() {
-        const {
-            alwaysRenderSuggestions,
-            classes = {},
-            InputProps,
-            ...rest
-        } = this.props;
+        const { alwaysRenderSuggestions, classes = {}, ...rest } = this.props;
         const { suggestions, searchText } = this.state;
 
         return (
