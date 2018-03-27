@@ -24,6 +24,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
+        height: '1px',
         alignItems: 'center',
         justifyContent: 'center',
     },
