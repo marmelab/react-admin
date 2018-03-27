@@ -44,45 +44,56 @@ const CreateView = ({
     save,
     title,
     ...rest
-}) => (
-    <div
-        className={classnames('create-page', className)}
-        {...sanitizeRestProps(rest)}
-    >
-        <Card>
-            <Header
-                title={
-                    <RecordTitle
-                        title={title}
-                        record={record}
-                        defaultTitle={defaultTitle}
-                    />
-                }
-                actions={actions}
-                actionProps={{
-                    basePath,
+}) => {
+    children =
+        typeof children === 'function'
+            ? children({
+                  basePath,
+                  record,
+                  resource,
+                  ...rest,
+              })
+            : children;
+    return (
+        <div
+            className={classnames('create-page', className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <Card>
+                <Header
+                    title={
+                        <RecordTitle
+                            title={title}
+                            record={record}
+                            defaultTitle={defaultTitle}
+                        />
+                    }
+                    actions={actions}
+                    actionProps={{
+                        basePath,
+                        resource,
+                        hasList,
+                    }}
+                />
+                {React.cloneElement(children, {
+                    save,
                     resource,
-                    hasList,
-                }}
-            />
-            {React.cloneElement(children, {
-                save,
-                resource,
-                basePath,
-                record,
-                redirect:
-                    typeof children.props.redirect === 'undefined'
-                        ? redirect
-                        : children.props.redirect,
-            })}
-        </Card>
-    </div>
-);
+                    basePath,
+                    record,
+                    redirect:
+                        typeof children.props.redirect === 'undefined'
+                            ? redirect
+                            : children.props.redirect,
+                })}
+            </Card>
+        </div>
+    );
+};
 
 CreateView.propTypes = {
     actions: PropTypes.element,
     basePath: PropTypes.string,
-    children: PropTypes.element,
+    children: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
     className: PropTypes.string,
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,

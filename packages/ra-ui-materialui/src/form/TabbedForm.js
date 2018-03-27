@@ -98,6 +98,9 @@ export class TabbedForm extends Component {
             ...rest
         } = this.props;
 
+        const resolvedChildren =
+            typeof children === 'function' ? children(this.props) : children;
+
         return (
             <form
                 className={classnames('tabbed-form', className)}
@@ -111,7 +114,7 @@ export class TabbedForm extends Component {
                     indicatorColor="primary"
                 >
                     {Children.map(
-                        children,
+                        resolvedChildren,
                         (tab, index) =>
                             tab ? (
                                 <Tab
@@ -136,7 +139,7 @@ export class TabbedForm extends Component {
                 <Divider />
                 <div className={classes.form}>
                     {Children.map(
-                        children,
+                        resolvedChildren,
                         (tab, index) =>
                             tab &&
                             this.state.value === index &&
@@ -163,7 +166,7 @@ export class TabbedForm extends Component {
 
 TabbedForm.propTypes = {
     basePath: PropTypes.string,
-    children: PropTypes.node,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     className: PropTypes.string,
     classes: PropTypes.object,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),

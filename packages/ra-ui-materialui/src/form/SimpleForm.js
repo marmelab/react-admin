@@ -77,13 +77,16 @@ export class SimpleForm extends Component {
             ...rest
         } = this.props;
 
+        const resolvedChildren =
+            typeof children === 'function' ? children(this.props) : children;
+
         return (
             <form
                 className={classnames('simple-form', className)}
                 {...sanitizeRestProps(rest)}
             >
                 <div className={classes.form} key={version}>
-                    {Children.map(children, input => (
+                    {Children.map(resolvedChildren, input => (
                         <FormInput
                             basePath={basePath}
                             input={input}
@@ -106,7 +109,7 @@ export class SimpleForm extends Component {
 
 SimpleForm.propTypes = {
     basePath: PropTypes.string,
-    children: PropTypes.node,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     classes: PropTypes.object,
     className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),

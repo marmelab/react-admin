@@ -47,39 +47,52 @@ const ShowView = ({
     title,
     version,
     ...rest
-}) => (
-    <div
-        className={classnames('show-page', className)}
-        {...sanitizeRestProps(rest)}
-    >
-        <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-            <Header
-                title={
-                    <RecordTitle
-                        title={title}
-                        record={record}
-                        defaultTitle={defaultTitle}
-                    />
-                }
-                actions={actions}
-                actionProps={{
-                    basePath,
-                    data: record,
-                    hasList,
-                    hasEdit,
-                    resource,
-                }}
-            />
-            {record &&
-                React.cloneElement(children, {
-                    resource,
-                    basePath,
-                    record,
-                    version,
-                })}
-        </Card>
-    </div>
-);
+}) => {
+    children =
+        typeof children === 'function'
+            ? children({
+                  basePath,
+                  isLoading,
+                  record,
+                  resource,
+                  version,
+                  ...rest,
+              })
+            : children;
+    return (
+        <div
+            className={classnames('show-page', className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                <Header
+                    title={
+                        <RecordTitle
+                            title={title}
+                            record={record}
+                            defaultTitle={defaultTitle}
+                        />
+                    }
+                    actions={actions}
+                    actionProps={{
+                        basePath,
+                        data: record,
+                        hasList,
+                        hasEdit,
+                        resource,
+                    }}
+                />
+                {record &&
+                    React.cloneElement(children, {
+                        resource,
+                        basePath,
+                        record,
+                        version,
+                    })}
+            </Card>
+        </div>
+    );
+};
 
 ShowView.propTypes = {
     actions: PropTypes.element,
