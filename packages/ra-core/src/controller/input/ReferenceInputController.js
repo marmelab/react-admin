@@ -105,7 +105,7 @@ export class ReferenceInputController extends Component {
     }
 
     componentDidMount() {
-        this.fetchReferenceAndOptions();
+        this.fetchReferenceAndOptions(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
