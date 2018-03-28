@@ -56,7 +56,9 @@ class CreateView extends React.Component {
     setupChildren = ({ children, ...props }) => {
         this.setState({
             children:
-                typeof children === 'function' ? children(props) : children,
+                typeof children === 'function'
+                    ? children(props).filter(c => c)
+                    : children,
         });
     };
 
