@@ -13,6 +13,7 @@ import Divider from 'material-ui/Divider';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import { withStyles } from 'material-ui/styles';
 import { getDefaultValues, translate } from 'ra-core';
+import ChildrenRenderPropSupport from '../layout/ChildrenRenderPropSupport';
 
 import Toolbar from './Toolbar';
 
@@ -81,94 +82,98 @@ export class TabbedForm extends Component {
         this.props.handleSubmit(values => this.props.save(values, redirect));
 
     render() {
-        const {
-            basePath,
-            children,
-            className,
-            classes = {},
-            invalid,
-            pristine,
-            record,
-            resource,
-            submitOnEnter,
-            tabsWithErrors,
-            toolbar,
-            translate,
-            version,
-            ...rest
-        } = this.props;
-
         return (
-            <form
-                className={classnames('tabbed-form', className)}
-                key={version}
-                {...sanitizeRestProps(rest)}
-            >
-                <Tabs
-                    scrollable
-                    value={this.state.value}
-                    onChange={this.handleChange}
-                    indicatorColor="primary"
-                >
-                    {Children.map(
-                        children,
-                        (tab, index) =>
-                            tab ? (
-                                <Tab
-                                    key={tab.props.label}
-                                    label={translate(tab.props.label, {
-                                        _: tab.props.label,
-                                    })}
-                                    value={index}
-                                    icon={tab.props.icon}
-                                    className={classnames(
-                                        'form-tab',
-                                        tabsWithErrors.includes(
-                                            tab.props.label
-                                        ) && this.state.value !== index
-                                            ? classes.errorTabButton
-                                            : null
-                                    )}
-                                />
-                            ) : null
-                    )}
-                </Tabs>
-                <Divider />
-                <div className={classes.form}>
-                    {Children.map(
-                        children,
-                        (tab, index) =>
-                            tab &&
-                            this.state.value === index &&
-                            React.cloneElement(tab, {
-                                resource,
-                                record,
-                                basePath,
-                            })
-                    )}
-                    {toolbar &&
-                        React.cloneElement(toolbar, {
-                            className: 'toolbar',
-                            handleSubmitWithRedirect: this
-                                .handleSubmitWithRedirect,
-                            invalid,
-                            pristine,
-                            submitOnEnter,
-                        })}
-                </div>
-            </form>
+            <ChildrenRenderPropSupport
+                {...this.props}
+                render={({
+                    basePath,
+                    children,
+                    className,
+                    classes = {},
+                    invalid,
+                    pristine,
+                    record,
+                    resource,
+                    submitOnEnter,
+                    tabsWithErrors,
+                    toolbar,
+                    translate,
+                    version,
+                    ...rest
+                }) => (
+                    <form
+                        className={classnames('tabbed-form', className)}
+                        key={version}
+                        {...sanitizeRestProps(rest)}
+                    >
+                        <Tabs
+                            scrollable
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                            indicatorColor="primary"
+                        >
+                            {Children.map(
+                                children,
+                                (tab, index) =>
+                                    tab ? (
+                                        <Tab
+                                            key={tab.props.label}
+                                            label={translate(tab.props.label, {
+                                                _: tab.props.label,
+                                            })}
+                                            value={index}
+                                            icon={tab.props.icon}
+                                            className={classnames(
+                                                'form-tab',
+                                                tabsWithErrors.includes(
+                                                    tab.props.label
+                                                ) && this.state.value !== index
+                                                    ? classes.errorTabButton
+                                                    : null
+                                            )}
+                                        />
+                                    ) : null
+                            )}
+                        </Tabs>
+                        <Divider />
+                        <div className={classes.form}>
+                            {Children.map(
+                                children,
+                                (tab, index) =>
+                                    tab &&
+                                    this.state.value === index &&
+                                    React.cloneElement(tab, {
+                                        resource,
+                                        record,
+                                        basePath,
+                                    })
+                            )}
+                            {toolbar &&
+                                React.cloneElement(toolbar, {
+                                    className: 'toolbar',
+                                    handleSubmitWithRedirect: this
+                                        .handleSubmitWithRedirect,
+                                    invalid,
+                                    pristine,
+                                    submitOnEnter,
+                                })}
+                        </div>
+                    </form>
+                )}
+            />
         );
     }
 }
 
 TabbedForm.propTypes = {
     basePath: PropTypes.string,
-    children: PropTypes.node,
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     className: PropTypes.string,
     classes: PropTypes.object,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
+    memoizeProps: PropTypes.arrayOf(PropTypes.string),
     pristine: PropTypes.bool,
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),

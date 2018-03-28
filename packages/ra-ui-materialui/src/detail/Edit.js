@@ -7,6 +7,7 @@ import { EditController } from 'ra-core';
 import Header from '../layout/Header';
 import DefaultActions from './EditActions';
 import RecordTitle from '../layout/RecordTitle';
+import ChildrenRenderPropSupport from '../layout/ChildrenRenderPropSupport';
 
 const sanitizeRestProps = ({
     actions,
@@ -36,71 +37,82 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const EditView = ({
-    actions = <DefaultActions />,
-    basePath,
-    children,
-    className,
-    defaultTitle,
-    hasList,
-    hasShow,
-    record,
-    redirect,
-    resource,
-    save,
-    title,
-    version,
-    ...rest
-}) => (
-    <div
-        className={classnames('edit-page', className)}
-        {...sanitizeRestProps(rest)}
-    >
-        <Card>
-            <Header
-                title={
-                    <RecordTitle
-                        title={title}
-                        record={record}
-                        defaultTitle={defaultTitle}
-                    />
-                }
-                actions={actions}
-                actionProps={{
+class EditView extends React.Component {
+    render() {
+        return (
+            <ChildrenRenderPropSupport
+                {...this.props}
+                render={({
+                    actions = <DefaultActions />,
                     basePath,
-                    data: record,
-                    hasShow,
+                    children,
+                    className,
+                    defaultTitle,
                     hasList,
-                    resource,
-                }}
-            />
-            {record ? (
-                React.cloneElement(children, {
-                    save,
-                    resource,
-                    basePath,
+                    hasShow,
                     record,
+                    redirect,
+                    resource,
+                    save,
+                    title,
                     version,
-                    redirect:
-                        typeof children.props.redirect === 'undefined'
-                            ? redirect
-                            : children.props.redirect,
-                })
-            ) : (
-                <CardContent>&nbsp;</CardContent>
-            )}
-        </Card>
-    </div>
-);
+                    ...rest
+                }) => (
+                    <div
+                        className={classnames('edit-page', className)}
+                        {...sanitizeRestProps(rest)}
+                    >
+                        <Card>
+                            <Header
+                                title={
+                                    <RecordTitle
+                                        title={title}
+                                        record={record}
+                                        defaultTitle={defaultTitle}
+                                    />
+                                }
+                                actions={actions}
+                                actionProps={{
+                                    basePath,
+                                    data: record,
+                                    hasShow,
+                                    hasList,
+                                    resource,
+                                }}
+                            />
+                            {record ? (
+                                React.cloneElement(children, {
+                                    save,
+                                    resource,
+                                    basePath,
+                                    record,
+                                    version,
+                                    redirect:
+                                        typeof children.props.redirect ===
+                                        'undefined'
+                                            ? redirect
+                                            : children.props.redirect,
+                                })
+                            ) : (
+                                <CardContent>&nbsp;</CardContent>
+                            )}
+                        </Card>
+                    </div>
+                )}
+            />
+        );
+    }
+}
 
 EditView.propTypes = {
     actions: PropTypes.element,
     basePath: PropTypes.string,
-    children: PropTypes.element,
+    children: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
     className: PropTypes.string,
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
+    memoizeProps: PropTypes.arrayOf(PropTypes.string),
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
@@ -111,7 +123,7 @@ EditView.propTypes = {
 
 /**
  * Page component for the Edit view
- * 
+ *
  * The `<Edit>` component renders the page title and actions,
  * fetches the record from the data provider.
  * It is not responsible for rendering the actual form -
@@ -122,14 +134,14 @@ EditView.propTypes = {
  *
  * - title
  * - actions
- * 
+ *
  * Both expect an element for value.
- * 
- * @example     
+ *
+ * @example
  *     // in src/posts.js
  *     import React from 'react';
  *     import { Edit, SimpleForm, TextInput } from 'react-admin';
- *     
+ *
  *     export const PostEdit = (props) => (
  *         <Edit {...props}>
  *             <SimpleForm>
@@ -141,9 +153,9 @@ EditView.propTypes = {
  *     // in src/App.js
  *     import React from 'react';
  *     import { Admin, Resource } from 'react-admin';
- *     
+ *
  *     import { PostEdit } from './posts';
- *     
+ *
  *     const App = () => (
  *         <Admin dataProvider={...}>
  *             <Resource name="posts" edit={PostEdit} />

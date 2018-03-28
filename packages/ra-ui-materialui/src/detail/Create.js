@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
 import classnames from 'classnames';
+
 import { CreateController } from 'ra-core';
 
 import Header from '../layout/Header';
 import DefaultActions from './CreateActions';
 import RecordTitle from '../layout/RecordTitle';
+import ChildrenRenderPropSupport from '../layout/ChildrenRenderPropSupport';
 
 const sanitizeRestProps = ({
     actions,
@@ -30,63 +32,74 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const CreateView = ({
-    actions = <DefaultActions />,
-    basePath,
-    children,
-    className,
-    defaultTitle,
-    hasList,
-    hasShow,
-    record = {},
-    redirect,
-    resource,
-    save,
-    title,
-    ...rest
-}) => (
-    <div
-        className={classnames('create-page', className)}
-        {...sanitizeRestProps(rest)}
-    >
-        <Card>
-            <Header
-                title={
-                    <RecordTitle
-                        title={title}
-                        record={record}
-                        defaultTitle={defaultTitle}
-                    />
-                }
-                actions={actions}
-                actionProps={{
+class CreateView extends React.Component {
+    render() {
+        return (
+            <ChildrenRenderPropSupport
+                {...this.props}
+                render={({
+                    actions = <DefaultActions />,
                     basePath,
-                    resource,
+                    children,
+                    className,
+                    defaultTitle,
                     hasList,
-                }}
+                    hasShow,
+                    record = {},
+                    redirect,
+                    resource,
+                    save,
+                    title,
+                    ...rest
+                }) => (
+                    <div
+                        className={classnames('create-page', className)}
+                        {...sanitizeRestProps(rest)}
+                    >
+                        <Card>
+                            <Header
+                                title={
+                                    <RecordTitle
+                                        title={title}
+                                        record={record}
+                                        defaultTitle={defaultTitle}
+                                    />
+                                }
+                                actions={actions}
+                                actionProps={{
+                                    basePath,
+                                    resource,
+                                    hasList,
+                                }}
+                            />
+                            {React.cloneElement(children, {
+                                save,
+                                resource,
+                                basePath,
+                                record,
+                                redirect:
+                                    typeof children.props.redirect ===
+                                    'undefined'
+                                        ? redirect
+                                        : children.props.redirect,
+                            })}
+                        </Card>
+                    </div>
+                )}
             />
-            {React.cloneElement(children, {
-                save,
-                resource,
-                basePath,
-                record,
-                redirect:
-                    typeof children.props.redirect === 'undefined'
-                        ? redirect
-                        : children.props.redirect,
-            })}
-        </Card>
-    </div>
-);
+        );
+    }
+}
 
 CreateView.propTypes = {
     actions: PropTypes.element,
     basePath: PropTypes.string,
-    children: PropTypes.element,
+    children: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
     className: PropTypes.string,
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
+    memoizeProps: PropTypes.arrayOf(PropTypes.string),
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,

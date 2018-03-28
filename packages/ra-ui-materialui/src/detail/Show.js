@@ -7,6 +7,7 @@ import { ShowController } from 'ra-core';
 import Header from '../layout/Header';
 import DefaultActions from './ShowActions';
 import RecordTitle from '../layout/RecordTitle';
+import ChildrenRenderPropSupport from '../layout/ChildrenRenderPropSupport';
 
 const sanitizeRestProps = ({
     actions,
@@ -33,53 +34,62 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const ShowView = ({
-    actions = <DefaultActions />,
-    basePath,
-    children,
-    className,
-    defaultTitle,
-    hasEdit,
-    hasList,
-    isLoading,
-    record,
-    resource,
-    title,
-    version,
-    ...rest
-}) => (
-    <div
-        className={classnames('show-page', className)}
-        {...sanitizeRestProps(rest)}
-    >
-        <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-            <Header
-                title={
-                    <RecordTitle
-                        title={title}
-                        record={record}
-                        defaultTitle={defaultTitle}
-                    />
-                }
-                actions={actions}
-                actionProps={{
+class ShowView extends React.Component {
+    render() {
+        return (
+            <ChildrenRenderPropSupport
+                {...this.props}
+                render={({
+                    actions = <DefaultActions />,
                     basePath,
-                    data: record,
-                    hasList,
+                    children,
+                    className,
+                    defaultTitle,
                     hasEdit,
-                    resource,
-                }}
-            />
-            {record &&
-                React.cloneElement(children, {
-                    resource,
-                    basePath,
+                    hasList,
+                    isLoading,
                     record,
+                    resource,
+                    title,
                     version,
-                })}
-        </Card>
-    </div>
-);
+                    ...rest
+                }) => (
+                    <div
+                        className={classnames('show-page', className)}
+                        {...sanitizeRestProps(rest)}
+                    >
+                        <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                            <Header
+                                title={
+                                    <RecordTitle
+                                        title={title}
+                                        record={record}
+                                        defaultTitle={defaultTitle}
+                                    />
+                                }
+                                actions={actions}
+                                actionProps={{
+                                    basePath,
+                                    data: record,
+                                    hasList,
+                                    hasEdit,
+                                    resource,
+                                }}
+                            />
+                            {record &&
+                                React.cloneElement(children, {
+                                    resource,
+                                    basePath,
+                                    record,
+                                    version,
+                                })}
+                        </Card>
+                    </div>
+                )}
+            />
+        );
+    }
+}
 
 ShowView.propTypes = {
     actions: PropTypes.element,
@@ -90,6 +100,7 @@ ShowView.propTypes = {
     hasEdit: PropTypes.bool,
     hasList: PropTypes.bool,
     isLoading: PropTypes.bool,
+    memoizeProps: PropTypes.arrayOf(PropTypes.string),
     record: PropTypes.object,
     resource: PropTypes.string,
     title: PropTypes.any,
