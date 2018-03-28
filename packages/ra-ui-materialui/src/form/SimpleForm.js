@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import shallowEqual from 'recompose/shallowEqual';
+import pick from 'lodash/pick';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 import { getDefaultValues, translate } from 'ra-core';
@@ -24,6 +26,7 @@ const sanitizeRestProps = ({
     anyTouched,
     asyncValidate,
     asyncValidating,
+    children,
     clearSubmit,
     dirty,
     handleSubmit,
@@ -61,10 +64,34 @@ export class SimpleForm extends Component {
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
         this.props.handleSubmit(values => this.props.save(values, redirect));
 
+    state = {
+        children: null,
+    };
+    componentWillMount() {
+        this.setupChildren(this.props);
+    }
+    componentWillReceiveProps({ memoizeProps, ...nextProps }) {
+        if (
+            !memoizeProps ||
+            !shallowEqual(
+                pick(this.props, memoizeProps),
+                pick(this.props, nextProps)
+            )
+        ) {
+            this.setupChildren(nextProps);
+        }
+    }
+
+    setupChildren = ({ children, ...props }) => {
+        this.setState({
+            children:
+                typeof children === 'function' ? children(props) : children,
+        });
+    };
+
     render() {
         const {
             basePath,
-            children,
             classes = {},
             className,
             invalid,
@@ -76,9 +103,7 @@ export class SimpleForm extends Component {
             version,
             ...rest
         } = this.props;
-
-        const resolvedChildren =
-            typeof children === 'function' ? children(this.props) : children;
+        const { children } = this.state;
 
         return (
             <form
@@ -86,7 +111,7 @@ export class SimpleForm extends Component {
                 {...sanitizeRestProps(rest)}
             >
                 <div className={classes.form} key={version}>
-                    {Children.map(resolvedChildren, input => (
+                    {Children.map(children, input => (
                         <FormInput
                             basePath={basePath}
                             input={input}
@@ -115,6 +140,7 @@ SimpleForm.propTypes = {
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
+    memoizeProps: PropTypes.arrayOf(PropTypes.string),
     pristine: PropTypes.bool,
     record: PropTypes.object,
     resource: PropTypes.string,

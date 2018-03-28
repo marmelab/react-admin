@@ -8,6 +8,8 @@ import {
     getFormSubmitErrors,
 } from 'redux-form';
 import { connect } from 'react-redux';
+import shallowEqual from 'recompose/shallowEqual';
+import pick from 'lodash/pick';
 import compose from 'recompose/compose';
 import Divider from 'material-ui/Divider';
 import Tabs, { Tab } from 'material-ui/Tabs';
@@ -70,8 +72,31 @@ export class TabbedForm extends Component {
         super(props);
         this.state = {
             value: 0,
+            children: null,
         };
     }
+
+    componentWillMount() {
+        this.setupChildren(this.props);
+    }
+    componentWillReceiveProps({ memoizeProps, ...nextProps }) {
+        if (
+            !memoizeProps ||
+            !shallowEqual(
+                pick(this.props, memoizeProps),
+                pick(this.props, nextProps)
+            )
+        ) {
+            this.setupChildren(nextProps);
+        }
+    }
+
+    setupChildren = ({ children, ...props }) => {
+        this.setState({
+            children:
+                typeof children === 'function' ? children(props) : children,
+        });
+    };
 
     handleChange = (event, value) => {
         this.setState({ value });
@@ -83,7 +108,6 @@ export class TabbedForm extends Component {
     render() {
         const {
             basePath,
-            children,
             className,
             classes = {},
             invalid,
@@ -97,10 +121,7 @@ export class TabbedForm extends Component {
             version,
             ...rest
         } = this.props;
-
-        const resolvedChildren =
-            typeof children === 'function' ? children(this.props) : children;
-
+        const { children } = this.state;
         return (
             <form
                 className={classnames('tabbed-form', className)}
@@ -114,7 +135,7 @@ export class TabbedForm extends Component {
                     indicatorColor="primary"
                 >
                     {Children.map(
-                        resolvedChildren,
+                        children,
                         (tab, index) =>
                             tab ? (
                                 <Tab
@@ -139,7 +160,7 @@ export class TabbedForm extends Component {
                 <Divider />
                 <div className={classes.form}>
                     {Children.map(
-                        resolvedChildren,
+                        children,
                         (tab, index) =>
                             tab &&
                             this.state.value === index &&
@@ -172,6 +193,7 @@ TabbedForm.propTypes = {
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
+    memoizeProps: PropTypes.arrayOf(PropTypes.string),
     pristine: PropTypes.bool,
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),

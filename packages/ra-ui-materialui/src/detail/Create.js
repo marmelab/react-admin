@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
 import classnames from 'classnames';
+import shallowEqual from 'recompose/shallowEqual';
+import pick from 'lodash/pick';
+
 import { CreateController } from 'ra-core';
 
 import Header from '../layout/Header';
@@ -30,65 +33,84 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const CreateView = ({
-    actions = <DefaultActions />,
-    basePath,
-    children,
-    className,
-    defaultTitle,
-    hasList,
-    hasShow,
-    record = {},
-    redirect,
-    resource,
-    save,
-    title,
-    ...rest
-}) => {
-    children =
-        typeof children === 'function'
-            ? children({
-                  basePath,
-                  record,
-                  resource,
-                  ...rest,
-              })
-            : children;
-    return (
-        <div
-            className={classnames('create-page', className)}
-            {...sanitizeRestProps(rest)}
-        >
-            <Card>
-                <Header
-                    title={
-                        <RecordTitle
-                            title={title}
-                            record={record}
-                            defaultTitle={defaultTitle}
-                        />
-                    }
-                    actions={actions}
-                    actionProps={{
-                        basePath,
+class CreateView extends React.Component {
+    state = {
+        children: null,
+    };
+    componentWillMount() {
+        this.setupChildren(this.props);
+    }
+    componentWillReceiveProps({ memoizeProps, ...nextProps }) {
+        if (
+            !memoizeProps ||
+            !shallowEqual(
+                pick(this.props, memoizeProps),
+                pick(this.props, nextProps)
+            )
+        ) {
+            this.setupChildren(nextProps);
+        }
+    }
+
+    setupChildren = ({ children, ...props }) => {
+        this.setState({
+            children:
+                typeof children === 'function' ? children(props) : children,
+        });
+    };
+
+    render() {
+        const {
+            actions = <DefaultActions />,
+            basePath,
+            className,
+            defaultTitle,
+            hasList,
+            hasShow,
+            record = {},
+            redirect,
+            resource,
+            save,
+            title,
+            ...rest
+        } = this.props;
+        const { children } = this.state;
+        return (
+            <div
+                className={classnames('create-page', className)}
+                {...sanitizeRestProps(rest)}
+            >
+                <Card>
+                    <Header
+                        title={
+                            <RecordTitle
+                                title={title}
+                                record={record}
+                                defaultTitle={defaultTitle}
+                            />
+                        }
+                        actions={actions}
+                        actionProps={{
+                            basePath,
+                            resource,
+                            hasList,
+                        }}
+                    />
+                    {React.cloneElement(children, {
+                        save,
                         resource,
-                        hasList,
-                    }}
-                />
-                {React.cloneElement(children, {
-                    save,
-                    resource,
-                    basePath,
-                    record,
-                    redirect:
-                        typeof children.props.redirect === 'undefined'
-                            ? redirect
-                            : children.props.redirect,
-                })}
-            </Card>
-        </div>
-    );
-};
+                        basePath,
+                        record,
+                        redirect:
+                            typeof children.props.redirect === 'undefined'
+                                ? redirect
+                                : children.props.redirect,
+                    })}
+                </Card>
+            </div>
+        );
+    }
+}
 
 CreateView.propTypes = {
     actions: PropTypes.element,
@@ -98,6 +120,7 @@ CreateView.propTypes = {
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
+    memoizeProps: PropTypes.arrayOf(PropTypes.string),
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,

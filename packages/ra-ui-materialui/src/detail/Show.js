@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
 import classnames from 'classnames';
+import shallowEqual from 'recompose/shallowEqual';
+import pick from 'lodash/pick';
 import { ShowController } from 'ra-core';
 
 import Header from '../layout/Header';
@@ -33,66 +35,83 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const ShowView = ({
-    actions = <DefaultActions />,
-    basePath,
-    children,
-    className,
-    defaultTitle,
-    hasEdit,
-    hasList,
-    isLoading,
-    record,
-    resource,
-    title,
-    version,
-    ...rest
-}) => {
-    children =
-        typeof children === 'function'
-            ? children({
-                  basePath,
-                  isLoading,
-                  record,
-                  resource,
-                  version,
-                  ...rest,
-              })
-            : children;
-    return (
-        <div
-            className={classnames('show-page', className)}
-            {...sanitizeRestProps(rest)}
-        >
-            <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                <Header
-                    title={
-                        <RecordTitle
-                            title={title}
-                            record={record}
-                            defaultTitle={defaultTitle}
-                        />
-                    }
-                    actions={actions}
-                    actionProps={{
-                        basePath,
-                        data: record,
-                        hasList,
-                        hasEdit,
-                        resource,
-                    }}
-                />
-                {record &&
-                    React.cloneElement(children, {
-                        resource,
-                        basePath,
-                        record,
-                        version,
-                    })}
-            </Card>
-        </div>
-    );
-};
+class ShowView extends React.Component {
+    state = {
+        children: null,
+    };
+    componentWillMount() {
+        this.setupChildren(this.props);
+    }
+    componentWillReceiveProps({ memoizeProps, ...nextProps }) {
+        if (
+            !memoizeProps ||
+            !shallowEqual(
+                pick(this.props, memoizeProps),
+                pick(this.props, nextProps)
+            )
+        ) {
+            this.setupChildren(nextProps);
+        }
+    }
+
+    setupChildren = ({ children, ...props }) => {
+        this.setState({
+            children:
+                typeof children === 'function' ? children(props) : children,
+        });
+    };
+    render() {
+        const {
+            actions = <DefaultActions />,
+            basePath,
+            className,
+            defaultTitle,
+            hasEdit,
+            hasList,
+            isLoading,
+            record,
+            resource,
+            title,
+            version,
+            ...rest
+        } = this.props;
+        const { children } = this.state;
+
+        return (
+            <div
+                className={classnames('show-page', className)}
+                {...sanitizeRestProps(rest)}
+            >
+                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                    <Header
+                        title={
+                            <RecordTitle
+                                title={title}
+                                record={record}
+                                defaultTitle={defaultTitle}
+                            />
+                        }
+                        actions={actions}
+                        actionProps={{
+                            basePath,
+                            data: record,
+                            hasList,
+                            hasEdit,
+                            resource,
+                        }}
+                    />
+                    {record &&
+                        React.cloneElement(children, {
+                            resource,
+                            basePath,
+                            record,
+                            version,
+                        })}
+                </Card>
+            </div>
+        );
+    }
+}
 
 ShowView.propTypes = {
     actions: PropTypes.element,
@@ -103,6 +122,7 @@ ShowView.propTypes = {
     hasEdit: PropTypes.bool,
     hasList: PropTypes.bool,
     isLoading: PropTypes.bool,
+    memoizeProps: PropTypes.arrayOf(PropTypes.string),
     record: PropTypes.object,
     resource: PropTypes.string,
     title: PropTypes.any,
