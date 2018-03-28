@@ -42,11 +42,12 @@ class CreateView extends React.Component {
     }
     componentWillReceiveProps({ memoizeProps, ...nextProps }) {
         if (
-            !memoizeProps ||
-            !shallowEqual(
-                pick(this.props, memoizeProps),
-                pick(this.props, nextProps)
-            )
+            typeof children === 'function' &&
+            (!memoizeProps ||
+                !shallowEqual(
+                    pick(this.props, memoizeProps),
+                    pick(nextProps, memoizeProps)
+                ))
         ) {
             this.setupChildren(nextProps);
         }
