@@ -2,13 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
 import classnames from 'classnames';
-import shallowEqual from 'recompose/shallowEqual';
-import pick from 'lodash/pick';
 import { ShowController } from 'ra-core';
 
 import Header from '../layout/Header';
 import DefaultActions from './ShowActions';
 import RecordTitle from '../layout/RecordTitle';
+import ChildrenRenderPropSupport from '../layout/ChildrenRenderPropSupport';
 
 const sanitizeRestProps = ({
     actions,
@@ -36,82 +35,58 @@ const sanitizeRestProps = ({
 }) => rest;
 
 class ShowView extends React.Component {
-    state = {
-        children: null,
-    };
-    componentWillMount() {
-        this.setupChildren(this.props);
-    }
-    componentWillReceiveProps({ memoizeProps, ...nextProps }) {
-        if (
-            typeof children === 'function' &&
-            (!memoizeProps ||
-                !shallowEqual(
-                    pick(this.props, memoizeProps),
-                    pick(nextProps, memoizeProps)
-                ))
-        ) {
-            this.setupChildren(nextProps);
-        }
-    }
-
-    setupChildren = ({ children, ...props }) => {
-        this.setState({
-            children:
-                typeof children === 'function'
-                    ? children(props).filter(c => c)
-                    : children,
-        });
-    };
     render() {
-        const {
-            actions = <DefaultActions />,
-            basePath,
-            className,
-            defaultTitle,
-            hasEdit,
-            hasList,
-            isLoading,
-            record,
-            resource,
-            title,
-            version,
-            ...rest
-        } = this.props;
-        const { children } = this.state;
-
         return (
-            <div
-                className={classnames('show-page', className)}
-                {...sanitizeRestProps(rest)}
-            >
-                <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-                    <Header
-                        title={
-                            <RecordTitle
-                                title={title}
-                                record={record}
-                                defaultTitle={defaultTitle}
+            <ChildrenRenderPropSupport
+                {...this.props}
+                render={({
+                    actions = <DefaultActions />,
+                    basePath,
+                    children,
+                    className,
+                    defaultTitle,
+                    hasEdit,
+                    hasList,
+                    isLoading,
+                    record,
+                    resource,
+                    title,
+                    version,
+                    ...rest
+                }) => (
+                    <div
+                        className={classnames('show-page', className)}
+                        {...sanitizeRestProps(rest)}
+                    >
+                        <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+                            <Header
+                                title={
+                                    <RecordTitle
+                                        title={title}
+                                        record={record}
+                                        defaultTitle={defaultTitle}
+                                    />
+                                }
+                                actions={actions}
+                                actionProps={{
+                                    basePath,
+                                    data: record,
+                                    hasList,
+                                    hasEdit,
+                                    resource,
+                                }}
                             />
-                        }
-                        actions={actions}
-                        actionProps={{
-                            basePath,
-                            data: record,
-                            hasList,
-                            hasEdit,
-                            resource,
-                        }}
-                    />
-                    {record &&
-                        React.cloneElement(children, {
-                            resource,
-                            basePath,
-                            record,
-                            version,
-                        })}
-                </Card>
-            </div>
+                            {record &&
+                                React.cloneElement(children, {
+                                    resource,
+                                    basePath,
+                                    record,
+                                    version,
+                                })}
+                        </Card>
+                    </div>
+                )}
+            />
         );
     }
 }

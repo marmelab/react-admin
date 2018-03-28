@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
 import classnames from 'classnames';
-import shallowEqual from 'recompose/shallowEqual';
-import pick from 'lodash/pick';
 
 import { CreateController } from 'ra-core';
 
 import Header from '../layout/Header';
 import DefaultActions from './CreateActions';
 import RecordTitle from '../layout/RecordTitle';
+import ChildrenRenderPropSupport from '../layout/ChildrenRenderPropSupport';
 
 const sanitizeRestProps = ({
     actions,
@@ -34,83 +33,60 @@ const sanitizeRestProps = ({
 }) => rest;
 
 class CreateView extends React.Component {
-    state = {
-        children: null,
-    };
-    componentWillMount() {
-        this.setupChildren(this.props);
-    }
-    componentWillReceiveProps({ memoizeProps, ...nextProps }) {
-        if (
-            typeof children === 'function' &&
-            (!memoizeProps ||
-                !shallowEqual(
-                    pick(this.props, memoizeProps),
-                    pick(nextProps, memoizeProps)
-                ))
-        ) {
-            this.setupChildren(nextProps);
-        }
-    }
-
-    setupChildren = ({ children, ...props }) => {
-        this.setState({
-            children:
-                typeof children === 'function'
-                    ? children(props).filter(c => c)
-                    : children,
-        });
-    };
-
     render() {
-        const {
-            actions = <DefaultActions />,
-            basePath,
-            className,
-            defaultTitle,
-            hasList,
-            hasShow,
-            record = {},
-            redirect,
-            resource,
-            save,
-            title,
-            ...rest
-        } = this.props;
-        const { children } = this.state;
         return (
-            <div
-                className={classnames('create-page', className)}
-                {...sanitizeRestProps(rest)}
-            >
-                <Card>
-                    <Header
-                        title={
-                            <RecordTitle
-                                title={title}
-                                record={record}
-                                defaultTitle={defaultTitle}
+            <ChildrenRenderPropSupport
+                {...this.props}
+                render={({
+                    actions = <DefaultActions />,
+                    basePath,
+                    children,
+                    className,
+                    defaultTitle,
+                    hasList,
+                    hasShow,
+                    record = {},
+                    redirect,
+                    resource,
+                    save,
+                    title,
+                    ...rest
+                }) => (
+                    <div
+                        className={classnames('create-page', className)}
+                        {...sanitizeRestProps(rest)}
+                    >
+                        <Card>
+                            <Header
+                                title={
+                                    <RecordTitle
+                                        title={title}
+                                        record={record}
+                                        defaultTitle={defaultTitle}
+                                    />
+                                }
+                                actions={actions}
+                                actionProps={{
+                                    basePath,
+                                    resource,
+                                    hasList,
+                                }}
                             />
-                        }
-                        actions={actions}
-                        actionProps={{
-                            basePath,
-                            resource,
-                            hasList,
-                        }}
-                    />
-                    {React.cloneElement(children, {
-                        save,
-                        resource,
-                        basePath,
-                        record,
-                        redirect:
-                            typeof children.props.redirect === 'undefined'
-                                ? redirect
-                                : children.props.redirect,
-                    })}
-                </Card>
-            </div>
+                            {React.cloneElement(children, {
+                                save,
+                                resource,
+                                basePath,
+                                record,
+                                redirect:
+                                    typeof children.props.redirect ===
+                                    'undefined'
+                                        ? redirect
+                                        : children.props.redirect,
+                            })}
+                        </Card>
+                    </div>
+                )}
+            />
         );
     }
 }

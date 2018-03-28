@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import shallowEqual from 'recompose/shallowEqual';
-import pick from 'lodash/pick';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 import { getDefaultValues, translate } from 'ra-core';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
+import ChildrenRenderPropSupport from '../layout/ChildrenRenderPropSupport';
 
 const styles = theme => ({
     form: {
@@ -64,73 +63,49 @@ export class SimpleForm extends Component {
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
         this.props.handleSubmit(values => this.props.save(values, redirect));
 
-    state = {
-        children: null,
-    };
-    componentWillMount() {
-        this.setupChildren(this.props);
-    }
-    componentWillReceiveProps({ memoizeProps, ...nextProps }) {
-        if (
-            typeof children === 'function' &&
-            (!memoizeProps ||
-                !shallowEqual(
-                    pick(this.props, memoizeProps),
-                    pick(nextProps, memoizeProps)
-                ))
-        ) {
-            this.setupChildren(nextProps);
-        }
-    }
-
-    setupChildren = ({ children, ...props }) => {
-        this.setState({
-            children:
-                typeof children === 'function'
-                    ? children(props).filter(c => c)
-                    : children,
-        });
-    };
-
     render() {
-        const {
-            basePath,
-            classes = {},
-            className,
-            invalid,
-            pristine,
-            record,
-            resource,
-            submitOnEnter,
-            toolbar,
-            version,
-            ...rest
-        } = this.props;
-        const { children } = this.state;
-
         return (
-            <form
-                className={classnames('simple-form', className)}
-                {...sanitizeRestProps(rest)}
-            >
-                <div className={classes.form} key={version}>
-                    {Children.map(children, input => (
-                        <FormInput
-                            basePath={basePath}
-                            input={input}
-                            record={record}
-                            resource={resource}
-                        />
-                    ))}
-                </div>
-                {toolbar &&
-                    React.cloneElement(toolbar, {
-                        handleSubmitWithRedirect: this.handleSubmitWithRedirect,
-                        invalid,
-                        pristine,
-                        submitOnEnter,
-                    })}
-            </form>
+            <ChildrenRenderPropSupport
+                {...this.props}
+                render={({
+                    basePath,
+                    children,
+                    classes = {},
+                    className,
+                    invalid,
+                    pristine,
+                    record,
+                    resource,
+                    submitOnEnter,
+                    toolbar,
+                    version,
+                    ...rest
+                }) => (
+                    <form
+                        className={classnames('simple-form', className)}
+                        {...sanitizeRestProps(rest)}
+                    >
+                        <div className={classes.form} key={version}>
+                            {Children.map(children, input => (
+                                <FormInput
+                                    basePath={basePath}
+                                    input={input}
+                                    record={record}
+                                    resource={resource}
+                                />
+                            ))}
+                        </div>
+                        {toolbar &&
+                            React.cloneElement(toolbar, {
+                                handleSubmitWithRedirect: this
+                                    .handleSubmitWithRedirect,
+                                invalid,
+                                pristine,
+                                submitOnEnter,
+                            })}
+                    </form>
+                )}
+            />
         );
     }
 }

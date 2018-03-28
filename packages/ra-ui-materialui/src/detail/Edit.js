@@ -2,13 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card, { CardContent } from 'material-ui/Card';
 import classnames from 'classnames';
-import shallowEqual from 'recompose/shallowEqual';
-import pick from 'lodash/pick';
 import { EditController } from 'ra-core';
 
 import Header from '../layout/Header';
 import DefaultActions from './EditActions';
 import RecordTitle from '../layout/RecordTitle';
+import ChildrenRenderPropSupport from '../layout/ChildrenRenderPropSupport';
 
 const sanitizeRestProps = ({
     actions,
@@ -39,93 +38,68 @@ const sanitizeRestProps = ({
 }) => rest;
 
 class EditView extends React.Component {
-    state = {
-        children: null,
-    };
-
-    componentWillMount() {
-        this.setupChildren(this.props);
-    }
-
-    componentWillReceiveProps({ memoizeProps, ...nextProps }) {
-        if (
-            typeof children === 'function' &&
-            (!memoizeProps ||
-                !shallowEqual(
-                    pick(this.props, memoizeProps),
-                    pick(nextProps, memoizeProps)
-                ))
-        ) {
-            this.setupChildren(nextProps);
-        }
-    }
-
-    setupChildren = ({ children, ...props }) => {
-        this.setState({
-            children:
-                typeof children === 'function'
-                    ? children(props).filter(c => c)
-                    : children,
-        });
-    };
-
     render() {
-        const {
-            actions = <DefaultActions />,
-            basePath,
-            className,
-            defaultTitle,
-            hasList,
-            hasShow,
-            record,
-            redirect,
-            resource,
-            save,
-            title,
-            version,
-            ...rest
-        } = this.props;
-        const { children } = this.state;
         return (
-            <div
-                className={classnames('edit-page', className)}
-                {...sanitizeRestProps(rest)}
-            >
-                <Card>
-                    <Header
-                        title={
-                            <RecordTitle
-                                title={title}
-                                record={record}
-                                defaultTitle={defaultTitle}
+            <ChildrenRenderPropSupport
+                {...this.props}
+                render={({
+                    actions = <DefaultActions />,
+                    basePath,
+                    children,
+                    className,
+                    defaultTitle,
+                    hasList,
+                    hasShow,
+                    record,
+                    redirect,
+                    resource,
+                    save,
+                    title,
+                    version,
+                    ...rest
+                }) => (
+                    <div
+                        className={classnames('edit-page', className)}
+                        {...sanitizeRestProps(rest)}
+                    >
+                        <Card>
+                            <Header
+                                title={
+                                    <RecordTitle
+                                        title={title}
+                                        record={record}
+                                        defaultTitle={defaultTitle}
+                                    />
+                                }
+                                actions={actions}
+                                actionProps={{
+                                    basePath,
+                                    data: record,
+                                    hasShow,
+                                    hasList,
+                                    resource,
+                                }}
                             />
-                        }
-                        actions={actions}
-                        actionProps={{
-                            basePath,
-                            data: record,
-                            hasShow,
-                            hasList,
-                            resource,
-                        }}
-                    />
-                    {record ? (
-                        React.cloneElement(children, {
-                            save,
-                            resource,
-                            basePath,
-                            record,
-                            version,
-                            redirect:
-                                typeof children.props.redirect === 'undefined'
-                                    ? redirect
-                                    : children.props.redirect,
-                        })
-                    ) : (
-                        <CardContent>&nbsp;</CardContent>
-                    )}
-                </Card>
-            </div>
+                            {record ? (
+                                React.cloneElement(children, {
+                                    save,
+                                    resource,
+                                    basePath,
+                                    record,
+                                    version,
+                                    redirect:
+                                        typeof children.props.redirect ===
+                                        'undefined'
+                                            ? redirect
+                                            : children.props.redirect,
+                                })
+                            ) : (
+                                <CardContent>&nbsp;</CardContent>
+                            )}
+                        </Card>
+                    </div>
+                )}
+            />
         );
     }
 }

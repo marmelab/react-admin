@@ -8,13 +8,12 @@ import {
     getFormSubmitErrors,
 } from 'redux-form';
 import { connect } from 'react-redux';
-import shallowEqual from 'recompose/shallowEqual';
-import pick from 'lodash/pick';
 import compose from 'recompose/compose';
 import Divider from 'material-ui/Divider';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import { withStyles } from 'material-ui/styles';
 import { getDefaultValues, translate } from 'ra-core';
+import ChildrenRenderPropSupport from '../layout/ChildrenRenderPropSupport';
 
 import Toolbar from './Toolbar';
 
@@ -72,34 +71,8 @@ export class TabbedForm extends Component {
         super(props);
         this.state = {
             value: 0,
-            children: null,
         };
     }
-
-    componentWillMount() {
-        this.setupChildren(this.props);
-    }
-    componentWillReceiveProps({ memoizeProps, ...nextProps }) {
-        if (
-            typeof children === 'function' &&
-            (!memoizeProps ||
-                !shallowEqual(
-                    pick(this.props, memoizeProps),
-                    pick(nextProps, memoizeProps)
-                ))
-        ) {
-            this.setupChildren(nextProps);
-        }
-    }
-
-    setupChildren = ({ children, ...props }) => {
-        this.setState({
-            children:
-                typeof children === 'function'
-                    ? children(props).filter(c => c)
-                    : children,
-        });
-    };
 
     handleChange = (event, value) => {
         this.setState({ value });
@@ -109,81 +82,85 @@ export class TabbedForm extends Component {
         this.props.handleSubmit(values => this.props.save(values, redirect));
 
     render() {
-        const {
-            basePath,
-            className,
-            classes = {},
-            invalid,
-            pristine,
-            record,
-            resource,
-            submitOnEnter,
-            tabsWithErrors,
-            toolbar,
-            translate,
-            version,
-            ...rest
-        } = this.props;
-        const { children } = this.state;
         return (
-            <form
-                className={classnames('tabbed-form', className)}
-                key={version}
-                {...sanitizeRestProps(rest)}
-            >
-                <Tabs
-                    scrollable
-                    value={this.state.value}
-                    onChange={this.handleChange}
-                    indicatorColor="primary"
-                >
-                    {Children.map(
-                        children,
-                        (tab, index) =>
-                            tab ? (
-                                <Tab
-                                    key={tab.props.label}
-                                    label={translate(tab.props.label, {
-                                        _: tab.props.label,
-                                    })}
-                                    value={index}
-                                    icon={tab.props.icon}
-                                    className={classnames(
-                                        'form-tab',
-                                        tabsWithErrors.includes(
-                                            tab.props.label
-                                        ) && this.state.value !== index
-                                            ? classes.errorTabButton
-                                            : null
-                                    )}
-                                />
-                            ) : null
-                    )}
-                </Tabs>
-                <Divider />
-                <div className={classes.form}>
-                    {Children.map(
-                        children,
-                        (tab, index) =>
-                            tab &&
-                            this.state.value === index &&
-                            React.cloneElement(tab, {
-                                resource,
-                                record,
-                                basePath,
-                            })
-                    )}
-                    {toolbar &&
-                        React.cloneElement(toolbar, {
-                            className: 'toolbar',
-                            handleSubmitWithRedirect: this
-                                .handleSubmitWithRedirect,
-                            invalid,
-                            pristine,
-                            submitOnEnter,
-                        })}
-                </div>
-            </form>
+            <ChildrenRenderPropSupport
+                {...this.props}
+                render={({
+                    basePath,
+                    children,
+                    className,
+                    classes = {},
+                    invalid,
+                    pristine,
+                    record,
+                    resource,
+                    submitOnEnter,
+                    tabsWithErrors,
+                    toolbar,
+                    translate,
+                    version,
+                    ...rest
+                }) => (
+                    <form
+                        className={classnames('tabbed-form', className)}
+                        key={version}
+                        {...sanitizeRestProps(rest)}
+                    >
+                        <Tabs
+                            scrollable
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                            indicatorColor="primary"
+                        >
+                            {Children.map(
+                                children,
+                                (tab, index) =>
+                                    tab ? (
+                                        <Tab
+                                            key={tab.props.label}
+                                            label={translate(tab.props.label, {
+                                                _: tab.props.label,
+                                            })}
+                                            value={index}
+                                            icon={tab.props.icon}
+                                            className={classnames(
+                                                'form-tab',
+                                                tabsWithErrors.includes(
+                                                    tab.props.label
+                                                ) && this.state.value !== index
+                                                    ? classes.errorTabButton
+                                                    : null
+                                            )}
+                                        />
+                                    ) : null
+                            )}
+                        </Tabs>
+                        <Divider />
+                        <div className={classes.form}>
+                            {Children.map(
+                                children,
+                                (tab, index) =>
+                                    tab &&
+                                    this.state.value === index &&
+                                    React.cloneElement(tab, {
+                                        resource,
+                                        record,
+                                        basePath,
+                                    })
+                            )}
+                            {toolbar &&
+                                React.cloneElement(toolbar, {
+                                    className: 'toolbar',
+                                    handleSubmitWithRedirect: this
+                                        .handleSubmitWithRedirect,
+                                    invalid,
+                                    pristine,
+                                    submitOnEnter,
+                                })}
+                        </div>
+                    </form>
+                )}
+            />
         );
     }
 }
