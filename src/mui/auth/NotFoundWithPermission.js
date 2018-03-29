@@ -11,7 +11,7 @@ const NotFoundWithPermission = ({ location }) => (
 );
 
 NotFoundWithPermission.propTypes = {
-    location: PropTypes.object
+    location: PropTypes.object,
 };
 
 export default withRouter(NotFoundWithPermission);
