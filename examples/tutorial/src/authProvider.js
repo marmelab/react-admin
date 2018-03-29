@@ -24,7 +24,9 @@ export default (type, params) => {
     }
     // called when the user navigates to a new location
     if (type === AUTH_CHECK) {
-        return localStorage.getItem('username') ? Promise.resolve() : Promise.reject();
+        return localStorage.getItem('username')
+            ? Promise.resolve()
+            : Promise.reject();
     }
     return Promise.reject('Unknown method');
 };

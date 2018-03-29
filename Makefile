@@ -92,7 +92,7 @@ lint: ## lint the code and check coding conventions
 	@"./node_modules/.bin/eslint" ./packages/**/src
 
 prettier: ## prettify the source code using prettier
-	@./node_modules/.bin/prettier-eslint --write --list-different  "packages/react-admin/src/**/*.js" "examples/**/*.js"
+	@./node_modules/.bin/prettier-eslint --write --list-different "packages/*/src/**/*.js" "examples/*/src/**/*.js"
 
 test: build test-unit lint test-e2e ## launch all tests
 
