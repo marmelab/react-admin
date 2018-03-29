@@ -5,11 +5,30 @@ import classnames from 'classnames';
 
 import ViewTitle from './ViewTitle';
 
-const styles = {
-    root: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
+const styles = theme => {
+    const backgroundColorDefault =
+        theme.palette.type === 'paper'
+            ? theme.palette.grey[100]
+            : theme.palette.grey[900];
+
+    return {
+        root: {
+            display: 'flex',
+            justifyContent: 'space-between',
+        },
+        colorDefault: {
+            backgroundColor: backgroundColorDefault,
+            color: theme.palette.getContrastText(backgroundColorDefault),
+        },
+        colorPrimary: {
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.primary.contrastText,
+        },
+        colorSecondary: {
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.secondary.contrastText,
+        },
+    };
 };
 
 export const Header = ({

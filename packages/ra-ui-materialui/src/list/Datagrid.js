@@ -107,7 +107,7 @@ class Datagrid extends Component {
 
         return (
             <Table className={classnames(classes.table, className)} {...rest}>
-                <TableHead>
+                <TableHead className={classes.thead}>
                     <TableRow className={classes.row}>
                         {hasBulkActions && (
                             <TableCell padding="none">
