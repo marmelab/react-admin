@@ -60,9 +60,7 @@ const Admin = ({
     sagaMiddleware.run(saga);
 
     const logout = authClient ? createElement(logoutButton || Logout) : null;
-    const catchAll = authClient
-        ? createElement(customCatchAll || NotFoundWithPermission)
-        : customCatchAll;
+    const catchAll = customCatchAll;
 
     return (
         <Provider store={store}>
