@@ -21,7 +21,7 @@ const convertHTTPResponse = (response, type, resource, params) => {
     switch (type) {
     case GET_LIST:
         return {
-            data: json.map(resource => { ...resource, id: resource._id } ),
+            data: json.map(resource => ({ ...resource, id: resource._id }) ),
             total: parseInt(headers.get('content-range').split('/').pop(), 10),
         };
     case UPDATE:
