@@ -17,6 +17,7 @@ import Menu from './mui/layout/Menu';
 import Logout from './mui/auth/Logout';
 import TranslationProvider from './i18n/TranslationProvider';
 import AdminRoutes from './AdminRoutes';
+import NotFoundWithPermission from './mui/auth/NotFoundWithPermission';
 
 const Admin = ({
     appLayout,
@@ -30,7 +31,7 @@ const Admin = ({
     locale,
     messages = {},
     menu = Menu,
-    catchAll,
+    catchAll: customCatchAll,
     restClient,
     theme,
     title = 'Admin on REST',
@@ -59,6 +60,9 @@ const Admin = ({
     sagaMiddleware.run(saga);
 
     const logout = authClient ? createElement(logoutButton || Logout) : null;
+    const catchAll = authClient
+        ? createElement(customCatchAll || NotFoundWithPermission)
+        : customCatchAll;
 
     return (
         <Provider store={store}>
