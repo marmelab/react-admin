@@ -117,7 +117,6 @@ SaveButton.propTypes = {
 };
 
 SaveButton.defaultProps = {
-    redirect: 'list',
     handleSubmitWithRedirect: () => () => {},
 };
 
