@@ -15,6 +15,7 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
+        height: '1px',
         alignItems: 'center',
         justifyContent: 'flex-start',
         background: 'url(https://source.unsplash.com/random/1600x900)',
