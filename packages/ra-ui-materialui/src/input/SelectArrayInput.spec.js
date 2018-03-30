@@ -181,35 +181,6 @@ describe('<SelectArrayInput />', () => {
         assert.equal(helperText.childAt(0).text(), 'Can i help you?');
     });
 
-    describe('rendering children', () => {
-        it('should render its children', () => {
-            const wrapper = shallow(
-                <SelectArrayInput
-                    {...defaultProps}
-                    input={{ value: ['M'] }}
-                    choices={[
-                        { id: 'M', name: 'Male' },
-                        { id: 'F', name: 'Female' },
-                    ]}
-                >
-                    <ChipField source="name" />
-                </SelectArrayInput>
-            )
-                .find('WithStyles(Select)')
-                .dive()
-                .dive()
-                .dive()
-                .dive()
-                .find('SelectInput')
-                .dive();
-            expect(wrapper.find('ChipField')).toHaveLength(1);
-            expect(wrapper.find('ChipField').prop('record')).toEqual({
-                id: 'M',
-                name: 'Male',
-            });
-        });
-    });
-
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             const wrapper = shallow(
