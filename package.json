@@ -33,7 +33,7 @@
         "lolex": "~2.3.2",
         "mocha": "~4.0.1",
         "prettier": "~1.7.0",
-        "prettier-eslint-cli": "~4.4.0",
+        "prettier-eslint-cli": "~4.7.1",
         "raf": "~3.4.0",
         "selenium-webdriver": "~3.5.0"
     },

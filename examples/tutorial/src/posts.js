@@ -1,16 +1,41 @@
 import React from 'react';
-import { Show, ShowButton, SimpleShowLayout, RichTextField, DateField, List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput, Filter } from 'react-admin';
+import {
+    Show,
+    ShowButton,
+    SimpleShowLayout,
+    RichTextField,
+    DateField,
+    List,
+    Edit,
+    Create,
+    Datagrid,
+    ReferenceField,
+    TextField,
+    EditButton,
+    DisabledInput,
+    LongTextInput,
+    ReferenceInput,
+    SelectInput,
+    SimpleForm,
+    TextInput,
+    Filter,
+} from 'react-admin';
 
-const PostFilter = (props) => (
+const PostFilter = props => (
     <Filter {...props}>
         <TextInput label="Search" source="q" alwaysOn />
-        <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
+        <ReferenceInput
+            label="User"
+            source="userId"
+            reference="users"
+            allowEmpty
+        >
             <SelectInput optionText="name" />
         </ReferenceInput>
     </Filter>
 );
 
-export const PostList = (props) => (
+export const PostList = props => (
     <List {...props} filters={<PostFilter />}>
         <Datagrid>
             <TextField source="id" />
@@ -28,7 +53,7 @@ const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 
-export const PostEdit = (props) => (
+export const PostEdit = props => (
     <Edit title={<PostTitle />} {...props}>
         <SimpleForm>
             <DisabledInput source="id" />
@@ -41,10 +66,15 @@ export const PostEdit = (props) => (
     </Edit>
 );
 
-export const PostCreate = (props) => (
+export const PostCreate = props => (
     <Create {...props}>
         <SimpleForm>
-            <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
+            <ReferenceInput
+                label="User"
+                source="userId"
+                reference="users"
+                allowEmpty
+            >
                 <SelectInput optionText="name" />
             </ReferenceInput>
             <TextInput source="title" />
@@ -53,7 +83,7 @@ export const PostCreate = (props) => (
     </Create>
 );
 
-export const PostShow = (props) => (
+export const PostShow = props => (
     <Show {...props}>
         <SimpleShowLayout>
             <TextField source="title" />
