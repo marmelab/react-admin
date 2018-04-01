@@ -91,7 +91,9 @@ export const CommandList = withStyles(styles)(({ classes, ...props }) => (
 
 const CommandTitle = translate(({ record, translate }) => (
     <span>
-        {translate('resources.Command.name', { smart_count: 1 })} #{record.reference}
+        {translate('resources.Command.name', { smart_count: 1 })} #{
+            record.reference
+        }
     </span>
 ));
 
@@ -103,7 +105,8 @@ export const CommandEdit = translate(({ translate, ...rest }) => (
             <ReferenceInput source="customer.id" reference="Customer">
                 <AutocompleteInput
                     optionText={choice =>
-                        `${choice.firstName} ${choice.lastName}`}
+                        `${choice.firstName} ${choice.lastName}`
+                    }
                 />
             </ReferenceInput>
             <SelectInput

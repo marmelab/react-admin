@@ -8,9 +8,9 @@ import defaultsDeep from 'lodash/defaultsDeep';
 
 /**
  * Creates a translation context, available to its children
- * 
+ *
  * Must be called withing a Redux app.
- * 
+ *
  * @example
  *     const MyApp = () => (
  *         <Provider store={store}>

@@ -38,33 +38,34 @@ const filterStyles = {
     status: { width: 150 },
 };
 
-export const ReviewFilter = withStyles(
-    filterStyles
-)(({ classes, ...props }) => (
-    <Filter {...props}>
-        <TextInput label="pos.search" source="q" alwaysOn />
-        <SelectInput
-            source="status"
-            choices={[
-                { id: 'accepted', name: 'Accepted' },
-                { id: 'pending', name: 'Pending' },
-                { id: 'rejected', name: 'Rejected' },
-            ]}
-            className={classes.status}
-        />
-        <ReferenceInput source="customer_id" reference="customers">
-            <AutocompleteInput
-                optionText={choice =>
-                    `${choice.first_name} ${choice.last_name}`}
+export const ReviewFilter = withStyles(filterStyles)(
+    ({ classes, ...props }) => (
+        <Filter {...props}>
+            <TextInput label="pos.search" source="q" alwaysOn />
+            <SelectInput
+                source="status"
+                choices={[
+                    { id: 'accepted', name: 'Accepted' },
+                    { id: 'pending', name: 'Pending' },
+                    { id: 'rejected', name: 'Rejected' },
+                ]}
+                className={classes.status}
             />
-        </ReferenceInput>
-        <ReferenceInput source="product_id" reference="products">
-            <AutocompleteInput optionText="reference" />
-        </ReferenceInput>
-        <DateInput source="date_gte" />
-        <DateInput source="date_lte" />
-    </Filter>
-));
+            <ReferenceInput source="customer_id" reference="customers">
+                <AutocompleteInput
+                    optionText={choice =>
+                        `${choice.first_name} ${choice.last_name}`
+                    }
+                />
+            </ReferenceInput>
+            <ReferenceInput source="product_id" reference="products">
+                <AutocompleteInput optionText="reference" />
+            </ReferenceInput>
+            <DateInput source="date_gte" />
+            <DateInput source="date_lte" />
+        </Filter>
+    )
+);
 
 const listStyles = {
     comment: {

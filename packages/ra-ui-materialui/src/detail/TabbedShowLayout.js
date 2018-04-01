@@ -23,15 +23,15 @@ const sanitizeRestProps = ({
 
 /**
  * Tabbed Layout for a Show view, showing fields grouped in tabs.
- * 
+ *
  * Receives the current `record` from the parent `<Show>` component,
  * and passes it to its childen. Children should be Tab components.
  *
- * @example     
+ * @example
  *     // in src/posts.js
  *     import React from 'react';
  *     import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
- *     
+ *
  *     export const PostShow = (props) => (
  *         <Show {...props}>
  *             <TabbedShowLayout>
@@ -49,9 +49,9 @@ const sanitizeRestProps = ({
  *     // in src/App.js
  *     import React from 'react';
  *     import { Admin, Resource } from 'react-admin';
- *     
+ *
  *     import { PostShow } from './posts';
- *     
+ *
  *     const App = () => (
  *         <Admin dataProvider={...}>
  *             <Resource name="posts" show={PostShow} />
