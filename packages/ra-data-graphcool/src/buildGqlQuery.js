@@ -52,9 +52,9 @@ export const getArgType = arg => {
     const required = isRequired(arg.type);
     const list = isList(arg.type);
 
-    return `${list ? '[' : ''}${type.name}${list ? '!]' : ''}${required
-        ? '!'
-        : ''}`;
+    return `${list ? '[' : ''}${type.name}${list ? '!]' : ''}${
+        required ? '!' : ''
+    }`;
 };
 
 export const buildArgs = (query, variables) => {

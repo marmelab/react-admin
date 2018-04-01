@@ -17,8 +17,8 @@ export const Responsive = ({
                 typeof xsmall !== 'undefined'
                     ? xsmall
                     : typeof small !== 'undefined'
-                      ? small
-                      : typeof medium !== 'undefined' ? medium : large;
+                        ? small
+                        : typeof medium !== 'undefined' ? medium : large;
             break;
         case 'sm':
             element =

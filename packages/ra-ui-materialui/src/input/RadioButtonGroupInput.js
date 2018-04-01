@@ -81,8 +81,8 @@ export class RadioButtonGroupInput extends Component {
         const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
             ? React.cloneElement(optionText, { record: choice })
             : typeof optionText === 'function'
-              ? optionText(choice)
-              : get(choice, optionText);
+                ? optionText(choice)
+                : get(choice, optionText);
         return (
             <FormControlLabel
                 key={get(choice, optionValue)}
