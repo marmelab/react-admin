@@ -34,8 +34,9 @@ const MobileGrid = withStyles(listStyles)(
                     <CardHeader
                         title={
                             <div className={classes.cardTitleContent}>
-                                <h2>{`${data[id].firstName} ${data[id]
-                                    .lastName}`}</h2>
+                                <h2>{`${data[id].firstName} ${
+                                    data[id].lastName
+                                }`}</h2>
                                 <EditButton
                                     resource="visitors"
                                     basePath={basePath}
@@ -58,9 +59,8 @@ const MobileGrid = withStyles(listStyles)(
                             />
                         </div>
                         <div>
-                            {translate(
-                                'resources.customers.fields.totalSpent'
-                            )}&nbsp; :{' '}
+                            {translate('resources.customers.fields.totalSpent')}&nbsp;
+                            :{' '}
                             <ColoredNumberField
                                 record={data[id]}
                                 source="totalSpent"

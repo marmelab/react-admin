@@ -37,7 +37,8 @@ const RoutesWithLayout = ({
                             // render itself as a standard component
                             context: 'route',
                             ...props,
-                        })}
+                        })
+                    }
                 />
             ))}
             {dashboard ? (
@@ -65,7 +66,8 @@ const RoutesWithLayout = ({
                 render={() =>
                     createElement(catchAll, {
                         title,
-                    })}
+                    })
+                }
             />
         </Switch>
     );

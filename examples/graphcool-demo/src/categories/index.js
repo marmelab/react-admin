@@ -31,7 +31,9 @@ export const CategoryList = props => (
 
 const CategoryTitle = translate(({ record, translate }) => (
     <span>
-        {translate('resources.Category.name', { smart_count: 1 })} "{record.name}"
+        {translate('resources.Category.name', { smart_count: 1 })} "{
+            record.name
+        }"
     </span>
 ));
 

@@ -66,61 +66,64 @@ const stylesCreate = {
     stock: { width: '5em' },
 };
 
-export const ProductCreate = withStyles(
-    stylesCreate
-)(({ classes, ...props }) => (
-    <Create {...props}>
-        <TabbedForm>
-            <FormTab label="resources.Product.tabs.image">
-                <TextInput
-                    source="image"
-                    options={{ fullWidth: true }}
-                    validation={{ required: true }}
-                />
-                <TextInput
-                    source="thumbnail"
-                    options={{ fullWidth: true }}
-                    validation={{ required: true }}
-                />
-            </FormTab>
-            <FormTab label="resources.Product.tabs.details">
-                <TextInput source="reference" validation={{ required: true }} />
-                <NumberInput
-                    source="price"
-                    validation={{ required: true }}
-                    classes={classes.price}
-                />
-                <NumberInput
-                    source="width"
-                    validation={{ required: true }}
-                    classes={classes.width}
-                    formClassName={classes.widthForm}
-                />
-                <NumberInput
-                    source="height"
-                    validation={{ required: true }}
-                    classes={classes.height}
-                    formClassName={classes.heightForm}
-                />
-                <ReferenceInput
-                    source="category.id"
-                    reference="Category"
-                    allowEmpty
-                >
-                    <SelectInput source="name" />
-                </ReferenceInput>
-                <NumberInput
-                    source="stock"
-                    validation={{ required: true }}
-                    className={classes.stock}
-                />
-            </FormTab>
-            <FormTab label="resources.Product.tabs.description">
-                <RichTextInput source="description" addLabel={false} />
-            </FormTab>
-        </TabbedForm>
-    </Create>
-));
+export const ProductCreate = withStyles(stylesCreate)(
+    ({ classes, ...props }) => (
+        <Create {...props}>
+            <TabbedForm>
+                <FormTab label="resources.Product.tabs.image">
+                    <TextInput
+                        source="image"
+                        options={{ fullWidth: true }}
+                        validation={{ required: true }}
+                    />
+                    <TextInput
+                        source="thumbnail"
+                        options={{ fullWidth: true }}
+                        validation={{ required: true }}
+                    />
+                </FormTab>
+                <FormTab label="resources.Product.tabs.details">
+                    <TextInput
+                        source="reference"
+                        validation={{ required: true }}
+                    />
+                    <NumberInput
+                        source="price"
+                        validation={{ required: true }}
+                        classes={classes.price}
+                    />
+                    <NumberInput
+                        source="width"
+                        validation={{ required: true }}
+                        classes={classes.width}
+                        formClassName={classes.widthForm}
+                    />
+                    <NumberInput
+                        source="height"
+                        validation={{ required: true }}
+                        classes={classes.height}
+                        formClassName={classes.heightForm}
+                    />
+                    <ReferenceInput
+                        source="category.id"
+                        reference="Category"
+                        allowEmpty
+                    >
+                        <SelectInput source="name" />
+                    </ReferenceInput>
+                    <NumberInput
+                        source="stock"
+                        validation={{ required: true }}
+                        className={classes.stock}
+                    />
+                </FormTab>
+                <FormTab label="resources.Product.tabs.description">
+                    <RichTextInput source="description" addLabel={false} />
+                </FormTab>
+            </TabbedForm>
+        </Create>
+    )
+);
 
 const ProductTitle = ({ record }) => <span>Poster #{record.reference}</span>;
 

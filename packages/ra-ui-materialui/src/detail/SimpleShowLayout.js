@@ -24,15 +24,15 @@ const sanitizeRestProps = ({
 
 /**
  * Simple Layout for a Show view, showing fields in one column.
- * 
+ *
  * Receives the current `record` from the parent `<Show>` component,
  * and passes it to its childen. Children should be Field-like components.
  *
- * @example     
+ * @example
  *     // in src/posts.js
  *     import React from 'react';
  *     import { Show, SimpleShowLayout, TextField } from 'react-admin';
- *     
+ *
  *     export const PostShow = (props) => (
  *         <Show {...props}>
  *             <SimpleShowLayout>
@@ -44,9 +44,9 @@ const sanitizeRestProps = ({
  *     // in src/App.js
  *     import React from 'react';
  *     import { Admin, Resource } from 'react-admin';
- *     
+ *
  *     import { PostShow } from './posts';
- *     
+ *
  *     const App = () => (
  *         <Admin dataProvider={...}>
  *             <Resource name="posts" show={PostShow} />
