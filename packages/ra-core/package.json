@@ -20,11 +20,11 @@
         "enzyme": "~3.1.0",
         "enzyme-adapter-react-16": "~1.0.1",
         "ignore-styles": "~5.0.1",
-        "react-test-renderer": "~16.0.0"
+        "react-test-renderer": "~16.3.0"
     },
     "peerDependencies": {
-        "react": "~16.0.0 || ~16.1.0 || ~16.2.0",
-        "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0"
+        "react": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0",
+        "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0"
     },
     "dependencies": {
         "babel-runtime": "~6.26.0",
@@ -38,7 +38,7 @@
         "react-redux": "~5.0.7",
         "react-router": "~4.2.0",
         "react-router-dom": "~4.2.2",
-        "react-router-redux": "~5.0.0-alpha.6",
+        "react-router-redux": "^5.0.0-alpha.9",
         "recompose": "~0.26.0",
         "redux": "~3.7.2",
         "redux-form": "~7.3.0",
