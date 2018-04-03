@@ -82,7 +82,7 @@ describe('<ArrayInput />', () => {
         ).toEqual([{ id: 1 }, { id: 2 }]);
     });
 
-    it('should not create any paper subform when the value is undefined', () => {
+    it('should not create any section subform when the value is undefined', () => {
         const DummyForm = () => (
             <form>
                 <ArrayInput source="foo">
@@ -96,10 +96,10 @@ describe('<ArrayInput />', () => {
                 <DummyFormRF />
             </AppMock>
         );
-        expect(wrapper.find('Paper').length).toBe(0);
+        expect(wrapper.find('section').length).toBe(0);
     });
 
-    it('should create one paper subform per value in the array', () => {
+    it('should create one section subform per value in the array', () => {
         const DummyForm = () => (
             <form>
                 <ArrayInput source="foo">
@@ -117,7 +117,7 @@ describe('<ArrayInput />', () => {
                 />
             </AppMock>
         );
-        expect(wrapper.find('Paper').length).toBe(3);
+        expect(wrapper.find('section').length).toBe(3);
     });
 
     it('should clone each input once per value in the array', () => {

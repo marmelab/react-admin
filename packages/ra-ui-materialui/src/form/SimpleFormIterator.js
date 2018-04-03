@@ -1,32 +1,39 @@
 import React, { Children, cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
-import Paper from 'material-ui/Paper';
-import IconButton from 'material-ui/IconButton';
-import AddIcon from 'material-ui-icons/Add';
-import RemoveIcon from 'material-ui-icons/Remove';
+import Typography from 'material-ui/Typography';
+import CloseIcon from 'material-ui-icons/RemoveCircleOutline';
+import Button from 'material-ui/Button';
+import AddIcon from 'material-ui-icons/AddCircleOutline';
+
 import { withStyles } from 'material-ui/styles';
 
 import FormInput from '../form/FormInput';
 
 const styles = theme => ({
     root: {
-        display: 'flex',
-        flexDirection: 'column',
-        marginTop: '1em',
-        fontFamily: theme.typography.fontFamily,
-        lineHeight: '1.1875em',
+        padding: 0,
+        marginBottom: 0,
     },
     line: {
-        flexGrow: 1,
-        margin: '0.5em 0',
-        padding: '0 1em 1em 1em',
+        display: 'flex',
+        listStyleType: 'none',
+        borderBottom: `solid 1px ${theme.palette.divider}`,
+        '&:last-child': {
+            borderBottom: 'none',
+        },
+        [theme.breakpoints.down('xs')]: { display: 'block' },
     },
-    remove: {
-        float: 'right',
-        marginRight: '-0.5em',
+    index: {
+        width: '3em',
+        paddingTop: '1em',
+        [theme.breakpoints.down('sm')]: { display: 'none' },
     },
-    add: {
-        textAlign: 'right',
+    form: { flex: 2 },
+    action: {
+        paddingTop: '0.5em',
+    },
+    leftIcon: {
+        marginRight: theme.spacing.unit,
     },
 });
 
@@ -52,42 +59,49 @@ export class SimpleFormIterator extends Component {
             resource,
         } = this.props;
         return fields ? (
-            <div className={classes.root}>
+            <ul className={classes.root}>
                 {submitFailed && error && <span>{error}</span>}
                 {fields.map((member, index) => (
-                    <Paper key={index} className={classes.line}>
-                        <IconButton
-                            className={classes.remove}
-                            color="primary"
-                            aria-label="Remove"
-                            onClick={this.removeField(index)}
-                        >
-                            <RemoveIcon />
-                        </IconButton>
-                        {Children.map(children, input => (
-                            <FormInput
-                                basePath={basePath}
-                                input={cloneElement(input, {
-                                    source: `${member}.${input.props.source}`,
-                                    label:
-                                        input.props.label || input.props.source,
-                                })}
-                                record={record}
-                                resource={resource}
-                            />
-                        ))}
-                    </Paper>
+                    <li key={index} className={classes.line}>
+                        <Typography variant="body1" className={classes.index}>
+                            {index + 1}
+                        </Typography>
+                        <section className={classes.form}>
+                            {Children.map(children, input => (
+                                <FormInput
+                                    basePath={basePath}
+                                    input={cloneElement(input, {
+                                        source: `${member}.${input.props
+                                            .source}`,
+                                        label:
+                                            input.props.label ||
+                                            input.props.source,
+                                    })}
+                                    record={record}
+                                    resource={resource}
+                                />
+                            ))}
+                        </section>
+                        <span className={classes.action}>
+                            <Button
+                                size="small"
+                                onClick={this.removeField(index)}
+                            >
+                                <CloseIcon className={classes.leftIcon} />
+                                Remove
+                            </Button>
+                        </span>
+                    </li>
                 ))}
-                <div className={classes.add}>
-                    <IconButton
-                        color="primary"
-                        aria-label="Add"
-                        onClick={this.addField}
-                    >
-                        <AddIcon />
-                    </IconButton>
-                </div>
-            </div>
+                <li className={classes.line}>
+                    <span className={classes.action}>
+                        <Button size="small" onClick={this.addField}>
+                            <AddIcon className={classes.leftIcon} />
+                            Add
+                        </Button>
+                    </span>
+                </li>
+            </ul>
         ) : null;
     }
 }
