@@ -74,25 +74,25 @@ describe('<ArrayField />', () => {
         );
         expect(
             wrapper
-                .find('TextField span')
+                .find('DatagridRow TextField span')
                 .at(0)
                 .text()
         ).toBe('bar');
         expect(
             wrapper
-                .find('NumberField span')
+                .find('DatagridRow NumberField span')
                 .at(0)
                 .text()
         ).toBe('123');
         expect(
             wrapper
-                .find('TextField span')
+                .find('DatagridRow TextField span')
                 .at(1)
                 .text()
         ).toBe('baz');
         expect(
             wrapper
-                .find('NumberField span')
+                .find('DatagridRow NumberField span')
                 .at(1)
                 .text()
         ).toBe('456');
