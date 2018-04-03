@@ -39,10 +39,11 @@ import sanitizeRestProps from './sanitizeRestProps';
  * }
  *
  * <ArrayInput> expects a single child, which must be a *form iterator* component.
- * A form iterator is a component accepting a fields object 
- * as passed by redux-form's <FieldArray> component,and defining a sub-form layout.
- * The <SimpleFormIterator> component displays sub-forms in a <Paper>,
- * one sub-form by line. It also provides controls for adding and removing
+ * A form iterator is a component accepting a fields object
+ * as passed by redux-form's <FieldArray> component, and defining a layout for
+ * an array of fields. For instance, the <SimpleFormIterator> component
+ * displays an array of fields in an unordered list (<ul>), one sub-form by
+ * list item (<li>). It also provides controls for adding and removing
  * a sub-record (a backlink in this example).
  * 
  * @see https://redux-form.com/7.3.0/examples/fieldarrays/
