@@ -202,7 +202,7 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin'
 | ---|---|---|---|--- |
 | `choices` | Required | `Object[]` | - | List of items to autosuggest |
 | `resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.   |
-| `source` | Required |  `string` | - | Name of field to edit, it's type should correspond to the type retrieved from `optionValue`  |
+| `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
 | `allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
 | `inputValueMatcher` | Optional | `Function` | `(input, suggestion, getOptionText) => input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()` | Allows to define how choices are matched with the searchText while typing.    |
 | `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
