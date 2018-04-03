@@ -1,12 +1,13 @@
 import React, { Children, cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Typography from 'material-ui/Typography';
 import CloseIcon from 'material-ui-icons/RemoveCircleOutline';
 import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/AddCircleOutline';
-
 import { withStyles } from 'material-ui/styles';
+import { translate } from 'ra-core';
 
 import FormInput from '../form/FormInput';
 
@@ -87,6 +88,7 @@ export class SimpleFormIterator extends Component {
             meta: { error, submitFailed },
             record,
             resource,
+            translate,
         } = this.props;
         return fields ? (
             <ul className={classes.root}>
@@ -129,7 +131,7 @@ export class SimpleFormIterator extends Component {
                                         <CloseIcon
                                             className={classes.leftIcon}
                                         />
-                                        Remove
+                                        {translate('ra.action.remove')}
                                     </Button>
                                 </span>
                             </li>
@@ -140,7 +142,7 @@ export class SimpleFormIterator extends Component {
                     <span className={classes.action}>
                         <Button size="small" onClick={this.addField}>
                             <AddIcon className={classes.leftIcon} />
-                            Add
+                            {translate('ra.action.add')}
                         </Button>
                     </span>
                 </li>
@@ -158,6 +160,7 @@ SimpleFormIterator.propTypes = {
     meta: PropTypes.object,
     record: PropTypes.object,
     resource: PropTypes.string,
+    translate: PropTypes.func,
 };
 
-export default withStyles(styles)(SimpleFormIterator);
+export default compose(translate, withStyles(styles))(SimpleFormIterator);
