@@ -142,7 +142,6 @@ export const ListView = ({
                                 basePath,
                                 currentSort,
                                 data,
-                                hasBulkActions: !!bulkActions,
                                 ids,
                                 isLoading,
                                 onSelect,
