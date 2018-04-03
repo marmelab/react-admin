@@ -62,6 +62,43 @@ Then you can display a text input to edit the author first name as follows:
 
 **Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
 
+## `<ArrayInput>`
+
+To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list of sub-forms. 
+
+```jsx
+import { ArrayInput, SimpleFormIterator, DateInput, UrlInput } from 'react-admin';
+
+<ArrayInput source="backlinks">
+    <SimpleFormIterator>
+        <DateInput source="date" />
+        <UrlInput source="url" />
+    </SimpleFormIterator>
+</ArrayInput>
+```
+
+![ArrayInput](./img/array-input.png)
+
+ `<ArrayInput>` allows the edition of embedded arrays, like the `backlinks` field in the following `post` record:
+
+```js
+{
+  id: 123
+  backlinks: [
+        {
+            date: '2012-08-10T00:00:00.000Z',
+            url: 'http://example.com/foo/bar.html',
+        },
+        {
+            date: '2012-08-14T00:00:00.000Z',
+            url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
+        }
+   ]
+}
+```
+
+`<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component accepting a `fields` object as passed by [redux-form's `<FieldArray>` component](https://redux-form.com/7.3.0/examples/fieldarrays/), and defining a sub-form layout. The `<SimpleFormIterator>` component displays sub-forms in a `<Paper>`, one sub-form by line. It also provides controls for adding and removing a sub-record (a backlink in this example).
+
 ## `<AutocompleteInput>`
 
 To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`. It renders using [react-autosuggest](http://react-autosuggest.js.org/) and a `fuzzySearch` filter. Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
@@ -189,6 +226,7 @@ This input does not handle `null` values. You would need the `<NullableBooleanIn
 
 You can use the `options` prop to pass any option supported by the Material UI `Switch` components. For example, here's how to set a custom checked icon:
 
+{% raw %}
 ```jsx
 import { BooleanInput } from 'react-admin';
 import FavoriteIcon from 'material-ui-icons/Favorite';
@@ -200,6 +238,7 @@ import FavoriteIcon from 'material-ui-icons/Favorite';
     }}
 />
 ```
+{% endraw %}
 
 ![CustomBooleanInputCheckIcon](./img/custom-switch-icon.png)
 
