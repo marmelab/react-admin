@@ -197,17 +197,18 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin'
 **Tip**: React-admin's `<AutocompleteInput>` has only a capital A, while material-ui's `<AutoComplete>` has a capital A and a capital C. Don't mix up the components!
 
 ### Properties
-Prop | Required/Optional | Type | Default | Description
----|---|---|---|---
-`choices` | Required | `Object[]` | - | List of items to autosuggest
-`resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.  
-`source` | Required |  `string` | - | Name of field to edit, it's type should correspond to the type retrieved from `optionValue` 
-`allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`.
-`inputValueMatcher` | Optional | `Function` | `(input, suggestion, getOptionText) => input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()` | Allows to define how choices are matched with the searchText while typing.   
-`optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value 
-`optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the currect record as argument (`(record)=> {string}`)
-`setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`. 
-`suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered. 
+
+| Prop | Required | Type | Default | Description |
+| ---|---|---|---|--- |
+| `choices` | Required | `Object[]` | - | List of items to autosuggest |
+| `resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.   |
+| `source` | Required |  `string` | - | Name of field to edit, it's type should correspond to the type retrieved from `optionValue`  |
+| `allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
+| `inputValueMatcher` | Optional | `Function` | `(input, suggestion, getOptionText) => input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()` | Allows to define how choices are matched with the searchText while typing.    |
+| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
+| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the currect record as argument (`(record)=> {string}`) |
+| `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
+| `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered.  |
 
 ## `<BooleanInput>` and `<NullableBooleanInput>`
 
