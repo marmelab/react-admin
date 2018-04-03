@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 
+const initialState = {
+    data: {},
+    ids: [],
+};
+
 /**
  * Display a collection
  * 
@@ -66,15 +71,12 @@ import pure from 'recompose/pure';
  *     )
  *     TagsField.defaultProps = { addLabel: true };
  */
-class ArrayField extends Component {
+export class ArrayField extends Component {
     constructor(props) {
         super(props);
         this.state = props.record
             ? this.getDataAndIds(props.record, props.source)
-            : {
-                  data: {},
-                  ids: [],
-              };
+            : initialState;
     }
 
     componentWillReceiveProps(nextProps, prevProps) {
@@ -87,13 +89,15 @@ class ArrayField extends Component {
 
     getDataAndIds(record, source) {
         const list = get(record, source);
-        return {
-            data: list.reduce((prev, item) => {
-                prev[JSON.stringify(item)] = item;
-                return prev;
-            }, {}),
-            ids: list.map(JSON.stringify),
-        };
+        return list
+            ? {
+                  data: list.reduce((prev, item) => {
+                      prev[JSON.stringify(item)] = item;
+                      return prev;
+                  }, {}),
+                  ids: list.map(JSON.stringify),
+              }
+            : initialState;
     }
 
     render() {

@@ -227,12 +227,6 @@ export const PostEdit = props => (
             <FormTab label="post.form.summary">
                 <DisabledInput source="id" />
                 <TextInput source="title" validate={required()} />
-                <ArrayInput source="backlinks">
-                    <SimpleFormIterator>
-                        <DateInput source="date" />
-                        <TextInput source="url" />
-                    </SimpleFormIterator>
-                </ArrayInput>
                 <CheckboxGroupInput
                     source="notifications"
                     choices={[
@@ -268,6 +262,12 @@ export const PostEdit = props => (
                         { name: 'Lifestyle', id: 'lifestyle' },
                     ]}
                 />
+                <ArrayInput source="backlinks">
+                    <SimpleFormIterator>
+                        <DateInput source="date" />
+                        <TextInput source="url" />
+                    </SimpleFormIterator>
+                </ArrayInput>
                 <NumberInput
                     source="average_note"
                     validate={[required(), number(), minValue(0)]}
