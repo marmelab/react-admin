@@ -51,7 +51,7 @@ export class SimpleFormIterator extends Component {
             record,
             resource,
         } = this.props;
-        return (
+        return fields ? (
             <div className={classes.root}>
                 {submitFailed && error && <span>{error}</span>}
                 {fields.map((member, index) => (
@@ -88,7 +88,7 @@ export class SimpleFormIterator extends Component {
                     </IconButton>
                 </div>
             </div>
-        );
+        ) : null;
     }
 }
 

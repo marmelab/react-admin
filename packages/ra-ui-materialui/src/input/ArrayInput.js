@@ -16,8 +16,8 @@ import sanitizeRestProps from './sanitizeRestProps';
  * 
  *      <ArrayInput source="backlinks">
  *          <SimpleFormIterator>
-        <DateInput source="date" />
-        <UrlInput source="url" />
+ *              <DateInput source="date" />
+ *              <UrlInput source="url" />
  *          </SimpleFormIterator>
  *      </ArrayInput>
  *
