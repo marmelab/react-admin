@@ -2,7 +2,6 @@ import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
 import { SelectArrayInput } from './SelectArrayInput';
-import { ChipField } from '../field/ChipField';
 
 describe('<SelectArrayInput />', () => {
     const defaultProps = {
@@ -179,35 +178,6 @@ describe('<SelectArrayInput />', () => {
         const helperText = wrapper.find('WithStyles(FormHelperText)');
         assert.equal(helperText.length, 1);
         assert.equal(helperText.childAt(0).text(), 'Can i help you?');
-    });
-
-    describe('rendering children', () => {
-        it('should render its children', () => {
-            const wrapper = shallow(
-                <SelectArrayInput
-                    {...defaultProps}
-                    input={{ value: ['M'] }}
-                    choices={[
-                        { id: 'M', name: 'Male' },
-                        { id: 'F', name: 'Female' },
-                    ]}
-                >
-                    <ChipField source="name" />
-                </SelectArrayInput>
-            )
-                .find('WithStyles(Select)')
-                .dive()
-                .dive()
-                .dive()
-                .dive()
-                .find('SelectInput')
-                .dive();
-            expect(wrapper.find('ChipField')).toHaveLength(1);
-            expect(wrapper.find('ChipField').prop('record')).toEqual({
-                id: 'M',
-                name: 'Male',
-            });
-        });
     });
 
     describe('error message', () => {

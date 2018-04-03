@@ -246,9 +246,7 @@ export const PostEdit = props => (
             </FormTab>
             <FormTab label="post.form.miscellaneous">
                 <ReferenceArrayInput reference="tags" source="tags">
-                    <SelectArrayInput>
-                        <ChipField source="name" />
-                    </SelectArrayInput>
+                    <SelectArrayInput optionText="name" />
                 </ReferenceArrayInput>
                 <DateInput source="published_at" options={{ locale: 'pt' }} />
                 <SelectInput
