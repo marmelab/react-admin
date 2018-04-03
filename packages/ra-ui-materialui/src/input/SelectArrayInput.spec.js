@@ -2,7 +2,6 @@ import React from 'react';
 import assert from 'assert';
 import { shallow } from 'enzyme';
 import { SelectArrayInput } from './SelectArrayInput';
-import { ChipField } from '../field/ChipField';
 
 describe('<SelectArrayInput />', () => {
     const defaultProps = {
