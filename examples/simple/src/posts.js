@@ -1,5 +1,7 @@
 import React, { Children, cloneElement } from 'react';
 import {
+    ArrayField,
+    ArrayInput,
     BulkActions,
     BulkDeleteAction,
     BooleanField,
@@ -33,6 +35,7 @@ import {
     Show,
     ShowButton,
     SimpleForm,
+    SimpleFormIterator,
     SimpleList,
     SingleFieldList,
     Tab,
@@ -41,6 +44,7 @@ import {
     TextField,
     TextInput,
     Toolbar,
+    UrlField,
     minValue,
     number,
     required,
@@ -223,6 +227,12 @@ export const PostEdit = props => (
             <FormTab label="post.form.summary">
                 <DisabledInput source="id" />
                 <TextInput source="title" validate={required()} />
+                <ArrayInput source="backlinks">
+                    <SimpleFormIterator>
+                        <DateInput source="date" />
+                        <TextInput source="url" />
+                    </SimpleFormIterator>
+                </ArrayInput>
                 <CheckboxGroupInput
                     source="notifications"
                     choices={[
@@ -290,6 +300,12 @@ export const PostShow = props => (
                 <TextField source="id" />
                 <TextField source="title" />
                 <TextField source="teaser" />
+                <ArrayField source="backlinks">
+                    <Datagrid>
+                        <DateField source="date" />
+                        <UrlField source="url" />
+                    </Datagrid>
+                </ArrayField>
             </Tab>
             <Tab label="post.form.body">
                 <RichTextField
