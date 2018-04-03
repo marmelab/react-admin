@@ -89,7 +89,7 @@ export class SimpleFormIterator extends Component {
                 </div>
             </div>
         );
-    };
+    }
 }
 
 SimpleFormIterator.propTypes = {
