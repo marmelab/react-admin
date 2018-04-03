@@ -1,5 +1,6 @@
 import React, { Children, cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Typography from 'material-ui/Typography';
 import CloseIcon from 'material-ui-icons/RemoveCircleOutline';
 import Button from 'material-ui/Button';
@@ -13,15 +14,33 @@ const styles = theme => ({
     root: {
         padding: 0,
         marginBottom: 0,
+        '& > li:last-child': {
+            borderBottom: 'none',
+        },
     },
     line: {
         display: 'flex',
         listStyleType: 'none',
         borderBottom: `solid 1px ${theme.palette.divider}`,
-        '&:last-child': {
-            borderBottom: 'none',
-        },
         [theme.breakpoints.down('xs')]: { display: 'block' },
+        '&.fade-enter': {
+            opacity: 0.01,
+            transform: 'translateX(100vw)',
+        },
+        '&.fade-enter-active': {
+            opacity: 1,
+            transform: 'translateX(0)',
+            transition: 'all 500ms ease-in',
+        },
+        '&.fade-exit': {
+            opacity: 1,
+            transform: 'translateX(0)',
+        },
+        '&.fade-exit-active': {
+            opacity: 0.01,
+            transform: 'translateX(100vw)',
+            transition: 'all 500ms ease-in',
+        },
     },
     index: {
         width: '3em',
@@ -38,13 +57,24 @@ const styles = theme => ({
 });
 
 export class SimpleFormIterator extends Component {
+    constructor(props) {
+        super(props);
+        // we need a unique id for each field for a proper enter/exit animation
+        // but redux-form doesn't provide one (cf https://github.com/erikras/redux-form/issues/2735)
+        // so we keep an internal map between the field position and an autoincrement id
+        this.nextId = 0;
+        this.ids = props.fields ? props.fields.map(() => this.nextId++) : [];
+    }
+
     removeField = index => () => {
         const { fields } = this.props;
+        this.ids.splice(index, 1);
         fields.remove(index);
     };
 
     addField = () => {
         const { fields } = this.props;
+        this.ids.push(this.nextId++);
         fields.push({});
     };
 
@@ -61,38 +91,51 @@ export class SimpleFormIterator extends Component {
         return fields ? (
             <ul className={classes.root}>
                 {submitFailed && error && <span>{error}</span>}
-                {fields.map((member, index) => (
-                    <li key={index} className={classes.line}>
-                        <Typography variant="body1" className={classes.index}>
-                            {index + 1}
-                        </Typography>
-                        <section className={classes.form}>
-                            {Children.map(children, input => (
-                                <FormInput
-                                    basePath={basePath}
-                                    input={cloneElement(input, {
-                                        source: `${member}.${input.props
-                                            .source}`,
-                                        label:
-                                            input.props.label ||
-                                            input.props.source,
-                                    })}
-                                    record={record}
-                                    resource={resource}
-                                />
-                            ))}
-                        </section>
-                        <span className={classes.action}>
-                            <Button
-                                size="small"
-                                onClick={this.removeField(index)}
-                            >
-                                <CloseIcon className={classes.leftIcon} />
-                                Remove
-                            </Button>
-                        </span>
-                    </li>
-                ))}
+                <TransitionGroup>
+                    {fields.map((member, index) => (
+                        <CSSTransition
+                            key={this.ids[index]}
+                            timeout={500}
+                            classNames="fade"
+                        >
+                            <li className={classes.line}>
+                                <Typography
+                                    variant="body1"
+                                    className={classes.index}
+                                >
+                                    {index + 1}
+                                </Typography>
+                                <section className={classes.form}>
+                                    {Children.map(children, input => (
+                                        <FormInput
+                                            basePath={basePath}
+                                            input={cloneElement(input, {
+                                                source: `${member}.${input.props
+                                                    .source}`,
+                                                label:
+                                                    input.props.label ||
+                                                    input.props.source,
+                                            })}
+                                            record={record}
+                                            resource={resource}
+                                        />
+                                    ))}
+                                </section>
+                                <span className={classes.action}>
+                                    <Button
+                                        size="small"
+                                        onClick={this.removeField(index)}
+                                    >
+                                        <CloseIcon
+                                            className={classes.leftIcon}
+                                        />
+                                        Remove
+                                    </Button>
+                                </span>
+                            </li>
+                        </CSSTransition>
+                    ))}
+                </TransitionGroup>
                 <li className={classes.line}>
                     <span className={classes.action}>
                         <Button size="small" onClick={this.addField}>

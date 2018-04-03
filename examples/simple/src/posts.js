@@ -254,6 +254,12 @@ export const PostEdit = props => (
                         <ChipField source="name" />
                     </SelectArrayInput>
                 </ReferenceArrayInput>
+                <ArrayInput source="backlinks">
+                    <SimpleFormIterator>
+                        <DateInput source="date" />
+                        <TextInput source="url" />
+                    </SimpleFormIterator>
+                </ArrayInput>
                 <DateInput source="published_at" options={{ locale: 'pt' }} />
                 <SelectInput
                     source="category"
@@ -262,12 +268,6 @@ export const PostEdit = props => (
                         { name: 'Lifestyle', id: 'lifestyle' },
                     ]}
                 />
-                <ArrayInput source="backlinks">
-                    <SimpleFormIterator>
-                        <DateInput source="date" />
-                        <TextInput source="url" />
-                    </SimpleFormIterator>
-                </ArrayInput>
                 <NumberInput
                     source="average_note"
                     validate={[required(), number(), minValue(0)]}
