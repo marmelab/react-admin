@@ -5,28 +5,36 @@ title: "Translation"
 
 # Translation
 
-The admin-on-rest interface uses English as the default language. But it also supports any other language, thanks to the [polyglot.js](http://airbnb.io/polyglot.js/) library.
+The react-admin interface uses English as the default language. But it also supports any other language, thanks to the [polyglot.js](http://airbnb.io/polyglot.js/) library.
 
 ## Changing Locale
 
-To handle translations, the `<Admin>` component supports:
+If you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, you must install the `ra-language-french` npm package then instruct react-admin to use it.
 
-- a `locale` prop expecting a string ('en', 'fr', etc), and
-- a `messages` prop, expecting a dictionary object.
+The `<Admin>` component has an `i18nProvider` prop, which accepts a function with the following signature:
 
-Admin-on-rest only ships the English locale; if you want to use another locale, you'll have to install a third-party package. For instance, to change the interface to French, install the `aor-language-french` npm package, then configure the `<Admin>` component as follows:
+```js
+const i18nProvider = locale => messages;
+```
+
+The `messages` should be a dictionary of interface and resource names (see the [Translation Messages section](#translation-messages) below for details about the dictionary format).
+
+React-admin calls the `i18nProvider` when it starts, passing the `locale` specified on the `Admin` component as parameter. The provider must return the messages synchronously. React-admin also calls the `i18nProvider` whenever the locale changes, passing the new locale as parameter. So the simplest example for a multilingual interface reads as follow:
 
 ```jsx
 import React from 'react';
-import { Admin, Resource, resolveBrowserLocale } from 'admin-on-rest';
-import frenchMessages from 'aor-language-french';
+import { Admin, Resource } from 'react-admin';
+import frenchMessages from 'ra-language-french';
+import englishMessages from 'ra-language-english';
 
 const messages = {
     fr: frenchMessages,
-};
+    en: englishMessages,
+}
+const i18nProvider = locale => messages[locale];
 
 const App = () => (
-    <Admin ...(your props) locale="fr" messages={messages}>
+    <Admin locale="en" i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
@@ -34,13 +42,42 @@ const App = () => (
 export default App;
 ```
 
+The `i18nProvider` may return a promise for locale change calls (except the initial call, when the app starts). This can be useful to only load the needed locale. For example:
+
+```js
+import englishMessages from '../en.js';
+
+const asyncMessages = {
+    fr: () => import('../i18n/fr.js').then(messages => messages.default),
+    it: () => import('../i18n/it.js').then(messages => messages.default),
+};
+
+const i18nProvider = locale => {
+    if (locale === 'en') {
+        // initial call, must return synchronously
+        return englishMessages;
+    }
+    // change of locale after initial call returns a promise
+    return asyncMessages[params.locale]();
+}
+
+const App = () => (
+    <Admin locale="en" i18nProvider={i18nProvider}>
+        ...
+    </Admin>
+);
+```
+
 ## Available Locales
 
 You can find translation packages for the following languages:
 
+- French (`fr`): [marmelab/ra-language-french](https://github.com/marmelab/ra-language-french)
+- English (`en`): [marmelab/ra-language-english](https://github.com/marmelab/ra-language-english)
+
+The previous version of react-admin, called admin-on-rest, was translated in the following languages:
+
 - Arabic ( `ع` ): [aymendhaya/aor-language-arabic](https://github.com/aymendhaya/aor-language-arabic)
-- English (`en`) is the default
-- Catalan (`ca`): [behind-design/aor-language-catalan](https://github.com/behind-design/aor-language-catalan)
 - Chinese (`cn`): [downup2u/aor-language-chinese](https://github.com/downup2u/aor-language-chinese)
 - Chinese (Traditional) (`cht`): [leesei/aor-language-chinese-traditional](https://github.com/leesei/aor-language-chinese-traditional)
 - Croatian (`hr`): [ariskemper/aor-language-croatian](https://github.com/ariskemper/aor-language-croatian)
@@ -49,7 +86,6 @@ You can find translation packages for the following languages:
 - Dutch (`nl`): [pimschaaf/aor-language-dutch](https://github.com/pimschaaf/aor-language-dutch)
 - Farsi (`fa`): [hamidfzm/aor-language-farsi](https://github.com/hamidfzm/aor-language-farsi)
 - Finnish (`fi`): [Joni-Aaltonen/aor-language-finnish](https://github.com/Joni-Aaltonen/aor-language-finnish)
-- French (`fr`): [marmelab/aor-language-french](https://github.com/marmelab/aor-language-french)
 - German (`de`): [der-On/aor-language-german](https://github.com/der-On/aor-language-german)
 - Greek (`el`): [zifnab87/aor-language-greek](https://github.com/zifnab87/aor-language-greek)
 - Hebrew (`he`): [motro/aor-language-hebrew](https://github.com/motro/aor-language-hebrew)
@@ -70,7 +106,9 @@ You can find translation packages for the following languages:
 - Ukrainian (`uk`): [vitivs/aor-language-ukrainian](https://github.com/vitivs/aor-language-ukrainian)
 - Vietnamese (`vi`): [kimkha/aor-language-vietnamese](https://github.com/kimkha/aor-language-vietnamese)
 
-If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/admin-on-rest/blob/master/docs/Translation.md) with a link to your package.
+These packages are not directly interoperable with react-admin, but the upgrade is straightforward; rename the root key from "aor" to "ra". We invite the authors of the packages listed above to republish their translations for react-admin, using a different package name.
+
+If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/react-admin/blob/master/docs/Translation.md) with a link to your package.
 
 ## Changing Locale At Runtime
 
@@ -78,16 +116,18 @@ If you want to offer the ability to change locale at runtime, you must provide t
 
 ```jsx
 import React from 'react';
-import { Admin, Resource, englishMessages } from 'admin-on-rest';
-import frenchMessages from 'aor-language-french';
+import { Admin, Resource } from 'react-admin';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
 
 const messages = {
     fr: frenchMessages,
     en: englishMessages,
 };
+const i18nProvider = locale => messages[locale];
 
 const App = () => (
-    <Admin ...(your props) locale="en" messages={messages}>
+    <Admin locale="en" i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
@@ -100,8 +140,8 @@ Then, dispatch the `CHANGE_LOCALE` action, by using the `changeLocale` action cr
 ```jsx
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import RaisedButton from 'material-ui/RaisedButton';
-import { changeLocale as changeLocaleAction } from 'admin-on-rest';
+import Button from 'material-ui/Button';
+import { changeLocale as changeLocaleAction } from 'react-admin';
 
 class LocaleSwitcher extends Component {
     switchToFrench = () => this.props.changeLocale('fr');
@@ -111,9 +151,9 @@ class LocaleSwitcher extends Component {
         const { changeLocale } = this.props;
         return (
             <div>
-                <div style={styles.label}>Language</div>
-                <RaisedButton style={styles.button} label="en" onClick={this.switchToEnglish} />
-                <RaisedButton style={styles.button} label="fr" onClick={this.switchToFrench} />
+                <div>Language</div>
+                <Button onClick={this.switchToEnglish}>en</Button>
+                <Button onClick={this.switchToFrench}>fr</Button>
             </div>
         );
     }
@@ -124,20 +164,22 @@ export default connect(undefined, { changeLocale: changeLocaleAction })(LocaleSw
 
 ## Using The Browser Locale
 
-Admin-on-rest provides a helper function named `resolveBrowserLocale()`, which helps you to introduce a dynamic locale attribution based on the locale configured in the user's browser. To use it, simply pass the function as `locale` prop.
+React-admin provides a helper function named `resolveBrowserLocale()`, which helps you to introduce a dynamic locale attribution based on the locale configured in the user's browser. To use it, simply pass the function as `locale` prop.
 
 ```jsx
 import React from 'react';
-import { Admin, Resource, englishMessages, resolveBrowserLocale } from 'admin-on-rest';
-import frenchMessages from 'aor-language-french';
+import { Admin, Resource, resolveBrowserLocale } from 'react-admin';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
 
 const messages = {
     fr: frenchMessages,
     en: englishMessages,
 };
+const i18nProvider = locale => messages[locale];
 
 const App = () => (
-    <Admin ...(your props) locale={resolveBrowserLocale()} messages={messages}>
+    <Admin locale={resolveBrowserLocale()} i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
@@ -147,50 +189,34 @@ export default App;
 
 ## Translation Messages
 
-The `message` value should be a dictionary with one entry per language supported. For a given language, the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
+The `message` returned by the `i18nProvider` value should be a dictionary where the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
 
 ```jsx
 {
-    en: {
-        aor: {
-            action: {
-                delete: 'Delete',
-                show: 'Show',
-                list: 'List',
-                save: 'Save',
-                create: 'Create',
-                edit: 'Edit',
-                cancel: 'Cancel',
-            },
-            ...
+    ra: {
+        action: {
+            delete: 'Delete',
+            show: 'Show',
+            list: 'List',
+            save: 'Save',
+            create: 'Create',
+            edit: 'Edit',
+            cancel: 'Cancel',
         },
+        ...
     },
-    fr: {
-        aor: {
-            action: {
-                delete: 'Supprimer',
-                show: 'Afficher',
-                list: 'Liste',
-                save: 'Enregistrer',
-                create: 'Créer',
-                edit: 'Éditer',
-                cancel: 'Quitter',
-            },
-            ...
-        }
-    }
 }
 ```
 
-All core translations are in the `aor` namespace, in order to prevent collisions with your own custom translations. The root key used at runtime is determined by the value of the `locale` prop.
+All core translations are in the `ra` namespace, in order to prevent collisions with your own custom translations. The root key used at runtime is determined by the value of the `locale` prop.
 
-The default messages are available [here](https://github.com/marmelab/admin-on-rest/blob/master/src/i18n/messages.js).
+The default messages are available [here](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/index.js).
 
 ## Translating Resource and Field Names
 
-By default, Admin-on-rest uses resource names ("post", "comment", etc) and field names ("title", "first_name", etc) everywhere in the interface. It simply "humanizes" the technical identifiers to make them look better (e.g. "first_name" becomes "First name").
+By default, React-admin uses resource names ("post", "comment", etc) and field names ("title", "first_name", etc) everywhere in the interface. It simply "humanizes" the technical identifiers to make them look better (e.g. "first_name" becomes "First name").
 
-However, before humanizing names, admin-on-rest checks the `messages` dictionary for a possible translation, with the following keys:
+However, before humanizing names, react-admin checks the `messages` dictionary for a possible translation, with the following keys:
 
 - `${locale}.resources.${resourceName}.name` for resource names (used for the menu and page titles)
 - `${locale}.resources.${resourceName}.fields.${fieldName}` for field names (used for datagrid header and form input labels)
@@ -199,23 +225,21 @@ This lets you translate your own resource and field names by passing a `messages
 
 ```jsx
 {
-    en: {
-        resources: {
-            shoe: {
-                name: 'Shoe |||| Shoes',
-                fields: {
-                    model: 'Model',
-                    stock: 'Nb in stock',
-                    color: 'Color',
-                },
+    resources: {
+        shoe: {
+            name: 'Shoe |||| Shoes',
+            fields: {
+                model: 'Model',
+                stock: 'Nb in stock',
+                color: 'Color',
             },
-            customer: {
-                name: 'Customer |||| Customers',
-                fields: {
-                    first_name: 'First name',
-                    last_name: 'Last name',
-                    dob: 'Date of birth',
-                }
+        },
+        customer: {
+            name: 'Customer |||| Customers',
+            fields: {
+                first_name: 'First name',
+                last_name: 'Last name',
+                dob: 'Date of birth',
             }
         }
     },
@@ -233,8 +257,8 @@ When translating an admin, interface messages (e.g. "List", "Page", etc.) usuall
 
 ```jsx
 // interface translations
-import { englishMessages } from 'admin-on-rest';
-import frenchMessages from 'aor-language-french';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
 
 // domain translations
 import * as domainMessages from './i18n';
@@ -243,9 +267,10 @@ const messages = {
     fr: { ...frenchMessages, ...domainMessages.fr },
     en: { ...englishMessages, ...domainMessages.en },
 };
+const i18nProvider = locale => messages[locale];
 
 const App = () => (
-    <Admin ...(your props) messages={messages}>
+    <Admin i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
@@ -282,12 +307,12 @@ const messages = {
 };
 ```
 
-However, using the context makes components harder to test. That's why admin-on-rest provides a `translate` Higher-Order Component, which simply passes the `translate` function from context to props:
+However, using the context makes components harder to test. That's why react-admin provides a `translate` Higher-Order Component, which simply passes the `translate` function from context to props:
 
 ```jsx
 // in src/MyHelloButton.js
 import React from 'react';
-import { translate } from 'admin-on-rest';
+import { translate } from 'react-admin';
 
 const MyHelloButton = ({ translate }) => (
     <button>{translate('myroot.hello.world')}</button>
@@ -296,7 +321,7 @@ const MyHelloButton = ({ translate }) => (
 export default translate(MyHelloButton);
 ```
 
-**Tip**: For your message identifiers, choose a different root name than `aor` and `resources`, which are reserved.
+**Tip**: For your message identifiers, choose a different root name than `ra` and `resources`, which are reserved.
 
 **Tip**: Don't use `translate` for Field and Input labels, or for page titles, as they are already translated:
 
@@ -314,7 +339,7 @@ export default translate(MyHelloButton);
 
 ## Using Specific Polyglot Features
 
-Polyglot.js is a fantastic library: in addition to being small, fully maintained, and totally framework agnostic, it provides some nice features such as interpolation and pluralization, that you can use in admin-on-rest.
+Polyglot.js is a fantastic library: in addition to being small, fully maintained, and totally framework agnostic, it provides some nice features such as interpolation and pluralization, that you can use in react-admin.
 
 ```jsx
 const messages = {
@@ -339,3 +364,26 @@ translate('not_yet_translated', { _: 'Default translation' })
 ```
 
 To find more detailed examples, please refer to [http://airbnb.io/polyglot.js/](http://airbnb.io/polyglot.js/)
+
+## Notifications With Variables
+
+It is possible to pass variables for polyglot interpolation with custom notifications. For example:
+
+```js
+showNotification('myroot.hello.world', 'info', { messageArgs: { name: 'Planet Earth' } });
+```
+
+Assuming you have the following in your custom messages:
+
+```js
+// in src/App.js
+const messages = {
+    en: {
+        myroot: {
+            hello: {
+                world: 'Hello, %{name}!',
+            },
+        },
+    },
+};
+```

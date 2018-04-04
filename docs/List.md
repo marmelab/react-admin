@@ -19,6 +19,7 @@ Here are all the props accepted by the `<List>` component:
 
 * [`title`](#page-title)
 * [`actions`](#actions)
+* [`bulkActions`](#bulk-actions)
 * [`filters`](#filters) (a React element used to display the filter form)
 * [`perPage`](#records-per-page)
 * [`sort`](#default-sort-field)
@@ -30,12 +31,13 @@ Here is the minimal code necessary to display a list of posts:
 ```jsx
 // in src/App.js
 import React from 'react';
-import { jsonServerRestClient, Admin, Resource } from 'admin-on-rest';
+import { Admin, Resource } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
 
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
@@ -44,7 +46,7 @@ export default App;
 
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest';
+import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -81,23 +83,22 @@ The title can be either a string, or an element of your own.
 You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
-import { CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import { CreateButton, RefreshButton } from 'admin-on-rest';
-
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
-};
+import Button from 'material-ui/Button';
+import { CardActions, CreateButton, RefreshButton } from 'react-admin';
 
 const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter }) => (
-    <CardActions style={cardActionStyle}>
-        {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
+    <CardActions>
+        {filters && React.cloneElement(filters, {
+            resource,
+            showFilter,
+            displayedFilters,
+            filterValues,
+            context: 'button',
+        }) }
         <CreateButton basePath={basePath} />
         <RefreshButton />
         {/* Add your custom actions */}
-        <FlatButton primary label="Custom Action" onClick={customAction} />
+        <Button primary onClick={customAction}>Custom Action</Button>
     </CardActions>
 );
 
@@ -107,6 +108,138 @@ export const PostList = (props) => (
     </List>
 );
 ```
+
+### Bulk Actions
+
+Bulk actions are actions that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, bulk actions are triggered by ticking the checkboxes in the first column of the table, then choosing an action from the bulk action menu. By default, all list views have a single bulk action, the bulk delete action. You can add other bulk actions by passing a custom element as the `bulkActions` prop of the `<List>` component:
+
+```jsx
+import Button from 'material-ui/Button';
+import { BulkActions, BulkDeleteAction } from 'react-admin';
+import ResetViewsAction from './ResetViewsAction';
+
+const PostBulkActions = props => (
+    <BulkActions {...props}>
+        <ResetViewsAction label="Reset Views" />
+        {/* Add the default bulk delete action */}
+        <BulkDeleteAction />
+    </BulkActions>
+);
+
+export const PostList = (props) => (
+    <List {...props} bulkActions={<PostBulkActions />}>
+        ...
+    </List>
+);
+```
+
+**Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActions` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
+
+React-admin uses the `label` prop of the bulk action components to display the bulk action menu items. 
+
+Bulk action components are regular React component that gets mounted when the related menu item is clicked. The component receives several props allowing it to perform its job:
+
+* `resource`: the currently displayed resource (eg `posts`, `comments`, etc.)
+* `basePath`: the current router base path for the resource (eg `/posts`, `/comments`, etc.)
+* `filterValues`: the filter values. This can be useful if you want to apply your action on all items matching the filter.
+* `selectedIds`: the identifiers of the currently selected items.
+* `onExit`: an event handler you should call when the bulk action ends.
+
+Here is an example leveraging the `UPDATE_MANY` crud action, which will set the `views` property of all posts to `0`:
+
+```jsx
+// in ./ResetViewsAction.js
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import { crudUpdateMany } from 'react-admin';
+
+class ResetViewsAction extends Component {
+    componentDidMount = () => {
+        const {
+            resource,
+            basePath,
+            selectedIds,
+            onExit,
+            crudUpdateMany,
+        } = this.props;
+
+        crudUpdateMany(resource, selectedIds, { views: 0 }, basePath);
+        onExit();
+    };
+
+    render() {
+        return null;
+    }
+}
+
+export default connect(undefined, { crudUpdateMany })(ResetViewsAction);
+```
+
+This component renders nothing - it just dispatches an action when mounted. Once finished, it also calls the `onExit()` method passed by the main bulk actions component, which has the effect of unmounting the `ResetViewsAction` component.
+
+But most of the time, bulk actions are mini-applications with a standalone user interface (in a Dialog), so the `render()` method is useful. Here is the same `ResetViewsAction` implemented behind a confirmation dialog:
+
+```jsx
+// in ./ResetViewsAction.js
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Confirm } from 'react-admin';
+import { crudUpdateMany } from 'ra-core';
+
+class ResetViewsAction extends Component {
+    handleDialogClose = () => {
+        this.props.onExit();
+    };
+
+    handleConfirm = () => {
+        const { basePath, crudUpdateMany, resource, selectedIds } = this.props;
+        crudUpdateMany(resource, selectedIds, { views: 0 }, basePath);
+        this.props.onExit();
+    };
+
+    render() {
+        return (
+            <Confirm
+                isOpen={true}
+                title="Update View Count"
+                content="Are you sure you want to reset the views for these items?"
+                onConfirm={this.handleConfirm}
+                onClose={this.handleDialogClose}
+            />
+        );
+    }
+}
+
+export default connect(undefined, { crudUpdateMany })(ResetViewsAction);
+```
+
+**Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
+
+**Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `ResetViewsAction` by wrapping the `crudUpdateMany()` action creator inside a `startUndoable()` action creator, as follows:
+
+```jsx
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import { startUndoable, crudUpdateMany } from 'ra-core';
+
+class ResetViewsAction extends Component {
+    componentDidMount = () => {
+        const { basePath, startUndoable, resource, selectedIds } = this.props;
+        startUndoable(
+            crudUpdateMany(resource, selectedIds, { views: 0 }, basePath)
+        );
+        this.props.onExit();
+    };
+
+    render() {
+        return null;
+    }
+}
+
+export default connect(undefined, { startUndoable })(ResetViewsAction);
+```
+
+Note that the `crudUpdateMany` action creator is *not* present in the `mapDispatchToProps` argument of `connect()` in that case. Only `startUndoable` needs to be dispatched in this case, using the result of the `crudUpdateMany()` call as parameter.
 
 ### Filters
 
@@ -137,6 +270,11 @@ The filter component must be a `<Filter>` with `<Input>` children.
 It does so by inspecting its `context` prop.
 
 **Tip**: Don't mix up this `filters` prop, expecting a React element, with the `filter` props, which expects an object to define permanent filters (see below).
+
+The `Filter` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui-next.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
+
+* `form`: applied to the root element when rendering as a form.
+* `button`: applied to the root element when rendering as a button.
 
 ### Records Per Page
 
@@ -176,7 +314,7 @@ It is possible to disable sorting for a specific field by passing a `sortable` p
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -214,24 +352,26 @@ You can replace the default pagination element by your own, using the `paginatio
 So if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
 
 ```jsx
-import FlatButton from 'material-ui/FlatButton';
-import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
-import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
+import Button from 'material-ui/Button';
+import ChevronLeft from 'material-ui-icons/ChevronLeft';
+import ChevronRight from 'material-ui-icons/ChevronRight';
+import Toolbar from 'material-ui/Toolbar';
 
 const PostPagination = ({ page, perPage, total, setPage }) => {
     const nbPages = Math.ceil(total / perPage) || 1;
     return (
         nbPages > 1 &&
             <Toolbar>
-                <ToolbarGroup>
                 {page > 1 &&
-                    <FlatButton primary key="prev" label="Prev" icon={<ChevronLeft />} onClick={() => setPage(page - 1)} />
+                    <Button primary key="prev" icon={<ChevronLeft />} onClick={() => setPage(page - 1)}>
+                        Prev
+                    </Button>
                 }
                 {page !== nbPages &&
-                    <FlatButton primary key="next" label="Next" icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before" />
+                    <Button primary key="next" icon={<ChevronRight />} onClick={() => setPage(page + 1)} labelPosition="before">
+                        Next
+                    </Button>
                 }
-                </ToolbarGroup>
             </Toolbar>
     );
 }
@@ -243,6 +383,15 @@ export const PostList = (props) => (
 );
 ```
 
+### CSS API
+
+The `List` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui-next.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
+
+* `root`: alternative to using `className`. Applied to the root element.
+* `header`: applied to the page header
+* `actions`: applied to the actions container
+* `noResults`: applied to the component shown when there is no result
+
 ## The `<Datagrid>` component
 
 The datagrid component renders a list of records as a table. It is usually used as a child of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components.
@@ -251,17 +400,13 @@ Here are all the props accepted by the component:
 
 * [`styles`](#custom-grid-style)
 * [`rowStyle`](#row-style-function)
-* [`options`](#options)
-* [`headerOptions`](#options)
-* [`bodyOptions`](#options)
-* [`rowOptions`](#options)
 
 It renders as many columns as it receives `<Field>` children.
 
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField, EditButton } from 'admin-on-rest';
+import { List, Datagrid, TextField, EditButton } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -325,8 +470,6 @@ export const PostList = (props) => (
 ```
 {% endraw %}
 
-**Tip**: if you want to go even further and apply a custom style cell by cell, check out the [Conditional Formatting section of the Theming chapter](./Theming.md#conditional-formatting.)
-
 ### Row Style Function
 
 You can customize the datagrid row style (applied to the `<tr>` element) based on the record, thanks to the `rowStyle` prop, which expects a function.
@@ -346,39 +489,17 @@ export const PostList = (props) => (
 );
 ```
 
-### `options`, `headerOptions`, `bodyOptions`, and `rowOptions`
+### CSS API
 
-Admin-on-rest relies on [material-ui's `<Table>` component](http://www.material-ui.com/#/components/table) for rendering the datagrid. The `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props allow your to override the props of `<Table>`, `<TableHeader>`, `<TableBody>`, and `<TableRow>`.
+The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui-next.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
 
-For instance, to get a fixed header on the table, override the `<Table>` props with `options`:
-
-{% raw %}
-```jsx
-export const PostList = (props) => (
-    <List {...props}>
-        <Datagrid options={{ fixedHeader: true, height: 400 }}>
-            ...
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-To enable striped rows and row hover, override the `<TableBody>` props with `bodyOptions`:
-
-{% raw %}
-```jsx
-export const PostList = (props) => (
-    <List {...props}>
-        <Datagrid bodyOptions={{ stripedRows: true, showRowHover: true }}>
-            ...
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-For a list of all the possible props that you can override via these options, please refer to [the material-ui `<Table>` component documentation](http://www.material-ui.com/#/components/table).
+* `table`: alternative to using `className`. Applied to the root element.
+* `tbody`: applied to the tbody
+* `headerCell`: applied to each header cell
+* `row`: applied to each row
+* `rowEven`: applied to each even row
+* `rowOdd`: applied to each odd row
+* `rowCell`: applied to each row cell
 
 ## The `<SimpleList>` component
 
@@ -387,7 +508,7 @@ For mobile devices, a `<Datagrid>` is often unusable - there is simply not enoug
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, SimpleList } from 'admin-on-rest';
+import { List, SimpleList } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -407,7 +528,7 @@ export const PostList = (props) => (
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -429,20 +550,60 @@ export const PostList = (props) => (
 );
 ```
 
-## The `<SingleFieldList>` component
-
-When you want to display only one property of a list of records, instead of using a `<Datagrid>`, use the `<SingleFieldList>`. It expects a single `<Field>` as child. It's especially useful for `<ReferenceManyField>` components:
+**Tip**: The `<SimpleList>` items link to the edition page by default. You can set the `linkType` prop to `show` to link to the `<Show>` page instead.
 
 ```jsx
-// Display all the books by the current author
-<ReferenceManyField reference="books" target="author_id">
+// in src/posts.js
+import React from 'react';
+import { List, SimpleList } from 'react-admin';
+
+export const PostList = (props) => (
+    <List {...props}>
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => `${record.views} views`}
+            tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+            linkType="show"
+        />
+    </List>
+);
+```
+
+Setting the `linkType` prop to `false` (boolean, not string) removes the link in all list items.
+
+## The `<SingleFieldList>` component
+
+When you want to display only one property of a list of records, instead of using a `<Datagrid>`, use the `<SingleFieldList>`. It expects a single `<Field>` as child. It's especially useful for `<ReferenceManyField>` or `<ReferenceArrayField>` components:
+
+```jsx
+// Display all the tags for the current post
+<ReferenceArrayField
+    label="Tags"
+    reference="tags"
+    source="tags"
+>
     <SingleFieldList>
-        <ChipField source="title" />
+        <ChipField source="name" />
     </SingleFieldList>
-</ReferenceManyField>
+</ReferenceArrayField>
 ```
 
 ![ReferenceManyFieldSingleFieldList](./img/reference-many-field-single-field-list.png)
+
+**Tip**: The `<SingleFieldList>` items link to the edition page by default. You can set the `linkType` prop to `show` to link to the `<Show>` page instead.
+
+```jsx
+// Display all the tags for the current post
+<ReferenceArrayField
+    label="Tags"
+    reference="tags"
+    source="tags"
+>
+    <SingleFieldList linkType="show">
+        <ChipField source="name" />
+    </SingleFieldList>
+</ReferenceArrayField>
+```
 
 ## Using a Custom Iterator
 
@@ -455,11 +616,13 @@ For instance, what if you prefer to show a list of cards rather than a datagrid?
 
 ![Custom iterator](./img/custom-iterator.png)
 
-Simple: Create your own iterator component as follows:
+You'll need to create your own iterator component as follows:
 
 {% raw %}
 ```jsx
 // in src/comments.js
+import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
+
 const cardStyle = {
     width: 300,
     minHeight: 300,
@@ -473,18 +636,18 @@ const CommentGrid = ({ ids, data, basePath }) => (
         <Card key={id} style={cardStyle}>
             <CardHeader
                 title={<TextField record={data[id]} source="author.name" />}
-                subtitle={<DateField record={data[id]} source="created_at" />}
+                subheader={<DateField record={data[id]} source="created_at" />}
                 avatar={<Avatar icon={<PersonIcon />} />}
             />
-            <CardText>
+            <CardContent>
                 <TextField record={data[id]} source="body" />
-            </CardText>
-            <CardText>
+            </CardContent>
+            <CardContent>
                 about&nbsp;
                 <ReferenceField label="Post" resource="comments" record={data[id]} source="post_id" reference="posts" basePath={basePath}>
                     <TextField source="title" />
                 </ReferenceField>
-            </CardText>
+            </CardContent>
             <CardActions style={{ textAlign: 'right' }}>
                 <EditButton resource="posts" basePath={basePath} record={data[id]} />
             </CardActions>
@@ -506,3 +669,52 @@ export const CommentList = (props) => (
 {% endraw %}
 
 As you can see, nothing prevents you from using `<Field>` components inside your own components... provided you inject the current `record`. Also, notice that components building links require the `basePath` component, which is also injected.
+
+## Displaying Fields depending on the user permissions
+
+You might want to display some fields or filters only to users with specific permissions. Those permissions are retrieved for each route and will provided to your component as a `permissions` prop.
+
+Each route will call the `authProvider` with the `AUTH_GET_PERMISSIONS` type and some parameters including the current location and route parameters. It's up to you to return whatever you need to check inside your component such as the user's role, etc.
+
+{% raw %}
+```jsx
+const UserFilter = ({ permissions, ...props }) =>
+    <Filter {...props}>
+        <TextInput
+            label="user.list.search"
+            source="q"
+            alwaysOn
+        />
+        <TextInput source="name" />
+        {permissions === 'admin' ? <TextInput source="role" /> : null}
+    </Filter>;
+
+export const UserList = ({ permissions, ...props }) =>
+    <List
+        {...props}
+        filters={<UserFilter permissions={permissions} />}
+        sort={{ field: 'name', order: 'ASC' }}
+    >
+        <Responsive
+            small={
+                <SimpleList
+                    primaryText={record => record.name}
+                    secondaryText={record =>
+                        permissions === 'admin' ? record.role : null}
+                />
+            }
+            medium={
+                <Datagrid>
+                    <TextField source="id" />
+                    <TextField source="name" />
+                    {permissions === 'admin' && <TextField source="role" />}
+                    {permissions === 'admin' && <EditButton />}
+                    <ShowButton />
+                </Datagrid>
+            }
+        />
+    </List>;
+```
+{% endraw %}
+
+**Tip** Note how the `permissions` prop is passed down to the custom `filters` component.

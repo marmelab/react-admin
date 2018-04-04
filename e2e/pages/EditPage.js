@@ -4,7 +4,7 @@ export default url => driver => ({
     elements: {
         appLoader: By.css('.app-loader'),
         input: name => By.css(`.edit-page input[name='${name}']`),
-        inputs: By.css(`.aor-input`),
+        inputs: By.css(`.ra-input`),
         tabs: By.css(`.form-tab`),
         submitButton: By.css(".edit-page button[type='submit']"),
         tab: index => By.css(`button.form-tab:nth-of-type(${index})`),
@@ -50,9 +50,11 @@ export default url => driver => ({
                 fields.map(field =>
                     field.getAttribute('class').then(classes =>
                         classes
-                            .replace('aor-input-', '')
-                            .replace('aor-input', '')
-                            .trim()
+                            .split(' ')
+                            .filter(className =>
+                                className.startsWith('ra-input-')
+                            )[0]
+                            .replace('ra-input-', '')
                     )
                 )
             )
@@ -71,6 +73,11 @@ export default url => driver => ({
             input.clear();
         }
         return input.sendKeys(value);
+    },
+
+    async getInputValue(name) {
+        const input = await driver.findElement(this.elements.input(name));
+        return await input.getAttribute('value');
     },
 
     clickInput(name) {

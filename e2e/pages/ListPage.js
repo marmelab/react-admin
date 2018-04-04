@@ -16,14 +16,29 @@ export default url => driver => ({
         pageNumber: n => By.css(`.page-number[data-page='${n}']`),
         previousPage: By.css('.previous-page'),
         recordRows: By.css('.datagrid-body tr'),
+        viewsColumn: By.css('.datagrid-body tr td:nth-child(6)'),
         datagridHeaders: By.css('th'),
         title: By.css('.title'),
         logout: By.css('.logout'),
+        bulkActionsButton: By.css('.bulk-actions-button'),
+        customBulkActionsButtonMenuItem: By.css(
+            '.bulk-actions-menu-item:first-child'
+        ),
+        deleteBulkActionsButtonMenuItem: By.css(
+            '.bulk-actions-menu-item:last-child'
+        ),
+        selectAll: By.css('.select-all'),
+        selectedItem: By.css('.select-item input:checked'),
+        selectItem: By.css('.select-item input'),
     },
 
     navigate() {
         driver.navigate().to(url);
         return this.waitUntilDataLoaded();
+    },
+
+    async waitForDebounce() {
+        await driver.sleep(501); // filter debounce is of 500ms
     },
 
     waitUntilVisible() {
@@ -61,6 +76,14 @@ export default url => driver => ({
             .then(ths => Promise.all(ths.map(th => th.getText())));
     },
 
+    getViewsColumnValues() {
+        return driver
+            .findElements(this.elements.viewsColumn)
+            .then(columns =>
+                Promise.all(columns.map(column => column.getText()))
+            );
+    },
+
     getResources() {
         return driver
             .findElements(this.elements.menuItems)
@@ -74,7 +97,7 @@ export default url => driver => ({
             this.elements.addFilterButton
         );
         addFilterButton.click();
-        driver.sleep(500); // wait until the dropdown animation ends
+
         driver.wait(until.elementLocated(this.elements.filterMenuItems));
 
         return driver
@@ -136,36 +159,136 @@ export default url => driver => ({
             .then(() => this.waitUntilDataLoaded());
     },
 
-    setFilterValue(name, value, clearPreviousValue = true) {
-        const filterField = driver.findElement(this.elements.filter(name));
+    async setFilterValue(name, value, clearPreviousValue = true) {
+        const filterField = await driver.findElement(
+            this.elements.filter(name)
+        );
         if (clearPreviousValue) {
-            filterField.clear();
+            await filterField.clear();
         }
-        filterField.sendKeys(value);
-        driver.sleep(500);
+
+        await filterField.sendKeys(value);
+
+        // Filling an input with no value doesn't trigger key events.
+        // Hence, let's blur it!
+        const body = await driver.findElement(By.css('body'));
+        await body.click();
+
+        await this.waitForDebounce();
+
         return this.waitUntilDataLoaded();
     },
 
-    showFilter(name) {
-        const addFilterButton = driver.findElement(
+    async getFilterValue(name) {
+        const filterField = await driver.findElement(
+            this.elements.filter(name)
+        );
+
+        return await filterField.getAttribute('value');
+    },
+
+    async showFilter(name) {
+        const addFilterButton = await driver.findElement(
             this.elements.addFilterButton
         );
-        addFilterButton.click();
-        driver.sleep(500); // wait until the dropdown animation ends
-        driver.wait(until.elementLocated(this.elements.filterMenuItem(name)));
-        driver.findElement(this.elements.filterMenuItem(name)).click();
-        return this.waitUntilDataLoaded();
+        await addFilterButton.click();
+
+        await driver.wait(
+            until.elementLocated(this.elements.filterMenuItem(name))
+        );
+
+        const menuItem = await driver.findElement(
+            this.elements.filterMenuItem(name)
+        );
+        await menuItem.click();
+
+        await this.waitForDebounce();
+        await this.waitUntilDataLoaded();
     },
 
-    hideFilter(name) {
-        const hideFilterButton = driver.findElement(
+    async hideFilter(name) {
+        const hideFilterButton = await driver.findElement(
             this.elements.hideFilterButton(name)
         );
-        hideFilterButton.click();
-        return this.waitUntilDataLoaded(); // wait for debounce and reload
+        await hideFilterButton.click();
+
+        await this.waitForDebounce();
+        await this.waitUntilDataLoaded();
     },
 
     logout() {
         driver.findElement(this.elements.logout).click();
+    },
+
+    toggleSelectAll() {
+        return driver
+            .findElement(this.elements.selectAll)
+            .click()
+            .then(
+                () => driver.sleep(1000) // wait until animations end
+            );
+    },
+
+    toggleSelectSomeItems(count) {
+        return driver
+            .findElements(this.elements.selectItem)
+            .then(elements =>
+                Promise.all(
+                    [...Array(count).keys()].map(index => {
+                        elements[index].click();
+                    })
+                )
+            )
+            .then(() => driver.sleep(1000)); // wait until animations end
+    },
+
+    getSelectedItemsCount() {
+        return driver
+            .findElements(this.elements.selectedItem)
+            .then(items => items.length);
+    },
+
+    applyUpdateBulkAction() {
+        return driver
+            .findElement(this.elements.bulkActionsButton)
+            .click()
+            .then(() =>
+                driver.wait(
+                    until.elementLocated(
+                        this.elements.customBulkActionsButtonMenuItem
+                    ),
+                    500
+                )
+            ) // wait until animations end
+            .then(() =>
+                driver
+                    .findElement(this.elements.customBulkActionsButtonMenuItem)
+                    .click()
+            )
+            .then(() => this.waitUntilDataLoaded())
+            .then(() => driver.sleep(500)) // wait until animations end
+            .then(() => this.waitUntilDataLoaded());
+    },
+
+    applyDeleteBulkAction() {
+        return driver
+            .findElement(this.elements.bulkActionsButton)
+            .click()
+            .then(() =>
+                driver.wait(
+                    until.elementLocated(
+                        this.elements.deleteBulkActionsButtonMenuItem
+                    ),
+                    500
+                )
+            ) // wait until animations end
+            .then(() =>
+                driver
+                    .findElement(this.elements.deleteBulkActionsButtonMenuItem)
+                    .click()
+            )
+            .then(() => this.waitUntilDataLoaded())
+            .then(() => driver.sleep(500)) // wait until animations end
+            .then(() => this.waitUntilDataLoaded());
     },
 });

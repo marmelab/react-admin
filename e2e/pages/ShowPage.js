@@ -3,13 +3,18 @@ import { By, until } from 'selenium-webdriver';
 export default (url, initialField = 'title') => driver => ({
     elements: {
         appLoader: By.css('.app-loader'),
-        field: name => By.css(`.aor-field-${name} > div > span`),
-        fields: By.css(`.aor-field`),
+        body: By.css('body'),
+        deleteButton: By.css('.ra-delete-button'),
+        field: name => By.css(`.ra-field-${name} > div > div > span`),
+        fields: By.css(`.ra-field`),
+        snackbar: By.css('div[role="alertdialog"]'),
+        tabs: By.css(`.show-tab`),
+        tab: index => By.css(`button.show-tab:nth-of-type(${index})`),
     },
 
     navigate() {
         driver.navigate().to(url);
-        return this.waitUntilVisible();
+        return this.waitUntilDataLoaded();
     },
 
     waitUntilVisible() {
@@ -47,12 +52,38 @@ export default (url, initialField = 'title') => driver => ({
                 fields.map(field =>
                     field.getAttribute('class').then(classes =>
                         classes
-                            .replace('aor-field-', '')
-                            .replace('aor-field', '')
-                            .trim()
+                            .split(' ')
+                            .filter(className =>
+                                className.startsWith('ra-field-')
+                            )[0]
+                            .replace('ra-field-', '')
                     )
                 )
             )
         );
+    },
+
+    getTabs() {
+        return driver
+            .findElements(this.elements.tabs)
+            .then(tabs => Promise.all(tabs.map(tab => tab.getText())));
+    },
+
+    gotoTab(index) {
+        const tab = driver.findElement(this.elements.tab(index));
+        tab.click();
+        return driver.sleep(200);
+    },
+
+    delete() {
+        return driver
+            .findElement(this.elements.deleteButton)
+            .click()
+            .then(() =>
+                driver.wait(until.elementLocated(this.elements.snackbar), 3000)
+            )
+            .then(() => driver.findElement(this.elements.body).click()) // dismiss notification
+            .then(() => driver.sleep(200)) // let the notification disappear (could block further submits)
+            .then(() => this.waitUntilDataLoaded());
     },
 });

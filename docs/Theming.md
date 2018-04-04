@@ -9,40 +9,167 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 ## Overriding A Component Style
 
-Most admin-on-rest components support two style props to set inline styles:
+Every react-admin component provides a `className` property, which is always applied to the root element.
 
-* `style`: A style object to customize the look and feel of the component container (e.g. the `<td>` in a datagrid). Most of the time, that's where you'll want to put your custom styles.
-* `elStyle`: A style object to customize the look and feel of the component element itself, usually a material ui component. Use this prop when you want to fine tune the display of a material ui component, according to [their styling documentation](http://www.material-ui.com/#/customization/styles).
-
-These props accept a style object:
+Here is an example customizing an `EditButton` component inside a `Datagrid`, using its `className` property and the `withStyles` Higher Order Component from Material-UI:
 
 {% raw %}
 ```jsx
-import { EmailField } from 'admin-on-rest/mui';
+import { NumberField, List, Datagrid, EditButton } from 'react-admin';
+import { withStyles } from 'material-ui/styles';
 
-<EmailField source="email" style={{ backgroundColor: 'lightgrey' }} elStyle={{ textDecoration: 'none' }} />
-// renders in the datagrid as
-<td style="background-color:lightgrey">
-    <a style="text-decoration:none" href="mailto:foo@example.com">
-        foo@example.com
-    </a>
-</td>
-```
-{% endraw %}
+const styles = {
+    button: {
+        fontWeight: 'bold',
+        // This is JSS syntax to target a deeper element using css selector, here the svg icon for this button
+        '& svg': { color: 'orange' }
+    },
+};
 
-Some components support additional props to style their own elements. For instance, when using a `<Datagrid>`, you can specify how a `<Field>` renders headers with the `headerStyle` prop. Here is how to make a column right aligned:
+const MyEditButton = withStyles(styles)(({ classes, ...props }) => (
+    <EditButton
+        className={classes.button}
+        {...props}
+    />
+));
 
-{% raw %}
-```jsx
 export const ProductList = (props) => (
     <List {...props}>
         <Datagrid>
             <TextField source="sku" />
-            <TextField
-                source="price"
-                style={{ textAlign: 'right' }}
-                headerStyle={{ textAlign: 'right' }}
+            <TextField source="price" />
+            <MyEditButton />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+For some components, you may want to override not only the root component style, but also the style of components inside the root. In this case, the `className` property isn't enough. You can take advantage of the `classes` property to customize the classes that the component uses internally.
+
+Here is an example using the `classes` property of the `Filter` and `List` components:
+
+{% raw %}
+```jsx
+import React from 'react';
+import {
+    BooleanField,
+    Datagrid,
+    DateField,
+    DateInput,
+    EditButton,
+    Filter,
+    List,
+    NullableBooleanInput,
+    NumberField,
+    TextInput,
+} from 'react-admin';
+import Icon from 'material-ui-icons/Person';
+import { withStyles } from 'material-ui/styles';
+
+export const VisitorIcon = Icon;
+
+// The Filter component supports the `form` and `button` CSS classes. Here we override the `form` class
+const filterStyles = {
+    form: {
+        backgroundColor: 'Lavender',
+    },
+};
+
+const VisitorFilter = withStyles(filterStyles)(({ classes, ...props }) => (
+    <Filter classes={classes} {...props}>
+        <TextInput
+            className={classes.searchInput}
+            label="pos.search"
+            source="q"
+            alwaysOn
+        />
+        <DateInput source="last_seen_gte" />
+        <NullableBooleanInput source="has_ordered" />
+        <NullableBooleanInput source="has_newsletter" defaultValue />
+    </Filter>
+));
+
+// The List component supports the `root`, `header`, `actions` and `noResults` CSS classes. Here we override the `header` and `actions` classes
+const listStyles = {
+    actions: {
+        backgroundColor: 'Lavender',
+    },
+    header: {
+        backgroundColor: 'Lavender',
+    },
+};
+
+export const VisitorList = withStyles(listStyles)(({ classes, ...props }) => (
+    <List
+        classes={classes}
+        {...props}
+        filters={<VisitorFilter />}
+        sort={{ field: 'last_seen', order: 'DESC' }}
+        perPage={25}
+    >
+        <Datagrid classes={classes} {...props}>
+            <DateField source="last_seen" type="date" />
+            <NumberField
+                source="nb_commands"
+                label="resources.customers.fields.commands"
             />
+            <NumberField
+                source="total_spent"
+                options={{ style: 'currency', currency: 'USD' }}
+            />
+            <DateField source="latest_purchase" showTime />
+            <BooleanField source="has_newsletter" label="News." />
+            <EditButton />
+        </Datagrid>
+    </List>
+));
+```
+{% endraw %}
+
+This example results in:
+
+![Visitor List with customized CSS classes](./img/list_with_customized_css.png)
+
+Take a look at a component documentation and source code to know which classes are available for styling. For instance, you can have a look at the [Datagrid CSS documentation](./List.md#the-datagrid-component).
+
+If you need more control over the HTML code, you can also create your own [Field](./Fields.md#writing-your-own-field-component) and [Input](./Inputs.md#writing-your-own-input-component) components.
+
+## Conditional Formatting
+
+Sometimes you want the format to depend on the value. The following example shows how to create a new custom `NumberField` component which highlight its text in red when its value is 100 or higher.
+
+{% raw %}
+```jsx
+import { NumberField, List, Datagrid, EditButton } from 'react-admin';
+import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
+
+const coloredStyles = {
+    small: { color: 'black' },
+    big: { color: 'red' },
+};
+
+const ColoredNumberField = withStyles(coloredStyles)(
+    ({ classes, ...props }) => (
+        <NumberField
+            className={classnames({
+                [classes.small]: props.record[props.source] < 100,
+                [classes.big]: props.record[props.source] >= 100,
+            })}
+            {...props}
+        />
+    ));
+
+// Ensure the original component defaultProps are still applied as they may be used by its parents (such as the `Show` component):
+ColoredNumberField.defaultProps = NumberField.defaultProps;
+
+export const PostList = (props) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="id" />
+            ...
+            <ColoredNumberField source="nb_views" />
             <EditButton />
         </Datagrid>
     </List>
@@ -50,30 +177,41 @@ export const ProductList = (props) => (
 ```
 {% endraw %}
 
-Refer to each component documentation for a list of supported style props.
-
-If you need more control over the HTML code, you can also create your own [Field](./Fields.md#writing-your-own-field-component) and [Input](./Inputs.md#writing-your-own-input-component) components.
-
-## Conditional Formatting
-
-Sometimes you want the format to depend on the value. Admin-on-rest doesn't provide any special way to do it, because React already has all that's necessary - in particular, Higher-Order Components (HOCs).
-
-For instance, if you want to highlight a `<TextField>` in red if the value is higher than 100, just wrap the field into a HOC:
+Furthermore, you may extract this highlighting strategy into an Higher Order Component if you'd like to reuse it for other components as well:
 
 {% raw %}
 ```jsx
-const colored = WrappedComponent => props => props.record[props.source] > 100 ?
-    <span style={{ color: 'red' }}><WrappedComponent {...props} /></span> :
-    <WrappedComponent {...props} />;
+import { NumberField, List, Datagrid, EditButton } from 'react-admin';
+import { withStyles } from 'material-ui/styles';
+import classnames from 'classnames';
 
-const ColoredTextField = colored(TextField);
+const coloredStyles = {
+    small: { color: 'black' },
+    big: { color: 'red' },
+};
+
+const colored = WrappedComponent => withStyles(coloredStyles)(
+    ({ classes, ...props }) => (
+        <WrappedComponent
+            className={classnames({
+                [classes.small]: props.record[props.source] < 500,
+                [classes.big]: props.record[props.source] >= 500,
+            })}
+            {...props}
+        />
+    ));
+
+
+const ColoredNumberField = colored(NumberField);
+// Ensure the original component defaultProps are still applied as they may be used by its parents (such as the `Show` component):
+ColoredNumberField.defaultProps = NumberField.defaultProps;
 
 export const PostList = (props) => (
     <List {...props}>
         <Datagrid>
             <TextField source="id" />
             ...
-            <ColoredTextField source="nb_views" />
+            <ColoredNumberField source="nb_views" />
             <EditButton />
         </Datagrid>
     </List>
@@ -92,7 +230,7 @@ It expects element props named `small`, `medium`, and `large`. It displays the e
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'admin-on-rest';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -122,18 +260,25 @@ export const PostList = (props) => (
 
 **Tip**: If you only provide `small` and `medium`, the `medium` element will also be used on large screens. The same kind of smart default exists for when you omit `small` or `medium`.
 
+**Tip**: You can specify `null` as the value for `small`, `medium` or `large` to avoid rendering something on a specific size without falling back to others.
+
 **Tip**: You can also use [material-ui's `withWidth()` higher order component](https://github.com/callemall/material-ui/blob/master/src/utils/withWidth.js) to have the `with` prop injected in your own components.
 
 ## Using a Predefined Theme
 
-Material UI also supports [complete theming](http://www.material-ui.com/#/customization/themes) out of the box. Material UI ships two base themes: light and dark. Admin-on-rest uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `getMuiTheme()`).
+Material UI also supports [complete theming](http://www.material-ui.com/#/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `createMuiTheme()`).
 
 ```jsx
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { createMuiTheme } from 'material-ui/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark', // Switching the dark mode on is a single property value change.
+  },
+});
 
 const App = () => (
-    <Admin theme={getMuiTheme(darkBaseTheme)} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -195,7 +340,7 @@ Once your theme is defined, pass it to the `<Admin>` component, in the `theme` p
 
 ```jsx
 const App = () => (
-    <Admin theme={getMuiTheme(myTheme)} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin theme={getMuiTheme(myTheme)} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -210,13 +355,13 @@ Instead of the default layout, you can use your own component as the admin layou
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin appLayout={MyLayout} restClient={simpleRestClient('http://path.to.my.api')}>
+    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
 ```
 
-Use the [default layout](https://github.com/marmelab/admin-on-rest/blob/master/src/mui/layout/Layout.js) as a starting point for your custom layout. Here is a simplified version (with no responsive support):
+Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src/mui/layout/Layout.js) as a starting point for your custom layout. Here is a simplified version (with no responsive support):
 
 ```jsx
 // in src/MyLayout.js
@@ -224,15 +369,22 @@ import React, { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import CircularProgress from 'material-ui/CircularProgress';
+import createMuiTheme from 'material-ui/styles/createMuiTheme';
+
+import { CircularProgress } from 'material-ui/Progress';
 import {
-    AdminRoutes,
     AppBar,
     Menu,
     Notification,
     Sidebar,
     setSidebarVisibility,
-} from 'admin-on-rest';
+} from 'react-admin';
+
+const theme = createMuiTheme({
+    palette: {
+        type: 'light',
+    },
+});
 
 const styles = {
     wrapper: {
@@ -249,6 +401,7 @@ const styles = {
         backgroundColor: '#edecec',
         display: 'flex',
         flex: 1,
+        marginTop: '2em',
         overflowY: 'hidden',
         overflowX: 'scroll',
     },
@@ -273,7 +426,6 @@ class MyLayout extends Component {
     render() {
         const {
             children,
-            customRoutes,
             dashboard,
             isLoading,
             logout,
@@ -281,14 +433,12 @@ class MyLayout extends Component {
             title,
         } = this.props;
         return (
-            <MuiThemeProvider>
+            <MuiThemeProvider theme={theme}>
                 <div style={styles.wrapper}>
                     <div style={styles.main}>
-                        <AppBar title={title} />
+                        <AppBar title={title} logout={logout} />
                         <div className="body" style={styles.body}>
-                            <div style={styles.content}>
-                                {children}
-                            </div>
+                            <div style={styles.content}>{children}</div>
                             <Sidebar>
                                 {createElement(menu || Menu, {
                                     logout,
@@ -299,7 +449,7 @@ class MyLayout extends Component {
                         <Notification />
                         {isLoading && (
                             <CircularProgress
-                                color="#fff"
+                                color="primary"
                                 size={30}
                                 thickness={2}
                                 style={styles.loader}
@@ -313,12 +463,11 @@ class MyLayout extends Component {
 }
 
 MyLayout.propTypes = {
-    authClient: PropTypes.func,
-    customRoutes: PropTypes.array,
+    children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     isLoading: PropTypes.bool.isRequired,
-    menu: PropTypes.element,
-    resources: PropTypes.array,
+    logout: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+    menu: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
     setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
 };
@@ -326,3 +475,45 @@ MyLayout.propTypes = {
 const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
 export default connect(mapStateToProps, { setSidebarVisibility })(MyLayout);
 ```
+
+## Notifications
+
+If you use your own layout (or custom login page), then you probably use the `<Notification>` component.
+
+You can override the notification duration by setting the `autoHideDuration` prop. It defaults to 4000, i.e. 4 seconds.
+
+```jsx
+<Notification autoHideDuration={5000} />
+```
+
+**Tip**: if you use the `showNotification` action, then you can define `autoHideDuration` per message as the third parameter of the `showNotification` action creator.
+
+
+## Loading
+
+Display a circular progress component with optional messages. Display the same loading component as `react-admin` on custom pages for consistency. 
+
+Supported props: 
+
+Prop | Type | Default | Descriptions
+---|---|---|---
+`loadingPrimary` |`String` | `ra.page.loading` | Label to use for primary loading message
+`loadingSecondary` |`String` | `ra.message.loading` | Label to use for secondary loading message
+
+Usage:
+
+```jsx 
+    <Loading loadingPrimary="app.page.loading" loadingSecondary="app.message.loading" />
+``` 
+
+## LinearProgress
+
+Display a linear progress component. Display the same loading component as `react-admin` on custom inputs for consistency. 
+
+Usage:
+
+```jsx 
+    ({ data, ...props }) => !data? 
+        <LinearProgress /> : 
+        <MyInput data={data} />        
+``` 

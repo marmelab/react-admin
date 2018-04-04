@@ -4,7 +4,7 @@ export default url => driver => ({
     elements: {
         appLoader: By.css('.app-loader'),
         total: By.css('.total'),
-        bodyFromLayout: By.css('.body'),
+        layout: By.css('.layout'),
     },
 
     navigate() {
@@ -33,7 +33,7 @@ export default url => driver => ({
 
     hasBody() {
         return driver
-            .findElements(this.elements.bodyFromLayout)
+            .findElements(this.elements.layout)
             .then(elements => elements.length > 0);
     },
 

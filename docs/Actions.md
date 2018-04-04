@@ -7,7 +7,7 @@ title: "Actions"
 
 Admin interfaces often have to offer custom actions, beyond the simple CRUD. For instance, in an administration for comments, an "Approve" button (allowing to update the `is_approved` property and to save the updated record in one click) - is a must have.
 
-How can you add such custom actions with admin-on-rest? The answer is twofold, and learning to do it properly will give you a better understanding of how admin-on-rest uses Redux and redux-saga.
+How can you add such custom actions with react-admin? The answer is twofold, and learning to do it properly will give you a better understanding of how react-admin uses Redux and redux-saga.
 
 ## The Simple Way
 
@@ -19,7 +19,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
-import { showNotification as showNotificationAction } from 'admin-on-rest';
+import { showNotification as showNotificationAction } from 'react-admin';
 import { push as pushAction } from 'react-router-redux';
 
 class ApproveButton extends Component {
@@ -82,7 +82,7 @@ Or, in the `<Edit>` page, as a [custom action](./CreateEdit.md#actions):
 // in src/comments/CommentEditActions.js
 import React from 'react';
 import { CardActions } from 'material-ui/Card';
-import { ListButton, DeleteButton } from 'admin-on-rest';
+import { ListButton, DeleteButton } from 'react-admin';
 import ApproveButton from './ApproveButton';
 
 const cardActionStyle = {
@@ -91,11 +91,11 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const CommentEditActions = ({ basePath, data }) => (
+const CommentEditActions = ({ basePath, data, resource }) => (
     <CardActions style={cardActionStyle}>
         <ApproveButton record={data} />
         <ListButton basePath={basePath} />
-        <DeleteButton basePath={basePath} record={data} />
+        <DeleteButton basePath={basePath} record={data} resource={resource} />
     </CardActions>
 );
 
@@ -110,24 +110,24 @@ export const CommentEdit = (props) =>
     </Edit>;
 ```
 
-## Using The REST Client Instead of Fetch
+## Using a Data Provider Instead of Fetch
 
-The previous code uses `fetch()`, which means it has to make raw HTTP requests. The REST logic often requires a bit of HTTP plumbing to deal with query parameters, encoding, headers, body formatting, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: the [REST Client](./RestClients.md). So it's a good idea to use this function instead of `fetch` - provided you have exported it:
+The previous code uses `fetch()`, which means it has to make raw HTTP requests. The REST logic often requires a bit of HTTP plumbing to deal with query parameters, encoding, headers, body formatting, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: the [Data Provider](./DataProviders.md). So it's a good idea to use this function instead of `fetch` - provided you have exported it:
 
 ```jsx
-// in src/restClient.js
-import { simpleRestClient } from 'admin-on-rest';
-export default simpleRestClient('http://Mydomain.com/api/');
+// in src/dataProvider.js
+import jsonServerProvider from 'ra-data-json-server';
+export default jsonServerProvider('http://Mydomain.com/api/');
 
 // in src/comments/ApproveButton.js
-import { UPDATE } from 'admin-on-rest';
-import restClient from '../restClient';
+import { UPDATE } from 'react-admin';
+import dataProvider from '../dataProvider';
 
 class ApproveButton extends Component {
     handleClick = () => {
         const { push, record, showNotification } = this.props;
         const updatedRecord = { ...record, is_approved: true };
-        restClient(UPDATE, 'comments', { id: record.id, data: updatedRecord })
+        dataProvider(UPDATE, 'comments', { id: record.id, data: updatedRecord })
             .then(() => {
                 showNotification('Comment approved');
                 push('/comments');
@@ -144,42 +144,42 @@ class ApproveButton extends Component {
 }
 ```
 
-There you go: no more `fetch`. Just like `fetch`, the `restClient` returns a `Promise`. It's signature is:
+There you go: no more `fetch`. Just like `fetch`, the `dataProvider` returns a `Promise`. It's signature is:
 
 ```jsx
 /**
- * Execute the REST request and return a promise for a REST response
+ * Query a data provider and return a promise for a response
  *
  * @example
- * restClient(GET_ONE, 'posts', { id: 123 })
+ * dataProvider(GET_ONE, 'posts', { id: 123 })
  *  => new Promise(resolve => resolve({ id: 123, title: "hello, world" }))
  *
  * @param {string} type Request type, e.g GET_LIST
  * @param {string} resource Resource name, e.g. "posts"
  * @param {Object} payload Request parameters. Depends on the action type
- * @returns {Promise} the Promise for a REST response
+ * @returns {Promise} the Promise for a response
  */
-const restClient = (type, resource, params) => new Promise();
+const dataProvider = (type, resource, params) => new Promise();
 ```
 
-As for the syntax of the various request types (`GET_LIST`, `GET_ONE`, `UPDATE`, etc.), head to the [REST Client documentation](./RestClients.md#request-format) for more details.
+As for the syntax of the various request types (`GET_LIST`, `GET_ONE`, `UPDATE`, etc.), head to the [Data Provider documentation](./DataProviders.md#request-format) for more details.
 
 ## Using a Custom Action Creator
 
-Fetching data right inside the component is easy. But if you're a Redux user, you might want to do it in a more idiomatic way - by dispatching actions. First, create your own action creator to replace the call to `restClient`:
+Fetching data right inside the component is easy. But if you're a Redux user, you might want to do it in a more idiomatic way - by dispatching actions. First, create your own action creator to replace the call to `dataProvider`:
 
 ```jsx
 // in src/comment/commentActions.js
-import { UPDATE } from 'admin-on-rest';
+import { UPDATE } from 'react-admin';
 export const COMMENT_APPROVE = 'COMMENT_APPROVE';
 export const commentApprove = (id, data, basePath) => ({
     type: COMMENT_APPROVE,
     payload: { id, data: { ...data, is_approved: true } },
-    meta: { resource: 'comments', fetch: UPDATE, cancelPrevious: false },
+    meta: { resource: 'comments', fetch: UPDATE },
 });
 ```
 
-This action creator takes advantage of admin-on-rest's built in fetcher, which listens to actions with the `fetch` meta. Upon dispatch, this action will trigger the call to `restClient(UPDATE, 'comments')`, dispatch a `COMMENT_APPROVE_LOADING` action, then after receiving the response, dispatch either a `COMMENT_APPROVE_SUCCESS`, or a `COMMENT_APPROVE_FAILURE`.
+This action creator takes advantage of react-admin's built in fetcher, which listens to actions with the `fetch` meta. Upon dispatch, this action will trigger the call to `dataProvider(UPDATE, 'comments')`, dispatch a `COMMENT_APPROVE_LOADING` action, then after receiving the response, dispatch either a `COMMENT_APPROVE_SUCCESS`, or a `COMMENT_APPROVE_FAILURE`.
 
 To use the new action creator in the component, `connect` it:
 
@@ -188,7 +188,7 @@ To use the new action creator in the component, `connect` it:
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import { commentApprove as commentApproveAction } from './commentActions';
 
 class ApproveButton extends Component {
@@ -199,7 +199,7 @@ class ApproveButton extends Component {
     }
 
     render() {
-        return <FlatButton label="Approve" onClick={this.handleClick} />;
+        return <Button onClick={this.handleClick}>Approve</Button>;
     }
 }
 
@@ -215,52 +215,139 @@ export default connect(null, {
 
 This works fine: when a user presses the "Approve" button, the API receives the `UPDATE` call, and that approves the comment. But it's not possible to call `push` or `showNotification` in `handleClick` anymore. This is because `commentApprove()` returns immediately, whether the API call succeeds or not. How can you run a function only when the action succeeds?
 
-## Handling Side Effects With a Custom Saga
+## Handling Side Effects
 
-`fetch`, `showNotification`, and `push` are called *side effects*. It's a functional programming term that describes functions that do more than just returning a value based on their input. Admin-on-rest promotes a programming style where side effects are decoupled from the rest of the code, which has the benefit of making them testable.
+Fetching data is called a *side effect*, since it calls the outside world, and is asynchronous. Usual actions may have other side effects, like showing a notification, or redirecting the user to another page. Just like for the `fetch` side effect, you can associate side effects to an action declaratively by setting the appropriate keys in the action `meta`. 
 
-In admin-on-rest, side effects are handled by Sagas. [Redux-saga](https://redux-saga.github.io/redux-saga/) is a side effect library built for Redux, where side effects are defined by generator functions. This may sound complicated, but it's not: Here is the generator function necessary to handle the side effects for the `COMMENT_APPROVE` action.
+For instance, to display a notification when the `COMMENT_APPROVE` action is dispatched, add the `notification` meta:
 
-```jsx
-// in src/comments/commentSaga.js
-import { put, takeEvery, all } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
-import { showNotification } from 'admin-on-rest';
+```diff
+// in src/comment/commentActions.js
+import { UPDATE } from 'react-admin';
+export const COMMENT_APPROVE = 'COMMENT_APPROVE';
+export const commentApprove = (id, data, basePath) => ({
+    type: COMMENT_APPROVE,
+    payload: { id, data: { ...data, is_approved: true } },
+    meta: {
+        resource: 'comments',
+        fetch: UPDATE,
++        notification: {
++            body: 'resources.comments.notification.approved_success',
++            level: 'info',
++        },
++        redirectTo: '/comments',
++        basePath,
+    },
+});
+```
 
-function* commentApproveSuccess() {
-    yield put(showNotification('Comment approved'));
-    yield put(push('/comments'));
-}
+React-admin can handle the following side effects metas:
 
-function* commentApproveFailure({ error }) {
-    yield put(showNotification('Error: comment not approved', 'warning'));
-    console.error(error);
-}
+- `notification`: Display a notification. The property value should be an object describing the notification to display. The `body` can be a translation key. `level` can be either `info` or `warning`.
+- `redirectTo`: Redirect the user to another page. The property value should be the path to redirect the user to.
+- `refresh`: Force a rerender of the current view (equivalent to pressing the Refresh button). Set to true to enable.
+- `unselectAll`: Unselect all lines in the current datagrid. Set to true to enable.
+- `basePath`: This is not a side effect, but it's used internaly to compute redirection paths. Set it when you have a redirection side effect.
 
-export default function* commentSaga() {
-    yield all([
-        takeEvery('COMMENT_APPROVE_SUCCESS', commentApproveSuccess),
-        takeEvery('COMMENT_APPROVE_FAILURE', commentApproveFailure),
-    ]);
+## Success and Failure Side Effects
+
+In the previous example, the "notification approved" notification appears when the `COMMENT_APPROVE` action is dispatched, i.e. *before* the server is even called. That's a bit too early: what if the server returns an error?
+
+In practice, most side effects must be triggered after the `fetch` side effect succeeds or fails. To support that, you can enclose side effects under the `onSuccess` and `onFailure` keys in the `meta` property of an action:
+
+```diff
+// in src/comment/commentActions.js
+import { UPDATE } from 'react-admin';
+export const COMMENT_APPROVE = 'COMMENT_APPROVE';
+export const commentApprove = (id, data, basePath) => ({
+    type: COMMENT_APPROVE,
+    payload: { id, data: { ...data, is_approved: true } },
+    meta: {
+        resource: 'comments',
+        fetch: UPDATE,
+-        notification: {
+-            body: 'resources.comments.notification.approved_success',
+-            level: 'info',
+-        },
+-        redirectTo: '/comments',
+-        basePath,
++        onSuccess: {
++            notification: {
++                body: 'resources.comments.notification.approved_success',
++                level: 'info',
++            },
++            redirectTo: '/comments',
++            basePath,
++        },
++        onFailure: {
++            notification: {
++                body: 'resources.comments.notification.approved_failure',
++                level: 'warning',
++            },
++        },
+    },
+});
+```
+
+In this case, no side effect is triggered when the `COMMENT_APPROVE` action is dispatched. However, when the `fetch` side effects returns successfully, react-admin dispatches a `COMMENT_APPROVE_SUCCESS` action, and copies the `onSuccess` side effects into the `meta` property. So it will dispatch an action looking like:
+
+```js
+{
+    type: COMMENT_APPROVE_SUCCESS,
+    payload: { data: { /* data returned by the server */ } },
+    meta: {
+        resource: 'comments',
+        notification: {
+            body: 'resources.comments.notification.approved_success',
+            level: 'info',
+        },
+        redirectTo: '/comments',
+        basePath,
+    },
 }
 ```
 
-Let's explain all of that, starting with the final `commentSaga` generator function. A [generator function](http://exploringjs.com/es6/ch_generators.html) (denoted by the `*` in the function name) gets paused on statements called by `yield` - until the yielded statement returns. `yield []` yields two commands [in parallel](https://redux-saga.github.io/redux-saga/docs/advanced/RunningTasksInParallel.html). `yield takeEvery([ACTION_NAME], callback)` executes the provided callback [every time the related action is called](https://redux-saga.github.io/redux-saga/docs/basics/UsingSagaHelpers.html). To summarize, this will execute `commentApproveSuccess` when the fetch initiated by `commentApprove()` succeeds, and `commentApproveFailure` otherwise.
+And then, the side effects will trigger. With this code, approving a review now displays the correct notification, and redirects to the comment list.
 
-As for `commentApproveSuccess` and `commentApproveFailure`, they simply dispatch (`put()`) the side effects - the same side effects as in the initial version.
+You can use `onSuccess` and `onFailure` metas in your own actions to handle side effects.
+
+## Custom sagas
+
+Sometimes, you may want to trigger other *side effects*. React-admin promotes a programming style where side effects are decoupled from the rest of the code, which has the benefit of making them testable.
+
+In react-admin, side effects are handled by Sagas. [Redux-saga](https://redux-saga.github.io/redux-saga/) is a side effect library built for Redux, where side effects are defined by generator functions. If this is new to you, take a few minutes to go through the Saga documentation. 
+
+Here is the generator function necessary to handle the side effects for a failed `COMMENT_APPROVE` action which would log the error with an external service such as [Sentry](https://sentry.io):
+
+```jsx
+// in src/comments/commentSaga.js
+import { call, takeEvery } from 'redux-saga/effects';
+
+function* commentApproveFailure({ error }) {
+    yield call(Raven.captureException, error);
+}
+
+export default function* commentSaga() {
+    yield takeEvery('COMMENT_APPROVE_FAILURE', commentApproveFailure);
+}
+```
+
+Let's explain all of that, starting with the final `commentSaga` generator function. A [generator function](http://exploringjs.com/es6/ch_generators.html) (denoted by the `*` in the function name) gets paused on statements called by `yield` - until the yielded statement returns. `yield takeEvery([ACTION_NAME], callback)` executes the provided callback [every time the related action is called](https://redux-saga.github.io/redux-saga/docs/basics/UsingSagaHelpers.html). To summarize, this will execute `commentApproveFailure` when the fetch initiated by `commentApprove()` fails.
+
+As for `commentApproveFailure`, it just dispatch a [`call`](https://redux-saga.js.org/docs/api/#callfn-args) side effect to the `captureException` function from the global `Raven` object.
 
 To use this saga, pass it in the `customSagas` props of the `<Admin>` component:
 
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin, Resource } from 'admin-on-rest';
+import { Admin, Resource } from 'react-admin';
 
 import { CommentList } from './comments';
 import commentSaga from './comments/commentSaga';
 
 const App = () => (
-    <Admin customSagas={[ commentSaga ]} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin customSagas={[ commentSaga ]} dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         <Resource name="comments" list={CommentList} />
     </Admin>
 );
@@ -268,15 +355,58 @@ const App = () => (
 export default App;
 ```
 
-With this code, approving a review now displays the correct notification, and redirects to the comment list. And the side effects are [testable](https://redux-saga.github.io/redux-saga/docs/introduction/BeginnerTutorial.html#making-our-code-testable), too.
+With this code, a failed review approval now sends the the correct signal to Sentry.
 
-## Bonus: Optimistic Rendering
+**Tip**:  The side effects are [testable](https://redux-saga.github.io/redux-saga/docs/introduction/BeginnerTutorial.html#making-our-code-testable), too.
 
-In this example, after clicking on the "Approve" button, users are redirected to the comments list. Admin-on-rest then fetches the `/comments` resource to grab the list of updated comments from the server. But admin-on-rest doesn't wait for the response to this call to display the list of comments. In fact, it has an internal instance pool (in `state.admin.resources[resource]`) that is kept during navigation, and uses it to render the screen before the API calls are over - it's called *optimistic rendering*.
+## Optimistic Rendering and Undo
 
-As the custom `COMMENT_APPROVE` action contains the `fetch: UPDATE` meta, admin-on-rest will automatically update its instance pool with the response. That means that the initial rendering (before the `GET /comments` response arrives) will show the approved comment!
+In the previous example, after clicking on the "Approve" button, a spinner displays while the data provider is fetched. Then, users are redirected to the comments list. But in most cases, the server returns a success response, so the user waits for this response for nothing. 
 
-The fact that admin-on-rest updates the instance pool if you use custom actions with the `fetch` meta should be another motivation to avoid using raw `fetch`.
+For its own fetch actions, react-admin uses an approach called *optimistic rendering*. The idea is to handle the `fetch` actions on the client side first (i.e. updating entities in the Redux store), and re-render the screen immediately. The user sees the effect of their action with no delay. Then, react-admin applies the success side effects, and only after that it triggers the fetch to the data provider. If the fetch ends with a success, react-admin does nothing more than a refresh to grab the latest data from the server, but in most cases, the user sees no difference (the data in the Redux store and the data from the data provider are the same). If the fetch fails, react-admin shows an error notification, and forces a refresh, too.
+
+As a bonus, while the success notification is displayed, users have the ability to cancel the action *before* the data provider is even called.
+
+To make an action with a `fetch` meta optimistic, decorate it with the `startUndoable` action creator:
+
+```diff
+// in src/comments/ApproveButton.js
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Button from 'material-ui/Button';
++ import { startUndoable as startUndoableAction } from 'ra-core';
+- import { commentApprove as commentApproveAction } from './commentActions';
++ import { commentApprove } from './commentActions';
+
+class ApproveButton extends Component {
+    handleClick = () => {
+-        const { commentApprove, record } = this.props;
+-        commentApprove(record.id, record);
++        const { startUndoable, record } = this.props;
++        startUndoable(commentApprove(record.id, record));
+    }
+
+    render() {
+        return <Button onClick={this.handleClick}>Approve</Button>;
+    }
+}
+
+ApproveButton.propTypes = {
+-    commentApprove: PropTypes.func,
++    startUndoable: PropTypes.func,
+    record: PropTypes.object,
+};
+
+export default connect(null, {
+-    commentApprove: commentApproveAction,
++    startUndoable: startUndoableAction,
+})(ApproveButton);
+```
+
+And that's all it takes to make a fetch action optimistic. Note that the `startUndoable` action creator is passed to Redux `connect` as `mapDispatchToProp`, to be decorated with `dispatch` - but `commentApprove` is not. Only the first action must be decorated with dispatch.
+
+The fact that react-admin updates the internal store if you use custom actions with the `fetch` meta should be another motivation to avoid using raw `fetch`.
 
 ## Using a Custom Reducer
 
@@ -346,12 +476,12 @@ Now the question is: How can you put this reducer in the `<Admin>` app? Simple: 
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin } from 'admin-on-rest';
+import { Admin } from 'react-admin';
 
 import rate from './rateReducer';
 
 const App = () => (
-    <Admin customReducers={{ rate }} restClient={jsonServerRestClient('http://jsonplaceholder.typicode.com')}>
+    <Admin customReducers={{ rate }} dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
         ...
     </Admin>
 );
@@ -362,10 +492,20 @@ export default App;
 
 **Tip**: You can avoid storing data in the Redux state by storing data in a component state instead. It's much less complicated to deal with, and more performant, too. Use the global state only when you really need to.
 
+## List Bulk Actions
+
+Almost everything we saw before is true for custom `List` bulk actions too, with the following few differences:
+
+* They receive the following props: `resource`, `selectedIds` and `filterValues`
+* They do not receive the current record in the `record` prop as there are many of them.
+* They must render as a material-ui [`MenuItem`](http://www.material-ui.com/#/components/menu).
+
+You can find a complete example in the `List` documentation, in the [`bulk-actions`](/List.html#bulk-actions) section.
+
 ## Conclusion
 
 Which style should you choose for your own action buttons?
 
 The first version (with `fetch`) is perfectly fine, and if you're not into unit testing your components, or decoupling side effects from pure functions, then you can stick with it without problem.
 
-On the other hand, if you want to promote reusability, separation of concerns, adhere to admin-on-rest's coding standards, and if you know enough Redux and Saga, use the final version.
+On the other hand, if you want to promote reusability, separation of concerns, adhere to react-admin's coding standards, and if you know enough Redux and Saga, use the final version.

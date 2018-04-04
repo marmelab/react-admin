@@ -3,9 +3,11 @@ import { By, until } from 'selenium-webdriver';
 export default url => driver => ({
     elements: {
         appLoader: By.css('.app-loader'),
+        body: By.css('body'),
         input: (name, type = 'input') =>
             By.css(`.create-page ${type}[name='${name}']`),
-        inputs: By.css(`.aor-input`),
+        inputs: By.css(`.ra-input`),
+        snackbar: By.css('div[role="alertdialog"]'),
         submitButton: By.css(".create-page button[type='submit']"),
         submitAndAddButton: By.css(
             ".create-page form>div:last-child button[type='button']"
@@ -74,9 +76,11 @@ export default url => driver => ({
                 fields.map(field =>
                     field.getAttribute('class').then(classes =>
                         classes
-                            .replace('aor-input-', '')
-                            .replace('aor-input', '')
-                            .trim()
+                            .split(' ')
+                            .filter(className =>
+                                className.startsWith('ra-input-')
+                            )[0]
+                            .replace('ra-input-', '')
                     )
                 )
             )
@@ -84,12 +88,26 @@ export default url => driver => ({
     },
 
     submit() {
-        driver.findElement(this.elements.submitButton).click();
-        return this.waitUntilDataLoaded();
+        return driver
+            .findElement(this.elements.submitButton)
+            .click()
+            .then(() =>
+                driver.wait(until.elementLocated(this.elements.snackbar), 3000)
+            )
+            .then(() => driver.findElement(this.elements.body).click()) // dismiss notification
+            .then(() => driver.sleep(200)) // let the notification disappear (could block further submits)
+            .then(() => this.waitUntilDataLoaded());
     },
 
     submitAndAdd() {
-        driver.findElement(this.elements.submitAndAddButton).click();
-        return this.waitUntilDataLoaded();
+        return driver
+            .findElement(this.elements.submitAndAddButton)
+            .click()
+            .then(() =>
+                driver.wait(until.elementLocated(this.elements.snackbar), 3000)
+            )
+            .then(() => driver.findElement(this.elements.body).click()) // dismiss notification
+            .then(() => driver.sleep(200)) // let the notification disappear (could block further submits)
+            .then(() => this.waitUntilDataLoaded());
     },
 });
