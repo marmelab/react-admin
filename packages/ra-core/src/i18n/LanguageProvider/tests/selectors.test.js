@@ -1,4 +1,4 @@
-import { selectLocale } from '../selectors';
+import { selectLocale, selectMessages } from '../selectors';
 
 describe('selectLocale', () => {
   it('should select the locale state', () => {
@@ -17,6 +17,6 @@ describe('selectLocale', () => {
         messages,
       },
     };
-    expect(selectLocale(mockedState)).toEqual(messages);
+    expect(selectMessages(mockedState)).toEqual(messages);
   });
 });
