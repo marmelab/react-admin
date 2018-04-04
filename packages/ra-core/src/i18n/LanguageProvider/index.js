@@ -34,11 +34,7 @@ export const fromPolyglot = (obj) => {
   return toReturn;
 };
 
-class TranslationProvider extends PureComponent {
-  render() {
-    return cloneElement(Children.only(this.props.children), { intl: this.props.intl });
-  }
-}
+const TranslationProvider = (props) => Children.only(props.children);
 
 const withI18nContext = withContext(
   {
