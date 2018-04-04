@@ -19,6 +19,23 @@ describe('<SimpleForm />', () => {
             'city',
         ]);
     });
+    it('should filter falsy children', () => {
+        const condition = false;
+
+        const wrapper = shallow(
+            <SimpleForm>
+                <TextInput source="name" />
+                <TextInput source="city" />
+                {condition && <TextInput source="foo" />}
+                {condition ? <TextInput source="bar" /> : null}
+            </SimpleForm>
+        );
+        const inputs = wrapper.find('FormInput');
+        assert.deepEqual(inputs.map(i => i.prop('input').props.source), [
+            'name',
+            'city',
+        ]);
+    });
 
     it('should display <Toolbar />', () => {
         const wrapper = shallow(
