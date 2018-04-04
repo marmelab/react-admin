@@ -42,7 +42,7 @@ const withI18nContext = withContext(
   },
   (props) => {
     return {
-      translate: (id, opts) => console.log(opts) || props.intl.formatMessage({ id }, opts),
+      translate: (id, opts) => props.intl.formatMessage({ id }, opts),
     };
   }
 );
