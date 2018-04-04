@@ -14,13 +14,13 @@
         "enzyme": "~3.3.0",
         "enzyme-adapter-react-16": "~1.1.1",
         "ignore-styles": "~5.0.1",
-        "react": "~16.0.0",
-        "react-dom": "~16.0.0",
-        "react-test-renderer": "~16.0.0"
+        "react": "~16.3.1",
+        "react-dom": "~16.3.1",
+        "react-test-renderer": "~16.3.1"
     },
     "peerDependencies": {
-        "react": "~16.0.0 || ~16.1.0 || ~16.2.0",
-        "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0"
+        "react": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0",
+        "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0"
     },
     "dependencies": {
         "babel-runtime": "~6.26.0",
@@ -28,16 +28,16 @@
         "inflection": "~1.12.0",
         "lodash": "~4.17.5",
         "node-polyglot": "2.2.2",
-        "prop-types": "~15.5.7",
-        "query-string": "~5.0.0",
+        "prop-types": "~15.6.1",
+        "query-string": "~6.0.0",
         "ra-language-english": "^2.0.0-beta4",
-        "react-redux": "~5.0.4",
+        "react-redux": "~5.0.7",
         "react-router": "~4.2.0",
         "react-router-dom": "~4.2.2",
-        "react-router-redux": "~5.0.0-alpha.6",
-        "recompose": "~0.25.0",
+        "react-router-redux": "~5.0.0-alpha.9",
+        "recompose": "~0.26.0",
         "redux": "~3.7.2",
-        "redux-form": "~7.0.3",
+        "redux-form": "~7.3.0",
         "redux-saga": "~0.16.0",
         "reselect": "~3.0.0",
         "warning": "~3.0.0"

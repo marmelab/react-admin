@@ -14,13 +14,13 @@
         "enzyme-adapter-react-16": "~1.1.1",
         "file-api": "~0.10.4",
         "ignore-styles": "~5.0.1",
-        "react": "~16.0.0",
-        "react-dom": "~16.0.0",
-        "react-test-renderer": "~16.0.0"
+        "react": "~16.3.1",
+        "react-dom": "~16.3.1",
+        "react-test-renderer": "~16.3.1"
     },
     "peerDependencies": {
-        "react": "~16.0.0 || ~16.1.0 || ~16.2.0",
-        "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0"
+        "react": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0",
+        "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0"
     },
     "dependencies": {
         "autosuggest-highlight": "^3.1.1",
@@ -29,15 +29,15 @@
         "lodash": "~4.17.5",
         "material-ui": "1.0.0-beta.40",
         "material-ui-icons": "1.0.0-beta.36",
-        "prop-types": "~15.5.7",
+        "prop-types": "~15.6.1",
         "ra-core": "^2.0.0-beta4",
         "react-autosuggest": "^9.3.2",
         "react-dropzone": "~4.0.1",
-        "react-redux": "~5.0.4",
+        "react-redux": "~5.0.7",
         "react-router-dom": "~4.2.2",
         "react-transition-group": "^2.2.1",
-        "recompose": "~0.25.0",
+        "recompose": "~0.26.0",
         "redux": "~3.7.2",
-        "redux-form": "~7.0.3"
+        "redux-form": "~7.3.0"
     }
 }
