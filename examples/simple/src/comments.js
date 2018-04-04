@@ -100,7 +100,7 @@ const CommentGrid = withStyles(listStyles)(
     translate(({ classes, ids, data, basePath, translate }) => (
         <Grid spacing={16} container style={{ padding: '1em' }}>
             {ids.map(id => (
-                <Grid spacing={16} item key={id} sm={12} md={6} lg={4}>
+                <Grid item key={id} sm={12} md={6} lg={4}>
                     <Card className={classes.card}>
                         <CardHeader
                             title={

@@ -8,7 +8,7 @@
         "start":
             "./node_modules/.bin/webpack-dev-server --progress --color --hot --watch --mode development",
         "build":
-            "./node_modules/.bin/webpack --color --mode development --hide-modules true",
+            "./node_modules/.bin/webpack-cli --color --mode development --hide-modules true",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
@@ -17,24 +17,23 @@
         "babel-core": "~6.26.0",
         "babel-loader": "~7.1.1",
         "babel-plugin-transform-react-jsx": "~6.24.1",
-        "babel-polyfill": "~6.9.1",
+        "babel-polyfill": "~6.26.0",
         "babel-preset-react": "~6.24.1",
         "css-loader": "~0.28.4",
-        "extract-text-webpack-plugin": "~2.1.2",
         "html-loader": "~0.5.5",
-        "html-webpack-plugin": "~3.0.6",
+        "html-webpack-plugin": "~3.2.0",
         "material-ui": "1.0.0-beta.40",
         "material-ui-icons": "1.0.0-beta.36",
         "ra-data-fakerest": "^2.0.0-beta1",
         "ra-input-rich-text": "^2.0.0-beta1",
         "ra-language-english": "^2.0.0-beta1",
         "ra-language-french": "^2.0.0-beta1",
-        "react": "~16.0.0",
+        "react": "~16.3.1",
         "react-admin": "^2.0.0-beta1",
-        "react-dom": "~16.0.0",
-        "style-loader": "~0.18.2",
-        "webpack": "~4.1.1",
-        "webpack-cli": "~2.0.12",
+        "react-dom": "~16.3.1",
+        "style-loader": "~0.20.3",
+        "webpack": "~4.5.0",
+        "webpack-cli": "~2.0.13",
         "webpack-dev-server": "~3.1.1"
     }
 }
