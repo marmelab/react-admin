@@ -6,56 +6,56 @@ import Typography from 'material-ui/Typography';
 import sanitizeRestProps from './sanitizeRestProps';
 
 export const removeTags = input =>
-    input ? input.replace(/<[^>]+>/gm, '') : '';
+  input ? input.replace(/<[^>]+>/gm, '') : '';
 
 const RichTextField = ({
-    className,
-    source,
-    record = {},
-    stripTags,
-    ...rest
+  className,
+  source,
+  record = {},
+  stripTags,
+  ...rest
 }) => {
-    const value = get(record, source);
-    if (stripTags) {
-        return (
-            <Typography
-                className={className}
-                component="span"
-                {...sanitizeRestProps(rest)}
-            >
-                {removeTags(value)}
-            </Typography>
-        );
-    }
-
+  const value = get(record, source);
+  if (stripTags) {
     return (
-        <Typography
-            className={className}
-            component="span"
-            {...sanitizeRestProps(rest)}
-        >
-            <span dangerouslySetInnerHTML={{ __html: value }} />
-        </Typography>
+      <Typography
+        className={className}
+        component="span"
+        {...sanitizeRestProps(rest)}
+      >
+        {removeTags(value)}
+      </Typography>
     );
+  }
+
+  return (
+    <Typography
+      className={className}
+      component="span"
+      {...sanitizeRestProps(rest)}
+    >
+      <span dangerouslySetInnerHTML={{ __html: value }} />
+    </Typography>
+  );
 };
 
 RichTextField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    label: PropTypes.string,
-    record: PropTypes.object,
-    source: PropTypes.string.isRequired,
-    stripTags: PropTypes.bool,
+  addLabel: PropTypes.bool,
+  basePath: PropTypes.string,
+  className: PropTypes.string,
+  cellClassName: PropTypes.string,
+  headerClassName: PropTypes.string,
+  label: PropTypes.string,
+  record: PropTypes.object,
+  source: PropTypes.string.isRequired,
+  stripTags: PropTypes.bool,
 };
 
 const PureRichTextField = pure(RichTextField);
 
 PureRichTextField.defaultProps = {
-    addLabel: true,
-    stripTags: false,
+  addLabel: true,
+  stripTags: false,
 };
 
 export default PureRichTextField;

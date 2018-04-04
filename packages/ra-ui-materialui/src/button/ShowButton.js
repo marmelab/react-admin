@@ -8,35 +8,35 @@ import Link from '../Link';
 import Button from './Button';
 
 const ShowButton = ({
-    basePath = '',
-    label = 'ra.action.show',
-    record = {},
-    ...rest
+  basePath = '',
+  label = 'ra.action.show',
+  record = {},
+  ...rest
 }) => (
-    <Button
-        component={Link}
-        to={`${linkToRecord(basePath, record.id)}/show`}
-        label={label}
-        {...rest}
-    >
-        <ImageEye />
-    </Button>
+  <Button
+    component={Link}
+    to={`${linkToRecord(basePath, record.id)}/show`}
+    label={label}
+    {...rest}
+  >
+    <ImageEye />
+  </Button>
 );
 
 ShowButton.propTypes = {
-    basePath: PropTypes.string,
-    label: PropTypes.string,
-    record: PropTypes.object,
+  basePath: PropTypes.string,
+  label: PropTypes.string,
+  record: PropTypes.object,
 };
 
 const enhance = shouldUpdate(
-    (props, nextProps) =>
-        props.translate !== nextProps.translate ||
-        (props.record &&
-            nextProps.record &&
-            props.record.id !== nextProps.record.id) ||
-        props.basePath !== nextProps.basePath ||
-        (props.record == null && nextProps.record != null)
+  (props, nextProps) =>
+    props.translate !== nextProps.translate ||
+    (props.record &&
+      nextProps.record &&
+      props.record.id !== nextProps.record.id) ||
+    props.basePath !== nextProps.basePath ||
+    (props.record == null && nextProps.record != null)
 );
 
 export default enhance(ShowButton);

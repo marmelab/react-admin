@@ -8,26 +8,25 @@ import Responsive from './Responsive';
 import AppBarMobile from './AppBarMobile';
 
 const ViewTitle = ({ className, title, ...rest }) => (
-    <Responsive
-        xsmall={
-            <AppBarMobile
-                className={classnames('title', className)}
-                title={title}
-                {...rest}
-            />
-        }
-        medium={
-            <CardContent className={classnames('title', className)} {...rest}>
-                <Typography variant="headline">{title}</Typography>
-            </CardContent>
-        }
-    />
+  <Responsive
+    xsmall={
+      <AppBarMobile
+        className={classnames('title', className)}
+        title={title}
+        {...rest}
+      />
+    }
+    medium={
+      <CardContent className={classnames('title', className)} {...rest}>
+        <Typography variant="headline">{title}</Typography>
+      </CardContent>
+    }
+  />
 );
 
 ViewTitle.propTypes = {
-    className: PropTypes.string,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-        .isRequired,
+  className: PropTypes.string,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
 };
 
 export default ViewTitle;

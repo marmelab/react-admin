@@ -9,104 +9,104 @@ import DefaultActions from './EditActions';
 import RecordTitle from '../layout/RecordTitle';
 
 const sanitizeRestProps = ({
-    actions,
-    children,
-    className,
-    crudGetOne,
-    crudUpdate,
-    data,
-    hasCreate,
-    hasEdit,
-    hasList,
-    hasShow,
-    id,
-    isLoading,
-    resetForm,
-    resource,
-    title,
-    translate,
-    version,
-    match,
-    location,
-    history,
-    options,
-    locale,
-    permissions,
-    undoable,
-    ...rest
+  actions,
+  children,
+  className,
+  crudGetOne,
+  crudUpdate,
+  data,
+  hasCreate,
+  hasEdit,
+  hasList,
+  hasShow,
+  id,
+  isLoading,
+  resetForm,
+  resource,
+  title,
+  translate,
+  version,
+  match,
+  location,
+  history,
+  options,
+  locale,
+  permissions,
+  undoable,
+  ...rest
 }) => rest;
 
 const EditView = ({
-    actions = <DefaultActions />,
-    basePath,
-    children,
-    className,
-    defaultTitle,
-    hasList,
-    hasShow,
-    record,
-    redirect,
-    resource,
-    save,
-    title,
-    version,
-    ...rest
+  actions = <DefaultActions />,
+  basePath,
+  children,
+  className,
+  defaultTitle,
+  hasList,
+  hasShow,
+  record,
+  redirect,
+  resource,
+  save,
+  title,
+  version,
+  ...rest
 }) => (
-    <div
-        className={classnames('edit-page', className)}
-        {...sanitizeRestProps(rest)}
-    >
-        <Card>
-            <Header
-                title={
-                    <RecordTitle
-                        title={title}
-                        record={record}
-                        defaultTitle={defaultTitle}
-                    />
-                }
-                actions={actions}
-                actionProps={{
-                    basePath,
-                    data: record,
-                    hasShow,
-                    hasList,
-                    resource,
-                }}
-            />
-            {record ? (
-                React.cloneElement(children, {
-                    save,
-                    resource,
-                    basePath,
-                    record,
-                    version,
-                    redirect:
-                        typeof children.props.redirect === 'undefined'
-                            ? redirect
-                            : children.props.redirect,
-                })
-            ) : (
-                <CardContent>&nbsp;</CardContent>
-            )}
-        </Card>
-    </div>
+  <div
+    className={classnames('edit-page', className)}
+    {...sanitizeRestProps(rest)}
+  >
+    <Card>
+      <Header
+        title={
+          <RecordTitle
+            title={title}
+            record={record}
+            defaultTitle={defaultTitle}
+          />
+        }
+        actions={actions}
+        actionProps={{
+          basePath,
+          data: record,
+          hasShow,
+          hasList,
+          resource,
+        }}
+      />
+      {record ? (
+        React.cloneElement(children, {
+          save,
+          resource,
+          basePath,
+          record,
+          version,
+          redirect:
+            typeof children.props.redirect === 'undefined'
+              ? redirect
+              : children.props.redirect,
+        })
+      ) : (
+        <CardContent>&nbsp;</CardContent>
+      )}
+    </Card>
+  </div>
 );
 
 EditView.propTypes = {
-    actions: PropTypes.element,
-    basePath: PropTypes.string,
-    children: PropTypes.element,
-    className: PropTypes.string,
-    defaultTitle: PropTypes.any,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    record: PropTypes.object,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    resource: PropTypes.string,
-    save: PropTypes.func,
-    title: PropTypes.any,
-    version: PropTypes.number,
+  actions: PropTypes.element,
+  basePath: PropTypes.string,
+  children: PropTypes.element,
+  className: PropTypes.string,
+  defaultTitle: PropTypes.any,
+  hasList: PropTypes.bool,
+  hasShow: PropTypes.bool,
+  record: PropTypes.object,
+  redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  resource: PropTypes.string,
+  save: PropTypes.func,
+  title: PropTypes.any,
+  version: PropTypes.number,
 };
 
 /**
@@ -152,23 +152,23 @@ EditView.propTypes = {
  *     export default App;
  */
 const Edit = props => (
-    <EditController {...props}>
-        {controllerProps => <EditView {...props} {...controllerProps} />}
-    </EditController>
+  <EditController {...props}>
+    {controllerProps => <EditView {...props} {...controllerProps} />}
+  </EditController>
 );
 
 Edit.propTypes = {
-    actions: PropTypes.element,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    hasList: PropTypes.bool,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
-    resource: PropTypes.string.isRequired,
-    title: PropTypes.any,
+  actions: PropTypes.element,
+  children: PropTypes.node,
+  className: PropTypes.string,
+  hasCreate: PropTypes.bool,
+  hasEdit: PropTypes.bool,
+  hasShow: PropTypes.bool,
+  hasList: PropTypes.bool,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  resource: PropTypes.string.isRequired,
+  title: PropTypes.any,
 };
 
 export default Edit;

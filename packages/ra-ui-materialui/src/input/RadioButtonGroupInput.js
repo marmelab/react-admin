@@ -67,108 +67,103 @@ import sanitizeRestProps from './sanitizeRestProps';
  * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
  */
 export class RadioButtonGroupInput extends Component {
-    handleChange = (event, value) => {
-        this.props.input.onChange(value);
-    };
+  handleChange = (event, value) => {
+    this.props.input.onChange(value);
+  };
 
-    renderRadioButton = choice => {
-        const {
-            optionText,
-            optionValue,
-            translate,
-            translateChoice,
-        } = this.props;
-        const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
-            ? React.cloneElement(optionText, { record: choice })
-            : typeof optionText === 'function'
-              ? optionText(choice)
-              : get(choice, optionText);
-        return (
-            <FormControlLabel
-                key={get(choice, optionValue)}
-                value={get(choice, optionValue)}
-                control={<Radio />}
-                label={
-                    translateChoice
-                        ? translate(choiceName, { _: choiceName })
-                        : choiceName
-                }
-            />
-        );
-    };
-
-    render() {
-        const {
-            className,
-            label,
-            resource,
-            source,
-            input,
-            isRequired,
-            choices,
-            options,
-            meta,
-            ...rest
-        } = this.props;
-        if (typeof meta === 'undefined') {
-            throw new Error(
-                "The RadioButtonGroupInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
-            );
+  renderRadioButton = choice => {
+    const { optionText, optionValue, translate, translateChoice } = this.props;
+    const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
+      ? React.cloneElement(optionText, { record: choice })
+      : typeof optionText === 'function'
+        ? optionText(choice)
+        : get(choice, optionText);
+    return (
+      <FormControlLabel
+        key={get(choice, optionValue)}
+        value={get(choice, optionValue)}
+        control={<Radio />}
+        label={
+          translateChoice
+            ? translate(choiceName, { _: choiceName })
+            : choiceName
         }
+      />
+    );
+  };
 
-        const { touched, error, helperText = false } = meta;
-
-        return (
-            <Labeled
-                {...sanitizeRestProps(rest)}
-                className={className}
-                label={label}
-                resource={resource}
-                onChange={this.handleChange}
-                source={source}
-                isRequired={isRequired}
-            >
-                <RadioGroup
-                    name={source}
-                    defaultSelected={input.value}
-                    value={input.value}
-                    {...options}
-                >
-                    {choices.map(this.renderRadioButton)}
-                </RadioGroup>
-                {touched && error && <FormHelperText>{error}</FormHelperText>}
-                {helperText && <FormHelperText>{helperText}</FormHelperText>}
-            </Labeled>
-        );
+  render() {
+    const {
+      className,
+      label,
+      resource,
+      source,
+      input,
+      isRequired,
+      choices,
+      options,
+      meta,
+      ...rest
+    } = this.props;
+    if (typeof meta === 'undefined') {
+      throw new Error(
+        "The RadioButtonGroupInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
+      );
     }
+
+    const { touched, error, helperText = false } = meta;
+
+    return (
+      <Labeled
+        {...sanitizeRestProps(rest)}
+        className={className}
+        label={label}
+        resource={resource}
+        onChange={this.handleChange}
+        source={source}
+        isRequired={isRequired}
+      >
+        <RadioGroup
+          name={source}
+          defaultSelected={input.value}
+          value={input.value}
+          {...options}
+        >
+          {choices.map(this.renderRadioButton)}
+        </RadioGroup>
+        {touched && error && <FormHelperText>{error}</FormHelperText>}
+        {helperText && <FormHelperText>{helperText}</FormHelperText>}
+      </Labeled>
+    );
+  }
 }
 
 RadioButtonGroupInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.object),
-    className: PropTypes.string,
-    input: PropTypes.object,
-    isRequired: PropTypes.bool,
-    label: PropTypes.string,
-    options: PropTypes.object,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]).isRequired,
-    optionValue: PropTypes.string.isRequired,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
-    translateChoice: PropTypes.bool.isRequired,
-    meta: PropTypes.object,
+  choices: PropTypes.arrayOf(PropTypes.object),
+  className: PropTypes.string,
+  input: PropTypes.object,
+  isRequired: PropTypes.bool,
+  label: PropTypes.string,
+  options: PropTypes.object,
+  optionText: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.func,
+    PropTypes.element,
+  ]).isRequired,
+  optionValue: PropTypes.string.isRequired,
+  resource: PropTypes.string,
+  source: PropTypes.string,
+  translate: PropTypes.func.isRequired,
+  translateChoice: PropTypes.bool.isRequired,
+  meta: PropTypes.object,
 };
 
 RadioButtonGroupInput.defaultProps = {
-    choices: [],
-    options: {},
-    optionText: 'name',
-    optionValue: 'id',
-    translateChoice: true,
+  choices: [],
+  options: {},
+  optionText: 'name',
+  optionValue: 'id',
+  translateChoice: true,
 };
 
 export default compose(addField, translate)(RadioButtonGroupInput);

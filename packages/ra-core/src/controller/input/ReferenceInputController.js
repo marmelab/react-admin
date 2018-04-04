@@ -7,9 +7,9 @@ import { createSelector } from 'reselect';
 
 import { crudGetOne, crudGetMatching } from '../../actions/dataActions';
 import {
-    getPossibleReferences,
-    getPossibleReferenceValues,
-    getReferenceResource,
+  getPossibleReferences,
+  getPossibleReferenceValues,
+  getReferenceResource,
 } from '../../reducer';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import translate from '../../i18n/translate';
@@ -96,178 +96,175 @@ const referenceSource = (resource, source) => `${resource}@${source}`;
  * </ReferenceInput>
  */
 export class ReferenceInputController extends Component {
-    constructor(props) {
-        super(props);
-        const { perPage, sort, filter } = props;
-        // stored as a property rather than state because we don't want redraw of async updates
-        this.params = { pagination: { page: 1, perPage }, sort, filter };
-        this.debouncedSetFilter = debounce(this.setFilter.bind(this), 500);
+  constructor(props) {
+    super(props);
+    const { perPage, sort, filter } = props;
+    // stored as a property rather than state because we don't want redraw of async updates
+    this.params = { pagination: { page: 1, perPage }, sort, filter };
+    this.debouncedSetFilter = debounce(this.setFilter.bind(this), 500);
+  }
+
+  componentDidMount() {
+    this.fetchReferenceAndOptions(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.record.id !== nextProps.record.id) {
+      this.fetchReferenceAndOptions(nextProps);
+    } else if (this.props.input.value !== nextProps.input.value) {
+      this.fetchReference(nextProps);
     }
+  }
 
-    componentDidMount() {
-        this.fetchReferenceAndOptions(this.props);
+  setFilter = filter => {
+    if (filter !== this.params.filter) {
+      this.params.filter = this.props.filterToQuery(filter);
+      this.fetchOptions();
     }
+  };
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.record.id !== nextProps.record.id) {
-            this.fetchReferenceAndOptions(nextProps);
-        } else if (this.props.input.value !== nextProps.input.value) {
-            this.fetchReference(nextProps);
-        }
+  setPagination = pagination => {
+    if (pagination !== this.param.pagination) {
+      this.param.pagination = pagination;
+      this.fetchOptions();
     }
+  };
 
-    setFilter = filter => {
-        if (filter !== this.params.filter) {
-            this.params.filter = this.props.filterToQuery(filter);
-            this.fetchOptions();
-        }
-    };
-
-    setPagination = pagination => {
-        if (pagination !== this.param.pagination) {
-            this.param.pagination = pagination;
-            this.fetchOptions();
-        }
-    };
-
-    setSort = sort => {
-        if (sort !== this.params.sort) {
-            this.params.sort = sort;
-            this.fetchOptions();
-        }
-    };
-
-    fetchReference = (props = this.props) => {
-        const { crudGetOne, input, reference } = props;
-        const id = input.value;
-        if (id) {
-            crudGetOne(reference, id, null, false);
-        }
-    };
-
-    fetchOptions = (props = this.props) => {
-        const {
-            crudGetMatching,
-            filter: filterFromProps,
-            reference,
-            referenceSource,
-            resource,
-            source,
-        } = props;
-        const { pagination, sort, filter } = this.params;
-
-        crudGetMatching(
-            reference,
-            referenceSource(resource, source),
-            pagination,
-            sort,
-            { ...filterFromProps, ...filter }
-        );
-    };
-
-    fetchReferenceAndOptions(props) {
-        this.fetchReference(props);
-        this.fetchOptions(props);
+  setSort = sort => {
+    if (sort !== this.params.sort) {
+      this.params.sort = sort;
+      this.fetchOptions();
     }
+  };
 
-    render() {
-        const {
-            input,
-            referenceRecord,
-            matchingReferences,
-            onChange,
-            children,
-            translate,
-        } = this.props;
-
-        const dataStatus = getDataStatus({
-            input,
-            matchingReferences,
-            referenceRecord,
-            translate,
-        });
-
-        return children({
-            choices: dataStatus.choices,
-            error: dataStatus.error,
-            isLoading: dataStatus.waiting,
-            onChange,
-            setFilter: this.debouncedSetFilter,
-            setPagination: this.setPagination,
-            setSort: this.setSort,
-            warning: dataStatus.warning,
-        });
+  fetchReference = (props = this.props) => {
+    const { crudGetOne, input, reference } = props;
+    const id = input.value;
+    if (id) {
+      crudGetOne(reference, id, null, false);
     }
+  };
+
+  fetchOptions = (props = this.props) => {
+    const {
+      crudGetMatching,
+      filter: filterFromProps,
+      reference,
+      referenceSource,
+      resource,
+      source,
+    } = props;
+    const { pagination, sort, filter } = this.params;
+
+    crudGetMatching(
+      reference,
+      referenceSource(resource, source),
+      pagination,
+      sort,
+      { ...filterFromProps, ...filter }
+    );
+  };
+
+  fetchReferenceAndOptions(props) {
+    this.fetchReference(props);
+    this.fetchOptions(props);
+  }
+
+  render() {
+    const {
+      input,
+      referenceRecord,
+      matchingReferences,
+      onChange,
+      children,
+      translate,
+    } = this.props;
+
+    const dataStatus = getDataStatus({
+      input,
+      matchingReferences,
+      referenceRecord,
+      translate,
+    });
+
+    return children({
+      choices: dataStatus.choices,
+      error: dataStatus.error,
+      isLoading: dataStatus.waiting,
+      onChange,
+      setFilter: this.debouncedSetFilter,
+      setPagination: this.setPagination,
+      setSort: this.setSort,
+      warning: dataStatus.warning,
+    });
+  }
 }
 
 ReferenceInputController.propTypes = {
-    allowEmpty: PropTypes.bool.isRequired,
-    basePath: PropTypes.string,
-    children: PropTypes.func.isRequired,
-    className: PropTypes.string,
-    classes: PropTypes.object,
-    crudGetMatching: PropTypes.func.isRequired,
-    crudGetOne: PropTypes.func.isRequired,
-    filter: PropTypes.object,
-    filterToQuery: PropTypes.func.isRequired,
-    input: PropTypes.object.isRequired,
-    matchingReferences: PropTypes.oneOfType([
-        PropTypes.array,
-        PropTypes.object,
-    ]),
-    onChange: PropTypes.func,
-    perPage: PropTypes.number,
-    record: PropTypes.object,
-    reference: PropTypes.string.isRequired,
-    referenceRecord: PropTypes.object,
-    referenceSource: PropTypes.func.isRequired,
-    resource: PropTypes.string.isRequired,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC']),
-    }),
-    source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
+  allowEmpty: PropTypes.bool.isRequired,
+  basePath: PropTypes.string,
+  children: PropTypes.func.isRequired,
+  className: PropTypes.string,
+  classes: PropTypes.object,
+  crudGetMatching: PropTypes.func.isRequired,
+  crudGetOne: PropTypes.func.isRequired,
+  filter: PropTypes.object,
+  filterToQuery: PropTypes.func.isRequired,
+  input: PropTypes.object.isRequired,
+  matchingReferences: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  onChange: PropTypes.func,
+  perPage: PropTypes.number,
+  record: PropTypes.object,
+  reference: PropTypes.string.isRequired,
+  referenceRecord: PropTypes.object,
+  referenceSource: PropTypes.func.isRequired,
+  resource: PropTypes.string.isRequired,
+  sort: PropTypes.shape({
+    field: PropTypes.string,
+    order: PropTypes.oneOf(['ASC', 'DESC']),
+  }),
+  source: PropTypes.string,
+  translate: PropTypes.func.isRequired,
 };
 
 ReferenceInputController.defaultProps = {
-    allowEmpty: false,
-    filter: {},
-    filterToQuery: searchText => ({ q: searchText }),
-    matchingReferences: null,
-    perPage: 25,
-    sort: { field: 'id', order: 'DESC' },
-    referenceRecord: null,
-    referenceSource, // used in tests
+  allowEmpty: false,
+  filter: {},
+  filterToQuery: searchText => ({ q: searchText }),
+  matchingReferences: null,
+  perPage: 25,
+  sort: { field: 'id', order: 'DESC' },
+  referenceRecord: null,
+  referenceSource, // used in tests
 };
 
 const makeMapStateToProps = () =>
-    createSelector(
-        [
-            getReferenceResource,
-            getPossibleReferenceValues,
-            (_, props) => props.input.value,
-        ],
-        (referenceState, possibleValues, inputId) => ({
-            matchingReferences: getPossibleReferences(
-                referenceState,
-                possibleValues,
-                [inputId]
-            ),
-            referenceRecord: referenceState && referenceState.data[inputId],
-        })
-    );
+  createSelector(
+    [
+      getReferenceResource,
+      getPossibleReferenceValues,
+      (_, props) => props.input.value,
+    ],
+    (referenceState, possibleValues, inputId) => ({
+      matchingReferences: getPossibleReferences(
+        referenceState,
+        possibleValues,
+        [inputId]
+      ),
+      referenceRecord: referenceState && referenceState.data[inputId],
+    })
+  );
 
 const EnhancedReferenceInputController = compose(
-    translate,
-    connect(makeMapStateToProps(), {
-        crudGetOne,
-        crudGetMatching,
-    })
+  translate,
+  connect(makeMapStateToProps(), {
+    crudGetOne,
+    crudGetMatching,
+  })
 )(ReferenceInputController);
 
 EnhancedReferenceInputController.defaultProps = {
-    referenceSource, // used in makeMapStateToProps
+  referenceSource, // used in makeMapStateToProps
 };
 
 export default EnhancedReferenceInputController;

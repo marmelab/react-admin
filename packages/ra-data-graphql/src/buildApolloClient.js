@@ -2,25 +2,25 @@ import { ApolloClient } from 'apollo-client';
 import { HttpLink, InMemoryCache } from 'apollo-client-preset';
 
 export default options => {
-    if (!options) {
-        return new ApolloClient();
-    }
+  if (!options) {
+    return new ApolloClient();
+  }
 
-    const { cache, link, uri, ...otherOptions } = options;
-    let finalLink = otherOptions.link;
-    let finalCache = otherOptions.cache;
+  const { cache, link, uri, ...otherOptions } = options;
+  let finalLink = otherOptions.link;
+  let finalCache = otherOptions.cache;
 
-    if (!link && uri) {
-        finalLink = new HttpLink({ uri });
-    }
+  if (!link && uri) {
+    finalLink = new HttpLink({ uri });
+  }
 
-    if (!cache) {
-        finalCache = new InMemoryCache().restore({});
-    }
+  if (!cache) {
+    finalCache = new InMemoryCache().restore({});
+  }
 
-    return new ApolloClient({
-        link: finalLink,
-        cache: finalCache,
-        ...otherOptions,
-    });
+  return new ApolloClient({
+    link: finalLink,
+    cache: finalCache,
+    ...otherOptions,
+  });
 };

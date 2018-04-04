@@ -12,10 +12,8 @@ describe('<FilterForm />', () => {
   const defaultProps = {
     resource: 'post',
     filters: [],
-    setFilter: () => {
-    },
-    hideFilter: () => {
-    },
+    setFilter: () => {},
+    hideFilter: () => {},
     displayedFilters: {},
     filterValues: {},
     translate: x => x,
@@ -27,7 +25,7 @@ describe('<FilterForm />', () => {
   });
 
   it('should display correctly passed filters', () => {
-    const filters = [<TextInput source="title" label="Title"/>]; // eslint-disable-line react/jsx-key
+    const filters = [<TextInput source="title" label="Title" />]; // eslint-disable-line react/jsx-key
     const displayedFilters = { title: true };
 
     const muiTheme = createMuiTheme({ userAgent: false });

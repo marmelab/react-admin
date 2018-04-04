@@ -6,22 +6,22 @@ export * from './util';
 export * from './controller';
 export * from './form';
 export createAppReducer, {
-    getResources,
-    getReferenceResource,
-    getLocale,
-    getNotification,
-    getPossibleReferences,
-    getPossibleReferenceValues,
+  getResources,
+  getReferenceResource,
+  getLocale,
+  getNotification,
+  getPossibleReferences,
+  getPossibleReferenceValues,
 } from './reducer';
 export adminReducer from './reducer/admin';
 export i18nReducer from './reducer/i18n';
 export queryReducer from './reducer/admin/resource/list/queryReducer';
 
 export {
-    getIds,
-    getReferences,
-    getReferencesByIds,
-    nameRelatedTo,
+  getIds,
+  getReferences,
+  getReferencesByIds,
+  nameRelatedTo,
 } from './reducer/admin/references/oneToMany';
 
 export * from './sideEffect';

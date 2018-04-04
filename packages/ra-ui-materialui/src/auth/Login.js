@@ -11,40 +11,40 @@ import Notification from '../layout/Notification';
 import DefaultLoginForm from './LoginForm';
 
 const styles = theme => ({
-    main: {
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-        height: '1px',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        background: 'url(https://source.unsplash.com/random/1600x900)',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-    },
-    card: {
-        minWidth: 300,
-        marginTop: '6em',
-    },
-    avatar: {
-        margin: '1em',
-        display: 'flex',
-        justifyContent: 'center',
-    },
-    icon: {
-        backgroundColor: theme.palette.secondary[500],
-    },
+  main: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+    height: '1px',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    background: 'url(https://source.unsplash.com/random/1600x900)',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+  },
+  card: {
+    minWidth: 300,
+    marginTop: '6em',
+  },
+  avatar: {
+    margin: '1em',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  icon: {
+    backgroundColor: theme.palette.secondary[500],
+  },
 });
 
 const sanitizeRestProps = ({
-    classes,
-    className,
-    location,
-    title,
-    array,
-    theme,
-    staticContext,
-    ...rest
+  classes,
+  className,
+  location,
+  title,
+  array,
+  theme,
+  staticContext,
+  ...rest
 }) => rest;
 
 /**
@@ -66,39 +66,39 @@ const sanitizeRestProps = ({
  *     );
  */
 const Login = ({
-    classes,
-    className,
-    loginForm = <DefaultLoginForm />,
-    ...rest
+  classes,
+  className,
+  loginForm = <DefaultLoginForm />,
+  ...rest
 }) => (
-    <div
-        className={classnames(classes.main, className)}
-        {...sanitizeRestProps(rest)}
-    >
-        <Card className={classes.card}>
-            <div className={classes.avatar}>
-                <Avatar className={classes.icon}>
-                    <LockIcon />
-                </Avatar>
-            </div>
-            {loginForm}
-        </Card>
-        <Notification />
-    </div>
+  <div
+    className={classnames(classes.main, className)}
+    {...sanitizeRestProps(rest)}
+  >
+    <Card className={classes.card}>
+      <div className={classes.avatar}>
+        <Avatar className={classes.icon}>
+          <LockIcon />
+        </Avatar>
+      </div>
+      {loginForm}
+    </Card>
+    <Notification />
+  </div>
 );
 
 Login.propTypes = {
-    className: PropTypes.string,
-    authProvider: PropTypes.func,
-    classes: PropTypes.object,
-    input: PropTypes.object,
-    meta: PropTypes.object,
-    previousRoute: PropTypes.string,
-    loginForm: PropTypes.func,
+  className: PropTypes.string,
+  authProvider: PropTypes.func,
+  classes: PropTypes.object,
+  input: PropTypes.object,
+  meta: PropTypes.object,
+  previousRoute: PropTypes.string,
+  loginForm: PropTypes.func,
 };
 
 Login.defaultProps = {
-    theme: defaultTheme,
+  theme: defaultTheme,
 };
 
 export default withStyles(styles)(Login);

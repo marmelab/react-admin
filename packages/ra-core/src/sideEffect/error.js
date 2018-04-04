@@ -8,25 +8,22 @@ import { showNotification } from '../actions/notificationActions';
  * Mostly corenr case handling
  */
 function* handleResponse({ type, requestPayload, payload }) {
-    switch (type) {
-        case CRUD_GET_ONE_SUCCESS:
-            if (
-                !('id' in payload.data) ||
-                payload.data.id != requestPayload.id
-            ) {
-                return yield put(
-                    showNotification('ra.notification.bad_item', 'warning')
-                );
-            }
-            break;
-        default:
-            return yield all([]);
-    }
+  switch (type) {
+    case CRUD_GET_ONE_SUCCESS:
+      if (!('id' in payload.data) || payload.data.id != requestPayload.id) {
+        return yield put(
+          showNotification('ra.notification.bad_item', 'warning')
+        );
+      }
+      break;
+    default:
+      return yield all([]);
+  }
 }
 
 export default function*() {
-    yield takeEvery(
-        action => action.meta && action.meta.fetchResponse,
-        handleResponse
-    );
+  yield takeEvery(
+    action => action.meta && action.meta.fetchResponse,
+    handleResponse
+  );
 }

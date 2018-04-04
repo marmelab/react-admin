@@ -6,21 +6,21 @@ import { withStyles } from 'material-ui/styles';
 import { FieldTitle } from 'ra-core';
 
 const styles = theme => ({
-    label: {
-        position: 'relative',
-    },
-    value: {
-        fontFamily: theme.typography.fontFamily,
-        color: 'currentColor',
-        padding: `${theme.spacing.unit}px 0 ${theme.spacing.unit / 2}px`,
-        border: 0,
-        boxSizing: 'content-box',
-        verticalAlign: 'middle',
-        background: 'none',
-        margin: 0, // Reset for Safari
-        display: 'block',
-        width: '100%',
-    },
+  label: {
+    position: 'relative',
+  },
+  value: {
+    fontFamily: theme.typography.fontFamily,
+    color: 'currentColor',
+    padding: `${theme.spacing.unit}px 0 ${theme.spacing.unit / 2}px`,
+    border: 0,
+    boxSizing: 'content-box',
+    verticalAlign: 'middle',
+    background: 'none',
+    margin: 0, // Reset for Safari
+    display: 'block',
+    width: '100%',
+  },
 });
 
 /**
@@ -39,59 +39,59 @@ const styles = theme => ({
  * </Labeled>
  */
 export const Labeled = ({
-    children,
-    classes,
-    className,
-    input,
-    isRequired,
-    label,
-    meta,
-    resource,
-    source,
-    ...rest
+  children,
+  classes,
+  className,
+  input,
+  isRequired,
+  label,
+  meta,
+  resource,
+  source,
+  ...rest
 }) => {
-    if (!label && !source) {
-        throw new Error(
-            `Cannot create label for component <${children &&
-                children.type &&
-                children.type
-                    .name}>: You must set either the label or source props. You can also disable automated label insertion by setting 'addLabel: false' in the component default props`
-        );
-    }
-
-    return (
-        <FormControl className={className} margin="normal">
-            <InputLabel shrink className={classes.label}>
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
-            </InputLabel>
-            <div className={classes.value}>
-                {children && typeof children.type !== 'string'
-                    ? React.cloneElement(children, { input, resource, ...rest })
-                    : children}
-            </div>
-        </FormControl>
+  if (!label && !source) {
+    throw new Error(
+      `Cannot create label for component <${children &&
+        children.type &&
+        children.type
+          .name}>: You must set either the label or source props. You can also disable automated label insertion by setting 'addLabel: false' in the component default props`
     );
+  }
+
+  return (
+    <FormControl className={className} margin="normal">
+      <InputLabel shrink className={classes.label}>
+        <FieldTitle
+          label={label}
+          source={source}
+          resource={resource}
+          isRequired={isRequired}
+        />
+      </InputLabel>
+      <div className={classes.value}>
+        {children && typeof children.type !== 'string'
+          ? React.cloneElement(children, { input, resource, ...rest })
+          : children}
+      </div>
+    </FormControl>
+  );
 };
 
 Labeled.propTypes = {
-    basePath: PropTypes.string,
-    children: PropTypes.element,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    input: PropTypes.object,
-    isRequired: PropTypes.bool,
-    label: PropTypes.string,
-    meta: PropTypes.object,
-    onChange: PropTypes.func,
-    record: PropTypes.object,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    labelStyle: PropTypes.object,
+  basePath: PropTypes.string,
+  children: PropTypes.element,
+  classes: PropTypes.object,
+  className: PropTypes.string,
+  input: PropTypes.object,
+  isRequired: PropTypes.bool,
+  label: PropTypes.string,
+  meta: PropTypes.object,
+  onChange: PropTypes.func,
+  record: PropTypes.object,
+  resource: PropTypes.string,
+  source: PropTypes.string,
+  labelStyle: PropTypes.object,
 };
 
 export default withStyles(styles)(Labeled);
