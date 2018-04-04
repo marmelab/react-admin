@@ -62,6 +62,43 @@ Then you can display a text input to edit the author first name as follows:
 
 **Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
 
+## `<ArrayInput>`
+
+To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list of sub-forms. 
+
+```jsx
+import { ArrayInput, SimpleFormIterator, DateInput, UrlInput } from 'react-admin';
+
+<ArrayInput source="backlinks">
+    <SimpleFormIterator>
+        <DateInput source="date" />
+        <UrlInput source="url" />
+    </SimpleFormIterator>
+</ArrayInput>
+```
+
+![ArrayInput](./img/array-input.png)
+
+ `<ArrayInput>` allows the edition of embedded arrays, like the `backlinks` field in the following `post` record:
+
+```js
+{
+  id: 123
+  backlinks: [
+        {
+            date: '2012-08-10T00:00:00.000Z',
+            url: 'http://example.com/foo/bar.html',
+        },
+        {
+            date: '2012-08-14T00:00:00.000Z',
+            url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
+        }
+   ]
+}
+```
+
+`<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component accepting a `fields` object as passed by [redux-form's `<FieldArray>` component](https://redux-form.com/7.3.0/examples/fieldarrays/), and defining a layout for an array of fields. For instance, the `<SimpleFormIterator>` component displays an array of fields in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record (a backlink in this example).
+
 ## `<AutocompleteInput>`
 
 To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`. It renders using [react-autosuggest](http://react-autosuggest.js.org/) and a `fuzzySearch` filter. Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
@@ -160,17 +197,18 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin'
 **Tip**: React-admin's `<AutocompleteInput>` has only a capital A, while material-ui's `<AutoComplete>` has a capital A and a capital C. Don't mix up the components!
 
 ### Properties
-Prop | Required/Optional | Type | Default | Description
----|---|---|---|---
-`choices` | Required | `Object[]` | - | List of items to autosuggest
-`resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.  
-`source` | Required |  `string` | - | Name of field to edit, it's type should correspond to the type retrieved from `optionValue` 
-`allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`.
-`inputValueMatcher` | Optional | `Function` | `(input, suggestion, getOptionText) => input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()` | Allows to define how choices are matched with the searchText while typing.   
-`optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value 
-`optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the currect record as argument (`(record)=> {string}`)
-`setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`. 
-`suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered. 
+
+| Prop | Required | Type | Default | Description |
+| ---|---|---|---|--- |
+| `choices` | Required | `Object[]` | - | List of items to autosuggest |
+| `resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.   |
+| `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
+| `allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
+| `inputValueMatcher` | Optional | `Function` | `(input, suggestion, getOptionText) => input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()` | Allows to define how choices are matched with the searchText while typing.    |
+| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
+| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the currect record as argument (`(record)=> {string}`) |
+| `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
+| `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered.  |
 
 ## `<BooleanInput>` and `<NullableBooleanInput>`
 
@@ -189,6 +227,7 @@ This input does not handle `null` values. You would need the `<NullableBooleanIn
 
 You can use the `options` prop to pass any option supported by the Material UI `Switch` components. For example, here's how to set a custom checked icon:
 
+{% raw %}
 ```jsx
 import { BooleanInput } from 'react-admin';
 import FavoriteIcon from 'material-ui-icons/Favorite';
@@ -200,6 +239,7 @@ import FavoriteIcon from 'material-ui-icons/Favorite';
     }}
 />
 ```
+{% endraw %}
 
 ![CustomBooleanInputCheckIcon](./img/custom-switch-icon.png)
 

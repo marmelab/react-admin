@@ -11,6 +11,8 @@ module.exports = {
             cancel: 'Cancel',
             undo: 'Undo',
             refresh: 'Refresh',
+            add: 'Add',
+            remove: 'Remove',
             add_filter: 'Add filter',
             remove_filter: 'Remove this filter',
             back: 'Go Back',

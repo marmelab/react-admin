@@ -187,6 +187,7 @@ export class SelectArrayInput extends Component {
 
         return (
             <FormControl
+                margin="normal"
                 className={classnames(classes.root, className)}
                 {...sanitizeRestProps(rest)}
             >
