@@ -12,13 +12,13 @@ built with [Apollo](http://www.apollodata.com/) and tailored to target a simple 
 Install with:
 
 ```sh
-npm install --save ra-data-graphql-simple
+npm install --save graphql ra-data-graphql-simple
 ```
 
 or
 
 ```sh
-yarn add ra-data-graphql-simple
+yarn add graphql ra-data-graphql-simple
 ```
 
 ## Usage
