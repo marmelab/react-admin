@@ -48,7 +48,7 @@ const withI18nContext = withContext(
 );
 
 const ConnectedTranslationProvider = compose(injectIntl, withI18nContext)(
-    TranslationProvider
+  TranslationProvider
 );
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -79,8 +79,7 @@ const mapStateToProps = createStructuredSelector({
   messages: selectMessages,
 });
 
-const withI18nContext2 = withContext(
-  {
+const withI18nContext2 = withContext({
     locale: PropTypes.string.isRequired,
     messages: PropTypes.object,
   },
@@ -93,5 +92,5 @@ const withI18nContext2 = withContext(
 );
 
 export default compose(connect(mapStateToProps), withI18nContext2)(
-    LanguageProvider
+  LanguageProvider
 );
