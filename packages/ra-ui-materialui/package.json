@@ -10,8 +10,8 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "devDependencies": {
-        "enzyme": "~3.1.0",
-        "enzyme-adapter-react-16": "~1.0.1",
+        "enzyme": "~3.3.0",
+        "enzyme-adapter-react-16": "~1.1.1",
         "file-api": "~0.10.4",
         "ignore-styles": "~5.0.1",
         "react": "~16.0.0",
