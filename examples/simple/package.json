@@ -8,7 +8,7 @@
         "start":
             "./node_modules/.bin/webpack-dev-server --progress --color --hot --watch --mode development",
         "build":
-            "./node_modules/.bin/webpack --color --mode development --hide-modules true",
+            "./node_modules/.bin/webpack-cli --color --mode development --hide-modules true",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
