@@ -1,24 +1,18 @@
 {
     "name": "ra-core",
     "version": "2.0.0-beta4",
-    "description": "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
-    "files": [
-        "*.md",
-        "lib",
-        "src"
-    ],
+    "description":
+        "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
+    "files": ["*.md", "lib", "src"],
     "main": "lib/index",
-    "authors": [
-        "François Zaninotto",
-        "Gildas Garcia"
-    ],
+    "authors": ["François Zaninotto", "Gildas Garcia"],
     "repository": "marmelab/react-admin",
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "devDependencies": {
-        "enzyme": "~3.1.0",
-        "enzyme-adapter-react-16": "~1.0.1",
+        "enzyme": "~3.3.0",
+        "enzyme-adapter-react-16": "~1.1.1",
         "ignore-styles": "~5.0.1",
         "react": "~16.0.0",
         "react-dom": "~16.0.0",

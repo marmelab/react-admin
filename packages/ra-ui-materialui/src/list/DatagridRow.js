@@ -54,6 +54,7 @@ class DatagridRow extends Component {
                 {hasBulkActions && (
                     <TableCell padding="none">
                         <Checkbox
+                            color="primary"
                             className={`select-item ${classes.checkbox}`}
                             checked={selected}
                             onClick={this.handleToggle}
