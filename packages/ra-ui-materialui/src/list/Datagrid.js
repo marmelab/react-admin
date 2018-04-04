@@ -27,7 +27,6 @@ const styles = {
     rowOdd: {},
     rowCell: {
         padding: '0 12px',
-        whiteSpace: 'normal',
     },
 };
 
@@ -113,6 +112,7 @@ class Datagrid extends Component {
                             <TableCell padding="none">
                                 <Checkbox
                                     className="select-all"
+                                    color="primary"
                                     checked={
                                         selectedIds.length > 0 &&
                                         ids.length > 0 &&

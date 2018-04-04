@@ -1,18 +1,18 @@
 {
-  "name": "tutorial",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "material-ui": "1.0.0-beta.32",
-    "ra-data-json-server": "~2.0.0-beta1",
-    "react": "~16.0.0",
-    "react-admin": "~2.0.0-beta1",
-    "react-dom": "~16.0.0",
-    "react-scripts": "1.1.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject"
-  }
+    "name": "tutorial",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "material-ui": "1.0.0-beta.40",
+        "ra-data-json-server": "~2.0.0-beta1",
+        "react": "~16.0.0",
+        "react-admin": "~2.0.0-beta1",
+        "react-dom": "~16.0.0",
+        "react-scripts": "1.1.0"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "eject": "react-scripts eject"
+    }
 }

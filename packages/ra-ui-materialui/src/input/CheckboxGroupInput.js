@@ -121,7 +121,7 @@ export class CheckboxGroupInput extends Component {
                 }
                 onChange={this.handleCheck}
                 value={String(get(choice, optionValue))}
-                control={<Checkbox {...options} />}
+                control={<Checkbox color="primary" {...options} />}
                 label={
                     translateChoice
                         ? translate(choiceName, { _: choiceName })

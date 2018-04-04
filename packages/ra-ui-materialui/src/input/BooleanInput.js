@@ -28,6 +28,7 @@ export class BooleanInput extends Component {
                 <FormControlLabel
                     control={
                         <Switch
+                            color="primary"
                             checked={!!input.value}
                             onChange={this.handleChange}
                             {...options}

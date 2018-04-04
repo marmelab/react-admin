@@ -4,8 +4,8 @@
     "private": true,
     "dependencies": {
         "fetch-mock": "~5.5.0",
-        "material-ui-icons": "1.0.0-beta.17",
-        "material-ui": "1.0.0-beta.32",
+        "material-ui": "1.0.0-beta.40",
+        "material-ui-icons": "1.0.0-beta.36",
         "ra-data-graphcool": "~2.0.0-beta2",
         "ra-input-rich-text": "^2.0.0-beta2",
         "ra-language-english": "^2.0.0-beta2",
