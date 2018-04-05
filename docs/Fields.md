@@ -75,6 +75,68 @@ Then you can display the author first name as follows:
 
 **Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
 
+## `<ArrayField>`
+
+Display a collection using `<Field>` child components.
+
+Ideal for embedded arrays of objects, e.g. `tags` and `backlinks` in the following `post` object:
+
+```js
+{
+  id: 123
+  tags: [
+        { name: 'foo' },
+        { name: 'bar' }
+  ],
+  backlinks: [
+        {
+            date: '2012-08-10T00:00:00.000Z',
+            url: 'http://example.com/foo/bar.html',
+        },
+        {
+            date: '2012-08-14T00:00:00.000Z',
+            url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
+        }
+   ]
+}
+```
+
+The child must be an iterator component (like `<Datagrid>` or `<SingleFieldList>`).
+
+Here is how to display all the backlinks of the current post as a `<datagrid>`
+
+```jsx
+<ArrayField source="backlinks">
+    <Datagrid>
+        <DateField source="date" />
+        <UrlField source="url" />
+    </Datagrid>
+</ArrayField>
+```
+
+And here is how to display all the tags of the current post as `<Chip>` components:
+
+```jsx
+<ArrayField source="tags">
+    <SingleFieldList>
+        <ChipField source="name" />
+    </SingleFieldList>
+</ArrayField>
+```
+
+**Tip**: If you need to render a collection in a custom way, it's often simpler to write your own component:
+
+```jsx
+const TagsField = ({ record }) => (
+    <ul>
+        {record.tags.map(item => (
+            <li key={item.name}>{item.name}</li>
+        ))}
+    </ul>
+)
+TagsField.defaultProps = { addLabel: true };
+```
+
 ## `<BooleanField>`
 
 Displays a boolean value as a check.

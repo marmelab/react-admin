@@ -21,13 +21,13 @@ you're free to use any graphql **server**.
 Install with:
 
 ```sh
-npm install --save ra-data-graphql
+npm install --save graphql ra-data-graphql
 ```
 
 or
 
 ```sh
-yarn add ra-data-graphql
+yarn add graphql ra-data-graphql
 ```
 
 ## Usage

@@ -5,11 +5,11 @@ import CardActions from '../layout/CardActions';
 import { ListButton } from '../button';
 
 const sanitizeRestProps = ({
-  basePath,
-  className,
-  hasList,
-  resource,
-  ...rest
+    basePath,
+    className,
+    hasList,
+    resource,
+    ...rest
 }) => rest;
 
 /**
@@ -38,15 +38,15 @@ const sanitizeRestProps = ({
  *     );
  */
 const CreateActions = ({ basePath, className, hasList, ...rest }) => (
-  <CardActions className={className} {...sanitizeRestProps(rest)}>
-    {hasList && <ListButton basePath={basePath} />}
-  </CardActions>
+    <CardActions className={className} {...sanitizeRestProps(rest)}>
+        {hasList && <ListButton basePath={basePath} />}
+    </CardActions>
 );
 
 CreateActions.propTypes = {
-  basePath: PropTypes.string,
-  className: PropTypes.string,
-  hasList: PropTypes.bool,
+    basePath: PropTypes.string,
+    className: PropTypes.string,
+    hasList: PropTypes.bool,
 };
 
 export default CreateActions;

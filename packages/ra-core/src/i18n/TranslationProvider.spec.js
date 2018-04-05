@@ -10,21 +10,23 @@ import { TranslationProvider } from './TranslationProvider';
 // import { translationMessages } from '../../../i18n';
 
 const messages = defineMessages({
-  someMessage: {
-    id: 'some.id',
-    defaultMessage: 'This is some default message',
-    en: 'This is some en message',
-  },
+    someMessage: {
+        id: 'some.id',
+        defaultMessage: 'This is some default message',
+        en: 'This is some en message',
+    },
 });
 
 describe('<TranslationProvider />', () => {
-  it('should render its children', () => {
-    const children = <h1>Test</h1>;
-    const renderedComponent = shallow(
-      <TranslationProvider messages={messages}>{children}</TranslationProvider>
-    );
-    expect(renderedComponent.contains(children)).toBe(true);
-  });
+    it('should render its children', () => {
+        const children = <h1>Test</h1>;
+        const renderedComponent = shallow(
+            <TranslationProvider messages={messages}>
+                {children}
+            </TranslationProvider>
+        );
+        expect(renderedComponent.contains(children)).toBe(true);
+    });
 });
 
 // describe('<ConnectedLanguageProvider />', () => {

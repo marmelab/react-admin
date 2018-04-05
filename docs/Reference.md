@@ -12,6 +12,8 @@ title: "Reference"
 * `<AdminRoutes>`
 * `<AppBar>`
 * `<AppBarMobile>`
+* [`<ArrayField>`](./Fields.html#arrayfield)
+* [`<ArrayInput>`](./Inputs.html#arrayinput)
 * [`<Authenticated>`](./Authentication.html#restricting-access-to-a-custom-page)
 * [`<AutocompleteInput>`](./Inputs.html#autocompleteinput)
 * [`<BooleanField>`](./Fields.html#booleanfield)
@@ -79,6 +81,7 @@ title: "Reference"
 * `<SimpleList>`
 * `<SingleFieldList>`
 * [`<SimpleForm>`](./CreateEdit.html#the-simpleform-component)
+* [`<SimpleformIterator>`](./Inputs.html#arrayinput)
 * [`<SimpleList>`](./List.html#the-simplelist-component)
 * [`<SimpleShowLayout>`](./Show.html#the-simpleshowlayout-component)
 * [`<SingleFieldList>`](./List.html#the-singlefieldlist-component)

@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 
 const ReferenceError = ({ label, error }) => (
-  <TextField error disabled label={label} value={error} margin="normal" />
+    <TextField error disabled label={label} value={error} margin="normal" />
 );
 
 ReferenceError.propTypes = {
-  error: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+    error: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
 };
 
 export default ReferenceError;

@@ -5,20 +5,20 @@ export const USER_LOGIN_FAILURE = 'RA/USER_LOGIN_FAILURE';
 export const USER_LOGIN_SUCCESS = 'RA/USER_LOGIN_SUCCESS';
 
 export const userLogin = (payload, pathName) => ({
-  type: USER_LOGIN,
-  payload,
-  meta: { auth: true, pathName },
+    type: USER_LOGIN,
+    payload,
+    meta: { auth: true, pathName },
 });
 
 export const USER_CHECK = 'RA/USER_CHECK';
 
 export const userCheck = (payload, pathName, routeParams) => ({
-  type: USER_CHECK,
-  payload: {
-    ...payload,
-    routeParams,
-  },
-  meta: { auth: true, pathName },
+    type: USER_CHECK,
+    payload: {
+        ...payload,
+        routeParams,
+    },
+    meta: { auth: true, pathName },
 });
 
 export const USER_LOGOUT = 'RA/USER_LOGOUT';
@@ -31,9 +31,9 @@ export const USER_LOGOUT = 'RA/USER_LOGOUT';
  * @return {{type: string, payload: {redirectTo: string}, meta: {auth: boolean}}}
  */
 export const userLogout = redirectTo => ({
-  type: USER_LOGOUT,
-  payload: {
-    redirectTo,
-  },
-  meta: { auth: true },
+    type: USER_LOGOUT,
+    payload: {
+        redirectTo,
+    },
+    meta: { auth: true },
 });

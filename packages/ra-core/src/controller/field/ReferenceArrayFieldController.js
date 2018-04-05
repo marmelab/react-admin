@@ -39,60 +39,67 @@ import { getReferencesByIds } from '../../reducer/admin/references/oneToMany';
  *
  */
 export class ReferenceArrayFieldController extends Component {
-  componentDidMount() {
-    this.fetchReferences();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.record.id !== nextProps.record.id) {
-      this.fetchReferences(nextProps);
+    componentDidMount() {
+        this.fetchReferences();
     }
-  }
 
-  fetchReferences({ crudGetManyAccumulate, reference, ids } = this.props) {
-    crudGetManyAccumulate(reference, ids);
-  }
+    componentWillReceiveProps(nextProps) {
+        if (this.props.record.id !== nextProps.record.id) {
+            this.fetchReferences(nextProps);
+        }
+    }
 
-  render() {
-    const { resource, reference, data, ids, children, basePath } = this.props;
+    fetchReferences({ crudGetManyAccumulate, reference, ids } = this.props) {
+        crudGetManyAccumulate(reference, ids);
+    }
 
-    const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
+    render() {
+        const {
+            resource,
+            reference,
+            data,
+            ids,
+            children,
+            basePath,
+        } = this.props;
 
-    return children({
-      isLoading: ids.length !== 0 && !data,
-      ids,
-      data,
-      referenceBasePath,
-      currentSort: {},
-    });
-  }
+        const referenceBasePath = basePath.replace(resource, reference); // FIXME obviously very weak
+
+        return children({
+            isLoading: ids.length !== 0 && !data,
+            ids,
+            data,
+            referenceBasePath,
+            currentSort: {},
+        });
+    }
 }
 
 ReferenceArrayFieldController.propTypes = {
-  addLabel: PropTypes.bool,
-  basePath: PropTypes.string.isRequired,
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  children: PropTypes.func.isRequired,
-  crudGetManyAccumulate: PropTypes.func.isRequired,
-  data: PropTypes.object,
-  ids: PropTypes.array.isRequired,
-  label: PropTypes.string,
-  record: PropTypes.object.isRequired,
-  reference: PropTypes.string.isRequired,
-  resource: PropTypes.string.isRequired,
-  source: PropTypes.string.isRequired,
+    addLabel: PropTypes.bool,
+    basePath: PropTypes.string.isRequired,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    children: PropTypes.func.isRequired,
+    crudGetManyAccumulate: PropTypes.func.isRequired,
+    data: PropTypes.object,
+    ids: PropTypes.array.isRequired,
+    label: PropTypes.string,
+    record: PropTypes.object.isRequired,
+    reference: PropTypes.string.isRequired,
+    resource: PropTypes.string.isRequired,
+    source: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, props) => {
-  const { record, source, reference } = props;
-  const ids = get(record, source) || [];
-  return {
-    data: getReferencesByIds(state, reference, ids),
-    ids,
-  };
+    const { record, source, reference } = props;
+    const ids = get(record, source) || [];
+    return {
+        data: getReferencesByIds(state, reference, ids),
+        ids,
+    };
 };
 
 export default connect(mapStateToProps, {
-  crudGetManyAccumulate: crudGetManyAccumulateAction,
+    crudGetManyAccumulate: crudGetManyAccumulateAction,
 })(ReferenceArrayFieldController);

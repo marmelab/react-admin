@@ -8,21 +8,25 @@ import resolveRedirectTo from '../util/resolveRedirectTo';
  * Redirection Side Effects
  */
 export function* handleRedirection({
-  payload,
-  meta: { basePath, redirectTo },
+    payload,
+    meta: { basePath, redirectTo },
 }) {
-  return redirectTo
-    ? yield put(
-        push(
-          resolveRedirectTo(redirectTo, basePath, payload.id || payload.data.id)
-        )
-      )
-    : yield put(reset('record-form')); // explicit no redirection, reset the form
+    return redirectTo
+        ? yield put(
+              push(
+                  resolveRedirectTo(
+                      redirectTo,
+                      basePath,
+                      payload.id || payload.data.id
+                  )
+              )
+          )
+        : yield put(reset('record-form')); // explicit no redirection, reset the form
 }
 
 export default function*() {
-  yield takeEvery(
-    action => action.meta && typeof action.meta.redirectTo !== 'undefined',
-    handleRedirection
-  );
+    yield takeEvery(
+        action => action.meta && typeof action.meta.redirectTo !== 'undefined',
+        handleRedirection
+    );
 }

@@ -5,20 +5,20 @@ import Divider from 'material-ui/Divider';
 import { withStyles } from 'material-ui/styles';
 
 const styles = {
-  tab: { padding: '0 1em 1em 1em' },
+    tab: { padding: '0 1em 1em 1em' },
 };
 
 const sanitizeRestProps = ({
-  children,
-  className,
-  classes,
-  record,
-  resource,
-  basePath,
-  version,
-  initialValues,
-  translate,
-  ...rest
+    children,
+    className,
+    classes,
+    record,
+    resource,
+    basePath,
+    version,
+    initialValues,
+    translate,
+    ...rest
 }) => rest;
 
 /**
@@ -60,75 +60,79 @@ const sanitizeRestProps = ({
  *     export default App;
  */
 export class TabbedShowLayout extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: 0,
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: 0,
+        };
+    }
+
+    handleChange = (event, value) => {
+        this.setState({ value });
     };
-  }
 
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
-
-  render() {
-    const {
-      children,
-      className,
-      classes,
-      record,
-      resource,
-      basePath,
-      version,
-      ...rest
-    } = this.props;
-    return (
-      <div className={className} key={version} {...sanitizeRestProps(rest)}>
-        <Tabs
-          scrollable
-          value={this.state.value}
-          onChange={this.handleChange}
-          indicatorColor="primary"
-        >
-          {Children.map(
+    render() {
+        const {
             children,
-            (tab, index) =>
-              tab &&
-              cloneElement(tab, {
-                context: 'header',
-                value: index,
-              })
-          )}
-        </Tabs>
-        <Divider />
-        <div className={classes.tab}>
-          {Children.map(
-            children,
-            (tab, index) =>
-              tab &&
-              this.state.value === index &&
-              cloneElement(tab, {
-                context: 'content',
-                resource,
-                record,
-                basePath,
-              })
-          )}
-        </div>
-      </div>
-    );
-  }
+            className,
+            classes,
+            record,
+            resource,
+            basePath,
+            version,
+            ...rest
+        } = this.props;
+        return (
+            <div
+                className={className}
+                key={version}
+                {...sanitizeRestProps(rest)}
+            >
+                <Tabs
+                    scrollable
+                    value={this.state.value}
+                    onChange={this.handleChange}
+                    indicatorColor="primary"
+                >
+                    {Children.map(
+                        children,
+                        (tab, index) =>
+                            tab &&
+                            cloneElement(tab, {
+                                context: 'header',
+                                value: index,
+                            })
+                    )}
+                </Tabs>
+                <Divider />
+                <div className={classes.tab}>
+                    {Children.map(
+                        children,
+                        (tab, index) =>
+                            tab &&
+                            this.state.value === index &&
+                            cloneElement(tab, {
+                                context: 'content',
+                                resource,
+                                record,
+                                basePath,
+                            })
+                    )}
+                </div>
+            </div>
+        );
+    }
 }
 
 TabbedShowLayout.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
-  classes: PropTypes.object,
-  record: PropTypes.object,
-  resource: PropTypes.string,
-  basePath: PropTypes.string,
-  version: PropTypes.number,
-  translate: PropTypes.func,
+    children: PropTypes.node,
+    className: PropTypes.string,
+    classes: PropTypes.object,
+    record: PropTypes.object,
+    resource: PropTypes.string,
+    basePath: PropTypes.string,
+    version: PropTypes.number,
+    translate: PropTypes.func,
 };
 
 const enhance = withStyles(styles);

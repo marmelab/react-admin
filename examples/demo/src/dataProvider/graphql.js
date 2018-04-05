@@ -6,6 +6,9 @@ export default () => {
             case 'customers':
                 return 'Customer';
 
+            case 'categories':
+                return 'Category';
+
             case 'commands':
                 return 'Command';
 

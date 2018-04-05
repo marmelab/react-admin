@@ -9,73 +9,73 @@ import Link from '../Link';
 import sanitizeRestProps from './sanitizeRestProps';
 
 const styles = theme => ({
-  link: {
-    color: theme.palette.primary.main,
-  },
+    link: {
+        color: theme.palette.primary.main,
+    },
 });
 
 export const ReferenceFieldView = ({
-  allowEmpty,
-  basePath,
-  children,
-  className,
-  classes = {},
-  isLoading,
-  record,
-  reference,
-  referenceRecord,
-  resource,
-  resourceLinkPath,
-  source,
-  translateChoice = false,
-  ...rest
-}) => {
-  if (isLoading) {
-    return <LinearProgress />;
-  }
-
-  if (resourceLinkPath) {
-    return (
-      <Link
-        className={classnames(classes.link, className)}
-        to={resourceLinkPath}
-      >
-        {React.cloneElement(children, {
-          record: referenceRecord,
-          resource: reference,
-          allowEmpty,
-          basePath,
-          translateChoice,
-          ...sanitizeRestProps(rest),
-        })}
-      </Link>
-    );
-  }
-
-  return React.cloneElement(children, {
-    record: referenceRecord,
-    resource: reference,
     allowEmpty,
     basePath,
-    translateChoice,
-    ...sanitizeRestProps(rest),
-  });
+    children,
+    className,
+    classes = {},
+    isLoading,
+    record,
+    reference,
+    referenceRecord,
+    resource,
+    resourceLinkPath,
+    source,
+    translateChoice = false,
+    ...rest
+}) => {
+    if (isLoading) {
+        return <LinearProgress />;
+    }
+
+    if (resourceLinkPath) {
+        return (
+            <Link
+                className={classnames(classes.link, className)}
+                to={resourceLinkPath}
+            >
+                {React.cloneElement(children, {
+                    record: referenceRecord,
+                    resource: reference,
+                    allowEmpty,
+                    basePath,
+                    translateChoice,
+                    ...sanitizeRestProps(rest),
+                })}
+            </Link>
+        );
+    }
+
+    return React.cloneElement(children, {
+        record: referenceRecord,
+        resource: reference,
+        allowEmpty,
+        basePath,
+        translateChoice,
+        ...sanitizeRestProps(rest),
+    });
 };
 
 ReferenceFieldView.propTypes = {
-  allowEmpty: PropTypes.bool,
-  basePath: PropTypes.string,
-  children: PropTypes.element,
-  className: PropTypes.string,
-  classes: PropTypes.object,
-  isLoading: PropTypes.bool,
-  record: PropTypes.object,
-  reference: PropTypes.string,
-  referenceRecord: PropTypes.object,
-  resource: PropTypes.string,
-  resourceLinkPath: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  source: PropTypes.string,
-  translateChoice: PropTypes.bool,
+    allowEmpty: PropTypes.bool,
+    basePath: PropTypes.string,
+    children: PropTypes.element,
+    className: PropTypes.string,
+    classes: PropTypes.object,
+    isLoading: PropTypes.bool,
+    record: PropTypes.object,
+    reference: PropTypes.string,
+    referenceRecord: PropTypes.object,
+    resource: PropTypes.string,
+    resourceLinkPath: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    source: PropTypes.string,
+    translateChoice: PropTypes.bool,
 };
 
 /**
@@ -108,48 +108,52 @@ ReferenceFieldView.propTypes = {
  * </ReferenceField>
  */
 const ReferenceField = ({ children, ...props }) => {
-  if (React.Children.count(children) !== 1) {
-    throw new Error('<ReferenceField> only accepts a single child');
-  }
+    if (React.Children.count(children) !== 1) {
+        throw new Error('<ReferenceField> only accepts a single child');
+    }
 
-  return (
-    <ReferenceFieldController {...props}>
-      {controllerProps => (
-        <ReferenceFieldView {...props} {...{ children, ...controllerProps }} />
-      )}
-    </ReferenceFieldController>
-  );
+    return (
+        <ReferenceFieldController {...props}>
+            {controllerProps => (
+                <ReferenceFieldView
+                    {...props}
+                    {...{ children, ...controllerProps }}
+                />
+            )}
+        </ReferenceFieldController>
+    );
 };
 
 ReferenceField.propTypes = {
-  addLabel: PropTypes.bool,
-  allowEmpty: PropTypes.bool.isRequired,
-  basePath: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired,
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  cellClassName: PropTypes.string,
-  headerClassName: PropTypes.string,
-  label: PropTypes.string,
-  record: PropTypes.object,
-  reference: PropTypes.string.isRequired,
-  resource: PropTypes.string,
-  source: PropTypes.string.isRequired,
-  translateChoice: PropTypes.func,
-  linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
+    addLabel: PropTypes.bool,
+    allowEmpty: PropTypes.bool.isRequired,
+    basePath: PropTypes.string.isRequired,
+    children: PropTypes.element.isRequired,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
+    label: PropTypes.string,
+    record: PropTypes.object,
+    reference: PropTypes.string.isRequired,
+    resource: PropTypes.string,
+    source: PropTypes.string.isRequired,
+    translateChoice: PropTypes.func,
+    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
+        .isRequired,
 };
 
 ReferenceField.defaultProps = {
-  allowEmpty: false,
-  classes: {},
-  linkType: 'edit',
-  record: {},
+    allowEmpty: false,
+    classes: {},
+    linkType: 'edit',
+    record: {},
 };
 
 const EnhancedReferenceField = withStyles(styles)(ReferenceField);
 
 EnhancedReferenceField.defaultProps = {
-  addLabel: true,
+    addLabel: true,
 };
 
 export default EnhancedReferenceField;

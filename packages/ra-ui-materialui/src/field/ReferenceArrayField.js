@@ -5,43 +5,43 @@ import { withStyles } from 'material-ui/styles';
 import { ReferenceArrayFieldController } from 'ra-core';
 
 const styles = {
-  progress: { marginTop: '1em' },
+    progress: { marginTop: '1em' },
 };
 
 export const ReferenceArrayFieldView = ({
-  children,
-  className,
-  classes = {},
-  data,
-  ids,
-  isLoading,
-  reference,
-  referenceBasePath,
-}) => {
-  if (isLoading) {
-    return <LinearProgress className={classes.progress} />;
-  }
-
-  return React.cloneElement(children, {
+    children,
     className,
-    resource: reference,
-    ids,
+    classes = {},
     data,
+    ids,
     isLoading,
-    basePath: referenceBasePath,
-    currentSort: {},
-  });
+    reference,
+    referenceBasePath,
+}) => {
+    if (isLoading) {
+        return <LinearProgress className={classes.progress} />;
+    }
+
+    return React.cloneElement(children, {
+        className,
+        resource: reference,
+        ids,
+        data,
+        isLoading,
+        basePath: referenceBasePath,
+        currentSort: {},
+    });
 };
 
 ReferenceArrayFieldView.propTypes = {
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  data: PropTypes.object,
-  ids: PropTypes.array,
-  isLoading: PropTypes.bool,
-  children: PropTypes.element.isRequired,
-  reference: PropTypes.string.isRequired,
-  referenceBasePath: PropTypes.string,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    data: PropTypes.object,
+    ids: PropTypes.array,
+    isLoading: PropTypes.bool,
+    children: PropTypes.element.isRequired,
+    reference: PropTypes.string.isRequired,
+    referenceBasePath: PropTypes.string,
 };
 
 /**
@@ -77,41 +77,41 @@ ReferenceArrayFieldView.propTypes = {
  *
  */
 export const ReferenceArrayField = ({ children, ...props }) => {
-  if (React.Children.count(children) !== 1) {
-    throw new Error(
-      '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
-    );
-  }
+    if (React.Children.count(children) !== 1) {
+        throw new Error(
+            '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
+        );
+    }
 
-  return (
-    <ReferenceArrayFieldController {...props}>
-      {controllerProps => (
-        <ReferenceArrayFieldView
-          {...props}
-          {...{ children, ...controllerProps }}
-        />
-      )}
-    </ReferenceArrayFieldController>
-  );
+    return (
+        <ReferenceArrayFieldController {...props}>
+            {controllerProps => (
+                <ReferenceArrayFieldView
+                    {...props}
+                    {...{ children, ...controllerProps }}
+                />
+            )}
+        </ReferenceArrayFieldController>
+    );
 };
 
 ReferenceArrayField.propTypes = {
-  addLabel: PropTypes.bool,
-  basePath: PropTypes.string.isRequired,
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  children: PropTypes.element.isRequired,
-  label: PropTypes.string,
-  record: PropTypes.object.isRequired,
-  reference: PropTypes.string.isRequired,
-  resource: PropTypes.string.isRequired,
-  source: PropTypes.string.isRequired,
+    addLabel: PropTypes.bool,
+    basePath: PropTypes.string.isRequired,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    children: PropTypes.element.isRequired,
+    label: PropTypes.string,
+    record: PropTypes.object.isRequired,
+    reference: PropTypes.string.isRequired,
+    resource: PropTypes.string.isRequired,
+    source: PropTypes.string.isRequired,
 };
 
 const EnhancedReferenceArrayField = withStyles(styles)(ReferenceArrayField);
 
 EnhancedReferenceArrayField.defaultProps = {
-  addLabel: true,
+    addLabel: true,
 };
 
 export default EnhancedReferenceArrayField;

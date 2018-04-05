@@ -14,13 +14,13 @@ A version of the `react-admin` demo using this data provider is available at htt
 Install with:
 
 ```sh
-npm install --save ra-data-graphcool
+npm install --save graphql ra-data-graphcool
 ```
 
 or
 
 ```sh
-yarn add ra-data-graphcool
+yarn add graphql ra-data-graphcool
 ```
 
 ## Usage

@@ -32,33 +32,39 @@ import { userCheck } from '../actions/authActions';
  *     );
  */
 export class Authenticated extends Component {
-  static propTypes = {
-    authParams: PropTypes.object,
-    children: PropTypes.element.isRequired,
-    location: PropTypes.object,
-    userCheck: PropTypes.func,
-  };
+    static propTypes = {
+        authParams: PropTypes.object,
+        children: PropTypes.element.isRequired,
+        location: PropTypes.object,
+        userCheck: PropTypes.func,
+    };
 
-  componentWillMount() {
-    this.checkAuthentication(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.location !== this.props.location) {
-      this.checkAuthentication(nextProps);
+    componentWillMount() {
+        this.checkAuthentication(this.props);
     }
-  }
 
-  checkAuthentication(params) {
-    const { userCheck, authParams, location } = params;
-    userCheck(authParams, location && location.pathname);
-  }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.location !== this.props.location) {
+            this.checkAuthentication(nextProps);
+        }
+    }
 
-  // render the child even though the AUTH_CHECK isn't finished (optimistic rendering)
-  render() {
-    const { children, userCheck, authParams, location, ...rest } = this.props;
-    return React.cloneElement(children, rest);
-  }
+    checkAuthentication(params) {
+        const { userCheck, authParams, location } = params;
+        userCheck(authParams, location && location.pathname);
+    }
+
+    // render the child even though the AUTH_CHECK isn't finished (optimistic rendering)
+    render() {
+        const {
+            children,
+            userCheck,
+            authParams,
+            location,
+            ...rest
+        } = this.props;
+        return React.cloneElement(children, rest);
+    }
 }
 
 export default connect(null, { userCheck })(Authenticated);

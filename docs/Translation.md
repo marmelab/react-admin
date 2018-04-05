@@ -74,6 +74,7 @@ You can find translation packages for the following languages:
 
 - French (`fr`): [marmelab/ra-language-french](https://github.com/marmelab/ra-language-french)
 - English (`en`): [marmelab/ra-language-english](https://github.com/marmelab/ra-language-english)
+- Slovak (`sk`): [zavadpe/ra-language-slovak](https://github.com/zavadpe/ra-language-slovak)
 
 The previous version of react-admin, called admin-on-rest, was translated in the following languages:
 
@@ -97,7 +98,6 @@ The previous version of react-admin, called admin-on-rest, was translated in the
 - Polish (`pl`): [KamilDzierbicki/aor-language-polish](https://github.com/KamilDzierbicki/aor-language-polish)
 - Portuguese (`pt`): [movibe/aor-language-portugues](https://github.com/movibe/aor-language-portugues)
 - Russian (`ru`): [cytomich/aor-language-russian](https://github.com/cytomich/aor-language-russian)
-- Slovak (`sk`): [zavadpe/aor-language-slovak](https://github.com/zavadpe/aor-language-slovak)
 - Slovenian (`sl`): [ariskemper/aor-language-slovenian](https://github.com/ariskemper/aor-language-slovenian)
 - Spanish (`es`): [blackboxvision/aor-language-spanish](https://github.com/BlackBoxVision/aor-language-spanish)
 - Swedish (`sv`): [StefanWallin/aor-language-swedish](https://github.com/StefanWallin/aor-language-swedish)
