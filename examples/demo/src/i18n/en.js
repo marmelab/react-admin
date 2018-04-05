@@ -1,5 +1,5 @@
 import { defineMessages } from 'react-intl'
-import englishMessages from 'ra-language-english-intl';
+import englishMessages from 'ra-language-intl/translation/en.json';
 
 const posMessages = defineMessages({
   search: {
@@ -48,7 +48,7 @@ const posMessages = defineMessages({
   },
   dashboardOrderItems: {
     id: 'pos.dashboard.order.items',
-    defaultMessage: 'by {customer_name}, one item |||| by {customer_name}, {nb_items} items',
+    defaultMessage: 'by {customer_name}, {nb_items, plural, one {one item} other {{nb_items, number} items}}',
   },
   dashboardWelcomeTitle: {
     id: 'pos.dashboard.welcome.title',
@@ -71,7 +71,7 @@ const posMessages = defineMessages({
 const resourcesMessages = defineMessages({
   customersName: {
     id: 'resources.customers.name',
-    defaultMessage: 'Customer |||| Customers',
+    defaultMessage: '{smart_count, plural, one {Customer} other {Customers}}',
   },
   customersFieldsCommands: {
     id: 'resources.customers.fields.commands',
@@ -119,7 +119,7 @@ const resourcesMessages = defineMessages({
   },
   commandsName: {
     id: 'resources.commands.name',
-    defaultMessage: 'Order |||| Orders',
+    defaultMessage: '{smart_count, plural, one {Order} other {Orders}}',
   },
   commandsFieldsBasketDelivery: {
     id: 'resources.commands.fields.basket.delivery',
@@ -175,7 +175,7 @@ const resourcesMessages = defineMessages({
   },
   productsName: {
     id: 'resources.products.name',
-    defaultMessage: 'Poster |||| Posters',
+    defaultMessage: '{smart_count, plural, one {Poster} other {Posters}}',
   },
   productsFieldsCategoryId: {
     id: 'resources.products.fields.category_id',
@@ -247,7 +247,7 @@ const resourcesMessages = defineMessages({
   },
   categoriesName: {
     id: 'resources.categories.name',
-    defaultMessage: 'Category |||| Categories',
+    defaultMessage: '{smart_count, plural, one {Category} other {Categories}}',
   },
   categoriesFieldsProducts: {
     id: 'resources.categories.fields.products',
@@ -255,7 +255,7 @@ const resourcesMessages = defineMessages({
   },
   reviewsName: {
     id: 'resources.reviews.name',
-    defaultMessage: 'Review |||| Reviews',
+    defaultMessage: '{smart_count, plural, one {Review} other {Reviews}}',
   },
   reviewsFieldsCustomerId: {
     id: 'resources.reviews.fields.customer_id',
@@ -351,8 +351,13 @@ const resourcesMessages = defineMessages({
   },
 });
 
+// we just convert quickly the file so we don't need to use babel-plugin-react-intl
+const obj = {};
+Object.values({ ...posMessages, ...resourcesMessages }).forEach((value) => {
+  obj[value.id] = value.defaultMessage;
+});
+
 export default {
   ...englishMessages,
-  ...posMessages,
-  ...resourcesMessages,
+  ...obj,
 };

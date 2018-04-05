@@ -21,7 +21,6 @@
     },
     "dependencies": {
         "ra-core": "^2.0.0-beta5",
-        "ra-language-english": "^2.0.0-beta5",
         "ra-ui-materialui": "^2.0.0-beta5"
     }
 }

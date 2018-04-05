@@ -38,6 +38,12 @@ build-react-admin:
 	@rm -rf ./packages/react-admin/lib
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/react-admin/src -d ./packages/react-admin/lib --ignore spec.js,test.js
 
+build-ra-language-intl:
+	@echo "Transpiling ra-language-intl files...";
+	@rm -rf ./packages/ra-language-intl/lib
+	@/usr/local/bin/npm run --prefix ./packages/ra-language-intl rollup-umd -- intl extract
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-language-intl/src -d ./packages/ra-language-intl/lib --ignore spec.js,test.js
+
 build-ra-data-json-server:
 	@echo "Transpiling ra-data-json-server files...";
 	@rm -rf ./packages/ra-data-json-server/lib
@@ -79,7 +85,7 @@ build-data-generator:
 	@rm -rf ./examples/data-generator/lib
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./examples/data-generator/src -d ./examples/data-generator/lib
 
-build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-input-rich-text build-ra-realtime build-data-generator ## compile ES6 files to JS
+build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-language-intl build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-input-rich-text build-ra-realtime build-data-generator ## compile ES6 files to JS
 
 watch: ## continuously compile ES6 files to JS
 	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore spec.js,test.js --watch
