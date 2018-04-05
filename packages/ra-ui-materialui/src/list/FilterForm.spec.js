@@ -25,7 +25,7 @@ describe('<FilterForm />', () => {
   });
 
   it('should display correctly passed filters', () => {
-    const filters = [<TextInput source="title" label="Title" />]; // eslint-disable-line react/jsx-key
+    const filters = [<TextInput source="title" label="ra.message.yes" />]; // eslint-disable-line react/jsx-key
     const displayedFilters = { title: true };
 
     const muiTheme = createMuiTheme({ userAgent: false });

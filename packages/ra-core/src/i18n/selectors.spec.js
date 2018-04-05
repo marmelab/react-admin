@@ -1,4 +1,4 @@
-import { selectLocale, selectMessages } from '../selectors';
+import { selectLocale, selectMessages } from './selectors';
 
 describe('selectLocale', () => {
   it('should select the locale state', () => {

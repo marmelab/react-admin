@@ -1,6 +1,6 @@
-const { defineMessages } = require('react-intl');
+import { defineMessages } from 'react-intl';
 
-module.exports = defineMessages({
+export default defineMessages({
   actionDelete: {
     id: 'ra.action.delete',
     defaultMessage: 'Delete',
@@ -160,17 +160,13 @@ module.exports = defineMessages({
   },
   messageBulkDeleteTitle: {
     id: 'ra.message.bulk_delete_title',
-    defaultMessage: `Delete {smart_count, plural,
-                      one {{name}}
-                      other {{smart_count} {name} items}
-                    }`
+    defaultMessage:
+      'Delete {smart_count, plural, one {{name}} other {{smart_count} {name} items}}',
   },
   messageBulkDeleteContent: {
     id: 'ra.message.bulk_delete_content',
-    defaultMessage: `Are you sure you want to delete {smart_count, plural,
-                      one {this {name}?}
-                      other {these {smart_count} items?}
-                    }`,
+    defaultMessage:
+      'Are you sure you want to delete {smart_count, plural, one {this {name}?} other {these {smart_count} items?}}',
   },
   navigationNoResults: {
     id: 'ra.navigation.no_results',
@@ -178,7 +174,8 @@ module.exports = defineMessages({
   },
   navigationNoMoreResults: {
     id: 'ra.navigation.no_more_results',
-    defaultMessage: 'The page number {page} is out of boundaries. Try the previous page.',
+    defaultMessage:
+      'The page number {page} is out of boundaries. Try the previous page.',
   },
   navigationPageOutOfBoundaries: {
     id: 'ra.navigation.page_out_of_boundaries',
@@ -226,10 +223,8 @@ module.exports = defineMessages({
   },
   notificationUpdated: {
     id: 'ra.notification.updated',
-    defaultMessage: `{smart_count, plural,
-                      one {Element updated}
-                      other {{smart_count, number} elements updated}
-                    }`
+    defaultMessage:
+      '{smart_count, plural, one {Element updated} other {{smart_count, number} elements updated}}',
   },
   notificationCreated: {
     id: 'ra.notification.created',
@@ -237,10 +232,8 @@ module.exports = defineMessages({
   },
   notificationDeleted: {
     id: 'ra.notification.deleted',
-    defaultMessage: `{smart_count, plural,
-                      one {Element deleted}
-                      other {{smart_count, number} elements deleted}
-                    }`
+    defaultMessage:
+      '{smart_count, plural, one {Element deleted} other {{smart_count, number} elements deleted}}',
   },
   notificationBadItem: {
     id: 'ra.notification.bad_item',

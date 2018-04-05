@@ -1,5 +1,5 @@
 import { defineMessages } from 'react-intl';
-import englishMessages from 'ra-language-english-intl';
+import englishMessages from 'ra-language-intl/translation/en.json';
 
 const simpleMessages = defineMessages({
   actionResetViews: {
@@ -8,13 +8,10 @@ const simpleMessages = defineMessages({
   }
 });
 
-const resourceMessages = defineMessages({
+const resourcesMessages = defineMessages({
   postsName: {
     id: 'resources.posts.name',
-    defaultMessage: `{smart_count, plural,
-                      one {Post}
-                      other {Posts}
-                    }`
+    defaultMessage: '{smart_count, plural, one {Post} other {Posts}}'
   },
   postsFieldsAverageNote: {
     id: 'resources.posts.fields.average_note',
@@ -78,10 +75,7 @@ const resourceMessages = defineMessages({
   },
   commentsName: {
     id: 'resources.comments.name',
-    defaultMessage: `{smart_count, plural,
-                      one {Comment}
-                      other {Comments}
-                    }`,
+    defaultMessage: '{smart_count, plural, one {Comment} other {Comments}}',
   },
   commentsFieldsBody: {
     id: 'resources.comments.fields.body',
@@ -101,10 +95,7 @@ const resourceMessages = defineMessages({
   },
   usersName: {
     id: 'resources.users.name',
-    defaultMessage: `{smart_count, plural,
-                      one {User}
-                      other {Users}
-                    }`
+    defaultMessage: '{smart_count, plural, one {User} other {Users}}'
   },
   usersFieldsId: {
     id: 'resources.users.fields.id',
@@ -188,14 +179,15 @@ const userMessages = defineMessages({
   }
 });
 
-export const messages = {
-  ...simpleMessages,
-  ...englishMessages,
-  ...resourceMessages,
-  ...postMessages,
-  ...commentMessages,
-  ...userMessages,
-};
+// we just convert quickly the file so we don't need to use babel-plugin-react-intl
+const obj = {};
+Object.values({ ...simpleMessages, ...resourcesMessages, ...postMessages, ...commentMessages, ...userMessages }).forEach((value) => {
+  obj[value.id] = value.defaultMessage;
+});
 
+export const messages = {
+  ...englishMessages,
+  ...obj,
+};
 
 export default messages;

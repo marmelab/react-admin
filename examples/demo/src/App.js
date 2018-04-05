@@ -34,12 +34,11 @@ import dataProviderFactory from './dataProvider';
 import fakeServerFactory from './fakeServer';
 
 const i18nProvider = locale => {
-  // if (locale === 'fr') {
-  //     return import('./i18n/fr').then(messages => messages.default);
-  // }
+  if (locale === 'fr') {
+      return import('./i18n/fr').then(messages => messages.default);
+  }
 
   // Always fallback on english
-  console.log(englishMessages);
   return englishMessages;
 };
 
