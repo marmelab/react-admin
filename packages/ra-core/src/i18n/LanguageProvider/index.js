@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { injectIntl, IntlProvider } from 'react-intl';
 import { compose, withContext } from 'recompose';
 import { createStructuredSelector } from 'reselect';
-import defaultMessages from 'ra-language-english';
+import defaultMessages from 'ra-language-english-intl';
 
 import { selectLocale, selectMessages } from './selectors';
 

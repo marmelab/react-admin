@@ -1,143 +1,358 @@
-import englishMessages from 'ra-language-english';
+import { defineMessages } from 'react-intl'
+import englishMessages from 'ra-language-english-intl';
+
+const posMessages = defineMessages({
+  search: {
+    id: 'pos.search',
+    defaultMessage: 'Search',
+  },
+  configuration: {
+    id: 'pos.configuration',
+    defaultMessage: 'Configuration',
+  },
+  language: {
+    id: 'pos.language',
+    defaultMessage: 'Language',
+  },
+  themeName: {
+    id: 'pos.theme.name',
+    defaultMessage: 'Theme',
+  },
+  themeLight: {
+    id: 'pos.theme.light',
+    defaultMessage: 'Light',
+  },
+  themeDark: {
+    id: 'pos.theme.dark',
+    defaultMessage: 'Dark',
+  },
+  dashboardMonthlyRevenue: {
+    id: 'pos.dashboard.monthly_revenue',
+    defaultMessage: 'Monthly Revenue',
+  },
+  dashboardNewOrders: {
+    id: 'pos.dashboard.new_orders',
+    defaultMessage: 'New Orders',
+  },
+  dashboardPendingReviews: {
+    id: 'pos.dashboard.pending_reviews',
+    defaultMessage: 'Pending Reviews',
+  },
+  dashboardNewCustomers: {
+    id: 'pos.dashboard.new_customers',
+    defaultMessage: 'New Customers',
+  },
+  dashboardPendingOrders: {
+    id: 'pos.dashboard.pending_orders',
+    defaultMessage: 'Pending Orders',
+  },
+  dashboardOrderItems: {
+    id: 'pos.dashboard.order.items',
+    defaultMessage: 'by {customer_name}, one item |||| by {customer_name}, {nb_items} items',
+  },
+  dashboardWelcomeTitle: {
+    id: 'pos.dashboard.welcome.title',
+    defaultMessage: 'Welcome to react-admin demo',
+  },
+  dashboardWelcomeSubtitle: {
+    id: 'pos.dashboard.welcome.subtitle',
+    defaultMessage: 'This is the admin of an imaginary poster shop. Fell free to explore and modify the data - it\'s local to your computer, and will reset each time you reload.',
+  },
+  dashboardWelcomeAorButton: {
+    id: 'pos.dashboard.welcome.aor_button',
+    defaultMessage: 'react-admin site',
+  },
+  dashboardWelcomeDemoButton: {
+    id: 'pos.dashboard.welcome.demo_button',
+    defaultMessage: 'Source for this demo',
+  },
+});
+
+const resourcesMessages = defineMessages({
+  customersName: {
+    id: 'resources.customers.name',
+    defaultMessage: 'Customer |||| Customers',
+  },
+  customersFieldsCommands: {
+    id: 'resources.customers.fields.commands',
+    defaultMessage: 'Orders',
+  },
+  customersFieldsGroups: {
+    id: 'resources.customers.fields.groups',
+    defaultMessage: 'Segments',
+  },
+  customersFieldsLastSeenGte: {
+    id: 'resources.customers.fields.last_seen_gte',
+    defaultMessage: 'Visited Since',
+  },
+  customersFieldsName: {
+    id: 'resources.customers.fields.name',
+    defaultMessage: 'Name',
+  },
+  customersFieldsTotalSpent: {
+    id: 'resources.customers.fields.total_spent',
+    defaultMessage: 'Total spent',
+  },
+  customersTabsIdentity: {
+    id: 'resources.customers.tabs.identity',
+    defaultMessage: 'Identity',
+  },
+  customersTabsAddress: {
+    id: 'resources.customers.tabs.address',
+    defaultMessage: 'Address',
+  },
+  customersTabsOrders: {
+    id: 'resources.customers.tabs.orders',
+    defaultMessage: 'Orders',
+  },
+  customersTabsReviews: {
+    id: 'resources.customers.tabs.reviews',
+    defaultMessage: 'Reviews',
+  },
+  customersTabsStats: {
+    id: 'resources.customers.tabs.stats',
+    defaultMessage: 'Stats',
+  },
+  customersPageDelete: {
+    id: 'resources.customers.page.delete',
+    defaultMessage: 'Delete Customer',
+  },
+  commandsName: {
+    id: 'resources.commands.name',
+    defaultMessage: 'Order |||| Orders',
+  },
+  commandsFieldsBasketDelivery: {
+    id: 'resources.commands.fields.basket.delivery',
+    defaultMessage: 'Delivery',
+  },
+  commandsFieldsBasketReference: {
+    id: 'resources.commands.fields.basket.reference',
+    defaultMessage: 'Reference',
+  },
+  commandsFieldsBasketQuantity: {
+    id: 'resources.commands.fields.basket.quantity',
+    defaultMessage: 'Quantity',
+  },
+  commandsFieldsBasketSum: {
+    id: 'resources.commands.fields.basket.sum',
+    defaultMessage: 'Sum',
+  },
+  commandsFieldsBasketTaxRate: {
+    id: 'resources.commands.fields.basket.tax_rate',
+    defaultMessage: 'Tax Rate',
+  },
+  commandsFieldsBasketTotal: {
+    id: 'resources.commands.fields.basket.total',
+    defaultMessage: 'Total',
+  },
+  commandsFieldsBasketUnitPrice: {
+    id: 'resources.commands.fields.basket.unit_price',
+    defaultMessage: 'Unit Price',
+  },
+  commandsFieldsCustomerId: {
+    id: 'resources.commands.fields.customer_id',
+    defaultMessage: 'Customer',
+  },
+  commandsFieldsDateGte: {
+    id: 'resources.commands.fields.date_gte',
+    defaultMessage: 'Passed Since',
+  },
+  commandsFieldsDateLte: {
+    id: 'resources.commands.fields.date_lte',
+    defaultMessage: 'Passed Before',
+  },
+  commandsFieldsTotalGte: {
+    id: 'resources.commands.fields.total_gte',
+    defaultMessage: 'Min amount',
+  },
+  commandsFieldsStatus: {
+    id: 'resources.commands.fields.status',
+    defaultMessage: 'Status',
+  },
+  commandsFieldsReturned: {
+    id: 'resources.commands.fields.returned',
+    defaultMessage: 'Returned',
+  },
+  productsName: {
+    id: 'resources.products.name',
+    defaultMessage: 'Poster |||| Posters',
+  },
+  productsFieldsCategoryId: {
+    id: 'resources.products.fields.category_id',
+    defaultMessage: 'Category',
+  },
+  productsFieldsHeightGte: {
+    id: 'resources.products.fields.height_gte',
+    defaultMessage: 'Min height',
+  },
+  productsFieldsHeightLte: {
+    id: 'resources.products.fields.height_lte',
+    defaultMessage: 'Max height',
+  },
+  productsFieldsHeight: {
+    id: 'resources.products.fields.height',
+    defaultMessage: 'Height',
+  },
+  productsFieldsImage: {
+    id: 'resources.products.fields.image',
+    defaultMessage: 'Image',
+  },
+  productsFieldsPrice: {
+    id: 'resources.products.fields.price',
+    defaultMessage: 'Price',
+  },
+  productsFieldsReference: {
+    id: 'resources.products.fields.reference',
+    defaultMessage: 'Reference',
+  },
+  productsFieldsStockLte: {
+    id: 'resources.products.fields.stock_lte',
+    defaultMessage: 'Low Stock',
+  },
+  productsFieldsStock: {
+    id: 'resources.products.fields.stock',
+    defaultMessage: 'Stock',
+  },
+  productsFieldsThumbnail: {
+    id: 'resources.products.fields.thumbnail',
+    defaultMessage: 'Thumbnail',
+  },
+  productsFieldsWidthGte: {
+    id: 'resources.products.fields.width_gte',
+    defaultMessage: 'Min width',
+  },
+  productsFieldsWidthLte: {
+    id: 'resources.products.fields.width_lte',
+    defaultMessage: 'mx_width',
+  },
+  productsFieldsWidth: {
+    id: 'resources.products.fields.width',
+    defaultMessage: 'Width',
+  },
+  productsTabsImage: {
+    id: 'resources.products.tabs.image',
+    defaultMessage: 'Image',
+  },
+  productsTabsDetails: {
+    id: 'resources.products.tabs.details',
+    defaultMessage: 'Details',
+  },
+  productsTabsDescription: {
+    id: 'resources.products.tabs.description',
+    defaultMessage: 'Description',
+  },
+  productsTabsReviews: {
+    id: 'resources.products.tabs.reviews',
+    defaultMessage: 'Reviews',
+  },
+  categoriesName: {
+    id: 'resources.categories.name',
+    defaultMessage: 'Category |||| Categories',
+  },
+  categoriesFieldsProducts: {
+    id: 'resources.categories.fields.products',
+    defaultMessage: 'Products',
+  },
+  reviewsName: {
+    id: 'resources.reviews.name',
+    defaultMessage: 'Review |||| Reviews',
+  },
+  reviewsFieldsCustomerId: {
+    id: 'resources.reviews.fields.customer_id',
+    defaultMessage: 'Customer',
+  },
+  reviewsFieldsCommandId: {
+    id: 'resources.reviews.fields.command_id',
+    defaultMessage: 'Order',
+  },
+  reviewsFieldsProductId: {
+    id: 'resources.reviews.fields.product_id',
+    defaultMessage: 'Product',
+  },
+  reviewsFieldsDateGte: {
+    id: 'resources.reviews.fields.date_gte',
+    defaultMessage: 'Posted since',
+  },
+  reviewsFieldsDateLte: {
+    id: 'resources.reviews.fields.date_lte',
+    defaultMessage: 'Posted before',
+  },
+  reviewsFieldsDate: {
+    id: 'resources.reviews.fields.date',
+    defaultMessage: 'Date',
+  },
+  reviewsFieldsComment: {
+    id: 'resources.reviews.fields.comment',
+    defaultMessage: 'Comment',
+  },
+  reviewsFieldsRating: {
+    id: 'resources.reviews.fields.rating',
+    defaultMessage: 'Rating',
+  },
+  reviewsActionAccept: {
+    id: 'resources.reviews.action.accept',
+    defaultMessage: 'Accept',
+  },
+  reviewsActionReject: {
+    id: 'resources.reviews.action.reject',
+    defaultMessage: 'Reject',
+  },
+  reviewsNotificationApprovedSuccess: {
+    id: 'resources.reviews.notification.approved_success',
+    defaultMessage: 'Review approved',
+  },
+  reviewsNotificationApprovedError: {
+    id: 'resources.reviews.notification.approved_error',
+    defaultMessage: 'Error: Review not approved',
+  },
+  reviewsNotificationRejectedSuccess: {
+    id: 'resources.reviews.notification.rejected_success',
+    defaultMessage: 'Review rejected',
+  },
+  reviewsNotificationRejectedError: {
+    id: 'resources.reviews.notification.rejected_error',
+    defaultMessage: 'Error: Review not rejected',
+  },
+  segmentsName: {
+    id: 'resources.segments.name',
+    defaultMessage: 'Segments',
+  },
+  segmentsFieldsCustomers: {
+    id: 'resources.segments.fields.customers',
+    defaultMessage: 'Customers',
+  },
+  segmentsFieldsName: {
+    id: 'resources.segments.fields.name',
+    defaultMessage: 'Name',
+  },
+  segmentsDataCompulsive: {
+    id: 'resources.segments.data.compulsive',
+    defaultMessage: 'Compulsive',
+  },
+  segmentsDataCollector: {
+    id: 'resources.segments.data.collector',
+    defaultMessage: 'Collector',
+  },
+  segmentsDataOrderedOnce: {
+    id: 'resources.segments.data.ordered_once',
+    defaultMessage: 'Ordered once',
+  },
+  segmentsDataRegular: {
+    id: 'resources.segments.data.regular',
+    defaultMessage: 'Regular',
+  },
+  segmentsDataReturns: {
+    id: 'resources.segments.data.returns',
+    defaultMessage: 'Returns',
+  },
+  segmentsDataReviewer: {
+    id: 'resources.segments.data.reviewer',
+    defaultMessage: 'Reviewer',
+  },
+});
 
 export default {
-    ...englishMessages,
-    pos: {
-        search: 'Search',
-        configuration: 'Configuration',
-        language: 'Language',
-        theme: {
-            name: 'Theme',
-            light: 'Light',
-            dark: 'Dark',
-        },
-        dashboard: {
-            monthly_revenue: 'Monthly Revenue',
-            new_orders: 'New Orders',
-            pending_reviews: 'Pending Reviews',
-            new_customers: 'New Customers',
-            pending_orders: 'Pending Orders',
-            order: {
-                items:
-                    'by %{customer_name}, one item |||| by %{customer_name}, %{nb_items} items',
-            },
-            welcome: {
-                title: 'Welcome to react-admin demo',
-                subtitle:
-                    "This is the admin of an imaginary poster shop. Fell free to explore and modify the data - it's local to your computer, and will reset each time you reload.",
-                aor_button: 'react-admin site',
-                demo_button: 'Source for this demo',
-            },
-        },
-    },
-    resources: {
-        customers: {
-            name: 'Customer |||| Customers',
-            fields: {
-                commands: 'Orders',
-                groups: 'Segments',
-                last_seen_gte: 'Visited Since',
-                name: 'Name',
-                total_spent: 'Total spent',
-            },
-            tabs: {
-                identity: 'Identity',
-                address: 'Address',
-                orders: 'Orders',
-                reviews: 'Reviews',
-                stats: 'Stats',
-            },
-            page: {
-                delete: 'Delete Customer',
-            },
-        },
-        commands: {
-            name: 'Order |||| Orders',
-            fields: {
-                basket: {
-                    delivery: 'Delivery',
-                    reference: 'Reference',
-                    quantity: 'Quantity',
-                    sum: 'Sum',
-                    tax_rate: 'Tax Rate',
-                    total: 'Total',
-                    unit_price: 'Unit Price',
-                },
-                customer_id: 'Customer',
-                date_gte: 'Passed Since',
-                date_lte: 'Passed Before',
-                total_gte: 'Min amount',
-                status: 'Status',
-                returned: 'Returned',
-            },
-        },
-        products: {
-            name: 'Poster |||| Posters',
-            fields: {
-                category_id: 'Category',
-                height_gte: 'Min height',
-                height_lte: 'Max height',
-                height: 'Height',
-                image: 'Image',
-                price: 'Price',
-                reference: 'Reference',
-                stock_lte: 'Low Stock',
-                stock: 'Stock',
-                thumbnail: 'Thumbnail',
-                width_gte: 'Min width',
-                width_lte: 'mx_width',
-                width: 'Width',
-            },
-            tabs: {
-                image: 'Image',
-                details: 'Details',
-                description: 'Description',
-                reviews: 'Reviews',
-            },
-        },
-        categories: {
-            name: 'Category |||| Categories',
-            fields: {
-                products: 'Products',
-            },
-        },
-        reviews: {
-            name: 'Review |||| Reviews',
-            fields: {
-                customer_id: 'Customer',
-                command_id: 'Order',
-                product_id: 'Product',
-                date_gte: 'Posted since',
-                date_lte: 'Posted before',
-                date: 'Date',
-                comment: 'Comment',
-                rating: 'Rating',
-            },
-            action: {
-                accept: 'Accept',
-                reject: 'Reject',
-            },
-            notification: {
-                approved_success: 'Review approved',
-                approved_error: 'Error: Review not approved',
-                rejected_success: 'Review rejected',
-                rejected_error: 'Error: Review not rejected',
-            },
-        },
-        segments: {
-            name: 'Segments',
-            fields: {
-                customers: 'Customers',
-                name: 'Name',
-            },
-            data: {
-                compulsive: 'Compulsive',
-                collector: 'Collector',
-                ordered_once: 'Ordered once',
-                regular: 'Regular',
-                returns: 'Returns',
-                reviewer: 'Reviewer',
-            },
-        },
-    },
+  ...englishMessages,
+  ...posMessages,
+  ...resourcesMessages,
 };
