@@ -49,100 +49,100 @@ import { crudGetOne as crudGetOneAction } from '../actions';
  *     export default App;
  */
 export class ShowController extends Component {
-    componentDidMount() {
-        this.updateData();
+  componentDidMount() {
+    this.updateData();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.id !== nextProps.id ||
+      nextProps.version !== this.props.version
+    ) {
+      this.updateData(nextProps.resource, nextProps.id);
     }
+  }
 
-    componentWillReceiveProps(nextProps) {
-        if (
-            this.props.id !== nextProps.id ||
-            nextProps.version !== this.props.version
-        ) {
-            this.updateData(nextProps.resource, nextProps.id);
-        }
-    }
+  getBasePath() {
+    const { location } = this.props;
+    return location.pathname
+      .split('/')
+      .slice(0, -2)
+      .join('/');
+  }
 
-    getBasePath() {
-        const { location } = this.props;
-        return location.pathname
-            .split('/')
-            .slice(0, -2)
-            .join('/');
-    }
+  updateData(resource = this.props.resource, id = this.props.id) {
+    this.props.crudGetOne(resource, id, this.getBasePath());
+  }
 
-    updateData(resource = this.props.resource, id = this.props.id) {
-        this.props.crudGetOne(resource, id, this.getBasePath());
-    }
+  render() {
+    const {
+      title,
+      children,
+      id,
+      record,
+      isLoading,
+      resource,
+      translate,
+      version,
+    } = this.props;
 
-    render() {
-        const {
-            title,
-            children,
-            id,
-            record,
-            isLoading,
-            resource,
-            translate,
-            version,
-        } = this.props;
+    if (!children) return null;
+    const basePath = this.getBasePath();
 
-        if (!children) return null;
-        const basePath = this.getBasePath();
-
-        const resourceName = translate(`resources.${resource}.name`, {
-            smart_count: 1,
-            _: inflection.humanize(inflection.singularize(resource)),
-        });
-        const defaultTitle = translate('ra.page.show', {
-            name: `${resourceName}`,
-            id,
-            record,
-        });
-        return children({
-            isLoading,
-            title,
-            defaultTitle,
-            resource,
-            basePath,
-            record,
-            translate,
-            version,
-        });
-    }
+    const resourceName = translate(`resources.${resource}.name`, {
+      smart_count: 1,
+      _: inflection.humanize(inflection.singularize(resource)),
+    });
+    const defaultTitle = translate('ra.page.show', {
+      name: `${resourceName}`,
+      id,
+      record,
+    });
+    return children({
+      isLoading,
+      title,
+      defaultTitle,
+      resource,
+      basePath,
+      record,
+      translate,
+      version,
+    });
+  }
 }
 
 ShowController.propTypes = {
-    children: PropTypes.func.isRequired,
-    crudGetOne: PropTypes.func.isRequired,
-    record: PropTypes.object,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    id: PropTypes.string.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
-    resource: PropTypes.string.isRequired,
-    title: PropTypes.any,
-    translate: PropTypes.func,
-    version: PropTypes.number.isRequired,
+  children: PropTypes.func.isRequired,
+  crudGetOne: PropTypes.func.isRequired,
+  record: PropTypes.object,
+  hasCreate: PropTypes.bool,
+  hasEdit: PropTypes.bool,
+  hasList: PropTypes.bool,
+  hasShow: PropTypes.bool,
+  id: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  resource: PropTypes.string.isRequired,
+  title: PropTypes.any,
+  translate: PropTypes.func,
+  version: PropTypes.number.isRequired,
 };
 
 function mapStateToProps(state, props) {
-    return {
-        id: decodeURIComponent(props.match.params.id),
-        record: state.admin.resources[props.resource]
-            ? state.admin.resources[props.resource].data[
-                  decodeURIComponent(props.match.params.id)
-              ]
-            : null,
-        isLoading: state.admin.loading > 0,
-        version: state.admin.ui.viewVersion,
-    };
+  return {
+    id: decodeURIComponent(props.match.params.id),
+    record: state.admin.resources[props.resource]
+      ? state.admin.resources[props.resource].data[
+          decodeURIComponent(props.match.params.id)
+        ]
+      : null,
+    isLoading: state.admin.loading > 0,
+    version: state.admin.ui.viewVersion,
+  };
 }
 
 export default compose(
-    connect(mapStateToProps, { crudGetOne: crudGetOneAction }),
-    translate
+  connect(mapStateToProps, { crudGetOne: crudGetOneAction }),
+  translate
 )(ShowController);

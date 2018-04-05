@@ -7,7 +7,7 @@ import { linkToRecord } from 'ra-core';
 import Link from '../Link';
 
 const styles = {
-    root: { display: 'flex', flexWrap: 'wrap' },
+  root: { display: 'flex', flexWrap: 'wrap' },
 };
 
 const sanitizeRestProps = ({ currentSort, isLoading, ...props }) => props;
@@ -46,78 +46,77 @@ const sanitizeRestProps = ({ currentSort, isLoading, ...props }) => props;
 
  */
 export class SingleFieldList extends Component {
-    // Our handleClick does nothing as we wrap the children inside a Link but it is
-    // required fo ChipField which uses a Chip from material-ui.
-    // The material-ui Chip requires an onClick handler to behave like a clickable element
-    handleClick = () => {};
-    render() {
-        const {
-            classes = {},
-            className,
-            ids,
-            data,
+  // Our handleClick does nothing as we wrap the children inside a Link but it is
+  // required fo ChipField which uses a Chip from material-ui.
+  // The material-ui Chip requires an onClick handler to behave like a clickable element
+  handleClick = () => {};
+  render() {
+    const {
+      classes = {},
+      className,
+      ids,
+      data,
+      resource,
+      basePath,
+      children,
+      linkType,
+      ...rest
+    } = this.props;
+
+    return (
+      <div
+        className={classnames(classes.root, className)}
+        {...sanitizeRestProps(rest)}
+      >
+        {ids.map(id => {
+          const resourceLinkPath = !linkType
+            ? false
+            : linkToRecord(basePath, id, linkType);
+
+          if (resourceLinkPath) {
+            return (
+              <Link
+                className={classnames(classes.link, className)}
+                key={id}
+                to={resourceLinkPath}
+              >
+                {cloneElement(children, {
+                  record: data[id],
+                  resource,
+                  basePath,
+                  // Workaround to force ChipField to be clickable
+                  onClick: this.handleClick,
+                })}
+              </Link>
+            );
+          }
+
+          return cloneElement(children, {
+            key: id,
+            record: data[id],
             resource,
             basePath,
-            children,
-            linkType,
-            ...rest
-        } = this.props;
-
-        return (
-            <div
-                className={classnames(classes.root, className)}
-                {...sanitizeRestProps(rest)}
-            >
-                {ids.map(id => {
-                    const resourceLinkPath = !linkType
-                        ? false
-                        : linkToRecord(basePath, id, linkType);
-
-                    if (resourceLinkPath) {
-                        return (
-                            <Link
-                                className={classnames(classes.link, className)}
-                                key={id}
-                                to={resourceLinkPath}
-                            >
-                                {cloneElement(children, {
-                                    record: data[id],
-                                    resource,
-                                    basePath,
-                                    // Workaround to force ChipField to be clickable
-                                    onClick: this.handleClick,
-                                })}
-                            </Link>
-                        );
-                    }
-
-                    return cloneElement(children, {
-                        key: id,
-                        record: data[id],
-                        resource,
-                        basePath,
-                    });
-                })}
-            </div>
-        );
-    }
+          });
+        })}
+      </div>
+    );
+  }
 }
 
 SingleFieldList.propTypes = {
-    basePath: PropTypes.string,
-    children: PropTypes.element.isRequired,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    data: PropTypes.object,
-    ids: PropTypes.array,
-    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
-        .isRequired,
-    resource: PropTypes.string,
+  basePath: PropTypes.string,
+  children: PropTypes.element.isRequired,
+  classes: PropTypes.object,
+  className: PropTypes.string,
+  data: PropTypes.object,
+  ids: PropTypes.array,
+  linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
+  resource: PropTypes.string,
 };
 
 SingleFieldList.defaultProps = {
-    classes: {},
-    linkType: 'edit',
+  classes: {},
+  linkType: 'edit',
 };
 
 export default withStyles(styles)(SingleFieldList);

@@ -50,145 +50,141 @@ import { crudGetOne, crudUpdate, startUndoable } from '../actions';
  *     export default App;
  */
 export class EditController extends Component {
-    componentDidMount() {
-        this.updateData();
+  componentDidMount() {
+    this.updateData();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.id !== nextProps.id ||
+      nextProps.version !== this.props.version
+    ) {
+      this.props.resetForm('record-form');
+      this.updateData(nextProps.resource, nextProps.id);
     }
+  }
 
-    componentWillReceiveProps(nextProps) {
-        if (
-            this.props.id !== nextProps.id ||
-            nextProps.version !== this.props.version
-        ) {
-            this.props.resetForm('record-form');
-            this.updateData(nextProps.resource, nextProps.id);
-        }
+  getBasePath() {
+    const { location } = this.props;
+    return location.pathname
+      .split('/')
+      .slice(0, -1)
+      .join('/');
+  }
+
+  defaultRedirectRoute() {
+    return 'list';
+  }
+
+  updateData(resource = this.props.resource, id = this.props.id) {
+    this.props.crudGetOne(resource, id, this.getBasePath());
+  }
+
+  save = (data, redirect) => {
+    const { undoable = true, startUndoable, dispatchCrudUpdate } = this.props;
+    if (undoable) {
+      startUndoable(
+        crudUpdate(
+          this.props.resource,
+          this.props.id,
+          data,
+          this.props.record,
+          this.getBasePath(),
+          redirect
+        )
+      );
+    } else {
+      dispatchCrudUpdate(
+        this.props.resource,
+        this.props.id,
+        data,
+        this.props.record,
+        this.getBasePath(),
+        redirect
+      );
     }
+  };
 
-    getBasePath() {
-        const { location } = this.props;
-        return location.pathname
-            .split('/')
-            .slice(0, -1)
-            .join('/');
-    }
+  render() {
+    const {
+      children,
+      record,
+      id,
+      isLoading,
+      resource,
+      translate,
+      version,
+    } = this.props;
 
-    defaultRedirectRoute() {
-        return 'list';
-    }
+    if (!children) return null;
 
-    updateData(resource = this.props.resource, id = this.props.id) {
-        this.props.crudGetOne(resource, id, this.getBasePath());
-    }
+    const basePath = this.getBasePath();
 
-    save = (data, redirect) => {
-        const {
-            undoable = true,
-            startUndoable,
-            dispatchCrudUpdate,
-        } = this.props;
-        if (undoable) {
-            startUndoable(
-                crudUpdate(
-                    this.props.resource,
-                    this.props.id,
-                    data,
-                    this.props.record,
-                    this.getBasePath(),
-                    redirect
-                )
-            );
-        } else {
-            dispatchCrudUpdate(
-                this.props.resource,
-                this.props.id,
-                data,
-                this.props.record,
-                this.getBasePath(),
-                redirect
-            );
-        }
-    };
+    const resourceName = translate(`resources.${resource}.name`, {
+      smart_count: 1,
+      _: inflection.humanize(inflection.singularize(resource)),
+    });
+    const defaultTitle = translate('ra.page.edit', {
+      name: `${resourceName}`,
+      id,
+      record,
+    });
 
-    render() {
-        const {
-            children,
-            record,
-            id,
-            isLoading,
-            resource,
-            translate,
-            version,
-        } = this.props;
-
-        if (!children) return null;
-
-        const basePath = this.getBasePath();
-
-        const resourceName = translate(`resources.${resource}.name`, {
-            smart_count: 1,
-            _: inflection.humanize(inflection.singularize(resource)),
-        });
-        const defaultTitle = translate('ra.page.edit', {
-            name: `${resourceName}`,
-            id,
-            record,
-        });
-
-        return children({
-            isLoading,
-            defaultTitle,
-            save: this.save,
-            resource,
-            basePath,
-            record,
-            redirect: this.defaultRedirectRoute(),
-            translate,
-            version,
-        });
-    }
+    return children({
+      isLoading,
+      defaultTitle,
+      save: this.save,
+      resource,
+      basePath,
+      record,
+      redirect: this.defaultRedirectRoute(),
+      translate,
+      version,
+    });
+  }
 }
 
 EditController.propTypes = {
-    children: PropTypes.func.isRequired,
-    crudGetOne: PropTypes.func.isRequired,
-    dispatchCrudUpdate: PropTypes.func.isRequired,
-    record: PropTypes.object,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    hasList: PropTypes.bool,
-    id: PropTypes.string.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
-    resetForm: PropTypes.func.isRequired,
-    resource: PropTypes.string.isRequired,
-    startUndoable: PropTypes.func.isRequired,
-    title: PropTypes.any,
-    translate: PropTypes.func,
-    undoable: PropTypes.bool,
-    version: PropTypes.number.isRequired,
+  children: PropTypes.func.isRequired,
+  crudGetOne: PropTypes.func.isRequired,
+  dispatchCrudUpdate: PropTypes.func.isRequired,
+  record: PropTypes.object,
+  hasCreate: PropTypes.bool,
+  hasEdit: PropTypes.bool,
+  hasShow: PropTypes.bool,
+  hasList: PropTypes.bool,
+  id: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  resetForm: PropTypes.func.isRequired,
+  resource: PropTypes.string.isRequired,
+  startUndoable: PropTypes.func.isRequired,
+  title: PropTypes.any,
+  translate: PropTypes.func,
+  undoable: PropTypes.bool,
+  version: PropTypes.number.isRequired,
 };
 
 function mapStateToProps(state, props) {
-    return {
-        id: decodeURIComponent(props.match.params.id),
-        record: state.admin.resources[props.resource]
-            ? state.admin.resources[props.resource].data[
-                  decodeURIComponent(props.match.params.id)
-              ]
-            : null,
-        isLoading: state.admin.loading > 0,
-        version: state.admin.ui.viewVersion,
-    };
+  return {
+    id: decodeURIComponent(props.match.params.id),
+    record: state.admin.resources[props.resource]
+      ? state.admin.resources[props.resource].data[
+          decodeURIComponent(props.match.params.id)
+        ]
+      : null,
+    isLoading: state.admin.loading > 0,
+    version: state.admin.ui.viewVersion,
+  };
 }
 
 export default compose(
-    connect(mapStateToProps, {
-        crudGetOne,
-        dispatchCrudUpdate: crudUpdate,
-        startUndoable,
-        resetForm: reset,
-    }),
-    translate
+  connect(mapStateToProps, {
+    crudGetOne,
+    dispatchCrudUpdate: crudUpdate,
+    startUndoable,
+    resetForm: reset,
+  }),
+  translate
 )(EditController);

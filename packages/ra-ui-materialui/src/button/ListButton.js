@@ -6,14 +6,14 @@ import Link from '../Link';
 import Button from './Button';
 
 const ListButton = ({ basePath = '', label = 'ra.action.list', ...rest }) => (
-    <Button component={Link} to={basePath} label={label} {...rest}>
-        <ActionList />
-    </Button>
+  <Button component={Link} to={basePath} label={label} {...rest}>
+    <ActionList />
+  </Button>
 );
 
 ListButton.propTypes = {
-    basePath: PropTypes.string,
-    label: PropTypes.string,
+  basePath: PropTypes.string,
+  label: PropTypes.string,
 };
 
 export default ListButton;

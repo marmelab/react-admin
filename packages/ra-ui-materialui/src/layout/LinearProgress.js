@@ -5,10 +5,10 @@ import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 
 const styles = theme => ({
-    root: {
-        margin: `${theme.spacing.unit}px 0`,
-        width: `${theme.spacing.unit * 20}px`,
-    },
+  root: {
+    margin: `${theme.spacing.unit}px 0`,
+    width: `${theme.spacing.unit * 20}px`,
+  },
 });
 
 /**
@@ -22,11 +22,11 @@ const styles = theme => ({
  * @param {object} classes CSS class names injected by withStyles 
  */
 export const LinearProgress = ({ classes, className, ...rest }) => (
-    <Progress className={classnames(classes.root, className)} {...rest} />
+  <Progress className={classnames(classes.root, className)} {...rest} />
 );
 LinearProgress.propTypes = {
-    classes: PropTypes.object,
-    className: PropTypes.string,
+  classes: PropTypes.object,
+  className: PropTypes.string,
 };
 
 export default withStyles(styles)(LinearProgress);

@@ -16,20 +16,20 @@ export const SHOW_NOTIFICATION = 'RA/SHOW_NOTIFICATION';
  * 
  */
 export const showNotification = (
-    message,
-    type = 'info',
-    notificationOptions
+  message,
+  type = 'info',
+  notificationOptions
 ) => ({
-    type: SHOW_NOTIFICATION,
-    payload: {
-        ...notificationOptions,
-        type,
-        message,
-    },
+  type: SHOW_NOTIFICATION,
+  payload: {
+    ...notificationOptions,
+    type,
+    message,
+  },
 });
 
 export const HIDE_NOTIFICATION = 'RA/HIDE_NOTIFICATION';
 
 export const hideNotification = () => ({
-    type: HIDE_NOTIFICATION,
+  type: HIDE_NOTIFICATION,
 });

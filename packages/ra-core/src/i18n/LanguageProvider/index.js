@@ -6,18 +6,18 @@
  * IntlProvider component and i18n messages (loaded from `app/translations`)
  */
 
-import React, { PureComponent, Children, cloneElement } from 'react';
+import React, { PureComponent, Children } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl, IntlProvider } from 'react-intl';
 import { compose, withContext } from 'recompose';
 import { createStructuredSelector } from 'reselect';
-import defaultMessages from 'ra-language-english';
+import defaultMessages from 'ra-language-english-intl';
 
 import { selectLocale, selectMessages } from './selectors';
 
 /* eslint-disable no-restricted-syntax, no-continue */
-export const fromPolyglot = (obj) => {
+export const fromPolyglot = obj => {
   const toReturn = {};
   for (const i in obj) {
     if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
@@ -34,32 +34,34 @@ export const fromPolyglot = (obj) => {
   return toReturn;
 };
 
-class TranslationProvider extends PureComponent {
-  render() {
-    return cloneElement(Children.only(this.props.children), { intl: this.props.intl });
-  }
-}
+const TranslationProvider = props => Children.only(props.children);
 
 const withI18nContext = withContext(
   {
     translate: PropTypes.func.isRequired,
   },
-  (props) => {
+  props => {
     return {
-      translate: (id, opts) => console.log(opts) || props.intl.formatMessage({ id }, opts),
+      translate: (id, opts) => props.intl.formatMessage({ id }, opts),
     };
   }
 );
 
 const ConnectedTranslationProvider = compose(injectIntl, withI18nContext)(
-    TranslationProvider
+  TranslationProvider
 );
 
 // eslint-disable-next-line react/prefer-stateless-function
 export class LanguageProvider extends PureComponent {
   render() {
     return (
-      <IntlProvider locale={this.props.locale} key={this.props.locale} messages={fromPolyglot(this.props.messages) || fromPolyglot(defaultMessages)}>
+      <IntlProvider
+        locale={this.props.locale}
+        key={this.props.locale}
+        messages={
+          fromPolyglot(this.props.messages) || fromPolyglot(defaultMessages)
+        }
+      >
         <ConnectedTranslationProvider>
           {this.props.children}
         </ConnectedTranslationProvider>
@@ -88,7 +90,7 @@ const withI18nContext2 = withContext(
     locale: PropTypes.string.isRequired,
     messages: PropTypes.object,
   },
-  (props) => {
+  props => {
     return {
       locale: props.locale,
       messages: props.messages,
@@ -97,5 +99,5 @@ const withI18nContext2 = withContext(
 );
 
 export default compose(connect(mapStateToProps), withI18nContext2)(
-    LanguageProvider
+  LanguageProvider
 );

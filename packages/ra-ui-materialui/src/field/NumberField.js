@@ -8,13 +8,13 @@ import compose from 'recompose/compose';
 import sanitizeRestProps from './sanitizeRestProps';
 
 const hasNumberFormat = !!(
-    typeof Intl === 'object' &&
-    Intl &&
-    typeof Intl.NumberFormat === 'function'
+  typeof Intl === 'object' &&
+  Intl &&
+  typeof Intl.NumberFormat === 'function'
 );
 
 const styles = {
-    input: { textAlign: 'right' },
+  input: { textAlign: 'right' },
 };
 
 /**
@@ -46,59 +46,59 @@ const styles = {
  * <span>25,99 $US</span>
  */
 export const NumberField = ({
-    classes = {},
-    className,
-    record,
-    source,
-    locales,
-    options,
-    ...rest
+  classes = {},
+  className,
+  record,
+  source,
+  locales,
+  options,
+  ...rest
 }) => {
-    if (!record) return null;
-    const value = get(record, source);
-    if (value == null) return null;
+  if (!record) return null;
+  const value = get(record, source);
+  if (value == null) return null;
 
-    if (!hasNumberFormat)
-        return (
-            <span
-                className={classnames(classes.input, className)}
-                {...sanitizeRestProps(rest)}
-            >
-                {value}
-            </span>
-        );
-
+  if (!hasNumberFormat)
     return (
-        <span
-            className={classnames(classes.input, className)}
-            {...sanitizeRestProps(rest)}
-        >
-            {value.toLocaleString(locales, options)}
-        </span>
+      <span
+        className={classnames(classes.input, className)}
+        {...sanitizeRestProps(rest)}
+      >
+        {value}
+      </span>
     );
+
+  return (
+    <span
+      className={classnames(classes.input, className)}
+      {...sanitizeRestProps(rest)}
+    >
+      {value.toLocaleString(locales, options)}
+    </span>
+  );
 };
 
 NumberField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    label: PropTypes.string,
-    locales: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-    ]),
-    options: PropTypes.object,
-    record: PropTypes.object,
-    textAlign: PropTypes.string,
-    source: PropTypes.string.isRequired,
+  addLabel: PropTypes.bool,
+  basePath: PropTypes.string,
+  classes: PropTypes.object,
+  className: PropTypes.string,
+  cellClassName: PropTypes.string,
+  headerClassName: PropTypes.string,
+  label: PropTypes.string,
+  locales: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+  ]),
+  options: PropTypes.object,
+  record: PropTypes.object,
+  textAlign: PropTypes.string,
+  source: PropTypes.string.isRequired,
 };
 
 const ComposedNumberField = compose(pure, withStyles(styles))(NumberField);
 ComposedNumberField.defaultProps = {
-    addLabel: true,
-    textAlign: 'right',
+  addLabel: true,
+  textAlign: 'right',
 };
 export default ComposedNumberField;

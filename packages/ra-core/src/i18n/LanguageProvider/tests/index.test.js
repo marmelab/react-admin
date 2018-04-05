@@ -1,8 +1,8 @@
-import assert from 'assert';
+// import assert from 'assert';
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import { FormattedMessage, defineMessages } from 'react-intl';
-import { Provider } from 'react-redux';
+import { shallow } from 'enzyme';
+import { defineMessages } from 'react-intl';
+// import { Provider } from 'react-redux';
 
 import { LanguageProvider } from '../index';
 // import configureStore from '../../../configureStore';
@@ -19,11 +19,9 @@ const messages = defineMessages({
 
 describe('<LanguageProvider />', () => {
   it('should render its children', () => {
-    const children = (<h1>Test</h1>);
+    const children = <h1>Test</h1>;
     const renderedComponent = shallow(
-      <LanguageProvider messages={messages}>
-        {children}
-      </LanguageProvider>
+      <LanguageProvider messages={messages}>{children}</LanguageProvider>
     );
     expect(renderedComponent.contains(children)).toBe(true);
   });

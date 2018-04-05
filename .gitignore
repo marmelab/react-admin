@@ -8,3 +8,4 @@ examples/**/static
 examples/**/dist
 packages/ra-example-shop
 .idea
+*.iml

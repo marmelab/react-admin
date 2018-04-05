@@ -7,34 +7,34 @@ import compose from 'recompose/compose';
 import translate from '../i18n/translate';
 
 export const FieldTitle = ({
-    resource,
-    source,
-    label,
-    isRequired,
-    translate,
+  resource,
+  source,
+  label,
+  isRequired,
+  translate,
 }) => (
-    <span>
-        {typeof label !== 'undefined'
-            ? translate(label, { _: label })
-            : typeof source !== 'undefined'
-              ? translate(`resources.${resource}.fields.${source}`, {
-                    _: inflection.transform(source, ['underscore', 'humanize']),
-                })
-              : ''}
-        {isRequired && ' *'}
-    </span>
+  <span>
+    {typeof label !== 'undefined'
+      ? translate(label, { _: label })
+      : typeof source !== 'undefined'
+        ? translate(`resources.${resource}.fields.${source}`, {
+            _: inflection.transform(source, ['underscore', 'humanize']),
+          })
+        : ''}
+    {isRequired && ' *'}
+  </span>
 );
 
 FieldTitle.propTypes = {
-    isRequired: PropTypes.bool,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    label: PropTypes.string,
-    translate: PropTypes.func.isRequired,
+  isRequired: PropTypes.bool,
+  resource: PropTypes.string,
+  source: PropTypes.string,
+  label: PropTypes.string,
+  translate: PropTypes.func.isRequired,
 };
 
 FieldTitle.defaultProps = {
-    translate: x => x,
+  translate: x => x,
 };
 
 const enhance = compose(translate, pure);

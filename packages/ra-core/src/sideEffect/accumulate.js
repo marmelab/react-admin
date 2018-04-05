@@ -11,17 +11,17 @@ import { call, cancel, fork, put, takeEvery } from 'redux-saga/effects';
  */
 const debouncedIds = {};
 const addIds = (resource, ids) => {
-    if (!debouncedIds[resource]) {
-        debouncedIds[resource] = {};
-    }
-    ids.forEach(id => {
-        debouncedIds[resource][id] = true;
-    }); // fast UNIQUE
+  if (!debouncedIds[resource]) {
+    debouncedIds[resource] = {};
+  }
+  ids.forEach(id => {
+    debouncedIds[resource][id] = true;
+  }); // fast UNIQUE
 };
 const getIds = resource => {
-    const ids = Object.keys(debouncedIds[resource]);
-    delete debouncedIds[resource];
-    return ids;
+  const ids = Object.keys(debouncedIds[resource]);
+  delete debouncedIds[resource];
+  return ids;
 };
 
 const tasks = {};
@@ -36,10 +36,10 @@ const tasks = {};
  * @see http://yelouafi.github.io/redux-saga/docs/recipes/index.html#debouncing
  */
 function* finalize(resource, actionCreator) {
-    // combined with cancel(), this debounces the calls
-    yield call(delay, 50);
-    yield put(actionCreator(resource, getIds(resource)));
-    delete tasks[resource];
+  // combined with cancel(), this debounces the calls
+  yield call(delay, 50);
+  yield put(actionCreator(resource, getIds(resource)));
+  delete tasks[resource];
 }
 
 /**
@@ -49,17 +49,14 @@ function* finalize(resource, actionCreator) {
  * accumulate({ type: CRUD_GET_MANY_ACCUMULATE, payload: { ids: [1, 3, 5], resource: 'posts' } })
  */
 function* accumulate({ payload, meta }) {
-    const { ids, resource } = payload;
-    if (tasks[resource]) {
-        yield cancel(tasks[resource]);
-    }
-    addIds(resource, ids);
-    tasks[resource] = yield fork(finalize, resource, meta.accumulate);
+  const { ids, resource } = payload;
+  if (tasks[resource]) {
+    yield cancel(tasks[resource]);
+  }
+  addIds(resource, ids);
+  tasks[resource] = yield fork(finalize, resource, meta.accumulate);
 }
 
 export default function*() {
-    yield takeEvery(
-        action => action.meta && action.meta.accumulate,
-        accumulate
-    );
+  yield takeEvery(action => action.meta && action.meta.accumulate, accumulate);
 }

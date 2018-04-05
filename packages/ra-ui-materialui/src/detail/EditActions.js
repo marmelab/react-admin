@@ -5,12 +5,12 @@ import { ListButton, ShowButton, DeleteButton, RefreshButton } from '../button';
 import CardActions from '../layout/CardActions';
 
 const sanitizeRestProps = ({
-    basePath,
-    className,
-    record,
-    hasShow,
-    hasList,
-    ...rest
+  basePath,
+  className,
+  record,
+  hasShow,
+  hasList,
+  ...rest
 }) => rest;
 
 /**
@@ -42,29 +42,29 @@ const sanitizeRestProps = ({
  *     );
  */
 const EditActions = ({
-    basePath,
-    className,
-    data,
-    hasShow,
-    hasList,
-    resource,
-    ...rest
+  basePath,
+  className,
+  data,
+  hasShow,
+  hasList,
+  resource,
+  ...rest
 }) => (
-    <CardActions className={className} {...sanitizeRestProps(rest)}>
-        {hasShow && <ShowButton basePath={basePath} record={data} />}
-        {hasList && <ListButton basePath={basePath} />}
-        <DeleteButton basePath={basePath} record={data} resource={resource} />
-        <RefreshButton />
-    </CardActions>
+  <CardActions className={className} {...sanitizeRestProps(rest)}>
+    {hasShow && <ShowButton basePath={basePath} record={data} />}
+    {hasList && <ListButton basePath={basePath} />}
+    <DeleteButton basePath={basePath} record={data} resource={resource} />
+    <RefreshButton />
+  </CardActions>
 );
 
 EditActions.propTypes = {
-    basePath: PropTypes.string,
-    className: PropTypes.string,
-    data: PropTypes.object,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    resource: PropTypes.string,
+  basePath: PropTypes.string,
+  className: PropTypes.string,
+  data: PropTypes.object,
+  hasList: PropTypes.bool,
+  hasShow: PropTypes.bool,
+  resource: PropTypes.string,
 };
 
 export default EditActions;

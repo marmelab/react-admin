@@ -9,91 +9,91 @@ import DefaultActions from './ShowActions';
 import RecordTitle from '../layout/RecordTitle';
 
 const sanitizeRestProps = ({
-    actions,
-    title,
-    children,
-    className,
-    crudGetOne,
-    id,
-    data,
-    isLoading,
-    resource,
-    hasCreate,
-    hasEdit,
-    hasList,
-    hasShow,
-    translate,
-    version,
-    match,
-    location,
-    history,
-    options,
-    locale,
-    permissions,
-    ...rest
+  actions,
+  title,
+  children,
+  className,
+  crudGetOne,
+  id,
+  data,
+  isLoading,
+  resource,
+  hasCreate,
+  hasEdit,
+  hasList,
+  hasShow,
+  translate,
+  version,
+  match,
+  location,
+  history,
+  options,
+  locale,
+  permissions,
+  ...rest
 }) => rest;
 
 const ShowView = ({
-    actions = <DefaultActions />,
-    basePath,
-    children,
-    className,
-    defaultTitle,
-    hasEdit,
-    hasList,
-    isLoading,
-    record,
-    resource,
-    title,
-    version,
-    ...rest
+  actions = <DefaultActions />,
+  basePath,
+  children,
+  className,
+  defaultTitle,
+  hasEdit,
+  hasList,
+  isLoading,
+  record,
+  resource,
+  title,
+  version,
+  ...rest
 }) => (
-    <div
-        className={classnames('show-page', className)}
-        {...sanitizeRestProps(rest)}
-    >
-        <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
-            <Header
-                title={
-                    <RecordTitle
-                        title={title}
-                        record={record}
-                        defaultTitle={defaultTitle}
-                    />
-                }
-                actions={actions}
-                actionProps={{
-                    basePath,
-                    data: record,
-                    hasList,
-                    hasEdit,
-                    resource,
-                }}
-            />
-            {record &&
-                React.cloneElement(children, {
-                    resource,
-                    basePath,
-                    record,
-                    version,
-                })}
-        </Card>
-    </div>
+  <div
+    className={classnames('show-page', className)}
+    {...sanitizeRestProps(rest)}
+  >
+    <Card style={{ opacity: isLoading ? 0.8 : 1 }}>
+      <Header
+        title={
+          <RecordTitle
+            title={title}
+            record={record}
+            defaultTitle={defaultTitle}
+          />
+        }
+        actions={actions}
+        actionProps={{
+          basePath,
+          data: record,
+          hasList,
+          hasEdit,
+          resource,
+        }}
+      />
+      {record &&
+        React.cloneElement(children, {
+          resource,
+          basePath,
+          record,
+          version,
+        })}
+    </Card>
+  </div>
 );
 
 ShowView.propTypes = {
-    actions: PropTypes.element,
-    basePath: PropTypes.string,
-    children: PropTypes.element,
-    className: PropTypes.string,
-    defaultTitle: PropTypes.any,
-    hasEdit: PropTypes.bool,
-    hasList: PropTypes.bool,
-    isLoading: PropTypes.bool,
-    record: PropTypes.object,
-    resource: PropTypes.string,
-    title: PropTypes.any,
-    version: PropTypes.number,
+  actions: PropTypes.element,
+  basePath: PropTypes.string,
+  children: PropTypes.element,
+  className: PropTypes.string,
+  defaultTitle: PropTypes.any,
+  hasEdit: PropTypes.bool,
+  hasList: PropTypes.bool,
+  isLoading: PropTypes.bool,
+  record: PropTypes.object,
+  resource: PropTypes.string,
+  title: PropTypes.any,
+  version: PropTypes.number,
 };
 
 /**
@@ -139,23 +139,23 @@ ShowView.propTypes = {
  *     export default App;
  */
 const Show = props => (
-    <ShowController {...props}>
-        {controllerProps => <ShowView {...props} {...controllerProps} />}
-    </ShowController>
+  <ShowController {...props}>
+    {controllerProps => <ShowView {...props} {...controllerProps} />}
+  </ShowController>
 );
 
 Show.propTypes = {
-    actions: PropTypes.element,
-    children: PropTypes.element,
-    className: PropTypes.string,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
-    resource: PropTypes.string.isRequired,
-    title: PropTypes.any,
+  actions: PropTypes.element,
+  children: PropTypes.element,
+  className: PropTypes.string,
+  hasCreate: PropTypes.bool,
+  hasEdit: PropTypes.bool,
+  hasList: PropTypes.bool,
+  hasShow: PropTypes.bool,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  resource: PropTypes.string.isRequired,
+  title: PropTypes.any,
 };
 
 export default Show;

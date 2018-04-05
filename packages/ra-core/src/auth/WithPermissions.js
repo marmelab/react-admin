@@ -45,97 +45,97 @@ const isEmptyChildren = children => Children.count(children) === 0;
  *     );
  */
 export class WithPermissions extends Component {
-    static propTypes = {
-        authProvider: PropTypes.func,
-        authParams: PropTypes.object,
-        children: PropTypes.func,
-        location: PropTypes.object,
-        match: PropTypes.object,
-        render: PropTypes.func,
-        isLoggedIn: PropTypes.bool,
-        staticContext: PropTypes.object,
-        userCheck: PropTypes.func,
-    };
+  static propTypes = {
+    authProvider: PropTypes.func,
+    authParams: PropTypes.object,
+    children: PropTypes.func,
+    location: PropTypes.object,
+    match: PropTypes.object,
+    render: PropTypes.func,
+    isLoggedIn: PropTypes.bool,
+    staticContext: PropTypes.object,
+    userCheck: PropTypes.func,
+  };
 
-    state = { permissions: null };
+  state = { permissions: null };
 
-    componentWillMount() {
-        warning(
-            !(
-                this.props.render &&
-                this.props.children &&
-                !isEmptyChildren(this.props.children)
-            ),
-            'You should not use both <WithPermissions render> and <WithPermissions children>; <WithPermissions children> will be ignored'
-        );
-        this.checkAuthentication(this.props);
+  componentWillMount() {
+    warning(
+      !(
+        this.props.render &&
+        this.props.children &&
+        !isEmptyChildren(this.props.children)
+      ),
+      'You should not use both <WithPermissions render> and <WithPermissions children>; <WithPermissions children> will be ignored'
+    );
+    this.checkAuthentication(this.props);
+  }
+
+  async componentDidMount() {
+    await this.checkPermissions(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.location !== this.props.location ||
+      nextProps.authParams !== this.props.authParams ||
+      nextProps.isLoggedIn !== this.props.isLoggedIn
+    ) {
+      this.checkAuthentication(nextProps);
+      this.checkPermissions(this.props);
+    }
+  }
+
+  checkAuthentication(params) {
+    const { userCheck, authParams, location } = params;
+    userCheck(authParams, location && location.pathname);
+  }
+
+  async checkPermissions(params) {
+    const { authProvider, authParams, location, match } = params;
+    try {
+      const permissions = await authProvider(AUTH_GET_PERMISSIONS, {
+        ...authParams,
+        routeParams: match ? match.params : undefined,
+        location: location ? location.pathname : undefined,
+      });
+
+      this.setState({ permissions });
+    } catch (error) {
+      this.setState({ permissions: null });
+    }
+  }
+
+  // render even though the AUTH_GET_PERMISSIONS
+  // isn't finished (optimistic rendering)
+  render() {
+    const {
+      authProvider,
+      userCheck,
+      isLoggedIn,
+      render,
+      children,
+      staticContext,
+      ...props
+    } = this.props;
+    const { permissions } = this.state;
+
+    if (render) {
+      return render({ permissions, ...props });
     }
 
-    async componentDidMount() {
-        await this.checkPermissions(this.props);
+    if (children) {
+      return children({ permissions, ...props });
     }
-
-    componentWillReceiveProps(nextProps) {
-        if (
-            nextProps.location !== this.props.location ||
-            nextProps.authParams !== this.props.authParams ||
-            nextProps.isLoggedIn !== this.props.isLoggedIn
-        ) {
-            this.checkAuthentication(nextProps);
-            this.checkPermissions(this.props);
-        }
-    }
-
-    checkAuthentication(params) {
-        const { userCheck, authParams, location } = params;
-        userCheck(authParams, location && location.pathname);
-    }
-
-    async checkPermissions(params) {
-        const { authProvider, authParams, location, match } = params;
-        try {
-            const permissions = await authProvider(AUTH_GET_PERMISSIONS, {
-                ...authParams,
-                routeParams: match ? match.params : undefined,
-                location: location ? location.pathname : undefined,
-            });
-
-            this.setState({ permissions });
-        } catch (error) {
-            this.setState({ permissions: null });
-        }
-    }
-
-    // render even though the AUTH_GET_PERMISSIONS
-    // isn't finished (optimistic rendering)
-    render() {
-        const {
-            authProvider,
-            userCheck,
-            isLoggedIn,
-            render,
-            children,
-            staticContext,
-            ...props
-        } = this.props;
-        const { permissions } = this.state;
-
-        if (render) {
-            return render({ permissions, ...props });
-        }
-
-        if (children) {
-            return children({ permissions, ...props });
-        }
-    }
+  }
 }
 const mapStateToProps = state => ({
-    isLoggedIn: isLoggedIn(state),
+  isLoggedIn: isLoggedIn(state),
 });
 
 export default compose(
-    getContext({
-        authProvider: PropTypes.func,
-    }),
-    connect(mapStateToProps, { userCheck })
+  getContext({
+    authProvider: PropTypes.func,
+  }),
+  connect(mapStateToProps, { userCheck })
 )(WithPermissions);
