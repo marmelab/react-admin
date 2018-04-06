@@ -8,9 +8,6 @@ const styles = {
         margin: '1rem 0',
         maxWidth: 250,
     },
-    label: {
-        color: 'rgba(0, 0, 0, 0.298039)',
-    },
     toggle: {
         marginBottom: 16,
     },
@@ -37,7 +34,6 @@ class BooleanInput extends Component {
                 <Toggle
                     toggled={!!input.value}
                     onToggle={this.handleToggle}
-                    labelStyle={styles.label}
                     style={styles.toggle}
                     label={
                         <FieldTitle
