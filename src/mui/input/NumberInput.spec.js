@@ -37,7 +37,7 @@ describe('<NumberInput />', () => {
                 <NumberInput {...props} onChange={onChange} />
             );
 
-            wrapper.find('TextField').simulate('change', 3);
+            wrapper.find('TextField').simulate('change', {}, 3);
             assert.deepEqual(onChange.args, [[3]]);
         });
 
@@ -47,7 +47,7 @@ describe('<NumberInput />', () => {
             const wrapper = shallow(
                 <NumberInput {...defaultProps} input={{ value: 2, onChange }} />
             );
-            wrapper.find('TextField').simulate('change', 3);
+            wrapper.find('TextField').simulate('change', {}, 3);
             assert.deepEqual(onChange.args, [[3]]);
         });
     });
@@ -61,8 +61,8 @@ describe('<NumberInput />', () => {
                 <NumberInput {...props} onFocus={onFocus} />
             );
 
-            wrapper.find('TextField').simulate('focus', 3);
-            assert.deepEqual(onFocus.args, [[3]]);
+            wrapper.find('TextField').simulate('focus', { event: true });
+            assert.deepEqual(onFocus.args, [[{ event: true }]]);
         });
 
         it('should keep calling redux-form original event', () => {
@@ -71,8 +71,8 @@ describe('<NumberInput />', () => {
             const wrapper = shallow(
                 <NumberInput {...defaultProps} input={{ value: 2, onFocus }} />
             );
-            wrapper.find('TextField').simulate('focus', 3);
-            assert.deepEqual(onFocus.args, [[3]]);
+            wrapper.find('TextField').simulate('focus', { event: true });
+            assert.deepEqual(onFocus.args, [[{ event: true }]]);
         });
     });
 
@@ -80,10 +80,13 @@ describe('<NumberInput />', () => {
         it('should be customizable via the `onBlur` prop', () => {
             const onBlur = sinon.spy();
 
-            const props = { ...defaultProps };
+            const props = {
+                ...defaultProps,
+                input: { ...defaultProps.input, value: 3 },
+            };
             const wrapper = shallow(<NumberInput {...props} onBlur={onBlur} />);
 
-            wrapper.find('TextField').simulate('blur', 3);
+            wrapper.find('TextField').simulate('blur', {}, 3);
             assert.deepEqual(onBlur.args, [[3]]);
         });
 
@@ -99,26 +102,25 @@ describe('<NumberInput />', () => {
             };
 
             const wrapper = shallow(<NumberInput {...props} />);
-            wrapper.find('TextField').simulate('blur', 3);
-            assert.deepEqual(onBlur.args, [[3]]);
+            wrapper.find('TextField').simulate('blur');
+            assert.deepEqual(onBlur.args, [[null]]);
         });
 
         it('should cast value as a numeric one', () => {
-            const onChange = sinon.spy();
+            const onBlur = sinon.spy();
             const wrapper = shallow(
                 <NumberInput
                     {...defaultProps}
                     input={{
                         value: '2',
-                        onBlur: () => {},
-                        onChange,
+                        onBlur,
                     }}
                 />
             );
 
             const TextFieldElement = wrapper.find('TextField').first();
             TextFieldElement.simulate('blur');
-            assert.deepEqual(onChange.args, [[2]]);
+            assert.deepEqual(onBlur.args, [[2]]);
         });
     });
 });

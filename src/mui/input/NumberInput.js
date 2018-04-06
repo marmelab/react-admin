@@ -16,14 +16,14 @@ import FieldTitle from '../../util/FieldTitle';
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
 class NumberInput extends Component {
-    handleBlur = (event, newValue) => {
+    handleBlur = () => {
         /**
          * Necessary because of a React bug on <input type="number">
          * @see https://github.com/facebook/react/issues/1425
          */
-        const value = isNaN(parseFloat(newValue))
-            ? undefined
-            : parseFloat(newValue);
+        const value = isNaN(parseFloat(this.props.input.value))
+            ? null
+            : parseFloat(this.props.input.value);
         this.props.onBlur(value);
         this.props.input.onBlur(value);
     };
@@ -38,9 +38,7 @@ class NumberInput extends Component {
          * Necessary because of a React bug on <input type="number">
          * @see https://github.com/facebook/react/issues/1425
          */
-        const value = isNaN(parseFloat(newValue))
-            ? undefined
-            : parseFloat(newValue);
+        const value = isNaN(parseFloat(newValue)) ? null : parseFloat(newValue);
         this.props.onChange(value);
         this.props.input.onChange(value);
     };
