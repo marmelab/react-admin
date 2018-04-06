@@ -10,6 +10,12 @@ import { isLoggedIn } from './reducer';
 import { userLogout } from './actions/authActions';
 import RoutesWithLayout from './RoutesWithLayout';
 
+const welcomeStyles = {
+    width: '50%',
+    margin: '40vh',
+    textAlign: 'center',
+};
+
 export class CoreAdminRouter extends Component {
     state = { children: [] };
 
@@ -93,14 +99,26 @@ export class CoreAdminRouter extends Component {
             theme,
             title,
         } = this.props;
-        const { children: childrenFromState } = this.state;
 
-        let childrenToRender =
-            typeof children === 'function' ? childrenFromState : children;
+        if (typeof children !== 'function' && !children) {
+            return (
+                <div style={welcomeStyles}>
+                    React-admin is properly configured.<br />
+                    Now you can add a first &lt;Resource&gt; as child of
+                    &lt;Admin&gt;.
+                </div>
+            );
+        }
 
-        if (!childrenToRender || childrenToRender.length === 0) {
+        if (
+            typeof children === 'function' &&
+            (!this.state.children || this.state.children.length === 0)
+        ) {
             return <Route path="/" key="loading" component={loading} />;
         }
+
+        let childrenToRender =
+            typeof children === 'function' ? this.state.children : children;
 
         return (
             <div>

@@ -79,6 +79,13 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                 url = `${apiUrl}/${resource}/${params.id}`;
                 options.method = 'DELETE';
                 break;
+            case GET_MANY: {
+                const query = {
+                    [`id_like`]: params.ids.join('|'),
+                };
+                url = `${apiUrl}/${resource}?${stringify(query)}`;
+                break;
+            }
             default:
                 throw new Error(`Unsupported fetch action type ${type}`);
         }
@@ -126,14 +133,6 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
      * @returns {Promise} the Promise for a data response
      */
     return (type, resource, params) => {
-        // json-server doesn't handle WHERE IN requests, so we fallback to calling GET_ONE n times instead
-        if (type === GET_MANY) {
-            return Promise.all(
-                params.ids.map(id => httpClient(`${apiUrl}/${resource}/${id}`))
-            ).then(responses => ({
-                data: responses.map(response => response.json),
-            }));
-        }
         // json-server doesn't handle filters on UPDATE route, so we fallback to calling UPDATE n times instead
         if (type === UPDATE_MANY) {
             return Promise.all(

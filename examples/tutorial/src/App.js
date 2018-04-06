@@ -13,6 +13,7 @@ const App = () => (
     <Admin
         dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}
         authProvider={authProvider}
+        dashboard={Dashboard}
     >
         <Resource
             name="posts"
