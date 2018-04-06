@@ -34,7 +34,10 @@ export function* handleUndoRace(undoableAction) {
         // if not cancelled, redispatch the action, this time immediate, and without success side effect
         yield put({
             ...action,
-            meta: metaWithoutSuccessSideEffects,
+            meta: {
+                ...metaWithoutSuccessSideEffects,
+                onSuccess: { refresh: true },
+            },
         });
     } else {
         yield put(showNotification('ra.notification.canceled'));
