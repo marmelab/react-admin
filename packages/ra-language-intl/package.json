@@ -1,6 +1,6 @@
 {
   "name": "@yeutech/ra-language-intl",
-  "version": "2.0.0-beta5",
+  "version": "2.0.0-beta4-yeutech-1",
   "description": "ra-language-intl",
   "main": "lib/index.js",
   "bin": {
@@ -45,24 +45,24 @@
     "webpack": "~3.11.0"
   },
   "dependencies": {
-    "babel-core": "6.26.0",
     "async": "2.6.0",
+    "babel-core": "6.26.0",
+    "classnames": "2.2.5",
     "glob": "7.1.2",
     "kopaxgroup-cli-helpers": "0.0.3",
     "node-map-directory": "0.1.0",
+    "prop-types": "15.6.1",
+    "react-intl": "2.4.0",
+    "reselect": "3.0.1",
     "rimraf": "2.6.2",
     "shelljs": "0.8.1",
-    "yargs": "11.0.0",
-    "classnames": "2.2.5",
-    "prop-types": "15.6.1",
-    "reselect": "3.0.1",
-    "react-intl": "2.4.0"
+    "yargs": "11.0.0"
   },
   "peerDependencies": {
     "react": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0",
     "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0",
-    "redux": "~3.7.2",
-    "react-redux": "~5.0.7"
+    "react-redux": "~5.0.7",
+    "redux": "~3.7.2"
   },
   "translation": {
     "locale": "en",

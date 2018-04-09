@@ -3,17 +3,23 @@
     "version": "2.0.0-beta4-yeutech-1",
     "description": "Simple REST data provider for react-admin",
     "main": "lib/index.js",
-    "files": ["*.md", "lib", "src"],
+    "files": [
+        "*.md",
+        "lib",
+        "src"
+    ],
     "scripts": {
         "test": "make test"
     },
-    "authors": ["François Zaninotto"],
+    "authors": [
+        "François Zaninotto"
+    ],
     "repository": "yeutech/react-admin",
     "homepage": "https://github.com/yeutech/react-admin#readme",
     "bugs": "https://github.com/yeutech/react-admin/issues",
     "license": "MIT",
     "dependencies": {
-        "query-string": "~6.0.0",
-        "@yeutech/react-admin": "~2.0.0-beta4-yeutech-1"
+        "@yeutech/react-admin": "^2.0.0-beta4-yeutech-1",
+        "query-string": "~6.0.0"
     }
 }

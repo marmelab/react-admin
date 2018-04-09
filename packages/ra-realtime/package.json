@@ -11,7 +11,9 @@
         "url": "https://github.com/yeutech/react-admin/issues"
     },
     "homepage": "https://github.com/yeutech/react-admin#readme",
-    "authors": ["Gildas Garcia"],
+    "authors": [
+        "Gildas Garcia"
+    ],
     "keywords": [
         "reactjs",
         "react",
@@ -31,7 +33,7 @@
         "redux-saga": "~0.16.0"
     },
     "devDependencies": {
-        "@yeutech/react-admin": "~2.0.0-beta4-yeutech-1",
+        "@yeutech/react-admin": "^2.0.0-beta4-yeutech-1",
         "react-router": "~4.2.0",
         "react-router-redux": "~5.0.0-alpha.9",
         "redux-saga": "~0.16.0"

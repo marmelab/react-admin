@@ -11,7 +11,9 @@
         "url": "https://github.com/yeutech/react-admin/issues"
     },
     "homepage": "https://github.com/yeutech/react-admin#readme",
-    "authors": ["Gildas Garcia"],
+    "authors": [
+        "Gildas Garcia"
+    ],
     "keywords": [
         "reactjs",
         "react",
@@ -29,11 +31,11 @@
         "ra-data-graphql": "^2.0.0-beta4"
     },
     "peerDependencies": {
-        "graphql": "^0.13.2",
-        "@yeutech/react-admin": "~2.0.0-beta4-yeutech-1"
+        "@yeutech/react-admin": "~2.0.0-beta4-yeutech-1",
+        "graphql": "^0.13.2"
     },
     "devDependencies": {
-        "graphql": "^0.13.2",
-        "@yeutech/react-admin": "~2.0.0-beta4-yeutech-1"
+        "@yeutech/react-admin": "^2.0.0-beta4-yeutech-1",
+        "graphql": "^0.13.2"
     }
 }
