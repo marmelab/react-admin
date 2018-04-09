@@ -34,7 +34,7 @@
         "pluralize": "~7.0.0"
     },
     "peerDependencies": {
-        "@yeutech/react-admin": "~2.0.0-beta4-yeutech.1",
+        "@yeutech/react-admin": "~2.0.0-beta4-yeutech.2",
         "graphql": "^0.13.2"
     },
     "devDependencies": {
