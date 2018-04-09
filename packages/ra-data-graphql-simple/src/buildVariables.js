@@ -6,7 +6,7 @@ import {
     CREATE,
     UPDATE,
     DELETE,
-} from 'react-admin';
+} from '@yeutech/react-admin';
 
 import getFinalType from './getFinalType';
 import isList from './isList';

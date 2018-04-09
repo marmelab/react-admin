@@ -1,5 +1,7 @@
 # react-admin [![Build Status](https://travis-ci.org/yeutech/react-admin.svg?branch=master)](https://travis-ci.org/yeutech/react-admin)
 
+> This project is a fork of https://github.com/marmelab/admin-on-rest, You will find all changed made to the project in [CHANGELOG_SINCE_FORK.md](CHANGELOG_SINCE_FORK.md)
+
 A frontend Framework for building admin applications running in the browser on top of REST/GraphQL services, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Open sourced and maintained by [yeutech](https://yeutech.vn/).
 
 [Demo](https://marmelab.com/react-admin-demo/) - [Documentation](https://marmelab.com/react-admin/) - [Releases](https://github.com/yeutech/react-admin/releases) - [Support](http://stackoverflow.com/questions/tagged/react-admin)
@@ -59,8 +61,8 @@ Read the [Tutorial](http://yeutech.com/react-admin/Tutorial.html) for a 15 minut
 // in app.js
 import React from 'react';
 import { render } from 'react-dom';
-import { Admin, Resource } from 'react-admin';
-import simpleRestClient from 'ra-data-simple-rest';
+import { Admin, Resource } from '@yeutech/react-admin';
+import simpleRestClient from '@yeutech/ra-data-simple-rest';
 
 import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
 
@@ -77,7 +79,7 @@ The `<Resource>` component is a configuration component that allows to define su
 ```jsx
 // in posts.js
 import React from 'react';
-import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'react-admin';
+import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from '@yeutech/react-admin';
 import BookIcon from 'material-ui/svg-icons/action/book';
 export const PostIcon = BookIcon;
 

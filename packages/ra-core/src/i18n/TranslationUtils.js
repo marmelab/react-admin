@@ -7,9 +7,9 @@ import { DEFAULT_LOCALE } from './index';
  * 
  * @example
  *     import React from 'react';
- *     import { Admin, Resource, resolveBrowserLocale } from 'react-admin';
- *     import englishMessages from 'ra-language-english';
- *     import frenchMessages from 'ra-language-french';
+ *     import { Admin, Resource, resolveBrowserLocale } from '@yeutech/react-admin';
+ *     import englishMessages from '@yeutech/ra-language-intl/translation/en.json';
+ *     import frenchMessages from '@yeutech/ra-language-intl/translation/fr.json';
  *     const messages = {
  *        fr: frenchMessages,
  *        en: englishMessages,

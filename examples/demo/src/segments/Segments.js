@@ -6,7 +6,7 @@ import Table, {
     TableRow,
     TableCell,
 } from 'material-ui/Table';
-import { translate, ViewTitle } from 'react-admin';
+import { translate, ViewTitle } from '@yeutech/react-admin';
 
 import LinkToRelatedCustomers from './LinkToRelatedCustomers';
 import segments from './data';

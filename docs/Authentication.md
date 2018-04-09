@@ -23,7 +23,7 @@ For instance, to query an authentication route via HTTPS and store the credentia
 
 ```jsx
 // in src/authProvider.js
-import { AUTH_LOGIN } from 'react-admin';
+import { AUTH_LOGIN } from '@yeutech/react-admin';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
@@ -72,7 +72,7 @@ To use the credentials when calling a data provider, you have to tweak, this tim
 For instance, to pass the token obtained during login as an `Authorization` header, configure the Data Provider as follows:
 
 ```jsx
-import { fetchUtils, Admin, Resource } from 'react-admin';
+import { fetchUtils, Admin, Resource } from '@yeutech/react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 const httpClient = (url, options = {}) => {
@@ -102,7 +102,7 @@ For instance, to remove the token from local storage upon logout:
 
 ```jsx
 // in src/authProvider.js
-import { AUTH_LOGIN, AUTH_LOGOUT } from 'react-admin';
+import { AUTH_LOGIN, AUTH_LOGOUT } from '@yeutech/react-admin';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
@@ -130,7 +130,7 @@ For instance, to redirect the user to the login page for both 401 and 403 codes:
 
 ```jsx
 // in src/authProvider.js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR } from 'react-admin';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR } from '@yeutech/react-admin';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
@@ -161,7 +161,7 @@ For instance, to check for the existence of the token in local storage:
 
 ```jsx
 // in src/authProvider.js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from '@yeutech/react-admin';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
@@ -184,7 +184,7 @@ If the promise is rejected, react-admin redirects by default to the `/login` pag
 
 ```jsx
 // in src/authProvider.js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from '@yeutech/react-admin';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
@@ -207,7 +207,7 @@ export default (type, params) => {
 
 ```jsx
 // in src/authProvider.js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from '@yeutech/react-admin';
 
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
@@ -248,7 +248,7 @@ For all these cases, it's up to you to implement your own `LoginPage` component,
 // in src/MyLoginPage.js
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { userLogin } from 'react-admin';
+import { userLogin } from '@yeutech/react-admin';
 
 class MyLoginPage extends Component {
     submit = (e) => {
@@ -273,7 +273,7 @@ export default connect(undefined, { userLogin })(MyLoginPage);
 
 // in src/MyLogoutButton.js
 import { connect } from 'react-redux';
-import { userLogout } from 'react-admin';
+import { userLogout } from '@yeutech/react-admin';
 
 const MyLogoutButton = ({ userLogout }) => (
     <button onClick={userLogout}>Logout</button>
@@ -300,7 +300,7 @@ If you add [custom pages](./Actions.md), of if you [create an admin app from scr
 ```jsx
 // in src/MyPage.js
 import { withRouter } from 'react-router-dom';
-import { Authenticated } from 'react-admin';
+import { Authenticated } from '@yeutech/react-admin';
 
 const MyPage = ({ location }) => (
     <Authenticated authParams={{ foo: 'bar' }} location={location}>
@@ -325,7 +325,7 @@ By default react-admin will redirect to '/login' after the user logs out. This c
 // in src/myMenu.js
 import React from 'react';
 import { connect } from 'react-redux';
-import { MenuItemLink } from 'react-admin';
+import { MenuItemLink } from '@yeutech/react-admin';
 
 const Menu = ({ onMenuClick, logout, permissions }) => (
     <div>

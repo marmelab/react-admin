@@ -1,6 +1,6 @@
 # Simple REST Data Provider For React-Admin
 
-Simple REST Data Provider for [react-admin](https://github.com/marmelab/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services.
+Simple REST Data Provider for [react-admin](https://github.com/yeutech/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services.
 
 ![react-admin demo](http://static.marmelab.com/react-admin.gif)
 
@@ -41,7 +41,7 @@ Access-Control-Expose-Headers: Content-Range
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
+import { Admin, Resource } from '@yeutech/react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 import { PostList } from './posts';
@@ -62,7 +62,7 @@ The provider function accepts an HTTP client function as second argument. By def
 That means that if you need to add custom headers to your requests, you just need to *wrap* the `fetchJson()` call inside your own function:
 
 ```jsx
-import { fetchUtils, Admin, Resource } from 'react-admin';
+import { fetchUtils, Admin, Resource } from '@yeutech/react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 const httpClient = (url, options = {}) => {

@@ -13,7 +13,7 @@ import {
     translate,
     undo,
     complete,
-} from 'ra-core';
+} from '@yeutech/ra-core';
 
 const styles = theme => ({
     confirm: {

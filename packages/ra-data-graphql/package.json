@@ -1,16 +1,16 @@
 {
-    "name": "ra-data-graphql",
-    "version": "2.0.0-beta4",
+    "name": "@yeutech/ra-data-graphql",
+    "version": "2.0.0-beta4-yeutech-1",
     "description": "A GraphQL data provider for react-admin",
     "main": "./lib/index.js",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/marmelab/react-admin.git"
+        "url": "git+https://github.com/yeutech/react-admin.git"
     },
     "bugs": {
-        "url": "https://github.com/marmelab/react-admin/issues"
+        "url": "https://github.com/yeutech/react-admin/issues"
     },
-    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "homepage": "https://github.com/yeutech/react-admin#readme",
     "authors": ["Gildas Garcia"],
     "keywords": [
         "reactjs",
@@ -30,10 +30,10 @@
     },
     "peerDependencies": {
         "graphql": "^0.13.2",
-        "react-admin": "^2.0.0-beta4"
+        "@yeutech/react-admin": "~2.0.0-beta4-yeutech-1"
     },
     "devDependencies": {
         "graphql": "^0.13.2",
-        "react-admin": "^2.0.0-beta4"
+        "@yeutech/react-admin": "~2.0.0-beta4-yeutech-1"
     }
 }

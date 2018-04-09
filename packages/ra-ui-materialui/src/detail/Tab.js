@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tab as MuiTab } from 'material-ui/Tabs';
-import { translate } from 'ra-core';
+import { translate } from '@yeutech/ra-core';
 
 import Labeled from '../input/Labeled';
 import classnames from 'classnames';
@@ -19,7 +19,7 @@ import classnames from 'classnames';
  *     import React from 'react';
  *     import FavoriteIcon from 'material-ui-icons/Favorite';
  *     import PersonPinIcon from 'material-ui-icons/PersonPin';
- *     import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
+ *     import { Show, TabbedShowLayout, Tab, TextField } from '@yeutech/react-admin';
  *     
  *     export const PostShow = (props) => (
  *         <Show {...props}>
@@ -37,7 +37,7 @@ import classnames from 'classnames';
  *
  *     // in src/App.js
  *     import React from 'react';
- *     import { Admin, Resource } from 'react-admin';
+ *     import { Admin, Resource } from '@yeutech/react-admin';
  *     
  *     import { PostShow } from './posts';
  *     

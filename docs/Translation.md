@@ -23,9 +23,9 @@ React-admin calls the `i18nProvider` when it starts, passing the `locale` specif
 
 ```jsx
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
-import frenchMessages from 'ra-language-french';
-import englishMessages from 'ra-language-english';
+import { Admin, Resource } from '@yeutech/react-admin';
+import frenchMessages from '@yeutech/ra-language-intl/translation/fr.json';
+import englishMessages from '@yeutech/ra-language-intl/translation/en.json';
 
 const messages = {
     fr: frenchMessages,
@@ -108,7 +108,7 @@ The previous version of react-admin, called admin-on-rest, was translated in the
 
 These packages are not directly interoperable with react-admin, but the upgrade is straightforward; rename the root key from "aor" to "ra". We invite the authors of the packages listed above to republish their translations for react-admin, using a different package name.
 
-If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/react-admin/blob/master/docs/Translation.md) with a link to your package.
+If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/yeutech/react-admin/blob/master/docs/Translation.md) with a link to your package.
 
 ## Changing Locale At Runtime
 
@@ -116,9 +116,9 @@ If you want to offer the ability to change locale at runtime, you must provide t
 
 ```jsx
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
-import englishMessages from 'ra-language-english';
-import frenchMessages from 'ra-language-french';
+import { Admin, Resource } from '@yeutech/react-admin';
+import englishMessages from '@yeutech/ra-language-intl/translation/en.json';
+import frenchMessages from '@yeutech/ra-language-intl/translation/fr.json';
 
 const messages = {
     fr: frenchMessages,
@@ -141,7 +141,7 @@ Then, dispatch the `CHANGE_LOCALE` action, by using the `changeLocale` action cr
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
-import { changeLocale as changeLocaleAction } from 'react-admin';
+import { changeLocale as changeLocaleAction } from '@yeutech/react-admin';
 
 class LocaleSwitcher extends Component {
     switchToFrench = () => this.props.changeLocale('fr');
@@ -168,9 +168,9 @@ React-admin provides a helper function named `resolveBrowserLocale()`, which hel
 
 ```jsx
 import React from 'react';
-import { Admin, Resource, resolveBrowserLocale } from 'react-admin';
-import englishMessages from 'ra-language-english';
-import frenchMessages from 'ra-language-french';
+import { Admin, Resource, resolveBrowserLocale } from '@yeutech/react-admin';
+import englishMessages from '@yeutech/ra-language-intl/translation/en.json';
+import frenchMessages from '@yeutech/ra-language-intl/translation/fr.json';
 
 const messages = {
     fr: frenchMessages,
@@ -210,7 +210,7 @@ The `message` returned by the `i18nProvider` value should be a dictionary where 
 
 All core translations are in the `ra` namespace, in order to prevent collisions with your own custom translations. The root key used at runtime is determined by the value of the `locale` prop.
 
-The default messages are available [here](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/index.js).
+The default messages are available [here](https://github.com/yeutech/react-admin/blob/master/packages/ra-language-english/index.js).
 
 ## Translating Resource and Field Names
 
@@ -257,8 +257,8 @@ When translating an admin, interface messages (e.g. "List", "Page", etc.) usuall
 
 ```jsx
 // interface translations
-import englishMessages from 'ra-language-english';
-import frenchMessages from 'ra-language-french';
+import englishMessages from '@yeutech/ra-language-intl/translation/en.json';
+import frenchMessages from '@yeutech/ra-language-intl/translation/fr.json';
 
 // domain translations
 import * as domainMessages from './i18n';
@@ -312,7 +312,7 @@ However, using the context makes components harder to test. That's why react-adm
 ```jsx
 // in src/MyHelloButton.js
 import React from 'react';
-import { translate } from 'react-admin';
+import { translate } from '@yeutech/react-admin';
 
 const MyHelloButton = ({ translate }) => (
     <button>{translate('myroot.hello.world')}</button>

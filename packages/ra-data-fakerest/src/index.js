@@ -9,7 +9,7 @@ import {
     UPDATE_MANY,
     DELETE,
     DELETE_MANY,
-} from 'react-admin';
+} from '@yeutech/react-admin';
 
 /* eslint-disable no-console */
 function log(type, resource, params, response) {
@@ -30,7 +30,7 @@ function log(type, resource, params, response) {
  * Useful for debugging and testing - do not use in production.
  *
  * @example
- * import fakeDataProvider from 'ra-data-fakerest';
+ * import fakeDataProvider from '@yeutech/ra-data-fakerest';
  * const dataProvider = fakeDataProvider({
  *   posts: [
  *     { id: 0, title: 'Hello, world!' },

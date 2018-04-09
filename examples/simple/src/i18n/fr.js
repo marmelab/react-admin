@@ -1,5 +1,5 @@
 import { defineMessages } from 'react-intl';
-import frenchMessages from 'ra-language-intl/translation/fr.json';
+import frenchMessages from '@yeutech/ra-language-intl/translation/fr.json';
 
 const simpleMessages = defineMessages({
   actionResetViews: {

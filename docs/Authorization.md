@@ -18,7 +18,7 @@ Following is an example where the `authProvider` stores the user's role upon aut
 {% raw %}
 ```jsx
 // in src/authProvider.js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_GET_PERMISSIONS } from 'react-admin';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_GET_PERMISSIONS } from '@yeutech/react-admin';
 import decodeJwt from 'jwt-decode';
 
 export default (type, params) => {
@@ -214,7 +214,7 @@ The component provided as a [`dashboard`]('./Admin.md#dashboard) will receive th
 // in src/Dashboard.js
 import React from 'react';
 import Card, { CardContent } from 'material-ui/Card';
-import { ViewTitle } from 'react-admin';
+import { ViewTitle } from '@yeutech/react-admin';
 
 export default ({ permissions }) => (
     <Card>
@@ -238,7 +238,7 @@ You might want to check user permissions inside a [custom pages](./Admin.md#cust
 // in src/MyPage.js
 import React from 'react';
 import Card, { CardContent } from 'material-ui/Card';
-import { ViewTitle, WithPermissions } from 'react-admin';
+import { ViewTitle, WithPermissions } from '@yeutech/react-admin';
 import { withRouter } from 'react-router-dom';
 
 const MyPage = ({ permissions }) => (
@@ -288,7 +288,7 @@ What if you want to check the permissions inside a [custom menu](./Admin.html#me
 // in src/myMenu.js
 import React from 'react';
 import { connect } from 'react-redux';
-import { MenuItemLink, WithPermissions } from 'react-admin';
+import { MenuItemLink, WithPermissions } from '@yeutech/react-admin';
 
 const Menu = ({ onMenuClick, logout, permissions }) => (
     <div>

@@ -31,7 +31,7 @@ const sanitizeRestProps = ({
  * @example     
  *     // in src/posts.js
  *     import React from 'react';
- *     import { Show, SimpleShowLayout, TextField } from 'react-admin';
+ *     import { Show, SimpleShowLayout, TextField } from '@yeutech/react-admin';
  *     
  *     export const PostShow = (props) => (
  *         <Show {...props}>
@@ -43,7 +43,7 @@ const sanitizeRestProps = ({
  *
  *     // in src/App.js
  *     import React from 'react';
- *     import { Admin, Resource } from 'react-admin';
+ *     import { Admin, Resource } from '@yeutech/react-admin';
  *     
  *     import { PostShow } from './posts';
  *     

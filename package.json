@@ -1,6 +1,6 @@
 {
     "private": true,
-    "name": "react-admin-lerna",
+    "name": "@yeutech/react-admin-lerna",
     "scripts": {
         "test": "make test"
     },

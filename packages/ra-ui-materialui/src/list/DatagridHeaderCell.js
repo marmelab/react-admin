@@ -5,7 +5,7 @@ import shouldUpdate from 'recompose/shouldUpdate';
 import compose from 'recompose/compose';
 import { TableCell, TableSortLabel } from 'material-ui/Table';
 import Tooltip from 'material-ui/Tooltip';
-import { FieldTitle, translate } from 'ra-core';
+import { FieldTitle, translate } from '@yeutech/ra-core';
 
 export const DatagridHeaderCell = ({
     className,

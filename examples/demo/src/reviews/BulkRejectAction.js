@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { startUndoable, crudUpdateMany } from 'ra-core';
+import { startUndoable, crudUpdateMany } from '@yeutech/ra-core';
 
 class BulkRejectAction extends Component {
     componentDidMount = () => {

@@ -26,8 +26,8 @@ Here is the minimal code necessary to display a form to create and edit comments
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
-import jsonServerProvider from 'ra-data-json-server';
+import { Admin, Resource } from '@yeutech/react-admin';
+import jsonServerProvider from '@yeutech/ra-data-json-server';
 
 import { PostCreate, PostEdit } from './posts';
 
@@ -41,8 +41,8 @@ export default App;
 
 // in src/posts.js
 import React from 'react';
-import { Create, Edit, SimpleForm, DisabledInput, TextInput, DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
-import RichTextInput from 'ra-input-rich-text';
+import { Create, Edit, SimpleForm, DisabledInput, TextInput, DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from '@yeutech/react-admin';
+import RichTextInput from '@yeutech/ra-input-rich-text';
 
 export const PostCreate = (props) => (
     <Create {...props}>
@@ -123,7 +123,7 @@ import {
     ShowButton,
     DeleteButton,
     RefreshButton,
-} from 'react-admin';
+} from '@yeutech/react-admin';
 
 const PostEditActions = ({ basePath, data, resource }) => (
     <CardActions>
@@ -195,7 +195,7 @@ Here are all the props accepted by the `<TabbedForm>` component:
 
 {% raw %}
 ```jsx
-import { TabbedForm, FormTab } from 'react-admin'
+import { TabbedForm, FormTab } from '@yeutech/react-admin'
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -406,7 +406,7 @@ import {
     regex,
     email,
     choices
-} from 'react-admin';
+} from '@yeutech/react-admin';
 
 const validateFirstName = [required(), minLength(2), maxLength(15)];
 const validateEmail = email();
@@ -486,7 +486,7 @@ The most common use case is to display two submit buttons in the `<Create>` view
 For that use case, use the `<SaveButton>` component with a custom `redirect` prop:
 
 ```jsx
-import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
+import { Edit, SimpleForm, SaveButton, Toolbar } from '@yeutech/react-admin';
 
 const PostCreateToolbar = props => (
     <Toolbar {...props} >

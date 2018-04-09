@@ -16,7 +16,7 @@ import { userCheck } from '../actions/authActions';
  * requires it.
  *
  * @example
- *     import { Authenticated } from 'react-admin';
+ *     import { Authenticated } from '@yeutech/react-admin';
  *
  *     const CustomRoutes = [
  *         <Route path="/foo" render={routeParams =>

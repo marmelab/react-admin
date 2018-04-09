@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
-import { ReferenceFieldController } from 'ra-core';
+import { ReferenceFieldController } from '@yeutech/ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
 import Link from '../Link';

@@ -6,7 +6,7 @@ import IconButton from 'material-ui/IconButton';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 
-import { translate } from 'ra-core';
+import { translate } from '@yeutech/ra-core';
 import Responsive from '../layout/Responsive';
 
 const styles = {

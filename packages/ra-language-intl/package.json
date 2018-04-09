@@ -1,5 +1,5 @@
 {
-  "name": "ra-language-intl",
+  "name": "@yeutech/ra-language-intl",
   "version": "2.0.0-beta5",
   "description": "ra-language-intl",
   "main": "lib/index.js",

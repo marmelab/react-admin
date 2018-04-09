@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { GET_LIST, GET_MANY, Responsive, ViewTitle } from 'react-admin';
+import { GET_LIST, GET_MANY, Responsive, ViewTitle } from '@yeutech/react-admin';
 
 import Welcome from './Welcome';
 import MonthlyRevenue from './MonthlyRevenue';

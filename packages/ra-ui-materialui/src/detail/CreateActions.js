@@ -21,7 +21,7 @@ const sanitizeRestProps = ({
  * 
  * @example
  *     import Button from 'material-ui/Button';
- *     import { CardActions, Create, ListButton } from 'react-admin';
+ *     import { CardActions, Create, ListButton } from '@yeutech/react-admin';
  *     
  *     const PostCreateActions = ({ basePath }) => (
  *         <CardActions>

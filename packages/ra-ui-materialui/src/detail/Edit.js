@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card, { CardContent } from 'material-ui/Card';
 import classnames from 'classnames';
-import { EditController } from 'ra-core';
+import { EditController } from '@yeutech/ra-core';
 
 import Header from '../layout/Header';
 import DefaultActions from './EditActions';
@@ -128,7 +128,7 @@ EditView.propTypes = {
  * @example     
  *     // in src/posts.js
  *     import React from 'react';
- *     import { Edit, SimpleForm, TextInput } from 'react-admin';
+ *     import { Edit, SimpleForm, TextInput } from '@yeutech/react-admin';
  *     
  *     export const PostEdit = (props) => (
  *         <Edit {...props}>
@@ -140,7 +140,7 @@ EditView.propTypes = {
  *
  *     // in src/App.js
  *     import React from 'react';
- *     import { Admin, Resource } from 'react-admin';
+ *     import { Admin, Resource } from '@yeutech/react-admin';
  *     
  *     import { PostEdit } from './posts';
  *     

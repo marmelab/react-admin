@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { MenuItem } from 'material-ui/Menu';
-import { FieldTitle } from 'ra-core';
+import { FieldTitle } from '@yeutech/ra-core';
 
 class FilterButtonMenuItem extends Component {
     static propTypes = {

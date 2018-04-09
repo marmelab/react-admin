@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { LinearProgress } from 'material-ui/Progress';
 import { withStyles } from 'material-ui/styles';
-import { ReferenceManyFieldController } from 'ra-core';
+import { ReferenceManyFieldController } from '@yeutech/ra-core';
 
 const styles = {
     progress: { marginTop: '1em' },

@@ -1,4 +1,4 @@
-import { UPDATE } from 'react-admin';
+import { UPDATE } from '@yeutech/react-admin';
 
 export const REVIEW_APPROVE = 'REVIEW_APPROVE';
 export const REVIEW_APPROVE_LOADING = 'REVIEW_APPROVE_LOADING';

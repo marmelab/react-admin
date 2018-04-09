@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme';
 import { reduxForm, reducer as formReducer } from 'redux-form';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import { TranslationProvider } from 'ra-core';
+import { TranslationProvider } from '@yeutech/ra-core';
 
 import { ArrayInput } from './ArrayInput';
 import NumberInput from './NumberInput';

@@ -9,7 +9,7 @@ import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
-import { toggleSidebar } from 'ra-core';
+import { toggleSidebar } from '@yeutech/ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
 

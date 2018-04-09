@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import compose from 'recompose/compose';
-import { translate } from 'ra-core';
+import { translate } from '@yeutech/ra-core';
 
 import sanitizeRestProps from './sanitizeRestProps';
 

@@ -9,7 +9,7 @@ import MenuIcon from 'material-ui-icons/Menu';
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
-import { toggleSidebar as toggleSidebarAction } from 'ra-core';
+import { toggleSidebar as toggleSidebarAction } from '@yeutech/ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
 

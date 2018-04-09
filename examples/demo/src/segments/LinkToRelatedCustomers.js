@@ -2,8 +2,8 @@ import React from 'react';
 import compose from 'recompose/compose';
 import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
-import { Link } from 'react-admin';
-import { translate } from 'react-admin';
+import { Link } from '@yeutech/react-admin';
+import { translate } from '@yeutech/react-admin';
 import { stringify } from 'query-string';
 
 import { VisitorIcon } from '../visitors';

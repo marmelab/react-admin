@@ -1,5 +1,5 @@
-import { CoreAdminRouter } from 'ra-core';
-import { Loading } from 'ra-ui-materialui';
+import { CoreAdminRouter } from '@yeutech/ra-core';
+import { Loading } from '@yeutech/ra-ui-materialui';
 
 const AdminRouter = CoreAdminRouter;
 

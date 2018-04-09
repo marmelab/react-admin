@@ -10,7 +10,7 @@ A `Field` component displays a given property of a REST resource. Such component
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, Datagrid, TextField } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -142,7 +142,7 @@ TagsField.defaultProps = { addLabel: true };
 Displays a boolean value as a check.
 
 ```jsx
-import { BooleanField } from 'react-admin';
+import { BooleanField } from '@yeutech/react-admin';
 
 <BooleanField source="commentable" />
 ```
@@ -154,7 +154,7 @@ import { BooleanField } from 'react-admin';
 Displays a value inside a ["Chip"](http://www.material-ui.com/#/components/chip), which is Material UI's term for a label.
 
 ```jsx
-import { ChipField } from 'react-admin';
+import { ChipField } from '@yeutech/react-admin';
 
 <ChipField source="category" />
 ```
@@ -164,7 +164,7 @@ import { ChipField } from 'react-admin';
 This field type is especially useful for one to many relationships, e.g. to display a list of books for a given author:
 
 ```jsx
-import { ChipField, SingleFieldList, ReferenceManyField } from 'react-admin';
+import { ChipField, SingleFieldList, ReferenceManyField } from '@yeutech/react-admin';
 
 <ReferenceManyField reference="books" target="author_id">
     <SingleFieldList>
@@ -178,7 +178,7 @@ import { ChipField, SingleFieldList, ReferenceManyField } from 'react-admin';
 Displays a date or datetime using the browser locale (thanks to `Date.toLocaleDateString()` and `Date.toLocaleString()`).
 
 ```jsx
-import { DateField } from 'react-admin';
+import { DateField } from '@yeutech/react-admin';
 
 <DateField source="publication_date" />
 ```
@@ -218,7 +218,7 @@ See [Intl.DateTimeformat documentation](https://developer.mozilla.org/fr/docs/We
 `<EmailField>` displays an email as a `<a href="mailto:" />` link.
 
 ```jsx
-import { EmailField } from 'react-admin';
+import { EmailField } from '@yeutech/react-admin';
 
 <EmailField source="personal_email" />
 ```
@@ -228,7 +228,7 @@ import { EmailField } from 'react-admin';
 If you need a special function to render a field, `<FunctionField>` is the perfect match. It passes the `record` to a `render` function supplied by the developer. For instance, to display the full name of a `user` record based on `first_name` and `last_name` properties:
 
 ```jsx
-import { FunctionField } from 'react-admin'
+import { FunctionField } from '@yeutech/react-admin'
 
 <FunctionField label="Name" render={record => `${record.first_name} ${record.last_name}`} />
 ```
@@ -240,7 +240,7 @@ import { FunctionField } from 'react-admin'
 If you need to display an image provided by your API, you can use the `<ImageField />` component:
 
 ```jsx
-import { ImageField } from 'react-admin';
+import { ImageField } from '@yeutech/react-admin';
 
 <ImageField source="url" title="title" />
 ```
@@ -281,7 +281,7 @@ If the record actually contains an array of images in its property defined by th
 If you need to display a file provided by your API, you can use the `<FileField />` component:
 
 ```jsx
-import { FileField } from 'react-admin';
+import { FileField } from '@yeutech/react-admin';
 
 <FileField source="url" title="title" />
 ```
@@ -333,7 +333,7 @@ If Intl is not available, it outputs number as is (and ignores the `locales` and
 
 {% raw %}
 ```jsx
-import { NumberField }  from 'react-admin';
+import { NumberField }  from '@yeutech/react-admin';
 
 <NumberField source="score" />
 // renders the record { id: 1234, score: 567 } as
@@ -369,7 +369,7 @@ See [Intl.Numberformat documentation](https://developer.mozilla.org/en-US/docs/W
 
 {% raw %}
 ```jsx
-import { NumberField }  from 'react-admin';
+import { NumberField }  from '@yeutech/react-admin';
 
 <NumberField source="score" style={{}} />
 ```
@@ -382,7 +382,7 @@ When you need to display an enumerated field, `<SelectField>` maps the value to 
 For instance, if the `gender` field can take values "M" and "F", here is how to display it as "Male" or "Female":
 
 ```jsx
-import { SelectField } from 'react-admin';
+import { SelectField } from '@yeutech/react-admin';
 
 <SelectField source="gender" choices={[
    { id: 'M', name: 'Male' },
@@ -454,7 +454,7 @@ For instance, here is how to fetch the `post` related to `comment` records, and 
 
 ```jsx
 import React from 'react';
-import { List, Datagrid, ReferenceField, TextField } from 'react-admin';
+import { List, Datagrid, ReferenceField, TextField } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -532,7 +532,7 @@ For instance, here is how to fetch the `comments` related to a `post` record by 
 
 ```jsx
 import React from 'react';
-import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'react-admin';
+import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -560,7 +560,7 @@ You can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside ano
 
 ```jsx
 import React from 'react';
-import { Edit, Datagrid, SimpleForm, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from 'react-admin';
+import { Edit, Datagrid, SimpleForm, DisabledInput, DateField, EditButton, ReferenceManyField, TextField, TextInput } from '@yeutech/react-admin';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -644,7 +644,7 @@ Here is how to fetch the list of tags for each post in a `PostList`, and display
 
 ```jsx
 import React from 'react';
-import { List, Datagrid, ChipField, ReferenceArrayField, SingleFieldList, TextField } from 'react-admin';
+import { List, Datagrid, ChipField, ReferenceArrayField, SingleFieldList, TextField } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -677,7 +677,7 @@ In an Edit of Show view, you can combine `<ReferenceArrayField>` with `<Datagrid
 
 ```jsx
 import React from 'react';
-import { Show, SimpleShowLayout, TextField, ReferenceArrayField, Datagrid, ShowButton } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, ReferenceArrayField, Datagrid, ShowButton } from '@yeutech/react-admin';
 
 export const PostShow = (props) => (
     <Show {...props}>
@@ -702,7 +702,7 @@ export const PostShow = (props) => (
 This component displays some HTML content. The content is "rich" (i.e. unescaped) by default.
 
 ```jsx
-import { RichTextField } from 'react-admin';
+import { RichTextField } from '@yeutech/react-admin';
 
 <RichTextField source="body" />
 ```
@@ -712,7 +712,7 @@ import { RichTextField } from 'react-admin';
 The `stripTags` attribute (`false` by default) allows you to remove any HTML markup, preventing some display glitches (which is especially useful in list views).
 
 ```jsx
-import { RichTextField } from 'react-admin';
+import { RichTextField } from '@yeutech/react-admin';
 
 <RichTextField source="body" stripTags />
 ```
@@ -722,7 +722,7 @@ import { RichTextField } from 'react-admin';
 The most simple as all fields, `<TextField>` simply displays the record property as plain text.
 
 ```jsx
-import { TextField } from 'react-admin';
+import { TextField } from '@yeutech/react-admin';
 
 <TextField label="Author Name" source="name" />
 ```
@@ -732,7 +732,7 @@ import { TextField } from 'react-admin';
 `<UrlField>` displays an url in an `< a href="">` tag.
 
 ```jsx
-import { UrlField } from 'react-admin';
+import { UrlField } from '@yeutech/react-admin';
 
 <UrlField source="site_url" />
 ```
@@ -860,7 +860,7 @@ If `source` is not specified, `resolve` will be called with the current record.
 ### Check that the field specified by `source` has a value (a truthy value):
 
 ```js
-import { Show, SimpleShowLayout, TextField, BooleanField, DependsOn } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, BooleanField, DependsOn } from '@yeutech/react-admin';
 
 export const UserShow = (props) => (
     <Show {...props}>
@@ -879,7 +879,7 @@ export const UserShow = (props) => (
 ### Check that the field specified by `source` has a specific value:
 
 ```js
-import { Show, SimpleShowLayout, TextField, DependsOn } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, DependsOn } from '@yeutech/react-admin';
 import ProgrammingIcon from './ProgrammingIcon';
 import LifestyleIcon from './LifestyleIcon';
 import PhotographyIcon from './PhotographyIcon';
@@ -909,7 +909,7 @@ export const PostShow = (props) => (
 ### Check that the field specified by `source` matches a custom constraint:
 
 ```js
-import { Show, SimpleShowLayout, TextField, DependsOn } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, DependsOn } from '@yeutech/react-admin';
 import ProgrammingIcon from './ProgrammingIcon';
 import LifestyleIcon from './LifestyleIcon';
 import PhotographyIcon from './PhotographyIcon';
@@ -941,7 +941,7 @@ export const PostShow = (props) => (
 ### All powers! Check whether the current full record matches your constraints:
 
 ```js
-import { Show, SimpleShowLayout, TextField, EmailField, DependsOn } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, EmailField, DependsOn } from '@yeutech/react-admin';
 
 const checkRecord = (record) => record.firstName && record.lastName);
 
@@ -1003,7 +1003,7 @@ The component will be:
 
 ```jsx
 import React from 'react';
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, Datagrid, TextField } from '@yeutech/react-admin';
 
 const FullNameField = ({ record = {} }) => <span>{record.firstName} {record.lastName}</span>;
 FullNameField.defaultProps = { label: 'Name' };

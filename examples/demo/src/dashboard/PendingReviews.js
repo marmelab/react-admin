@@ -6,7 +6,7 @@ import CommentIcon from 'material-ui-icons/Comment';
 import Avatar from 'material-ui/Avatar';
 import { withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-admin';
+import { translate } from '@yeutech/react-admin';
 
 import StarRatingField from '../reviews/StarRatingField';
 

@@ -5,7 +5,7 @@ import Menu, { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
-import { translate } from 'ra-core';
+import { translate } from '@yeutech/ra-core';
 
 import Button from '../button/Button';
 import BulkDeleteAction from './BulkDeleteAction';

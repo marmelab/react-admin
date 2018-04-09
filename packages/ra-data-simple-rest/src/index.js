@@ -10,7 +10,7 @@ import {
     UPDATE_MANY,
     DELETE,
     DELETE_MANY,
-} from 'react-admin';
+} from '@yeutech/react-admin';
 
 /**
  * Maps react-admin queries to a simple REST API

@@ -7,7 +7,7 @@ import {
     NumberField,
     TextField,
     BooleanField,
-} from 'react-admin';
+} from '@yeutech/react-admin';
 import Card, { CardHeader, CardContent } from 'material-ui/Card';
 import { withStyles } from 'material-ui/styles';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';

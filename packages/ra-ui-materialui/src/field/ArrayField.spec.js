@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import { TranslationProvider } from 'ra-core';
+import { TranslationProvider } from '@yeutech/ra-core';
 
 import { ArrayField } from './ArrayField';
 import NumberField from './NumberField';

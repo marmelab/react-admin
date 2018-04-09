@@ -54,8 +54,8 @@ Bootstrap the admin app by replacing the `src/App.js` by the following code:
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
-import jsonServerProvider from 'ra-data-json-server';
+import { Admin, Resource } from '@yeutech/react-admin';
+import jsonServerProvider from '@yeutech/ra-data-json-server';
 
 const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com');
 const App = () => <Admin dataProvider={dataProvider} />;
@@ -95,7 +95,7 @@ The line `<Resource name="posts" />` informs react-admin to fetch the "posts" re
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, Datagrid, TextField } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -157,7 +157,7 @@ Now, create a `users.js` file exporting a `UserList`, using `<EmailField>` to ma
 ```jsx
 // in src/users.js
 import React from 'react';
-import { List, Datagrid, EmailField, TextField } from 'react-admin';
+import { List, Datagrid, EmailField, TextField } from '@yeutech/react-admin';
 
 export const UserList = (props) => (
     <List title="All users" {...props}>
@@ -215,7 +215,7 @@ React-admin knows how to take advantage of these foreign keys to fetch reference
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField, EmailField, ReferenceField } from 'react-admin';
+import { List, Datagrid, TextField, EmailField, ReferenceField } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -246,7 +246,7 @@ An admin interface isn't just about displaying remote data, it should also allow
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'react-admin';
+import { List, Edit, Create, Datagrid, ReferenceField, TextField, EditButton, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -337,7 +337,7 @@ React-admin can use Input components to create a multi-criteria search engine in
 
 ```jsx
 // in src/posts.js
-import { Filter, ReferenceInput, SelectInput, TextInput } from 'react-admin';
+import { Filter, ReferenceInput, SelectInput, TextInput } from '@yeutech/react-admin';
 
 const PostFilter = (props) => (
     <Filter {...props}>
@@ -422,7 +422,7 @@ The `authProvider` is a simple function, which must return a `Promise`:
 
 ```jsx
 // in src/authProvider.js
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from '@yeutech/react-admin';
 
 export default (type, params) => {
     // called when the user attempts to log in
@@ -487,7 +487,7 @@ First, you should know that you don't have to use the `<Datagrid>` component as 
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, SimpleList } from 'react-admin';
+import { List, SimpleList } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -511,7 +511,7 @@ That works fine on mobile, but now the desktop user experience is worse. The bes
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -575,7 +575,7 @@ import {
     UPDATE,
     DELETE,
     fetchUtils,
-} from 'react-admin';
+} from '@yeutech/react-admin';
 import { stringify } from 'query-string';
 
 const API_URL = 'my.api.url';

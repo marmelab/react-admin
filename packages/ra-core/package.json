@@ -1,14 +1,14 @@
 {
-    "name": "ra-core",
-    "version": "2.0.0-beta4",
+    "name": "@yeutech/ra-core",
+    "version": "2.0.0-beta4-yeutech-1",
     "description":
         "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
     "files": ["*.md", "lib", "src"],
     "main": "lib/index",
     "authors": ["François Zaninotto", "Gildas Garcia"],
-    "repository": "marmelab/react-admin",
-    "homepage": "https://github.com/marmelab/react-admin#readme",
-    "bugs": "https://github.com/marmelab/react-admin/issues",
+    "repository": "yeutech/react-admin",
+    "homepage": "https://github.com/yeutech/react-admin#readme",
+    "bugs": "https://github.com/yeutech/react-admin/issues",
     "license": "MIT",
     "devDependencies": {
         "enzyme": "~3.3.0",
@@ -29,7 +29,7 @@
         "lodash": "~4.17.5",
         "prop-types": "~15.6.1",
         "query-string": "~6.0.0",
-        "ra-language-intl": "^2.0.0-beta5",
+        "@yeutech/ra-language-intl": "~2.0.0-beta4-yeutech-1",
         "react-intl": "^2.4.0",
         "react-redux": "~5.0.7",
         "react-router": "~4.2.0",

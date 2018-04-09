@@ -1,5 +1,10 @@
-import { GET_LIST, GET_MANY, GET_MANY_REFERENCE, DELETE } from 'react-admin';
-import { QUERY_TYPES } from 'ra-data-graphql';
+import {
+    GET_LIST,
+    GET_MANY,
+    GET_MANY_REFERENCE,
+    DELETE,
+} from '@yeutech/react-admin';
+import { QUERY_TYPES } from '@yeutech/ra-data-graphql';
 import { TypeKind } from 'graphql';
 
 import { encodeQuery, encodeMutation } from './graphqlify';

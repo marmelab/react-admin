@@ -23,7 +23,7 @@ import {
     Toolbar,
     required,
     translate,
-} from 'react-admin'; // eslint-disable-line import/no-unresolved
+} from '@yeutech/react-admin'; // eslint-disable-line import/no-unresolved
 import { InputAdornment } from 'material-ui/Input';
 import PeopleIcon from 'material-ui-icons/People';
 import SearchIcon from 'material-ui-icons/Search';

@@ -13,7 +13,7 @@ npm install --save ra-language-english
 ## Usage
 
 ```js
-import englishMessages from 'ra-language-intl/translation/en.json';
+import englishMessages from '@yeutech/ra-language-intl/translation/en.json';
 
 const messages = {
     'en': englishMessages,

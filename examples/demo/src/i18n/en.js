@@ -1,5 +1,5 @@
 import { defineMessages } from 'react-intl'
-import englishMessages from 'ra-language-intl/translation/en.json';
+import englishMessages from '@yeutech/ra-language-intl/translation/en.json';
 
 const posMessages = defineMessages({
   search: {

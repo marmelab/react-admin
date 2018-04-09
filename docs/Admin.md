@@ -11,7 +11,7 @@ The `<Admin>` component creates an application with its own state, routing, and 
 // in src/App.js
 import React from 'react';
 
-import { Admin, Resource } from 'react-admin';
+import { Admin, Resource } from '@yeutech/react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 import { PostList } from './posts';
@@ -87,7 +87,7 @@ By default, the homepage of an an admin app is the `list` of the first child `<R
 // in src/Dashboard.js
 import React from 'react';
 import Card, { CardContent } from 'material-ui/Card';
-import { ViewTitle } from 'react-admin';
+import { ViewTitle } from '@yeutech/react-admin';
 export default () => (
     <Card>
         <ViewTitle title="Welcome to the administration" />
@@ -123,7 +123,7 @@ You can customize this page to use the component of your choice by passing it as
 // in src/NotFound.js
 import React from 'react';
 import Card, { CardContent } from 'material-ui/Card';
-import { ViewTitle } from 'react-admin';
+import { ViewTitle } from '@yeutech/react-admin';
 
 export default () => (
     <Card>
@@ -158,7 +158,7 @@ If you want to add or remove menu items, for instance to link to non-resources p
 // in src/Menu.js
 import React from 'react';
 import { connect } from 'react-redux';
-import { MenuItemLink, getResources } from 'react-admin';
+import { MenuItemLink, getResources } from '@yeutech/react-admin';
 import { withRouter } from 'react-router-dom';
 import Responsive from '../layout/Responsive';
 
@@ -212,7 +212,7 @@ If the default active style does not suit your tastes, you can override it by pa
 // in src/Menu.js
 import React from 'react';
 import { connect } from 'react-redux';
-import { MenuItemLink, getResources } from 'react-admin';
+import { MenuItemLink, getResources } from '@yeutech/react-admin';
 import { withStyles } from 'material-ui/styles';
 import { withRouter } from 'react-router-dom';
 
@@ -270,7 +270,7 @@ For more details on predefined themes and custom themes, refer to the [Material 
 
 If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<MuiThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
 
-Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/react-admin/src/mui/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.html#using-a-custom-layout) for examples.
+Use the [default layout](https://github.com/yeutech/react-admin/blob/master/packages/react-admin/src/mui/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.html#using-a-custom-layout) for examples.
 
 ```jsx
 // in src/App.js
@@ -313,7 +313,7 @@ To register this reducer in the `<Admin>` app, simply pass it in the `customRedu
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin } from 'react-admin';
+import { Admin } from '@yeutech/react-admin';
 
 import bitcoinRateReducer from './bitcoinRateReducer';
 
@@ -347,7 +347,7 @@ If your components dispatch custom actions, you probably need to register your o
 ```jsx
 // in src/bitcoinSaga.js
 import { put, takeEvery } from 'redux-saga/effects';
-import { showNotification } from 'react-admin';
+import { showNotification } from '@yeutech/react-admin';
 
 export default function* bitcoinSaga() {
     yield takeEvery('BITCOIN_RATE_RECEIVED', function* () {
@@ -361,7 +361,7 @@ To register this saga in the `<Admin>` app, simply pass it in the `customSagas` 
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin } from 'react-admin';
+import { Admin } from '@yeutech/react-admin';
 
 import bitcoinSaga from './bitcoinSaga';
 
@@ -398,7 +398,7 @@ Then, pass this array as `customRoutes` prop in the `<Admin>` component:
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin } from 'react-admin';
+import { Admin } from '@yeutech/react-admin';
 
 import customRoutes from './customRoutes';
 
@@ -425,7 +425,7 @@ to design the screen the way you want.
 // in src/Foo.js
 import React from 'react';
 import Card, { CardContent } from 'material-ui/Card';
-import { ViewTitle } from 'react-admin';
+import { ViewTitle } from '@yeutech/react-admin';
 
 const Foo = () => (
     <Card>
@@ -444,7 +444,7 @@ export default Foo;
 The `authProvider` prop expect a function returning a Promise, to control the application authentication strategy:
 
 ```jsx
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'react-admin';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from '@yeutech/react-admin';
 
 const authProvider(type, params) {
     // type can be any of AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, and AUTH_CHECK
@@ -527,7 +527,7 @@ For instance, getting the resource from an API might look like:
 ```js
 import React from 'react';
 
-import { Admin, Resource } from 'react-admin';
+import { Admin, Resource } from '@yeutech/react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 import { PostList } from './posts';
