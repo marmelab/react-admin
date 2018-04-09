@@ -1,6 +1,6 @@
 {
     "name": "@yeutech/ra-data-simple-rest",
-    "version": "2.0.0-beta4-yeutech-1",
+    "version": "2.0.0-beta4-yeutech-0",
     "description": "Simple REST data provider for react-admin",
     "main": "lib/index.js",
     "files": [
@@ -19,7 +19,7 @@
     "bugs": "https://github.com/yeutech/react-admin/issues",
     "license": "MIT",
     "dependencies": {
-        "@yeutech/react-admin": "^2.0.0-beta4-yeutech-1",
+        "@yeutech/react-admin": "^2.0.0-beta4-yeutech-0",
         "query-string": "~6.0.0"
     }
 }
