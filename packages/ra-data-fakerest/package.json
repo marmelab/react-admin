@@ -1,6 +1,6 @@
 {
     "name": "@yeutech/ra-data-fakerest",
-    "version": "2.0.0-beta4-yeutech-0",
+    "version": "2.0.0-beta4-yeutech.0",
     "description": "JSON Server data provider for react-admin",
     "main": "lib/index.js",
     "scripts": {
@@ -34,6 +34,6 @@
         "fakerest": "~2.1.0"
     },
     "peerDependencies": {
-        "@yeutech/react-admin": "~2.0.0-beta4-yeutech-0"
+        "@yeutech/react-admin": "~2.0.0-beta4-yeutech.0"
     }
 }
