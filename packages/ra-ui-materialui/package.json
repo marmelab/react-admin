@@ -1,6 +1,6 @@
 {
     "name": "@yeutech/ra-ui-materialui",
-    "version": "2.0.0-beta4-yeutech.0",
+    "version": "2.0.0-beta4-yeutech.1",
     "description": "UI Components for react-admin with MaterialUI",
     "files": [
         "*.md",

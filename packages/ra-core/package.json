@@ -1,6 +1,6 @@
 {
     "name": "@yeutech/ra-core",
-    "version": "2.0.0-beta4-yeutech.0",
+    "version": "2.0.0-beta4-yeutech.1",
     "description": "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
     "files": [
         "*.md",
