@@ -29,6 +29,9 @@
     ],
     "author": "François Zaninotto",
     "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
     "bugs": {
         "url": "https://github.com/yeutech/react-admin/issues"
     },

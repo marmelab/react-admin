@@ -16,6 +16,9 @@
     "homepage": "https://github.com/yeutech/react-admin#readme",
     "bugs": "https://github.com/yeutech/react-admin/issues",
     "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
     "devDependencies": {
         "enzyme": "~3.3.0",
         "enzyme-adapter-react-16": "~1.1.1",

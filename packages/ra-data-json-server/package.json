@@ -18,6 +18,9 @@
     "homepage": "https://github.com/yeutech/react-admin#readme",
     "bugs": "https://github.com/yeutech/react-admin/issues",
     "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
     "dependencies": {
         "@yeutech/react-admin": "^2.0.0-beta4-yeutech-0",
         "query-string": "~6.0.0"

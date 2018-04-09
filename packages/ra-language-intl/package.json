@@ -30,6 +30,9 @@
     "Dimitri Kopriwa"
   ],
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "babel": "~6.23.0",
     "babel-plugin-react-intl": "~2.4.0",

@@ -15,6 +15,9 @@
     "homepage": "https://github.com/yeutech/react-admin#readme",
     "bugs": "https://github.com/yeutech/react-admin/issues",
     "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
     "peerDependencies": {
         "react": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0",
         "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0"
