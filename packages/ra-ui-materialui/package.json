@@ -1,6 +1,6 @@
 {
     "name": "@yeutech/ra-ui-materialui",
-    "version": "2.0.0-beta4-yeutech-0",
+    "version": "2.0.0-beta4-yeutech-1",
     "description": "UI Components for react-admin with MaterialUI",
     "files": [
         "*.md",
@@ -30,7 +30,7 @@
         "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0"
     },
     "dependencies": {
-        "@yeutech/ra-core": "^2.0.0-beta4-yeutech-0",
+        "@yeutech/ra-core": "^2.0.0-beta4-yeutech-1",
         "autosuggest-highlight": "^3.1.1",
         "classnames": "~2.2.5",
         "inflection": "~1.12.0",
