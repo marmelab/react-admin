@@ -61,7 +61,7 @@ Read the [Tutorial](./Tutorial.md) for a 15 minutes introduction. After that, he
 import React from 'react';
 import { render } from 'react-dom';
 import { Admin, Resource } from '@yeutech/react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
+import simpleRestProvider from '@yeutech/ra-data-simple-rest';
 
 import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
 

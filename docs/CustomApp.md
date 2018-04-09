@@ -41,7 +41,7 @@ import {
     TranslationProvider,
     declareResources,
 } from '@yeutech/react-admin';
-import simpleRestClient from 'ra-data-simple-rest';
+import simpleRestClient from '@yeutech/ra-data-simple-rest';
 import defaultMessages from '@yeutech/ra-language-intl/translation/en.json';
 
 // your app components

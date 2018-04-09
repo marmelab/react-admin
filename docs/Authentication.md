@@ -73,7 +73,7 @@ For instance, to pass the token obtained during login as an `Authorization` head
 
 ```jsx
 import { fetchUtils, Admin, Resource } from '@yeutech/react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
+import simpleRestProvider from '@yeutech/ra-data-simple-rest';
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {

@@ -59,7 +59,7 @@ Read the [Tutorial](http://marmelab.com/react-admin/Tutorial.html) for a 15 minu
 import React from 'react';
 import { render } from 'react-dom';
 import { Admin, Resource } from '@yeutech/react-admin';
-import simpleRestClient from 'ra-data-simple-rest';
+import simpleRestClient from '@yeutech/ra-data-simple-rest';
 
 import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
 

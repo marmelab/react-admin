@@ -70,7 +70,7 @@ Then, initialize the provider with the RESt backend URL, and pass the result to 
 // in src/App.js
 import React from 'react';
 import { Admin, Resource } from '@yeutech/react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
+import simpleRestProvider from '@yeutech/ra-data-simple-rest';
 
 import { PostList } from './posts';
 
@@ -117,7 +117,7 @@ That means that if you need to add custom headers to your requests, you can just
 
 ```jsx
 import { fetchUtils, Admin, Resource } from '@yeutech/react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
+import simpleRestProvider from '@yeutech/ra-data-simple-rest';
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -209,7 +209,7 @@ export default addUploadFeature;
 To enhance a provider with the upload feature, compose `addUploadFeature` function with the data provider function:
 
 ```jsx
-import simpleRestProvider from 'ra-data-simple-rest';
+import simpleRestProvider from '@yeutech/ra-data-simple-rest';
 import addUploadFeature from './addUploadFeature';
 
 const dataProvider = simpleRestProvider('http://path.to.my.api/');

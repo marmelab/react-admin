@@ -42,7 +42,7 @@ Access-Control-Expose-Headers: Content-Range
 // in src/App.js
 import React from 'react';
 import { Admin, Resource } from '@yeutech/react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
+import simpleRestProvider from '@yeutech/ra-data-simple-rest';
 
 import { PostList } from './posts';
 
@@ -63,7 +63,7 @@ That means that if you need to add custom headers to your requests, you just nee
 
 ```jsx
 import { fetchUtils, Admin, Resource } from '@yeutech/react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
+import simpleRestProvider from '@yeutech/ra-data-simple-rest';
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {

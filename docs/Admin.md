@@ -12,7 +12,7 @@ The `<Admin>` component creates an application with its own state, routing, and 
 import React from 'react';
 
 import { Admin, Resource } from '@yeutech/react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
+import simpleRestProvider from '@yeutech/ra-data-simple-rest';
 
 import { PostList } from './posts';
 
@@ -528,7 +528,7 @@ For instance, getting the resource from an API might look like:
 import React from 'react';
 
 import { Admin, Resource } from '@yeutech/react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
+import simpleRestProvider from '@yeutech/ra-data-simple-rest';
 
 import { PostList } from './posts';
 import { CommentList } from './comments';
