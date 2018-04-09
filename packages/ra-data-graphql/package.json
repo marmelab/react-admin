@@ -1,6 +1,6 @@
 {
     "name": "@yeutech/ra-data-graphql",
-    "version": "2.0.0-beta4-yeutech.1",
+    "version": "2.0.0-beta4-yeutech.0",
     "description": "A GraphQL data provider for react-admin",
     "main": "./lib/index.js",
     "repository": {
@@ -38,7 +38,7 @@
         "graphql": "^0.13.2"
     },
     "devDependencies": {
-        "@yeutech/react-admin": "^2.0.0-beta4-yeutech.1",
+        "@yeutech/react-admin": "^2.0.0-beta4-yeutech.0",
         "graphql": "^0.13.2"
     }
 }

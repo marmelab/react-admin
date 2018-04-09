@@ -1,6 +1,6 @@
 {
     "name": "@yeutech/ra-data-fakerest",
-    "version": "2.0.0-beta4-yeutech.1",
+    "version": "2.0.0-beta4-yeutech.0",
     "description": "JSON Server data provider for react-admin",
     "main": "lib/index.js",
     "scripts": {
@@ -26,6 +26,9 @@
     ],
     "author": "François Zaninotto",
     "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
     "bugs": {
         "url": "https://github.com/yeutech/react-admin/issues"
     },
