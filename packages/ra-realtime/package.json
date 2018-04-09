@@ -30,13 +30,13 @@
         "lodash": "~4.17.5"
     },
     "peerDependencies": {
-        "@yeutech/react-admin": "~2.0.0-beta4-yeutech.2",
+        "@yeutech/react-admin": "~2.0.0-beta4-yeutech.3",
         "react-router": "~4.2.0",
         "react-router-redux": "~5.0.0-alpha.9",
         "redux-saga": "~0.16.0"
     },
     "devDependencies": {
-        "@yeutech/react-admin": "^2.0.0-beta4-yeutech.2",
+        "@yeutech/react-admin": "^2.0.0-beta4-yeutech.3",
         "react-router": "~4.2.0",
         "react-router-redux": "~5.0.0-alpha.9",
         "redux-saga": "~0.16.0"

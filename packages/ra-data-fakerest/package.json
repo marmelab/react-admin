@@ -37,6 +37,6 @@
         "fakerest": "~2.1.0"
     },
     "peerDependencies": {
-        "@yeutech/react-admin": "~2.0.0-beta4-yeutech.2"
+        "@yeutech/react-admin": "~2.0.0-beta4-yeutech.3"
     }
 }

@@ -22,7 +22,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@yeutech/react-admin": "^2.0.0-beta4-yeutech.2",
+        "@yeutech/react-admin": "^2.0.0-beta4-yeutech.3",
         "query-string": "~6.0.0"
     }
 }
