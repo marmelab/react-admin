@@ -1,6 +1,6 @@
 {
   "name": "@yeutech/ra-language-intl",
-  "version": "2.0.0-beta4-yeutech.1",
+  "version": "2.0.0-beta4-yeutech.2",
   "description": "ra-language-intl",
   "main": "lib/index.js",
   "bin": {
