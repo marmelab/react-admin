@@ -1,7 +1,8 @@
 {
     "name": "ra-input-rich-text",
-    "version": "2.0.0-beta5",
-    "description": "<RichTextInput> component for react-admin, useful for editing HTML code in admin GUIs.",
+    "version": "2.0.0-beta4",
+    "description":
+        "<RichTextInput> component for react-admin, useful for editing HTML code in admin GUIs.",
     "main": "lib/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"

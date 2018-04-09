@@ -1,6 +1,6 @@
 {
     "name": "ra-data-graphql",
-    "version": "2.0.0-beta5",
+    "version": "2.0.0-beta4",
     "description": "A GraphQL data provider for react-admin",
     "main": "./lib/index.js",
     "repository": {
@@ -30,10 +30,10 @@
     },
     "peerDependencies": {
         "graphql": "^0.13.2",
-        "react-admin": "^2.0.0-beta5"
+        "react-admin": "^2.0.0-beta4"
     },
     "devDependencies": {
         "graphql": "^0.13.2",
-        "react-admin": "^2.0.0-beta5"
+        "react-admin": "^2.0.0-beta4"
     }
 }

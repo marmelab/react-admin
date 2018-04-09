@@ -1,6 +1,6 @@
 {
     "name": "ra-ui-materialui",
-    "version": "2.0.0-beta5",
+    "version": "2.0.0-beta4",
     "description": "UI Components for react-admin with MaterialUI",
     "files": ["*.md", "lib", "src"],
     "main": "lib/index",
@@ -30,7 +30,7 @@
         "material-ui": "1.0.0-beta.40",
         "material-ui-icons": "1.0.0-beta.36",
         "prop-types": "~15.6.1",
-        "ra-core": "^2.0.0-beta5",
+        "ra-core": "^2.0.0-beta4",
         "react-autosuggest": "^9.3.2",
         "react-dropzone": "~4.0.1",
         "react-redux": "~5.0.7",

@@ -1,7 +1,8 @@
 {
     "name": "ra-core",
-    "version": "2.0.0-beta5",
-    "description": "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
+    "version": "2.0.0-beta4",
+    "description":
+        "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
     "files": ["*.md", "lib", "src"],
     "main": "lib/index",
     "authors": ["François Zaninotto", "Gildas Garcia"],
@@ -36,7 +37,7 @@
         "react-router-redux": "~5.0.0-alpha.9",
         "recompose": "~0.26.0",
         "redux": "~3.7.2",
-        "redux-form": "~7.0.3",
+        "redux-form": "~7.3.0",
         "redux-saga": "~0.16.0",
         "reselect": "~3.0.0",
         "warning": "~3.0.0"

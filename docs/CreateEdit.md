@@ -80,7 +80,7 @@ That's enough to display the post edit form:
 
 ![post edition form](./img/post-edition.png)
 
-**Tip**: You might find it cumbersome to repeat the same input components for both the `<Create>` and the `<Edit>` view. In practice, these two views almost never have exactly the same form inputs. For instance, in the previous snippet, the `<Edit>` views shows related comments to the current post, which makes no sense for a new post. Having two separate sets of input components for the two view is therefore a deliberate choice. However, if you have the same set of input components, export them as a custom Form component to avoid repetition.
+**Tip**: You might find it cumbersome to repeat the same input components for both the `<Create>` and the `<Edit>` view. In practice, these two views almost never have exactly the same form inputs. For instance, in the previous snippet, the `<Edit>` views shows related comments to the current post, which makes no sense for a new post. Having two separate sets of input components for the two views is therefore a deliberate choice. However, if you have the same set of input components, export them as a custom Form component to avoid repetition.
 
  `<Create>` accepts a `record` prop, to initialize the form based on an value object.
 
@@ -149,12 +149,12 @@ Using a custom `EditActions` component also allow to remove the `<DeleteButton>`
 
 The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as argument when the user submits the form.
 
-By default the `<SimpleForm>` submits the form when the user presses `ENTER`, if you want
-to change this behaviour you can pass `false` for the `submitOnEnter` property.
-
 The `<SimpleForm>` renders its child components line by line (within `<div>` components). It uses `redux-form`.
 
 ![post edition form](./img/post-edition.png)
+
+By default the `<SimpleForm>` submits the form when the user presses `ENTER`. If you want
+to change this behaviour you can pass `false` for the `submitOnEnter` property, and the user will only be able to submit by pressing the save button. This can be useful e.g. if you have an input widget using `ENTER` for a special function.
 
 Here are all the props accepted by the `<SimpleForm>` component:
 
@@ -180,10 +180,10 @@ export const PostCreate = (props) => (
 
 Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop.
 
+![tabbed form](./img/tabbed-form.gif)
+
 By default the `<TabbedForm>` submits the form when the user presses `ENTER`, if you want
 to change this behaviour you can pass `false` for the `submitOnEnter` property.
-
-![tabbed form](./img/tabbed-form.gif)
 
 Here are all the props accepted by the `<TabbedForm>` component:
 
@@ -232,11 +232,11 @@ export const PostEdit = (props) => (
 
 ## Default Values
 
-To define default values, you can add a `defaultValue` prop to form components (`<SimpleForm>`, `<Tabbedform>`, etc.), or add a `defaultValue` to individual input components.
+To define default values, you can add a `defaultValue` prop to form components (`<SimpleForm>`, `<Tabbedform>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
 
 ### Global Default Value
 
-The value of the form `defaultValue` prop can be an object or a function returning an object, specifying default value for the created record. For instance:
+The value of the form `defaultValue` prop can be an object, or a function returning an object, specifying default values for the created record. For instance:
 
 ```jsx
 const postDefaultValue = { created_at: new Date(), nb_views: 0 };
@@ -253,9 +253,9 @@ export const PostCreate = (props) => (
 
 **Tip**: You can include properties in the form `defaultValue` that are not listed as input components, like the `created_at` property in the previous example.
 
-### Per Field Default Value
+### Per Input Default Value
 
-Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. React-admin will merge the child default values with the form default value (input > form):
+Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. Just like for form-level default values, an input-level default value can be a scalar, or a function returning a scalar.  React-admin will merge the input default values with the form default value (input > form):
 
 ```jsx
 export const PostCreate = (props) => (
@@ -306,19 +306,19 @@ export const UserCreate = (props) => (
 
 **Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` end up as `reduxForm()` parameters. This means that, in addition to `validate`, you can also pass `warn` or `asyncValidate` functions. Read the [`reduxForm()` documentation](http://redux-form.com/6.5.0/docs/api/ReduxForm.md/) for details.
 
-### Per Field Validation: Function Validator
+### Per Input Validation: Function Validator
 
 Alternatively, you can specify a `validate` prop directly in `<Input>` components, taking either a function, or an array of functions. These functions should return `undefined` when there is no error, or an error string.
 
-React-admin will mash all the individual functions up to a single function looking just like the previous one:
-
 ```jsx
-const required = value => value ? undefined : 'Required';
-const maxLength = max => value =>
-  value && value.length > max ? `Must be ${max} characters or less` : undefined;
-const number = value => value && isNaN(Number(value)) ? 'Must be a number' : undefined;
-const minValue = min => value =>
-  value && value < min ? `Must be at least ${min}` : undefined;
+const required = (message = 'Required') =>
+    value => value ? undefined : message;
+const maxLength = (max, message = 'Too short') =>
+    value => value && value.length > max ? message : undefined;
+const number = (message = 'Must be a number') =>
+    value => value && isNaN(Number(value)) ? message : undefined;
+const minValue = (min, message = 'Too small') =>
+    value => value && value < min ? message : undefined;
 
 const ageValidation = (value, allValues) => {
     if (!value) {
@@ -343,34 +343,37 @@ export const UserCreate = (props) => (
 );
 ```
 
+React-admin will combine all the input-level functions into a single function looking just like the previous one.
+
 Input validation functions receive the current field value, and the values of all fields of the current record. This allows for complex validation scenarios (e.g. validate that two passwords are the same).
 
 **Tip**: Validator functions receive the form `props` as third parameter, including the `translate` function. This lets you build internationalized validators:
 
 ```jsx
-const required = (value, allValues, props) => value ? undefined : props.translate('myroot.validation.required');
+const required = (message = 'myroot.validation.required') => 
+    (value, allValues, props) => value ? undefined : props.translate(message);
 ```
 
-**Tip**: Make sure you store your validation functions or array of functions in a variable that you pass to the input component as it can results in a new function or array at every render and trigger infinite rerender.
+**Tip**: Make sure to define validation functions or array of functions in a variable, instead of defining them directly in JSX. This can result in a new function or array at every render, and trigger infinite rerender.
 
+{% raw %}
 ```jsx
-import { Edit, SimpleForm, NumberInput, required, minValue, number } from 'react-admin';
-
 const validateStock = [required(), number(), minValue(0)];
 
 export const ProductEdit = ({ ...props }) => (
     <Edit {...props}>
         <SimpleForm defaultValue={{ stock: 0 }}>
             ...
-            <NumberInput
-                source="stock"
-                validate={validateStock}
-            />
+            {/* do this */}
+            <NumberInput source="stock" validate={validateStock} />
+            {/* don't do that */}
+            <NumberInput source="stock" validate={[required(), number(), minValue(0)]} />
             ...
         </SimpleForm>
     </Edit>
 );
 ```
+{% endraw %}
 
 **Tip**: The props of your Input components are passed to a redux-form `<Field>` component. So in addition to `validate`, you can also use `warn`.
 
@@ -378,7 +381,7 @@ export const ProductEdit = ({ ...props }) => (
 
 ### Built-in Field Validators
 
-React-admin already bundles a few validator functions, that you can just require and use as field validators:
+React-admin already bundles a few validator functions, that you can just require, and use as input-level validators:
 
 * `required(message)` if the field is mandatory,
 * `minValue(min, message)` to specify a minimum value for integers,
@@ -393,9 +396,20 @@ React-admin already bundles a few validator functions, that you can just require
 Example usage:
 
 ```jsx
-import { required, minLength, maxLength, minValue, maxValue, number, regex, email, choices } from 'react-admin';
+import { 
+    required,
+    minLength,
+    maxLength,
+    minValue,
+    maxValue,
+    number,
+    regex,
+    email,
+    choices
+} from 'react-admin';
 
-const validateFirstName = [required, minLength(2), maxLength(15)];
+const validateFirstName = [required(), minLength(2), maxLength(15)];
+const validateEmail = email();
 const validateAge = [number(), minValue(18)];
 const validateZipCode = regex(/^\d{5}$/, 'Must be a valid Zip Code');
 const validateSex = choices(['m', 'f'], 'Must be Male or Female');
@@ -404,7 +418,7 @@ export const UserCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
             <TextInput label="First Name" source="firstName" validate={validateFirstName} />
-            <TextInput label="Email" source="email" validate={email()} />
+            <TextInput label="Email" source="email" validate={validateEmail} />
             <TextInput label="Age" source="age" validate={validateAge}/>
             <TextInput label="Zip Code" source="zip" validate={validateZipCode}/>
             <SelectInput label="Sex" source="sex" choices={[
@@ -416,11 +430,12 @@ export const UserCreate = (props) => (
 );
 ```
 
-**Tip**: You can pass a function as a message callback, for example: 
-```javascript
-<TextInput label="Email" source="email" validate={email(({translate})=>translate(''))} />
+**Tip**: If you pass a function as a message, react-admin calls this function with `{ args, value, values,translate, ...props }` as argument. For instance: 
+
+```jsx
+const message = ({ translate }) => translate('myroot.validation.email_invalid');
+const validateEmail = email(message);
 ```
-The callback signature is: `({args,value,values,translate,...props}) => String`
 
 ## Submit On Enter
 
@@ -473,10 +488,21 @@ For that use case, use the `<SaveButton>` component with a custom `redirect` pro
 ```jsx
 import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
 
-const PostCreateToolbar = props => <Toolbar {...props} >
-    <SaveButton label="post.action.save_and_show" redirect="show" submitOnEnter={true} />
-    <SaveButton label="post.action.save_and_add" redirect={false} submitOnEnter={false} variant="flat" />
-</Toolbar>;
+const PostCreateToolbar = props => (
+    <Toolbar {...props} >
+        <SaveButton
+            label="post.action.save_and_show"
+            redirect="show"
+            submitOnEnter={true}
+        />
+        <SaveButton
+            label="post.action.save_and_add"
+            redirect={false}
+            submitOnEnter={false}
+            variant="flat"
+        />
+    </Toolbar>
+);
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -491,32 +517,22 @@ export const PostEdit = (props) => (
 
 **Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.
 
-## Customize Input Containers Styles
+## Customizing Input Container Styles
 
 The input components are wrapped inside a `div` to ensure a good looking form by default. You can pass a `formClassName` prop to the input components to customize the style of this `div`. For example, here is how to display two inputs on the same line:
 
 {% raw %}
-```js
+```jsx
 const styles = {
     inlineBlock: { display: 'inline-flex', marginRight: '1rem' },
 };
-export const UserEdit = withStyles(editStyles)(({ classes, ...props }) => (
+export const UserEdit = withStyles(styles)(({ classes, ...props }) => (
     <Edit {...props}>
         <SimpleForm>
-            <TextInput
-                formClassName={classes.inlineBlock}
-                source="first_name"
-            />
-            <TextInput
-                formClassName={classes.inlineBlock}
-                source="last_name"
-            />
-            {/* This input will be display below the two first one */}
-            <TextInput
-                type="email"
-                source="email"
-                validation={{ email: true }}
-            />
+            <TextInput source="first_name" formClassName={classes.inlineBlock} />
+            <TextInput source="last_name" formClassName={classes.inlineBlock} />
+            {/* This input will be display below the two first ones */}
+            <TextInput source="email" type="email" />
         </SimpleForm>
     </Edit>
 ```
@@ -562,7 +578,7 @@ export const UserCreate = ({ permissions, ...props }) =>
 ```
 {% endraw %}
 
-**Tip** Note how the `permissions` prop is passed down to the custom `toolbar` component.
+**Tip**: Note how the `permissions` prop is passed down to the custom `toolbar` component.
 
 This also works inside an `Edition` view with a `TabbedForm`, and you can hide a `FormTab` completely:
 

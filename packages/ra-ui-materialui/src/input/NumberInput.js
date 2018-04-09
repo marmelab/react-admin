@@ -18,16 +18,16 @@ import sanitizeRestProps from './sanitizeRestProps';
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
 export class NumberInput extends Component {
-    handleBlur = eventOrValue => {
-        this.props.onBlur(eventOrValue);
-        this.props.input.onBlur(eventOrValue);
-
+    handleBlur = event => {
         /**
-         * Necessary because of a React bug on <input type="number">
-         * @see https://github.com/facebook/react/issues/1425
-         */
-        const value = parseFloat(this.props.input.value);
-        this.handleChange(isNaN(value) ? undefined : value);
+          * Necessary because of a React bug on <input type="number">
+          * @see https://github.com/facebook/react/issues/1425
+          */
+        const numericValue = isNaN(parseFloat(event.target.value))
+            ? null
+            : parseFloat(event.target.value);
+        this.props.onBlur(numericValue);
+        this.props.input.onBlur(numericValue);
     };
 
     handleFocus = event => {
@@ -35,9 +35,16 @@ export class NumberInput extends Component {
         this.props.input.onFocus(event);
     };
 
-    handleChange = eventOrValue => {
-        this.props.onChange(eventOrValue);
-        this.props.input.onChange(eventOrValue);
+    handleChange = event => {
+        /**
+          * Necessary because of a React bug on <input type="number">
+          * @see https://github.com/facebook/react/issues/1425
+          */
+        const numericValue = isNaN(parseFloat(event.target.value))
+            ? null
+            : parseFloat(event.target.value);
+        this.props.onChange(numericValue);
+        this.props.input.onChange(numericValue);
     };
 
     render() {

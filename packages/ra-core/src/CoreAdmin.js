@@ -121,17 +121,17 @@ CoreAdmin.propTypes = {
     customReducers: PropTypes.object,
     customRoutes: PropTypes.array,
     dashboard: componentPropType,
+    dataProvider: PropTypes.func.isRequired,
     history: PropTypes.object,
+    i18nProvider: PropTypes.func,
+    initialState: PropTypes.object,
     loading: componentPropType,
+    locale: PropTypes.string,
     loginPage: componentPropType,
     logoutButton: componentPropType,
     menu: componentPropType,
-    dataProvider: PropTypes.func,
-    i18nProvider: PropTypes.func,
     theme: PropTypes.object,
     title: PropTypes.node,
-    locale: PropTypes.string,
-    initialState: PropTypes.object,
 };
 
 export default withContext(

@@ -98,6 +98,7 @@ describe('undo saga', () => {
                     payload: { id: 123 },
                     meta: {
                         foo: 1,
+                        onSuccess: { refresh: true },
                     },
                 })
             );

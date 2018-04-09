@@ -1,6 +1,6 @@
 {
     "name": "ra-data-simple-rest",
-    "version": "2.0.0-beta5",
+    "version": "2.0.0-beta4",
     "description": "Simple REST data provider for react-admin",
     "main": "lib/index.js",
     "files": ["*.md", "lib", "src"],
@@ -14,6 +14,6 @@
     "license": "MIT",
     "dependencies": {
         "query-string": "~6.0.0",
-        "react-admin": "^2.0.0-beta5"
+        "react-admin": "^2.0.0-beta4"
     }
 }
