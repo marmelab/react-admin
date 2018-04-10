@@ -10,7 +10,7 @@ An `Input` component displays an input, or a dropdown list, a list of radio butt
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { Edit, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'react-admin';
+import { Edit, DisabledInput, LongTextInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from '@yeutech/react-admin';
 
 export const PostEdit = (props) => (
     <Edit title={<PostTitle />} {...props}>
@@ -62,12 +62,49 @@ Then you can display a text input to edit the author first name as follows:
 
 **Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
 
+## `<ArrayInput>`
+
+To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list of sub-forms. 
+
+```jsx
+import { ArrayInput, SimpleFormIterator, DateInput, UrlInput } from '@yeutech/react-admin';
+
+<ArrayInput source="backlinks">
+    <SimpleFormIterator>
+        <DateInput source="date" />
+        <UrlInput source="url" />
+    </SimpleFormIterator>
+</ArrayInput>
+```
+
+![ArrayInput](./img/array-input.png)
+
+ `<ArrayInput>` allows the edition of embedded arrays, like the `backlinks` field in the following `post` record:
+
+```js
+{
+  id: 123
+  backlinks: [
+        {
+            date: '2012-08-10T00:00:00.000Z',
+            url: 'http://example.com/foo/bar.html',
+        },
+        {
+            date: '2012-08-14T00:00:00.000Z',
+            url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
+        }
+   ]
+}
+```
+
+`<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component accepting a `fields` object as passed by [redux-form's `<FieldArray>` component](https://redux-form.com/7.3.0/examples/fieldarrays/), and defining a layout for an array of fields. For instance, the `<SimpleFormIterator>` component displays an array of fields in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record (a backlink in this example).
+
 ## `<AutocompleteInput>`
 
 To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`. It renders using [react-autosuggest](http://react-autosuggest.js.org/) and a `fuzzySearch` filter. Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
 
 ```jsx
-import { AutocompleteInput } from 'react-admin';
+import { AutocompleteInput } from '@yeutech/react-admin';
 
 <AutocompleteInput source="category" choices={[
     { id: 'programming', name: 'Programming' },
@@ -100,7 +137,7 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 You can customize the `filter` function used to filter the results. By default, it's `AutoComplete.fuzzyFilter`, but you can use any of [the functions provided by `AutoComplete`](http://www.material-ui.com/#/components/auto-complete), or a function of your own (`(searchText: string, key: string) => boolean`):
 
 ```jsx
-import { AutocompleteInput } from 'react-admin';
+import { AutocompleteInput } from '@yeutech/react-admin';
 import AutoComplete from 'material-ui/AutoComplete';
 
 <AutocompleteInput source="category" filter={AutoComplete.caseInsensitiveFilter} choices={choices} />
@@ -148,7 +185,7 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
 ```jsx
-import { AutocompleteInput, ReferenceInput } from 'react-admin'
+import { AutocompleteInput, ReferenceInput } from '@yeutech/react-admin'
 
 <ReferenceInput label="Post" source="post_id" reference="posts">
     <AutocompleteInput optionText="title" />
@@ -160,24 +197,25 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin'
 **Tip**: React-admin's `<AutocompleteInput>` has only a capital A, while material-ui's `<AutoComplete>` has a capital A and a capital C. Don't mix up the components!
 
 ### Properties
-Prop | Required/Optional | Type | Default | Description
----|---|---|---|---
-`choices` | Required | `Object[]` | - | List of items to autosuggest
-`resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.  
-`source` | Required |  `string` | - | Name of field to edit, it's type should correspond to the type retrieved from `optionValue` 
-`allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`.
-`inputValueMatcher` | Optional | `Function` | `(input, suggestion, getOptionText) => input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()` | Allows to define how choices are matched with the searchText while typing.   
-`optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value 
-`optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the currect record as argument (`(record)=> {string}`)
-`setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`. 
-`suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered. 
+
+| Prop | Required | Type | Default | Description |
+| ---|---|---|---|--- |
+| `choices` | Required | `Object[]` | - | List of items to autosuggest |
+| `resource` | Required | `string` | - | The resource working on. This field is passed down by wrapped components like `Create` and `Edit`.   |
+| `source` | Required |  `string` | - | Name of field to edit, its type should match the type retrieved from `optionValue`  |
+| `allowEmpty` | Optional | `boolean` | `false` | If `false` and the searchText typed did not match any suggestion, the searchText will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
+| `inputValueMatcher` | Optional | `Function` | `(input, suggestion, getOptionText) => input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()` | Allows to define how choices are matched with the searchText while typing.    |
+| `optionValue` | Optional | `string` | `id` | Fieldname of record containing the value to use as input value  |
+| `optionText` | Optional | <code>string &#124; Function</code> | `name` | Fieldname of record to display in the suggestion item or function which accepts the currect record as argument (`(record)=> {string}`) |
+| `setFilter` | Optional | `Function` | null | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.  |
+| `suggestionComponent` | Optional | Function | `({ suggestion, query, isHighlighted, props }) => <div {...props} />` | Allows to override how the item is rendered.  |
 
 ## `<BooleanInput>` and `<NullableBooleanInput>`
 
 `<BooleanInput />` is a toggle button allowing you to attribute a `true` or `false` value to a record field.
 
 ```jsx
-import { BooleanInput } from 'react-admin';
+import { BooleanInput } from '@yeutech/react-admin';
 
 <BooleanInput label="Commentable" source="commentable" />
 ```
@@ -189,8 +227,9 @@ This input does not handle `null` values. You would need the `<NullableBooleanIn
 
 You can use the `options` prop to pass any option supported by the Material UI `Switch` components. For example, here's how to set a custom checked icon:
 
+{% raw %}
 ```jsx
-import { BooleanInput } from 'react-admin';
+import { BooleanInput } from '@yeutech/react-admin';
 import FavoriteIcon from 'material-ui-icons/Favorite';
 
 <BooleanInput
@@ -200,6 +239,7 @@ import FavoriteIcon from 'material-ui-icons/Favorite';
     }}
 />
 ```
+{% endraw %}
 
 ![CustomBooleanInputCheckIcon](./img/custom-switch-icon.png)
 
@@ -209,7 +249,7 @@ Refer to [Material UI Switch documentation](http://www.material-ui.com/#/compone
 `<NullableBooleanInput />` renders as a dropdown list, allowing to choose between true, false, and null values.
 
 ```jsx
-import { NullableBooleanInput } from 'react-admin';
+import { NullableBooleanInput } from '@yeutech/react-admin';
 
 <NullableBooleanInput label="Commentable" source="commentable" />
 ```
@@ -221,7 +261,7 @@ import { NullableBooleanInput } from 'react-admin';
 If you want to let the user choose multiple values among a list of possible values by showing them all, `<CheckboxGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```jsx
-import { CheckboxGroupInput } from 'react-admin';
+import { CheckboxGroupInput } from '@yeutech/react-admin';
 
 <CheckboxGroupInput source="category" choices={[
     { id: 'programming', name: 'Programming' },
@@ -297,7 +337,7 @@ Refer to [Material UI Checkbox documentation](http://www.material-ui.com/#/compo
 Ideal for editing dates, `<DateInput>` renders a standard browser [Date Picker](http://www.material-ui.com/#/components/date-picker).
 
 ```jsx
-import { DateInput } from 'react-admin';
+import { DateInput } from '@yeutech/react-admin';
 
 <DateInput source="published_at" />
 ```
@@ -309,7 +349,7 @@ import { DateInput } from 'react-admin';
 When you want to display a record property in an `<Edit>` form without letting users update it (such as for auto-incremented primary keys), use the `<DisabledInput>`:
 
 ```jsx
-import { DisabledInput } from 'react-admin';
+import { DisabledInput } from '@yeutech/react-admin';
 
 <DisabledInput source="id" />
 ```
@@ -320,7 +360,7 @@ import { DisabledInput } from 'react-admin';
 
 ```jsx
 // in src/posts.js
-import { Edit, LongTextInput, SimpleForm, TextField } from 'react-admin';
+import { Edit, LongTextInput, SimpleForm, TextField } from '@yeutech/react-admin';
 
 export const PostEdit = (props) => (
     <Edit {...props}>
@@ -336,7 +376,7 @@ export const PostEdit = (props) => (
 
 ```jsx
 // in src/posts.js
-import { Edit, Labeled, LongTextInput, SimpleForm } from 'react-admin';
+import { Edit, Labeled, LongTextInput, SimpleForm } from '@yeutech/react-admin';
 
 const titleStyle = { textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '20em' };
 const Title = ({ record, label }) => (
@@ -420,7 +460,7 @@ Note that the file upload returns a [File](https://developer.mozilla.org/en/docs
 `<LongTextInput>` is the best choice for multiline text values. It renders as an auto expandable textarea.
 
 ```jsx
-import { LongTextInput } from 'react-admin';
+import { LongTextInput } from '@yeutech/react-admin';
 
 <LongTextInput source="teaser" />
 ```
@@ -432,7 +472,7 @@ import { LongTextInput } from 'react-admin';
 `<NumberInput>` translates to a HTML `<input type="number">`. It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
 
 ```jsx
-import { NumberInput } from 'react-admin';
+import { NumberInput } from '@yeutech/react-admin';
 
 <NumberInput source="nb_views" />
 ```
@@ -448,7 +488,7 @@ You can customize the `step` props (which defaults to "any"):
 If you want to let the user choose a value among a list of possible values by showing them all (instead of hiding them behind a dropdown list, as in [`<SelectInput>`](#selectinput)), `<RadioButtonGroupInput>` is the right component. Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```jsx
-import { RadioButtonGroupInput } from 'react-admin';
+import { RadioButtonGroupInput } from '@yeutech/react-admin';
 
 <RadioButtonGroupInput source="category" choices={[
     { id: 'programming', name: 'Programming' },
@@ -521,7 +561,7 @@ Refer to [Material UI RadioGroup documentation](http://www.material-ui.com/#/com
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
 ```jsx
-import { RadioButtonGroupInput, ReferenceInput } from 'react-admin'
+import { RadioButtonGroupInput, ReferenceInput } from '@yeutech/react-admin'
 
 <ReferenceInput label="Author" source="author_id" reference="authors">
     <RadioButtonGroupInput optionText="last_name" />
@@ -558,7 +598,7 @@ This means you can use `<ReferenceArrayInput>` with [`<SelectArrayInput>`](#sele
 The component expects a `source` and a `reference` attributes. For instance, to make the `tag_ids` for a `post` editable:
 
 ```js
-import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
+import { ReferenceArrayInput, SelectArrayInput } from '@yeutech/react-admin'
 
 <ReferenceArrayInput source="tag_ids" reference="tags">
     <SelectArrayInput optionText="name" />
@@ -580,7 +620,7 @@ Set the `allowEmpty` prop when you want to add an empty choice with a value of n
 Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.html#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
 
 ```js
-import { ReferenceArrayInput, SelectArrayInput } from 'react-admin'
+import { ReferenceArrayInput, SelectArrayInput } from '@yeutech/react-admin'
 
 <ReferenceArrayInput source="tag_ids" reference="tags" allowEmpty>
     <SelectArrayInput optionText="name" />
@@ -631,7 +671,7 @@ This means you can use `<ReferenceInput>` with any of [`<SelectInput>`](#selecti
 The component expects a `source` and a `reference` attributes. For instance, to make the `post_id` for a `comment` editable:
 
 ```jsx
-import { ReferenceInput, SelectInput } from 'react-admin'
+import { ReferenceInput, SelectInput } from '@yeutech/react-admin'
 
 <ReferenceInput label="Post" source="post_id" reference="posts">
     <SelectInput optionText="title" />
@@ -653,7 +693,7 @@ Set the `allowEmpty` prop when you want to add an empty choice with a value of n
 Disabling `allowEmpty` does not mean that the input will be required. If you want to make the input required, you must add a validator as indicated in [Validation Documentation](./CreateEdit.html#validation). Enabling the `allowEmpty` props just adds an empty choice (with `null` value) on top of the options, and makes the value nullable.
 
 ```jsx
-import { ReferenceInput, SelectInput } from 'react-admin'
+import { ReferenceInput, SelectInput } from '@yeutech/react-admin'
 
 <ReferenceInput label="Post" source="post_id" reference="posts" allowEmpty>
     <SelectInput optionText="title" />
@@ -732,7 +772,7 @@ npm install ra-input-rich-text
 Then use it as a normal input component:
 
 ```jsx
-import RichTextInput from 'ra-input-rich-text';
+import RichTextInput from '@yeutech/ra-input-rich-text';
 
 <RichTextInput source="body" />
 ```
@@ -750,7 +790,7 @@ You can customize the rich text editor toolbar using the `toolbar` attribute, as
 To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<SelectField>`](http://www.material-ui.com/#/components/select-field). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```jsx
-import { SelectInput } from 'react-admin';
+import { SelectInput } from '@yeutech/react-admin';
 
 <SelectInput source="category" choices={[
     { id: 'programming', name: 'Programming' },
@@ -835,7 +875,7 @@ Refer to [Material UI SelectField documentation](http://www.material-ui.com/#/co
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](#referenceinput), and leave the `choices` empty:
 
 ```jsx
-import { SelectInput, ReferenceInput } from 'react-admin'
+import { SelectInput, ReferenceInput } from '@yeutech/react-admin'
 
 <ReferenceInput label="Author" source="author_id" reference="authors">
     <SelectInput optionText="last_name" />
@@ -917,7 +957,7 @@ import {
     ReferenceArrayInput,
     SelectArrayInput,
     TextInput,
-} from 'react-admin';
+} from '@yeutech/react-admin';
 
 export const PostCreate = props => (
     <Create {...props}>
@@ -943,7 +983,7 @@ export const PostCreate = props => (
 `<TextInput>` is the most common input. It is used for texts, emails, URL or passwords. In translates to an HTML `<input>` tag.
 
 ```jsx
-import { TextInput } from 'react-admin';
+import { TextInput } from '@yeutech/react-admin';
 
 <TextInput source="title" />
 ```
@@ -1022,7 +1062,7 @@ If `source` is not specified, `resolve` will be called with the current form val
 ### Check that the field specified by `source` has a value (a truthy value):
 
 ```js
-import { Create, SimpleForm, TextInput, BooleanInput, DependsOn } from 'react-admin';
+import { Create, SimpleForm, TextInput, BooleanInput, DependsOn } from '@yeutech/react-admin';
 
 export const UserCreate = (props) => (
     <Create {...props}>
@@ -1041,7 +1081,7 @@ export const UserCreate = (props) => (
 ### Check that the field specified by `source` has a specific value:
 
 ```js
-import { Create, SimpleForm, TextInput, SelectInput, DependsOn } from 'react-admin';
+import { Create, SimpleForm, TextInput, SelectInput, DependsOn } from '@yeutech/react-admin';
 
 export const PostCreate = (props) => (
     <Create {...props}>
@@ -1081,7 +1121,7 @@ export const PostCreate = (props) => (
 ### Check that the field specified by `source` matches a custom constraint:
 
 ```js
-import { Create, SimpleForm, TextInput, SelectInput, DependsOn } from 'react-admin';
+import { Create, SimpleForm, TextInput, SelectInput, DependsOn } from '@yeutech/react-admin';
 
 const checkCustomConstraint = (value) => value.startsWith('programming'));
 
@@ -1112,7 +1152,7 @@ export const PostCreate = (props) => (
 ### All powers! Check whether the current full record matches your constraints:
 
 ```js
-import { Create, SimpleForm, TextInput, EmailInput, DependsOn } from 'react-admin';
+import { Create, SimpleForm, TextInput, EmailInput, DependsOn } from '@yeutech/react-admin';
 
 const checkRecord = (record) => record.firstName && record.lastName);
 
@@ -1138,7 +1178,7 @@ This is how we could display only the sub genres for the selected genre:
 ```js
 // in SubGenreInput.js
 import React, { Component } from 'react';
-import { translate, SelectInput } from 'react-admin';
+import { translate, SelectInput } from '@yeutech/react-admin';
 import fetchSubGenres from './fetchSubGenres';
 
 class SubGenreInput extends Component {
@@ -1234,7 +1274,7 @@ This component lacks a label. React-admin provides the `<Labeled>` component for
 ```jsx
 // in LatLongInput.js
 import { Field } from 'redux-form';
-import { Labeled } from 'react-admin';
+import { Labeled } from '@yeutech/react-admin';
 
 const LatLngInput = () => (
     <Labeled label="position">
@@ -1290,7 +1330,7 @@ Material-ui's `<TextField>` component already includes a label, so you don't nee
 // in SexInput.js
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import { addField } from 'react-admin';
+import { addField } from '@yeutech/react-admin';
 
 const SexInput = ({ input, meta: { touched, error } }) => (
     <SelectField
@@ -1330,7 +1370,7 @@ Instead of HTML `input` elements or material-ui components, you can use react-ad
 ```jsx
 // in LatLongInput.js
 import { Field } from 'redux-form';
-import { NumberInput } from 'react-admin';
+import { NumberInput } from '@yeutech/react-admin';
 const LatLngInput = () => (
     <span>
         <NumberInput source="lat" label="latitude" />

@@ -1,6 +1,6 @@
 # ra-data-graphcool
 
-A GraphQL data provider for [react-admin](https://github.com/marmelab/react-admin/)
+A GraphQL data provider for [react-admin](https://github.com/yeutech/react-admin/)
 built with [Apollo](http://www.apollodata.com/) and tailored to target the [GraphCool](https://www.graph.cool/) service.
 
 A version of the `react-admin` demo using this data provider is available at https://react-admin-graphql.now.sh/.<br>
@@ -14,13 +14,13 @@ A version of the `react-admin` demo using this data provider is available at htt
 Install with:
 
 ```sh
-npm install --save ra-data-graphcool
+npm install --save graphql ra-data-graphcool
 ```
 
 or
 
 ```sh
-yarn add ra-data-graphcool
+yarn add graphql ra-data-graphcool
 ```
 
 ## Usage
@@ -30,8 +30,8 @@ This example assumes a `Post` type is defined in the graphcool schema.
 ```js
 // in App.js
 import React, { Component } from 'react';
-import buildGraphcoolProvider from 'ra-data-graphcool';
-import { Admin, Resource, Delete } from 'react-admin';
+import buildGraphcoolProvider from '@yeutech/ra-data-graphcool';
+import { Admin, Resource, Delete } from '@yeutech/react-admin';
 
 import { PostCreate, PostEdit, PostList } from './posts';
 

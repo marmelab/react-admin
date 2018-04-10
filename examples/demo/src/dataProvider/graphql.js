@@ -1,10 +1,13 @@
-import buildApolloClient from 'ra-data-graphql-simple';
+import buildApolloClient from '@yeutech/ra-data-graphql-simple';
 
 export default () => {
     const getGqlResource = resource => {
         switch (resource) {
             case 'customers':
                 return 'Customer';
+
+            case 'categories':
+                return 'Category';
 
             case 'commands':
                 return 'Command';

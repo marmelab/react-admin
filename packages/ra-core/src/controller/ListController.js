@@ -13,16 +13,16 @@ import pickBy from 'lodash/pickBy';
 
 import removeEmpty from '../util/removeEmpty';
 import queryReducer, {
-  SET_SORT,
-  SET_PAGE,
-  SET_FILTER,
-  SORT_DESC,
+    SET_SORT,
+    SET_PAGE,
+    SET_FILTER,
+    SORT_DESC,
 } from '../reducer/admin/resource/list/queryReducer';
 import { crudGetList as crudGetListAction } from '../actions/dataActions';
 import {
-  changeListParams as changeListParamsAction,
-  setListSelectedIds as setListSelectedIdsAction,
-  toggleListItem as toggleListItemAction,
+    changeListParams as changeListParamsAction,
+    setListSelectedIds as setListSelectedIdsAction,
+    toggleListItem as toggleListItemAction,
 } from '../actions/listActions';
 import translate from '../i18n/translate';
 import removeKey from '../util/removeKey';
@@ -69,312 +69,312 @@ import removeKey from '../util/removeKey';
  *     );
  */
 export class ListController extends Component {
-  state = {};
+    state = {};
 
-  componentDidMount() {
-    if (
-      !this.props.query.page &&
-      !(this.props.ids || []).length &&
-      this.props.params.page > 1 &&
-      this.props.total > 0
-    ) {
-      this.setPage(this.props.params.page - 1);
-      return;
+    componentDidMount() {
+        if (
+            !this.props.query.page &&
+            !(this.props.ids || []).length &&
+            this.props.params.page > 1 &&
+            this.props.total > 0
+        ) {
+            this.setPage(this.props.params.page - 1);
+            return;
+        }
+
+        this.updateData();
+        if (Object.keys(this.props.query).length > 0) {
+            this.props.changeListParams(this.props.resource, this.props.query);
+        }
     }
 
-    this.updateData();
-    if (Object.keys(this.props.query).length > 0) {
-      this.props.changeListParams(this.props.resource, this.props.query);
+    componentWillUnmount() {
+        this.setFilters.cancel();
     }
-  }
 
-  componentWillUnmount() {
-    this.setFilters.cancel();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.resource !== this.props.resource ||
-      nextProps.query.sort !== this.props.query.sort ||
-      nextProps.query.order !== this.props.query.order ||
-      nextProps.query.page !== this.props.query.page ||
-      nextProps.query.filter !== this.props.query.filter
-    ) {
-      this.updateData(
-        Object.keys(nextProps.query).length > 0
-          ? nextProps.query
-          : nextProps.params
-      );
+    componentWillReceiveProps(nextProps) {
+        if (
+            nextProps.resource !== this.props.resource ||
+            nextProps.query.sort !== this.props.query.sort ||
+            nextProps.query.order !== this.props.query.order ||
+            nextProps.query.page !== this.props.query.page ||
+            nextProps.query.filter !== this.props.query.filter
+        ) {
+            this.updateData(
+                Object.keys(nextProps.query).length > 0
+                    ? nextProps.query
+                    : nextProps.params
+            );
+        }
+        if (nextProps.version !== this.props.version) {
+            this.updateData();
+        }
     }
-    if (nextProps.version !== this.props.version) {
-      this.updateData();
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (
+            nextProps.translate === this.props.translate &&
+            nextProps.isLoading === this.props.isLoading &&
+            nextProps.version === this.props.version &&
+            nextState === this.state &&
+            nextProps.data === this.props.data &&
+            nextProps.selectedIds === this.props.selectedIds
+        ) {
+            return false;
+        }
+        return true;
     }
-  }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (
-      nextProps.translate === this.props.translate &&
-      nextProps.isLoading === this.props.isLoading &&
-      nextProps.version === this.props.version &&
-      nextState === this.state &&
-      nextProps.data === this.props.data &&
-      nextProps.selectedIds === this.props.selectedIds
-    ) {
-      return false;
+    getBasePath() {
+        return this.props.location.pathname.replace(/\/$/, '');
     }
-    return true;
-  }
 
-  getBasePath() {
-    return this.props.location.pathname.replace(/\/$/, '');
-  }
-
-  /**
+    /**
      * Merge list params from 3 different sources:
      *   - the query string
      *   - the params stored in the state (from previous navigation)
      *   - the props passed to the List component
      */
-  getQuery() {
-    const query =
-      Object.keys(this.props.query).length > 0
-        ? this.props.query
-        : { ...this.props.params };
-    if (!query.sort) {
-      query.sort = this.props.sort.field;
-      query.order = this.props.sort.order;
+    getQuery() {
+        const query =
+            Object.keys(this.props.query).length > 0
+                ? this.props.query
+                : { ...this.props.params };
+        if (!query.sort) {
+            query.sort = this.props.sort.field;
+            query.order = this.props.sort.order;
+        }
+        if (!query.perPage) {
+            query.perPage = this.props.perPage;
+        }
+        if (!query.page) {
+            query.page = 1;
+        }
+        return query;
     }
-    if (!query.perPage) {
-      query.perPage = this.props.perPage;
-    }
-    if (!query.page) {
-      query.page = 1;
-    }
-    return query;
-  }
 
-  updateData(query) {
-    const params = query || this.getQuery();
-    const { sort, order, page = 1, perPage, filter } = params;
-    const pagination = {
-      page: parseInt(page, 10),
-      perPage: parseInt(perPage, 10),
+    updateData(query) {
+        const params = query || this.getQuery();
+        const { sort, order, page = 1, perPage, filter } = params;
+        const pagination = {
+            page: parseInt(page, 10),
+            perPage: parseInt(perPage, 10),
+        };
+        const permanentFilter = this.props.filter;
+        this.props.crudGetList(
+            this.props.resource,
+            pagination,
+            { field: sort, order },
+            { ...filter, ...permanentFilter }
+        );
+    }
+
+    setSort = sort => this.changeParams({ type: SET_SORT, payload: sort });
+
+    setPage = page => this.changeParams({ type: SET_PAGE, payload: page });
+
+    setFilters = debounce(filters => {
+        if (isEqual(filters, this.props.filterValues)) {
+            return;
+        }
+
+        // fix for redux-form bug with onChange and enableReinitialize
+        const filtersWithoutEmpty = removeEmpty(filters);
+        this.changeParams({ type: SET_FILTER, payload: filtersWithoutEmpty });
+    }, this.props.debounce);
+
+    showFilter = (filterName, defaultValue) => {
+        this.setState({ [filterName]: true });
+        if (typeof defaultValue !== 'undefined') {
+            this.setFilters({
+                ...this.props.filterValues,
+                [filterName]: defaultValue,
+            });
+        }
     };
-    const permanentFilter = this.props.filter;
-    this.props.crudGetList(
-      this.props.resource,
-      pagination,
-      { field: sort, order },
-      { ...filter, ...permanentFilter }
-    );
-  }
 
-  setSort = sort => this.changeParams({ type: SET_SORT, payload: sort });
+    hideFilter = filterName => {
+        this.setState({ [filterName]: false });
+        const newFilters = removeKey(this.props.filterValues, filterName);
+        this.setFilters(newFilters);
+    };
 
-  setPage = page => this.changeParams({ type: SET_PAGE, payload: page });
+    handleSelect = ids => {
+        this.props.setSelectedIds(this.props.resource, ids);
+    };
 
-  setFilters = debounce(filters => {
-    if (isEqual(filters, this.props.filterValues)) {
-      return;
+    handleUnselectItems = () => {
+        this.props.setSelectedIds(this.props.resource, []);
+    };
+
+    handleToggleItem = id => {
+        this.props.toggleItem(this.props.resource, id);
+    };
+
+    changeParams(action) {
+        const newParams = queryReducer(this.getQuery(), action);
+        this.props.push({
+            ...this.props.location,
+            search: `?${stringify({
+                ...newParams,
+                filter: JSON.stringify(newParams.filter),
+            })}`,
+        });
+        this.props.changeListParams(this.props.resource, newParams);
     }
 
-    // fix for redux-form bug with onChange and enableReinitialize
-    const filtersWithoutEmpty = removeEmpty(filters);
-    this.changeParams({ type: SET_FILTER, payload: filtersWithoutEmpty });
-  }, this.props.debounce);
+    render() {
+        const {
+            children,
+            resource,
+            hasCreate,
+            data,
+            ids,
+            total,
+            isLoading,
+            translate,
+            version,
+            selectedIds,
+        } = this.props;
+        const query = this.getQuery();
 
-  showFilter = (filterName, defaultValue) => {
-    this.setState({ [filterName]: true });
-    if (typeof defaultValue !== 'undefined') {
-      this.setFilters({
-        ...this.props.filterValues,
-        [filterName]: defaultValue,
-      });
+        const queryFilterValues = query.filter || {};
+        const basePath = this.getBasePath();
+
+        const resourceName = translate(`resources.${resource}.name`, {
+            smart_count: 2,
+            _: inflection.humanize(inflection.pluralize(resource)),
+        });
+        const defaultTitle = translate('ra.page.list', {
+            name: `${resourceName}`,
+        });
+
+        return children({
+            basePath,
+            currentSort: {
+                field: query.sort,
+                order: query.order,
+            },
+            data,
+            defaultTitle,
+            displayedFilters: this.state,
+            filterValues: queryFilterValues,
+            hasCreate,
+            hideFilter: this.hideFilter,
+            ids,
+            isLoading,
+            onSelect: this.handleSelect,
+            onToggleItem: this.handleToggleItem,
+            onUnselectItems: this.handleUnselectItems,
+            page: parseInt(query.page || 1, 10),
+            perPage: parseInt(query.perPage, 10),
+            refresh: this.refresh,
+            selectedIds,
+            setFilters: this.setFilters,
+            setPage: this.setPage,
+            setSort: this.setSort,
+            showFilter: this.showFilter,
+            translate,
+            total,
+            version,
+        });
     }
-  };
-
-  hideFilter = filterName => {
-    this.setState({ [filterName]: false });
-    const newFilters = removeKey(this.props.filterValues, filterName);
-    this.setFilters(newFilters);
-  };
-
-  handleSelect = ids => {
-    this.props.setSelectedIds(this.props.resource, ids);
-  };
-
-  handleUnselectItems = () => {
-    this.props.setSelectedIds(this.props.resource, []);
-  };
-
-  handleToggleItem = id => {
-    this.props.toggleItem(this.props.resource, id);
-  };
-
-  changeParams(action) {
-    const newParams = queryReducer(this.getQuery(), action);
-    this.props.push({
-      ...this.props.location,
-      search: `?${stringify({
-        ...newParams,
-        filter: JSON.stringify(newParams.filter),
-      })}`,
-    });
-    this.props.changeListParams(this.props.resource, newParams);
-  }
-
-  render() {
-    const {
-      children,
-      resource,
-      hasCreate,
-      data,
-      ids,
-      total,
-      isLoading,
-      translate,
-      version,
-      selectedIds,
-    } = this.props;
-    const query = this.getQuery();
-
-    const queryFilterValues = query.filter || {};
-    const basePath = this.getBasePath();
-
-    const resourceName = translate(`resources.${resource}.name`, {
-      smart_count: 2,
-      _: inflection.humanize(inflection.pluralize(resource)),
-    });
-    const defaultTitle = translate('ra.page.list', {
-      name: `${resourceName}`,
-    });
-
-    return children({
-      basePath,
-      currentSort: {
-        field: query.sort,
-        order: query.order,
-      },
-      data,
-      defaultTitle,
-      displayedFilters: this.state,
-      filterValues: queryFilterValues,
-      hasCreate,
-      hideFilter: this.hideFilter,
-      ids,
-      isLoading,
-      onSelect: this.handleSelect,
-      onToggleItem: this.handleToggleItem,
-      onUnselectItems: this.handleUnselectItems,
-      page: parseInt(query.page || 1, 10),
-      perPage: parseInt(query.perPage, 10),
-      refresh: this.refresh,
-      selectedIds,
-      setFilters: this.setFilters,
-      setPage: this.setPage,
-      setSort: this.setSort,
-      showFilter: this.showFilter,
-      translate,
-      total,
-      version,
-    });
-  }
 }
 
 ListController.propTypes = {
-  // the props you can change
-  children: PropTypes.func.isRequired,
-  filter: PropTypes.object,
-  filters: PropTypes.element,
-  pagination: PropTypes.element,
-  perPage: PropTypes.number.isRequired,
-  sort: PropTypes.shape({
-    field: PropTypes.string,
-    order: PropTypes.string,
-  }),
-  // the props managed by react-admin
-  authProvider: PropTypes.func,
-  changeListParams: PropTypes.func.isRequired,
-  crudGetList: PropTypes.func.isRequired,
-  data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  debounce: PropTypes.number,
-  filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  hasCreate: PropTypes.bool.isRequired,
-  hasEdit: PropTypes.bool.isRequired,
-  hasList: PropTypes.bool.isRequired,
-  hasShow: PropTypes.bool.isRequired,
-  ids: PropTypes.array,
-  selectedIds: PropTypes.array,
-  isLoading: PropTypes.bool.isRequired,
-  location: PropTypes.object.isRequired,
-  path: PropTypes.string,
-  params: PropTypes.object.isRequired,
-  push: PropTypes.func.isRequired,
-  query: PropTypes.object.isRequired,
-  resource: PropTypes.string.isRequired,
-  setSelectedIds: PropTypes.func.isRequired,
-  toggleItem: PropTypes.func.isRequired,
-  total: PropTypes.number.isRequired,
-  translate: PropTypes.func.isRequired,
-  version: PropTypes.number,
+    // the props you can change
+    children: PropTypes.func.isRequired,
+    filter: PropTypes.object,
+    filters: PropTypes.element,
+    pagination: PropTypes.element,
+    perPage: PropTypes.number.isRequired,
+    sort: PropTypes.shape({
+        field: PropTypes.string,
+        order: PropTypes.string,
+    }),
+    // the props managed by react-admin
+    authProvider: PropTypes.func,
+    changeListParams: PropTypes.func.isRequired,
+    crudGetList: PropTypes.func.isRequired,
+    data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    debounce: PropTypes.number,
+    filterValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    hasCreate: PropTypes.bool.isRequired,
+    hasEdit: PropTypes.bool.isRequired,
+    hasList: PropTypes.bool.isRequired,
+    hasShow: PropTypes.bool.isRequired,
+    ids: PropTypes.array,
+    selectedIds: PropTypes.array,
+    isLoading: PropTypes.bool.isRequired,
+    location: PropTypes.object.isRequired,
+    path: PropTypes.string,
+    params: PropTypes.object.isRequired,
+    push: PropTypes.func.isRequired,
+    query: PropTypes.object.isRequired,
+    resource: PropTypes.string.isRequired,
+    setSelectedIds: PropTypes.func.isRequired,
+    toggleItem: PropTypes.func.isRequired,
+    total: PropTypes.number.isRequired,
+    translate: PropTypes.func.isRequired,
+    version: PropTypes.number,
 };
 
 ListController.defaultProps = {
-  debounce: 500,
-  filter: {},
-  filterValues: {},
-  perPage: 10,
-  sort: {
-    field: 'id',
-    order: SORT_DESC,
-  },
+    debounce: 500,
+    filter: {},
+    filterValues: {},
+    perPage: 10,
+    sort: {
+        field: 'id',
+        order: SORT_DESC,
+    },
 };
 
 const validQueryParams = ['page', 'perPage', 'sort', 'order', 'filter'];
 const getLocationPath = props => props.location.pathname;
 const getLocationSearch = props => props.location.search;
 const getQuery = createSelector(
-  getLocationPath,
-  getLocationSearch,
-  (path, search) => {
-    const query = pickBy(
-      parse(search),
-      (v, k) => validQueryParams.indexOf(k) !== -1
-    );
-    if (query.filter && typeof query.filter === 'string') {
-      try {
-        query.filter = JSON.parse(query.filter);
-      } catch (err) {
-        delete query.filter;
-      }
+    getLocationPath,
+    getLocationSearch,
+    (path, search) => {
+        const query = pickBy(
+            parse(search),
+            (v, k) => validQueryParams.indexOf(k) !== -1
+        );
+        if (query.filter && typeof query.filter === 'string') {
+            try {
+                query.filter = JSON.parse(query.filter);
+            } catch (err) {
+                delete query.filter;
+            }
+        }
+        return query;
     }
-    return query;
-  }
 );
 
 function mapStateToProps(state, props) {
-  const resourceState = state.admin.resources[props.resource];
+    const resourceState = state.admin.resources[props.resource];
 
-  return {
-    query: getQuery(props),
-    params: resourceState.list.params,
-    ids: resourceState.list.ids,
-    selectedIds: resourceState.list.selectedIds,
-    total: resourceState.list.total,
-    data: resourceState.data,
-    isLoading: state.admin.loading > 0,
-    filterValues: resourceState.list.params.filter,
-    version: state.admin.ui.viewVersion,
-  };
+    return {
+        query: getQuery(props),
+        params: resourceState.list.params,
+        ids: resourceState.list.ids,
+        selectedIds: resourceState.list.selectedIds,
+        total: resourceState.list.total,
+        data: resourceState.data,
+        isLoading: state.admin.loading > 0,
+        filterValues: resourceState.list.params.filter,
+        version: state.admin.ui.viewVersion,
+    };
 }
 
 export default compose(
-  connect(mapStateToProps, {
-    crudGetList: crudGetListAction,
-    changeListParams: changeListParamsAction,
-    setSelectedIds: setListSelectedIdsAction,
-    toggleItem: toggleListItemAction,
-    push: pushAction,
-  }),
-  translate
+    connect(mapStateToProps, {
+        crudGetList: crudGetListAction,
+        changeListParams: changeListParamsAction,
+        setSelectedIds: setListSelectedIdsAction,
+        toggleItem: toggleListItemAction,
+        push: pushAction,
+    }),
+    translate
 )(ListController);

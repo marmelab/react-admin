@@ -1,16 +1,16 @@
 // Encodes a graphql query
 const graphqlify = function(fields) {
-  return encodeOperation('query', fields);
+    return encodeOperation('query', fields);
 };
 
 // Encodes a graphql query
 export const encodeQuery = function(_nameOrFields, _fieldsOrNil) {
-  return encodeOperation('query', _nameOrFields, _fieldsOrNil);
+    return encodeOperation('query', _nameOrFields, _fieldsOrNil);
 };
 
 // Encodes a graphql mutation
 export const encodeMutation = function(_nameOrFields, _fieldsOrNil) {
-  return encodeOperation('mutation', _nameOrFields, _fieldsOrNil);
+    return encodeOperation('mutation', _nameOrFields, _fieldsOrNil);
 };
 
 // default export graphqlify
@@ -23,31 +23,31 @@ export default graphqlify;
 //   'mutation', {a: {fields: {b: 1}}}  => 'mutation{a{b}}'
 //
 function encodeOperation(type, _nameOrFields, _fieldsOrNil) {
-  let name = _nameOrFields;
-  let fields = _fieldsOrNil;
-  if (!_fieldsOrNil && typeof _nameOrFields === 'object') {
-    name = null;
-    fields = _nameOrFields;
-  }
-
-  const parts = [];
-  let fieldset;
-
-  if (name && (fields.params || fields.fields)) {
-    fieldset = encodeField(name, fields);
-    parts.push(`${type} ${fieldset}`);
-  } else {
-    // stringifying the main query object
-    fieldset = encodeFieldset(fields, null);
-
-    if (name) {
-      parts.push(`${type} ${name}${fieldset}`);
-    } else {
-      parts.push(`${type} ${fieldset}`);
+    let name = _nameOrFields;
+    let fields = _fieldsOrNil;
+    if (!_fieldsOrNil && typeof _nameOrFields === 'object') {
+        name = null;
+        fields = _nameOrFields;
     }
-  }
 
-  return parts.join(',');
+    const parts = [];
+    let fieldset;
+
+    if (name && (fields.params || fields.fields)) {
+        fieldset = encodeField(name, fields);
+        parts.push(`${type} ${fieldset}`);
+    } else {
+        // stringifying the main query object
+        fieldset = encodeFieldset(fields, null);
+
+        if (name) {
+            parts.push(`${type} ${name}${fieldset}`);
+        } else {
+            parts.push(`${type} ${fieldset}`);
+        }
+    }
+
+    return parts.join(',');
 }
 
 // Encodes a group of fields and fragments
@@ -57,14 +57,14 @@ function encodeOperation(type, _nameOrFields, _fieldsOrNil) {
 //   {a: {fields: {b: 1}}}  => '{a{b}}'
 //
 function encodeFieldset(fields, fragments) {
-  const parts = [];
-  if (fields) {
-    parts.push(encodeFields(fields));
-  }
-  if (fragments) {
-    fragments.forEach(f => parts.push(`...${f.name}`));
-  }
-  return `{${parts.join(',')}}`;
+    const parts = [];
+    if (fields) {
+        parts.push(encodeFields(fields));
+    }
+    if (fragments) {
+        fragments.forEach(f => parts.push(`...${f.name}`));
+    }
+    return `{${parts.join(',')}}`;
 }
 
 // Encodes a set of fields and nested fields.
@@ -74,23 +74,23 @@ function encodeFieldset(fields, fragments) {
 //   {a: {fields: {b: 1}}}  => 'a{b}'
 //
 function encodeFields(fields) {
-  if (!fields || typeof fields !== 'object') {
-    throw new Error(`fields cannot be "${fields}"`);
-  }
+    if (!fields || typeof fields !== 'object') {
+        throw new Error(`fields cannot be "${fields}"`);
+    }
 
-  const encoded = Object.keys(fields)
-    .filter(function(key) {
-      return fields.hasOwnProperty(key) && fields[key];
-    })
-    .map(function(key) {
-      return encodeField(key, fields[key]);
-    });
+    const encoded = Object.keys(fields)
+        .filter(function(key) {
+            return fields.hasOwnProperty(key) && fields[key];
+        })
+        .map(function(key) {
+            return encodeField(key, fields[key]);
+        });
 
-  if (encoded.length === 0) {
-    throw new Error(`fields cannot be empty`);
-  }
+    if (encoded.length === 0) {
+        throw new Error(`fields cannot be empty`);
+    }
 
-  return encoded.join(',');
+    return encoded.join(',');
 }
 
 // Encode a single field and nested fields.
@@ -102,23 +102,23 @@ function encodeFields(fields) {
 //   ('a', {fields: {b: 10}}) => 'a{b}'
 //
 function encodeField(key, val) {
-  if (typeof val !== 'object') {
-    return key;
-  }
+    if (typeof val !== 'object') {
+        return key;
+    }
 
-  const parts = [key];
+    const parts = [key];
 
-  if (val.field) {
-    parts.push(`:${val.field}`);
-  }
-  if (val.params) {
-    parts.push(encodeParams(val.params));
-  }
-  if (val.fields || val.fragments) {
-    parts.push(encodeFieldset(val.fields, val.fragments));
-  }
+    if (val.field) {
+        parts.push(`:${val.field}`);
+    }
+    if (val.params) {
+        parts.push(encodeParams(val.params));
+    }
+    if (val.fields || val.fragments) {
+        parts.push(encodeFieldset(val.fields, val.fragments));
+    }
 
-  return parts.join('');
+    return parts.join('');
 }
 
 // Encodes a map of field parameters.
@@ -128,12 +128,12 @@ function encodeField(key, val) {
 //   {a: {b: 'c'}}   => '(a:{b:"c"})'
 //
 function encodeParams(params) {
-  const encoded = encodeParamsMap(params);
-  if (encoded.length === 0) {
-    throw new Error(`params cannot be empty`);
-  }
+    const encoded = encodeParamsMap(params);
+    if (encoded.length === 0) {
+        throw new Error(`params cannot be empty`);
+    }
 
-  return `(${encoded.join(',')})`;
+    return `(${encoded.join(',')})`;
 }
 
 // Encodes an object type field parameter.
@@ -142,8 +142,8 @@ function encodeParams(params) {
 //   {a: {b: false}}   => '{a:{b:false}}'
 //
 function encodeParamsObject(params) {
-  const encoded = encodeParamsMap(params);
-  return `{${encoded.join(',')}}`;
+    const encoded = encodeParamsMap(params);
+    return `{${encoded.join(',')}}`;
 }
 
 // Encodes an array type field parameter.
@@ -152,8 +152,8 @@ function encodeParamsObject(params) {
 //   [ {a: 1}, {a: 2} ] => '[{a:1},{a:2}]'
 //
 function encodeParamsArray(array) {
-  const encoded = array.map(encodeParamValue);
-  return `[${encoded.join(',')}]`;
+    const encoded = array.map(encodeParamValue);
+    return `[${encoded.join(',')}]`;
 }
 
 // Encodes a map of field parameters.
@@ -163,21 +163,21 @@ function encodeParamsArray(array) {
 //   {a: {b: 'c'}}   => 'a:{b:"c"}'
 //
 function encodeParamsMap(params) {
-  if (!params || typeof params !== 'object') {
-    throw new Error(`params cannot be "${params}"`);
-  }
+    if (!params || typeof params !== 'object') {
+        throw new Error(`params cannot be "${params}"`);
+    }
 
-  const keys = Object.keys(params).filter(function(key) {
-    const val = params[key];
-    return (
-      params.hasOwnProperty(key) &&
-      val !== undefined &&
-      val !== null &&
-      !Number.isNaN(val)
-    );
-  });
+    const keys = Object.keys(params).filter(function(key) {
+        const val = params[key];
+        return (
+            params.hasOwnProperty(key) &&
+            val !== undefined &&
+            val !== null &&
+            !Number.isNaN(val)
+        );
+    });
 
-  return keys.map(key => encodeParam(key, params[key]));
+    return keys.map(key => encodeParam(key, params[key]));
 }
 
 // Encodes a single parameter
@@ -185,7 +185,7 @@ function encodeParamsMap(params) {
 //    ('a', 1) => 'a:1'
 //
 function encodeParam(key, val) {
-  return `${key}:${encodeParamValue(val)}`;
+    return `${key}:${encodeParamValue(val)}`;
 }
 
 // Encodes parameter value
@@ -194,15 +194,15 @@ function encodeParam(key, val) {
 //   Enum('a') => 'a'
 //
 function encodeParamValue(value) {
-  if (Array.isArray(value)) {
-    return encodeParamsArray(value);
-  }
-  if (typeof value === 'object') {
-    return encodeParamsObject(value);
-  }
-  if (typeof value === 'string') {
-    return value;
-  }
+    if (Array.isArray(value)) {
+        return encodeParamsArray(value);
+    }
+    if (typeof value === 'object') {
+        return encodeParamsObject(value);
+    }
+    if (typeof value === 'string') {
+        return value;
+    }
 
-  throw new Error(`unsupported param type "${typeof value}"`);
+    throw new Error(`unsupported param type "${typeof value}"`);
 }

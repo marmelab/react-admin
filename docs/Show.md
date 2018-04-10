@@ -24,8 +24,8 @@ Here is the minimal code necessary to display a view to show a post:
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
-import jsonServerProvider from 'ra-data-json-server';
+import { Admin, Resource } from '@yeutech/react-admin';
+import jsonServerProvider from '@yeutech/ra-data-json-server';
 
 import { PostCreate, PostEdit, PostShow } from './posts';
 
@@ -39,7 +39,7 @@ export default App;
 
 // in src/posts.js
 import React from 'react';
-import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, DateField, EditButton, RichTextField } from '@yeutech/react-admin';
 
 export const PostShow = (props) => (
     <Show {...props}>
@@ -93,7 +93,7 @@ You can replace the list of default actions by your own element using the `actio
 import { CardActions } from 'material-ui/Card';
 
 import Button from 'material-ui/Button';
-import { ListButton, EditButton, DeleteButton, RefreshButton } from 'react-admin';
+import { ListButton, EditButton, DeleteButton, RefreshButton } from '@yeutech/react-admin';
 
 const cardActionStyle = {
     zIndex: 2,
@@ -168,7 +168,7 @@ Just like `<SimpleShowLayout>`, `<TabbedShowLayout>` receives the `record` prop 
 
 {% raw %}
 ```jsx
-import { TabbedShowLayout, Tab } from 'react-admin'
+import { TabbedShowLayout, Tab } from '@yeutech/react-admin'
 
 export const PostShow = (props) => (
     <Show {...props}>
@@ -215,7 +215,7 @@ Here's an example inside a `Show` view with a `SimpleShowLayout` and a custom `a
 ```jsx
 import { CardActions } from 'material-ui/Card';
 import Button from 'material-ui/Button';
-import { ListButton, EditButton, DeleteButton } from 'react-admin';
+import { ListButton, EditButton, DeleteButton } from '@yeutech/react-admin';
 
 const cardActionStyle = {
     zIndex: 2,

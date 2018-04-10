@@ -1,6 +1,6 @@
 {
-    "name": "ra-input-rich-text",
-    "version": "2.0.0-beta5",
+    "name": "@yeutech/ra-input-rich-text",
+    "version": "2.0.0-beta4-yeutech.3",
     "description": "<RichTextInput> component for react-admin, useful for editing HTML code in admin GUIs.",
     "main": "lib/index.js",
     "scripts": {
@@ -14,7 +14,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/marmelab/react-admin.git"
+        "url": "git+https://github.com/yeutech/react-admin.git"
     },
     "keywords": [
         "reactjs",
@@ -29,18 +29,21 @@
     ],
     "author": "François Zaninotto",
     "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/marmelab/react-admin/issues"
+    "publishConfig": {
+        "access": "public"
     },
-    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "bugs": {
+        "url": "https://github.com/yeutech/react-admin/issues"
+    },
+    "homepage": "https://github.com/yeutech/react-admin#readme",
     "peerDependencies": {
-        "react": "~16.0.0 || ~16.1.0 || ~16.2.0",
-        "react-admin": "^2.0.0-beta1",
-        "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0"
+        "@yeutech/react-admin": "~2.0.0-beta4-yeutech.3",
+        "react": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0",
+        "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0"
     },
     "dependencies": {
         "lodash": "~4.17.5",
-        "prop-types": "~15.5.7",
-        "quill": "~1.1.9"
+        "prop-types": "~15.6.1",
+        "quill": "~1.3.6"
     }
 }

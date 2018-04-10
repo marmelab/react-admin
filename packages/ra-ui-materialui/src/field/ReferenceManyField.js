@@ -2,53 +2,53 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { LinearProgress } from 'material-ui/Progress';
 import { withStyles } from 'material-ui/styles';
-import { ReferenceManyFieldController } from 'ra-core';
+import { ReferenceManyFieldController } from '@yeutech/ra-core';
 
 const styles = {
-  progress: { marginTop: '1em' },
+    progress: { marginTop: '1em' },
 };
 
 export const ReferenceManyFieldView = ({
-  children,
-  classes = {},
-  className,
-  currentSort,
-  data,
-  ids,
-  isLoading,
-  reference,
-  referenceBasePath,
-  setSort,
-}) => {
-  if (isLoading) {
-    return <LinearProgress className={classes.progress} />;
-  }
-
-  return React.cloneElement(children, {
+    children,
+    classes = {},
     className,
-    resource: reference,
-    ids,
-    data,
-    basePath: referenceBasePath,
     currentSort,
+    data,
+    ids,
+    isLoading,
+    reference,
+    referenceBasePath,
     setSort,
-  });
+}) => {
+    if (isLoading) {
+        return <LinearProgress className={classes.progress} />;
+    }
+
+    return React.cloneElement(children, {
+        className,
+        resource: reference,
+        ids,
+        data,
+        basePath: referenceBasePath,
+        currentSort,
+        setSort,
+    });
 };
 
 ReferenceManyFieldView.propTypes = {
-  children: PropTypes.element,
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  currentSort: PropTypes.shape({
-    field: PropTypes.string,
-    order: PropTypes.string,
-  }),
-  data: PropTypes.object,
-  ids: PropTypes.array,
-  isLoading: PropTypes.bool,
-  reference: PropTypes.string,
-  referenceBasePath: PropTypes.string,
-  setSort: PropTypes.func,
+    children: PropTypes.element,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    currentSort: PropTypes.shape({
+        field: PropTypes.string,
+        order: PropTypes.string,
+    }),
+    data: PropTypes.object,
+    ids: PropTypes.array,
+    isLoading: PropTypes.bool,
+    reference: PropTypes.string,
+    referenceBasePath: PropTypes.string,
+    setSort: PropTypes.func,
 };
 
 /**
@@ -98,56 +98,56 @@ ReferenceManyFieldView.propTypes = {
  * </ReferenceManyField>
  */
 export const ReferenceManyField = ({ children, ...props }) => {
-  if (React.Children.count(children) !== 1) {
-    throw new Error(
-      '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
-    );
-  }
+    if (React.Children.count(children) !== 1) {
+        throw new Error(
+            '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
+        );
+    }
 
-  return (
-    <ReferenceManyFieldController {...props}>
-      {controllerProps => (
-        <ReferenceManyFieldView
-          {...props}
-          {...{ children, ...controllerProps }}
-        />
-      )}
-    </ReferenceManyFieldController>
-  );
+    return (
+        <ReferenceManyFieldController {...props}>
+            {controllerProps => (
+                <ReferenceManyFieldView
+                    {...props}
+                    {...{ children, ...controllerProps }}
+                />
+            )}
+        </ReferenceManyFieldController>
+    );
 };
 
 ReferenceManyField.propTypes = {
-  addLabel: PropTypes.bool,
-  basePath: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired,
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  filter: PropTypes.object,
-  label: PropTypes.string,
-  perPage: PropTypes.number,
-  record: PropTypes.object,
-  reference: PropTypes.string.isRequired,
-  resource: PropTypes.string.isRequired,
-  source: PropTypes.string.isRequired,
-  sort: PropTypes.shape({
-    field: PropTypes.string,
-    order: PropTypes.string,
-  }),
-  target: PropTypes.string.isRequired,
+    addLabel: PropTypes.bool,
+    basePath: PropTypes.string.isRequired,
+    children: PropTypes.element.isRequired,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    filter: PropTypes.object,
+    label: PropTypes.string,
+    perPage: PropTypes.number,
+    record: PropTypes.object,
+    reference: PropTypes.string.isRequired,
+    resource: PropTypes.string.isRequired,
+    source: PropTypes.string.isRequired,
+    sort: PropTypes.shape({
+        field: PropTypes.string,
+        order: PropTypes.string,
+    }),
+    target: PropTypes.string.isRequired,
 };
 
 ReferenceManyField.defaultProps = {
-  filter: {},
-  perPage: 25,
-  sort: { field: 'id', order: 'DESC' },
-  source: 'id',
+    filter: {},
+    perPage: 25,
+    sort: { field: 'id', order: 'DESC' },
+    source: 'id',
 };
 
 const EnhancedReferenceManyField = withStyles(styles)(ReferenceManyField);
 
 EnhancedReferenceManyField.defaultProps = {
-  addLabel: true,
-  source: 'id',
+    addLabel: true,
+    source: 'id',
 };
 
 export default EnhancedReferenceManyField;

@@ -10,8 +10,8 @@ A `<Resource>` component maps one API endpoint to a CRUD interface. For instance
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
-import jsonServerProvider from 'ra-data-json-server';
+import { Admin, Resource } from '@yeutech/react-admin';
+import jsonServerProvider from '@yeutech/ra-data-json-server';
 
 import { PostList } from './posts';
 import { UserList } from './users';
@@ -35,8 +35,8 @@ Here is a more complete admin, with components for all the CRUD operations:
 
 ```jsx
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
-import jsonServerProvider from 'ra-data-json-server';
+import { Admin, Resource } from '@yeutech/react-admin';
+import jsonServerProvider from '@yeutech/ra-data-json-server';
 
 import { PostList, PostCreate, PostEdit, PostShow, PostIcon } from './posts';
 import { UserList } from './posts';
@@ -95,8 +95,8 @@ React-admin will render the `icon` prop component in the menu:
 import React from 'react';
 import PostIcon from 'material-ui-icons/Book';
 import UserIcon from 'material-ui-icons/People';
-import { Admin, Resource } from 'react-admin';
-import jsonServerProvider from 'ra-data-json-server';
+import { Admin, Resource } from '@yeutech/react-admin';
+import jsonServerProvider from '@yeutech/ra-data-json-server';
 
 import { PostList } from './posts';
 

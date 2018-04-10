@@ -43,7 +43,7 @@ Here is a very naive example using an interval to fetch data every 5 seconds:
 
 ```js
 // In createRealtimeSaga.js
-import realtimeSaga from 'ra-realtime';
+import realtimeSaga from '@yeutech/ra-realtime';
 
 const observeRequest = restClient => (type, resource, params) => {
     // Filtering so that only posts are updated in real time

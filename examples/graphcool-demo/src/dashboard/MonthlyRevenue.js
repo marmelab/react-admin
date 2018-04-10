@@ -1,7 +1,7 @@
 import React from 'react';
 import Card, { CardHeader } from 'material-ui/Card';
 import DollarIcon from 'material-ui-icons/AttachMoney';
-import { translate } from 'react-admin';
+import { translate } from '@yeutech/react-admin';
 
 const styles = {
     card: { borderLeft: 'solid 4px #31708f', flex: '1', marginRight: '1em' },

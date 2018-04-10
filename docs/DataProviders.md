@@ -27,7 +27,7 @@ The `dataProvider` parameter of the `<Admin>` component must be a function with 
 const dataProvider = (type, resource, params) => new Promise();
 ```
 
-You can find a Data Provider example implementation in [`packages/ra-data-simple-rest/src/index.js`](https://github.com/marmelab/react-admin/blob/master/packages/ra-data-simple-rest/src/index.js);
+You can find a Data Provider example implementation in [`packages/ra-data-simple-rest/src/index.js`](https://github.com/yeutech/react-admin/blob/master/packages/ra-data-simple-rest/src/index.js);
 
 The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc.
 
@@ -69,8 +69,8 @@ Then, initialize the provider with the RESt backend URL, and pass the result to 
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
+import { Admin, Resource } from '@yeutech/react-admin';
+import simpleRestProvider from '@yeutech/ra-data-simple-rest';
 
 import { PostList } from './posts';
 
@@ -116,8 +116,8 @@ The `simpleRestProvider` function accepts an HTTP client function as second argu
 That means that if you need to add custom headers to your requests, you can just *wrap* the `fetchJson()` call inside your own function:
 
 ```jsx
-import { fetchUtils, Admin, Resource } from 'react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
+import { fetchUtils, Admin, Resource } from '@yeutech/react-admin';
+import simpleRestProvider from '@yeutech/ra-data-simple-rest';
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -209,7 +209,7 @@ export default addUploadFeature;
 To enhance a provider with the upload feature, compose `addUploadFeature` function with the data provider function:
 
 ```jsx
-import simpleRestProvider from 'ra-data-simple-rest';
+import simpleRestProvider from '@yeutech/ra-data-simple-rest';
 import addUploadFeature from './addUploadFeature';
 
 const dataProvider = simpleRestProvider('http://path.to.my.api/');
@@ -325,7 +325,7 @@ import {
     DELETE,
     GET_MANY,
     GET_MANY_REFERENCE,
-} from 'react-admin';
+} from '@yeutech/react-admin';
 
 const apiUrl = 'http://path.to.my.api/';
 
@@ -600,7 +600,7 @@ import {
     DELETE_MANY,
     GET_MANY,
     GET_MANY_REFERENCE,
-} from 'react-admin';
+} from '@yeutech/react-admin';
 
 const apiUrl = 'http://path.to.my.api/';
 
@@ -663,4 +663,4 @@ When the API backend returns an error, the Data Provider should `throw` an `Erro
 
 ### Example implementation
 
-Check the code from the [simple REST client](https://github.com/marmelab/react-admin/blob/master/packages/ra-data-simple-rest/src/index.js): it's a good starting point for a custom Data Provider implementation.
+Check the code from the [simple REST client](https://github.com/yeutech/react-admin/blob/master/packages/ra-data-simple-rest/src/index.js): it's a good starting point for a custom Data Provider implementation.

@@ -5,7 +5,7 @@ import CodeIcon from 'material-ui-icons/Code';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 
-import { translate } from 'react-admin';
+import { translate } from '@yeutech/react-admin';
 
 export default translate(({ translate }) => (
     <Card>
@@ -22,7 +22,7 @@ export default translate(({ translate }) => (
                 <HomeIcon style={{ paddingRight: '0.5em' }} />
                 {translate('pos.dashboard.welcome.aor_button')}
             </Button>
-            <Button href="https://github.com/marmelab/react-admin">
+            <Button href="https://github.com/yeutech/react-admin">
                 <CodeIcon style={{ paddingRight: '0.5em' }} />
                 {translate('pos.dashboard.welcome.demo_button')}
             </Button>

@@ -1,8 +1,10 @@
-# react-admin [![Build Status](https://travis-ci.org/marmelab/react-admin.svg?branch=master)](https://travis-ci.org/marmelab/react-admin)
+# react-admin [![Build Status](https://travis-ci.org/yeutech/react-admin.svg?branch=master)](https://travis-ci.org/yeutech/react-admin)
 
-A frontend Framework for building admin applications running in the browser on top of REST/GraphQL services, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Open sourced and maintained by [marmelab](https://marmelab.com/).
+> This project is a fork of https://github.com/marmelab/admin-on-rest, You will find all changed made to the project in [CHANGELOG_SINCE_FORK.md](CHANGELOG_SINCE_FORK.md)
 
-[Demo](https://marmelab.com/react-admin-demo/) - [Documentation](https://marmelab.com/react-admin/) - [Releases](https://github.com/marmelab/react-admin/releases) - [Support](http://stackoverflow.com/questions/tagged/react-admin)
+A frontend Framework for building admin applications running in the browser on top of REST/GraphQL services, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Open sourced and maintained by [yeutech](https://yeutech.vn/).
+
+[Demo](https://marmelab.com/react-admin-demo/) - [Documentation](https://marmelab.com/react-admin/) - [Releases](https://github.com/yeutech/react-admin/releases) - [Support](http://stackoverflow.com/questions/tagged/react-admin)
 
 [![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/205118063)
 
@@ -30,13 +32,13 @@ A frontend Framework for building admin applications running in the browser on t
 * Can connect to multiple backends
 * Leverages the best libraries in the React ecosystem (Redux, redux-form, redux-saga, material-ui, recompose)
 * Can be included in another React app
-* Inspired by the popular [ng-admin](https://github.com/marmelab/ng-admin) library (also by marmelab)
+* Inspired by the popular [ng-admin](https://github.com/marmelab/ng-admin) library (by marmelab)
 
 ## Versions In This Repository
 
-* [master](https://github.com/marmelab/react-admin/commits/master) - commits that will be included in the next _patch_ release
+* [master](https://github.com/yeutech/react-admin/commits/master) - commits that will be included in the next _patch_ release
 
-* [next](https://github.com/marmelab/react-admin/commits/next) - commits that will be included in the next _major_ or _minor_ release
+* [next](https://github.com/yeutech/react-admin/commits/next) - commits that will be included in the next _major_ or _minor_ release
 
 Bugfix PRs that don't break BC should be made against **master**. All other PRs (new features, bugfix with BC break) should be made against **next**.
 
@@ -51,7 +53,7 @@ npm install --save-dev react-admin
 
 ## Documentation
 
-Read the [Tutorial](http://marmelab.com/react-admin/Tutorial.html) for a 15 minutes introduction. After that, head to the [Documentation](http://marmelab.com/react-admin/index.html), or checkout the [source code of the demo](https://github.com/marmelab/react-admin-demo) for an example usage.
+Read the [Tutorial](http://yeutech.com/react-admin/Tutorial.html) for a 15 minutes introduction. After that, head to the [Documentation](http://yeutech.com/react-admin/index.html), or checkout the [source code of the demo](https://github.com/yeutech/react-admin-demo) for an example usage.
 
 ## At a Glance
 
@@ -59,8 +61,8 @@ Read the [Tutorial](http://marmelab.com/react-admin/Tutorial.html) for a 15 minu
 // in app.js
 import React from 'react';
 import { render } from 'react-dom';
-import { Admin, Resource } from 'react-admin';
-import simpleRestClient from 'ra-data-simple-rest';
+import { Admin, Resource } from '@yeutech/react-admin';
+import simpleRestClient from '@yeutech/ra-data-simple-rest';
 
 import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
 
@@ -77,7 +79,7 @@ The `<Resource>` component is a configuration component that allows to define su
 ```jsx
 // in posts.js
 import React from 'react';
-import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'react-admin';
+import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from '@yeutech/react-admin';
 import BookIcon from 'material-ui/svg-icons/action/book';
 export const PostIcon = BookIcon;
 
@@ -195,7 +197,7 @@ If you are using react-admin as a dependency, and if you want to try and hack it
 # in myapp
 # install react-admin from GitHub in another directory
 $ cd ..
-$ git clone git@github.com:marmelab/react-admin.git && cd react-admin && make install
+$ git clone git@github.com:yeutech/react-admin.git && cd react-admin && make install
 # replace your node_modules/react-admin by a symbolic link to the github checkout
 $ cd ../myapp
 $ npm link ../react-admin
@@ -212,7 +214,7 @@ $ npm run
 
 ## License
 
-React-admin is licensed under the [MIT License](https://github.com/marmelab/react-admin/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
+React-admin is licensed under the [MIT License](https://github.com/yeutech/react-admin/blob/master/LICENSE.md), sponsored and supported by [yeutech](http://yeutech.com).
 
 ## Donate
 

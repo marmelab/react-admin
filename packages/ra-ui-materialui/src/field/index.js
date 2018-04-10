@@ -1,3 +1,4 @@
+export ArrayField from './ArrayField';
 export BooleanField from './BooleanField';
 export ChipField from './ChipField';
 export DateField from './DateField';

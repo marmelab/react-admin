@@ -29,7 +29,7 @@ module.exports = {
     ],
     resolve: {
         alias: {
-            'ra-core': path.join(
+            '@yeutech/ra-core': path.join(
                 __dirname,
                 '..',
                 '..',
@@ -37,7 +37,7 @@ module.exports = {
                 'ra-core',
                 'src'
             ),
-            'ra-ui-materialui': path.join(
+            '@yeutech/ra-ui-materialui': path.join(
                 __dirname,
                 '..',
                 '..',
@@ -45,7 +45,7 @@ module.exports = {
                 'ra-ui-materialui',
                 'src'
             ),
-            'react-admin': path.join(
+            '@yeutech/react-admin': path.join(
                 __dirname,
                 '..',
                 '..',
@@ -53,7 +53,7 @@ module.exports = {
                 'react-admin',
                 'src'
             ),
-            'ra-data-fakerest': path.join(
+            '@yeutech/ra-data-fakerest': path.join(
                 __dirname,
                 '..',
                 '..',
@@ -61,7 +61,7 @@ module.exports = {
                 'ra-data-fakerest',
                 'src'
             ),
-            'ra-input-rich-text': path.join(
+            '@yeutech/ra-input-rich-text': path.join(
                 __dirname,
                 '..',
                 '..',

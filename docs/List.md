@@ -31,8 +31,8 @@ Here is the minimal code necessary to display a list of posts:
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
-import jsonServerProvider from 'ra-data-json-server';
+import { Admin, Resource } from '@yeutech/react-admin';
+import jsonServerProvider from '@yeutech/ra-data-json-server';
 
 import { PostList } from './posts';
 
@@ -46,7 +46,7 @@ export default App;
 
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, Datagrid, TextField } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -84,7 +84,7 @@ You can replace the list of default actions by your own element using the `actio
 
 ```jsx
 import Button from 'material-ui/Button';
-import { CardActions, CreateButton, RefreshButton } from 'react-admin';
+import { CardActions, CreateButton, RefreshButton } from '@yeutech/react-admin';
 
 const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter }) => (
     <CardActions>
@@ -115,7 +115,7 @@ Bulk actions are actions that affect several records at once, like mass deletion
 
 ```jsx
 import Button from 'material-ui/Button';
-import { BulkActions, BulkDeleteAction } from 'react-admin';
+import { BulkActions, BulkDeleteAction } from '@yeutech/react-admin';
 import ResetViewsAction from './ResetViewsAction';
 
 const PostBulkActions = props => (
@@ -151,7 +151,7 @@ Here is an example leveraging the `UPDATE_MANY` crud action, which will set the 
 // in ./ResetViewsAction.js
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { crudUpdateMany } from 'react-admin';
+import { crudUpdateMany } from '@yeutech/react-admin';
 
 class ResetViewsAction extends Component {
     componentDidMount = () => {
@@ -183,8 +183,8 @@ But most of the time, bulk actions are mini-applications with a standalone user 
 // in ./ResetViewsAction.js
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Confirm } from 'react-admin';
-import { crudUpdateMany } from 'ra-core';
+import { Confirm } from '@yeutech/react-admin';
+import { crudUpdateMany } from '@yeutech/ra-core';
 
 class ResetViewsAction extends Component {
     handleDialogClose = () => {
@@ -220,7 +220,7 @@ export default connect(undefined, { crudUpdateMany })(ResetViewsAction);
 ```jsx
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { startUndoable, crudUpdateMany } from 'ra-core';
+import { startUndoable, crudUpdateMany } from '@yeutech/ra-core';
 
 class ResetViewsAction extends Component {
     componentDidMount = () => {
@@ -314,7 +314,7 @@ It is possible to disable sorting for a specific field by passing a `sortable` p
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, Datagrid, TextField } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -406,7 +406,7 @@ It renders as many columns as it receives `<Field>` children.
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Datagrid, TextField, EditButton } from 'react-admin';
+import { List, Datagrid, TextField, EditButton } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -508,7 +508,7 @@ For mobile devices, a `<Datagrid>` is often unusable - there is simply not enoug
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, SimpleList } from 'react-admin';
+import { List, SimpleList } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -528,7 +528,7 @@ export const PostList = (props) => (
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -555,7 +555,7 @@ export const PostList = (props) => (
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, SimpleList } from 'react-admin';
+import { List, SimpleList } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>

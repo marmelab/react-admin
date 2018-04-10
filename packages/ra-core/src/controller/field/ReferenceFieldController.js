@@ -36,82 +36,83 @@ import { linkToRecord } from '../../util';
  * </ReferenceField>
  */
 export class ReferenceFieldController extends Component {
-  componentDidMount() {
-    this.fetchReference(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.record.id !== nextProps.record.id) {
-      this.fetchReference(nextProps);
+    componentDidMount() {
+        this.fetchReference(this.props);
     }
-  }
 
-  fetchReference(props) {
-    const source = get(props.record, props.source);
-    if (source !== null && typeof source !== 'undefined') {
-      this.props.crudGetManyAccumulate(props.reference, [source]);
+    componentWillReceiveProps(nextProps) {
+        if (this.props.record.id !== nextProps.record.id) {
+            this.fetchReference(nextProps);
+        }
     }
-  }
 
-  render() {
-    const {
-      allowEmpty,
-      basePath,
-      children,
-      linkType,
-      record,
-      reference,
-      referenceRecord,
-      resource,
-      source,
-    } = this.props;
-    const rootPath = basePath.replace(resource, reference);
-    const resourceLinkPath = !linkType
-      ? false
-      : linkToRecord(rootPath, get(record, source), linkType);
-    return children({
-      isLoading: !referenceRecord && !allowEmpty,
-      referenceRecord,
-      resourceLinkPath,
-    });
-  }
+    fetchReference(props) {
+        const source = get(props.record, props.source);
+        if (source !== null && typeof source !== 'undefined') {
+            this.props.crudGetManyAccumulate(props.reference, [source]);
+        }
+    }
+
+    render() {
+        const {
+            allowEmpty,
+            basePath,
+            children,
+            linkType,
+            record,
+            reference,
+            referenceRecord,
+            resource,
+            source,
+        } = this.props;
+        const rootPath = basePath.replace(resource, reference);
+        const resourceLinkPath = !linkType
+            ? false
+            : linkToRecord(rootPath, get(record, source), linkType);
+        return children({
+            isLoading: !referenceRecord && !allowEmpty,
+            referenceRecord,
+            resourceLinkPath,
+        });
+    }
 }
 
 ReferenceFieldController.propTypes = {
-  addLabel: PropTypes.bool,
-  allowEmpty: PropTypes.bool.isRequired,
-  basePath: PropTypes.string.isRequired,
-  children: PropTypes.func.isRequired,
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  cellClassName: PropTypes.string,
-  headerClassName: PropTypes.string,
-  crudGetManyAccumulate: PropTypes.func.isRequired,
-  label: PropTypes.string,
-  record: PropTypes.object,
-  reference: PropTypes.string.isRequired,
-  referenceRecord: PropTypes.object,
-  resource: PropTypes.string,
-  source: PropTypes.string.isRequired,
-  translateChoice: PropTypes.func,
-  linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
+    addLabel: PropTypes.bool,
+    allowEmpty: PropTypes.bool.isRequired,
+    basePath: PropTypes.string.isRequired,
+    children: PropTypes.func.isRequired,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    cellClassName: PropTypes.string,
+    headerClassName: PropTypes.string,
+    crudGetManyAccumulate: PropTypes.func.isRequired,
+    label: PropTypes.string,
+    record: PropTypes.object,
+    reference: PropTypes.string.isRequired,
+    referenceRecord: PropTypes.object,
+    resource: PropTypes.string,
+    source: PropTypes.string.isRequired,
+    translateChoice: PropTypes.func,
+    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
+        .isRequired,
 };
 
 ReferenceFieldController.defaultProps = {
-  allowEmpty: false,
-  classes: {},
-  linkType: 'edit',
-  referenceRecord: null,
-  record: {},
+    allowEmpty: false,
+    classes: {},
+    linkType: 'edit',
+    referenceRecord: null,
+    record: {},
 };
 
 const mapStateToProps = (state, props) => ({
-  referenceRecord:
-    state.admin.resources[props.reference].data[
-      get(props.record, props.source)
-    ],
+    referenceRecord:
+        state.admin.resources[props.reference].data[
+            get(props.record, props.source)
+        ],
 });
 
 export default connect(mapStateToProps, {
-  crudGetManyAccumulate: crudGetManyAccumulateAction,
+    crudGetManyAccumulate: crudGetManyAccumulateAction,
 })(ReferenceFieldController);

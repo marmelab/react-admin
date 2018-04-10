@@ -1,6 +1,6 @@
 # `<RichTextInput>` for react-admin
 
-For editing HTML with [react-admin](https://github.com/marmelab/react-admin), use the `<RichTextInput>` component. It embarks [quill](http://quilljs.com/), a popular cross-platform Rich Text Editor.
+For editing HTML with [react-admin](https://github.com/yeutech/react-admin), use the `<RichTextInput>` component. It embarks [quill](http://quilljs.com/), a popular cross-platform Rich Text Editor.
 
 ![`<RichTextInput>` example](http://marmelab.com/admin-on-rest/img/rich-text-input.png)
 
@@ -20,8 +20,8 @@ import {
     EditButton,
     LongTextInput,
     TextInput,
-} from 'react-admin';
-import RichTextInput from 'ra-input-rich-text';
+} from '@yeutech/react-admin';
+import RichTextInput from '@yeutech/ra-input-rich-text';
 
 const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;

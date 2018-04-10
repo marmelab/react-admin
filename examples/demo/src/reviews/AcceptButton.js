@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
 import ThumbUp from 'material-ui-icons/ThumbUp';
-import { translate } from 'react-admin';
+import { translate } from '@yeutech/react-admin';
 import compose from 'recompose/compose';
 import { reviewApprove as reviewApproveAction } from './reviewActions';
 

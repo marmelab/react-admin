@@ -24,7 +24,7 @@ import { crudCreate as crudCreateAction } from '../actions';
  * @example     
  *     // in src/posts.js
  *     import React from 'react';
- *     import { Create, SimpleForm, TextInput } from 'react-admin';
+ *     import { Create, SimpleForm, TextInput } from '@yeutech/react-admin';
  *     
  *     export const PostCreate = (props) => (
  *         <Create {...props}>
@@ -36,7 +36,7 @@ import { crudCreate as crudCreateAction } from '../actions';
  *
  *     // in src/App.js
  *     import React from 'react';
- *     import { Admin, Resource } from 'react-admin';
+ *     import { Admin, Resource } from '@yeutech/react-admin';
  *     
  *     import { PostCreate } from './posts';
  *     
@@ -48,83 +48,83 @@ import { crudCreate as crudCreateAction } from '../actions';
  *     export default App;
  */
 class CreateController extends Component {
-  getBasePath() {
-    const { location } = this.props;
-    return location.pathname
-      .split('/')
-      .slice(0, -1)
-      .join('/');
-  }
+    getBasePath() {
+        const { location } = this.props;
+        return location.pathname
+            .split('/')
+            .slice(0, -1)
+            .join('/');
+    }
 
-  defaultRedirectRoute() {
-    const { hasShow, hasEdit } = this.props;
-    if (hasEdit) return 'edit';
-    if (hasShow) return 'show';
-    return 'list';
-  }
+    defaultRedirectRoute() {
+        const { hasShow, hasEdit } = this.props;
+        if (hasEdit) return 'edit';
+        if (hasShow) return 'show';
+        return 'list';
+    }
 
-  save = (record, redirect) => {
-    this.props.crudCreate(
-      this.props.resource,
-      record,
-      this.getBasePath(),
-      redirect
-    );
-  };
+    save = (record, redirect) => {
+        this.props.crudCreate(
+            this.props.resource,
+            record,
+            this.getBasePath(),
+            redirect
+        );
+    };
 
-  render() {
-    const { children, isLoading, record, resource, translate } = this.props;
+    render() {
+        const { children, isLoading, record, resource, translate } = this.props;
 
-    if (!children) return null;
-    const basePath = this.getBasePath();
+        if (!children) return null;
+        const basePath = this.getBasePath();
 
-    const resourceName = translate(`resources.${resource}.name`, {
-      smart_count: 1,
-      _: inflection.humanize(inflection.singularize(resource)),
-    });
-    const defaultTitle = translate('ra.page.create', {
-      name: `${resourceName}`,
-    });
-    return children({
-      isLoading,
-      defaultTitle,
-      save: this.save,
-      resource,
-      basePath,
-      record,
-      redirect: this.defaultRedirectRoute(),
-      translate,
-    });
-  }
+        const resourceName = translate(`resources.${resource}.name`, {
+            smart_count: 1,
+            _: inflection.humanize(inflection.singularize(resource)),
+        });
+        const defaultTitle = translate('ra.page.create', {
+            name: `${resourceName}`,
+        });
+        return children({
+            isLoading,
+            defaultTitle,
+            save: this.save,
+            resource,
+            basePath,
+            record,
+            redirect: this.defaultRedirectRoute(),
+            translate,
+        });
+    }
 }
 
 CreateController.propTypes = {
-  children: PropTypes.func.isRequired,
-  crudCreate: PropTypes.func.isRequired,
-  hasCreate: PropTypes.bool,
-  hasEdit: PropTypes.bool,
-  hasList: PropTypes.bool,
-  hasShow: PropTypes.bool,
-  isLoading: PropTypes.bool.isRequired,
-  location: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
-  record: PropTypes.object,
-  resource: PropTypes.string.isRequired,
-  title: PropTypes.any,
-  translate: PropTypes.func.isRequired,
+    children: PropTypes.func.isRequired,
+    crudCreate: PropTypes.func.isRequired,
+    hasCreate: PropTypes.bool,
+    hasEdit: PropTypes.bool,
+    hasList: PropTypes.bool,
+    hasShow: PropTypes.bool,
+    isLoading: PropTypes.bool.isRequired,
+    location: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    record: PropTypes.object,
+    resource: PropTypes.string.isRequired,
+    title: PropTypes.any,
+    translate: PropTypes.func.isRequired,
 };
 
 CreateController.defaultProps = {
-  record: {},
+    record: {},
 };
 
 function mapStateToProps(state) {
-  return {
-    isLoading: state.admin.loading > 0,
-  };
+    return {
+        isLoading: state.admin.loading > 0,
+    };
 }
 
 export default compose(
-  connect(mapStateToProps, { crudCreate: crudCreateAction }),
-  translate
+    connect(mapStateToProps, { crudCreate: crudCreateAction }),
+    translate
 )(CreateController);

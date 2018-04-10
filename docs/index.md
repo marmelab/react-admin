@@ -8,8 +8,8 @@ A frontend Framework for building admin applications running in the browser on t
 
 <div style="text-align: center" markdown="1">
 <i class="octicon octicon-device-desktop"></i> [Demo](https://marmelab.com/react-admin-demo/) -
-<i class="octicon octicon-mark-github"></i> [Source](https://github.com/marmelab/react-admin) -
-<i class="octicon octicon-megaphone"></i> [Releases](https://github.com/marmelab/react-admin/releases) -
+<i class="octicon octicon-mark-github"></i> [Source](https://github.com/yeutech/react-admin) -
+<i class="octicon octicon-megaphone"></i> [Releases](https://github.com/yeutech/react-admin/releases) -
 <i class="octicon octicon-comment-discussion"></i> [Support](http://stackoverflow.com/questions/tagged/react-admin)
 </div>
 
@@ -52,7 +52,7 @@ npm install react-admin
 
 ## Usage
 
-Read the [Tutorial](./Tutorial.md) for a 15 minutes introduction. After that, head to the [Documentation](./index.md), or checkout the [source code of the demo](https://github.com/marmelab/react-admin-demo) for an example usage.
+Read the [Tutorial](./Tutorial.md) for a 15 minutes introduction. After that, head to the [Documentation](./index.md), or checkout the [source code of the demo](https://github.com/yeutech/react-admin-demo) for an example usage.
 
 ## At a Glance
 
@@ -60,8 +60,8 @@ Read the [Tutorial](./Tutorial.md) for a 15 minutes introduction. After that, he
 // in app.js
 import React from 'react';
 import { render } from 'react-dom';
-import { Admin, Resource } from 'react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
+import { Admin, Resource } from '@yeutech/react-admin';
+import simpleRestProvider from '@yeutech/ra-data-simple-rest';
 
 import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
 
@@ -79,7 +79,7 @@ The `<Resource>` component is a configuration component that allows to define su
 ```jsx
 // in posts.js
 import React from 'react';
-import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'react-admin';
+import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from '@yeutech/react-admin';
 import BookIcon from 'material-ui-icons/Book';
 export const PostIcon = BookIcon;
 
@@ -144,7 +144,7 @@ React-admin is designed as a library of loosely coupled React components built o
 
 ## Contributing
 
-Pull requests are welcome on the [GitHub repository](https://github.com/marmelab/react-admin). Try to follow the coding style of the existing files, and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
+Pull requests are welcome on the [GitHub repository](https://github.com/yeutech/react-admin). Try to follow the coding style of the existing files, and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
 
 You can run the example app by calling:
 
@@ -189,7 +189,7 @@ $ npm run
 
 ## License
 
-React-admin is licensed under the [MIT Licence](https://github.com/marmelab/react-admin/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
+React-admin is licensed under the [MIT Licence](https://github.com/yeutech/react-admin/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
 
 ## Donate
 

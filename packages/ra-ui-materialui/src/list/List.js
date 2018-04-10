@@ -11,214 +11,217 @@ import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
 import DefaultBulkActions from './BulkActions';
 import DefaultActions from './ListActions';
-import { ListController } from 'ra-core';
+import { ListController } from '@yeutech/ra-core';
 import defaultTheme from '../defaultTheme';
 
 const styles = {
-  root: {},
-  actions: {},
-  header: {},
-  noResults: { padding: 20 },
+    root: {},
+    actions: {},
+    header: {},
+    noResults: { padding: 20 },
 };
 
 const sanitizeRestProps = ({
-  children,
-  classes,
-  className,
-  filters,
-  pagination,
-  actions,
-  resource,
-  hasCreate,
-  hasEdit,
-  hasList,
-  hasShow,
-  filter,
-  filterValues,
-  crudGetList,
-  changeListParams,
-  perPage,
-  title,
-  data,
-  ids,
-  total,
-  isLoading,
-  translate,
-  version,
-  push,
-  history,
-  locale,
-  location,
-  match,
-  options,
-  params,
-  permissions,
-  query: q,
-  selectedIds,
-  setSelectedIds,
-  sort,
-  theme,
-  toggleItem,
-  ...rest
+    children,
+    classes,
+    className,
+    filters,
+    pagination,
+    actions,
+    resource,
+    hasCreate,
+    hasEdit,
+    hasList,
+    hasShow,
+    filter,
+    filterValues,
+    crudGetList,
+    changeListParams,
+    perPage,
+    title,
+    data,
+    ids,
+    total,
+    isLoading,
+    translate,
+    version,
+    push,
+    history,
+    locale,
+    location,
+    match,
+    options,
+    params,
+    permissions,
+    query: q,
+    selectedIds,
+    setSelectedIds,
+    sort,
+    theme,
+    toggleItem,
+    ...rest
 }) => rest;
 
 export const ListView = ({
-  actions = <DefaultActions />,
-  basePath,
-  bulkActions = <DefaultBulkActions />,
-  children,
-  className,
-  classes = {},
-  currentSort,
-  data,
-  defaultTitle,
-  displayedFilters,
-  filters,
-  filterValues,
-  hasCreate,
-  hideFilter,
-  ids,
-  isLoading,
-  onSelect,
-  onToggleItem,
-  onUnselectItems,
-  page,
-  pagination = <DefaultPagination />,
-  perPage,
-  refresh,
-  resource,
-  selectedIds,
-  setFilters,
-  setPage,
-  setSort,
-  showFilter,
-  title,
-  total,
-  translate,
-  version,
-  ...rest
+    actions = <DefaultActions />,
+    basePath,
+    bulkActions = <DefaultBulkActions />,
+    children,
+    className,
+    classes = {},
+    currentSort,
+    data,
+    defaultTitle,
+    displayedFilters,
+    filters,
+    filterValues,
+    hasCreate,
+    hideFilter,
+    ids,
+    isLoading,
+    onSelect,
+    onToggleItem,
+    onUnselectItems,
+    page,
+    pagination = <DefaultPagination />,
+    perPage,
+    refresh,
+    resource,
+    selectedIds,
+    setFilters,
+    setPage,
+    setSort,
+    showFilter,
+    title,
+    total,
+    translate,
+    version,
+    ...rest
 }) => {
-  const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
+    const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
 
-  return (
-    <div
-      className={classnames('list-page', classes.root, className)}
-      {...sanitizeRestProps(rest)}
-    >
-      <Card>
-        <Header
-          className={classes.header}
-          title={titleElement}
-          actions={React.cloneElement(actions, {
-            className: classes.actions,
-          })}
-          actionProps={{
-            basePath,
-            bulkActions,
-            displayedFilters,
-            filters,
-            filterValues,
-            hasCreate,
-            onUnselectItems,
-            refresh,
-            resource,
-            selectedIds,
-            showFilter,
-          }}
-        />
-        {filters &&
-          React.cloneElement(filters, {
-            displayedFilters,
-            filterValues,
-            hideFilter,
-            resource,
-            setFilters,
-            context: 'form',
-          })}
-        {isLoading || total > 0 ? (
-          <div key={version}>
-            {children &&
-              React.cloneElement(children, {
-                basePath,
-                currentSort,
-                data,
-                hasBulkActions: !!bulkActions,
-                ids,
-                isLoading,
-                onSelect,
-                onToggleItem,
-                resource,
-                selectedIds,
-                setSort,
-                version,
-              })}
-            {!isLoading &&
-              !ids.length && (
-                <CardContent style={styles.noResults}>
-                  <Typography variant="body1">
-                    {translate('ra.navigation.no_more_results', {
-                      page,
+    return (
+        <div
+            className={classnames('list-page', classes.root, className)}
+            {...sanitizeRestProps(rest)}
+        >
+            <Card>
+                <Header
+                    className={classes.header}
+                    title={titleElement}
+                    actions={React.cloneElement(actions, {
+                        className: classes.actions,
                     })}
-                  </Typography>
-                </CardContent>
-              )}
-            {pagination &&
-              React.cloneElement(pagination, {
-                page,
-                perPage,
-                setPage,
-                total,
-              })}
-          </div>
-        ) : (
-          <CardContent className={classes.noResults}>
-            <Typography variant="body1">
-              {translate('ra.navigation.no_results')}
-            </Typography>
-          </CardContent>
-        )}
-      </Card>
-    </div>
-  );
+                    actionProps={{
+                        basePath,
+                        bulkActions,
+                        displayedFilters,
+                        filters,
+                        filterValues,
+                        hasCreate,
+                        onUnselectItems,
+                        refresh,
+                        resource,
+                        selectedIds,
+                        showFilter,
+                    }}
+                />
+                {filters &&
+                    React.cloneElement(filters, {
+                        displayedFilters,
+                        filterValues,
+                        hideFilter,
+                        resource,
+                        setFilters,
+                        context: 'form',
+                    })}
+                {isLoading || total > 0 ? (
+                    <div key={version}>
+                        {children &&
+                            React.cloneElement(children, {
+                                basePath,
+                                currentSort,
+                                data,
+                                hasBulkActions: !!bulkActions,
+                                ids,
+                                isLoading,
+                                onSelect,
+                                onToggleItem,
+                                resource,
+                                selectedIds,
+                                setSort,
+                                version,
+                            })}
+                        {!isLoading &&
+                            !ids.length && (
+                                <CardContent style={styles.noResults}>
+                                    <Typography variant="body1">
+                                        {translate(
+                                            'ra.navigation.no_more_results',
+                                            {
+                                                page,
+                                            }
+                                        )}
+                                    </Typography>
+                                </CardContent>
+                            )}
+                        {pagination &&
+                            React.cloneElement(pagination, {
+                                page,
+                                perPage,
+                                setPage,
+                                total,
+                            })}
+                    </div>
+                ) : (
+                    <CardContent className={classes.noResults}>
+                        <Typography variant="body1">
+                            {translate('ra.navigation.no_results')}
+                        </Typography>
+                    </CardContent>
+                )}
+            </Card>
+        </div>
+    );
 };
 
 ListView.propTypes = {
-  actions: PropTypes.element,
-  basePath: PropTypes.string,
-  bulkActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
-  children: PropTypes.element,
-  className: PropTypes.string,
-  classes: PropTypes.object,
-  currentSort: PropTypes.shape({
-    field: PropTypes.string,
-    order: PropTypes.string,
-  }),
-  data: PropTypes.object,
-  defaultTitle: PropTypes.string,
-  displayedFilters: PropTypes.object,
-  filters: PropTypes.element,
-  filterValues: PropTypes.object,
-  hasCreate: PropTypes.bool,
-  hideFilter: PropTypes.func,
-  ids: PropTypes.array,
-  isLoading: PropTypes.bool,
-  onSelect: PropTypes.func,
-  onToggleItem: PropTypes.func,
-  onUnselectItems: PropTypes.func,
-  page: PropTypes.number,
-  pagination: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
-  perPage: PropTypes.number,
-  refresh: PropTypes.func,
-  resource: PropTypes.string,
-  selectedIds: PropTypes.array,
-  setFilters: PropTypes.func,
-  setPage: PropTypes.func,
-  setSort: PropTypes.func,
-  showFilter: PropTypes.func,
-  title: PropTypes.any,
-  total: PropTypes.number,
-  translate: PropTypes.func,
-  version: PropTypes.number,
+    actions: PropTypes.element,
+    basePath: PropTypes.string,
+    bulkActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
+    children: PropTypes.element,
+    className: PropTypes.string,
+    classes: PropTypes.object,
+    currentSort: PropTypes.shape({
+        field: PropTypes.string,
+        order: PropTypes.string,
+    }),
+    data: PropTypes.object,
+    defaultTitle: PropTypes.string,
+    displayedFilters: PropTypes.object,
+    filters: PropTypes.element,
+    filterValues: PropTypes.object,
+    hasCreate: PropTypes.bool,
+    hideFilter: PropTypes.func,
+    ids: PropTypes.array,
+    isLoading: PropTypes.bool,
+    onSelect: PropTypes.func,
+    onToggleItem: PropTypes.func,
+    onUnselectItems: PropTypes.func,
+    page: PropTypes.number,
+    pagination: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
+    perPage: PropTypes.number,
+    refresh: PropTypes.func,
+    resource: PropTypes.string,
+    selectedIds: PropTypes.array,
+    setFilters: PropTypes.func,
+    setPage: PropTypes.func,
+    setSort: PropTypes.func,
+    showFilter: PropTypes.func,
+    title: PropTypes.any,
+    total: PropTypes.number,
+    translate: PropTypes.func,
+    version: PropTypes.number,
 };
 
 /**
@@ -263,44 +266,44 @@ ListView.propTypes = {
  *     );
  */
 const List = props => (
-  <ListController {...props}>
-    {controllerProps => <ListView {...props} {...controllerProps} />}
-  </ListController>
+    <ListController {...props}>
+        {controllerProps => <ListView {...props} {...controllerProps} />}
+    </ListController>
 );
 
 List.propTypes = {
-  // the props you can change
-  actions: PropTypes.element,
-  bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-  children: PropTypes.node,
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  filter: PropTypes.object,
-  filters: PropTypes.element,
-  pagination: PropTypes.element,
-  perPage: PropTypes.number.isRequired,
-  sort: PropTypes.shape({
-    field: PropTypes.string,
-    order: PropTypes.string,
-  }),
-  title: PropTypes.any,
-  // the props managed by react-admin
-  authProvider: PropTypes.func,
-  hasCreate: PropTypes.bool.isRequired,
-  hasEdit: PropTypes.bool.isRequired,
-  hasList: PropTypes.bool.isRequired,
-  hasShow: PropTypes.bool.isRequired,
-  location: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
-  path: PropTypes.string,
-  resource: PropTypes.string.isRequired,
-  theme: PropTypes.object.isRequired,
+    // the props you can change
+    actions: PropTypes.element,
+    bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
+    children: PropTypes.node,
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    filter: PropTypes.object,
+    filters: PropTypes.element,
+    pagination: PropTypes.element,
+    perPage: PropTypes.number.isRequired,
+    sort: PropTypes.shape({
+        field: PropTypes.string,
+        order: PropTypes.string,
+    }),
+    title: PropTypes.any,
+    // the props managed by react-admin
+    authProvider: PropTypes.func,
+    hasCreate: PropTypes.bool.isRequired,
+    hasEdit: PropTypes.bool.isRequired,
+    hasList: PropTypes.bool.isRequired,
+    hasShow: PropTypes.bool.isRequired,
+    location: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    path: PropTypes.string,
+    resource: PropTypes.string.isRequired,
+    theme: PropTypes.object.isRequired,
 };
 
 List.defaultProps = {
-  filter: {},
-  perPage: 10,
-  theme: defaultTheme,
+    filter: {},
+    perPage: 10,
+    theme: defaultTheme,
 };
 
 export default withStyles(styles)(List);

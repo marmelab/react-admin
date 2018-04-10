@@ -1,6 +1,6 @@
 {
-    "name": "react-admin",
-    "version": "2.0.0-beta5",
+    "name": "@yeutech/react-admin",
+    "version": "2.0.0-beta4-yeutech.3",
     "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
     "files": [
         "*.md",
@@ -11,16 +11,19 @@
     "authors": [
         "François Zaninotto"
     ],
-    "repository": "marmelab/react-admin",
-    "homepage": "https://github.com/marmelab/react-admin#readme",
-    "bugs": "https://github.com/marmelab/react-admin/issues",
+    "repository": "yeutech/react-admin",
+    "homepage": "https://github.com/yeutech/react-admin#readme",
+    "bugs": "https://github.com/yeutech/react-admin/issues",
     "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
     "peerDependencies": {
-        "react": "~16.0.0 || ~16.1.0 || ~16.2.0",
-        "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0"
+        "react": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0",
+        "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0"
     },
     "dependencies": {
-        "ra-core": "^2.0.0-beta5",
-        "ra-ui-materialui": "^2.0.0-beta5"
+        "@yeutech/ra-core": "^2.0.0-beta4-yeutech.3",
+        "@yeutech/ra-ui-materialui": "^2.0.0-beta4-yeutech.3"
     }
 }

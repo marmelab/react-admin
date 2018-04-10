@@ -8,7 +8,7 @@ import {
     DashboardMenuItem,
     MenuItemLink,
     Responsive,
-} from 'react-admin';
+} from '@yeutech/react-admin';
 import { withRouter } from 'react-router-dom';
 
 import { VisitorIcon } from './visitors';

@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
  * 
  * @example
  *     import React from 'react';
- *     import { translate } from 'react-admin';
+ *     import { translate } from '@yeutech/react-admin';
  *     
  *     const MyHelloButton = ({ translate }) => (
  *         <button>{translate('myroot.hello.world')}</button>
@@ -20,22 +20,22 @@ import PropTypes from 'prop-types';
  * @param {*} BaseComponent The component to decorate
  */
 const translate = BaseComponent => {
-  class TranslatedComponent extends Component {
-    render() {
-      const props = { ...this.context, ...this.props };
-      return <BaseComponent {...props} />;
+    class TranslatedComponent extends Component {
+        render() {
+            const props = { ...this.context, ...this.props };
+            return <BaseComponent {...props} />;
+        }
     }
-  }
 
-  const { translate, ...defaultProps } = BaseComponent.defaultProps || {};
-  TranslatedComponent.defaultProps = defaultProps;
-  TranslatedComponent.contextTypes = {
-    translate: PropTypes.func.isRequired,
-    locale: PropTypes.string.isRequired,
-  };
-  TranslatedComponent.displayName = `TranslatedComponent(${BaseComponent.displayName})`;
+    const { translate, ...defaultProps } = BaseComponent.defaultProps || {};
+    TranslatedComponent.defaultProps = defaultProps;
+    TranslatedComponent.contextTypes = {
+        translate: PropTypes.func.isRequired,
+        locale: PropTypes.string.isRequired,
+    };
+    TranslatedComponent.displayName = `TranslatedComponent(${BaseComponent.displayName})`;
 
-  return TranslatedComponent;
+    return TranslatedComponent;
 };
 
 export default translate;

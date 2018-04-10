@@ -19,7 +19,7 @@ import {
     SimpleForm,
     TextInput,
     Filter,
-} from 'react-admin';
+} from '@yeutech/react-admin';
 
 const PostFilter = props => (
     <Filter {...props}>
@@ -69,12 +69,7 @@ export const PostEdit = props => (
 export const PostCreate = props => (
     <Create {...props}>
         <SimpleForm>
-            <ReferenceInput
-                label="User"
-                source="userId"
-                reference="users"
-                allowEmpty
-            >
+            <ReferenceInput label="User" source="userId" reference="users">
                 <SelectInput optionText="name" />
             </ReferenceInput>
             <TextInput source="title" />

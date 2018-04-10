@@ -40,9 +40,9 @@ import {
     adminSaga,
     TranslationProvider,
     declareResources,
-} from 'react-admin';
-import simpleRestClient from 'ra-data-simple-rest';
-import defaultMessages from 'ra-language-english';
+} from '@yeutech/react-admin';
+import simpleRestClient from '@yeutech/ra-data-simple-rest';
+import defaultMessages from '@yeutech/ra-language-intl/translation/en.json';
 
 // your app components
 import Dashboard from './Dashboard';

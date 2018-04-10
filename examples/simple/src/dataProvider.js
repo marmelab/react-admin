@@ -1,4 +1,4 @@
-import jsonRestDataProvider from 'ra-data-fakerest';
+import jsonRestDataProvider from '@yeutech/ra-data-fakerest';
 
 import data from './data';
 import addUploadFeature from './addUploadFeature';

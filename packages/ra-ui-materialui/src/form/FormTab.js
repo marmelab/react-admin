@@ -5,16 +5,19 @@ import FormInput from './FormInput';
 const sanitizeRestProps = ({ label, icon, ...rest }) => rest;
 
 const FormTab = ({ children, ...rest }) => (
-  <span>
-    {React.Children.map(
-      children,
-      input => input && <FormInput input={input} {...sanitizeRestProps(rest)} />
-    )}
-  </span>
+    <span>
+        {React.Children.map(
+            children,
+            input =>
+                input && (
+                    <FormInput input={input} {...sanitizeRestProps(rest)} />
+                )
+        )}
+    </span>
 );
 
 FormTab.propTypes = {
-  children: PropTypes.node,
+    children: PropTypes.node,
 };
 
 export default FormTab;

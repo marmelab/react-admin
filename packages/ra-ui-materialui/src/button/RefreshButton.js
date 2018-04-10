@@ -3,33 +3,33 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NavigationRefresh from 'material-ui-icons/Refresh';
 
-import { refreshView as refreshViewAction } from 'ra-core';
+import { refreshView as refreshViewAction } from '@yeutech/ra-core';
 import Button from './Button';
 
 class RefreshButton extends Component {
-  static propTypes = {
-    label: PropTypes.string,
-    refreshView: PropTypes.func.isRequired,
-  };
+    static propTypes = {
+        label: PropTypes.string,
+        refreshView: PropTypes.func.isRequired,
+    };
 
-  static defaultProps = {
-    label: 'ra.action.refresh',
-  };
+    static defaultProps = {
+        label: 'ra.action.refresh',
+    };
 
-  handleClick = event => {
-    event.preventDefault();
-    this.props.refreshView();
-  };
+    handleClick = event => {
+        event.preventDefault();
+        this.props.refreshView();
+    };
 
-  render() {
-    const { label, refreshView, ...rest } = this.props;
+    render() {
+        const { label, refreshView, ...rest } = this.props;
 
-    return (
-      <Button label={label} onClick={this.handleClick} {...rest}>
-        <NavigationRefresh />
-      </Button>
-    );
-  }
+        return (
+            <Button label={label} onClick={this.handleClick} {...rest}>
+                <NavigationRefresh />
+            </Button>
+        );
+    }
 }
 
 const enhance = connect(null, { refreshView: refreshViewAction });

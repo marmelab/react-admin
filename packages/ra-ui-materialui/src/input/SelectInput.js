@@ -5,51 +5,51 @@ import TextField from 'material-ui/TextField';
 import { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import compose from 'recompose/compose';
-import { addField, translate, FieldTitle } from 'ra-core';
+import { addField, translate, FieldTitle } from '@yeutech/ra-core';
 
 const sanitizeRestProps = ({
-  addLabel,
-  allowEmpty,
-  basePath,
-  choices,
-  className,
-  component,
-  crudGetMatching,
-  crudGetOne,
-  defaultValue,
-  filter,
-  filterToQuery,
-  formClassName,
-  initializeForm,
-  input,
-  isRequired,
-  label,
-  locale,
-  meta,
-  onChange,
-  options,
-  optionValue,
-  optionText,
-  perPage,
-  record,
-  reference,
-  resource,
-  setFilter,
-  setPagination,
-  setSort,
-  sort,
-  source,
-  textAlign,
-  translate,
-  translateChoice,
-  validation,
-  ...rest
+    addLabel,
+    allowEmpty,
+    basePath,
+    choices,
+    className,
+    component,
+    crudGetMatching,
+    crudGetOne,
+    defaultValue,
+    filter,
+    filterToQuery,
+    formClassName,
+    initializeForm,
+    input,
+    isRequired,
+    label,
+    locale,
+    meta,
+    onChange,
+    options,
+    optionValue,
+    optionText,
+    perPage,
+    record,
+    reference,
+    resource,
+    setFilter,
+    setPagination,
+    setSort,
+    sort,
+    source,
+    textAlign,
+    translate,
+    translateChoice,
+    validation,
+    ...rest
 }) => rest;
 
 const styles = theme => ({
-  input: {
-    minWidth: theme.spacing.unit * 20,
-  },
+    input: {
+        minWidth: theme.spacing.unit * 20,
+    },
 });
 
 /**
@@ -110,133 +110,136 @@ const styles = theme => ({
  * The object passed as `options` props is passed to the material-ui <Select> component
  */
 export class SelectInput extends Component {
-  /*
+    /*
      * Using state to bypass a redux-form comparison but which prevents re-rendering
      * @see https://github.com/erikras/redux-form/issues/2456
      */
-  state = {
-    value: this.props.input.value,
-  };
+    state = {
+        value: this.props.input.value,
+    };
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.input.value !== this.props.input.value) {
-      this.setState({ value: nextProps.input.value });
-    }
-  }
-
-  handleChange = event => {
-    this.props.input.onChange(event.target.value);
-    this.setState({ value: event.target.value });
-  };
-
-  addAllowEmpty = choices => {
-    if (this.props.allowEmpty) {
-      return [<MenuItem value={null} key="null" />, ...choices];
-    }
-
-    return choices;
-  };
-  renderMenuItemOption = choice => {
-    const { optionText, translate, translateChoice } = this.props;
-    if (React.isValidElement(optionText))
-      return React.cloneElement(optionText, {
-        record: choice,
-      });
-    const choiceName =
-      typeof optionText === 'function'
-        ? optionText(choice)
-        : get(choice, optionText);
-    return translateChoice
-      ? translate(choiceName, { _: choiceName })
-      : choiceName;
-  };
-
-  renderMenuItem = choice => {
-    const { optionValue } = this.props;
-    return (
-      <MenuItem key={get(choice, optionValue)} value={get(choice, optionValue)}>
-        {this.renderMenuItemOption(choice)}
-      </MenuItem>
-    );
-  };
-
-  render() {
-    const {
-      choices,
-      classes,
-      className,
-      isRequired,
-      label,
-      meta,
-      options,
-      resource,
-      source,
-      allowEmpty,
-      ...rest
-    } = this.props;
-    if (typeof meta === 'undefined') {
-      throw new Error(
-        "The SelectInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
-      );
-    }
-    const { touched, error, helperText = false } = meta;
-
-    return (
-      <TextField
-        select
-        margin="normal"
-        value={this.state.value}
-        label={
-          <FieldTitle
-            label={label}
-            source={source}
-            resource={resource}
-            isRequired={isRequired}
-          />
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.input.value !== this.props.input.value) {
+            this.setState({ value: nextProps.input.value });
         }
-        className={`${classes.input} ${className}`}
-        error={!!(touched && error)}
-        helperText={(touched && error) || helperText}
-        {...options}
-        {...sanitizeRestProps(rest)}
-        onChange={this.handleChange}
-      >
-        {this.addAllowEmpty(choices.map(this.renderMenuItem))}
-      </TextField>
-    );
-  }
+    }
+
+    handleChange = event => {
+        this.props.input.onChange(event.target.value);
+        this.setState({ value: event.target.value });
+    };
+
+    addAllowEmpty = choices => {
+        if (this.props.allowEmpty) {
+            return [<MenuItem value={null} key="null" />, ...choices];
+        }
+
+        return choices;
+    };
+    renderMenuItemOption = choice => {
+        const { optionText, translate, translateChoice } = this.props;
+        if (React.isValidElement(optionText))
+            return React.cloneElement(optionText, {
+                record: choice,
+            });
+        const choiceName =
+            typeof optionText === 'function'
+                ? optionText(choice)
+                : get(choice, optionText);
+        return translateChoice
+            ? translate(choiceName, { _: choiceName })
+            : choiceName;
+    };
+
+    renderMenuItem = choice => {
+        const { optionValue } = this.props;
+        return (
+            <MenuItem
+                key={get(choice, optionValue)}
+                value={get(choice, optionValue)}
+            >
+                {this.renderMenuItemOption(choice)}
+            </MenuItem>
+        );
+    };
+
+    render() {
+        const {
+            choices,
+            classes,
+            className,
+            isRequired,
+            label,
+            meta,
+            options,
+            resource,
+            source,
+            allowEmpty,
+            ...rest
+        } = this.props;
+        if (typeof meta === 'undefined') {
+            throw new Error(
+                "The SelectInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
+            );
+        }
+        const { touched, error, helperText = false } = meta;
+
+        return (
+            <TextField
+                select
+                margin="normal"
+                value={this.state.value}
+                label={
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                }
+                className={`${classes.input} ${className}`}
+                error={!!(touched && error)}
+                helperText={(touched && error) || helperText}
+                {...options}
+                {...sanitizeRestProps(rest)}
+                onChange={this.handleChange}
+            >
+                {this.addAllowEmpty(choices.map(this.renderMenuItem))}
+            </TextField>
+        );
+    }
 }
 
 SelectInput.propTypes = {
-  allowEmpty: PropTypes.bool.isRequired,
-  choices: PropTypes.arrayOf(PropTypes.object),
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  input: PropTypes.object,
-  isRequired: PropTypes.bool,
-  label: PropTypes.string,
-  meta: PropTypes.object,
-  options: PropTypes.object,
-  optionText: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.func,
-    PropTypes.element,
-  ]).isRequired,
-  optionValue: PropTypes.string.isRequired,
-  resource: PropTypes.string,
-  source: PropTypes.string,
-  translate: PropTypes.func.isRequired,
-  translateChoice: PropTypes.bool,
+    allowEmpty: PropTypes.bool.isRequired,
+    choices: PropTypes.arrayOf(PropTypes.object),
+    classes: PropTypes.object,
+    className: PropTypes.string,
+    input: PropTypes.object,
+    isRequired: PropTypes.bool,
+    label: PropTypes.string,
+    meta: PropTypes.object,
+    options: PropTypes.object,
+    optionText: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.func,
+        PropTypes.element,
+    ]).isRequired,
+    optionValue: PropTypes.string.isRequired,
+    resource: PropTypes.string,
+    source: PropTypes.string,
+    translate: PropTypes.func.isRequired,
+    translateChoice: PropTypes.bool,
 };
 
 SelectInput.defaultProps = {
-  allowEmpty: false,
-  classes: {},
-  choices: [],
-  options: {},
-  optionText: 'name',
-  optionValue: 'id',
-  translateChoice: true,
+    allowEmpty: false,
+    classes: {},
+    choices: [],
+    options: {},
+    optionText: 'name',
+    optionValue: 'id',
+    translateChoice: true,
 };
 
 export default compose(addField, translate, withStyles(styles))(SelectInput);

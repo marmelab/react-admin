@@ -25,7 +25,7 @@ import {
     ShowButton,
     SimpleShowLayout,
     required,
-} from 'react-admin'; // eslint-disable-line import/no-unresolved
+} from '@yeutech/react-admin'; // eslint-disable-line import/no-unresolved
 
 import PersonIcon from 'material-ui-icons/Person';
 import Avatar from 'material-ui/Avatar';
@@ -98,7 +98,7 @@ const listStyles = theme => ({
 
 const CommentGrid = withStyles(listStyles)(
     translate(({ classes, ids, data, basePath, translate }) => (
-        <Grid container style={{ padding: '1em' }}>
+        <Grid spacing={16} container style={{ padding: '1em' }}>
             {ids.map(id => (
                 <Grid item key={id} sm={12} md={6} lg={4}>
                     <Card className={classes.card}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate, SelectArrayInput } from 'react-admin';
+import { translate, SelectArrayInput } from '@yeutech/react-admin';
 
 import segments from '../segments/data';
 

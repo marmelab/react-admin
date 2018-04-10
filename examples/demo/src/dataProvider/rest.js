@@ -1,4 +1,4 @@
-import simpleRestProvider from 'ra-data-simple-rest';
+import simpleRestProvider from '@yeutech/ra-data-simple-rest';
 
 const restDataProvider = simpleRestProvider('http://localhost:4000');
 export default (type, resource, params) =>

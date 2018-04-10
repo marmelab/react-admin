@@ -13,16 +13,16 @@ import undo from './undo';
  * @param {Object} dataProvider A Data Provider function
  */
 export default (dataProvider, authProvider, i18nProvider) =>
-  function* admin() {
-    yield all([
-      i18n(i18nProvider)(),
-      auth(authProvider)(),
-      undo(),
-      fetch(dataProvider)(),
-      error(),
-      accumulate(),
-      redirection(),
-      refresh(),
-      notification(),
-    ]);
-  };
+    function* admin() {
+        yield all([
+            i18n(i18nProvider)(),
+            auth(authProvider)(),
+            undo(),
+            fetch(dataProvider)(),
+            error(),
+            accumulate(),
+            redirection(),
+            refresh(),
+            notification(),
+        ]);
+    };

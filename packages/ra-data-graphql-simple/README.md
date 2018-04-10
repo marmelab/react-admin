@@ -1,6 +1,6 @@
 # ra-data-graphql-simple
 
-A GraphQL data provider for [react-admin](https://github.com/marmelab/react-admin/)
+A GraphQL data provider for [react-admin](https://github.com/yeutech/react-admin/)
 built with [Apollo](http://www.apollodata.com/) and tailored to target a simple GraphQL implementation.
 
 - [Installation](#installation)
@@ -12,13 +12,13 @@ built with [Apollo](http://www.apollodata.com/) and tailored to target a simple 
 Install with:
 
 ```sh
-npm install --save ra-data-graphql-simple
+npm install --save graphql ra-data-graphql-simple
 ```
 
 or
 
 ```sh
-yarn add ra-data-graphql-simple
+yarn add graphql ra-data-graphql-simple
 ```
 
 ## Usage
@@ -28,8 +28,8 @@ The `ra-data-graphql-simple` package exposes a single function, which is a const
 ```js
 // in App.js
 import React, { Component } from 'react';
-import buildGraphQLProvider from 'ra-data-graphql-simple';
-import { Admin, Resource, Delete } from 'react-admin';
+import buildGraphQLProvider from '@yeutech/ra-data-graphql-simple';
+import { Admin, Resource, Delete } from '@yeutech/react-admin';
 
 import { PostCreate, PostEdit, PostList } from './posts';
 

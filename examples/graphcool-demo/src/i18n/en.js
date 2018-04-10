@@ -1,5 +1,5 @@
 import { defineMessages } from 'react-intl'
-import englishMessages from 'ra-language-intl/translation/en.json';
+import englishMessages from '@yeutech/ra-language-intl/translation/en.json';
 
 const posMessages = defineMessages({
   search: {
@@ -364,8 +364,10 @@ const resourcesMessages = defineMessages({
 
 // we just convert quickly the file so we don't need to use babel-plugin-react-intl
 const obj = {};
-Object.values({ ...posMessages, ...resourcesMessages }).forEach((value) => {
-  obj[value.id] = value.defaultMessage;
+[posMessages, resourcesMessages].forEach((msgs) => {
+  Object.values(msgs).forEach((value) => {
+    obj[value.id] = value.defaultMessage;
+  });
 });
 
 export default {

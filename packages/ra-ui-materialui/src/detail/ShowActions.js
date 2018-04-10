@@ -5,13 +5,13 @@ import { ListButton, EditButton, DeleteButton, RefreshButton } from '../button';
 import CardActions from '../layout/CardActions';
 
 const sanitizeRestProps = ({
-  basePath,
-  className,
-  record,
-  hasEdit,
-  hasList,
-  resource,
-  ...rest
+    basePath,
+    className,
+    record,
+    hasEdit,
+    hasList,
+    resource,
+    ...rest
 }) => rest;
 
 /**
@@ -23,7 +23,7 @@ const sanitizeRestProps = ({
  * 
  * @example
  *     import Button from 'material-ui/Button';
- *     import { CardActions, ListButton, EditButton, DeleteButton, RefreshButton, Show } from 'react-admin';
+ *     import { CardActions, ListButton, EditButton, DeleteButton, RefreshButton, Show } from '@yeutech/react-admin';
  *     
  *     const PostShowActions = ({ basePath, record, resource }) => (
  *         <CardActions>
@@ -43,31 +43,35 @@ const sanitizeRestProps = ({
  *     );
  */
 const ShowActions = ({
-  basePath,
-  className,
-  data,
-  hasEdit,
-  hasList,
-  resource,
-  ...rest
+    basePath,
+    className,
+    data,
+    hasEdit,
+    hasList,
+    resource,
+    ...rest
 }) => (
-  <CardActions className={className} {...sanitizeRestProps(rest)}>
-    {hasEdit && <EditButton basePath={basePath} record={data} />}
-    {hasList && <ListButton basePath={basePath} />}
-    {hasEdit && (
-      <DeleteButton basePath={basePath} record={data} resource={resource} />
-    )}
-    <RefreshButton />
-  </CardActions>
+    <CardActions className={className} {...sanitizeRestProps(rest)}>
+        {hasEdit && <EditButton basePath={basePath} record={data} />}
+        {hasList && <ListButton basePath={basePath} />}
+        {hasEdit && (
+            <DeleteButton
+                basePath={basePath}
+                record={data}
+                resource={resource}
+            />
+        )}
+        <RefreshButton />
+    </CardActions>
 );
 
 ShowActions.propTypes = {
-  basePath: PropTypes.string,
-  className: PropTypes.string,
-  data: PropTypes.object,
-  hasEdit: PropTypes.bool,
-  hasList: PropTypes.bool,
-  resource: PropTypes.string,
+    basePath: PropTypes.string,
+    className: PropTypes.string,
+    data: PropTypes.object,
+    hasEdit: PropTypes.bool,
+    hasList: PropTypes.bool,
+    resource: PropTypes.string,
 };
 
 export default ShowActions;

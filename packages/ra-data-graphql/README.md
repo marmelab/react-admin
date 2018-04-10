@@ -1,6 +1,6 @@
 # ra-data-graphql
 
-A GraphQL data provider for [react-admin](https://github.com/marmelab/react-admin/)
+A GraphQL data provider for [react-admin](https://github.com/yeutech/react-admin/)
 built with [Apollo](http://www.apollodata.com/)
 
 - [Installation](#installation)
@@ -21,13 +21,13 @@ you're free to use any graphql **server**.
 Install with:
 
 ```sh
-npm install --save ra-data-graphql
+npm install --save graphql ra-data-graphql
 ```
 
 or
 
 ```sh
-yarn add ra-data-graphql
+yarn add graphql ra-data-graphql
 ```
 
 ## Usage
@@ -35,8 +35,8 @@ yarn add ra-data-graphql
 ```jsx
 // in App.js
 import React, { Component } from 'react';
-import buildGraphQLProvider from 'ra-data-graphql';
-import { Admin, Resource, Delete } from 'react-admin';
+import buildGraphQLProvider from '@yeutech/ra-data-graphql';
+import { Admin, Resource, Delete } from '@yeutech/react-admin';
 
 import { PostCreate, PostEdit, PostList } from '../components/admin/posts';
 

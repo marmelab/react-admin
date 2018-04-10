@@ -4,7 +4,7 @@ UI Components for [react-admin](https://marmelab.com/admin-on-rest/) with [Mater
 
 ## License
 
-React-admin is licensed under the [MIT License](https://github.com/marmelab/react-admin/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
+React-admin is licensed under the [MIT License](https://github.com/yeutech/react-admin/blob/master/LICENSE.md), sponsored and supported by [marmelab](http://marmelab.com).
 
 ## Donate
 

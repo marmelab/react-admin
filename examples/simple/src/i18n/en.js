@@ -1,5 +1,5 @@
 import { defineMessages } from 'react-intl';
-import englishMessages from 'ra-language-intl/translation/en.json';
+import englishMessages from '@yeutech/ra-language-intl/translation/en.json';
 
 const simpleMessages = defineMessages({
   actionResetViews: {
@@ -181,8 +181,10 @@ const userMessages = defineMessages({
 
 // we just convert quickly the file so we don't need to use babel-plugin-react-intl
 const obj = {};
-Object.values({ ...simpleMessages, ...resourcesMessages, ...postMessages, ...commentMessages, ...userMessages }).forEach((value) => {
-  obj[value.id] = value.defaultMessage;
+[simpleMessages, resourcesMessages, postMessages, commentMessages, userMessages].forEach((msgs) => {
+  Object.values(msgs).forEach((value) => {
+    obj[value.id] = value.defaultMessage;
+  });
 });
 
 export const messages = {
