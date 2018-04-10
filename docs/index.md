@@ -47,7 +47,7 @@ React-admin is available from npm. You can install it (and its required dependen
 using:
 
 ```sh
-npm install react-admin
+npm install @yeutech/react-admin
 ```
 
 ## Usage
