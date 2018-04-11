@@ -10,7 +10,7 @@
 
 # [2018-04-06] - dka - Replace polyglot with react-intl
 
-- Reconfigure dependencies, 
+- Reconfigure dependencies.
 - Replace original `TranslationProvider` that used `node-polyglot` with our own.
 - Replace `node-polyglot` with `react-intl`.
 - Remove `ra-language-english` and `ra-language-french`.
