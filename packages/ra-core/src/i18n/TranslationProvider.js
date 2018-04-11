@@ -11,10 +11,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl, IntlProvider } from 'react-intl';
 import { compose, withContext } from 'recompose';
-import { createStructuredSelector } from 'reselect';
 import defaultMessages from '@yeutech/ra-language-intl/translation/en.json';
-
-import { selectLocale, selectMessages } from './selectors';
 
 const TranslationProviderTranslateContext = props =>
     Children.only(props.children);
@@ -23,9 +20,10 @@ const withI18nContext = withContext(
     {
         translate: PropTypes.func.isRequired,
     },
-    props => {
+    ({ intl, messages }) => {
         return {
-            translate: (id, opts) => props.intl.formatMessage({ id }, opts),
+            translate: (id, opts) =>
+                intl.formatMessage({ id, defaultMessage: messages[id] }, opts),
         };
     }
 );
@@ -37,39 +35,34 @@ const ConnectedTranslationProvider = compose(injectIntl, withI18nContext)(
 export const TranslationProvider = props => (
     <IntlProvider
         locale={props.locale}
-        key={props.locale}
         messages={props.messages || defaultMessages}
     >
-        <ConnectedTranslationProvider>
+        <ConnectedTranslationProvider
+            messages={props.messages || defaultMessages}
+        >
             {props.children}
         </ConnectedTranslationProvider>
     </IntlProvider>
 );
 
-TranslationProvider.defaultProps = {
-    locale: 'en',
-};
-
 TranslationProvider.propTypes = {
-    locale: PropTypes.string,
+    locale: PropTypes.string.isRequired,
     messages: PropTypes.object,
     children: PropTypes.element.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-    locale: selectLocale,
-    messages: selectMessages,
+const mapStateToProps = state => ({
+    locale: state.i18n.locale,
+    messages: state.i18n.messages,
 });
 
 const withI18nContextTranslationProvider = withContext(
     {
         locale: PropTypes.string.isRequired,
-        messages: PropTypes.object,
     },
-    props => {
+    ({ locale }) => {
         return {
-            locale: props.locale,
-            messages: props.messages,
+            locale,
         };
     }
 );
