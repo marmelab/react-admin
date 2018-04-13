@@ -1,0 +1,41 @@
+{
+    "name": "simple-bs",
+    "private": true,
+    "version": "2.0.0-beta1",
+    "description": "",
+    "main": "index.html",
+    "scripts": {
+        "start":
+            "./node_modules/.bin/webpack-dev-server --progress --color --hot --watch --mode development",
+        "build":
+            "./node_modules/.bin/webpack-cli --color --mode development --hide-modules true",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+        "babel-core": "~6.26.0",
+        "babel-loader": "~7.1.1",
+        "babel-plugin-transform-react-jsx": "~6.24.1",
+        "babel-polyfill": "~6.26.0",
+        "babel-preset-react": "~6.24.1",
+        "css-loader": "~0.28.4",
+        "html-loader": "~0.5.5",
+        "html-webpack-plugin": "~3.2.0",
+        "material-ui": "1.0.0-beta.40",
+        "material-ui-icons": "1.0.0-beta.36",
+        "styled-components": "^3.2.5",
+        "bootstrap-styled": "git+ssh://git@module.kopaxgroup.com:20024/styled-components/bootstrap-styled.git#1.5.15",
+        "bootstrap-styled-mixins": "git+ssh://git@module.kopaxgroup.com:20024/styled-components/bootstrap-styled-mixins.git#v1.0.3",
+        "bootstrap-styled-motion": "git+ssh://git@module.kopaxgroup.com:20024/styled-components/bootstrap-styled-motion.git#1.0.3",
+        "@yeutech/ra-data-fakerest": "~2.0.0-beta4-yeutech.3",
+        "@yeutech/ra-input-rich-text": "~2.0.0-beta4-yeutech.3",
+        "@yeutech/ra-language-intl": "~2.0.0-beta4-yeutech.3",
+        "react": "~16.3.1",
+        "@yeutech/react-admin-bs": "~2.0.0-beta4-yeutech.3",
+        "react-dom": "~16.3.1",
+        "style-loader": "~0.20.3",
+        "webpack": "~4.5.0",
+        "webpack-dev-server": "~3.1.1"
+    }
+}

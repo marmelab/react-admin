@@ -1,3 +1,9 @@
+# [2018-04-13] - dka - Creating examples projects
+
+- Adding examples `demo-bs`.
+- Adding examples `simple-bs`.
+- Todo: use `bootstrap-styled`.
+
 # [2018-04-12] - dka - Fix Translation @yeutech
 
 - Fix TranslationProvider.
