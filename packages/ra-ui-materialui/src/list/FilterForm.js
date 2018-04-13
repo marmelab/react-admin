@@ -71,6 +71,16 @@ const sanitizeRestProps = ({
 }) => props;
 
 export class FilterForm extends Component {
+    componentDidMount() {
+        this.props.filters.forEach(filter => {
+            if (filter.props.alwaysOn && filter.props.defaultValue) {
+                throw new Error(
+                    'Cannot use alwaysOn and defaultValue on a filter input. Please set the filterDefaultValues props on the <List> element instead.'
+                );
+            }
+        });
+    }
+
     getShownFilters() {
         const { filters, displayedFilters, initialValues } = this.props;
 

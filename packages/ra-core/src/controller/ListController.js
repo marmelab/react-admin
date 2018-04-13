@@ -130,9 +130,10 @@ export class ListController extends Component {
     }
 
     /**
-     * Merge list params from 3 different sources:
+     * Merge list params from 4 different sources:
      *   - the query string
      *   - the params stored in the state (from previous navigation)
+     *   - the filter defaultValues
      *   - the props passed to the List component
      */
     getQuery() {
@@ -140,6 +141,16 @@ export class ListController extends Component {
             Object.keys(this.props.query).length > 0
                 ? this.props.query
                 : { ...this.props.params };
+        const filterDefaultValues = this.props.filterDefaultValues || {};
+        Object.keys(filterDefaultValues).forEach(name => {
+            if (!query.filter) {
+                query.filter = {};
+            }
+            if (!query.filter[name]) {
+                query.filter[name] = filterDefaultValues[name];
+            }
+        });
+
         if (!query.sort) {
             query.sort = this.props.sort.field;
             query.order = this.props.sort.order;
@@ -286,6 +297,7 @@ ListController.propTypes = {
     children: PropTypes.func.isRequired,
     filter: PropTypes.object,
     filters: PropTypes.element,
+    filterDefaultValues: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     pagination: PropTypes.element,
     perPage: PropTypes.number.isRequired,
     sort: PropTypes.shape({
