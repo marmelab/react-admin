@@ -82,7 +82,7 @@ export class ListController extends Component {
             return;
         }
 
-        this.updateData();
+        this.updateData(this.props);
         if (Object.keys(this.props.query).length > 0) {
             this.props.changeListParams(this.props.resource, this.props.query);
         }
@@ -98,16 +98,18 @@ export class ListController extends Component {
             nextProps.query.sort !== this.props.query.sort ||
             nextProps.query.order !== this.props.query.order ||
             nextProps.query.page !== this.props.query.page ||
+            nextProps.query.perPage !== this.props.query.perPage ||
             nextProps.query.filter !== this.props.query.filter
         ) {
             this.updateData(
+                nextProps,
                 Object.keys(nextProps.query).length > 0
                     ? nextProps.query
                     : nextProps.params
             );
         }
         if (nextProps.version !== this.props.version) {
-            this.updateData();
+            this.updateData(nextProps);
         }
     }
 
@@ -144,18 +146,17 @@ export class ListController extends Component {
             query.sort = this.props.sort.field;
             query.order = this.props.sort.order;
         }
-        if (!query.perPage) {
-            query.perPage = this.props.perPage;
-        }
+        query.perPage = this.props.perPage;
         if (!query.page) {
             query.page = 1;
         }
         return query;
     }
 
-    updateData(query) {
+    updateData(props, query) {
         const params = query || this.getQuery();
-        const { sort, order, page = 1, perPage, filter } = params;
+        const { perPage } = props;
+        const { sort, order, page = 1, filter } = params;
         const pagination = {
             page: parseInt(page, 10),
             perPage: parseInt(perPage, 10),
