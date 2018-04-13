@@ -25,12 +25,14 @@ export class Filter extends Component {
             showFilter,
             hideFilter,
             displayedFilters,
+            filterButton,
             filterValues,
             ...rest
         } = this.props;
 
         return (
             <FilterButton
+                button={filterButton}
                 className={classes.button}
                 resource={resource}
                 filters={React.Children.toArray(children)}
@@ -84,6 +86,7 @@ Filter.propTypes = {
     context: PropTypes.oneOf(['form', 'button']),
     debounce: PropTypes.number.isRequired,
     displayedFilters: PropTypes.object,
+    filterButton: PropTypes.element,
     filterValues: PropTypes.object,
     hideFilter: PropTypes.func,
     setFilters: PropTypes.func,
