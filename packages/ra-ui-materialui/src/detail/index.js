@@ -1,7 +1,7 @@
-export Create from './Create';
-export Edit from './Edit';
+export Create, { CreateView } from './Create';
+export Edit, { EditView } from './Edit';
 export EditActions from './EditActions';
-export Show from './Show';
+export Show, { ShowView } from './Show';
 export ShowActions from './ShowActions';
 export SimpleShowLayout from './SimpleShowLayout';
 export TabbedShowLayout from './TabbedShowLayout';

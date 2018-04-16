@@ -25,6 +25,7 @@
 - [Logout is now displayed in the AppBar on desktop](#logout-is-now-displayed-in-the-appbar-on-desktop)
 - [Data providers should support two more types for bulk actions](#data-providers-should-support-two-more-types-for-bulk-actions)
 - [react-admin addon packages renamed with ra prefix and moved into root repository](#react-admin-addon-packages-renamed-with-ra-prefix-and-moved-into-root-repository)
+- [aor-dependent-input Was Removed](#aor-dependent-input-was-removed)
 - [The require,number and email validators should be renamed to require(),number() and validation()](#validators-should-be-initialized)
 
 ## Admin-on-rest Renamed to React-Admin
@@ -173,7 +174,7 @@ If you don't use the `<Admin>` component, but prefer to implement your administr
 
 ## `<AutocompleteInput>` no longer accepts a `filter` prop
 
-Material-ui's implementation of the autocomplete input has radically changed. React-admin maintains backwards compatibility, except for the `filter` prop, which no longer makes sense in the new impementation.
+Material-ui's implementation of the autocomplete input has radically changed. React-admin maintains backwards compatibility, except for the `filter` prop, which no longer makes sense in the new implementation.
 
 ## `<Datagrid>` No Longer Accepts `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props
 
@@ -313,7 +314,7 @@ import { CardActions } from 'material-ui/Card';
 );
 ```
 
-## Customizing styles
+## Customizing Styles
 
 Following the same path as Material UI, react-admin now uses [JSS](https://github.com/cssinjs/jss) for styling components instead of the `style` prop. This approach has many benefits, including a smaller DOM, faster rendering, media queries support, and automated browser prefixing.
 
@@ -904,7 +905,7 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps)(Menu);
 ```
 
-## Logout is now displayed in the AppBar on Desktop
+## Logout is Now Displayed in the AppBar on Desktop
 
 The Logout button is now displayed in the AppBar on desktop, but is still displayed as a menu item on small devices.
 
@@ -950,7 +951,7 @@ const MyLayout () => ({ logout, ...props }) => (
 );
 ```
 
-## Data providers should support two more types for bulk actions
+## Data Providers Should Support Two More Types For Bulk Actions
 
 The `List` component now support bulk actions. The consequence is that data providers should support them too. We introduced two new message types for the `dataProvider`: `DELETE_MANY` and `UPDATE_MANY`.
 
@@ -958,9 +959,9 @@ Both will be called with an `ids` property in their params, containing an array 
 
 Please refer to the `dataProvider` documentation for more information.
 
-## react-admin addon packages renamed with ra prefix and moved into root repository
+## react-admin Addon Packages Renamed With ra Prefix And Moved Into Root Repository
 
-`aor-graphql` and `aor-realtime` packages have been migrated into the main `react-admin` repository and renamed with the new prefix. Besides, `aor-graphql-client` and `aor-graphql-client-graphcool` follow the new dataProvider packages naming.
+The `aor-graphql` and `aor-realtime` packages have been migrated into the main `react-admin` repository and renamed with the new prefix. Besides, `aor-graphql-client` and `aor-graphql-client-graphcool` follow the new dataProvider packages naming.
 
 * `aor-realtime` => `ra-realtime`
 * `aor-graphql-client` => `ra-data-graphql`
@@ -979,13 +980,19 @@ Update your `import` statements accordingly:
 + import buildGraphcoolProvider from 'ra-data-graphcool';
 ```
 
-## aor-dependent-input integrated into core
+## aor-dependent-input Was Removed
 
-The `DependentInput` and `DependentField` components of `aor-dependent-input` have been merged into one named `DependsOn`. Besides, the `dependsOn` prop was renamed to `source`. Finally, this component is now bundled by default in the main `react-admin` package. 
+The `DependentInput` and `DependentField` components of `aor-dependent-input` have been removed. 
+
+To display conditional inputs, wrap existing inputs into a test of the injected `record` prop.
 
 ```diff
 - import { DependentInput } from 'aor-dependent-input';
-+ import { DependsOn } from 'react-admin';
+
++const ConditionalEmailInput = props =>
++  props.record && props.record.hasEmail
++    ? <TextInput source="email" {...props} />
++    : null;
 
 export const UserCreate = (props) => (
     <Create {...props}>
@@ -994,14 +1001,12 @@ export const UserCreate = (props) => (
             <TextInput source="lastName" />
             <BooleanInput source="hasEmail" label="Has email ?" />
 -           <DependentInput dependsOn="hasEmail">
-+           <DependsOn source="hasEmail">
-                <TextInput source="email" />
+-                <TextInput source="email" />
 -           </DependentInput>
-+           </DependsOn>
++           <ConditionalEmailInput />
         </SimpleForm>
     </Create>
 );
-
 ```
 
 ## Validators should be initialized

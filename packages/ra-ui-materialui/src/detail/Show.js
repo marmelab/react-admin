@@ -33,7 +33,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const ShowView = ({
+export const ShowView = ({
     actions = <DefaultActions />,
     basePath,
     children,

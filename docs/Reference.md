@@ -32,7 +32,6 @@ title: "Reference"
 * [`<DateField>`](./Fields.html#datefield)
 * [`<DateInput>`](./Inputs.html#dateinput)
 * `<DeleteButton>`
-* [`<DependsOn>`](./Inputs.html#customize-forms-depending-on-its-inputs-values)
 * [`<DisabledInput>`](./Inputs.html#disabledinput)
 * [`<Edit>`](./CreateEdit.html#the-create-and-edit-components)
 * `<EditActions>`
