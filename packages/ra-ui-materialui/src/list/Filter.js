@@ -53,6 +53,7 @@ export class Filter extends Component {
             children,
             hideFilter,
             displayedFilters,
+            formClasses,
             inActionsToolbar,
             showFilter,
             filterValues,
@@ -62,6 +63,7 @@ export class Filter extends Component {
 
         return (
             <FilterForm
+                classes={formClasses}
                 className={classes.form}
                 resource={resource}
                 filters={React.Children.toArray(children)}
@@ -90,6 +92,7 @@ Filter.propTypes = {
     displayedFilters: PropTypes.object,
     filterButton: PropTypes.element,
     filterValues: PropTypes.object,
+    formClasses: PropTypes.object,
     hideFilter: PropTypes.func,
     inActionsToolbar: PropTypes.bool,
     setFilters: PropTypes.func,
