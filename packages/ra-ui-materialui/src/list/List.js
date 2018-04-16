@@ -22,6 +22,7 @@ const styles = {
 };
 
 const sanitizeRestProps = ({
+    TitleClass,
     children,
     classes,
     className,
@@ -63,6 +64,7 @@ const sanitizeRestProps = ({
 }) => rest;
 
 export const ListView = ({
+    TitleClass,
     actions = <DefaultActions />,
     basePath,
     bulkActions = <DefaultBulkActions />,
@@ -98,7 +100,9 @@ export const ListView = ({
     version,
     ...rest
 }) => {
-    const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
+    const titleElement = (
+        <TitleClass title={title} defaultTitle={defaultTitle} total={total} />
+    );
 
     return (
         <div
@@ -274,6 +278,7 @@ const List = props => (
 
 List.propTypes = {
     // the props you can change
+    TitleClass: PropTypes.object.isRequired,
     actions: PropTypes.element,
     bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     children: PropTypes.node,
@@ -302,6 +307,7 @@ List.propTypes = {
 };
 
 List.defaultProps = {
+    TitleClass: Title,
     filter: {},
     perPage: 10,
     theme: defaultTheme,
