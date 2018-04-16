@@ -25,7 +25,7 @@
 - [Logout is now displayed in the AppBar on desktop](#logout-is-now-displayed-in-the-appbar-on-desktop)
 - [Data providers should support two more types for bulk actions](#data-providers-should-support-two-more-types-for-bulk-actions)
 - [react-admin addon packages renamed with ra prefix and moved into root repository](#react-admin-addon-packages-renamed-with-ra-prefix-and-moved-into-root-repository)
-- [aor-dependent-input Was Removed](#aor-dependent-input-was-removed)
+- [The `<DependentInput>` Feature Was Moved To `<FormDataConsumer>`](#the-dependentinput-feature-was-moved-to-formdataconsumer`)
 - [The require,number and email validators should be renamed to require(),number() and validation()](#validators-should-be-initialized)
 
 ## Admin-on-rest Renamed to React-Admin
@@ -980,19 +980,15 @@ Update your `import` statements accordingly:
 + import buildGraphcoolProvider from 'ra-data-graphcool';
 ```
 
-## aor-dependent-input Was Removed
+## The `<DependentInput>` Feature Was Moved To `<FormDataConsumer>`
 
-The `DependentInput` and `DependentField` components of `aor-dependent-input` have been removed. 
+The `aor-dependent-input` package has been removed. You can achieve a similar effect to the old `<DependentInput>` component by using the new `<FormDataConsumer>` component.
 
-To display conditional inputs, wrap existing inputs into a test of the injected `record` prop.
+To display a component based on the value of the current (edited) record, wrap that component with `<FormDataConsumer>`, which uses grabs the form data from the redux-form state, and passes it to a child function: 
 
 ```diff
 - import { DependentInput } from 'aor-dependent-input';
-
-+const ConditionalEmailInput = props =>
-+  props.record && props.record.hasEmail
-+    ? <TextInput source="email" {...props} />
-+    : null;
++ import { FormDataConsumer } from 'react-admin';
 
 export const UserCreate = (props) => (
     <Create {...props}>
@@ -1003,7 +999,11 @@ export const UserCreate = (props) => (
 -           <DependentInput dependsOn="hasEmail">
 -                <TextInput source="email" />
 -           </DependentInput>
-+           <ConditionalEmailInput />
++           <FormDataConsumer>
++               {(formData, ...rest) => formData.hasEmail && 
++                   <TextInput source="email" {...rest} />
++               }
++           </FormDataConsumer>
         </SimpleForm>
     </Create>
 );

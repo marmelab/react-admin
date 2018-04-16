@@ -42,6 +42,7 @@ title: "Reference"
 * [`<Filter>`](./List.html#filters)
 * `<FilterButton>`
 * `<FilterForm>`
+* [`<FormDataConsumer>`](./Inputs.html#linking-two-inputs)
 * [`<FormTab>`](./CreateEdit.html#the-tabbedform-component)
 * [`<FunctionField>`](./Fields.html#functionfield)
 * `<EditButton>`

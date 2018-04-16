@@ -1219,115 +1219,50 @@ const ItemEdit = (props) => (
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin injects the current `record` to each input component. This facilitates the implementation of linked inputs:
+React-admin relies on redux-form, so you can grab the current form values using redux-form [`formValueSelector()](https://redux-form.com/7.3.0/docs/api/formvalueselector.md/). Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function.
+
+This facilitates the implementation of linked inputs:
 
 ```jsx
-class CityInput extends React.Component {
-    state = {
-        cities: [];
-    };
+import { FormDataConsumer } from 'react-admin';
 
-    constructor(props) {
-        super(props);
-        if (props.record) {
-            this.fetchCities(props.record.country);
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.record && nextProps.record.country !== this.props.record.country) {
-            this.fetchCities(nextProps.record.country);
-        }
-    }
-
-    fetchCities(country) {
-        fetch(`${API_URL}/cities?country=${country}`)
-            .then(res => res.json)
-            .then(data => this.setState({
-                cities: data.cities
-            }))
-    }
-
-    render() {
-        return <SelectInput source="city" choices={this.state.cities} />;
-    }
-}
+const OrderEdit = (props) => (
+    <Edit {...props}>
+        <SimpleForm>
+            <SelectInput source="country" choices={countries} />
+            <FormDataConsumer>
+                {(formData, ...rest) =>
+                     <SelectInput 
+                         source="city"
+                         choices={getCitiesFor(formData.country)}
+                         {...rest}
+                     />
+                }
+            </FormDataConsumer>
+        </SimpleForm>
+    </Edit>
+); 
 ```
 
 ## Hiding Inputs Based On Other Inputs
 
 You may want to display or hide inputs base on the value of another input - for instance, show an `email` input only if the `hasEmail` boolean input is ticked to `true`.
 
-For such cases, you can use the previous approach (using the injected `record` prop) in a custom component. But if you want to use react-admin components, creating a custom input component just for a test might feel cumbersome.
-
-An alternative approach consists of splitting the `<Edit>` component. Under the hood, the `<Edit>` component is composed of two sub components: the `<EditController>` component, which fetches the record and handles save, and the `<EditView>`, which is responsible for rendering the view title, actions, and children. `<EditController>` uses the *render props* pattern:
+For such cases, you can use the approach described above, using the `<FormDataConsumer>` component.
 
 ```jsx
-const Edit = props => (
-    <EditController {...props}>
-        {controllerProps => <EditView {...props} {...controllerProps} />}
-    </EditController>
-);
+import { FormDataConsumer } from 'react-admin';
+
+ const PostEdit = (props) => (
+     <Edit {...props}>
+         <SimpleForm>
+             <BooleanInput source="hasEmail" />
+             <FormDataConsumer>
+                 {(formData, ...rest) => formData.hasEmail &&
+                      <TextInput source="email" {...rest} />
+                 }
+             </FormDataConsumer>
+         </SimpleForm>
+     </Edit>
+ ); 
 ```
-
-The `<EditController>` fetches the `record` from the data provider, and passes it to its child function when received (among the `controllerProps`). That means the following code:
-
-```jsx
-import { Edit, SimpleForm, BooleanInput, TextInput } from 'react-admin';
-
-const PostEdit = props => (
-    <Edit {...props}>
-        <SimpleForm>
-            <TextInput source="title" />
-            <BooleanInput source="hasEmail" label="Has email ?" />
-            <TextInput source="email" />
-        </SimpleForm>
-    </Edit>
-);
-```
-
-Is equivalent to:
-
-```jsx
-import { EditController } from 'ra-core';
-import { EditView, SimpleForm, BooleanInput, TextInput } from 'react-admin';
-
-const PostEdit = props => (
-    <EditController {...props}>
-        {controllerProps => 
-            <EditView {...props} {...controllerProps}>
-                <SimpleForm>
-                    <TextInput source="title" />
-                    <BooleanInput source="hasEmail" label="Has email ?" />
-                    <TextInput source="email" />
-                </SimpleForm>
-            </EditView>
-        }
-    </EditController>
-);
-```
-
-If you want one input to be displayed based on the `record`, for instance to display the email input only if the `hasEmail` field is `true`, you just need to test the value from `controllerProps.record`, as follows:
-
-```jsx
-import { EditController } from 'ra-core';
-import { EditView, SimpleForm, BooleanInput, TextInput } from 'react-admin';
-
-const PostEdit = props => (
-    <EditController {...props}>
-        {controllerProps => 
-            <EditView {...props} {...controllerProps}>
-                <SimpleForm>
-                    <TextInput source="title" />
-                    <BooleanInput source="hasEmail" label="Has email ?" />
-                    {controllerProps.record && controllerProps.record.hasEmail &&
-                        <TextInput source="email" />
-                    }
-                </SimpleForm>
-            </EditView>
-        }
-    </EditController>
-);
-```
-
-**Tip**: What works for the `<Edit>` component (split into `<EditController>` and `<EditView>`) also works for the `<Create>` component (split into `<CreateController>` and `<CreateView>`).
