@@ -123,6 +123,7 @@ export const ListView = ({
                         refresh,
                         resource,
                         selectedIds,
+                        setFilters,
                         showFilter,
                     }}
                 />
