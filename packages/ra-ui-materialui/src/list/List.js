@@ -129,6 +129,7 @@ export const ListView = ({
                         selectedIds,
                         setFilters,
                         showFilter,
+                        total,
                     }}
                 />
                 {filters &&
@@ -138,6 +139,7 @@ export const ListView = ({
                         hideFilter,
                         resource,
                         setFilters,
+                        total,
                         context: 'form',
                     })}
                 {isLoading || total > 0 ? (
