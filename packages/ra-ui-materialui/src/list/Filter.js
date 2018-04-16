@@ -53,6 +53,7 @@ export class Filter extends Component {
             children,
             hideFilter,
             displayedFilters,
+            inActionsToolbar,
             showFilter,
             filterValues,
             setFilters,
@@ -66,6 +67,7 @@ export class Filter extends Component {
                 filters={React.Children.toArray(children)}
                 hideFilter={hideFilter}
                 displayedFilters={displayedFilters}
+                inActionsToolbar={inActionsToolbar}
                 initialValues={filterValues}
                 setFilters={setFilters}
                 {...rest}
@@ -89,6 +91,7 @@ Filter.propTypes = {
     filterButton: PropTypes.element,
     filterValues: PropTypes.object,
     hideFilter: PropTypes.func,
+    inActionsToolbar: PropTypes.bool,
     setFilters: PropTypes.func,
     showFilter: PropTypes.func,
     resource: PropTypes.string.isRequired,
