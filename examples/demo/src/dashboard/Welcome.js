@@ -22,7 +22,7 @@ export default translate(({ translate }) => (
                 <HomeIcon style={{ paddingRight: '0.5em' }} />
                 {translate('pos.dashboard.welcome.aor_button')}
             </Button>
-            <Button href="https://github.com/marmelab/react-admin">
+            <Button href="https://github.com/marmelab/react-admin/tree/master/examples/demo">
                 <CodeIcon style={{ paddingRight: '0.5em' }} />
                 {translate('pos.dashboard.welcome.demo_button')}
             </Button>

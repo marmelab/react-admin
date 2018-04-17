@@ -17,6 +17,9 @@ run-tutorial: build ## run the tutorial example
 run-demo: build ## run the demo example
 	@cd examples/demo && REACT_APP_DATA_PROVIDER=rest yarn start
 
+build-demo: ## compile the demo example to static js
+	@cd examples/Demo && REACT_APP_DATA_PROVIDER=rest yarn build
+
 run-graphql-demo: build ## run the demo example
 	@cd examples/demo && REACT_APP_DATA_PROVIDER=graphql yarn start
 
