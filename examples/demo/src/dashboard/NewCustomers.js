@@ -3,8 +3,8 @@ import compose from 'recompose/compose';
 import Card, { CardHeader } from 'material-ui/Card';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
-import CustomerIcon from 'material-ui-icons/PersonAdd';
 import { withStyles } from 'material-ui/styles';
+import CustomerIcon from '@material-ui/icons/PersonAdd';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-admin';
 

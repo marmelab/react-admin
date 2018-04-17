@@ -17,8 +17,8 @@ import classnames from 'classnames';
  * @example     
  *     // in src/posts.js
  *     import React from 'react';
- *     import FavoriteIcon from 'material-ui-icons/Favorite';
- *     import PersonPinIcon from 'material-ui-icons/PersonPin';
+ *     import FavoriteIcon from '@material-ui/icons/Favorite';
+ *     import PersonPinIcon from '@material-ui/icons/PersonPin';
  *     import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
  *     
  *     export const PostShow = (props) => (

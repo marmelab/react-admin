@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Card from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
-import LockIcon from 'material-ui-icons/LockOutline';
 import { withStyles } from 'material-ui/styles';
+import LockIcon from '@material-ui/icons/LockOutline';
 
 import defaultTheme from '../defaultTheme';
 import Notification from '../layout/Notification';

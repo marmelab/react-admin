@@ -1,6 +1,6 @@
 import React from 'react';
 import Card, { CardHeader } from 'material-ui/Card';
-import DollarIcon from 'material-ui-icons/AttachMoney';
+import DollarIcon from '@material-ui/icons/AttachMoney';
 import { translate } from 'react-admin';
 
 const styles = {

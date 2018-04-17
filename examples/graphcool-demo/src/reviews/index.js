@@ -17,8 +17,8 @@ import {
     TextField,
     TextInput,
 } from 'react-admin';
-import Icon from 'material-ui-icons/Comment';
 import { withStyles } from 'material-ui/styles';
+import Icon from '@material-ui/icons/Comment';
 
 import ProductReferenceField from '../products/ProductReferenceField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';

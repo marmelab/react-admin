@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { CardContent } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
-import ActionHide from 'material-ui-icons/HighlightOff';
+import { withStyles } from 'material-ui/styles';
+import ActionHide from '@material-ui/icons/HighlightOff';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
-import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 import lodashSet from 'lodash/set';
 import { translate } from 'ra-core';
@@ -71,6 +71,16 @@ const sanitizeRestProps = ({
 }) => props;
 
 export class FilterForm extends Component {
+    componentDidMount() {
+        this.props.filters.forEach(filter => {
+            if (filter.props.alwaysOn && filter.props.defaultValue) {
+                throw new Error(
+                    'Cannot use alwaysOn and defaultValue on a filter input. Please set the filterDefaultValues props on the <List> element instead.'
+                );
+            }
+        });
+    }
+
     getShownFilters() {
         const { filters, displayedFilters, initialValues } = this.props;
 

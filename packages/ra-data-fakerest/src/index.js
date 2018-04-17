@@ -45,6 +45,9 @@ function log(type, resource, params, response) {
 export default (data, loggingEnabled = false) => {
     const restServer = new FakeRest.Server();
     restServer.init(data);
+    if (window) {
+        window.restServer = restServer; // give way to update data in the console
+    }
 
     function getResponse(type, resource, params) {
         switch (type) {

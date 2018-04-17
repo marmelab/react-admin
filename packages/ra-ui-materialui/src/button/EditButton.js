@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
-import ContentCreate from 'material-ui-icons/Create';
+import ContentCreate from '@material-ui/icons/Create';
+import { linkToRecord } from 'ra-core';
 
 import Link from '../Link';
-import { linkToRecord } from 'ra-core';
 import Button from './Button';
 
 const EditButton = ({

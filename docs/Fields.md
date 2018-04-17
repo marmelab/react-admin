@@ -835,130 +835,6 @@ PriceField.defaultProps = {
 ```
 {% endraw %}
 
-## Customize views depending on its record values
-
-When you want to display fields only when some other fields are present or have a specific value, you can use the `DependsOn` component.
-
-The `DependsOn` component accepts the following props:
-
-* `source`: Either a string indicating the name of the field to check (eg: `hasEmail`) or an array of fields to check (eg: `['firstName', 'lastName']`). You can specify deep paths such as `author.firstName`.
-* `value`: If not specified, only check that the field(s) specified by `source` have a truthy value. You may specify a single value or an array of values. Deep paths will be correctly retrieved and compared to the specified values. 
-* `resolve`: The `resolve` prop accepts a function which must return either `true` to display the child input or `false` to hide it.
-
-If both `value` and `resolve` are specified, `value` will be ignored.
-
-If the `source` prop is specified, `resolve` will be called with either the value of the field specified by `source` (when a single field name was specified as `source`) or with an object matching the specified paths.
-
-**Note**: When specifying deep paths (eg: `author.firstName`), `resolve` will be called with an object matching the specified structure. For example, when passing `['author.firstName', 'author.lastName']` as `source`, the `resolve` function will be passed the following object:
-
-```js
-{ author: { firstName: 'bValue', lastName: 'cValue' } }
-```
-
-If `source` is not specified, `resolve` will be called with the current record.
-
-### Check that the field specified by `source` has a value (a truthy value):
-
-```js
-import { Show, SimpleShowLayout, TextField, BooleanField, DependsOn } from 'react-admin';
-
-export const UserShow = (props) => (
-    <Show {...props}>
-        <SimpleShowLayout>
-            <TextField source="firstName" />
-            <TextField source="lastName" />
-            <BooleanField source="hasEmail" label="Has email ?" />
-            <DependsOn source="hasEmail">
-                <TextField source="email" />
-            </DependsOn>
-        </SimpleShowLayout>
-    </Show>
-);
-```
-
-### Check that the field specified by `source` has a specific value:
-
-```js
-import { Show, SimpleShowLayout, TextField, DependsOn } from 'react-admin';
-import ProgrammingIcon from './ProgrammingIcon';
-import LifestyleIcon from './LifestyleIcon';
-import PhotographyIcon from './PhotographyIcon';
-
-export const PostShow = (props) => (
-    <Show {...props}>
-        <SimpleShowLayout>
-            <TextField source="title" />
-            <TextField source="subcategory" />
-
-            <DependsOn source="category" value="programming">
-                <ProgrammingIcon />
-            </DependsOn>
-
-            <DependsOn source="category" value="lifestyle">
-                <LifestyleIcon />
-            </DependsOn>
-
-            <DependsOn source="category" value="photography">
-                <PhotographyIcon />
-            </DependsOn>
-        </SimpleShowLayout>
-    </Create>
-);
-```
-
-### Check that the field specified by `source` matches a custom constraint:
-
-```js
-import { Show, SimpleShowLayout, TextField, DependsOn } from 'react-admin';
-import ProgrammingIcon from './ProgrammingIcon';
-import LifestyleIcon from './LifestyleIcon';
-import PhotographyIcon from './PhotographyIcon';
-
-const checkCustomConstraint = (value) => value.startsWith('programming'));
-
-export const PostShow = (props) => (
-    <Show {...props}>
-        <SimpleShowLayout>
-            <TextField source="title" />
-            <TextField source="subcategory" />
-
-            <DependsOn source="category" resolve={checkCustomConstraint}>
-                <ProgrammingIcon />
-            </DependsOn>
-
-            <DependsOn source="category" value="lifestyle">
-                <LifestyleIcon />
-            </DependsOn>
-
-            <DependsOn source="category" value="photography">
-                <PhotographyIcon />
-            </DependsOn>
-        </SimpleShowLayout>
-    </Show>
-);
-```
-
-### All powers! Check whether the current full record matches your constraints:
-
-```js
-import { Show, SimpleShowLayout, TextField, EmailField, DependsOn } from 'react-admin';
-
-const checkRecord = (record) => record.firstName && record.lastName);
-
-export const UserShow = (props) => (
-    <Show {...props}>
-        <SimpleShowLayout>
-            <TextField source="firstName" />
-            <TextField source="lastName" />
-
-            <DependsOn resolve={checkRecord}>
-                <EmailField source="email" />
-            </DependsOn>
-        </SimpleShowLayout>
-    </Show>
-);
-```
-
 ## Writing Your Own Field Component
 
 If you don't find what you need in the list above, you can write your own Field component. It must be a regular React component, accepting not only a `source` attribute, but also a `record` attribute. React-admin will inject the `record` based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
@@ -1018,3 +894,127 @@ export const UserList = (props) => (
 ```
 
 **Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked.
+
+## Adding Label To Custom Field Components In The Show View
+
+React-admin lets you use the same Field components in the List view and in the Show view. But if you use the `<FullNameField>` custom field component defined earlier in a Show view, something is missing: the Field label. Why do other fields have a label and not this custom Field? And how can you create a Field component that has a label in the Show view, but not in the List view? 
+
+React-admin uses a trick: the Show view layouts (`<SimpleShowLayout>` and `<TabbedShowLayout>`) inspect their Field children, and whenever one has the `addLabel` prop set to `true`, the layout adds a label.
+
+That means that the only thing you need to add to a custom component to make it usable in a Show view is a `addLabel: true` default prop.
+
+```jsx
+FullNameField.defaultProps = {
+    addLabel: true,
+};
+```
+
+## Hiding A Field Based On The Value Of Another
+
+In a Show view, you may want to display or hide fields based on the value of another field - for instance, show an `email` field only if the `hasEmail` boolean field is `true`.
+
+For such cases, you can use the custom field approach: use the injected `record` prop, and render another Field based on the value.
+
+```jsx
+import React from 'react';
+import { EmailField } from 'react-admin';
+
+const ConditionalEmailField = ({ record, ...rest }) => 
+    record && record.hasEmail 
+        ? <EmailField source="email" record={record} {...rest} />
+        : null;
+
+export default ConditionalEmailField;
+```
+
+**Tip**: Always check that the `record` is defined before inspecting its properties, as react-admin displays the Show view *before* fetching the record from the data provider. So the first time it renders the show view for a resource, the `record` is undefined.
+
+This `ConditionalEmailField` is properly hidden when `hasEmail` is false. But when `hasEmail` is true, the Show layout renders it... without label. And if you add a `addLabel` default prop, the Show layout will render the label regardless of the `hasEmail` value...
+
+One solution is to add the label manually in the custom component:
+
+```jsx
+import React from 'react';
+import { Labeled, EmailField } from 'react-admin';
+
+const ConditionalEmailField = ({ record, ...rest }) => 
+    record && record.hasEmail 
+        ? (
+            <Labeled label="Email">
+                <EmailField source="email" record={record} {...rest} />
+            </Labeled>
+        )
+        : null;
+
+export default ConditionalEmailField;
+```
+
+This comes with a drawback, though: the `<ConditionalEmailField>` cannot be used in a List view anymore, as it will always have a label. If you want to reuse the custom component in a List, this isn't the right solution.
+
+An alternative solution is to split the `<Show>` component. Under the hood, the `<Show>` component is composed of two sub components: the `<ShowController>` component, which fetches the record, and the `<ShowView>`, which is responsible for rendering the view title, actions, and children. `<ShowController>` uses the *render props* pattern:
+
+```jsx
+// inside react-admin
+const Show = props => (
+    <ShowController {...props}>
+        {controllerProps => <ShowView {...props} {...controllerProps} />}
+    </ShowController>
+);
+```
+
+The `<ShowController>` fetches the `record` from the data provider, and passes it to its child function when received (among the `controllerProps`). That means the following code:
+
+```jsx
+import { Show, SimpleShowLayout, TextField } from 'react-admin';
+
+const UserShow = props => (
+    <Show {...props}>
+        <SimpleShowLayout>
+            <TextField source="username" />
+            <TextField source="email" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+Is equivalent to:
+
+```jsx
+import { ShowController, ShowView, SimpleShowLayout, TextField } from 'react-admin';
+
+const UserShow = props => (
+    <ShowController {...props}>
+        {controllerProps => 
+            <ShowView {...props} {...controllerProps}>
+                <SimpleShowLayout>
+                    <TextField source="username" />
+                    <TextField source="email" />
+                </SimpleShowLayout>
+            </ShowView>
+        }
+    </ShowController>
+);
+```
+
+If you want one field to be displayed based on the `record`, for instance to display the email field only if the `hasEmail` field is `true`, you just need to test the value from `controllerProps.record`, as follows:
+
+```jsx
+import { ShowController, ShowView, SimpleShowLayout, TextField } from 'react-admin';
+
+const UserShow = props => (
+    <ShowController {...props}>
+        {controllerProps => 
+            <ShowView {...props} {...controllerProps}>
+                <SimpleShowLayout>
+                    <TextField source="username" />
+                    {controllerProps.record && controllerProps.record.hasEmail && 
+                        <TextField source="email" />
+                    }
+                </SimpleShowLayout>
+            </ShowView>
+        }
+    </ShowController>
+);
+```
+
+And now you can use a regular Field component, and the label displays correctly in the Show view.
