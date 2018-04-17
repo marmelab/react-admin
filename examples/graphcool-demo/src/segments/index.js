@@ -1,6 +1,6 @@
 import React from 'react';
 import { Datagrid, List, TextField } from 'react-admin';
-import Icon from 'material-ui-icons/Bookmark';
+import Icon from '@material-ui/icons/Bookmark';
 
 import LinkToRelatedCustomers from './LinkToRelatedCustomers';
 

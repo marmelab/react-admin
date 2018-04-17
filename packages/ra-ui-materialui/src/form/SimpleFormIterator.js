@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Typography from 'material-ui/Typography';
-import CloseIcon from 'material-ui-icons/RemoveCircleOutline';
 import Button from 'material-ui/Button';
-import AddIcon from 'material-ui-icons/AddCircleOutline';
 import { withStyles } from 'material-ui/styles';
+import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
+import AddIcon from '@material-ui/icons/AddCircleOutline';
 import { translate } from 'ra-core';
 
 import FormInput from '../form/FormInput';

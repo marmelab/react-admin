@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import SettingsIcon from 'material-ui-icons/Settings';
-import LabelIcon from 'material-ui-icons/Label';
+import SettingsIcon from '@material-ui/icons/Settings';
+import LabelIcon from '@material-ui/icons/Label';
 import {
     translate,
     DashboardMenuItem,

@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import Menu from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
-import ContentFilter from 'material-ui-icons/FilterList';
+import ContentFilter from '@material-ui/icons/FilterList';
 import classnames from 'classnames';
 import compose from 'recompose/compose';
 import { translate } from 'ra-core';

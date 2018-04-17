@@ -18,10 +18,10 @@ import {
     TextInput,
     required,
 } from 'react-admin';
-import Icon from 'material-ui-icons/Collections';
 import Chip from 'material-ui/Chip';
-import RichTextInput from 'ra-input-rich-text';
 import withStyles from 'material-ui/styles/withStyles';
+import Icon from '@material-ui/icons/Collections';
+import RichTextInput from 'ra-input-rich-text';
 
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from '../reviews/StarRatingField';

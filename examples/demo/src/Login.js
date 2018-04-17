@@ -9,8 +9,8 @@ import Avatar from 'material-ui/Avatar';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import { CircularProgress } from 'material-ui/Progress';
-import LockIcon from 'material-ui-icons/LockOutline';
 import { withStyles } from 'material-ui/styles';
+import LockIcon from '@material-ui/icons/LockOutline';
 
 import { Notification, translate, userLogin } from 'react-admin';
 

@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 import { getResources, translate } from 'ra-core';
-import DefaultIcon from 'material-ui-icons/ViewList';
+import DefaultIcon from '@material-ui/icons/ViewList';
 
 import DashboardMenuItem from './DashboardMenuItem';
 import MenuItemLink from './MenuItemLink';
