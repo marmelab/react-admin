@@ -25,7 +25,7 @@
 - [Logout is now displayed in the AppBar on desktop](#logout-is-now-displayed-in-the-appbar-on-desktop)
 - [Data providers should support two more types for bulk actions](#data-providers-should-support-two-more-types-for-bulk-actions)
 - [react-admin addon packages renamed with ra prefix and moved into root repository](#react-admin-addon-packages-renamed-with-ra-prefix-and-moved-into-root-repository)
-- [The `<DependentInput>` Feature Was Moved To `<FormDataConsumer>`](#the-dependentinput-feature-was-moved-to-formdataconsumer`)
+- [`aor-dependent-input` Was Removed](#aor-dependent-input-was-removed)
 - [The require,number and email validators should be renamed to require(),number() and validation()](#validators-should-be-initialized)
 
 ## Admin-on-rest Renamed to React-Admin
@@ -980,9 +980,11 @@ Update your `import` statements accordingly:
 + import buildGraphcoolProvider from 'ra-data-graphcool';
 ```
 
-## The `<DependentInput>` Feature Was Moved To `<FormDataConsumer>`
+## `aor-dependent-input` Was Removed
 
-The `aor-dependent-input` package has been removed. You can achieve a similar effect to the old `<DependentInput>` component by using the new `<FormDataConsumer>` component.
+The `aor-dependent-input` package has been removed.
+
+You can achieve a similar effect to the old `<DependentInput>` component by using the new `<FormDataConsumer>` component.
 
 To display a component based on the value of the current (edited) record, wrap that component with `<FormDataConsumer>`, which uses grabs the form data from the redux-form state, and passes it to a child function: 
 
@@ -1006,6 +1008,72 @@ export const UserCreate = (props) => (
 +           </FormDataConsumer>
         </SimpleForm>
     </Create>
+);
+```
+
+As for the `<DependentField>` in a `<Show>` view, you need to use an alternative approach, taking advantage of the structure of `<Show>`, which in fact decomposes into a controller and a view component:
+
+```jsx
+// inside react-admin
+const Show = props => (
+    <ShowController {...props}>
+        {controllerProps => <ShowView {...props} {...controllerProps} />}
+    </ShowController>
+);
+```
+
+The `<ShowController>` fetches the `record` from the data provider, and passes it to its child function when received (among the `controllerProps`). That means the following code:
+
+```jsx
+import { Show, SimpleShowLayout, TextField } from 'react-admin';
+
+const UserShow = props => (
+    <Show {...props}>
+        <SimpleShowLayout>
+            <TextField source="username" />
+            <TextField source="email" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+Is equivalent to:
+
+```jsx
+import { ShowController, ShowView, SimpleShowLayout, TextField } from 'react-admin';
+
+const UserShow = props => (
+    <ShowController {...props}>
+        {controllerProps => 
+            <ShowView {...props} {...controllerProps}>
+                <SimpleShowLayout>
+                    <TextField source="username" />
+                    <TextField source="email" />
+                </SimpleShowLayout>
+            </ShowView>
+        }
+    </ShowController>
+);
+```
+
+If you want one field to be displayed based on the `record`, for instance to display the email field only if the `hasEmail` field is `true`, you just need to test the value from `controllerProps.record`, as follows:
+
+```jsx
+import { ShowController, ShowView, SimpleShowLayout, TextField } from 'react-admin';
+
+const UserShow = props => (
+    <ShowController {...props}>
+        {controllerProps => 
+            <ShowView {...props} {...controllerProps}>
+                <SimpleShowLayout>
+                    <TextField source="username" />
+                    {controllerProps.record && controllerProps.record.hasEmail && 
+                        <TextField source="email" />
+                    }
+                </SimpleShowLayout>
+            </ShowView>
+        }
+    </ShowController>
 );
 ```
 
