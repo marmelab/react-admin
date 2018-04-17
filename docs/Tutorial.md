@@ -176,7 +176,7 @@ export const UserList = (props) => (
 
 ![Simple user datagrid](./img/simple-user-list.png)
 
-The sidebar now gives access to the second resource, "users". You can click on it, it's working! The users list shows email addresses as a `<a href="mailto:">` tags. 
+The sidebar now gives access to the second resource, "users". You can click on it, it's working! The users list shows email addresses as a `<a href="mailto:">` tags.
 
 In react-admin, fields are simple React components. At runtime, they receive the `record` fetched from the API (e.g. `{ "id": 2, "name": "Ervin Howell", "username": "Antonette", "email": "Shanna@melissa.tv" }`), and the `source` field they should display (e.g. `email`).
 
@@ -451,7 +451,7 @@ export default (type, params) => {
     }
     // called when the user navigates to a new location
     if (type === AUTH_CHECK) {
-        return localStorage.getItem('username') 
+        return localStorage.getItem('username')
             ? Promise.resolve()
             : Promise.reject();
     }
@@ -622,17 +622,17 @@ const convertDataProviderRequestToHTTP = (type, resource, params) => {
     case UPDATE:
         return {
             url: `${API_URL}/${resource}/${params.id}`,
-            options: { method = 'PUT', body = JSON.stringify(params.data) },
+            options: { method: 'PUT', body: JSON.stringify(params.data) },
         };
     case CREATE:
         return {
             url: `${API_URL}/${resource}`,
-            options: { method = 'POST', body = JSON.stringify(params.data) },
+            options: { method: 'POST', body: JSON.stringify(params.data) },
         };
     case DELETE:
         return {
             url: `${API_URL}/${resource}/${params.id}`,
-            options: { method = 'DELETE' },
+            options: { method: 'DELETE' },
         };
     default:
         throw new Error(`Unsupported fetch action type ${type}`);
