@@ -36,8 +36,10 @@ build-ra-ui-materialui:
 build-react-admin:
 	@echo "Transpiling react-admin files...";
 	@rm -rf ./packages/react-admin/lib
+	@rm -rf ./packages/react-admin/docs
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/react-admin/src -d ./packages/react-admin/lib --ignore spec.js,test.js
-	@cp -R docs packages/react-admin/docs
+	@mkdir packages/react-admin/docs
+	@cp docs/*.md packages/react-admin/docs
 
 build-ra-data-json-server:
 	@echo "Transpiling ra-data-json-server files...";
