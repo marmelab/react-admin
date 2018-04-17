@@ -11,9 +11,7 @@
         "url": "https://github.com/marmelab/react-admin/issues"
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
-    "authors": [
-        "Gildas Garcia"
-    ],
+    "authors": ["Gildas Garcia"],
     "keywords": [
         "reactjs",
         "react",
@@ -27,7 +25,7 @@
         "lodash": "~4.17.5"
     },
     "peerDependencies": {
-        "react-admin": "^2.0.0-beta4",
+        "react-admin": "^2.0.0-RC1",
         "react-router": "~4.2.0",
         "react-router-redux": "~5.0.0-alpha.9",
         "redux-saga": "~0.16.0"

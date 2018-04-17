@@ -11,9 +11,7 @@
         "url": "https://github.com/marmelab/react-admin/issues"
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
-    "authors": [
-        "Gildas Garcia"
-    ],
+    "authors": ["Gildas Garcia"],
     "keywords": [
         "reactjs",
         "react",
@@ -31,7 +29,7 @@
     },
     "peerDependencies": {
         "graphql": "^0.13.2",
-        "react-admin": "^2.0.0-beta4"
+        "react-admin": "^2.0.0-RC1"
     },
     "devDependencies": {
         "graphql": "^0.13.2",

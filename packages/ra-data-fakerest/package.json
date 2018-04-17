@@ -6,12 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "files": [
-        "LICENSE",
-        "*.md",
-        "lib",
-        "src"
-    ],
+    "files": ["LICENSE", "*.md", "lib", "src"],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/marmelab/react-admin.git"
@@ -34,6 +29,6 @@
         "fakerest": "~2.1.0"
     },
     "peerDependencies": {
-        "react-admin": "^2.0.0-beta1"
+        "react-admin": "^2.0.0-RC1"
     }
 }
