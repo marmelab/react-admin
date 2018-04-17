@@ -367,8 +367,8 @@ The sidebar menu shows the same icon for both posts and users. Customizing the m
 
 ```jsx
 // in src/App.js
-import PostIcon from 'material-ui-icons/Book';
-import UserIcon from 'material-ui-icons/Group';
+import PostIcon from '@material-ui/icons/Book';
+import UserIcon from '@material-ui/icons/Group';
 
 const App = () => (
     <Admin dataProvider={dataProvider}>

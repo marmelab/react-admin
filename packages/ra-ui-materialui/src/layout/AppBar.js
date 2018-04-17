@@ -5,9 +5,9 @@ import classNames from 'classnames';
 import MuiAppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
-import MenuIcon from 'material-ui-icons/Menu';
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
+import MenuIcon from '@material-ui/icons/Menu';
 import compose from 'recompose/compose';
 import { toggleSidebar as toggleSidebarAction } from 'ra-core';
 

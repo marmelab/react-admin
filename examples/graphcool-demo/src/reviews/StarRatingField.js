@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from 'material-ui-icons/Stars';
+import Icon from '@material-ui/icons/Stars';
 
 const style = { opacity: 0.87, width: 20, height: 20 };
 

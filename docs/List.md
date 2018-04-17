@@ -353,8 +353,8 @@ So if you want to replace the default pagination by a "<previous - next>" pagina
 
 ```jsx
 import Button from 'material-ui/Button';
-import ChevronLeft from 'material-ui-icons/ChevronLeft';
-import ChevronRight from 'material-ui-icons/ChevronRight';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
 import Toolbar from 'material-ui/Toolbar';
 
 const PostPagination = ({ page, perPage, total, setPage }) => {

@@ -1,10 +1,10 @@
 import React from 'react';
 import Card, { CardHeader, CardActions } from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
-import LightBulbIcon from 'material-ui-icons/LightbulbOutline';
-import HomeIcon from 'material-ui-icons/Home';
-import CodeIcon from 'material-ui-icons/Code';
 import Button from 'material-ui/Button';
+import LightBulbIcon from '@material-ui/icons/LightbulbOutline';
+import HomeIcon from '@material-ui/icons/Home';
+import CodeIcon from '@material-ui/icons/Code';
 import { translate } from 'react-admin';
 
 export default translate(({ style, translate }) => (

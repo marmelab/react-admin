@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
-import ImageEye from 'material-ui-icons/RemoveRedEye';
+import ImageEye from '@material-ui/icons/RemoveRedEye';
 import { linkToRecord } from 'ra-core';
 
 import Link from '../Link';
