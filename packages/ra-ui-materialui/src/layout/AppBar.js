@@ -64,6 +64,7 @@ const styles = theme => ({
 const AppBar = ({
     classes,
     className,
+    locale,
     logout,
     open,
     title,
@@ -118,9 +119,14 @@ AppBar.propTypes = {
 };
 
 const enhance = compose(
-    connect(null, {
-        toggleSidebar: toggleSidebarAction,
-    }),
+    connect(
+        state => ({
+            locale: state.i18n.locale, // force redraw on locale change
+        }),
+        {
+            toggleSidebar: toggleSidebarAction,
+        }
+    ),
     withStyles(styles)
 );
 
