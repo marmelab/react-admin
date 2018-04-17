@@ -3,7 +3,7 @@
     "version": "2.0.0-beta4",
     "description":
         "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
-    "files": ["*.md", "lib", "src"],
+    "files": ["*.md", "lib", "src", "docs"],
     "main": "lib/index",
     "authors": ["François Zaninotto"],
     "repository": "marmelab/react-admin",

@@ -37,6 +37,7 @@ build-react-admin:
 	@echo "Transpiling react-admin files...";
 	@rm -rf ./packages/react-admin/lib
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/react-admin/src -d ./packages/react-admin/lib --ignore spec.js,test.js
+	@cp -R docs packages/react-admin/docs
 
 build-ra-data-json-server:
 	@echo "Transpiling ra-data-json-server files...";
