@@ -36,7 +36,7 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const EditView = ({
+export const EditView = ({
     actions = <DefaultActions />,
     basePath,
     children,

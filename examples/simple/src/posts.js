@@ -12,6 +12,7 @@ import {
     Datagrid,
     DateField,
     DateInput,
+    FormDataConsumer,
     DisabledInput,
     Edit,
     EditButton,
@@ -32,7 +33,7 @@ import {
     SelectField,
     SelectArrayInput,
     SelectInput,
-    Show,
+    ShowView,
     ShowButton,
     SimpleForm,
     SimpleFormIterator,
@@ -50,6 +51,7 @@ import {
     required,
     translate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import { ShowController } from 'ra-core';
 import RichTextInput from 'ra-input-rich-text';
 import Chip from 'material-ui/Chip';
 import { InputAdornment } from 'material-ui/Input';
@@ -141,6 +143,7 @@ export const PostList = withStyles(styles)(({ classes, ...props }) => (
                         source="published_at"
                         cellClassName={classes.publishedAt}
                     />
+
                     <BooleanField
                         source="commentable"
                         label="resources.posts.fields.commentable_short"
@@ -211,11 +214,15 @@ export const PostCreate = props => (
             }}
         >
             <TextInput source="title" />
-            <TextInput source="password" type="password" />
             <LongTextInput source="teaser" />
             <RichTextInput source="body" />
+            <FormDataConsumer>
+                {(formData, ...rest) =>
+                    formData.title && (
+                        <NumberInput source="average_note" {...rest} />
+                    )}
+            </FormDataConsumer>
             <DateInput source="published_at" defaultValue={getDefaultDate} />
-            <NumberInput source="average_note" />
             <BooleanInput source="commentable" defaultValue />
         </SimpleForm>
     </Create>
@@ -227,6 +234,7 @@ export const PostEdit = props => (
             <FormTab label="post.form.summary">
                 <DisabledInput source="id" />
                 <TextInput source="title" validate={required()} />
+                <LongTextInput source="teaser" validate={required()} />
                 <CheckboxGroupInput
                     source="notifications"
                     choices={[
@@ -235,7 +243,6 @@ export const PostEdit = props => (
                         { id: 42, name: 'Sean Phonee' },
                     ]}
                 />
-                <LongTextInput source="teaser" validate={required()} />
                 <ImageInput multiple source="pictures" accept="image/*">
                     <ImageField source="src" title="title" />
                 </ImageInput>
@@ -292,60 +299,68 @@ export const PostEdit = props => (
 );
 
 export const PostShow = props => (
-    <Show title={<PostTitle />} {...props}>
-        <TabbedShowLayout>
-            <Tab label="post.form.summary">
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="teaser" />
-                <ArrayField source="backlinks">
-                    <Datagrid>
-                        <DateField source="date" />
-                        <UrlField source="url" />
-                    </Datagrid>
-                </ArrayField>
-            </Tab>
-            <Tab label="post.form.body">
-                <RichTextField
-                    source="body"
-                    stripTags={false}
-                    label=""
-                    addLabel={false}
-                />
-            </Tab>
-            <Tab label="post.form.miscellaneous">
-                <ReferenceArrayField reference="tags" source="tags">
-                    <SingleFieldList>
-                        <ChipField source="name" />
-                    </SingleFieldList>
-                </ReferenceArrayField>
-                <DateField source="published_at" />
-                <SelectField
-                    source="category"
-                    choices={[
-                        { name: 'Tech', id: 'tech' },
-                        { name: 'Lifestyle', id: 'lifestyle' },
-                    ]}
-                />
-                <NumberField source="average_note" />
-                <BooleanField source="commentable" />
-                <TextField source="views" />
-            </Tab>
-            <Tab label="post.form.comments">
-                <ReferenceManyField
-                    addLabel={false}
-                    reference="comments"
-                    target="post_id"
-                    sort={{ field: 'created_at', order: 'DESC' }}
-                >
-                    <Datagrid>
-                        <DateField source="created_at" />
-                        <TextField source="author.name" />
-                        <TextField source="body" />
-                        <EditButton />
-                    </Datagrid>
-                </ReferenceManyField>
-            </Tab>
-        </TabbedShowLayout>
-    </Show>
+    <ShowController title={<PostTitle />} {...props}>
+        {controllerProps => (
+            <ShowView {...props} {...controllerProps}>
+                <TabbedShowLayout>
+                    <Tab label="post.form.summary">
+                        <TextField source="id" />
+                        <TextField source="title" />
+                        {controllerProps.record &&
+                            controllerProps.record.title ==
+                                'Fusce massa lorem, pulvinar a posuere ut, accumsan ac nisi' && (
+                                <TextField source="teaser" />
+                            )}
+                        <ArrayField source="backlinks">
+                            <Datagrid>
+                                <DateField source="date" />
+                                <UrlField source="url" />
+                            </Datagrid>
+                        </ArrayField>
+                    </Tab>
+                    <Tab label="post.form.body">
+                        <RichTextField
+                            source="body"
+                            stripTags={false}
+                            label=""
+                            addLabel={false}
+                        />
+                    </Tab>
+                    <Tab label="post.form.miscellaneous">
+                        <ReferenceArrayField reference="tags" source="tags">
+                            <SingleFieldList>
+                                <ChipField source="name" />
+                            </SingleFieldList>
+                        </ReferenceArrayField>
+                        <DateField source="published_at" />
+                        <SelectField
+                            source="category"
+                            choices={[
+                                { name: 'Tech', id: 'tech' },
+                                { name: 'Lifestyle', id: 'lifestyle' },
+                            ]}
+                        />
+                        <NumberField source="average_note" />
+                        <BooleanField source="commentable" />
+                        <TextField source="views" />
+                    </Tab>
+                    <Tab label="post.form.comments">
+                        <ReferenceManyField
+                            addLabel={false}
+                            reference="comments"
+                            target="post_id"
+                            sort={{ field: 'created_at', order: 'DESC' }}
+                        >
+                            <Datagrid>
+                                <DateField source="created_at" />
+                                <TextField source="author.name" />
+                                <TextField source="body" />
+                                <EditButton />
+                            </Datagrid>
+                        </ReferenceManyField>
+                    </Tab>
+                </TabbedShowLayout>
+            </ShowView>
+        )}
+    </ShowController>
 );

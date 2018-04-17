@@ -25,6 +25,7 @@
 - [Logout is now displayed in the AppBar on desktop](#logout-is-now-displayed-in-the-appbar-on-desktop)
 - [Data providers should support two more types for bulk actions](#data-providers-should-support-two-more-types-for-bulk-actions)
 - [react-admin addon packages renamed with ra prefix and moved into root repository](#react-admin-addon-packages-renamed-with-ra-prefix-and-moved-into-root-repository)
+- [`aor-dependent-input` Was Removed](#aor-dependent-input-was-removed)
 - [The require,number and email validators should be renamed to require(),number() and validation()](#validators-should-be-initialized)
 
 ## Admin-on-rest Renamed to React-Admin
@@ -173,7 +174,7 @@ If you don't use the `<Admin>` component, but prefer to implement your administr
 
 ## `<AutocompleteInput>` no longer accepts a `filter` prop
 
-Material-ui's implementation of the autocomplete input has radically changed. React-admin maintains backwards compatibility, except for the `filter` prop, which no longer makes sense in the new impementation.
+Material-ui's implementation of the autocomplete input has radically changed. React-admin maintains backwards compatibility, except for the `filter` prop, which no longer makes sense in the new implementation.
 
 ## `<Datagrid>` No Longer Accepts `options`, `headerOptions`, `bodyOptions`, and `rowOptions` props
 
@@ -313,7 +314,7 @@ import { CardActions } from 'material-ui/Card';
 );
 ```
 
-## Customizing styles
+## Customizing Styles
 
 Following the same path as Material UI, react-admin now uses [JSS](https://github.com/cssinjs/jss) for styling components instead of the `style` prop. This approach has many benefits, including a smaller DOM, faster rendering, media queries support, and automated browser prefixing.
 
@@ -904,7 +905,7 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps)(Menu);
 ```
 
-## Logout is now displayed in the AppBar on Desktop
+## Logout is Now Displayed in the AppBar on Desktop
 
 The Logout button is now displayed in the AppBar on desktop, but is still displayed as a menu item on small devices.
 
@@ -950,7 +951,7 @@ const MyLayout () => ({ logout, ...props }) => (
 );
 ```
 
-## Data providers should support two more types for bulk actions
+## Data Providers Should Support Two More Types For Bulk Actions
 
 The `List` component now support bulk actions. The consequence is that data providers should support them too. We introduced two new message types for the `dataProvider`: `DELETE_MANY` and `UPDATE_MANY`.
 
@@ -958,9 +959,9 @@ Both will be called with an `ids` property in their params, containing an array 
 
 Please refer to the `dataProvider` documentation for more information.
 
-## react-admin addon packages renamed with ra prefix and moved into root repository
+## react-admin Addon Packages Renamed With ra Prefix And Moved Into Root Repository
 
-`aor-graphql` and `aor-realtime` packages have been migrated into the main `react-admin` repository and renamed with the new prefix. Besides, `aor-graphql-client` and `aor-graphql-client-graphcool` follow the new dataProvider packages naming.
+The `aor-graphql` and `aor-realtime` packages have been migrated into the main `react-admin` repository and renamed with the new prefix. Besides, `aor-graphql-client` and `aor-graphql-client-graphcool` follow the new dataProvider packages naming.
 
 * `aor-realtime` => `ra-realtime`
 * `aor-graphql-client` => `ra-data-graphql`
@@ -979,13 +980,17 @@ Update your `import` statements accordingly:
 + import buildGraphcoolProvider from 'ra-data-graphcool';
 ```
 
-## aor-dependent-input integrated into core
+## `aor-dependent-input` Was Removed
 
-The `DependentInput` and `DependentField` components of `aor-dependent-input` have been merged into one named `DependsOn`. Besides, the `dependsOn` prop was renamed to `source`. Finally, this component is now bundled by default in the main `react-admin` package. 
+The `aor-dependent-input` package has been removed.
+
+You can achieve a similar effect to the old `<DependentInput>` component by using the new `<FormDataConsumer>` component.
+
+To display a component based on the value of the current (edited) record, wrap that component with `<FormDataConsumer>`, which uses grabs the form data from the redux-form state, and passes it to a child function: 
 
 ```diff
 - import { DependentInput } from 'aor-dependent-input';
-+ import { DependsOn } from 'react-admin';
++ import { FormDataConsumer } from 'react-admin';
 
 export const UserCreate = (props) => (
     <Create {...props}>
@@ -994,14 +999,82 @@ export const UserCreate = (props) => (
             <TextInput source="lastName" />
             <BooleanInput source="hasEmail" label="Has email ?" />
 -           <DependentInput dependsOn="hasEmail">
-+           <DependsOn source="hasEmail">
-                <TextInput source="email" />
+-                <TextInput source="email" />
 -           </DependentInput>
-+           </DependsOn>
++           <FormDataConsumer>
++               {(formData, ...rest) => formData.hasEmail && 
++                   <TextInput source="email" {...rest} />
++               }
++           </FormDataConsumer>
         </SimpleForm>
     </Create>
 );
+```
 
+As for the `<DependentField>` in a `<Show>` view, you need to use an alternative approach, taking advantage of the structure of `<Show>`, which in fact decomposes into a controller and a view component:
+
+```jsx
+// inside react-admin
+const Show = props => (
+    <ShowController {...props}>
+        {controllerProps => <ShowView {...props} {...controllerProps} />}
+    </ShowController>
+);
+```
+
+The `<ShowController>` fetches the `record` from the data provider, and passes it to its child function when received (among the `controllerProps`). That means the following code:
+
+```jsx
+import { Show, SimpleShowLayout, TextField } from 'react-admin';
+
+const UserShow = props => (
+    <Show {...props}>
+        <SimpleShowLayout>
+            <TextField source="username" />
+            <TextField source="email" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+Is equivalent to:
+
+```jsx
+import { ShowController, ShowView, SimpleShowLayout, TextField } from 'react-admin';
+
+const UserShow = props => (
+    <ShowController {...props}>
+        {controllerProps => 
+            <ShowView {...props} {...controllerProps}>
+                <SimpleShowLayout>
+                    <TextField source="username" />
+                    <TextField source="email" />
+                </SimpleShowLayout>
+            </ShowView>
+        }
+    </ShowController>
+);
+```
+
+If you want one field to be displayed based on the `record`, for instance to display the email field only if the `hasEmail` field is `true`, you just need to test the value from `controllerProps.record`, as follows:
+
+```jsx
+import { ShowController, ShowView, SimpleShowLayout, TextField } from 'react-admin';
+
+const UserShow = props => (
+    <ShowController {...props}>
+        {controllerProps => 
+            <ShowView {...props} {...controllerProps}>
+                <SimpleShowLayout>
+                    <TextField source="username" />
+                    {controllerProps.record && controllerProps.record.hasEmail && 
+                        <TextField source="email" />
+                    }
+                </SimpleShowLayout>
+            </ShowView>
+        }
+    </ShowController>
+);
 ```
 
 ## Validators should be initialized
