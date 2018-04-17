@@ -43,6 +43,7 @@ const sanitizeRestProps = ({
     data,
     ids,
     total,
+    totalAll,
     isLoading,
     translate,
     version,
@@ -96,12 +97,13 @@ export const ListView = ({
     showFilter,
     title,
     total,
+    totalAll,
     translate,
     version,
     ...rest
 }) => {
     const titleElement = (
-        <TitleClass title={title} defaultTitle={defaultTitle} total={total} />
+        <TitleClass title={title} defaultTitle={defaultTitle} total={totalAll} />
     );
 
     return (
@@ -227,6 +229,7 @@ ListView.propTypes = {
     showFilter: PropTypes.func,
     title: PropTypes.any,
     total: PropTypes.number,
+    totalAll: PropTypes.number,
     translate: PropTypes.func,
     version: PropTypes.number,
 };

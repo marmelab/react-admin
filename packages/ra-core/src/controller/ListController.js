@@ -232,6 +232,7 @@ export class ListController extends Component {
             data,
             ids,
             total,
+            totalAll,
             isLoading,
             translate,
             version,
@@ -277,6 +278,7 @@ export class ListController extends Component {
             showFilter: this.showFilter,
             translate,
             total,
+            totalAll,
             version,
         });
     }
@@ -316,6 +318,7 @@ ListController.propTypes = {
     setSelectedIds: PropTypes.func.isRequired,
     toggleItem: PropTypes.func.isRequired,
     total: PropTypes.number.isRequired,
+    totalAll: PropTypes.number.isRequired,
     translate: PropTypes.func.isRequired,
     version: PropTypes.number,
 };
@@ -362,6 +365,7 @@ function mapStateToProps(state, props) {
         ids: resourceState.list.ids,
         selectedIds: resourceState.list.selectedIds,
         total: resourceState.list.total,
+        totalAll: resourceState.list.totalAll,
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
         filterValues: resourceState.list.params.filter,
