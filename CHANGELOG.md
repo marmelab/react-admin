@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.4.1
+
+* Add `addLabel` default prop in custom Field documentation ([jorrit](https://github.com/jorrit))
+* Add Catalan translation ([fzaninotto](https://github.com/fzaninotto))
+* Add `aor-cli` package to Ecosystem documentaiton ([aymendhaya](https://github.com/aymendhaya))
+* Add DynamoDb to RestClients ([yonahforst](https://github.com/yonahforst))
+* Update redux-form to 7.1.X ([mauchede](https://github.com/mauchede))
+* Update link to GraphQL client ([romainquellec](https://github.com/romainquellec))
+* Fix `NumberInput` returns String value ([fzaninotto](https://github.com/fzaninotto))
+* Fix boolean input label color does not use theme ([fzaninotto](https://github.com/fzaninotto))
+* Fix login layout in IE 11 ([pavyarov](https://github.com/pavyarov))
+* Fix tutorial usage of ReferenceInput for Create ([djhi](https://github.com/djhi))
+* Fix `GET_MANY_REFERENCE` example in `RestClients` documentation ([Kiailandi](https://github.com/Kiailandi))
+* Fix custom layout documentation ([djhi](https://github.com/djhi))
+* Fix `AutocompleteInput` ([djhi](https://github.com/djhi))
+
 ## v1.4.0
 
 * Add `options` support in `DisabledInput` ([afilp](https://github.com/afilp))
