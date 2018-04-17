@@ -699,9 +699,14 @@ import PropTypes from 'prop-types';
 const TextField = ({ source, record = {} }) => <span>{record[source]}</span>;
 
 TextField.propTypes = {
+    addLabel: PropTypes.bool,
     label: PropTypes.string,
     record: PropTypes.object,
     source: PropTypes.string.isRequired,
+};
+
+TextField.defaultProps = {
+  addLabel: true,
 };
 
 export default TextField;
