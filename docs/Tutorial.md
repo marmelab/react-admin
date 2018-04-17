@@ -86,7 +86,10 @@ const App = () => (
 );
 ```
 
+**Tip**: We'll define the `<PostList>` component in the next section.
+
 The line `<Resource name="posts" />` informs react-admin to fetch the "posts" records from the [http://jsonplaceholder.typicode.com/posts](http://jsonplaceholder.typicode.com/posts) URL.
+
 
 ## Displaying A List Of Records
 
