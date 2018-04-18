@@ -68,6 +68,7 @@ export class FilterButton extends Component {
     render() {
         const hiddenFilters = this.getHiddenFilters();
         const {
+            button,
             classes = {},
             className,
             resource,
@@ -82,16 +83,18 @@ export class FilterButton extends Component {
         return (
             hiddenFilters.length > 0 && (
                 <div className={classnames(classes.root, className)} {...rest}>
-                    <Button
-                        ref={node => {
-                            this.button = node;
-                        }}
-                        className="add-filter"
-                        label="ra.action.add_filter"
-                        onClick={this.handleClickButton}
-                    >
-                        <ContentFilter />
-                    </Button>
+                    {React.cloneElement(
+                        button,
+                        {
+                            ref: node => {
+                                this.button = node;
+                            },
+                            className: 'add-filter',
+                            label: 'ra.action.add_filter',
+                            onClick: this.handleClickButton,
+                        },
+                        button.props.children || <ContentFilter />
+                    )}
                     <Menu
                         open={open}
                         anchorEl={anchorEl}
@@ -113,6 +116,7 @@ export class FilterButton extends Component {
 }
 
 FilterButton.propTypes = {
+    button: PropTypes.element.isRequired,
     resource: PropTypes.string.isRequired,
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
     displayedFilters: PropTypes.object.isRequired,
@@ -121,6 +125,10 @@ FilterButton.propTypes = {
     translate: PropTypes.func.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
+};
+
+FilterButton.defaultProps = {
+    button: <Button />,
 };
 
 export default compose(translate, withStyles(styles))(FilterButton);

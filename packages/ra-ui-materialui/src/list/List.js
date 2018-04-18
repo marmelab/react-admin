@@ -22,6 +22,7 @@ const styles = {
 };
 
 const sanitizeRestProps = ({
+    TitleClass,
     children,
     classes,
     className,
@@ -42,6 +43,7 @@ const sanitizeRestProps = ({
     data,
     ids,
     total,
+    totalAll,
     isLoading,
     translate,
     version,
@@ -63,6 +65,7 @@ const sanitizeRestProps = ({
 }) => rest;
 
 export const ListView = ({
+    TitleClass,
     actions = <DefaultActions />,
     basePath,
     bulkActions = <DefaultBulkActions />,
@@ -94,11 +97,14 @@ export const ListView = ({
     showFilter,
     title,
     total,
+    totalAll,
     translate,
     version,
     ...rest
 }) => {
-    const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
+    const titleElement = (
+        <TitleClass title={title} defaultTitle={defaultTitle} total={totalAll} />
+    );
 
     return (
         <div
@@ -123,7 +129,9 @@ export const ListView = ({
                         refresh,
                         resource,
                         selectedIds,
+                        setFilters,
                         showFilter,
+                        total,
                     }}
                 />
                 {filters &&
@@ -133,6 +141,7 @@ export const ListView = ({
                         hideFilter,
                         resource,
                         setFilters,
+                        total,
                         context: 'form',
                     })}
                 {isLoading || total > 0 ? (
@@ -220,6 +229,7 @@ ListView.propTypes = {
     showFilter: PropTypes.func,
     title: PropTypes.any,
     total: PropTypes.number,
+    totalAll: PropTypes.number,
     translate: PropTypes.func,
     version: PropTypes.number,
 };
@@ -273,6 +283,7 @@ const List = props => (
 
 List.propTypes = {
     // the props you can change
+    TitleClass: PropTypes.object.isRequired,
     actions: PropTypes.element,
     bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     children: PropTypes.node,
@@ -301,6 +312,7 @@ List.propTypes = {
 };
 
 List.defaultProps = {
+    TitleClass: Title,
     filter: {},
     perPage: 10,
     theme: defaultTheme,
