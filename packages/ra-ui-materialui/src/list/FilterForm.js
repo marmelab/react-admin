@@ -98,6 +98,7 @@ export class FilterForm extends Component {
             className,
             resource,
             translate,
+            shouldBulkToggleFilters,
             ...rest
         } = this.props;
 
@@ -116,7 +117,8 @@ export class FilterForm extends Component {
                                     filterElement.props.containerClassName
                                 )}
                             >
-                                {filterElement.props.alwaysOn ? (
+                                {filterElement.props.alwaysOn ||
+                                shouldBulkToggleFilters ? (
                                     <div className={classes.spacer}>&nbsp;</div>
                                 ) : (
                                     <IconButton
@@ -159,6 +161,7 @@ FilterForm.propTypes = {
     translate: PropTypes.func.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
+    shouldBulkToggleFilters: PropTypes.bool,
 };
 
 export const mergeInitialValuesWithDefaultValues = ({

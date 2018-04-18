@@ -79,6 +79,7 @@ export const ListView = ({
     filters,
     filterValues,
     hasCreate,
+    hideActiveFilters,
     hideFilter,
     ids,
     isLoading,
@@ -103,7 +104,11 @@ export const ListView = ({
     ...rest
 }) => {
     const titleElement = (
-        <TitleClass title={title} defaultTitle={defaultTitle} total={totalAll} />
+        <TitleClass
+            defaultTitle={defaultTitle}
+            title={title}
+            total={totalAll}
+        />
     );
 
     return (
@@ -125,6 +130,8 @@ export const ListView = ({
                         filters,
                         filterValues,
                         hasCreate,
+                        hideActiveFilters,
+                        hideFilter,
                         onUnselectItems,
                         refresh,
                         resource,
@@ -195,6 +202,7 @@ export const ListView = ({
 };
 
 ListView.propTypes = {
+    TitleClass: PropTypes.object.isRequired,
     actions: PropTypes.element,
     basePath: PropTypes.string,
     bulkActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
@@ -211,6 +219,7 @@ ListView.propTypes = {
     filters: PropTypes.element,
     filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,
+    hideActiveFilters: PropTypes.func,
     hideFilter: PropTypes.func,
     ids: PropTypes.array,
     isLoading: PropTypes.bool,

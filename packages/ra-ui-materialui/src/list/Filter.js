@@ -23,10 +23,11 @@ export class Filter extends Component {
             resource,
             children,
             showFilter,
-            hideFilter,
+            hideActiveFilters,
             displayedFilters,
             filterButton,
             filterValues,
+            shouldBulkToggleFilters,
             ...rest
         } = this.props;
 
@@ -37,8 +38,10 @@ export class Filter extends Component {
                 resource={resource}
                 filters={React.Children.toArray(children)}
                 showFilter={showFilter}
+                hideActiveFilters={hideActiveFilters}
                 displayedFilters={displayedFilters}
                 filterValues={filterValues}
+                shouldBulkToggleFilters={shouldBulkToggleFilters}
                 {...rest}
             />
         );
@@ -58,6 +61,7 @@ export class Filter extends Component {
             showFilter,
             filterValues,
             setFilters,
+            shouldBulkToggleFilters,
             ...rest
         } = this.props;
 
@@ -72,6 +76,7 @@ export class Filter extends Component {
                 inActionsToolbar={inActionsToolbar}
                 initialValues={filterValues}
                 setFilters={setFilters}
+                shouldBulkToggleFilters={shouldBulkToggleFilters}
                 {...rest}
             />
         );
@@ -93,9 +98,11 @@ Filter.propTypes = {
     filterButton: PropTypes.element,
     filterValues: PropTypes.object,
     formClasses: PropTypes.object,
+    hideActiveFilters: PropTypes.func,
     hideFilter: PropTypes.func,
     inActionsToolbar: PropTypes.bool,
     setFilters: PropTypes.func,
+    shouldBulkToggleFilters: PropTypes.bool,
     showFilter: PropTypes.func,
     resource: PropTypes.string.isRequired,
 };

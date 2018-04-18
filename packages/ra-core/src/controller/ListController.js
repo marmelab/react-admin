@@ -194,6 +194,15 @@ export class ListController extends Component {
         }
     };
 
+    hideActiveFilters = () => {
+        const nextState = { ...this.state };
+        Object.keys(this.state).forEach(filterName => {
+            nextState[filterName] = false;
+        });
+        this.setState(nextState);
+        this.setFilters({});
+    };
+
     hideFilter = filterName => {
         this.setState({ [filterName]: false });
         const newFilters = removeKey(this.props.filterValues, filterName);
@@ -262,6 +271,7 @@ export class ListController extends Component {
             displayedFilters: this.state,
             filterValues: queryFilterValues,
             hasCreate,
+            hideActiveFilters: this.hideActiveFilters,
             hideFilter: this.hideFilter,
             ids,
             isLoading,
