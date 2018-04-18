@@ -37,6 +37,7 @@ export class TextInput extends Component {
 
     render() {
         const {
+            TextFieldClass,
             className,
             input,
             isRequired,
@@ -46,7 +47,7 @@ export class TextInput extends Component {
             resource,
             source,
             type,
-            textField,
+            textFieldProps,
             ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
@@ -56,31 +57,35 @@ export class TextInput extends Component {
         }
         const { touched, error } = meta;
 
-        return React.cloneElement(textField, {
-            margin: 'normal',
-            type,
-            label: (
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
-            ),
-            error: !!(touched && error),
-            helperText: touched && error,
-            className,
-            ...options,
-            ...sanitizeRestProps(rest),
-            ...input,
-            onBlur: this.handleBlur,
-            onFocus: this.handleFocus,
-            onChange: this.handleChange,
-        });
+        return (
+            <TextFieldClass
+                {...textFieldProps}
+                margin={'normal'}
+                type={type}
+                label={
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                }
+                error={!!(touched && error)}
+                helperText={touched && error}
+                className={className}
+                {...options}
+                {...sanitizeRestProps(rest)}
+                {...input}
+                onBlur={this.handleBlur}
+                onFocus={this.handleFocus}
+                onChange={this.handleChange}
+            />
+        );
     }
 }
 
 TextInput.propTypes = {
+    TextFieldClass: PropTypes.object.isRequired,
     className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
@@ -93,7 +98,7 @@ TextInput.propTypes = {
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-    textField: PropTypes.element.isRequired,
+    textFieldProps: PropTypes.object,
     type: PropTypes.string,
 };
 
@@ -102,7 +107,7 @@ TextInput.defaultProps = {
     onChange: () => {},
     onFocus: () => {},
     options: {},
-    textField: <TextField />,
+    TextFieldClass: TextField,
     type: 'text',
 };
 
