@@ -17,10 +17,13 @@ export const FieldTitle = ({
         {typeof label !== 'undefined'
             ? translate(label, { _: label })
             : typeof source !== 'undefined'
-              ? translate(`resources.${resource}.fields.${source}`, {
-                    _: inflection.transform(source, ['underscore', 'humanize']),
-                })
-              : ''}
+                ? translate(`resources.${resource}.fields.${source}`, {
+                      _: inflection.transform(source, [
+                          'underscore',
+                          'humanize',
+                      ]),
+                  })
+                : ''}
         {isRequired && ' *'}
     </span>
 );

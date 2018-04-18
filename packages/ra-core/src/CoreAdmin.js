@@ -78,7 +78,8 @@ const CoreAdmin = ({
                                 createElement(loginPage, {
                                     ...props,
                                     title,
-                                })}
+                                })
+                            }
                         />
                         <Route
                             path="/"

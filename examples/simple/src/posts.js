@@ -132,7 +132,8 @@ export const PostList = withStyles(styles)(({ classes, ...props }) => (
                     primaryText={record => record.title}
                     secondaryText={record => `${record.views} views`}
                     tertiaryText={record =>
-                        new Date(record.published_at).toLocaleDateString()}
+                        new Date(record.published_at).toLocaleDateString()
+                    }
                 />
             }
             medium={
@@ -220,7 +221,8 @@ export const PostCreate = props => (
                 {(formData, ...rest) =>
                     formData.title && (
                         <NumberInput source="average_note" {...rest} />
-                    )}
+                    )
+                }
             </FormDataConsumer>
             <DateInput source="published_at" defaultValue={getDefaultDate} />
             <BooleanInput source="commentable" defaultValue />

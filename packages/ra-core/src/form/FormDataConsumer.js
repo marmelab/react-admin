@@ -7,9 +7,9 @@ const REDUX_FORM_NAME = 'record-form';
 /**
  * Get the current (edited) value of the record from the form and pass it
  * to child function
- * 
+ *
  * @example
- * 
+ *
  * const PostEdit = (props) => (
  *     <Edit {...props}>
  *         <SimpleForm>
@@ -21,17 +21,17 @@ const REDUX_FORM_NAME = 'record-form';
  *             </FormDataConsumer>
  *         </SimpleForm>
  *     </Edit>
- * ); 
- * 
+ * );
+ *
  * @example
- * 
+ *
  * const OrderEdit = (props) => (
  *     <Edit {...props}>
  *         <SimpleForm>
  *             <SelectInput source="country" choices={countries} />
  *             <FormDataConsumer>
  *                 {(formData, ...rest) =>
- *                      <SelectInput 
+ *                      <SelectInput
  *                          source="city"
  *                          choices={getCitiesFor(formData.country)}
  *                          {...rest}
@@ -40,7 +40,7 @@ const REDUX_FORM_NAME = 'record-form';
  *             </FormDataConsumer>
  *         </SimpleForm>
  *     </Edit>
- * ); 
+ * );
  */
 const FormDataConsumer = ({ children, formData, ...rest }) => {
     const ret = children(formData, ...rest);

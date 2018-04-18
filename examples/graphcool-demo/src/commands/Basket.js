@@ -28,7 +28,10 @@ class Basket extends Component {
         this.fetchData();
     }
     fetchData() {
-        const { record: { basket }, crudGetMany } = this.props;
+        const {
+            record: { basket },
+            crudGetMany,
+        } = this.props;
         crudGetMany('Product', basket.map(item => item['product.id']));
     }
     render() {
@@ -91,8 +94,9 @@ class Basket extends Component {
                                         <TableCell
                                             className={classes.rightAlignedCell}
                                         >
-                                            {(products[item.product.id].price *
-                                                item.quantity
+                                            {(
+                                                products[item.product.id]
+                                                    .price * item.quantity
                                             ).toLocaleString(undefined, {
                                                 style: 'currency',
                                                 currency: 'USD',
@@ -169,7 +173,9 @@ class Basket extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-    const { record: { basket } } = props;
+    const {
+        record: { basket },
+    } = props;
     const productIds = basket.map(item => item['product.id']);
     return {
         products: productIds

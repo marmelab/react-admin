@@ -87,7 +87,9 @@ const styles = theme => ({
  */
 export class CheckboxGroupInput extends Component {
     handleCheck = (event, isChecked) => {
-        const { input: { value, onChange } } = this.props;
+        const {
+            input: { value, onChange },
+        } = this.props;
         const newValue = JSON.parse(event.target.value);
         if (isChecked) {
             onChange([...value, ...[newValue]]);
@@ -108,8 +110,8 @@ export class CheckboxGroupInput extends Component {
         const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
             ? React.cloneElement(optionText, { record: choice })
             : typeof optionText === 'function'
-              ? optionText(choice)
-              : get(choice, optionText);
+                ? optionText(choice)
+                : get(choice, optionText);
         return (
             <FormControlLabel
                 key={get(choice, optionValue)}

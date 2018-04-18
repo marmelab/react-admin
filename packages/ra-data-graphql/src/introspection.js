@@ -32,7 +32,11 @@ export default async (client, options) => {
     const schema = options.schema
         ? options.schema
         : await client
-              .query({ query: gql`${introspectionQuery}` })
+              .query({
+                  query: gql`
+                      ${introspectionQuery}
+                  `,
+              })
               .then(({ data: { __schema } }) => __schema);
 
     const queries = schema.types.reduce((acc, type) => {

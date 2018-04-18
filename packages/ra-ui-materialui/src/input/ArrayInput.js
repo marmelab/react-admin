@@ -8,12 +8,12 @@ import { InputLabel } from 'material-ui/Input';
 import sanitizeRestProps from './sanitizeRestProps';
 
 /**
- * To edit arrays of data embedded inside a record, <ArrayInput> creates a list of sub-forms. 
+ * To edit arrays of data embedded inside a record, <ArrayInput> creates a list of sub-forms.
  *
  *  @example
- * 
+ *
  *      import { ArrayInput, SimpleFormIterator, DateInput, UrlInput } from 'react-admin';
- * 
+ *
  *      <ArrayInput source="backlinks">
  *          <SimpleFormIterator>
  *              <DateInput source="date" />
@@ -45,7 +45,7 @@ import sanitizeRestProps from './sanitizeRestProps';
  * displays an array of fields in an unordered list (<ul>), one sub-form by
  * list item (<li>). It also provides controls for adding and removing
  * a sub-record (a backlink in this example).
- * 
+ *
  * @see https://redux-form.com/7.3.0/examples/fieldarrays/
  */
 export class ArrayInput extends Component {

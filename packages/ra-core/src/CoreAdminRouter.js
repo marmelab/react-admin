@@ -144,7 +144,8 @@ export class CoreAdminRouter extends Component {
                                     this.renderCustomRoutesWithoutLayout(
                                         route,
                                         props
-                                    )}
+                                    )
+                                }
                             />
                         ))}
                     <Route
@@ -167,7 +168,8 @@ export class CoreAdminRouter extends Component {
                                 menu,
                                 theme,
                                 title,
-                            })}
+                            })
+                        }
                     />
                 </Switch>
             </div>
