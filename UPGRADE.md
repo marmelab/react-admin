@@ -6,7 +6,7 @@
 - [`authClient` Prop Renamed To `authProvider` in `<Admin>` Component](#authclient-prop-renamed-to-authprovider-in-admin-component)
 - [Default (English) Messages Moved To Standalone Package](#default-english-messages-moved-to-standalone-package)
 - [Message Hash Main Key Changed ("aor" => "ra")](#message-hash-main-key-changed-aor--ra)
-- [Removed the Delete view in Resource](#removed-the-delete-view-in-resources)
+- [Removed the Delete view in Resource](#removed-the-delete-view-in-resource)
 - [Replaced `messages` by `i18nProvider` in `<Admin>`](#replaced-messages-by-i18nprovider-in-admin)
 - [`crudSaga` renamed to `adminSaga`](#crudsaga-renamed-to-adminsaga)
 - [`<AutocompleteInput>` no longer accepts a `filter` prop](#autocompleteinput-no-longer-accepts-a-filter-prop)
