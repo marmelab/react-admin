@@ -37,6 +37,7 @@ export class TextInput extends Component {
 
     render() {
         const {
+            TextFieldClass,
             className,
             input,
             isRequired,
@@ -46,6 +47,7 @@ export class TextInput extends Component {
             resource,
             source,
             type,
+            textFieldProps,
             ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
@@ -56,8 +58,9 @@ export class TextInput extends Component {
         const { touched, error } = meta;
 
         return (
-            <TextField
-                margin="normal"
+            <TextFieldClass
+                {...textFieldProps}
+                margin={'normal'}
                 type={type}
                 label={
                     <FieldTitle
@@ -82,6 +85,7 @@ export class TextInput extends Component {
 }
 
 TextInput.propTypes = {
+    TextFieldClass: PropTypes.object.isRequired,
     className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
@@ -94,6 +98,7 @@ TextInput.propTypes = {
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
+    textFieldProps: PropTypes.object,
     type: PropTypes.string,
 };
 
@@ -102,6 +107,7 @@ TextInput.defaultProps = {
     onChange: () => {},
     onFocus: () => {},
     options: {},
+    TextFieldClass: TextField,
     type: 'text',
 };
 

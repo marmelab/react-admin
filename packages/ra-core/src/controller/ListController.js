@@ -82,7 +82,7 @@ export class ListController extends Component {
             return;
         }
 
-        this.updateData();
+        this.updateData(this.props);
         if (Object.keys(this.props.query).length > 0) {
             this.props.changeListParams(this.props.resource, this.props.query);
         }
@@ -98,16 +98,18 @@ export class ListController extends Component {
             nextProps.query.sort !== this.props.query.sort ||
             nextProps.query.order !== this.props.query.order ||
             nextProps.query.page !== this.props.query.page ||
+            nextProps.query.perPage !== this.props.query.perPage ||
             nextProps.query.filter !== this.props.query.filter
         ) {
             this.updateData(
+                nextProps,
                 Object.keys(nextProps.query).length > 0
                     ? nextProps.query
                     : nextProps.params
             );
         }
         if (nextProps.version !== this.props.version) {
-            this.updateData();
+            this.updateData(nextProps);
         }
     }
 
@@ -155,18 +157,17 @@ export class ListController extends Component {
             query.sort = this.props.sort.field;
             query.order = this.props.sort.order;
         }
-        if (!query.perPage) {
-            query.perPage = this.props.perPage;
-        }
+        query.perPage = this.props.perPage;
         if (!query.page) {
             query.page = 1;
         }
         return query;
     }
 
-    updateData(query) {
+    updateData(props, query) {
         const params = query || this.getQuery();
-        const { sort, order, page = 1, perPage, filter } = params;
+        const { perPage } = props;
+        const { sort, order, page = 1, filter } = params;
         const pagination = {
             page: parseInt(page, 10),
             perPage: parseInt(perPage, 10),
@@ -202,6 +203,15 @@ export class ListController extends Component {
                 [filterName]: defaultValue,
             });
         }
+    };
+
+    hideActiveFilters = () => {
+        const nextState = { ...this.state };
+        Object.keys(this.state).forEach(filterName => {
+            nextState[filterName] = false;
+        });
+        this.setState(nextState);
+        this.setFilters({});
     };
 
     hideFilter = filterName => {
@@ -242,6 +252,7 @@ export class ListController extends Component {
             data,
             ids,
             total,
+            totalAll,
             isLoading,
             translate,
             version,
@@ -271,6 +282,7 @@ export class ListController extends Component {
             displayedFilters: this.state,
             filterValues: queryFilterValues,
             hasCreate,
+            hideActiveFilters: this.hideActiveFilters,
             hideFilter: this.hideFilter,
             ids,
             isLoading,
@@ -287,6 +299,7 @@ export class ListController extends Component {
             showFilter: this.showFilter,
             translate,
             total,
+            totalAll,
             version,
         });
     }
@@ -327,6 +340,7 @@ ListController.propTypes = {
     setSelectedIds: PropTypes.func.isRequired,
     toggleItem: PropTypes.func.isRequired,
     total: PropTypes.number.isRequired,
+    totalAll: PropTypes.number.isRequired,
     translate: PropTypes.func.isRequired,
     version: PropTypes.number,
 };
@@ -373,6 +387,7 @@ function mapStateToProps(state, props) {
         ids: resourceState.list.ids,
         selectedIds: resourceState.list.selectedIds,
         total: resourceState.list.total,
+        totalAll: resourceState.list.totalAll,
         data: resourceState.data,
         isLoading: state.admin.loading > 0,
         filterValues: resourceState.list.params.filter,

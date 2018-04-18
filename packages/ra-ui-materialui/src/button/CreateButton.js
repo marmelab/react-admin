@@ -35,16 +35,18 @@ const styles = theme => ({
 });
 
 const CreateButton = ({
+    ButtonClass,
     basePath = '',
     className,
     classes = {},
-    translate,
+    icon,
     label = 'ra.action.create',
+    translate,
     ...rest
 }) => (
     <Responsive
         small={
-            <Button
+            <ButtonClass
                 component={Link}
                 variant="fab"
                 color="primary"
@@ -52,30 +54,39 @@ const CreateButton = ({
                 to={`${basePath}/create`}
                 {...rest}
             >
-                <ContentAdd />
-            </Button>
+                {React.cloneElement(icon)}
+            </ButtonClass>
         }
         medium={
-            <Button
+            <ButtonClass
                 component={Link}
                 color="primary"
                 to={`${basePath}/create`}
                 className={classnames(classes.desktopLink, className)}
                 {...rest}
             >
-                <ContentAdd className={classes.iconPaddingStyle} />
+                {React.cloneElement(icon, {
+                    className: classes.iconPaddingStyle,
+                })}
                 {label && translate(label)}
-            </Button>
+            </ButtonClass>
         }
     />
 );
 
 CreateButton.propTypes = {
+    ButtonClass: PropTypes.object.isRequired,
     basePath: PropTypes.string,
     className: PropTypes.string,
     classes: PropTypes.object,
+    icon: PropTypes.element.isRequired,
     label: PropTypes.string,
     translate: PropTypes.func.isRequired,
+};
+
+CreateButton.defaultProps = {
+    ButtonClass: Button,
+    icon: <ContentAdd />,
 };
 
 const enhance = compose(

@@ -22,6 +22,7 @@ const styles = {
 };
 
 const sanitizeRestProps = ({
+    TitleClass,
     children,
     classes,
     className,
@@ -43,6 +44,7 @@ const sanitizeRestProps = ({
     data,
     ids,
     total,
+    totalAll,
     isLoading,
     translate,
     version,
@@ -64,6 +66,7 @@ const sanitizeRestProps = ({
 }) => rest;
 
 export const ListView = ({
+    TitleClass,
     actions = <DefaultActions />,
     basePath,
     bulkActions = <DefaultBulkActions />,
@@ -77,6 +80,7 @@ export const ListView = ({
     filters,
     filterValues,
     hasCreate,
+    hideActiveFilters,
     hideFilter,
     ids,
     isLoading,
@@ -95,11 +99,18 @@ export const ListView = ({
     showFilter,
     title,
     total,
+    totalAll,
     translate,
     version,
     ...rest
 }) => {
-    const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
+    const titleElement = (
+        <TitleClass
+            defaultTitle={defaultTitle}
+            title={title}
+            total={totalAll}
+        />
+    );
 
     return (
         <div
@@ -120,11 +131,15 @@ export const ListView = ({
                         filters,
                         filterValues,
                         hasCreate,
+                        hideActiveFilters,
+                        hideFilter,
                         onUnselectItems,
                         refresh,
                         resource,
                         selectedIds,
+                        setFilters,
                         showFilter,
+                        total,
                     }}
                 />
                 {filters &&
@@ -134,6 +149,7 @@ export const ListView = ({
                         hideFilter,
                         resource,
                         setFilters,
+                        total,
                         context: 'form',
                     })}
                 {isLoading || total > 0 ? (
@@ -187,6 +203,7 @@ export const ListView = ({
 };
 
 ListView.propTypes = {
+    TitleClass: PropTypes.object.isRequired,
     actions: PropTypes.element,
     basePath: PropTypes.string,
     bulkActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
@@ -204,6 +221,7 @@ ListView.propTypes = {
     filters: PropTypes.element,
     filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,
+    hideActiveFilters: PropTypes.func,
     hideFilter: PropTypes.func,
     ids: PropTypes.array,
     isLoading: PropTypes.bool,
@@ -222,6 +240,7 @@ ListView.propTypes = {
     showFilter: PropTypes.func,
     title: PropTypes.any,
     total: PropTypes.number,
+    totalAll: PropTypes.number,
     translate: PropTypes.func,
     version: PropTypes.number,
 };
@@ -275,6 +294,7 @@ const List = props => (
 
 List.propTypes = {
     // the props you can change
+    TitleClass: PropTypes.object.isRequired,
     actions: PropTypes.element,
     bulkActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     children: PropTypes.node,
@@ -304,6 +324,7 @@ List.propTypes = {
 };
 
 List.defaultProps = {
+    TitleClass: Title,
     filter: {},
     perPage: 10,
     theme: defaultTheme,

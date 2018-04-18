@@ -82,13 +82,20 @@ export class FilterForm extends Component {
     }
 
     getShownFilters() {
-        const { filters, displayedFilters, initialValues } = this.props;
+        const {
+            filters,
+            displayedFilters,
+            inActionsToolbar,
+            initialValues,
+        } = this.props;
 
         return filters.filter(
             filterElement =>
-                filterElement.props.alwaysOn ||
-                displayedFilters[filterElement.props.source] ||
-                typeof initialValues[filterElement.props.source] !== 'undefined'
+                inActionsToolbar === filterElement.props.inActionsToolbar &&
+                (filterElement.props.alwaysOn ||
+                    displayedFilters[filterElement.props.source] ||
+                    typeof initialValues[filterElement.props.source] !==
+                        'undefined')
         );
     }
 
@@ -101,6 +108,7 @@ export class FilterForm extends Component {
             className,
             resource,
             translate,
+            shouldBulkToggleFilters,
             ...rest
         } = this.props;
 
@@ -115,10 +123,12 @@ export class FilterForm extends Component {
                                 data-source={filterElement.props.source}
                                 className={classnames(
                                     'filter-field',
-                                    classes.body
+                                    classes.body,
+                                    filterElement.props.containerClassName
                                 )}
                             >
-                                {filterElement.props.alwaysOn ? (
+                                {filterElement.props.alwaysOn ||
+                                shouldBulkToggleFilters ? (
                                     <div className={classes.spacer}>&nbsp;</div>
                                 ) : (
                                     <IconButton
@@ -156,10 +166,12 @@ FilterForm.propTypes = {
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
     displayedFilters: PropTypes.object.isRequired,
     hideFilter: PropTypes.func.isRequired,
+    inActionsToolbar: PropTypes.bool,
     initialValues: PropTypes.object,
     translate: PropTypes.func.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
+    shouldBulkToggleFilters: PropTypes.bool,
 };
 
 export const mergeInitialValuesWithDefaultValues = ({
