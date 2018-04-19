@@ -3,7 +3,7 @@ import driver from '../chromeDriver';
 import showPageFactory from '../pages/ShowPage';
 
 describe('Show Page', () => {
-    const ShowPage = showPageFactory('http://localhost:8083/#/posts/13/show')(
+    const ShowPage = showPageFactory('http://localhost:8083/#/posts/10/show')(
         driver
     );
 
@@ -13,7 +13,7 @@ describe('Show Page', () => {
         await ShowPage.navigate();
         assert.equal(
             await ShowPage.getValue('title'),
-            'Fusce massa lorem, pulvinar a posuere ut, accumsan ac nisi'
+            'Totam vel quasi a odio et nihil'
         );
     });
 });
