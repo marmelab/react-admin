@@ -87,9 +87,7 @@ const styles = theme => ({
  */
 export class CheckboxGroupInput extends Component {
     handleCheck = (event, isChecked) => {
-        const {
-            input: { value, onChange },
-        } = this.props;
+        const { input: { value, onChange } } = this.props;
         const newValue = JSON.parse(event.target.value);
         if (isChecked) {
             onChange([...value, ...[newValue]]);

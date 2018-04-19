@@ -29,10 +29,7 @@ class Basket extends Component {
         this.fetchData();
     }
     fetchData() {
-        const {
-            record: { basket },
-            crudGetMany,
-        } = this.props;
+        const { record: { basket }, crudGetMany } = this.props;
         crudGetMany('products', basket.map(item => item.product_id));
     }
     render() {
@@ -173,9 +170,7 @@ class Basket extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-    const {
-        record: { basket },
-    } = props;
+    const { record: { basket } } = props;
     const productIds = basket.map(item => item.product_id);
     return {
         products: productIds

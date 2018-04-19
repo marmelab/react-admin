@@ -18,34 +18,26 @@ export const Responsive = ({
                     ? xsmall
                     : typeof small !== 'undefined'
                         ? small
-                        : typeof medium !== 'undefined'
-                            ? medium
-                            : large;
+                        : typeof medium !== 'undefined' ? medium : large;
             break;
         case 'sm':
             element =
                 typeof small !== 'undefined'
                     ? small
-                    : typeof medium !== 'undefined'
-                        ? medium
-                        : large;
+                    : typeof medium !== 'undefined' ? medium : large;
             break;
         case 'md':
             element =
                 typeof medium !== 'undefined'
                     ? medium
-                    : typeof large !== 'undefined'
-                        ? large
-                        : small;
+                    : typeof large !== 'undefined' ? large : small;
             break;
         case 'lg':
         case 'xl':
             element =
                 typeof large !== 'undefined'
                     ? large
-                    : typeof medium !== 'undefined'
-                        ? medium
-                        : small;
+                    : typeof medium !== 'undefined' ? medium : small;
             break;
         default:
             throw new Error(`Unknown width ${width}`);

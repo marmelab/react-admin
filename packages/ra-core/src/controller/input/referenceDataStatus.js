@@ -26,9 +26,7 @@ export const getStatusForInput = ({
                 selectedReferenceError &&
                 matchingReferencesError) ||
             (!input.value && matchingReferencesError)
-                ? input.value
-                    ? selectedReferenceError
-                    : matchingReferencesError
+                ? input.value ? selectedReferenceError : matchingReferencesError
                 : null,
         warning: selectedReferenceError || matchingReferencesError,
         choices: Array.isArray(matchingReferences)
