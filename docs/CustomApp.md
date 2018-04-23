@@ -36,10 +36,9 @@ import Typography from 'material-ui/Typography';
 // prebuilt react-admin features
 import {
     adminReducer,
-    localeReducer,
+    i18nReducer,
     adminSaga,
     TranslationProvider,
-    declareResources,
 } from 'react-admin';
 import simpleRestClient from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
@@ -52,19 +51,10 @@ import { UserList, UserEdit, UserCreate } from './User';
 // your app labels
 import messages from './i18n';
 
-const i18nProvider = locale => {
-    if (locale !== 'en') {
-        return messages[locale];
-    }
-
-    return defaultMessages;
-};
-
-
 // create a Redux app
 const reducer = combineReducers({
-    admin: adminReducer('en', messages['en']),
-    locale: localeReducer(),
+    admin: adminReducer,
+    locale: i18nReducer('en', messages['en']),
     form: formReducer,
     routing: routerReducer,
 });
@@ -74,9 +64,17 @@ const store = createStore(reducer, undefined, compose(
     applyMiddleware(sagaMiddleware, routerMiddleware(history)),
     window.devToolsExtension ? window.devToolsExtension() : f => f,
 ));
-store.dispatch(declareResources([{ name: 'posts' }, { name: 'comments' }, { name: 'users' }]));
+
+// side effects
 const dataProvider = simpleRestClient('http://path.to.my.api/');
-sagaMiddleware.run(adminSaga(dataProvider, i18nProvider));
+const authProvider = () => Promise.resolve();
+const i18nProvider = locale => {
+    if (locale !== 'en') {
+        return messages[locale];
+    }
+    return defaultMessages;
+};
+sagaMiddleware.run(adminSaga(dataProvider, authProvider, i18nProvider));
 
 // bootstrap redux and the routes
 const App = () => (
