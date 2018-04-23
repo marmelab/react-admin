@@ -1002,7 +1002,7 @@ export const UserCreate = (props) => (
 -                <TextInput source="email" />
 -           </DependentInput>
 +           <FormDataConsumer>
-+               {(formData, ...rest) => formData.hasEmail && 
++               {({ formData, ...rest }) => formData.hasEmail && 
 +                   <TextInput source="email" {...rest} />
 +               }
 +           </FormDataConsumer>
