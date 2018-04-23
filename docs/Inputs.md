@@ -1231,7 +1231,7 @@ const OrderEdit = (props) => (
         <SimpleForm>
             <SelectInput source="country" choices={countries} />
             <FormDataConsumer>
-                {(formData, ...rest) =>
+                {({ formData, ...rest }) =>
                      <SelectInput 
                          source="city"
                          choices={getCitiesFor(formData.country)}
@@ -1258,7 +1258,7 @@ import { FormDataConsumer } from 'react-admin';
          <SimpleForm>
              <BooleanInput source="hasEmail" />
              <FormDataConsumer>
-                 {(formData, ...rest) => formData.hasEmail &&
+                 {({ formData, ...rest }) => formData.hasEmail &&
                       <TextInput source="email" {...rest} />
                  }
              </FormDataConsumer>

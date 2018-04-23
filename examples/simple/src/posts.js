@@ -217,10 +217,11 @@ export const PostCreate = props => (
             <LongTextInput source="teaser" />
             <RichTextInput source="body" />
             <FormDataConsumer>
-                {(formData, ...rest) =>
+                {({ formData, ...rest }) =>
                     formData.title && (
                         <NumberInput source="average_note" {...rest} />
-                    )}
+                    )
+                }
             </FormDataConsumer>
             <DateInput source="published_at" defaultValue={getDefaultDate} />
             <BooleanInput source="commentable" defaultValue />
