@@ -54,7 +54,7 @@ import messages from './i18n';
 // create a Redux app
 const reducer = combineReducers({
     admin: adminReducer,
-    locale: i18nReducer('en', messages['en']),
+    i18n: i18nReducer('en', messages['en']),
     form: formReducer,
     routing: routerReducer,
 });
