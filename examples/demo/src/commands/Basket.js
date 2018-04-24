@@ -91,8 +91,9 @@ class Basket extends Component {
                                         <TableCell
                                             className={classes.rightAlignedCell}
                                         >
-                                            {(products[item.product_id].price *
-                                                item.quantity
+                                            {(
+                                                products[item.product_id]
+                                                    .price * item.quantity
                                             ).toLocaleString(undefined, {
                                                 style: 'currency',
                                                 currency: 'USD',

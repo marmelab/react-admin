@@ -64,8 +64,9 @@ const PendingReviews = ({
                 >
                     {record.customer && customers[record.customer.id] ? (
                         <Avatar
-                            src={`${customers[record.customer.id]
-                                .avatar}?size=32x32`}
+                            src={`${
+                                customers[record.customer.id].avatar
+                            }?size=32x32`}
                             className={classes.avatar}
                         />
                     ) : (
