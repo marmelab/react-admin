@@ -88,7 +88,14 @@ const styles = theme => ({
 export class CheckboxGroupInput extends Component {
     handleCheck = (event, isChecked) => {
         const { input: { value, onChange } } = this.props;
-        const newValue = JSON.parse(event.target.value);
+        let newValue;
+        try {
+            // try to convert string value to number, e.g. '123'
+            newValue = JSON.parse(event.target.value);
+        } catch (e) {
+            // impossible to convert value, e.g. 'abc'
+            newValue = event.target.value;
+        }
         if (isChecked) {
             onChange([...value, ...[newValue]]);
         } else {
