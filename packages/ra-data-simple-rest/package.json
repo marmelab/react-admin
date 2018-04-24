@@ -1,19 +1,25 @@
 {
     "name": "ra-data-simple-rest",
-    "version": "2.0.0-RC1",
+    "version": "2.0.0-RC2",
     "description": "Simple REST data provider for react-admin",
     "main": "lib/index.js",
-    "files": ["*.md", "lib", "src"],
+    "files": [
+        "*.md",
+        "lib",
+        "src"
+    ],
     "scripts": {
         "test": "make test"
     },
-    "authors": ["François Zaninotto"],
+    "authors": [
+        "François Zaninotto"
+    ],
     "repository": "marmelab/react-admin",
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "dependencies": {
         "query-string": "~5.1.1",
-        "react-admin": "^2.0.0-RC1"
+        "react-admin": "^2.0.0-RC2"
     }
 }

@@ -26,7 +26,6 @@ export const crudGetList = (resource, pagination, sort, filter) => ({
                 body: 'ra.notification.http_error',
                 level: 'warning',
             },
-            refresh: true,
         },
     },
 });
@@ -258,7 +257,6 @@ export const crudGetMany = (resource, ids) => ({
                 body: 'ra.notification.http_error',
                 level: 'warning',
             },
-            refresh: true,
         },
     },
 });
@@ -286,7 +284,6 @@ export const crudGetMatching = (
                 body: 'ra.notification.http_error',
                 level: 'warning',
             },
-            refresh: true,
         },
     },
 });
@@ -320,7 +317,6 @@ export const crudGetManyReference = (
                 body: 'ra.notification.http_error',
                 level: 'warning',
             },
-            refresh: true,
         },
     },
 });

@@ -1,6 +1,6 @@
 {
     "name": "ra-data-graphql",
-    "version": "2.0.0-RC1",
+    "version": "2.0.0-RC2",
     "description": "A GraphQL data provider for react-admin",
     "main": "./lib/index.js",
     "repository": {
@@ -11,7 +11,9 @@
         "url": "https://github.com/marmelab/react-admin/issues"
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
-    "authors": ["Gildas Garcia"],
+    "authors": [
+        "Gildas Garcia"
+    ],
     "keywords": [
         "reactjs",
         "react",
@@ -30,10 +32,10 @@
     },
     "peerDependencies": {
         "graphql": "^0.13.2",
-        "react-admin": "^2.0.0-RC1"
+        "react-admin": "^2.0.0-RC2"
     },
     "devDependencies": {
         "graphql": "^0.13.2",
-        "react-admin": "^2.0.0-RC1"
+        "react-admin": "^2.0.0-RC2"
     }
 }
