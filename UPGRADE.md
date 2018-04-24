@@ -169,7 +169,7 @@ If you don't use the `<Admin>` component, but prefer to implement your administr
 
 // ...
 - sagaMiddleware.run(crudSaga(dataProvider, i18nProvider));
-+ sagaMiddleware.run(adminSaga(dataProvider, i18nProvider));
++ sagaMiddleware.run(adminSaga(dataProvider, authProvider, i18nProvider));
 ```
 
 ## `<AutocompleteInput>` no longer accepts a `filter` prop
