@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = {
     devtool: 'cheap-module-source-map',
@@ -26,6 +27,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html',
         }),
+        new HardSourceWebpackPlugin(),
     ],
     resolve: {
         alias: {
@@ -35,7 +37,7 @@ module.exports = {
                 '..',
                 'packages',
                 'ra-core',
-                'src'
+                'src',
             ),
             'ra-ui-materialui': path.join(
                 __dirname,
@@ -43,7 +45,7 @@ module.exports = {
                 '..',
                 'packages',
                 'ra-ui-materialui',
-                'src'
+                'src',
             ),
             'react-admin': path.join(
                 __dirname,
@@ -51,7 +53,7 @@ module.exports = {
                 '..',
                 'packages',
                 'react-admin',
-                'src'
+                'src',
             ),
             'ra-data-fakerest': path.join(
                 __dirname,
@@ -59,7 +61,7 @@ module.exports = {
                 '..',
                 'packages',
                 'ra-data-fakerest',
-                'src'
+                'src',
             ),
             'ra-input-rich-text': path.join(
                 __dirname,
@@ -67,7 +69,7 @@ module.exports = {
                 '..',
                 'packages',
                 'ra-input-rich-text',
-                'src'
+                'src',
             ),
         },
     },
