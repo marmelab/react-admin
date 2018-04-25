@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { CardContent } from 'material-ui/Card';
-import IconButton from 'material-ui/IconButton';
 import { withStyles } from 'material-ui/styles';
-import ActionHide from '@material-ui/icons/HighlightOff';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
-import classnames from 'classnames';
 import lodashSet from 'lodash/set';
-import { translate } from 'ra-core';
+
+import FilterFormInput from './FilterFormInput';
 
 const styles = ({ palette: { primary1Color } }) => ({
     card: {
@@ -25,8 +23,6 @@ const styles = ({ palette: { primary1Color } }) => ({
     icon: { color: primary1Color || '#00bcd4', paddingBottom: 0 },
     clearFix: { clear: 'right' },
 });
-
-const emptyRecord = {};
 
 const sanitizeRestProps = ({
     anyTouched,
@@ -62,7 +58,6 @@ const sanitizeRestProps = ({
     submitSucceeded,
     submitting,
     touch,
-    translate,
     triggerSubmit,
     untouch,
     valid,
@@ -96,13 +91,7 @@ export class FilterForm extends Component {
         this.props.hideFilter(event.currentTarget.dataset.key);
 
     render() {
-        const {
-            classes = {},
-            className,
-            resource,
-            translate,
-            ...rest
-        } = this.props;
+        const { classes = {}, className, resource, ...rest } = this.props;
 
         return (
             <div className={className} {...sanitizeRestProps(rest)}>
@@ -110,39 +99,12 @@ export class FilterForm extends Component {
                     {this.getShownFilters()
                         .reverse()
                         .map(filterElement => (
-                            <div
+                            <FilterFormInput
                                 key={filterElement.props.source}
-                                data-source={filterElement.props.source}
-                                className={classnames(
-                                    'filter-field',
-                                    classes.body
-                                )}
-                            >
-                                {filterElement.props.alwaysOn ? (
-                                    <div className={classes.spacer}>&nbsp;</div>
-                                ) : (
-                                    <IconButton
-                                        className="hide-filter"
-                                        onClick={this.handleHide}
-                                        data-key={filterElement.props.source}
-                                        tooltip={translate(
-                                            'ra.action.remove_filter'
-                                        )}
-                                    >
-                                        <ActionHide />
-                                    </IconButton>
-                                )}
-                                <div>
-                                    <Field
-                                        allowEmpty
-                                        {...filterElement.props}
-                                        name={filterElement.props.source}
-                                        component={filterElement.type}
-                                        resource={resource}
-                                        record={emptyRecord}
-                                    />
-                                </div>
-                            </div>
+                                filterElement={filterElement}
+                                classes={classes}
+                                resource={resource}
+                            />
                         ))}
                 </CardContent>
                 <div className={classes.clearFix} />
@@ -157,7 +119,6 @@ FilterForm.propTypes = {
     displayedFilters: PropTypes.object.isRequired,
     hideFilter: PropTypes.func.isRequired,
     initialValues: PropTypes.object,
-    translate: PropTypes.func.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
 };
@@ -188,7 +149,6 @@ export const mergeInitialValuesWithDefaultValues = ({
 
 const enhance = compose(
     withStyles(styles),
-    translate,
     withProps(mergeInitialValuesWithDefaultValues),
     reduxForm({
         form: 'filterForm',
