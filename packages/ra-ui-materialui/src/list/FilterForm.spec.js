@@ -16,7 +16,6 @@ describe('<FilterForm />', () => {
         hideFilter: () => {},
         displayedFilters: {},
         filterValues: {},
-        translate: x => x,
     };
 
     let store;
