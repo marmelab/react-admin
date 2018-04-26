@@ -10,7 +10,13 @@ const emptyRecord = {};
 
 const sanitizeRestProps = ({ alwaysOn, ...props }) => props;
 
-const FilterFormInput = ({ filterElement, classes, resource, translate }) => (
+const FilterFormInput = ({
+    filterElement,
+    handleHide,
+    classes,
+    resource,
+    translate,
+}) => (
     <div
         data-source={filterElement.props.source}
         className={classnames('filter-field', classes.body)}
@@ -20,7 +26,7 @@ const FilterFormInput = ({ filterElement, classes, resource, translate }) => (
         ) : (
             <IconButton
                 className="hide-filter"
-                onClick={this.handleHide}
+                onClick={handleHide}
                 data-key={filterElement.props.source}
                 tooltip={translate('ra.action.remove_filter')}
             >
@@ -42,6 +48,7 @@ const FilterFormInput = ({ filterElement, classes, resource, translate }) => (
 
 FilterFormInput.propTypes = {
     filterElement: PropTypes.node,
+    handleHide: PropTypes.func,
     classes: PropTypes.object,
     resource: PropTypes.string,
     translate: PropTypes.func,

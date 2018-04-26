@@ -102,6 +102,7 @@ export class FilterForm extends Component {
                             <FilterFormInput
                                 key={filterElement.props.source}
                                 filterElement={filterElement}
+                                handleHide={this.handleHide}
                                 classes={classes}
                                 resource={resource}
                             />
