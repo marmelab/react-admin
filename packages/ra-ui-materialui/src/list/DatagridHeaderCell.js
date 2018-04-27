@@ -36,7 +36,10 @@ export const DatagridHeaderCell = ({
                 enterDelay={300}
             >
                 <TableSortLabel
-                    active={currentSort.field === (field.props.sortBy || field.props.source)}
+                    active={
+                        currentSort.field ===
+                        (field.props.sortBy || field.props.source)
+                    }
                     direction={currentSort.order === 'ASC' ? 'asc' : 'desc'}
                     data-sort={field.props.sortBy || field.props.source}
                     onClick={updateSort}
