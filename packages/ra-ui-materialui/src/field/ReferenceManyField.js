@@ -128,6 +128,7 @@ ReferenceManyField.propTypes = {
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string.isRequired,
+    sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     sort: PropTypes.shape({
         field: PropTypes.string,

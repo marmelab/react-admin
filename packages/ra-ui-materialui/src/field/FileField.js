@@ -75,6 +75,7 @@ FileField.propTypes = {
     cellClassName: PropTypes.string,
     headerClassName: PropTypes.string,
     record: PropTypes.object,
+    sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     src: PropTypes.string,
     title: PropTypes.string,

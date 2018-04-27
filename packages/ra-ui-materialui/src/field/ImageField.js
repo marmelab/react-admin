@@ -77,6 +77,7 @@ ImageField.propTypes = {
     headerClassName: PropTypes.string,
     classes: PropTypes.object,
     record: PropTypes.object,
+    sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     src: PropTypes.string,
     title: PropTypes.string,
