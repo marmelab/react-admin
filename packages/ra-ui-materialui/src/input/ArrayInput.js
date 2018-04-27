@@ -100,7 +100,7 @@ ArrayInput.propTypes = {
     label: PropTypes.string,
     resource: PropTypes.string,
     source: PropTypes.string,
-    record: PropTypes.onject,
+    record: PropTypes.object,
     options: PropTypes.object,
     validate: PropTypes.func,
 };
