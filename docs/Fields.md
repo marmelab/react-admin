@@ -901,8 +901,7 @@ export const UserList = (props) => (
 );
 ```
 
-<<<<<<< HEAD
-**Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked.
+**Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked. In case you use the `source` property for additional purposes, the sorting can be overridden by the `sortBy` property on any `Field` component.
 
 ## Adding Label To Custom Field Components In The Show View
 
@@ -1027,6 +1026,3 @@ const UserShow = props => (
 ```
 
 And now you can use a regular Field component, and the label displays correctly in the Show view.
-=======
-**Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked. In case you use the `source` property for additional purposes, the sorting can be overridden by the `sortBy` property on any `Field` component.
->>>>>>> Add sortBy to propTypes definition of all Field components and add docs
