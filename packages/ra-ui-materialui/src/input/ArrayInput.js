@@ -49,10 +49,10 @@ import sanitizeRestProps from './sanitizeRestProps';
  * @see https://redux-form.com/7.3.0/examples/fieldarrays/
  */
 export class ArrayInput extends Component {
-    renderFieldArray = props => {
+    renderFieldArray = fieldProps => {
         const { children, record } = this.props;
         return cloneElement(children, {
-            ...props,
+            ...fieldProps,
             record,
         });
     };
