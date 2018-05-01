@@ -13,9 +13,6 @@ import Button from '../button/Button';
 
 const styles = {
     root: { display: 'inline-block' },
-    label: {
-        marginLeft: '0.5em',
-    },
 };
 
 export class FilterButton extends Component {
