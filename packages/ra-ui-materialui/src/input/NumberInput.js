@@ -73,7 +73,7 @@ export class NumberInput extends Component {
                 margin="normal"
                 error={!!(touched && error)}
                 helperText={touched && error}
-                step={step}
+                inputProps={{step}}
                 label={
                     <FieldTitle
                         label={label}
