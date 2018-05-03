@@ -21,7 +21,6 @@ const styles = {
 export class FilterButton extends Component {
     constructor(props) {
         super(props);
-        this.handleShow = this.handleShow.bind(this);
         this.state = {
             open: false,
         };
