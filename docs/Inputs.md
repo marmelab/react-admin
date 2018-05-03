@@ -1193,7 +1193,6 @@ Instead of HTML `input` elements or material-ui components, you can use react-ad
 
 ```jsx
 // in LatLongInput.js
-import { Field } from 'redux-form';
 import { NumberInput } from 'react-admin';
 const LatLngInput = () => (
     <span>
