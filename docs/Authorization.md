@@ -54,14 +54,9 @@ export default (type, params) => {
         return localStorage.getItem('token') ? Promise.resolve() : Promise.reject();
     }
     if (type === AUTH_GET_PERMISSIONS) {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            return Promise.reject();
-        }
         const role = localStorage.getItem('role');
-        Promise.resolve(role);
+        return role ? Promise.resolve(role) : Promise.reject();
     }
-
     return Promise.reject('Unkown method');
 };
 ```
