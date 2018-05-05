@@ -40,7 +40,8 @@ const CommandFilter = withStyles(filterStyles)(({ classes, ...props }) => (
         <ReferenceInput source="customer_id" reference="customers">
             <AutocompleteInput
                 optionText={choice =>
-                    `${choice.first_name} ${choice.last_name}`}
+                    `${choice.first_name} ${choice.last_name}`
+                }
             />
         </ReferenceInput>
         <SelectInput
@@ -94,7 +95,9 @@ export const CommandList = withStyles(listStyles)(({ classes, ...props }) => (
 
 const CommandTitle = translate(({ record, translate }) => (
     <span>
-        {translate('resources.commands.name', { smart_count: 1 })} #{record.reference}
+        {translate('resources.commands.name', { smart_count: 1 })} #{
+            record.reference
+        }
     </span>
 ));
 
@@ -110,7 +113,8 @@ export const CommandEdit = withStyles(editStyles)(({ classes, ...props }) => (
             <ReferenceInput source="customer_id" reference="customers">
                 <AutocompleteInput
                     optionText={choice =>
-                        `${choice.first_name} ${choice.last_name}`}
+                        `${choice.first_name} ${choice.last_name}`
+                    }
                 />
             </ReferenceInput>
             <SelectInput
