@@ -4,7 +4,7 @@
   "description": "ra-language-intl",
   "main": "lib/index.js",
   "scripts": {
-    "extract-intl": "npx rollup-umd-scripts intl extract"
+    "extract-intl": "NODE_ENV=production npx rollup-umd-scripts intl extract"
   },
   "repository": {
     "type": "git",
@@ -30,7 +30,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "devDependencies": {
+  "dependencies": {
     "react-intl": "~2.4.0"
   },
   "translation": {
@@ -39,5 +39,10 @@
       "en",
       "fr"
     ]
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-react-intl": "^2.4.0",
+    "babel-preset-react-app": "^3.1.1"
   }
 }

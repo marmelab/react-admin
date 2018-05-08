@@ -115,6 +115,7 @@ AppBar.propTypes = {
     open: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,
+    locale: PropTypes.string.isRequired,
     toggleSidebar: PropTypes.func.isRequired,
 };
 

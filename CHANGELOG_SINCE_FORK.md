@@ -1,3 +1,8 @@
+# [2018-04-13] - dka - Merge to RC2
+
+- Change the original repo to `https://github.com/marmelab/react-admin`.
+- Merge original repo to get RC2, from commit [ba0b514](https://github.com/marmelab/admin-on-rest/commit/ba0b514068fc01f94282a7e3de1f599b55e7ca3e) to [e7d9fb0](https://github.com/yeutech/react-admin/commit/e7d9fb0589cbe3f2e0c46c4e5ab285e0b50cdd14)
+
 # [2018-04-13] - dka - Creating examples projects
 
 - Adding examples `demo-bs`.

@@ -53,7 +53,7 @@ build-react-admin:
 build-ra-language-intl:
 	@echo "Transpiling ra-language-intl files...";
 	@rm -rf ./packages/ra-language-intl/lib
-	@npm run --prefix ./packages/ra-language-intl rollup-umd -- intl extract
+	@npm run --prefix ./packages/ra-language-intl extract-intl
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-language-intl/src -d ./packages/ra-language-intl/lib --ignore spec.js,test.js
 
 build-ra-data-json-server:
