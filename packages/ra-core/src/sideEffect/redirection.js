@@ -19,7 +19,8 @@ export function* handleRedirection({
                       redirectTo,
                       basePath,
                       payload
-                          ? payload.id || payload.data ? payload.data.id : null
+                          ? payload.id ||
+                            (payload.data ? payload.data.id : null)
                           : requestPayload ? requestPayload.id : null
                   )
               )
