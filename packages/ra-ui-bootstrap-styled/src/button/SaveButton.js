@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Button from 'material-ui/Button';
-import ContentSave from 'material-ui-icons/Save';
+import ContentSave from '@material-ui/icons/Save';
 import { CircularProgress } from 'material-ui/Progress';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';

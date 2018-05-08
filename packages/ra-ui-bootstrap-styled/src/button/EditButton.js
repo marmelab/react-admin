@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
-import ContentCreate from 'material-ui-icons/Create';
+import ContentCreate from '@material-ui/icons/Create';
 
 import Link from '../Link';
 import { linkToRecord } from '@yeutech/ra-core';

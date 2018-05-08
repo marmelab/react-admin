@@ -1,0 +1,689 @@
+0 silly input [ 'publish' ]
+1 silly flags { _: [ 'publish' ], 'reject-cycles': false, rejectCycles: false }
+2 verbose rootPath /home/dka/workspace/github.com/yeutech/react-admin
+3 info version 2.11.0
+4 silly isInitialized
+5 silly isInitialized true
+6 silly existsSync /home/dka/workspace/github.com/yeutech/react-admin/VERSION
+7 silly initialize attempt
+8 info current version 2.0.0-RC2-yeutech.1
+9 silly isDetachedHead
+10 silly getCurrentBranch
+11 verbose getCurrentBranch next
+12 verbose isDetachedHead false
+13 silly getCurrentBranch
+14 verbose getCurrentBranch next
+15 silly getUpdates
+16 info Checking for updated packages...
+17 silly hasTags
+18 verbose hasTags true
+19 silly getLastTag
+20 verbose getLastTag v2.0.0-RC2-yeutech.1
+21 info Comparing with v2.0.0-RC2-yeutech.1.
+22 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/ra-core
+23 silly diff
+24 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/ra-data-fakerest
+25 silly diff packages/ra-data-fakerest/package.json
+26 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/ra-data-graphcool
+27 silly diff
+28 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/ra-data-graphql-simple
+29 silly diff
+30 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/ra-data-graphql
+31 silly diff
+32 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/ra-data-json-server
+33 silly diff
+34 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/ra-data-simple-rest
+35 silly diff
+36 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/ra-input-rich-text
+37 silly diff
+38 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/ra-language-english
+39 silly diff
+40 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/ra-language-french
+41 silly diff
+42 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/ra-language-intl
+43 silly diff
+44 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/ra-realtime
+45 silly diff
+46 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/ra-ui-bootstrap-styled
+47 silly diff packages/ra-ui-bootstrap-styled/src/auth/Login.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/auth/Logout.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/button/CreateButton.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/button/DeleteButton.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/button/EditButton.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/button/ListButton.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/button/RefreshButton.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/button/SaveButton.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/button/ShowButton.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/detail/Tab.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/field/BooleanField.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/form/SimpleFormIterator.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/input/FileInputPreview.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/layout/AppBar.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/layout/AppBarMobile.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/layout/Confirm.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/layout/DashboardMenuItem.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/layout/Menu.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/layout/NotFound.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/list/BulkActions.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/list/FilterButton.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/list/FilterForm.js
+47 silly diff packages/ra-ui-bootstrap-styled/src/list/Pagination.js
+48 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/ra-ui-materialui
+49 silly diff packages/ra-ui-materialui/package.json
+50 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/react-admin-bs
+51 silly diff
+52 silly diffSinceIn v2.0.0-RC2-yeutech.1 packages/react-admin
+53 silly diff
+54 verbose updated @yeutech/ra-data-fakerest
+55 verbose updated @yeutech/ra-ui-bootstrap-styled
+56 verbose updated @yeutech/ra-ui-materialui
+57 info Checking for prereleased packages...
+58 verbose prereleased @yeutech/ra-core
+59 verbose prereleased @yeutech/ra-data-fakerest
+60 verbose prereleased @yeutech/ra-data-graphcool
+61 verbose prereleased @yeutech/ra-data-graphql-simple
+62 verbose prereleased @yeutech/ra-data-graphql
+63 verbose prereleased @yeutech/ra-data-json-server
+64 verbose prereleased @yeutech/ra-data-simple-rest
+65 verbose prereleased @yeutech/ra-input-rich-text
+66 verbose prereleased @yeutech/ra-language-english
+67 verbose prereleased @yeutech/ra-language-french
+68 verbose prereleased @yeutech/ra-language-intl
+69 verbose prereleased @yeutech/ra-realtime
+70 verbose prereleased @yeutech/ra-ui-bootstrap-styled
+71 verbose prereleased @yeutech/ra-ui-materialui
+72 verbose prereleased @yeutech/react-admin-bs
+73 verbose prereleased @yeutech/react-admin
+74 silly collectDependents
+75 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-fakerest
+76 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-data-fakerest
+77 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-ui-bootstrap-styled
+78 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-ui-bootstrap-styled
+79 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-ui-materialui
+80 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-ui-materialui
+81 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-core
+82 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-core
+83 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-graphcool
+84 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-data-graphcool
+85 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-graphql-simple
+86 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-data-graphql-simple
+87 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-graphql
+88 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-data-graphql
+89 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-json-server
+90 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-data-json-server
+91 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-simple-rest
+92 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-data-simple-rest
+93 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-input-rich-text
+94 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-input-rich-text
+95 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-language-english
+96 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-language-english
+97 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-language-french
+98 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-language-french
+99 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-language-intl
+100 verbose dependent @yeutech/ra-core depends on @yeutech/ra-language-intl
+101 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-realtime
+102 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-realtime
+103 silly isPackageDependentOf @yeutech/ra-core @yeutech/react-admin-bs
+104 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/react-admin-bs
+105 silly isPackageDependentOf @yeutech/ra-core @yeutech/react-admin
+106 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/react-admin
+107 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/ra-data-fakerest
+108 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/ra-ui-bootstrap-styled
+109 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/ra-ui-materialui
+110 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/ra-core
+111 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/ra-data-graphcool
+112 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/ra-data-graphql-simple
+113 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/ra-data-graphql
+114 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/ra-data-json-server
+115 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/ra-data-simple-rest
+116 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/ra-input-rich-text
+117 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/ra-language-english
+118 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/ra-language-french
+119 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/ra-language-intl
+120 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/ra-realtime
+121 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/react-admin-bs
+122 silly isPackageDependentOf @yeutech/ra-data-fakerest @yeutech/react-admin
+123 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/ra-data-fakerest
+124 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-fakerest
+125 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-fakerest
+126 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-data-fakerest
+127 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-fakerest
+128 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-fakerest
+129 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-fakerest
+130 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/ra-ui-bootstrap-styled
+131 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-ui-bootstrap-styled
+132 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-ui-bootstrap-styled
+133 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-ui-bootstrap-styled
+134 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-ui-bootstrap-styled
+135 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-ui-bootstrap-styled
+136 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-ui-bootstrap-styled
+137 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/ra-ui-materialui
+138 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-ui-materialui
+139 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-ui-materialui
+140 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-ui-materialui
+141 verbose dependent @yeutech/ra-data-graphcool depends on @yeutech/ra-ui-materialui
+142 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/ra-core
+143 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-core
+144 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-core
+145 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-core
+146 verbose dependent @yeutech/ra-data-graphcool depends on @yeutech/ra-core
+147 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/ra-data-graphcool
+148 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphcool
+149 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-graphcool
+150 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-data-graphcool
+151 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-graphcool
+152 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-graphcool
+153 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphcool
+154 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/ra-data-graphql-simple
+155 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphql-simple
+156 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-graphql-simple
+157 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-data-graphql-simple
+158 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-graphql-simple
+159 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-graphql-simple
+160 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphql-simple
+161 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/ra-data-graphql
+162 verbose dependent @yeutech/ra-data-graphcool depends on @yeutech/ra-data-graphql
+163 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/ra-data-json-server
+164 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-json-server
+165 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-json-server
+166 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-data-json-server
+167 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-json-server
+168 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-json-server
+169 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-json-server
+170 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/ra-data-simple-rest
+171 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-simple-rest
+172 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-simple-rest
+173 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-data-simple-rest
+174 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-simple-rest
+175 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-simple-rest
+176 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-simple-rest
+177 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/ra-input-rich-text
+178 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-input-rich-text
+179 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-input-rich-text
+180 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-input-rich-text
+181 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-input-rich-text
+182 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-input-rich-text
+183 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-input-rich-text
+184 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/ra-language-english
+185 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-english
+186 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-language-english
+187 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-language-english
+188 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-language-english
+189 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-language-english
+190 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-english
+191 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/ra-language-french
+192 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-french
+193 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-language-french
+194 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-language-french
+195 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-language-french
+196 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-language-french
+197 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-french
+198 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/ra-language-intl
+199 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-intl
+200 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-language-intl
+201 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-language-intl
+202 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-language-intl
+203 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-language-intl
+204 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-intl
+205 verbose dependent @yeutech/ra-data-graphcool depends on @yeutech/ra-language-intl
+206 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/ra-realtime
+207 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-realtime
+208 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-realtime
+209 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-realtime
+210 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-realtime
+211 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-realtime
+212 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-realtime
+213 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/react-admin-bs
+214 silly isPackageDependentOf @yeutech/react-admin @yeutech/react-admin-bs
+215 silly isPackageDependentOf @yeutech/ra-core @yeutech/react-admin-bs
+216 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/react-admin-bs
+217 silly isPackageDependentOf @yeutech/ra-core @yeutech/react-admin-bs
+218 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/react-admin-bs
+219 silly isPackageDependentOf @yeutech/react-admin @yeutech/react-admin-bs
+220 silly isPackageDependentOf @yeutech/ra-data-graphcool @yeutech/react-admin
+221 verbose dependent @yeutech/ra-data-graphcool depends on @yeutech/react-admin
+222 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/ra-data-fakerest
+223 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-fakerest
+224 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-fakerest
+225 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/ra-ui-bootstrap-styled
+226 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-ui-bootstrap-styled
+227 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-ui-bootstrap-styled
+228 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/ra-ui-materialui
+229 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-ui-materialui
+230 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-ui-materialui
+231 verbose dependent @yeutech/ra-data-graphql-simple depends on @yeutech/ra-ui-materialui
+232 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/ra-core
+233 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-core
+234 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-core
+235 verbose dependent @yeutech/ra-data-graphql-simple depends on @yeutech/ra-core
+236 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/ra-data-graphcool
+237 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphcool
+238 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-graphcool
+239 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/ra-data-graphql-simple
+240 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphql-simple
+241 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-graphql-simple
+242 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/ra-data-graphql
+243 verbose dependent @yeutech/ra-data-graphql-simple depends on @yeutech/ra-data-graphql
+244 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/ra-data-json-server
+245 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-json-server
+246 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-json-server
+247 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/ra-data-simple-rest
+248 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-simple-rest
+249 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-simple-rest
+250 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/ra-input-rich-text
+251 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-input-rich-text
+252 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-input-rich-text
+253 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/ra-language-english
+254 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-english
+255 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-language-english
+256 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/ra-language-french
+257 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-french
+258 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-language-french
+259 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/ra-language-intl
+260 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-intl
+261 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-language-intl
+262 verbose dependent @yeutech/ra-data-graphql-simple depends on @yeutech/ra-language-intl
+263 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/ra-realtime
+264 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-realtime
+265 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-realtime
+266 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/react-admin-bs
+267 silly isPackageDependentOf @yeutech/react-admin @yeutech/react-admin-bs
+268 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/react-admin-bs
+269 silly isPackageDependentOf @yeutech/ra-data-graphql-simple @yeutech/react-admin
+270 verbose dependent @yeutech/ra-data-graphql-simple depends on @yeutech/react-admin
+271 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-fakerest
+272 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-ui-bootstrap-styled
+273 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-ui-materialui
+274 verbose dependent @yeutech/ra-data-graphql depends on @yeutech/ra-ui-materialui
+275 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-core
+276 verbose dependent @yeutech/ra-data-graphql depends on @yeutech/ra-core
+277 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-graphcool
+278 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-graphql-simple
+279 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-graphql
+280 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphql
+281 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-graphql
+282 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-data-graphql
+283 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-graphql
+284 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-json-server
+285 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-data-simple-rest
+286 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-input-rich-text
+287 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-language-english
+288 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-language-french
+289 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-language-intl
+290 verbose dependent @yeutech/ra-data-graphql depends on @yeutech/ra-language-intl
+291 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/ra-realtime
+292 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/react-admin-bs
+293 silly isPackageDependentOf @yeutech/ra-data-graphql @yeutech/react-admin
+294 verbose dependent @yeutech/ra-data-graphql depends on @yeutech/react-admin
+295 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/ra-data-fakerest
+296 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-fakerest
+297 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/ra-ui-bootstrap-styled
+298 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-ui-bootstrap-styled
+299 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/ra-ui-materialui
+300 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-ui-materialui
+301 verbose dependent @yeutech/ra-data-json-server depends on @yeutech/ra-ui-materialui
+302 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/ra-core
+303 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-core
+304 verbose dependent @yeutech/ra-data-json-server depends on @yeutech/ra-core
+305 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/ra-data-graphcool
+306 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphcool
+307 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/ra-data-graphql-simple
+308 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphql-simple
+309 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/ra-data-graphql
+310 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphql
+311 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/ra-data-json-server
+312 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-json-server
+313 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/ra-data-simple-rest
+314 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-simple-rest
+315 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/ra-input-rich-text
+316 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-input-rich-text
+317 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/ra-language-english
+318 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-english
+319 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/ra-language-french
+320 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-french
+321 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/ra-language-intl
+322 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-intl
+323 verbose dependent @yeutech/ra-data-json-server depends on @yeutech/ra-language-intl
+324 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/ra-realtime
+325 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-realtime
+326 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/react-admin-bs
+327 silly isPackageDependentOf @yeutech/react-admin @yeutech/react-admin-bs
+328 silly isPackageDependentOf @yeutech/ra-data-json-server @yeutech/react-admin
+329 verbose dependent @yeutech/ra-data-json-server depends on @yeutech/react-admin
+330 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/ra-data-fakerest
+331 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-fakerest
+332 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/ra-ui-bootstrap-styled
+333 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-ui-bootstrap-styled
+334 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/ra-ui-materialui
+335 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-ui-materialui
+336 verbose dependent @yeutech/ra-data-simple-rest depends on @yeutech/ra-ui-materialui
+337 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/ra-core
+338 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-core
+339 verbose dependent @yeutech/ra-data-simple-rest depends on @yeutech/ra-core
+340 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/ra-data-graphcool
+341 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphcool
+342 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/ra-data-graphql-simple
+343 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphql-simple
+344 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/ra-data-graphql
+345 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphql
+346 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/ra-data-json-server
+347 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-json-server
+348 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/ra-data-simple-rest
+349 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-simple-rest
+350 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/ra-input-rich-text
+351 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-input-rich-text
+352 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/ra-language-english
+353 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-english
+354 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/ra-language-french
+355 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-french
+356 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/ra-language-intl
+357 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-intl
+358 verbose dependent @yeutech/ra-data-simple-rest depends on @yeutech/ra-language-intl
+359 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/ra-realtime
+360 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-realtime
+361 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/react-admin-bs
+362 silly isPackageDependentOf @yeutech/react-admin @yeutech/react-admin-bs
+363 silly isPackageDependentOf @yeutech/ra-data-simple-rest @yeutech/react-admin
+364 verbose dependent @yeutech/ra-data-simple-rest depends on @yeutech/react-admin
+365 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/ra-data-fakerest
+366 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/ra-ui-bootstrap-styled
+367 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/ra-ui-materialui
+368 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/ra-core
+369 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/ra-data-graphcool
+370 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/ra-data-graphql-simple
+371 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/ra-data-graphql
+372 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/ra-data-json-server
+373 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/ra-data-simple-rest
+374 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/ra-input-rich-text
+375 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/ra-language-english
+376 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/ra-language-french
+377 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/ra-language-intl
+378 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/ra-realtime
+379 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/react-admin-bs
+380 silly isPackageDependentOf @yeutech/ra-input-rich-text @yeutech/react-admin
+381 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/ra-data-fakerest
+382 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/ra-ui-bootstrap-styled
+383 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/ra-ui-materialui
+384 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/ra-core
+385 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/ra-data-graphcool
+386 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/ra-data-graphql-simple
+387 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/ra-data-graphql
+388 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/ra-data-json-server
+389 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/ra-data-simple-rest
+390 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/ra-input-rich-text
+391 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/ra-language-english
+392 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/ra-language-french
+393 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/ra-language-intl
+394 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/ra-realtime
+395 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/react-admin-bs
+396 silly isPackageDependentOf @yeutech/ra-language-english @yeutech/react-admin
+397 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/ra-data-fakerest
+398 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/ra-ui-bootstrap-styled
+399 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/ra-ui-materialui
+400 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/ra-core
+401 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/ra-data-graphcool
+402 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/ra-data-graphql-simple
+403 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/ra-data-graphql
+404 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/ra-data-json-server
+405 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/ra-data-simple-rest
+406 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/ra-input-rich-text
+407 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/ra-language-english
+408 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/ra-language-french
+409 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/ra-language-intl
+410 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/ra-realtime
+411 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/react-admin-bs
+412 silly isPackageDependentOf @yeutech/ra-language-french @yeutech/react-admin
+413 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-data-fakerest
+414 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-ui-bootstrap-styled
+415 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-ui-materialui
+416 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-core
+417 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-data-graphcool
+418 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-data-graphql-simple
+419 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-data-graphql
+420 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-data-json-server
+421 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-data-simple-rest
+422 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-input-rich-text
+423 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-language-english
+424 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-language-french
+425 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-language-intl
+426 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/ra-realtime
+427 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/react-admin-bs
+428 silly isPackageDependentOf @yeutech/ra-language-intl @yeutech/react-admin
+429 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/ra-data-fakerest
+430 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-fakerest
+431 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/ra-ui-bootstrap-styled
+432 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-ui-bootstrap-styled
+433 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/ra-ui-materialui
+434 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-ui-materialui
+435 verbose dependent @yeutech/ra-realtime depends on @yeutech/ra-ui-materialui
+436 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/ra-core
+437 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-core
+438 verbose dependent @yeutech/ra-realtime depends on @yeutech/ra-core
+439 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/ra-data-graphcool
+440 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphcool
+441 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/ra-data-graphql-simple
+442 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphql-simple
+443 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/ra-data-graphql
+444 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphql
+445 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/ra-data-json-server
+446 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-json-server
+447 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/ra-data-simple-rest
+448 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-simple-rest
+449 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/ra-input-rich-text
+450 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-input-rich-text
+451 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/ra-language-english
+452 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-english
+453 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/ra-language-french
+454 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-french
+455 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/ra-language-intl
+456 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-intl
+457 verbose dependent @yeutech/ra-realtime depends on @yeutech/ra-language-intl
+458 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/ra-realtime
+459 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-realtime
+460 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/react-admin-bs
+461 silly isPackageDependentOf @yeutech/react-admin @yeutech/react-admin-bs
+462 silly isPackageDependentOf @yeutech/ra-realtime @yeutech/react-admin
+463 verbose dependent @yeutech/ra-realtime depends on @yeutech/react-admin
+464 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-data-fakerest
+465 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-fakerest
+466 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-ui-bootstrap-styled
+467 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-ui-bootstrap-styled
+468 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-ui-materialui
+469 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-ui-materialui
+470 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-core
+471 verbose dependent @yeutech/ra-ui-bootstrap-styled depends on @yeutech/ra-core
+472 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-data-graphcool
+473 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-graphcool
+474 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-data-graphql-simple
+475 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-graphql-simple
+476 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-data-graphql
+477 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-graphql
+478 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-data-json-server
+479 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-json-server
+480 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-data-simple-rest
+481 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-simple-rest
+482 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-input-rich-text
+483 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-input-rich-text
+484 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-language-english
+485 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-language-english
+486 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-language-french
+487 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-language-french
+488 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-language-intl
+489 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-language-intl
+490 verbose dependent @yeutech/ra-ui-bootstrap-styled depends on @yeutech/ra-language-intl
+491 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-realtime
+492 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-realtime
+493 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/react-admin-bs
+494 silly isPackageDependentOf @yeutech/ra-core @yeutech/react-admin-bs
+495 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/react-admin
+496 silly isPackageDependentOf @yeutech/ra-core @yeutech/react-admin
+497 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-data-fakerest
+498 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-ui-bootstrap-styled
+499 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-ui-materialui
+500 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-ui-materialui
+501 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-core
+502 verbose dependent @yeutech/ra-ui-materialui depends on @yeutech/ra-core
+503 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-data-graphcool
+504 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-data-graphql-simple
+505 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-data-graphql
+506 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-data-json-server
+507 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-data-simple-rest
+508 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-input-rich-text
+509 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-language-english
+510 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-language-french
+511 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-language-intl
+512 verbose dependent @yeutech/ra-ui-materialui depends on @yeutech/ra-language-intl
+513 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/ra-realtime
+514 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/react-admin-bs
+515 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/react-admin
+516 silly isPackageDependentOf @yeutech/ra-core @yeutech/react-admin
+517 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/ra-data-fakerest
+518 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-fakerest
+519 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-data-fakerest
+520 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/ra-ui-bootstrap-styled
+521 verbose dependent @yeutech/react-admin-bs depends on @yeutech/ra-ui-bootstrap-styled
+522 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/ra-ui-materialui
+523 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-ui-materialui
+524 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-ui-materialui
+525 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/ra-core
+526 verbose dependent @yeutech/react-admin-bs depends on @yeutech/ra-core
+527 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/ra-data-graphcool
+528 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-graphcool
+529 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-data-graphcool
+530 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/ra-data-graphql-simple
+531 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-graphql-simple
+532 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-data-graphql-simple
+533 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/ra-data-graphql
+534 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-graphql
+535 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-data-graphql
+536 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/ra-data-json-server
+537 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-json-server
+538 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-data-json-server
+539 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/ra-data-simple-rest
+540 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-data-simple-rest
+541 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-data-simple-rest
+542 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/ra-input-rich-text
+543 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-input-rich-text
+544 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-input-rich-text
+545 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/ra-language-english
+546 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-language-english
+547 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-language-english
+548 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/ra-language-french
+549 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-language-french
+550 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-language-french
+551 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/ra-language-intl
+552 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-language-intl
+553 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-language-intl
+554 verbose dependent @yeutech/react-admin-bs depends on @yeutech/ra-language-intl
+555 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/ra-realtime
+556 silly isPackageDependentOf @yeutech/ra-core @yeutech/ra-realtime
+557 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/ra-realtime
+558 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/react-admin-bs
+559 silly isPackageDependentOf @yeutech/ra-core @yeutech/react-admin-bs
+560 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/react-admin-bs
+561 silly isPackageDependentOf @yeutech/react-admin-bs @yeutech/react-admin
+562 silly isPackageDependentOf @yeutech/ra-core @yeutech/react-admin
+563 silly isPackageDependentOf @yeutech/ra-ui-bootstrap-styled @yeutech/react-admin
+564 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-fakerest
+565 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-ui-bootstrap-styled
+566 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-ui-materialui
+567 verbose dependent @yeutech/react-admin depends on @yeutech/ra-ui-materialui
+568 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-core
+569 verbose dependent @yeutech/react-admin depends on @yeutech/ra-core
+570 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphcool
+571 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphql-simple
+572 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-graphql
+573 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-json-server
+574 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-data-simple-rest
+575 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-input-rich-text
+576 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-english
+577 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-french
+578 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-language-intl
+579 verbose dependent @yeutech/react-admin depends on @yeutech/ra-language-intl
+580 silly isPackageDependentOf @yeutech/react-admin @yeutech/ra-realtime
+581 silly isPackageDependentOf @yeutech/react-admin @yeutech/react-admin-bs
+582 silly isPackageDependentOf @yeutech/react-admin @yeutech/react-admin
+583 silly isPackageDependentOf @yeutech/ra-core @yeutech/react-admin
+584 silly isPackageDependentOf @yeutech/ra-ui-materialui @yeutech/react-admin
+585 silly collectUpdates
+586 verbose has filtered update @yeutech/ra-core
+587 verbose has filtered update @yeutech/ra-data-fakerest
+588 verbose has filtered update @yeutech/ra-data-graphcool
+589 verbose has filtered update @yeutech/ra-data-graphql-simple
+590 verbose has filtered update @yeutech/ra-data-graphql
+591 verbose has filtered update @yeutech/ra-data-json-server
+592 verbose has filtered update @yeutech/ra-data-simple-rest
+593 verbose has filtered update @yeutech/ra-input-rich-text
+594 verbose has filtered update @yeutech/ra-language-english
+595 verbose has filtered update @yeutech/ra-language-french
+596 verbose has filtered update @yeutech/ra-language-intl
+597 verbose has filtered update @yeutech/ra-realtime
+598 verbose has filtered update @yeutech/ra-ui-bootstrap-styled
+599 verbose has filtered update @yeutech/ra-ui-materialui
+600 verbose has filtered update @yeutech/react-admin-bs
+601 verbose has filtered update @yeutech/react-admin
+602 silly initialize success
+603 silly execute attempt
+604 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/lerna.json
+605 silly runScriptSync preversion @yeutech/react-admin-lerna
+606 silly runScriptSync preversion @yeutech/ra-core
+607 silly runScriptSync version @yeutech/ra-core
+608 silly runScriptSync preversion @yeutech/ra-data-fakerest
+609 silly runScriptSync version @yeutech/ra-data-fakerest
+610 silly runScriptSync preversion @yeutech/ra-data-graphcool
+611 silly runScriptSync version @yeutech/ra-data-graphcool
+612 silly runScriptSync preversion @yeutech/ra-data-graphql-simple
+613 silly runScriptSync version @yeutech/ra-data-graphql-simple
+614 silly runScriptSync preversion @yeutech/ra-data-graphql
+615 silly runScriptSync version @yeutech/ra-data-graphql
+616 silly runScriptSync preversion @yeutech/ra-data-json-server
+617 silly runScriptSync version @yeutech/ra-data-json-server
+618 silly runScriptSync preversion @yeutech/ra-data-simple-rest
+619 silly runScriptSync version @yeutech/ra-data-simple-rest
+620 silly runScriptSync preversion @yeutech/ra-input-rich-text
+621 silly runScriptSync version @yeutech/ra-input-rich-text
+622 silly runScriptSync preversion @yeutech/ra-language-english
+623 silly runScriptSync version @yeutech/ra-language-english
+624 silly runScriptSync preversion @yeutech/ra-language-french
+625 silly runScriptSync version @yeutech/ra-language-french
+626 silly runScriptSync preversion @yeutech/ra-language-intl
+627 silly runScriptSync version @yeutech/ra-language-intl
+628 silly runScriptSync preversion @yeutech/ra-realtime
+629 silly runScriptSync version @yeutech/ra-realtime
+630 silly runScriptSync preversion @yeutech/ra-ui-bootstrap-styled
+631 silly runScriptSync version @yeutech/ra-ui-bootstrap-styled
+632 silly runScriptSync preversion @yeutech/ra-ui-materialui
+633 silly runScriptSync version @yeutech/ra-ui-materialui
+634 silly runScriptSync preversion @yeutech/react-admin-bs
+635 silly runScriptSync version @yeutech/react-admin-bs
+636 silly runScriptSync preversion @yeutech/react-admin
+637 silly runScriptSync version @yeutech/react-admin
+638 silly runScriptSync version @yeutech/react-admin-lerna
+639 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/ra-core/package.json
+640 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/ra-data-fakerest/package.json
+641 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/ra-data-graphcool/package.json
+642 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/ra-data-graphql-simple/package.json
+643 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/ra-data-graphql/package.json
+644 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/ra-data-json-server/package.json
+645 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/ra-data-simple-rest/package.json
+646 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/ra-input-rich-text/package.json
+647 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/ra-language-english/package.json
+648 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/ra-language-french/package.json
+649 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/ra-language-intl/package.json
+650 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/ra-realtime/package.json
+651 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/ra-ui-bootstrap-styled/package.json
+652 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/ra-ui-materialui/package.json
+653 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/react-admin-bs/package.json
+654 silly addFile /home/dka/workspace/github.com/yeutech/react-admin/packages/react-admin/package.json
+655 silly commit v2.0.0-RC2-yeutech.1
+656 verbose commit [ 'commit', '--no-verify', '-m', 'v2.0.0-RC2-yeutech.1' ]
+657 silly addTag v2.0.0-RC2-yeutech.1
+658 error execute caught error
+659 error Error: fatal: tag 'v2.0.0-RC2-yeutech.1' already exists
+659 error
+659 error     at Function.module.exports.sync (/home/dka/.nvm/versions/node/v10.0.0/lib/node_modules/lerna/node_modules/execa/index.js:303:26)
+659 error     at Function.execSync (/home/dka/.nvm/versions/node/v10.0.0/lib/node_modules/lerna/lib/ChildProcessUtilities.js:59:30)
+659 error     at Function.addTag (/home/dka/.nvm/versions/node/v10.0.0/lib/node_modules/lerna/lib/GitUtilities.js:100:39)
+659 error     at PublishCommand.gitCommitAndTagVersion (/home/dka/.nvm/versions/node/v10.0.0/lib/node_modules/lerna/lib/commands/PublishCommand.js:779:30)
+659 error     at PublishCommand.commitAndTagUpdates (/home/dka/.nvm/versions/node/v10.0.0/lib/node_modules/lerna/lib/commands/PublishCommand.js:740:27)
+659 error     at PublishCommand.execute (/home/dka/.nvm/versions/node/v10.0.0/lib/node_modules/lerna/lib/commands/PublishCommand.js:329:14)

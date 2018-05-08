@@ -34,7 +34,7 @@
         "css-loader": "~0.28.4",
         "html-loader": "~0.5.5",
         "html-webpack-plugin": "~3.2.0",
-        "material-ui": "1.0.0-beta.40",
+        "material-ui": "1.0.0-beta.42",
         "styled-components": "^3.2.5",
         "bootstrap-styled": "^1.6.5",
         "bootstrap-styled-mixins": "^1.0.4",

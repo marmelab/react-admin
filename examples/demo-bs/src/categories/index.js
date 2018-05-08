@@ -11,7 +11,7 @@ import {
     TextField,
     TextInput,
 } from '@yeutech/react-admin-bs';
-import Icon from 'material-ui-icons/Bookmark';
+import Icon from '@material-ui/icons/Bookmark';
 import withStyles from 'material-ui/styles/withStyles';
 
 import ThumbnailField from '../products/ThumbnailField';

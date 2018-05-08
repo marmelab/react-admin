@@ -19,7 +19,7 @@ import {
     TextField,
     TextInput,
 } from '@yeutech/react-admin-bs';
-import Icon from 'material-ui-icons/Comment';
+import Icon from '@material-ui/icons/Comment';
 import withStyles from 'material-ui/styles/withStyles';
 
 import ProductReferenceField from '../products/ProductReferenceField';

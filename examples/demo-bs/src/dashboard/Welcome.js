@@ -1,7 +1,7 @@
 import React from 'react';
 import Card, { CardContent, CardActions } from 'material-ui/Card';
-import HomeIcon from 'material-ui-icons/Home';
-import CodeIcon from 'material-ui-icons/Code';
+import HomeIcon from '@material-ui/icons/Home';
+import CodeIcon from '@material-ui/icons/Code';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 

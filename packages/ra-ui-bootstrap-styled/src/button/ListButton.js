@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ActionList from 'material-ui-icons/List';
+import ActionList from '@material-ui/icons/List';
 
 import Link from '../Link';
 import Button from './Button';

@@ -9,8 +9,8 @@ import Dialog, {
 import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
 import { fade } from 'material-ui/styles/colorManipulator';
-import ActionCheck from 'material-ui-icons/CheckCircle';
-import AlertError from 'material-ui-icons/ErrorOutline';
+import ActionCheck from '@material-ui/icons/CheckCircle';
+import AlertError from '@material-ui/icons/ErrorOutline';
 import classnames from 'classnames';
 
 const styles = theme => ({
@@ -34,7 +34,7 @@ const styles = theme => ({
 
 /**
  * Confirmation dialog
- * 
+ *
  * @example
  * <Confirm
  *     isOpen={true}

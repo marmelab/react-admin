@@ -18,7 +18,7 @@ import {
     TextInput,
     required,
 } from '@yeutech/react-admin';
-import Icon from 'material-ui-icons/Collections';
+import Icon from '@material-ui/icons/Collections';
 import Chip from 'material-ui/Chip';
 import withStyles from 'material-ui/styles/withStyles';
 import Icon from '@material-ui/icons/Collections';

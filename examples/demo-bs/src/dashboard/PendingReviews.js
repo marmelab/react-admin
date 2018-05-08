@@ -2,7 +2,7 @@ import React from 'react';
 import compose from 'recompose/compose';
 import Card, { CardHeader } from 'material-ui/Card';
 import List, { ListItem, ListItemText } from 'material-ui/List';
-import CommentIcon from 'material-ui-icons/Comment';
+import CommentIcon from '@material-ui/icons/Comment';
 import Avatar from 'material-ui/Avatar';
 import { withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';

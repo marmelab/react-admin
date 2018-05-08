@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { CardContent } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
-import ActionHide from 'material-ui-icons/HighlightOff';
+import ActionHide from '@material-ui/icons/HighlightOff';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import { withStyles } from 'material-ui/styles';

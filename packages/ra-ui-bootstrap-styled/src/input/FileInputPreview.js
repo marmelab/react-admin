@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import IconButton from 'material-ui/IconButton';
-import RemoveCircle from 'material-ui-icons/RemoveCircle';
+import RemoveCircle from '@material-ui/icons/RemoveCircle';
 import { withStyles } from 'material-ui/styles';
 
 const styles = theme => ({
