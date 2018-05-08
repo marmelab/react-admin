@@ -18,7 +18,7 @@ import {
     SimpleForm,
     TextField,
     TextInput,
-} from 'react-admin';
+} from '@yeutech/react-admin';
 import withStyles from 'material-ui/styles/withStyles';
 import Icon from '@material-ui/icons/Comment';
 

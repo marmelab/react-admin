@@ -9,7 +9,7 @@ import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 import classnames from 'classnames';
 import Responsive from '../layout/Responsive';
 
-import { translate, userLogout as userLogoutAction } from 'ra-core';
+import { translate, userLogout as userLogoutAction } from '@yeutech/ra-core';
 
 const styles = theme => ({
     menuItem: {

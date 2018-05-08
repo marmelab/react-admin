@@ -1,3 +1,3 @@
-import defaultMessages from 'ra-language-english';
+import defaultMessages from '@yeutech/ra-language-intl/translation/en.json';
 
 export default () => defaultMessages;

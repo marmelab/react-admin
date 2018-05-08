@@ -1,5 +1,6 @@
 npm-debug.log
 yarn-error.log
+lerna-debug.log
 node_modules
 lib
 es6
@@ -7,3 +8,6 @@ docs/_site/
 packages/react-admin/docs
 examples/**/static
 examples/**/dist
+packages/ra-example-shop
+.idea
+*.iml

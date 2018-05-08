@@ -24,7 +24,7 @@ import { crudCreate as crudCreateAction } from '../actions';
  * @example     
  *     // in src/posts.js
  *     import React from 'react';
- *     import { Create, SimpleForm, TextInput } from 'react-admin';
+ *     import { Create, SimpleForm, TextInput } from '@yeutech/react-admin';
  *     
  *     export const PostCreate = (props) => (
  *         <Create {...props}>
@@ -36,7 +36,7 @@ import { crudCreate as crudCreateAction } from '../actions';
  *
  *     // in src/App.js
  *     import React from 'react';
- *     import { Admin, Resource } from 'react-admin';
+ *     import { Admin, Resource } from '@yeutech/react-admin';
  *     
  *     import { PostCreate } from './posts';
  *     

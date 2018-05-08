@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tab as MuiTab } from 'material-ui/Tabs';
-import { translate } from 'ra-core';
+import { translate } from '@yeutech/ra-core';
 
 import Labeled from '../input/Labeled';
 import classnames from 'classnames';
 
 /**
  * Tab element for the SimpleShowLayout.
- * 
+ *
  * The `<Tab>` component accepts the following props:
- * 
+ *
  * - label: The string displayed for each tab
  * - icon: The icon to show before the label (optional). Must be an element.
- * 
- * @example     
+ *
+ * @example
  *     // in src/posts.js
  *     import React from 'react';
  *     import FavoriteIcon from '@material-ui/icons/Favorite';
  *     import PersonPinIcon from '@material-ui/icons/PersonPin';
  *     import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
- *     
+ *
  *     export const PostShow = (props) => (
  *         <Show {...props}>
  *             <TabbedShowLayout>
@@ -37,10 +37,10 @@ import classnames from 'classnames';
  *
  *     // in src/App.js
  *     import React from 'react';
- *     import { Admin, Resource } from 'react-admin';
- *     
+ *     import { Admin, Resource } from '@yeutech/react-admin';
+ *
  *     import { PostShow } from './posts';
- *     
+ *
  *     const App = () => (
  *         <Admin dataProvider={...}>
  *             <Resource name="posts" show={PostShow} />

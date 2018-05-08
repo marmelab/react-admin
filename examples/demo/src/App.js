@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import React, { Component } from 'react';
-import { Admin, Resource } from 'react-admin';
+import { Admin, Resource } from '@yeutech/react-admin';
 
 import './App.css';
 

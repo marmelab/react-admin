@@ -17,11 +17,12 @@ import {
     TextField,
     TextInput,
     required,
-} from 'react-admin';
+} from '@yeutech/react-admin';
+import Icon from '@material-ui/icons/Collections';
 import Chip from 'material-ui/Chip';
 import withStyles from 'material-ui/styles/withStyles';
 import Icon from '@material-ui/icons/Collections';
-import RichTextInput from 'ra-input-rich-text';
+import RichTextInput from '@yeutech/ra-input-rich-text';
 
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from '../reviews/StarRatingField';

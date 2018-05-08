@@ -10,7 +10,7 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
-import { translate } from 'ra-core';
+import { translate } from '@yeutech/ra-core';
 
 import Responsive from '../layout/Responsive';
 

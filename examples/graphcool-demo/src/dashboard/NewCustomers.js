@@ -6,7 +6,7 @@ import Avatar from 'material-ui/Avatar';
 import { withStyles } from 'material-ui/styles';
 import CustomerIcon from '@material-ui/icons/PersonAdd';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-admin';
+import { translate } from '@yeutech/react-admin';
 
 const styles = theme => ({
     card: { borderLeft: 'solid 4px #4caf50', flex: 1, marginLeft: '1em' },

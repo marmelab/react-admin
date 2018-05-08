@@ -7,7 +7,7 @@ import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
 import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
-import { translate } from 'ra-core';
+import { translate } from '@yeutech/ra-core';
 
 import FormInput from '../form/FormInput';
 

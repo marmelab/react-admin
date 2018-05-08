@@ -9,7 +9,7 @@ import {
     CREATE,
     UPDATE,
     DELETE,
-} from 'react-admin';
+} from '@yeutech/react-admin';
 
 import buildApolloClient from './buildApolloClient';
 import {

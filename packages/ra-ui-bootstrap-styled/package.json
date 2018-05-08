@@ -1,0 +1,63 @@
+{
+    "name": "@yeutech/ra-ui-bootstrap-styled",
+    "version": "2.0.0-RC2-yeutech.2",
+    "description": "UI Components for react-admin with bootstrap-styled",
+    "files": [
+        "*.md",
+        "lib",
+        "src"
+    ],
+    "main": "lib/index",
+    "author": "Yeutech Company Limited <contact@yeutech.com>",
+    "contributors": [
+        "Alexander Janet <alexander.janet@yeutech.com>"
+    ],
+    "keywords": [
+        "bootstrap",
+        "styled",
+        "bootstrap-styled",
+        "styled-components",
+        "react"
+    ],
+    "repository": "yeutech/react-admin",
+    "homepage": "https://github.com/yeutech/react-admin#readme",
+    "bugs": "https://github.com/yeutech/react-admin/issues",
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
+    "devDependencies": {
+        "enzyme": "~3.3.0",
+        "enzyme-adapter-react-16": "~1.1.1",
+        "file-api": "~0.10.4",
+        "ignore-styles": "~5.0.1",
+        "react": "~16.3.1",
+        "react-dom": "~16.3.1",
+        "react-test-renderer": "~16.3.1"
+    },
+    "peerDependencies": {
+        "react": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0",
+        "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0"
+    },
+    "dependencies": {
+        "@material-ui/icons": "1.0.0-beta.42",
+        "@yeutech/ra-core": "^2.0.0-RC2-yeutech.2",
+        "autosuggest-highlight": "^3.1.1",
+        "bootstrap-styled": "^1.6.5",
+        "bootstrap-styled-mixins": "^1.0.4",
+        "bootstrap-styled-motion": "^1.0.5",
+        "classnames": "~2.2.5",
+        "inflection": "~1.12.0",
+        "lodash": "~4.17.5",
+        "material-ui": "1.0.0-beta.42",
+        "prop-types": "~15.6.1",
+        "react-autosuggest": "^9.3.2",
+        "react-dropzone": "~4.0.1",
+        "react-redux": "~5.0.7",
+        "react-router-dom": "~4.2.2",
+        "react-transition-group": "^2.2.1",
+        "recompose": "~0.26.0",
+        "redux": "~3.7.2",
+        "redux-form": "~7.3.0"
+    }
+}

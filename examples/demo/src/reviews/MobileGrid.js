@@ -1,6 +1,6 @@
 // in src/comments.js
 import React from 'react';
-import { DateField, EditButton, translate } from 'react-admin';
+import { DateField, EditButton, translate } from '@yeutech/react-admin';
 import Card, { CardHeader, CardContent } from 'material-ui/Card';
 import { withStyles } from 'material-ui/styles';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';

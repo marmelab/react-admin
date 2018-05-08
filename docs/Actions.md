@@ -19,7 +19,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
-import { showNotification as showNotificationAction } from 'react-admin';
+import { showNotification as showNotificationAction } from '@yeutech/react-admin';
 import { push as pushAction } from 'react-router-redux';
 
 class ApproveButton extends Component {
@@ -82,7 +82,7 @@ Or, in the `<Edit>` page, as a [custom action](./CreateEdit.md#actions):
 // in src/comments/CommentEditActions.js
 import React from 'react';
 import { CardActions } from 'material-ui/Card';
-import { ListButton, DeleteButton } from 'react-admin';
+import { ListButton, DeleteButton } from '@yeutech/react-admin';
 import ApproveButton from './ApproveButton';
 
 const cardActionStyle = {
@@ -116,11 +116,11 @@ The previous code uses `fetch()`, which means it has to make raw HTTP requests. 
 
 ```jsx
 // in src/dataProvider.js
-import jsonServerProvider from 'ra-data-json-server';
+import jsonServerProvider from '@yeutech/ra-data-json-server';
 export default jsonServerProvider('http://Mydomain.com/api/');
 
 // in src/comments/ApproveButton.js
-import { UPDATE } from 'react-admin';
+import { UPDATE } from '@yeutech/react-admin';
 import dataProvider from '../dataProvider';
 
 class ApproveButton extends Component {
@@ -170,7 +170,7 @@ Fetching data right inside the component is easy. But if you're a Redux user, yo
 
 ```jsx
 // in src/comment/commentActions.js
-import { UPDATE } from 'react-admin';
+import { UPDATE } from '@yeutech/react-admin';
 export const COMMENT_APPROVE = 'COMMENT_APPROVE';
 export const commentApprove = (id, data, basePath) => ({
     type: COMMENT_APPROVE,
@@ -223,7 +223,7 @@ For instance, to display a notification when the `COMMENT_APPROVE` action is dis
 
 ```diff
 // in src/comment/commentActions.js
-import { UPDATE } from 'react-admin';
+import { UPDATE } from '@yeutech/react-admin';
 export const COMMENT_APPROVE = 'COMMENT_APPROVE';
 export const commentApprove = (id, data, basePath) => ({
     type: COMMENT_APPROVE,
@@ -257,7 +257,7 @@ In practice, most side effects must be triggered after the `fetch` side effect s
 
 ```diff
 // in src/comment/commentActions.js
-import { UPDATE } from 'react-admin';
+import { UPDATE } from '@yeutech/react-admin';
 export const COMMENT_APPROVE = 'COMMENT_APPROVE';
 export const commentApprove = (id, data, basePath) => ({
     type: COMMENT_APPROVE,
@@ -341,7 +341,7 @@ To use this saga, pass it in the `customSagas` props of the `<Admin>` component:
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
+import { Admin, Resource } from '@yeutech/react-admin';
 
 import { CommentList } from './comments';
 import commentSaga from './comments/commentSaga';
@@ -375,7 +375,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
-+ import { startUndoable as startUndoableAction } from 'ra-core';
++ import { startUndoable as startUndoableAction } from '@yeutech/ra-core';
 - import { commentApprove as commentApproveAction } from './commentActions';
 + import { commentApprove } from './commentActions';
 
@@ -476,7 +476,7 @@ Now the question is: How can you put this reducer in the `<Admin>` app? Simple: 
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin } from 'react-admin';
+import { Admin } from '@yeutech/react-admin';
 
 import rate from './rateReducer';
 

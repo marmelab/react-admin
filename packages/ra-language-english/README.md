@@ -1,6 +1,6 @@
 # English Messages for React-Admin
 
-English messages for [react-admin](https://github.com/marmelab/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services.
+English messages for [react-admin](https://github.com/yeutech/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services.
 
 ![react-admin demo](http://static.marmelab.com/react-admin.gif)
 
@@ -13,7 +13,7 @@ npm install --save ra-language-english
 ## Usage
 
 ```js
-import englishMessages from 'ra-language-english';
+import englishMessages from '@yeutech/ra-language-intl/translation/en.json';
 
 const messages = {
     'en': englishMessages,

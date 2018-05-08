@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NavigationRefresh from '@material-ui/icons/Refresh';
-import { refreshView as refreshViewAction } from 'ra-core';
+import { refreshView as refreshViewAction } from '@yeutech/ra-core';
 
 import Button from './Button';
 

@@ -1,5 +1,5 @@
 import { all, put, takeEvery } from 'redux-saga/effects';
-import { showNotification } from 'react-admin';
+import { showNotification } from '@yeutech/react-admin';
 import { REVIEW_APPROVE_FAILURE, REVIEW_REJECT_FAILURE } from './reviewActions';
 
 export default function* reviewSaga() {

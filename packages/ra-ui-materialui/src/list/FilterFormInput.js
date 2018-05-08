@@ -4,7 +4,7 @@ import { Field } from 'redux-form';
 import IconButton from 'material-ui/IconButton';
 import ActionHide from '@material-ui/icons/HighlightOff';
 import classnames from 'classnames';
-import { translate } from 'ra-core';
+import { translate } from '@yeutech/ra-core';
 
 const emptyRecord = {};
 

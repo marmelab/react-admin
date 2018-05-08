@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
  * 
  * @example
  *     import React from 'react';
- *     import { translate } from 'react-admin';
+ *     import { translate } from '@yeutech/react-admin';
  *     
  *     const MyHelloButton = ({ translate }) => (
  *         <button>{translate('myroot.hello.world')}</button>

@@ -12,7 +12,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import { withStyles } from 'material-ui/styles';
 import LockIcon from '@material-ui/icons/LockOutline';
 
-import { Notification, translate, userLogin } from 'react-admin';
+import { Notification, translate, userLogin } from '@yeutech/react-admin';
 
 const styles = theme => ({
     main: {

@@ -1,6 +1,6 @@
 {
-    "name": "ra-language-english",
-    "version": "2.0.0-RC2",
+    "name": "@yeutech/ra-language-english",
+    "version": "2.0.0-RC2-yeutech.2",
     "description": "English messages for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
     "main": "index.js",
     "scripts": {
@@ -8,7 +8,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/marmelab/react-admin.git"
+        "url": "git+https://github.com/yeutech/react-admin.git"
     },
     "keywords": [
         "react",
@@ -18,8 +18,11 @@
     ],
     "author": "François Zaninotto",
     "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/marmelab/react-admin/issues"
+    "publishConfig": {
+        "access": "public"
     },
-    "homepage": "https://github.com/marmelab/react-admin#readme"
+    "bugs": {
+        "url": "https://github.com/yeutech/react-admin/issues"
+    },
+    "homepage": "https://github.com/yeutech/react-admin#readme"
 }

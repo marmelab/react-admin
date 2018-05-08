@@ -16,10 +16,10 @@ import {
     TabbedForm,
     TextField,
     TextInput,
-} from 'react-admin';
+} from '@yeutech/react-admin';
 import Chip from 'material-ui/Chip';
 import Icon from '@material-ui/icons/Collections';
-import RichTextInput from 'ra-input-rich-text';
+import RichTextInput from '@yeutech/ra-input-rich-text';
 
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from '../reviews/StarRatingField';

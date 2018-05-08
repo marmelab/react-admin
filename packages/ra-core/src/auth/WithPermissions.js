@@ -24,7 +24,7 @@ const isEmptyChildren = children => Children.count(children) === 0;
  * requires it.
  *
  * @example
- *     import { WithPermissions } from 'react-admin';
+ *     import { WithPermissions } from '@yeutech/react-admin';
  *
  *     const Foo = ({ permissions }) => (
  *         {permissions === 'admin' ? <p>Sensitive data</p> : null}

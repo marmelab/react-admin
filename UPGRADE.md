@@ -43,7 +43,7 @@ As well as all your files depending on the 'admin-on-rest' package:
 
 ```diff
 - import { BooleanField, NumberField, Show } from 'admin-on-rest'; 
-+ import { BooleanField, NumberField, Show } from 'react-admin'; 
++ import { BooleanField, NumberField, Show } from '@yeutech/react-admin'; 
 ```
 
 A global search and replace on the string "admin-on-rest" should do the trick in no time.
@@ -75,10 +75,10 @@ Update your `import` statements accordingly:
 
 ```diff
 - import { simpleRestClient } from 'admin-on-rest';
-+ import simpleRestClient from 'ra-data-simple-rest';
++ import simpleRestClient from '@yeutech/ra-data-simple-rest';
 
 - import { jsonServerRestClient } from 'admin-on-rest';
-+ import jsonServerRestClient from 'ra-data-json-server';
++ import jsonServerRestClient from '@yeutech/ra-data-json-server';
 ```
 
 ## `authClient` Prop Renamed To `authProvider` in `<Admin>` Component
@@ -102,7 +102,7 @@ The English messages have moved to another package, `ra-language-english`. The c
 
 ```diff
 - import { enMessages } from 'admin-on-rest';
-+ import enMessages from 'ra-language-english';
++ import enMessages from '@yeutech/ra-language-intl/translation/en.json';
 const messages = { 'en': enMessages };
 ```
 
@@ -142,9 +142,9 @@ In admin-on-rest, localization messages were passed as an object literal in the 
 ```diff
 - import { Admin, enMessages } from 'admin-on-rest';
 - import frMessages from 'aor-language-french';
-+ import { Admin } from 'react-admin';
-+ import enMessages from 'ra-language-english';
-+ import frMessages from 'ra-language-french';
++ import { Admin } from '@yeutech/react-admin';
++ import enMessages from '@yeutech/ra-language-intl/translation/en.json';
++ import frMessages from '@yeutech/ra-language-intl/translation/fr.json';
 
 const messages = {
     en: enMessages,
@@ -165,7 +165,7 @@ If you don't use the `<Admin>` component, but prefer to implement your administr
 ```diff
 // in src/App.js
 - import { crudSaga, ... } from 'admin-on-rest';
-+ import { adminSaga, ... } from 'react-admin';
++ import { adminSaga, ... } from '@yeutech/react-admin';
 
 // ...
 - sagaMiddleware.run(crudSaga(dataProvider, i18nProvider));
@@ -258,7 +258,7 @@ Adding the `addField` prop to a component used to automatically add a redux-form
 ```diff
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-+ import { addField } from 'react-admin';
++ import { addField } from '@yeutech/react-admin';
 const SexInput = ({ input, meta: { touched, error } }) => (
     <SelectField
         floatingLabelText="Sex"
@@ -280,7 +280,7 @@ Admin-on-rest input components all use the new `addField` HOC. This means that i
 
 ```diff
 - import { SelectInput } from 'admin-on-rest';
-+ import { SelectInput } from 'react-admin';
++ import { SelectInput } from '@yeutech/react-admin';
 const choices = [
     { id: 'M', name: 'Male' },
     { id: 'F', name: 'Female' },
@@ -301,7 +301,7 @@ import { CardActions } from 'material-ui/Card';
 - import FlatButton from 'material-ui/FlatButton';
 - import { CreateButton } from 'admin-on-rest';
 - import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-+ import { CreateButton, RefreshButton } from 'react-admin';
++ import { CreateButton, RefreshButton } from '@yeutech/react-admin';
 
 - const PostListActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
 + const PostListActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter }) => (
@@ -335,7 +335,7 @@ All react-admin components now accept a `className` prop instead of the `elStyle
 //<td>
 //    <a style="text-decoration:none" href="mailto:foo@example.com">foo@example.com</a>
 //</td>
-+ import { EmailField, List, Datagrid } from 'react-admin';
++ import { EmailField, List, Datagrid } from '@yeutech/react-admin';
 + import { withStyles } from 'material-ui/styles';
 + const styles = {
 +     field: {
@@ -357,7 +357,7 @@ In addition to `elStyle`, Field and Input components used to support a `style` p
 
 ```diff
 - import { EmailField, List, Datagrid } from 'admin-on-rest';
-+ import { EmailField, List, Datagrid } from 'react-admin';
++ import { EmailField, List, Datagrid } from '@yeutech/react-admin';
 + import { withStyles } from 'material-ui/styles';
 
 + const styles = {
@@ -394,7 +394,7 @@ Furthermore, some React-admin components such as the `List`, `Filter`, and `Data
 **Tip**: When you set the `classes` prop in the `List` or `Datagrid` components, you might see warnings about the `cell` and `field` classes being unknown by those components. Those warnings are not displayed in `production` mode, and are just a way to ensure you know what you're doing. And you can make them disappear by destructuring the `classes` prop:
 
 ```jsx
-import { EmailField, List, Datagrid } from 'react-admin';
+import { EmailField, List, Datagrid } from '@yeutech/react-admin';
 import { withStyles } from 'material-ui/styles';
 
 const styles = {
@@ -446,7 +446,7 @@ The `Restricted` component has been renamed to `Authenticated`. Update your `imp
 // in src/MyPage.js
 import { withRouter } from 'react-router-dom';
 - import { Restricted } from 'admin-on-rest';
-+ import { Authenticated } from 'react-admin';
++ import { Authenticated } from '@yeutech/react-admin';
 
 const MyPage = ({ location }) => (
 -  <Restricted authParams={{ foo: 'bar' }} location={location}>
@@ -472,7 +472,7 @@ If you were using `WithPermission` before, here's how to migrate to `WithPermiss
 ```diff
 import React from 'react';
 - import { MenuItemLink, WithPermission } from 'admin-on-rest';
-+ import { MenuItemLink, WithPermissions } from 'react-admin';
++ import { MenuItemLink, WithPermissions } from '@yeutech/react-admin';
 
 export default ({ onMenuClick, logout }) => (
     <div>
@@ -500,7 +500,7 @@ import React from 'react';
 import BenefitsSummary from './BenefitsSummary';
 import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
 - import { ViewTitle, SwitchPermissions, Permission } from 'admin-on-rest';
-+ import { ViewTitle, WithPermissions } from 'react-admin';
++ import { ViewTitle, WithPermissions } from '@yeutech/react-admin';
 
 export default () => (
     <div>
@@ -642,7 +642,7 @@ import React from 'react';
 import BenefitsSummary from './BenefitsSummary';
 import BenefitsDetailsWithSensitiveData from './BenefitsDetailsWithSensitiveData';
 - import { ViewTitle, SwitchPermissions, Permission } from 'admin-on-rest';
-+ import { ViewTitle } from 'react-admin';
++ import { ViewTitle } from '@yeutech/react-admin';
 
 - export default () => (
 + export default ({ permissions }) => (
@@ -669,7 +669,7 @@ Finally, you won't need the now deprecated `<WithPermission>` or `<SwitchPermiss
 // in src/MyPage.js
 import React from 'react';
 import Card, { CardContent } from 'material-ui/Card';
-import { ViewTitle, WithPermissions } from 'react-admin';
+import { ViewTitle, WithPermissions } from '@yeutech/react-admin';
 import { withRouter } from 'react-router-dom';
 
 const MyPage = ({ permissions }) => (
@@ -728,7 +728,7 @@ import {
     Sidebar,
 -   setSidebarVisibility,
 - } from 'admin-on-rest';
-+ } from 'react-admin';
++ } from '@yeutech/react-admin';
 
 - const styles = {
 -     wrapper: {
@@ -883,7 +883,7 @@ Material-ui renamed all `xxxTap` props to `xxxClick`, so did we.
 import React from 'react';
 import { connect } from 'react-redux';
 - import { MenuItemLink, getResources } from 'admin-on-rest';
-+ import { MenuItemLink, getResources } from 'react-admin';
++ import { MenuItemLink, getResources } from '@yeutech/react-admin';
 
 - const Menu = ({ resources, onMenuTap, logout }) => (
 + const Menu = ({ resources, onMenuClick, logout }) => (
@@ -916,7 +916,7 @@ This impacts how you build a custom menu, as you'll now have to check whether yo
 import React from 'react';
 import { connect } from 'react-redux';
 - import { MenuItemLink, getResources } from 'admin-on-rest';
-+ import { MenuItemLink, getResources, Responsive } from 'react-admin';
++ import { MenuItemLink, getResources, Responsive } from '@yeutech/react-admin';
 import { withRouter } from 'react-router-dom';
 
 const Menu = ({ resources, onMenuClick, logout }) => (
@@ -971,13 +971,13 @@ Update your `import` statements accordingly:
 
 ```diff
 - import realtimeSaga from 'aor-realtime';
-+ import realtimeSaga from 'ra-realtime';
++ import realtimeSaga from '@yeutech/ra-realtime';
 
 - import buildGraphQLProvider from 'aor-graphql-client';
-+ import buildGraphQLProvider from 'ra-data-graphql';
++ import buildGraphQLProvider from '@yeutech/ra-data-graphql';
 
 - import buildGraphcoolProvider from 'aor-graphql-client-graphcool';
-+ import buildGraphcoolProvider from 'ra-data-graphcool';
++ import buildGraphcoolProvider from '@yeutech/ra-data-graphcool';
 ```
 
 ## `aor-dependent-input` Was Removed
@@ -990,7 +990,7 @@ To display a component based on the value of the current (edited) record, wrap t
 
 ```diff
 - import { DependentInput } from 'aor-dependent-input';
-+ import { FormDataConsumer } from 'react-admin';
++ import { FormDataConsumer } from '@yeutech/react-admin';
 
 export const UserCreate = (props) => (
     <Create {...props}>

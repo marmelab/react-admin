@@ -8,7 +8,7 @@ import { withStyles } from 'material-ui/styles';
 import ContentSave from '@material-ui/icons/Save';
 import classnames from 'classnames';
 
-import { showNotification, translate } from 'ra-core';
+import { showNotification, translate } from '@yeutech/ra-core';
 
 const styles = {
     button: {

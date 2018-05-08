@@ -9,7 +9,7 @@ import classnames from 'classnames';
 
 import Responsive from '../layout/Responsive';
 import Link from '../Link';
-import { translate } from 'ra-core';
+import { translate } from '@yeutech/ra-core';
 
 const styles = theme => ({
     floating: {

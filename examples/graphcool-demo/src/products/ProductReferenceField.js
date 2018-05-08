@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReferenceField, TextField } from 'react-admin';
+import { ReferenceField, TextField } from '@yeutech/react-admin';
 
 const ProductReferenceField = props => (
     <ReferenceField source="product.id" reference="Product" {...props}>

@@ -1,6 +1,6 @@
 # FakeRest Data Provider For React-Admin
 
-Client-side data provider for [react-admin](https://github.com/marmelab/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services.
+Client-side data provider for [react-admin](https://github.com/yeutech/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services.
 
 This package takes a JSON object as input, then creates a client-side data provider around it - no backend involved. The provider issues no HTTP requests, every operation happens locally in the browser. It's ideal to run e2e tests without an API server, or to showcase an admin only with a static server.
 
@@ -21,8 +21,8 @@ Pass a JSON object to the provider constructor:
 ```jsx
 // in src/App.js
 import React from 'react';
-import { Admin, Resource } from 'react-admin';
-import fakeDataProvider from 'ra-data-fakerest';
+import { Admin, Resource } from '@yeutech/react-admin';
+import fakeDataProvider from '@yeutech/ra-data-fakerest';
 
 const dataProvider = fakeDataProvider({
     posts: [

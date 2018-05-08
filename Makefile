@@ -11,6 +11,9 @@ run: run-simple
 run-simple: ## run the simple example
 	@cd examples/simple && yarn start
 
+run-simple-bs: ## run the simple example bootstrap-styled
+	@cd examples/simple-bs && yarn start
+
 run-tutorial: build ## run the tutorial example
 	@cd examples/tutorial && yarn start
 
@@ -19,6 +22,9 @@ run-demo: build ## run the demo example
 
 build-demo: ## compile the demo example to static js
 	@cd examples/demo && REACT_APP_DATA_PROVIDER=rest yarn build
+
+run-demo-bs: build ## run the demo example bootstrap-styled
+	@cd examples/demo-bs && REACT_APP_DATA_PROVIDER=rest yarn start
 
 run-graphql-demo: build ## run the demo example
 	@cd examples/demo && REACT_APP_DATA_PROVIDER=graphql yarn start
@@ -43,6 +49,12 @@ build-react-admin:
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/react-admin/src -d ./packages/react-admin/lib --ignore spec.js,test.js
 	@mkdir packages/react-admin/docs
 	@cp docs/*.md packages/react-admin/docs
+
+build-ra-language-intl:
+	@echo "Transpiling ra-language-intl files...";
+	@rm -rf ./packages/ra-language-intl/lib
+	@npm run --prefix ./packages/ra-language-intl extract-intl
+	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-language-intl/src -d ./packages/ra-language-intl/lib --ignore spec.js,test.js
 
 build-ra-data-json-server:
 	@echo "Transpiling ra-data-json-server files...";
@@ -85,7 +97,7 @@ build-data-generator:
 	@rm -rf ./examples/data-generator/lib
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./examples/data-generator/src -d ./examples/data-generator/lib
 
-build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-input-rich-text build-ra-realtime build-data-generator ## compile ES6 files to JS
+build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-language-intl build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-input-rich-text build-ra-realtime build-data-generator ## compile ES6 files to JS
 
 watch: ## continuously compile ES6 files to JS
 	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore spec.js,test.js --watch

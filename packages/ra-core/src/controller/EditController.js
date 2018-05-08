@@ -26,7 +26,7 @@ import { crudGetOne, crudUpdate, startUndoable } from '../actions';
  * @example     
  *     // in src/posts.js
  *     import React from 'react';
- *     import { Edit, SimpleForm, TextInput } from 'react-admin';
+ *     import { Edit, SimpleForm, TextInput } from '@yeutech/react-admin';
  *     
  *     export const PostEdit = (props) => (
  *         <Edit {...props}>
@@ -38,7 +38,7 @@ import { crudGetOne, crudUpdate, startUndoable } from '../actions';
  *
  *     // in src/App.js
  *     import React from 'react';
- *     import { Admin, Resource } from 'react-admin';
+ *     import { Admin, Resource } from '@yeutech/react-admin';
  *     
  *     import { PostEdit } from './posts';
  *     

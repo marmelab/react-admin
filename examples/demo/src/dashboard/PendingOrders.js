@@ -9,7 +9,7 @@ import List, {
 import Avatar from 'material-ui/Avatar';
 import { withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-admin';
+import { translate } from '@yeutech/react-admin';
 
 const style = theme => ({
     root: {

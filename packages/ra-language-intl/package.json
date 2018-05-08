@@ -1,0 +1,48 @@
+{
+  "name": "@yeutech/ra-language-intl",
+  "version": "2.0.0-RC2-yeutech.2",
+  "description": "ra-language-intl",
+  "main": "lib/index.js",
+  "scripts": {
+    "extract-intl": "NODE_ENV=production npx rollup-umd-scripts intl extract"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:yeutech/react-admin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yeutech/react-admin/issues"
+  },
+  "files": [
+    "*.md",
+    "bin",
+    "lib",
+    "src",
+    "translation"
+  ],
+  "keywords": [
+    ""
+  ],
+  "authors": [
+    "Dimitri Kopriwa"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "react-intl": "~2.4.0"
+  },
+  "translation": {
+    "locale": "en",
+    "locales": [
+      "en",
+      "fr"
+    ]
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-react-intl": "^2.4.0",
+    "babel-preset-react-app": "^3.1.1"
+  }
+}

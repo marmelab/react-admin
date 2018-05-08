@@ -4,7 +4,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Route } from 'react-router';
 
-import { Admin, Resource } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import { Admin, Resource } from '@yeutech/react-admin'; // eslint-disable-line import/no-unresolved
 
 import { PostList, PostCreate, PostEdit, PostShow, PostIcon } from './posts';
 import {

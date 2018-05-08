@@ -6,10 +6,10 @@ enzyme.configure({ adapter: new Adapter() });
 
 /**
  * Mock PopperJS
- * 
+ *
  * When using mount(), material-ui calls Popper.js, which is not compatible with JSDom
  * And causes UnhandledPromiseRejectionWarning: TypeError: document.createRange is not a function
- * 
+ *
  * @see https://github.com/FezVrasta/popper.js/issues/478
  * */
 jest.mock(

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
 import classnames from 'classnames';
-import { CreateController } from 'ra-core';
+import { CreateController } from '@yeutech/ra-core';
 
 import Header from '../layout/Header';
 import DefaultActions from './CreateActions';
@@ -112,7 +112,7 @@ CreateView.propTypes = {
  * @example     
  *     // in src/posts.js
  *     import React from 'react';
- *     import { Create, SimpleForm, TextInput } from 'react-admin';
+ *     import { Create, SimpleForm, TextInput } from '@yeutech/react-admin';
  *     
  *     export const PostCreate = (props) => (
  *         <Create {...props}>
@@ -124,7 +124,7 @@ CreateView.propTypes = {
  *
  *     // in src/App.js
  *     import React from 'react';
- *     import { Admin, Resource } from 'react-admin';
+ *     import { Admin, Resource } from '@yeutech/react-admin';
  *     
  *     import { PostCreate } from './posts';
  *     

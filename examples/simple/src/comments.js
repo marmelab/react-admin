@@ -25,7 +25,7 @@ import {
     ShowButton,
     SimpleShowLayout,
     required,
-} from 'react-admin'; // eslint-disable-line import/no-unresolved
+} from '@yeutech/react-admin'; // eslint-disable-line import/no-unresolved
 
 import Avatar from 'material-ui/Avatar';
 import Card, { CardActions, CardHeader, CardContent } from 'material-ui/Card';

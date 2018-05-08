@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card from 'material-ui/Card';
 import classnames from 'classnames';
-import { ShowController } from 'ra-core';
+import { ShowController } from '@yeutech/ra-core';
 
 import Header from '../layout/Header';
 import DefaultActions from './ShowActions';
@@ -115,7 +115,7 @@ ShowView.propTypes = {
  * @example     
  *     // in src/posts.js
  *     import React from 'react';
- *     import { Show, SimpleShowLayout, TextField } from 'react-admin';
+ *     import { Show, SimpleShowLayout, TextField } from '@yeutech/react-admin';
  *     
  *     export const PostShow = (props) => (
  *         <Show {...props}>
@@ -127,7 +127,7 @@ ShowView.propTypes = {
  *
  *     // in src/App.js
  *     import React from 'react';
- *     import { Admin, Resource } from 'react-admin';
+ *     import { Admin, Resource } from '@yeutech/react-admin';
  *     
  *     import { PostShow } from './posts';
  *     

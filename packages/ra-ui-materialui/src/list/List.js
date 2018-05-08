@@ -11,7 +11,7 @@ import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
 import DefaultBulkActions from './BulkActions';
 import DefaultActions from './ListActions';
-import { ListController } from 'ra-core';
+import { ListController } from '@yeutech/ra-core';
 import defaultTheme from '../defaultTheme';
 
 const styles = {

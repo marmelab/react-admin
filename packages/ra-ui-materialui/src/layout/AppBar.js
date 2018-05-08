@@ -9,7 +9,7 @@ import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import compose from 'recompose/compose';
-import { toggleSidebar as toggleSidebarAction } from 'ra-core';
+import { toggleSidebar as toggleSidebarAction } from '@yeutech/ra-core';
 
 import LoadingIndicator from './LoadingIndicator';
 
@@ -115,6 +115,7 @@ AppBar.propTypes = {
     open: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,
+    locale: PropTypes.string.isRequired,
     toggleSidebar: PropTypes.func.isRequired,
 };
 

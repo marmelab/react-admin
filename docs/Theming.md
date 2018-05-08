@@ -15,7 +15,7 @@ Here is an example customizing an `EditButton` component inside a `Datagrid`, us
 
 {% raw %}
 ```jsx
-import { NumberField, List, Datagrid, EditButton } from 'react-admin';
+import { NumberField, List, Datagrid, EditButton } from '@yeutech/react-admin';
 import { withStyles } from 'material-ui/styles';
 
 const styles = {
@@ -63,8 +63,8 @@ import {
     NullableBooleanInput,
     NumberField,
     TextInput,
-} from 'react-admin';
-import Icon from '@material-ui/icons/Person';
+} from '@yeutech/react-admin';
+import Icon from '@@material-ui/icons/Person';
 import { withStyles } from 'material-ui/styles';
 
 export const VisitorIcon = Icon;
@@ -141,7 +141,7 @@ Sometimes you want the format to depend on the value. The following example show
 
 {% raw %}
 ```jsx
-import { NumberField, List, Datagrid, EditButton } from 'react-admin';
+import { NumberField, List, Datagrid, EditButton } from '@yeutech/react-admin';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 
@@ -181,7 +181,7 @@ Furthermore, you may extract this highlighting strategy into an Higher Order Com
 
 {% raw %}
 ```jsx
-import { NumberField, List, Datagrid, EditButton } from 'react-admin';
+import { NumberField, List, Datagrid, EditButton } from '@yeutech/react-admin';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
 
@@ -230,7 +230,7 @@ It expects element props named `small`, `medium`, and `large`. It displays the e
 ```jsx
 // in src/posts.js
 import React from 'react';
-import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
+import { List, Responsive, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from '@yeutech/react-admin';
 
 export const PostList = (props) => (
     <List {...props}>
@@ -361,7 +361,7 @@ const App = () => (
 );
 ```
 
-Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src/mui/layout/Layout.js) as a starting point for your custom layout. Here is a simplified version (with no responsive support):
+Use the [default layout](https://github.com/yeutech/react-admin/blob/master/src/mui/layout/Layout.js) as a starting point for your custom layout. Here is a simplified version (with no responsive support):
 
 ```jsx
 // in src/MyLayout.js
@@ -378,7 +378,7 @@ import {
     Notification,
     Sidebar,
     setSidebarVisibility,
-} from 'react-admin';
+} from '@yeutech/react-admin';
 
 const theme = createMuiTheme({
     palette: {
