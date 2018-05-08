@@ -1,44 +1,27 @@
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
+import PersonIcon from '@material-ui/icons/Person';
+import Avatar from 'material-ui/Avatar';
+import Button from 'material-ui/Button';
+import Card, { CardActions, CardContent, CardHeader } from 'material-ui/Card';
+import Grid from 'material-ui/Grid';
+import Toolbar from 'material-ui/Toolbar';
+import { withStyles } from 'material-ui/styles';
 import React from 'react';
 import {
-    AutocompleteInput,
-    Create,
     DateField,
-    DateInput,
-    DisabledInput,
-    EditActions,
-    EditController,
     EditButton,
     Filter,
     List,
-    LongTextInput,
     ReferenceField,
     ReferenceInput,
     Responsive,
     SelectInput,
-    SimpleList,
-    SimpleForm,
-    TextField,
-    TextInput,
-    minLength,
-    translate,
-    Show,
     ShowButton,
-    SimpleShowLayout,
-    required,
+    SimpleList,
+    TextField,
+    translate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-
-import Avatar from 'material-ui/Avatar';
-import Card, { CardActions, CardHeader, CardContent } from 'material-ui/Card';
-import Button from 'material-ui/Button';
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
-import Grid from 'material-ui/Grid';
-import { withStyles } from 'material-ui/styles';
-import PersonIcon from '@material-ui/icons/Person';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
-export const CommentIcon = ChatBubbleIcon;
 
 const CommentFilter = props => (
     <Filter {...props}>
@@ -171,7 +154,7 @@ const CommentMobileList = props => (
     />
 );
 
-export const CommentList = props => (
+const CommentList = props => (
     <List
         {...props}
         perPage={6}
@@ -182,107 +165,4 @@ export const CommentList = props => (
     </List>
 );
 
-const editStyles = {
-    header: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-    actions: {
-        height: 'auto',
-    },
-    card: {
-        marginTop: '1em',
-        maxWidth: '30em',
-    },
-};
-
-export const CommentEdit = withStyles(editStyles)(({ classes, ...props }) => (
-    <EditController {...props}>
-        {({ resource, record, redirect, save, basePath, version }) => (
-            <div className="edit-page">
-                <div className={classes.header}>
-                    <Typography variant="headline">
-                        Comment #{record && record.id}
-                    </Typography>
-                    <EditActions
-                        basePath={basePath}
-                        resource={resource}
-                        data={record}
-                        hasShow
-                        hasList
-                        className={classes.actions}
-                    />
-                </div>
-                <Card className={classes.card}>
-                    {record && (
-                        <SimpleForm
-                            basePath={basePath}
-                            redirect={redirect}
-                            resource={resource}
-                            record={record}
-                            save={save}
-                            version={version}
-                        >
-                            <DisabledInput source="id" fullWidth />
-                            <ReferenceInput
-                                source="post_id"
-                                reference="posts"
-                                perPage={15}
-                                sort={{ field: 'title', order: 'ASC' }}
-                                fullWidth
-                            >
-                                <AutocompleteInput
-                                    optionText="title"
-                                    options={{ fullWidth: true }}
-                                />
-                            </ReferenceInput>
-                            <TextInput
-                                source="author.name"
-                                validate={minLength(10)}
-                                fullWidth
-                            />
-                            <DateInput source="created_at" fullWidth />
-                            <LongTextInput
-                                source="body"
-                                validate={minLength(10)}
-                                fullWidth
-                            />
-                        </SimpleForm>
-                    )}
-                </Card>
-            </div>
-        )}
-    </EditController>
-));
-
-const defaultValue = { created_at: new Date() };
-export const CommentCreate = props => (
-    <Create {...props}>
-        <SimpleForm defaultValue={defaultValue}>
-            <ReferenceInput
-                source="post_id"
-                reference="posts"
-                allowEmpty
-                validate={required()}
-            >
-                <SelectInput optionText="title" />
-            </ReferenceInput>
-            <DateInput source="created_at" />
-            <LongTextInput source="body" />
-        </SimpleForm>
-    </Create>
-);
-
-export const CommentShow = props => (
-    <Show {...props}>
-        <SimpleShowLayout>
-            <TextField source="id" />
-            <ReferenceField source="post_id" reference="posts">
-                <TextField source="title" />
-            </ReferenceField>
-            <TextField source="author.name" />
-            <DateField source="created_at" />
-            <TextField source="body" />
-        </SimpleShowLayout>
-    </Show>
-);
+export default CommentList;
