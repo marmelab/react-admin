@@ -1,6 +1,6 @@
 {
     "name": "@yeutech/ra-ui-bootstrap-styled",
-    "version": "2.0.0-beta4-yeutech.4",
+    "version": "2.0.0-RC2-yeutech.1",
     "description": "UI Components for react-admin with bootstrap-styled",
     "files": [
         "*.md",
@@ -8,7 +8,8 @@
         "src"
     ],
     "main": "lib/index",
-    "authors": [
+    "author": "Yeutech Company Limited <contact@yeutech.com>",
+    "contributors": [
         "Alexander Janet <alexander.janet@yeutech.com>"
     ],
     "keywords": [
@@ -39,16 +40,16 @@
         "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0"
     },
     "dependencies": {
-        "@yeutech/ra-core": "^2.0.0-beta4-yeutech.4",
+        "@yeutech/ra-core": "^2.0.0-RC2-yeutech.1",
         "autosuggest-highlight": "^3.1.1",
         "classnames": "~2.2.5",
         "inflection": "~1.12.0",
         "lodash": "~4.17.5",
-        "bootstrap-styled": "^1.6.0",
+        "bootstrap-styled": "^1.6.5",
         "bootstrap-styled-mixins": "^1.0.4",
         "bootstrap-styled-motion": "^1.0.5",
         "material-ui": "1.0.0-beta.40",
-        "material-ui-icons": "1.0.0-beta.36",
+        "@material-ui-icons": "1.0.0-beta.42",
         "prop-types": "~15.6.1",
         "react-autosuggest": "^9.3.2",
         "react-dropzone": "~4.0.1",
