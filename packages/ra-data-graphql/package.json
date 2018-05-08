@@ -34,11 +34,11 @@
         "pluralize": "~7.0.0"
     },
     "peerDependencies": {
-        "graphql": "^0.13.2",
-        "@yeutech/react-admin": "^2.0.0-RC2-yeutech.1"
+        "@yeutech/react-admin": "^2.0.0-RC2-yeutech.1",
+        "graphql": "^0.13.2"
     },
     "devDependencies": {
-        "graphql": "^0.13.2",
-        "@yeutech/react-admin": "^2.0.0-RC2-yeutech.1"
+        "@yeutech/react-admin": "^2.0.0-RC2-yeutech.1",
+        "graphql": "^0.13.2"
     }
 }

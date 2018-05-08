@@ -31,25 +31,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "babel": "~6.23.0",
-    "babel-plugin-react-intl": "~2.4.0",
-    "babel-runtime": "~6.26.0",
-    "enzyme": "~3.3.0",
-    "enzyme-adapter-react-16": "~1.1.1",
-    "react": "~16.3.1",
-    "react-dom": "~16.2.0",
-    "react-intl": "~2.4.0",
-    "react-redux": "~5.0.7",
-    "react-test-renderer": "~16.3.1",
-    "redux": "~3.7.2",
-    "sinon": "~2.3.2",
-    "webpack": "~3.11.0"
-  },
-  "peerDependencies": {
-    "react": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0",
-    "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0",
-    "react-redux": "~5.0.7",
-    "redux": "~3.7.2"
+    "react-intl": "~2.4.0"
   },
   "translation": {
     "locale": "en",
