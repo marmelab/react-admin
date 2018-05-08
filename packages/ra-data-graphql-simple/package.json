@@ -1,6 +1,6 @@
 {
     "name": "@yeutech/ra-data-graphql-simple",
-    "version": "2.0.0-RC2-yeutech.1",
+    "version": "2.0.0-RC2-yeutech.2",
     "description": "A GraphQL simple data provider for react-admin",
     "main": "./lib/index.js",
     "repository": {
@@ -27,7 +27,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@yeutech/ra-data-graphql": "^2.0.0-RC2-yeutech.1",
+        "@yeutech/ra-data-graphql": "^2.0.0-RC2-yeutech.2",
         "graphql-tag": "^2.6.1",
         "lodash": "~4.17.5",
         "pluralize": "~7.0.0"
@@ -37,7 +37,7 @@
         "graphql": "^0.13.2"
     },
     "devDependencies": {
-        "@yeutech/react-admin": "^2.0.0-RC2-yeutech.1",
+        "@yeutech/react-admin": "^2.0.0-RC2-yeutech.2",
         "graphql": "^0.13.2"
     }
 }

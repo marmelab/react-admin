@@ -1,6 +1,6 @@
 {
     "name": "@yeutech/ra-ui-bootstrap-styled",
-    "version": "2.0.0-RC2-yeutech.1",
+    "version": "2.0.0-RC2-yeutech.2",
     "description": "UI Components for react-admin with bootstrap-styled",
     "files": [
         "*.md",
@@ -41,7 +41,7 @@
     },
     "dependencies": {
         "@material-ui/icons": "1.0.0-beta.42",
-        "@yeutech/ra-core": "^2.0.0-RC2-yeutech.1",
+        "@yeutech/ra-core": "^2.0.0-RC2-yeutech.2",
         "autosuggest-highlight": "^3.1.1",
         "bootstrap-styled": "^1.6.5",
         "bootstrap-styled-mixins": "^1.0.4",
