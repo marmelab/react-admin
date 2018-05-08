@@ -140,7 +140,7 @@ export default (type, params) => {
         // ...
     }
     if (type === AUTH_ERROR) {
-        const status  = params.message.status;
+        const status  = params.status;
         if (status === 401 || status === 403) {
             localStorage.removeItem('token');
             return Promise.reject();
@@ -272,6 +272,7 @@ class MyLoginPage extends Component {
 export default connect(undefined, { userLogin })(MyLoginPage);
 
 // in src/MyLogoutButton.js
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userLogout } from '@yeutech/react-admin';
 

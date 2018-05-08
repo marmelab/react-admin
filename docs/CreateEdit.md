@@ -406,7 +406,7 @@ import {
     regex,
     email,
     choices
-} from '@yeutech/react-admin';
+} from 'react-admin';
 
 const validateFirstName = [required(), minLength(2), maxLength(15)];
 const validateEmail = email();
@@ -486,7 +486,7 @@ The most common use case is to display two submit buttons in the `<Create>` view
 For that use case, use the `<SaveButton>` component with a custom `redirect` prop:
 
 ```jsx
-import { Edit, SimpleForm, SaveButton, Toolbar } from '@yeutech/react-admin';
+import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
 
 const PostCreateToolbar = props => (
     <Toolbar {...props} >

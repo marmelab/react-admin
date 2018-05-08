@@ -20,6 +20,9 @@ run-tutorial: build ## run the tutorial example
 run-demo: build ## run the demo example
 	@cd examples/demo && REACT_APP_DATA_PROVIDER=rest yarn start
 
+build-demo: ## compile the demo example to static js
+	@cd examples/demo && REACT_APP_DATA_PROVIDER=rest yarn build
+
 run-demo-bs: build ## run the demo example bootstrap-styled
 	@cd examples/demo-bs && REACT_APP_DATA_PROVIDER=rest yarn start
 
@@ -42,7 +45,10 @@ build-ra-ui-materialui:
 build-react-admin:
 	@echo "Transpiling react-admin files...";
 	@rm -rf ./packages/react-admin/lib
+	@rm -rf ./packages/react-admin/docs
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/react-admin/src -d ./packages/react-admin/lib --ignore spec.js,test.js
+	@mkdir packages/react-admin/docs
+	@cp docs/*.md packages/react-admin/docs
 
 build-ra-language-intl:
 	@echo "Transpiling ra-language-intl files...";

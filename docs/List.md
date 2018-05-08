@@ -24,6 +24,7 @@ Here are all the props accepted by the `<List>` component:
 * [`perPage`](#records-per-page)
 * [`sort`](#default-sort-field)
 * [`filter`](#permanent-filter) (the permanent filter used in the REST request)
+* [`filterDefaultValues`](#filter-default-values) (the default values for `alwaysOn` filters)
 * [`pagination`](#pagination)
 
 Here is the minimal code necessary to display a list of posts:
@@ -276,6 +277,10 @@ The `Filter` component accepts the usual `className` prop but you can override m
 * `form`: applied to the root element when rendering as a form.
 * `button`: applied to the root element when rendering as a button.
 
+Children of the `<Filter>` form are regular inputs. `<Filter>` hides them all by default, except those that have the `alwaysOn` prop.
+
+**Tip**: For technical reasons, react-admin does not accept children of `<Filter>` having both a `defaultValue` and `alwaysOn`. To set default values for always on filters, use the `filterDefaultValues` prop of the `<List>` component instead (see below).
+
 ### Records Per Page
 
 By default, the list paginates results by groups of 10. You can override this setting by specifying the `perPage` prop:
@@ -345,6 +350,37 @@ export const PostList = (props) => (
 
 The actual filter parameter sent to the REST client is the result of the combination of the *user* filters (the ones set through the `filters` component form), and the *permanent* filter. The user cannot override the permanent filters set by way of `filter`.
 
+### Filter Default Values
+
+To set default values to filters, you can either pass an object literal as the `filterDefaultValues` prop of the `<List>` element, or use the `defaultValue` prop of any input component.
+
+There is one exception: inputs with `alwaysOn` don't accept `defaultValue`. You have to use the `filterDefaultValues` for those.
+
+{% raw %}
+```jsx
+// in src/posts.js
+const PostFilter = (props) => (
+    <Filter {...props}>
+        <TextInput label="Search" source="q" alwaysOn />
+        <BooleanInput source="is_published" alwaysOn />
+        <TextInput source="title" defaultValue="Hello, World!" />
+    </Filter>
+);
+
+export const PostList = (props) => (
+    <List {...props} filters={<PostFilter />} filterDefaultValues={{ is_published: true }}>
+        ...
+    </List>
+);
+```
+{% endraw %}
+
+**Tip**: The `filter` and `filterDefaultValues` props have one key difference: the `filterDefaultValues` can be overriddent by the user, while the `filter` values are always sent to the data provider. Or, to put it otherwise:
+
+```js
+const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser, ...filters };
+```
+
 ### Pagination
 
 You can replace the default pagination element by your own, using the `pagination` prop. The pagination element receives the current page, the number of records per page, the total number of records, as well as a `setPage()` function that changes the page.
@@ -353,8 +389,8 @@ So if you want to replace the default pagination by a "<previous - next>" pagina
 
 ```jsx
 import Button from 'material-ui/Button';
-import ChevronLeft from 'material-ui-icons/ChevronLeft';
-import ChevronRight from 'material-ui-icons/ChevronRight';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
 import Toolbar from 'material-ui/Toolbar';
 
 const PostPagination = ({ page, perPage, total, setPage }) => {

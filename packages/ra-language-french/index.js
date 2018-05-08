@@ -62,7 +62,7 @@ module.exports = {
                 "L'URL saisie est incorrecte, ou vous avez suivi un mauvais lien.",
             loading:
                 'La page est en cours de chargement, merci de bien vouloir patienter.',
-            invalid_form: `Le formulaire n'est pas valide.`,
+            invalid_form: "Le formulaire n'est pas valide.",
             delete_title: 'Supprimer %{name} #%{id}',
             delete_content:
                 'Êtes-vous sur(e) de vouloir supprimer cet élément ?',

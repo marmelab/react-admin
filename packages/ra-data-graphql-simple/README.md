@@ -75,9 +75,22 @@ type Query {
 }
 
 type Mutation {
-  createPost(data: String): Post
-  updatePost(data: String): Post
-  removePost(id: ID!): Boolean
+  createPost(
+    title: String!
+    views: Int!
+    user_id: ID!
+    User: User
+    Comments: [Comment]
+  ): Post
+  updatePost(
+    id: ID!
+    title: String!
+    views: Int!
+    user_id: ID!
+    User: User
+    Comments: [Comment]
+  ): Post
+  deletePost(id: ID!): Boolean
 }
 
 type Post {
@@ -98,7 +111,7 @@ type PostFilter {
     views_lte: Int
     views_gt: Int
     views_gte: Int
-    user_id: ID    
+    user_id: ID
 }
 
 type ListMetadata {

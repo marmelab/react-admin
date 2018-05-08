@@ -3,20 +3,19 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@material-ui/icons": "1.0.0-beta.42",
         "data-generator": "^0.1.0",
-        "json-graphql-server": "~2.1.1",
         "fakerest": "~2.1.0",
         "fetch-mock": "~6.3.0",
-        "material-ui": "1.0.0-beta.40",
-        "material-ui-icons": "1.0.0-beta.36",
-        "@yeutech/ra-data-fakerest": "~2.0.0-beta4-yeutech.3",
-        "@yeutech/ra-data-graphql-simple": "~2.0.0-beta4-yeutech.3",
-        "@yeutech/ra-data-simple-rest": "~2.0.0-beta4-yeutech.3",
-        "@yeutech/ra-input-rich-text": "~2.0.0-beta4-yeutech.3",
-        "@yeutech/ra-language-intl": "~2.0.0-beta4-yeutech.3",
-        "react-intl": "^2.4.0",
+        "json-graphql-server": "~2.1.1",
+        "material-ui": "1.0.0-beta.42",
+        "@yeutech/ra-data-fakerest": "^2.0.0-RC2-yeutech.1",
+        "@yeutech/ra-data-graphql-simple": "~2.0.0-RC2-yeutech.1",
+        "@yeutech/ra-data-simple-rest": "~2.0.0-RC2-yeutech.1",
+        "@yeutech/ra-input-rich-text": "^2.0.0-RC2-yeutech.1",
+        "@yeutech/ra-language-intl": "~2.0.0-RC2-yeutech.1",
         "react": "~16.3.1",
-        "@yeutech/react-admin": "~2.0.0-beta4-yeutech.3",
+        "@yeutech/react-admin": "~2.0.0-RC2-yeutech.1",
         "react-dom": "~16.3.1",
         "react-redux": "~5.0.7",
         "react-router-dom": "~4.2.2",
@@ -29,5 +28,6 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "eject": "react-scripts eject"
-    }
+    },
+    "homepage": "https://marmelab.com/react-admin-demo"
 }

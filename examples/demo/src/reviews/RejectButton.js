@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
-import ThumbDown from 'material-ui-icons/ThumbDown';
 import { translate } from '@yeutech/react-admin';
+import ThumbDown from '@material-ui/icons/ThumbDown';
 import compose from 'recompose/compose';
 import { reviewReject as reviewRejectAction } from './reviewActions';
 

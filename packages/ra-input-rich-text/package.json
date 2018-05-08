@@ -1,6 +1,6 @@
 {
     "name": "@yeutech/ra-input-rich-text",
-    "version": "2.0.0-beta4-yeutech.4",
+    "version": "2.0.0-RC2-yeutech.1",
     "description": "<RichTextInput> component for react-admin, useful for editing HTML code in admin GUIs.",
     "main": "lib/index.js",
     "scripts": {
@@ -37,8 +37,8 @@
     },
     "homepage": "https://github.com/yeutech/react-admin#readme",
     "peerDependencies": {
-        "@yeutech/react-admin": "~2.0.0-beta4-yeutech.3",
         "react": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0",
+        "@yeutech/react-admin": "^2.0.0-RC2-yeutech.1",
         "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0"
     },
     "dependencies": {

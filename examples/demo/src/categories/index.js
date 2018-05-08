@@ -10,9 +10,9 @@ import {
     SimpleForm,
     TextField,
     TextInput,
-} from '@yeutech/react-admin';
-import Icon from 'material-ui-icons/Bookmark';
+} from 'react-admin';
 import withStyles from 'material-ui/styles/withStyles';
+import Icon from '@material-ui-icons/Bookmark';
 
 import ThumbnailField from '../products/ThumbnailField';
 import ProductRefField from '../products/ProductRefField';

@@ -19,9 +19,9 @@ import {
     SimpleForm,
     TextField,
     TextInput,
-} from '@yeutech/react-admin';
-import Icon from 'material-ui-icons/AttachMoney';
+} from 'react-admin';
 import withStyles from 'material-ui/styles/withStyles';
+import Icon from '@material-ui/icons/AttachMoney';
 
 import Basket from './Basket';
 import NbItemsField from './NbItemsField';

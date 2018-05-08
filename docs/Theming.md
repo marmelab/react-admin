@@ -64,7 +64,7 @@ import {
     NumberField,
     TextInput,
 } from '@yeutech/react-admin';
-import Icon from 'material-ui-icons/Person';
+import Icon from '@material-ui-icons/Person';
 import { withStyles } from 'material-ui/styles';
 
 export const VisitorIcon = Icon;

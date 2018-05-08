@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import Button from 'material-ui/Button';
-import ContentAdd from 'material-ui-icons/Add';
 import { withStyles } from 'material-ui/styles';
+import ContentAdd from '@material-ui/icons/Add';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 

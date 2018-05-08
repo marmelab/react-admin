@@ -1,6 +1,6 @@
 import React from 'react';
-import PostIcon from 'material-ui-icons/Book';
-import UserIcon from 'material-ui-icons/Group';
+import PostIcon from '@material-ui/icons/Book';
+import UserIcon from '@material-ui/icons/Group';
 
 import { Admin, Resource } from '@yeutech/react-admin';
 import jsonServerProvider from '@yeutech/ra-data-json-server';

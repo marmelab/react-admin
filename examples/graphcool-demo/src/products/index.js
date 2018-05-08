@@ -17,8 +17,8 @@ import {
     TextField,
     TextInput,
 } from '@yeutech/react-admin';
-import Icon from 'material-ui-icons/Collections';
 import Chip from 'material-ui/Chip';
+import Icon from '@material-ui/icons/Collections';
 import RichTextInput from '@yeutech/ra-input-rich-text';
 
 import CustomerReferenceField from '../visitors/CustomerReferenceField';

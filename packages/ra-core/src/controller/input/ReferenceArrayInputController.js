@@ -126,8 +126,8 @@ export class ReferenceArrayInputController extends Component {
     };
 
     setPagination = pagination => {
-        if (pagination !== this.param.pagination) {
-            this.param.pagination = pagination;
+        if (pagination !== this.params.pagination) {
+            this.params.pagination = pagination;
             this.fetchOptions();
         }
     };
