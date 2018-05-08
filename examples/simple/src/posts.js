@@ -51,6 +51,7 @@ import {
     required,
     translate,
 } from '@yeutech/react-admin'; // eslint-disable-line import/no-unresolved
+import { ShowController } from '@yeutech/ra-core';
 import RichTextInput from '@yeutech/ra-input-rich-text';
 import Chip from 'material-ui/Chip';
 import { InputAdornment } from 'material-ui/Input';

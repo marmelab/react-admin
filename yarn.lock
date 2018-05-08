@@ -161,12 +161,6 @@
     reselect "~3.0.0"
     warning "~3.0.0"
 
-"@yeutech/ra-data-fakerest@^2.0.0-RC1-yeutech.1", "@yeutech/ra-data-fakerest@^2.0.0-RC2-yeutech.1", "@yeutech/ra-data-fakerest@~2.0.0-RC2-yeutech.1":
-  version "2.0.0-beta4-yeutech.4"
-  resolved "https://registry.yarnpkg.com/@yeutech/ra-data-fakerest/-/ra-data-fakerest-2.0.0-beta4-yeutech.4.tgz#07baeb0bf13cf1b0e3576ed4f257df882ab14699"
-  dependencies:
-    fakerest "~2.1.0"
-
 "@yeutech/ra-data-graphql-simple@~2.0.0-beta4-yeutech.3":
   version "2.0.0-beta4-yeutech.4"
   resolved "https://registry.yarnpkg.com/@yeutech/ra-data-graphql-simple/-/ra-data-graphql-simple-2.0.0-beta4-yeutech.4.tgz#668a27b1714daec1e161a4272ad46f75d70abfd9"
@@ -210,7 +204,7 @@
     shelljs "0.8.1"
     yargs "11.0.0"
 
-"@yeutech/ra-ui-materialui@^2.0.0-RC2-yeutech.1", "@yeutech/ra-ui-materialui@^2.0.0-beta4-yeutech.4":
+"@yeutech/ra-ui-materialui@^2.0.0-beta4-yeutech.4":
   version "2.0.0-beta4-yeutech.4"
   resolved "https://registry.yarnpkg.com/@yeutech/ra-ui-materialui/-/ra-ui-materialui-2.0.0-beta4-yeutech.4.tgz#a2fca53e1ed196edd315f174cd8cb8a45e49bc28"
   dependencies:
@@ -739,7 +733,7 @@ axobject-query@^0.1.0:
   dependencies:
     ast-types-flow "0.0.7"
 
-babel-cli@~6.26.0:
+babel-cli@^6.26.0, babel-cli@~6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-cli/-/babel-cli-6.26.0.tgz#502ab54874d7db88ad00b887a06383ce03d002f1"
   dependencies:
@@ -1035,6 +1029,14 @@ babel-plugin-istanbul@^4.0.0:
 babel-plugin-jest-hoist@^20.0.3:
   version "20.0.3"
   resolved "https://registry.yarnpkg.com/babel-plugin-jest-hoist/-/babel-plugin-jest-hoist-20.0.3.tgz#afedc853bd3f8dc3548ea671fbe69d03cc2c1767"
+
+babel-plugin-react-intl@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-react-intl/-/babel-plugin-react-intl-2.4.0.tgz#292fca8030603a9e0476973290836aa0c7da17e2"
+  dependencies:
+    babel-runtime "^6.2.0"
+    intl-messageformat-parser "^1.2.0"
+    mkdirp "^0.5.1"
 
 babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"
@@ -5432,7 +5434,7 @@ intl-format-cache@^2.0.5:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/intl-format-cache/-/intl-format-cache-2.1.0.tgz#04a369fecbfad6da6005bae1f14333332dcf9316"
 
-intl-messageformat-parser@1.4.0:
+intl-messageformat-parser@1.4.0, intl-messageformat-parser@^1.2.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/intl-messageformat-parser/-/intl-messageformat-parser-1.4.0.tgz#b43d45a97468cadbe44331d74bb1e8dea44fc075"
 
