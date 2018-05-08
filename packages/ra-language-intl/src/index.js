@@ -41,6 +41,14 @@ export default defineMessages({
         id: 'ra.action.refresh',
         defaultMessage: 'Refresh',
     },
+    actionAdd: {
+        id: 'ra.action.add',
+        defaultMessage: 'Add',
+    },
+    actionRemove: {
+        id: 'ra.action.remove',
+        defaultMessage: 'Remove',
+    },
     actionAddFilter: {
         id: 'ra.action.add_filter',
         defaultMessage: 'Add filter',
@@ -280,13 +288,5 @@ export default defineMessages({
     validationEmail: {
         id: 'ra.validation.email',
         defaultMessage: 'Must be a valid email',
-    },
-    validationOneOf: {
-        id: 'ra.validation.oneOf',
-        defaultMessage: 'Must be one of: {options}',
-    },
-    validationRegex: {
-        id: 'ra.validation.regex',
-        defaultMessage: 'Must match a specific format (regexp): {pattern}',
     },
 });

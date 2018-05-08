@@ -1,4 +1,5 @@
 {
+  "ra.action.add": "Ajouter",
   "ra.action.add_filter": "Ajouter un filtre",
   "ra.action.back": "Retour",
   "ra.action.bulk_actions": "{smart_count, number} {smart_count, plural, one {selectionné} other {selectionnés}}",
@@ -8,6 +9,7 @@
   "ra.action.edit": "Éditer",
   "ra.action.list": "Liste",
   "ra.action.refresh": "Actualiser",
+  "ra.action.remove": "Supprimer",
   "ra.action.remove_filter": "Supprimer ce filtre",
   "ra.action.save": "Enregistrer",
   "ra.action.show": "Afficher",
@@ -66,7 +68,5 @@
   "ra.validation.minLength": "Minimum {min} caractères",
   "ra.validation.minValue": "Minimum {min}",
   "ra.validation.number": "Doit être un nombre",
-  "ra.validation.oneOf": "",
-  "ra.validation.regex": "",
   "ra.validation.required": "Ce champ est requis"
 }

@@ -4,6 +4,7 @@ import { reduxForm, reducer as formReducer } from 'redux-form';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { TranslationProvider } from '@yeutech/ra-core';
+import messages from '@yeutech/ra-language-intl/translation/en.json';
 
 import { ArrayInput } from './ArrayInput';
 import NumberInput from './NumberInput';
@@ -15,7 +16,7 @@ const AppMock = ({ children }) => (
         store={createStore(
             combineReducers({
                 form: formReducer,
-                i18n: () => ({ locale: 'en', messages: {} }),
+                i18n: () => ({ locale: 'en', messages }),
             })
         )}
     >

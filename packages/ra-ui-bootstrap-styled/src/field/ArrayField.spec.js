@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { TranslationProvider } from '@yeutech/ra-core';
+import messages from '@yeutech/ra-language-intl/translation/en.json';
 
 import { ArrayField } from './ArrayField';
 import NumberField from './NumberField';
@@ -49,7 +50,7 @@ describe('<ArrayField />', () => {
     it('should render the underlying iterator component', () => {
         const store = createStore(
             combineReducers({
-                i18n: () => ({ locale: 'en', messages: {} }),
+                i18n: () => ({ locale: 'en', messages }),
             })
         );
         const Dummy = () => (

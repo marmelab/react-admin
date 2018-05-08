@@ -1,4 +1,5 @@
 {
+  "ra.action.add": "Add",
   "ra.action.add_filter": "Add filter",
   "ra.action.back": "Go Back",
   "ra.action.bulk_actions": "{smart_count} selected",
@@ -8,6 +9,7 @@
   "ra.action.edit": "Edit",
   "ra.action.list": "List",
   "ra.action.refresh": "Refresh",
+  "ra.action.remove": "Remove",
   "ra.action.remove_filter": "Remove this filter",
   "ra.action.save": "Save",
   "ra.action.show": "Show",
@@ -66,7 +68,5 @@
   "ra.validation.minLength": "Must be {min} characters at least",
   "ra.validation.minValue": "Must be at least {min}",
   "ra.validation.number": "Must be a number",
-  "ra.validation.oneOf": "Must be one of: {options}",
-  "ra.validation.regex": "Must match a specific format (regexp): {pattern}",
   "ra.validation.required": "Required"
 }

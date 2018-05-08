@@ -4,9 +4,9 @@
     "private": true,
     "dependencies": {
         "material-ui": "1.0.0-beta.42",
-        "@yeutech/ra-data-json-server": "~2.0.0-RC2-yeutech.1",
+        "@yeutech/ra-data-json-server": "~2.0.0-RC2-yeutech.2",
         "react": "~16.3.1",
-        "@yeutech/react-admin": "~2.0.0-RC2-yeutech.1",
+        "@yeutech/react-admin": "~2.0.0-RC2-yeutech.2",
         "react-dom": "~16.3.1",
         "react-scripts": "1.1.4"
     },
