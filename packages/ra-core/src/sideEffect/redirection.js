@@ -9,6 +9,7 @@ import resolveRedirectTo from '../util/resolveRedirectTo';
  */
 export function* handleRedirection({
     payload,
+    requestPayload,
     meta: { basePath, redirectTo },
 }) {
     return redirectTo
@@ -17,7 +18,10 @@ export function* handleRedirection({
                   resolveRedirectTo(
                       redirectTo,
                       basePath,
-                      payload.id || payload.data.id
+                      payload
+                          ? payload.id ||
+                            (payload.data ? payload.data.id : null)
+                          : requestPayload ? requestPayload.id : null
                   )
               )
           )
