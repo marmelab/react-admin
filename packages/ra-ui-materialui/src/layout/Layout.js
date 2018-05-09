@@ -39,7 +39,6 @@ const styles = theme => ({
         flexDirection: 'column',
         flexGrow: 2,
         padding: theme.spacing.unit * 3,
-        minWidth: 0,
         [theme.breakpoints.up('xs')]: {
             marginTop: '4em',
             paddingLeft: 5,
