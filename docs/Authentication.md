@@ -96,7 +96,7 @@ If you have a custom REST client, don't forget to add credentials yourself.
 
 ## Adding a Logout Button
 
-If you provide an `authProvider` prop to `<Admin>`, react-admin displays a logout button in the sidebar. When the user clicks on the logout button, this calls the `authProvider` with the `AUTH_LOGOUT` type and removes potentially sensitive data from the redux store. When resolved, the user gets redirected to the login page.
+If you provide an `authProvider` prop to `<Admin>`, react-admin displays a logout button in the top bar (or in the menu on mobile). When the user clicks on the logout button, this calls the `authProvider` with the `AUTH_LOGOUT` type and removes potentially sensitive data from the redux store. When resolved, the user gets redirected to the login page.
 
 For instance, to remove the token from local storage upon logout:
 
@@ -272,15 +272,35 @@ class MyLoginPage extends Component {
 export default connect(undefined, { userLogin })(MyLoginPage);
 
 // in src/MyLogoutButton.js
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { userLogout } from 'react-admin';
+import { Responsive, userLogout } from 'react-admin';
+import { MenuItem } from 'material-ui/Menu';
+import Button from 'material-ui/Button';
+import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 
-const MyLogoutButton = ({ userLogout }) => (
-    <button onClick={userLogout}>Logout</button>
+const MyLogoutButton = ({ userLogout, ...rest }) => (
+    <Responsive
+        xsmall={
+            <MenuItem
+                onClick={userLogout}
+                {...sanitizeRestProps(rest)}
+            >
+                <ExitIcon /> Logout
+            </MenuItem>
+        }
+        medium={
+            <Button
+                onClick={userLogout}
+                size="small"
+                {...sanitizeRestProps(rest)}
+            >
+                <ExitIcon /> Logout
+            </Button>
+        }
+    />
 );
-
-export default connect(undefined, { userLogout })(MyLogoutButton);
+export default connect(undefined, { userLogout: userLogout() })(MyLogoutButton);
 
 // in src/App.js
 import MyLoginPage from './MyLoginPage';
@@ -320,21 +340,11 @@ The `<Authenticated>` component calls the `authProvider` function with `AUTH_CHE
 
 ## Redirect After Logout
 
-By default react-admin will redirect to '/login' after the user logs out. This can be changed by adding a `redirectTo` prop to the `logoutButton` of a customMenu:
+By default, react-admin redirects the user to '/login' after they log out. This can be changed by passing the url to redirect to as parameter to the `userLogout()` action creator when you `connect` the `MyLogoutButton` component:
 
-```jsx
-// in src/myMenu.js
-import React from 'react';
-import { connect } from 'react-redux';
-import { MenuItemLink } from 'react-admin';
-
-const Menu = ({ onMenuClick, logout, permissions }) => (
-    <div>
-        <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuClick} />
-        <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuClick} />
-        {React.cloneElement(logout,{
-            redirectTo:'/'
-        })}
-    </div>
-);
+```diff
+// in src/MyLogoutButton.js
+// ...
+- export default connect(undefined, { userLogout: userLogout() })(MyLogoutButton);
++ export default connect(undefined, { userLogout: userLogout('/') })(MyLogoutButton);
 ```
