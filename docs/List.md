@@ -486,25 +486,35 @@ export const PostList = (props) => (
 );
 ```
 
-**Tip**: If you want to override the `header` and `cell` styles independently for each column, use the `headerStyle` and `style` props in `<Field>` components:
+**Tip**: If you want to override the `header` and `cell` styles independently for each column, use the `headerClassName` and `cellClassName` props in `<Field>` components. For instance, to hide a certain column on small screens:
 
-{% raw %}
 ```jsx
-export const PostList = (props) => (
+import { withStyles } from 'material-ui/styles';
+
+const styles = theme => ({
+    hiddenOnSmallScreens: {
+        [theme.breakpoints.down('md')]: {
+            display: 'none',
+        },
+    },
+});
+
+const PostList = ({ classes, ...props }) => (
     <List {...props}>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
             <TextField
                 source="views"
-                style={{ textAlign: 'right' }}
-                headerStyle={{ textAlign: 'right' }}
+                headerClassName={classes.hiddenOnSmallScreens}
+                cellClassName={classes.hiddenOnSmallScreens}
             />
         </Datagrid>
     </List>
 );
+
+export default withStyles(styles)(PostList);
 ```
-{% endraw %}
 
 ### Row Style Function
 
