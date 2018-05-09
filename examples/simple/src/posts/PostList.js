@@ -57,15 +57,20 @@ const PostFilter = props => (
     </Filter>
 );
 
-const styles = {
+const styles = theme => ({
     title: {
         maxWidth: '20em',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
     },
+    hiddenOnSmallScreens: {
+        [theme.breakpoints.down('md')]: {
+            display: 'none',
+        },
+    },
     publishedAt: { fontStyle: 'italic' },
-};
+});
 
 const PostListBulkActions = props => (
     <BulkActions {...props}>
@@ -120,6 +125,8 @@ const PostList = withStyles(styles)(({ classes, ...props }) => (
                         label="Tags"
                         reference="tags"
                         source="tags"
+                        cellClassName={classes.hiddenOnSmallScreens}
+                        headerClassName={classes.hiddenOnSmallScreens}
                     >
                         <SingleFieldList>
                             <ChipField source="name" />
