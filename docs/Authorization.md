@@ -9,7 +9,7 @@ Some applications may require to determine what level of access a particular aut
 
 By default, a react-admin app doesn't require authorization. However, if needed, it will rely on the `authProvider` introduced in the [Authentication](./Authentication.html) section.
 
-## Configuring the Auth Client
+## Configuring the Auth Provider
 
 A call to the `authProvider` with the `AUTH_GET_PERMISSIONS` type will be made each time a component requires to check the user's permissions.
 

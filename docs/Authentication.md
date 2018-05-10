@@ -11,7 +11,7 @@ React-admin lets you secure your admin app with the authentication strategy of y
 
 By default, an react-admin app doesn't require authentication. But if the REST API ever returns a 401 (Unauthorized) or a 403 (Forbidden) response, then the user is redirected to the `/login` route. You have nothing to do - it's already built in.
 
-## Configuring the Auth Client
+## Configuring the Auth Provider
 
 By default, the `/login` route renders a special component called `Login`, which displays a login form asking for username and password.
 
