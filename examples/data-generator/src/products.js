@@ -31,23 +31,17 @@ export default (db, chance) => {
                         fixed: 2,
                     }),
                     thumbnail:
-                        'https://lorempixel.com/' +
-                        (width * 10).toFixed() +
-                        '/' +
-                        (height * 10).toFixed() +
-                        '/' +
+                        'https://marmelab.com/posters/' +
                         category.name +
-                        '/' +
-                        index,
+                        '-' +
+                        (index + 1) +
+                        '.jpeg',
                     image:
-                        'https://lorempixel.com/' +
-                        (width * 50).toFixed() +
-                        '/' +
-                        (height * 50).toFixed() +
-                        '/' +
+                        'https://marmelab.com/posters/' +
                         category.name +
-                        '/' +
-                        index,
+                        '-' +
+                        (index + 1) +
+                        '.jpeg',
                     description: chance.paragraph(),
                     stock: chance.bool({ likelihood: 20 })
                         ? 0

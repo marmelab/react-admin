@@ -37,7 +37,11 @@ const QuickFilter = translate(({ label, translate }) => (
 export const ProductFilter = props => (
     <Filter {...props}>
         <TextInput label="pos.search" source="q" alwaysOn />
-        <ReferenceInput source="category_id" reference="categories">
+        <ReferenceInput
+            source="category_id"
+            reference="categories"
+            sort={{ field: 'id', order: 'ASC' }}
+        >
             <SelectInput source="name" />
         </ReferenceInput>
         <NumberInput source="width_gte" />
@@ -53,7 +57,12 @@ export const ProductFilter = props => (
 );
 
 export const ProductList = props => (
-    <List {...props} filters={<ProductFilter />} perPage={20}>
+    <List
+        {...props}
+        filters={<ProductFilter />}
+        perPage={20}
+        sort={{ field: 'id', order: 'ASC' }}
+    >
         <GridList />
     </List>
 );
