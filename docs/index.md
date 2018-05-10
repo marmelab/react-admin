@@ -13,7 +13,7 @@ A frontend Framework for building admin applications running in the browser on t
 <i class="octicon octicon-comment-discussion"></i> [Support](http://stackoverflow.com/questions/tagged/react-admin)
 </div>
 
-<iframe src="https://player.vimeo.com/video/205118063?byline=0&portrait=0" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="display:block;margin:0 auto"></iframe>
+<iframe src="https://player.vimeo.com/video/268958716?byline=0&portrait=0" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="display:block;margin:0 auto"></iframe>
 
 ## Features
 
