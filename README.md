@@ -49,6 +49,10 @@ using:
 npm install --save-dev react-admin
 ```
 
+## Upgrading From Admin-On-Rest
+
+Head to the [Upgrade Guide](https://github.com/marmelab/react-admin/blob/master/UPGRADE.md).
+
 ## Documentation
 
 Read the [Tutorial](http://marmelab.com/react-admin/Tutorial.html) for a 15 minutes introduction. After that, head to the [Documentation](http://marmelab.com/react-admin/index.html), or checkout the [source code of the demo](https://github.com/marmelab/react-admin-demo) for an example usage.
