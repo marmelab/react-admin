@@ -1,6 +1,6 @@
 {
     "name": "ra-data-graphcool",
-    "version": "2.0.0-RC2",
+    "version": "2.0.0-RC3",
     "description": "A Graphcool data provider for react-admin",
     "main": "./lib/index.js",
     "repository": {
@@ -28,14 +28,14 @@
         "graphql-tag": "^2.6.1",
         "lodash": "~4.17.5",
         "pluralize": "~7.0.0",
-        "ra-data-graphql": "^2.0.0-RC2"
+        "ra-data-graphql": "^2.0.0-RC3"
     },
     "peerDependencies": {
         "graphql": "^0.13.2",
-        "react-admin": "^2.0.0-RC2"
+        "react-admin": "^2.0.0-RC3"
     },
     "devDependencies": {
         "graphql": "^0.13.2",
-        "react-admin": "^2.0.0-RC2"
+        "react-admin": "^2.0.0-RC3"
     }
 }

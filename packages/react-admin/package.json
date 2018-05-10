@@ -1,6 +1,6 @@
 {
     "name": "react-admin",
-    "version": "2.0.0-RC2",
+    "version": "2.0.0-RC3",
     "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
     "files": [
         "*.md",
@@ -21,8 +21,8 @@
         "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0"
     },
     "dependencies": {
-        "ra-core": "^2.0.0-RC2",
-        "ra-language-english": "^2.0.0-RC2",
-        "ra-ui-materialui": "^2.0.0-RC2"
+        "ra-core": "^2.0.0-RC3",
+        "ra-language-english": "^2.0.0-RC3",
+        "ra-ui-materialui": "^2.0.0-RC3"
     }
 }
