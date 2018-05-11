@@ -86,7 +86,7 @@ class Notification extends React.Component {
                 }
                 onExited={this.handleExited}
                 onClose={this.handleRequestClose}
-                SnackbarContentProps={{
+                ContentProps={{
                     className: classnames(
                         classes[(notification && notification.type) || type],
                         className
