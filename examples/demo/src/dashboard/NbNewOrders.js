@@ -1,25 +1,38 @@
 import React from 'react';
-import Card, { CardHeader } from 'material-ui/Card';
+import Card from 'material-ui/Card';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import { withStyles } from 'material-ui/styles';
+import Typography from 'material-ui/Typography';
 import { translate } from 'react-admin';
 
+import CardIcon from './CardIcon';
+
 const styles = {
-    card: { borderLeft: 'solid 4px #ff9800', flex: 1, marginLeft: '1em' },
-    icon: {
-        float: 'right',
-        width: 64,
-        height: 64,
+    main: {
+        flex: '1',
+        marginLeft: '1em',
+        marginTop: 20,
+    },
+    card: {
+        overflow: 'inherit',
+        textAlign: 'right',
         padding: 16,
-        color: '#ff9800',
+        minHeight: 52,
     },
 };
 
-export default translate(({ value, translate }) => (
-    <Card style={styles.card}>
-        <ShoppingCartIcon style={styles.icon} />
-        <CardHeader
-            title={value}
-            subheader={translate('pos.dashboard.new_orders')}
-        />
-    </Card>
-));
+const NbNewOrders = ({ value, translate, classes }) => (
+    <div className={classes.main}>
+        <CardIcon Icon={ShoppingCartIcon} bgColor="#ff9800" />
+        <Card className={classes.card}>
+            <Typography className={classes.title} color="textSecondary">
+                {translate('pos.dashboard.new_orders')}
+            </Typography>
+            <Typography variant="headline" component="h2">
+                {value}
+            </Typography>
+        </Card>
+    </div>
+);
+
+export default translate(withStyles(styles)(NbNewOrders));
