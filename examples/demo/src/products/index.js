@@ -18,8 +18,8 @@ import {
     TextInput,
     required,
 } from 'react-admin';
-import Chip from 'material-ui/Chip';
-import withStyles from 'material-ui/styles/withStyles';
+import Chip from '@material-ui/core/Chip';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Icon from '@material-ui/icons/Collections';
 import RichTextInput from 'ra-input-rich-text';
 

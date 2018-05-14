@@ -84,7 +84,7 @@ The title can be either a string, or an element of your own.
 You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import { CardActions, CreateButton, RefreshButton } from 'react-admin';
 
 const PostActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter }) => (
@@ -115,7 +115,7 @@ export const PostList = (props) => (
 Bulk actions are actions that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, bulk actions are triggered by ticking the checkboxes in the first column of the table, then choosing an action from the bulk action menu. By default, all list views have a single bulk action, the bulk delete action. You can add other bulk actions by passing a custom element as the `bulkActions` prop of the `<List>` component:
 
 ```jsx
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import { BulkActions, BulkDeleteAction } from 'react-admin';
 import ResetViewsAction from './ResetViewsAction';
 
@@ -388,10 +388,10 @@ You can replace the default pagination element by your own, using the `paginatio
 So if you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
 
 ```jsx
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
-import Toolbar from 'material-ui/Toolbar';
+import Toolbar from '@material-ui/core/Toolbar';
 
 const PostPagination = ({ page, perPage, total, setPage }) => {
     const nbPages = Math.ceil(total / perPage) || 1;
@@ -489,7 +489,7 @@ export const PostList = (props) => (
 **Tip**: If you want to override the `header` and `cell` styles independently for each column, use the `headerClassName` and `cellClassName` props in `<Field>` components. For instance, to hide a certain column on small screens:
 
 ```jsx
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
     hiddenOnSmallScreens: {
@@ -667,7 +667,10 @@ You'll need to create your own iterator component as follows:
 {% raw %}
 ```jsx
 // in src/comments.js
-import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 
 const cardStyle = {
     width: 300,

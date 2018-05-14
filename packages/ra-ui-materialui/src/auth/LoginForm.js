@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Field, propTypes, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { CardActions } from 'material-ui/Card';
-import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
-import { CircularProgress } from 'material-ui/Progress';
-import { withStyles } from 'material-ui/styles';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { withStyles } from '@material-ui/core/styles';
 import { translate, userLogin } from 'ra-core';
 
 const styles = () => ({

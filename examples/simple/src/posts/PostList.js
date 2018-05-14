@@ -1,8 +1,8 @@
 import BookIcon from '@material-ui/icons/Book';
 import SearchIcon from '@material-ui/icons/Search';
-import Chip from 'material-ui/Chip';
-import { InputAdornment } from 'material-ui/Input';
-import { withStyles } from 'material-ui/styles';
+import Chip from '@material-ui/core/Chip';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { withStyles } from '@material-ui/core/styles';
 import React, { Children, cloneElement } from 'react';
 import {
     BooleanField,
@@ -24,6 +24,7 @@ import {
     TextInput,
     translate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
+
 import ResetViewsAction from './ResetViewsAction';
 export const PostIcon = BookIcon;
 

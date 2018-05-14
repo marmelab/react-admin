@@ -390,7 +390,9 @@ By default, react-admin displays the list page of the first resource as home pag
 ```jsx
 // in src/Dashboard.js
 import React from 'react';
-import Card, { CardHeader, CardContent } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 
 export default () => (
     <Card>

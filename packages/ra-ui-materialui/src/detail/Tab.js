@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Tab as MuiTab } from 'material-ui/Tabs';
+import MuiTab from '@material-ui/core/Tab';
 import { translate } from 'ra-core';
 
 import Labeled from '../input/Labeled';

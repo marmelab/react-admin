@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { shallowEqual } from 'recompose';
 import Dropzone from 'react-dropzone';
 import compose from 'recompose/compose';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { addField, translate } from 'ra-core';
 

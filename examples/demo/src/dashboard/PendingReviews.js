@@ -1,12 +1,14 @@
 import React from 'react';
 import compose from 'recompose/compose';
-import Card from 'material-ui/Card';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import Avatar from 'material-ui/Avatar';
-import { withStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
+import Card from '@material-ui/core/Card';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import CommentIcon from '@material-ui/icons/Comment';
-import Divider from 'material-ui/Divider';
+import Divider from '@material-ui/core/Divider';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-admin';
 

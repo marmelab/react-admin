@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Card from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
 import classnames from 'classnames';
 import { ShowController } from 'ra-core';
 

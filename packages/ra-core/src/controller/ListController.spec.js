@@ -4,7 +4,7 @@ import lolex from 'lolex';
 import { setDisplayName } from 'recompose';
 
 import { ListController } from './ListController';
-import TextField from 'material-ui/TextField/TextField';
+import TextField from '@material-ui/core/TextField/TextField';
 
 describe('ListController', () => {
     const defaultProps = {

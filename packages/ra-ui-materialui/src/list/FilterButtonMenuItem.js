@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { MenuItem } from 'material-ui/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { FieldTitle } from 'ra-core';
 
 class FilterButtonMenuItem extends Component {

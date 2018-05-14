@@ -21,7 +21,7 @@ const sanitizeRestProps = ({
  * use it in the `actions` prop to pas a custom element.
  * 
  * @example
- *     import Button from 'material-ui/Button';
+ *     import Button from '@material-ui/core/Button';
  *     import { CardActions, ListButton, ShowButton, DeleteButton, RefreshButton, Edit } from 'react-admin';
  *     
  *     const PostEditActions = ({ basePath, record, rseource }) => (

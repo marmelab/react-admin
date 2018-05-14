@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import inflection from 'inflection';
 import compose from 'recompose/compose';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { getResources, translate } from 'ra-core';
 import DefaultIcon from '@material-ui/icons/ViewList';

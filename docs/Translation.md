@@ -140,7 +140,7 @@ Then, dispatch the `CHANGE_LOCALE` action, by using the `changeLocale` action cr
 ```jsx
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import { changeLocale as changeLocaleAction } from 'react-admin';
 
 class LocaleSwitcher extends Component {

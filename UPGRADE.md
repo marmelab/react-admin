@@ -256,8 +256,8 @@ If you used CSS to customize the look and feel of these components, please updat
 Adding the `addField` prop to a component used to automatically add a redux-form `<Field>` component around an input component that you wanted to bind to the edit or create form. This feature was moved to a Higher-order component (HOC):
 
 ```diff
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import SelectField from '@material-ui/core/SelectField';
+import MenuItem from '@material-ui/core/MenuItem';
 + import { addField } from 'react-admin';
 const SexInput = ({ input, meta: { touched, error } }) => (
     <SelectField
@@ -297,10 +297,10 @@ export default SexInput;
 The Refresh button now uses Redux to force a refetch of the data. As a consequence, the List view no longer passes the `refresh` prop to the `<Actions>` component. If you relied on that prop to refresh the list, you must now use the new `<RefreshButton>` component.
 
 ```diff
-import { CardActions } from 'material-ui/Card';
-- import FlatButton from 'material-ui/FlatButton';
+import CardActions from '@material-ui/core/CardActions';
+- import FlatButton from '@material-ui/core/FlatButton';
 - import { CreateButton } from 'admin-on-rest';
-- import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+- import NavigationRefresh from '@material-ui/core/svg-icons/navigation/refresh';
 + import { CreateButton, RefreshButton } from 'react-admin';
 
 - const PostListActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
@@ -336,7 +336,7 @@ All react-admin components now accept a `className` prop instead of the `elStyle
 //    <a style="text-decoration:none" href="mailto:foo@example.com">foo@example.com</a>
 //</td>
 + import { EmailField, List, Datagrid } from 'react-admin';
-+ import { withStyles } from 'material-ui/styles';
++ import { withStyles } from '@material-ui/core/styles';
 + const styles = {
 +     field: {
 +         textDecoration: 'none',
@@ -358,7 +358,7 @@ In addition to `elStyle`, Field and Input components used to support a `style` p
 ```diff
 - import { EmailField, List, Datagrid } from 'admin-on-rest';
 + import { EmailField, List, Datagrid } from 'react-admin';
-+ import { withStyles } from 'material-ui/styles';
++ import { withStyles } from '@material-ui/core/styles';
 
 + const styles = {
 +     cell: {
@@ -395,7 +395,7 @@ Furthermore, some React-admin components such as the `List`, `Filter`, and `Data
 
 ```jsx
 import { EmailField, List, Datagrid } from 'react-admin';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
     header: { fontWeight: 'bold' },
@@ -668,7 +668,8 @@ Finally, you won't need the now deprecated `<WithPermission>` or `<SwitchPermiss
 ```jsx
 // in src/MyPage.js
 import React from 'react';
-import Card, { CardContent } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import { ViewTitle, WithPermissions } from 'react-admin';
 import { withRouter } from 'react-router-dom';
 
@@ -717,9 +718,9 @@ The default layout has been simplified, and this results in a simplified custom 
 import React, { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-- import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-+ import { MuiThemeProvider, withStyles } from 'material-ui/styles';
-- import CircularProgress from 'material-ui/CircularProgress';
+- import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
++ import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
+- import CircularProgress from '@material-ui/core/CircularProgress';
 import {
 -   AdminRoutes,
     AppBar,

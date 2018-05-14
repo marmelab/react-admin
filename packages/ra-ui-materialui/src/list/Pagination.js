@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import Typography from 'material-ui/Typography';
-import Toolbar from 'material-ui/Toolbar';
-import { withStyles } from 'material-ui/styles';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import Toolbar from '@material-ui/core/Toolbar';
+import { withStyles } from '@material-ui/core/styles';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import compose from 'recompose/compose';

@@ -208,7 +208,8 @@ The component provided as a [`dashboard`]('./Admin.md#dashboard) will receive th
 ```jsx
 // in src/Dashboard.js
 import React from 'react';
-import Card, { CardContent } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import { ViewTitle } from 'react-admin';
 
 export default ({ permissions }) => (
@@ -232,7 +233,8 @@ You might want to check user permissions inside a [custom pages](./Admin.md#cust
 ```jsx
 // in src/MyPage.js
 import React from 'react';
-import Card, { CardContent } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import { ViewTitle, WithPermissions } from 'react-admin';
 import { withRouter } from 'react-router-dom';
 

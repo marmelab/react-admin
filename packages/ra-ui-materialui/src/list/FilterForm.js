@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
-import { CardContent } from 'material-ui/Card';
-import { withStyles } from 'material-ui/styles';
+import CardContent from '@material-ui/core/CardContent';
+import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import lodashSet from 'lodash/set';

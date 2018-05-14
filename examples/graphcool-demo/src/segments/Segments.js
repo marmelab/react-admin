@@ -1,11 +1,10 @@
 import React from 'react';
-import Card from 'material-ui/Card';
-import Table, {
-    TableBody,
-    TableHead,
-    TableRow,
-    TableCell,
-} from 'material-ui/Table';
+import Card from '@material-ui/core/Card';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
 import { translate, ViewTitle } from 'react-admin';
 
 import LinkToRelatedCustomers from './LinkToRelatedCustomers';

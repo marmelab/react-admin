@@ -3,7 +3,7 @@ import { render } from 'enzyme';
 import React from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { TranslationProvider } from 'ra-core';
 import FilterForm, { mergeInitialValuesWithDefaultValues } from './FilterForm';
 import TextInput from '../input/TextInput';
