@@ -116,7 +116,7 @@ export const PostEdit = (props) => (
 You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import {
     CardActions,
     ListButton,

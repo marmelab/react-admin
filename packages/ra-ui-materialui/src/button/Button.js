@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import MuiButton from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import { withStyles } from 'material-ui/styles';
+import MuiButton from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-
 import { translate } from 'ra-core';
+
 import Responsive from '../layout/Responsive';
 
 const styles = {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
-import Typography from 'material-ui/Typography';
+import Typography from '@material-ui/core/Typography';
 import sanitizeRestProps from './sanitizeRestProps';
 
 export const removeTags = input =>

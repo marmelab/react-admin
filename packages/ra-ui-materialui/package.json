@@ -10,6 +10,7 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "devDependencies": {
+        "@material-ui/codemod": "^1.0.0-rc.0",
         "enzyme": "~3.3.0",
         "enzyme-adapter-react-16": "~1.1.1",
         "file-api": "~0.10.4",
@@ -23,12 +24,12 @@
         "react-dom": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0"
     },
     "dependencies": {
-        "@material-ui/icons": "1.0.0-beta.43",
+        "@material-ui/core": "1.0.0-rc.0",
+        "@material-ui/icons": "1.0.0-rc.0",
         "autosuggest-highlight": "^3.1.1",
         "classnames": "~2.2.5",
         "inflection": "~1.12.0",
         "lodash": "~4.17.5",
-        "material-ui": "1.0.0-beta.47",
         "prop-types": "~15.6.1",
         "ra-core": "^2.0.0-RC3",
         "react-autosuggest": "^9.3.2",

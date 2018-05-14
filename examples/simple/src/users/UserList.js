@@ -1,7 +1,7 @@
 /* eslint react/jsx-key: off */
 import PeopleIcon from '@material-ui/icons/People';
 import SearchIcon from '@material-ui/icons/Search';
-import { InputAdornment } from 'material-ui/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import React from 'react';
 import {
     Datagrid,

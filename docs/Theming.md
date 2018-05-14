@@ -16,7 +16,7 @@ Here is an example customizing an `EditButton` component inside a `Datagrid`, us
 {% raw %}
 ```jsx
 import { NumberField, List, Datagrid, EditButton } from 'react-admin';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
     button: {
@@ -65,7 +65,7 @@ import {
     TextInput,
 } from 'react-admin';
 import Icon from '@material-ui/icons/Person';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 export const VisitorIcon = Icon;
 
@@ -142,7 +142,7 @@ Sometimes you want the format to depend on the value. The following example show
 {% raw %}
 ```jsx
 import { NumberField, List, Datagrid, EditButton } from 'react-admin';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 const coloredStyles = {
@@ -182,7 +182,7 @@ Furthermore, you may extract this highlighting strategy into an Higher Order Com
 {% raw %}
 ```jsx
 import { NumberField, List, Datagrid, EditButton } from 'react-admin';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 const coloredStyles = {
@@ -269,7 +269,7 @@ export const PostList = (props) => (
 Material UI also supports [complete theming](http://www.material-ui.com/#/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `createMuiTheme()`).
 
 ```jsx
-import { createMuiTheme } from 'material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
   palette: {
@@ -296,9 +296,9 @@ import {
   pinkA200,
   grey100, grey300, grey400, grey500,
   white, darkBlack, fullBlack,
-} from 'material-ui/styles/colors';
-import { fade } from 'material-ui/utils/colorManipulator';
-import spacing from 'material-ui/styles/spacing';
+} from '@material-ui/core/styles/colors';
+import { fade } from '@material-ui/core/utils/colorManipulator';
+import spacing from '@material-ui/core/styles/spacing';
 
 const myTheme = {
     spacing: spacing,
@@ -368,10 +368,10 @@ Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src
 import React, { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import createMuiTheme from 'material-ui/styles/createMuiTheme';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { CircularProgress } from 'material-ui/Progress';
 import {
     AppBar,
     Menu,

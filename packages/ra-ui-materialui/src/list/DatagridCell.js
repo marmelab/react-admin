@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TableCell } from 'material-ui/Table';
+import TableCell from '@material-ui/core/TableCell';
 import classnames from 'classnames';
 
 const sanitizeRestProps = ({

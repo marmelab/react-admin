@@ -1,8 +1,8 @@
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import Tabs from 'material-ui/Tabs';
-import Divider from 'material-ui/Divider';
-import { withStyles } from 'material-ui/styles';
+import Tabs from '@material-ui/core/Tabs';
+import Divider from '@material-ui/core/Divider';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
     tab: { padding: '0 1em 1em 1em' },

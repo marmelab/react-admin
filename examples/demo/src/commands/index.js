@@ -20,7 +20,7 @@ import {
     TextField,
     TextInput,
 } from 'react-admin';
-import withStyles from 'material-ui/styles/withStyles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Icon from '@material-ui/icons/AttachMoney';
 
 import Basket from './Basket';

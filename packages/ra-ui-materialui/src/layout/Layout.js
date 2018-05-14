@@ -6,8 +6,8 @@ import {
     MuiThemeProvider,
     createMuiTheme,
     withStyles,
-} from 'material-ui/styles';
-import Hidden from 'material-ui/Hidden';
+} from '@material-ui/core/styles';
+import Hidden from '@material-ui/core/Hidden';
 import compose from 'recompose/compose';
 
 import AppBar from './AppBar';

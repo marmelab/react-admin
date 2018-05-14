@@ -138,7 +138,7 @@ You can customize the `filter` function used to filter the results. By default, 
 
 ```jsx
 import { AutocompleteInput } from 'react-admin';
-import AutoComplete from 'material-ui/AutoComplete';
+import AutoComplete from '@material-ui/core/AutoComplete';
 
 <AutocompleteInput source="category" filter={AutoComplete.caseInsensitiveFilter} choices={choices} />
 ```
@@ -1126,7 +1126,7 @@ Instead of HTML `input` elements, you can use a material-ui component. To compos
 
 ```jsx
 // in LatLongInput.js
-import TextField from 'material-ui/TextField';
+import TextField from '@material-ui/core/TextField';
 import { Field } from 'redux-form';
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
     <TextField
@@ -1152,8 +1152,8 @@ Material-ui's `<TextField>` component already includes a label, so you don't nee
 
 ```jsx
 // in SexInput.js
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import SelectField from '@material-ui/core/SelectField';
+import MenuItem from '@material-ui/core/MenuItem';
 import { addField } from 'react-admin';
 
 const SexInput = ({ input, meta: { touched, error } }) => (
@@ -1169,8 +1169,8 @@ const SexInput = ({ input, meta: { touched, error } }) => (
 export default addField(SexInput); // decorate with redux-form's <Field>
 
 // equivalent of
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import SelectField from '@material-ui/core/SelectField';
+import MenuItem from '@material-ui/core/MenuItem';
 import { Field } from 'redux-form';
 
 const renderSexInput = ({ input, meta: { touched, error } }) => (

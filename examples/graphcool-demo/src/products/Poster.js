@@ -1,5 +1,6 @@
 import React from 'react';
-import Card, { CardContent } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 
 const Poster = ({ record }) => (
     <Card style={{ display: 'inline-block', marginTop: '1em', zIndex: 2 }}>

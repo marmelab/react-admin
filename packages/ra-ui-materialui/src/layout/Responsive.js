@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import withWidth from 'material-ui/utils/withWidth';
+import withWidth from '@material-ui/core/withWidth';
 
 export const Responsive = ({
     xsmall,

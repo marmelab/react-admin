@@ -17,7 +17,7 @@ import {
     TextField,
     TextInput,
 } from 'react-admin';
-import Chip from 'material-ui/Chip';
+import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/icons/Collections';
 import RichTextInput from 'ra-input-rich-text';
 
@@ -25,7 +25,7 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
 import GridList from './GridList';
 import Poster from './Poster';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 export const ProductIcon = Icon;
 

@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
-import Button from 'material-ui/Button';
-import { withStyles } from 'material-ui/styles';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import ContentAdd from '@material-ui/icons/Add';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
+import { translate } from 'ra-core';
 
 import Responsive from '../layout/Responsive';
 import Link from '../Link';
-import { translate } from 'ra-core';
 
 const styles = theme => ({
     floating: {

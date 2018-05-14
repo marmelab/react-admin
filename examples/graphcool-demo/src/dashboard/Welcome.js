@@ -1,7 +1,9 @@
 import React from 'react';
-import Card, { CardHeader, CardActions } from 'material-ui/Card';
-import Avatar from 'material-ui/Avatar';
-import Button from 'material-ui/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardHeader from '@material-ui/core/CardHeader';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
 import LightBulbIcon from '@material-ui/icons/LightbulbOutline';
 import HomeIcon from '@material-ui/icons/Home';
 import CodeIcon from '@material-ui/icons/Code';
