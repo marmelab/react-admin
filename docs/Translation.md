@@ -72,6 +72,7 @@ const App = () => (
 
 You can find translation packages for the following languages:
 
+- Dutch (`nl`): [pimschaaf/ra-language-dutch](https://github.com/pimschaaf/ra-language-dutch)
 - French (`fr`): [marmelab/ra-language-french](https://github.com/marmelab/ra-language-french)
 - English (`en`): [marmelab/ra-language-english](https://github.com/marmelab/ra-language-english)
 - Slovak (`sk`): [zavadpe/ra-language-slovak](https://github.com/zavadpe/ra-language-slovak)
@@ -84,7 +85,6 @@ The previous version of react-admin, called admin-on-rest, was translated in the
 - Croatian (`hr`): [ariskemper/aor-language-croatian](https://github.com/ariskemper/aor-language-croatian)
 - Czech (`cs`): [magikMaker/aor-language-czech](https://github.com/magikMaker/aor-language-czech)
 - Danish (`da`): [SSA111/aor-language-danish](https://github.com/SSA111/aor-language-danish)
-- Dutch (`nl`): [pimschaaf/aor-language-dutch](https://github.com/pimschaaf/aor-language-dutch)
 - Farsi (`fa`): [hamidfzm/aor-language-farsi](https://github.com/hamidfzm/aor-language-farsi)
 - Finnish (`fi`): [Joni-Aaltonen/aor-language-finnish](https://github.com/Joni-Aaltonen/aor-language-finnish)
 - German (`de`): [der-On/aor-language-german](https://github.com/der-On/aor-language-german)
