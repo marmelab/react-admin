@@ -18,7 +18,7 @@ Here is an implementation of the "Approve" button that works perfectly:
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
+import FlatButton from '@material-ui/core/FlatButton';
 import { showNotification as showNotificationAction } from 'react-admin';
 import { push as pushAction } from 'react-router-redux';
 
@@ -81,7 +81,7 @@ Or, in the `<Edit>` page, as a [custom action](./CreateEdit.md#actions):
 ```jsx
 // in src/comments/CommentEditActions.js
 import React from 'react';
-import { CardActions } from 'material-ui/Card';
+import CardActions from '@material-ui/core/CardActions';
 import { ListButton, DeleteButton } from 'react-admin';
 import ApproveButton from './ApproveButton';
 
@@ -188,7 +188,7 @@ To use the new action creator in the component, `connect` it:
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import { commentApprove as commentApproveAction } from './commentActions';
 
 class ApproveButton extends Component {
@@ -374,7 +374,7 @@ To make an action with a `fetch` meta optimistic, decorate it with the `startUnd
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 + import { startUndoable as startUndoableAction } from 'ra-core';
 - import { commentApprove as commentApproveAction } from './commentActions';
 + import { commentApprove } from './commentActions';

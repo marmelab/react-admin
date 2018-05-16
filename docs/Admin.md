@@ -86,7 +86,8 @@ By default, the homepage of an an admin app is the `list` of the first child `<R
 ```jsx
 // in src/Dashboard.js
 import React from 'react';
-import Card, { CardContent } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import { ViewTitle } from 'react-admin';
 export default () => (
     <Card>
@@ -122,7 +123,8 @@ You can customize this page to use the component of your choice by passing it as
 ```jsx
 // in src/NotFound.js
 import React from 'react';
-import Card, { CardContent } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import { ViewTitle } from 'react-admin';
 
 export default () => (
@@ -213,7 +215,7 @@ If the default active style does not suit your tastes, you can override it by pa
 import React from 'react';
 import { connect } from 'react-redux';
 import { MenuItemLink, getResources } from 'react-admin';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 
 const styles = {
@@ -247,7 +249,7 @@ export default withRouter(connect(mapStateToProps)(withStyles(styles)(Menu)));
 Material UI supports [theming](http://www.material-ui.com/#/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
 
 ```jsx
-import { createMuiTheme } from 'material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
   palette: {
@@ -424,7 +426,8 @@ to design the screen the way you want.
 ```jsx
 // in src/Foo.js
 import React from 'react';
-import Card, { CardContent } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import { ViewTitle } from 'react-admin';
 
 const Foo = () => (

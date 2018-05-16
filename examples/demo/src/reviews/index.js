@@ -19,7 +19,7 @@ import {
     TextField,
     TextInput,
 } from 'react-admin';
-import withStyles from 'material-ui/styles/withStyles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Icon from '@material-ui/icons/Comment';
 
 import ProductReferenceField from '../products/ProductReferenceField';

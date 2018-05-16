@@ -1,5 +1,6 @@
 import React from 'react';
-import Card, { CardHeader } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { translate } from 'react-admin';
 

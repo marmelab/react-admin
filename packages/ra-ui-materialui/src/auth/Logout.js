@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { MenuItem } from 'material-ui/Menu';
-import Button from 'material-ui/Button';
-import { withStyles } from 'material-ui/styles';
+import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withStyles } from '@material-ui/core/styles';
 import ExitIcon from '@material-ui/icons/PowerSettingsNew';
 import classnames from 'classnames';
-import Responsive from '../layout/Responsive';
-
 import { translate, userLogout as userLogoutAction } from 'ra-core';
+
+import Responsive from '../layout/Responsive';
 
 const styles = theme => ({
     menuItem: {

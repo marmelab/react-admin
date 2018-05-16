@@ -90,9 +90,8 @@ export const PostShow = (props) => (
 You can replace the list of default actions by your own element using the `actions` prop:
 
 ```jsx
-import { CardActions } from 'material-ui/Card';
-
-import Button from 'material-ui/Button';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
 import { ListButton, EditButton, DeleteButton, RefreshButton } from 'react-admin';
 
 const cardActionStyle = {
@@ -213,8 +212,8 @@ Here's an example inside a `Show` view with a `SimpleShowLayout` and a custom `a
 
 {% raw %}
 ```jsx
-import { CardActions } from 'material-ui/Card';
-import Button from 'material-ui/Button';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
 import { ListButton, EditButton, DeleteButton } from 'react-admin';
 
 const cardActionStyle = {

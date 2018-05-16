@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CardActions as MuiCardActions } from 'material-ui/Card';
-import { withStyles } from 'material-ui/styles';
+import MuiCardActions from '@material-ui/core/CardActions';
+import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 const styles = {

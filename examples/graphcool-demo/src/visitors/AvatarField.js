@@ -1,5 +1,5 @@
 import React from 'react';
-import Avatar from 'material-ui/Avatar';
+import Avatar from '@material-ui/core/Avatar';
 
 const style = { verticalAlign: 'middle' };
 const AvatarField = ({ record, size }) => (

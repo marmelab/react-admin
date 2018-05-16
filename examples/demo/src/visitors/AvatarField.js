@@ -1,5 +1,5 @@
 import React from 'react';
-import Avatar from 'material-ui/Avatar';
+import Avatar from '@material-ui/core/Avatar';
 
 const AvatarField = ({ record, size }) => (
     <Avatar

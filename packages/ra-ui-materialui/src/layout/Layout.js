@@ -6,8 +6,8 @@ import {
     MuiThemeProvider,
     createMuiTheme,
     withStyles,
-} from 'material-ui/styles';
-import Hidden from 'material-ui/Hidden';
+} from '@material-ui/core/styles';
+import Hidden from '@material-ui/core/Hidden';
 import compose from 'recompose/compose';
 
 import AppBar from './AppBar';
@@ -39,7 +39,6 @@ const styles = theme => ({
         flexDirection: 'column',
         flexGrow: 2,
         padding: theme.spacing.unit * 3,
-        minWidth: 0,
         [theme.breakpoints.up('xs')]: {
             marginTop: '4em',
             paddingLeft: 5,

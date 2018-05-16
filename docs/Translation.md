@@ -72,8 +72,11 @@ const App = () => (
 
 You can find translation packages for the following languages:
 
-- French (`fr`): [marmelab/ra-language-french](https://github.com/marmelab/ra-language-french)
+- Dutch (`nl`): [pimschaaf/ra-language-dutch](https://github.com/pimschaaf/ra-language-dutch)
 - English (`en`): [marmelab/ra-language-english](https://github.com/marmelab/ra-language-english)
+- French (`fr`): [marmelab/ra-language-french](https://github.com/marmelab/ra-language-french)
+- German (`de`): [greenbananaCH/ra-language-german](https://github.com/greenbananaCH/ra-language-german)
+- Italian (`it`): [stefsava/ra-language-italian](https://github.com/stefsava/ra-language-italian)
 - Russian (`ru`): [klucherev/ra-language-russian](https://github.com/klucherev/ra-language-russian)
 - Slovak (`sk`): [zavadpe/ra-language-slovak](https://github.com/zavadpe/ra-language-slovak)
 
@@ -85,7 +88,6 @@ The previous version of react-admin, called admin-on-rest, was translated in the
 - Croatian (`hr`): [ariskemper/aor-language-croatian](https://github.com/ariskemper/aor-language-croatian)
 - Czech (`cs`): [magikMaker/aor-language-czech](https://github.com/magikMaker/aor-language-czech)
 - Danish (`da`): [SSA111/aor-language-danish](https://github.com/SSA111/aor-language-danish)
-- Dutch (`nl`): [pimschaaf/aor-language-dutch](https://github.com/pimschaaf/aor-language-dutch)
 - Farsi (`fa`): [hamidfzm/aor-language-farsi](https://github.com/hamidfzm/aor-language-farsi)
 - Finnish (`fi`): [Joni-Aaltonen/aor-language-finnish](https://github.com/Joni-Aaltonen/aor-language-finnish)
 - German (`de`): [der-On/aor-language-german](https://github.com/der-On/aor-language-german)
@@ -93,7 +95,6 @@ The previous version of react-admin, called admin-on-rest, was translated in the
 - Hebrew (`he`): [motro/aor-language-hebrew](https://github.com/motro/aor-language-hebrew)
 - Hungarian (`hu`): [s33m4nn/aor-language-hungarian](https://github.com/s33m4nn/aor-language-hungarian)
 - Indonesian (`id`): [ronadi/aor-language-indonesian](https://github.com/ronadi/aor-language-indonesian)
-- Italian (`it`): [stefsava/aor-language-italian](https://github.com/stefsava/aor-language-italian)
 - Japanese (`ja`): [kuma-guy/aor-language-japanese](https://github.com/kuma-guy/aor-language-japanese)
 - Norwegian (`nb`): [zeusbaba/aor-language-norwegian](https://github.com/zeusbaba/aor-language-norwegian)
 - Polish (`pl`): [KamilDzierbicki/aor-language-polish](https://github.com/KamilDzierbicki/aor-language-polish)
@@ -141,7 +142,7 @@ Then, dispatch the `CHANGE_LOCALE` action, by using the `changeLocale` action cr
 ```jsx
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import { changeLocale as changeLocaleAction } from 'react-admin';
 
 class LocaleSwitcher extends Component {

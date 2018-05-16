@@ -25,7 +25,7 @@ describe('<RadioButtonGroupInput />', () => {
             <RadioButtonGroupInput {...defaultProps} input={{ value: '2' }} />
         );
         const RadioGroupElement = wrapper.find('RadioGroup').first();
-        assert.equal(RadioGroupElement.prop('defaultSelected'), '2');
+        assert.equal(RadioGroupElement.prop('value'), '2');
     });
 
     it('should use the input parameter value as the selected value', () => {

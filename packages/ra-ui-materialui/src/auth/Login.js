@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Card from 'material-ui/Card';
-import Avatar from 'material-ui/Avatar';
-import { withStyles } from 'material-ui/styles';
+import Card from '@material-ui/core/Card';
+import Avatar from '@material-ui/core/Avatar';
+import { withStyles } from '@material-ui/core/styles';
 import LockIcon from '@material-ui/icons/LockOutline';
 
 import defaultTheme from '../defaultTheme';

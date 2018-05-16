@@ -1,7 +1,7 @@
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
-import MuiToolbar from 'material-ui/Toolbar';
-import { withStyles } from 'material-ui/styles';
+import MuiToolbar from '@material-ui/core/Toolbar';
+import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 
 import { SaveButton } from '../button';

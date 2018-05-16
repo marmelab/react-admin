@@ -4,7 +4,7 @@ A frontend Framework for building admin applications running in the browser on t
 
 [Demo](https://marmelab.com/react-admin-demo/) - [Documentation](https://marmelab.com/react-admin/) - [Releases](https://github.com/marmelab/react-admin/releases) - [Support](http://stackoverflow.com/questions/tagged/react-admin)
 
-[![react-admin-demo](https://marmelab.com/admin-on-rest/img/admin-on-rest-demo-still.png)](https://vimeo.com/205118063)
+[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/268958716)
 
 ## Features
 
@@ -49,6 +49,10 @@ using:
 npm install --save-dev react-admin
 ```
 
+## Upgrading From Admin-On-Rest
+
+Head to the [Upgrade Guide](https://github.com/marmelab/react-admin/blob/master/UPGRADE.md).
+
 ## Documentation
 
 Read the [Tutorial](http://marmelab.com/react-admin/Tutorial.html) for a 15 minutes introduction. After that, head to the [Documentation](http://marmelab.com/react-admin/index.html), or checkout the [source code of the demo](https://github.com/marmelab/react-admin-demo) for an example usage.
@@ -78,7 +82,7 @@ The `<Resource>` component is a configuration component that allows to define su
 // in posts.js
 import React from 'react';
 import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, DisabledInput, TextInput, LongTextInput, DateInput } from 'react-admin';
-import BookIcon from 'material-ui/svg-icons/action/book';
+import BookIcon from '@material-ui/core/svg-icons/action/book';
 export const PostIcon = BookIcon;
 
 export const PostList = (props) => (

@@ -85,7 +85,7 @@ export default {
                 stock: 'Stock',
                 thumbnail: 'Thumbnail',
                 width_gte: 'Min width',
-                width_lte: 'mx_width',
+                width_lte: 'Max width',
                 width: 'Width',
             },
             tabs: {

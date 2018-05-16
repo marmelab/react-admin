@@ -1,6 +1,6 @@
 import React from 'react';
 import { translate, SelectInput } from 'react-admin';
-import withStyles from 'material-ui/styles/withStyles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import compose from 'recompose/compose';
 
 import segments from '../segments/data';

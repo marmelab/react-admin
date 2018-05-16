@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import shouldUpdate from 'recompose/shouldUpdate';
 import compose from 'recompose/compose';
-import { TableCell, TableSortLabel } from 'material-ui/Table';
-import Tooltip from 'material-ui/Tooltip';
+import TableCell from '@material-ui/core/TableCell';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
+import Tooltip from '@material-ui/core/Tooltip';
 import { FieldTitle, translate } from 'ra-core';
 
 export const DatagridHeaderCell = ({

@@ -9,7 +9,7 @@ Some applications may require to determine what level of access a particular aut
 
 By default, a react-admin app doesn't require authorization. However, if needed, it will rely on the `authProvider` introduced in the [Authentication](./Authentication.html) section.
 
-## Configuring the Auth Client
+## Configuring the Auth Provider
 
 A call to the `authProvider` with the `AUTH_GET_PERMISSIONS` type will be made each time a component requires to check the user's permissions.
 
@@ -54,14 +54,9 @@ export default (type, params) => {
         return localStorage.getItem('token') ? Promise.resolve() : Promise.reject();
     }
     if (type === AUTH_GET_PERMISSIONS) {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            return Promise.reject();
-        }
         const role = localStorage.getItem('role');
-        Promise.resolve(role);
+        return role ? Promise.resolve(role) : Promise.reject();
     }
-
     return Promise.reject('Unkown method');
 };
 ```
@@ -213,7 +208,8 @@ The component provided as a [`dashboard`]('./Admin.md#dashboard) will receive th
 ```jsx
 // in src/Dashboard.js
 import React from 'react';
-import Card, { CardContent } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import { ViewTitle } from 'react-admin';
 
 export default ({ permissions }) => (
@@ -237,7 +233,8 @@ You might want to check user permissions inside a [custom pages](./Admin.md#cust
 ```jsx
 // in src/MyPage.js
 import React from 'react';
-import Card, { CardContent } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import { ViewTitle, WithPermissions } from 'react-admin';
 import { withRouter } from 'react-router-dom';
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import Card, { CardHeader } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
 import DollarIcon from '@material-ui/icons/AttachMoney';
 import { translate } from 'react-admin';
 

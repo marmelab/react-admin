@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { FormControlLabel, FormHelperText } from 'material-ui/Form';
-import Radio, { RadioGroup } from 'material-ui/Radio';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import InputLabel from '@material-ui/core/InputLabel';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
+import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
-import { addField, translate } from 'ra-core';
+import { addField, translate, FieldTitle } from 'ra-core';
 
-import Labeled from './Labeled';
 import sanitizeRestProps from './sanitizeRestProps';
+
+const styles = {
+    label: {
+        position: 'relative',
+    },
+};
 
 /**
  * An Input component for a radio button group, using an array of objects for the options
@@ -87,7 +97,7 @@ export class RadioButtonGroupInput extends Component {
             <FormControlLabel
                 key={get(choice, optionValue)}
                 value={get(choice, optionValue)}
-                control={<Radio />}
+                control={<Radio color="primary" />}
                 label={
                     translateChoice
                         ? translate(choiceName, { _: choiceName })
@@ -99,6 +109,7 @@ export class RadioButtonGroupInput extends Component {
 
     render() {
         const {
+            classes,
             className,
             label,
             resource,
@@ -119,32 +130,45 @@ export class RadioButtonGroupInput extends Component {
         const { touched, error, helperText = false } = meta;
 
         return (
-            <Labeled
-                {...sanitizeRestProps(rest)}
+            <FormControl
+                component="fieldset"
+                required={isRequired}
                 className={className}
-                label={label}
-                resource={resource}
-                onChange={this.handleChange}
-                source={source}
-                isRequired={isRequired}
+                margin="normal"
+                {...sanitizeRestProps(rest)}
             >
+                <InputLabel
+                    component="legend"
+                    shrink
+                    required={isRequired}
+                    className={classes.label}
+                >
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                </InputLabel>
+
                 <RadioGroup
                     name={source}
-                    defaultSelected={input.value}
                     value={input.value}
+                    onChange={this.handleChange}
                     {...options}
                 >
                     {choices.map(this.renderRadioButton)}
                 </RadioGroup>
                 {touched && error && <FormHelperText>{error}</FormHelperText>}
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
-            </Labeled>
+            </FormControl>
         );
     }
 }
 
 RadioButtonGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
+    classes: PropTypes.object,
     className: PropTypes.string,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
@@ -164,6 +188,7 @@ RadioButtonGroupInput.propTypes = {
 };
 
 RadioButtonGroupInput.defaultProps = {
+    classes: {},
     choices: [],
     options: {},
     optionText: 'name',
@@ -171,4 +196,6 @@ RadioButtonGroupInput.defaultProps = {
     translateChoice: true,
 };
 
-export default compose(addField, translate)(RadioButtonGroupInput);
+export default compose(addField, translate, withStyles(styles))(
+    RadioButtonGroupInput
+);

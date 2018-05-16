@@ -9,9 +9,10 @@ import {
 } from 'redux-form';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import Divider from 'material-ui/Divider';
-import Tabs, { Tab } from 'material-ui/Tabs';
-import { withStyles } from 'material-ui/styles';
+import Divider from '@material-ui/core/Divider';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import { withStyles } from '@material-ui/core/styles';
 import { getDefaultValues, translate } from 'ra-core';
 
 import Toolbar from './Toolbar';

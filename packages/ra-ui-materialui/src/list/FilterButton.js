@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
-import Menu from 'material-ui/Menu';
-import { withStyles } from 'material-ui/styles';
+import Menu from '@material-ui/core/Menu';
+import { withStyles } from '@material-ui/core/styles';
 import ContentFilter from '@material-ui/icons/FilterList';
 import classnames from 'classnames';
 import compose from 'recompose/compose';
@@ -13,15 +13,11 @@ import Button from '../button/Button';
 
 const styles = {
     root: { display: 'inline-block' },
-    label: {
-        marginLeft: '0.5em',
-    },
 };
 
 export class FilterButton extends Component {
     constructor(props) {
         super(props);
-        this.handleShow = this.handleShow.bind(this);
         this.state = {
             open: false,
         };

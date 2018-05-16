@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import Table, {
-    TableBody,
-    TableHead,
-    TableCell,
-    TableRow,
-} from 'material-ui/Table';
-import Paper from 'material-ui/Paper';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 import { translate, crudGetMany as crudGetManyAction } from 'react-admin';
 import compose from 'recompose/compose';
-import withStyles from 'material-ui/styles/withStyles';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = {
     container: {

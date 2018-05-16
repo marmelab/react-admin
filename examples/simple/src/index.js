@@ -1,26 +1,17 @@
 /* eslint react/jsx-key: off */
 import 'babel-polyfill';
 import React from 'react';
+import { Admin, Resource } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import { render } from 'react-dom';
 import { Route } from 'react-router';
-
-import { Admin, Resource } from 'react-admin'; // eslint-disable-line import/no-unresolved
-
-import { PostList, PostCreate, PostEdit, PostShow, PostIcon } from './posts';
-import {
-    CommentList,
-    CommentEdit,
-    CommentCreate,
-    CommentShow,
-    CommentIcon,
-} from './comments';
-import { UserList, UserEdit, UserCreate, UserIcon, UserShow } from './users';
-import CustomRouteNoLayout from './customRouteNoLayout';
-import CustomRouteLayout from './customRouteLayout';
-
 import authProvider from './authProvider';
+import comments from './comments';
+import CustomRouteLayout from './customRouteLayout';
+import CustomRouteNoLayout from './customRouteNoLayout';
 import dataProvider from './dataProvider';
 import i18nProvider from './i18nProvider';
+import posts from './posts';
+import users from './users';
 
 render(
     <Admin
@@ -40,32 +31,9 @@ render(
         ]}
     >
         {permissions => [
-            <Resource
-                name="posts"
-                list={PostList}
-                create={PostCreate}
-                edit={PostEdit}
-                show={PostShow}
-                icon={PostIcon}
-            />,
-            <Resource
-                name="comments"
-                list={CommentList}
-                create={CommentCreate}
-                edit={CommentEdit}
-                show={CommentShow}
-                icon={CommentIcon}
-            />,
-            permissions ? (
-                <Resource
-                    name="users"
-                    list={UserList}
-                    create={UserCreate}
-                    edit={UserEdit}
-                    icon={UserIcon}
-                    show={UserShow}
-                />
-            ) : null,
+            <Resource name="posts" {...posts} />,
+            <Resource name="comments" {...comments} />,
+            permissions ? <Resource name="users" {...users} /> : null,
             <Resource name="tags" />,
         ]}
     </Admin>,

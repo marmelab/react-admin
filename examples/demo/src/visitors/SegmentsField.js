@@ -1,5 +1,5 @@
 import React from 'react';
-import Chip from 'material-ui/Chip';
+import Chip from '@material-ui/core/Chip';
 import { translate } from 'react-admin';
 import segments from '../segments/data';
 

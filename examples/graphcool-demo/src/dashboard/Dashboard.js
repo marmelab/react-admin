@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { GET_LIST, GET_MANY, Responsive, ViewTitle } from 'react-admin';
-import Card, { CardContent } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 
 import Welcome from './Welcome';
 import MonthlyRevenue from './MonthlyRevenue';
