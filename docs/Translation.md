@@ -74,8 +74,8 @@ You can find translation packages for the following languages:
 
 - French (`fr`): [marmelab/ra-language-french](https://github.com/marmelab/ra-language-french)
 - English (`en`): [marmelab/ra-language-english](https://github.com/marmelab/ra-language-english)
-- Slovak (`sk`): [zavadpe/ra-language-slovak](https://github.com/zavadpe/ra-language-slovak)
 - Russian (`ru`): [klucherev/ra-language-russian](https://github.com/klucherev/ra-language-russian)
+- Slovak (`sk`): [zavadpe/ra-language-slovak](https://github.com/zavadpe/ra-language-slovak)
 
 The previous version of react-admin, called admin-on-rest, was translated in the following languages:
 
