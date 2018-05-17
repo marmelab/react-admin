@@ -1,6 +1,6 @@
 # ra-realtime
 
-A custom saga enabling realtime update inside [react-admin](https://github.com/marmelab/admin-on-rest/).
+A custom saga enabling realtime update inside [react-admin](https://github.com/marmelab/react-admin/).
 
 ## Installation
 
@@ -19,7 +19,7 @@ yarn add ra-realtime
 ## Usage
 
 Define an `observeRequest` function which will be called by the realtime saga whenever a `CRUD_GET_LIST` or `CRUD_GET_ONE` fetch
-is triggered by react-admin ([documentation](https://marmelab.com/admin-on-rest/RestClients.html) about those).
+is triggered by react-admin ([documentation](https://marmelab.com/react-admin/RestClients.html) about those).
 
 This function will be called with the following parameters:
 
@@ -33,7 +33,7 @@ This function must return an object with a `subscribe` method which will be call
 
 The `observer` have the following methods:
 
-- `next(data)`: Call this method each time new data is received so that the Admin-on-rest views are updated.
+- `next(data)`: Call this method each time new data is received so that the react-admin views are updated.
 - `complete()`: Call this method to indicates this subscription won't receive any new data.
 - `error(error)`: Call this method when an error occurs.
 
