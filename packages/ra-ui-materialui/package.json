@@ -2,9 +2,16 @@
     "name": "ra-ui-materialui",
     "version": "2.0.0",
     "description": "UI Components for react-admin with MaterialUI",
-    "files": ["*.md", "lib", "src"],
+    "files": [
+        "*.md",
+        "lib",
+        "src"
+    ],
     "main": "lib/index",
-    "authors": ["François Zaninotto", "Gildas Garcia"],
+    "authors": [
+        "François Zaninotto",
+        "Gildas Garcia"
+    ],
     "repository": "marmelab/react-admin",
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "bugs": "https://github.com/marmelab/react-admin/issues",
