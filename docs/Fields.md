@@ -739,7 +739,7 @@ import { UrlField } from 'react-admin';
 
 ## Styling Fields
 
-All field components accept a `className` prop, allowing you to customize their style to your liking. We advise you to use the Material UI styling solution, JSS, to generate those classes. See their [documentation](https://material-ui-next.com/customization/css-in-js/#api) about that.
+All field components accept a `className` prop, allowing you to customize their style to your liking. We advise you to use the Material UI styling solution, JSS, to generate those classes. See their [documentation](https://material-ui.com/customization/css-in-js/#api) about that.
 
 {% raw %}
 ```jsx

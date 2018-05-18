@@ -1,6 +1,6 @@
 # ra-ui-material
 
-UI Components for [react-admin](https://marmelab.com/react-admin/) with [MaterialUI](https://material-ui-next.com/).
+UI Components for [react-admin](https://marmelab.com/react-admin/) with [MaterialUI](https://material-ui.com/).
 
 ## License
 
