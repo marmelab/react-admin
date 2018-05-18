@@ -1,16 +1,16 @@
-import React, { Children, cloneElement, Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
-import MoveIcon from '@material-ui/icons/Reorder';
 import { translate } from 'ra-core';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import FormInput from '../form/FormInput';
+import DraggableFormInput from './DraggableFormInput';
+
+const sanitizeProps = ({ classes, ...props }) => props;
 
 const styles = theme => ({
     root: {
@@ -43,11 +43,6 @@ const styles = theme => ({
             transform: 'translateX(100vw)',
             transition: 'all 500ms ease-in',
         },
-    },
-    index: {
-        width: '3em',
-        paddingTop: '1em',
-        [theme.breakpoints.down('sm')]: { display: 'none' },
     },
     form: { flex: 2 },
     action: {
@@ -116,51 +111,13 @@ export class OrderedFormIterator extends Component {
                                         timeout={500}
                                         classNames="fade"
                                     >
-                                        <Draggable
-                                            key={this.ids[index]}
-                                            draggableId={this.ids[index]}
+                                        <DraggableFormInput
+                                            id={this.ids[index]}
                                             index={index}
-                                        >
-                                            {provided => (
-                                                <li
-                                                    className={classes.line}
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                >
-                                                    <MoveIcon
-                                                        className={classes.index}
-                                                        {...provided.dragHandleProps}
-                                                    />
-                                                    <section className={classes.form}>
-                                                        {Children.map(children, input => (
-                                                            <FormInput
-                                                                basePath={basePath}
-                                                                input={cloneElement(input, {
-                                                                    source: `${member}.${input.props
-                                                                        .source}`,
-                                                                    label:
-                                                                        input.props.label ||
-                                                                        input.props.source,
-                                                                })}
-                                                                record={record}
-                                                                resource={resource}
-                                                            />
-                                                        ))}
-                                                    </section>
-                                                    <span className={classes.action}>
-                                                        <Button
-                                                            size="small"
-                                                            onClick={this.removeField(index)}
-                                                        >
-                                                            <CloseIcon
-                                                                className={classes.leftIcon}
-                                                            />
-                                                            {translate('ra.action.remove')}
-                                                        </Button>
-                                                    </span>
-                                                </li>
-                                            )}
-                                        </Draggable>
+                                            member={member}
+                                            onRemove={this.removeField}
+                                            {...sanitizeProps(this.props)}
+                                        />
                                     </CSSTransition>
                                 ))}
                             </TransitionGroup>
