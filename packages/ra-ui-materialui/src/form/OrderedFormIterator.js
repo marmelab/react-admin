@@ -119,8 +119,8 @@ export class OrderedFormIterator extends Component {
                             </TransitionGroup>
                             <li className={classes.line}>
                                 <span className={classes.action}>
-                                    <Button 
-                                        size="small" 
+                                    <Button
+                                        size="small"
                                         onClick={this.addField}
                                     >
                                         <AddIcon className={classes.leftIcon} />
