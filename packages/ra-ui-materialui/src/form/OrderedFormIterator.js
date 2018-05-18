@@ -2,7 +2,6 @@ import React, { Children, cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
@@ -81,13 +80,13 @@ export class OrderedFormIterator extends Component {
         fields.push({});
     };
 
-    onDragEnd = (result) => {
+    onDragEnd = result => {
         if (!result.destination) {
             return;
         }
         const { fields } = this.props;
         const startIndex = result.source.index;
-        const endIndex = result.destination.index
+        const endIndex = result.destination.index;
         const [removed] = this.ids.splice(startIndex, 1);
         this.ids.splice(endIndex, 0, removed);
         fields.move(startIndex, endIndex);
@@ -107,7 +106,7 @@ export class OrderedFormIterator extends Component {
         return fields ? (
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
+                    {provided => (
                         <ul className={classes.root} ref={provided.innerRef}>
                             {submitFailed && error && <span>{error}</span>}
                             <TransitionGroup>
@@ -122,7 +121,7 @@ export class OrderedFormIterator extends Component {
                                             draggableId={this.ids[index]}
                                             index={index}
                                         >
-                                            {(provided, snapshot) => (
+                                            {provided => (
                                                 <li
                                                     className={classes.line}
                                                     ref={provided.innerRef}
