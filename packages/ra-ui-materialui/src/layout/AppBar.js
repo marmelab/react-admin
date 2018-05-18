@@ -64,7 +64,6 @@ const styles = theme => ({
 const AppBar = ({
     classes,
     className,
-    locale,
     logout,
     open,
     title,
