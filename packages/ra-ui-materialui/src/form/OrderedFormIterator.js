@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
+import MoveIcon from '@material-ui/icons/Reorder';
 import { translate } from 'ra-core';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -122,12 +123,7 @@ export class OrderedFormIterator extends Component {
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}
                                                     {...provided.dragHandleProps}>
-                                                    <Typography
-                                                        variant="body1"
-                                                        className={classes.index}
-                                                    >
-                                                        {index + 1}
-                                                    </Typography>
+                                                    <MoveIcon className={classes.index}/>
                                                     <section className={classes.form}>
                                                         {Children.map(children, input => (
                                                             <FormInput
