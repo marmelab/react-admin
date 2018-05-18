@@ -85,13 +85,9 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@material-ui/codemod@^1.0.0-rc.0":
-  version "1.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@material-ui/codemod/-/codemod-1.0.0-rc.0.tgz#d3d96b90d1f960f41e99688e6fbf92e74d8084bb"
-
-"@material-ui/core@1.0.0-rc.0":
-  version "1.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-1.0.0-rc.0.tgz#8bd32a4e9c37bd5fa9227375a42fcced5e17cdfa"
+"@material-ui/core@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-1.0.0.tgz#857b871038bb300f2d25594ce0cd250be944e71b"
   dependencies:
     "@babel/runtime" "^7.0.0-beta.42"
     "@types/jss" "^9.5.3"
@@ -121,9 +117,9 @@
     scroll "^2.0.3"
     warning "^3.0.0"
 
-"@material-ui/icons@1.0.0-rc.0":
-  version "1.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-1.0.0-rc.0.tgz#1c836832183d509eaac9df42aa31dbbe4dd337cb"
+"@material-ui/icons@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-1.0.0.tgz#0cac779257de02538be8834e1b0e45b7cd2cb898"
   dependencies:
     recompose "^0.26.0 || ^0.27.0"
 
