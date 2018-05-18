@@ -86,7 +86,7 @@ export const DraggableFormInput = ({
                     ))}
                 </section>
                 <span className={classes.action}>
-                    <Button size="small" onClick={onRemove(index)}                        >
+                    <Button size="small" onClick={onRemove(index)}>
                         <CloseIcon className={classes.leftIcon} />
                         {translate('ra.action.remove')}
                     </Button>
@@ -107,6 +107,6 @@ DraggableFormInput.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     translate: PropTypes.func,
-}
+};
 
 export default compose(translate, withStyles(styles))(DraggableFormInput);

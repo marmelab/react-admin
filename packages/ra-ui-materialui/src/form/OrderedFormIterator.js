@@ -89,13 +89,9 @@ export class OrderedFormIterator extends Component {
 
     render() {
         const {
-            basePath,
             classes = {},
-            children,
             fields,
             meta: { error, submitFailed },
-            record,
-            resource,
             translate,
         } = this.props;
         return fields ? (
@@ -123,7 +119,10 @@ export class OrderedFormIterator extends Component {
                             </TransitionGroup>
                             <li className={classes.line}>
                                 <span className={classes.action}>
-                                    <Button size="small" onClick={this.addField}>
+                                    <Button 
+                                        size="small" 
+                                        onClick={this.addField}
+                                    >
                                         <AddIcon className={classes.leftIcon} />
                                         {translate('ra.action.add')}
                                     </Button>
