@@ -117,13 +117,21 @@ export class OrderedFormIterator extends Component {
                                         timeout={500}
                                         classNames="fade"
                                     >
-                                        <Draggable key={this.ids[index]} draggableId={this.ids[index]} index={index}>
+                                        <Draggable
+                                            key={this.ids[index]}
+                                            draggableId={this.ids[index]}
+                                            index={index}
+                                        >
                                             {(provided, snapshot) => (
-                                                <li className={classes.line}
+                                                <li
+                                                    className={classes.line}
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}>
-                                                    <MoveIcon className={classes.index}/>
+                                                >
+                                                    <MoveIcon
+                                                        className={classes.index}
+                                                        {...provided.dragHandleProps}
+                                                    />
                                                     <section className={classes.form}>
                                                         {Children.map(children, input => (
                                                             <FormInput
