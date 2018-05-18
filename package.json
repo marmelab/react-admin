@@ -37,8 +37,5 @@
         "raf": "~3.4.0",
         "selenium-webdriver": "~3.5.0"
     },
-    "workspaces": [
-        "packages/*",
-        "examples/*"
-    ]
+    "workspaces": ["packages/*", "examples/*"]
 }
