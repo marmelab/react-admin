@@ -1,4 +1,4 @@
-const rowStyle = (record, defaultStyle = {}) => {
+const rowStyle = (record, index, defaultStyle = {}) => {
     if (record.status === 'accepted')
         return { ...defaultStyle, backgroundColor: '#dfd' };
     if (record.status === 'pending')
