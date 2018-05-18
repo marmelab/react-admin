@@ -1,5 +1,32 @@
 # Changelog
 
+## v2.0.0
+
+After 7 months of refactoring for better performance and easier overrides, we finally released the new major version of react-admin 🎉.
+
+Thanks to all the contributors who made that possible!
+
+Here are some hilghlights ✨:
+
+* Upgrade to material-ui 1.0, react-router 4, React 16.3
+* Use CSS-in-JS (JSS) for styling
+* Undo button for edits and deletes
+* Bulk actions
+* Render props
+* GraphQL as a first class citizen
+* Embedded arrays
+* Improved permissions handling
+* Side effect support in custom actions
+* Easier custom inputs
+* Easier dependent inputs
+* Asynchronous i18n
+* Extra props passed transparently
+* More implementation examples
+
+There are many more features in 2.0, as well as all bug fixes from 1.x.
+
+This new release is not backwards compatible with 1.x. Please refer to [the Upgrade guide](https://github.com/marmelab/react-admin/blob/master/UPGRADE.md) for directions on upgrading your code.
+
 ## v1.4.0
 
 * Documentation: change extraction of status for AUTH_ERROR ([zifnab87](https://github.com/zifnab87))
