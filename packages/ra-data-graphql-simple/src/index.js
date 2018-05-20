@@ -54,11 +54,14 @@ export default options => {
                     return { data };
                 });
             }
-            
             if (customParameters && typeof customParameters === 'function') {
-                customParams = customParameters(fetchType, resource, params)
+                customParams = customParameters(fetchType, resource, params);
             }
-            return defaultDataProvider(fetchType, resource, customParams || params);
+            return defaultDataProvider(
+                fetchType,
+                resource,
+                customParams || params
+            );
         };
     });
 };
