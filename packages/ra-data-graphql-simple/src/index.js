@@ -12,6 +12,8 @@ export default options => {
         merge({}, defaultOptions, options)
     ).then(defaultDataProvider => {
         return (fetchType, resource, params) => {
+            const { customParameters } = options;
+            let customParams;
             // This provider does not support multiple deletions so instead we send multiple DELETE requests
             // This can be optimized using the apollo-link-batch-http link
             if (fetchType === DELETE_MANY) {
@@ -52,8 +54,11 @@ export default options => {
                     return { data };
                 });
             }
-
-            return defaultDataProvider(fetchType, resource, params);
+            
+            if (customParameters && typeof customParameters === 'function') {
+                customParams = customParameters(fetchType, resource, params)
+            }
+            return defaultDataProvider(fetchType, resource, customParams || params);
         };
     });
 };
