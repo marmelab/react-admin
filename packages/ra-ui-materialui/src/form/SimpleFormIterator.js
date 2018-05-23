@@ -123,7 +123,7 @@ export class SimpleFormIterator extends Component {
                                         />
                                     ))}
                                 </section>
-                                <span className={classes.action}>
+                                {allowRemove && (<span className={classes.action}>
                                     <Button
                                         size="small"
                                         onClick={this.removeField(index)}
@@ -133,23 +133,28 @@ export class SimpleFormIterator extends Component {
                                         />
                                         {translate('ra.action.remove')}
                                     </Button>
-                                </span>
+                                </span>)}
                             </li>
                         </CSSTransition>
                     ))}
                 </TransitionGroup>
-                <li className={classes.line}>
+                {allowAdd && (<li className={classes.line}>
                     <span className={classes.action}>
                         <Button size="small" onClick={this.addField}>
                             <AddIcon className={classes.leftIcon} />
                             {translate('ra.action.add')}
                         </Button>
                     </span>
-                </li>
+                </li>)}
             </ul>
         ) : null;
     }
 }
+
+SimpleFormIterator.ddefaultProps = {
+    allowAdd: true,
+    allowRemove: true,
+};
 
 SimpleFormIterator.propTypes = {
     basePath: PropTypes.string,
@@ -161,6 +166,8 @@ SimpleFormIterator.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     translate: PropTypes.func,
+    allowAdd: PropTypes.bool,
+    allowRemove: PropTypes.bool,
 };
 
 export default compose(translate, withStyles(styles))(SimpleFormIterator);
