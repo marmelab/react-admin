@@ -1218,7 +1218,7 @@ const ItemEdit = (props) => (
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on redux-form, so you can grab the current form values using redux-form [`formValueSelector()](https://redux-form.com/7.3.0/docs/api/formvalueselector.md/). Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function.
+React-admin relies on redux-form, so you can grab the current form values using redux-form [formValueSelector()](https://redux-form.com/7.3.0/docs/api/formvalueselector.md/). Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function.
 
 This facilitates the implementation of linked inputs:
 
