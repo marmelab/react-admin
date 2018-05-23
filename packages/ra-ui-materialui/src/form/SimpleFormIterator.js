@@ -125,29 +125,33 @@ export class SimpleFormIterator extends Component {
                                         />
                                     ))}
                                 </section>
-                                {allowRemove && (<span className={classes.action}>
-                                    <Button
-                                        size="small"
-                                        onClick={this.removeField(index)}
-                                    >
-                                        <CloseIcon
-                                            className={classes.leftIcon}
-                                        />
-                                        {translate('ra.action.remove')}
-                                    </Button>
-                                </span>)}
+                                {allowRemove && (
+                                    <span className={classes.action}>
+                                        <Button
+                                            size="small"
+                                            onClick={this.removeField(index)}
+                                        >
+                                            <CloseIcon
+                                                className={classes.leftIcon}
+                                            />
+                                            {translate('ra.action.remove')}
+                                        </Button>
+                                    </span>
+                                )}
                             </li>
                         </CSSTransition>
                     ))}
                 </TransitionGroup>
-                {allowAdd && (<li className={classes.line}>
-                    <span className={classes.action}>
-                        <Button size="small" onClick={this.addField}>
-                            <AddIcon className={classes.leftIcon} />
-                            {translate('ra.action.add')}
-                        </Button>
-                    </span>
-                </li>)}
+                {allowAdd && (
+                    <li className={classes.line}>
+                        <span className={classes.action}>
+                            <Button size="small" onClick={this.addField}>
+                                <AddIcon className={classes.leftIcon} />
+                                {translate('ra.action.add')}
+                            </Button>
+                        </span>
+                    </li>
+                )}
             </ul>
         ) : null;
     }
