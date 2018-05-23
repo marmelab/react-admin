@@ -443,13 +443,13 @@ const Foo = () => (
 export default Foo;
 ```
 
-## `routerBasename`
+## `basename`
 
 If you need to host react-admin in a subdirectory on your web host, e.g.
 
 `http://example.com/admin/`
 
-please specify a [basename](https://reacttraining.com/react-router/web/api/BrowserRouter/basename-string) via the routerBasename prop to teach react-router..
+please specify a [basename](https://reacttraining.com/react-router/web/api/BrowserRouter/basename-string) via the basename prop to teach react-router..
 
 Additional helpful info on deployments is available at create-react-app [documentation](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#building-for-relative-paths)
 

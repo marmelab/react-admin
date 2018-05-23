@@ -121,6 +121,7 @@ CoreAdmin.propTypes = {
     customSagas: PropTypes.array,
     customReducers: PropTypes.object,
     customRoutes: PropTypes.array,
+    basename: PropTypes.string,
     dashboard: componentPropType,
     dataProvider: PropTypes.func.isRequired,
     history: PropTypes.object,
