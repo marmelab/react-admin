@@ -23,6 +23,7 @@ const CoreAdmin = ({
     customReducers = {},
     customSagas = [],
     customRoutes = [],
+    basename,
     dashboard,
     history,
     menu,
@@ -69,7 +70,7 @@ const CoreAdmin = ({
     return (
         <Provider store={store}>
             <TranslationProvider>
-                <ConnectedRouter history={routerHistory}>
+                <ConnectedRouter basename={basename} history={routerHistory}>
                     <Switch>
                         <Route
                             exact
