@@ -10,7 +10,8 @@ const styles = {
     root: { display: 'flex', flexWrap: 'wrap' },
 };
 
-const sanitizeRestProps = ({ currentSort, isLoading, ...props }) => props;
+const sanitizeRestProps = ({ currentSort, setSort, isLoading, ...props }) =>
+    props;
 
 /**
  * Iterator component to be used to display a list of entities, using a single field
