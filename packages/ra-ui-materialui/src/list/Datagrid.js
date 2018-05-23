@@ -79,7 +79,14 @@ class Datagrid extends Component {
     handleSelectAll = event => {
         const { onSelect, ids, selectedIds } = this.props;
         if (event.target.checked) {
-            onSelect(selectedIds.concat(ids));
+            onSelect(
+                ids.reduce(
+                    (idList, id) =>
+                        idList.includes(id) ? idList : idList.concat(id),
+
+                    selectedIds
+                )
+            );
         } else {
             onSelect([]);
         }
