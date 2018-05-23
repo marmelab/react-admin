@@ -89,8 +89,8 @@ export class SimpleFormIterator extends Component {
             record,
             resource,
             translate,
-            allowAdd,
-            allowRemove,
+            disableAdd,
+            disableRemove,
         } = this.props;
         return fields ? (
             <ul className={classes.root}>
@@ -125,7 +125,7 @@ export class SimpleFormIterator extends Component {
                                         />
                                     ))}
                                 </section>
-                                {allowRemove && (
+                                {!disableRemove && (
                                     <span className={classes.action}>
                                         <Button
                                             size="small"
@@ -142,7 +142,7 @@ export class SimpleFormIterator extends Component {
                         </CSSTransition>
                     ))}
                 </TransitionGroup>
-                {allowAdd && (
+                {!disableAdd && (
                     <li className={classes.line}>
                         <span className={classes.action}>
                             <Button size="small" onClick={this.addField}>
@@ -157,9 +157,9 @@ export class SimpleFormIterator extends Component {
     }
 }
 
-SimpleFormIterator.ddefaultProps = {
-    allowAdd: true,
-    allowRemove: true,
+SimpleFormIterator.defaultProps = {
+    disableAdd: false,
+    disableRemove: false,
 };
 
 SimpleFormIterator.propTypes = {
@@ -172,8 +172,8 @@ SimpleFormIterator.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     translate: PropTypes.func,
-    allowAdd: PropTypes.bool,
-    allowRemove: PropTypes.bool,
+    disableAdd: PropTypes.bool,
+    disableRemove: PropTypes.bool,
 };
 
 export default compose(translate, withStyles(styles))(SimpleFormIterator);
