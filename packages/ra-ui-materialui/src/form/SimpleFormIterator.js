@@ -89,6 +89,8 @@ export class SimpleFormIterator extends Component {
             record,
             resource,
             translate,
+            allowAdd,
+            allowRemove,
         } = this.props;
         return fields ? (
             <ul className={classes.root}>
