@@ -7,8 +7,8 @@ export default options => {
     }
 
     const { cache, link, uri, ...otherOptions } = options;
-    let finalLink = otherOptions.link;
-    let finalCache = otherOptions.cache;
+    let finalLink = link;
+    let finalCache = cache;
 
     if (!link && uri) {
         finalLink = new HttpLink({ uri });
