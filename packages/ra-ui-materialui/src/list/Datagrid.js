@@ -22,9 +22,7 @@ const styles = {
     headerCell: {
         padding: '0 12px',
     },
-    checkbox: {
-        height: 'auto',
-    },
+    checkbox: {},
     row: {},
     rowEven: {},
     rowOdd: {},
