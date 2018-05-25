@@ -9,10 +9,12 @@ A frontend Framework for building admin applications running in the browser on t
 ## Features
 
 * Adapts to any backend (REST, GraphQL, SOAP, etc.)
-* Complete documentation
+* Combines the best libraries in the React ecosystem (material-ui, redux, redux-form, redux-saga, react-router, recompose, reselect)
 * Super-fast UI thanks to optimistic rendering (renders before the server returns)
 * Undo updates and deletes for a few seconds
+* Complete documentation
 * Relationships (many to one, one to many)
+* Data Validation
 * Internationalization (i18n)
 * Conditional formatting
 * Themeable
@@ -20,7 +22,6 @@ A frontend Framework for building admin applications running in the browser on t
 * Full-featured Datagrid (sort, pagination, filters)
 * Filter-as-you-type
 * Supports any form layout (simple, tabbed, etc.)
-* Data Validation
 * Custom actions
 * Large library of components for various data types: boolean, number, rich text, etc.
 * WYSIWYG editor
@@ -28,7 +29,6 @@ A frontend Framework for building admin applications running in the browser on t
 * Super easy to extend and override (it's just React components)
 * Highly customizable interface
 * Can connect to multiple backends
-* Leverages the best libraries in the React ecosystem (Redux, redux-form, redux-saga, material-ui, recompose)
 * Can be included in another React app
 * Inspired by the popular [ng-admin](https://github.com/marmelab/ng-admin) library (also by marmelab)
 
