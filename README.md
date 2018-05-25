@@ -9,7 +9,7 @@ A frontend Framework for building admin applications running in the browser on t
 ## Features
 
 * Adapts to any backend (REST, GraphQL, SOAP, etc.)
-* Combines the best libraries in the React ecosystem (material-ui, redux, redux-form, redux-saga, react-router, recompose, reselect)
+* Powered by [material-ui](https://material-ui.com/), [redux](https://redux.js.org/), [redux-form](https://redux-form.com/7.3.0/), [redux-saga](https://redux-saga.js.org/), [react-router](https://reacttraining.com/react-router/), [recompose](https://github.com/acdlite/recompose), [reselect](https://github.com/reduxjs/reselect) and a few more
 * Super-fast UI thanks to optimistic rendering (renders before the server returns)
 * Undo updates and deletes for a few seconds
 * Complete documentation
