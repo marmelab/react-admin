@@ -11,7 +11,9 @@ import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import { addField, translate, FieldTitle } from 'ra-core';
 
-import sanitizeRestProps from './sanitizeRestProps';
+import defaultSanitizeRestProps from './sanitizeRestProps';
+const sanitizeRestProps = ({ setFilter, setPagination, setSort, ...rest }) =>
+    defaultSanitizeRestProps(rest);
 
 const styles = theme => ({
     root: {},
