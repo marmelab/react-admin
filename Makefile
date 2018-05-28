@@ -73,7 +73,6 @@ build-ra-input-rich-text:
 	@echo "Transpiling ra-input-rich-text files...";
 	@rm -rf ./packages/ra-input-rich-text/lib
 	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-input-rich-text/src -d ./packages/ra-input-rich-text/lib --ignore spec.js,test.js
-	@cd packages/ra-input-rich-text/src && rsync -R `find . -name *.css` ../lib
 
 build-ra-realtime:
 	@echo "Transpiling ra-realtime files...";
