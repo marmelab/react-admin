@@ -8,12 +8,12 @@ export default {
                 fontFamily: "Roboto, 'sans-serif'",
                 padding: 0,
 
-                '&:hover:before': {
+                '&:hover::before': {
                     backgroundColor: 'rgba(0, 0, 0, 1)',
                     height: 2,
                 },
 
-                '&:before': {
+                '&::before': {
                     left: 0,
                     right: 0,
                     bottom: 0,
@@ -25,7 +25,7 @@ export default {
                     backgroundColor: 'rgba(0, 0, 0, 0.42)',
                 },
 
-                '&:after': {
+                '&::after': {
                     left: 0,
                     right: 0,
                     bottom: 0,

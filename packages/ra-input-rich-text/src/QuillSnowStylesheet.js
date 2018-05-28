@@ -429,7 +429,7 @@ export default {
     '.ql-snow .ql-tooltip a': {
         cursor: 'pointer',
         textDecoration: 'none',
-        lineHeight: 26,
+        lineHeight: '26px',
     },
     '.ql-snow .ql-tooltip.ql-flip': {
         transform: 'translateY(-10px)',
@@ -741,7 +741,7 @@ export default {
     },
     '.ql-snow .ql-tooltip::before': {
         content: '"Visit URL:"',
-        lineHeight: 26,
+        lineHeight: '26px',
         marginRight: 8,
     },
     '.ql-snow .ql-tooltip input[type=text]': {
