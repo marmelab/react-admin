@@ -12,11 +12,6 @@ module.exports = {
                 use: { loader: 'babel-loader' },
             },
             {
-                test: /\.css$/,
-                exclude: /node_modules/,
-                use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
-            },
-            {
                 test: /\.html$/,
                 exclude: /node_modules/,
                 use: { loader: 'html-loader' },
@@ -37,7 +32,7 @@ module.exports = {
                 '..',
                 'packages',
                 'ra-core',
-                'src',
+                'src'
             ),
             'ra-ui-materialui': path.join(
                 __dirname,
@@ -45,7 +40,7 @@ module.exports = {
                 '..',
                 'packages',
                 'ra-ui-materialui',
-                'src',
+                'src'
             ),
             'react-admin': path.join(
                 __dirname,
@@ -53,7 +48,7 @@ module.exports = {
                 '..',
                 'packages',
                 'react-admin',
-                'src',
+                'src'
             ),
             'ra-data-fakerest': path.join(
                 __dirname,
@@ -61,7 +56,7 @@ module.exports = {
                 '..',
                 'packages',
                 'ra-data-fakerest',
-                'src',
+                'src'
             ),
             'ra-input-rich-text': path.join(
                 __dirname,
@@ -69,7 +64,7 @@ module.exports = {
                 '..',
                 'packages',
                 'ra-input-rich-text',
-                'src',
+                'src'
             ),
         },
     },

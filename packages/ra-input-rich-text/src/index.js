@@ -3,12 +3,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Quill from 'quill';
 import { addField } from 'react-admin';
+import { withStyles } from '@material-ui/core/styles';
 
-require('./styles.css');
+import styles from './styles';
 
 export class RichTextInput extends Component {
     static propTypes = {
         addLabel: PropTypes.bool.isRequired,
+        classes: PropTypes.object,
         input: PropTypes.object,
         label: PropTypes.string,
         options: PropTypes.object,
@@ -52,14 +54,15 @@ export class RichTextInput extends Component {
 
     render() {
         return (
-            <div className="aor-rich-text-input">
+            <div className="ra-rich-text-input">
                 <div ref={this.updateDivRef} />
             </div>
         );
     }
 }
 
-const RichRextInputWithField = addField(RichTextInput);
+const RichRextInputWithField = addField(withStyles(styles)(RichTextInput));
+
 RichRextInputWithField.defaultProps = {
     addLabel: true,
 };
