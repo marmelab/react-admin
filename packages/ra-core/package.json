@@ -1,6 +1,6 @@
 {
     "name": "ra-core",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "description": "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
     "files": [
         "*.md",
@@ -36,7 +36,7 @@
         "node-polyglot": "2.2.2",
         "prop-types": "~15.6.1",
         "query-string": "~5.1.1",
-        "ra-language-english": "^2.0.0",
+        "ra-language-english": "^2.0.2",
         "react-redux": "~5.0.7",
         "react-router": "~4.2.0",
         "react-router-dom": "~4.2.2",
