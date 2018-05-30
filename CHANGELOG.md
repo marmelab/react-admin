@@ -1,5 +1,20 @@
 # Changelog
 
+## V2.0.1
+
+* Add Spanish translation package to the docs ([JonatanSalas](https://github.com/JonatanSalas))
+* Fix `SelectArrayInput` `Chip` label should render same as selected menu item option ([jeromemacias](https://github.com/jeromemacias))
+* Fix warnings when using `CheckboxGroupInput` into `ReferenceArrayInput` ([jeromemacias](https://github.com/jeromemacias))
+* Fix proptype warning in custom `Login` form ([fzaninotto](https://github.com/fzaninotto))
+* Fix override of link and cache parameter in `ra-data-graphql` ([terkiterje](https://github.com/terkiterje))
+* Fix checkbox ripple height in `Datagrid` ([cherniavskii](https://github.com/cherniavskii))
+* Fix infinite renders on forms due to validators not using memoization ([jpetitcolas](https://github.com/jpetitcolas))
+* Fix warning in `SingleFieldList` ([fzaninotto](https://github.com/fzaninotto))
+* Fix yarn.lock to match `packages.json` ([fzaninotto](https://github.com/fzaninotto))
+* Fix select all checkbox selects rows twice ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo in Inputs documentation ([afilp](https://github.com/afilp))
+* Fix custom datagrid style fonction example ([afilp](https://github.com/afilp))
+
 ## v2.0.0
 
 After 7 months of refactoring for better performance and easier overrides, we finally released the new major version of react-admin 🎉.
