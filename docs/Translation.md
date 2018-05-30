@@ -79,6 +79,7 @@ You can find translation packages for the following languages:
 - German (`de`): [greenbananaCH/ra-language-german](https://github.com/greenbananaCH/ra-language-german)
 - Italian (`it`): [stefsava/ra-language-italian](https://github.com/stefsava/ra-language-italian)
 - Slovak (`sk`): [zavadpe/ra-language-slovak](https://github.com/zavadpe/ra-language-slovak)
+- Spanish (`es`): [blackboxvision/ra-language-spanish](https://github.com/BlackBoxVision/ra-language-spanish)
 
 The previous version of react-admin, called admin-on-rest, was translated in the following languages:
 
