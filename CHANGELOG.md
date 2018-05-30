@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.2
+
+* Fix bad lerna packaging ([fzaninotto](https://github.com/fzaninotto))
+
 ## V2.0.1
 
 * Add Spanish translation package to the docs ([JonatanSalas](https://github.com/JonatanSalas))
