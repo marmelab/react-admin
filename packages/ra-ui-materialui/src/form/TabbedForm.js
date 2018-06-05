@@ -138,15 +138,19 @@ export class TabbedForm extends Component {
                 </Tabs>
                 <Divider />
                 <div className={classes.form}>
+                    {/* All tabs are rendered (not only the one in focus), to allow validation
+                    on tabs not in focus. The tabs receive a `hidden` property, which they'll
+                    use to hide the tab using CSS if it's not the one in focus.
+                    See https://github.com/marmelab/react-admin/issues/1866 */}
                     {Children.map(
                         children,
                         (tab, index) =>
                             tab &&
-                            this.state.value === index &&
                             React.cloneElement(tab, {
                                 resource,
                                 record,
                                 basePath,
+                                hidden: this.state.value !== index,
                             })
                     )}
                     {toolbar &&

@@ -59,7 +59,7 @@ describe('<ArrayInput />', () => {
         const MockChild = () => <span />;
         const DummyForm = () => (
             <form>
-                <ArrayInput source="foo" record="record">
+                <ArrayInput source="foo" record={{ iAmRecord: true }}>
                     <MockChild />
                 </ArrayInput>
             </form>
@@ -70,7 +70,9 @@ describe('<ArrayInput />', () => {
                 <DummyFormRF />
             </AppMock>
         );
-        expect(wrapper.find(MockChild).props().record).toBe('record');
+        expect(wrapper.find(MockChild).props().record).toEqual({
+            iAmRecord: true,
+        });
     });
 
     it('should pass redux-form fields to child', () => {

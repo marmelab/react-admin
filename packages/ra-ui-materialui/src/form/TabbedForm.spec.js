@@ -23,7 +23,9 @@ describe('<TabbedForm />', () => {
         const tabsContainer = wrapper.find('WithStyles(Tabs)');
         assert.equal(tabsContainer.length, 1);
         const tabs = wrapper.find('FormTab');
-        assert.equal(tabs.length, 1);
+        assert.equal(tabs.length, 2);
+        assert.equal(tabs.at(0).prop('hidden'), false);
+        assert.equal(tabs.at(1).prop('hidden'), true);
     });
 
     it('should display <Toolbar />', () => {
