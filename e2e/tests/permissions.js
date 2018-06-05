@@ -126,9 +126,11 @@ describe('Permissions', () => {
         it('in Edit page', async () => {
             await EditPage.navigate();
             assert.deepEqual(await EditPage.getTabs(), ['SUMMARY', 'SECURITY']);
-            assert.deepEqual(await EditPage.getFields(), ['id', 'name']);
-            await EditPage.gotoTab(2);
-            assert.deepEqual(await EditPage.getFields(), ['role']);
+            assert.deepEqual(await EditPage.getFields(), [
+                'id',
+                'name',
+                'role',
+            ]);
         });
     });
 });
