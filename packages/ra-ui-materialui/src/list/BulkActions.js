@@ -14,7 +14,7 @@ import BulkDeleteAction from './BulkDeleteAction';
 
 const styles = theme => ({
     bulkActionsButton: {
-        opacity: 0,
+        opacity: 1,
         transition: theme.transitions.create('opacity', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
@@ -26,6 +26,9 @@ const styles = theme => ({
             opacity: 1,
         },
         '&.fade-exit': {
+            opacity: 0,
+        },
+        '&.fade-exit-done': {
             opacity: 0,
         },
     },
