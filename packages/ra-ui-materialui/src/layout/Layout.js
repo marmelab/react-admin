@@ -55,6 +55,7 @@ const styles = theme => ({
 const sanitizeRestProps = ({ staticContext, ...props }) => props;
 
 const Layout = ({
+    appBar,
     children,
     classes,
     className,
@@ -62,6 +63,7 @@ const Layout = ({
     dashboard,
     logout,
     menu,
+    notification,
     open,
     title,
     ...props
@@ -72,18 +74,18 @@ const Layout = ({
     >
         <div className={classes.appFrame}>
             <Hidden xsDown>
-                <AppBar title={title} open={open} logout={logout} />
+                {createElement(appBar, { title, open, logout })}
             </Hidden>
             <main className={classes.contentWithSidebar}>
                 <Sidebar>
-                    {createElement(menu || Menu, {
+                    {createElement(menu, {
                         logout,
                         hasDashboard: !!dashboard,
                     })}
                 </Sidebar>
                 <div className={classes.content}>{children}</div>
             </main>
-            <Notification />
+            {createElement(notification)}
         </div>
     </div>
 );
@@ -94,6 +96,7 @@ const componentPropType = PropTypes.oneOfType([
 ]);
 
 Layout.propTypes = {
+    appBar: componentPropType,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -104,9 +107,16 @@ Layout.propTypes = {
         PropTypes.func,
         PropTypes.string,
     ]),
-    menu: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+    menu: componentPropType,
+    notification: componentPropType,
     open: PropTypes.bool,
     title: PropTypes.node.isRequired,
+};
+
+Layout.defaultProps = {
+    appBar: AppBar,
+    menu: Menu,
+    notification: Notification,
 };
 
 const mapStateToProps = state => ({

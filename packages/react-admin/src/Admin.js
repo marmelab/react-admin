@@ -4,7 +4,6 @@ import {
     Loading,
     Login,
     Logout,
-    Menu,
     NotFound,
 } from 'ra-ui-materialui';
 
@@ -16,7 +15,6 @@ Admin.defaultProps = {
     loading: Loading,
     loginPage: Login,
     logoutButton: Logout,
-    menu: Menu,
 };
 
 export default Admin;

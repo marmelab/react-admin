@@ -361,17 +361,33 @@ const App = () => (
 );
 ```
 
-Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src/mui/layout/Layout.js) as a starting point for your custom layout. Here is a simplified version (with no responsive support):
+Your custom layout can extend the default `<Layout>` component if you only want to override the appBar, the menu, or the notification component. For instance:
 
 ```jsx
 // in src/MyLayout.js
-import React, { createElement, Component } from 'react';
+import { Layout } from 'react-admin';
+import MyAppBar from './MyAppBar';
+import MyMenu from './MyMenu';
+import MyNotification from './MyNotification';
+
+const MyLayout = (props) => <Layout 
+    {...props}
+    appBar={MyAppBar}
+    menu={MyMenu}
+    notification={MyNotification}
+/>;
+
+export default MyLayout;
+```
+
+For more custom layouts, write a component from scratch. It must contain a `{children}` placeholder, where react-admin will render the resources. Use the [default layout](https://github.com/marmelab/react-admin/blob/master/src/mui/layout/Layout.js) as a starting point. Here is a simplified version (with no responsive support):
+
+```jsx
+// in src/MyLayout.js
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
-import CircularProgress from '@material-ui/core/CircularProgress';
-
+import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import {
     AppBar,
     Menu,
@@ -380,43 +396,33 @@ import {
     setSidebarVisibility,
 } from 'react-admin';
 
-const theme = createMuiTheme({
-    palette: {
-        type: 'light',
-    },
-});
-
-const styles = {
-    wrapper: {
-        // Avoid IE bug with Flexbox, see #467
+const styles = theme => ({
+    root: {
         display: 'flex',
         flexDirection: 'column',
-    },
-    main: {
-        display: 'flex',
-        flexDirection: 'column',
+        zIndex: 1,
         minHeight: '100vh',
+        backgroundColor: theme.palette.background.default,
+        position: 'relative',
     },
-    body: {
-        backgroundColor: '#edecec',
+    appFrame: {
         display: 'flex',
-        flex: 1,
-        marginTop: '2em',
-        overflowY: 'hidden',
-        overflowX: 'scroll',
+        flexDirection: 'column',
+        overflowX: 'auto',
+    },
+    contentWithSidebar: {
+        display: 'flex',
+        flexGrow: 1,
     },
     content: {
-        flex: 1,
-        padding: '2em',
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 2,
+        padding: theme.spacing.unit * 3,
+        marginTop: '4em',
+        paddingLeft: 5,
     },
-    loader: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        margin: 16,
-        zIndex: 1200,
-    },
-};
+});
 
 class MyLayout extends Component {
     componentWillMount() {
@@ -426,68 +432,170 @@ class MyLayout extends Component {
     render() {
         const {
             children,
+            classes,
             dashboard,
             isLoading,
             logout,
-            menu,
+            open,
             title,
         } = this.props;
         return (
-            <MuiThemeProvider theme={theme}>
-                <div style={styles.wrapper}>
-                    <div style={styles.main}>
-                        <AppBar title={title} logout={logout} />
-                        <div className="body" style={styles.body}>
-                            <div style={styles.content}>{children}</div>
-                            <Sidebar>
-                                {createElement(menu || Menu, {
-                                    logout,
-                                    hasDashboard: !!dashboard,
-                                })}
-                            </Sidebar>
+            <div className={classes.root}>
+                <div className={classes.appFrame}>
+                    <AppBar title={title} open={open} logout={logout} />
+                    <main className={classes.contentWithSidebar}>
+                        <Sidebar>
+                            <Menu logout={logout} hasDashboard={!!dashboard} />
+                        </Sidebar>
+                        <div className={classes.content}>
+                            {children}
                         </div>
-                        <Notification />
-                        {isLoading && (
-                            <CircularProgress
-                                color="primary"
-                                size={30}
-                                thickness={2}
-                                style={styles.loader}
-                            />
-                        )}
-                    </div>
+                    </main>
+                    <Notification />
                 </div>
-            </MuiThemeProvider>
+            </div>
         );
     }
 }
 
 MyLayout.propTypes = {
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-    dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+    dashboard: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.string,
+    ]),
     isLoading: PropTypes.bool.isRequired,
-    logout: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
-    menu: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+    logout: componentPropType,
     setSidebarVisibility: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
-export default connect(mapStateToProps, { setSidebarVisibility })(MyLayout);
+export default connect(mapStateToProps, { setSidebarVisibility })(withStyles(styles)(MyLayout));
+```
+
+## Using a Custom Menu
+
+By default, React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component.
+
+If you want to add or remove menu items, for instance to link to non-resources pages, you can create your own menu component:
+
+```jsx
+// in src/MyMenu.js
+import React from 'react';
+import { connect } from 'react-redux';
+import { MenuItemLink, getResources } from 'react-admin';
+import { withRouter } from 'react-router-dom';
+import Responsive from '../layout/Responsive';
+
+const MyMenu = ({ resources, onMenuClick, logout }) => (
+    <div>
+        {resources.map(resource => (
+            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+        ))}
+        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
+        <Responsive
+            small={logout}
+            medium={null} // Pass null to render nothing on larger devices
+        />
+    </div>
+);
+
+const mapStateToProps = state => ({
+    resources: getResources(state),
+});
+
+export default withRouter(connect(mapStateToProps)(MyMenu));
+
+```
+
+**Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
+
+**Tip**: Note that we include the `logout` item only on small devices. Indeed, the `logout` button is already displayed in the AppBar on larger devices.
+
+**Tip**: Note that we use React Router [`withRouter`](https://reacttraining.com/react-router/web/api/withRouter) Higher Order Component and that it is used **before** Redux [`connect](https://github.com/reactjs/react-redux/blob/master/docs/api.html#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options). This is required if you want the active menu item to be highlighted.
+
+To use this custom menu component, pass it to a custom Layout, as explained above:
+
+```jsx
+// in src/MyLayout.js
+import { Layout } from 'react-admin';
+import MyMenu from './MyMenu';
+
+const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
+
+export default MyLayout;
+```
+
+Then, use this layout in the `<Admin>` `applayout` prop:
+
+```jsx
+// in src/App.js
+import MyLayout from './MyLayout';
+
+const App = () => (
+    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
+**Tip**: If you use authentication, don't forget to render the `logout` prop in your custom menu component. Also, the `onMenuClick` function passed as prop is used to close the sidebar on mobile.
+
+The `MenuItemLink` component make use of the React Router [`NavLink`](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize its style when it targets the current page.
+
+If the default active style does not suit your tastes, you can override it by passing your own `classes`:
+
+```jsx
+// in src/MyMenu.js
+import React from 'react';
+import { connect } from 'react-redux';
+import { MenuItemLink, getResources } from 'react-admin';
+import { withStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
+
+const styles = {
+    root: {}, // Style applied to the MenuItem from material-ui
+    active: { fontWeight: 'bold' }, // Style applied when the menu item is the active one
+    icon: {}, // Style applied to the icon
+};
+
+const MyMenu = ({ classes, resources, onMenuClick, logout }) => (
+    <div>
+        {resources.map(resource => (
+            <MenuItemLink classes={classes} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+        ))}
+        <MenuItemLink classes={classes} to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
+        <Responsive
+            small={logout}
+            medium={null} // Pass null to render nothing on larger devices
+        />
+    </div>
+);
+
+const mapStateToProps = state => ({
+    resources: getResources(state),
+});
+
+export default withRouter(connect(mapStateToProps)(withStyles(styles)(Menu)));
 ```
 
 ## Notifications
 
 If you use your own layout (or custom login page), then you probably use the `<Notification>` component.
 
-You can override the notification duration by setting the `autoHideDuration` prop. It defaults to 4000, i.e. 4 seconds.
+You can override the notification duration by setting the `autoHideDuration` prop. It defaults to 4000, i.e. 4 seconds. For instance, to create a custom Notification component with a 5 seconds default:
 
 ```jsx
-<Notification autoHideDuration={5000} />
+// in src/MyNotification.js
+import { Notification } from 'react-admin';
+
+const MyNotification = props => <Notification {...props}autoHideDuration={5000} />;
+
+export default MyNotification;
 ```
 
 **Tip**: if you use the `showNotification` action, then you can define `autoHideDuration` per message as the third parameter of the `showNotification` action creator.
-
 
 ## Loading
 
@@ -503,7 +611,7 @@ Prop | Type | Default | Descriptions
 Usage:
 
 ```jsx 
-    <Loading loadingPrimary="app.page.loading" loadingSecondary="app.message.loading" />
+<Loading loadingPrimary="app.page.loading" loadingSecondary="app.message.loading" />
 ``` 
 
 ## LinearProgress
@@ -513,7 +621,7 @@ Display a linear progress component. Display the same loading component as `reac
 Usage:
 
 ```jsx 
-    ({ data, ...props }) => !data? 
+({ data, ...props }) => !data? 
         <LinearProgress /> : 
         <MyInput data={data} />        
 ``` 
