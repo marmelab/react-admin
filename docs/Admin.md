@@ -234,7 +234,7 @@ For more details on predefined themes and custom themes, refer to the [Material 
 
 ## `appLayout`
 
-If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component through the `appLauout` prop.
+If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component through the `appLayout` prop.
 
 ```jsx
 // in src/App.js
