@@ -51,12 +51,12 @@ title: "Reference"
 * [`<ImageInputPreview>`](./Inputs.html#imageinput)
 * [`<FunctionField>`](./Fields.html#functionfield)
 * `<Labeled>`
-* [`<Layout>`](./Admin.html#applayout)
+* [`<Layout>`](./Theming.html#using-a-custom-layout)
 * [`<Loading>`](./Theming.html#Loading)
 * [`<List>`](./List.html#the-list-component)
 * `<ListButton>`
 * [`<LongTextInput>`](./Inputs.html#longtextinput)
-* `<Menu>`
+* [`<Menu>`](./Theming.html#using-a-custom-menu)
 * `<Notification>`
 * [`<NullableBooleanInput>`](./Inputs.html#booleaninput-and-nullablebooleaninput)
 * [`<NumberField>`](./Fields.html#numberfield)

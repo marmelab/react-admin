@@ -25,7 +25,7 @@ const CoreAdmin = ({
     customRoutes = [],
     dashboard,
     history,
-    menu,
+    menu, // deprecated, use a custom layout instead
     catchAll,
     dataProvider,
     i18nProvider = defaultI18nProvider,

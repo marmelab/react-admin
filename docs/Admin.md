@@ -31,7 +31,7 @@ Here are all the props accepted by the component:
 * [`title`](#title)
 * [`dashboard`](#dashboard)
 * [`catchAll`](#catchall)
-* [`menu`](#menu)
+* [`menu`](#menu) (deprecated)
 * [`theme`](#theme)
 * [`appLayout`](#applayout)
 * [`customReducers`](#customreducers)
@@ -152,6 +152,8 @@ const App = () => (
 
 ## `menu`
 
+**Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#appLayout) instead.
+
 React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component.
 
 If you want to add or remove menu items, for instance to link to non-resources pages, you can create your own menu component:
@@ -204,45 +206,7 @@ const App = () => (
 );
 ```
 
-**Tip**: If you use authentication, don't forget to render the `logout` prop in your custom menu component. Also, the `onMenuClick` function passed as prop is used to close the sidebar on mobile.
-
-The `MenuItemLink` component make use of the React Router [`NavLink`](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize its style when it targets the current page.
-
-If the default active style does not suit your tastes, you can override it by passing your own `classes`:
-
-```jsx
-// in src/Menu.js
-import React from 'react';
-import { connect } from 'react-redux';
-import { MenuItemLink, getResources } from 'react-admin';
-import { withStyles } from '@material-ui/core/styles';
-import { withRouter } from 'react-router-dom';
-
-const styles = {
-    root: {}, // Style applied to the MenuItem from material-ui
-    active: { fontWeight: 'bold' }, // Style applied when the menu item is the active one
-    icon: {}, // Style applied to the icon
-};
-
-const Menu = ({ classes, resources, onMenuClick, logout }) => (
-    <div>
-        {resources.map(resource => (
-            <MenuItemLink classes={classes} to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
-        ))}
-        <MenuItemLink classes={classes} to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
-        <Responsive
-            small={logout}
-            medium={null} // Pass null to render nothing on larger devices
-        />
-    </div>
-);
-
-const mapStateToProps = state => ({
-    resources: getResources(state),
-});
-
-export default withRouter(connect(mapStateToProps)(withStyles(styles)(Menu)));
-```
+See the [Theming documentation](./Theming.html#using-a-custom-menu) for more details.
 
 ## `theme`
 
@@ -270,9 +234,7 @@ For more details on predefined themes and custom themes, refer to the [Material 
 
 ## `appLayout`
 
-If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<MuiThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
-
-Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/react-admin/src/mui/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.html#using-a-custom-layout) for examples.
+If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component through the `appLauout` prop.
 
 ```jsx
 // in src/App.js
@@ -284,6 +246,27 @@ const App = () => (
     </Admin>
 );
 ```
+
+Your custom layout can simply extend the default `<Layout>` component if you only want to override the appBar, the menu, or the notification component. For instance:
+
+```jsx
+// in src/MyLayout.js
+import { Layout } from 'react-admin';
+import MyAppBar from './MyAppBar';
+import MyMenu from './MyMenu';
+import MyNotification from './MyNotification';
+
+const MyLayout = (props) => <Layout 
+    {...props}
+    appBar={MyAppBar}
+    menu={MyMenu}
+    notification={MyNotification}
+/>;
+
+export default MyLayout;
+```
+
+For more details on custom layouts, check [the Theming documentation](./Theming.html#using-a-custom-layout).
 
 ## `customReducers`
 
