@@ -2,7 +2,7 @@ import React, { createElement } from 'react';
 import PropTypes from 'prop-types';
 import { createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import createHistory from 'history/createHashHistory';
+import createHistory from 'history/createBrowserHistory';
 import { Switch, Route } from 'react-router-dom';
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
@@ -23,6 +23,7 @@ const CoreAdmin = ({
     customReducers = {},
     customSagas = [],
     customRoutes = [],
+    basename,
     dashboard,
     history,
     menu, // deprecated, use a custom layout instead
@@ -69,7 +70,7 @@ const CoreAdmin = ({
     return (
         <Provider store={store}>
             <TranslationProvider>
-                <ConnectedRouter history={routerHistory}>
+                <ConnectedRouter basename={basename} history={routerHistory}>
                     <Switch>
                         <Route
                             exact
@@ -120,6 +121,7 @@ CoreAdmin.propTypes = {
     customSagas: PropTypes.array,
     customReducers: PropTypes.object,
     customRoutes: PropTypes.array,
+    basename: PropTypes.string,
     dashboard: componentPropType,
     dataProvider: PropTypes.func.isRequired,
     history: PropTypes.object,
