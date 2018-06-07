@@ -494,7 +494,7 @@ To change the link from the `<Edit>` page to the `<Show>` page, set the `linkTyp
 By default, `<ReferenceField>` is sorted by its `source`. To specify another attribute to sort by, set the `sortBy` prop to the according attribute's name.
 
 ```jsx
-<ReferenceField label="User" source="userId" reference="users" sortBy="name">
+<ReferenceField label="User" source="userId" reference="users" sortBy="user.name">
     <TextField source="name" />
 </ReferenceField>
 ```
