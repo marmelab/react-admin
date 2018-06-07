@@ -15,11 +15,11 @@ const addIds = (resource, ids) => {
         debouncedIds[resource] = {};
     }
     ids.forEach(id => {
-        debouncedIds[resource][id] = true;
+        debouncedIds[resource][id] = id;
     }); // fast UNIQUE
 };
 const getIds = resource => {
-    const ids = Object.keys(debouncedIds[resource]);
+    const ids = Object.values(debouncedIds[resource]);
     delete debouncedIds[resource];
     return ids;
 };
