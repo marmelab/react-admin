@@ -191,9 +191,13 @@ export class AutocompleteInput extends React.Component {
         }
     };
 
-    handleSuggestionsFetchRequested = () => {
+    handleSuggestionsFetchRequested = input => {
         this.setState(({ suggestions, prevSuggestions }) => ({
-            suggestions: prevSuggestions ? prevSuggestions : suggestions,
+            suggestions: this.props.choices.filter(choice =>
+                this.getSuggestionText(choice)
+                    .toLowerCase()
+                    .includes(input.value.toLowerCase().trim())
+            ),
         }));
     };
 
