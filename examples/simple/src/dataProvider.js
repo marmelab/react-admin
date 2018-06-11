@@ -1,9 +1,9 @@
-import jsonRestDataProvider from 'ra-data-fakerest';
+import jsonRestProvider from 'ra-data-fakerest';
 
 import data from './data';
 import addUploadFeature from './addUploadFeature';
 
-const dataProvider = jsonRestDataProvider(data, true);
+const dataProvider = jsonRestProvider(data, true);
 const uploadCapableDataProvider = addUploadFeature(dataProvider);
 const sometimesFailsDataProvider = (type, resource, params) =>
     new Promise((resolve, reject) => {
