@@ -666,7 +666,7 @@ export const PostList = (props) => (
 
 ```jsx
 export const App = () => (
-    <Admin dataProvider={simpleRestClient('http://path.to.my.api')}>
+    <Admin dataProvider={restProvider('http://path.to.my.api')}>
         <Resource name="posts" list={PostList} />
         <Resource name="tags" /> // <= this one is compulsory
     </Admin>

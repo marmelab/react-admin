@@ -19,7 +19,7 @@ yarn add ra-realtime
 ## Usage
 
 Define an `observeRequest` function which will be called by the realtime saga whenever a `CRUD_GET_LIST` or `CRUD_GET_ONE` fetch
-is triggered by react-admin ([documentation](https://marmelab.com/react-admin/RestClients.html) about those).
+is triggered by react-admin ([documentation](https://marmelab.com/react-admin/DataProviders.html) about those).
 
 This function will be called with the following parameters:
 
@@ -45,7 +45,7 @@ Here is a very naive example using an interval to fetch data every 5 seconds:
 // In createRealtimeSaga.js
 import realtimeSaga from 'ra-realtime';
 
-const observeRequest = restClient => (type, resource, params) => {
+const observeRequest = dataProvider => (type, resource, params) => {
     // Filtering so that only posts are updated in real time
     if (resource !== 'posts') return;
 
@@ -53,7 +53,7 @@ const observeRequest = restClient => (type, resource, params) => {
     return {
         subscribe(observer) {
             const intervalId = setInterval(() => {
-                restClient(type, resource, params)
+                dataProvider(type, resource, params)
                     .then(results => observer.next(results)) // New data received, notify the observer
                     .catch(error => observer.error(error)); // Ouch, an error occured, notify the observer
             }, 5000);
@@ -72,5 +72,5 @@ const observeRequest = restClient => (type, resource, params) => {
     };
 };
 
-export default restClient => realtimeSaga(observeRequest(restClient));
+export default dataProvider => realtimeSaga(observeRequest(dataProvider));
 ```
