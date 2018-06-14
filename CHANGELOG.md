@@ -1,10 +1,25 @@
 # Changelog
 
+## v2.0.3
+
+* Add Russian translation package to the docs ([fzaninotto](https://github.com/fzaninotto))
+* Add Indonesian translation package to the docs ([ronadi](https://github.com/ronadi))
+* Add media to demo dashboard to make it better-looking ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Labeled>` to correctly passe `<FormControl>` props for full width and validation ([djhi](https://github.com/djhi))
+* Fix `<ReferenceArrayInput>` and `<ReferenceInput>` so that the label correctly adds the * when required ([djhi](https://github.com/djhi))
+* Fix AutocompleteInput documentation refers to outdated mui doc ([fzaninotto](https://github.com/fzaninotto))
+* Fix mentions of REST client in the documentation ([fzaninotto](https://github.com/fzaninotto))
+* Fix logout button icon padding ([fzaninotto](https://github.com/fzaninotto))
+* Fix Bulk Actions button was clickable even with no row selected ([fzaninotto](https://github.com/fzaninotto))
+* Fix global validation on TabbedForm ([fzaninotto](https://github.com/fzaninotto))
+* Fix link for Saga debouncing doc ([dunglas](https://github.com/dunglas))
+* Fix warning in GraphQL data provider with `<ReferenceField>` ([byymster](https://github.com/byymster))
+
 ## v2.0.2
 
 * Fix bad lerna packaging ([fzaninotto](https://github.com/fzaninotto))
 
-## V2.0.1
+## v2.0.1
 
 * Add Spanish translation package to the docs ([JonatanSalas](https://github.com/JonatanSalas))
 * Fix `SelectArrayInput` `Chip` label should render same as selected menu item option ([jeromemacias](https://github.com/jeromemacias))
