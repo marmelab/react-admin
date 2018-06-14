@@ -24,11 +24,15 @@ const styles = theme => ({
     },
     titleLink: { textDecoration: 'none', color: 'inherit' },
     card: {
+        padding: '16px 0',
         overflow: 'inherit',
         textAlign: 'right',
-        padding: 16,
+    },
+    title: {
+        padding: '0 16px',
     },
     value: {
+        padding: '0 16px',
         minHeight: 48,
     },
     avatar: {

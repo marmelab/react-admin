@@ -20,9 +20,6 @@ const style = theme => ({
     },
     cost: {
         marginRight: '1em',
-        position: 'absolute',
-        top: '1em',
-        right: 0,
         color: theme.palette.text.primary,
     },
 });
