@@ -45,6 +45,7 @@ export const ReferenceArrayInputView = ({
     error,
     input,
     isLoading,
+    isRequired,
     label,
     meta,
     onChange,
@@ -70,6 +71,7 @@ export const ReferenceArrayInputView = ({
                 source={source}
                 resource={resource}
                 className={className}
+                isRequired={isRequired}
             >
                 <LinearProgress />
             </Labeled>
@@ -87,6 +89,7 @@ export const ReferenceArrayInputView = ({
         className,
         error,
         input,
+        isRequired,
         label: translatedLabel,
         meta: {
             ...meta,
