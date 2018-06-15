@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Quill from 'quill';
 import { addField } from 'react-admin';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
 import { withStyles } from '@material-ui/core/styles';
 
 import styles from './styles';
@@ -45,7 +47,9 @@ export class RichTextInput extends Component {
     }
 
     onTextChange = () => {
-        this.props.input.onChange(this.editor.innerHTML);
+        const value =
+            this.editor.innerHTML == '<p><br></p>' ? '' : this.editor.innerHTML;
+        this.props.input.onChange(value);
     };
 
     updateDivRef = ref => {
@@ -53,10 +57,13 @@ export class RichTextInput extends Component {
     };
 
     render() {
+        const { error, helperText = false } = this.props.meta;
         return (
-            <div className="ra-rich-text-input">
+            <FormControl error={error} className="ra-rich-text-input">
                 <div ref={this.updateDivRef} />
-            </div>
+                {error && <FormHelperText>{error}</FormHelperText>}
+                {helperText && <FormHelperText>{helperText}</FormHelperText>}
+            </FormControl>
         );
     }
 }
