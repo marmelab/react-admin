@@ -470,6 +470,21 @@ export const PostEdit = (props) => (
 );
 ```
 
+You can also pass a custom route (e.g. "/home") or a function as `redirect` prop value. For example, if you want to redirect to a page related to the current object:
+
+```jsx
+// redirect to the related Author show page
+const redirect = (basePath, id, data) => `/author/${data.author_id}/show`;
+  
+export const PostEdit = (props) => {
+    <Edit {...props}>
+        <SimpleForm redirect={redirect}>
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
 This affects both the submit button, and the form submission when the user presses `ENTER` in one of the form fields.
 
 ## Toolbar

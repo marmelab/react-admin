@@ -21,7 +21,12 @@ export function* handleRedirection({
                       payload
                           ? payload.id ||
                             (payload.data ? payload.data.id : null)
-                          : requestPayload ? requestPayload.id : null
+                          : requestPayload ? requestPayload.id : null,
+                      payload && payload.data
+                          ? payload.data
+                          : requestPayload && requestPayload.data
+                            ? requestPayload.data
+                            : null
                   )
               )
           )
