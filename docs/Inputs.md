@@ -677,7 +677,7 @@ You can tweak how this component fetches the possible values using the `perPage`
 
 ## `<ReferenceInput>`
 
-Use `<ReferenceInput>` for foreign-key values, i.e. to let users choose a value from another REST endpoint. This component fetches the possible values in the reference resource (using the `GET_LIST` REST method) and the referenced record (using the `GET_ONE` REST method), then delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
+Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `post_id` of a `comment` resource. This component fetches the possible values in the reference resource (using the `GET_LIST` REST method) and the referenced record (using the `GET_ONE` REST method), then delegates rendering to a subcomponent, to which it passes the possible choices as the `choices` attribute.
 
 This means you can use `<ReferenceInput>` with any of [`<SelectInput>`](#selectinput), [`<AutocompleteInput>`](#autocompleteinput), or [`<RadioButtonGroupInput>`](#radiobuttongroupinput), or even with the component of your choice, provided it supports the `choices` attribute.
 
@@ -758,7 +758,7 @@ You can tweak how this component fetches the possible values using the `perPage`
 ```
 {% endraw %}
 
-The enclosed component may further filter results (that's the case, for instance, for `<AutocompleteInput>`). ReferenceInput passes a `setFilter` function as prop to its child component. It uses the value to create a filter for the query - by default `{ q: [searchText] }`. You can customize the mapping
+The child component may further filter results (that's the case, for instance, for `<AutocompleteInput>`). ReferenceInput passes a `setFilter` function as prop to its child component. It uses the value to create a filter for the query - by default `{ q: [searchText] }`. You can customize the mapping
 `searchText => searchQuery` by setting a custom `filterToQuery` function prop:
 
 ```jsx
@@ -769,7 +769,19 @@ The enclosed component may further filter results (that's the case, for instance
     <SelectInput optionText="title" />
 </ReferenceInput>
 ```
-  
+
+The child component receives the following props from `<ReferenceInput>`:
+
+- `isLoading`: whether the request for possible values is loading or not
+- `filter`: the current filter of the request for possible values. Defaults to `{}`.
+- `pagination`: the current pagination of the request for possible values. Defaults to `{ page: 1, perPage: 25 }`.
+- `sort`: the current sorting of the request for possible values. Defaults to `{ field: 'id', order: 'DESC' }`.
+- `error`: the error message if the form validation failed for that input
+- `warning`: the warning message if the form validation failed for that input
+- `onChange`: function to call when the value changes
+- `setFilter`: function to call to update the filter of the request for possible values
+- `setPagination`: : function to call to update the pagination of the request for possible values
+- `setSort`: function to call to update the sorting of the request for possible values
 
 ## `<RichTextInput>`
 
