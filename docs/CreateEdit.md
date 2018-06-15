@@ -473,7 +473,8 @@ export const PostEdit = (props) => (
 You can also pass a custom route (e.g. "/home") or a function as `redirect` prop value. For example, if you want to redirect to a page related to the current object:
 
 ```jsx
-const redirect = (basePath, id, data) => `author/${data.author_id}/show`;
+// redirect to the related Author show page
+const redirect = (basePath, id, data) => `/author/${data.author_id}/show`;
   
 export const PostEdit = (props) => {
     <Edit {...props}>
