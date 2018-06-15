@@ -25,7 +25,7 @@ export function* handleRedirection({
                       payload && payload.data
                           ? payload.data
                           : requestPayload && requestPayload.data
-                            ? requestPayload.id
+                            ? requestPayload.data
                             : null
                   )
               )
