@@ -293,7 +293,7 @@ const Menu = ({ onMenuClick, logout, permissions }) => (
         <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuClick} />
         <WithPermissions
             render={({ permissions }) => (
-                permissions === '
+                permissions === 'admin'
                     ? <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
                     : null
             )}
