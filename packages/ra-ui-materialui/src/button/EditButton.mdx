@@ -1,0 +1,33 @@
+---
+name: EditButton
+menu: ra-ui-material-ui
+---
+
+import { Playground, PropsTable } from 'docz';
+import EditButton from './EditButton';
+
+# EditButton
+
+A button leading to the Edit view of the current record.
+
+<PropsTable of={EditButton} />
+
+## Basic Usage
+
+<Playground>
+    <EditButton />
+</Playground>
+
+## Customize label
+
+<Playground>
+    <EditButton label="Post details" />
+</Playground>
+
+## Injected Props
+
+When used inside a `<Datagrid>` or `<CardActions>`, react-admin injects the current `basePath` and `record`, which are necessary to generate a correct link.
+
+<Playground>
+    <EditButton basePath="posts" record={{ id: 123, title: "hello, world" }} />
+</Playground>

@@ -2,7 +2,9 @@
     "private": true,
     "name": "react-admin-lerna",
     "scripts": {
-        "test": "make test"
+        "test": "make test",
+        "doc": "docz dev",
+        "doc-build": "docz build"
     },
     "jest": {
         "setupTestFrameworkScriptFile": "./test-setup.js"
@@ -20,6 +22,9 @@
         "babel-preset-stage-0": "~6.24.1",
         "babel-register": "~6.26.0",
         "cheerio": "~1.0.0-rc.2",
+        "docz": "^0.2.6",
+        "docz-plugin-babel6": "^0.2.6",
+        "docz-theme-default": "^0.2.6",
         "eslint": "~4.19.1",
         "eslint-config-prettier": "~2.9.0",
         "eslint-plugin-cypress": "~2.0.1",
