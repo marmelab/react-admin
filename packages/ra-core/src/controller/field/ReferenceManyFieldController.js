@@ -146,6 +146,7 @@ ReferenceManyFieldController.propTypes = {
         field: PropTypes.string,
         order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
+    sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
     isLoading: PropTypes.bool,

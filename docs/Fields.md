@@ -233,7 +233,7 @@ import { FunctionField } from 'react-admin'
 <FunctionField label="Name" render={record => `${record.first_name} ${record.last_name}`} />
 ```
 
-**Tip**: Technically, you can omit the `source` property for the `<FunctionField>` since you provide the render function. However, providing a `source` will allow the datagrid to make the column sortable, since when a user clicks on a column, the datagrid uses the `source` prop as sort field.
+**Tip**: Technically, you can omit the `source` and `sortBy` properties for the `<FunctionField>` since you provide the render function. However, providing a `source` or a `sortBy` will allow the datagrid to make the column sortable, since when a user clicks on a column, the datagrid uses these properties to sort. Should you provide both, `sortBy` will override `source` for sorting the column.
 
 ## `<ImageField>`
 
@@ -468,7 +468,7 @@ export const PostList = (props) => (
 );
 ```
 
-With this configuration, `<ReferenceField>` wraps the user title in a link to the related user `<Edit>` page.
+With this configuration, `<ReferenceField>` wraps the user's name in a link to the related user `<Edit>` page.
 
 ![ReferenceField](./img/reference-field.png)
 
@@ -487,6 +487,14 @@ To change the link from the `<Edit>` page to the `<Show>` page, set the `linkTyp
 
 ```jsx
 <ReferenceField label="User" source="userId" reference="users" linkType="show">
+    <TextField source="name" />
+</ReferenceField>
+```
+
+By default, `<ReferenceField>` is sorted by its `source`. To specify another attribute to sort by, set the `sortBy` prop to the according attribute's name.
+
+```jsx
+<ReferenceField label="User" source="userId" reference="users" sortBy="user.name">
     <TextField source="name" />
 </ReferenceField>
 ```
@@ -893,7 +901,7 @@ export const UserList = (props) => (
 );
 ```
 
-**Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked.
+**Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked. In case you use the `source` property for additional purposes, the sorting can be overridden by the `sortBy` property on any `Field` component.
 
 ## Adding Label To Custom Field Components In The Show View
 

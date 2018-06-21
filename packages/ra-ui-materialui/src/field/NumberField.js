@@ -93,6 +93,7 @@ NumberField.propTypes = {
     options: PropTypes.object,
     record: PropTypes.object,
     textAlign: PropTypes.string,
+    sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
 };
 

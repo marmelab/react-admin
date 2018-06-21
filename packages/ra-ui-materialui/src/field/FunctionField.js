@@ -23,6 +23,7 @@ FunctionField.propTypes = {
     label: PropTypes.string,
     render: PropTypes.func.isRequired,
     record: PropTypes.object,
+    sortBy: PropTypes.string,
     source: PropTypes.string,
 };
 

@@ -110,6 +110,7 @@ SelectField.propTypes = {
     optionValue: PropTypes.string.isRequired,
     resource: PropTypes.string,
     record: PropTypes.object,
+    sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     translate: PropTypes.func.isRequired,
     translateChoice: PropTypes.bool.isRequired,

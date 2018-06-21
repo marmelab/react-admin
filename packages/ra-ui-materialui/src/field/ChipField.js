@@ -31,6 +31,7 @@ ChipField.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
     elStyle: PropTypes.object,
+    sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     record: PropTypes.object,
 };

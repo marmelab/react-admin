@@ -81,6 +81,7 @@ DateField.propTypes = {
     options: PropTypes.object,
     record: PropTypes.object,
     showTime: PropTypes.bool,
+    sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
 };
 
