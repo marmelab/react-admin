@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
@@ -11,6 +12,12 @@ import PostQuickCreate from './PostQuickCreate';
 import { hidePostQuickCreate, showPostQuickCreate } from './postQuickCreate';
 
 class PostReferenceInputView extends React.Component {
+    static propTypes = {
+        hidePostQuickCreate: PropTypes.func.isRequired,
+        showDialog: PropTypes.bool,
+        showPostQuickCreate: PropTypes.func.isRequired,
+    };
+
     handleClick = event => {
         event.preventDefault();
         this.props.showPostQuickCreate();

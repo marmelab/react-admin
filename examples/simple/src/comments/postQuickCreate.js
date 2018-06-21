@@ -4,7 +4,6 @@ import { change } from 'redux-form';
 
 export const SHOW_POST_QUICK_CREATE = 'SHOW_POST_QUICK_CREATE';
 export const HIDE_POST_QUICK_CREATE = 'HIDE_POST_QUICK_CREATE';
-export const POST_QUICK_CREATE_SUCCESS = 'POST_QUICK_CREATE_SUCCESS';
 
 export const showPostQuickCreate = () => ({
     type: SHOW_POST_QUICK_CREATE,
@@ -12,10 +11,6 @@ export const showPostQuickCreate = () => ({
 
 export const hidePostQuickCreate = () => ({
     type: HIDE_POST_QUICK_CREATE,
-});
-
-export const postQuickCreateSuccess = () => ({
-    type: POST_QUICK_CREATE_SUCCESS,
 });
 
 export const postQuickCreateReducer = (
@@ -30,21 +25,19 @@ export const postQuickCreateReducer = (
         return { ...state, showDialog: false };
     }
 
-    if (type === POST_QUICK_CREATE_SUCCESS) {
-        return { ...state, showDialog: false };
-    }
-
     return state;
 };
 
 function* handlePostQuickCreateSaga() {
     const { successfull } = yield race({
+        // The dialog may be closed manually
         cancelled: take(HIDE_POST_QUICK_CREATE),
+        // The form inside the dialog has been submitted and the creation was a success
         successfull: take(CRUD_CREATE_SUCCESS),
     });
 
     if (successfull) {
-        yield put(postQuickCreateSuccess());
+        yield put(hidePostQuickCreate());
         yield put(
             change(REDUX_FORM_NAME, 'post_id', successfull.payload.data.id)
         );
