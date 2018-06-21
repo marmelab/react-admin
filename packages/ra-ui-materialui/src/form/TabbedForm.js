@@ -194,10 +194,10 @@ TabbedForm.defaultProps = {
     toolbar: <Toolbar />,
 };
 
-const collectErrors = state => {
-    const syncErrors = getFormSyncErrors('record-form')(state);
-    const asyncErrors = getFormAsyncErrors('record-form')(state);
-    const submitErrors = getFormSubmitErrors('record-form')(state);
+const collectErrors = (state, props) => {
+    const syncErrors = getFormSyncErrors(props.form)(state);
+    const asyncErrors = getFormAsyncErrors(props.form)(state);
+    const submitErrors = getFormSubmitErrors(props.form)(state);
 
     return {
         ...syncErrors,
@@ -211,7 +211,7 @@ export const findTabsWithErrors = (
     props,
     collectErrorsImpl = collectErrors
 ) => {
-    const errors = collectErrorsImpl(state);
+    const errors = collectErrorsImpl(state, props);
 
     return Children.toArray(props.children).reduce((acc, child) => {
         const inputs = Children.toArray(child.props.children);
@@ -238,7 +238,6 @@ const enhance = compose(
     }),
     translate, // Must be before reduxForm so that it can be used in validation
     reduxForm({
-        form: 'record-form',
         destroyOnUnmount: false,
         enableReinitialize: true,
     }),

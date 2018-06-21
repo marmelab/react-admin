@@ -5,6 +5,7 @@ import compose from 'recompose/compose';
 import inflection from 'inflection';
 import translate from '../i18n/translate';
 import { crudCreate as crudCreateAction } from '../actions';
+import { REDUX_FORM_NAME } from '../form';
 
 /**
  * Page component for the Create view
@@ -60,7 +61,8 @@ class CreateController extends Component {
             this.props.resource,
             record,
             this.props.basePath,
-            redirect
+            redirect,
+            this.props.formName
         );
     };
 
@@ -68,6 +70,7 @@ class CreateController extends Component {
         const {
             basePath,
             children,
+            formName,
             isLoading,
             record,
             resource,
@@ -92,6 +95,7 @@ class CreateController extends Component {
             record,
             redirect: this.defaultRedirectRoute(),
             translate,
+            formName,
         });
     }
 }
@@ -100,13 +104,12 @@ CreateController.propTypes = {
     basePath: PropTypes.string.isRequired,
     children: PropTypes.func.isRequired,
     crudCreate: PropTypes.func.isRequired,
+    formName: PropTypes.string,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
     isLoading: PropTypes.bool.isRequired,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
     record: PropTypes.object,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
@@ -114,6 +117,7 @@ CreateController.propTypes = {
 };
 
 CreateController.defaultProps = {
+    formName: REDUX_FORM_NAME,
     record: {},
 };
 

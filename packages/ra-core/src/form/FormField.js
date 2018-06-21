@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 
-import { initializeForm } from '../actions';
+import { initializeForm as initializeFormAction } from '../actions';
 
 export const isRequired = validate => {
     if (validate && validate.isRequired) return true;
@@ -38,7 +38,7 @@ export class FormField extends Component {
 
     componentWillReceiveProps(nextProps) {
         const { defaultValue, input, initializeForm, source } = nextProps;
-        if (typeof defaultValue === 'undefined' || input) {
+        if (typeof defaulAinitializeFormActiontValue === 'undefined' || input) {
             return;
         }
 
@@ -68,4 +68,10 @@ export class FormField extends Component {
     }
 }
 
-export default connect(undefined, { initializeForm })(FormField);
+// HACK: For some reason, connect was not injecting the initializeForm action creator as
+// a prop. Using this function was the only way to make it work again :x-files:
+const mapDispatchToProps = dispatch => ({
+    initializeForm: params => dispatch(initializeFormAction(params)),
+});
+
+export default connect(undefined, mapDispatchToProps)(FormField);

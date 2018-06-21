@@ -3,6 +3,7 @@ import { push } from 'react-router-redux';
 import { reset } from 'redux-form';
 
 import { handleRedirection } from './redirection';
+import { REDUX_FORM_NAME } from '../form';
 
 describe('redirection saga', () => {
     it('should yield a redirection if redirectTo is truthy', () => {
@@ -37,6 +38,14 @@ describe('redirection saga', () => {
             meta: { redirectTo: false },
         };
         const generator = handleRedirection(action);
-        expect(generator.next().value).toEqual(put(reset('record-form')));
+        expect(generator.next().value).toEqual(put(reset(REDUX_FORM_NAME)));
+    });
+
+    it('should yield a form refresh with a custom name if redirectTo is falsy', () => {
+        const action = {
+            meta: { redirectTo: false, formName: 'custom-form' },
+        };
+        const generator = handleRedirection(action);
+        expect(generator.next().value).toEqual(put(reset('custom-form')));
     });
 });

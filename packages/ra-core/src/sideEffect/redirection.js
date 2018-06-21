@@ -3,6 +3,7 @@ import { push } from 'react-router-redux';
 import { reset } from 'redux-form';
 
 import resolveRedirectTo from '../util/resolveRedirectTo';
+import { REDUX_FORM_NAME } from '../form';
 
 /**
  * Redirection Side Effects
@@ -10,7 +11,7 @@ import resolveRedirectTo from '../util/resolveRedirectTo';
 export function* handleRedirection({
     payload,
     requestPayload,
-    meta: { basePath, redirectTo },
+    meta: { basePath, redirectTo, formName = REDUX_FORM_NAME },
 }) {
     return redirectTo
         ? yield put(
@@ -30,7 +31,7 @@ export function* handleRedirection({
                   )
               )
           )
-        : yield put(reset('record-form')); // explicit no redirection, reset the form
+        : yield put(reset(formName)); // explicit no redirection, reset the form
 }
 
 export default function*() {

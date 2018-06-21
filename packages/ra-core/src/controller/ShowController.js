@@ -114,8 +114,6 @@ ShowController.propTypes = {
     hasShow: PropTypes.bool,
     id: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
@@ -124,6 +122,7 @@ ShowController.propTypes = {
 
 function mapStateToProps(state, props) {
     return {
+        id: props.id,
         record: state.admin.resources[props.resource]
             ? state.admin.resources[props.resource].data[props.id]
             : null,
