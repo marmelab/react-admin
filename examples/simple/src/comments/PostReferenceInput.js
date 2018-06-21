@@ -47,7 +47,11 @@ class PostReferenceInputView extends React.Component {
                     aria-label="New post"
                 >
                     <DialogContent>
-                        <PostQuickCreate />
+                        <PostQuickCreate
+                            basePath="/posts"
+                            formName="post-create"
+                            resource="posts"
+                        />
                     </DialogContent>
                 </Dialog>
             </div>

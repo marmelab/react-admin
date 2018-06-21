@@ -27,10 +27,4 @@ const PostQuickCreate = props => (
     </Create>
 );
 
-PostQuickCreate.defaultProps = {
-    basePath: '/posts',
-    formName: 'post-create',
-    resource: 'posts',
-};
-
 export default PostQuickCreate;
