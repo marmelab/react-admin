@@ -1,7 +1,7 @@
 import React from 'react';
 import { Create, LongTextInput, SimpleForm, TextInput } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
-const PostCreate = props => (
+const PostQuickCreate = props => (
     <Create {...props}>
         <SimpleForm
             defaultValue={{ average_note: 0 }}
@@ -27,9 +27,10 @@ const PostCreate = props => (
     </Create>
 );
 
-PostCreate.defaultProps = {
-    resource: 'posts',
+PostQuickCreate.defaultProps = {
+    basePath: '/posts',
     formName: 'post-create',
+    resource: 'posts',
 };
 
-export default PostCreate;
+export default PostQuickCreate;
