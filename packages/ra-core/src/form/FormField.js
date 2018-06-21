@@ -38,7 +38,7 @@ export class FormField extends Component {
 
     componentWillReceiveProps(nextProps) {
         const { defaultValue, input, initializeForm, source } = nextProps;
-        if (typeof defaulAinitializeFormActiontValue === 'undefined' || input) {
+        if (typeof defaultValue === 'undefined' || input) {
             return;
         }
 
