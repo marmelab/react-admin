@@ -68,6 +68,7 @@ class PostReferenceInputView extends React.Component {
                     <SelectInput optionText="title" />
                 </ReferenceInput>
                 <Button
+                    data-testid="button-add-post"
                     className={classes.button}
                     onClick={this.handleNewClick}
                 >
@@ -75,6 +76,7 @@ class PostReferenceInputView extends React.Component {
                 </Button>
                 {post_id && (
                     <Button
+                        data-testid="button-show-post"
                         className={classes.button}
                         onClick={this.handleShowClick}
                     >
@@ -82,6 +84,7 @@ class PostReferenceInputView extends React.Component {
                     </Button>
                 )}
                 <Dialog
+                    data-testid="dialog-add-post"
                     fullWidth
                     open={showCreateDialog}
                     onClose={this.handleCloseCreate}
@@ -99,6 +102,7 @@ class PostReferenceInputView extends React.Component {
                     </DialogContent>
                 </Dialog>
                 <Dialog
+                    data-testid="dialog-show-post"
                     fullWidth
                     open={showPreviewDialog}
                     onClose={this.handleCloseShow}
