@@ -3,26 +3,68 @@ name: EditButton
 menu: ra-ui-material-ui
 ---
 
-import { Playground, PropsTable } from 'docz';
+import { Playground } from 'docz';
+import PropTypes from 'prop-types';
+import PropsTable from '../../../../docs/components/PropsTable';
+import WithStyles from '../../../../docs/components/WithStyles';
 import EditButton from './EditButton';
 
 # EditButton
 
-A button leading to the Edit view of the current record.
-
-<PropsTable of={EditButton} />
-
-## Basic Usage
+A button leading to the Edit view of the current record. Generally used as child of `<Datagrid>`, and in the toolbar of the `<ShowView>`.
 
 <Playground>
     <EditButton />
 </Playground>
 
-## Customize label
+## Props
+
+<PropsTable props={{
+    alignIcon: { type: 'left|right', description: 'The icon position', default: 'left' },
+    basePath: { type: 'string (required)', description: 'The current page base path. Used for generating the link. Injected by react-admin.' },
+    className: { type: 'string', description: 'A custom class name to be applied to the main element' },
+    classes: { type: 'object', description: 'The component styles, injected by withStyles().', default: 'default styles (see below)' },
+    label: { type: 'string', description: 'The Button text. Will be translated by the i18n provider.', default: 'ra.action.edit' },
+    record: { type: 'record', description: 'The curent record. Injected by react-admin.' }
+}} />
+
+## Examples
 
 <Playground>
-    <EditButton label="Post details" />
+    <div style={{ display:'flex', justifyContent: 'space-around' }}>
+        <EditButton label="Post details" />
+        <EditButton alignIcon="right" />
+        <EditButton className="Foo" />
+    </div>
 </Playground>
+
+## Customizing the material-ui Button
+
+Additional props are passed down to the material-ui button.
+
+<Playground>    
+    <div style={{ display:'flex', justifyContent: 'space-around' }}>
+        <EditButton variant="outlined" />
+        <EditButton size="large" />
+        <EditButton variant="contained" color="secondary" />
+    </div>
+</Playground>
+
+## Customizing Style
+
+Using the `classes` prop, you can override the following inner styles:
+
+- `button`: applied to the material-ui `<Button>` component
+- `label`: applied to the label
+- ` labelRightIcon`: applied to the label when the icon is in right position
+
+
+<Playground>
+    <WithStyles styles={{ label: { color: 'red' }}}>
+        {({ classes }) => <EditButton classes={{ label: classes.label }} />}
+    </WithStyles>
+</Playground>
+
 
 ## Injected Props
 
