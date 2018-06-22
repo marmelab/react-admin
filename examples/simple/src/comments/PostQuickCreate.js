@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 
 import {
     CREATE,
-    FETCH_START,
-    FETCH_END,
     LongTextInput,
     SimpleForm,
     TextInput,

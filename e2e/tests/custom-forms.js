@@ -21,6 +21,8 @@ describe('Custom Forms', () => {
         await driver.wait(
             until.elementLocated(CreatePage.elements.postItem(12))
         );
+        await driver.sleep(250); // wait for the dropdown animation
+
         const postItem = driver.findElement(CreatePage.elements.postItem(12));
         await postItem.click();
         await driver.wait(until.elementIsNotVisible(postItem));
@@ -47,5 +49,30 @@ describe('Custom Forms', () => {
             await ShowPage.getValue('teaser'),
             'Occaecati rem perferendis dolor aut numquam cupiditate. At tenetur dolores pariatur et libero asperiores porro voluptas. Officiis corporis sed eos repellendus perferendis distinctio hic consequatur.'
         );
+
+        await driver.findElement(CreatePage.elements.modalCloseButton).click();
+    });
+
+    it('should allows to create a new post', async () => {
+        await driver.wait(
+            until.elementLocated(CreatePage.elements.showPostCreateModalButton)
+        );
+        await driver
+            .findElement(CreatePage.elements.showPostCreateModalButton)
+            .click();
+
+        await driver.wait(
+            until.elementLocated(CreatePage.elements.postCreateModal)
+        );
+
+        await CreatePage.setInputValue('input', 'title', 'Bazinga!');
+        await CreatePage.setInputValue('textarea', 'teaser', 'Bazingaaaaaaaa!');
+        await driver.findElement(CreatePage.elements.modalSubmitButton).click();
+        await CreatePage.waitUntilDataLoaded();
+        const title = await driver
+            .findElement(CreatePage.elements.postSelect)
+            .getText();
+
+        assert.equal(title, 'Bazinga!');
     });
 });
