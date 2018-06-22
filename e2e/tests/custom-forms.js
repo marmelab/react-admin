@@ -4,7 +4,7 @@ import driver from '../chromeDriver';
 import createPageFactory from '../pages/CustomFormPage';
 import showPageFactory from '../pages/ShowPage';
 
-describe.only('Custom Forms', () => {
+describe('Custom Forms', () => {
     const CreatePage = createPageFactory(
         'http://localhost:8083/#/comments/create'
     )(driver);
