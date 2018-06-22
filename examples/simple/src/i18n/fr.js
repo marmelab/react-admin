@@ -5,6 +5,7 @@ export default {
         action: {
             resetViews: 'Réinitialiser des vues',
         },
+        'create-post': 'Nouveau post',
     },
     ...frenchMessages,
     resources: {

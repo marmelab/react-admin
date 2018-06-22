@@ -1,14 +1,30 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
 
+import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 
-import { ReferenceInput, SelectInput } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import { ReferenceInput, SelectInput, translate } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import PostQuickCreate from './PostQuickCreate';
 
-export default class PostReferenceInput extends React.Component {
+const styles = {
+    button: {
+        margin: '10px 24px',
+        position: 'relative',
+    },
+};
+
+class PostReferenceInputView extends React.Component {
+    static propTypes = {
+        classes: PropTypes.object.isRequired,
+        translate: PropTypes.func.isRequired,
+    };
+
     state = { showDialog: false, post_id: '' };
 
     handleClick = event => {
@@ -21,26 +37,30 @@ export default class PostReferenceInput extends React.Component {
     };
 
     handleSave = post => {
-        console.log({ post });
         this.setState({ showDialog: false, post_id: post.id });
     };
 
     render() {
         const { showDialog, post_id } = this.state;
+        const { classes, translate, ...props } = this.props;
 
         return (
             <div>
-                <ReferenceInput {...this.props} defaultValue={post_id}>
+                <ReferenceInput {...props} defaultValue={post_id}>
                     <SelectInput optionText="title" />
                 </ReferenceInput>
-                <Button onClick={this.handleClick}>New</Button>
+                <Button className={classes.button} onClick={this.handleClick}>
+                    New
+                </Button>
                 <Dialog
                     open={showDialog}
                     onClose={this.handleClose}
-                    aria-label="New post"
+                    aria-label={translate('simple.create-post')}
                 >
+                    <DialogTitle>{translate('simple.create-post')}</DialogTitle>
                     <DialogContent>
                         <PostQuickCreate
+                            onCancel={this.handleClose}
                             onSave={this.handleSave}
                             basePath="/posts"
                             formName="post-create"
@@ -52,3 +72,5 @@ export default class PostReferenceInput extends React.Component {
         );
     }
 }
+
+export default compose(withStyles(styles), translate)(PostReferenceInputView);

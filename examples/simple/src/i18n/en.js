@@ -5,6 +5,7 @@ export const messages = {
         action: {
             resetViews: 'Reset views',
         },
+        'create-post': 'New post',
     },
     ...englishMessages,
     resources: {
