@@ -20,12 +20,35 @@ A button leading to the Edit view of the current record. Generally used as child
 ## Props
 
 <PropsTable props={{
-    alignIcon: { type: 'left|right', description: 'The icon position', default: 'left' },
-    basePath: { type: 'string (required)', description: 'The current page base path. Used for generating the link. Injected by react-admin.' },
-    className: { type: 'string', description: 'A custom class name to be applied to the main element' },
-    classes: { type: 'object', description: 'The component styles, injected by withStyles().', default: 'default styles (see below)' },
-    label: { type: 'string', description: 'The Button text. Will be translated by the i18n provider.', default: 'ra.action.edit' },
-    record: { type: 'record', description: 'The curent record. Injected by react-admin.' }
+    alignIcon: { 
+        type: 'left|right',
+        description: 'The icon position',
+        default: 'left'
+    },
+    basePath: {
+        type: 'string',
+        description: 'The current page base path. Used for generating the link. Injected by react-admin.',
+        required: 'true',
+    },
+    className: {
+        type: 'string',
+        description: 'A custom class name to be applied to the main element'
+    },
+    classes: {
+        type: 'object',
+        description: 'The component styles, injected by withStyles().',
+        default: 'default styles (see below)'
+    },
+    label: {
+        type: 'string',
+        description: 'The Button text. Will be translated by the i18n provider.',
+        default: 'ra.action.edit'
+    },
+    record: { 
+        type: 'record',
+        description: 'The curent record. Injected by react-admin.',
+        required: 'true',
+    }
 }} />
 
 ## Examples

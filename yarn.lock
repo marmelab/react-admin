@@ -878,7 +878,18 @@
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/@emotion/babel-utils/-/babel-utils-0.5.3.tgz#6be6dd7a480fdbdfb6cbba7f4f6d9361744b8d6e"
 
-"@emotion/hash@^0.6.2":
+"@emotion/babel-utils@^0.6.4":
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/@emotion/babel-utils/-/babel-utils-0.6.4.tgz#2eac69eb31ae944fbe4a2a0e736a35db5f810866"
+  dependencies:
+    "@emotion/hash" "^0.6.3"
+    "@emotion/memoize" "^0.6.2"
+    "@emotion/serialize" "^0.8.2"
+    convert-source-map "^1.5.1"
+    find-root "^1.1.0"
+    source-map "^0.7.2"
+
+"@emotion/hash@^0.6.2", "@emotion/hash@^0.6.3":
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.6.3.tgz#0e7a5604626fc6c6d4ac4061a2f5ac80d50262a4"
 
@@ -892,13 +903,30 @@
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/@emotion/memoize/-/memoize-0.6.2.tgz#138e00b332d519b4e307bded6159e5ba48aba3ae"
 
+"@emotion/serialize@^0.8.2":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@emotion/serialize/-/serialize-0.8.2.tgz#d3b2caddfc93107d63c79fc6bbc11e555e3b762e"
+  dependencies:
+    "@emotion/hash" "^0.6.3"
+    "@emotion/memoize" "^0.6.2"
+    "@emotion/unitless" "^0.6.3"
+    "@emotion/utils" "^0.7.1"
+
+"@emotion/stylis@^0.6.10":
+  version "0.6.10"
+  resolved "https://registry.yarnpkg.com/@emotion/stylis/-/stylis-0.6.10.tgz#7d321e639ebc8ba23ace5990c20e94dcebb8f3dd"
+
 "@emotion/stylis@^0.6.5":
   version "0.6.9"
   resolved "https://registry.yarnpkg.com/@emotion/stylis/-/stylis-0.6.9.tgz#2145c179cc0fda18e5544bd65e249d3601920997"
 
-"@emotion/unitless@^0.6.2":
+"@emotion/unitless@^0.6.2", "@emotion/unitless@^0.6.3":
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.6.3.tgz#65682e68a82701c70eefb38d7f941a2c0bfa90de"
+
+"@emotion/utils@^0.7.1":
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.7.1.tgz#e44e596d03c9f16ba3b127ad333a8a072bcb5a0a"
 
 "@material-ui/core@^1.0.0", "@material-ui/core@~1.2.1":
   version "1.2.1"
@@ -2128,6 +2156,23 @@ babel-plugin-emotion@^9.2.0:
     "@emotion/hash" "^0.6.2"
     "@emotion/memoize" "^0.6.1"
     "@emotion/stylis" "^0.6.5"
+    babel-plugin-macros "^2.0.0"
+    babel-plugin-syntax-jsx "^6.18.0"
+    convert-source-map "^1.5.0"
+    find-root "^1.1.0"
+    mkdirp "^0.5.1"
+    source-map "^0.5.7"
+    touch "^1.0.0"
+
+babel-plugin-emotion@^9.2.4:
+  version "9.2.4"
+  resolved "https://registry.yarnpkg.com/babel-plugin-emotion/-/babel-plugin-emotion-9.2.4.tgz#a4e54a8097f6ba06cbbc7a9063927afafe9fe73a"
+  dependencies:
+    "@babel/helper-module-imports" "7.0.0-beta.40"
+    "@emotion/babel-utils" "^0.6.4"
+    "@emotion/hash" "^0.6.2"
+    "@emotion/memoize" "^0.6.1"
+    "@emotion/stylis" "^0.6.10"
     babel-plugin-macros "^2.0.0"
     babel-plugin-syntax-jsx "^6.18.0"
     convert-source-map "^1.5.0"
@@ -10652,6 +10697,13 @@ react-emotion@^9.1.1, react-emotion@^9.2.1:
     babel-plugin-emotion "^9.2.0"
     create-emotion-styled "^9.2.3"
 
+react-emotion@^9.2.4:
+  version "9.2.4"
+  resolved "https://registry.yarnpkg.com/react-emotion/-/react-emotion-9.2.4.tgz#98e00f70ce2ca4ee13923460123e763e492c013a"
+  dependencies:
+    babel-plugin-emotion "^9.2.4"
+    create-emotion-styled "^9.2.3"
+
 react-error-overlay@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-4.0.0.tgz#d198408a85b4070937a98667f500c832f86bd5d4"
@@ -11969,6 +12021,10 @@ source-map@^0.4.4, source-map@~0.4.1:
 source-map@^0.6.1, source-map@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
+
+source-map@^0.7.2:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
 
 spdx-correct@^3.0.0:
   version "3.0.0"

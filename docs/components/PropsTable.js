@@ -1,49 +1,86 @@
 import React, { Fragment } from 'react';
+import styled from 'react-emotion';
 
-const PropsTable = ({ props, components }) => {
+const Table = styled('table')`
+    width: 100%;
+    padding: 0;
+    margin-bottom: 50px;
+    border-spacing: 0;
+    border-collapse: collapse;
+    border-style: hidden;
+    & thead {
+        color: ${p => p.theme.colors.grayDark};
+    }
+    & thead th {
+        text-align: left;
+        font-weight: 400;
+        padding: 1em;
+        &.description {
+            min-width: 40%;
+        }
+    }
+    & tbody td {
+        padding: 1em;
+        &.nowrap {
+            white-space: nowrap;
+        }
+        & code {
+            font-size: 0.8em;
+            font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+        }
+        &.description {
+            min-width: 40%;
+        }
+    }
+    & tbody > tr {
+        display: table-row;
+        border-top: 1px solid ${p => p.theme.colors.border};
+    }
+`;
+
+const PropsTable = ({ props }) => {
     if (!props) {
         return null;
     }
 
-    const Table = components.table || 'table';
-    const Thead = components.thead || 'thead';
-    const Tr = components.tr || 'tr';
-    const Th = components.th || 'th';
-    const Tbody = components.tbody || 'tbody';
-    const Td = components.td || 'td';
-    const Tooltip = components.tooltip;
-
     return (
         <Fragment>
             <Table className="PropsTable">
-                <Thead>
-                    <Tr>
-                        <Th className="PropsTable--property">Property</Th>
-                        <Th className="PropsTable--type">Type</Th>
-                        <Th className="PropsTable--description">Default</Th>
-                        <Th width="40%" className="PropsTable--description">
-                            Description
-                        </Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Type</th>
+                        <th>Default</th>
+                        <th className="description">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
                     {props &&
                         Object.keys(props).map((name: string) => {
                             const prop = props[name];
 
                             if (!prop.flowType && !prop.type) return null;
                             return (
-                                <Tr key={name}>
-                                    <Td>{name}</Td>
-                                    <Td>{prop.type}</Td>
-                                    <Td>{prop.default}</Td>
-                                    <Td>
+                                <tr key={name}>
+                                    <td className="nowrap">
+                                        <code>
+                                            {name}
+                                            {prop.required && ' *'}
+                                        </code>
+                                    </td>
+                                    <td>
+                                        <code>{prop.type}</code>
+                                    </td>
+                                    <td>
+                                        <code>{prop.default}</code>
+                                    </td>
+                                    <td className="description">
                                         {prop.description && prop.description}
-                                    </Td>
-                                </Tr>
+                                    </td>
+                                </tr>
                             );
                         })}
-                </Tbody>
+                </tbody>
             </Table>
         </Fragment>
     );
