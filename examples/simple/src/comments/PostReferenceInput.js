@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,35 +7,30 @@ import DialogContent from '@material-ui/core/DialogContent';
 import { ReferenceInput, SelectInput } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import PostQuickCreate from './PostQuickCreate';
-import { hidePostQuickCreate, showPostQuickCreate } from './postQuickCreate';
 
-class PostReferenceInputView extends React.Component {
-    static propTypes = {
-        hidePostQuickCreate: PropTypes.func.isRequired,
-        showDialog: PropTypes.bool,
-        showPostQuickCreate: PropTypes.func.isRequired,
-    };
+export default class PostReferenceInput extends React.Component {
+    state = { showDialog: false, post_id: '' };
 
     handleClick = event => {
         event.preventDefault();
-        this.props.showPostQuickCreate();
+        this.setState({ showDialog: true });
     };
 
     handleClose = () => {
-        this.props.hidePostQuickCreate();
+        this.setState({ showDialog: false });
+    };
+
+    handleSave = post => {
+        console.log({ post });
+        this.setState({ showDialog: false, post_id: post.id });
     };
 
     render() {
-        const {
-            showDialog,
-            hidePostQuickCreate,
-            showPostQuickCreate,
-            ...props
-        } = this.props;
+        const { showDialog, post_id } = this.state;
 
         return (
             <div>
-                <ReferenceInput {...props}>
+                <ReferenceInput {...this.props} defaultValue={post_id}>
                     <SelectInput optionText="title" />
                 </ReferenceInput>
                 <Button onClick={this.handleClick}>New</Button>
@@ -48,6 +41,7 @@ class PostReferenceInputView extends React.Component {
                 >
                     <DialogContent>
                         <PostQuickCreate
+                            onSave={this.handleSave}
                             basePath="/posts"
                             formName="post-create"
                             resource="posts"
@@ -58,12 +52,3 @@ class PostReferenceInputView extends React.Component {
         );
     }
 }
-
-const PostReferenceInput = connect(
-    state => ({
-        showDialog: state.postQuickCreate.showDialog,
-    }),
-    { hidePostQuickCreate, showPostQuickCreate }
-)(PostReferenceInputView);
-
-export default PostReferenceInput;

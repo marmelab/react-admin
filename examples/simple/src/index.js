@@ -12,16 +12,6 @@ import dataProvider from './dataProvider';
 import i18nProvider from './i18nProvider';
 import posts from './posts';
 import users from './users';
-import {
-    postQuickCreateReducer,
-    postQuickCreateSaga,
-} from './comments/postQuickCreate';
-
-const customReducers = {
-    postQuickCreate: postQuickCreateReducer,
-};
-
-const customSagas = [postQuickCreateSaga];
 
 render(
     <Admin
@@ -30,7 +20,6 @@ render(
         i18nProvider={i18nProvider}
         title="Example Admin"
         locale="en"
-        customReducers={customReducers}
         customRoutes={[
             <Route
                 exact
@@ -40,7 +29,6 @@ render(
             />,
             <Route exact path="/custom2" component={CustomRouteLayout} />,
         ]}
-        customSagas={customSagas}
     >
         {permissions => [
             <Resource name="posts" {...posts} />,

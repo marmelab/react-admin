@@ -3,9 +3,11 @@ import React from 'react';
 import {
     Create,
     DateInput,
+    TextInput,
     LongTextInput,
     SimpleForm,
     required,
+    minLength,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import PostReferenceInput from './PostReferenceInput';
 
@@ -19,6 +21,11 @@ const CommentCreate = props => (
                 allowEmpty
                 validate={required()}
                 perPage={10000}
+            />
+            <TextInput
+                source="author.name"
+                validate={minLength(10)}
+                fullWidth
             />
             <DateInput source="created_at" />
             <LongTextInput source="body" />
