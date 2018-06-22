@@ -3,6 +3,7 @@ import frenchMessages from 'ra-language-french';
 export default {
     simple: {
         action: {
+            close: 'Fermer',
             resetViews: 'Réinitialiser des vues',
         },
         'create-post': 'Nouveau post',

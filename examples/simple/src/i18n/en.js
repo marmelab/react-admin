@@ -3,6 +3,7 @@ import englishMessages from 'ra-language-english';
 export const messages = {
     simple: {
         action: {
+            close: 'Close',
             resetViews: 'Reset views',
         },
         'create-post': 'New post',
