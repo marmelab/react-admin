@@ -11,11 +11,16 @@ import {
     TextInput,
     Toolbar,
     required,
+    fetchEnd,
+    fetchStart,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import dataProvider from '../dataProvider';
 import CancelButton from './PostQuickCreateCancelButton';
 import SaveButton from './PostQuickCreateSaveButton';
 
+// We need a custom toolbar to add our custom buttons
+// The SaveButton is not the react-admin one because it is dependent on the CRUD actions which we don't use here
+// The CancelButton allows to close the modal without submitting anything
 const PostQuickCreateToolbar = ({ submitting, onCancel, ...props }) => (
     <Toolbar {...props}>
         <SaveButton saving={submitting} />
@@ -32,15 +37,15 @@ class PostQuickCreateView extends Component {
     static propTypes = {
         onCancel: PropTypes.func.isRequired,
         onSave: PropTypes.func.isRequired,
-        setFetchEnd: PropTypes.func.isRequired,
-        setFetchStart: PropTypes.func.isRequired,
+        fetchEnd: PropTypes.func.isRequired,
+        fetchStart: PropTypes.func.isRequired,
         submitting: PropTypes.bool.isRequired,
     };
 
     handleSave = values => {
-        const { setFetchStart, setFetchEnd, onSave } = this.props;
+        const { fetchStart, fetchEnd, onSave } = this.props;
 
-        setFetchStart();
+        fetchStart();
         dataProvider(CREATE, 'posts', { data: values })
             .then(({ data }) => {
                 onSave(data);
@@ -49,7 +54,7 @@ class PostQuickCreateView extends Component {
                 this.setState({ error });
             })
             .finally(() => {
-                setFetchEnd();
+                fetchEnd();
             });
     };
 
@@ -78,10 +83,10 @@ class PostQuickCreateView extends Component {
 const mapStateToProps = state => ({
     submitting: state.admin.loading > 0,
 });
-const mapDispatchToProps = dispatch => ({
-    setFetchStart: () => dispatch({ type: FETCH_START }),
-    setFetchEnd: () => dispatch({ type: FETCH_END }),
-});
+const mapDispatchToProps = {
+    fetchStart,
+    fetchEnd,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(
     PostQuickCreateView
