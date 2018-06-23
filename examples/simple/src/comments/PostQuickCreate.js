@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {
     CREATE,
     LongTextInput,
+    SaveButton,
     SimpleForm,
     TextInput,
     Toolbar,
@@ -14,14 +15,12 @@ import {
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import dataProvider from '../dataProvider';
 import CancelButton from './PostQuickCreateCancelButton';
-import SaveButton from './PostQuickCreateSaveButton';
 
 // We need a custom toolbar to add our custom buttons
-// The SaveButton is not the react-admin one because it is dependent on the CRUD actions which we don't use here
 // The CancelButton allows to close the modal without submitting anything
-const PostQuickCreateToolbar = ({ submitting, onCancel, ...props }) => (
+const PostQuickCreateToolbar = ({ onCancel, ...props }) => (
     <Toolbar {...props}>
-        <SaveButton saving={submitting} />
+        <SaveButton />
         <CancelButton onClick={onCancel} />
     </Toolbar>
 );
@@ -63,6 +62,7 @@ class PostQuickCreateView extends Component {
             <SimpleForm
                 form="post-create"
                 save={this.handleSave}
+                saving={submitting}
                 redirect={false}
                 toolbar={
                     <PostQuickCreateToolbar
