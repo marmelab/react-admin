@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import { formValueSelector } from 'redux-form';
+import { Field } from 'redux-form';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
@@ -60,7 +59,7 @@ class PostReferenceInputView extends React.Component {
 
     render() {
         const { showCreateDialog, showPreviewDialog, new_post_id } = this.state;
-        const { classes, translate, post_id, ...props } = this.props;
+        const { classes, translate, ...props } = this.props;
 
         return (
             <Fragment>
@@ -72,17 +71,46 @@ class PostReferenceInputView extends React.Component {
                     className={classes.button}
                     onClick={this.handleNewClick}
                 >
-                    New
+                    {translate('ra.action.create')}
                 </Button>
-                {post_id && (
-                    <Button
-                        data-testid="button-show-post"
-                        className={classes.button}
-                        onClick={this.handleShowClick}
-                    >
-                        Show
-                    </Button>
-                )}
+                <Field
+                    name="post_id"
+                    component={({ input }) =>
+                        input.value && (
+                            <Fragment>
+                                <Button
+                                    data-testid="button-show-post"
+                                    className={classes.button}
+                                    onClick={this.handleShowClick}
+                                >
+                                    {translate('ra.action.show')}
+                                </Button>
+                                <Dialog
+                                    data-testid="dialog-show-post"
+                                    fullWidth
+                                    open={showPreviewDialog}
+                                    onClose={this.handleCloseShow}
+                                    aria-label={translate('simple.create-post')}
+                                >
+                                    <DialogTitle>
+                                        {translate('simple.create-post')}
+                                    </DialogTitle>
+                                    <DialogContent>
+                                        <PostPreview
+                                            id={input.value}
+                                            basePath="/posts"
+                                            resource="posts"
+                                        />
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={this.handleCloseShow}>
+                                            {translate('simple.action.close')}
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
+                            </Fragment>
+                        )}
+                />
                 <Dialog
                     data-testid="dialog-add-post"
                     fullWidth
@@ -101,38 +129,9 @@ class PostReferenceInputView extends React.Component {
                         />
                     </DialogContent>
                 </Dialog>
-                <Dialog
-                    data-testid="dialog-show-post"
-                    fullWidth
-                    open={showPreviewDialog}
-                    onClose={this.handleCloseShow}
-                    aria-label={translate('simple.create-post')}
-                >
-                    <DialogTitle>{translate('simple.create-post')}</DialogTitle>
-                    <DialogContent>
-                        <PostPreview
-                            id={post_id}
-                            basePath="/posts"
-                            resource="posts"
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleCloseShow}>
-                            {translate('simple.action.close')}
-                        </Button>
-                    </DialogActions>
-                </Dialog>
             </Fragment>
         );
     }
 }
 
-const formSelector = formValueSelector('record-form');
-
-const mapStateToProps = state => ({
-    post_id: formSelector(state, 'post_id'),
-});
-
-export default compose(connect(mapStateToProps), withStyles(styles), translate)(
-    PostReferenceInputView
-);
+export default compose(withStyles(styles), translate)(PostReferenceInputView);
