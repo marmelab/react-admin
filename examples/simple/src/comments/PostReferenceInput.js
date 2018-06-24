@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { Field } from 'redux-form';
 
@@ -10,7 +11,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import { ReferenceInput, SelectInput, translate } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import {
+    crudGetMatching,
+    ReferenceInput,
+    SelectInput,
+    translate,
+} from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import PostQuickCreate from './PostQuickCreate';
 import PostPreview from './PostPreview';
@@ -25,6 +31,7 @@ const styles = {
 class PostReferenceInputView extends React.Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
+        crudGetMatching: PropTypes.func.isRequired,
         post_id: PropTypes.any,
         translate: PropTypes.func.isRequired,
     };
@@ -54,7 +61,18 @@ class PostReferenceInputView extends React.Component {
     };
 
     handleSave = post => {
-        this.setState({ showCreateDialog: false, new_post_id: post.id });
+        const { crudGetMatching } = this.props;
+        this.setState({ showCreateDialog: false, new_post_id: post.id }, () => {
+            // Refresh the choices of the ReferenceInput to ensure our newly created post
+            // always appear, even after selecting another post
+            crudGetMatching(
+                'posts',
+                'comments@post_id',
+                { page: 1, perPage: 25 },
+                { field: 'id', order: 'DESC' },
+                {}
+            );
+        });
     };
 
     render() {
@@ -137,4 +155,12 @@ class PostReferenceInputView extends React.Component {
     }
 }
 
-export default compose(withStyles(styles), translate)(PostReferenceInputView);
+const mapDispatchToProps = {
+    crudGetMatching,
+};
+
+export default compose(
+    connect(undefined, mapDispatchToProps),
+    withStyles(styles),
+    translate
+)(PostReferenceInputView);
