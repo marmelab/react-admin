@@ -25,8 +25,7 @@ describe('Custom Forms', () => {
 
         const postItem = driver.findElement(CreatePage.elements.postItem(12));
         await postItem.click();
-        await driver.wait(until.elementIsNotVisible(postItem));
-        await driver.sleep(250); // wait for the dropdown overlay to disapear
+        await driver.wait(until.stalenessOf(postItem));
 
         await driver.wait(
             until.elementLocated(CreatePage.elements.showPostPreviewModalButton)
@@ -37,7 +36,6 @@ describe('Custom Forms', () => {
         await driver.wait(
             until.elementLocated(CreatePage.elements.postPreviewModal)
         );
-        await driver.sleep(250); // wait for the small loading time
 
         assert.equal(await ShowPage.getValue('id'), '12');
 
