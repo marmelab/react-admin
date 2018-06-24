@@ -5,7 +5,7 @@ export default url => driver => ({
         appLoader: By.css('.app-loader'),
         body: By.css('body'),
         input: (name, type = 'input') => By.css(`${type}[name='${name}']`),
-        modalCloseButton: By.css("[data-testid='dialog-show-post'] button"),
+        modalCloseButton: By.css("[data-testid='button-close-modal']"),
         modalSubmitButton: By.css(
             "[data-testid='dialog-add-post'] button[type='submit']"
         ),

@@ -26,6 +26,7 @@ describe('Custom Forms', () => {
         const postItem = driver.findElement(CreatePage.elements.postItem(12));
         await postItem.click();
         await driver.wait(until.stalenessOf(postItem));
+        await CreatePage.waitUntilDataLoaded();
 
         await driver.wait(
             until.elementLocated(CreatePage.elements.showPostPreviewModalButton)
@@ -34,7 +35,7 @@ describe('Custom Forms', () => {
             .findElement(CreatePage.elements.showPostPreviewModalButton)
             .click();
         await driver.wait(
-            until.elementLocated(CreatePage.elements.postPreviewModal)
+            until.elementLocated(CreatePage.elements.modalCloseButton)
         );
 
         assert.equal(await ShowPage.getValue('id'), '12');
@@ -48,7 +49,12 @@ describe('Custom Forms', () => {
             'Occaecati rem perferendis dolor aut numquam cupiditate. At tenetur dolores pariatur et libero asperiores porro voluptas. Officiis corporis sed eos repellendus perferendis distinctio hic consequatur.'
         );
 
-        await driver.findElement(CreatePage.elements.modalCloseButton).click();
+        const modalCloseButton = await driver.findElement(
+            CreatePage.elements.modalCloseButton
+        );
+
+        modalCloseButton.click();
+        await driver.wait(until.stalenessOf(modalCloseButton));
     });
 
     it('should allows to create a new post', async () => {

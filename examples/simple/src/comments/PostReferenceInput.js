@@ -103,7 +103,10 @@ class PostReferenceInputView extends React.Component {
                                         />
                                     </DialogContent>
                                     <DialogActions>
-                                        <Button onClick={this.handleCloseShow}>
+                                        <Button
+                                            data-testid="button-close-modal"
+                                            onClick={this.handleCloseShow}
+                                        >
                                             {translate('simple.action.close')}
                                         </Button>
                                     </DialogActions>
