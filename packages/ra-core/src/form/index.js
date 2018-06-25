@@ -3,3 +3,4 @@ export FormDataConsumer from './FormDataConsumer';
 export FormField, { isRequired } from './FormField';
 export getDefaultValues from './getDefaultValues';
 export * from './validate';
+export * from './constants';

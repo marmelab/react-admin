@@ -6,6 +6,7 @@ import inflection from 'inflection';
 import { reset } from 'redux-form';
 import translate from '../i18n/translate';
 import { crudGetOne, crudUpdate, startUndoable } from '../actions';
+import { REDUX_FORM_NAME } from '../form';
 
 /**
  * Page component for the Edit view
@@ -59,7 +60,7 @@ export class EditController extends Component {
             this.props.id !== nextProps.id ||
             nextProps.version !== this.props.version
         ) {
-            this.props.resetForm('record-form');
+            this.props.resetForm(this.props.formName);
             this.updateData(nextProps.resource, nextProps.id);
         }
     }
@@ -86,7 +87,8 @@ export class EditController extends Component {
                     data,
                     this.props.record,
                     this.props.basePath,
-                    redirect
+                    redirect,
+                    this.props.formName
                 )
             );
         } else {
@@ -96,7 +98,8 @@ export class EditController extends Component {
                 data,
                 this.props.record,
                 this.props.basePath,
-                redirect
+                redirect,
+                this.props.formName
             );
         }
     };
@@ -105,6 +108,7 @@ export class EditController extends Component {
         const {
             basePath,
             children,
+            formName,
             id,
             isLoading,
             record,
@@ -135,6 +139,7 @@ export class EditController extends Component {
             redirect: this.defaultRedirectRoute(),
             translate,
             version,
+            formName,
         });
     }
 }
@@ -144,6 +149,7 @@ EditController.propTypes = {
     children: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,
     dispatchCrudUpdate: PropTypes.func.isRequired,
+    formName: PropTypes.string,
     record: PropTypes.object,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
@@ -151,8 +157,6 @@ EditController.propTypes = {
     hasList: PropTypes.bool,
     id: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
     resetForm: PropTypes.func.isRequired,
     resource: PropTypes.string.isRequired,
     startUndoable: PropTypes.func.isRequired,
@@ -162,8 +166,13 @@ EditController.propTypes = {
     version: PropTypes.number.isRequired,
 };
 
+EditController.defaultProps = {
+    formName: REDUX_FORM_NAME,
+};
+
 function mapStateToProps(state, props) {
     return {
+        id: props.id,
         record: state.admin.resources[props.resource]
             ? state.admin.resources[props.resource].data[props.id]
             : null,

@@ -43,6 +43,7 @@ export const EditView = ({
     children,
     className,
     defaultTitle,
+    formName,
     hasList,
     hasShow,
     record,
@@ -77,15 +78,16 @@ export const EditView = ({
             />
             {record ? (
                 React.cloneElement(children, {
-                    save,
-                    resource,
                     basePath,
+                    form: formName,
                     record,
-                    version,
                     redirect:
                         typeof children.props.redirect === 'undefined'
                             ? redirect
                             : children.props.redirect,
+                    resource,
+                    save,
+                    version,
                 })
             ) : (
                 <CardContent>&nbsp;</CardContent>
@@ -99,6 +101,7 @@ EditView.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
+    formName: PropTypes.string,
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
@@ -162,12 +165,12 @@ Edit.propTypes = {
     actions: PropTypes.element,
     children: PropTypes.node,
     className: PropTypes.string,
+    formName: PropTypes.string,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
     hasList: PropTypes.bool,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
+    id: PropTypes.any.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
 };

@@ -9,6 +9,7 @@ import {
     GET_MANY,
     GET_MANY_REFERENCE,
 } from '../dataFetchActions';
+import { REDUX_FORM_NAME } from '../form';
 
 export const CRUD_GET_LIST = 'RA/CRUD_GET_LIST';
 export const CRUD_GET_LIST_LOADING = 'RA/CRUD_GET_LIST_LOADING';
@@ -58,11 +59,18 @@ export const CRUD_CREATE_LOADING = 'RA/CRUD_CREATE_LOADING';
 export const CRUD_CREATE_FAILURE = 'RA/CRUD_CREATE_FAILURE';
 export const CRUD_CREATE_SUCCESS = 'RA/CRUD_CREATE_SUCCESS';
 
-export const crudCreate = (resource, data, basePath, redirectTo = 'edit') => ({
+export const crudCreate = (
+    resource,
+    data,
+    basePath,
+    redirectTo = 'edit',
+    formName = REDUX_FORM_NAME
+) => ({
     type: CRUD_CREATE,
     payload: { data },
     meta: {
         resource,
+        formName,
         fetch: CREATE,
         onSuccess: {
             notification: {
@@ -97,12 +105,14 @@ export const crudUpdate = (
     data,
     previousData,
     basePath,
-    redirectTo = 'show'
+    redirectTo = 'show',
+    formName = REDUX_FORM_NAME
 ) => ({
     type: CRUD_UPDATE,
     payload: { id, data, previousData },
     meta: {
         resource,
+        formName,
         fetch: UPDATE,
         onSuccess: {
             notification: {
