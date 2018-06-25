@@ -72,6 +72,8 @@ export class Resource extends Component {
             hasCreate: !!create,
         };
 
+        const basePath = match.url;
+
         return (
             <Switch>
                 {create && (
@@ -80,7 +82,11 @@ export class Resource extends Component {
                         path={`${match.url}/create`}
                         render={routeProps => (
                             <WithPermissions
-                                render={props => createElement(create, props)}
+                                render={props =>
+                                    createElement(create, {
+                                        basePath,
+                                        ...props,
+                                    })}
                                 {...routeProps}
                                 {...resource}
                             />
@@ -93,7 +99,14 @@ export class Resource extends Component {
                         path={`${match.url}/:id/show`}
                         render={routeProps => (
                             <WithPermissions
-                                render={props => createElement(show, props)}
+                                render={props =>
+                                    createElement(show, {
+                                        basePath,
+                                        id: decodeURIComponent(
+                                            props.match.params.id
+                                        ),
+                                        ...props,
+                                    })}
                                 {...routeProps}
                                 {...resource}
                             />
@@ -106,7 +119,14 @@ export class Resource extends Component {
                         path={`${match.url}/:id`}
                         render={routeProps => (
                             <WithPermissions
-                                render={props => createElement(edit, props)}
+                                render={props =>
+                                    createElement(edit, {
+                                        basePath,
+                                        id: decodeURIComponent(
+                                            props.match.params.id
+                                        ),
+                                        ...props,
+                                    })}
                                 {...routeProps}
                                 {...resource}
                             />
@@ -119,7 +139,11 @@ export class Resource extends Component {
                         path={`${match.url}`}
                         render={routeProps => (
                             <WithPermissions
-                                render={props => createElement(list, props)}
+                                render={props =>
+                                    createElement(list, {
+                                        basePath,
+                                        ...props,
+                                    })}
                                 {...routeProps}
                                 {...resource}
                             />

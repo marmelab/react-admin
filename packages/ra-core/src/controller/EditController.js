@@ -64,20 +64,12 @@ export class EditController extends Component {
         }
     }
 
-    getBasePath() {
-        const { location } = this.props;
-        return location.pathname
-            .split('/')
-            .slice(0, -1)
-            .join('/');
-    }
-
     defaultRedirectRoute() {
         return 'list';
     }
 
     updateData(resource = this.props.resource, id = this.props.id) {
-        this.props.crudGetOne(resource, id, this.getBasePath());
+        this.props.crudGetOne(resource, id, this.props.basePath);
     }
 
     save = (data, redirect) => {
@@ -93,7 +85,7 @@ export class EditController extends Component {
                     this.props.id,
                     data,
                     this.props.record,
-                    this.getBasePath(),
+                    this.props.basePath,
                     redirect
                 )
             );
@@ -103,7 +95,7 @@ export class EditController extends Component {
                 this.props.id,
                 data,
                 this.props.record,
-                this.getBasePath(),
+                this.props.basePath,
                 redirect
             );
         }
@@ -111,18 +103,17 @@ export class EditController extends Component {
 
     render() {
         const {
+            basePath,
             children,
-            record,
             id,
             isLoading,
+            record,
             resource,
             translate,
             version,
         } = this.props;
 
         if (!children) return null;
-
-        const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
@@ -149,6 +140,7 @@ export class EditController extends Component {
 }
 
 EditController.propTypes = {
+    basePath: PropTypes.string.isRequired,
     children: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,
     dispatchCrudUpdate: PropTypes.func.isRequired,
@@ -172,11 +164,8 @@ EditController.propTypes = {
 
 function mapStateToProps(state, props) {
     return {
-        id: decodeURIComponent(props.match.params.id),
         record: state.admin.resources[props.resource]
-            ? state.admin.resources[props.resource].data[
-                  decodeURIComponent(props.match.params.id)
-              ]
+            ? state.admin.resources[props.resource].data[props.id]
             : null,
         isLoading: state.admin.loading > 0,
         version: state.admin.ui.viewVersion,
