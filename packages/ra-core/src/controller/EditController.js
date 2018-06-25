@@ -6,6 +6,7 @@ import inflection from 'inflection';
 import { reset } from 'redux-form';
 import translate from '../i18n/translate';
 import { crudGetOne, crudUpdate, startUndoable } from '../actions';
+import { REDUX_FORM_NAME } from '../form';
 
 /**
  * Page component for the Edit view
@@ -59,7 +60,7 @@ export class EditController extends Component {
             this.props.id !== nextProps.id ||
             nextProps.version !== this.props.version
         ) {
-            this.props.resetForm('record-form');
+            this.props.resetForm(REDUX_FORM_NAME);
             this.updateData(nextProps.resource, nextProps.id);
         }
     }
@@ -164,6 +165,7 @@ EditController.propTypes = {
 
 function mapStateToProps(state, props) {
     return {
+        id: props.id,
         record: state.admin.resources[props.resource]
             ? state.admin.resources[props.resource].data[props.id]
             : null,

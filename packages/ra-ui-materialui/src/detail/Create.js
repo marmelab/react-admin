@@ -43,6 +43,7 @@ export const CreateView = ({
     resource,
     save,
     title,
+    formName,
     ...rest
 }) => (
     <div
@@ -66,14 +67,15 @@ export const CreateView = ({
                 }}
             />
             {React.cloneElement(children, {
-                save,
-                resource,
                 basePath,
+                form: formName,
                 record,
                 redirect:
                     typeof children.props.redirect === 'undefined'
                         ? redirect
                         : children.props.redirect,
+                resource,
+                save,
             })}
         </Card>
     </div>
@@ -85,6 +87,7 @@ CreateView.propTypes = {
     children: PropTypes.element,
     className: PropTypes.string,
     defaultTitle: PropTypes.any,
+    formName: PropTypes.string,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
     record: PropTypes.object,
@@ -145,11 +148,10 @@ Create.propTypes = {
     actions: PropTypes.element,
     children: PropTypes.element,
     className: PropTypes.string,
+    formName: PropTypes.string,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     record: PropTypes.object,
