@@ -5,8 +5,9 @@ describe('Edit Page', () => {
     const EditCommentPage = editPageFactory('/#/comments/5');
 
     describe('TabbedForm', () => {
+        beforeEach(() => EditPostPage.navigate());
+
         it('should display the title in a TextField', () => {
-            EditPostPage.navigate();
             cy
                 .get(EditPostPage.elements.input('title'))
                 .should(el =>
@@ -15,7 +16,6 @@ describe('Edit Page', () => {
         });
 
         it('should allow to update elements', () => {
-            EditPostPage.navigate();
             EditPostPage.setInputValue('title', 'Lorem Ipsum');
             EditPostPage.submit();
             EditPostPage.navigate();
@@ -25,14 +25,12 @@ describe('Edit Page', () => {
         });
 
         it('should redirect to list page after edit success', () => {
-            EditPostPage.navigate();
             EditPostPage.setInputValue('title', 'Lorem Ipsum +');
             EditPostPage.submit();
             cy.url().then(url => expect(url).to.contain('/#/posts'));
         });
 
         it('should allow to switch tabs', () => {
-            EditPostPage.navigate();
             EditPostPage.gotoTab(3);
             cy
                 .get(EditPostPage.elements.input('average_note'))
@@ -40,7 +38,6 @@ describe('Edit Page', () => {
         });
 
         it('should keep DateInput value after opening datapicker', () => {
-            EditPostPage.navigate();
             EditPostPage.gotoTab(3);
             const date = new Date('2012-08-05').toISOString().slice(0, 10);
             cy

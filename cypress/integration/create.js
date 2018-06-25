@@ -5,8 +5,9 @@ describe('Create Page', () => {
     const CreatePage = createPageFactory('/#/posts/create');
     const ShowPage = showPageFactory('/#/posts/14/show');
 
+    beforeEach(() => CreatePage.navigate());
+
     it('should put the current date in the field by default', () => {
-        CreatePage.navigate();
         const currentDate = new Date();
         const currentDateString = currentDate.toISOString().slice(0, 10);
         cy
@@ -15,7 +16,6 @@ describe('Create Page', () => {
     });
 
     it('should redirect to show page after create success', () => {
-        CreatePage.navigate();
         const values = [
             {
                 type: 'input',
@@ -36,7 +36,6 @@ describe('Create Page', () => {
     });
 
     it('should stay at create page after create success with "Save and add"', () => {
-        CreatePage.navigate();
         const values = [
             {
                 type: 'input',
@@ -61,7 +60,6 @@ describe('Create Page', () => {
     });
 
     it('should not accept creation without required fields', () => {
-        CreatePage.navigate();
         const values = [
             {
                 type: 'textarea',
