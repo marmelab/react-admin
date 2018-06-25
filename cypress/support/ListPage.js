@@ -1,6 +1,3 @@
-/// <reference types="Cypress" />
-/* globals cy, Cypress */
-
 export default url => ({
     elements: {
         addFilterButton: '.add-filter',
@@ -32,10 +29,6 @@ export default url => ({
         cy.visit(url);
     },
 
-    async waitForDebounce() {
-        await cy.wait(501); // filter debounce is of 500ms
-    },
-
     waitUntilVisible() {
         return cy.get(this.elements.title);
     },
@@ -43,26 +36,6 @@ export default url => ({
     waitUntilDataLoaded() {
         return cy.get(this.elements.appLoader);
     },
-
-    // getNbRows() {
-    //     return driver
-    //         .findElements(this.elements.recordRows)
-    //         .then(rows => rows.length);
-    // },
-
-    // getColumns() {
-    //     return driver
-    //         .findElements(this.elements.datagridHeaders)
-    //         .then(ths => Promise.all(ths.map(th => th.getText())));
-    // },
-
-    // getViewsColumnValues() {
-    //     return driver
-    //         .findElements(this.elements.viewsColumn)
-    //         .then(columns =>
-    //             Promise.all(columns.map(column => column.getText()))
-    //         );
-    // },
 
     openFilters() {
         cy.get(this.elements.addFilterButton).click();
@@ -90,14 +63,6 @@ export default url => ({
         }
     },
 
-    // async getFilterValue(name) {
-    //     const filterField = await driver.findElement(
-    //         this.elements.filter(name)
-    //     );
-
-    //     return await filterField.getAttribute('value');
-    // },
-
     showFilter(name) {
         cy.get(this.elements.addFilterButton).click();
 
@@ -109,7 +74,7 @@ export default url => ({
     },
 
     logout() {
-        cy.queryByText('Logout').click();
+        cy.get(this.elements.logout).click();
     },
 
     toggleSelectAll() {
@@ -123,12 +88,6 @@ export default url => ({
             }
         });
     },
-
-    // getSelectedItemsCount() {
-    //     return driver
-    //         .findElements(this.elements.selectedItem)
-    //         .then(items => items.length);
-    // },
 
     applyUpdateBulkAction() {
         cy.get(this.elements.bulkActionsButton).click();

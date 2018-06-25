@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-/* globals cy */
 import listPageFactory from '../support/ListPage';
 
 describe('List Page', () => {

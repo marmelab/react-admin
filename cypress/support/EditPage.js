@@ -1,6 +1,3 @@
-/// <reference types="Cypress" />
-/* globals cy */
-
 export default url => ({
     elements: {
         body: 'body',
@@ -19,34 +16,6 @@ export default url => ({
     waitUntilVisible() {
         return cy.get(this.elements.title);
     },
-
-    // getInputValue(name) {
-    //     const input = driver.findElement(this.elements.input(name));
-    //     return input.getAttribute('value');
-    // },
-
-    // getFields() {
-    //     return driver.findElements(this.elements.inputs).then(fields =>
-    //         Promise.all(
-    //             fields.map(field =>
-    //                 field.getAttribute('class').then(classes =>
-    //                     classes
-    //                         .split(' ')
-    //                         .filter(className =>
-    //                             className.startsWith('ra-input-')
-    //                         )[0]
-    //                         .replace('ra-input-', '')
-    //                 )
-    //             )
-    //         )
-    //     );
-    // },
-
-    // getTabs() {
-    //     return driver
-    //         .findElements(this.elements.tabs)
-    //         .then(tabs => Promise.all(tabs.map(tab => tab.getText())));
-    // },
 
     setInputValue(name, value, clearPreviousValue = true) {
         if (clearPreviousValue) {

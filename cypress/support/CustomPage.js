@@ -1,6 +1,3 @@
-/// <reference types="Cypress" />
-/* globals cy */
-
 export default url => ({
     elements: {
         appLoader: '.app-loader',

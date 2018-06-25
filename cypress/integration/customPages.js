@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-/* globals cy */
 import customPageFactory from '../support/CustomPage';
 
 describe('Custom Pages', () => {

@@ -1,6 +1,3 @@
-/// <reference types="Cypress" />
-/* globals cy */
-
 import listPageFactory from '../support/ListPage';
 import loginPageFactory from '../support/LoginPage';
 
@@ -18,7 +15,6 @@ describe('Authentication', () => {
         ListPage.navigate();
         ListPage.logout();
         ListPage.navigate();
-
         cy.url().then(url => expect(url).to.contain('/#/login'));
     });
     it('should not login with incorrect credentials', () => {

@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-/* globals cy */
 import editPageFactory from '../support/EditPage';
 
 describe('Edit Page', () => {

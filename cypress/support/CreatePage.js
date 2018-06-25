@@ -1,6 +1,3 @@
-/// <reference types="Cypress" />
-/* globals cy */
-
 export default url => ({
     elements: {
         body: 'body',
@@ -36,29 +33,6 @@ export default url => ({
             cy.get(this.elements.input(val.name, val.type)).type(val.value);
         });
     },
-
-    // getInputValue(name, type = 'input') {
-    //     return driver
-    //         .findElement(this.elements.input(name, type))
-    //         .getAttribute('value');
-    // },
-
-    // getFields() {
-    //     return driver.findElements(this.elements.inputs).then(fields =>
-    //         Promise.all(
-    //             fields.map(field =>
-    //                 field.getAttribute('class').then(classes =>
-    //                     classes
-    //                         .split(' ')
-    //                         .filter(className =>
-    //                             className.startsWith('ra-input-')
-    //                         )[0]
-    //                         .replace('ra-input-', '')
-    //                 )
-    //             )
-    //         )
-    //     );
-    // },
 
     submit() {
         cy.get(this.elements.submitButton).click();

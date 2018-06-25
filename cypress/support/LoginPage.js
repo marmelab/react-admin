@@ -1,6 +1,3 @@
-/// <reference types="Cypress" />
-/* globals cy */
-
 export default url => ({
     elements: {
         username: "input[name='username']",
@@ -18,11 +15,8 @@ export default url => ({
     },
 
     login(username = 'login', password = 'password') {
-        const usernameField = cy.get(this.elements.username);
-        usernameField.type(username);
-        const passwordField = cy.get(this.elements.password);
-        passwordField.type(password);
-        const submitButton = cy.get(this.elements.submitButton);
-        return submitButton.click();
+        cy.get(this.elements.username).type(username);
+        cy.get(this.elements.password).type(password);
+        cy.get(this.elements.submitButton).click();
     },
 });

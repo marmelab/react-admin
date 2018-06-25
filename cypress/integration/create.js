@@ -1,6 +1,3 @@
-/// <reference types="Cypress" />
-/* globals cy */
-
 import createPageFactory from '../support/CreatePage';
 import showPageFactory from '../support/ShowPage';
 

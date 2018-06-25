@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-/* globals cy */
 import showPageFactory from '../support/ShowPage';
 
 describe('Show Page', () => {

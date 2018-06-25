@@ -121,11 +121,9 @@ test-e2e: ## launch end-to-end tests
 		cd examples/simple && yarn build; \
 	fi
 
-	@NODE_ENV=test cd examples/simple && yarn serve &
-	./node_modules/.bin/wait-on http://localhost:8080
-
 	@NODE_ENV=test cd cypress && yarn test
 
 
-test-e2e-local: ## launch end-to-end tests
+test-e2e-local: ## launch end-to-end tests for development
+	echo 'Starting e2e tests environment. Ensure you started the simple example first (make run-simple)'
 	cd cypress && yarn start
