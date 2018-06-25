@@ -48,14 +48,6 @@ import { crudCreate as crudCreateAction } from '../actions';
  *     export default App;
  */
 class CreateController extends Component {
-    getBasePath() {
-        const { location } = this.props;
-        return location.pathname
-            .split('/')
-            .slice(0, -1)
-            .join('/');
-    }
-
     defaultRedirectRoute() {
         const { hasShow, hasEdit } = this.props;
         if (hasEdit) return 'edit';
@@ -67,16 +59,22 @@ class CreateController extends Component {
         this.props.crudCreate(
             this.props.resource,
             record,
-            this.getBasePath(),
+            this.props.basePath,
             redirect
         );
     };
 
     render() {
-        const { children, isLoading, record, resource, translate } = this.props;
+        const {
+            basePath,
+            children,
+            isLoading,
+            record,
+            resource,
+            translate,
+        } = this.props;
 
         if (!children) return null;
-        const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
@@ -99,6 +97,7 @@ class CreateController extends Component {
 }
 
 CreateController.propTypes = {
+    basePath: PropTypes.string.isRequired,
     children: PropTypes.func.isRequired,
     crudCreate: PropTypes.func.isRequired,
     hasCreate: PropTypes.bool,

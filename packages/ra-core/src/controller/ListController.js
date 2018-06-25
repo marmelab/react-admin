@@ -125,10 +125,6 @@ export class ListController extends Component {
         return true;
     }
 
-    getBasePath() {
-        return this.props.location.pathname.replace(/\/$/, '');
-    }
-
     /**
      * Merge list params from 4 different sources:
      *   - the query string
@@ -236,6 +232,7 @@ export class ListController extends Component {
 
     render() {
         const {
+            basePath,
             children,
             resource,
             hasCreate,
@@ -250,7 +247,6 @@ export class ListController extends Component {
         const query = this.getQuery();
 
         const queryFilterValues = query.filter || {};
-        const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 2,
@@ -306,6 +302,7 @@ ListController.propTypes = {
     }),
     // the props managed by react-admin
     authProvider: PropTypes.func,
+    basePath: PropTypes.string.isRequired,
     changeListParams: PropTypes.func.isRequired,
     crudGetList: PropTypes.func.isRequired,
     data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
