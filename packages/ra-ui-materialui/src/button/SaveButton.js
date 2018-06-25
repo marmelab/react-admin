@@ -123,13 +123,9 @@ SaveButton.defaultProps = {
     handleSubmitWithRedirect: () => () => {},
 };
 
-const mapStateToProps = state => ({
-    saving: state.admin.saving,
-});
-
 const enhance = compose(
     translate,
-    connect(mapStateToProps, { showNotification }),
+    connect(undefined, { showNotification }),
     withStyles(styles)
 );
 
