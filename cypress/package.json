@@ -4,7 +4,7 @@
     "version": "0.1.0",
     "scripts": {
         "start": "./node_modules/.bin/cypress open",
-        "test": "./node_modules/.bin/cypress run"
+        "test": "./node_modules/.bin/cypress run --browser chrome"
     },
     "devDependencies": {
         "@cypress/webpack-preprocessor": "2.0.1",
