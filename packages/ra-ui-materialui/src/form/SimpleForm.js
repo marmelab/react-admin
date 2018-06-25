@@ -141,6 +141,7 @@ SimpleForm.defaultProps = {
 
 const enhance = compose(
     connect((state, props) => ({
+        form: props.form || REDUX_FORM_NAME,
         initialValues: getDefaultValues(state, props),
         saving: props.saving || state.admin.saving,
     })),
@@ -151,9 +152,5 @@ const enhance = compose(
     }),
     withStyles(styles)
 );
-
-enhance.defaultProps = {
-    form: REDUX_FORM_NAME,
-};
 
 export default enhance(SimpleForm);

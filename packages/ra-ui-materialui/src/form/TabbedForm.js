@@ -237,6 +237,7 @@ const enhance = compose(
         );
 
         return {
+            form: props.form || REDUX_FORM_NAME,
             initialValues: getDefaultValues(state, { ...props, children }),
             saving: props.saving || state.admin.saving,
             tabsWithErrors: findTabsWithErrors(state, props),
@@ -249,9 +250,5 @@ const enhance = compose(
     }),
     withStyles(styles)
 );
-
-enhance.defaultProps = {
-    form: REDUX_FORM_NAME,
-};
 
 export default enhance(TabbedForm);
