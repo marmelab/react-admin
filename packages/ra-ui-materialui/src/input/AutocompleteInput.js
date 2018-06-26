@@ -100,7 +100,7 @@ export class AutocompleteInput extends React.Component {
     componentWillMount() {
         const selectedItem = this.getSelectedItem(
             this.props,
-            this.props.input.value
+            this.props.input.value,
         );
         this.setState({
             selectedItem,
@@ -133,7 +133,7 @@ export class AutocompleteInput extends React.Component {
         } else if (!isEqual(choices, this.props.choices)) {
             const selectedItem = this.getSelectedItem(
                 nextProps,
-                this.state.inputValue
+                this.state.inputValue,
             );
             this.setState(({ dirty, searchText }) => ({
                 selectedItem,
@@ -152,7 +152,7 @@ export class AutocompleteInput extends React.Component {
     getSelectedItem = ({ choices }, inputValue) =>
         choices && inputValue
             ? choices.find(
-                  choice => this.getSuggestionValue(choice) === inputValue
+                  choice => this.getSuggestionValue(choice) === inputValue,
               )
             : null;
 
@@ -183,7 +183,7 @@ export class AutocompleteInput extends React.Component {
                 searchText: this.getSuggestionText(suggestion),
                 suggestions: [suggestion],
             },
-            () => input && input.onChange && input.onChange(inputValue)
+            () => input && input.onChange && input.onChange(inputValue),
         );
 
         if (method === 'enter') {
@@ -210,7 +210,7 @@ export class AutocompleteInput extends React.Component {
         const match =
             inputValue &&
             choices.find(it =>
-                inputValueMatcher(inputValue, it, this.getSuggestionText)
+                inputValueMatcher(inputValue, it, this.getSuggestionText),
             );
         if (match) {
             const nextId = this.getSuggestionValue(match);
@@ -265,7 +265,7 @@ export class AutocompleteInput extends React.Component {
         } = inputProps;
         if (typeof meta === 'undefined') {
             throw new Error(
-                "The TextInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
+                "The TextInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details.",
             );
         }
 
@@ -381,9 +381,19 @@ export class AutocompleteInput extends React.Component {
     };
 
     updateFilter = value => {
-        const { setFilter } = this.props;
+        const { setFilter, choices } = this.props;
         if (this.previousFilterValue !== value) {
-            setFilter && setFilter(value);
+            if (setFilter) {
+                setFilter(value);
+            } else {
+                this.setState({
+                    suggestions: choices.filter(choice =>
+                        this.getSuggestionText(choice)
+                            .toLowerCase()
+                            .includes(value.toLowerCase()),
+                    ),
+                });
+            }
         }
         this.previousFilterValue = value;
     };
@@ -485,5 +495,5 @@ AutocompleteInput.defaultProps = {
 };
 
 export default compose(addField, translate, withStyles(styles))(
-    AutocompleteInput
+    AutocompleteInput,
 );
