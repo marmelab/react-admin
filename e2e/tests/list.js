@@ -18,21 +18,18 @@ describe('List Page', () => {
     describe('Pagination', () => {
         it('should display paginated list of available posts', async () => {
             // 14 because we created one in custom-forms tests
-            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 14');
+            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
         });
 
         it('should switch page when clicking on previous/next page buttons or page numbers', async () => {
             await ListPagePosts.nextPage();
-            // 14 because we created one in custom-forms tests
-            assert.equal(await ListPagePosts.getNbPagesText(), '11-14 of 14');
+            assert.equal(await ListPagePosts.getNbPagesText(), '11-13 of 13');
 
             await ListPagePosts.previousPage();
-            // 14 because we created one in custom-forms tests
-            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 14');
+            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
 
             await ListPagePosts.goToPage(2);
-            // 14 because we created one in custom-forms tests
-            assert.equal(await ListPagePosts.getNbPagesText(), '11-14 of 14');
+            assert.equal(await ListPagePosts.getNbPagesText(), '11-13 of 13');
         });
     });
 
@@ -87,7 +84,7 @@ describe('List Page', () => {
                 ListPagePosts.elements.filter('title')
             );
             assert.equal(filters.length, 0);
-            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 14');
+            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
         });
 
         it('should keep filters when navigating away and going back on given page', async () => {
@@ -151,7 +148,7 @@ describe('List Page', () => {
         it('should allow to trigger the delete bulk action on selected items', async () => {
             await ListPagePosts.toggleSelectSomeItems(3);
             await ListPagePosts.applyDeleteBulkAction();
-            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 11');
+            assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 10');
         });
     });
 });

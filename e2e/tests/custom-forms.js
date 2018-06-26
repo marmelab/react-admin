@@ -78,5 +78,7 @@ describe('Custom Forms', () => {
             .getText();
 
         assert.equal(title, 'Bazinga!');
+        await ShowPage.navigate();
+        await ShowPage.delete();
     });
 });

@@ -145,7 +145,7 @@ class PostReferenceInputView extends React.Component {
                             onCancel={this.handleCloseCreate}
                             onSave={this.handleSave}
                             basePath="/posts"
-                            formName="post-create"
+                            form="post-create"
                             resource="posts"
                         />
                     </DialogContent>

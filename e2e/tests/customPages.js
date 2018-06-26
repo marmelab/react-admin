@@ -19,8 +19,7 @@ describe('Custom Pages', () => {
         });
 
         it('should have retrieved the number of posts', async () => {
-            // 14 because we created one in custom-forms tests
-            assert.equal(await CustomPageNoLayout.getTotal(), '14');
+            assert.equal(await CustomPageNoLayout.getTotal(), '13');
         });
     });
     describe('With Layout', () => {
@@ -31,8 +30,7 @@ describe('Custom Pages', () => {
         });
 
         it('should have retrieved the number of posts', async () => {
-            // 14 because we created one in custom-forms tests
-            assert.equal(await CustomPageWithLayout.getTotal(), '14');
+            assert.equal(await CustomPageWithLayout.getTotal(), '13');
         });
     });
 });

@@ -31,15 +31,7 @@ const editStyles = {
 
 const CommentEdit = withStyles(editStyles)(({ classes, ...props }) => (
     <EditController {...props}>
-        {({
-            resource,
-            record,
-            redirect,
-            save,
-            basePath,
-            version,
-            formName,
-        }) => (
+        {({ resource, record, redirect, save, basePath, version }) => (
             <div className="edit-page">
                 <div className={classes.header}>
                     <Typography variant="headline">
@@ -57,7 +49,6 @@ const CommentEdit = withStyles(editStyles)(({ classes, ...props }) => (
                 <Card className={classes.card}>
                     {record && (
                         <SimpleForm
-                            form={formName}
                             basePath={basePath}
                             redirect={redirect}
                             resource={resource}
