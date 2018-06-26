@@ -1,0 +1,13 @@
+{
+    "private": true,
+    "name": "e2e",
+    "version": "0.1.0",
+    "scripts": {
+        "start": "./node_modules/.bin/cypress open",
+        "test": "node ./start.js"
+    },
+    "devDependencies": {
+        "@cypress/webpack-preprocessor": "2.0.1",
+        "cypress": "^3.0.1"
+    }
+}

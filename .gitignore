@@ -7,3 +7,5 @@ docs/_site/
 packages/react-admin/docs
 examples/**/static
 examples/**/dist
+cypress/videos
+cypress/screenshots

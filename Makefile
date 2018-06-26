@@ -120,8 +120,10 @@ test-e2e: ## launch end-to-end tests
 		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
 		cd examples/simple && yarn build; \
 	fi
-	@NODE_ENV=test node_modules/.bin/mocha \
-		--require babel-core/register \
-		--timeout 15000 \
-		./e2e/tests/server.js \
-		./e2e/tests/*.js
+
+	@NODE_ENV=test cd cypress && yarn test
+
+
+test-e2e-local: ## launch end-to-end tests for development
+	echo 'Starting e2e tests environment. Ensure you started the simple example first (make run-simple)'
+	cd cypress && yarn start

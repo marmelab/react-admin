@@ -177,6 +177,8 @@ You can run the tests (linting, unit and functional tests) by calling
 make test
 ```
 
+When working on the end to end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple`) and starting cypress in another terminal (`make tests-e2e-local`).
+
 If you have coding standards problems, you can fix them automatically using `prettier` by calling
 
 ```sh

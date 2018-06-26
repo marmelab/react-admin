@@ -6,9 +6,10 @@
         "jest": true,
         "node": true,
         "phantomjs": true,
-        "protractor": true
+        "protractor": true,
+        "cypress/globals": true
     },
-    "plugins": ["prettier", "react"],
+    "plugins": ["prettier", "react", "cypress"],
     "extends": [
         "eslint:recommended",
         "prettier",
