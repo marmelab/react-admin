@@ -1,12 +1,12 @@
-# Admin-on-rest Demo
+# React-admin Demo
 
-This is a demo of the [admin-on-rest](https://github.com/marmelab/admin-on-rest) library for React.js. It creates a working administration for a fake poster shop named Posters Galore. You can test it online at http://marmelab.com/admin-on-rest-demo.
+This is a demo of the [react-admin](https://github.com/marmelab/react-admin) library for React.js. It creates a working administration for a fake poster shop named Posters Galore. You can test it online at http://marmelab.com/react-admin-demo.
 
-[![admin-on-rest-demo](https://marmelab.com/admin-on-rest/img/admin-on-rest-demo-still.png)](https://vimeo.com/205118063)
+[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/268958716)
 
-Admin-on-rest usually requires a REST server to provide data. In this demo however, the REST server is simulated by the browser (using [FakeRest](https://github.com/marmelab/FakeRest)). You can see the source data in [public/data.js](https://github.com/marmelab/admin-on-rest-demo/tree/master/public/data.js).
+This app connects to [a GraphCool backend](https://api.graph.cool/simple/v1/cj2kl5gbc8w7a0130p3n4eg78), in GraphQL. You can explore the underlying data using the GraphCool web interface.
 
-To explore the source code, start with [src/index.js](https://github.com/marmelab/admin-on-rest-demo/blob/master/src/index.js).
+To explore the source code, start with [src/App.js](https://github.com/marmelab/react-admin/blob/master/examples/graphcool-demo/src/App.js).
 
 **Note**: This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
@@ -17,7 +17,7 @@ After having cloned the react-admin repository, run the following commands at th
 ```sh
 make install
 
-make run-demo
+make run-graphcool-demo
 ```
 
 ## Available Scripts

@@ -158,18 +158,29 @@ If you want to add or remove menu items, for instance to link to non-resources p
 
 ```jsx
 // in src/Menu.js
-import React from 'react';
+import React, { createElement } from 'react';
 import { connect } from 'react-redux';
 import { MenuItemLink, getResources } from 'react-admin';
 import { withRouter } from 'react-router-dom';
+import LabelIcon from '@material-ui/icons/Label';
+
 import Responsive from '../layout/Responsive';
 
 const Menu = ({ resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
-            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+            <MenuItemLink 
+                to={`/${resource.name}`}
+                primaryText={resource.name}
+                leftIcon={createElement(resource.icon)}
+                onClick={onMenuClick}
+            />
         ))}
-        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
+        <MenuItemLink 
+            to="/custom-route"
+            primaryText="Miscellaneous"
+            leftIcon={<LabelIcon />}
+            onClick={onMenuClick} />
         <Responsive
             small={logout}
             medium={null} // Pass null to render nothing on larger devices
@@ -182,10 +193,9 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(connect(mapStateToProps)(Menu));
-
 ```
 
-**Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
+**Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views. It supports a custom text and icon (which must be a material-ui `<SvgIcon>`).
 
 **Tip**: Note that we include the `logout` item only on small devices. Indeed, the `logout` button is already displayed in the AppBar on larger devices.
 
@@ -266,7 +276,7 @@ const App = () => (
 
 ![Dark theme](./img/dark-theme.png)
 
-For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](https://material-ui-next.com/customization/themes/).
+For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](https://material-ui.com/customization/themes/).
 
 ## `appLayout`
 

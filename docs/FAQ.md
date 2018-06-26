@@ -43,7 +43,7 @@ When displaying a `Datagrid` component, you get the following warning:
 > Warning: Each child in an array or iterator should have a unique "key" prop.
 > Check the render method of `DatagridBody`.
 
-This is most probably because the resource does not have an `id` property as expected by `admin-on-rest`. See the previous FAQ to see how to resolve this: [Can I have custom identifiers/primary keys for my resources?](#can-i-have-custom-identifiersprimary-keys-for-my-resources)
+This is most probably because the resource does not have an `id` property as expected by react-admin. See the previous FAQ to see how to resolve this: [Can I have custom identifiers/primary keys for my resources?](#can-i-have-custom-identifiersprimary-keys-for-my-resources)
 
 ## A form with validation freezes when rendering
 

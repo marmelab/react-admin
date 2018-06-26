@@ -666,7 +666,7 @@ export const PostList = (props) => (
 
 ```jsx
 export const App = () => (
-    <Admin dataProvider={simpleRestClient('http://path.to.my.api')}>
+    <Admin dataProvider={restProvider('http://path.to.my.api')}>
         <Resource name="posts" list={PostList} />
         <Resource name="tags" /> // <= this one is compulsory
     </Admin>
@@ -739,7 +739,7 @@ import { UrlField } from 'react-admin';
 
 ## Styling Fields
 
-All field components accept a `className` prop, allowing you to customize their style to your liking. We advise you to use the Material UI styling solution, JSS, to generate those classes. See their [documentation](https://material-ui-next.com/customization/css-in-js/#api) about that.
+All field components accept a `className` prop, allowing you to customize their style to your liking. We advise you to use the Material UI styling solution, JSS, to generate those classes. See their [documentation](https://material-ui.com/customization/css-in-js/#api) about that.
 
 {% raw %}
 ```jsx
@@ -749,7 +749,7 @@ const styles = {
     price: { color: 'purple' },
 };
 
-const PriceField = withStyles(styles)(props => (
+const PriceField = withStyles(styles)(({ classes, ...props }) => (
     <TextField className={classes.price} {...props} />
 ));
 
@@ -778,7 +778,7 @@ const styles = {
     priceCell: { fontWeight: 'bold' },
 };
 
-const PriceField = withStyles(styles)(props => (
+const PriceField = withStyles(styles)(({ classes, ...props }) => (
     <TextField cellClassName={classes.priceCell} {...props} />
 ));
 
@@ -805,8 +805,8 @@ const styles = {
     priceHeader: { fontWeight: 'bold' },
 };
 
-const PriceField = withStyles(styles)(props => (
-    <TextField cellClassName={classes.priceHeader} {...props} />
+const PriceField = withStyles(styles)(({ classes, ...props }) => (
+    <TextField headerClassName={classes.priceHeader} {...props} />
 ));
 
 export const ProductList = (props) => (

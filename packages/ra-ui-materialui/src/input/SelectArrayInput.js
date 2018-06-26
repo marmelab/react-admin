@@ -216,7 +216,9 @@ export class SelectArrayInput extends Component {
                                 .map(choice => (
                                     <Chip
                                         key={get(choice, optionValue)}
-                                        label={get(choice, optionText)}
+                                        label={this.renderMenuItemOption(
+                                            choice
+                                        )}
                                         className={classes.chip}
                                     />
                                 ))}

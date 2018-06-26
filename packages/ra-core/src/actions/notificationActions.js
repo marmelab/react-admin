@@ -11,7 +11,7 @@ export const SHOW_NOTIFICATION = 'RA/SHOW_NOTIFICATION';
  * @param {string} message - A translatable label or text to display on notification
  * @param {string} [type=info] - The type of the notification
  * @param {notificationOptions} [notificationOptions] - Specify additional parameters of notification
- * @see {@link https://material-ui-next.com/api/snackbar/|Material ui snackbar component}
+ * @see {@link https://material-ui.com/api/snackbar/|Material ui snackbar component}
  * @see {@link https://material.io/guidelines/components/snackbars-toasts.html|Material ui reference document on snackbar}
  * 
  */

@@ -272,7 +272,7 @@ It does so by inspecting its `context` prop.
 
 **Tip**: Don't mix up this `filters` prop, expecting a React element, with the `filter` props, which expects an object to define permanent filters (see below).
 
-The `Filter` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui-next.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
+The `Filter` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
 
 * `form`: applied to the root element when rendering as a form.
 * `button`: applied to the root element when rendering as a button.
@@ -421,7 +421,7 @@ export const PostList = (props) => (
 
 ### CSS API
 
-The `List` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui-next.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
+The `List` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
 
 * `root`: alternative to using `className`. Applied to the root element.
 * `header`: applied to the page header
@@ -537,7 +537,7 @@ export const PostList = (props) => (
 
 ### CSS API
 
-The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui-next.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
+The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/overrides/#overriding-with-classes)). This property accepts the following keys:
 
 * `table`: alternative to using `className`. Applied to the root element.
 * `tbody`: applied to the tbody

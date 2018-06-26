@@ -75,11 +75,6 @@ export default url => driver => ({
         return input.sendKeys(value);
     },
 
-    async getInputValue(name) {
-        const input = await driver.findElement(this.elements.input(name));
-        return await input.getAttribute('value');
-    },
-
     clickInput(name) {
         const input = driver.findElement(this.elements.input(name));
         input.click();
