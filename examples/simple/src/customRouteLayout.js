@@ -6,7 +6,7 @@ class CustomRouteLayout extends Component {
     componentWillMount() {
         this.props.crudGetList(
             'posts',
-            { page: 0, pageSize: 10 },
+            { page: 0, perPage: 10 },
             { field: 'id', order: 'ASC' }
         );
     }
