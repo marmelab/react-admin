@@ -17,7 +17,6 @@ describe('List Page', () => {
 
     describe('Pagination', () => {
         it('should display paginated list of available posts', async () => {
-            // 14 because we created one in custom-forms tests
             assert.equal(await ListPagePosts.getNbPagesText(), '1-10 of 13');
         });
 
