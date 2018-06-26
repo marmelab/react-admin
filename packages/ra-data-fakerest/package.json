@@ -1,6 +1,6 @@
 {
     "name": "ra-data-fakerest",
-    "version": "2.0.0-RC3",
+    "version": "2.0.2",
     "description": "JSON Server data provider for react-admin",
     "main": "lib/index.js",
     "scripts": {
@@ -34,6 +34,6 @@
         "fakerest": "~2.1.0"
     },
     "peerDependencies": {
-        "react-admin": "^2.0.0-RC3"
+        "react-admin": "^2.0.0"
     }
 }

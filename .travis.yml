@@ -1,7 +1,7 @@
 language: node_js
 sudo: required
 node_js:
-  - '8.9.4'
+  - '10.5.0'
 addons:
   chrome: stable
 env:

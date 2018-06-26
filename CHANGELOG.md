@@ -1,5 +1,66 @@
 # Changelog
 
+## v2.0.3
+
+* Add Russian translation package to the docs ([fzaninotto](https://github.com/fzaninotto))
+* Add Indonesian translation package to the docs ([ronadi](https://github.com/ronadi))
+* Add media to demo dashboard to make it better-looking ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Labeled>` to correctly passe `<FormControl>` props for full width and validation ([djhi](https://github.com/djhi))
+* Fix `<ReferenceArrayInput>` and `<ReferenceInput>` so that the label correctly adds the * when required ([djhi](https://github.com/djhi))
+* Fix AutocompleteInput documentation refers to outdated mui doc ([fzaninotto](https://github.com/fzaninotto))
+* Fix mentions of REST client in the documentation ([fzaninotto](https://github.com/fzaninotto))
+* Fix logout button icon padding ([fzaninotto](https://github.com/fzaninotto))
+* Fix Bulk Actions button was clickable even with no row selected ([fzaninotto](https://github.com/fzaninotto))
+* Fix global validation on TabbedForm ([fzaninotto](https://github.com/fzaninotto))
+* Fix link for Saga debouncing doc ([dunglas](https://github.com/dunglas))
+* Fix warning in GraphQL data provider with `<ReferenceField>` ([byymster](https://github.com/byymster))
+
+## v2.0.2
+
+* Fix bad lerna packaging ([fzaninotto](https://github.com/fzaninotto))
+
+## v2.0.1
+
+* Add Spanish translation package to the docs ([JonatanSalas](https://github.com/JonatanSalas))
+* Fix `SelectArrayInput` `Chip` label should render same as selected menu item option ([jeromemacias](https://github.com/jeromemacias))
+* Fix warnings when using `CheckboxGroupInput` into `ReferenceArrayInput` ([jeromemacias](https://github.com/jeromemacias))
+* Fix proptype warning in custom `Login` form ([fzaninotto](https://github.com/fzaninotto))
+* Fix override of link and cache parameter in `ra-data-graphql` ([terkiterje](https://github.com/terkiterje))
+* Fix checkbox ripple height in `Datagrid` ([cherniavskii](https://github.com/cherniavskii))
+* Fix infinite renders on forms due to validators not using memoization ([jpetitcolas](https://github.com/jpetitcolas))
+* Fix warning in `SingleFieldList` ([fzaninotto](https://github.com/fzaninotto))
+* Fix yarn.lock to match `packages.json` ([fzaninotto](https://github.com/fzaninotto))
+* Fix select all checkbox selects rows twice ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo in Inputs documentation ([afilp](https://github.com/afilp))
+* Fix custom datagrid style fonction example ([afilp](https://github.com/afilp))
+
+## v2.0.0
+
+After 7 months of refactoring for better performance and easier overrides, we finally released the new major version of react-admin 🎉.
+
+Thanks to all the contributors who made that possible!
+
+Here are some hilghlights ✨:
+
+* Upgrade to material-ui 1.0, react-router 4, React 16.3
+* Use CSS-in-JS (JSS) for styling
+* Undo button for edits and deletes
+* Bulk actions
+* Render props
+* GraphQL as a first class citizen
+* Embedded arrays
+* Improved permissions handling
+* Side effect support in custom actions
+* Easier custom inputs
+* Easier dependent inputs
+* Asynchronous i18n
+* Extra props passed transparently
+* More implementation examples
+
+There are many more features in 2.0, as well as all bug fixes from 1.x.
+
+This new release is not backwards compatible with 1.x. Please refer to [the Upgrade guide](https://github.com/marmelab/react-admin/blob/master/UPGRADE.md) for directions on upgrading your code.
+
 ## v1.4.0
 
 * Documentation: change extraction of status for AUTH_ERROR ([zifnab87](https://github.com/zifnab87))

@@ -65,12 +65,7 @@ const sanitizeRestProps = ({
  *        </Admin>
  *     );
  */
-const Login = ({
-    classes,
-    className,
-    loginForm = <DefaultLoginForm />,
-    ...rest
-}) => (
+const Login = ({ classes, className, loginForm, ...rest }) => (
     <div
         className={classnames(classes.main, className)}
         {...sanitizeRestProps(rest)}
@@ -94,11 +89,12 @@ Login.propTypes = {
     input: PropTypes.object,
     meta: PropTypes.object,
     previousRoute: PropTypes.string,
-    loginForm: PropTypes.func,
+    loginForm: PropTypes.element,
 };
 
 Login.defaultProps = {
     theme: defaultTheme,
+    loginForm: <DefaultLoginForm />,
 };
 
 export default withStyles(styles)(Login);

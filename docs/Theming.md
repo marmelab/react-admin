@@ -288,59 +288,63 @@ const App = () => (
 
 ## Writing a Custom Theme
 
-If you need more fine tuning, you'll need to write your own `theme` object, following [Material UI themes documentation](http://www.material-ui.com/#/customization/themes). Material UI merges custom theme objects with the `light` theme.
+If you need more fine tuning, you'll need to write your own `theme` object, following [Material UI themes documentation](https://material-ui.com/customization/themes/). Material UI merges custom theme objects with the default theme.
 
 ```jsx
-import {
-  cyan500, cyan700,
-  pinkA200,
-  grey100, grey300, grey400, grey500,
-  white, darkBlack, fullBlack,
-} from '@material-ui/core/styles/colors';
-import { fade } from '@material-ui/core/utils/colorManipulator';
-import spacing from '@material-ui/core/styles/spacing';
+import { createMuiTheme } from '@material-ui/core/styles';
+import indigo from '@material-ui/core/colors/indigo';
+import pink from '@material-ui/core/colors/pink';
+import red from '@material-ui/core/colors/red';
 
-const myTheme = {
-    spacing: spacing,
-    fontFamily: 'Roboto, sans-serif',
+const myTheme = createMuiTheme({
     palette: {
-      primary1Color: cyan500,
-      primary2Color: cyan700,
-      primary3Color: grey400,
-      accent1Color: pinkA200,
-      accent2Color: grey100,
-      accent3Color: grey500,
-      textColor: darkBlack,
-      alternateTextColor: white,
-      canvasColor: white,
-      borderColor: grey300,
-      disabledColor: fade(darkBlack, 0.3),
-      pickerHeaderColor: cyan500,
-      clockCircleColor: fade(darkBlack, 0.07),
-      shadowColor: fullBlack,
+        primary: indigo,
+        secondary: pink,
+        error: red,
+        contrastThreshold: 3,
+        tonalOffset: 0.2,
     },
-};
+    typography: {
+        // Use the system font instead of the default Roboto font.
+        fontFamily: [
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Arial',
+            'sans-serif',
+        ].join(','),
+    },
+    overrides: {
+        MuiButton: { // override the styles of all instances of this component
+            root: { // Name of the rule
+                color: 'white', // Some CSS
+            },
+        },
+    },
+});
 ```
 
 The `muiTheme` object contains the following keys:
 
-* `spacing` can be used to change the spacing of components.
-* `fontFamily` can be used to change the default font family.
-* `palette` can be used to change the color of components.
-* `zIndex` can be used to change the level of each component.
-* `isRtl` can be used to enable the right to left mode.
-* There is also one key for each component so you can use to customize them individually:
-  * `appBar`
-  * `avatar`
-  * ...
+* `breakpoints`
+* `direction`
+* `mixins`
+* `overrides`
+* `palette`
+* `props`
+* `shadows`
+* `typography`
+* `transitions`
+* `spacing`
+* `zIndex`
 
-**Tip**: Check [Material UI custom colors documentation](http://www.material-ui.com/#/customization/colors) to see pre-defined colors available for customizing your theme.
+**Tip**: Check [Material UI default theme documentation](https://material-ui.com/customization/default-theme/) to see the default values and meaning for these keys.
 
-Once your theme is defined, pass it to the `<Admin>` component, in the `theme` prop (along with `getMuiTheme()`).
+Once your theme is defined, pass it to the `<Admin>` component, in the `theme` prop.
 
 ```jsx
 const App = () => (
-    <Admin theme={getMuiTheme(myTheme)} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin theme={myTheme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );

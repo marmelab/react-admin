@@ -134,15 +134,6 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 <AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
 ```
 
-You can customize the `filter` function used to filter the results. By default, it's `AutoComplete.fuzzyFilter`, but you can use any of [the functions provided by `AutoComplete`](http://www.material-ui.com/#/components/auto-complete), or a function of your own (`(searchText: string, key: string) => boolean`):
-
-```jsx
-import { AutocompleteInput } from 'react-admin';
-import AutoComplete from '@material-ui/core/AutoComplete';
-
-<AutocompleteInput source="category" filter={AutoComplete.caseInsensitiveFilter} choices={choices} />
-```
-
 The choices are translated by default, so you can use translation identifiers as choices:
 
 ```jsx
@@ -158,12 +149,11 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
-
-By default the component matches choices with the current input searchText, if it finds a match this choice will be selected. For example, using the `choices`: `[{id:'M',name:'Male',id:'F',name:'Female'}]` and the user enters the text `male` then the component will set the input value to `M`. Using the `inputValueMatcher` prop the component allows you to change how choices are matched. For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]` you can create the following `inputValueMatcher` to match choices on the iso2 code: 
+By default the component matches choices with the current input searchText: if it finds a match, this choice will be selected. For example, given the choices `[{ id: 'M', name: 'Male', id: 'F', name: 'Female' }]`, when the user enters the text `male`, then the component will set the input value to `M`. If you need to change how choices are matched, pass a custom function as `inputValueMatcher` prop. For example, given the choices: `[{id:1,iso2:'NL',name:'Dutch'},{id:2,iso2:'EN',name:'English'},{id:3,iso2:'FR',name:'French'}]`, if you want to match choices on the iso2 code, you can create the following `inputValueMatcher` function: 
 
 ```javascript
 <AutocompleteInput inputValueMatcher={
-    (input,suggestion,getOptionText) => 
+    (input, suggestion, getOptionText) => 
         input.toUpperCase().trim() === suggestion.iso2 || 
         input.toLowerCase().trim() === getOptionText(suggestion).toLowerCase().trim()
 }/>
@@ -171,13 +161,12 @@ By default the component matches choices with the current input searchText, if i
 
 If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.  
 
-Lastly, use the `options` attribute if you want to override any of Material UI's `<AutoComplete>` attributes:
+Lastly, `<AutocompleteInput>` renders a meterial-ui `<TextField>` component. Use the `options` attribute to override any of the `<TextField>` attributes:
 
 {% raw %}
 ```jsx
 <AutocompleteInput source="category" options={{
     fullWidth: true,
-    filter: AutoComplete.fuzzyFilter,
 }} />
 ```
 {% endraw %}
@@ -889,7 +878,7 @@ If, instead of showing choices as a dropdown list, you prefer to display them as
 To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](http://www.material-ui.com/#/components/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```js
-import { SelectArrayInput } from 'admin-on-rest';
+import { SelectArrayInput } from 'react-admin';
 
 <SelectArrayInput label="Tags" source="categories" choices={[
     { id: 'music', name: 'Music' },
@@ -1041,8 +1030,9 @@ const dateParser = v => {
 
 You can find components for react-admin in third-party repositories.
 
-* [dreinke/aor-color-input](https://github.com/dreinke/aor-color-input): a color input using [React Color](http://casesandberg.github.io/react-color/), a collection of color pickers.
+* [vascofg/react-admin-color-input](https://github.com/vascofg/react-admin-color-input): a color input using [React Color](http://casesandberg.github.io/react-color/), a collection of color pickers.
 * [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
+* [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs): a collection of Date Inputs, based on [material-ui-pickers](https://material-ui-pickers.firebaseapp.com/)
 
 ## Writing Your Own Input Component
 
@@ -1218,7 +1208,7 @@ const ItemEdit = (props) => (
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on redux-form, so you can grab the current form values using redux-form [`formValueSelector()](https://redux-form.com/7.3.0/docs/api/formvalueselector.md/). Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function.
+React-admin relies on redux-form, so you can grab the current form values using redux-form [formValueSelector()](https://redux-form.com/7.3.0/docs/api/formvalueselector.md/). Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function.
 
 This facilitates the implementation of linked inputs:
 
