@@ -92,7 +92,9 @@ export class TabbedForm extends Component {
             invalid,
             pristine,
             record,
+            redirect,
             resource,
+            saving,
             submitOnEnter,
             tabsWithErrors,
             toolbar,
@@ -156,6 +158,8 @@ export class TabbedForm extends Component {
                                 .handleSubmitWithRedirect,
                             invalid,
                             pristine,
+                            redirect,
+                            saving,
                             submitOnEnter,
                         })}
                 </div>
@@ -181,6 +185,7 @@ TabbedForm.propTypes = {
     ]),
     resource: PropTypes.string,
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
+    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
     toolbar: PropTypes.element,
@@ -232,8 +237,9 @@ const enhance = compose(
         );
 
         return {
-            tabsWithErrors: findTabsWithErrors(state, props),
             initialValues: getDefaultValues(state, { ...props, children }),
+            saving: state.admin.saving,
+            tabsWithErrors: findTabsWithErrors(state, props),
         };
     }),
     translate, // Must be before reduxForm so that it can be used in validation

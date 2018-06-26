@@ -72,7 +72,9 @@ export class SimpleForm extends Component {
             invalid,
             pristine,
             record,
+            redirect,
             resource,
+            saving,
             submitOnEnter,
             toolbar,
             version,
@@ -99,6 +101,8 @@ export class SimpleForm extends Component {
                         handleSubmitWithRedirect: this.handleSubmitWithRedirect,
                         invalid,
                         pristine,
+                        redirect,
+                        saving,
                         submitOnEnter,
                     })}
             </form>
@@ -123,6 +127,7 @@ SimpleForm.propTypes = {
         PropTypes.func,
     ]),
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
+    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.element,
     validate: PropTypes.func,
@@ -137,6 +142,7 @@ SimpleForm.defaultProps = {
 const enhance = compose(
     connect((state, props) => ({
         initialValues: getDefaultValues(state, props),
+        saving: state.admin.saving,
     })),
     translate, // Must be before reduxForm so that it can be used in validation
     reduxForm({

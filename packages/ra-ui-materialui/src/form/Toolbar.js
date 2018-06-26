@@ -28,6 +28,8 @@ const Toolbar = ({
     handleSubmitWithRedirect,
     invalid,
     pristine,
+    redirect,
+    saving,
     submitOnEnter,
     ...rest
 }) => (
@@ -43,7 +45,9 @@ const Toolbar = ({
                         handleSubmitWithRedirect={handleSubmitWithRedirect}
                         invalid={invalid}
                         variant="flat"
+                        redirect={redirect}
                         submitOnEnter={submitOnEnter}
+                        saving={saving}
                     />
                 ) : (
                     Children.map(
@@ -51,14 +55,15 @@ const Toolbar = ({
                         button =>
                             button
                                 ? React.cloneElement(button, {
+                                      handleSubmitWithRedirect,
                                       invalid,
                                       pristine,
-                                      handleSubmitWithRedirect,
-                                      variant: 'flat',
+                                      saving,
                                       submitOnEnter: valueOrDefault(
                                           button.props.submitOnEnter,
                                           submitOnEnter
                                       ),
+                                      variant: 'flat',
                                   })
                                 : null
                     )
@@ -71,7 +76,9 @@ const Toolbar = ({
                     <SaveButton
                         handleSubmitWithRedirect={handleSubmitWithRedirect}
                         invalid={invalid}
+                        redirect={redirect}
                         submitOnEnter={submitOnEnter}
+                        saving={saving}
                     />
                 ) : (
                     Children.map(
@@ -82,6 +89,7 @@ const Toolbar = ({
                                       handleSubmitWithRedirect,
                                       invalid,
                                       pristine,
+                                      saving,
                                       submitOnEnter: valueOrDefault(
                                           button.props.submitOnEnter,
                                           submitOnEnter
@@ -102,6 +110,12 @@ Toolbar.propTypes = {
     handleSubmitWithRedirect: PropTypes.func,
     invalid: PropTypes.bool,
     pristine: PropTypes.bool,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
+    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
 };
 
