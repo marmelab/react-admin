@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Labeled from '../input/Labeled';
 
-const sanitizeRestProps = ({ basePath, record, resoure, ...rest }) => rest;
+const sanitizeRestProps = ({ basePath, record, resource, ...rest }) => rest;
 
 const styles = theme => ({
     input: { width: theme.spacing.unit * 32 },
@@ -17,7 +17,7 @@ export const FormInput = ({ classes, input, ...rest }) =>
             className={classnames(
                 'ra-input',
                 `ra-input-${input.props.source}`,
-                input.props.formClassName
+                input.props.formClassName,
             )}
         >
             {input.props.addLabel ? (
@@ -27,7 +27,7 @@ export const FormInput = ({ classes, input, ...rest }) =>
                             {
                                 [classes.input]: !input.props.fullWidth,
                             },
-                            input.props.className
+                            input.props.className,
                         ),
                         ...rest,
                     })}
@@ -38,7 +38,7 @@ export const FormInput = ({ classes, input, ...rest }) =>
                         {
                             [classes.input]: !input.props.fullWidth,
                         },
-                        input.props.className
+                        input.props.className,
                     ),
                     ...rest,
                 })

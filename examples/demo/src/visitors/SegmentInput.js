@@ -21,11 +21,10 @@ const SegmentInput = ({ classes, translate, ...rest }) => (
 );
 
 const TranslatedSegmentInput = compose(translate, withStyles(styles))(
-    SegmentInput
+    SegmentInput,
 );
 
 TranslatedSegmentInput.defaultProps = {
-    addLabel: true,
     source: 'groups',
 };
 
