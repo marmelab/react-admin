@@ -59,6 +59,7 @@ export const Labeled = ({
                     .name}>: You must set either the label or source props. You can also disable automated label insertion by setting 'addLabel: false' in the component default props`
         );
     }
+    const restProps = fullWidth ? { ...rest, fullWidth } : rest;
 
     return (
         <FormControl
@@ -80,8 +81,7 @@ export const Labeled = ({
                     ? React.cloneElement(children, {
                           input,
                           resource,
-                          fullWidth,
-                          ...rest,
+                          ...restProps,
                       })
                     : children}
             </div>
