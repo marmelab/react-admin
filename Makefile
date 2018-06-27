@@ -105,15 +105,15 @@ test: build test-unit lint test-e2e ## launch all tests
 test-unit: ## launch unit tests
 	@if [ "$(CI)" != "true" ]; then \
 		echo "Running unit tests..."; \
-		NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/jest; \
+		NODE_ENV=test ./node_modules/.bin/jest; \
 	fi
 	@if [ "$(CI)" = "true" ]; then \
 		echo "Running unit tests in CI..."; \
-		NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/jest --runInBand; \
+		NODE_ENV=test ./node_modules/.bin/jest --runInBand; \
 	fi
 
 test-unit-watch: ## launch unit tests and watch for changes
-	@NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/jest --watch
+	@NODE_ENV=test ./node_modules/.bin/jest --watch
 
 test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \
