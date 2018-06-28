@@ -99,6 +99,7 @@ describe('undo saga', () => {
                     meta: {
                         foo: 1,
                         onSuccess: { refresh: true },
+                        onFailure: { refresh: true },
                     },
                 })
             );
