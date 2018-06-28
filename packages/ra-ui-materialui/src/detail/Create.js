@@ -66,14 +66,14 @@ export const CreateView = ({
                 }}
             />
             {React.cloneElement(children, {
-                save,
-                resource,
                 basePath,
                 record,
                 redirect:
                     typeof children.props.redirect === 'undefined'
                         ? redirect
                         : children.props.redirect,
+                resource,
+                save,
             })}
         </Card>
     </div>
@@ -148,8 +148,6 @@ Create.propTypes = {
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     record: PropTypes.object,

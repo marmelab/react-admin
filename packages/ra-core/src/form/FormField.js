@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 
-import { initializeForm } from '../actions';
+import { initializeForm } from '../actions/formActions';
 
 export const isRequired = validate => {
     if (validate && validate.isRequired) return true;

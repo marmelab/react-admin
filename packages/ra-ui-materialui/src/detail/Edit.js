@@ -77,15 +77,15 @@ export const EditView = ({
             />
             {record ? (
                 React.cloneElement(children, {
-                    save,
-                    resource,
                     basePath,
                     record,
-                    version,
                     redirect:
                         typeof children.props.redirect === 'undefined'
                             ? redirect
                             : children.props.redirect,
+                    resource,
+                    save,
+                    version,
                 })
             ) : (
                 <CardContent>&nbsp;</CardContent>
@@ -166,8 +166,7 @@ Edit.propTypes = {
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
     hasList: PropTypes.bool,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
+    id: PropTypes.any.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
 };

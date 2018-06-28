@@ -46,8 +46,8 @@ const Toolbar = ({
                         invalid={invalid}
                         variant="flat"
                         redirect={redirect}
-                        submitOnEnter={submitOnEnter}
                         saving={saving}
+                        submitOnEnter={submitOnEnter}
                     />
                 ) : (
                     Children.map(
@@ -77,8 +77,8 @@ const Toolbar = ({
                         handleSubmitWithRedirect={handleSubmitWithRedirect}
                         invalid={invalid}
                         redirect={redirect}
-                        submitOnEnter={submitOnEnter}
                         saving={saving}
+                        submitOnEnter={submitOnEnter}
                     />
                 ) : (
                     Children.map(

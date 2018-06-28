@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { getDefaultValues, translate } from 'ra-core';
+import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
 
@@ -141,12 +141,12 @@ SimpleForm.defaultProps = {
 
 const enhance = compose(
     connect((state, props) => ({
+        form: props.form || REDUX_FORM_NAME,
         initialValues: getDefaultValues(state, props),
-        saving: state.admin.saving,
+        saving: props.saving || state.admin.saving,
     })),
     translate, // Must be before reduxForm so that it can be used in validation
     reduxForm({
-        form: 'record-form',
         destroyOnUnmount: false,
         enableReinitialize: true,
     }),
