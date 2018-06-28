@@ -368,6 +368,10 @@ export class AutocompleteInput extends React.Component {
                 this.setState({
                     dirty: false,
                     searchText: this.getSuggestionText(selectedItem),
+                    suggestions:
+                        this.props.limitChoicesToValue && selectedItem
+                            ? [selectedItem]
+                            : this.props.choices,
                 });
             }
         } else {
