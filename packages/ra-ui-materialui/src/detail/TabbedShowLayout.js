@@ -68,7 +68,9 @@ export class TabbedShowLayout extends Component {
     }
 
     handleChange = (event, value) => {
-        this.setState({ value });
+        if (this.props.value == null) {
+            this.setState({ value });
+        }
     };
 
     render() {
@@ -80,8 +82,12 @@ export class TabbedShowLayout extends Component {
             resource,
             basePath,
             version,
+            value,
             ...rest
         } = this.props;
+
+        const tabValue = value != null ? value : this.state.value;
+
         return (
             <div
                 className={className}
@@ -90,7 +96,7 @@ export class TabbedShowLayout extends Component {
             >
                 <Tabs
                     scrollable
-                    value={this.state.value}
+                    value={tabValue}
                     onChange={this.handleChange}
                     indicatorColor="primary"
                 >
@@ -100,7 +106,7 @@ export class TabbedShowLayout extends Component {
                             tab &&
                             cloneElement(tab, {
                                 context: 'header',
-                                value: index,
+                                value: tab.props.value || index,
                             })
                     )}
                 </Tabs>
@@ -110,7 +116,7 @@ export class TabbedShowLayout extends Component {
                         children,
                         (tab, index) =>
                             tab &&
-                            this.state.value === index &&
+                            tabValue === (tab.props.value || index) &&
                             cloneElement(tab, {
                                 context: 'content',
                                 resource,
@@ -131,6 +137,7 @@ TabbedShowLayout.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     basePath: PropTypes.string,
+    value: PropTypes.number,
     version: PropTypes.number,
     translate: PropTypes.func,
 };

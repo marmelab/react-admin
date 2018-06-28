@@ -77,7 +77,9 @@ export class TabbedForm extends Component {
     }
 
     handleChange = (event, value) => {
-        this.setState({ value });
+        if (this.props.value == null) {
+            this.setState({ value });
+        }
     };
 
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
@@ -99,9 +101,12 @@ export class TabbedForm extends Component {
             tabsWithErrors,
             toolbar,
             translate,
+            value,
             version,
             ...rest
         } = this.props;
+
+        const tabValue = value != null ? value : this.state.value;
 
         return (
             <form
@@ -111,7 +116,7 @@ export class TabbedForm extends Component {
             >
                 <Tabs
                     scrollable
-                    value={this.state.value}
+                    value={tabValue}
                     onChange={this.handleChange}
                     indicatorColor="primary"
                 >
@@ -121,10 +126,13 @@ export class TabbedForm extends Component {
                             tab ? (
                                 <Tab
                                     key={tab.props.label}
+                                    {...tab.props}
                                     label={translate(tab.props.label, {
                                         _: tab.props.label,
                                     })}
-                                    value={index}
+                                    value={
+                                        tab.value != null ? tab.value : index
+                                    }
                                     icon={tab.props.icon}
                                     className={classnames(
                                         'form-tab',
@@ -208,6 +216,7 @@ TabbedForm.propTypes = {
     toolbar: PropTypes.element,
     translate: PropTypes.func,
     validate: PropTypes.func,
+    value: PropTypes.number,
     version: PropTypes.number,
 };
 

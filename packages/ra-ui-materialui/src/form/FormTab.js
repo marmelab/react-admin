@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FormInput from './FormInput';
 
-const sanitizeRestProps = ({ label, icon, ...rest }) => rest;
+const sanitizeRestProps = ({ label, icon, component, ...rest }) => rest;
 
 const hiddenStyle = { display: 'none' };
 

@@ -49,12 +49,21 @@ import classnames from 'classnames';
  *     export default App;
  */
 class Tab extends Component {
-    renderHeader = ({ className, label, icon, value, translate, ...rest }) => (
+    renderHeader = ({
+        className,
+        component,
+        label,
+        icon,
+        value,
+        translate,
+        ...rest
+    }) => (
         <MuiTab
             key={label}
             label={translate(label, { _: label })}
             value={value}
             icon={icon}
+            component={component}
             className={classnames('show-tab', className)}
             {...rest}
         />
@@ -97,6 +106,7 @@ class Tab extends Component {
         const {
             children,
             className,
+            component,
             context,
             icon,
             label,
@@ -107,6 +117,7 @@ class Tab extends Component {
         return context === 'header'
             ? this.renderHeader({
                   className,
+                  component,
                   label,
                   icon,
                   value,
@@ -120,6 +131,7 @@ class Tab extends Component {
 Tab.propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
+    component: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
     context: PropTypes.oneOf(['header', 'content']),
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
