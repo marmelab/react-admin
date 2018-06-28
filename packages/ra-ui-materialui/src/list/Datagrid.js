@@ -142,7 +142,7 @@ class Datagrid extends Component {
                                         field={field}
                                         isSorting={
                                             field.props.source ===
-                                            (currentSort && currentSort.field)
+                                            currentSort.field
                                         }
                                         key={field.props.source || index}
                                         resource={resource}
