@@ -181,7 +181,7 @@ Datagrid.propTypes = {
     currentSort: PropTypes.shape({
         sort: PropTypes.string,
         order: PropTypes.string,
-    }),
+    }).isRequired,
     data: PropTypes.object.isRequired,
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
