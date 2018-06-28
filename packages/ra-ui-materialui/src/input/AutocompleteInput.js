@@ -368,6 +368,10 @@ export class AutocompleteInput extends React.Component {
                 this.setState({
                     dirty: false,
                     searchText: this.getSuggestionText(selectedItem),
+                    suggestions:
+                        this.props.limitChoicesToValue && selectedItem
+                            ? [selectedItem]
+                            : this.props.choices,
                 });
             }
         } else {
@@ -381,9 +385,19 @@ export class AutocompleteInput extends React.Component {
     };
 
     updateFilter = value => {
-        const { setFilter } = this.props;
+        const { setFilter, choices } = this.props;
         if (this.previousFilterValue !== value) {
-            setFilter && setFilter(value);
+            if (setFilter) {
+                setFilter(value);
+            } else {
+                this.setState({
+                    suggestions: choices.filter(choice =>
+                        this.getSuggestionText(choice)
+                            .toLowerCase()
+                            .includes(value.toLowerCase())
+                    ),
+                });
+            }
         }
         this.previousFilterValue = value;
     };
