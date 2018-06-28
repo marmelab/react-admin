@@ -78,7 +78,6 @@ export class Resource extends Component {
             <Switch>
                 {create && (
                     <Route
-                        exact
                         path={`${match.url}/create`}
                         render={routeProps => (
                             <WithPermissions
@@ -95,7 +94,6 @@ export class Resource extends Component {
                 )}
                 {show && (
                     <Route
-                        exact
                         path={`${match.url}/:id/show`}
                         render={routeProps => (
                             <WithPermissions
@@ -115,7 +113,6 @@ export class Resource extends Component {
                 )}
                 {edit && (
                     <Route
-                        exact
                         path={`${match.url}/:id`}
                         render={routeProps => (
                             <WithPermissions
@@ -135,7 +132,6 @@ export class Resource extends Component {
                 )}
                 {list && (
                     <Route
-                        exact
                         path={`${match.url}`}
                         render={routeProps => (
                             <WithPermissions
