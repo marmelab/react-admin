@@ -8,6 +8,7 @@ import {
     getFormSubmitErrors,
 } from 'redux-form';
 import { connect } from 'react-redux';
+import { withRouter, Link, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
 import Divider from '@material-ui/core/Divider';
 import Tabs from '@material-ui/core/Tabs';
@@ -55,6 +56,7 @@ const sanitizeRestProps = ({
     reset,
     resetSection,
     save,
+    staticContext,
     submit,
     submitFailed,
     submitSucceeded,
@@ -69,19 +71,6 @@ const sanitizeRestProps = ({
 }) => props;
 
 export class TabbedForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: 0,
-        };
-    }
-
-    handleChange = (event, value) => {
-        if (this.props.value == null) {
-            this.setState({ value });
-        }
-    };
-
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
         this.props.handleSubmit(values => this.props.save(values, redirect));
 
@@ -92,6 +81,8 @@ export class TabbedForm extends Component {
             className,
             classes = {},
             invalid,
+            location,
+            match,
             pristine,
             record,
             redirect,
@@ -106,8 +97,6 @@ export class TabbedForm extends Component {
             ...rest
         } = this.props;
 
-        const tabValue = value != null ? value : this.state.value;
-
         return (
             <form
                 className={classnames('tabbed-form', className)}
@@ -116,35 +105,36 @@ export class TabbedForm extends Component {
             >
                 <Tabs
                     scrollable
-                    value={tabValue}
-                    onChange={this.handleChange}
+                    value={location.pathname}
                     indicatorColor="primary"
                 >
-                    {Children.map(
-                        children,
-                        (tab, index) =>
-                            tab ? (
-                                <Tab
-                                    key={tab.props.label}
-                                    {...tab.props}
-                                    label={translate(tab.props.label, {
-                                        _: tab.props.label,
-                                    })}
-                                    value={
-                                        tab.value != null ? tab.value : index
-                                    }
-                                    icon={tab.props.icon}
-                                    className={classnames(
-                                        'form-tab',
-                                        tabsWithErrors.includes(
-                                            tab.props.label
-                                        ) && this.state.value !== index
-                                            ? classes.errorTabButton
-                                            : null
-                                    )}
-                                />
-                            ) : null
-                    )}
+                    {Children.map(children, (tab, index) => {
+                        if (!tab) return null;
+                        const tabPath = `${match.url}${tab.props.path
+                            ? `/${tab.props.path}`
+                            : index > 0 ? index : ''}`;
+
+                        return (
+                            <Tab
+                                key={tab.props.label}
+                                component={Link}
+                                to={tabPath}
+                                value={tabPath}
+                                {...tab.props}
+                                label={translate(tab.props.label, {
+                                    _: tab.props.label,
+                                })}
+                                icon={tab.props.icon}
+                                className={classnames(
+                                    'form-tab',
+                                    tabsWithErrors.includes(tab.props.label) &&
+                                    location.pathname !== tabPath
+                                        ? classes.errorTabButton
+                                        : null
+                                )}
+                            />
+                        );
+                    })}
                 </Tabs>
                 <Divider />
                 <div className={classes.form}>
@@ -155,26 +145,34 @@ export class TabbedForm extends Component {
                     {Children.map(
                         children,
                         (tab, index) =>
-                            tab &&
-                            React.cloneElement(tab, {
-                                resource,
-                                record,
-                                basePath,
-                                hidden: this.state.value !== index,
-                                /**
-                                 * Force redraw when the tab becomes active
-                                 * 
-                                 * This is because the fields, decorated by redux-form and connect,
-                                 * aren't redrawn by default when the tab becomes active.
-                                 * Unfortunately, some material-ui fields (like multiline TextField)
-                                 * compute their size based on the scrollHeight of a dummy DOM element,
-                                 * and scrollHeight is 0 in a hidden div. So they must be redrawn
-                                 * once the tab becomes active.
-                                 * 
-                                 * @ref https://github.com/marmelab/react-admin/issues/1956
-                                 */
-                                key: `${index}_${this.state.value !== index}`,
-                            })
+                            tab && (
+                                <Route
+                                    exact
+                                    path={`${match.url}/${tab.props.path ||
+                                        (index > 0 ? index : '')}`}
+                                >
+                                    {routeProps =>
+                                        React.cloneElement(tab, {
+                                            resource,
+                                            record,
+                                            basePath,
+                                            hidden: !routeProps.match,
+                                            /**
+                                             * Force redraw when the tab becomes active
+                                             * 
+                                             * This is because the fields, decorated by redux-form and connect,
+                                             * aren't redrawn by default when the tab becomes active.
+                                             * Unfortunately, some material-ui fields (like multiline TextField)
+                                             * compute their size based on the scrollHeight of a dummy DOM element,
+                                             * and scrollHeight is 0 in a hidden div. So they must be redrawn
+                                             * once the tab becomes active.
+                                             * 
+                                             * @ref https://github.com/marmelab/react-admin/issues/1956
+                                             */
+                                            key: `${index}_${!routeProps.match}`,
+                                        })}
+                                </Route>
+                            )
                     )}
                     {toolbar &&
                         React.cloneElement(toolbar, {
@@ -256,6 +254,7 @@ export const findTabsWithErrors = (
 };
 
 const enhance = compose(
+    withRouter,
     connect((state, props) => {
         const children = Children.toArray(props.children).reduce(
             (acc, child) => [...acc, ...Children.toArray(child.props.children)],
@@ -266,7 +265,10 @@ const enhance = compose(
             form: props.form || REDUX_FORM_NAME,
             initialValues: getDefaultValues(state, { ...props, children }),
             saving: props.saving || state.admin.saving,
-            tabsWithErrors: findTabsWithErrors(state, props),
+            tabsWithErrors: findTabsWithErrors(state, {
+                form: REDUX_FORM_NAME,
+                ...props,
+            }),
         };
     }),
     translate, // Must be before reduxForm so that it can be used in validation

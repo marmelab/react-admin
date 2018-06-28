@@ -21,6 +21,8 @@ const FormTab = ({ children, hidden, ...rest }) => (
 FormTab.propTypes = {
     children: PropTypes.node,
     hidden: PropTypes.bool,
+    label: PropTypes.string,
+    path: PropTypes.string,
 };
 
 export default FormTab;
