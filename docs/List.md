@@ -428,13 +428,36 @@ The `List` component accepts the usual `className` prop but you can override man
 * `actions`: applied to the actions container
 * `noResults`: applied to the component shown when there is no result
 
+Here is an example of how you can override some of these classes:
+
+You can customize the datagrid styles by passing a `styles` object as prop. The object should have the following properties:
+
+{% raw %}
+```jsx
+const styles = {
+    header: {
+        backgroundColor: '#ccc',
+    },
+};
+
+const PostList = ({ classes, ...props) => (
+    <List {...props} classes={{ header: classes.header }}>
+        <Datagrid>
+            ...
+        </Datagrid>
+    </List>
+);
+
+export withStyles(styles)(PostList);
+```
+{% endraw %}
+
 ## The `<Datagrid>` component
 
 The datagrid component renders a list of records as a table. It is usually used as a child of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components.
 
 Here are all the props accepted by the component:
 
-* [`styles`](#custom-grid-style)
 * [`rowStyle`](#row-style-function)
 
 It renders as many columns as it receives `<Field>` children.
@@ -457,64 +480,6 @@ export const PostList = (props) => (
 ```
 
 The datagrid is an *iterator* component: it receives an array of ids, and a data store, and is supposed to iterate over the ids to display each record. Another example of iterator component is [`<SingleFieldList>`](#the-singlefieldlist-component).
-
-### Custom Grid Style
-
-You can customize the datagrid styles by passing a `styles` object as prop. The object should have the following properties:
-
-```jsx
-const datagridStyles = {
-    table: { },
-    tbody: { },
-    tr: { },
-    header: {
-        th: { },
-        'th:first-child': { }, // special style for the first header column
-    },
-    cell: {
-        td: { },
-        'td:first-child': { }, // special style for the first column
-    },
-};
-
-export const PostList = (props) => (
-    <List {...props}>
-        <Datagrid styles={datagridStyles}>
-            ...
-        </Datagrid>
-    </List>
-);
-```
-
-**Tip**: If you want to override the `header` and `cell` styles independently for each column, use the `headerClassName` and `cellClassName` props in `<Field>` components. For instance, to hide a certain column on small screens:
-
-```jsx
-import { withStyles } from '@material-ui/core/styles';
-
-const styles = theme => ({
-    hiddenOnSmallScreens: {
-        [theme.breakpoints.down('md')]: {
-            display: 'none',
-        },
-    },
-});
-
-const PostList = ({ classes, ...props }) => (
-    <List {...props}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField
-                source="views"
-                headerClassName={classes.hiddenOnSmallScreens}
-                cellClassName={classes.hiddenOnSmallScreens}
-            />
-        </Datagrid>
-    </List>
-);
-
-export default withStyles(styles)(PostList);
-```
 
 ### Row Style Function
 
@@ -546,6 +511,60 @@ The `Datagrid` component accepts the usual `className` prop but you can override
 * `rowEven`: applied to each even row
 * `rowOdd`: applied to each odd row
 * `rowCell`: applied to each row cell
+
+Here is an example of how you can override some of these classes:
+
+You can customize the datagrid styles by passing a `styles` object as prop. The object should have the following properties:
+
+{% raw %}
+```jsx
+const styles = {
+    row: {
+        backgroundColor: '#ccc',
+    },
+};
+
+const PostList = ({ classes, ...props) => (
+    <List {...props}>
+        <Datagrid classes={{ row: classes.row }}>
+            ...
+        </Datagrid>
+    </List>
+);
+
+export withStyles(styles)(PostList);
+```
+{% endraw %}
+
+**Tip**: If you want to override the `header` and `cell` styles independently for each column, use the `headerClassName` and `cellClassName` props in `<Field>` components. For instance, to hide a certain column on small screens:
+
+```jsx
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+    hiddenOnSmallScreens: {
+        [theme.breakpoints.down('md')]: {
+            display: 'none',
+        },
+    },
+});
+
+const PostList = ({ classes, ...props }) => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField
+                source="views"
+                headerClassName={classes.hiddenOnSmallScreens}
+                cellClassName={classes.hiddenOnSmallScreens}
+            />
+        </Datagrid>
+    </List>
+);
+
+export default withStyles(styles)(PostList);
+```
 
 ## The `<SimpleList>` component
 
