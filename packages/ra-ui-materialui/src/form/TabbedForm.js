@@ -112,7 +112,7 @@ export class TabbedForm extends Component {
                         if (!tab) return null;
                         const tabPath = `${match.url}${tab.props.path
                             ? `/${tab.props.path}`
-                            : index > 0 ? index : ''}`;
+                            : index > 0 ? `/${index}` : ''}`;
 
                         return (
                             <Tab
