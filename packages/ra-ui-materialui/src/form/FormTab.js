@@ -4,8 +4,10 @@ import FormInput from './FormInput';
 
 const sanitizeRestProps = ({ label, icon, ...rest }) => rest;
 
-const FormTab = ({ children, ...rest }) => (
-    <span>
+const hiddenStyle = { display: 'none' };
+
+const FormTab = ({ children, hidden, ...rest }) => (
+    <span style={hidden ? hiddenStyle : null}>
         {React.Children.map(
             children,
             input =>
@@ -18,6 +20,7 @@ const FormTab = ({ children, ...rest }) => (
 
 FormTab.propTypes = {
     children: PropTypes.node,
+    hidden: PropTypes.bool,
 };
 
 export default FormTab;

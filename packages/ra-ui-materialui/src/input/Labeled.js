@@ -42,6 +42,7 @@ export const Labeled = ({
     children,
     classes,
     className,
+    fullWidth,
     input,
     isRequired,
     label,
@@ -58,9 +59,15 @@ export const Labeled = ({
                     .name}>: You must set either the label or source props. You can also disable automated label insertion by setting 'addLabel: false' in the component default props`
         );
     }
+    const restProps = fullWidth ? { ...rest, fullWidth } : rest;
 
     return (
-        <FormControl className={className} margin="normal">
+        <FormControl
+            className={className}
+            margin="normal"
+            fullWidth={fullWidth}
+            error={meta && meta.touched && meta.error}
+        >
             <InputLabel shrink className={classes.label}>
                 <FieldTitle
                     label={label}
@@ -71,7 +78,11 @@ export const Labeled = ({
             </InputLabel>
             <div className={classes.value}>
                 {children && typeof children.type !== 'string'
-                    ? React.cloneElement(children, { input, resource, ...rest })
+                    ? React.cloneElement(children, {
+                          input,
+                          resource,
+                          ...restProps,
+                      })
                     : children}
             </div>
         </FormControl>
@@ -83,6 +94,7 @@ Labeled.propTypes = {
     children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
+    fullWidth: PropTypes.bool,
     input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.string,

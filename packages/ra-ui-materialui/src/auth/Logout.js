@@ -15,7 +15,12 @@ const styles = theme => ({
     menuItem: {
         color: theme.palette.text.secondary,
     },
-    iconPaddingStyle: { paddingRight: '1.2em' },
+    iconMenuPaddingStyle: {
+        paddingRight: '1.2em',
+    },
+    iconPaddingStyle: {
+        paddingRight: theme.spacing.unit,
+    },
 });
 
 const sanitizeRestProps = ({
@@ -40,7 +45,9 @@ const Logout = ({ classes, className, translate, userLogout, ...rest }) => (
                 onClick={userLogout}
                 {...sanitizeRestProps(rest)}
             >
-                <ExitIcon className={classes.iconPaddingStyle} />
+                <span className={classes.iconMenuPaddingStyle}>
+                    <ExitIcon />
+                </span>
                 {translate('ra.auth.logout')}
             </MenuItem>
         }

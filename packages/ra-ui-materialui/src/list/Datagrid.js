@@ -22,9 +22,7 @@ const styles = {
     headerCell: {
         padding: '0 12px',
     },
-    checkbox: {
-        height: 'auto',
-    },
+    checkbox: {},
     row: {},
     rowEven: {},
     rowOdd: {},
@@ -183,7 +181,7 @@ Datagrid.propTypes = {
     currentSort: PropTypes.shape({
         sort: PropTypes.string,
         order: PropTypes.string,
-    }),
+    }).isRequired,
     data: PropTypes.object.isRequired,
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,

@@ -189,11 +189,9 @@ describe('<AutocompleteInput />', () => {
                 .find('input')
                 .simulate('change', { target: { value: 'foo' } });
             expect(wrapper.state('searchText')).toBe('foo');
-            wrapper.find('input').simulate('blur');
             expect(wrapper.state('suggestions')).toHaveLength(0);
-            wrapper
-                .find('input')
-                .simulate('change', { target: { value: 'foo' } });
+            wrapper.find('input').simulate('blur');
+            wrapper.find('input').simulate('change', { target: { value: '' } });
             expect(wrapper.state('suggestions')).toHaveLength(1);
         });
         it('should allow optionText to be a function', () => {

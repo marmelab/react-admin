@@ -80,7 +80,6 @@ export const crudCreate = (resource, data, basePath, redirectTo = 'edit') => ({
                 body: 'ra.notification.http_error',
                 level: 'warning',
             },
-            refresh: true,
         },
     },
 });
@@ -120,7 +119,6 @@ export const crudUpdate = (
                 body: 'ra.notification.http_error',
                 level: 'warning',
             },
-            refresh: true,
         },
     },
 });
@@ -161,7 +159,6 @@ export const crudUpdateMany = (
                 body: 'ra.notification.http_error',
                 level: 'warning',
             },
-            refresh: true,
         },
     },
 });
@@ -200,7 +197,6 @@ export const crudDelete = (
                 body: 'ra.notification.http_error',
                 level: 'warning',
             },
-            refresh: true,
         },
     },
 });
@@ -234,7 +230,6 @@ export const crudDeleteMany = (resource, ids, basePath, refresh = true) => ({
                 body: 'ra.notification.http_error',
                 level: 'warning',
             },
-            refresh: true,
         },
     },
 });

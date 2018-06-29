@@ -67,7 +67,7 @@ DatagridHeaderCell.propTypes = {
     currentSort: PropTypes.shape({
         sort: PropTypes.string,
         order: PropTypes.string,
-    }),
+    }).isRequired,
     isSorting: PropTypes.bool,
     sortable: PropTypes.bool,
     resource: PropTypes.string,

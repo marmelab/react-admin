@@ -160,18 +160,29 @@ If you want to add or remove menu items, for instance to link to non-resources p
 
 ```jsx
 // in src/Menu.js
-import React from 'react';
+import React, { createElement } from 'react';
 import { connect } from 'react-redux';
 import { MenuItemLink, getResources } from 'react-admin';
 import { withRouter } from 'react-router-dom';
+import LabelIcon from '@material-ui/icons/Label';
+
 import Responsive from '../layout/Responsive';
 
 const Menu = ({ resources, onMenuClick, logout }) => (
     <div>
         {resources.map(resource => (
-            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
+            <MenuItemLink 
+                to={`/${resource.name}`}
+                primaryText={resource.name}
+                leftIcon={createElement(resource.icon)}
+                onClick={onMenuClick}
+            />
         ))}
-        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
+        <MenuItemLink 
+            to="/custom-route"
+            primaryText="Miscellaneous"
+            leftIcon={<LabelIcon />}
+            onClick={onMenuClick} />
         <Responsive
             small={logout}
             medium={null} // Pass null to render nothing on larger devices
@@ -184,10 +195,9 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(connect(mapStateToProps)(Menu));
-
 ```
 
-**Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views.
+**Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views. It supports a custom text and icon (which must be a material-ui `<SvgIcon>`).
 
 **Tip**: Note that we include the `logout` item only on small devices. Indeed, the `logout` button is already displayed in the AppBar on larger devices.
 
@@ -234,7 +244,9 @@ For more details on predefined themes and custom themes, refer to the [Material 
 
 ## `appLayout`
 
-If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component through the `appLayout` prop.
+If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<MuiThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
+
+Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.html#using-a-custom-layout) for examples.
 
 ```jsx
 // in src/App.js

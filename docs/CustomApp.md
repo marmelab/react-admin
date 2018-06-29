@@ -40,7 +40,7 @@ import {
     adminSaga,
     TranslationProvider,
 } from 'react-admin';
-import simpleRestClient from 'ra-data-simple-rest';
+import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
 
 // your app components
@@ -66,7 +66,7 @@ const store = createStore(reducer, undefined, compose(
 ));
 
 // side effects
-const dataProvider = simpleRestClient('http://path.to.my.api/');
+const dataProvider = restProvider('http://path.to.my.api/');
 const authProvider = () => Promise.resolve();
 const i18nProvider = locale => {
     if (locale !== 'en') {

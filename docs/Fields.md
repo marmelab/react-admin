@@ -674,7 +674,7 @@ export const PostList = (props) => (
 
 ```jsx
 export const App = () => (
-    <Admin dataProvider={simpleRestClient('http://path.to.my.api')}>
+    <Admin dataProvider={restProvider('http://path.to.my.api')}>
         <Resource name="posts" list={PostList} />
         <Resource name="tags" /> // <= this one is compulsory
     </Admin>
@@ -757,7 +757,7 @@ const styles = {
     price: { color: 'purple' },
 };
 
-const PriceField = withStyles(styles)(props => (
+const PriceField = withStyles(styles)(({ classes, ...props }) => (
     <TextField className={classes.price} {...props} />
 ));
 
@@ -786,7 +786,7 @@ const styles = {
     priceCell: { fontWeight: 'bold' },
 };
 
-const PriceField = withStyles(styles)(props => (
+const PriceField = withStyles(styles)(({ classes, ...props }) => (
     <TextField cellClassName={classes.priceCell} {...props} />
 ));
 
@@ -813,8 +813,8 @@ const styles = {
     priceHeader: { fontWeight: 'bold' },
 };
 
-const PriceField = withStyles(styles)(props => (
-    <TextField cellClassName={classes.priceHeader} {...props} />
+const PriceField = withStyles(styles)(({ classes, ...props }) => (
+    <TextField headerClassName={classes.priceHeader} {...props} />
 ));
 
 export const ProductList = (props) => (

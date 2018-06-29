@@ -10,6 +10,7 @@ import { AUTH_GET_PERMISSIONS } from '../auth/types';
 import { isLoggedIn } from '../reducer';
 
 const isEmptyChildren = children => Children.count(children) === 0;
+
 /**
  * After checking that the user is authenticated,
  * retrieves the user's permissions for a specific context.
@@ -57,6 +58,8 @@ export class WithPermissions extends Component {
         userCheck: PropTypes.func,
     };
 
+    cancelled = false;
+
     state = { permissions: null };
 
     componentWillMount() {
@@ -73,6 +76,10 @@ export class WithPermissions extends Component {
 
     async componentDidMount() {
         await this.checkPermissions(this.props);
+    }
+
+    componentWillUnmount() {
+        this.cancelled = true;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -100,9 +107,13 @@ export class WithPermissions extends Component {
                 location: location ? location.pathname : undefined,
             });
 
-            this.setState({ permissions });
+            if (!this.cancelled) {
+                this.setState({ permissions });
+            }
         } catch (error) {
-            this.setState({ permissions: null });
+            if (!this.cancelled) {
+                this.setState({ permissions: null });
+            }
         }
     }
 

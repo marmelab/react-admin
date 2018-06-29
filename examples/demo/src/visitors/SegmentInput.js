@@ -25,7 +25,6 @@ const TranslatedSegmentInput = compose(translate, withStyles(styles))(
 );
 
 TranslatedSegmentInput.defaultProps = {
-    addLabel: true,
     source: 'groups',
 };
 

@@ -9,10 +9,12 @@ A frontend Framework for building admin applications running in the browser on t
 ## Features
 
 * Adapts to any backend (REST, GraphQL, SOAP, etc.)
-* Complete documentation
+* Powered by [material-ui](https://material-ui.com/), [redux](https://redux.js.org/), [redux-form](https://redux-form.com/7.3.0/), [redux-saga](https://redux-saga.js.org/), [react-router](https://reacttraining.com/react-router/), [recompose](https://github.com/acdlite/recompose), [reselect](https://github.com/reduxjs/reselect) and a few more
 * Super-fast UI thanks to optimistic rendering (renders before the server returns)
 * Undo updates and deletes for a few seconds
+* Complete documentation
 * Relationships (many to one, one to many)
+* Data Validation
 * Internationalization (i18n)
 * Conditional formatting
 * Themeable
@@ -20,7 +22,6 @@ A frontend Framework for building admin applications running in the browser on t
 * Full-featured Datagrid (sort, pagination, filters)
 * Filter-as-you-type
 * Supports any form layout (simple, tabbed, etc.)
-* Data Validation
 * Custom actions
 * Large library of components for various data types: boolean, number, rich text, etc.
 * WYSIWYG editor
@@ -28,7 +29,6 @@ A frontend Framework for building admin applications running in the browser on t
 * Super easy to extend and override (it's just React components)
 * Highly customizable interface
 * Can connect to multiple backends
-* Leverages the best libraries in the React ecosystem (Redux, redux-form, redux-saga, material-ui, recompose)
 * Can be included in another React app
 * Inspired by the popular [ng-admin](https://github.com/marmelab/ng-admin) library (also by marmelab)
 
@@ -64,12 +64,12 @@ Read the [Tutorial](http://marmelab.com/react-admin/Tutorial.html) for a 15 minu
 import React from 'react';
 import { render } from 'react-dom';
 import { Admin, Resource } from 'react-admin';
-import simpleRestClient from 'ra-data-simple-rest';
+import restProvider from 'ra-data-simple-rest';
 
 import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
 
 render(
-    <Admin dataProvider={simpleRestClient('http://localhost:3000')}>
+    <Admin dataProvider={restProvider('http://localhost:3000')}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon}/>
     </Admin>,
     document.getElementById('root')
@@ -176,6 +176,8 @@ You can run the tests (linting, unit and functional tests) by calling
 ```sh
 make test
 ```
+
+When working on the end to end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple`) and starting cypress in another terminal (`make tests-e2e-local`).
 
 If you have coding standards problems, you can fix them automatically using `prettier` by calling
 

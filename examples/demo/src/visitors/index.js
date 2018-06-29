@@ -132,7 +132,7 @@ export const VisitorEdit = withStyles(editStyles)(({ classes, ...props }) => (
                     type="email"
                     source="email"
                     validation={{ email: true }}
-                    options={{ fullWidth: true }}
+                    fullWidth={true}
                     formClassName={classes.email}
                 />
                 <DateInput source="birthday" />
@@ -218,7 +218,7 @@ export const VisitorCreate = withStyles(editStyles)(({ classes, ...props }) => (
                     type="email"
                     source="email"
                     validation={{ email: true }}
-                    options={{ fullWidth: true }}
+                    fullWidth={true}
                     formClassName={classes.email}
                 />
                 <DateInput source="birthday" />

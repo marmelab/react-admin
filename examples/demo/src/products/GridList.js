@@ -3,7 +3,10 @@ import MuiGridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import { withStyles } from '@material-ui/core/styles';
-import { NumberField, EditButton } from 'react-admin';
+import IconButton from '@material-ui/core/IconButton';
+import ContentCreate from '@material-ui/icons/Create';
+import { NumberField, Link } from 'react-admin';
+import { linkToRecord } from 'ra-core';
 
 const styles = {
     root: {
@@ -47,12 +50,13 @@ const GridList = ({ classes, ids, data, basePath }) => (
                             </span>
                         }
                         actionIcon={
-                            <EditButton
-                                basePath={basePath}
-                                record={data[id]}
-                                label=""
+                            <IconButton
+                                to={linkToRecord(basePath, data[id].id)}
                                 className={classes.link}
-                            />
+                                component={Link}
+                            >
+                                <ContentCreate />
+                            </IconButton>
                         }
                     />
                 </GridListTile>

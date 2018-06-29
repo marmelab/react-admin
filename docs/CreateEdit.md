@@ -464,7 +464,7 @@ By default:
 - Submitting the form in the `<Create>` view redirects to the `<Edit>` view
 - Submitting the form in the `<Edit>` view redirects to the `<List>` view
 
-You can customize the redirection by setting the `redirect` prop of the form component. Possible values are "edit", "show", "list", and `false` to disable redirection. For instance, to redirect to the `<Show>` view after edition:
+You can customize the redirection by setting the `redirect` prop of the form component. Possible values are "edit", "show", "list", and `false` to disable redirection. You may also specify a custom path such as `/my-custom-route`. For instance, to redirect to the `<Show>` view after edition:
 
 ```jsx
 export const PostEdit = (props) => (
