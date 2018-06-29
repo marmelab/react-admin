@@ -430,7 +430,7 @@ The `List` component accepts the usual `className` prop but you can override man
 
 Here is an example of how you can override some of these classes:
 
-You can customize the datagrid styles by passing a `styles` object as prop. The object should have the following properties:
+You can customize the list styles by passing a `classes` object as prop, through `withStyles()`. Here is an example:
 
 {% raw %}
 ```jsx
@@ -514,7 +514,7 @@ The `Datagrid` component accepts the usual `className` prop but you can override
 
 Here is an example of how you can override some of these classes:
 
-You can customize the datagrid styles by passing a `styles` object as prop. The object should have the following properties:
+You can customize the datagrid styles by passing a `classes` object as prop, through `withStyles()`. Here is an example:
 
 {% raw %}
 ```jsx
