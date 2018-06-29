@@ -1,5 +1,29 @@
 # Changelog
 
+## v2.0.4
+
+* Add documentation for icon format restriction in `<MenuItemLink>` ([fzaninotto](https://github.com/fzaninotto))
+* Add `required` to the `currenSort` propType in `<Datagrid>`, to avoid unexpected errors ([alexicum](https://github.com/alexicum))
+* Add Portuguese translation ([marquesgabriel](https://github.com/marquesgabriel))
+* Add Ukrainian translation ([koresar](https://github.com/koresar))
+* Add documentation about custom path as the `redirect` prop on Create/Edit ([djhi](https://github.com/djhi))
+* Add mention of `react-admin-color-input` and `react-admin-date-inputs` in Ecosystem doc ([vascofg](https://github.com/vascofg))
+* Fix style overriding documentation for `<Datagrid>` ([fzaninotto](https://github.com/fzaninotto))
+* Fix broken link in `<Admin>` documentation ([fzaninotto](https://github.com/fzaninotto))
+* Fix refresh in pessimistic mode prevents server-side validation ([fzaninotto](https://github.com/fzaninotto))
+* Fix `fullWidth` warning when using `<Labeled>` ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` when used in standalone ([fzaninotto](https://github.com/fzaninotto))
+* Fix custom route action in simple example ([alexicum](https://github.com/alexicum))
+* Fix warning in Demo, in `<Link>` to filtered list ([fzaninotto](https://github.com/fzaninotto))
+* Fix edit icon in Demo, in product gridlist on smaller screens ([fzaninotto](https://github.com/fzaninotto))
+* Fix outdated `import` in Custom Theme documentation ([AkselsLedins](https://github.com/AkselsLedins))
+* Fix `WithPermissions` calling `setState` in async function ([djhi](https://github.com/djhi))
+* Fix error in `jsonserver` provider on Windows ([fzaninotto](https://github.com/fzaninotto))
+* Fix outdated theming doc ([fzaninotto](https://github.com/fzaninotto))
+* Fix multiple broken links in DataProviders doc ([alireza](https://github.com/alireza)-ahmadi)
+* Fix missing resource in ArrayInput iterator ([fzaninotto](https://github.com/fzaninotto))
+* Fix outdated mention of `aor-embedded-array` in Ecosystem doc ([vascofg](https://github.com/vascofg))
+
 ## v2.0.3
 
 * Add Russian translation package to the docs ([fzaninotto](https://github.com/fzaninotto))
