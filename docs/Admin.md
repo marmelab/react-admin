@@ -282,7 +282,7 @@ For more details on predefined themes and custom themes, refer to the [Material 
 
 If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<MuiThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
 
-Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/react-admin/src/mui/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.html#using-a-custom-layout) for examples.
+Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.js) as a starting point, and check [the Theming documentation](./Theming.html#using-a-custom-layout) for examples.
 
 ```jsx
 // in src/App.js
