@@ -1,8 +1,13 @@
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import Tabs from '@material-ui/core/Tabs';
+import MuiTab from '@material-ui/core/Tab';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
+import { withRouter, Link, Route } from 'react-router-dom';
+import compose from 'recompose/compose';
+import { translate } from 'ra-core';
 
 const styles = {
     tab: { padding: '0 1em 1em 1em' },
@@ -17,6 +22,7 @@ const sanitizeRestProps = ({
     basePath,
     version,
     initialValues,
+    staticContext,
     translate,
     ...rest
 }) => rest;
@@ -60,33 +66,21 @@ const sanitizeRestProps = ({
  *     export default App;
  */
 export class TabbedShowLayout extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: 0,
-        };
-    }
-
-    handleChange = (event, value) => {
-        if (this.props.value == null) {
-            this.setState({ value });
-        }
-    };
-
     render() {
         const {
+            basePath,
             children,
             className,
             classes,
+            location,
+            match,
             record,
             resource,
-            basePath,
+            translate,
             version,
             value,
             ...rest
         } = this.props;
-
-        const tabValue = value != null ? value : this.state.value;
 
         return (
             <div
@@ -96,33 +90,50 @@ export class TabbedShowLayout extends Component {
             >
                 <Tabs
                     scrollable
-                    value={tabValue}
+                    value={location.pathname}
                     onChange={this.handleChange}
                     indicatorColor="primary"
                 >
-                    {Children.map(
-                        children,
-                        (tab, index) =>
-                            tab &&
-                            cloneElement(tab, {
-                                context: 'header',
-                                value: tab.props.value || index,
-                            })
-                    )}
+                    {Children.map(children, (tab, index) => {
+                        if (!tab) return null;
+                        const tabPath = `${match.url}${tab.props.path
+                            ? `/${tab.props.path}`
+                            : index > 0 ? `/${index}` : ''}`;
+
+                        return (
+                            <MuiTab
+                                key={tab.props.label}
+                                component={Link}
+                                to={tabPath}
+                                value={tabPath}
+                                {...tab.props}
+                                label={translate(tab.props.label, {
+                                    _: tab.props.label,
+                                })}
+                                icon={tab.props.icon}
+                                className={classnames('show-tab', className)}
+                            />
+                        );
+                    })}
                 </Tabs>
                 <Divider />
                 <div className={classes.tab}>
                     {Children.map(
                         children,
                         (tab, index) =>
-                            tab &&
-                            tabValue === (tab.props.value || index) &&
-                            cloneElement(tab, {
-                                context: 'content',
-                                resource,
-                                record,
-                                basePath,
-                            })
+                            tab && (
+                                <Route
+                                    exact
+                                    path={`${match.url}/${tab.props.path ||
+                                        (index > 0 ? index : '')}`}
+                                    render={() =>
+                                        cloneElement(tab, {
+                                            resource,
+                                            record,
+                                            basePath,
+                                        })}
+                                />
+                            )
                     )}
                 </div>
             </div>
@@ -142,6 +153,6 @@ TabbedShowLayout.propTypes = {
     translate: PropTypes.func,
 };
 
-const enhance = withStyles(styles);
+const enhance = compose(withRouter, withStyles(styles), translate);
 
 export default enhance(TabbedShowLayout);
