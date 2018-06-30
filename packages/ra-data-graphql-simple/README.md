@@ -79,16 +79,12 @@ type Mutation {
     title: String!
     views: Int!
     user_id: ID!
-    User: User
-    Comments: [Comment]
   ): Post
   updatePost(
     id: ID!
     title: String!
     views: Int!
     user_id: ID!
-    User: User
-    Comments: [Comment]
   ): Post
   deletePost(id: ID!): Boolean
 }
@@ -102,7 +98,7 @@ type Post {
     Comments: [Comment]
 }
 
-type PostFilter {
+input PostFilter {
     q: String
     id: ID
     title: String
