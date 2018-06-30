@@ -153,6 +153,19 @@ export class TabbedForm extends Component {
                                 record,
                                 basePath,
                                 hidden: this.state.value !== index,
+                                /**
+                                 * Force redraw when the tab becomes active
+                                 * 
+                                 * This is because the fields, decorated by redux-form and connect,
+                                 * aren't redrawn by default when the tab becomes active.
+                                 * Unfortunately, some material-ui fields (like multiline TextField)
+                                 * compute their size based on the scrollHeight of a dummy DOM element,
+                                 * and scrollHeight is 0 in a hidden div. So they must be redrawn
+                                 * once the tab becomes active.
+                                 * 
+                                 * @ref https://github.com/marmelab/react-admin/issues/1956
+                                 */
+                                key: `${index}_${this.state.value !== index}`,
                             })
                     )}
                     {toolbar &&
