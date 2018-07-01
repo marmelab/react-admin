@@ -72,12 +72,12 @@ describe('<TabbedForm />', () => {
                 <FormTab label="tab2" />
             </TabbedForm>
         );
-        const tabs = wrapper.find('WithStyles(Tab)');
+        const tabs = wrapper.find('TranslatedComponent(FormTab)');
         const tab1 = tabs.at(0);
         const tab2 = tabs.at(1);
 
-        assert.equal(tab1.prop('className'), 'form-tab');
-        assert.equal(tab2.prop('className'), 'form-tab error');
+        assert.equal(tab1.prop('className'), null);
+        assert.equal(tab2.prop('className'), 'error');
     });
 
     it('should not set the style of an active Tab button with errors', () => {
@@ -98,8 +98,8 @@ describe('<TabbedForm />', () => {
         const tab1 = tabs.at(0);
         const tab2 = tabs.at(1);
 
-        assert.equal(tab1.prop('className'), 'form-tab');
-        assert.equal(tab2.prop('className'), 'form-tab');
+        assert.equal(tab1.prop('className'), null);
+        assert.equal(tab2.prop('className'), null);
     });
 
     describe('findTabsWithErrors', () => {

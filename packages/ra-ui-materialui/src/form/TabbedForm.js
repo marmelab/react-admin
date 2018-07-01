@@ -114,26 +114,15 @@ export class TabbedForm extends Component {
                             ? `/${tab.props.path}`
                             : index > 0 ? `/${index}` : ''}`;
 
-                        return (
-                            <Tab
-                                key={tab.props.label}
-                                component={Link}
-                                to={tabPath}
-                                value={tabPath}
-                                {...tab.props}
-                                label={translate(tab.props.label, {
-                                    _: tab.props.label,
-                                })}
-                                icon={tab.props.icon}
-                                className={classnames(
-                                    'form-tab',
-                                    tabsWithErrors.includes(tab.props.label) &&
-                                    location.pathname !== tabPath
-                                        ? classes.errorTabButton
-                                        : null
-                                )}
-                            />
-                        );
+                        return React.cloneElement(tab, {
+                            context: 'header',
+                            value: tabPath,
+                            className:
+                                tabsWithErrors.includes(tab.props.label) &&
+                                location.pathname !== tabPath
+                                    ? classes.errorTabButton
+                                    : null,
+                        });
                     })}
                 </Tabs>
                 <Divider />
@@ -153,6 +142,7 @@ export class TabbedForm extends Component {
                                 >
                                     {routeProps =>
                                         React.cloneElement(tab, {
+                                            context: 'content',
                                             resource,
                                             record,
                                             basePath,
