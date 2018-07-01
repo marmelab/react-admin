@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import MuiTab from '@material-ui/core/Tab';
+import { translate } from 'ra-core';
+import classnames from 'classnames';
 
 import Labeled from '../input/Labeled';
-import classnames from 'classnames';
+
+const sanitizeRestProps = ({ label, icon, value, translate, ...rest }) => rest;
 
 /**
  * Tab element for the SimpleShowLayout.
@@ -46,56 +51,72 @@ import classnames from 'classnames';
  *     );
  *     export default App;
  */
-const Tab = ({
-    children,
-    className,
-    component,
-    context,
-    icon,
-    label,
-    translate,
-    value,
-    ...rest
-}) => (
-    <span className={className}>
-        {React.Children.map(
-            children,
-            field =>
-                field && (
-                    <div
-                        key={field.props.source}
-                        className={classnames(
-                            'ra-field',
-                            `ra-field-${field.props.source}`,
-                            field.props.className
-                        )}
-                    >
-                        {field.props.addLabel ? (
-                            <Labeled
-                                {...rest}
-                                label={field.props.label}
-                                source={field.props.source}
-                            >
-                                {field}
-                            </Labeled>
-                        ) : typeof field.type === 'string' ? (
-                            field
-                        ) : (
-                            React.cloneElement(field, rest)
-                        )}
-                    </div>
-                )
-        )}
-    </span>
-);
+class Tab extends Component {
+    renderHeader = ({ className, label, icon, value, translate, ...rest }) => (
+        <MuiTab
+            key={label}
+            label={translate(label, { _: label })}
+            value={value}
+            icon={icon}
+            className={classnames('show-tab', className)}
+            component={Link}
+            to={value}
+            {...sanitizeRestProps(rest)}
+        />
+    );
+
+    renderContent = ({ className, children, ...rest }) => (
+        <span className={className}>
+            {React.Children.map(
+                children,
+                field =>
+                    field && (
+                        <div
+                            key={field.props.source}
+                            className={classnames(
+                                'ra-field',
+                                `ra-field-${field.props.source}`,
+                                field.props.className
+                            )}
+                        >
+                            {field.props.addLabel ? (
+                                <Labeled
+                                    label={field.props.label}
+                                    source={field.props.source}
+                                    {...sanitizeRestProps(rest)}
+                                >
+                                    {field}
+                                </Labeled>
+                            ) : typeof field.type === 'string' ? (
+                                field
+                            ) : (
+                                React.cloneElement(
+                                    field,
+                                    sanitizeRestProps(rest)
+                                )
+                            )}
+                        </div>
+                    )
+            )}
+        </span>
+    );
+
+    render() {
+        const { children, context, ...rest } = this.props;
+        return context === 'header'
+            ? this.renderHeader(rest)
+            : this.renderContent({ children, ...rest });
+    }
+}
 
 Tab.propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
-    component: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+    context: PropTypes.oneOf(['header', 'content']),
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
-    value: PropTypes.number,
+    translate: PropTypes.func.isRequired,
+    value: PropTypes.string,
 };
 
-export default Tab;
+export default translate(Tab);

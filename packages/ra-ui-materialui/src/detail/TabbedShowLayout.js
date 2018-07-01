@@ -5,7 +5,7 @@ import Tabs from '@material-ui/core/Tabs';
 import MuiTab from '@material-ui/core/Tab';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
-import { withRouter, Link, Route } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
 import { translate } from 'ra-core';
 
@@ -100,20 +100,10 @@ export class TabbedShowLayout extends Component {
                             ? `/${tab.props.path}`
                             : index > 0 ? `/${index}` : ''}`;
 
-                        return (
-                            <MuiTab
-                                key={tab.props.label}
-                                component={Link}
-                                to={tabPath}
-                                value={tabPath}
-                                {...tab.props}
-                                label={translate(tab.props.label, {
-                                    _: tab.props.label,
-                                })}
-                                icon={tab.props.icon}
-                                className={classnames('show-tab', className)}
-                            />
-                        );
+                        return cloneElement(tab, {
+                            context: 'header',
+                            value: tabPath,
+                        });
                     })}
                 </Tabs>
                 <Divider />
@@ -128,6 +118,7 @@ export class TabbedShowLayout extends Component {
                                         (index > 0 ? index : '')}`}
                                     render={() =>
                                         cloneElement(tab, {
+                                            context: 'content',
                                             resource,
                                             record,
                                             basePath,
