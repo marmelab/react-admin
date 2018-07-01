@@ -8,11 +8,10 @@ import {
     getFormSubmitErrors,
 } from 'redux-form';
 import { connect } from 'react-redux';
-import { withRouter, Link, Route } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
 import Divider from '@material-ui/core/Divider';
 import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import { withStyles } from '@material-ui/core/styles';
 import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 
@@ -189,6 +188,8 @@ TabbedForm.propTypes = {
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
+    location: PropTypes.object,
+    match: PropTypes.object,
     pristine: PropTypes.bool,
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([

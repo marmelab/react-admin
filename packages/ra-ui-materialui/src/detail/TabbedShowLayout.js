@@ -1,8 +1,6 @@
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import Tabs from '@material-ui/core/Tabs';
-import MuiTab from '@material-ui/core/Tab';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter, Route } from 'react-router-dom';
@@ -136,6 +134,8 @@ TabbedShowLayout.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     classes: PropTypes.object,
+    location: PropTypes.object,
+    match: PropTypes.object,
     record: PropTypes.object,
     resource: PropTypes.string,
     basePath: PropTypes.string,
