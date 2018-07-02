@@ -4698,9 +4698,9 @@ doctrine@^2.0.0, doctrine@^2.0.2, doctrine@^2.1.0:
   dependencies:
     esutils "^2.0.2"
 
-docz-core@^0.3.4:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/docz-core/-/docz-core-0.3.4.tgz#23938419b2a38b5361af1bf5f4427af7c8b70f49"
+docz-core@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/docz-core/-/docz-core-0.4.0.tgz#9d286559c31c8830475884f09d106b33eff20faa"
   dependencies:
     "@babel/core" "7.0.0-beta.51"
     "@babel/preset-typescript" "^7.0.0-beta.51"
@@ -4720,7 +4720,7 @@ docz-core@^0.3.4:
     cpy "^7.0.1"
     deepmerge "^2.1.1"
     detect-port "^1.2.3"
-    docz-theme-default "^0.3.4"
+    docz-theme-default "^0.4.0"
     express "^4.16.3"
     fast-glob "^2.2.2"
     file-loader "^1.1.11"
@@ -4747,6 +4747,7 @@ docz-core@^0.3.4:
     remark-slug "^5.0.0"
     resolve "^1.8.1"
     signale "^1.2.1"
+    strip-indent "^2.0.0"
     to-vfile "^5.0.0"
     uglifyjs-webpack-plugin "^1.2.7"
     ulid "^2.3.0"
@@ -4765,22 +4766,22 @@ docz-core@^0.3.4:
     ws "^5.2.1"
     yargs "^11.0.0"
 
-docz-plugin-babel6@~0.3.4:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/docz-plugin-babel6/-/docz-plugin-babel6-0.3.4.tgz#62f57b5e9b71f528152f436ecba499d1d19bee20"
+docz-plugin-babel6@~0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/docz-plugin-babel6/-/docz-plugin-babel6-0.4.0.tgz#a9430c4e3c03ea9d117831c34c3636365e49d67a"
   dependencies:
     babel-core "^6.26.3"
     babel-loader "^7.1.4"
     babel-preset-react-app "^3.1.2"
-    docz-core "^0.3.4"
+    docz-core "^0.4.0"
     happypack "^5.0.0"
     ts-loader "^4.4.1"
 
-docz-theme-default@^0.3.4, docz-theme-default@~0.3.4:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/docz-theme-default/-/docz-theme-default-0.3.4.tgz#8884688c74362f218edd54ed8669d2466ed6deec"
+docz-theme-default@^0.4.0, docz-theme-default@~0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/docz-theme-default/-/docz-theme-default-0.4.0.tgz#04c3cb2cc8cd83312a6b7ca1e57a8532814ae290"
   dependencies:
-    docz "^0.3.4"
+    docz "^0.4.0"
     emotion "^9.2.4"
     emotion-theming "^9.2.4"
     facepaint "^1.2.1"
@@ -4795,18 +4796,19 @@ docz-theme-default@^0.3.4, docz-theme-default@~0.3.4:
     react-feather "^1.1.0"
     react-lightweight-tooltip "^1.0.0"
     react-powerplug "^0.1.6"
+    react-router-hash-link "^1.2.0"
     react-spinners "^0.3.2"
     webfontloader "^1.6.28"
 
-docz@^0.3.4, docz@~0.3.4:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/docz/-/docz-0.3.4.tgz#bfa0c5b29f5b80b8c3a921478cc9bdeb02865ced"
+docz@^0.4.0, docz@~0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/docz/-/docz-0.4.0.tgz#27b7ac412e958be52ee27a01e802ba161247b207"
   dependencies:
     "@mdx-js/tag" "^0.11.0"
     "@sindresorhus/slugify" "^0.3.0"
     deepmerge "^2.1.1"
-    docz-core "^0.3.4"
-    docz-theme-default "^0.3.4"
+    docz-core "^0.4.0"
+    docz-theme-default "^0.4.0"
     invariant "^2.2.4"
     loadable-components "^2.2.2"
     pascalcase "^0.1.1"
@@ -10951,6 +10953,12 @@ react-router-dom@~4.2.2:
     prop-types "^15.5.4"
     react-router "^4.2.0"
     warning "^3.0.0"
+
+react-router-hash-link@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-router-hash-link/-/react-router-hash-link-1.2.0.tgz#ce824cc5f0502ce9b0686bb6dd9c08659b24094c"
+  dependencies:
+    prop-types "^15.6.0"
 
 react-router-redux@~5.0.0-alpha.9:
   version "5.0.0-alpha.9"

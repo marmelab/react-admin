@@ -22,9 +22,9 @@
         "babel-preset-stage-0": "~6.24.1",
         "babel-register": "~6.26.0",
         "cheerio": "~1.0.0-rc.2",
-        "docz": "~0.3.4",
-        "docz-plugin-babel6": "~0.3.4",
-        "docz-theme-default": "~0.3.4",
+        "docz": "~0.4.0",
+        "docz-plugin-babel6": "~0.4.0",
+        "docz-theme-default": "~0.4.0",
         "emotion": "^9.2.4",
         "eslint": "~4.19.1",
         "eslint-config-prettier": "~2.9.0",
@@ -43,5 +43,9 @@
         "wait-on": "^2.1.0",
         "react-emotion": "^9.2.4"
     },
-    "workspaces": ["packages/*", "examples/*", "cypress"]
+    "workspaces": [
+        "packages/*",
+        "examples/*",
+        "cypress"
+    ]
 }
