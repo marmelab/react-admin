@@ -21,7 +21,7 @@ const styles = {
             'linear-gradient(to top, rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.4) 70%,rgba(0,0,0,0) 100%)',
     },
     link: {
-        color: 'white',
+        color: '#fff',
     },
 };
 

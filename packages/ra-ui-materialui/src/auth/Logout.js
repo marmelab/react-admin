@@ -83,7 +83,10 @@ const mapDispatchToProps = (dispatch, { redirectTo }) => ({
 
 const enhance = compose(
     translate,
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    ),
     withStyles(styles)
 );
 

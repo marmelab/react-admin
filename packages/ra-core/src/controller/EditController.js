@@ -6,10 +6,11 @@ import inflection from 'inflection';
 import { reset } from 'redux-form';
 import translate from '../i18n/translate';
 import { crudGetOne, crudUpdate, startUndoable } from '../actions';
+import { REDUX_FORM_NAME } from '../form';
 
 /**
  * Page component for the Edit view
- * 
+ *
  * The `<Edit>` component renders the page title and actions,
  * fetches the record from the data provider.
  * It is not responsible for rendering the actual form -
@@ -20,14 +21,14 @@ import { crudGetOne, crudUpdate, startUndoable } from '../actions';
  *
  * - title
  * - actions
- * 
+ *
  * Both expect an element for value.
- * 
- * @example     
+ *
+ * @example
  *     // in src/posts.js
  *     import React from 'react';
  *     import { Edit, SimpleForm, TextInput } from 'react-admin';
- *     
+ *
  *     export const PostEdit = (props) => (
  *         <Edit {...props}>
  *             <SimpleForm>
@@ -39,9 +40,9 @@ import { crudGetOne, crudUpdate, startUndoable } from '../actions';
  *     // in src/App.js
  *     import React from 'react';
  *     import { Admin, Resource } from 'react-admin';
- *     
+ *
  *     import { PostEdit } from './posts';
- *     
+ *
  *     const App = () => (
  *         <Admin dataProvider={...}>
  *             <Resource name="posts" edit={PostEdit} />
@@ -59,17 +60,9 @@ export class EditController extends Component {
             this.props.id !== nextProps.id ||
             nextProps.version !== this.props.version
         ) {
-            this.props.resetForm('record-form');
+            this.props.resetForm(REDUX_FORM_NAME);
             this.updateData(nextProps.resource, nextProps.id);
         }
-    }
-
-    getBasePath() {
-        const { location } = this.props;
-        return location.pathname
-            .split('/')
-            .slice(0, -1)
-            .join('/');
     }
 
     defaultRedirectRoute() {
@@ -77,7 +70,7 @@ export class EditController extends Component {
     }
 
     updateData(resource = this.props.resource, id = this.props.id) {
-        this.props.crudGetOne(resource, id, this.getBasePath());
+        this.props.crudGetOne(resource, id, this.props.basePath);
     }
 
     save = (data, redirect) => {
@@ -93,7 +86,7 @@ export class EditController extends Component {
                     this.props.id,
                     data,
                     this.props.record,
-                    this.getBasePath(),
+                    this.props.basePath,
                     redirect
                 )
             );
@@ -103,7 +96,7 @@ export class EditController extends Component {
                 this.props.id,
                 data,
                 this.props.record,
-                this.getBasePath(),
+                this.props.basePath,
                 redirect
             );
         }
@@ -111,18 +104,17 @@ export class EditController extends Component {
 
     render() {
         const {
+            basePath,
             children,
-            record,
             id,
             isLoading,
+            record,
             resource,
             translate,
             version,
         } = this.props;
 
         if (!children) return null;
-
-        const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
@@ -149,6 +141,7 @@ export class EditController extends Component {
 }
 
 EditController.propTypes = {
+    basePath: PropTypes.string.isRequired,
     children: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,
     dispatchCrudUpdate: PropTypes.func.isRequired,
@@ -172,11 +165,9 @@ EditController.propTypes = {
 
 function mapStateToProps(state, props) {
     return {
-        id: decodeURIComponent(props.match.params.id),
+        id: props.id,
         record: state.admin.resources[props.resource]
-            ? state.admin.resources[props.resource].data[
-                  decodeURIComponent(props.match.params.id)
-              ]
+            ? state.admin.resources[props.resource].data[props.id]
             : null,
         isLoading: state.admin.loading > 0,
         version: state.admin.ui.viewVersion,
@@ -184,11 +175,14 @@ function mapStateToProps(state, props) {
 }
 
 export default compose(
-    connect(mapStateToProps, {
-        crudGetOne,
-        dispatchCrudUpdate: crudUpdate,
-        startUndoable,
-        resetForm: reset,
-    }),
+    connect(
+        mapStateToProps,
+        {
+            crudGetOne,
+            dispatchCrudUpdate: crudUpdate,
+            startUndoable,
+            resetForm: reset,
+        }
+    ),
     translate
 )(EditController);

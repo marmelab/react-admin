@@ -5,7 +5,7 @@ export default url => ({
         inputs: `.ra-input`,
         tabs: `.form-tab`,
         submitButton: ".edit-page button[type='submit']",
-        tab: index => `button.form-tab:nth-of-type(${index})`,
+        tab: index => `.form-tab:nth-of-type(${index})`,
         title: '.title',
     },
 

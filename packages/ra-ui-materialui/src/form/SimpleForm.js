@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { getDefaultValues, translate } from 'ra-core';
+import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 import FormInput from './FormInput';
 import Toolbar from './Toolbar';
 
@@ -72,7 +72,9 @@ export class SimpleForm extends Component {
             invalid,
             pristine,
             record,
+            redirect,
             resource,
+            saving,
             submitOnEnter,
             toolbar,
             version,
@@ -99,6 +101,8 @@ export class SimpleForm extends Component {
                         handleSubmitWithRedirect: this.handleSubmitWithRedirect,
                         invalid,
                         pristine,
+                        redirect,
+                        saving,
                         submitOnEnter,
                     })}
             </form>
@@ -117,8 +121,13 @@ SimpleForm.propTypes = {
     pristine: PropTypes.bool,
     record: PropTypes.object,
     resource: PropTypes.string,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
+    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.element,
     validate: PropTypes.func,
@@ -132,11 +141,12 @@ SimpleForm.defaultProps = {
 
 const enhance = compose(
     connect((state, props) => ({
+        form: props.form || REDUX_FORM_NAME,
         initialValues: getDefaultValues(state, props),
+        saving: props.saving || state.admin.saving,
     })),
     translate, // Must be before reduxForm so that it can be used in validation
     reduxForm({
-        form: 'record-form',
         destroyOnUnmount: false,
         enableReinitialize: true,
     }),

@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
+import { withRouter, Route } from 'react-router-dom';
+import compose from 'recompose/compose';
+import { translate } from 'ra-core';
 
 const styles = {
     tab: { padding: '0 1em 1em 1em' },
@@ -17,21 +20,27 @@ const sanitizeRestProps = ({
     basePath,
     version,
     initialValues,
+    staticContext,
     translate,
     ...rest
 }) => rest;
 
+const getTabFullPath = (tab, index, baseUrl) =>
+    `${baseUrl}${
+        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
+    }`;
+
 /**
  * Tabbed Layout for a Show view, showing fields grouped in tabs.
- * 
+ *
  * Receives the current `record` from the parent `<Show>` component,
  * and passes it to its childen. Children should be Tab components.
  *
- * @example     
+ * @example
  *     // in src/posts.js
  *     import React from 'react';
  *     import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
- *     
+ *
  *     export const PostShow = (props) => (
  *         <Show {...props}>
  *             <TabbedShowLayout>
@@ -49,9 +58,9 @@ const sanitizeRestProps = ({
  *     // in src/App.js
  *     import React from 'react';
  *     import { Admin, Resource } from 'react-admin';
- *     
+ *
  *     import { PostShow } from './posts';
- *     
+ *
  *     const App = () => (
  *         <Admin dataProvider={...}>
  *             <Resource name="posts" show={PostShow} />
@@ -60,28 +69,22 @@ const sanitizeRestProps = ({
  *     export default App;
  */
 export class TabbedShowLayout extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: 0,
-        };
-    }
-
-    handleChange = (event, value) => {
-        this.setState({ value });
-    };
-
     render() {
         const {
+            basePath,
             children,
             className,
             classes,
+            location,
+            match,
             record,
             resource,
-            basePath,
+            translate,
             version,
+            value,
             ...rest
         } = this.props;
+
         return (
             <div
                 className={className}
@@ -90,33 +93,45 @@ export class TabbedShowLayout extends Component {
             >
                 <Tabs
                     scrollable
-                    value={this.state.value}
-                    onChange={this.handleChange}
+                    // The location pathname will contain the page path including the current tab path
+                    // so we can use it as a way to determine the current tab
+                    value={location.pathname}
                     indicatorColor="primary"
                 >
-                    {Children.map(
-                        children,
-                        (tab, index) =>
-                            tab &&
-                            cloneElement(tab, {
-                                context: 'header',
-                                value: index,
-                            })
-                    )}
+                    {Children.map(children, (tab, index) => {
+                        if (!tab) return null;
+
+                        // Builds the full tab tab which is the concatenation of the last matched route in the
+                        // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
+                        // and the tab path.
+                        // This will be used as the Tab's value
+                        const tabPath = getTabFullPath(tab, index, match.url);
+
+                        return cloneElement(tab, {
+                            context: 'header',
+                            value: tabPath,
+                        });
+                    })}
                 </Tabs>
                 <Divider />
                 <div className={classes.tab}>
                     {Children.map(
                         children,
                         (tab, index) =>
-                            tab &&
-                            this.state.value === index &&
-                            cloneElement(tab, {
-                                context: 'content',
-                                resource,
-                                record,
-                                basePath,
-                            })
+                            tab && (
+                                <Route
+                                    exact
+                                    path={getTabFullPath(tab, index, match.url)}
+                                    render={() =>
+                                        cloneElement(tab, {
+                                            context: 'content',
+                                            resource,
+                                            record,
+                                            basePath,
+                                        })
+                                    }
+                                />
+                            )
                     )}
                 </div>
             </div>
@@ -128,13 +143,20 @@ TabbedShowLayout.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     classes: PropTypes.object,
+    location: PropTypes.object,
+    match: PropTypes.object,
     record: PropTypes.object,
     resource: PropTypes.string,
     basePath: PropTypes.string,
+    value: PropTypes.number,
     version: PropTypes.number,
     translate: PropTypes.func,
 };
 
-const enhance = withStyles(styles);
+const enhance = compose(
+    withRouter,
+    withStyles(styles),
+    translate
+);
 
 export default enhance(TabbedShowLayout);

@@ -10,7 +10,7 @@ export default (url, initialField = 'title') => driver => ({
         fields: By.css(`.ra-field`),
         snackbar: By.css('div[role="alertdialog"]'),
         tabs: By.css(`.show-tab`),
-        tab: index => By.css(`button.show-tab:nth-of-type(${index})`),
+        tab: index => By.css(`.show-tab:nth-of-type(${index})`),
     },
 
     navigate() {

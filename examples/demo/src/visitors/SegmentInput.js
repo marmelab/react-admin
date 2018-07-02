@@ -20,9 +20,10 @@ const SegmentInput = ({ classes, translate, ...rest }) => (
     />
 );
 
-const TranslatedSegmentInput = compose(translate, withStyles(styles))(
-    SegmentInput
-);
+const TranslatedSegmentInput = compose(
+    translate,
+    withStyles(styles)
+)(SegmentInput);
 
 TranslatedSegmentInput.defaultProps = {
     source: 'groups',

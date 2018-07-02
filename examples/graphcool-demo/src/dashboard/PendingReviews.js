@@ -67,8 +67,9 @@ const PendingReviews = ({
                 >
                     {record.customer && customers[record.customer.id] ? (
                         <Avatar
-                            src={`${customers[record.customer.id]
-                                .avatar}?size=32x32`}
+                            src={`${
+                                customers[record.customer.id].avatar
+                            }?size=32x32`}
                             className={classes.avatar}
                         />
                     ) : (
@@ -87,6 +88,9 @@ const PendingReviews = ({
     </Card>
 );
 
-const enhance = compose(withStyles(styles), translate);
+const enhance = compose(
+    withStyles(styles),
+    translate
+);
 
 export default enhance(PendingReviews);

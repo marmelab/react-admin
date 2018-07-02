@@ -67,4 +67,7 @@ export class Authenticated extends Component {
     }
 }
 
-export default connect(null, { userCheck })(Authenticated);
+export default connect(
+    null,
+    { userCheck }
+)(Authenticated);

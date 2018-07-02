@@ -31,4 +31,7 @@ BulkRejectAction.propTypes = {
     startUndoable: PropTypes.func.isRequired,
 };
 
-export default connect(undefined, { startUndoable })(BulkRejectAction);
+export default connect(
+    undefined,
+    { startUndoable }
+)(BulkRejectAction);

@@ -137,6 +137,7 @@ ReferenceField.propTypes = {
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,
+    sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     translateChoice: PropTypes.func,
     linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])

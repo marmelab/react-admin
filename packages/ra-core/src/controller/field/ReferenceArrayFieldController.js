@@ -88,6 +88,7 @@ ReferenceArrayFieldController.propTypes = {
     record: PropTypes.object.isRequired,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string.isRequired,
+    sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
 };
 
@@ -100,6 +101,9 @@ const mapStateToProps = (state, props) => {
     };
 };
 
-export default connect(mapStateToProps, {
-    crudGetManyAccumulate: crudGetManyAccumulateAction,
-})(ReferenceArrayFieldController);
+export default connect(
+    mapStateToProps,
+    {
+        crudGetManyAccumulate: crudGetManyAccumulateAction,
+    }
+)(ReferenceArrayFieldController);

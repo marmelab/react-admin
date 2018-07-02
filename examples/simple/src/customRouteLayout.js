@@ -31,6 +31,7 @@ const mapStateToProps = state => ({
         : 0,
 });
 
-export default connect(mapStateToProps, { crudGetList: crudGetListAction })(
-    CustomRouteLayout
-);
+export default connect(
+    mapStateToProps,
+    { crudGetList: crudGetListAction }
+)(CustomRouteLayout);

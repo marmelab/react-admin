@@ -89,6 +89,8 @@ export class SimpleFormIterator extends Component {
             record,
             resource,
             translate,
+            disableAdd,
+            disableRemove,
         } = this.props;
         return fields ? (
             <ul className={classes.root}>
@@ -112,8 +114,9 @@ export class SimpleFormIterator extends Component {
                                         <FormInput
                                             basePath={basePath}
                                             input={cloneElement(input, {
-                                                source: `${member}.${input.props
-                                                    .source}`,
+                                                source: `${member}.${
+                                                    input.props.source
+                                                }`,
                                                 label:
                                                     input.props.label ||
                                                     input.props.source,
@@ -123,33 +126,42 @@ export class SimpleFormIterator extends Component {
                                         />
                                     ))}
                                 </section>
-                                <span className={classes.action}>
-                                    <Button
-                                        size="small"
-                                        onClick={this.removeField(index)}
-                                    >
-                                        <CloseIcon
-                                            className={classes.leftIcon}
-                                        />
-                                        {translate('ra.action.remove')}
-                                    </Button>
-                                </span>
+                                {!disableRemove && (
+                                    <span className={classes.action}>
+                                        <Button
+                                            size="small"
+                                            onClick={this.removeField(index)}
+                                        >
+                                            <CloseIcon
+                                                className={classes.leftIcon}
+                                            />
+                                            {translate('ra.action.remove')}
+                                        </Button>
+                                    </span>
+                                )}
                             </li>
                         </CSSTransition>
                     ))}
                 </TransitionGroup>
-                <li className={classes.line}>
-                    <span className={classes.action}>
-                        <Button size="small" onClick={this.addField}>
-                            <AddIcon className={classes.leftIcon} />
-                            {translate('ra.action.add')}
-                        </Button>
-                    </span>
-                </li>
+                {!disableAdd && (
+                    <li className={classes.line}>
+                        <span className={classes.action}>
+                            <Button size="small" onClick={this.addField}>
+                                <AddIcon className={classes.leftIcon} />
+                                {translate('ra.action.add')}
+                            </Button>
+                        </span>
+                    </li>
+                )}
             </ul>
         ) : null;
     }
 }
+
+SimpleFormIterator.defaultProps = {
+    disableAdd: false,
+    disableRemove: false,
+};
 
 SimpleFormIterator.propTypes = {
     basePath: PropTypes.string,
@@ -161,6 +173,11 @@ SimpleFormIterator.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     translate: PropTypes.func,
+    disableAdd: PropTypes.bool,
+    disableRemove: PropTypes.bool,
 };
 
-export default compose(translate, withStyles(styles))(SimpleFormIterator);
+export default compose(
+    translate,
+    withStyles(styles)
+)(SimpleFormIterator);

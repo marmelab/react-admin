@@ -57,6 +57,9 @@ const NewCustomers = ({ visitors = [], nb, translate, classes }) => (
     </Card>
 );
 
-const enhance = compose(withStyles(styles), translate);
+const enhance = compose(
+    withStyles(styles),
+    translate
+);
 
 export default enhance(NewCustomers);

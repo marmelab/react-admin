@@ -92,6 +92,7 @@ ReferenceFieldController.propTypes = {
     reference: PropTypes.string.isRequired,
     referenceRecord: PropTypes.object,
     resource: PropTypes.string,
+    sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     translateChoice: PropTypes.func,
     linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
@@ -113,6 +114,9 @@ const mapStateToProps = (state, props) => ({
         ],
 });
 
-export default connect(mapStateToProps, {
-    crudGetManyAccumulate: crudGetManyAccumulateAction,
-})(ReferenceFieldController);
+export default connect(
+    mapStateToProps,
+    {
+        crudGetManyAccumulate: crudGetManyAccumulateAction,
+    }
+)(ReferenceFieldController);

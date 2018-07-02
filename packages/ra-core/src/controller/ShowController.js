@@ -8,7 +8,7 @@ import { crudGetOne as crudGetOneAction } from '../actions';
 
 /**
  * Page component for the Show view
- * 
+ *
  * The `<Show>` component renders the page title and actions,
  * fetches the record from the data provider.
  * It is not responsible for rendering the actual form -
@@ -19,14 +19,14 @@ import { crudGetOne as crudGetOneAction } from '../actions';
  *
  * - title
  * - actions
- * 
+ *
  * Both expect an element for value.
- * 
- * @example     
+ *
+ * @example
  *     // in src/posts.js
  *     import React from 'react';
  *     import { Show, SimpleShowLayout, TextField } from 'react-admin';
- *     
+ *
  *     export const PostShow = (props) => (
  *         <Show {...props}>
  *             <SimpleShowLayout>
@@ -38,9 +38,9 @@ import { crudGetOne as crudGetOneAction } from '../actions';
  *     // in src/App.js
  *     import React from 'react';
  *     import { Admin, Resource } from 'react-admin';
- *     
+ *
  *     import { PostShow } from './posts';
- *     
+ *
  *     const App = () => (
  *         <Admin dataProvider={...}>
  *             <Resource name="posts" show={PostShow} />
@@ -62,32 +62,24 @@ export class ShowController extends Component {
         }
     }
 
-    getBasePath() {
-        const { location } = this.props;
-        return location.pathname
-            .split('/')
-            .slice(0, -2)
-            .join('/');
-    }
-
     updateData(resource = this.props.resource, id = this.props.id) {
-        this.props.crudGetOne(resource, id, this.getBasePath());
+        this.props.crudGetOne(resource, id, this.props.basePath);
     }
 
     render() {
         const {
-            title,
+            basePath,
             children,
             id,
-            record,
             isLoading,
+            record,
             resource,
+            title,
             translate,
             version,
         } = this.props;
 
         if (!children) return null;
-        const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
@@ -112,6 +104,7 @@ export class ShowController extends Component {
 }
 
 ShowController.propTypes = {
+    basePath: PropTypes.string.isRequired,
     children: PropTypes.func.isRequired,
     crudGetOne: PropTypes.func.isRequired,
     record: PropTypes.object,
@@ -121,8 +114,6 @@ ShowController.propTypes = {
     hasShow: PropTypes.bool,
     id: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     translate: PropTypes.func,
@@ -131,11 +122,9 @@ ShowController.propTypes = {
 
 function mapStateToProps(state, props) {
     return {
-        id: decodeURIComponent(props.match.params.id),
+        id: props.id,
         record: state.admin.resources[props.resource]
-            ? state.admin.resources[props.resource].data[
-                  decodeURIComponent(props.match.params.id)
-              ]
+            ? state.admin.resources[props.resource].data[props.id]
             : null,
         isLoading: state.admin.loading > 0,
         version: state.admin.ui.viewVersion,
@@ -143,6 +132,9 @@ function mapStateToProps(state, props) {
 }
 
 export default compose(
-    connect(mapStateToProps, { crudGetOne: crudGetOneAction }),
+    connect(
+        mapStateToProps,
+        { crudGetOne: crudGetOneAction }
+    ),
     translate
 )(ShowController);

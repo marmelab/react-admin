@@ -107,7 +107,11 @@ SaveButton.propTypes = {
     invalid: PropTypes.bool,
     label: PropTypes.string,
     pristine: PropTypes.bool,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
     saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     showNotification: PropTypes.func,
     submitOnEnter: PropTypes.bool,
@@ -119,13 +123,12 @@ SaveButton.defaultProps = {
     handleSubmitWithRedirect: () => () => {},
 };
 
-const mapStateToProps = state => ({
-    saving: state.admin.saving,
-});
-
 const enhance = compose(
     translate,
-    connect(mapStateToProps, { showNotification }),
+    connect(
+        undefined,
+        { showNotification }
+    ),
     withStyles(styles)
 );
 

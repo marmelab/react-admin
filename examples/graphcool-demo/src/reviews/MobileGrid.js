@@ -49,9 +49,7 @@ const MobileGrid = withStyles(listStyles)(
                         title={
                             <div className={classes.cardTitleContent}>
                                 <span>
-                                    {translate(
-                                        'resources.reviews.fields.date'
-                                    )}:&nbsp;
+                                    {translate('resources.reviews.fields.date')}:&nbsp;
                                     <DateField
                                         record={data[id]}
                                         source="date"
@@ -68,10 +66,7 @@ const MobileGrid = withStyles(listStyles)(
                     />
                     <CardContent className={classes.cardContent}>
                         <span className={classes.cardContentRow}>
-                            {translate(
-                                'resources.reviews.fields.rating',
-                                1
-                            )}:&nbsp;
+                            {translate('resources.reviews.fields.rating', 1)}:&nbsp;
                             <StarRatingField record={data[id]} />
                         </span>
                         <span className={classes.cardContentRow}>
@@ -82,9 +77,7 @@ const MobileGrid = withStyles(listStyles)(
                             />
                         </span>
                         <span className={classes.cardContentRow}>
-                            {translate(
-                                'resources.reviews.fields.product_id'
-                            )}:&nbsp;
+                            {translate('resources.reviews.fields.product_id')}:&nbsp;
                             <ProductReferenceField
                                 record={data[id]}
                                 basePath={basePath}

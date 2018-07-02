@@ -27,6 +27,7 @@ BooleanField.propTypes = {
     headerClassName: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.object,
+    sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
 };
 

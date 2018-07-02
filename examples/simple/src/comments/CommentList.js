@@ -151,7 +151,8 @@ const CommentMobileList = props => (
         primaryText={record => record.author.name}
         secondaryText={record => record.body}
         tertiaryText={record =>
-            new Date(record.created_at).toLocaleDateString()}
+            new Date(record.created_at).toLocaleDateString()
+        }
         leftAvatar={() => <PersonIcon />}
         {...props}
     />

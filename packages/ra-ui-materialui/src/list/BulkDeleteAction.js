@@ -40,10 +40,13 @@ BulkDeleteAction.propTypes = {
 };
 
 const EnhancedBulkDeleteAction = compose(
-    connect(undefined, {
-        startUndoable,
-        dispatchCrudDeleteMany: crudDeleteMany,
-    }),
+    connect(
+        undefined,
+        {
+            startUndoable,
+            dispatchCrudDeleteMany: crudDeleteMany,
+        }
+    ),
     translate
 )(BulkDeleteAction);
 

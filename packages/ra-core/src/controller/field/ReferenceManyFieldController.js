@@ -146,6 +146,7 @@ ReferenceManyFieldController.propTypes = {
         field: PropTypes.string,
         order: PropTypes.oneOf(['ASC', 'DESC']),
     }),
+    sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
     isLoading: PropTypes.bool,
@@ -172,6 +173,9 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default connect(mapStateToProps, {
-    crudGetManyReference: crudGetManyReferenceAction,
-})(ReferenceManyFieldController);
+export default connect(
+    mapStateToProps,
+    {
+        crudGetManyReference: crudGetManyReferenceAction,
+    }
+)(ReferenceManyFieldController);

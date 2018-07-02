@@ -26,8 +26,8 @@ export default (db, chance) => {
                     width: width,
                     height: height,
                     price: chance.floating({
-                        min: width * height / 20,
-                        max: width * height / 15,
+                        min: (width * height) / 20,
+                        max: (width * height) / 15,
                         fixed: 2,
                     }),
                     thumbnail:

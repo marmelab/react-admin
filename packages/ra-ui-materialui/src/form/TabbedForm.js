@@ -8,12 +8,12 @@ import {
     getFormSubmitErrors,
 } from 'redux-form';
 import { connect } from 'react-redux';
+import { withRouter, Route } from 'react-router-dom';
 import compose from 'recompose/compose';
 import Divider from '@material-ui/core/Divider';
 import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import { withStyles } from '@material-ui/core/styles';
-import { getDefaultValues, translate } from 'ra-core';
+import { getDefaultValues, translate, REDUX_FORM_NAME } from 'ra-core';
 
 import Toolbar from './Toolbar';
 
@@ -55,6 +55,7 @@ const sanitizeRestProps = ({
     reset,
     resetSection,
     save,
+    staticContext,
     submit,
     submitFailed,
     submitSucceeded,
@@ -68,18 +69,12 @@ const sanitizeRestProps = ({
     ...props
 }) => props;
 
+const getTabFullPath = (tab, index, baseUrl) =>
+    `${baseUrl}${
+        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
+    }`;
+
 export class TabbedForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: 0,
-        };
-    }
-
-    handleChange = (event, value) => {
-        this.setState({ value });
-    };
-
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
         this.props.handleSubmit(values => this.props.save(values, redirect));
 
@@ -90,13 +85,18 @@ export class TabbedForm extends Component {
             className,
             classes = {},
             invalid,
+            location,
+            match,
             pristine,
             record,
+            redirect,
             resource,
+            saving,
             submitOnEnter,
             tabsWithErrors,
             toolbar,
             translate,
+            value,
             version,
             ...rest
         } = this.props;
@@ -109,32 +109,30 @@ export class TabbedForm extends Component {
             >
                 <Tabs
                     scrollable
-                    value={this.state.value}
-                    onChange={this.handleChange}
+                    // The location pathname will contain the page path including the current tab path
+                    // so we can use it as a way to determine the current tab
+                    value={location.pathname}
                     indicatorColor="primary"
                 >
-                    {Children.map(
-                        children,
-                        (tab, index) =>
-                            tab ? (
-                                <Tab
-                                    key={tab.props.label}
-                                    label={translate(tab.props.label, {
-                                        _: tab.props.label,
-                                    })}
-                                    value={index}
-                                    icon={tab.props.icon}
-                                    className={classnames(
-                                        'form-tab',
-                                        tabsWithErrors.includes(
-                                            tab.props.label
-                                        ) && this.state.value !== index
-                                            ? classes.errorTabButton
-                                            : null
-                                    )}
-                                />
-                            ) : null
-                    )}
+                    {Children.map(children, (tab, index) => {
+                        if (!tab) return null;
+
+                        // Builds the full tab tab which is the concatenation of the last matched route in the
+                        // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
+                        // and the tab path.
+                        // This will be used as the Tab's value
+                        const tabPath = getTabFullPath(tab, index, match.url);
+
+                        return React.cloneElement(tab, {
+                            context: 'header',
+                            value: tabPath,
+                            className:
+                                tabsWithErrors.includes(tab.props.label) &&
+                                location.pathname !== tabPath
+                                    ? classes.errorTabButton
+                                    : null,
+                        });
+                    })}
                 </Tabs>
                 <Divider />
                 <div className={classes.form}>
@@ -145,13 +143,35 @@ export class TabbedForm extends Component {
                     {Children.map(
                         children,
                         (tab, index) =>
-                            tab &&
-                            React.cloneElement(tab, {
-                                resource,
-                                record,
-                                basePath,
-                                hidden: this.state.value !== index,
-                            })
+                            tab && (
+                                <Route
+                                    exact
+                                    path={getTabFullPath(tab, index, match.url)}
+                                >
+                                    {routeProps =>
+                                        React.cloneElement(tab, {
+                                            context: 'content',
+                                            resource,
+                                            record,
+                                            basePath,
+                                            hidden: !routeProps.match,
+                                            /**
+                                             * Force redraw when the tab becomes active
+                                             *
+                                             * This is because the fields, decorated by redux-form and connect,
+                                             * aren't redrawn by default when the tab becomes active.
+                                             * Unfortunately, some material-ui fields (like multiline TextField)
+                                             * compute their size based on the scrollHeight of a dummy DOM element,
+                                             * and scrollHeight is 0 in a hidden div. So they must be redrawn
+                                             * once the tab becomes active.
+                                             *
+                                             * @ref https://github.com/marmelab/react-admin/issues/1956
+                                             */
+                                            key: `${index}_${!routeProps.match}`,
+                                        })
+                                    }
+                                </Route>
+                            )
                     )}
                     {toolbar &&
                         React.cloneElement(toolbar, {
@@ -160,6 +180,8 @@ export class TabbedForm extends Component {
                                 .handleSubmitWithRedirect,
                             invalid,
                             pristine,
+                            redirect,
+                            saving,
                             submitOnEnter,
                         })}
                 </div>
@@ -176,16 +198,24 @@ TabbedForm.propTypes = {
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     handleSubmit: PropTypes.func, // passed by redux-form
     invalid: PropTypes.bool,
+    location: PropTypes.object,
+    match: PropTypes.object,
     pristine: PropTypes.bool,
     record: PropTypes.object,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
     resource: PropTypes.string,
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
+    saving: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     submitOnEnter: PropTypes.bool,
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
     toolbar: PropTypes.element,
     translate: PropTypes.func,
     validate: PropTypes.func,
+    value: PropTypes.number,
     version: PropTypes.number,
 };
 
@@ -194,10 +224,10 @@ TabbedForm.defaultProps = {
     toolbar: <Toolbar />,
 };
 
-const collectErrors = state => {
-    const syncErrors = getFormSyncErrors('record-form')(state);
-    const asyncErrors = getFormAsyncErrors('record-form')(state);
-    const submitErrors = getFormSubmitErrors('record-form')(state);
+const collectErrors = (state, props) => {
+    const syncErrors = getFormSyncErrors(props.form)(state);
+    const asyncErrors = getFormAsyncErrors(props.form)(state);
+    const submitErrors = getFormSubmitErrors(props.form)(state);
 
     return {
         ...syncErrors,
@@ -211,7 +241,7 @@ export const findTabsWithErrors = (
     props,
     collectErrorsImpl = collectErrors
 ) => {
-    const errors = collectErrorsImpl(state);
+    const errors = collectErrorsImpl(state, props);
 
     return Children.toArray(props.children).reduce((acc, child) => {
         const inputs = Children.toArray(child.props.children);
@@ -225,6 +255,7 @@ export const findTabsWithErrors = (
 };
 
 const enhance = compose(
+    withRouter,
     connect((state, props) => {
         const children = Children.toArray(props.children).reduce(
             (acc, child) => [...acc, ...Children.toArray(child.props.children)],
@@ -232,13 +263,17 @@ const enhance = compose(
         );
 
         return {
-            tabsWithErrors: findTabsWithErrors(state, props),
+            form: props.form || REDUX_FORM_NAME,
             initialValues: getDefaultValues(state, { ...props, children }),
+            saving: props.saving || state.admin.saving,
+            tabsWithErrors: findTabsWithErrors(state, {
+                form: REDUX_FORM_NAME,
+                ...props,
+            }),
         };
     }),
     translate, // Must be before reduxForm so that it can be used in validation
     reduxForm({
-        form: 'record-form',
         destroyOnUnmount: false,
         enableReinitialize: true,
     }),

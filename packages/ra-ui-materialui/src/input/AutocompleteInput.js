@@ -498,6 +498,8 @@ AutocompleteInput.defaultProps = {
             .trim(),
 };
 
-export default compose(addField, translate, withStyles(styles))(
-    AutocompleteInput
-);
+export default compose(
+    addField,
+    translate,
+    withStyles(styles)
+)(AutocompleteInput);

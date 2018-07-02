@@ -8,7 +8,7 @@ import { crudCreate as crudCreateAction } from '../actions';
 
 /**
  * Page component for the Create view
- * 
+ *
  * The `<Create>` component renders the page title and actions.
  * It is not responsible for rendering the actual form -
  * that's the job of its child component (usually `<SimpleForm>`),
@@ -18,14 +18,14 @@ import { crudCreate as crudCreateAction } from '../actions';
  *
  * - title
  * - actions
- * 
+ *
  * Both expect an element for value.
- * 
- * @example     
+ *
+ * @example
  *     // in src/posts.js
  *     import React from 'react';
  *     import { Create, SimpleForm, TextInput } from 'react-admin';
- *     
+ *
  *     export const PostCreate = (props) => (
  *         <Create {...props}>
  *             <SimpleForm>
@@ -37,9 +37,9 @@ import { crudCreate as crudCreateAction } from '../actions';
  *     // in src/App.js
  *     import React from 'react';
  *     import { Admin, Resource } from 'react-admin';
- *     
+ *
  *     import { PostCreate } from './posts';
- *     
+ *
  *     const App = () => (
  *         <Admin dataProvider={...}>
  *             <Resource name="posts" create={PostCreate} />
@@ -48,14 +48,6 @@ import { crudCreate as crudCreateAction } from '../actions';
  *     export default App;
  */
 class CreateController extends Component {
-    getBasePath() {
-        const { location } = this.props;
-        return location.pathname
-            .split('/')
-            .slice(0, -1)
-            .join('/');
-    }
-
     defaultRedirectRoute() {
         const { hasShow, hasEdit } = this.props;
         if (hasEdit) return 'edit';
@@ -67,16 +59,22 @@ class CreateController extends Component {
         this.props.crudCreate(
             this.props.resource,
             record,
-            this.getBasePath(),
+            this.props.basePath,
             redirect
         );
     };
 
     render() {
-        const { children, isLoading, record, resource, translate } = this.props;
+        const {
+            basePath,
+            children,
+            isLoading,
+            record,
+            resource,
+            translate,
+        } = this.props;
 
         if (!children) return null;
-        const basePath = this.getBasePath();
 
         const resourceName = translate(`resources.${resource}.name`, {
             smart_count: 1,
@@ -99,6 +97,7 @@ class CreateController extends Component {
 }
 
 CreateController.propTypes = {
+    basePath: PropTypes.string.isRequired,
     children: PropTypes.func.isRequired,
     crudCreate: PropTypes.func.isRequired,
     hasCreate: PropTypes.bool,
@@ -125,6 +124,9 @@ function mapStateToProps(state) {
 }
 
 export default compose(
-    connect(mapStateToProps, { crudCreate: crudCreateAction }),
+    connect(
+        mapStateToProps,
+        { crudCreate: crudCreateAction }
+    ),
     translate
 )(CreateController);

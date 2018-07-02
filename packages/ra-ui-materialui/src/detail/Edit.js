@@ -77,15 +77,15 @@ export const EditView = ({
             />
             {record ? (
                 React.cloneElement(children, {
-                    save,
-                    resource,
                     basePath,
                     record,
-                    version,
                     redirect:
                         typeof children.props.redirect === 'undefined'
                             ? redirect
                             : children.props.redirect,
+                    resource,
+                    save,
+                    version,
                 })
             ) : (
                 <CardContent>&nbsp;</CardContent>
@@ -112,7 +112,7 @@ EditView.propTypes = {
 
 /**
  * Page component for the Edit view
- * 
+ *
  * The `<Edit>` component renders the page title and actions,
  * fetches the record from the data provider.
  * It is not responsible for rendering the actual form -
@@ -123,14 +123,14 @@ EditView.propTypes = {
  *
  * - title
  * - actions
- * 
+ *
  * Both expect an element for value.
- * 
- * @example     
+ *
+ * @example
  *     // in src/posts.js
  *     import React from 'react';
  *     import { Edit, SimpleForm, TextInput } from 'react-admin';
- *     
+ *
  *     export const PostEdit = (props) => (
  *         <Edit {...props}>
  *             <SimpleForm>
@@ -142,9 +142,9 @@ EditView.propTypes = {
  *     // in src/App.js
  *     import React from 'react';
  *     import { Admin, Resource } from 'react-admin';
- *     
+ *
  *     import { PostEdit } from './posts';
- *     
+ *
  *     const App = () => (
  *         <Admin dataProvider={...}>
  *             <Resource name="posts" edit={PostEdit} />
@@ -166,8 +166,7 @@ Edit.propTypes = {
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
     hasList: PropTypes.bool,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
+    id: PropTypes.any.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
 };

@@ -26,4 +26,7 @@ ResetViewsAction.propTypes = {
     startUndoable: PropTypes.func.isRequired,
 };
 
-export default connect(undefined, { startUndoable })(ResetViewsAction);
+export default connect(
+    undefined,
+    { startUndoable }
+)(ResetViewsAction);

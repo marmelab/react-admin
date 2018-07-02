@@ -41,8 +41,9 @@ const PendingOrders = ({ orders = [], customers = {}, translate, classes }) => (
                     {customers[record.customer_id] ? (
                         <Avatar
                             className={classes.avatar}
-                            src={`${customers[record.customer_id]
-                                .avatar}?size=32x32`}
+                            src={`${
+                                customers[record.customer_id].avatar
+                            }?size=32x32`}
                         />
                     ) : (
                         <Avatar />
@@ -53,10 +54,9 @@ const PendingOrders = ({ orders = [], customers = {}, translate, classes }) => (
                             smart_count: record.basket.length,
                             nb_items: record.basket.length,
                             customer_name: customers[record.customer_id]
-                                ? `${customers[record.customer_id]
-                                      .first_name} ${customers[
-                                      record.customer_id
-                                  ].last_name}`
+                                ? `${
+                                      customers[record.customer_id].first_name
+                                  } ${customers[record.customer_id].last_name}`
                                 : '',
                         })}
                     />
@@ -69,6 +69,9 @@ const PendingOrders = ({ orders = [], customers = {}, translate, classes }) => (
     </Card>
 );
 
-const enhance = compose(withStyles(style), translate);
+const enhance = compose(
+    withStyles(style),
+    translate
+);
 
 export default enhance(PendingOrders);

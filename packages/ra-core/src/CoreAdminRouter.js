@@ -144,7 +144,8 @@ export class CoreAdminRouter extends Component {
                                     this.renderCustomRoutesWithoutLayout(
                                         route,
                                         props
-                                    )}
+                                    )
+                                }
                             />
                         ))}
                     <Route
@@ -167,7 +168,8 @@ export class CoreAdminRouter extends Component {
                                 menu,
                                 theme,
                                 title,
-                            })}
+                            })
+                        }
                     />
                 </Switch>
             </div>
@@ -204,5 +206,8 @@ export default compose(
     getContext({
         authProvider: PropTypes.func,
     }),
-    connect(mapStateToProps, { userLogout })
+    connect(
+        mapStateToProps,
+        { userLogout }
+    )
 )(CoreAdminRouter);

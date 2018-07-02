@@ -242,4 +242,8 @@ SelectInput.defaultProps = {
     translateChoice: true,
 };
 
-export default compose(addField, translate, withStyles(styles))(SelectInput);
+export default compose(
+    addField,
+    translate,
+    withStyles(styles)
+)(SelectInput);

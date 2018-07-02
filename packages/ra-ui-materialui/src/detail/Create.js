@@ -66,14 +66,14 @@ export const CreateView = ({
                 }}
             />
             {React.cloneElement(children, {
-                save,
-                resource,
                 basePath,
                 record,
                 redirect:
                     typeof children.props.redirect === 'undefined'
                         ? redirect
                         : children.props.redirect,
+                resource,
+                save,
             })}
         </Card>
     </div>
@@ -96,7 +96,7 @@ CreateView.propTypes = {
 
 /**
  * Page component for the Create view
- * 
+ *
  * The `<Create>` component renders the page title and actions.
  * It is not responsible for rendering the actual form -
  * that's the job of its child component (usually `<SimpleForm>`),
@@ -106,14 +106,14 @@ CreateView.propTypes = {
  *
  * - title
  * - actions
- * 
+ *
  * Both expect an element for value.
- * 
- * @example     
+ *
+ * @example
  *     // in src/posts.js
  *     import React from 'react';
  *     import { Create, SimpleForm, TextInput } from 'react-admin';
- *     
+ *
  *     export const PostCreate = (props) => (
  *         <Create {...props}>
  *             <SimpleForm>
@@ -125,9 +125,9 @@ CreateView.propTypes = {
  *     // in src/App.js
  *     import React from 'react';
  *     import { Admin, Resource } from 'react-admin';
- *     
+ *
  *     import { PostCreate } from './posts';
- *     
+ *
  *     const App = () => (
  *         <Admin dataProvider={...}>
  *             <Resource name="posts" create={PostCreate} />
@@ -148,8 +148,6 @@ Create.propTypes = {
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     title: PropTypes.any,
     record: PropTypes.object,

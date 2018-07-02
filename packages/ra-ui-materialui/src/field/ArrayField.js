@@ -10,7 +10,7 @@ const initialState = {
 
 /**
  * Display a collection
- * 
+ *
  * Ideal for embedded arrays of objects, e.g.
  * {
  *   id: 123
@@ -19,10 +19,10 @@ const initialState = {
  *     { name: 'bar' }
  *   ]
  * }
- * 
+ *
  * The child must be an iterator component
  * (like <Datagrid> or <SingleFieldList>).
- * 
+ *
  * @example Display all the backlinks of the current post as a <Datagrid>
  * // post = {
  * //   id: 123
@@ -60,7 +60,7 @@ const initialState = {
  *
  * If you need to render a collection in a custom way, it's often simpler
  * to write your own component:
- * 
+ *
  * @example
  *     const TagsField = ({ record }) => (
  *          <ul>
@@ -128,6 +128,7 @@ ArrayField.propTypes = {
     children: PropTypes.element.isRequired,
     record: PropTypes.object,
     resource: PropTypes.string,
+    sortBy: PropTypes.string,
     source: PropTypes.string,
 };
 

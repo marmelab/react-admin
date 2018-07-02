@@ -54,11 +54,11 @@ export const DateField = ({
     const date = value instanceof Date ? value : new Date(value);
     const dateString = showTime
         ? toLocaleStringSupportsLocales
-          ? date.toLocaleString(locales, options)
-          : date.toLocaleString()
+            ? date.toLocaleString(locales, options)
+            : date.toLocaleString()
         : toLocaleStringSupportsLocales
-          ? date.toLocaleDateString(locales, options)
-          : date.toLocaleDateString();
+            ? date.toLocaleDateString(locales, options)
+            : date.toLocaleDateString();
 
     return (
         <span className={className} {...sanitizeRestProps(rest)}>
@@ -81,6 +81,7 @@ DateField.propTypes = {
     options: PropTypes.object,
     record: PropTypes.object,
     showTime: PropTypes.bool,
+    sortBy: PropTypes.string,
     source: PropTypes.string.isRequired,
 };
 

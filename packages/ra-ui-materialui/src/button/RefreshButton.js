@@ -32,6 +32,9 @@ class RefreshButton extends Component {
     }
 }
 
-const enhance = connect(null, { refreshView: refreshViewAction });
+const enhance = connect(
+    null,
+    { refreshView: refreshViewAction }
+);
 
 export default enhance(RefreshButton);
