@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import MuiTab from '@material-ui/core/Tab';
 import { translate } from 'ra-core';
+import classnames from 'classnames';
 
 import Labeled from '../input/Labeled';
-import classnames from 'classnames';
+
+const sanitizeRestProps = ({ label, icon, value, translate, ...rest }) => rest;
 
 /**
  * Tab element for the SimpleShowLayout.
@@ -56,7 +59,9 @@ class Tab extends Component {
             value={value}
             icon={icon}
             className={classnames('show-tab', className)}
-            {...rest}
+            component={Link}
+            to={value}
+            {...sanitizeRestProps(rest)}
         />
     );
 
@@ -76,16 +81,19 @@ class Tab extends Component {
                         >
                             {field.props.addLabel ? (
                                 <Labeled
-                                    {...rest}
                                     label={field.props.label}
                                     source={field.props.source}
+                                    {...sanitizeRestProps(rest)}
                                 >
                                     {field}
                                 </Labeled>
                             ) : typeof field.type === 'string' ? (
                                 field
                             ) : (
-                                React.cloneElement(field, rest)
+                                React.cloneElement(
+                                    field,
+                                    sanitizeRestProps(rest)
+                                )
                             )}
                         </div>
                     )
@@ -94,26 +102,10 @@ class Tab extends Component {
     );
 
     render() {
-        const {
-            children,
-            className,
-            context,
-            icon,
-            label,
-            translate,
-            value,
-            ...rest
-        } = this.props;
+        const { children, context, ...rest } = this.props;
         return context === 'header'
-            ? this.renderHeader({
-                  className,
-                  label,
-                  icon,
-                  value,
-                  translate,
-                  ...rest,
-              })
-            : this.renderContent({ children, className, ...rest });
+            ? this.renderHeader(rest)
+            : this.renderContent({ children, ...rest });
     }
 }
 
@@ -124,7 +116,7 @@ Tab.propTypes = {
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
     translate: PropTypes.func.isRequired,
-    value: PropTypes.number,
+    value: PropTypes.string,
 };
 
 export default translate(Tab);

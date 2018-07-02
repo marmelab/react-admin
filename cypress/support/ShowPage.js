@@ -6,7 +6,7 @@ export default (url, initialField = 'title') => ({
         fields: `.ra-field`,
         snackbar: 'div[role="alertdialog"]',
         tabs: `.show-tab`,
-        tab: index => `button.show-tab:nth-of-type(${index})`,
+        tab: index => `.show-tab:nth-of-type(${index})`,
     },
 
     navigate() {
