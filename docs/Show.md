@@ -161,7 +161,7 @@ export const PostShow = (props) => (
 
 ## The `<TabbedShowLayout>` component
 
-Just like `<SimpleShowLayout>`, `<TabbedShowLayout>` receives the `record` prop and renders the actual view. However, the `<TabbedShowLayout>` component renders fields grouped by tab. The tabs are set by using `<Tab>` components, which expect a `label` and an optional `icon` prop.
+Just like `<SimpleShowLayout>`, `<TabbedShowLayout>` receives the `record` prop and renders the actual view. However, the `<TabbedShowLayout>` component renders fields grouped by tab. The tabs are set by using `<Tab>` components, which expect a `label` and an optional `icon` prop. Switching tabs will update the current url. By default, it uses the tabs indexes and the first tab will be displayed at the root url. You can customize the path by providing a `path` prop to each `Tab` component. If you'd like the first one to act as an index page, just omit the `path` prop.
 
 ![tabbed show](./img/tabbed-show.gif)
 
@@ -177,17 +177,17 @@ export const PostShow = (props) => (
                 <TextField source="title" />
                 <TextField source="teaser" />
             </Tab>
-            <Tab label="body">
+            <Tab label="body" path="body">
                 <RichTextField source="body" addLabel={false} />
             </Tab>
-            <Tab label="Miscellaneous">
+            <Tab label="Miscellaneous" path="miscellaneous">
                 <TextField label="Password (if protected post)" source="password" type="password" />
                 <DateField label="Publication date" source="published_at" />
                 <NumberField source="average_note" />
                 <BooleanField label="Allow comments?" source="commentable" defaultValue />
                 <TextField label="Nb views" source="views" />
             </Tab>
-            <Tab label="comments">
+            <Tab label="comments" path="comments">
                 <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
                     <Datagrid>
                         <TextField source="body" />

@@ -181,7 +181,7 @@ export const PostCreate = (props) => (
 
 ## The `<TabbedForm>` component
 
-Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop.
+Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop. Switching tabs will update the current url. By default, it uses the tabs indexes and the first tab will be displayed at the root url. You can customize the path by providing a `path` prop to each `Tab` component. If you'd like the first one to act as an index page, just omit the `path` prop.
 
 ![tabbed form](./img/tabbed-form.gif)
 
@@ -211,17 +211,17 @@ export const PostEdit = (props) => (
                 <TextInput source="title" validate={required()} />
                 <LongTextInput source="teaser" validate={required()} />
             </FormTab>
-            <FormTab label="body">
+            <FormTab label="body" path="body">
                 <RichTextInput source="body" validate={required()} addLabel={false} />
             </FormTab>
-            <FormTab label="Miscellaneous">
+            <FormTab label="Miscellaneous" path="miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
                 <DateInput label="Publication date" source="published_at" />
                 <NumberInput source="average_note" validate={[ number(), minValue(0) ]} />
                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
                 <DisabledInput label="Nb views" source="views" />
             </FormTab>
-            <FormTab label="comments">
+            <FormTab label="comments" path="comments">
                 <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
                     <Datagrid>
                         <TextField source="body" />
