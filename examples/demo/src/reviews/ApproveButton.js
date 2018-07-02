@@ -67,7 +67,10 @@ ApproveButton.propTypes = {
     reviewReject: PropTypes.func,
 };
 
-export default connect(null, {
-    reviewApprove: reviewApproveAction,
-    reviewReject: reviewRejectAction,
-})(withStyles(styles)(ApproveButton));
+export default connect(
+    null,
+    {
+        reviewApprove: reviewApproveAction,
+        reviewReject: reviewRejectAction,
+    }
+)(withStyles(styles)(ApproveButton));

@@ -97,7 +97,10 @@ NumberField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const ComposedNumberField = compose(pure, withStyles(styles))(NumberField);
+const ComposedNumberField = compose(
+    pure,
+    withStyles(styles)
+)(NumberField);
 ComposedNumberField.defaultProps = {
     addLabel: true,
     textAlign: 'right',

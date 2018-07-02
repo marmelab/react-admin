@@ -31,7 +31,7 @@
         "jest": "20.0.4",
         "lerna": "~2.9.1",
         "lolex": "~2.3.2",
-        "prettier": "~1.7.0",
+        "prettier": "~1.13.7",
         "prettier-eslint-cli": "~4.7.1",
         "raf": "~3.4.0",
         "wait-on": "^2.1.0"

@@ -31,4 +31,7 @@ BulkApproveAction.propTypes = {
     startUndoable: PropTypes.func.isRequired,
 };
 
-export default connect(undefined, { startUndoable })(BulkApproveAction);
+export default connect(
+    undefined,
+    { startUndoable }
+)(BulkApproveAction);

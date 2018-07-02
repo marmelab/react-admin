@@ -172,6 +172,9 @@ BulkActions.defaultProps = {
     selectedIds: [],
 };
 
-const EnhancedButton = compose(withStyles(styles), translate)(BulkActions);
+const EnhancedButton = compose(
+    withStyles(styles),
+    translate
+)(BulkActions);
 
 export default EnhancedButton;

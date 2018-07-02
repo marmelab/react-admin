@@ -37,5 +37,8 @@ const LinkToRelatedProducts = ({ classes, record, translate }) => (
     </Button>
 );
 
-const enhance = compose(withStyles(styles), translate);
+const enhance = compose(
+    withStyles(styles),
+    translate
+);
 export default enhance(LinkToRelatedProducts);

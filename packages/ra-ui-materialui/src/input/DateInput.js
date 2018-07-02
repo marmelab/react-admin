@@ -7,7 +7,7 @@ import sanitizeRestProps from './sanitizeRestProps';
 
 /**
  * Convert Date object to String
- * 
+ *
  * @param {Date} v value to convert
  * @returns {String} A standardized date (yyyy-MM-dd), to be passed to an <input type="date" />
  */

@@ -45,10 +45,7 @@ const MobileGrid = withStyles(listStyles)(
                         title={
                             <div className={classes.cardTitleContent}>
                                 <span>
-                                    {translate(
-                                        'resources.commands.name',
-                                        1
-                                    )}:&nbsp;
+                                    {translate('resources.commands.name', 1)}:&nbsp;
                                     <TextField
                                         record={data[id]}
                                         source="reference"
@@ -90,15 +87,11 @@ const MobileGrid = withStyles(listStyles)(
                             />
                         </span>
                         <span className={classes.cardContentRow}>
-                            {translate(
-                                'resources.commands.fields.status'
-                            )}:&nbsp;
+                            {translate('resources.commands.fields.status')}:&nbsp;
                             <TextField source="status" record={data[id]} />
                         </span>
                         <span className={classes.cardContentRow}>
-                            {translate(
-                                'resources.commands.fields.returned'
-                            )}:&nbsp;
+                            {translate('resources.commands.fields.returned')}:&nbsp;
                             <BooleanField record={data[id]} source="returned" />
                         </span>
                     </CardContent>

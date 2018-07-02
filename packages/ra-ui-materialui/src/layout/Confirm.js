@@ -33,7 +33,7 @@ const styles = theme => ({
 
 /**
  * Confirmation dialog
- * 
+ *
  * @example
  * <Confirm
  *     isOpen={true}

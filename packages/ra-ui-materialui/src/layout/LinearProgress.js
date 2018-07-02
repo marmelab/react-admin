@@ -13,13 +13,13 @@ const styles = theme => ({
 
 /**
  * Progress bar formatted to replace an input or a field in a form layout
- * 
+ *
  * Avoids visual jumps when replaced by value or form input
- * 
+ *
  * @see ReferenceField
  * @see ReferenceInput
- * 
- * @param {object} classes CSS class names injected by withStyles 
+ *
+ * @param {object} classes CSS class names injected by withStyles
  */
 export const LinearProgress = ({ classes, className, ...rest }) => (
     <Progress className={classnames(classes.root, className)} {...rest} />

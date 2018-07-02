@@ -16,7 +16,8 @@
 * [Refactoring] Manage form saving state inside Form components ([djhi](https://github.com/djhi))
 * [Refactoring] Migrate e2e tests to Cypress ([djhi](https://github.com/djhi))
 * [Refactoring] Move the URL parsing responsibility from View controllers to `<Resource>` ([djhi](https://github.com/djhi))
-* [Dependencies] Upgrade to `material-ui` 1.2.1 ([fzaninotto](https://github.com/fzaninotto))
+* [Dependencies] Upgrade to `material-ui` ^1.0.0, upgrade examples to `material-ui` 1.2.1 ([fzaninotto](https://github.com/fzaninotto))
+* [Dependencies] Upgrade to `prettier` 1.13 ([fzaninotto](https://github.com/fzaninotto))
 
 ## v2.0.4
 

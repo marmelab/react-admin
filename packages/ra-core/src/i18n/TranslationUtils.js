@@ -2,9 +2,9 @@ import { DEFAULT_LOCALE } from './index';
 
 /**
  * Resolve the browser locale according to the value of the global window.navigator
- * 
+ *
  * Use it to determine the <Admin> locale at runtime.
- * 
+ *
  * @example
  *     import React from 'react';
  *     import { Admin, Resource, resolveBrowserLocale } from 'react-admin';

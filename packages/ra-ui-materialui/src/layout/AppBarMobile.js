@@ -84,6 +84,12 @@ AppBarMobile.propTypes = {
     toggleSidebar: PropTypes.func.isRequired,
 };
 
-const enhance = compose(connect(null, { toggleSidebar }), withStyles(styles));
+const enhance = compose(
+    connect(
+        null,
+        { toggleSidebar }
+    ),
+    withStyles(styles)
+);
 
 export default enhance(AppBarMobile);

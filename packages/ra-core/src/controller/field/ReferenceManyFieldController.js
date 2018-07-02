@@ -173,6 +173,9 @@ function mapStateToProps(state, props) {
     };
 }
 
-export default connect(mapStateToProps, {
-    crudGetManyReference: crudGetManyReferenceAction,
-})(ReferenceManyFieldController);
+export default connect(
+    mapStateToProps,
+    {
+        crudGetManyReference: crudGetManyReferenceAction,
+    }
+)(ReferenceManyFieldController);

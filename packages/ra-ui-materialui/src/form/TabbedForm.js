@@ -70,9 +70,9 @@ const sanitizeRestProps = ({
 }) => props;
 
 const getTabFullPath = (tab, index, baseUrl) =>
-    `${baseUrl}${tab.props.path
-        ? `/${tab.props.path}`
-        : index > 0 ? `/${index}` : ''}`;
+    `${baseUrl}${
+        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
+    }`;
 
 export class TabbedForm extends Component {
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
@@ -157,18 +157,19 @@ export class TabbedForm extends Component {
                                             hidden: !routeProps.match,
                                             /**
                                              * Force redraw when the tab becomes active
-                                             * 
+                                             *
                                              * This is because the fields, decorated by redux-form and connect,
                                              * aren't redrawn by default when the tab becomes active.
                                              * Unfortunately, some material-ui fields (like multiline TextField)
                                              * compute their size based on the scrollHeight of a dummy DOM element,
                                              * and scrollHeight is 0 in a hidden div. So they must be redrawn
                                              * once the tab becomes active.
-                                             * 
+                                             *
                                              * @ref https://github.com/marmelab/react-admin/issues/1956
                                              */
                                             key: `${index}_${!routeProps.match}`,
-                                        })}
+                                        })
+                                    }
                                 </Route>
                             )
                     )}

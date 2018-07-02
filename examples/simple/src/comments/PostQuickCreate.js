@@ -86,6 +86,7 @@ const mapDispatchToProps = {
     fetchEnd,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-    PostQuickCreateView
-);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PostQuickCreateView);

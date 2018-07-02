@@ -37,4 +37,7 @@ CancelButtonView.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-export default compose(translate, withStyles(styles))(CancelButtonView);
+export default compose(
+    translate,
+    withStyles(styles)
+)(CancelButtonView);

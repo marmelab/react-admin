@@ -67,7 +67,10 @@ const mapStateToProps = state => ({
     locale: state.locale,
 });
 
-export default connect(mapStateToProps, {
-    changeLocale,
-    changeTheme,
-})(translate(Configuration));
+export default connect(
+    mapStateToProps,
+    {
+        changeLocale,
+        changeTheme,
+    }
+)(translate(Configuration));

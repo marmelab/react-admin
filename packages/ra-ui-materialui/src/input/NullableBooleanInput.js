@@ -100,6 +100,10 @@ NullableBooleanInput.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-const enhance = compose(addField, translate, withStyles(styles));
+const enhance = compose(
+    addField,
+    translate,
+    withStyles(styles)
+);
 
 export default enhance(NullableBooleanInput);

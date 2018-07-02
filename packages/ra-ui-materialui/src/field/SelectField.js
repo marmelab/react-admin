@@ -83,8 +83,8 @@ export const SelectField = ({
     const choiceName = React.isValidElement(optionText) // eslint-disable-line no-nested-ternary
         ? React.cloneElement(optionText, { record: choice })
         : typeof optionText === 'function'
-          ? optionText(choice)
-          : choice[optionText];
+            ? optionText(choice)
+            : choice[optionText];
     return (
         <span className={className} {...sanitizeRestProps(rest)}>
             {translateChoice
@@ -123,7 +123,10 @@ SelectField.defaultProps = {
     translateChoice: true,
 };
 
-const enhance = compose(pure, translate);
+const enhance = compose(
+    pure,
+    translate
+);
 
 const EnhancedSelectField = enhance(SelectField);
 

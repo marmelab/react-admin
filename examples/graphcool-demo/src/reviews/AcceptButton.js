@@ -34,9 +34,12 @@ AcceptButton.propTypes = {
 
 const enhance = compose(
     translate,
-    connect(null, {
-        reviewApprove: reviewApproveAction,
-    })
+    connect(
+        null,
+        {
+            reviewApprove: reviewApproveAction,
+        }
+    )
 );
 
 export default enhance(AcceptButton);

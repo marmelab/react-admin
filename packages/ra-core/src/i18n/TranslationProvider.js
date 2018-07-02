@@ -8,9 +8,9 @@ import defaultsDeep from 'lodash/defaultsDeep';
 
 /**
  * Creates a translation context, available to its children
- * 
+ *
  * Must be called withing a Redux app.
- * 
+ *
  * @example
  *     const MyApp = () => (
  *         <Provider store={store}>
@@ -51,6 +51,7 @@ const withI18nContext = withContext(
     }
 );
 
-export default compose(connect(mapStateToProps), withI18nContext)(
-    TranslationProvider
-);
+export default compose(
+    connect(mapStateToProps),
+    withI18nContext
+)(TranslationProvider);

@@ -68,4 +68,7 @@ export class FormField extends Component {
     }
 }
 
-export default connect(undefined, { initializeForm })(FormField);
+export default connect(
+    undefined,
+    { initializeForm }
+)(FormField);

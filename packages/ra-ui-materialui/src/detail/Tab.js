@@ -11,19 +11,19 @@ const sanitizeRestProps = ({ label, icon, value, translate, ...rest }) => rest;
 
 /**
  * Tab element for the SimpleShowLayout.
- * 
+ *
  * The `<Tab>` component accepts the following props:
- * 
+ *
  * - label: The string displayed for each tab
  * - icon: The icon to show before the label (optional). Must be an element.
- * 
- * @example     
+ *
+ * @example
  *     // in src/posts.js
  *     import React from 'react';
  *     import FavoriteIcon from '@material-ui/icons/Favorite';
  *     import PersonPinIcon from '@material-ui/icons/PersonPin';
  *     import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
- *     
+ *
  *     export const PostShow = (props) => (
  *         <Show {...props}>
  *             <TabbedShowLayout>
@@ -41,9 +41,9 @@ const sanitizeRestProps = ({ label, icon, value, translate, ...rest }) => rest;
  *     // in src/App.js
  *     import React from 'react';
  *     import { Admin, Resource } from 'react-admin';
- *     
+ *
  *     import { PostShow } from './posts';
- *     
+ *
  *     const App = () => (
  *         <Admin dataProvider={...}>
  *             <Resource name="posts" show={PostShow} />

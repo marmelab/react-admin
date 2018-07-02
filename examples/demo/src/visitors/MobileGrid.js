@@ -38,8 +38,9 @@ const MobileGrid = withStyles(listStyles)(
                     <CardHeader
                         title={
                             <div className={classes.cardTitleContent}>
-                                <h2>{`${data[id].first_name} ${data[id]
-                                    .last_name}`}</h2>
+                                <h2>{`${data[id].first_name} ${
+                                    data[id].last_name
+                                }`}</h2>
                                 <EditButton
                                     resource="visitors"
                                     basePath={basePath}

@@ -104,7 +104,8 @@ const PostList = withStyles(styles)(({ classes, ...props }) => (
                     primaryText={record => record.title}
                     secondaryText={record => `${record.views} views`}
                     tertiaryText={record =>
-                        new Date(record.published_at).toLocaleDateString()}
+                        new Date(record.published_at).toLocaleDateString()
+                    }
                 />
             }
             medium={
