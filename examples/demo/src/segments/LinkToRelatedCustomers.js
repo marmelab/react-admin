@@ -35,5 +35,8 @@ const LinkToRelatedCustomers = ({ classes, segment, translate }) => (
     </Button>
 );
 
-const enhance = compose(withStyles(styles), translate);
+const enhance = compose(
+    withStyles(styles),
+    translate
+);
 export default enhance(LinkToRelatedCustomers);

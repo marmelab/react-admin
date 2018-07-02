@@ -119,4 +119,7 @@ FilterButton.propTypes = {
     className: PropTypes.string,
 };
 
-export default compose(translate, withStyles(styles))(FilterButton);
+export default compose(
+    translate,
+    withStyles(styles)
+)(FilterButton);

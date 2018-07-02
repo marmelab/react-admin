@@ -148,5 +148,8 @@ export default compose(
     getContext({
         authProvider: PropTypes.func,
     }),
-    connect(mapStateToProps, { userCheck })
+    connect(
+        mapStateToProps,
+        { userCheck }
+    )
 )(WithPermissions);

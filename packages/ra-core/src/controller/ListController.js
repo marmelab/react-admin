@@ -378,12 +378,15 @@ function mapStateToProps(state, props) {
 }
 
 export default compose(
-    connect(mapStateToProps, {
-        crudGetList: crudGetListAction,
-        changeListParams: changeListParamsAction,
-        setSelectedIds: setListSelectedIdsAction,
-        toggleItem: toggleListItemAction,
-        push: pushAction,
-    }),
+    connect(
+        mapStateToProps,
+        {
+            crudGetList: crudGetListAction,
+            changeListParams: changeListParamsAction,
+            setSelectedIds: setListSelectedIdsAction,
+            toggleItem: toggleListItemAction,
+            push: pushAction,
+        }
+    ),
     translate
 )(ListController);

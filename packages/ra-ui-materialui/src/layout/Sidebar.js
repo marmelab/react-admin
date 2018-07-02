@@ -138,7 +138,10 @@ const mapStateToProps = state => ({
 });
 
 export default compose(
-    connect(mapStateToProps, { setSidebarVisibility }),
+    connect(
+        mapStateToProps,
+        { setSidebarVisibility }
+    ),
     withStyles(styles),
     withWidth()
 )(Sidebar);

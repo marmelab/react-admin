@@ -39,4 +39,8 @@ export class ImageInput extends FileInput {
     };
 }
 
-export default compose(addField, translate, withStyles(styles))(ImageInput);
+export default compose(
+    addField,
+    translate,
+    withStyles(styles)
+)(ImageInput);

@@ -11,7 +11,9 @@ import {
 import { refreshView } from '../actions/uiActions';
 
 export function* handleUndoRace(undoableAction) {
-    const { payload: { action } } = undoableAction;
+    const {
+        payload: { action },
+    } = undoableAction;
     const { onSuccess, onFailure, ...metaWithoutSideEffects } = action.meta;
     yield put(startOptimisticMode());
     // dispatch action in optimistic mode (no fetch), with success side effects

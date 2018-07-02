@@ -26,7 +26,9 @@ export const getStatusForInput = ({
                 selectedReferenceError &&
                 matchingReferencesError) ||
             (!input.value && matchingReferencesError)
-                ? input.value ? selectedReferenceError : matchingReferencesError
+                ? input.value
+                    ? selectedReferenceError
+                    : matchingReferencesError
                 : null,
         warning: selectedReferenceError || matchingReferencesError,
         choices: Array.isArray(matchingReferences)
@@ -43,8 +45,8 @@ export const getSelectedReferencesStatus = (input, referenceRecords) =>
     !input.value || input.value.length === referenceRecords.length
         ? REFERENCES_STATUS_READY
         : referenceRecords.length > 0
-          ? REFERENCES_STATUS_INCOMPLETE
-          : REFERENCES_STATUS_EMPTY;
+            ? REFERENCES_STATUS_INCOMPLETE
+            : REFERENCES_STATUS_EMPTY;
 
 export const getStatusForArrayInput = ({
     input,

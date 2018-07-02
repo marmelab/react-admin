@@ -69,6 +69,9 @@ NotFound.propTypes = {
     translate: PropTypes.func.isRequired,
 };
 
-const enhance = compose(withStyles(styles), translate);
+const enhance = compose(
+    withStyles(styles),
+    translate
+);
 
 export default enhance(NotFound);

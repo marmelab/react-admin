@@ -70,10 +70,13 @@ const mapStateToProps = state => ({
 });
 
 export default compose(
-    connect(mapStateToProps, {
-        changeLocale,
-        changeTheme,
-    }),
+    connect(
+        mapStateToProps,
+        {
+            changeLocale,
+            changeTheme,
+        }
+    ),
     translate,
     withStyles(styles)
 )(Configuration);

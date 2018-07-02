@@ -263,10 +263,13 @@ const makeMapStateToProps = () =>
 
 const EnhancedReferenceInputController = compose(
     translate,
-    connect(makeMapStateToProps(), {
-        crudGetOne,
-        crudGetMatching,
-    })
+    connect(
+        makeMapStateToProps(),
+        {
+            crudGetOne,
+            crudGetMatching,
+        }
+    )
 )(ReferenceInputController);
 
 EnhancedReferenceInputController.defaultProps = {

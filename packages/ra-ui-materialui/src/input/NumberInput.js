@@ -20,9 +20,9 @@ import sanitizeRestProps from './sanitizeRestProps';
 export class NumberInput extends Component {
     handleBlur = event => {
         /**
-          * Necessary because of a React bug on <input type="number">
-          * @see https://github.com/facebook/react/issues/1425
-          */
+         * Necessary because of a React bug on <input type="number">
+         * @see https://github.com/facebook/react/issues/1425
+         */
         const numericValue = isNaN(parseFloat(event.target.value))
             ? null
             : parseFloat(event.target.value);
@@ -37,9 +37,9 @@ export class NumberInput extends Component {
 
     handleChange = event => {
         /**
-          * Necessary because of a React bug on <input type="number">
-          * @see https://github.com/facebook/react/issues/1425
-          */
+         * Necessary because of a React bug on <input type="number">
+         * @see https://github.com/facebook/react/issues/1425
+         */
         const numericValue = isNaN(parseFloat(event.target.value))
             ? null
             : parseFloat(event.target.value);

@@ -18,4 +18,7 @@ const mapStateToProps = (state, props) => ({
     version: state.admin.ui.viewVersion,
 });
 
-export default connect(mapStateToProps, {})(PostPreviewView);
+export default connect(
+    mapStateToProps,
+    {}
+)(PostPreviewView);

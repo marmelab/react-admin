@@ -125,7 +125,10 @@ SaveButton.defaultProps = {
 
 const enhance = compose(
     translate,
-    connect(undefined, { showNotification }),
+    connect(
+        undefined,
+        { showNotification }
+    ),
     withStyles(styles)
 );
 

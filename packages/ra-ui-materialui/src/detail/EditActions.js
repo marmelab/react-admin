@@ -15,15 +15,15 @@ const sanitizeRestProps = ({
 
 /**
  * Action Toolbar for the Edit view
- * 
+ *
  * Internal component. If you want to add or remove actions for a Edit view,
  * write your own EditActions Component. Then, in the <Edit> component,
  * use it in the `actions` prop to pas a custom element.
- * 
+ *
  * @example
  *     import Button from '@material-ui/core/Button';
  *     import { CardActions, ListButton, ShowButton, DeleteButton, RefreshButton, Edit } from 'react-admin';
- *     
+ *
  *     const PostEditActions = ({ basePath, record, rseource }) => (
  *         <CardActions>
  *             <ShowButton basePath={basePath} record={record} />

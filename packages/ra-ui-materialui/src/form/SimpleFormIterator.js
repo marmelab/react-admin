@@ -114,8 +114,9 @@ export class SimpleFormIterator extends Component {
                                         <FormInput
                                             basePath={basePath}
                                             input={cloneElement(input, {
-                                                source: `${member}.${input.props
-                                                    .source}`,
+                                                source: `${member}.${
+                                                    input.props.source
+                                                }`,
                                                 label:
                                                     input.props.label ||
                                                     input.props.source,
@@ -176,4 +177,7 @@ SimpleFormIterator.propTypes = {
     disableRemove: PropTypes.bool,
 };
 
-export default compose(translate, withStyles(styles))(SimpleFormIterator);
+export default compose(
+    translate,
+    withStyles(styles)
+)(SimpleFormIterator);

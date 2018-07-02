@@ -130,7 +130,8 @@ class PostReferenceInputView extends React.Component {
                                     </DialogActions>
                                 </Dialog>
                             </Fragment>
-                        )}
+                        )
+                    }
                 />
                 <Dialog
                     data-testid="dialog-add-post"
@@ -160,7 +161,10 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    connect(undefined, mapDispatchToProps),
+    connect(
+        undefined,
+        mapDispatchToProps
+    ),
     withStyles(styles),
     translate
 )(PostReferenceInputView);

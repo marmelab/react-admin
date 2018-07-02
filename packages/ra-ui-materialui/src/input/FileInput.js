@@ -206,4 +206,8 @@ export class FileInput extends Component {
     }
 }
 
-export default compose(addField, translate, withStyles(styles))(FileInput);
+export default compose(
+    addField,
+    translate,
+    withStyles(styles)
+)(FileInput);

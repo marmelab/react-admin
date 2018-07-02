@@ -255,8 +255,9 @@ ReferenceArrayInput.defaultProps = {
     sort: { field: 'id', order: 'DESC' },
 };
 
-const EnhancedReferenceArrayInput = compose(addField, translate)(
-    ReferenceArrayInput
-);
+const EnhancedReferenceArrayInput = compose(
+    addField,
+    translate
+)(ReferenceArrayInput);
 
 export default EnhancedReferenceArrayInput;

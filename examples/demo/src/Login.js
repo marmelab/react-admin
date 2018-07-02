@@ -160,7 +160,10 @@ const enhance = compose(
             return errors;
         },
     }),
-    connect(mapStateToProps, { userLogin }),
+    connect(
+        mapStateToProps,
+        { userLogin }
+    ),
     withStyles(styles)
 );
 

@@ -18,6 +18,6 @@ export default (previousState = [], { type, payload }) => {
 
 /**
  * Returns the first available notification to show
- * @param {Object} state - Redux state 
+ * @param {Object} state - Redux state
  */
 export const getNotification = state => state.admin.notifications[0];

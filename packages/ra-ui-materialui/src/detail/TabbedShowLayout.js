@@ -26,21 +26,21 @@ const sanitizeRestProps = ({
 }) => rest;
 
 const getTabFullPath = (tab, index, baseUrl) =>
-    `${baseUrl}${tab.props.path
-        ? `/${tab.props.path}`
-        : index > 0 ? `/${index}` : ''}`;
+    `${baseUrl}${
+        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
+    }`;
 
 /**
  * Tabbed Layout for a Show view, showing fields grouped in tabs.
- * 
+ *
  * Receives the current `record` from the parent `<Show>` component,
  * and passes it to its childen. Children should be Tab components.
  *
- * @example     
+ * @example
  *     // in src/posts.js
  *     import React from 'react';
  *     import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
- *     
+ *
  *     export const PostShow = (props) => (
  *         <Show {...props}>
  *             <TabbedShowLayout>
@@ -58,9 +58,9 @@ const getTabFullPath = (tab, index, baseUrl) =>
  *     // in src/App.js
  *     import React from 'react';
  *     import { Admin, Resource } from 'react-admin';
- *     
+ *
  *     import { PostShow } from './posts';
- *     
+ *
  *     const App = () => (
  *         <Admin dataProvider={...}>
  *             <Resource name="posts" show={PostShow} />
@@ -128,7 +128,8 @@ export class TabbedShowLayout extends Component {
                                             resource,
                                             record,
                                             basePath,
-                                        })}
+                                        })
+                                    }
                                 />
                             )
                     )}
@@ -152,6 +153,10 @@ TabbedShowLayout.propTypes = {
     translate: PropTypes.func,
 };
 
-const enhance = compose(withRouter, withStyles(styles), translate);
+const enhance = compose(
+    withRouter,
+    withStyles(styles),
+    translate
+);
 
 export default enhance(TabbedShowLayout);

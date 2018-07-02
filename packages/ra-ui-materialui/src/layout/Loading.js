@@ -60,6 +60,9 @@ Loading.defaultProps = {
     loadingSecondary: 'ra.message.loading',
 };
 
-const enhance = compose(withStyles(styles), translate);
+const enhance = compose(
+    withStyles(styles),
+    translate
+);
 
 export default enhance(Loading);

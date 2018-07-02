@@ -28,7 +28,10 @@ export class RichTextInput extends Component {
     };
 
     componentDidMount() {
-        const { input: { value }, toolbar } = this.props;
+        const {
+            input: { value },
+            toolbar,
+        } = this.props;
 
         this.quill = new Quill(this.divRef, {
             modules: { toolbar },

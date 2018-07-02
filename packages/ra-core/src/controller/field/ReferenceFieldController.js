@@ -114,6 +114,9 @@ const mapStateToProps = (state, props) => ({
         ],
 });
 
-export default connect(mapStateToProps, {
-    crudGetManyAccumulate: crudGetManyAccumulateAction,
-})(ReferenceFieldController);
+export default connect(
+    mapStateToProps,
+    {
+        crudGetManyAccumulate: crudGetManyAccumulateAction,
+    }
+)(ReferenceFieldController);

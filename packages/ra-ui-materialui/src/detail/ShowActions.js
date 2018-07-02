@@ -16,15 +16,15 @@ const sanitizeRestProps = ({
 
 /**
  * Action Toolbar for the Show view
- * 
+ *
  * Internal component. If you want to add or remove actions for a Show view,
  * write your own ShowActions Component. Then, in the <Show> component,
  * use it in the `actions` prop to pas a custom element.
- * 
+ *
  * @example
  *     import Button from '@material-ui/core/Button';
  *     import { CardActions, ListButton, EditButton, DeleteButton, RefreshButton, Show } from 'react-admin';
- *     
+ *
  *     const PostShowActions = ({ basePath, record, resource }) => (
  *         <CardActions>
  *             <EditButton basePath={basePath} record={record} />

@@ -85,7 +85,8 @@ export class Resource extends Component {
                                     createElement(create, {
                                         basePath,
                                         ...props,
-                                    })}
+                                    })
+                                }
                                 {...routeProps}
                                 {...resource}
                             />
@@ -104,7 +105,8 @@ export class Resource extends Component {
                                             props.match.params.id
                                         ),
                                         ...props,
-                                    })}
+                                    })
+                                }
                                 {...routeProps}
                                 {...resource}
                             />
@@ -123,7 +125,8 @@ export class Resource extends Component {
                                             props.match.params.id
                                         ),
                                         ...props,
-                                    })}
+                                    })
+                                }
                                 {...routeProps}
                                 {...resource}
                             />
@@ -139,7 +142,8 @@ export class Resource extends Component {
                                     createElement(list, {
                                         basePath,
                                         ...props,
-                                    })}
+                                    })
+                                }
                                 {...routeProps}
                                 {...resource}
                             />
@@ -175,6 +179,7 @@ Resource.defaultProps = {
     options: {},
 };
 
-export default connect(null, { registerResource, unregisterResource })(
-    Resource
-);
+export default connect(
+    null,
+    { registerResource, unregisterResource }
+)(Resource);

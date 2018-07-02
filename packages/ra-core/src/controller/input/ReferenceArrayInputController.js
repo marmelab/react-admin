@@ -273,10 +273,13 @@ const makeMapStateToProps = () =>
 
 const EnhancedReferenceArrayInputController = compose(
     translate,
-    connect(makeMapStateToProps(), {
-        crudGetMany: crudGetManyAction,
-        crudGetMatching: crudGetMatchingAction,
-    })
+    connect(
+        makeMapStateToProps(),
+        {
+            crudGetMany: crudGetManyAction,
+            crudGetMatching: crudGetMatchingAction,
+        }
+    )
 )(ReferenceArrayInputController);
 
 EnhancedReferenceArrayInputController.defaultProps = {
