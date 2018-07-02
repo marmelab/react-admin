@@ -25,6 +25,11 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
+const getTabFullPath = (tab, index, baseUrl) =>
+    `${baseUrl}${tab.props.path
+        ? `/${tab.props.path}`
+        : index > 0 ? `/${index}` : ''}`;
+
 /**
  * Tabbed Layout for a Show view, showing fields grouped in tabs.
  * 
@@ -88,15 +93,19 @@ export class TabbedShowLayout extends Component {
             >
                 <Tabs
                     scrollable
+                    // The location pathname will contain the page path including the current tab path
+                    // so we can use it as a way to determine the current tab
                     value={location.pathname}
-                    onChange={this.handleChange}
                     indicatorColor="primary"
                 >
                     {Children.map(children, (tab, index) => {
                         if (!tab) return null;
-                        const tabPath = `${match.url}${tab.props.path
-                            ? `/${tab.props.path}`
-                            : index > 0 ? `/${index}` : ''}`;
+
+                        // Builds the full tab tab which is the concatenation of the last matched route in the
+                        // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
+                        // and the tab path.
+                        // This will be used as the Tab's value
+                        const tabPath = getTabFullPath(tab, index, match.url);
 
                         return cloneElement(tab, {
                             context: 'header',
@@ -112,8 +121,7 @@ export class TabbedShowLayout extends Component {
                             tab && (
                                 <Route
                                     exact
-                                    path={`${match.url}/${tab.props.path ||
-                                        (index > 0 ? index : '')}`}
+                                    path={getTabFullPath(tab, index, match.url)}
                                     render={() =>
                                         cloneElement(tab, {
                                             context: 'content',
