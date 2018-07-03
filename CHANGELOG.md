@@ -1,8 +1,15 @@
 # Changelog
 
+## v2.1.1
+
+* Fix FormInput not passing `resource` to `Labeled` inputs ([djhi](https://github.com/djhi))
+* Add documentaton on how to prefill a `<Create>` form based on another record ([fzaninotto](https://github.com/fzaninotto))
+* Add polish translations ([tskorupka](https://github.com/tskorupka))
+* Add documentation on tabs routing ([djhi](https://github.com/djhi))
+
 ## v2.1.0
 
-* [`TabbedForm`, `TabbedShowLayout`] Add routing support for tab navigation dj([djhi](https://github.com/djhi))i
+* [`TabbedForm`, `TabbedShowLayout`] Add routing support for tab navigation ([djhi](https://github.com/djhi))
 * [`SimpleForm`, `TabbedForm`] Add ability to customize the redux form ([djhi](https://github.com/djhi))
 * [`ReferenceField`] Add optional `sortBy` prop to allow sorting by another field than `id` ([ArneZsng](https://github.com/ArneZsng))
 * [`SaveButton`, `SimpleForm`, `Tabbedform`] Add support for function as `redirect` value ([fzaninotto](https://github.com/fzaninotto))
