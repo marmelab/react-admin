@@ -72,7 +72,7 @@ describe('<TabbedForm />', () => {
                 <FormTab label="tab2" />
             </TabbedForm>
         );
-        const tabs = wrapper.find('TranslatedComponent(FormTab)');
+        const tabs = wrapper.find('translate(FormTab)');
         const tab1 = tabs.at(0);
         const tab2 = tabs.at(1);
 
