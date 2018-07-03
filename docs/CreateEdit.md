@@ -173,8 +173,12 @@ const commentDefaultValue = { nb_views: 0 };
 -export const CommentCreate = (props) => (
 +export const CommentCreate = ({ location, ...props}) => (
 -   <Create {...props}>
-+   <Create {...props} record={location.state || commentDefaultValue}>
-        <SimpleForm>
++   <Create
++       record={(location.state && location.state.record) || defaultValue}
++       location={location}
++       {...props}
++   >
+       <SimpleForm>
             <TextInput source="author" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" />
@@ -194,7 +198,10 @@ import { Link } from 'react-router-dom';
 const CreateRelatedCommentButton = ({ record }) => (
     <Button
         component={Link}
-        to={{ pathname: '/comments/create', state: { post_id: record.id } }}
+        to={{
+            pathname: '/comments/create',
+            state: { record: { post_id: record.id } },
+        }}
     >
         Write a comment for that post
     </Button>

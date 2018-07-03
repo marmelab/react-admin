@@ -26,7 +26,10 @@ import PostTitle from './PostTitle';
 const CreateRelatedComment = ({ record }) => (
     <Button
         component={Link}
-        to={{ pathname: '/comments/create', state: { post_id: record.id } }}
+        to={{
+            pathname: '/comments/create',
+            state: { record: { post_id: record.id } },
+        }}
     >
         Add comment
     </Button>
