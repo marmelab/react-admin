@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Labeled from '../input/Labeled';
 
-const sanitizeRestProps = ({ basePath, record, resource, ...rest }) => rest;
+const sanitizeRestProps = ({ basePath, record, ...rest }) => rest;
 
 const styles = theme => ({
     input: { width: theme.spacing.unit * 32 },
