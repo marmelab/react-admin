@@ -147,11 +147,28 @@ Using a custom `EditActions` component also allow to remove the `<DeleteButton>`
 
 ## Prefilling a `<Create>` Record
 
-You may need to prepopulate a record based on a related record. For instance, in a `PostShow` component, you may want to display a button to create a comment related to the current post. Clicking on that button would lead to a `CommentCreate` page where the `post_id` is preset to the id of the Post.
+You may need to prepopulate a record based on another one. For that use case, use the `<CloneButton>` component. It expects a `record` and a `basePath` (usually injected to children of `<Datagrid>`, `<SimpleForm>`, `<SimpleShowLayout>`, etc.), so it's as simple to use as a regulat field or input.
 
-By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object.
+For instance, to allow cloning all the posts from the list:
 
-That means that if you want to create a link to a creation form, presetting some values, all you have to do is to set the location `state`. React-router provides the `<Link>` component for that:
+```jsx
+import { List, Datagrid, TextField, CloneButton } from 'react-admin';
+
+const PostList = props => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="title" />
+            <CloneButton />
+        </Datagrid>
+    </List>
+)
+```
+
+Alternately, you may need to prepopulate a record based on a *related* record. For instance, in a `PostList` component, you may want to display a button to create a comment related to the current post. Clicking on that button would lead to a `CommentCreate` page where the `post_id` is preset to the id of the Post.
+
+By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works behind the hood.
+
+That means that if you want to create a link to a creation form, presetting *some* values, all you have to do is to set the location `state`. React-router provides the `<Link>` component for that:
 
 {% raw %}
 ```jsx
@@ -170,13 +187,13 @@ const CreateRelatedCommentButton = ({ record }) => (
     </Button>
 );
 
-export default PostShow = props => (
-    <Show {...props}>
-        <SimpleShowLayout>
+export default PostList = props => (
+    <List {...props}>
+        <Datagrid>
             ...
             <CreateRelatedCommentButton />
-        </SimpleShowLayout>
-    </Show>
+        </Datagrid>
+    </List>
 )
 ```
 {% endraw %}
