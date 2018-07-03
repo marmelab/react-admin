@@ -201,6 +201,24 @@ describe('Validators', () => {
                 'not foo'
             );
         });
+
+        it('should memoize the validator when the regex pattren and message are the same', () => {
+            expect(regex(/foo/, 'placeholder')).toBe(
+                regex(/foo/, 'placeholder')
+            );
+        });
+
+        it('should create new validator when the regex pattren is different', () => {
+            expect(regex(/foo/, 'placeholder')).not.toBe(
+                regex(/notfoo/, 'placeholder')
+            );
+        });
+
+        it('should create new validator when message is different', () => {
+            expect(regex(/foo/, 'placeholder')).not.toBe(
+                regex(/foo/, 'another placeholder')
+            );
+        });
     });
     describe('email', () => {
         it('should return undefined if the value is empty', () => {
