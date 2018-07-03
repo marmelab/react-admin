@@ -8,7 +8,7 @@ import Button from './Button';
 
 const omitId = ({ id, ...rest }) => rest;
 
-const CloneButton = ({
+export const CloneButton = ({
     basePath = '',
     label = 'ra.action.clone',
     record = {},
