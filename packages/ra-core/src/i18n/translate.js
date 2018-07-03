@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import wrapDisplayName from 'recompose/wrapDisplayName';
 
 /**
  * Higher-Order Component for getting access to the `translate` function in props.
@@ -33,9 +34,10 @@ const translate = BaseComponent => {
         translate: PropTypes.func.isRequired,
         locale: PropTypes.string.isRequired,
     };
-    TranslatedComponent.displayName = `TranslatedComponent(${
-        BaseComponent.displayName
-    })`;
+    TranslatedComponent.displayName = wrapDisplayName(
+        BaseComponent,
+        'translate'
+    );
 
     return TranslatedComponent;
 };
