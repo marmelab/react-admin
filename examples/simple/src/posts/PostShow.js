@@ -7,6 +7,7 @@ import {
     Datagrid,
     DateField,
     EditButton,
+    Link,
     NumberField,
     ReferenceArrayField,
     ReferenceManyField,
@@ -19,7 +20,20 @@ import {
     TextField,
     UrlField,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import Button from '@material-ui/core/Button';
 import PostTitle from './PostTitle';
+
+const CreateRelatedComment = ({ record }) => (
+    <Button
+        component={Link}
+        to={{
+            pathname: '/comments/create',
+            state: { record: { post_id: record.id } },
+        }}
+    >
+        Add comment
+    </Button>
+);
 
 const PostShow = props => (
     <ShowController title={<PostTitle />} {...props}>
@@ -81,6 +95,7 @@ const PostShow = props => (
                                 <EditButton />
                             </Datagrid>
                         </ReferenceManyField>
+                        <CreateRelatedComment />
                     </Tab>
                 </TabbedShowLayout>
             </ShowView>

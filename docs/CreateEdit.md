@@ -145,6 +145,81 @@ export const PostEdit = (props) => (
 
 Using a custom `EditActions` component also allow to remove the `<DeleteButton>` if you want to prevent deletions from the admin.
 
+## Prefilling a `<Create>` Record
+
+By default, the `<Create>` view starts with an empty `record`. You can pass a custom `record` object to start with preset values:
+
+```jsx
+const commentDefaultValue = { nb_views: 0 };
+export const CommentCreate = (props) => (
+    <Create {...props} record={commentDefaultValue}>
+        <SimpleForm>
+            <TextInput source="author" />
+            <RichTextInput source="body" />
+            <NumberInput source="nb_views" />
+        </SimpleForm>
+    </Create>
+);
+```
+
+While using the `record` to set default values works here, it doesn't work with `<Edit>`. So it's recommended to use [the `defaultValue` prop in the Form component](#default-values) instead.
+
+However, there is a valid use case for presetting the `record` prop: to prepopulate a record based on a related record. For instance, in a `PostShow` component, you may want to display a button to create a comment related to the current post, that would lead to a `CommentCreate` page where the `post_id` is preset.
+
+To enable this, you must first update the `CommentCreate` component to read the record from the `location` object (which is injected by react-router):
+
+```diff
+const commentDefaultValue = { nb_views: 0 };
+-export const CommentCreate = (props) => (
++export const CommentCreate = ({ location, ...props}) => (
+-   <Create {...props}>
++   <Create
++       record={(location.state && location.state.record) || defaultValue}
++       location={location}
++       {...props}
++   >
+       <SimpleForm>
+            <TextInput source="author" />
+            <RichTextInput source="body" />
+            <NumberInput source="nb_views" />
+        </SimpleForm>
+    </Create>
+);
+```
+
+To set this `location.state`, you have to create a link or a button using react-router's `<Link>` component:
+
+{% raw %}
+```jsx
+// in PostShow.js
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
+
+const CreateRelatedCommentButton = ({ record }) => (
+    <Button
+        component={Link}
+        to={{
+            pathname: '/comments/create',
+            state: { record: { post_id: record.id } },
+        }}
+    >
+        Write a comment for that post
+    </Button>
+);
+
+export default PostShow = props => (
+    <Show {...props}>
+        <SimpleShowLayout>
+            ...
+            <CreateRelatedCommentButton />
+        </SimpleShowLayout>
+    </Show>
+)
+```
+{% endraw %}
+
+**Tip**: To style the button with the main color from the material-ui theme, use the `Link` component from the `react-admin` package rather than the one from `react-router`.
+
 ## The `<SimpleForm>` component
 
 The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as argument when the user submits the form.
@@ -181,7 +256,7 @@ export const PostCreate = (props) => (
 
 ## The `<TabbedForm>` component
 
-Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop. Switching tabs will update the current url. By default, it uses the tabs indexes and the first tab will be displayed at the root url. You can customize the path by providing a `path` prop to each `Tab` component. If you'd like the first one to act as an index page, just omit the `path` prop.
+Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop.
 
 ![tabbed form](./img/tabbed-form.gif)
 
@@ -211,17 +286,17 @@ export const PostEdit = (props) => (
                 <TextInput source="title" validate={required()} />
                 <LongTextInput source="teaser" validate={required()} />
             </FormTab>
-            <FormTab label="body" path="body">
+            <FormTab label="body">
                 <RichTextInput source="body" validate={required()} addLabel={false} />
             </FormTab>
-            <FormTab label="Miscellaneous" path="miscellaneous">
+            <FormTab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
                 <DateInput label="Publication date" source="published_at" />
                 <NumberInput source="average_note" validate={[ number(), minValue(0) ]} />
                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
                 <DisabledInput label="Nb views" source="views" />
             </FormTab>
-            <FormTab label="comments" path="comments">
+            <FormTab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
                     <Datagrid>
                         <TextField source="body" />
