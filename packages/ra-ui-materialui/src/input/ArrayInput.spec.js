@@ -26,9 +26,7 @@ const AppMock = ({ children }) => (
 describe('<ArrayInput />', () => {
     it('should render a FieldArray', () => {
         const wrapper = shallow(<ArrayInput source="arr" record={{}} />);
-        expect(
-            wrapper.find('TranslatedComponent(pure(FieldTitle))').length
-        ).toBe(1);
+        expect(wrapper.find('translate(pure(FieldTitle))').length).toBe(1);
         expect(wrapper.find('FieldArray').length).toBe(1);
     });
 
