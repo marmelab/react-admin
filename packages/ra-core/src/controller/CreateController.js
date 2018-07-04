@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import inflection from 'inflection';
+import { parse } from 'query-string';
+
 import translate from '../i18n/translate';
 import { crudCreate as crudCreateAction } from '../actions';
 
@@ -47,7 +49,21 @@ import { crudCreate as crudCreateAction } from '../actions';
  *     );
  *     export default App;
  */
-class CreateController extends Component {
+export class CreateController extends Component {
+    constructor(props) {
+        super(props);
+        const {
+            location: { state, search },
+            record,
+        } = this.props;
+        this.record =
+            state && state.record
+                ? state.record
+                : search
+                    ? parse(search)
+                    : record;
+    }
+
     defaultRedirectRoute() {
         const { hasShow, hasEdit } = this.props;
         if (hasEdit) return 'edit';
@@ -69,7 +85,6 @@ class CreateController extends Component {
             basePath,
             children,
             isLoading,
-            record,
             resource,
             translate,
         } = this.props;
@@ -89,7 +104,7 @@ class CreateController extends Component {
             save: this.save,
             resource,
             basePath,
-            record,
+            record: this.record,
             redirect: this.defaultRedirectRoute(),
             translate,
         });

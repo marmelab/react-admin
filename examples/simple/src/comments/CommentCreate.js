@@ -12,13 +12,9 @@ import {
 import PostReferenceInput from './PostReferenceInput';
 
 const defaultValue = { created_at: new Date() };
-const CommentCreate = ({ location, ...props }) => (
-    <Create
-        record={(location.state && location.state.record) || defaultValue}
-        location={location}
-        {...props}
-    >
-        <SimpleForm redirect={false}>
+const CommentCreate = props => (
+    <Create {...props}>
+        <SimpleForm redirect={false} defaultValue={defaultValue}>
             <PostReferenceInput
                 source="post_id"
                 reference="posts"

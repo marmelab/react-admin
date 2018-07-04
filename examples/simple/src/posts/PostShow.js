@@ -3,6 +3,7 @@ import React from 'react';
 import {
     ArrayField,
     BooleanField,
+    CloneButton,
     ChipField,
     Datagrid,
     DateField,
@@ -80,6 +81,7 @@ const PostShow = props => (
                         <NumberField source="average_note" />
                         <BooleanField source="commentable" />
                         <TextField source="views" />
+                        <CloneButton />
                     </Tab>
                     <Tab label="post.form.comments">
                         <ReferenceManyField

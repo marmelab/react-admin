@@ -20,6 +20,7 @@ title: "Reference"
 * [`<BooleanInput>`](./Inputs.html#booleaninput-and-nullablebooleaninput)
 * [`<CheckboxGroupInput>`](./Inputs.html#checkboxgroupinput)
 * [`<ChipField>`](./Fields.html#chipfield)
+* `<CloneButton>`
 * `<Confirm>`
 * [`<Create>`](./CreateEdit.html#the-create-and-edit-components)
 * `<CreateActions>`
