@@ -1,9 +1,10 @@
 import { cloneElement } from 'react';
 import jss from 'jss';
 
-const WithStyles = ({ styles, children }) =>
+const WithStyles = ({ styles, children, ...rest }) =>
     children({
         classes: jss.createStyleSheet(styles).attach().classes,
+        ...rest,
     });
 
 export default WithStyles;

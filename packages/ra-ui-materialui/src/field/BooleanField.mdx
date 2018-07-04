@@ -1,0 +1,116 @@
+---
+name: BooleanField
+menu: fields
+---
+
+import { Playground } from 'docz';
+import PropTypes from 'prop-types';
+import PropsTable from '../../../../docs/components/PropsTable';
+import WithStyles from '../../../../docs/components/WithStyles';
+import BooleanField from './BooleanField';
+import SimpleShowLayout from '../detail/SimpleShowLayout';
+import Datagrid from '../list/Datagrid';
+
+# BooleanField
+
+Displays a true of false icon depending on the value of the record field. Generally used as child of `<Datagrid>`, `<SimpleShowLayout>`, or `<SimpleForm>`.
+
+<Playground>
+    <SimpleShowLayout resource="post" record={{ is_published: true, is_final: false, is_strange: 'neither true or false' }} style={{ display:'flex', justifyContent: 'space-around' }}>
+        <BooleanField source="is_published"  />
+        <BooleanField source="is_final"  />
+        <BooleanField source="is_strange" />
+    </SimpleShowLayout>
+</Playground>
+
+## Props
+
+<PropsTable props={{
+    addLabel: { 
+        type: 'boolean',
+        description: 'Add a label when used in a form',
+        default: true
+    },
+    className: {
+        type: 'string',
+        description: 'A custom class name to be applied to the main element'
+    },
+    cellClassName: {
+        type: 'string',
+        description: 'A custom class name to be applied to the cell containing the component when used in a Datagrid'
+    },
+    headerClassName: {
+        type: 'string',
+        description: 'A custom class name to be applied to the header of the column of the component when used in a Datagrid'
+    },
+    label: {
+        type: 'string',
+        description: 'The field label. Will be translated by the i18n provider.',
+        default: 'The humanized source (e.g. post_id => Post id)'
+    },
+    record: { 
+        type: 'object',
+        description: 'The curent record. Injected by react-admin.',
+    },
+    sortBy: { 
+        type: 'string',
+        description: 'The name of the field to use for sorting when the user clicks on the field header name.',
+        default: 'The source'
+    },
+    source: { 
+        type: 'string',
+        description: 'The path to the value in the record. Can use dot notation (e.g. "author.name") when the record has sub objects.',
+        required: 'true'
+    }
+}} />
+
+## Examples
+
+<Playground>
+    <WithStyles styles={{ dark: { background: '#ccffe3' }}}>
+    {({ classes }) => 
+        <SimpleShowLayout resource="post" record={{ is_published: true, is_final: false, has_class: true }} style={{ display:'flex', justifyContent: 'space-around' }}>
+            <BooleanField source="is_published" label="Published?" />
+            <BooleanField source="is_final" addLabel={false} />
+            <BooleanField source="has_class" className={classes.dark} />
+        </SimpleShowLayout>
+    }
+    </WithStyles>
+</Playground>
+
+Inside a `<Datagrid>`, you can benefit from the `headerClassName` and `cellClassName` props to style the filed header or cell.
+
+<Playground>
+<WithStyles styles={{ green: { background: '#ccffe3' }, yellow: { background: '#ffc' }}}>
+    {({ classes }) => 
+        <Datagrid resource="post" ids={[1, 2]} data={{
+            1: { is_published: true, is_final: false, has_class: true },
+            2: { is_published: false, is_final: false, has_class: false }
+        }}>
+            <BooleanField source="is_published" headerClassName={classes.green} />
+            <BooleanField source="is_final" cellClassName={classes.yellow} />
+            <BooleanField source="has_class" />
+        </Datagrid>
+    }
+    </WithStyles>
+</Playground>
+
+## Customizing the material-ui Icon
+
+Additional props are passed down to the material-ui [`<SvgIcon>`](https://material-ui.com/api/svg-icon/) component.
+
+<Playground>  
+    <SimpleShowLayout resource="post" record={{ is_published: true, is_final: false, has_class: true, }} style={{ display:'flex', justifyContent: 'space-around' }}>  
+        <BooleanField source="is_published" nativeColor="#afa" />
+        <BooleanField source="is_final" color="secondary" />
+        <BooleanField source="has_class" titleAccess="Has Class" />
+    </SimpleShowLayout>
+</Playground>
+
+## Injected Props
+
+When used inside a `<Datagrid>` or `<CardActions>`, react-admin injects the current `record`, which is necessary to get the data.
+
+<Playground>
+    <BooleanField source="is_published" record={{ id: 123, title: "hello, world", is_published: true }} />
+</Playground>

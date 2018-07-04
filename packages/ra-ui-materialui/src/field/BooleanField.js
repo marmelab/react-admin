@@ -21,7 +21,6 @@ export const BooleanField = ({ className, source, record = {}, ...rest }) => {
 
 BooleanField.propTypes = {
     addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
     className: PropTypes.string,
     cellClassName: PropTypes.string,
     headerClassName: PropTypes.string,

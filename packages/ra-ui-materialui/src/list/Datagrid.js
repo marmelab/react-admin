@@ -197,6 +197,7 @@ Datagrid.propTypes = {
 };
 
 Datagrid.defaultProps = {
+    currentSort: {},
     data: {},
     hasBulkActions: false,
     ids: [],
