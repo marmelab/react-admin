@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField/TextField';
 
 describe('ListController', () => {
     const defaultProps = {
+        basePath: '',
         changeListParams: () => {},
         children: () => {},
         crudGetList: () => {},
