@@ -60,8 +60,15 @@ const sanitizeRestProps = ({
 }) => props;
 
 export class SimpleForm extends Component {
-    handleSubmitWithRedirect = (redirect = this.props.redirect) =>
-        this.props.handleSubmit(values => this.props.save(values, redirect));
+    handleSubmitWithRedirect = (redirect = this.props.redirect) => {
+        const { handleSubmit, save } = this.props;
+        return handleSubmit(values => save(values, redirect));
+    };
+
+    handleSubmit = values => {
+        const { redirect, save } = this.props;
+        save(values, redirect);
+    };
 
     render() {
         const {
@@ -69,6 +76,7 @@ export class SimpleForm extends Component {
             children,
             classes = {},
             className,
+            handleSubmit,
             invalid,
             pristine,
             record,
@@ -84,6 +92,7 @@ export class SimpleForm extends Component {
         return (
             <form
                 className={classnames('simple-form', className)}
+                onSubmit={handleSubmit(this.handleSubmit)}
                 {...sanitizeRestProps(rest)}
             >
                 <div className={classes.form} key={version}>

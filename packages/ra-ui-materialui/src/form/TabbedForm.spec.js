@@ -17,6 +17,7 @@ describe('<TabbedForm />', () => {
                 translate={translate}
                 muiTheme={muiTheme}
                 tabsWithErrors={[]}
+                handleSubmit={() => {}}
             >
                 <FormTab />
                 <FormTab />
@@ -67,6 +68,7 @@ describe('<TabbedForm />', () => {
                 muiTheme={muiTheme}
                 tabsWithErrors={['tab2']}
                 classes={{ errorTabButton: 'error' }}
+                handleSubmit={() => {}}
             >
                 <FormTab label="tab1" />
                 <FormTab label="tab2" />
@@ -89,6 +91,7 @@ describe('<TabbedForm />', () => {
                 muiTheme={muiTheme}
                 tabsWithErrors={['tab1']}
                 classes={{ errorTabButton: 'error' }}
+                handleSubmit={() => {}}
             >
                 <FormTab label="tab1" />
                 <FormTab label="tab2" />

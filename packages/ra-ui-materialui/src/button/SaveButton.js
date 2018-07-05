@@ -56,6 +56,7 @@ export class SaveButton extends Component {
             if (e) {
                 e.preventDefault();
             }
+
             handleSubmitWithRedirect(redirect)();
         }
     };
@@ -81,7 +82,7 @@ export class SaveButton extends Component {
                 className={classnames(classes.button, className)}
                 variant={variant}
                 type={type}
-                onClick={this.handleClick}
+                onClick={submitOnEnter ? undefined : this.handleClick}
                 color={saving ? 'default' : 'primary'}
                 {...sanitizeRestProps(rest)}
             >

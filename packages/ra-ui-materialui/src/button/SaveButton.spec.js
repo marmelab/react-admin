@@ -64,22 +64,24 @@ describe('<SaveButton />', () => {
         expect(flatButtonWrapper.prop('type')).toEqual('button');
     });
 
-    it('should trigger submit action when clicked if no saving is in progress', () => {
+    it('should trigger submit action when clicked if no saving is in progress and submitOnEnter is false', () => {
         const onSubmit = jest.fn();
         const raisedButtonWrapper = shallow(
             <SaveButton
                 raised={true}
                 translate={translate}
-                handleSubmitWithRedirect={() => onSubmit}
+                handleSubmitWithRedirect={onSubmit}
                 saving={false}
+                submitOnEnter={false}
             />
         );
         const flatButtonWrapper = shallow(
             <SaveButton
                 raised={false}
                 translate={translate}
-                handleSubmitWithRedirect={() => onSubmit}
+                handleSubmitWithRedirect={onSubmit}
                 saving={false}
+                submitOnEnter={false}
             />
         );
 
@@ -97,16 +99,18 @@ describe('<SaveButton />', () => {
             <SaveButton
                 raised={true}
                 translate={translate}
-                handleSubmitWithRedirect={() => onSubmit}
+                handleSubmitWithRedirect={onSubmit}
                 saving={true}
+                submitOnEnter={false}
             />
         );
         const flatButtonWrapper = shallow(
             <SaveButton
                 raised={false}
                 translate={translate}
-                handleSubmitWithRedirect={() => onSubmit}
+                handleSubmitWithRedirect={onSubmit}
                 saving={true}
+                submitOnEnter={false}
             />
         );
 
@@ -126,18 +130,20 @@ describe('<SaveButton />', () => {
             <SaveButton
                 raised={true}
                 translate={translate}
-                handleSubmitWithRedirect={() => onSubmit}
+                handleSubmitWithRedirect={onSubmit}
                 invalid={true}
                 showNotification={showNotification}
+                submitOnEnter={false}
             />
         );
         const flatButtonWrapper = shallow(
             <SaveButton
                 raised={false}
                 translate={translate}
-                handleSubmitWithRedirect={() => onSubmit}
+                handleSubmitWithRedirect={onSubmit}
                 invalid={true}
                 showNotification={showNotification}
+                submitOnEnter={false}
             />
         );
 

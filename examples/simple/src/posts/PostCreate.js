@@ -15,11 +15,7 @@ import {
 
 const PostCreateToolbar = props => (
     <Toolbar {...props}>
-        <SaveButton
-            label="post.action.save_and_show"
-            redirect="show"
-            submitOnEnter={true}
-        />
+        <SaveButton label="post.action.save_and_show" submitOnEnter={true} />
         <SaveButton
             label="post.action.save_and_add"
             redirect={false}
@@ -36,6 +32,7 @@ const PostCreate = props => (
         <SimpleForm
             toolbar={<PostCreateToolbar />}
             defaultValue={{ average_note: 0 }}
+            redirect="show"
             validate={values => {
                 const errors = {};
                 ['title', 'teaser'].forEach(field => {

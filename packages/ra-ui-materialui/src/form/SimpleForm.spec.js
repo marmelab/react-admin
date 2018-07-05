@@ -8,7 +8,7 @@ import TextInput from '../input/TextInput';
 describe('<SimpleForm />', () => {
     it('should embed a form with given component children', () => {
         const wrapper = shallow(
-            <SimpleForm>
+            <SimpleForm handleSubmit={() => {}}>
                 <TextInput source="name" />
                 <TextInput source="city" />
             </SimpleForm>
@@ -22,7 +22,7 @@ describe('<SimpleForm />', () => {
 
     it('should display <Toolbar />', () => {
         const wrapper = shallow(
-            <SimpleForm>
+            <SimpleForm handleSubmit={() => {}}>
                 <TextInput source="name" />
             </SimpleForm>
         );
