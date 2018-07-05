@@ -2,6 +2,7 @@ import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { withRouter } from 'react-router';
 import {
     MuiThemeProvider,
     createMuiTheme,
@@ -14,6 +15,7 @@ import AppBar from './AppBar';
 import Sidebar from './Sidebar';
 import Menu from './Menu';
 import Notification from './Notification';
+import Error from './Error';
 import defaultTheme from '../defaultTheme';
 
 const styles = theme => ({
@@ -52,43 +54,83 @@ const styles = theme => ({
     },
 });
 
-const sanitizeRestProps = ({ staticContext, ...props }) => props;
-
-const Layout = ({
-    appBar,
-    children,
-    classes,
-    className,
-    customRoutes,
-    dashboard,
-    logout,
-    menu,
-    notification,
-    open,
-    title,
+const sanitizeRestProps = ({
+    staticContext,
+    history,
+    location,
+    match,
     ...props
-}) => (
-    <div
-        className={classnames('layout', classes.root, className)}
-        {...sanitizeRestProps(props)}
-    >
-        <div className={classes.appFrame}>
-            <Hidden xsDown>
-                {createElement(appBar, { title, open, logout })}
-            </Hidden>
-            <main className={classes.contentWithSidebar}>
-                <Sidebar>
-                    {createElement(menu, {
-                        logout,
-                        hasDashboard: !!dashboard,
-                    })}
-                </Sidebar>
-                <div className={classes.content}>{children}</div>
-            </main>
-            {createElement(notification)}
-        </div>
-    </div>
-);
+}) => props;
+
+class Layout extends Component {
+    state = { hasError: false, errorMessage: null, errorInfo: null };
+
+    constructor(props) {
+        super(props);
+        /**
+         * Reset the error state upon navigation
+         *
+         * @see https://stackoverflow.com/questions/48121750/browser-navigation-broken-by-use-of-react-error-boundaries
+         * */
+        props.history.listen(() => {
+            if (this.state.hasError) {
+                this.setState({ hasError: false });
+            }
+        });
+    }
+
+    componentDidCatch(errorMessage, errorInfo) {
+        this.setState({ hasError: true, errorMessage, errorInfo });
+    }
+
+    render() {
+        const {
+            appBar,
+            children,
+            classes,
+            className,
+            customRoutes,
+            error,
+            dashboard,
+            logout,
+            menu,
+            notification,
+            open,
+            title,
+            ...props
+        } = this.props;
+        const { hasError, errorMessage, errorInfo } = this.state;
+        return (
+            <div
+                className={classnames('layout', classes.root, className)}
+                {...sanitizeRestProps(props)}
+            >
+                <div className={classes.appFrame}>
+                    <Hidden xsDown>
+                        {createElement(appBar, { title, open, logout })}
+                    </Hidden>
+                    <main className={classes.contentWithSidebar}>
+                        <Sidebar>
+                            {createElement(menu, {
+                                logout,
+                                hasDashboard: !!dashboard,
+                            })}
+                        </Sidebar>
+                        <div className={classes.content}>
+                            {hasError
+                                ? createElement(error, {
+                                      error: errorMessage,
+                                      errorInfo,
+                                  })
+                                : children}
+                        </div>
+                    </main>
+                    {createElement(notification)}
+                </div>
+            </div>
+        );
+    }
+}
 
 const componentPropType = PropTypes.oneOfType([
     PropTypes.func,
@@ -102,6 +144,8 @@ Layout.propTypes = {
     className: PropTypes.string,
     customRoutes: PropTypes.array,
     dashboard: componentPropType,
+    error: componentPropType,
+    history: PropTypes.object.isRequired,
     logout: PropTypes.oneOfType([
         PropTypes.node,
         PropTypes.func,
@@ -115,6 +159,7 @@ Layout.propTypes = {
 
 Layout.defaultProps = {
     appBar: AppBar,
+    error: Error,
     menu: Menu,
     notification: Notification,
 };
@@ -128,6 +173,7 @@ const EnhancedLayout = compose(
         mapStateToProps,
         {} // Avoid connect passing dispatch in props
     ),
+    withRouter,
     withStyles(styles)
 )(Layout);
 
