@@ -149,6 +149,7 @@ const enhance = compose(
     reduxForm({
         destroyOnUnmount: false,
         enableReinitialize: true,
+        keepDirtyOnReinitialize: true,
     }),
     withStyles(styles)
 );
