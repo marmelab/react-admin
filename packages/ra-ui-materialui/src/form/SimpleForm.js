@@ -63,6 +63,12 @@ export class SimpleForm extends Component {
     handleSubmitWithRedirect = (redirect = this.props.redirect) =>
         this.props.handleSubmit(values => this.props.save(values, redirect));
 
+    handleKeyPress = event => {
+        if (!this.props.submitOnEnter && event.key === 'Enter') {
+            event.preventDefault();
+        }
+    };
+
     render() {
         const {
             basePath,
@@ -84,6 +90,7 @@ export class SimpleForm extends Component {
         return (
             <form
                 className={classnames('simple-form', className)}
+                onKeyPress={this.handleKeyPress}
                 {...sanitizeRestProps(rest)}
             >
                 <div className={classes.form} key={version}>
