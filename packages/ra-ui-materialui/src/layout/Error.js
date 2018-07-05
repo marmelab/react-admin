@@ -92,7 +92,7 @@ const Error = ({
 Error.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
-    error: PropTypes.string.isRequired,
+    error: PropTypes.object.isRequired,
     errorInfo: PropTypes.object,
     translate: PropTypes.func.isRequired,
 };

@@ -101,7 +101,7 @@ class Layout extends Component {
                         <div className={classes.content}>
                             {errorMessage
                                 ? createElement(error, {
-                                      errorMessage,
+                                      error: errorMessage,
                                       errorInfo,
                                   })
                                 : children}
