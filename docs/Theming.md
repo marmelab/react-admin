@@ -365,7 +365,7 @@ const App = () => (
 );
 ```
 
-Your custom layout can extend the default `<Layout>` component if you only want to override the appBar, the menu, or the notification component. For instance:
+Your custom layout can extend the default `<Layout>` component if you only want to override the appBar, the menu, the notification component, or the error page. For instance:
 
 ```jsx
 // in src/MyLayout.js
@@ -586,9 +586,7 @@ export default withRouter(connect(mapStateToProps)(withStyles(styles)(Menu)));
 
 ## Notifications
 
-If you use your own layout (or custom login page), then you probably use the `<Notification>` component.
-
-You can override the notification duration by setting the `autoHideDuration` prop. It defaults to 4000, i.e. 4 seconds. For instance, to create a custom Notification component with a 5 seconds default:
+You can override the notification component, for instance to change the notification duration. It defaults to 4000, i.e. 4 seconds, and you can override it using the `autoHideDuration` prop. For instance, to create a custom Notification component with a 5 seconds default:
 
 ```jsx
 // in src/MyNotification.js
@@ -600,6 +598,96 @@ export default MyNotification;
 ```
 
 **Tip**: if you use the `showNotification` action, then you can define `autoHideDuration` per message as the third parameter of the `showNotification` action creator.
+
+To use this custom notification component, pass it to a custom Layout, as explained above:
+
+```jsx
+// in src/MyLayout.js
+import { Layout } from 'react-admin';
+import MyNotification from './MyNotification';
+
+const MyLayout = (props) => <Layout {...props} notification={MyNotification} />;
+
+export default MyLayout;
+```
+
+Then, use this layout in the `<Admin>` `applayout` prop:
+
+```jsx
+// in src/App.js
+import MyLayout from './MyLayout';
+
+const App = () => (
+    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
+## Customizing The Error Page
+
+Whenever a client-side error happens in react-admin, the user sees a default error message. If you want to customize this page, or log the error to a third-party service, create your own `<Error>` component. The following snippet is a simplified version of the react-admin Error component, that you can use as a base for your own:
+
+```jsx
+// in src/MyError.js
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import ErrorIcon from '@material-ui/icons/Report';
+import History from '@material-ui/icons/History';
+
+const MyError = ({
+    error,
+    errorInfo,
+    ...rest
+}) => (
+    <div>
+        <h1><ErrorIcon /> Something Went Wrong </h1>
+        <div>A client error occurred and your request couldn't be completed.</div>
+        {process.env.NODE_ENV === 'development' && (
+            <details>
+                <h2>{translate(error.toString())}</h2>
+                {errorInfo.componentStack}
+            </details>
+        )}
+        <div>
+            <Button
+                variant="raised"
+                icon={<History />}
+                onClick={() => history.go(-1)}
+            >
+                Back
+            </Button>
+        </div>
+    </div>
+);
+
+export default MyError;
+```
+
+To use this custom error component, pass it to a custom Layout, as explained above:
+
+```jsx
+// in src/MyLayout.js
+import { Layout } from 'react-admin';
+import MyError from './MyError';
+
+const MyLayout = (props) => <Layout {...props} error={MyError} />;
+
+export default MyLayout;
+```
+
+Then, use this layout in the `<Admin>` `applayout` prop:
+
+```jsx
+// in src/App.js
+import MyLayout from './MyLayout';
+
+const App = () => (
+    <Admin appLayout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
 
 ## Loading
 
