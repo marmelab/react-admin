@@ -14,7 +14,7 @@ const UserCreateToolbar = ({ permissions, ...props }) => (
         <SaveButton
             label="user.action.save_and_show"
             redirect="show"
-            submitOnEnter={true}
+            submitOnEnter={false}
         />
         {permissions === 'admin' && (
             <SaveButton
@@ -32,6 +32,7 @@ const UserCreate = ({ permissions, ...props }) => (
         <SimpleForm
             toolbar={<UserCreateToolbar permissions={permissions} />}
             defaultValue={{ role: 'user' }}
+            submitOnEnter={false}
         >
             <TextInput source="name" validate={[required()]} />
             {permissions === 'admin' && (
