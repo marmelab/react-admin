@@ -65,7 +65,7 @@ describe('<SaveButton />', () => {
     });
 
     it('should trigger submit action when clicked if no saving is in progress and submitOnEnter is false', () => {
-        const onSubmit = jest.fn();
+        const onSubmit = jest.fn(() => () => {});
         const raisedButtonWrapper = shallow(
             <SaveButton
                 raised={true}
@@ -92,7 +92,7 @@ describe('<SaveButton />', () => {
     });
 
     it('should not trigger submit action when clicked if saving is in progress', () => {
-        const onSubmit = jest.fn();
+        const onSubmit = jest.fn(() => () => {});
         const event = { preventDefault: jest.fn() };
 
         const raisedButtonWrapper = shallow(
@@ -122,7 +122,7 @@ describe('<SaveButton />', () => {
         expect(onSubmit.mock.calls.length).toEqual(0);
     });
     it('should show a notification if the form is not valid', () => {
-        const onSubmit = jest.fn();
+        const onSubmit = jest.fn(() => () => {});
         const showNotification = jest.fn();
         const event = { preventDefault: jest.fn() };
 
