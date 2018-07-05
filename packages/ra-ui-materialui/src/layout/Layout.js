@@ -2,6 +2,7 @@ import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { withRouter } from 'react-router';
 import {
     MuiThemeProvider,
     createMuiTheme,
@@ -53,16 +54,33 @@ const styles = theme => ({
     },
 });
 
-const sanitizeRestProps = ({ staticContext, ...props }) => props;
+const sanitizeRestProps = ({
+    staticContext,
+    history,
+    location,
+    match,
+    ...props
+}) => props;
 
 class Layout extends Component {
-    state = { errorMessage: null, errorInfo: null };
+    state = { hasError: false, errorMessage: null, errorInfo: null };
+
+    constructor(props) {
+        super(props);
+        /**
+         * Reset the error state upon navigation
+         *
+         * @see https://stackoverflow.com/questions/48121750/browser-navigation-broken-by-use-of-react-error-boundaries
+         * */
+        props.history.listen(() => {
+            if (this.state.hasError) {
+                this.setState({ hasError: false });
+            }
+        });
+    }
 
     componentDidCatch(errorMessage, errorInfo) {
-        this.setState({
-            errorMessage,
-            errorInfo,
-        });
+        this.setState({ hasError: true, errorMessage, errorInfo });
     }
 
     render() {
@@ -81,7 +99,7 @@ class Layout extends Component {
             title,
             ...props
         } = this.props;
-        const { errorMessage, errorInfo } = this.state;
+        const { hasError, errorMessage, errorInfo } = this.state;
         return (
             <div
                 className={classnames('layout', classes.root, className)}
@@ -99,7 +117,7 @@ class Layout extends Component {
                             })}
                         </Sidebar>
                         <div className={classes.content}>
-                            {errorMessage
+                            {hasError
                                 ? createElement(error, {
                                       error: errorMessage,
                                       errorInfo,
@@ -127,6 +145,7 @@ Layout.propTypes = {
     customRoutes: PropTypes.array,
     dashboard: componentPropType,
     error: componentPropType,
+    history: PropTypes.object.isRequired,
     logout: PropTypes.oneOfType([
         PropTypes.node,
         PropTypes.func,
@@ -154,6 +173,7 @@ const EnhancedLayout = compose(
         mapStateToProps,
         {} // Avoid connect passing dispatch in props
     ),
+    withRouter,
     withStyles(styles)
 )(Layout);
 
