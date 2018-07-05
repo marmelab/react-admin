@@ -14,6 +14,7 @@ import AppBar from './AppBar';
 import Sidebar from './Sidebar';
 import Menu from './Menu';
 import Notification from './Notification';
+import Error from './Error';
 import defaultTheme from '../defaultTheme';
 
 const styles = theme => ({
@@ -54,41 +55,64 @@ const styles = theme => ({
 
 const sanitizeRestProps = ({ staticContext, ...props }) => props;
 
-const Layout = ({
-    appBar,
-    children,
-    classes,
-    className,
-    customRoutes,
-    dashboard,
-    logout,
-    menu,
-    notification,
-    open,
-    title,
-    ...props
-}) => (
-    <div
-        className={classnames('layout', classes.root, className)}
-        {...sanitizeRestProps(props)}
-    >
-        <div className={classes.appFrame}>
-            <Hidden xsDown>
-                {createElement(appBar, { title, open, logout })}
-            </Hidden>
-            <main className={classes.contentWithSidebar}>
-                <Sidebar>
-                    {createElement(menu, {
-                        logout,
-                        hasDashboard: !!dashboard,
-                    })}
-                </Sidebar>
-                <div className={classes.content}>{children}</div>
-            </main>
-            {createElement(notification)}
-        </div>
-    </div>
-);
+class Layout extends Component {
+    state = { errorMessage: null, errorInfo: null };
+
+    componentDidCatch(errorMessage, errorInfo) {
+        this.setState({
+            errorMessage,
+            errorInfo,
+        });
+    }
+
+    render() {
+        const {
+            appBar,
+            children,
+            classes,
+            className,
+            customRoutes,
+            error,
+            dashboard,
+            logout,
+            menu,
+            notification,
+            open,
+            title,
+            ...props
+        } = this.props;
+        const { errorMessage, errorInfo } = this.state;
+        return (
+            <div
+                className={classnames('layout', classes.root, className)}
+                {...sanitizeRestProps(props)}
+            >
+                <div className={classes.appFrame}>
+                    <Hidden xsDown>
+                        {createElement(appBar, { title, open, logout })}
+                    </Hidden>
+                    <main className={classes.contentWithSidebar}>
+                        <Sidebar>
+                            {createElement(menu, {
+                                logout,
+                                hasDashboard: !!dashboard,
+                            })}
+                        </Sidebar>
+                        <div className={classes.content}>
+                            {errorMessage
+                                ? createElement(error, {
+                                      errorMessage,
+                                      errorInfo,
+                                  })
+                                : children}
+                        </div>
+                    </main>
+                    {createElement(notification)}
+                </div>
+            </div>
+        );
+    }
+}
 
 const componentPropType = PropTypes.oneOfType([
     PropTypes.func,
@@ -102,6 +126,7 @@ Layout.propTypes = {
     className: PropTypes.string,
     customRoutes: PropTypes.array,
     dashboard: componentPropType,
+    error: componentPropType,
     logout: PropTypes.oneOfType([
         PropTypes.node,
         PropTypes.func,
@@ -115,6 +140,7 @@ Layout.propTypes = {
 
 Layout.defaultProps = {
     appBar: AppBar,
+    error: Error,
     menu: Menu,
     notification: Notification,
 };

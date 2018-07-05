@@ -3,6 +3,7 @@ export AppBarMobile from './AppBarMobile';
 export CardActions from './CardActions';
 export Confirm from './Confirm';
 export DashboardMenuItem from './DashboardMenuItem';
+export Error from './Error';
 export Header from './Header';
 export Layout from './Layout';
 export Loading from './Loading';
