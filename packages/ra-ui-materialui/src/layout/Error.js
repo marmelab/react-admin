@@ -64,7 +64,7 @@ const Error = ({
             <AppBarMobile />
         </Hidden>
         <div className={classnames(classes.container, className)} {...rest}>
-            <h1 className={classes.title}>
+            <h1 className={classes.title} role="alert">
                 <ErrorIcon className={classes.icon} />
                 {translate('ra.page.error')}
             </h1>
