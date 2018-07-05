@@ -80,9 +80,12 @@ export class TabbedForm extends Component {
         return handleSubmit(values => save(values, redirect));
     };
 
-    handleSubmit = values => {
-        const { redirect, save } = this.props;
-        save(values, redirect);
+    handleSubmit = event => {
+        const { handleSubmit, redirect, save, submitOnEnter } = this.props;
+        if (!submitOnEnter && event.key === 'Enter') {
+            return event.preventDefault();
+        }
+        handleSubmit(values => save(values, redirect))(event);
     };
 
     render() {
@@ -113,7 +116,7 @@ export class TabbedForm extends Component {
             <form
                 className={classnames('tabbed-form', className)}
                 key={version}
-                onSubmit={handleSubmit(this.handleSubmit)}
+                onSubmit={this.handleSubmit}
                 {...sanitizeRestProps(rest)}
             >
                 <Tabs
