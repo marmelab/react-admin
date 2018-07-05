@@ -69,17 +69,19 @@ const Error = ({
                 {translate('ra.page.error')}
             </h1>
             <div>{translate('ra.message.error')}</div>
-            <ExpansionPanel className={classes.panel}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    {translate('ra.message.details')}
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails className={classes.panelDetails}>
-                    <div>
-                        <h2>{translate(error.toString())}</h2>
-                        {errorInfo.componentStack}
-                    </div>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
+            {process.env.NODE_ENV === 'development' && (
+                <ExpansionPanel className={classes.panel}>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                        {translate('ra.message.details')}
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails className={classes.panelDetails}>
+                        <div>
+                            <h2>{translate(error.toString())}</h2>
+                            {errorInfo.componentStack}
+                        </div>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+            )}
             <div className={classes.toolbar}>
                 <Button variant="raised" icon={<History />} onClick={goBack}>
                     {translate('ra.action.back')}
