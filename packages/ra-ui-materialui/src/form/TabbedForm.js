@@ -32,6 +32,7 @@ const styles = theme => ({
 const sanitizeRestProps = ({
     anyTouched,
     array,
+    asyncBlurFields,
     asyncValidate,
     asyncValidating,
     autofill,
