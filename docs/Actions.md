@@ -418,7 +418,7 @@ For its own fetch actions, react-admin uses an approach called *optimistic rende
 
 As a bonus, while the success notification is displayed, users have the ability to cancel the action *before* the data provider is even called.
 
-You can benefit from optimistic rendering in your own custom actions, too. Ypu just need to decorate the action with the `startUndoable` action creator:
+You can benefit from optimistic rendering in your own custom actions, too. You just need to decorate the action with the `startUndoable` action creator:
 
 ```diff
 // in src/comments/ApproveButton.js
