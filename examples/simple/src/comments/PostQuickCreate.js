@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+import { withStyles } from '@material-ui/core/styles';
 import {
     CREATE,
     LongTextInput,
@@ -10,16 +10,14 @@ import {
     TextInput,
     Toolbar,
     required,
-    fetchEnd,
-    fetchStart,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-import dataProvider from '../dataProvider';
+
 import CancelButton from './PostQuickCreateCancelButton';
 
 // We need a custom toolbar to add our custom buttons
 // The CancelButton allows to close the modal without submitting anything
-const PostQuickCreateToolbar = ({ onCancel, ...props }) => (
-    <Toolbar {...props}>
+const PostQuickCreateToolbar = ({ submitting, onCancel, ...props }) => (
+    <Toolbar {...props} disableGutters>
         <SaveButton />
         <CancelButton onClick={onCancel} />
     </Toolbar>
@@ -30,33 +28,38 @@ PostQuickCreateToolbar.propTypes = {
     onCancel: PropTypes.func.isRequired,
 };
 
+const styles = {
+    form: { padding: 0 },
+};
+
 class PostQuickCreateView extends Component {
     static propTypes = {
+        dispatch: PropTypes.func.isRequired,
         onCancel: PropTypes.func.isRequired,
         onSave: PropTypes.func.isRequired,
-        fetchEnd: PropTypes.func.isRequired,
-        fetchStart: PropTypes.func.isRequired,
         submitting: PropTypes.bool.isRequired,
     };
 
     handleSave = values => {
-        const { fetchStart, fetchEnd, onSave } = this.props;
-
-        fetchStart();
-        dataProvider(CREATE, 'posts', { data: values })
-            .then(({ data }) => {
-                onSave(data);
-            })
-            .catch(error => {
-                this.setState({ error });
-            })
-            .finally(() => {
-                fetchEnd();
-            });
+        const { dispatch, onSave } = this.props;
+        dispatch({
+            type: 'QUICK_CREATE',
+            payload: { data: values },
+            meta: {
+                fetch: CREATE,
+                resource: 'posts',
+                onSuccess: {
+                    callback: ({ payload: { data } }) => onSave(data),
+                },
+                onError: {
+                    callback: ({ error }) => this.setState({ error }),
+                },
+            },
+        });
     };
 
     render() {
-        const { submitting, onCancel } = this.props;
+        const { classes, submitting, onCancel } = this.props;
 
         return (
             <SimpleForm
@@ -70,6 +73,7 @@ class PostQuickCreateView extends Component {
                         submitting={submitting}
                     />
                 }
+                classes={{ form: classes.form }}
             >
                 <TextInput source="title" validate={required()} />
                 <LongTextInput source="teaser" validate={required()} />
@@ -81,12 +85,7 @@ class PostQuickCreateView extends Component {
 const mapStateToProps = state => ({
     submitting: state.admin.loading > 0,
 });
-const mapDispatchToProps = {
-    fetchStart,
-    fetchEnd,
-};
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(PostQuickCreateView);
+export default connect(mapStateToProps)(
+    withStyles(styles)(PostQuickCreateView)
+);
