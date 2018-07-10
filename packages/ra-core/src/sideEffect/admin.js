@@ -1,5 +1,6 @@
 import { all } from 'redux-saga/effects';
 import auth from './auth';
+import callback from './callback';
 import fetch from './fetch';
 import error from './error';
 import i18n from './i18n';
@@ -24,5 +25,6 @@ export default (dataProvider, authProvider, i18nProvider) =>
             redirection(),
             refresh(),
             notification(),
+            callback(),
         ]);
     };
