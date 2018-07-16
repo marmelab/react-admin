@@ -89,6 +89,7 @@ const CommentGrid = withStyles(listStyles)(
                 <Grid item key={id} sm={12} md={6} lg={4}>
                     <Card className={classes.card}>
                         <CardHeader
+                            className="comment"
                             title={
                                 <TextField
                                     record={data[id]}

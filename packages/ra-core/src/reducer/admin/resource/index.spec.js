@@ -1,6 +1,7 @@
 import assert from 'assert';
 import reducer, { getReferenceResource } from './index';
 import { REGISTER_RESOURCE, UNREGISTER_RESOURCE } from '../../../actions';
+import { CRUD_CHANGE_LIST_PARAMS } from '../../../actions/listActions';
 
 describe('Resources Reducer', () => {
     it('should return previous state if the action has no resource meta and is not REGISTER_RESOURCE nor UNREGISTER_RESOURCE', () => {
@@ -12,20 +13,39 @@ describe('Resources Reducer', () => {
     });
 
     it('should initialize a new resource upon REGISTER_RESOURCE', () => {
-        const dataReducer = () => () => 'data_data';
-        const listReducer = () => () => 'list_data';
-
         assert.deepEqual(
             reducer(
                 {
                     posts: {
-                        data: 'data_data',
-                        list: 'list_data',
+                        data: {},
+                        list: {
+                            ids: [],
+                            params: {
+                                filter: {},
+                                order: null,
+                                page: 1,
+                                perPage: null,
+                                sort: null,
+                            },
+                            selectedIds: [],
+                            total: 0,
+                        },
                         props: { name: 'posts' },
                     },
                     comments: {
-                        data: 'data_data',
-                        list: 'list_data',
+                        data: {},
+                        list: {
+                            ids: [],
+                            params: {
+                                filter: {},
+                                order: null,
+                                page: 1,
+                                perPage: null,
+                                sort: null,
+                            },
+                            selectedIds: [],
+                            total: 0,
+                        },
                         props: { name: 'comments' },
                     },
                 },
@@ -35,24 +55,55 @@ describe('Resources Reducer', () => {
                         name: 'users',
                         options: 'foo',
                     },
-                },
-                dataReducer,
-                listReducer
+                }
             ),
             {
                 posts: {
-                    data: 'data_data',
-                    list: 'list_data',
+                    data: {},
+                    list: {
+                        ids: [],
+                        params: {
+                            filter: {},
+                            order: null,
+                            page: 1,
+                            perPage: null,
+                            sort: null,
+                        },
+                        selectedIds: [],
+                        total: 0,
+                    },
                     props: { name: 'posts' },
                 },
                 comments: {
-                    data: 'data_data',
-                    list: 'list_data',
+                    data: {},
+                    list: {
+                        ids: [],
+                        params: {
+                            filter: {},
+                            order: null,
+                            page: 1,
+                            perPage: null,
+                            sort: null,
+                        },
+                        selectedIds: [],
+                        total: 0,
+                    },
                     props: { name: 'comments' },
                 },
                 users: {
-                    data: 'data_data',
-                    list: 'list_data',
+                    data: {},
+                    list: {
+                        ids: [],
+                        params: {
+                            filter: {},
+                            order: null,
+                            page: 1,
+                            perPage: null,
+                            sort: null,
+                        },
+                        selectedIds: [],
+                        total: 0,
+                    },
                     props: { name: 'users', options: 'foo' },
                 },
             }
@@ -60,34 +111,62 @@ describe('Resources Reducer', () => {
     });
 
     it('should remove a resource upon UNREGISTER_RESOURCE', () => {
-        const dataReducer = () => () => 'data_data';
-        const listReducer = () => () => 'list_data';
-
         assert.deepEqual(
             reducer(
                 {
                     posts: {
-                        data: 'data_data',
-                        list: 'list_data',
+                        data: {},
+                        list: {
+                            ids: [],
+                            params: {
+                                filter: {},
+                                order: null,
+                                page: 1,
+                                perPage: null,
+                                sort: null,
+                            },
+                            selectedIds: [],
+                            total: 0,
+                        },
                         props: { name: 'posts' },
                     },
                     comments: {
-                        data: 'data_data',
-                        list: 'list_data',
+                        data: {},
+                        list: {
+                            ids: [],
+                            params: {
+                                filter: {},
+                                order: null,
+                                page: 1,
+                                perPage: null,
+                                sort: null,
+                            },
+                            selectedIds: [],
+                            total: 0,
+                        },
                         props: { name: 'comments' },
                     },
                 },
                 {
                     type: UNREGISTER_RESOURCE,
                     payload: 'comments',
-                },
-                dataReducer,
-                listReducer
+                }
             ),
             {
                 posts: {
-                    data: 'data_data',
-                    list: 'list_data',
+                    data: {},
+                    list: {
+                        ids: [],
+                        params: {
+                            filter: {},
+                            order: null,
+                            page: 1,
+                            perPage: null,
+                            sort: null,
+                        },
+                        selectedIds: [],
+                        total: 0,
+                    },
                     props: { name: 'posts' },
                 },
             }
@@ -95,44 +174,89 @@ describe('Resources Reducer', () => {
     });
 
     it('should call inner reducers for each resource when action has a resource meta', () => {
-        const innerReducer = state => state;
-        const dataReducer = jest.fn(() => innerReducer);
-        const listReducer = jest.fn(() => innerReducer);
-
         assert.deepEqual(
             reducer(
                 {
                     posts: {
-                        data: 'data_data',
-                        list: 'list_data',
+                        data: {},
+                        list: {
+                            ids: [],
+                            params: {
+                                filter: {},
+                                order: null,
+                                page: 1,
+                                perPage: null,
+                                sort: null,
+                            },
+                            selectedIds: [],
+                            total: 0,
+                        },
                         props: { name: 'posts' },
                     },
                     comments: {
-                        data: 'data_data',
-                        list: 'list_data',
+                        data: {},
+                        list: {
+                            ids: [],
+                            params: {
+                                filter: {},
+                                order: null,
+                                page: 1,
+                                perPage: null,
+                                sort: null,
+                            },
+                            selectedIds: [],
+                            total: 0,
+                        },
                         props: { name: 'comments' },
                     },
                 },
-                { type: 'A_RESOURCE_ACTION', meta: { resource: 'posts' } },
-                dataReducer,
-                listReducer
+                {
+                    type: CRUD_CHANGE_LIST_PARAMS,
+                    meta: { resource: 'posts' },
+                    payload: {
+                        filter: { commentable: true },
+                        order: null,
+                        page: 1,
+                        perPage: null,
+                        sort: null,
+                    },
+                }
             ),
             {
                 posts: {
-                    data: 'data_data',
-                    list: 'list_data',
+                    data: {},
+                    list: {
+                        ids: [],
+                        params: {
+                            filter: { commentable: true },
+                            order: null,
+                            page: 1,
+                            perPage: null,
+                            sort: null,
+                        },
+                        selectedIds: [],
+                        total: 0,
+                    },
                     props: { name: 'posts' },
                 },
                 comments: {
-                    data: 'data_data',
-                    list: 'list_data',
+                    data: {},
+                    list: {
+                        ids: [],
+                        params: {
+                            filter: {},
+                            order: null,
+                            page: 1,
+                            perPage: null,
+                            sort: null,
+                        },
+                        selectedIds: [],
+                        total: 0,
+                    },
                     props: { name: 'comments' },
                 },
             }
         );
-
-        assert.equal(dataReducer.mock.calls[0][0], 'posts');
-        assert.equal(listReducer.mock.calls[0][0], 'posts');
     });
 
     describe('getReferenceResource selector', () => {

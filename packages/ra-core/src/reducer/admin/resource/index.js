@@ -4,21 +4,19 @@ import data from './data';
 import list from './list';
 
 const initialState = {};
-export default (
-    previousState = initialState,
-    action,
-    dataReducer = data,
-    listReducer = list
-) => {
+
+export default (previousState = initialState, action) => {
     if (action.type === REGISTER_RESOURCE) {
+        const resourceState = {
+            props: action.payload,
+            data: data(undefined, action),
+            list: list(undefined, action),
+        };
         const newState = {
             ...previousState,
-            [action.payload.name]: {
-                props: action.payload,
-                data: dataReducer(action.payload.name)(undefined, action),
-                list: listReducer(action.payload.name)(undefined, action),
-            },
+            [action.payload.name]: resourceState,
         };
+
         return newState;
     }
 
@@ -45,14 +43,8 @@ export default (
                 action.meta.resource === resource
                     ? {
                           props: previousState[resource].props,
-                          data: dataReducer(resource)(
-                              previousState[resource].data,
-                              action
-                          ),
-                          list: listReducer(resource)(
-                              previousState[resource].list,
-                              action
-                          ),
+                          data: data(previousState[resource].data, action),
+                          list: list(previousState[resource].list, action),
                       }
                     : {
                           props: previousState[resource].props,
