@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.1.2
+
+* Fix duplicated block in `CreateEdit` doc [fzaninotto](https://github.com/fzaninotto)
+* Fix submit on enter when `submitOnEnter` is false [djhi](https://github.com/djhi)
+* Fix form resetting when a input with `defaultValue` is dynamically added [djhi](https://github.com/djhi)
+* Fix validators memoization [Bnaya](https://github.com/Bnaya)
+* Add Chinese translation [chen4w](https://github.com/chen4w)
+* Add API Platform Admin and the JSON-LD Data Provider to the `Ecosystem` doc [dunglas](https://github.com/dunglas)
+
 ## v2.1.1
 
 * Fix FormInput not passing `resource` to `Labeled` inputs ([djhi](https://github.com/djhi))
