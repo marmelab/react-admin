@@ -38,4 +38,8 @@ ChipField.propTypes = {
 
 const PureChipField = withStyles(styles)(pure(ChipField));
 
+PureChipField.defaultProps = {
+    addLabel: true,
+};
+
 export default PureChipField;
