@@ -46,11 +46,7 @@ export default (previousState = initialState, action) => {
                           data: data(previousState[resource].data, action),
                           list: list(previousState[resource].list, action),
                       }
-                    : {
-                          props: previousState[resource].props,
-                          data: previousState[resource].data,
-                          list: previousState[resource].list,
-                      },
+                    : previousState[resource],
         }),
         {}
     );
