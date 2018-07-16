@@ -1,7 +1,9 @@
 import listPageFactory from '../support/ListPage';
+import loginPageFactory from '../support/LoginPage';
 
 describe('List Page', () => {
     const ListPagePosts = listPageFactory('/#/posts');
+    const LoginPage = loginPageFactory('/#/login');
 
     beforeEach(() => {
         ListPagePosts.navigate();
@@ -66,10 +68,17 @@ describe('List Page', () => {
         });
 
         it('should keep filters when navigating away and going back on given page', () => {
+            LoginPage.navigate();
+            LoginPage.login('admin', 'password');
             ListPagePosts.setFilterValue('q', 'quis culpa impedit');
             cy.contains('1-1 of 1');
-            cy.get('[href="#/comments"]').click();
-            cy.get('.comment').should(els => expect(els.length).to.equal(6));
+
+            // This validates that defaultFilterValues on the user list is
+            // not kept for posts after navigation.
+            // See https://github.com/marmelab/react-admin/pull/2019
+            cy.get('[href="#/users"]').click();
+            cy.contains('1-2 of 2');
+
             cy.get('[href="#/posts"]').click();
 
             cy.get(ListPagePosts.elements.filter('q')).should(el =>

@@ -53,6 +53,7 @@ const PostFilter = props => (
         <QuickFilter
             label="resources.posts.fields.commentable"
             source="commentable"
+            defaultValue
         />
     </Filter>
 );
@@ -95,7 +96,6 @@ const PostList = withStyles(styles)(({ classes, ...props }) => (
         {...props}
         bulkActions={<PostListBulkActions />}
         filters={<PostFilter />}
-        filterDefaultValues={{ commentable: true }}
         sort={{ field: 'published_at', order: 'DESC' }}
     >
         <Responsive

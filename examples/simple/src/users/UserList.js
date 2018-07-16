@@ -39,6 +39,7 @@ const UserList = ({ permissions, ...props }) => (
     <List
         {...props}
         filters={<UserFilter permissions={permissions} />}
+        filterDefaultValues={{ role: 'user' }}
         sort={{ field: 'name', order: 'ASC' }}
     >
         <Responsive
