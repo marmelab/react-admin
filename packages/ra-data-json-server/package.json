@@ -1,6 +1,6 @@
 {
     "name": "ra-data-json-server",
-    "version": "2.1.2",
+    "version": "2.1.1",
     "description": "JSON Server data provider for react-admin",
     "main": "lib/index.js",
     "files": [
@@ -20,6 +20,6 @@
     "license": "MIT",
     "dependencies": {
         "query-string": "~5.1.1",
-        "react-admin": "^2.1.2"
+        "react-admin": "^2.1.1"
     }
 }
