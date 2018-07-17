@@ -138,14 +138,8 @@ export class ListController extends Component {
                 ? this.props.query
                 : { ...this.props.params };
         const filterDefaultValues = this.props.filterDefaultValues || {};
-        Object.keys(filterDefaultValues).forEach(name => {
-            if (!query.filter) {
-                query.filter = {};
-            }
-            if (!query.filter[name]) {
-                query.filter[name] = filterDefaultValues[name];
-            }
-        });
+
+        query.filter = { ...filterDefaultValues, ...query.filter };
 
         if (!query.sort) {
             query.sort = this.props.sort.field;
@@ -342,7 +336,7 @@ ListController.defaultProps = {
 const validQueryParams = ['page', 'perPage', 'sort', 'order', 'filter'];
 const getLocationPath = props => props.location.pathname;
 const getLocationSearch = props => props.location.search;
-const getQuery = createSelector(
+const selectQuery = createSelector(
     getLocationPath,
     getLocationSearch,
     (path, search) => {
@@ -365,7 +359,7 @@ function mapStateToProps(state, props) {
     const resourceState = state.admin.resources[props.resource];
 
     return {
-        query: getQuery(props),
+        query: selectQuery(props),
         params: resourceState.list.params,
         ids: resourceState.list.ids,
         selectedIds: resourceState.list.selectedIds,

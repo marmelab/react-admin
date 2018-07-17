@@ -58,13 +58,7 @@ const addRecords = addRecordsFactory(getFetchedAt);
 const initialState = {};
 Object.defineProperty(initialState, 'fetchedAt', { value: {} }); // non enumerable by default
 
-export default resource => (
-    previousState = initialState,
-    { type, payload, meta }
-) => {
-    if (!meta || meta.resource !== resource) {
-        return previousState;
-    }
+export default (previousState = initialState, { type, payload, meta }) => {
     if (type === CRUD_UPDATE_OPTIMISTIC) {
         const updatedRecord = { ...previousState[payload.id], ...payload.data };
         return addRecords([updatedRecord], previousState);
@@ -75,7 +69,7 @@ export default resource => (
             .map(record => ({ ...record, ...payload.data }));
         return addRecords(updatedRecords, previousState);
     }
-    if (!meta.fetchResponse || meta.fetchStatus !== FETCH_END) {
+    if (!meta || !meta.fetchResponse || meta.fetchStatus !== FETCH_END) {
         return previousState;
     }
     switch (meta.fetchResponse) {

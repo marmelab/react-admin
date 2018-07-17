@@ -5,10 +5,7 @@ import {
     CRUD_DELETE_MANY_OPTIMISTIC,
 } from '../../../../actions/dataActions';
 
-export default resource => (previousState = 0, { type, payload, meta }) => {
-    if (!meta || meta.resource !== resource) {
-        return previousState;
-    }
+export default (previousState = 0, { type, payload }) => {
     if (type === CRUD_GET_ONE_SUCCESS) {
         return previousState == 0 ? 1 : previousState;
     }

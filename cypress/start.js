@@ -11,8 +11,11 @@ return server.start().then(listeningServer => {
                 video: false,
             },
         })
-        .then(() => {
+        .then(results => {
             // stop your server when it's complete
-            return listeningServer.close();
+            listeningServer.close();
+            if (results.totalFailed > 0) {
+                process.exit(1);
+            }
         });
 });

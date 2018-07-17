@@ -46,12 +46,12 @@ describe('Permissions', () => {
         it('in List page filters', () => {
             ListPage.navigate();
             ListPage.openFilters();
-            cy
-                .get(ListPage.elements.filterMenuItem('name'))
-                .should(el => expect(el).to.exist);
-            cy
-                .get(ListPage.elements.filterMenuItem('role'))
-                .should(el => expect(el).to.not.exist);
+            cy.get(ListPage.elements.filterMenuItem('name')).should(
+                el => expect(el).to.exist
+            );
+            cy.get(ListPage.elements.filter('role')).should(
+                el => expect(el).to.not.exist
+            );
         });
 
         it('in Create page', () => {
@@ -94,12 +94,12 @@ describe('Permissions', () => {
         it('in List page filters', () => {
             ListPage.navigate();
             ListPage.openFilters();
-            cy
-                .get(ListPage.elements.filterMenuItem('name'))
-                .should(el => expect(el).to.exist);
-            cy
-                .get(ListPage.elements.filterMenuItem('role'))
-                .should(el => expect(el).to.exist);
+            cy.get(ListPage.elements.filterMenuItem('name')).should(
+                el => expect(el).to.exist
+            );
+            cy.get(ListPage.elements.filter('role')).should(
+                el => expect(el).to.exist
+            );
         });
 
         it('in Create page', () => {
