@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import { addField, translate, FieldTitle } from 'ra-core';
-import ResetableTextField from './ResetableTextField';
+import TextField from './TextField';
 
 const sanitizeRestProps = ({
     addLabel,
@@ -188,7 +188,7 @@ export class SelectInput extends Component {
         const { touched, error, helperText = false } = meta;
 
         return (
-            <ResetableTextField
+            <TextField
                 select
                 margin="normal"
                 value={this.state.value}
@@ -209,7 +209,7 @@ export class SelectInput extends Component {
                 onChange={this.handleChange}
             >
                 {this.addAllowEmpty(choices.map(this.renderMenuItem))}
-            </ResetableTextField>
+            </TextField>
         );
     }
 }

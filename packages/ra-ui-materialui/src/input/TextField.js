@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
+import MuiTextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
 
@@ -23,14 +23,16 @@ const styles = theme => ({
     },
 });
 
-class ResetableTextField extends Component {
+class TextField extends Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
         clearAlwaysVisible: PropTypes.bool,
+        onBlur: PropTypes.func,
         onChange: PropTypes.func.isRequired,
         onFocus: PropTypes.func,
-        onBlur: PropTypes.func,
+        resetable: PropTypes.bool,
         translate: PropTypes.func.isRequired,
+        value: PropTypes.any.isRequired,
     };
 
     state = { showClear: false };
@@ -55,13 +57,21 @@ class ResetableTextField extends Component {
     };
 
     render() {
-        const { translate, classes, clearAlwaysVisible, ...props } = this.props;
+        const {
+            translate,
+            classes,
+            clearAlwaysVisible,
+            value,
+            resetable,
+            ...props
+        } = this.props;
         const { showClear } = this.state;
         const { clearButton, ...restClasses } = classes;
 
         return (
-            <TextField
+            <MuiTextField
                 classes={restClasses}
+                value={value}
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
@@ -76,7 +86,9 @@ class ResetableTextField extends Component {
                                 onMouseDown={this.handleMouseDownClearButton}
                                 style={{
                                     width:
-                                        clearAlwaysVisible || showClear
+                                        value &&
+                                        resetable &&
+                                        (clearAlwaysVisible || showClear)
                                             ? 24
                                             : 0,
                                 }}
@@ -97,4 +109,4 @@ class ResetableTextField extends Component {
 export default compose(
     translate,
     withStyles(styles)
-)(ResetableTextField);
+)(TextField);

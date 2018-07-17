@@ -12,7 +12,7 @@ import compose from 'recompose/compose';
 import classnames from 'classnames';
 
 import { addField, translate, FieldTitle } from 'ra-core';
-import ResetableTextField from './ResetableTextField';
+import TextField from './TextField';
 
 const styles = theme => ({
     container: {
@@ -272,7 +272,7 @@ export class AutocompleteInput extends React.Component {
         const { touched, error, helperText = false } = meta;
 
         return (
-            <ResetableTextField
+            <TextField
                 label={
                     <FieldTitle
                         label={label}
