@@ -8,6 +8,8 @@ import {
     UPDATE,
 } from '../../../dataFetchActions';
 import {
+    CRUD_DELETE_OPTIMISTIC,
+    CRUD_DELETE_MANY_OPTIMISTIC,
     CRUD_UPDATE_OPTIMISTIC,
     CRUD_UPDATE_MANY_OPTIMISTIC,
 } from '../../../actions/dataActions';
@@ -68,6 +70,26 @@ export default (previousState = initialState, { type, payload, meta }) => {
             .reduce((records, id) => records.concat(previousState[id]), [])
             .map(record => ({ ...record, ...payload.data }));
         return addRecords(updatedRecords, previousState);
+    }
+    if (type === CRUD_DELETE_OPTIMISTIC) {
+        const { [payload.id]: removed, ...newState } = previousState;
+
+        Object.defineProperty(newState, 'fetchedAt', {
+            value: previousState.fetchedAt,
+        });
+
+        return newState;
+    }
+    if (type === CRUD_DELETE_MANY_OPTIMISTIC) {
+        const newState = Object.entries(previousState)
+            .filter(([key]) => !payload.ids.includes(key))
+            .reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {});
+
+        Object.defineProperty(newState, 'fetchedAt', {
+            value: previousState.fetchedAt,
+        });
+
+        return newState;
     }
     if (!meta || !meta.fetchResponse || meta.fetchStatus !== FETCH_END) {
         return previousState;
