@@ -42,7 +42,7 @@ const styles = theme => ({
         flexGrow: 2,
         padding: theme.spacing.unit * 3,
         [theme.breakpoints.up('xs')]: {
-            marginTop: '4em',
+            marginTop: '3em',
             paddingLeft: 5,
         },
         [theme.breakpoints.down('sm')]: {
