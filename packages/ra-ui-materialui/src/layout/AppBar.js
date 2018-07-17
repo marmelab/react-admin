@@ -76,7 +76,7 @@ const AppBar = ({
         position="absolute"
         {...rest}
     >
-        <Toolbar disableGutters className={classes.toolbar}>
+        <Toolbar disableGutters variant="dense" className={classes.toolbar}>
             <IconButton
                 color="inherit"
                 aria-label="open drawer"

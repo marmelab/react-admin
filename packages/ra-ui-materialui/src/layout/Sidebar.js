@@ -24,7 +24,7 @@ const styles = theme => ({
         }),
         backgroundColor: 'transparent',
         borderRight: 'none',
-        marginTop: '4.5em',
+        marginTop: '3.5em',
         [theme.breakpoints.only('xs')]: {
             marginTop: 0,
             height: '100vh',
@@ -33,7 +33,7 @@ const styles = theme => ({
         },
         [theme.breakpoints.up('md')]: {
             border: 'none',
-            marginTop: '5.5em',
+            marginTop: '4.5em',
         },
     },
     drawerPaperClose: {

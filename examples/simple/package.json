@@ -5,18 +5,15 @@
     "description": "",
     "main": "index.html",
     "scripts": {
-        "start":
-            "./node_modules/.bin/webpack-dev-server --progress --color --hot --watch --mode development",
-        "serve":
-            "./node_modules/.bin/serve --listen 8080 ./dist",
-        "build":
-            "./node_modules/.bin/webpack-cli --color --mode development --hide-modules true",
+        "start": "./node_modules/.bin/webpack-dev-server --progress --color --hot --watch --mode development",
+        "serve": "./node_modules/.bin/serve --listen 8080 ./dist",
+        "build": "./node_modules/.bin/webpack-cli --color --mode development --hide-modules true",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
     "license": "MIT",
     "devDependencies": {
-        "@material-ui/core": "~1.2.1",
+        "@material-ui/core": "~1.4.0",
         "@material-ui/icons": "~1.1.0",
         "babel-core": "~6.26.0",
         "babel-loader": "~7.1.1",
