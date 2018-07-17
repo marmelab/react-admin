@@ -139,13 +139,7 @@ export class ListController extends Component {
                 : { ...this.props.params };
         const filterDefaultValues = this.props.filterDefaultValues || {};
 
-        query.filter = Object.keys(filterDefaultValues).reduce(
-            (acc, name) => ({
-                ...acc,
-                [name]: acc[name] || filterDefaultValues[name],
-            }),
-            query.filter || {}
-        );
+        query.filter = { ...filterDefaultValues, ...query.filter };
 
         if (!query.sort) {
             query.sort = this.props.sort.field;
