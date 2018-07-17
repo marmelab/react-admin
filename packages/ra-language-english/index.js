@@ -6,6 +6,7 @@ module.exports = {
             back: 'Go Back',
             bulk_actions: '%{smart_count} selected',
             cancel: 'Cancel',
+            clear_input_value: 'Clear input value',
             clone: 'Clone',
             create: 'Create',
             delete: 'Delete',

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
 import { addField, FieldTitle } from 'ra-core';
 
+import ResetableTextField from './ResetableTextField';
 import sanitizeRestProps from './sanitizeRestProps';
 
 /**
@@ -56,7 +56,7 @@ export class TextInput extends Component {
         const { touched, error } = meta;
 
         return (
-            <TextField
+            <ResetableTextField
                 margin="normal"
                 type={type}
                 label={
