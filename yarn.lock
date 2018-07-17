@@ -114,9 +114,9 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
-"@material-ui/core@^1.0.0", "@material-ui/core@~1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-1.2.1.tgz#f8c73da10b875762b37be7167ec2ac79b027499f"
+"@material-ui/core@^1.4.0", "@material-ui/core@~1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-1.4.0.tgz#e535fef84576b096c46e1fb7d6c4c61895155fd3"
   dependencies:
     "@babel/runtime" "^7.0.0-beta.42"
     "@types/jss" "^9.5.3"
@@ -128,6 +128,7 @@
     deepmerge "^2.0.1"
     dom-helpers "^3.2.1"
     hoist-non-react-statics "^2.5.0"
+    is-plain-object "^2.0.4"
     jss "^9.3.3"
     jss-camel-case "^6.0.0"
     jss-default-unit "^8.0.2"
@@ -137,12 +138,12 @@
     jss-vendor-prefixer "^7.0.0"
     keycode "^2.1.9"
     normalize-scroll-left "^0.1.2"
+    popper.js "^1.0.0"
     prop-types "^15.6.0"
     react-event-listener "^0.6.0"
     react-jss "^8.1.0"
-    react-popper "^0.10.0"
     react-transition-group "^2.2.1"
-    recompose "^0.26.0 || ^0.27.0"
+    recompose "^0.27.0"
     scroll "^2.0.3"
     warning "^4.0.1"
 
@@ -8193,7 +8194,7 @@ pluralize@^7.0.0, pluralize@~7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
 
-popper.js@^1.14.1:
+popper.js@^1.0.0:
   version "1.14.3"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.3.tgz#1438f98d046acf7b4d78cd502bf418ac64d4f095"
 
@@ -8758,6 +8759,29 @@ quill@~1.3.6:
     parchment "^1.1.4"
     quill-delta "^3.6.2"
 
+ra-data-graphcool@~2.0.0:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/ra-data-graphcool/-/ra-data-graphcool-2.0.4.tgz#29ddb3b2ba027dd2970ba24a89fa29c6806c6c2b"
+  dependencies:
+    graphql-tag "^2.6.1"
+    lodash "~4.17.5"
+    pluralize "~7.0.0"
+    ra-data-graphql "^2.0.4"
+
+ra-data-json-server@~2.0.0:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/ra-data-json-server/-/ra-data-json-server-2.0.4.tgz#0773f3bd30bdc91640eaf7d930d205eea76328a9"
+  dependencies:
+    query-string "~5.1.1"
+    react-admin "^2.0.4"
+
+ra-data-simple-rest@~2.0.0:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/ra-data-simple-rest/-/ra-data-simple-rest-2.0.4.tgz#f6e842c55a9cf94d8ce3923ee7734f75e81ab145"
+  dependencies:
+    query-string "~5.1.1"
+    react-admin "^2.0.4"
+
 raf@3.4.0, raf@^3.4.0, raf@~3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.0.tgz#a28876881b4bc2ca9117d4138163ddb80f781575"
@@ -8836,6 +8860,14 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.2.7:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+react-admin@~2.0.0:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-admin/-/react-admin-2.0.4.tgz#bddd29f411d250cee0728ced7a75663907fd86ea"
+  dependencies:
+    ra-core "^2.0.4"
+    ra-language-english "^2.0.2"
+    ra-ui-materialui "^2.0.4"
 
 react-autosuggest@^9.3.2:
   version "9.3.4"
@@ -8921,13 +8953,6 @@ react-jss@^8.1.0:
 react-lifecycles-compat@^3.0.2:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
-
-react-popper@^0.10.0:
-  version "0.10.4"
-  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.10.4.tgz#af2a415ea22291edd504678d7afda8a6ee3295aa"
-  dependencies:
-    popper.js "^1.14.1"
-    prop-types "^15.6.1"
 
 react-reconciler@^0.7.0:
   version "0.7.0"
@@ -9200,7 +9225,7 @@ rechoir@^0.6.2:
   dependencies:
     resolve "^1.1.6"
 
-"recompose@^0.26.0 || ^0.27.0":
+"recompose@^0.26.0 || ^0.27.0", recompose@^0.27.0:
   version "0.27.1"
   resolved "https://registry.yarnpkg.com/recompose/-/recompose-0.27.1.tgz#1a49e931f183634516633bbb4f4edbfd3f38a7ba"
   dependencies:
