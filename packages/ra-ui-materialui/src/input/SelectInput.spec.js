@@ -15,7 +15,10 @@ describe('<SelectInput />', () => {
         const wrapper = shallow(
             <SelectInput {...defaultProps} input={{ value: 'hello' }} />
         );
-        const SelectFieldElement = wrapper.find('TextField');
+        const SelectFieldElement = wrapper.find(
+            'TranslatedComponent(WithStyles(ResetableTextField))'
+        );
+
         assert.equal(SelectFieldElement.length, 1);
         assert.equal(SelectFieldElement.prop('value'), 'hello');
     });
@@ -24,7 +27,9 @@ describe('<SelectInput />', () => {
         const wrapper = shallow(
             <SelectInput {...defaultProps} input={{ value: 2 }} />
         );
-        const SelectFieldElement = wrapper.find('TextField').first();
+        const SelectFieldElement = wrapper
+            .find('TranslatedComponent(WithStyles(ResetableTextField))')
+            .first();
         assert.equal(SelectFieldElement.prop('value'), '2');
     });
 
@@ -211,7 +216,9 @@ describe('<SelectInput />', () => {
                 meta={{ helperText: 'Can i help you?' }}
             />
         );
-        const SelectFieldElement = wrapper.find('TextField');
+        const SelectFieldElement = wrapper.find(
+            'TranslatedComponent(WithStyles(ResetableTextField))'
+        );
         assert.equal(SelectFieldElement.prop('helperText'), 'Can i help you?');
     });
 
@@ -220,7 +227,9 @@ describe('<SelectInput />', () => {
             const wrapper = shallow(
                 <SelectInput {...defaultProps} meta={{ touched: false }} />
             );
-            const SelectFieldElement = wrapper.find('TextField');
+            const SelectFieldElement = wrapper.find(
+                'TranslatedComponent(WithStyles(ResetableTextField))'
+            );
             assert.equal(SelectFieldElement.prop('helperText'), false);
         });
 
@@ -231,7 +240,9 @@ describe('<SelectInput />', () => {
                     meta={{ touched: true, error: false }}
                 />
             );
-            const SelectFieldElement = wrapper.find('TextField');
+            const SelectFieldElement = wrapper.find(
+                'TranslatedComponent(WithStyles(ResetableTextField))'
+            );
             assert.equal(SelectFieldElement.prop('helperText'), false);
         });
 
@@ -242,7 +253,9 @@ describe('<SelectInput />', () => {
                     meta={{ touched: true, error: 'Required field.' }}
                 />
             );
-            const SelectFieldElement = wrapper.find('TextField');
+            const SelectFieldElement = wrapper.find(
+                'TranslatedComponent(WithStyles(ResetableTextField))'
+            );
             assert.equal(
                 SelectFieldElement.prop('helperText'),
                 'Required field.'
@@ -260,7 +273,9 @@ describe('<SelectInput />', () => {
                     }}
                 />
             );
-            const SelectFieldElement = wrapper.find('TextField');
+            const SelectFieldElement = wrapper.find(
+                'TranslatedComponent(WithStyles(ResetableTextField))'
+            );
             assert.equal(
                 SelectFieldElement.prop('helperText'),
                 'Required field.'

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import Autosuggest from 'react-autosuggest';
-import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
@@ -13,6 +12,7 @@ import compose from 'recompose/compose';
 import classnames from 'classnames';
 
 import { addField, translate, FieldTitle } from 'ra-core';
+import ResetableTextField from './ResetableTextField';
 
 const styles = theme => ({
     container: {
@@ -272,7 +272,7 @@ export class AutocompleteInput extends React.Component {
         const { touched, error, helperText = false } = meta;
 
         return (
-            <TextField
+            <ResetableTextField
                 label={
                     <FieldTitle
                         label={label}
