@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { addField, FieldTitle } from 'ra-core';
 
-import ResetableTextField from './ResetableTextField';
+import TextField from './TextField';
 import sanitizeRestProps from './sanitizeRestProps';
 
 /**
@@ -56,7 +56,7 @@ export class TextInput extends Component {
         const { touched, error } = meta;
 
         return (
-            <ResetableTextField
+            <TextField
                 margin="normal"
                 type={type}
                 label={
