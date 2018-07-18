@@ -34,6 +34,15 @@ const CommentFilter = props => (
     </Filter>
 );
 
+const exporter = data =>
+    Promise.resolve(
+        data.map(datum => {
+            const { author, ...res } = datum; // omit author
+            res.authorName = author.name;
+            return res;
+        })
+    );
+
 const CommentPagination = translate(
     ({ page, perPage, total, setPage, translate }) => {
         const nbPages = Math.ceil(total / perPage) || 1;
@@ -162,6 +171,7 @@ const CommentList = props => (
     <List
         {...props}
         perPage={6}
+        exporter={exporter}
         filters={<CommentFilter />}
         pagination={<CommentPagination />}
     >
