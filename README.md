@@ -213,8 +213,9 @@ $ make watch
 $ cd ../myapp
 $ npm run
 ```
+## for Windows user
 
-**Tip**: If you're on Windows and can't use `make`, try [this Gist](https://gist.github.com/mantis/bb5d9f7d492f86e94341816321500934).
+`react-admin` not support Windows for now, [see this](https://github.com/marmelab/react-admin/issues/2030#issuecomment-405909164). Please use [admin-on-rest](https://github.com/marmelab/admin-on-rest) instead.
 
 ## License
 
