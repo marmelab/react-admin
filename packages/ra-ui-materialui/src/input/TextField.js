@@ -30,6 +30,7 @@ class TextField extends Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
         clearAlwaysVisible: PropTypes.bool,
+        InputProps: PropTypes.object,
         onBlur: PropTypes.func,
         onChange: PropTypes.func.isRequired,
         onFocus: PropTypes.func,
@@ -64,6 +65,7 @@ class TextField extends Component {
             translate,
             classes,
             clearAlwaysVisible,
+            InputProps,
             value,
             resetable,
             ...props
@@ -100,6 +102,7 @@ class TextField extends Component {
                             </IconButton>
                         </InputAdornment>
                     ),
+                    ...InputProps,
                 }}
                 {...props}
                 onFocus={this.handleFocus}
