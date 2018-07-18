@@ -22,9 +22,11 @@ const valueOrDefault = (value, defaultValue) =>
     typeof value === 'undefined' ? defaultValue : value;
 
 const Toolbar = ({
+    basePath,
     children,
     classes,
     className,
+    handleSubmit,
     handleSubmitWithRedirect,
     invalid,
     pristine,
@@ -55,6 +57,8 @@ const Toolbar = ({
                         button =>
                             button
                                 ? React.cloneElement(button, {
+                                      basePath,
+                                      handleSubmit,
                                       handleSubmitWithRedirect,
                                       invalid,
                                       pristine,
@@ -86,6 +90,8 @@ const Toolbar = ({
                         button =>
                             button
                                 ? React.cloneElement(button, {
+                                      basePath,
+                                      handleSubmit,
                                       handleSubmitWithRedirect,
                                       invalid,
                                       pristine,
@@ -104,9 +110,11 @@ const Toolbar = ({
 );
 
 Toolbar.propTypes = {
+    basePath: PropTypes.string,
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
+    handleSubmit: PropTypes.func,
     handleSubmitWithRedirect: PropTypes.func,
     invalid: PropTypes.bool,
     pristine: PropTypes.bool,

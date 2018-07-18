@@ -20,6 +20,7 @@ const styles = {
 };
 
 const sanitizeRestProps = ({
+    basePath,
     className,
     classes,
     saving,
@@ -27,6 +28,7 @@ const sanitizeRestProps = ({
     invalid,
     variant,
     translate,
+    handleSubmit,
     handleSubmitWithRedirect,
     submitOnEnter,
     redirect,
