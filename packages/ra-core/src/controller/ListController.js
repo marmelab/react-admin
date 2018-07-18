@@ -344,6 +344,51 @@ ListController.defaultProps = {
     },
 };
 
+const injectedProps = [
+    'basePath',
+    'currentSort',
+    'data',
+    'displayedFilters',
+    'filterValues',
+    'hasCreate',
+    'hideFilter',
+    'ids',
+    'isLoading',
+    'onSelect',
+    'onToggleItem',
+    'onUnselectItems',
+    'page',
+    'perPage',
+    'refresh',
+    'resource',
+    'selectedIds',
+    'setFilters',
+    'setPage',
+    'setPerPage',
+    'setSort',
+    'showFilter',
+    'total',
+    'version',
+];
+
+/**
+ * Select the props injected by the ListController
+ * to be passed to the List children need
+ * This is an implementation of pick()
+ */
+export const getListControllerProps = props =>
+    injectedProps.reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
+
+/**
+ * Select the props not injected by the ListController
+ * to be used inside the List children to sanitize props injected by List
+ * This is an implementation of omit()
+ */
+export const sanitizeListRestProps = props =>
+    Object.keys(props)
+        .filter(props => !injectedProps.includes(props))
+        .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
+
 const validQueryParams = ['page', 'perPage', 'sort', 'order', 'filter'];
 const getLocationPath = props => props.location.pathname;
 const getLocationSearch = props => props.location.search;

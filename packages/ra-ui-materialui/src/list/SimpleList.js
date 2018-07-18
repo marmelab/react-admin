@@ -9,7 +9,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import { linkToRecord } from 'ra-core';
+import { linkToRecord, sanitizeListRestProps } from 'ra-core';
 
 const styles = {
     link: {
@@ -37,18 +37,6 @@ const LinkOrNot = withStyles(styles)(
         )
 );
 
-const sanitizeRestProps = ({
-    currentSort,
-    isLoading,
-    page,
-    perPage,
-    setPage,
-    setPerPage,
-    setSort,
-    total,
-    ...rest
-}) => rest;
-
 const SimpleList = ({
     basePath,
     classes = {},
@@ -68,7 +56,7 @@ const SimpleList = ({
     tertiaryText,
     ...rest
 }) => (
-    <List className={className} {...sanitizeRestProps(rest)}>
+    <List className={className} {...sanitizeListRestProps(rest)}>
         {ids.map(id => (
             <LinkOrNot linkType={linkType} basePath={basePath} id={id} key={id}>
                 <ListItem button>

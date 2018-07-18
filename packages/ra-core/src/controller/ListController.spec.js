@@ -3,7 +3,11 @@ import { shallow } from 'enzyme';
 import lolex from 'lolex';
 import { setDisplayName } from 'recompose';
 
-import { ListController } from './ListController';
+import {
+    ListController,
+    getListControllerProps,
+    sanitizeListRestProps,
+} from './ListController';
 import TextField from '@material-ui/core/TextField/TextField';
 
 describe('ListController', () => {
@@ -103,6 +107,40 @@ describe('ListController', () => {
 
         afterEach(() => {
             clock.uninstall();
+        });
+    });
+
+    describe('getListControllerProps', () => {
+        it('should only pick the props injected by the ListController', () => {
+            expect(
+                getListControllerProps({
+                    foo: 1,
+                    data: [4, 5],
+                    ids: [1, 2],
+                    page: 3,
+                    bar: 'hello',
+                })
+            ).toEqual({
+                data: [4, 5],
+                ids: [1, 2],
+                page: 3,
+            });
+        });
+    });
+    describe('sanitizeListRestProps', () => {
+        it('should omit the props injected by the ListController', () => {
+            expect(
+                sanitizeListRestProps({
+                    foo: 1,
+                    data: [4, 5],
+                    ids: [1, 2],
+                    page: 3,
+                    bar: 'hello',
+                })
+            ).toEqual({
+                foo: 1,
+                bar: 'hello',
+            });
         });
     });
 });
