@@ -92,6 +92,7 @@ export const ListView = ({
     selectedIds,
     setFilters,
     setPage,
+    setPerPage,
     setSort,
     showFilter,
     title,
@@ -149,9 +150,14 @@ export const ListView = ({
                                 isLoading,
                                 onSelect,
                                 onToggleItem,
+                                page,
+                                perPage,
                                 resource,
                                 selectedIds,
+                                setPage,
+                                setPerPage,
                                 setSort,
+                                total,
                                 version,
                             })}
                         {!isLoading &&
@@ -172,6 +178,7 @@ export const ListView = ({
                                 page,
                                 perPage,
                                 setPage,
+                                setPerPage,
                                 total,
                             })}
                     </div>
@@ -219,6 +226,7 @@ ListView.propTypes = {
     selectedIds: PropTypes.array,
     setFilters: PropTypes.func,
     setPage: PropTypes.func,
+    setPerPage: PropTypes.func,
     setSort: PropTypes.func,
     showFilter: PropTypes.func,
     title: PropTypes.any,
