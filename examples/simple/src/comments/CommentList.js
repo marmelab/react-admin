@@ -24,6 +24,7 @@ import {
     SimpleList,
     TextField,
     translate,
+    crudGetMany,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const CommentFilter = props => (
@@ -34,14 +35,39 @@ const CommentFilter = props => (
     </Filter>
 );
 
-const exporter = data =>
-    Promise.resolve(
-        data.map(datum => {
-            const { author, ...res } = datum; // omit author
-            res.authorName = author.name;
-            return res;
+const exporter = (records, { parser, downloader, dispatch }) => {
+    const recordsWithAuthor = records.map(record => {
+        const { author, ...res } = record; // omit author
+        res.author_name = author.name;
+        return res;
+    });
+    const postIds = [...new Set(records.map(record => record.post_id))];
+    dispatch(
+        crudGetMany('posts', postIds, ({ payload: { data } }) => {
+            const postsIndexedById = data.reduce((acc, post) => {
+                acc[post.id] = post;
+                return acc;
+            }, {});
+            const recordsWithAuthorAndPost = recordsWithAuthor.map(record => {
+                record.post_title = postsIndexedById[record.post_id].title;
+                return record;
+            });
+            downloader(
+                parser.unparse({
+                    fields: [
+                        'id',
+                        'author_name',
+                        'post_id',
+                        'post_title',
+                        'created_at',
+                        'body',
+                    ],
+                    data: recordsWithAuthorAndPost,
+                })
+            );
         })
     );
+};
 
 const CommentPagination = translate(
     ({ page, perPage, total, setPage, translate }) => {

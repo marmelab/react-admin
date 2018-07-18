@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import GetApp from '@material-ui/icons/GetApp';
 import { crudGetAll } from 'ra-core';
 import Papa from 'papaparse/papaparse.min';
@@ -9,8 +10,8 @@ import Button from './Button';
 
 const sanitizeRestProps = ({
     basePath,
-    config,
     crudGetAll,
+    dispatch,
     exporter,
     filter,
     maxResults,
@@ -19,19 +20,17 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const downloadCSV = (csv, filename) => {
+const downloadCSV = resource => (csv, filename = `${resource}.csv`) => {
     const fakeLink = document.createElement('a');
     fakeLink.style.display = 'none';
     document.body.appendChild(fakeLink);
-
-    const blobName = `${filename}.csv`;
     const blob = new Blob([csv], { type: 'text/csv' });
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
         // Manage IE11+ & Edge
-        window.navigator.msSaveOrOpenBlob(blob, blobName);
+        window.navigator.msSaveOrOpenBlob(blob, filename);
     } else {
         fakeLink.setAttribute('href', URL.createObjectURL(blob));
-        fakeLink.setAttribute('download', blobName);
+        fakeLink.setAttribute('download', filename);
         fakeLink.click();
     }
 };
@@ -39,13 +38,13 @@ const downloadCSV = (csv, filename) => {
 class ExportButton extends Component {
     handleClick = () => {
         const {
-            config,
             crudGetAll,
-            resource,
-            sort,
+            dispatch,
+            exporter,
             filter,
             maxResults,
-            exporter,
+            sort,
+            resource,
         } = this.props;
         crudGetAll(
             resource,
@@ -53,9 +52,13 @@ class ExportButton extends Component {
             filter,
             maxResults,
             ({ payload: { data } }) =>
-                exporter(data)
-                    .then(data => Papa.unparse(data, config))
-                    .then(csv => downloadCSV(csv, resource))
+                exporter
+                    ? exporter(data, {
+                          parser: Papa,
+                          downloader: downloadCSV(resource),
+                          dispatch,
+                      })
+                    : downloadCSV(resource)(Papa.unparse(data))
         );
     };
 
@@ -76,9 +79,9 @@ class ExportButton extends Component {
 
 ExportButton.propTypes = {
     basePath: PropTypes.string,
-    config: PropTypes.object,
     crudGetAll: PropTypes.func.isRequired,
-    exporter: PropTypes.func.isRequired, // must return a Promise
+    dispatch: PropTypes.func,
+    exporter: PropTypes.func,
     filter: PropTypes.object,
     label: PropTypes.string,
     maxResults: PropTypes.number.isRequired,
@@ -87,11 +90,13 @@ ExportButton.propTypes = {
 };
 
 ExportButton.defaultProps = {
-    exporter: x => Promise.resolve(x),
     maxResults: 1000,
 };
 
 export default connect(
     null,
-    { crudGetAll }
+    dispatch => ({
+        crudGetAll: bindActionCreators(crudGetAll, dispatch),
+        dispatch,
+    })
 )(ExportButton);
