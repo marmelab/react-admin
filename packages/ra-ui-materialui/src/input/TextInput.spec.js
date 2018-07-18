@@ -11,24 +11,24 @@ describe('<TextInput />', () => {
         input: {},
     };
 
-    it('should use a mui TextField when type is text', () => {
+    it('should use a TextField when type is text', () => {
         const wrapper = shallow(
             <TextInput {...defaultProps} input={{ value: 'hello' }} />
         );
         const TextFieldElement = wrapper.find(
-            'TranslatedComponent(WithStyles(TextField))'
+            'translate(WithStyles(TextField))'
         );
         assert.equal(TextFieldElement.length, 1);
         assert.equal(TextFieldElement.prop('value'), 'hello');
         assert.equal(TextFieldElement.prop('type'), 'text');
     });
 
-    it('should use a mui TextField when type is password', () => {
+    it('should use a TextField when type is password', () => {
         const wrapper = shallow(
             <TextInput {...defaultProps} type="password" />
         );
         const TextFieldElement = wrapper.find(
-            'TranslatedComponent(WithStyles(TextField))'
+            'translate(WithStyles(TextField))'
         );
         assert.equal(TextFieldElement.length, 1);
         assert.equal(TextFieldElement.prop('type'), 'password');
@@ -41,7 +41,7 @@ describe('<TextInput />', () => {
         );
 
         const TextFieldElement = wrapper
-            .find('TranslatedComponent(WithStyles(TextField))')
+            .find('translate(WithStyles(TextField))')
             .first();
         TextFieldElement.simulate('blur', 'event');
         assert.equal(onBlur.mock.calls[0][0], 'event');
@@ -53,7 +53,7 @@ describe('<TextInput />', () => {
                 <TextInput {...defaultProps} meta={{ touched: false }} />
             );
             const TextFieldElement = wrapper.find(
-                'TranslatedComponent(WithStyles(TextField))'
+                'translate(WithStyles(TextField))'
             );
             assert.equal(TextFieldElement.prop('helperText'), false);
         });
@@ -66,7 +66,7 @@ describe('<TextInput />', () => {
                 />
             );
             const TextFieldElement = wrapper.find(
-                'TranslatedComponent(WithStyles(TextField))'
+                'translate(WithStyles(TextField))'
             );
             assert.equal(TextFieldElement.prop('helperText'), false);
         });
@@ -79,7 +79,7 @@ describe('<TextInput />', () => {
                 />
             );
             const TextFieldElement = wrapper.find(
-                'TranslatedComponent(WithStyles(TextField))'
+                'translate(WithStyles(TextField))'
             );
             assert.equal(
                 TextFieldElement.prop('helperText'),

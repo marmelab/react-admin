@@ -23,6 +23,9 @@ const styles = theme => ({
     },
 });
 
+/**
+ * An override of the default Material-UI TextField which is resetable
+ */
 class TextField extends Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
