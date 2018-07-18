@@ -4,6 +4,7 @@ import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import Autosuggest from 'react-autosuggest';
 import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import parse from 'autosuggest-highlight/parse';
@@ -12,7 +13,6 @@ import compose from 'recompose/compose';
 import classnames from 'classnames';
 
 import { addField, translate, FieldTitle } from 'ra-core';
-import TextField from './TextField';
 
 const styles = theme => ({
     container: {
