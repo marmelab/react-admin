@@ -35,37 +35,29 @@ const CommentFilter = props => (
     </Filter>
 );
 
-const exporter = (records, convertToCSV, downloadCSV, dispatch) => {
+const exporter = (records, convertToCSV, downloadCSV, fetchRelatedRecords) => {
     const recordsWithAuthor = records.map(record => {
         const { author, ...res } = record; // omit author
         res.author_name = author.name;
         return res;
     });
-    const postIds = [...new Set(records.map(record => record.post_id))];
-    dispatch(
-        crudGetMany('posts', postIds, ({ payload: { data } }) => {
-            const postsIndexedById = data.reduce((acc, post) => {
-                acc[post.id] = post;
-                return acc;
-            }, {});
-            const recordsWithAuthorAndPost = recordsWithAuthor.map(record => {
-                record.post_title = postsIndexedById[record.post_id].title;
-                return record;
-            });
-            downloadCSV(
-                convertToCSV({
-                    fields: [
-                        'id',
-                        'author_name',
-                        'post_id',
-                        'post_title',
-                        'created_at',
-                        'body',
-                    ],
-                    data: recordsWithAuthorAndPost,
-                })
-            );
-        })
+    fetchRelatedRecords(recordsWithAuthor, 'post_id', 'posts').then(posts =>
+        downloadCSV(
+            convertToCSV({
+                fields: [
+                    'id',
+                    'author_name',
+                    'post_id',
+                    'post_title',
+                    'created_at',
+                    'body',
+                ],
+                data: recordsWithAuthor.map(record => {
+                    record.post_title = posts[record.post_id].title;
+                    return record;
+                }),
+            })
+        )
     );
 };
 

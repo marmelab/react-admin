@@ -34,6 +34,36 @@ const downloadCSV = resource => (csv, filename = `${resource}.csv`) => {
     }
 };
 
+const fetchRelatedRecords = dispatch => (data, field, resource) =>
+    new Promise((resolve, reject) => {
+        const ids = [...new Set(data.map(record => record[field]))];
+        dispatch({
+            type: 'CRUD_GET_MANY',
+            payload: { ids },
+            meta: {
+                resource,
+                fetch: 'GET_MANY',
+                onSuccess: {
+                    callback: ({ payload: { data } }) => {
+                        resolve(
+                            data.reduce((acc, post) => {
+                                acc[post.id] = post;
+                                return acc;
+                            }, {})
+                        );
+                    },
+                },
+                onFailure: {
+                    notification: {
+                        body: 'ra.notification.http_error',
+                        level: 'warning',
+                    },
+                    callback: ({ error }) => reject(error),
+                },
+            },
+        });
+    });
+
 class ExportButton extends Component {
     static propTypes = {
         basePath: PropTypes.string,
@@ -67,7 +97,7 @@ class ExportButton extends Component {
                               data,
                               convertToCSV,
                               downloadCSV(resource),
-                              dispatch
+                              fetchRelatedRecords(dispatch)
                           )
                         : downloadCSV(resource)(convertToCSV(data))
             )
