@@ -11,6 +11,7 @@ module.exports = {
             create: 'Créer',
             delete: 'Supprimer',
             edit: 'Éditer',
+            export: 'Exporter',
             list: 'Liste',
             refresh: 'Actualiser',
             remove_filter: 'Supprimer ce filtre',

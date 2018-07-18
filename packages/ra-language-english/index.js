@@ -10,6 +10,7 @@ module.exports = {
             create: 'Create',
             delete: 'Delete',
             edit: 'Edit',
+            export: 'Export',
             list: 'List',
             refresh: 'Refresh',
             remove_filter: 'Remove this filter',
