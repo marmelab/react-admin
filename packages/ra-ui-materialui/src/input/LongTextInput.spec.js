@@ -11,7 +11,7 @@ describe('<LongTextInput />', () => {
                 <LongTextInput source="foo" meta={{ touched: false }} />
             );
             const TextFieldElement = wrapper.find(
-                'translate(WithStyles(TextField))'
+                'translate(WithStyles(ResettableTextField))'
             );
             assert.equal(TextFieldElement.prop('helperText'), false);
         });
@@ -24,7 +24,7 @@ describe('<LongTextInput />', () => {
                 />
             );
             const TextFieldElement = wrapper.find(
-                'translate(WithStyles(TextField))'
+                'translate(WithStyles(ResettableTextField))'
             );
             assert.equal(TextFieldElement.prop('helperText'), false);
         });
@@ -37,7 +37,7 @@ describe('<LongTextInput />', () => {
                 />
             );
             const TextFieldElement = wrapper.find(
-                'translate(WithStyles(TextField))'
+                'translate(WithStyles(ResettableTextField))'
             );
             assert.equal(
                 TextFieldElement.prop('helperText'),
