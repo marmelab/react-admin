@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import GetApp from '@material-ui/icons/GetApp';
 import { crudGetAll } from 'ra-core';
 import { unparse as convertToCSV } from 'papaparse/papaparse.min';
@@ -36,9 +35,19 @@ const downloadCSV = resource => (csv, filename = `${resource}.csv`) => {
 };
 
 class ExportButton extends Component {
+    static propTypes = {
+        basePath: PropTypes.string,
+        dispatch: PropTypes.func,
+        exporter: PropTypes.func,
+        filter: PropTypes.object,
+        label: PropTypes.string,
+        maxResults: PropTypes.number.isRequired,
+        resource: PropTypes.string.isRequired,
+        sort: PropTypes.object,
+    };
+
     handleClick = () => {
         const {
-            crudGetAll,
             dispatch,
             exporter,
             filter,
@@ -46,25 +55,27 @@ class ExportButton extends Component {
             sort,
             resource,
         } = this.props;
-        crudGetAll(
-            resource,
-            sort,
-            filter,
-            maxResults,
-            ({ payload: { data } }) =>
-                exporter
-                    ? exporter(
-                          data,
-                          convertToCSV,
-                          downloadCSV(resource),
-                          dispatch
-                      )
-                    : downloadCSV(resource)(convertToCSV(data))
+        dispatch(
+            crudGetAll(
+                resource,
+                sort,
+                filter,
+                maxResults,
+                ({ payload: { data } }) =>
+                    exporter
+                        ? exporter(
+                              data,
+                              convertToCSV,
+                              downloadCSV(resource),
+                              dispatch
+                          )
+                        : downloadCSV(resource)(convertToCSV(data))
+            )
         );
     };
 
     render() {
-        const { label = 'ra.action.export', ...rest } = this.props;
+        const { label, ...rest } = this.props;
 
         return (
             <Button
@@ -78,26 +89,9 @@ class ExportButton extends Component {
     }
 }
 
-ExportButton.propTypes = {
-    basePath: PropTypes.string,
-    crudGetAll: PropTypes.func.isRequired,
-    dispatch: PropTypes.func,
-    exporter: PropTypes.func,
-    filter: PropTypes.object,
-    label: PropTypes.string,
-    maxResults: PropTypes.number.isRequired,
-    resource: PropTypes.string.isRequired,
-    sort: PropTypes.object,
-};
-
 ExportButton.defaultProps = {
+    label: 'ra.action.export',
     maxResults: 1000,
 };
 
-export default connect(
-    null,
-    dispatch => ({
-        crudGetAll: bindActionCreators(crudGetAll, dispatch),
-        dispatch,
-    })
-)(ExportButton);
+export default connect()(ExportButton); // inject redux dispatch
