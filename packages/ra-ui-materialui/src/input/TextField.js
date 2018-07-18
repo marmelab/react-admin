@@ -10,21 +10,19 @@ import ClearIcon from '@material-ui/icons/Clear';
 
 import { translate } from 'ra-core';
 
-const styles = theme => ({
+const styles = () => ({
+    clearIcon: {
+        height: 16,
+        width: 16,
+    },
     clearButton: {
-        overflow: 'hidden',
-        transitionDuration: theme.transitions.duration.shortest,
-        transitionProperty: 'width',
-        transitionTimingFunction: theme.transitions.easing.easeInOut,
-        '&:hover': {
-            background: 'unset',
-            color: theme.palette.secondary.main,
-        },
+        width: 24,
+        height: 24,
     },
 });
 
 /**
- * An override of the default Material-UI TextField which is resetable
+ * An override of the default Material-UI TextField which is resettable
  */
 class TextField extends Component {
     static propTypes = {
@@ -34,7 +32,7 @@ class TextField extends Component {
         onBlur: PropTypes.func,
         onChange: PropTypes.func.isRequired,
         onFocus: PropTypes.func,
-        resetable: PropTypes.bool,
+        resettable: PropTypes.bool,
         translate: PropTypes.func.isRequired,
         value: PropTypes.any.isRequired,
     };
@@ -67,41 +65,52 @@ class TextField extends Component {
             clearAlwaysVisible,
             InputProps,
             value,
-            resetable,
+            resettable,
             ...props
         } = this.props;
         const { showClear } = this.state;
-        const { clearButton, ...restClasses } = classes;
+        const { clearButton, clearIcon, ...restClasses } = classes;
 
         return (
             <MuiTextField
                 classes={restClasses}
                 value={value}
                 InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <IconButton
-                                className={clearButton}
-                                aria-label={translate(
-                                    'ra.action.clear_input_value'
-                                )}
-                                title={translate('ra.action.clear_input_value')}
-                                disableRipple
-                                onClick={this.handleClickClearButton}
-                                onMouseDown={this.handleMouseDownClearButton}
-                                style={{
-                                    width:
-                                        value &&
-                                        resetable &&
-                                        (clearAlwaysVisible || showClear)
-                                            ? 24
-                                            : 0,
-                                }}
-                            >
-                                <ClearIcon />
-                            </IconButton>
-                        </InputAdornment>
-                    ),
+                    endAdornment: resettable &&
+                        value && (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    className={clearButton}
+                                    aria-label={translate(
+                                        'ra.action.clear_input_value'
+                                    )}
+                                    title={translate(
+                                        'ra.action.clear_input_value'
+                                    )}
+                                    disableRipple
+                                    onClick={this.handleClickClearButton}
+                                    onMouseDown={
+                                        this.handleMouseDownClearButton
+                                    }
+                                    style={{
+                                        width:
+                                            !clearAlwaysVisible &&
+                                            !showClear &&
+                                            0,
+                                    }}
+                                >
+                                    <ClearIcon
+                                        className={classes.clearIcon}
+                                        style={{
+                                            width:
+                                                clearAlwaysVisible || showClear
+                                                    ? 'auto'
+                                                    : 0,
+                                        }}
+                                    />
+                                </IconButton>
+                            </InputAdornment>
+                        ),
                     ...InputProps,
                 }}
                 {...props}
