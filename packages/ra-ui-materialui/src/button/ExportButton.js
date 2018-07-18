@@ -19,6 +19,23 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
+const downloadCSV = (csv, filename) => {
+    const fakeLink = document.createElement('a');
+    fakeLink.style.display = 'none';
+    document.body.appendChild(fakeLink);
+
+    const blobName = `${filename}.csv`;
+    const blob = new Blob([csv], { type: 'text/csv' });
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        // Manage IE11+ & Edge
+        window.navigator.msSaveOrOpenBlob(blob, blobName);
+    } else {
+        fakeLink.setAttribute('href', URL.createObjectURL(blob));
+        fakeLink.setAttribute('download', blobName);
+        fakeLink.click();
+    }
+};
+
 class ExportButton extends Component {
     handleClick = () => {
         const {
@@ -38,29 +55,7 @@ class ExportButton extends Component {
             ({ payload: { data } }) =>
                 exporter(data)
                     .then(data => Papa.unparse(data, config))
-                    .then(csv => {
-                        const fakeLink = document.createElement('a');
-                        document.body.appendChild(fakeLink);
-
-                        const blobName = `${resource}.csv`;
-
-                        if (
-                            window.navigator &&
-                            window.navigator.msSaveOrOpenBlob
-                        ) {
-                            // Manage IE11+ & Edge
-                            var blob = new Blob([csv], { type: 'text/csv' });
-                            window.navigator.msSaveOrOpenBlob(blob, blobName);
-                        } else {
-                            fakeLink.setAttribute(
-                                'href',
-                                'data:application/octet-stream;charset=utf-8,' +
-                                    encodeURIComponent(csv)
-                            );
-                            fakeLink.setAttribute('download', blobName);
-                            fakeLink.click();
-                        }
-                    })
+                    .then(csv => downloadCSV(csv, resource))
         );
     };
 
