@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import GetApp from '@material-ui/icons/GetApp';
 import { crudGetAll } from 'ra-core';
-import Papa from 'papaparse/papaparse.min';
+import { unparse as convertToCSV } from 'papaparse/papaparse.min';
 
 import Button from './Button';
 
@@ -53,12 +53,13 @@ class ExportButton extends Component {
             maxResults,
             ({ payload: { data } }) =>
                 exporter
-                    ? exporter(data, {
-                          parser: Papa,
-                          downloader: downloadCSV(resource),
-                          dispatch,
-                      })
-                    : downloadCSV(resource)(Papa.unparse(data))
+                    ? exporter(
+                          data,
+                          convertToCSV,
+                          downloadCSV(resource),
+                          dispatch
+                      )
+                    : downloadCSV(resource)(convertToCSV(data))
         );
     };
 

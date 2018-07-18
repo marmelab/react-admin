@@ -35,7 +35,7 @@ const CommentFilter = props => (
     </Filter>
 );
 
-const exporter = (records, { parser, downloader, dispatch }) => {
+const exporter = (records, convertToCSV, downloadCSV, dispatch) => {
     const recordsWithAuthor = records.map(record => {
         const { author, ...res } = record; // omit author
         res.author_name = author.name;
@@ -52,8 +52,8 @@ const exporter = (records, { parser, downloader, dispatch }) => {
                 record.post_title = postsIndexedById[record.post_id].title;
                 return record;
             });
-            downloader(
-                parser.unparse({
+            downloadCSV(
+                convertToCSV({
                     fields: [
                         'id',
                         'author_name',
