@@ -264,13 +264,12 @@ export const CRUD_GET_MANY_SUCCESS = 'RA/CRUD_GET_MANY_SUCCESS';
 
 // Reference related actions
 
-export const crudGetMany = (resource, ids, callback) => ({
+export const crudGetMany = (resource, ids) => ({
     type: CRUD_GET_MANY,
     payload: { ids },
     meta: {
         resource,
         fetch: GET_MANY,
-        onSuccess: { callback },
         onFailure: {
             notification: {
                 body: 'ra.notification.http_error',
