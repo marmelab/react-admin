@@ -34,8 +34,12 @@ const PostEdit = props => (
         <TabbedForm defaultValue={{ average_note: 0 }}>
             <FormTab label="post.form.summary">
                 <DisabledInput source="id" />
-                <TextInput source="title" validate={required()} />
-                <LongTextInput source="teaser" validate={required()} />
+                <TextInput source="title" validate={required()} resettable />
+                <LongTextInput
+                    source="teaser"
+                    validate={required()}
+                    resettable
+                />
                 <CheckboxGroupInput
                     source="notifications"
                     choices={[
@@ -68,6 +72,7 @@ const PostEdit = props => (
                 </ArrayInput>
                 <DateInput source="published_at" options={{ locale: 'pt' }} />
                 <SelectInput
+                    resettable
                     source="category"
                     choices={[
                         { name: 'Tech', id: 'tech' },

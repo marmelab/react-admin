@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { addField, FieldTitle } from 'ra-core';
 
-import TextField from './TextField';
+import ResettableTextField from './ResettableTextField';
 import sanitizeRestProps from './sanitizeRestProps';
 
 /**
@@ -17,7 +17,7 @@ import sanitizeRestProps from './sanitizeRestProps';
  * <TextInput source="email" type="email" />
  * <NumberInput source="nb_views" />
  *
- * The object passed as `options` props is passed to the material-ui <TextField> component
+ * The object passed as `options` props is passed to the <ResettableTextField> component
  */
 export class TextInput extends Component {
     handleBlur = eventOrValue => {
@@ -56,7 +56,7 @@ export class TextInput extends Component {
         const { touched, error } = meta;
 
         return (
-            <TextField
+            <ResettableTextField
                 margin="normal"
                 type={type}
                 label={
