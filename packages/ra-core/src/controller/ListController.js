@@ -182,7 +182,8 @@ export class ListController extends Component {
 
     setPage = page => this.changeParams({ type: SET_PAGE, payload: page });
 
-    setPerPage = perPage => this.changeParams({ type: SET_PER_PAGE, payload: perPage });
+    setPerPage = perPage =>
+        this.changeParams({ type: SET_PER_PAGE, payload: perPage });
 
     setFilters = debounce(filters => {
         if (isEqual(filters, this.props.filterValues)) {
