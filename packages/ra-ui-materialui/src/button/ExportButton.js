@@ -87,7 +87,7 @@ ExportButton.propTypes = {
 };
 
 ExportButton.defaultProps = {
-    exporter: x => new Promise(resolve => resolve(x)),
+    exporter: x => Promise.resolve(x),
     maxResults: 1000,
 };
 
