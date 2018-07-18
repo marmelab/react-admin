@@ -24,7 +24,6 @@ import {
     SimpleList,
     TextField,
     translate,
-    crudGetMany,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const CommentFilter = props => (
