@@ -10,7 +10,7 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
-import { translate } from 'ra-core';
+import { translate, sanitizeListRestProps } from 'ra-core';
 
 import Responsive from '../layout/Responsive';
 
@@ -149,7 +149,7 @@ export class Pagination extends Component {
                     <Toolbar
                         className={className}
                         classes={{ root: classes.mobileToolbar }}
-                        {...rest}
+                        {...sanitizeListRestProps(rest)}
                     >
                         {page > 1 && (
                             <IconButton color="primary" onClick={this.prevPage}>
@@ -179,7 +179,7 @@ export class Pagination extends Component {
                             className,
                             classes.desktopToolbar
                         )}
-                        {...rest}
+                        {...sanitizeListRestProps(rest)}
                     >
                         <Typography
                             variant="body1"

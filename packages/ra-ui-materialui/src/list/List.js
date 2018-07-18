@@ -12,97 +12,95 @@ import Title from '../layout/Title';
 import DefaultPagination from './Pagination';
 import DefaultBulkActions from './BulkActions';
 import DefaultActions from './ListActions';
-import { ListController } from 'ra-core';
+import { ListController, getListControllerProps } from 'ra-core';
 import defaultTheme from '../defaultTheme';
 
 const styles = {
     root: {},
-    actions: {},
+    actions: {
+        zIndex: 2,
+        display: 'flex',
+        justifyContent: 'flex-end',
+        flexWrap: 'wrap',
+    },
     header: {},
     noResults: { padding: 20 },
 };
 
 const sanitizeRestProps = ({
+    actions,
+    basePath,
+    bulkActions,
+    changeListParams,
     children,
     classes,
     className,
-    filters,
-    pagination,
-    actions,
-    resource,
-    hasCreate,
-    hasEdit,
-    hasList,
-    hasShow,
-    filter,
-    filterDefaultValues,
-    filterValues,
     crudGetList,
-    changeListParams,
-    perPage,
-    title,
-    data,
-    ids,
-    total,
-    isLoading,
-    translate,
-    version,
-    push,
-    history,
-    locale,
-    location,
-    match,
-    options,
-    params,
-    permissions,
-    query: q,
-    selectedIds,
-    setSelectedIds,
-    sort,
-    theme,
-    toggleItem,
-    ...rest
-}) => rest;
-
-export const ListView = ({
-    actions = <DefaultActions />,
-    basePath,
-    bulkActions = <DefaultBulkActions />,
-    children,
-    className,
-    classes = {},
     currentSort,
     data,
     defaultTitle,
     displayedFilters,
+    filter,
+    filterDefaultValues,
     filters,
     filterValues,
     hasCreate,
+    hasEdit,
+    hasList,
+    hasShow,
     hideFilter,
+    history,
     ids,
     isLoading,
+    locale,
+    location,
+    match,
     onSelect,
     onToggleItem,
     onUnselectItems,
+    options,
     page,
-    pagination = <DefaultPagination />,
+    pagination,
+    params,
+    permissions,
     perPage,
+    push,
+    query,
     refresh,
     resource,
     selectedIds,
     setFilters,
     setPage,
     setPerPage,
+    setSelectedIds,
     setSort,
     showFilter,
+    sort,
+    theme,
     title,
+    toggleItem,
     total,
     translate,
     version,
     ...rest
-}) => {
-    const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
+}) => rest;
 
+export const ListView = ({
+    // component props
+    actions = <DefaultActions />,
+    filters,
+    bulkActions = <DefaultBulkActions />,
+    pagination = <DefaultPagination />,
+    // overridable by user
+    children,
+    className,
+    classes = {},
+    title,
+    ...rest
+}) => {
+    const { defaultTitle, isLoading, page, version, total, translate } = rest;
+    const controllerProps = getListControllerProps(rest);
+    const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
     return (
         <div
             className={classnames('list-page', classes.root, className)}
@@ -116,71 +114,36 @@ export const ListView = ({
                         className: classes.actions,
                     })}
                     actionProps={{
-                        basePath,
+                        ...controllerProps,
                         bulkActions,
-                        displayedFilters,
                         filters,
-                        filterValues,
-                        hasCreate,
-                        onUnselectItems,
-                        refresh,
-                        resource,
-                        selectedIds,
-                        showFilter,
                     }}
                 />
                 {filters &&
                     React.cloneElement(filters, {
-                        displayedFilters,
-                        filterValues,
-                        hideFilter,
-                        resource,
-                        setFilters,
+                        ...controllerProps,
                         context: 'form',
                     })}
                 {isLoading || total > 0 ? (
                     <div key={version}>
                         {children &&
                             React.cloneElement(children, {
-                                basePath,
-                                currentSort,
-                                data,
+                                ...controllerProps,
                                 hasBulkActions: !!bulkActions,
-                                ids,
-                                isLoading,
-                                onSelect,
-                                onToggleItem,
-                                page,
-                                perPage,
-                                resource,
-                                selectedIds,
-                                setPage,
-                                setPerPage,
-                                setSort,
-                                total,
-                                version,
                             })}
                         {!isLoading &&
-                            !ids.length && (
+                            !rest.ids.length && (
                                 <CardContent style={styles.noResults}>
                                     <Typography variant="body1">
                                         {translate(
                                             'ra.navigation.no_more_results',
-                                            {
-                                                page,
-                                            }
+                                            { page }
                                         )}
                                     </Typography>
                                 </CardContent>
                             )}
                         {pagination &&
-                            React.cloneElement(pagination, {
-                                page,
-                                perPage,
-                                setPage,
-                                setPerPage,
-                                total,
-                            })}
+                            React.cloneElement(pagination, controllerProps)}
                     </div>
                 ) : (
                     <CardContent className={classes.noResults}>
