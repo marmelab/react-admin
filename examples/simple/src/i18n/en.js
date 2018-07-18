@@ -64,6 +64,7 @@ export const messages = {
         },
         action: {
             save_and_add: 'Save and Add',
+            save_commentable: 'Save as Commentable',
             save_and_show: 'Save and Show',
         },
     },

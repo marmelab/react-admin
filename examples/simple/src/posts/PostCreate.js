@@ -1,6 +1,9 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import RichTextInput from 'ra-input-rich-text';
-import React from 'react';
 import {
+    crudCreate,
     BooleanInput,
     Create,
     DateInput,
@@ -13,6 +16,44 @@ import {
     Toolbar,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
+const saveAsCommentable = (values, basePath, redirectTo) =>
+    crudCreate('posts', { ...values, commentable: true }, basePath, redirectTo);
+
+const SaveAsCommentableButton = connect(
+    undefined,
+    { saveAsCommentable }
+)(
+    class SaveAsCommentableButton extends Component {
+        handleClick = () => {
+            const {
+                basePath,
+                handleSubmit,
+                redirect,
+                saveAsCommentable,
+            } = this.props;
+
+            return handleSubmit(values => {
+                saveAsCommentable(values, basePath, redirect);
+            });
+        };
+
+        render() {
+            const {
+                handleSubmitWithRedirect,
+                saveAsCommentable,
+                ...props
+            } = this.props;
+
+            return (
+                <SaveButton
+                    handleSubmitWithRedirect={this.handleClick}
+                    {...props}
+                />
+            );
+        }
+    }
+);
+
 const PostCreateToolbar = props => (
     <Toolbar {...props}>
         <SaveButton
@@ -23,6 +64,12 @@ const PostCreateToolbar = props => (
         <SaveButton
             label="post.action.save_and_add"
             redirect={false}
+            submitOnEnter={false}
+            variant="flat"
+        />
+        <SaveAsCommentableButton
+            label="post.action.save_commentable"
+            redirect="show"
             submitOnEnter={false}
             variant="flat"
         />
