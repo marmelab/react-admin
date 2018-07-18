@@ -469,6 +469,17 @@ import { LongTextInput } from 'react-admin';
 
 ![LongTextInput](./img/long-text-input.png)
 
+You can make the `LongTextInput` component resetable using the `resetable` prop. This will add a reset button which will be displayed only when the field has a value and is focused.
+
+```jsx
+import { LongTextInput } from 'react-admin';
+
+<LongTextInput source="title" resetable />
+```
+
+![Resetable LongTextInput](./img/resetable-long-text-input.png)
+
+
 ## `<NumberInput>`
 
 `<NumberInput>` translates to a HTML `<input type="number">`. It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](#textinput) in that case.
@@ -898,6 +909,10 @@ import { SelectInput, ReferenceInput } from 'react-admin'
 
 If, instead of showing choices as a dropdown list, you prefer to display them as a list of radio buttons, try the [`<RadioButtonGroupInput>`](#radiobuttongroupinput). And if the list is too big, prefer the [`<AutocompleteInput>`](#autocompleteinput).
 
+You can make the `SelectInput` component resetable using the `resetable` prop. This will add a reset button which will be displayed only when the field has a value.
+
+![Resetable SelectInput](./img/resetable-select-input.png)
+
 ## `<SelectArrayInput>`
 
 To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](http://www.material-ui.com/#/components/select). Set the `choices` attribute to determine the options (with `id`, `name` tuples):
@@ -1009,6 +1024,17 @@ You can choose a specific input type using the `type` attribute, for instance `t
 ```jsx
 <TextInput label="Email Address" source="email" type="email" />
 ```
+
+You can make the `TextInput` component resetable using the `resetable` prop. This will add a reset button which will be displayed only when the field has a value and is focused.
+
+```jsx
+import { TextInput } from 'react-admin';
+
+<TextInput source="title" resetable />
+```
+
+![Resetable TextInput](./img/resetable-text-input.png)
+
 
 **Warning**: Do not use `type="number"`, or you'll receive a string as value (this is a [known React bug](https://github.com/facebook/react/issues/1425)). Instead, use [`<NumberInput>`](#numberinput).
 
