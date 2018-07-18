@@ -133,6 +133,7 @@ export class Pagination extends Component {
             page,
             perPage,
             setPage,
+            setPerPage,
             total,
             translate,
             ...rest
@@ -228,6 +229,7 @@ Pagination.propTypes = {
     page: PropTypes.number,
     perPage: PropTypes.number,
     setPage: PropTypes.func,
+    setPerPage: PropTypes.func,
     translate: PropTypes.func.isRequired,
     total: PropTypes.number,
 };

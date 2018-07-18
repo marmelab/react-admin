@@ -37,8 +37,17 @@ const LinkOrNot = withStyles(styles)(
         )
 );
 
-const sanitizeRestProps = ({ currentSort, isLoading, setSort, ...rest }) =>
-    rest;
+const sanitizeRestProps = ({
+    currentSort,
+    isLoading,
+    page,
+    perPage,
+    setPage,
+    setPerPage,
+    setSort,
+    total,
+    ...rest
+}) => rest;
 
 const SimpleList = ({
     basePath,
