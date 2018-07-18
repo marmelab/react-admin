@@ -10,7 +10,9 @@ describe('<LongTextInput />', () => {
             const wrapper = shallow(
                 <LongTextInput source="foo" meta={{ touched: false }} />
             );
-            const TextFieldElement = wrapper.find('TextField');
+            const TextFieldElement = wrapper.find(
+                'translate(WithStyles(ResettableTextField))'
+            );
             assert.equal(TextFieldElement.prop('helperText'), false);
         });
 
@@ -21,7 +23,9 @@ describe('<LongTextInput />', () => {
                     meta={{ touched: true, error: false }}
                 />
             );
-            const TextFieldElement = wrapper.find('TextField');
+            const TextFieldElement = wrapper.find(
+                'translate(WithStyles(ResettableTextField))'
+            );
             assert.equal(TextFieldElement.prop('helperText'), false);
         });
 
@@ -32,7 +36,9 @@ describe('<LongTextInput />', () => {
                     meta={{ touched: true, error: 'Required field.' }}
                 />
             );
-            const TextFieldElement = wrapper.find('TextField');
+            const TextFieldElement = wrapper.find(
+                'translate(WithStyles(ResettableTextField))'
+            );
             assert.equal(
                 TextFieldElement.prop('helperText'),
                 'Required field.'

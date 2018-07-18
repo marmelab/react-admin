@@ -7,6 +7,7 @@ module.exports = {
             bulk_actions:
                 '%{smart_count} selectionné |||| %{smart_count} selectionnés',
             cancel: 'Annuler',
+            clear_input_value: 'Vider le champ',
             clone: 'Dupliquer',
             create: 'Créer',
             delete: 'Supprimer',
