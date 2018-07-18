@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import GetApp from '@material-ui/icons/GetApp';
-import { crudGetAll } from 'ra-core';
+import { crudGetAll, CRUD_GET_MANY, GET_MANY } from 'ra-core';
 import { unparse as convertToCSV } from 'papaparse/papaparse.min';
 
 import Button from './Button';
@@ -38,11 +38,11 @@ const fetchRelatedRecords = dispatch => (data, field, resource) =>
     new Promise((resolve, reject) => {
         const ids = [...new Set(data.map(record => record[field]))];
         dispatch({
-            type: 'CRUD_GET_MANY',
+            type: CRUD_GET_MANY,
             payload: { ids },
             meta: {
                 resource,
-                fetch: 'GET_MANY',
+                fetch: GET_MANY,
                 onSuccess: {
                     callback: ({ payload: { data } }) => {
                         resolve(
