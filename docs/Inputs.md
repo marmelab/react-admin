@@ -469,15 +469,15 @@ import { LongTextInput } from 'react-admin';
 
 ![LongTextInput](./img/long-text-input.png)
 
-You can make the `LongTextInput` component resetable using the `resetable` prop. This will add a reset button which will be displayed only when the field has a value and is focused.
+You can make the `LongTextInput` component resettable using the `resettable` prop. This will add a reset button which will be displayed only when the field has a value and is focused.
 
 ```jsx
 import { LongTextInput } from 'react-admin';
 
-<LongTextInput source="title" resetable />
+<LongTextInput source="title" resettable />
 ```
 
-![Resetable LongTextInput](./img/resetable-long-text-input.png)
+![resettable LongTextInput](./img/resettable-long-text-input.png)
 
 
 ## `<NumberInput>`
@@ -909,9 +909,9 @@ import { SelectInput, ReferenceInput } from 'react-admin'
 
 If, instead of showing choices as a dropdown list, you prefer to display them as a list of radio buttons, try the [`<RadioButtonGroupInput>`](#radiobuttongroupinput). And if the list is too big, prefer the [`<AutocompleteInput>`](#autocompleteinput).
 
-You can make the `SelectInput` component resetable using the `resetable` prop. This will add a reset button which will be displayed only when the field has a value.
+You can make the `SelectInput` component resettable using the `resettable` prop. This will add a reset button which will be displayed only when the field has a value.
 
-![Resetable SelectInput](./img/resetable-select-input.png)
+![resettable SelectInput](./img/resettable-select-input.png)
 
 ## `<SelectArrayInput>`
 
@@ -1025,15 +1025,15 @@ You can choose a specific input type using the `type` attribute, for instance `t
 <TextInput label="Email Address" source="email" type="email" />
 ```
 
-You can make the `TextInput` component resetable using the `resetable` prop. This will add a reset button which will be displayed only when the field has a value and is focused.
+You can make the `TextInput` component resettable using the `resettable` prop. This will add a reset button which will be displayed only when the field has a value and is focused.
 
 ```jsx
 import { TextInput } from 'react-admin';
 
-<TextInput source="title" resetable />
+<TextInput source="title" resettable />
 ```
 
-![Resetable TextInput](./img/resetable-text-input.png)
+![resettable TextInput](./img/resettable-text-input.png)
 
 
 **Warning**: Do not use `type="number"`, or you'll receive a string as value (this is a [known React bug](https://github.com/facebook/react/issues/1425)). Instead, use [`<NumberInput>`](#numberinput).
