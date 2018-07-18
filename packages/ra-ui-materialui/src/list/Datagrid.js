@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { sanitizeListRestProps } from 'ra-core';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableCell from '@material-ui/core/TableCell';
@@ -113,7 +114,10 @@ class Datagrid extends Component {
         } = this.props;
 
         return (
-            <Table className={classnames(classes.table, className)} {...rest}>
+            <Table
+                className={classnames(classes.table, className)}
+                {...sanitizeListRestProps(rest)}
+            >
                 <TableHead>
                     <TableRow className={classes.row}>
                         {hasBulkActions && (

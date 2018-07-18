@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { sanitizeListRestProps } from 'ra-core';
 
 import FilterForm from './FilterForm';
 import FilterButton from './FilterButton';
@@ -37,7 +38,7 @@ export class Filter extends Component {
                 showFilter={showFilter}
                 displayedFilters={displayedFilters}
                 filterValues={filterValues}
-                {...rest}
+                {...sanitizeListRestProps(rest)}
             />
         );
     }
@@ -66,7 +67,7 @@ export class Filter extends Component {
                 displayedFilters={displayedFilters}
                 initialValues={filterValues}
                 setFilters={setFilters}
-                {...rest}
+                {...sanitizeListRestProps(rest)}
             />
         );
     }

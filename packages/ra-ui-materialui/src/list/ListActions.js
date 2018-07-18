@@ -1,9 +1,10 @@
 import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
+import CardActions from '@material-ui/core/CardActions';
+import { sanitizeListRestProps } from 'ra-core';
 
 import { CreateButton, RefreshButton } from '../button';
-import CardActions from '../layout/CardActions';
 
 const Actions = ({
     bulkActions,
@@ -20,7 +21,7 @@ const Actions = ({
     ...rest
 }) => {
     return (
-        <CardActions className={className} {...rest}>
+        <CardActions className={className} {...sanitizeListRestProps(rest)}>
             {bulkActions &&
                 cloneElement(bulkActions, {
                     basePath,

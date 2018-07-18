@@ -3,6 +3,7 @@ export const SORT_ASC = 'ASC';
 export const SORT_DESC = 'DESC';
 
 export const SET_PAGE = 'SET_PAGE';
+export const SET_PER_PAGE = 'SET_PER_PAGE';
 
 export const SET_FILTER = 'SET_FILTER';
 
@@ -32,6 +33,9 @@ export default (previousState, { type, payload }) => {
 
         case SET_PAGE:
             return { ...previousState, page: payload };
+
+        case SET_PER_PAGE:
+            return { ...previousState, perPage: payload };
 
         case SET_FILTER: {
             return { ...previousState, page: 1, filter: payload };

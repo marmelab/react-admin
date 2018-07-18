@@ -15,6 +15,7 @@ import removeEmpty from '../util/removeEmpty';
 import queryReducer, {
     SET_SORT,
     SET_PAGE,
+    SET_PER_PAGE,
     SET_FILTER,
     SORT_DESC,
 } from '../reducer/admin/resource/list/queryReducer';
@@ -118,7 +119,8 @@ export class ListController extends Component {
             nextProps.version === this.props.version &&
             nextState === this.state &&
             nextProps.data === this.props.data &&
-            nextProps.selectedIds === this.props.selectedIds
+            nextProps.selectedIds === this.props.selectedIds &&
+            nextProps.total === this.props.total
         ) {
             return false;
         }
@@ -179,6 +181,9 @@ export class ListController extends Component {
     setSort = sort => this.changeParams({ type: SET_SORT, payload: sort });
 
     setPage = page => this.changeParams({ type: SET_PAGE, payload: page });
+
+    setPerPage = perPage =>
+        this.changeParams({ type: SET_PER_PAGE, payload: perPage });
 
     setFilters = debounce(filters => {
         if (isEqual(filters, this.props.filterValues)) {
@@ -279,6 +284,7 @@ export class ListController extends Component {
             selectedIds,
             setFilters: this.setFilters,
             setPage: this.setPage,
+            setPerPage: this.setPerPage,
             setSort: this.setSort,
             showFilter: this.showFilter,
             translate,
@@ -338,6 +344,51 @@ ListController.defaultProps = {
         order: SORT_DESC,
     },
 };
+
+const injectedProps = [
+    'basePath',
+    'currentSort',
+    'data',
+    'displayedFilters',
+    'filterValues',
+    'hasCreate',
+    'hideFilter',
+    'ids',
+    'isLoading',
+    'onSelect',
+    'onToggleItem',
+    'onUnselectItems',
+    'page',
+    'perPage',
+    'refresh',
+    'resource',
+    'selectedIds',
+    'setFilters',
+    'setPage',
+    'setPerPage',
+    'setSort',
+    'showFilter',
+    'total',
+    'version',
+];
+
+/**
+ * Select the props injected by the ListController
+ * to be passed to the List children need
+ * This is an implementation of pick()
+ */
+export const getListControllerProps = props =>
+    injectedProps.reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
+
+/**
+ * Select the props not injected by the ListController
+ * to be used inside the List children to sanitize props injected by List
+ * This is an implementation of omit()
+ */
+export const sanitizeListRestProps = props =>
+    Object.keys(props)
+        .filter(props => !injectedProps.includes(props))
+        .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
 const validQueryParams = ['page', 'perPage', 'sort', 'order', 'filter'];
 const getLocationPath = props => props.location.pathname;
