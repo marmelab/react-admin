@@ -36,29 +36,23 @@ const CommentFilter = props => (
 );
 
 const exporter = (records, convertToCSV, downloadCSV, fetchRelatedRecords) => {
-    const recordsWithAuthor = records.map(record => {
-        const { author, ...res } = record; // omit author
-        res.author_name = author.name;
-        return res;
+    fetchRelatedRecords(records, 'post_id', 'posts').then(posts => {
+        const data = records.map(record => {
+            const { author, ...recordForExport } = record; // omit author
+            recordForExport.author_name = author.name;
+            recordForExport.post_title = posts[record.post_id].title;
+            return recordForExport;
+        });
+        const fields = [
+            'id',
+            'author_name',
+            'post_id',
+            'post_title',
+            'created_at',
+            'body',
+        ];
+        downloadCSV(convertToCSV({ data, fields }));
     });
-    fetchRelatedRecords(recordsWithAuthor, 'post_id', 'posts').then(posts =>
-        downloadCSV(
-            convertToCSV({
-                fields: [
-                    'id',
-                    'author_name',
-                    'post_id',
-                    'post_title',
-                    'created_at',
-                    'body',
-                ],
-                data: recordsWithAuthor.map(record => {
-                    record.post_title = posts[record.post_id].title;
-                    return record;
-                }),
-            })
-        )
-    );
 };
 
 const CommentPagination = translate(
