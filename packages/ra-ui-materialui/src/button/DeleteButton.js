@@ -74,7 +74,11 @@ DeleteButton.propTypes = {
     dispatchCrudDelete: PropTypes.func.isRequired,
     label: PropTypes.string,
     record: PropTypes.object,
-    redirect: PropTypes.string,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
     resource: PropTypes.string.isRequired,
     startUndoable: PropTypes.func,
     translate: PropTypes.func,
