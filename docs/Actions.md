@@ -462,7 +462,7 @@ Sometimes, you may want your custom action to alter the form values before actua
 - `handleSubmitWithRedirect` which calls the default form save methods
 - `handleSubmit` which is the same prop as in [`react-form`](https://redux-form.com/7.4.2/docs/api/props.md/#-code-handlesubmit-eventorsubmit-function-code-)
 
-Knowing this, you can dispatch a custom action with a button. For instance, in the `simple` example:
+Knowing this, you can dispatch a custom action with a button and still benefit from the default crud action side effects (notifications, optimistic ui, undo, etc.). For instance, in the `simple` example:
 
 ```jsx
 // A custom action creator which modifies the values before calling the default crudCreate action creator
@@ -515,8 +515,6 @@ const PostCreateToolbar = props => (
     </Toolbar>
 );
 ```
-
-The advantages of this is that we still benefit from the default `crudCreate` action side effects.
 
 ## Custom Sagas
 
