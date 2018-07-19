@@ -4,14 +4,16 @@ import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import CardActions from '@material-ui/core/CardActions';
 import { sanitizeListRestProps } from 'ra-core';
 
-import { CreateButton, RefreshButton } from '../button';
+import { CreateButton, ExportButton, RefreshButton } from '../button';
 
 const Actions = ({
     bulkActions,
+    currentSort,
     className,
     resource,
     filters,
     displayedFilters,
+    exporter,
     filterValues,
     hasCreate,
     basePath,
@@ -19,36 +21,42 @@ const Actions = ({
     onUnselectItems,
     showFilter,
     ...rest
-}) => {
-    return (
-        <CardActions className={className} {...sanitizeListRestProps(rest)}>
-            {bulkActions &&
-                cloneElement(bulkActions, {
-                    basePath,
-                    filterValues,
-                    resource,
-                    selectedIds,
-                    onUnselectItems,
-                })}
-            {filters &&
-                cloneElement(filters, {
-                    resource,
-                    showFilter,
-                    displayedFilters,
-                    filterValues,
-                    context: 'button',
-                })}
-            {hasCreate && <CreateButton basePath={basePath} />}
-            <RefreshButton />
-        </CardActions>
-    );
-};
+}) => (
+    <CardActions className={className} {...sanitizeListRestProps(rest)}>
+        {bulkActions &&
+            cloneElement(bulkActions, {
+                basePath,
+                filterValues,
+                resource,
+                selectedIds,
+                onUnselectItems,
+            })}
+        {filters &&
+            cloneElement(filters, {
+                resource,
+                showFilter,
+                displayedFilters,
+                filterValues,
+                context: 'button',
+            })}
+        {hasCreate && <CreateButton basePath={basePath} />}
+        <ExportButton
+            resource={resource}
+            sort={currentSort}
+            filter={filterValues}
+            exporter={exporter}
+        />
+        <RefreshButton />
+    </CardActions>
+);
 
 Actions.propTypes = {
     bulkActions: PropTypes.node,
     basePath: PropTypes.string,
     className: PropTypes.string,
+    currentSort: PropTypes.object,
     displayedFilters: PropTypes.object,
+    exporter: PropTypes.func,
     filters: PropTypes.element,
     filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,

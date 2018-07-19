@@ -40,6 +40,7 @@ const sanitizeRestProps = ({
     data,
     defaultTitle,
     displayedFilters,
+    exporter,
     filter,
     filterDefaultValues,
     filters,
@@ -95,6 +96,7 @@ export const ListView = ({
     children,
     className,
     classes = {},
+    exporter,
     title,
     ...rest
 }) => {
@@ -116,6 +118,7 @@ export const ListView = ({
                     actionProps={{
                         ...controllerProps,
                         bulkActions,
+                        exporter,
                         filters,
                     }}
                 />
@@ -171,6 +174,7 @@ ListView.propTypes = {
     data: PropTypes.object,
     defaultTitle: PropTypes.string,
     displayedFilters: PropTypes.object,
+    exporter: PropTypes.func,
     filterDefaultValues: PropTypes.object,
     filters: PropTypes.element,
     filterValues: PropTypes.object,
