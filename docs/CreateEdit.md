@@ -637,61 +637,7 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 * `saving`: A boolean indicating whether a save operation is ongoing.
 * `submitOnEnter`: A boolean indicating whether the form should be submitted when pressing `enter`
 
-**Tip**: To alter the form values before submitting, you should use the `handleSubmit` prop. For instance, in the `simple` example:
-
-```jsx
-// A custom action creator which modifies the values before calling the default crudCreate action creator
-const saveWithNote = (values, basePath, redirectTo) =>
-    crudCreate('posts', { ...values, average_note: 10 }, basePath, redirectTo);
-
-class SaveWithNoteButtonView extends Component {
-    handleClick = () => {
-        const { basePath, handleSubmit, redirect, saveWithNote } = this.props;
-
-        return handleSubmit(values => {
-            saveWithNote(values, basePath, redirect);
-        });
-    };
-
-    render() {
-        const { handleSubmitWithRedirect, saveWithNote, ...props } = this.props;
-
-        return (
-            <SaveButton
-                handleSubmitWithRedirect={this.handleClick}
-                {...props}
-            />
-        );
-    }
-}
-
-const SaveWithNoteButton = connect(
-    undefined,
-    { saveWithNote }
-)(SaveWithNoteButtonView);
-```
-
-This button can be used in the `PostCreateToolbar` component:
-
-```jsx
-const PostCreateToolbar = props => (
-    <Toolbar {...props}>
-        <SaveButton
-            label="post.action.save_and_show"
-            redirect="show"
-            submitOnEnter={true}
-        />
-        <SaveWithNoteButton
-            label="post.action.save_with_average_note"
-            redirect="show"
-            submitOnEnter={false}
-            variant="flat"
-        />
-    </Toolbar>
-);
-```
-
-The advantages of this is that we still benefit from the default `crudCreate` action side effects.
+**Tip**: To alter the form values before submitting, you should use the `handleSubmit` prop. See [Altering the Form Values before Submitting](/Actions.html#altering-the-form-values-before-submitting) for more informations and example.
 
 ## Customizing Input Container Styles
 
