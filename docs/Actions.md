@@ -455,6 +455,69 @@ And that's all it takes to make a fetch action optimistic. Note that the `startU
 
 The fact that react-admin updates the internal store if you use custom actions with the `fetch` meta should be another motivation to avoid using raw `fetch`.
 
+## Altering the Form Values before Submitting
+
+Sometimes, you may want your custom action to alter the form values before actually sending them to the `dataProvider`. For those cases, you should know that every buttons inside a form [Toolbar](/CreateEdit.html#toolbar) receive two props:
+
+- `handleSubmitWithRedirect` which calls the default form save methods
+- `handleSubmit` which is the same prop as in [`react-form`](https://redux-form.com/7.4.2/docs/api/props.md/#-code-handlesubmit-eventorsubmit-function-code-)
+
+Knowing this, we can dispatch a custom action with a button. For instance, in the `simple` example:
+
+```jsx
+// A custom action creator which modifies the values before calling the default crudCreate action creator
+const saveWithNote = (values, basePath, redirectTo) =>
+    crudCreate('posts', { ...values, average_note: 10 }, basePath, redirectTo);
+
+class SaveWithNoteButtonView extends Component {
+    handleClick = () => {
+        const { basePath, handleSubmit, redirect, saveWithNote } = this.props;
+
+        return handleSubmit(values => {
+            saveWithNote(values, basePath, redirect);
+        });
+    };
+
+    render() {
+        const { handleSubmitWithRedirect, saveWithNote, ...props } = this.props;
+
+        return (
+            <SaveButton
+                handleSubmitWithRedirect={this.handleClick}
+                {...props}
+            />
+        );
+    }
+}
+
+const SaveWithNoteButton = connect(
+    undefined,
+    { saveWithNote }
+)(SaveWithNoteButtonView);
+```
+
+This button can be used in the `PostCreateToolbar` component:
+
+```jsx
+const PostCreateToolbar = props => (
+    <Toolbar {...props}>
+        <SaveButton
+            label="post.action.save_and_show"
+            redirect="show"
+            submitOnEnter={true}
+        />
+        <SaveWithNoteButton
+            label="post.action.save_with_average_note"
+            redirect="show"
+            submitOnEnter={false}
+            variant="flat"
+        />
+    </Toolbar>
+);
+```
+
+The advantages of this is that we still benefit from the default `crudCreate` action side effects.
+
 ## Custom Sagas
 
 Sometimes, you may want to trigger other *side effects* - like closing a popup window, or sending a message to an analytics server. The easiest way to achieve this is to use the `callback` side effect:
