@@ -4,19 +4,45 @@ import get from 'lodash/get';
 import pure from 'recompose/pure';
 import FalseIcon from '@material-ui/icons/Clear';
 import TrueIcon from '@material-ui/icons/Done';
+import Typography from '@material-ui/core/Typography';
 
 import sanitizeRestProps from './sanitizeRestProps';
 
 export const BooleanField = ({ className, source, record = {}, ...rest }) => {
     if (get(record, source) === false) {
-        return <FalseIcon className={className} {...sanitizeRestProps(rest)} />;
+        return (
+            <Typography
+                component="span"
+                body1="body1"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                <FalseIcon />
+            </Typography>
+        );
     }
 
     if (get(record, source) === true) {
-        return <TrueIcon className={className} {...sanitizeRestProps(rest)} />;
+        return (
+            <Typography
+                component="span"
+                body1="body1"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                <TrueIcon />
+            </Typography>
+        );
     }
 
-    return <span className={className} {...sanitizeRestProps(rest)} />;
+    return (
+        <Typography
+            component="span"
+            body1="body1"
+            className={className}
+            {...sanitizeRestProps(rest)}
+        />
+    );
 };
 
 BooleanField.propTypes = {

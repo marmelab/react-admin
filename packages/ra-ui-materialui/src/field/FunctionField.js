@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
+import Typography from '@material-ui/core/Typography';
+
 import sanitizeRestProps from './sanitizeRestProps';
 
 /**
@@ -9,9 +11,14 @@ import sanitizeRestProps from './sanitizeRestProps';
  */
 const FunctionField = ({ className, record = {}, source, render, ...rest }) =>
     record ? (
-        <span className={className} {...sanitizeRestProps(rest)}>
+        <Typography
+            component="span"
+            body1="body1"
+            className={className}
+            {...sanitizeRestProps(rest)}
+        >
             {render(record, source)}
-        </span>
+        </Typography>
     ) : null;
 
 FunctionField.propTypes = {
