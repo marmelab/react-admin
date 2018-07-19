@@ -26,7 +26,7 @@ const sanitizeRestProps = ({
  *
  * @example
  *     fetchRelatedRecords(records, 'post_id', 'posts').then(posts =>
- *          records.map(record => ({
+ *          posts.map(record => ({
  *              ...record,
  *              post_title: posts[record.post_id].title,
  *          }));
