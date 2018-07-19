@@ -196,6 +196,7 @@ Under the hood, `fetchRelatedRecords()` uses react-admin's sagas, which trigger 
 
 **Tip**: If you need to call another `dataProvider` verb in the exporter, take advantage of the third parameter passed to the function: `dispatch()`. It allows you to call any Redux action. Combine it with [the `callback` side effect](./Actions.html#custom-sagas) to grab the result in a callback.
 
+**Tip**: The `<ExportButton>` limits the main request to the `dataProvider` to 1,000 records. If you want to increase or decrease this limit, pass a `maxResults` prop to the `<ExportButton>` in a custom `<ListActions>` component, as explained in the previous section.
 
 ### Bulk Actions
 
