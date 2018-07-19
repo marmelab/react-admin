@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import withWidth from '@material-ui/core/withWidth';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import compose from 'recompose/compose';
 
@@ -13,19 +12,13 @@ const styles = {
     },
 };
 
-export const LoadingIndicator = ({
-    classes,
-    className,
-    isLoading,
-    width,
-    ...rest
-}) =>
+export const LoadingIndicator = ({ classes, className, isLoading, ...rest }) =>
     isLoading ? (
         <CircularProgress
             className={classNames('app-loader', classes.loader, className)}
             color="inherit"
-            size={width === 'xs' || width === 'sm' ? 20 : 30}
-            thickness={3}
+            size={20}
+            thickness={4}
             {...rest}
         />
     ) : null;
@@ -46,6 +39,5 @@ export default compose(
         mapStateToProps,
         {} // Avoid connect passing dispatch in props
     ),
-    withStyles(styles),
-    withWidth()
+    withStyles(styles)
 )(LoadingIndicator);
