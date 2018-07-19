@@ -72,6 +72,33 @@ describe('Create Page', () => {
         ); // new empty form
 
         ShowPage.navigate();
+        ShowPage.ShowPage.delete();
+    });
+
+    it.only('should allow to call a custom action updating values before submit', () => {
+        const values = [
+            {
+                type: 'input',
+                name: 'title',
+                value: 'Test title',
+            },
+            {
+                type: 'textarea',
+                name: 'teaser',
+                value: 'Test teaser',
+            },
+            {
+                type: 'checkbox',
+                name: 'commentable',
+                value: false,
+            },
+        ];
+
+        CreatePage.setValues(values);
+        CreatePage.submitWithAverageNote();
+        ShowPage.waitUntilVisible();
+        ShowPage.gotoTab(3);
+        cy.contains('10');
         ShowPage.delete();
     });
 
