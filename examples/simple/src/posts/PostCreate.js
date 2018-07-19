@@ -16,31 +16,31 @@ import {
     Toolbar,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
-const saveAsCommentable = (values, basePath, redirectTo) =>
-    crudCreate('posts', { ...values, commentable: true }, basePath, redirectTo);
+const saveWithNoteButton = (values, basePath, redirectTo) =>
+    crudCreate('posts', { ...values, average_note: 10 }, basePath, redirectTo);
 
-const SaveAsCommentableButton = connect(
+const SaveWithNoteButton = connect(
     undefined,
-    { saveAsCommentable }
+    { saveWithNoteButton }
 )(
-    class SaveAsCommentableButton extends Component {
+    class SaveWithNoteButton extends Component {
         handleClick = () => {
             const {
                 basePath,
                 handleSubmit,
                 redirect,
-                saveAsCommentable,
+                saveWithNoteButton,
             } = this.props;
 
             return handleSubmit(values => {
-                saveAsCommentable(values, basePath, redirect);
+                saveWithNoteButton(values, basePath, redirect);
             });
         };
 
         render() {
             const {
                 handleSubmitWithRedirect,
-                saveAsCommentable,
+                saveWithNoteButton,
                 ...props
             } = this.props;
 
@@ -67,8 +67,8 @@ const PostCreateToolbar = props => (
             submitOnEnter={false}
             variant="flat"
         />
-        <SaveAsCommentableButton
-            label="post.action.save_commentable"
+        <SaveWithNoteButton
+            label="post.action.save_with_average_note"
             redirect="show"
             submitOnEnter={false}
             variant="flat"
