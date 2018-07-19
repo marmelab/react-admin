@@ -16,43 +16,34 @@ import {
     Toolbar,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
-const saveWithNoteButton = (values, basePath, redirectTo) =>
+const saveWithNote = (values, basePath, redirectTo) =>
     crudCreate('posts', { ...values, average_note: 10 }, basePath, redirectTo);
+
+class SaveWithNoteButtonComponent extends Component {
+    handleClick = () => {
+        const { basePath, handleSubmit, redirect, saveWithNote } = this.props;
+
+        return handleSubmit(values => {
+            saveWithNote(values, basePath, redirect);
+        });
+    };
+
+    render() {
+        const { handleSubmitWithRedirect, saveWithNote, ...props } = this.props;
+
+        return (
+            <SaveButton
+                handleSubmitWithRedirect={this.handleClick}
+                {...props}
+            />
+        );
+    }
+}
 
 const SaveWithNoteButton = connect(
     undefined,
-    { saveWithNoteButton }
-)(
-    class SaveWithNoteButton extends Component {
-        handleClick = () => {
-            const {
-                basePath,
-                handleSubmit,
-                redirect,
-                saveWithNoteButton,
-            } = this.props;
-
-            return handleSubmit(values => {
-                saveWithNoteButton(values, basePath, redirect);
-            });
-        };
-
-        render() {
-            const {
-                handleSubmitWithRedirect,
-                saveWithNoteButton,
-                ...props
-            } = this.props;
-
-            return (
-                <SaveButton
-                    handleSubmitWithRedirect={this.handleClick}
-                    {...props}
-                />
-            );
-        }
-    }
-);
+    { saveWithNote }
+)(SaveWithNoteButtonComponent);
 
 const PostCreateToolbar = props => (
     <Toolbar {...props}>

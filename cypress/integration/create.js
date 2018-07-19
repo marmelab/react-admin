@@ -59,7 +59,7 @@ describe('Create Page', () => {
         ShowPage.ShowPage.delete();
     });
 
-    it.only('should allow to call a custom action updating values before submit', () => {
+    it('should allow to call a custom action updating values before submit', () => {
         const values = [
             {
                 type: 'input',
