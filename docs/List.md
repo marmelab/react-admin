@@ -126,6 +126,16 @@ export const PostList = (props) => (
 );
 ```
 
+You can also use such a custom `ListActions` prop to omit or reorder buttons based on permissions. Just pass the `permisisons` down from the `List` component:
+
+```jsx
+export const PostList = ({ permissions, ...props }) => (
+    <List {...props} actions={<PostActions permissions={permissions} />}>
+        ...
+    </List>
+);
+```
+
 ### Exporter
 
 Among the default list actions, react-admin includes an `<ExportButton>`. By default, clicking this button will:
@@ -134,7 +144,7 @@ Among the default list actions, react-admin includes an `<ExportButton>`. By def
 2. Transform the result into a CSV string,
 3. Download the CSV file.
 
-The columns of the CSV file correspond to all the fields of the records in the `dataProvider` response. That means that the export doesn't take into account the selection and ordering of fields in your `<List>` via `Field` components. If you want to customize the result, pass a custom `exporter` function to the `<List>`. This function will receive the data from the `dataProvider` (after step 1), and replace steps 2-3 (i.e. it's in charge of transforming, converting, and downloading the file). 
+The columns of the CSV file match all the fields of the records in the `dataProvider` response. That means that the export doesn't take into account the selection and ordering of fields in your `<List>` via `Field` components. If you want to customize the result, pass a custom `exporter` function to the `<List>`. This function will receive the data from the `dataProvider` (after step 1), and replace steps 2-3 (i.e. it's in charge of transforming, converting, and downloading the file). 
 
 **Tip**: For CSV conversion, you can import [Papaparse](https://www.papaparse.com/), a CSV parser and stringifier which is already a react-admin dependency. And for CSV download, take advantage of react-admin's `downloadCSV` function.
 
@@ -197,6 +207,8 @@ Under the hood, `fetchRelatedRecords()` uses react-admin's sagas, which trigger 
 **Tip**: If you need to call another `dataProvider` verb in the exporter, take advantage of the third parameter passed to the function: `dispatch()`. It allows you to call any Redux action. Combine it with [the `callback` side effect](./Actions.html#custom-sagas) to grab the result in a callback.
 
 **Tip**: The `<ExportButton>` limits the main request to the `dataProvider` to 1,000 records. If you want to increase or decrease this limit, pass a `maxResults` prop to the `<ExportButton>` in a custom `<ListActions>` component, as explained in the previous section.
+
+**Tip**: For complex (or large) exports, fetching all the related records and assembling them client-side can be slow. In that case, create the CSV on the server side, and replace the `<ExportButton>` component by a custom one, fetching the CSV route.
 
 ### Bulk Actions
 
