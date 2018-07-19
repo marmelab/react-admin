@@ -23,6 +23,9 @@
         "graphql"
     ],
     "license": "MIT",
+    "scripts": {
+        "build": "rimraf ./lib && NODE_ENV=production babel --quiet ./src -d ./lib --ignore spec.js,test.js"
+    },
     "dependencies": {
         "graphql-tag": "^2.6.1",
         "lodash": "~4.17.5",
@@ -34,7 +37,10 @@
         "react-admin": "^2.1.2"
     },
     "devDependencies": {
+        "babel-cli": "~6.26.0",
+        "cross-env": "^5.2.0",
         "graphql": "^0.13.2",
-        "react-admin": "^2.1.2"
+        "react-admin": "^2.1.2",
+        "rimraf": "^2.6.2"
     }
 }

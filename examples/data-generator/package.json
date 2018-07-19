@@ -3,10 +3,18 @@
     "version": "0.1.0",
     "private": true,
     "main": "./lib/index.js",
+    "scripts": {
+        "build": "rimraf ./lib && NODE_ENV=production babel --quiet ./src -d ./lib --ignore spec.js,test.js"
+    },
     "dependencies": {
         "babel-core": "~6.26.0",
         "chance": "~1.0.13",
         "date-fns": "~1.29.0",
         "md5": "~2.2.1"
+    },
+    "devDependencies": {
+        "babel-cli": "~6.26.0",
+        "cross-env": "^5.2.0",
+        "rimraf": "^2.6.2"
     }
 }
