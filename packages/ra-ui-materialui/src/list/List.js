@@ -174,6 +174,7 @@ ListView.propTypes = {
     data: PropTypes.object,
     defaultTitle: PropTypes.string,
     displayedFilters: PropTypes.object,
+    exporter: PropTypes.func,
     filterDefaultValues: PropTypes.object,
     filters: PropTypes.element,
     filterValues: PropTypes.object,
