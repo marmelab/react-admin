@@ -64,22 +64,24 @@ describe('<SaveButton />', () => {
         expect(flatButtonWrapper.prop('type')).toEqual('button');
     });
 
-    it('should trigger submit action when clicked if no saving is in progress', () => {
-        const onSubmit = jest.fn();
+    it('should trigger submit action when clicked if no saving is in progress and submitOnEnter is false', () => {
+        const onSubmit = jest.fn(() => () => {});
         const raisedButtonWrapper = shallow(
             <SaveButton
                 raised={true}
                 translate={translate}
-                handleSubmitWithRedirect={() => onSubmit}
+                handleSubmitWithRedirect={onSubmit}
                 saving={false}
+                submitOnEnter={false}
             />
         );
         const flatButtonWrapper = shallow(
             <SaveButton
                 raised={false}
                 translate={translate}
-                handleSubmitWithRedirect={() => onSubmit}
+                handleSubmitWithRedirect={onSubmit}
                 saving={false}
+                submitOnEnter={false}
             />
         );
 
@@ -90,23 +92,25 @@ describe('<SaveButton />', () => {
     });
 
     it('should not trigger submit action when clicked if saving is in progress', () => {
-        const onSubmit = jest.fn();
+        const onSubmit = jest.fn(() => () => {});
         const event = { preventDefault: jest.fn() };
 
         const raisedButtonWrapper = shallow(
             <SaveButton
                 raised={true}
                 translate={translate}
-                handleSubmitWithRedirect={() => onSubmit}
+                handleSubmitWithRedirect={onSubmit}
                 saving={true}
+                submitOnEnter={false}
             />
         );
         const flatButtonWrapper = shallow(
             <SaveButton
                 raised={false}
                 translate={translate}
-                handleSubmitWithRedirect={() => onSubmit}
+                handleSubmitWithRedirect={onSubmit}
                 saving={true}
+                submitOnEnter={false}
             />
         );
 
@@ -118,7 +122,7 @@ describe('<SaveButton />', () => {
         expect(onSubmit.mock.calls.length).toEqual(0);
     });
     it('should show a notification if the form is not valid', () => {
-        const onSubmit = jest.fn();
+        const onSubmit = jest.fn(() => () => {});
         const showNotification = jest.fn();
         const event = { preventDefault: jest.fn() };
 
@@ -126,18 +130,20 @@ describe('<SaveButton />', () => {
             <SaveButton
                 raised={true}
                 translate={translate}
-                handleSubmitWithRedirect={() => onSubmit}
+                handleSubmitWithRedirect={onSubmit}
                 invalid={true}
                 showNotification={showNotification}
+                submitOnEnter={false}
             />
         );
         const flatButtonWrapper = shallow(
             <SaveButton
                 raised={false}
                 translate={translate}
-                handleSubmitWithRedirect={() => onSubmit}
+                handleSubmitWithRedirect={onSubmit}
                 invalid={true}
                 showNotification={showNotification}
+                submitOnEnter={false}
             />
         );
 

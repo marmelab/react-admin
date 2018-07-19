@@ -76,8 +76,18 @@ const getTabFullPath = (tab, index, baseUrl) =>
     }`;
 
 export class TabbedForm extends Component {
-    handleSubmitWithRedirect = (redirect = this.props.redirect) =>
-        this.props.handleSubmit(values => this.props.save(values, redirect));
+    handleSubmitWithRedirect = (redirect = this.props.redirect) => {
+        const { handleSubmit, save } = this.props;
+        return handleSubmit(values => save(values, redirect));
+    };
+
+    handleSubmit = event => {
+        const { handleSubmit, redirect, save, submitOnEnter } = this.props;
+        if (!submitOnEnter && event.key === 'Enter') {
+            return event.preventDefault();
+        }
+        handleSubmit(values => save(values, redirect))(event);
+    };
 
     render() {
         const {
@@ -85,6 +95,7 @@ export class TabbedForm extends Component {
             children,
             className,
             classes = {},
+            handleSubmit,
             invalid,
             location,
             match,
@@ -106,6 +117,7 @@ export class TabbedForm extends Component {
             <form
                 className={classnames('tabbed-form', className)}
                 key={version}
+                onSubmit={this.handleSubmit}
                 {...sanitizeRestProps(rest)}
             >
                 <Tabs

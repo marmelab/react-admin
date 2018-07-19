@@ -36,15 +36,21 @@ export default url => ({
 
     submit() {
         cy.get(this.elements.submitButton).click();
-        cy.get(this.elements.snackbar);
-        cy.get(this.elements.body).click(); // dismiss notification
-        cy.wait(200); // let the notification disappear (could block further submits)
+        cy.get(this.elements.body).then(el => {
+            if (el.find(this.elements.snackbar).length) {
+                el.click(); // dismiss notification
+                cy.wait(200); // let the notification disappear (could block further submits)
+            }
+        });
     },
 
     submitAndAdd() {
         cy.get(this.elements.submitAndAddButton).click();
-        cy.get(this.elements.snackbar);
-        cy.get(this.elements.body).click(); // dismiss notification
-        cy.wait(200); // let the notification disappear (could block further submits)
+        cy.get(this.elements.body).then(el => {
+            if (el.find(this.elements.snackbar).length) {
+                el.click(); // dismiss notification
+                cy.wait(200); // let the notification disappear (could block further submits)
+            }
+        });
     },
 });
