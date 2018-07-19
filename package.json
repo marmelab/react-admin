@@ -3,7 +3,12 @@
     "name": "react-admin-lerna",
     "scripts": {
         "build": "lerna run build",
-        "test": "make test"
+        "test-unit": "cross-env NODE_ENV=test cross-env NODE_ICU_DATA=node_modules/full-icu jest",
+        "test-unit-ci": "cross-env NODE_ENV=test cross-env NODE_ICU_DATA=node_modules/full-icu jest --runInBand",
+        "test-e2e": "npm run build && cross-env NODE_ENV=test && cd cypress && yarn test",
+        "test-e2e-local": "cd cypress && yarn start",
+        "test": "yarn test-unit && yarn test-e2e",
+        "test-ci": "yarn test-unit-ci && yarn test-e2e"
     },
     "jest": {
         "setupTestFrameworkScriptFile": "./test-setup.js"
