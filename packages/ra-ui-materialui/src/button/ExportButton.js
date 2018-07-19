@@ -6,6 +6,7 @@ import { crudGetAll, CRUD_GET_MANY, GET_MANY } from 'ra-core';
 import { unparse as convertToCSV } from 'papaparse/papaparse.min';
 
 import Button from './Button';
+import downloadCSV from '../util/downloadCSV';
 
 const sanitizeRestProps = ({
     basePath,
@@ -19,23 +20,20 @@ const sanitizeRestProps = ({
     ...rest
 }) => rest;
 
-const downloadCSV = resource => (csv, filename = `${resource}.csv`) => {
-    const fakeLink = document.createElement('a');
-    fakeLink.style.display = 'none';
-    document.body.appendChild(fakeLink);
-    const blob = new Blob([csv], { type: 'text/csv' });
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-        // Manage IE11+ & Edge
-        window.navigator.msSaveOrOpenBlob(blob, filename);
-    } else {
-        fakeLink.setAttribute('href', URL.createObjectURL(blob));
-        fakeLink.setAttribute('download', filename);
-        fakeLink.click();
-    }
-};
-
+/**
+ * Helper function for calling the data provider with GET_MANY
+ * via redux and saga, and getting a Promise in return
+ *
+ * @example
+ *     fetchRelatedRecords(records, 'post_id', 'posts').then(posts =>
+ *          records.map(record => ({
+ *              ...record,
+ *              post_title: posts[record.post_id].title,
+ *          }));
+ */
 const fetchRelatedRecords = dispatch => (data, field, resource) =>
     new Promise((resolve, reject) => {
+        // find unique keys
         const ids = [...new Set(data.map(record => record[field]))];
         dispatch({
             type: CRUD_GET_MANY,
@@ -95,9 +93,8 @@ class ExportButton extends Component {
                     exporter
                         ? exporter(
                               data,
-                              convertToCSV,
-                              downloadCSV(resource),
-                              fetchRelatedRecords(dispatch)
+                              fetchRelatedRecords(dispatch),
+                              dispatch
                           )
                         : downloadCSV(resource)(convertToCSV(data))
             )
