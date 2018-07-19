@@ -162,7 +162,7 @@ const PostList = props => (
 )
 ```
 
-In many cases, you'll need more than simple object manipulation. You'll need to *augment* your objects based on relationships. For instance, the export for comments should include the title of the related post - but the export only exposes a `post_id` by default. For that purpose, the exporter receives a `fetchRelatedRecords()` function as second parameter. It fetches related records using your `dataProdider` and Redux, and returns a promise.
+In many cases, you'll need more than simple object manipulation. You'll need to *augment* your objects based on relationships. For instance, the export for comments should include the title of the related post - but the export only exposes a `post_id` by default. For that purpose, the exporter receives a `fetchRelatedRecords` function as second parameter. It fetches related records using your `dataProvider` and Redux, and returns a promise.
 
 Here is an example for a Comments exporter, fetching related Posts:
 
