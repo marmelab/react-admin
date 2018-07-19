@@ -1,6 +1,6 @@
 import React from 'react';
 import assert from 'assert';
-import { shallow } from 'enzyme';
+import { render, shallow } from 'enzyme';
 import { NumberField } from './NumberField';
 
 describe('<NumberField />', () => {
@@ -17,7 +17,7 @@ describe('<NumberField />', () => {
         const wrapper = shallow(
             <NumberField record={{ foo: 1 }} source="foo" />
         );
-        assert.equal(wrapper.text(), '1');
+        assert.equal(wrapper.children().text(), '1');
     });
 
     it('should pass the options prop to Intl.NumberFormat', () => {
@@ -29,11 +29,11 @@ describe('<NumberField />', () => {
                 options={{ minimumFractionDigits: 2 }}
             />
         );
-        assert.equal(wrapper.text(), '1.00');
+        assert.equal(wrapper.children().text(), '1.00');
     });
 
     it('should use the locales props as an argument to Intl.NumberFormat', () => {
-        const wrapper = shallow(
+        const wrapper = render(
             <NumberField
                 record={{ foo: 1 }}
                 source="foo"
@@ -61,6 +61,6 @@ describe('<NumberField />', () => {
             <NumberField record={{ foo: { bar: 2 } }} source="foo.bar" />
         );
 
-        assert.equal(wrapper.text(), '2');
+        assert.equal(wrapper.children().text(), '2');
     });
 });

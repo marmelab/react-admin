@@ -11,16 +11,26 @@ import sanitizeRestProps from './sanitizeRestProps';
 export const BooleanField = ({ className, source, record = {}, ...rest }) => {
     if (get(record, source) === false) {
         return (
-            <Typography component="span" body1="body1">
-                <FalseIcon className={className} {...sanitizeRestProps(rest)} />
+            <Typography
+                component="span"
+                body1="body1"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                <FalseIcon />
             </Typography>
         );
     }
 
     if (get(record, source) === true) {
         return (
-            <Typography component="span" body1="body1">
-                <TrueIcon className={className} {...sanitizeRestProps(rest)} />
+            <Typography
+                component="span"
+                body1="body1"
+                className={className}
+                {...sanitizeRestProps(rest)}
+            >
+                <TrueIcon />
             </Typography>
         );
     }

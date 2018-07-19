@@ -58,8 +58,7 @@ export const NumberField = ({
     if (!record) return null;
     const value = get(record, source);
     if (value == null) return null;
-
-    if (!hasNumberFormat)
+    if (!hasNumberFormat) {
         return (
             <Typography
                 component="span"
@@ -70,6 +69,7 @@ export const NumberField = ({
                 {value}
             </Typography>
         );
+    }
 
     return (
         <Typography
