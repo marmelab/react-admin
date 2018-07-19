@@ -1,3 +1,4 @@
+import React from 'react';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import PersonIcon from '@material-ui/icons/Person';
@@ -10,7 +11,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
-import React from 'react';
+import { unparse as convertToCSV } from 'papaparse/papaparse.min';
 import {
     DateField,
     EditButton,
@@ -23,6 +24,7 @@ import {
     ShowButton,
     SimpleList,
     TextField,
+    downloadCSV,
     translate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
@@ -34,7 +36,7 @@ const CommentFilter = props => (
     </Filter>
 );
 
-const exporter = (records, convertToCSV, downloadCSV, fetchRelatedRecords) => {
+const exporter = (records, fetchRelatedRecords) => {
     fetchRelatedRecords(records, 'post_id', 'posts').then(posts => {
         const data = records.map(record => {
             const { author, ...recordForExport } = record; // omit author
@@ -50,7 +52,7 @@ const exporter = (records, convertToCSV, downloadCSV, fetchRelatedRecords) => {
             'created_at',
             'body',
         ];
-        downloadCSV(convertToCSV({ data, fields }));
+        downloadCSV(convertToCSV({ data, fields }), 'comments');
     });
 };
 
