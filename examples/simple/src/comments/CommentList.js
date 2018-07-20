@@ -36,7 +36,7 @@ const CommentFilter = props => (
     </Filter>
 );
 
-const exporter = (records, fetchRelatedRecords) => {
+const exporter = (records, fetchRelatedRecords) =>
     fetchRelatedRecords(records, 'post_id', 'posts').then(posts => {
         const data = records.map(record => {
             const { author, ...recordForExport } = record; // omit author
@@ -54,7 +54,6 @@ const exporter = (records, fetchRelatedRecords) => {
         ];
         downloadCSV(convertToCSV({ data, fields }), 'comments');
     });
-};
 
 const CommentPagination = translate(
     ({ page, perPage, total, setPage, translate }) => {
