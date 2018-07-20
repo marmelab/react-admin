@@ -24,14 +24,17 @@ export class BooleanInput extends Component {
             ...rest
         } = this.props;
 
+        const { value, ...inputProps } = input;
+
         return (
             <FormGroup className={className} {...sanitizeRestProps(rest)}>
                 <FormControlLabel
                     control={
                         <Switch
                             color="primary"
-                            checked={!!input.value}
+                            checked={!!value}
                             onChange={this.handleChange}
+                            {...inputProps}
                             {...options}
                         />
                     }

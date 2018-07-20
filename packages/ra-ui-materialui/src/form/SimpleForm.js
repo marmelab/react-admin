@@ -99,7 +99,9 @@ export class SimpleForm extends Component {
                 </div>
                 {toolbar &&
                     React.cloneElement(toolbar, {
+                        basePath,
                         handleSubmitWithRedirect: this.handleSubmitWithRedirect,
+                        handleSubmit: this.props.handleSubmit,
                         invalid,
                         pristine,
                         redirect,

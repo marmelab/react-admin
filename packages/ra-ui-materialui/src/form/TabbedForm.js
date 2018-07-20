@@ -179,6 +179,7 @@ export class TabbedForm extends Component {
                             className: 'toolbar',
                             handleSubmitWithRedirect: this
                                 .handleSubmitWithRedirect,
+                            handleSubmit: this.props.handleSubmit,
                             invalid,
                             pristine,
                             redirect,

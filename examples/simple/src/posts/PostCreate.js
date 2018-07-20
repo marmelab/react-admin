@@ -1,6 +1,9 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import RichTextInput from 'ra-input-rich-text';
-import React from 'react';
 import {
+    crudCreate,
     BooleanInput,
     Create,
     DateInput,
@@ -13,6 +16,35 @@ import {
     Toolbar,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
+const saveWithNote = (values, basePath, redirectTo) =>
+    crudCreate('posts', { ...values, average_note: 10 }, basePath, redirectTo);
+
+class SaveWithNoteButtonComponent extends Component {
+    handleClick = () => {
+        const { basePath, handleSubmit, redirect, saveWithNote } = this.props;
+
+        return handleSubmit(values => {
+            saveWithNote(values, basePath, redirect);
+        });
+    };
+
+    render() {
+        const { handleSubmitWithRedirect, saveWithNote, ...props } = this.props;
+
+        return (
+            <SaveButton
+                handleSubmitWithRedirect={this.handleClick}
+                {...props}
+            />
+        );
+    }
+}
+
+const SaveWithNoteButton = connect(
+    undefined,
+    { saveWithNote }
+)(SaveWithNoteButtonComponent);
+
 const PostCreateToolbar = props => (
     <Toolbar {...props}>
         <SaveButton
@@ -23,6 +55,12 @@ const PostCreateToolbar = props => (
         <SaveButton
             label="post.action.save_and_add"
             redirect={false}
+            submitOnEnter={false}
+            variant="flat"
+        />
+        <SaveWithNoteButton
+            label="post.action.save_with_average_note"
+            redirect="show"
             submitOnEnter={false}
             variant="flat"
         />
