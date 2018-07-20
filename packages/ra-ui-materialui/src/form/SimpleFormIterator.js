@@ -126,7 +126,7 @@ export class SimpleFormIterator extends Component {
                                                     input.props.label ||
                                                     input.props.source,
                                             })}
-                                            record={records[index]}
+                                            record={records && records[index]}
                                             resource={resource}
                                         />
                                     ))}
