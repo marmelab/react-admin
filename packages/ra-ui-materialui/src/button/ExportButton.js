@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import GetApp from '@material-ui/icons/GetApp';
-import { crudGetAll, CRUD_GET_MANY, GET_MANY } from 'ra-core';
+import { crudGetAll, downloadCSV, CRUD_GET_MANY, GET_MANY } from 'ra-core';
 import { unparse as convertToCSV } from 'papaparse/papaparse.min';
 
 import Button from './Button';
-import downloadCSV from '../util/downloadCSV';
 
 const sanitizeRestProps = ({
     basePath,
