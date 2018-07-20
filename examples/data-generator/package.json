@@ -4,7 +4,8 @@
     "private": true,
     "main": "./lib/index.js",
     "scripts": {
-        "build": "rimraf ./lib && NODE_ENV=production babel --quiet ./src -d ./lib --ignore spec.js,test.js"
+        "build": "rimraf ./lib && cross-env NODE_ENV=production babel --quiet ./src -d ./lib --ignore spec.js,test.js",
+        "watch": "rimraf ./lib && cross-env NODE_ENV=production babel --watch ./src -d ./lib --ignore spec.js,test.js"
     },
     "dependencies": {
         "babel-core": "~6.26.0",

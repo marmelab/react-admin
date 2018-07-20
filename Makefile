@@ -74,18 +74,16 @@ build-data-generator:
 
 build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-input-rich-text build-ra-realtime build-data-generator ## compile ES6 files to JS
 
-watch: ## continuously compile ES6 files to JS
-	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore spec.js,test.js --watch
-
 doc: ## compile doc as html and launch doc web server
-	@cd docs && jekyll server . --watch
+	@yarn doc
 
 lint: ## lint the code and check coding conventions
 	@echo "Running linter..."
-	@"./node_modules/.bin/eslint" ./packages/**/src
+	@yarn lint
 
 prettier: ## prettify the source code using prettier
-	@./node_modules/.bin/prettier-eslint --write --list-different "packages/*/src/**/*.js" "examples/*/src/**/*.js"
+	@echo "Running prettier..."
+	@yarn prettier
 
 test: build test-unit lint test-e2e ## launch all tests
 

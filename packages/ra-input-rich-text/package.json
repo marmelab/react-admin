@@ -31,7 +31,8 @@
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "scripts": {
-        "build": "rimraf ./lib && NODE_ENV=production babel --quiet ./src -d ./lib --ignore spec.js,test.js"
+        "build": "rimraf ./lib && cross-env NODE_ENV=production babel --quiet ./src -d ./lib --ignore spec.js,test.js",
+        "watch": "rimraf ./lib && cross-env NODE_ENV=production babel --watch ./src -d ./lib --ignore spec.js,test.js"
     },
     "peerDependencies": {
         "react": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0",

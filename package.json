@@ -8,7 +8,10 @@
         "test-e2e": "npm run build && cross-env NODE_ENV=test && cd cypress && yarn test",
         "test-e2e-local": "cd cypress && yarn start",
         "test": "yarn test-unit && yarn test-e2e",
-        "test-ci": "yarn test-unit-ci && yarn test-e2e"
+        "test-ci": "yarn test-unit-ci && yarn test-e2e",
+        "doc": "cd docs && jekyll server . --watch",
+        "lint": "eslint \" ./packages /**/src\"",
+        "prettier": "prettier-eslint --write --list-different \"packages /*/src/**/*.js\" \"examples /*/src/**/*.js\""
     },
     "jest": {
         "setupTestFrameworkScriptFile": "./test-setup.js"
@@ -26,6 +29,7 @@
         "babel-preset-stage-0": "~6.24.1",
         "babel-register": "~6.26.0",
         "cheerio": "~1.0.0-rc.2",
+        "cross-env": "^5.2.0",
         "eslint": "~4.19.1",
         "eslint-config-prettier": "~2.9.0",
         "eslint-plugin-cypress": "~2.0.1",
