@@ -9,22 +9,22 @@ install: package.json ## install dependencies
 run: run-simple
 
 run-simple: ## run the simple example
-	@cd examples/simple && yarn start
+	@yarn run-simple
 
 run-tutorial: build ## run the tutorial example
-	@cd examples/tutorial && yarn start
+	@yarn run-tutorial
 
 run-demo: build ## run the demo example
-	@cd examples/demo && REACT_APP_DATA_PROVIDER=rest yarn start
+	@yarn run-demo
 
 build-demo: ## compile the demo example to static js
-	@cd examples/demo && REACT_APP_DATA_PROVIDER=rest yarn build
+	@yarn build-demo
 
 run-graphql-demo: build ## run the demo example
-	@cd examples/demo && REACT_APP_DATA_PROVIDER=graphql yarn start
+	@yarn run-graphql-demo
 
 run-graphcool-demo: build ## run the demo example
-	@cd examples/graphcool-demo && yarn start
+	@yarn run-graphcool-demo
 
 build-ra-core:
 	@echo "Transpiling ra-core files...";
