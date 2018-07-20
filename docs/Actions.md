@@ -465,6 +465,10 @@ Sometimes, you may want your custom action to alter the form values before actua
 Knowing this, you can dispatch a custom action with a button and still benefit from the default crud action side effects (notifications, optimistic ui, undo, etc.). For instance, in the `simple` example:
 
 ```jsx
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { crudCreate, SaveButton, Toolbar } from 'react-admin';
+
 // A custom action creator which modifies the values before calling the default crudCreate action creator
 const saveWithNote = (values, basePath, redirectTo) =>
     crudCreate('posts', { ...values, average_note: 10 }, basePath, redirectTo);
