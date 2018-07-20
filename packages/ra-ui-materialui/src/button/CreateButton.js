@@ -29,8 +29,8 @@ const styles = theme => ({
         display: 'inline-flex',
         alignItems: 'center',
     },
-    iconPaddingStyle: {
-        paddingRight: '0.5em',
+    label: {
+        paddingLeft: '0.5em',
     },
 });
 
@@ -40,6 +40,7 @@ const CreateButton = ({
     classes = {},
     translate,
     label = 'ra.action.create',
+    size = 'small',
     ...rest
 }) => (
     <Responsive
@@ -61,10 +62,13 @@ const CreateButton = ({
                 color="primary"
                 to={`${basePath}/create`}
                 className={classnames(classes.desktopLink, className)}
+                size={size}
                 {...rest}
             >
                 <ContentAdd className={classes.iconPaddingStyle} />
-                {label && translate(label)}
+                <span className={classes.label}>
+                    {label && translate(label)}
+                </span>
             </Button>
         }
     />
@@ -75,6 +79,7 @@ CreateButton.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
     label: PropTypes.string,
+    size: PropTypes.string,
     translate: PropTypes.func.isRequired,
 };
 
