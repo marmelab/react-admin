@@ -15,6 +15,7 @@ const styles = {
 
 const CardActions = ({ classes, className, children, ...rest }) => (
     <MuiCardActions
+        disableActionSpacing
         className={classnames(classes.cardActions, className)}
         {...rest}
     >
