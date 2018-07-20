@@ -16,7 +16,7 @@ class AcceptButton extends Component {
     render() {
         const { record, translate } = this.props;
         return record && record.status === 'pending' ? (
-            <Button color="primary" onClick={this.handleApprove}>
+            <Button color="primary" size="small" onClick={this.handleApprove}>
                 <ThumbDown
                     color="primary"
                     style={{ paddingRight: '0.5em', color: 'red' }}
