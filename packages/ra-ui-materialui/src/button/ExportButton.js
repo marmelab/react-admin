@@ -96,7 +96,7 @@ class ExportButton extends Component {
                               fetchRelatedRecords(dispatch),
                               dispatch
                           )
-                        : downloadCSV(resource)(convertToCSV(data))
+                        : downloadCSV(convertToCSV(data), resource)
             )
         );
     };
