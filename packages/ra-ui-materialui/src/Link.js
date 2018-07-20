@@ -10,6 +10,9 @@ const styles = theme => ({
         color: theme.palette.primary.main,
     },
 });
+/**
+ * @deprecated Use react-router-dom's Link instead
+ */
 const Link = ({ to, children, className, classes }) => (
     <RRLink to={to} className={classNames(classes.link, className)}>
         {children}
