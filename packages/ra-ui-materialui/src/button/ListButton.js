@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ActionList from '@material-ui/icons/List';
+import { Link } from 'react-router-dom';
 
-import Link from '../Link';
 import Button from './Button';
 
 const ListButton = ({ basePath = '', label = 'ra.action.list', ...rest }) => (

@@ -22,7 +22,11 @@ const Actions = ({
     showFilter,
     ...rest
 }) => (
-    <CardActions className={className} {...sanitizeListRestProps(rest)}>
+    <CardActions
+        className={className}
+        disableActionSpacing
+        {...sanitizeListRestProps(rest)}
+    >
         {bulkActions &&
             cloneElement(bulkActions, {
                 basePath,

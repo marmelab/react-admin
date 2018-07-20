@@ -8,7 +8,6 @@ import {
     Datagrid,
     DateField,
     EditButton,
-    Link,
     NumberField,
     ReferenceArrayField,
     ReferenceManyField,
@@ -21,6 +20,7 @@ import {
     TextField,
     UrlField,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import PostTitle from './PostTitle';
 
