@@ -27,6 +27,11 @@ export const addRecordsFactory = getFetchedAt => (
     newRecords = [],
     oldRecords
 ) => {
+    if (!newRecords.map) {
+        throw new Error(
+            `Expecting an array of records as data, got ${typeof newRecords} instead`
+        );
+    }
     const newFetchedAt = getFetchedAt(
         newRecords.map(({ id }) => id),
         oldRecords.fetchedAt
