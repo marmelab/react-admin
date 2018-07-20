@@ -3,9 +3,6 @@
     "version": "2.1.0",
     "description": "<RichTextInput> component for react-admin, useful for editing HTML code in admin GUIs.",
     "main": "lib/index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
     "files": [
         "LICENSE",
         "*.md",
@@ -33,6 +30,10 @@
         "url": "https://github.com/marmelab/react-admin/issues"
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
+    "scripts": {
+        "build": "rimraf ./lib && cross-env NODE_ENV=production babel --quiet ./src -d ./lib --ignore spec.js,test.js",
+        "watch": "rimraf ./lib && cross-env NODE_ENV=production babel --watch ./src -d ./lib --ignore spec.js,test.js"
+    },
     "peerDependencies": {
         "react": "~16.0.0 || ~16.1.0 || ~16.2.0 || ~16.3.0",
         "react-admin": "^2.0.0",
@@ -42,5 +43,10 @@
         "lodash": "~4.17.5",
         "prop-types": "~15.6.1",
         "quill": "~1.3.6"
+    },
+    "devDependencies": {
+        "babel-cli": "~6.26.0",
+        "cross-env": "^5.2.0",
+        "rimraf": "^2.6.2"
     }
 }
