@@ -16,8 +16,8 @@
         "run-simple": "cd examples/simple && yarn start",
         "run-tutorial": "yarn run build && cd examples/tutorial && yarn start",
         "run-demo": "yarn run build && cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn start",
-        "run-demo-graphql": "yarn run build && cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=graphql yarn start",
-        "run-demo-graphcool": "yarn run build && cd examples/graphcool-demo && yarn start"
+        "run-graphql-demo": "yarn run build && cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=graphql yarn start",
+        "run-graphcool-demo": "yarn run build && cd examples/graphcool-demo && yarn start"
     },
     "jest": {
         "setupTestFrameworkScriptFile": "./test-setup.js"

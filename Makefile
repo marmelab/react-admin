@@ -11,19 +11,19 @@ run: run-simple
 run-simple: ## run the simple example
 	@yarn run-simple
 
-run-tutorial: build ## run the tutorial example
+run-tutorial: ## run the tutorial example
 	@yarn run-tutorial
 
-run-demo: build ## run the demo example
+run-demo: ## run the demo example
 	@yarn run-demo
 
 build-demo: ## compile the demo example to static js
 	@yarn build-demo
 
-run-graphql-demo: build ## run the demo example
+run-graphql-demo: ## run the demo example
 	@yarn run-graphql-demo
 
-run-graphcool-demo: build ## run the demo example
+run-graphcool-demo: ## run the demo example
 	@yarn run-graphcool-demo
 
 build-ra-core:
