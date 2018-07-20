@@ -6,10 +6,10 @@ import { withStyles } from '@material-ui/core/styles';
 import ContentAdd from '@material-ui/icons/Add';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 import { translate } from 'ra-core';
 
 import Responsive from '../layout/Responsive';
-import Link from '../Link';
 
 const styles = theme => ({
     floating: {

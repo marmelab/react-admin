@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import ContentCreate from '@material-ui/icons/Create';
+import { Link } from 'react-router-dom';
 
-import Link from '../Link';
 import Button from './Button';
 
 const omitId = ({ id, ...rest }) => rest;

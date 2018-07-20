@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import shouldUpdate from 'recompose/shouldUpdate';
 import ImageEye from '@material-ui/icons/RemoveRedEye';
+import { Link } from 'react-router-dom';
 import { linkToRecord } from 'ra-core';
 
-import Link from '../Link';
 import Button from './Button';
 
 const ShowButton = ({
