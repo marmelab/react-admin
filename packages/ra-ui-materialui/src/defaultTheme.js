@@ -7,4 +7,9 @@ export default {
             contrastText: '#fff',
         },
     },
+    typography: {
+        title: {
+            fontWeight: 400,
+        },
+    },
 };
