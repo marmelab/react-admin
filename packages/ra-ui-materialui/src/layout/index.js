@@ -13,6 +13,7 @@ export Menu from './Menu';
 export MenuItemLink from './MenuItemLink';
 export NotFound from './NotFound';
 export Notification from './Notification';
+export RecordTitle from './RecordTitle';
 export Responsive from './Responsive';
 export Sidebar from './Sidebar';
 export Title from './Title';

@@ -1,4 +1,5 @@
 export Create, { CreateView } from './Create';
+export CreateActions from './CreateActions';
 export Edit, { EditView } from './Edit';
 export EditActions from './EditActions';
 export Show, { ShowView } from './Show';
