@@ -18,7 +18,11 @@ import {
     fetchActionsWithTotalResponse,
 } from '../dataFetchActions';
 
-function validateResponseFormat(response, type, logger = console.error) {
+function validateResponseFormat(
+    response,
+    type,
+    logger = console.error // eslint-disable-line no-console
+) {
     if (!response.data) {
         logger(
             `The response to '${type}' must be like { data: ... }, but the received response does not have a 'data' key. The dataProvider is probably wrong for '${type}'.`
@@ -80,7 +84,8 @@ export function* handleFetch(dataProvider, action) {
             meta.resource,
             payload
         );
-        validateResponseFormat(response, restType);
+        process.env.NODE_ENV === 'development' &&
+            validateResponseFormat(response, restType);
         yield put({
             type: `${type}_SUCCESS`,
             payload: response,
