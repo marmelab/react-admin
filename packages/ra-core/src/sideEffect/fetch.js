@@ -12,6 +12,51 @@ import {
     FETCH_ERROR,
     FETCH_START,
 } from '../actions/fetchActions';
+import {
+    fetchActionsWithRecordResponse,
+    fetchActionsWithArrayOfRecordsResponse,
+    fetchActionsWithTotalResponse,
+} from '../dataFetchActions';
+
+function validateResponseFormat(
+    response,
+    type,
+    logger = console.error // eslint-disable-line no-console
+) {
+    if (!response.data) {
+        logger(
+            `The response to '${type}' must be like { data: ... }, but the received response does not have a 'data' key. The dataProvider is probably wrong for '${type}'.`
+        );
+        throw new Error('ra.notification.data_provider_error');
+    }
+    if (
+        fetchActionsWithArrayOfRecordsResponse.includes(type) &&
+        !Array.isArray(response.data)
+    ) {
+        logger(
+            `The response to '${type}' must be like { data : [...] }, but the received data is not an array. The dataProvider is probably wrong for '${type}'`
+        );
+        throw new Error('ra.notification.data_provider_error');
+    }
+    if (
+        fetchActionsWithRecordResponse.includes(type) &&
+        !response.data.hasOwnProperty('id')
+    ) {
+        logger(
+            `The response to '${type}' must be like { data: { id: 123, ... } }, but the received data does not have an 'id' key. The dataProvider is probably wrong for '${type}'`
+        );
+        throw new Error('ra.notification.data_provider_error');
+    }
+    if (
+        fetchActionsWithTotalResponse.includes(type) &&
+        !response.hasOwnProperty('total')
+    ) {
+        logger(
+            `The response to '${type}' must be like  { data: [...], total: 123 }, but the received response does not have a 'total' key. The dataProvider is probably wrong for '${type}'`
+        );
+        throw new Error('ra.notification.data_provider_error');
+    }
+}
 
 export function* handleFetch(dataProvider, action) {
     const {
@@ -39,9 +84,8 @@ export function* handleFetch(dataProvider, action) {
             meta.resource,
             payload
         );
-        if (!response.data) {
-            throw new Error('REST response must contain a data key');
-        }
+        process.env.NODE_ENV === 'development' &&
+            validateResponseFormat(response, restType);
         yield put({
             type: `${type}_SUCCESS`,
             payload: response,
