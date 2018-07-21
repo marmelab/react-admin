@@ -99,6 +99,8 @@ module.exports = {
             bad_item: 'Incorrect element',
             item_doesnt_exist: 'Element does not exist',
             http_error: 'Server communication error',
+            data_provider_error:
+                'dataProvider error. Check the console for details.',
             canceled: 'Action cancelled',
         },
         validation: {

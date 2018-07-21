@@ -102,6 +102,8 @@ module.exports = {
             bad_item: 'Élément inconnu',
             item_doesnt_exist: "L'élément n'existe pas",
             http_error: 'Erreur de communication avec le serveur',
+            data_provider_error:
+                'Erreur dans le dataProvider. Plus de détails dans la console.',
             canceled: 'Action annulée',
         },
         validation: {

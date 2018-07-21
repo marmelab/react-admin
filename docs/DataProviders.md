@@ -561,7 +561,7 @@ POST http://path.to.my.api/posts
 PUT http://path.to.my.api/posts/123
 { "id": 123, "title": "hello, world", "author_id": 12 }
 
-PATCH http://path.to.my.api/posts?filter={ids:[123,124,125]}
+PUT http://path.to.my.api/posts?filter={ids:[123,124,125]}
 [123, 124, 125]
 
 DELETE http://path.to.my.api/posts/123
