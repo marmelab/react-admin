@@ -14,6 +14,7 @@ import {
 } from '../actions/fetchActions';
 import {
     fetchActionsWithRecordResponse,
+    fetchActionsWithArrayOfIdentifiedRecordsResponse,
     fetchActionsWithArrayOfRecordsResponse,
     fetchActionsWithTotalResponse,
 } from '../dataFetchActions';
@@ -39,7 +40,7 @@ function validateResponseFormat(
         throw new Error('ra.notification.data_provider_error');
     }
     if (
-        fetchActionsWithArrayOfRecordsResponse.includes(type) &&
+        fetchActionsWithArrayOfIdentifiedRecordsResponse.includes(type) &&
         Array.isArray(response.data) &&
         response.data.length > 0 &&
         !response.data[0].hasOwnProperty('id')
