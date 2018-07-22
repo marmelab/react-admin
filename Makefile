@@ -36,9 +36,14 @@ build-ra-ui-materialui:
 
 build-react-admin:
 	@echo "Transpiling react-admin files...";
+	@rm -rf ./packages/react-admin/docs
 	@cd ./packages/react-admin && yarn build
 	@mkdir packages/react-admin/docs
 	@cp docs/*.md packages/react-admin/docs
+
+build-ra-data-fakerest:
+	@echo "Transpiling ra-data-fakerest files...";
+	@cd ./packages/ra-data-fakerest && yarn build
 
 build-ra-data-json-server:
 	@echo "Transpiling ra-data-json-server files...";
@@ -72,7 +77,7 @@ build-data-generator:
 	@echo "Transpiling data-generator files...";
 	@cd ./examples/data-generator && yarn build
 
-build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-input-rich-text build-ra-realtime build-data-generator ## compile ES6 files to JS
+build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-fakerest build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-input-rich-text build-ra-realtime build-data-generator ## compile ES6 files to JS
 
 doc: ## compile doc as html and launch doc web server
 	@yarn doc
