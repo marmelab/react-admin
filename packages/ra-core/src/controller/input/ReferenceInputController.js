@@ -6,7 +6,8 @@ import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
 import isEqual from 'lodash/isEqual';
 
-import { crudGetOne, crudGetMatching } from '../../actions/dataActions';
+import { crudGetManyAccumulate as crudGetManyAccumulateAction } from '../../actions/accumulateActions';
+import { crudGetMatchingDebounce as crudGetMatchingDebounceAction } from '../../actions/debounceActions';
 import {
     getPossibleReferences,
     getPossibleReferenceValues,
@@ -154,16 +155,16 @@ export class ReferenceInputController extends Component {
     };
 
     fetchReference = (props = this.props) => {
-        const { crudGetOne, input, reference } = props;
+        const { crudGetManyAccumulate, input, reference } = props;
         const id = input.value;
         if (id) {
-            crudGetOne(reference, id, null, false);
+            crudGetManyAccumulate(reference, [id], null, false);
         }
     };
 
     fetchOptions = (props = this.props) => {
         const {
-            crudGetMatching,
+            crudGetMatchingDebounce,
             filter: filterFromProps,
             reference,
             referenceSource,
@@ -172,7 +173,7 @@ export class ReferenceInputController extends Component {
         } = props;
         const { pagination, sort, filter } = this.state;
 
-        crudGetMatching(
+        crudGetMatchingDebounce(
             reference,
             referenceSource(resource, source),
             pagination,
@@ -226,8 +227,8 @@ ReferenceInputController.propTypes = {
     children: PropTypes.func.isRequired,
     className: PropTypes.string,
     classes: PropTypes.object,
-    crudGetMatching: PropTypes.func.isRequired,
-    crudGetOne: PropTypes.func.isRequired,
+    crudGetMatchingDebounce: PropTypes.func.isRequired,
+    crudGetManyAccumulate: PropTypes.func.isRequired,
     filter: PropTypes.object,
     filterToQuery: PropTypes.func.isRequired,
     input: PropTypes.object.isRequired,
@@ -283,8 +284,8 @@ const EnhancedReferenceInputController = compose(
     connect(
         makeMapStateToProps(),
         {
-            crudGetOne,
-            crudGetMatching,
+            crudGetManyAccumulate: crudGetManyAccumulateAction,
+            crudGetMatchingDebounce: crudGetMatchingDebounceAction,
         }
     )
 )(ReferenceInputController);

@@ -43,6 +43,7 @@ export const ReferenceFieldView = ({
                     allowEmpty,
                     basePath,
                     translateChoice,
+                    className: classes.link,
                     ...sanitizeRestProps(rest),
                 })}
             </Link>
