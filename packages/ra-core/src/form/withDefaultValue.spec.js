@@ -44,7 +44,7 @@ describe('withDefaultValue', () => {
             assert.equal(initializeForm.mock.calls.length, 1);
             assert.deepEqual(initializeForm.mock.calls[0][0], { bar: 'foo' });
 
-            wrapper.setProps({ defaultValue: 'bar', initializeForm });
+            wrapper.setProps({ defaultValue: 'bar' });
 
             assert.equal(initializeForm.mock.calls.length, 2);
             assert.deepEqual(initializeForm.mock.calls[1][0], { bar: 'bar' });
