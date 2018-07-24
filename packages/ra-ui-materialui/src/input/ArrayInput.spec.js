@@ -5,7 +5,7 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { TranslationProvider } from 'ra-core';
 
-import { ArrayInput } from './ArrayInput';
+import ArrayInput, { ArrayInput as ArrayInputView } from './ArrayInput';
 import NumberInput from './NumberInput';
 import TextInput from './TextInput';
 import SimpleFormIterator from '../form/SimpleFormIterator';
