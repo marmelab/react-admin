@@ -275,7 +275,6 @@ const enhance = compose(
     translate, // Must be before reduxForm so that it can be used in validation
     reduxForm({
         enableReinitialize: true,
-        keepDirtyOnReinitialize: true,
     }),
     withStyles(styles)
 );
