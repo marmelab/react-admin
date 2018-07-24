@@ -5,7 +5,7 @@
     "dependencies": {
         "@material-ui/core": "~1.2.1",
         "@material-ui/icons": "~1.1.0",
-        "data-generator": "^0.1.0",
+        "data-generator": "^2.1.4",
         "fakerest": "~2.1.0",
         "fetch-mock": "~6.3.0",
         "json-graphql-server": "~2.1.1",
