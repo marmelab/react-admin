@@ -8,12 +8,21 @@ import {
     DisabledInput,
     EditActions,
     EditController,
+    Link,
     LongTextInput,
     ReferenceInput,
     SimpleForm,
     TextInput,
     minLength,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
+
+const LinkToRelatedPost = ({ record }) => (
+    <Link to={`/posts/${record.post_id}`}>
+        <Typography variant="caption" color="inherit" align="right">
+            See related post
+        </Typography>
+    </Link>
+);
 
 const editStyles = {
     header: {
@@ -69,6 +78,7 @@ const CommentEdit = withStyles(editStyles)(({ classes, ...props }) => (
                                     options={{ fullWidth: true }}
                                 />
                             </ReferenceInput>
+                            <LinkToRelatedPost />
                             <TextInput
                                 source="author.name"
                                 validate={minLength(10)}
