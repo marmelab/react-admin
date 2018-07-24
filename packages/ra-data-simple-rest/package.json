@@ -1,6 +1,6 @@
 {
     "name": "ra-data-simple-rest",
-    "version": "2.1.2",
+    "version": "2.1.3",
     "description": "Simple REST data provider for react-admin",
     "main": "lib/index.js",
     "files": [
@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "query-string": "~5.1.1",
-        "react-admin": "^2.1.2"
+        "react-admin": "^2.1.3"
     },
     "devDependencies": {
         "babel-cli": "~6.26.0",
