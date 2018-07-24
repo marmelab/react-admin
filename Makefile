@@ -38,7 +38,7 @@ build-react-admin:
 	@echo "Transpiling react-admin files...";
 	@rm -rf ./packages/react-admin/docs
 	@cd ./packages/react-admin && yarn -s build
-	@mkdir -p packages/react-admin/docs
+	@mkdir packages/react-admin/docs
 	@cp docs/*.md packages/react-admin/docs
 
 build-ra-data-fakerest:
