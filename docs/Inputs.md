@@ -67,12 +67,12 @@ Then you can display a text input to edit the author first name as follows:
 To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list of sub-forms. 
 
 ```jsx
-import { ArrayInput, SimpleFormIterator, DateInput, UrlInput } from 'react-admin';
+import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
 
 <ArrayInput source="backlinks">
     <SimpleFormIterator>
         <DateInput source="date" />
-        <UrlInput source="url" />
+        <TextInput source="url" />
     </SimpleFormIterator>
 </ArrayInput>
 ```
@@ -102,12 +102,12 @@ import { ArrayInput, SimpleFormIterator, DateInput, UrlInput } from 'react-admin
 You can pass `disableAdd` and `disableRemove` as props of `SimpleFormIterator`, to disable `ADD` and `REMOVE` button respectively. Default value of both is `false`.
 
 ```jsx
-import { ArrayInput, SimpleFormIterator, DateInput, UrlInput } from 'react-admin';
+import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
 
 <ArrayInput source="backlinks">
     <SimpleFormIterator disableRemove >
         <DateInput source="date" />
-        <UrlInput source="url" />
+        <TextInput source="url" />
     </SimpleFormIterator>
 </ArrayInput>
 ```
