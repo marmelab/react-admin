@@ -3,22 +3,22 @@ import { connect } from 'react-redux';
 
 import RichTextInput from 'ra-input-rich-text';
 import {
-    crudCreate,
+    ArrayInput,
+    AutocompleteInput,
     BooleanInput,
     Create,
+    crudCreate,
     DateInput,
     FormDataConsumer,
     LongTextInput,
     NumberInput,
+    ReferenceInput,
     SaveButton,
+    SelectInput,
     SimpleForm,
+    SimpleFormIterator,
     TextInput,
     Toolbar,
-    ArrayInput,
-    SimpleFormIterator,
-    ReferenceInput,
-    AutocompleteInput,
-    SelectInput,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const saveWithNote = (values, basePath, redirectTo) =>
@@ -127,6 +127,20 @@ const PostCreate = ({ permissions, ...props }) => (
                     </SimpleFormIterator>
                 </ArrayInput>
             )}
+            <ArrayInput
+                source="backlinks"
+                defaultValue={[
+                    {
+                        date: new Date().toISOString(),
+                        url: 'http://google.com',
+                    },
+                ]}
+            >
+                <SimpleFormIterator>
+                    <DateInput source="date" />
+                    <TextInput source="url" />
+                </SimpleFormIterator>
+            </ArrayInput>
         </SimpleForm>
     </Create>
 );
