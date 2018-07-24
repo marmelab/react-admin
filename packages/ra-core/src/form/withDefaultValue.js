@@ -52,9 +52,8 @@ export class DefaultValue extends Component {
     }
 }
 
-export default DecoratedComponent => {
-    return connect(
+export default DecoratedComponent =>
+    connect(
         () => ({ decoratedComponent: DecoratedComponent }),
         { initializeForm: initializeFormAction }
     )(DefaultValue);
-};
