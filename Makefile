@@ -9,111 +9,111 @@ install: package.json ## install dependencies
 run: run-simple
 
 run-simple: ## run the simple example
-	@yarn run-simple
+	@yarn -s run-simple
 
 run-tutorial: ## run the tutorial example
-	@yarn run-tutorial
+	@yarn -s run-tutorial
 
 run-demo: ## run the demo example
-	@yarn run-demo
+	@yarn -s run-demo
 
 build-demo: ## compile the demo example to static js
-	@yarn build-demo
+	@yarn -s build-demo
 
 run-graphql-demo: ## run the demo example
-	@yarn run-graphql-demo
+	@yarn -s run-graphql-demo
 
 run-graphcool-demo: ## run the demo example
-	@yarn run-graphcool-demo
+	@yarn -s run-graphcool-demo
 
 build-ra-core:
 	@echo "Transpiling ra-core files...";
-	@cd ./packages/ra-core && yarn build
+	@cd ./packages/ra-core && yarn -s build
 
 build-ra-ui-materialui:
 	@echo "Transpiling ra-ui-materialui files...";
-	@cd ./packages/ra-ui-materialui && yarn build
+	@cd ./packages/ra-ui-materialui && yarn -s build
 
 build-react-admin:
 	@echo "Transpiling react-admin files...";
 	@rm -rf ./packages/react-admin/docs
-	@cd ./packages/react-admin && yarn build
+	@cd ./packages/react-admin && yarn -s build
 	@mkdir packages/react-admin/docs
 	@cp docs/*.md packages/react-admin/docs
 
 build-ra-data-fakerest:
 	@echo "Transpiling ra-data-fakerest files...";
-	@cd ./packages/ra-data-fakerest && yarn build
+	@cd ./packages/ra-data-fakerest && yarn -s build
 
 build-ra-data-json-server:
 	@echo "Transpiling ra-data-json-server files...";
-	@cd ./packages/ra-data-json-server && yarn build
+	@cd ./packages/ra-data-json-server && yarn -s build
 
 build-ra-data-simple-rest:
 	@echo "Transpiling ra-data-simple-rest files...";
-	@cd ./packages/ra-data-simple-rest && yarn build
+	@cd ./packages/ra-data-simple-rest && yarn -s build
 
 build-ra-data-graphql:
 	@echo "Transpiling ra-data-graphql files...";
-	@cd ./packages/ra-data-graphql && yarn build
+	@cd ./packages/ra-data-graphql && yarn -s build
 
 build-ra-data-graphcool:
 	@echo "Transpiling ra-data-graphcool files...";
-	@cd ./packages/ra-data-graphcool && yarn build
+	@cd ./packages/ra-data-graphcool && yarn -s build
 
 build-ra-data-graphql-simple:
 	@echo "Transpiling ra-data-graphql-simple files...";
-	@cd ./packages/ra-data-graphql-simple && yarn build
+	@cd ./packages/ra-data-graphql-simple && yarn -s build
 
 build-ra-input-rich-text:
 	@echo "Transpiling ra-input-rich-text files...";
-	@cd ./packages/ra-input-rich-text && yarn build
+	@cd ./packages/ra-input-rich-text && yarn -s build
 
 build-ra-realtime:
 	@echo "Transpiling ra-realtime files...";
-	@cd ./packages/ra-realtime && yarn build
+	@cd ./packages/ra-realtime && yarn -s build
 
 build-data-generator:
 	@echo "Transpiling data-generator files...";
-	@cd ./examples/data-generator && yarn build
+	@cd ./examples/data-generator && yarn -s build
 
 build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-fakerest build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-input-rich-text build-ra-realtime build-data-generator ## compile ES6 files to JS
 
 doc: ## compile doc as html and launch doc web server
-	@yarn doc
+	@yarn -s doc
 
 lint: ## lint the code and check coding conventions
 	@echo "Running linter..."
-	@yarn lint
+	@yarn -s lint
 
 prettier: ## prettify the source code using prettier
 	@echo "Running prettier..."
-	@yarn prettier
+	@yarn -s prettier
 
 test: build test-unit lint test-e2e ## launch all tests
 
 test-unit: ## launch unit tests
 	@if [ "$(CI)" != "true" ]; then \
 		echo "Running unit tests..."; \
-		yarn test-unit; \
+		yarn -s test-unit; \
 	fi
 	@if [ "$(CI)" = "true" ]; then \
 		echo "Running unit tests in CI..."; \
-		yarn test-unit-ci; \
+		yarn -s test-unit-ci; \
 	fi
 
 test-unit-watch: ## launch unit tests and watch for changes
-	yarn test-unit --watch
+	yarn -s test-unit --watch
 
 test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \
 		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
-		cd examples/simple && yarn build; \
+		cd examples/simple && yarn -s build; \
 	fi
 
-	@NODE_ENV=test cd cypress && yarn test
+	@NODE_ENV=test cd cypress && yarn -s test
 
 
 test-e2e-local: ## launch end-to-end tests for development
 	echo 'Starting e2e tests environment. Ensure you started the simple example first (make run-simple)'
-	cd cypress && yarn start
+	cd cypress && yarn -s start

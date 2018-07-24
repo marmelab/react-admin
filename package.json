@@ -3,21 +3,21 @@
     "name": "react-admin-lerna",
     "scripts": {
         "build": "lerna run build",
-        "build-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn build",
+        "build-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn -s build",
         "test-unit": "cross-env NODE_ENV=test cross-env NODE_ICU_DATA=node_modules/full-icu jest",
         "test-unit-ci": "cross-env NODE_ENV=test cross-env NODE_ICU_DATA=node_modules/full-icu jest --runInBand",
-        "test-e2e": "yarn run build && cross-env NODE_ENV=test && cd cypress && yarn test",
-        "test-e2e-local": "cd cypress && yarn start",
-        "test": "yarn test-unit && yarn test-e2e",
-        "test-ci": "yarn test-unit-ci && yarn test-e2e",
+        "test-e2e": "yarn run -s build && cross-env NODE_ENV=test && cd cypress && yarn -s test",
+        "test-e2e-local": "cd cypress && yarn -s start",
+        "test": "yarn -s test-unit && yarn -s test-e2e",
+        "test-ci": "yarn -s test-unit-ci && yarn -s test-e2e",
         "doc": "cd docs && jekyll server . --watch",
         "lint": "eslint \" ./packages /**/src\"",
         "prettier": "prettier-eslint --write --list-different \"packages /*/src/**/*.js\" \"examples /*/src/**/*.js\"",
-        "run-simple": "cd examples/simple && yarn start",
-        "run-tutorial": "yarn run build && cd examples/tutorial && yarn start",
-        "run-demo": "yarn run build && cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn start",
-        "run-graphql-demo": "yarn run build && cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=graphql yarn start",
-        "run-graphcool-demo": "yarn run build && cd examples/graphcool-demo && yarn start"
+        "run-simple": "cd examples/simple && yarn -s start",
+        "run-tutorial": "yarn run -s build && cd examples/tutorial && yarn -s start",
+        "run-demo": "yarn run -s build && cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=rest yarn -s start",
+        "run-graphql-demo": "yarn run -s build && cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=graphql yarn -s start",
+        "run-graphcool-demo": "yarn run -s build && cd examples/graphcool-demo && yarn -s start"
     },
     "jest": {
         "setupTestFrameworkScriptFile": "./test-setup.js"
@@ -52,5 +52,9 @@
         "raf": "~3.4.0",
         "wait-on": "^2.1.0"
     },
-    "workspaces": ["packages/*", "examples/*", "cypress"]
+    "workspaces": [
+        "packages/*",
+        "examples/*",
+        "cypress"
+    ]
 }
