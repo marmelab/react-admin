@@ -64,7 +64,16 @@ export class SimpleFormIterator extends Component {
         // but redux-form doesn't provide one (cf https://github.com/erikras/redux-form/issues/2735)
         // so we keep an internal map between the field position and an autoincrement id
         this.nextId = 0;
-        this.ids = props.fields ? props.fields.map(() => this.nextId++) : [];
+
+        // We check whether we have a defaultValue (which must be an array) before checking
+        // the fields prop which will always be empty for a new record.
+        // Without it, our ids wouldn't match the default value and we would get key warnings
+        // on the CssTransition element inside our render method
+        this.ids = props.defaultValue
+            ? props.defaultValue.map(() => this.nextId++)
+            : props.fields
+                ? props.fields.map(() => this.nextId++)
+                : [];
     }
 
     removeField = index => () => {
@@ -164,6 +173,7 @@ SimpleFormIterator.defaultProps = {
 };
 
 SimpleFormIterator.propTypes = {
+    defaultValue: PropTypes.any,
     basePath: PropTypes.string,
     children: PropTypes.node,
     classes: PropTypes.object,
