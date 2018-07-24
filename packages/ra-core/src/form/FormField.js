@@ -1,9 +1,7 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-
-import { initializeForm } from '../actions/formActions';
+import withDefaultValue from './withDefaultValue';
 
 export const isRequired = validate => {
     if (validate && validate.isRequired) return true;
@@ -13,62 +11,23 @@ export const isRequired = validate => {
     return false;
 };
 
-export class FormField extends Component {
-    static propTypes = {
-        component: PropTypes.any.isRequired,
-        defaultValue: PropTypes.any,
-        initializeForm: PropTypes.func.isRequired,
-        input: PropTypes.object,
-        source: PropTypes.string,
-        validate: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
-    };
+export const FormFieldView = ({ input, ...props }) =>
+    input ? ( // An ancestor is already decorated by Field
+        React.createElement(props.component, { input, ...props })
+    ) : (
+        <Field
+            {...props}
+            name={props.source}
+            isRequired={isRequired(props.validate)}
+        />
+    );
 
-    componentDidMount() {
-        const { defaultValue, input, initializeForm, source } = this.props;
-        if (typeof defaultValue === 'undefined' || input) {
-            return;
-        }
-        initializeForm({
-            [source]:
-                typeof defaultValue === 'function'
-                    ? defaultValue()
-                    : defaultValue,
-        });
-    }
+FormFieldView.propTypes = {
+    component: PropTypes.any.isRequired,
+    defaultValue: PropTypes.any,
+    input: PropTypes.object,
+    source: PropTypes.string,
+    validate: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
+};
 
-    componentWillReceiveProps(nextProps) {
-        const { defaultValue, input, initializeForm, source } = nextProps;
-        if (typeof defaultValue === 'undefined' || input) {
-            return;
-        }
-
-        if (defaultValue !== this.props.defaultValue) {
-            initializeForm({
-                [source]:
-                    typeof defaultValue === 'function'
-                        ? defaultValue()
-                        : defaultValue,
-            });
-        }
-    }
-
-    render() {
-        const { input, validate, component, ...props } = this.props;
-        return input ? ( // An ancestor is already decorated by Field
-            React.createElement(component, this.props)
-        ) : (
-            <Field
-                {...props}
-                name={props.source}
-                component={component}
-                validate={validate}
-                isRequired={isRequired(validate)}
-            />
-        );
-    }
-}
-
-export default connect(
-    undefined,
-    { initializeForm }
-)(FormField);
+export default withDefaultValue(FormFieldView);
