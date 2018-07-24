@@ -14,6 +14,7 @@ import {
 } from '../actions/fetchActions';
 import {
     fetchActionsWithRecordResponse,
+    fetchActionsWithArrayOfIdentifiedRecordsResponse,
     fetchActionsWithArrayOfRecordsResponse,
     fetchActionsWithTotalResponse,
 } from '../dataFetchActions';
@@ -35,6 +36,17 @@ function validateResponseFormat(
     ) {
         logger(
             `The response to '${type}' must be like { data : [...] }, but the received data is not an array. The dataProvider is probably wrong for '${type}'`
+        );
+        throw new Error('ra.notification.data_provider_error');
+    }
+    if (
+        fetchActionsWithArrayOfIdentifiedRecordsResponse.includes(type) &&
+        Array.isArray(response.data) &&
+        response.data.length > 0 &&
+        !response.data[0].hasOwnProperty('id')
+    ) {
+        logger(
+            `The response to '${type}' must be like { data : [{ id: 123, ...}, ...] }, but the received data items do not have an 'id' key. The dataProvider is probably wrong for '${type}'`
         );
         throw new Error('ra.notification.data_provider_error');
     }

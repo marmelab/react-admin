@@ -9,10 +9,13 @@ export const DELETE = 'DELETE';
 export const DELETE_MANY = 'DELETE_MANY';
 
 export const fetchActionsWithRecordResponse = [GET_ONE, CREATE, UPDATE, DELETE];
-export const fetchActionsWithArrayOfRecordsResponse = [
+export const fetchActionsWithArrayOfIdentifiedRecordsResponse = [
     GET_LIST,
     GET_MANY,
     GET_MANY_REFERENCE,
+];
+export const fetchActionsWithArrayOfRecordsResponse = [
+    ...fetchActionsWithArrayOfIdentifiedRecordsResponse,
     UPDATE_MANY,
     DELETE_MANY,
 ];
