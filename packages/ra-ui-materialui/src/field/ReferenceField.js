@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
 import { ReferenceFieldController } from 'ra-core';
 
 import LinearProgress from '../layout/LinearProgress';
@@ -36,11 +35,9 @@ export const ReferenceFieldView = ({
 
     if (resourceLinkPath) {
         return (
-            <Link
-                className={classnames(classes.link, className)}
-                to={resourceLinkPath}
-            >
+            <Link to={resourceLinkPath} className={className}>
                 {React.cloneElement(children, {
+                    className: classes.link, // force color override for Typography components
                     record: referenceRecord,
                     resource: reference,
                     allowEmpty,
