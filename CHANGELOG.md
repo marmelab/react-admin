@@ -1,13 +1,27 @@
 # Changelog
 
+## v2.1.3
+
+* Fix `<ArrayInput>` documentation mentions non-existing `UrlInput` component ([AkselsLedins](https://github.com/AkselsLedins))
+* Fix `<ReferenceInput>` infinite loop on missing reference ([djhi](https://github.com/djhi))
+* Fix `Reference` inputs do not update when their props change from outside ([djhi](https://github.com/djhi))
+* Fix makefile does not build `ra-data-fakerest` package ([djhi](https://github.com/djhi))
+* Fix `record` prop value in `<SimpleFormIterator>` children ([fzaninotto](https://github.com/fzaninotto))
+* Fix `fetchJson` util `undefined Buffer` error ([fzaninotto](https://github.com/fzaninotto))
+* Fix form keeps values after navigation ([djhi](https://github.com/djhi))
+* Fix Theme doesn't apply to `Fields` ([djhi](https://github.com/djhi)) 
+* Fix optimistic delete in `<List>` ([djhi](https://github.com/djhi))
+* Fix `filterDefaultValues` is shared accross resources ([djhi](https://github.com/djhi))
+* Make contributions easier for Windows users by moving most scripting logic from `make` to `npm` ([djhi](https://github.com/djhi))
+
 ## v2.1.2
 
-* Fix duplicated block in `CreateEdit` doc [fzaninotto](https://github.com/fzaninotto)
-* Fix submit on enter when `submitOnEnter` is false [djhi](https://github.com/djhi)
-* Fix form resetting when a input with `defaultValue` is dynamically added [djhi](https://github.com/djhi)
-* Fix validators memoization [Bnaya](https://github.com/Bnaya)
-* Add Chinese translation [chen4w](https://github.com/chen4w)
-* Add API Platform Admin and the JSON-LD Data Provider to the `Ecosystem` doc [dunglas](https://github.com/dunglas)
+* Fix duplicated block in `CreateEdit` doc ([fzaninotto](https://github.com/fzaninotto))
+* Fix submit on enter when `submitOnEnter` is false ([djhi](https://github.com/djhi))
+* Fix form resetting when a input with `defaultValue` is dynamically added ([djhi](https://github.com/djhi))
+* Fix validators memoization ([Bnaya](https://github.com/Bnaya))
+* Add Chinese translation ([chen4w](https://github.com/chen4w))
+* Add API Platform Admin and the JSON-LD Data Provider to the `Ecosystem` doc ([dunglas](https://github.com/dunglas))
 
 ## v2.1.1
 
