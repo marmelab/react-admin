@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.1.4
+
+* Fix link color in `<ReferenceField>` ([fzaninotto](https://github.com/fzaninotto))
+* Fix form does not display data when coming from another form ([fzaninotto](https://github.com/fzaninotto))
+* Revert Fix form resetting when a input with defaultValue is dynamically added ([fzaninotto](https://github.com/fzaninotto))
+* Add link to related post from Comment edit view in Simple example ([fzaninotto](https://github.com/fzaninotto))
+
 ## v2.1.3
 
 * Fix `<ArrayInput>` documentation mentions non-existing `UrlInput` component ([AkselsLedins](https://github.com/AkselsLedins))
