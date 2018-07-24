@@ -500,7 +500,7 @@ Almost everything we saw before is true for custom `List` bulk actions too, with
 * They do not receive the current record in the `record` prop as there are many of them.
 * They must render as a material-ui [`MenuItem`](http://www.material-ui.com/#/components/menu).
 
-You can find a complete example in the `List` documentation, in the [`bulk-actions`](/List.html#bulk-actions) section.
+You can find a complete example in the `List` documentation, in the [`bulk-actions`](./List.md#bulk-actions) section.
 
 ## Conclusion
 
