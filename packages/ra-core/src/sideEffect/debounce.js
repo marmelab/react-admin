@@ -1,4 +1,4 @@
-import { call, fork, put, takeEvery, take } from 'redux-saga/effects';
+import { fork, put, takeEvery, take } from 'redux-saga/effects';
 
 const tasks = {};
 
@@ -7,20 +7,16 @@ const tasks = {};
 // the same resource but with different filters, etc.
 const getKey = payload => JSON.stringify(payload);
 
-const deleteKey = key => {
+export const handleFinalize = key => {
     delete tasks[key];
 };
-
-function* finalize(key) {
-    yield call(deleteKey, key);
-}
 
 /**
  * For example, will match `GET_MATCHING_SUCCESS` or `GET_MATCHING_FAILURE`
  * if the specified type is `GET_MATCHING` and the action's requestPayload
  * matches the key after being stringified
  */
-const isRelatedAction = (type, key) => action =>
+const defaultIsRelatedAction = (type, key) => action =>
     [`${type}_SUCCESS`, `${type}_FAILURE`].includes(action.type) &&
     key === getKey(action.requestPayload);
 
@@ -30,25 +26,31 @@ const isRelatedAction = (type, key) => action =>
  * `SUCCESS` or `FAILURE` counterparts and removing the action from our debounced tasks
  * list
  */
-function* dispatchDebouncedAction(key, debouncedAction) {
+export function* handleDebouncedAction(
+    key,
+    debouncedAction,
+    isRelatedAction = defaultIsRelatedAction(debouncedAction.type, key)
+) {
     yield put(debouncedAction);
-    yield take(isRelatedAction(debouncedAction.type, key), finalize, key);
+    yield take(isRelatedAction, handleFinalize, key);
 }
 
 /**
  * Debounce calls to the exact same action (with exact same parameters) by
  * only calling letting the first one to be handled
  */
-function* debounce({ meta: { debounce } }) {
+export function* handleDebounce({ meta: { debounce } }) {
     const key = getKey(debounce.payload);
-
     // Don't dispatch the debounced action if already dispatched
     if (tasks[key]) {
         return;
     }
-    tasks[key] = yield fork(dispatchDebouncedAction, key, debounce);
+    tasks[key] = yield fork(handleDebouncedAction, key, debounce);
 }
 
 export default function*() {
-    yield takeEvery(action => action.meta && action.meta.debounce, debounce);
+    yield takeEvery(
+        action => action.meta && action.meta.debounce,
+        handleDebounce
+    );
 }
