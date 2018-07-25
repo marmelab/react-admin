@@ -1,5 +1,6 @@
 export default url => ({
     elements: {
+        addAuthor: '.button-add-authors',
         body: 'body',
         input: (name, type = 'input') => `.create-page ${type}[name='${name}']`,
         inputs: `.ra-input`,
