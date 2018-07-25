@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
 import { translate } from 'ra-core';
+import classNames from 'classnames';
 
 import FormInput from '../form/FormInput';
 
@@ -134,6 +135,10 @@ export class SimpleFormIterator extends Component {
                                 {!disableRemove && (
                                     <span className={classes.action}>
                                         <Button
+                                            className={classNames(
+                                                'button-remove',
+                                                `button-remove-${source}-${index}`
+                                            )}
                                             size="small"
                                             onClick={this.removeField(index)}
                                         >
@@ -151,7 +156,14 @@ export class SimpleFormIterator extends Component {
                 {!disableAdd && (
                     <li className={classes.line}>
                         <span className={classes.action}>
-                            <Button size="small" onClick={this.addField}>
+                            <Button
+                                className={classNames(
+                                    'button-add',
+                                    `button-add-${source}`
+                                )}
+                                size="small"
+                                onClick={this.addField}
+                            >
                                 <AddIcon className={classes.leftIcon} />
                                 {translate('ra.action.add')}
                             </Button>
