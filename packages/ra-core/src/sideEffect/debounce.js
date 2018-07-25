@@ -45,7 +45,9 @@ export function* handleDebounce({ meta: { debounce } }) {
     if (tasks[key]) {
         return;
     }
-    tasks[key] = yield fork(handleDebouncedAction, key, debounce);
+
+    tasks[key] = true;
+    yield fork(handleDebouncedAction, key, debounce);
 }
 
 export default function*() {
