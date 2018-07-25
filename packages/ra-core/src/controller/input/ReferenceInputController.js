@@ -109,7 +109,7 @@ export class ReferenceInputController extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.record.id !== nextProps.record.id) {
+        if ((this.props.record || {}).id !== (nextProps.record || {}).id) {
             this.fetchReferenceAndOptions(nextProps);
         } else if (this.props.input.value !== nextProps.input.value) {
             this.fetchReference(nextProps);
