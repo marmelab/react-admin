@@ -5,5 +5,7 @@
     "pluginsFile": "plugins/index.js",
     "screenshotsFolder": "screenshots",
     "supportFile": "support/index.js",
-    "videosFolder": "videos"
+    "videosFolder": "videos",
+    "viewportWidth": 1280,
+    "viewportHeight": 720
 }
