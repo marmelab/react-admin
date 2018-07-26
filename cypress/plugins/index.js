@@ -6,8 +6,12 @@ module.exports = on => {
     };
     on('before:browser:launch', (browser = {}, args) => {
         if (browser.name === 'chrome') {
-            args.push('--disable-gpu');
-            return args;
+            return [
+                ...args.filter(
+                    arg => arg !== '--disable-blink-features=RootLayerScrolling'
+                ),
+                '--disable-gpu',
+            ];
         }
     });
     on('file:preprocessor', wp(options));
