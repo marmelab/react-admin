@@ -2,14 +2,16 @@
 import React from 'react';
 import {
     Create,
+    FormTab,
     SaveButton,
-    SimpleForm,
+    SelectInput,
+    TabbedForm,
     TextInput,
     Toolbar,
     required,
 } from 'react-admin';
 
-const UserCreateToolbar = ({ permissions, ...props }) => (
+const UserEditToolbar = ({ permissions, ...props }) => (
     <Toolbar {...props}>
         <SaveButton
             label="user.action.save_and_show"
@@ -29,15 +31,28 @@ const UserCreateToolbar = ({ permissions, ...props }) => (
 
 const UserCreate = ({ permissions, ...props }) => (
     <Create {...props}>
-        <SimpleForm
-            toolbar={<UserCreateToolbar permissions={permissions} />}
-            defaultValue={{ role: 'user' }}
-        >
-            <TextInput source="name" validate={[required()]} />
+        <TabbedForm toolbar={<UserEditToolbar permissions={permissions} />}>
+            <FormTab label="user.form.summary" path="">
+                <TextInput
+                    source="name"
+                    defaultValue="Slim Shady"
+                    validate={required()}
+                />
+            </FormTab>
             {permissions === 'admin' && (
-                <TextInput source="role" validate={[required()]} />
+                <FormTab label="user.form.security" path="security">
+                    <SelectInput
+                        source="role"
+                        choices={[
+                            { id: '', name: 'None' },
+                            { id: 'admin', name: 'Admin' },
+                            { id: 'user', name: 'User' },
+                        ]}
+                        defaultValue={'user'}
+                    />
+                </FormTab>
             )}
-        </SimpleForm>
+        </TabbedForm>
     </Create>
 );
 

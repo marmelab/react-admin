@@ -1,9 +1,12 @@
 import createPageFactory from '../support/CreatePage';
 import showPageFactory from '../support/ShowPage';
+import loginPageFactory from '../support/LoginPage';
 
 describe('Create Page', () => {
     const CreatePage = createPageFactory('/#/posts/create');
+    const UserCreatePage = createPageFactory('/#/users/create');
     const ShowPage = showPageFactory('/#/posts/14/show');
+    const LoginPage = loginPageFactory('/#/login');
 
     beforeEach(() => CreatePage.navigate());
 
@@ -108,5 +111,28 @@ describe('Create Page', () => {
         CreatePage.setValues(values);
         CreatePage.submit();
         cy.contains('Required field');
+    });
+
+    // NOTE: For some reason, this test fails in Cypress but works when testing manually...
+    it('should not reset the form value when switching tabs', () => {
+        LoginPage.navigate();
+        LoginPage.login('admin', 'password');
+        UserCreatePage.navigate();
+
+        CreatePage.setValues([
+            {
+                type: 'input',
+                name: 'name',
+                value: 'The real Slim Shady!',
+            },
+        ]);
+        cy.wait(250);
+        CreatePage.gotoTab(2);
+        cy.wait(250);
+        CreatePage.gotoTab(1);
+        cy.wait(250);
+        cy.get(CreatePage.elements.input('name')).should(el =>
+            expect(el).to.have.value('The real Slim Shady!')
+        );
     });
 });
