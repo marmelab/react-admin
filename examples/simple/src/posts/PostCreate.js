@@ -100,7 +100,11 @@ const PostCreate = ({ permissions, ...props }) => (
             <FormDataConsumer>
                 {({ formData, ...rest }) =>
                     formData.title && (
-                        <NumberInput source="average_note" {...rest} />
+                        <NumberInput
+                            source="average_note"
+                            defaultValue={5}
+                            {...rest}
+                        />
                     )
                 }
             </FormDataConsumer>
