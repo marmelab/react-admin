@@ -22,7 +22,7 @@
         "react-router-dom": "~4.2.2",
         "react-scripts": "1.1.4",
         "recompose": "~0.26.0",
-        "redux-form": "~7.3.0",
+        "redux-form": "~7.4.0",
         "redux-saga": "~0.16.0"
     },
     "scripts": {
