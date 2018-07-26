@@ -113,7 +113,6 @@ describe('Create Page', () => {
         cy.contains('Required field');
     });
 
-    // NOTE: For some reason, this test fails in Cypress but works when testing manually...
     it('should not reset the form value when switching tabs', () => {
         LoginPage.navigate();
         LoginPage.login('admin', 'password');
@@ -126,11 +125,8 @@ describe('Create Page', () => {
                 value: 'The real Slim Shady!',
             },
         ]);
-        cy.wait(250);
         CreatePage.gotoTab(2);
-        cy.wait(250);
         CreatePage.gotoTab(1);
-        cy.wait(250);
         cy.get(CreatePage.elements.input('name')).should(el =>
             expect(el).to.have.value('The real Slim Shady!')
         );
