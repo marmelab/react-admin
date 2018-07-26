@@ -14,6 +14,7 @@ export function* handleLocationChange({ payload: { pathname } }) {
         !lastLocationPathName.startsWith(pathname) &&
         !pathname.startsWith(lastLocationPathName)
     ) {
+        lastLocationPathName = pathname;
         yield put(resetForm());
     }
 }
