@@ -46,6 +46,6 @@
         "react-transition-group": "^2.2.1",
         "recompose": "~0.26.0",
         "redux": "~3.7.2",
-        "redux-form": "~7.3.0"
+        "redux-form": "~7.4.0"
     }
 }
