@@ -102,6 +102,21 @@ export class TabbedForm extends Component {
             ...rest
         } = this.props;
 
+        const validTabPaths = Children.toArray(children).map((tab, index) =>
+            getTabFullPath(tab, index, match.url)
+        );
+
+        // This ensure we don't get warnings from material-ui Tabs component when
+        // the current location pathname targets a dynamically added Tab
+        // In the case the targeted Tab is not present at first render (when
+        // using permissions for example) we temporarily switch to the first
+        // available tab. The current location will be applied again on the
+        // first render containing the targeted tab. This is almost transparent
+        // for the user who may just see an short tab selection animation
+        const tabsValue = validTabPaths.includes(location.pathname)
+            ? location.pathname
+            : validTabPaths[0];
+
         return (
             <form
                 className={classnames('tabbed-form', className)}
@@ -112,7 +127,7 @@ export class TabbedForm extends Component {
                     scrollable
                     // The location pathname will contain the page path including the current tab path
                     // so we can use it as a way to determine the current tab
-                    value={location.pathname}
+                    value={tabsValue}
                     indicatorColor="primary"
                 >
                     {Children.map(children, (tab, index) => {
@@ -276,7 +291,6 @@ const enhance = compose(
     }),
     translate, // Must be before reduxForm so that it can be used in validation
     reduxForm({
-        destroyOnUnmount: false,
         enableReinitialize: true,
     }),
     withStyles(styles)
