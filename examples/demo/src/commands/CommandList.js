@@ -7,9 +7,12 @@ import {
     DateInput,
     EditButton,
     Filter,
-    List,
+    Header,
+    ListActions,
+    ListController,
     NullableBooleanInput,
     NumberField,
+    Pagination,
     ReferenceInput,
     Responsive,
     TextField,
@@ -17,9 +20,12 @@ import {
 } from 'react-admin';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Icon from '@material-ui/icons/AttachMoney';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
 
 import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
@@ -87,34 +93,74 @@ const listStyles = {
     total: { fontWeight: 'bold' },
 };
 
-const CommandList = ({ classes, ...props }) => (
-    <List
-        {...props}
-        filters={<CommandFilter />}
+const CommandList = ({ classes, ...mainProps }) => (
+    <ListController
+        {...mainProps}
         filterDefaultValues={{ status: 'ordered' }}
-        header={<ListTabs />}
         sort={{ field: 'date', order: 'DESC' }}
         perPage={25}
     >
-        <Responsive
-            xsmall={<MobileGrid />}
-            medium={
-                <Datagrid>
-                    <DateField source="date" showTime />
-                    <TextField source="reference" />
-                    <CustomerReferenceField />
-                    <NbItemsField />
-                    <NumberField
-                        source="total"
-                        options={{ style: 'currency', currency: 'USD' }}
-                        className={classes.total}
-                    />
-                    <BooleanField source="returned" />
-                    <EditButton />
-                </Datagrid>
-            }
-        />
-    </List>
+        {props => (
+            <Card>
+                <Header
+                    title="Orders"
+                    actions={
+                        <ListActions {...props} filters={<CommandFilter />} />
+                    }
+                />
+                <CommandFilter context="form" {...props} />
+                <ListTabs
+                    filterValues={props.filterValues}
+                    setFilters={props.setFilters}
+                />
+                {props.isLoading || props.total > 0 ? (
+                    <div key={props.version}>
+                        <Responsive
+                            xsmall={<MobileGrid {...props} />}
+                            medium={
+                                <Datagrid {...props}>
+                                    <DateField source="date" showTime />
+                                    <TextField source="reference" />
+                                    <CustomerReferenceField />
+                                    <NbItemsField />
+                                    <NumberField
+                                        source="total"
+                                        options={{
+                                            style: 'currency',
+                                            currency: 'USD',
+                                        }}
+                                        className={classes.total}
+                                    />
+                                    <BooleanField source="returned" />
+                                    <EditButton />
+                                </Datagrid>
+                            }
+                        />
+                        {!props.isLoading &&
+                            !props.ids.length && (
+                                <CardContent>
+                                    <Typography variant="body1">
+                                        {props.translate(
+                                            'ra.navigation.no_more_results',
+                                            {
+                                                page: props.page,
+                                            }
+                                        )}
+                                    </Typography>
+                                </CardContent>
+                            )}
+                        <Pagination {...props} />
+                    </div>
+                ) : (
+                    <CardContent className={classes.noResults}>
+                        <Typography variant="body1">
+                            {props.translate('ra.navigation.no_results')}
+                        </Typography>
+                    </CardContent>
+                )}
+            </Card>
+        )}
+    </ListController>
 );
 
 export default withStyles(listStyles)(CommandList);
