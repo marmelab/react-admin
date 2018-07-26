@@ -56,7 +56,7 @@ describe('Create Page', () => {
         ); // new empty form
 
         ShowPage.navigate();
-        ShowPage.ShowPage.delete();
+        ShowPage.delete();
     });
 
     it('should allow to call a custom action updating values before submit', () => {
