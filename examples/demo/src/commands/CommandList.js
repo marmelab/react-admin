@@ -17,6 +17,7 @@ import {
     Responsive,
     TextField,
     TextInput,
+    Title,
 } from 'react-admin';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Icon from '@material-ui/icons/AttachMoney';
@@ -102,12 +103,12 @@ const CommandList = ({ classes, ...mainProps }) => (
         {props => (
             <Card>
                 <Header
-                    title="Orders"
+                    title={<Title defaultTitle={props.defaultTitle} />}
                     actions={
                         <ListActions {...props} filters={<CommandFilter />} />
                     }
                 />
-                <CommandFilter context="form" {...props} />
+                <CommandFilter {...props} />
                 <ListTabs
                     filterValues={props.filterValues}
                     setFilters={props.setFilters}
