@@ -35,6 +35,7 @@ class TreeNodeContent extends Component {
             classes,
             node: { __children, ...node },
             resource,
+            ...props
         } = this.props;
         return (
             <div
@@ -49,6 +50,7 @@ class TreeNodeContent extends Component {
                                   basePath: field.props.basePath || basePath,
                                   record: node,
                                   resource,
+                                  ...props,
                               })
                             : null
                 )}

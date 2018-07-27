@@ -24,6 +24,7 @@ class TreeNodeContent extends Component {
         node: PropTypes.object.isRequired,
         record: PropTypes.object.isRequired,
         resource: PropTypes.string.isRequired,
+        submitOnEnter: PropTypes.bool,
     };
 
     handleClick = event => {
@@ -60,6 +61,7 @@ class TreeNodeContent extends Component {
             children,
             node: { __children, ...node },
             resource,
+            submitOnEnter,
         } = this.props;
         return (
             <form className={classes.root} onClick={this.handleClick}>
@@ -72,7 +74,7 @@ class TreeNodeContent extends Component {
                                   handleSubmit: this.handleSubmit,
                                   record: node,
                                   resource,
-                                  submitOnEnter: true,
+                                  submitOnEnter,
                               })
                             : null
                 )}

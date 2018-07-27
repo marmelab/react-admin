@@ -45,6 +45,7 @@ class TreeNodeWithChildrenView extends Component {
             node,
             resource,
             treeNodeContentComponent: TreeNodeContent,
+            ...props
         } = this.props;
 
         return (
@@ -69,6 +70,7 @@ class TreeNodeWithChildrenView extends Component {
                         basePath={basePath}
                         node={node}
                         resource={resource}
+                        {...props}
                     >
                         {children}
                     </TreeNodeContent>
@@ -88,6 +90,7 @@ class TreeNodeWithChildrenView extends Component {
                                 node={child}
                                 resource={resource}
                                 treeNodeContentComponent={TreeNodeContent}
+                                {...props}
                             >
                                 {children}
                             </TreeNode>

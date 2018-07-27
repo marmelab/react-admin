@@ -14,6 +14,7 @@ const TreeNode = ({
     node,
     resource,
     treeNodeContentComponent: TreeNodeContent,
+    ...props
 }) => (
     <ListItem
         button
@@ -35,6 +36,7 @@ const TreeNode = ({
                 node={node}
                 resource={resource}
                 treeNodeContentComponent={TreeNodeContent}
+                {...props}
             >
                 {children}
             </TreeNodeWithChildren>
@@ -46,6 +48,7 @@ const TreeNode = ({
                     initialValues={getRecordFromNode(node)}
                     node={node}
                     resource={resource}
+                    {...props}
                 >
                     {children}
                 </TreeNodeContent>

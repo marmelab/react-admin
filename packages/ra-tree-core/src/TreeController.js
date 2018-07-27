@@ -5,26 +5,22 @@ import defaultGetTreeFromArray from './getTreeFromArray';
 const defaultGetTreeState = state => state.tree;
 
 export const TreeController = ({
-    basePath,
     children,
     ids,
     data: { fetchedAt, ...data },
     getTreeFromArray,
-    getTreeState,
     parentSource,
-    resource,
+    ...props
 }) => {
     const availableData = ids.reduce((acc, id) => [...acc, data[id]], []);
     const tree = getTreeFromArray(Object.values(availableData), parentSource);
 
     return children({
-        basePath,
         ids,
         data,
-        getTreeState,
         parentSource,
-        resource,
         tree,
+        ...props,
     });
 };
 
