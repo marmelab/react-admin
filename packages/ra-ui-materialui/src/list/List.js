@@ -98,7 +98,7 @@ export const ListView = ({
     title,
     ...rest
 }) => {
-    const { defaultTitle, isLoading, page, version, total, translate } = rest;
+    const { defaultTitle, isLoading, version, total } = rest;
     const controllerProps = getListControllerProps(rest);
     const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
     return (
