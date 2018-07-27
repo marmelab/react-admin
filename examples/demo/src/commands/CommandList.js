@@ -113,7 +113,7 @@ const CommandList = ({ classes, ...mainProps }) => (
                     filterValues={props.filterValues}
                     setFilters={props.setFilters}
                 />
-                {props.isLoading || props.total > 0 ? (
+                {(props.isLoading || props.total > 0) && (
                     <div key={props.version}>
                         <Responsive
                             xsmall={<MobileGrid {...props} />}
@@ -136,27 +136,8 @@ const CommandList = ({ classes, ...mainProps }) => (
                                 </Datagrid>
                             }
                         />
-                        {!props.isLoading &&
-                            !props.ids.length && (
-                                <CardContent>
-                                    <Typography variant="body1">
-                                        {props.translate(
-                                            'ra.navigation.no_more_results',
-                                            {
-                                                page: props.page,
-                                            }
-                                        )}
-                                    </Typography>
-                                </CardContent>
-                            )}
                         <Pagination {...props} />
                     </div>
-                ) : (
-                    <CardContent className={classes.noResults}>
-                        <Typography variant="body1">
-                            {props.translate('ra.navigation.no_results')}
-                        </Typography>
-                    </CardContent>
                 )}
             </Card>
         )}

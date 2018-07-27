@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import Button from '@material-ui/core/Button';
+import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -130,6 +131,8 @@ export class Pagination extends Component {
         const {
             classes = {},
             className,
+            ids,
+            isLoading,
             page,
             perPage,
             setPage,
@@ -138,7 +141,27 @@ export class Pagination extends Component {
             translate,
             ...rest
         } = this.props;
-        if (total === 0) return null;
+
+        if (!isLoading && !ids.length) {
+            return (
+                <CardContent style={styles.noResults}>
+                    <Typography variant="body1">
+                        {translate('ra.navigation.no_more_results', { page })}
+                    </Typography>
+                </CardContent>
+            );
+        }
+
+        if (!isLoading && total === 0) {
+            return (
+                <CardContent className={classes.noResults}>
+                    <Typography variant="body1">
+                        {translate('ra.navigation.no_results')}
+                    </Typography>
+                </CardContent>
+            );
+        }
+
         const offsetEnd = Math.min(page * perPage, total);
         const offsetBegin = Math.min((page - 1) * perPage + 1, offsetEnd);
         const nbPages = this.getNbPages();
@@ -226,6 +249,8 @@ export class Pagination extends Component {
 Pagination.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
+    ids: PropTypes.array,
+    isLoading: PropTypes.bool,
     page: PropTypes.number,
     perPage: PropTypes.number,
     setPage: PropTypes.func,
