@@ -21,11 +21,9 @@ import {
 import withStyles from '@material-ui/core/styles/withStyles';
 import Icon from '@material-ui/icons/AttachMoney';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 
 import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
@@ -71,6 +69,7 @@ class ListTabs extends React.Component {
             <Fragment>
                 <Tabs
                     fullWidth
+                    centered
                     value={filterValues.status}
                     indicatorColor="primary"
                     onChange={this.handleChange}
