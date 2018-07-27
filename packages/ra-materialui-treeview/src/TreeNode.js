@@ -23,7 +23,6 @@ const TreeNode = ({
         }}
         dense
         disableGutters
-        style={{ paddingLeft: theme.spacing.unit * 4 }}
     >
         {node.__children.length > 0 ? (
             <TreeNodeWithChildren

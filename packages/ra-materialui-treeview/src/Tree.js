@@ -13,7 +13,7 @@ import defaultGetTreeFromArray from './getTreeFromArray';
 
 import TreeNode from './TreeNode';
 
-const styles = {
+const styles = theme => ({
     expandIcon: {
         margin: 0,
     },
@@ -23,6 +23,7 @@ const styles = {
     },
     node: {
         display: 'flex',
+        paddingLeft: theme.spacing.unit * 4,
     },
     panel: {
         background: 'unset',
@@ -46,7 +47,7 @@ const styles = {
     panelSummaryExpanded: {
         margin: '0 !important',
     },
-};
+});
 
 export class Tree extends Component {
     static propTypes = {
