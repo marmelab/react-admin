@@ -6,6 +6,7 @@ import List from '@material-ui/core/List';
 import { TreeController } from 'ra-tree-core';
 
 import TreeNode from './TreeNode';
+import DefaultTreeNodeContent from './TreeNodeContent';
 
 const styles = theme => ({
     expandIcon: {
@@ -58,7 +59,12 @@ const styles = theme => ({
     },
 });
 
-export const Tree = ({ children, classes, ...props }) => (
+export const Tree = ({
+    children,
+    classes,
+    treeNodeContentComponent,
+    ...props
+}) => (
     <TreeController {...props}>
         {({ basePath, resource, tree }) => (
             <List
@@ -78,6 +84,7 @@ export const Tree = ({ children, classes, ...props }) => (
                         }}
                         node={node}
                         resource={resource}
+                        treeNodeContentComponent={treeNodeContentComponent}
                     >
                         {children}
                     </TreeNode>
@@ -97,11 +104,16 @@ Tree.propTypes = {
     onChange: PropTypes.func,
     parentSource: PropTypes.string,
     resource: PropTypes.string.isRequired,
+    treeNodeContentComponent: PropTypes.oneOfType([
+        PropTypes.element,
+        PropTypes.func,
+    ]),
 };
 
 Tree.defaultProps = {
     classes: {},
     parentSource: 'parent_id',
+    treeNodeContentComponent: DefaultTreeNodeContent,
 };
 
 export default withStyles(styles)(Tree);

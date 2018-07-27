@@ -3,21 +3,24 @@ import {
     DeleteButton,
     EditButton,
     List,
+    SaveButton,
     ShowButton,
     TextField,
+    TextInput,
 } from 'react-admin';
-import { Tree, TreeNodeActions } from 'ra-tree-ui-materialui';
+import { EditableTree, TreeNodeActions } from 'ra-tree-ui-materialui';
 
 const TagList = props => (
     <List {...props} perPage={1000}>
-        <Tree parentSource="parent_id">
-            <TextField source="name" />
+        <EditableTree parentSource="parent_id">
+            <TextInput source="name" />
             <TreeNodeActions>
+                <SaveButton variant="flat" />
                 <EditButton />
                 <ShowButton />
                 <DeleteButton />
             </TreeNodeActions>
-        </Tree>
+        </EditableTree>
     </List>
 );
 

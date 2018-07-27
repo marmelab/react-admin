@@ -4,10 +4,16 @@ import ListItem from '@material-ui/core/ListItem';
 import { getRecordFromNode } from 'ra-tree-core';
 import classNames from 'classnames';
 
-import TreeNodeContent from './TreeNodeContent';
 import TreeNodeWithChildren from './TreeNodeWithChildren';
 
-const TreeNode = ({ basePath, classes, children, node, resource }) => (
+const TreeNode = ({
+    basePath,
+    classes,
+    children,
+    node,
+    resource,
+    treeNodeContentComponent: TreeNodeContent,
+}) => (
     <ListItem
         button
         classes={{
@@ -26,6 +32,7 @@ const TreeNode = ({ basePath, classes, children, node, resource }) => (
                 initialValues={getRecordFromNode(node)}
                 node={node}
                 resource={resource}
+                treeNodeContentComponent={TreeNodeContent}
             >
                 {children}
             </TreeNodeWithChildren>
@@ -51,6 +58,10 @@ TreeNode.propTypes = {
     classes: PropTypes.object,
     node: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
+    treeNodeContentComponent: PropTypes.oneOfType([
+        PropTypes.element,
+        PropTypes.func,
+    ]).isRequired,
 };
 
 export default TreeNode;

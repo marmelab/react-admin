@@ -12,7 +12,6 @@ import {
 } from 'ra-tree-core';
 
 import TreeNode from './TreeNode';
-import TreeNodeContent from './TreeNodeContent';
 
 class TreeNodeWithChildrenView extends Component {
     static propTypes = {
@@ -23,6 +22,10 @@ class TreeNodeWithChildrenView extends Component {
         node: PropTypes.object.isRequired,
         resource: PropTypes.string.isRequired,
         toggleNode: PropTypes.func.isRequired,
+        treeNodeContentComponent: PropTypes.oneOfType([
+            PropTypes.element,
+            PropTypes.func,
+        ]).isRequired,
     };
 
     handleChange = () => {
@@ -39,6 +42,7 @@ class TreeNodeWithChildrenView extends Component {
             expanded,
             node,
             resource,
+            treeNodeContentComponent: TreeNodeContent,
         } = this.props;
 
         return (
@@ -80,6 +84,7 @@ class TreeNodeWithChildrenView extends Component {
                                 classes={classes}
                                 node={child}
                                 resource={resource}
+                                treeNodeContentComponent={TreeNodeContent}
                             >
                                 {children}
                             </TreeNode>
