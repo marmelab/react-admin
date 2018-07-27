@@ -22,21 +22,21 @@ yarn add react-beautiful-dnd
 
 ## Usage
 
-With a category ressource having this shape:
+With a categories ressource having this structure where a category may have a parent category referenced by the `parent_id` field:
 
 ```json
 [
-    { id: 1, name: 'Clothing' },
-    { id: 2, name: 'Men', parent_id: 1 },
-    { id: 3, name: 'Suits', parent_id: 2 },
-    { id: 4, name: 'Slacks', parent_id: 3 },
-    { id: 5, name: 'Jackets', parent_id: 3 },
-    { id: 6, name: 'Women', parent_id: 1 },
-    { id: 7, name: 'Dresses', parent_id: 6 },
-    { id: 8, name: 'Evening Gowns', parent_id: 7 },
-    { id: 9, name: 'Sun Dresses', parent_id: 7 },
-    { id: 10, name: 'Skirts', parent_id: 6 },
-    { id: 11, name: 'Blouses', parent_id: 6 },
+    { "id": 1, "name": "Clothing" },
+    { "id": 2, "name": "Men", "parent_id": 1 },
+    { "id": 3, "name": "Suits", "parent_id": 2 },
+    { "id": 4, "name": "Slacks", "parent_id": 3 },
+    { "id": 5, "name": "Jackets", "parent_id": 3 },
+    { "id": 6, "name": "Women", "parent_id": 1 },
+    { "id": 7, "name": "Dresses", "parent_id": 6 },
+    { "id": 8, "name": "Evening Gowns", "parent_id": 7 },
+    { "id": 9, "name": "Sun Dresses", "parent_id": 7 },
+    { "id": 10, "name": "Skirts", "parent_id": 6 },
+    { "id": 11, "name": "Blouses", "parent_id": 6 }
 ]
 ```
 
@@ -56,6 +56,10 @@ export const CategoriesList = (props) => (
     </List>
 );
 ```
+
+`react-admin` will fetch the data and the `Treeview` component will build a tree from it. Note that every category which do not have a parent will be considered a root node. The `Treeview` component will render them using material-ui `ListItem`.
+
+TODO: ADD SCREENSHOT
 
 ## Editable
 
@@ -83,6 +87,8 @@ const CategoriesList = () => (
     </List>
 );
 ```
+
+TODO: ADD SCREENSHOT
 
 ## Roadmap
 
