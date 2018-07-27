@@ -63,7 +63,6 @@ Requires [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd)
 
 ```js
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import {
     List,
     EditButton,
@@ -71,7 +70,7 @@ import {
     SaveButton,
     TextInput,
 } from 'react-admin';
-import Treeview, { ACTION_UPDATED, ACTION_DELETED, ACTION_CREATED } from 'ra-materialui-treeview';
+import Treeview from 'ra-materialui-treeview';
 
 const CategoriesList = () => (
     <List {...this.props}>
