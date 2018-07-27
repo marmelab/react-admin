@@ -10,6 +10,7 @@ const TreeNode = ({
     basePath,
     classes,
     children,
+    getTreeState,
     node,
     resource,
     treeNodeContentComponent: TreeNodeContent,
@@ -30,6 +31,7 @@ const TreeNode = ({
                 classes={classes}
                 form={`treeview-node-${node.id}`}
                 initialValues={getRecordFromNode(node)}
+                getTreeState={getTreeState}
                 node={node}
                 resource={resource}
                 treeNodeContentComponent={TreeNodeContent}
@@ -56,6 +58,7 @@ TreeNode.propTypes = {
     basePath: PropTypes.string.isRequired,
     children: PropTypes.node,
     classes: PropTypes.object,
+    getTreeState: PropTypes.func.isRequired,
     node: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     treeNodeContentComponent: PropTypes.oneOfType([

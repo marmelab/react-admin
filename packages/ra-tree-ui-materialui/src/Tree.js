@@ -66,7 +66,7 @@ export const Tree = ({
     ...props
 }) => (
     <TreeController {...props}>
-        {({ basePath, resource, tree }) => (
+        {({ basePath, getTreeState, resource, tree }) => (
             <List
                 classes={{
                     root: classes.root,
@@ -82,6 +82,7 @@ export const Tree = ({
                             ...classes,
                             root: classes.node,
                         }}
+                        getTreeState={getTreeState}
                         node={node}
                         resource={resource}
                         treeNodeContentComponent={treeNodeContentComponent}

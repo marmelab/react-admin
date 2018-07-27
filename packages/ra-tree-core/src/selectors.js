@@ -1,1 +1,1 @@
-export const getIsNodeExpanded = (state, node) => !!state.ra_treeview[node.id];
+export const getIsNodeExpanded = (state, node) => !!state[node.id];
