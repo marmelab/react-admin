@@ -9,7 +9,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 
-import defaultGetHierarchizedData from './getHierarchizedData';
+import defaultGetTreeFromArray from './getTreeFromArray';
 
 import TreeNode from './TreeNode';
 
@@ -57,7 +57,7 @@ export class Tree extends Component {
         crudUpdate: PropTypes.func.isRequired,
         ids: PropTypes.array.isRequired,
         data: PropTypes.object.isRequired,
-        getHierarchizedData: PropTypes.func,
+        getTreeFromArray: PropTypes.func,
         onChange: PropTypes.func,
         parentSource: PropTypes.string,
         resource: PropTypes.string.isRequired,
@@ -66,7 +66,7 @@ export class Tree extends Component {
 
     static defaultProps = {
         classes: {},
-        getHierarchizedData: defaultGetHierarchizedData,
+        getTreeFromArray: defaultGetTreeFromArray,
         parentSource: 'parent_id',
     };
 
@@ -90,14 +90,14 @@ export class Tree extends Component {
             classes,
             ids,
             data: { fetchedAt, ...data },
-            getHierarchizedData,
+            getTreeFromArray,
             parentSource,
             resource,
             theme,
         } = this.props;
 
         const availableData = ids.reduce((acc, id) => [...acc, data[id]], []);
-        const hierarchizedData = getHierarchizedData(
+        const tree = getTreeFromArray(
             Object.values(availableData),
             parentSource
         );
@@ -110,7 +110,7 @@ export class Tree extends Component {
                 dense
                 disablePadding
             >
-                {hierarchizedData.map(node => (
+                {tree.map(node => (
                     <TreeNode
                         key={node.id}
                         basePath={basePath}

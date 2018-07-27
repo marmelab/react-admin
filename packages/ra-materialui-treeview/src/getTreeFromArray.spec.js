@@ -1,6 +1,6 @@
-import getHierarchizedData from './getHierarchizedData';
+import getTreeFromArray from './getTreeFromArray';
 
-describe('getHierarchizedData', () => {
+describe('getTreeFromArray', () => {
     it('return a tree from flat data', () => {
         const data = [
             { id: 2, name: 'Men', parent_id: 1 },
@@ -16,7 +16,7 @@ describe('getHierarchizedData', () => {
             { id: 9, name: 'Sun Dresses', parent_id: 7 },
         ];
 
-        expect(getHierarchizedData(data, 'parent_id')).toEqual([
+        expect(getTreeFromArray(data, 'parent_id')).toEqual([
             {
                 __children: [
                     {
