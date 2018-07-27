@@ -12,6 +12,7 @@ import dataProvider from './dataProvider';
 import i18nProvider from './i18nProvider';
 import posts from './posts';
 import users from './users';
+import tags from './tags';
 
 render(
     <Admin
@@ -34,7 +35,7 @@ render(
             <Resource name="posts" {...posts} />,
             <Resource name="comments" {...comments} />,
             permissions ? <Resource name="users" {...users} /> : null,
-            <Resource name="tags" />,
+            <Resource name="tags" {...tags} />,
         ]}
     </Admin>,
     document.getElementById('root')

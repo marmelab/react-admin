@@ -34,6 +34,13 @@ const styles = theme => ({
     },
 });
 
+const sanitizeRestProps = ({
+    handleSubmit,
+    handleSubmitWithRedirect,
+    submitOnEnter,
+    ...rest
+}) => rest;
+
 const CreateButton = ({
     basePath = '',
     className,
@@ -51,7 +58,7 @@ const CreateButton = ({
                 color="primary"
                 className={classnames(classes.floating, className)}
                 to={`${basePath}/create`}
-                {...rest}
+                {...sanitizeRestProps(rest)}
             >
                 <ContentAdd />
             </Button>
@@ -63,7 +70,7 @@ const CreateButton = ({
                 to={`${basePath}/create`}
                 className={classnames(classes.desktopLink, className)}
                 size={size}
-                {...rest}
+                {...sanitizeRestProps(rest)}
             >
                 <ContentAdd className={classes.iconPaddingStyle} />
                 <span className={classes.label}>

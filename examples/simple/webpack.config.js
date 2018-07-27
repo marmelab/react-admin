@@ -66,6 +66,14 @@ module.exports = {
                 'ra-input-rich-text',
                 'src'
             ),
+            'ra-materialui-treeview': path.join(
+                __dirname,
+                '..',
+                '..',
+                'packages',
+                'ra-materialui-treeview',
+                'src'
+            ),
         },
     },
     devServer: {

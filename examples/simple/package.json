@@ -27,6 +27,7 @@
         "ra-input-rich-text": "^2.0.0",
         "ra-language-english": "^2.0.0",
         "ra-language-french": "^2.0.0",
+        "ra-materialui-treeview": "^0.0.0",
         "react": "~16.3.1",
         "react-admin": "^2.0.0",
         "react-dom": "~16.3.1",

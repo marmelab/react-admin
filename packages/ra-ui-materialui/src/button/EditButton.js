@@ -7,6 +7,13 @@ import { linkToRecord } from 'ra-core';
 
 import Button from './Button';
 
+const sanitizeRestProps = ({
+    handleSubmit,
+    handleSubmitWithRedirect,
+    submitOnEnter,
+    ...rest
+}) => rest;
+
 const EditButton = ({
     basePath = '',
     label = 'ra.action.edit',
@@ -17,7 +24,7 @@ const EditButton = ({
         component={Link}
         to={linkToRecord(basePath, record.id)}
         label={label}
-        {...rest}
+        {...sanitizeRestProps(rest)}
     >
         <ContentCreate />
     </Button>
