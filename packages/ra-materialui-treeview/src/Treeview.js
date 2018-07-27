@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
     crudCreate as crudCreateAction,
-    crudDelete as crudDeleteAction,
     crudUpdate as crudUpdateAction,
 } from 'react-admin';
 
@@ -55,8 +54,8 @@ export class Treeview extends Component {
         children: PropTypes.node,
         classes: PropTypes.object,
         crudCreate: PropTypes.func.isRequired,
-        crudDelete: PropTypes.func.isRequired,
         crudUpdate: PropTypes.func.isRequired,
+        ids: PropTypes.array.isRequired,
         data: PropTypes.object.isRequired,
         getHierarchizedData: PropTypes.func,
         onChange: PropTypes.func,
@@ -89,6 +88,7 @@ export class Treeview extends Component {
             basePath,
             children,
             classes,
+            ids,
             data: { fetchedAt, ...data },
             getHierarchizedData,
             parentSource,
@@ -96,46 +96,43 @@ export class Treeview extends Component {
             theme,
         } = this.props;
 
-        if (data) {
-            const hierarchizedData = getHierarchizedData(
-                Object.values(data),
-                parentSource
-            );
+        const availableData = ids.reduce((acc, id) => [...acc, data[id]], []);
+        const hierarchizedData = getHierarchizedData(
+            Object.values(availableData),
+            parentSource
+        );
 
-            return (
-                <List
-                    classes={{
-                        root: classes.root,
-                    }}
-                    dense
-                    disablePadding
-                >
-                    {hierarchizedData.map(node => (
-                        <TreeviewNode
-                            key={node.id}
-                            basePath={basePath}
-                            classes={{
-                                ...classes,
-                                root: classes.node,
-                            }}
-                            node={node}
-                            onChange={this.handleChange}
-                            resource={resource}
-                            theme={theme}
-                        >
-                            {children}
-                        </TreeviewNode>
-                    ))}
-                </List>
-            );
-        }
-        return null;
+        return (
+            <List
+                classes={{
+                    root: classes.root,
+                }}
+                dense
+                disablePadding
+            >
+                {hierarchizedData.map(node => (
+                    <TreeviewNode
+                        key={node.id}
+                        basePath={basePath}
+                        classes={{
+                            ...classes,
+                            root: classes.node,
+                        }}
+                        node={node}
+                        onChange={this.handleChange}
+                        resource={resource}
+                        theme={theme}
+                    >
+                        {children}
+                    </TreeviewNode>
+                ))}
+            </List>
+        );
     }
 }
 
 const mapDispatchToProps = {
     crudCreate: crudCreateAction,
-    crudDelete: crudDeleteAction,
     crudUpdate: crudUpdateAction,
 };
 
