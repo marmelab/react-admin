@@ -7,19 +7,19 @@ import {
     ShowButton,
     TextInput,
 } from 'react-admin';
-import { Treeview, TreeviewNodeActions } from 'ra-materialui-treeview';
+import { Tree, TreeNodeActions } from 'ra-materialui-treeview';
 
 const TagList = props => (
     <List {...props} perPage={1000}>
-        <Treeview parentSource="parent_id">
+        <Tree parentSource="parent_id">
             <TextInput source="name" />
-            <TreeviewNodeActions>
+            <TreeNodeActions>
                 <SaveButton variant="flat" />
                 <EditButton />
                 <ShowButton />
                 <DeleteButton />
-            </TreeviewNodeActions>
-        </Treeview>
+            </TreeNodeActions>
+        </Tree>
     </List>
 );
 

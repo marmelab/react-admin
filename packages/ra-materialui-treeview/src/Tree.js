@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import {
     crudCreate as crudCreateAction,
     crudUpdate as crudUpdateAction,
-} from 'react-admin';
+} from '../../react-admin/lib';
 
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 
 import defaultGetHierarchizedData from './getHierarchizedData';
 
-import TreeviewNode from './TreeviewNode';
+import TreeNode from './TreeNode';
 
 const styles = {
     expandIcon: {
@@ -48,7 +48,7 @@ const styles = {
     },
 };
 
-export class Treeview extends Component {
+export class Tree extends Component {
     static propTypes = {
         basePath: PropTypes.string.isRequired,
         children: PropTypes.node,
@@ -111,7 +111,7 @@ export class Treeview extends Component {
                 disablePadding
             >
                 {hierarchizedData.map(node => (
-                    <TreeviewNode
+                    <TreeNode
                         key={node.id}
                         basePath={basePath}
                         classes={{
@@ -124,7 +124,7 @@ export class Treeview extends Component {
                         theme={theme}
                     >
                         {children}
-                    </TreeviewNode>
+                    </TreeNode>
                 ))}
             </List>
         );
@@ -139,4 +139,4 @@ const mapDispatchToProps = {
 export default connect(
     undefined,
     mapDispatchToProps
-)(withStyles(styles, { withTheme: true })(Treeview));
+)(withStyles(styles, { withTheme: true })(Tree));

@@ -10,7 +10,7 @@ const styles = {
     },
 };
 
-class TreeviewNodeContent extends Component {
+class TreeNodeContent extends Component {
     static propTypes = {
         basePath: PropTypes.string.isRequired,
         children: PropTypes.node,
@@ -68,4 +68,4 @@ class TreeviewNodeContent extends Component {
 export default reduxForm({
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
-})(withStyles(styles)(TreeviewNodeContent));
+})(withStyles(styles)(TreeNodeContent));
