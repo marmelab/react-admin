@@ -113,47 +113,28 @@ export const ListView = ({
                     className={classes.header}
                     title={titleElement}
                     actions={React.cloneElement(actions, {
-                        className: classes.actions,
-                    })}
-                    actionProps={{
                         ...controllerProps,
+                        className: classes.actions,
                         bulkActions,
                         exporter,
                         filters,
-                    }}
+                    })}
                 />
                 {filters &&
                     React.cloneElement(filters, {
                         ...controllerProps,
                         context: 'form',
                     })}
-                {isLoading || total > 0 ? (
+                {(isLoading || total > 0) && (
                     <div key={version}>
                         {children &&
                             React.cloneElement(children, {
                                 ...controllerProps,
                                 hasBulkActions: !!bulkActions,
                             })}
-                        {!isLoading &&
-                            !rest.ids.length && (
-                                <CardContent style={styles.noResults}>
-                                    <Typography variant="body1">
-                                        {translate(
-                                            'ra.navigation.no_more_results',
-                                            { page }
-                                        )}
-                                    </Typography>
-                                </CardContent>
-                            )}
                         {pagination &&
                             React.cloneElement(pagination, controllerProps)}
                     </div>
-                ) : (
-                    <CardContent className={classes.noResults}>
-                        <Typography variant="body1">
-                            {translate('ra.navigation.no_results')}
-                        </Typography>
-                    </CardContent>
                 )}
             </Card>
         </div>
