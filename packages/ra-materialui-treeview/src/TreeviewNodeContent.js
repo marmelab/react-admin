@@ -22,7 +22,9 @@ class TreeviewNodeContent extends Component {
     };
 
     handleClick = event => {
-        event.stopPropagation();
+        if (event.target.tagName.toLowerCase() !== 'form') {
+            event.stopPropagation();
+        }
     };
 
     handleSubmit = () => {
