@@ -3,7 +3,6 @@ import {
     DeleteButton,
     EditButton,
     List,
-    SaveButton,
     ShowButton,
     TextInput,
 } from 'react-admin';
@@ -14,7 +13,6 @@ const TagList = props => (
         <EditableTree parentSource="parent_id">
             <TextInput source="name" />
             <TreeNodeActions>
-                <SaveButton variant="flat" />
                 <EditButton />
                 <ShowButton />
                 <DeleteButton />
