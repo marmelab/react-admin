@@ -6,7 +6,6 @@ import classNames from 'classnames';
 
 import TreeNodeContent from './TreeNodeContent';
 import TreeNodeWithChildren from './TreeNodeWithChildren';
-import FiberManualRecord from '@material-ui/icons/FiberManualRecord';
 
 const TreeNode = ({ basePath, classes, children, node, resource }) => (
     <ListItem
