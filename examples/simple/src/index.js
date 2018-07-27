@@ -4,6 +4,8 @@ import React from 'react';
 import { Admin, Resource } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import { render } from 'react-dom';
 import { Route } from 'react-router';
+import { reducer as ra_treeview } from 'ra-materialui-treeview';
+
 import authProvider from './authProvider';
 import comments from './comments';
 import CustomRouteLayout from './customRouteLayout';
@@ -21,6 +23,7 @@ render(
         i18nProvider={i18nProvider}
         title="Example Admin"
         locale="en"
+        customReducers={{ ra_treeview }}
         customRoutes={[
             <Route
                 exact
