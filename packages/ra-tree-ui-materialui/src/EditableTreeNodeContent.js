@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
-import { crudUpdate as crudUpdateAction } from 'react-admin';
+import { crudUpdate as crudUpdateAction } from 'ra-core';
 import { getRecordFromNode } from 'ra-tree-core';
 
 const styles = {

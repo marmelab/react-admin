@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
-import { getRecordFromNode } from 'ra-tree-core';
+import { getRecordFromNode, TreeContext } from 'ra-tree-core';
 import classNames from 'classnames';
 
 import TreeNodeWithChildren from './TreeNodeWithChildren';
 
-const TreeNode = ({
+const TreeNodeView = ({
     basePath,
     classes,
     children,
@@ -57,7 +57,7 @@ const TreeNode = ({
     </ListItem>
 );
 
-TreeNode.propTypes = {
+TreeNodeView.propTypes = {
     basePath: PropTypes.string.isRequired,
     children: PropTypes.node,
     classes: PropTypes.object,
@@ -69,5 +69,13 @@ TreeNode.propTypes = {
         PropTypes.func,
     ]).isRequired,
 };
+
+const TreeNode = props => (
+    <TreeContext.Consumer>
+        {({ getTreeState }) => (
+            <TreeNodeView {...props} getTreeState={getTreeState} />
+        )}
+    </TreeContext.Consumer>
+);
 
 export default TreeNode;
