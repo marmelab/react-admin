@@ -75,7 +75,7 @@ class TreeNodeWithChildrenView extends Component {
                     }}
                 >
                     <List dense>
-                        {node.__children.map(child => (
+                        {node.children.map(child => (
                             <TreeNode
                                 key={child.id}
                                 basePath={basePath}

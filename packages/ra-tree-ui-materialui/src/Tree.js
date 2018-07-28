@@ -98,8 +98,6 @@ Tree.propTypes = {
     basePath: PropTypes.string.isRequired,
     children: PropTypes.node,
     classes: PropTypes.object,
-    ids: PropTypes.array.isRequired,
-    data: PropTypes.object.isRequired,
     getTreeFromArray: PropTypes.func,
     onChange: PropTypes.func,
     parentSource: PropTypes.string,

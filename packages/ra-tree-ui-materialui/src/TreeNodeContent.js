@@ -33,7 +33,7 @@ class TreeNodeContent extends Component {
             basePath,
             children,
             classes,
-            node: { __children, ...node },
+            node: { record },
             resource,
             ...props
         } = this.props;
@@ -48,7 +48,7 @@ class TreeNodeContent extends Component {
                         field
                             ? cloneElement(field, {
                                   basePath: field.props.basePath || basePath,
-                                  record: node,
+                                  record,
                                   resource,
                                   ...props,
                               })

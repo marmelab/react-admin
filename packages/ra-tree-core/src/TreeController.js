@@ -31,9 +31,6 @@ export const TreeControllerView = ({
             }}
         >
             {children({
-                ids,
-                data,
-                parentSource,
                 tree,
                 ...props,
             })}

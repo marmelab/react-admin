@@ -19,18 +19,16 @@ const TreeNode = ({
         button
         classes={{
             root: classNames(classes.root, {
-                [classes.leaf]: node.__children.length === 0,
+                [classes.leaf]: node.children.length === 0,
             }),
         }}
         dense
         disableGutters
     >
-        {node.__children.length > 0 ? (
+        {node.children.length > 0 ? (
             <TreeNodeWithChildren
                 basePath={basePath}
                 classes={classes}
-                form={`treeview-node-${node.id}`}
-                initialValues={getRecordFromNode(node)}
                 node={node}
                 resource={resource}
                 treeNodeContentComponent={TreeNodeContent}
@@ -42,8 +40,6 @@ const TreeNode = ({
             <Fragment>
                 <TreeNodeContent
                     basePath={basePath}
-                    form={`treeview-node-${node.id}`}
-                    initialValues={getRecordFromNode(node)}
                     node={node}
                     resource={resource}
                     {...props}

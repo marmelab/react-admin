@@ -31,6 +31,7 @@ With a categories ressource having this structure where a category may have a pa
 ```
 
 ```js
+// in src/category/list.js
 import React from 'react';
 import {
     List,
@@ -42,8 +43,10 @@ import TreeNode from './TreeNode';
 export const CategoriesList = (props) => (
     <List {...props}>
         <TreeController>
-            {props => (
-                <TreeNode {...props} />
+            {({ tree }) => (
+                <Fragment>
+                    {tree.map(node => <TreeNode node={node} />)}
+                </Fragment>
             )}
         </TreeController>
     </List>
@@ -60,21 +63,22 @@ The `TreeController` accepts the following props:
 
 - `parentSource`: The field used as the parent identifier for each node. Defaults to `parent_id`
 - `getTreeFromArray`: The function used to build the tree from the fetched data. It defaults to one using [performant-array-to-tree](https://github.com/philipstanislaus/performant-array-to-tree)
-- `getTreeState`: A function which must return the tree state root from the redux state in case you mounted it on a key different key than `tree`. It will be called with a single `state` argument which is the redux state.
-- `children`: A function will be called with following props
-  - `tree`: an array of the root nodes. Each node will have two properties in addition of the resource data, `__children`, an array of its child nodes, and `__depth`, a number indicating its depth in the hierarchy
-  - `ids`: An array of the all the data items identifiers
-  - `data`: An object containing the fetched data, where an item identifier its the key
-  - `parentSource`: The field used as the parent identifier for each node
+- `getTreeState`: A function which must return the tree state root from the redux state in case you mounted it on a different key than `tree`. It will be called with a single `state` argument which is the redux state.
+- `children`: A function which will be called with a single object argument having the following props
+  - `tree`: an array of the root nodes. Each node have the following properties:
+    - `children`: an array of its child nodes
+    - `depth`: a number indicating its depth in the hierarchy
+    - `record`: the node's original data
+  - any additional props received by the `TreeController` component
 
 ### TreeContext
 
 A React [`Context`](https://reactjs.org/docs/context.html) allowing us to avoid passing everything trough props. It provides a single object value containing the following properties:
 
-- `getIsNodeExpanded`: a function which takes a node identifier as its only parameter and returns a boolean indicating whether this node is expanded.
+- `getIsNodeExpanded`: a function which takes a node identifier and returns a boolean indicating whether this node is expanded
 - `toggleNode`: a function which takes a node identifier and toggle its expanded state
 
-Under the hood, it store the expanded state of all nodes in redux and dispatch the appropriate actions when calling `toggleNode`, avoiding you to connect your components by yourself.
+Under the hood, it store the expanded state of all nodes in redux and dispatch the appropriate redux actions when calling `toggleNode`, avoiding you to connect your components by yourself.
 
 To use it, you must first register the provided reducer:
 
@@ -115,18 +119,18 @@ class TreeNodeView extends Component {
     render() {
         const { isExpanded, node, toggleNode, ...props } = this.props;
         const prefix = Array
-            .from(Array(node.__depth).keys())
+            .from(Array(node.depth).keys())
             .reduce((acc, index) => `${acc}|--`, '');
 
         return (
             <div {...props}>
-                {prefix}{node.name}
+                {prefix}{node.record.name}
                 <button onClick={this.handleToggle}>
                     {isExpanded ? '-' : '+'}
                 </button>
                 {isExpanded
-                    ? node.__children.map(child => (
-                        <TreeNode {...props} node={child} />
+                    ? node.children.map(child => (
+                        <TreeNode node={child} />
                     ))
                     : null
                 }
@@ -155,7 +159,7 @@ export default TreeNode;
 - Support nested set hierarchical data
 - `TreeSelectInputController` to select a value inside the hierarchical data (with autocomplete showing the matched nodes)
 - `TreeInputController` to edit a field containing hierarchical data as json
-- `TreeNodeFieldController` to show a node and its hierarchie. It should recursively fetch the parents by default, allow a custom function to be supplied to fetch them in one call (`fetchHierarchy`).
+- `TreeNodeFieldController` to show a node and its hierarchie. It should recursively fetch the parents by default, accepting a custom function to fetch them in one call (`fetchHierarchy`).
 
 ## License
 

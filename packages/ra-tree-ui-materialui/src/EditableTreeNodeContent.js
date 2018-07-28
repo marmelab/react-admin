@@ -5,7 +5,6 @@ import compose from 'recompose/compose';
 import { reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
 import { crudUpdate as crudUpdateAction } from 'ra-core';
-import { getRecordFromNode } from 'ra-tree-core';
 
 const styles = {
     root: {
@@ -38,7 +37,7 @@ class TreeNodeContent extends Component {
             basePath,
             crudUpdate,
             handleSubmit,
-            record,
+            node: { record },
             resource,
         } = this.props;
 
@@ -59,7 +58,7 @@ class TreeNodeContent extends Component {
             basePath,
             classes,
             children,
-            node: { __children, ...node },
+            node: { record },
             resource,
             submitOnEnter,
         } = this.props;
@@ -72,7 +71,7 @@ class TreeNodeContent extends Component {
                             ? cloneElement(field, {
                                   basePath: field.props.basePath || basePath,
                                   handleSubmit: this.handleSubmit,
-                                  record: node,
+                                  record,
                                   resource,
                                   submitOnEnter,
                               })
@@ -84,11 +83,10 @@ class TreeNodeContent extends Component {
 }
 
 const mapStateToProps = (state, { node }) => {
-    const record = getRecordFromNode(node);
     return {
         form: `tree-node-form-${node.id}`,
-        initialValues: record,
-        record,
+        initialValues: node.record,
+        record: node.record,
     };
 };
 

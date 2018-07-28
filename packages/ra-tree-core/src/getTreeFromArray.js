@@ -1,14 +1,16 @@
 import { arrayToTree } from 'performant-array-to-tree';
 
-const applyDepth = ({ children, ...node }, __depth) => ({
-    ...node.data,
-    __depth,
-    __children: children
-        ? children.map(child => applyDepth(child, __depth + 1))
+const applyDepth = ({ children, ...node }, depth) => ({
+    id: node.data.id,
+    record: node.data,
+    depth,
+    children: children
+        ? children.map(child => applyDepth(child, depth + 1))
         : [],
 });
 
 export default (data, parentSource) => {
+    // arrayToTree requires top level nodes to have their parent id set to null
     const sanitizedData = data.map(item => ({
         ...item,
         [parentSource]: item[parentSource] || null,
