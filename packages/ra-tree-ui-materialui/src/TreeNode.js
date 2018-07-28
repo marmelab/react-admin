@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
-import { getRecordFromNode } from 'ra-tree-core';
 import classNames from 'classnames';
 
 import TreeNodeWithChildren from './TreeNodeWithChildren';
