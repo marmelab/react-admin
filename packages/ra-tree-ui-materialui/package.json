@@ -39,7 +39,7 @@
     },
     "dependencies": {
         "prop-types": "^15.6.1",
-        "performant-array-to-tree": "^1.1.2"
+        "ra-tree-core": "^0.0.1"
     },
     "devDependencies": {
         "babel-cli": "~6.26.0",
