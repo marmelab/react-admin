@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import List from '@material-ui/core/List';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
-import {
-    getIsNodeExpanded,
-    toggleNode as toggleNodeAction,
-} from 'ra-tree-core';
+import { TreeContext } from 'ra-tree-core';
 
 import TreeNode from './TreeNode';
 
@@ -18,8 +14,7 @@ class TreeNodeWithChildrenView extends Component {
         basePath: PropTypes.string.isRequired,
         children: PropTypes.node,
         classes: PropTypes.object,
-        expanded: PropTypes.bool,
-        getTreeState: PropTypes.func.isRequired,
+        isExpanded: PropTypes.bool,
         node: PropTypes.object.isRequired,
         resource: PropTypes.string.isRequired,
         toggleNode: PropTypes.func.isRequired,
@@ -40,8 +35,7 @@ class TreeNodeWithChildrenView extends Component {
             basePath,
             children,
             classes,
-            expanded,
-            getTreeState,
+            isExpanded,
             node,
             resource,
             treeNodeContentComponent: TreeNodeContent,
@@ -54,7 +48,7 @@ class TreeNodeWithChildrenView extends Component {
                     root: classes.panel,
                 }}
                 elevation={0}
-                expanded={expanded}
+                expanded={isExpanded}
                 onChange={this.handleChange}
             >
                 <ExpansionPanelSummary
@@ -86,7 +80,6 @@ class TreeNodeWithChildrenView extends Component {
                                 key={child.id}
                                 basePath={basePath}
                                 classes={classes}
-                                getTreeState={getTreeState}
                                 node={child}
                                 resource={resource}
                                 treeNodeContentComponent={TreeNodeContent}
@@ -102,13 +95,16 @@ class TreeNodeWithChildrenView extends Component {
     }
 }
 
-const mapStateToProps = (state, { getTreeState, node }) => ({
-    expanded: getIsNodeExpanded(getTreeState(state), node),
-});
-
-const TreeNodeWithChildren = connect(
-    mapStateToProps,
-    { toggleNode: toggleNodeAction }
-)(TreeNodeWithChildrenView);
+const TreeNodeWithChildren = props => (
+    <TreeContext.Consumer>
+        {({ getIsNodeExpanded, toggleNode }) => (
+            <TreeNodeWithChildrenView
+                {...props}
+                toggleNode={toggleNode}
+                isExpanded={getIsNodeExpanded(props.node.id)}
+            />
+        )}
+    </TreeContext.Consumer>
+);
 
 export default TreeNodeWithChildren;

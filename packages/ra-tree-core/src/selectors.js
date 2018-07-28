@@ -1,1 +1,1 @@
-export const getIsNodeExpanded = (state, node) => !!state.expanded[node.id];
+export const getIsNodeExpanded = (state, nodeId) => !!state.expanded[nodeId];

@@ -1,16 +1,15 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ListItem from '@material-ui/core/ListItem';
-import { getRecordFromNode, TreeContext } from 'ra-tree-core';
+import { getRecordFromNode } from 'ra-tree-core';
 import classNames from 'classnames';
 
 import TreeNodeWithChildren from './TreeNodeWithChildren';
 
-const TreeNodeView = ({
+const TreeNode = ({
     basePath,
     classes,
     children,
-    getTreeState,
     node,
     resource,
     treeNodeContentComponent: TreeNodeContent,
@@ -32,7 +31,6 @@ const TreeNodeView = ({
                 classes={classes}
                 form={`treeview-node-${node.id}`}
                 initialValues={getRecordFromNode(node)}
-                getTreeState={getTreeState}
                 node={node}
                 resource={resource}
                 treeNodeContentComponent={TreeNodeContent}
@@ -57,11 +55,10 @@ const TreeNodeView = ({
     </ListItem>
 );
 
-TreeNodeView.propTypes = {
+TreeNode.propTypes = {
     basePath: PropTypes.string.isRequired,
     children: PropTypes.node,
     classes: PropTypes.object,
-    getTreeState: PropTypes.func.isRequired,
     node: PropTypes.object.isRequired,
     resource: PropTypes.string.isRequired,
     treeNodeContentComponent: PropTypes.oneOfType([
@@ -69,13 +66,5 @@ TreeNodeView.propTypes = {
         PropTypes.func,
     ]).isRequired,
 };
-
-const TreeNode = props => (
-    <TreeContext.Consumer>
-        {({ getTreeState }) => (
-            <TreeNodeView {...props} getTreeState={getTreeState} />
-        )}
-    </TreeContext.Consumer>
-);
 
 export default TreeNode;
