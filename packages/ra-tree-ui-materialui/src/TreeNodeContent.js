@@ -18,6 +18,7 @@ class TreeNodeContent extends Component {
         basePath: PropTypes.string.isRequired,
         children: PropTypes.node,
         classes: PropTypes.object.isRequired,
+        isLeaf: PropTypes.bool,
         node: PropTypes.object.isRequired,
         resource: PropTypes.string.isRequired,
     };
@@ -36,6 +37,7 @@ class TreeNodeContent extends Component {
             basePath,
             children,
             classes,
+            isLeaf,
             node: { record },
             resource,
             ...props

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TreeContext from './TreeContext';
 import defaultGetTreeFromArray from './getTreeFromArray';
-import { getIsNodeExpanded } from './selectors';
+import { getIsNodeExpanded, getIsNodeExpandedFromHover } from './selectors';
 import { toggleNode as toggleNodeAction } from './actions';
 
 const defaultGetTreeState = state => state.tree;
@@ -27,11 +27,15 @@ export const TreeControllerView = ({
             value={{
                 getIsNodeExpanded: nodeId =>
                     getIsNodeExpanded(treeState, nodeId),
+                getIsNodeExpandedFromHover: nodeId =>
+                    getIsNodeExpandedFromHover(treeState, nodeId),
                 toggleNode,
+                parentSource,
             }}
         >
             {children({
                 tree,
+                parentSource,
                 ...props,
             })}
         </TreeContext.Provider>

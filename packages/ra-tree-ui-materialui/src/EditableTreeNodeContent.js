@@ -4,14 +4,23 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
-import { crudUpdate as crudUpdateAction } from 'ra-core';
 
-const styles = {
+import { crudUpdate as crudUpdateAction } from 'ra-core';
+import { DropTarget } from 'react-dnd';
+import { DROP_TARGET_TYPE } from './constants';
+
+const styles = theme => ({
     root: {
         display: 'flex',
         flexGrow: 1,
     },
-};
+    handle: {
+        alignItems: 'center',
+        cursor: 'crosshair',
+        display: 'flex',
+        marginRight: theme.spacing.unit * 2,
+    },
+});
 
 class TreeNodeContent extends Component {
     static propTypes = {
@@ -20,6 +29,7 @@ class TreeNodeContent extends Component {
         classes: PropTypes.object.isRequired,
         crudUpdate: PropTypes.func.isRequired,
         handleSubmit: PropTypes.func.isRequired,
+        isLeaf: PropTypes.bool,
         node: PropTypes.object.isRequired,
         record: PropTypes.object.isRequired,
         resource: PropTypes.string.isRequired,
