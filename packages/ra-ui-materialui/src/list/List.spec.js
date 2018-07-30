@@ -20,59 +20,31 @@ describe('<List />', () => {
         translate: x => x,
         version: 1,
     };
-
-    it('should display a no results text when there is no result', () => {
+    it('should render a mui Card', () => {
+        const Datagrid = () => <div>datagrid</div>;
         const wrapper = shallow(
-            <ListView
-                {...defaultProps}
-                translate={x => x}
-                total={0}
-                changeFormValue={() => true}
-                changeListParams={() => true}
-            >
-                <div />
+            <ListView {...defaultProps}>
+                <Datagrid />
             </ListView>
         );
-        const textElement = wrapper
-            .find('WithStyles(CardContent)')
-            .children()
-            .children();
-        assert.equal(textElement.text(), 'ra.navigation.no_results');
+        assert.equal(wrapper.find('WithStyles(Card)').length, 1);
     });
 
-    it('should not display a no results text when there are results', () => {
+    it('should render filters, children and pagination', () => {
+        const Filters = () => <div>filters</div>;
+        const Pagination = () => <div>pagination</div>;
+        const Datagrid = () => <div>datagrid</div>;
         const wrapper = shallow(
             <ListView
+                filters={<Filters />}
+                pagination={<Pagination />}
                 {...defaultProps}
-                translate={x => x}
-                total={1}
-                ids={[1]}
-                changeFormValue={() => true}
-                changeListParams={() => true}
             >
-                <div />
+                <Datagrid />
             </ListView>
         );
-        const textElement = wrapper.find('CardText');
-        assert.equal(textElement.length, 0);
-    });
-
-    it('should display a no more results text on an empty paginated page', () => {
-        const wrapper = shallow(
-            <ListView
-                {...defaultProps}
-                translate={x => x}
-                total={10}
-                ids={[]}
-                page={2}
-                perPage={10}
-                changeFormValue={() => true}
-                changeListParams={() => true}
-            >
-                <div />
-            </ListView>
-        );
-        const textElement = wrapper.find('WithStyles(Typography)').children();
-        assert.equal(textElement.text(), 'ra.navigation.no_more_results');
+        assert.equal(wrapper.find('Filters').length, 1);
+        assert.equal(wrapper.find('Pagination').length, 1);
+        assert.equal(wrapper.find('Datagrid').length, 1);
     });
 });

@@ -152,7 +152,7 @@ export class Pagination extends Component {
             );
         }
 
-        if (!isLoading && !ids.length) {
+        if (!isLoading && ids && !ids.length) {
             return (
                 <CardContent style={styles.noResults}>
                     <Typography variant="body1">

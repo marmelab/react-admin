@@ -5,6 +5,52 @@ import { shallow } from 'enzyme';
 import { Pagination } from './Pagination';
 
 describe('<Pagination />', () => {
+    it('should display a no results text when there is no result', () => {
+        const wrapper = shallow(
+            <Pagination
+                translate={x => x}
+                total={0}
+                changeFormValue={() => true}
+                changeListParams={() => true}
+            />
+        );
+        const textElement = wrapper
+            .find('WithStyles(CardContent)')
+            .children()
+            .children();
+        assert.equal(textElement.text(), 'ra.navigation.no_results');
+    });
+
+    it('should not display a no results text when there are results', () => {
+        const wrapper = shallow(
+            <Pagination
+                translate={x => x}
+                total={1}
+                ids={[1]}
+                changeFormValue={() => true}
+                changeListParams={() => true}
+            />
+        );
+        const textElement = wrapper.find('CardText');
+        assert.equal(textElement.length, 0);
+    });
+
+    it('should display a no more results text on an empty paginated page', () => {
+        const wrapper = shallow(
+            <Pagination
+                translate={x => x}
+                total={10}
+                ids={[]}
+                page={2}
+                perPage={10}
+                changeFormValue={() => true}
+                changeListParams={() => true}
+            />
+        );
+        const textElement = wrapper.find('WithStyles(Typography)').children();
+        assert.equal(textElement.text(), 'ra.navigation.no_more_results');
+    });
+
     describe('mobile', () => {
         it('should render a condensed <Toolbar>', () => {
             const wrapper = shallow(
