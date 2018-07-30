@@ -38,6 +38,7 @@ See the [translation](./Translation.md#available-locales) page.
 
 ## Miscellaneous
 
+- [ra-customizable-datagrid](https://github.com/fizix-io/ra-customizable-datagrid): plugin that allows to hide / show columns dynamically.
 - [api-platform/admin](https://api-platform.com/docs/admin): create a fully featured admin using React Admin for API supporting the [Hydra Core Vocabulary](http://www.hydra-cg.com/), including but not limited to APIs created using the [API Platform framework](https://api-platform.com)
 - [marmelab/ra-realtime](https://github.com/marmelab/react-admin/tree/master/packages/ra-realtime): enable realtime updates
 - [zifnab87/ra-component-factory](https://github.com/zifnab87/ra-component-factory): centralized configuration of immutability/visibility of fields/menu-links/action buttons, easy re-ordering of fields/properties and tab reorganization based on permission roles
