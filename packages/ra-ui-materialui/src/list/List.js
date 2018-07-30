@@ -123,17 +123,15 @@ export const ListView = ({
                         ...controllerProps,
                         context: 'form',
                     })}
-                {(isLoading || total > 0) && (
-                    <div key={version}>
-                        {children &&
-                            React.cloneElement(children, {
-                                ...controllerProps,
-                                hasBulkActions: !!bulkActions,
-                            })}
-                        {pagination &&
-                            React.cloneElement(pagination, controllerProps)}
-                    </div>
-                )}
+                <div key={version}>
+                    {children &&
+                        React.cloneElement(children, {
+                            ...controllerProps,
+                            hasBulkActions: !!bulkActions,
+                        })}
+                    {pagination &&
+                        React.cloneElement(pagination, controllerProps)}
+                </div>
             </Card>
         </div>
     );
