@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import Button from '@material-ui/core/Button';
-import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -13,6 +12,7 @@ import compose from 'recompose/compose';
 import classnames from 'classnames';
 import { translate, sanitizeListRestProps } from 'ra-core';
 
+import PaginationLimit from './PaginationLimit';
 import Responsive from '../layout/Responsive';
 
 const styles = {
@@ -142,24 +142,8 @@ export class Pagination extends Component {
             ...rest
         } = this.props;
 
-        if (!isLoading && total === 0) {
-            return (
-                <CardContent className={classes.noResults}>
-                    <Typography variant="body1">
-                        {translate('ra.navigation.no_results')}
-                    </Typography>
-                </CardContent>
-            );
-        }
-
-        if (!isLoading && ids && !ids.length) {
-            return (
-                <CardContent style={styles.noResults}>
-                    <Typography variant="body1">
-                        {translate('ra.navigation.no_more_results', { page })}
-                    </Typography>
-                </CardContent>
-            );
+        if (!isLoading && (total === 0 || (ids && !ids.length))) {
+            return <PaginationLimit total={total} page={page} ids={ids} />;
         }
 
         const offsetEnd = Math.min(page * perPage, total);
