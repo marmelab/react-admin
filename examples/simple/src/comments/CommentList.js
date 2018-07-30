@@ -17,6 +17,7 @@ import {
     EditButton,
     Filter,
     List,
+    PaginationLimit,
     ReferenceField,
     ReferenceInput,
     Responsive,
@@ -56,8 +57,12 @@ const exporter = (records, fetchRelatedRecords) =>
     });
 
 const CommentPagination = translate(
-    ({ page, perPage, total, setPage, translate }) => {
+    ({ isLoading, ids, page, perPage, total, setPage, translate }) => {
         const nbPages = Math.ceil(total / perPage) || 1;
+        if (!isLoading && (total === 0 || (ids && !ids.length))) {
+            return <PaginationLimit total={total} page={page} ids={ids} />;
+        }
+
         return (
             nbPages > 1 && (
                 <Toolbar>
