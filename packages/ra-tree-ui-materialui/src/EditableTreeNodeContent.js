@@ -27,6 +27,9 @@ class TreeNodeContent extends Component {
     };
 
     handleClick = event => {
+        // This ensure clicking on an input or button does not collapse/expand a node
+        // When clicking on the form (empty spaces around inputs) however, it should
+        // propagate to the parent
         if (event.target.tagName.toLowerCase() !== 'form') {
             event.stopPropagation();
         }
