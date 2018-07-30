@@ -142,21 +142,21 @@ export class Pagination extends Component {
             ...rest
         } = this.props;
 
-        if (!isLoading && !ids.length) {
-            return (
-                <CardContent style={styles.noResults}>
-                    <Typography variant="body1">
-                        {translate('ra.navigation.no_more_results', { page })}
-                    </Typography>
-                </CardContent>
-            );
-        }
-
         if (!isLoading && total === 0) {
             return (
                 <CardContent className={classes.noResults}>
                     <Typography variant="body1">
                         {translate('ra.navigation.no_results')}
+                    </Typography>
+                </CardContent>
+            );
+        }
+
+        if (!isLoading && !ids.length) {
+            return (
+                <CardContent style={styles.noResults}>
+                    <Typography variant="body1">
+                        {translate('ra.navigation.no_more_results', { page })}
                     </Typography>
                 </CardContent>
             );

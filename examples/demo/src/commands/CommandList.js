@@ -8,8 +8,8 @@ import {
     EditButton,
     Filter,
     Header,
+    List,
     ListActions,
-    ListController,
     NullableBooleanInput,
     NumberField,
     Pagination,
@@ -53,19 +53,24 @@ const CommandFilter = withStyles(filterStyles)(({ classes, ...props }) => (
     </Filter>
 ));
 
-class ListTabs extends React.Component {
+const datagridStyles = {
+    total: { fontWeight: 'bold' },
+};
+
+class TabbedDatagrid extends React.Component {
+    tabs = [
+        { id: 'ordered', name: 'ordered' },
+        { id: 'delivered', name: 'delivered' },
+        { id: 'cancelled', name: 'cancelled' },
+    ];
+
     handleChange = (event, value) => {
         const { filterValues, setFilters } = this.props;
         setFilters({ ...filterValues, status: value });
     };
 
     render() {
-        const { filterValues } = this.props;
-        const choices = [
-            { id: 'ordered', name: 'ordered' },
-            { id: 'delivered', name: 'delivered' },
-            { id: 'cancelled', name: 'cancelled' },
-        ];
+        const { classes, filterValues, ...props } = this.props;
         return (
             <Fragment>
                 <Tabs
@@ -75,7 +80,7 @@ class ListTabs extends React.Component {
                     indicatorColor="primary"
                     onChange={this.handleChange}
                 >
-                    {choices.map(choice => (
+                    {this.tabs.map(choice => (
                         <Tab
                             key={choice.id}
                             label={choice.name}
@@ -84,64 +89,44 @@ class ListTabs extends React.Component {
                     ))}
                 </Tabs>
                 <Divider />
+                <Responsive
+                    xsmall={<MobileGrid {...props} />}
+                    medium={
+                        <Datagrid {...props}>
+                            <DateField source="date" showTime />
+                            <TextField source="reference" />
+                            <CustomerReferenceField />
+                            <NbItemsField />
+                            <NumberField
+                                source="total"
+                                options={{
+                                    style: 'currency',
+                                    currency: 'USD',
+                                }}
+                                className={classes.total}
+                            />
+                            <BooleanField source="returned" />
+                            <EditButton />
+                        </Datagrid>
+                    }
+                />
             </Fragment>
         );
     }
 }
 
-const listStyles = {
-    total: { fontWeight: 'bold' },
-};
+const StyledTabbedDatagrid = withStyles(datagridStyles)(TabbedDatagrid);
 
-const CommandList = ({ classes, ...mainProps }) => (
-    <ListController
-        {...mainProps}
+const CommandList = ({ classes, ...props }) => (
+    <List
+        {...props}
         filterDefaultValues={{ status: 'ordered' }}
         sort={{ field: 'date', order: 'DESC' }}
         perPage={25}
+        filters={<CommandFilter />}
     >
-        {props => (
-            <Card>
-                <Header
-                    title={<Title defaultTitle={props.defaultTitle} />}
-                    actions={
-                        <ListActions {...props} filters={<CommandFilter />} />
-                    }
-                />
-                <CommandFilter {...props} />
-                <ListTabs
-                    filterValues={props.filterValues}
-                    setFilters={props.setFilters}
-                />
-                {(props.isLoading || props.total > 0) && (
-                    <div key={props.version}>
-                        <Responsive
-                            xsmall={<MobileGrid {...props} />}
-                            medium={
-                                <Datagrid {...props}>
-                                    <DateField source="date" showTime />
-                                    <TextField source="reference" />
-                                    <CustomerReferenceField />
-                                    <NbItemsField />
-                                    <NumberField
-                                        source="total"
-                                        options={{
-                                            style: 'currency',
-                                            currency: 'USD',
-                                        }}
-                                        className={classes.total}
-                                    />
-                                    <BooleanField source="returned" />
-                                    <EditButton />
-                                </Datagrid>
-                            }
-                        />
-                        <Pagination {...props} />
-                    </div>
-                )}
-            </Card>
-        )}
-    </ListController>
+        <StyledTabbedDatagrid />
+    </List>
 );
 
-export default withStyles(listStyles)(CommandList);
+export default CommandList;
