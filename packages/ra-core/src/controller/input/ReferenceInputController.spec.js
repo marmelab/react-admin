@@ -10,7 +10,6 @@ describe('<ReferenceInputController />', () => {
         crudGetMatching: jest.fn(),
         meta: {},
         input: {},
-        record: {},
         reference: 'posts',
         resource: 'comments',
         source: 'post_id',
