@@ -12,6 +12,7 @@ import compose from 'recompose/compose';
 import classnames from 'classnames';
 import { translate, sanitizeListRestProps } from 'ra-core';
 
+import PaginationLimit from './PaginationLimit';
 import Responsive from '../layout/Responsive';
 
 const styles = {
@@ -130,6 +131,8 @@ export class Pagination extends Component {
         const {
             classes = {},
             className,
+            ids,
+            isLoading,
             page,
             perPage,
             setPage,
@@ -138,7 +141,11 @@ export class Pagination extends Component {
             translate,
             ...rest
         } = this.props;
-        if (total === 0) return null;
+
+        if (!isLoading && (total === 0 || (ids && !ids.length))) {
+            return <PaginationLimit total={total} page={page} ids={ids} />;
+        }
+
         const offsetEnd = Math.min(page * perPage, total);
         const offsetBegin = Math.min((page - 1) * perPage + 1, offsetEnd);
         const nbPages = this.getNbPages();
@@ -226,6 +233,8 @@ export class Pagination extends Component {
 Pagination.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
+    ids: PropTypes.array,
+    isLoading: PropTypes.bool,
     page: PropTypes.number,
     perPage: PropTypes.number,
     setPage: PropTypes.func,

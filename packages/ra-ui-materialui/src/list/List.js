@@ -2,8 +2,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -100,7 +98,7 @@ export const ListView = ({
     title,
     ...rest
 }) => {
-    const { defaultTitle, isLoading, page, version, total, translate } = rest;
+    const { defaultTitle, version } = rest;
     const controllerProps = getListControllerProps(rest);
     const titleElement = <Title title={title} defaultTitle={defaultTitle} />;
     return (
@@ -113,48 +111,27 @@ export const ListView = ({
                     className={classes.header}
                     title={titleElement}
                     actions={React.cloneElement(actions, {
-                        className: classes.actions,
-                    })}
-                    actionProps={{
                         ...controllerProps,
+                        className: classes.actions,
                         bulkActions,
                         exporter,
                         filters,
-                    }}
+                    })}
                 />
                 {filters &&
                     React.cloneElement(filters, {
                         ...controllerProps,
                         context: 'form',
                     })}
-                {isLoading || total > 0 ? (
-                    <div key={version}>
-                        {children &&
-                            React.cloneElement(children, {
-                                ...controllerProps,
-                                hasBulkActions: !!bulkActions,
-                            })}
-                        {!isLoading &&
-                            !rest.ids.length && (
-                                <CardContent style={styles.noResults}>
-                                    <Typography variant="body1">
-                                        {translate(
-                                            'ra.navigation.no_more_results',
-                                            { page }
-                                        )}
-                                    </Typography>
-                                </CardContent>
-                            )}
-                        {pagination &&
-                            React.cloneElement(pagination, controllerProps)}
-                    </div>
-                ) : (
-                    <CardContent className={classes.noResults}>
-                        <Typography variant="body1">
-                            {translate('ra.navigation.no_results')}
-                        </Typography>
-                    </CardContent>
-                )}
+                <div key={version}>
+                    {children &&
+                        React.cloneElement(children, {
+                            ...controllerProps,
+                            hasBulkActions: !!bulkActions,
+                        })}
+                    {pagination &&
+                        React.cloneElement(pagination, controllerProps)}
+                </div>
             </Card>
         </div>
     );

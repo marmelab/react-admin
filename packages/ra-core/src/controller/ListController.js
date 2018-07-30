@@ -281,6 +281,7 @@ export class ListController extends Component {
             page: parseInt(query.page || 1, 10),
             perPage: parseInt(query.perPage, 10),
             refresh: this.refresh,
+            resource,
             selectedIds,
             setFilters: this.setFilters,
             setPage: this.setPage,
@@ -349,6 +350,7 @@ const injectedProps = [
     'basePath',
     'currentSort',
     'data',
+    'defaultTitle',
     'displayedFilters',
     'filterValues',
     'hasCreate',
@@ -369,6 +371,7 @@ const injectedProps = [
     'setSort',
     'showFilter',
     'total',
+    'translate',
     'version',
 ];
 
