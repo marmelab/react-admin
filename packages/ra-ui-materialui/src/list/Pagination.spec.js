@@ -1,11 +1,12 @@
 import assert from 'assert';
 import React from 'react';
 import { shallow } from 'enzyme';
+import { TranslationProvider } from 'ra-core';
 
 import { Pagination } from './Pagination';
 
 describe('<Pagination />', () => {
-    it('should display a no results text when there is no result', () => {
+    it('should display a pagination limit when there is no result', () => {
         const wrapper = shallow(
             <Pagination
                 translate={x => x}
@@ -14,14 +15,12 @@ describe('<Pagination />', () => {
                 changeListParams={() => true}
             />
         );
-        const textElement = wrapper
-            .find('WithStyles(CardContent)')
-            .children()
-            .children();
-        assert.equal(textElement.text(), 'ra.navigation.no_results');
+        expect(wrapper.find('pure(translate(PaginationLimit))')).toHaveLength(
+            1
+        );
     });
 
-    it('should not display a no results text when there are results', () => {
+    it('should not display a pagination limit when there are results', () => {
         const wrapper = shallow(
             <Pagination
                 translate={x => x}
@@ -31,11 +30,12 @@ describe('<Pagination />', () => {
                 changeListParams={() => true}
             />
         );
-        const textElement = wrapper.find('CardText');
-        assert.equal(textElement.length, 0);
+        expect(wrapper.find('pure(translate(PaginationLimit))')).toHaveLength(
+            0
+        );
     });
 
-    it('should display a no more results text on an empty paginated page', () => {
+    it('should display a pagination limit on an empty paginated page', () => {
         const wrapper = shallow(
             <Pagination
                 translate={x => x}
@@ -47,8 +47,9 @@ describe('<Pagination />', () => {
                 changeListParams={() => true}
             />
         );
-        const textElement = wrapper.find('WithStyles(Typography)').children();
-        assert.equal(textElement.text(), 'ra.navigation.no_more_results');
+        expect(wrapper.find('pure(translate(PaginationLimit))')).toHaveLength(
+            1
+        );
     });
 
     describe('mobile', () => {
