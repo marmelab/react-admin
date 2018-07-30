@@ -15,6 +15,17 @@ describe('Create Page', () => {
         );
     });
 
+    it('should put the ArrayInput default value', () => {
+        const currentDate = new Date();
+        const currentDateString = currentDate.toISOString().slice(0, 10);
+        cy.get(CreatePage.elements.input('backlinks[0].date')).should(el =>
+            expect(el).to.have.value(currentDateString)
+        );
+        cy.get(CreatePage.elements.input('backlinks[0].url')).should(el =>
+            expect(el).to.have.value('http://google.com')
+        );
+    });
+
     it('should redirect to show page after create success', () => {
         const values = [
             {

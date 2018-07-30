@@ -1,6 +1,6 @@
 import React, { cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
-import { isRequired, FieldTitle } from 'ra-core';
+import { isRequired, FieldTitle, withDefaultValue } from 'ra-core';
 import { FieldArray } from 'redux-form';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -61,6 +61,7 @@ export class ArrayInput extends Component {
     render() {
         const {
             className,
+            defaultValue,
             label,
             source,
             resource,
@@ -85,6 +86,7 @@ export class ArrayInput extends Component {
                 </InputLabel>
                 <FieldArray
                     name={source}
+                    defaultValue={defaultValue}
                     component={this.renderFieldArray}
                     validate={validate}
                     isRequired={isRequired(validate)}
@@ -97,6 +99,7 @@ export class ArrayInput extends Component {
 ArrayInput.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
+    defaultValue: PropTypes.any,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
     resource: PropTypes.string,
@@ -110,4 +113,4 @@ ArrayInput.defaultProps = {
     options: {},
     fullWidth: true,
 };
-export default ArrayInput;
+export default withDefaultValue(ArrayInput);
