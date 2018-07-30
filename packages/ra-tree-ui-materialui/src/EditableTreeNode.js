@@ -10,7 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { crudUpdate as crudUpdateAction } from 'ra-core';
 
 import { DROP_TARGET_TYPE } from './constants';
-import { styles as getDefaultStyles } from './TreeNode';
+import TreeNode, { styles as getDefaultStyles } from './TreeNode';
 
 const styles = theme => {
     const defaultStyles = getDefaultStyles(theme);
@@ -37,6 +37,8 @@ const styles = theme => {
 };
 
 class EditableTreeNode extends Component {
+    static propTypes = TreeNode.propTypes;
+
     render() {
         const {
             basePath,

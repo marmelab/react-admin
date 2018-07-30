@@ -6,8 +6,6 @@ import { reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
 
 import { crudUpdate as crudUpdateAction } from 'ra-core';
-import { DropTarget } from 'react-dnd';
-import { DROP_TARGET_TYPE } from './constants';
 
 const styles = theme => ({
     root: {

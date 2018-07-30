@@ -119,4 +119,6 @@ const TreeNodeWithChildren = ({ isExpanded, ...props }) => (
     </TreeContext.Consumer>
 );
 
+TreeNodeWithChildren.propTypes = TreeNodeWithChildrenView.propTypes;
+
 export default TreeNodeWithChildren;
