@@ -16,7 +16,6 @@ import {
     SimpleFormIterator,
     TextInput,
     Toolbar,
-    ArrayInput,
     SimpleFormIterator,
     ReferenceInput,
     AutocompleteInput,
