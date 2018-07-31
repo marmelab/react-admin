@@ -27,6 +27,7 @@ export default {
                 tags: 'Catégories',
                 title: 'Titre',
                 views: 'Vues',
+                authors: 'Auteurs',
             },
         },
         comments: {

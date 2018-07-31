@@ -28,6 +28,7 @@ export const messages = {
                 tags: 'Tags',
                 title: 'Title',
                 views: 'Views',
+                authors: 'Authors',
             },
         },
         comments: {

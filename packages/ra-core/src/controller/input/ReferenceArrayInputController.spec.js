@@ -357,6 +357,34 @@ describe('<ReferenceArrayInputController />', () => {
         expect(crudGetMany).toHaveBeenCalledTimes(1);
     });
 
+    it('should only call crudGetMatching when props are changed from outside', () => {
+        const crudGetMatching = jest.fn();
+        const crudGetMany = jest.fn();
+        const wrapper = shallow(
+            <ReferenceArrayInputController
+                {...defaultProps}
+                allowEmpty
+                input={{ value: [5] }}
+                crudGetMany={crudGetMany}
+                crudGetMatching={crudGetMatching}
+            />
+        );
+        expect(crudGetMatching).toHaveBeenCalledTimes(1);
+        expect(crudGetMany).toHaveBeenCalledTimes(1);
+
+        wrapper.setProps({ filter: { foo: 'bar' } });
+        expect(crudGetMatching.mock.calls.length).toBe(2);
+        expect(crudGetMany).toHaveBeenCalledTimes(1);
+
+        wrapper.setProps({ sort: { field: 'foo', order: 'ASC' } });
+        expect(crudGetMatching.mock.calls.length).toBe(3);
+        expect(crudGetMany).toHaveBeenCalledTimes(1);
+
+        wrapper.setProps({ perPage: 42 });
+        expect(crudGetMatching.mock.calls.length).toBe(4);
+        expect(crudGetMany).toHaveBeenCalledTimes(1);
+    });
+
     it('should call crudGetMany when input value changes', () => {
         const crudGetMany = jest.fn();
         const wrapper = shallow(

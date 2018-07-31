@@ -1,6 +1,6 @@
 {
     "name": "ra-data-simple-rest",
-    "version": "2.1.1",
+    "version": "2.1.4",
     "description": "Simple REST data provider for react-admin",
     "main": "lib/index.js",
     "files": [
@@ -8,9 +8,6 @@
         "lib",
         "src"
     ],
-    "scripts": {
-        "test": "make test"
-    },
     "authors": [
         "François Zaninotto"
     ],
@@ -18,8 +15,17 @@
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
+    "scripts": {
+        "build": "rimraf ./lib && cross-env NODE_ENV=production babel --quiet ./src -d ./lib --ignore spec.js,test.js",
+        "watch": "rimraf ./lib && cross-env NODE_ENV=production babel --watch ./src -d ./lib --ignore spec.js,test.js"
+    },
     "dependencies": {
         "query-string": "~5.1.1",
-        "react-admin": "^2.1.1"
+        "react-admin": "^2.1.4"
+    },
+    "devDependencies": {
+        "babel-cli": "~6.26.0",
+        "cross-env": "^5.2.0",
+        "rimraf": "^2.6.2"
     }
 }

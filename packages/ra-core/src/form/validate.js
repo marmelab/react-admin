@@ -70,11 +70,14 @@ export const number = memoize(
             : undefined
 );
 
-export const regex = memoize(
+export const regex = lodashMemoize(
     (pattern, message = 'ra.validation.regex') => (value, values, props) =>
         !isEmpty(value) && typeof value === 'string' && !pattern.test(value)
             ? getMessage(message, { pattern }, value, values, props)
-            : undefined
+            : undefined,
+    (pattern, message) => {
+        return pattern.toString() + message;
+    }
 );
 
 export const email = memoize((message = 'ra.validation.email') =>

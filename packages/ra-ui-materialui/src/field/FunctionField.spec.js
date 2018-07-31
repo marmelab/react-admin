@@ -1,18 +1,18 @@
 import React from 'react';
 import assert from 'assert';
-import { shallow } from 'enzyme';
+import { render, shallow } from 'enzyme';
 import FunctionField from './FunctionField';
 
 describe('<FunctionField />', () => {
     it('should render using the render function', () => {
         const record = { foo: 'bar' };
-        const wrapper = shallow(
+        const wrapper = render(
             <FunctionField
                 record={record}
                 render={r => r['foo'].substr(0, 2)}
             />
         );
-        assert.equal(wrapper.html(), '<span>ba</span>');
+        assert.equal(wrapper.text(), 'ba');
     });
 
     it('should use custom className', () =>

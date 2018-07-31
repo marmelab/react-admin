@@ -2,12 +2,14 @@ import React, { Children, cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import get from 'lodash/get';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/RemoveCircleOutline';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
 import { translate } from 'ra-core';
+import classNames from 'classnames';
 
 import FormInput from '../form/FormInput';
 
@@ -97,10 +99,12 @@ export class SimpleFormIterator extends Component {
             meta: { error, submitFailed },
             record,
             resource,
+            source,
             translate,
             disableAdd,
             disableRemove,
         } = this.props;
+        const records = get(record, source);
         return fields ? (
             <ul className={classes.root}>
                 {submitFailed && error && <span>{error}</span>}
@@ -121,7 +125,9 @@ export class SimpleFormIterator extends Component {
                                 <section className={classes.form}>
                                     {Children.map(children, input => (
                                         <FormInput
-                                            basePath={basePath}
+                                            basePath={
+                                                input.props.basePath || basePath
+                                            }
                                             input={cloneElement(input, {
                                                 source: `${member}.${
                                                     input.props.source
@@ -130,7 +136,7 @@ export class SimpleFormIterator extends Component {
                                                     input.props.label ||
                                                     input.props.source,
                                             })}
-                                            record={record}
+                                            record={records && records[index]}
                                             resource={resource}
                                         />
                                     ))}
@@ -138,6 +144,10 @@ export class SimpleFormIterator extends Component {
                                 {!disableRemove && (
                                     <span className={classes.action}>
                                         <Button
+                                            className={classNames(
+                                                'button-remove',
+                                                `button-remove-${source}-${index}`
+                                            )}
                                             size="small"
                                             onClick={this.removeField(index)}
                                         >
@@ -155,7 +165,14 @@ export class SimpleFormIterator extends Component {
                 {!disableAdd && (
                     <li className={classes.line}>
                         <span className={classes.action}>
-                            <Button size="small" onClick={this.addField}>
+                            <Button
+                                className={classNames(
+                                    'button-add',
+                                    `button-add-${source}`
+                                )}
+                                size="small"
+                                onClick={this.addField}
+                            >
                                 <AddIcon className={classes.leftIcon} />
                                 {translate('ra.action.add')}
                             </Button>
@@ -181,6 +198,7 @@ SimpleFormIterator.propTypes = {
     fields: PropTypes.object,
     meta: PropTypes.object,
     record: PropTypes.object,
+    source: PropTypes.string,
     resource: PropTypes.string,
     translate: PropTypes.func,
     disableAdd: PropTypes.bool,

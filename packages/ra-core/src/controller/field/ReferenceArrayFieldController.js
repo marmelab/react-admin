@@ -44,7 +44,7 @@ export class ReferenceArrayFieldController extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.record.id !== nextProps.record.id) {
+        if ((this.props.record || {}).id !== (nextProps.record || {}).id) {
             this.fetchReferences(nextProps);
         }
     }

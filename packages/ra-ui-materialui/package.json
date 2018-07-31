@@ -1,6 +1,6 @@
 {
     "name": "ra-ui-materialui",
-    "version": "2.1.1",
+    "version": "2.1.4",
     "description": "UI Components for react-admin with MaterialUI",
     "files": [
         "*.md",
@@ -16,14 +16,21 @@
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
+    "scripts": {
+        "build": "rimraf ./lib && cross-env NODE_ENV=production babel --quiet ./src -d ./lib --ignore spec.js,test.js",
+        "watch": "rimraf ./lib && cross-env NODE_ENV=production babel --watch ./src -d ./lib --ignore spec.js,test.js"
+    },
     "devDependencies": {
+        "babel-cli": "~6.26.0",
+        "cross-env": "^5.2.0",
         "enzyme": "~3.3.0",
         "enzyme-adapter-react-16": "~1.1.1",
         "file-api": "~0.10.4",
         "ignore-styles": "~5.0.1",
         "react": "~16.3.1",
         "react-dom": "~16.3.1",
-        "react-test-renderer": "~16.3.1"
+        "react-test-renderer": "~16.3.1",
+        "rimraf": "^2.6.2"
     },
     "peerDependencies": {
         "react": "~16.3.0",
@@ -38,7 +45,7 @@
         "lodash": "~4.17.5",
         "papaparse": "^4.1.4",
         "prop-types": "~15.6.1",
-        "ra-core": "^2.1.0",
+        "ra-core": "^2.1.3",
         "react-autosuggest": "^9.3.2",
         "react-dropzone": "~4.0.1",
         "react-redux": "~5.0.7",

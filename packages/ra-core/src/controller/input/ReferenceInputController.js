@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
 import compose from 'recompose/compose';
 import { createSelector } from 'reselect';
+import isEqual from 'lodash/isEqual';
 
 import { crudGetOne, crudGetMatching } from '../../actions/dataActions';
 import {
@@ -108,10 +109,16 @@ export class ReferenceInputController extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.record.id !== nextProps.record.id) {
+        if ((this.props.record || {}).id !== (nextProps.record || {}).id) {
             this.fetchReferenceAndOptions(nextProps);
         } else if (this.props.input.value !== nextProps.input.value) {
             this.fetchReference(nextProps);
+        } else if (
+            !isEqual(nextProps.filter, this.props.filter) ||
+            !isEqual(nextProps.sort, this.props.sort) ||
+            nextProps.perPage !== this.props.perPage
+        ) {
+            this.fetchOptions(nextProps);
         }
     }
 

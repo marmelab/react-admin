@@ -168,16 +168,17 @@ export class SelectInput extends Component {
 
     render() {
         const {
+            allowEmpty,
             choices,
             classes,
             className,
+            input,
             isRequired,
             label,
             meta,
             options,
             resource,
             source,
-            allowEmpty,
             ...rest
         } = this.props;
         if (typeof meta === 'undefined') {
@@ -200,6 +201,7 @@ export class SelectInput extends Component {
                         isRequired={isRequired}
                     />
                 }
+                name={input.name}
                 className={`${classes.input} ${className}`}
                 clearAlwaysVisible
                 error={!!(touched && error)}

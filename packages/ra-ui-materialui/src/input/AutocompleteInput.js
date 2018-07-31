@@ -248,6 +248,7 @@ export class AutocompleteInput extends React.Component {
     };
 
     renderInput = inputProps => {
+        const { input } = this.props;
         const {
             autoFocus,
             className,
@@ -289,6 +290,7 @@ export class AutocompleteInput extends React.Component {
                 inputRef={ref}
                 error={!!(touched && error)}
                 helperText={(touched && error) || helperText}
+                name={input.name}
                 {...options}
                 InputProps={{
                     classes: {

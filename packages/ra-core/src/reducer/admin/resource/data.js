@@ -8,6 +8,8 @@ import {
     UPDATE,
 } from '../../../dataFetchActions';
 import {
+    CRUD_DELETE_OPTIMISTIC,
+    CRUD_DELETE_MANY_OPTIMISTIC,
     CRUD_UPDATE_OPTIMISTIC,
     CRUD_UPDATE_MANY_OPTIMISTIC,
 } from '../../../actions/dataActions';
@@ -58,13 +60,7 @@ const addRecords = addRecordsFactory(getFetchedAt);
 const initialState = {};
 Object.defineProperty(initialState, 'fetchedAt', { value: {} }); // non enumerable by default
 
-export default resource => (
-    previousState = initialState,
-    { type, payload, meta }
-) => {
-    if (!meta || meta.resource !== resource) {
-        return previousState;
-    }
+export default (previousState = initialState, { type, payload, meta }) => {
     if (type === CRUD_UPDATE_OPTIMISTIC) {
         const updatedRecord = { ...previousState[payload.id], ...payload.data };
         return addRecords([updatedRecord], previousState);
@@ -75,7 +71,27 @@ export default resource => (
             .map(record => ({ ...record, ...payload.data }));
         return addRecords(updatedRecords, previousState);
     }
-    if (!meta.fetchResponse || meta.fetchStatus !== FETCH_END) {
+    if (type === CRUD_DELETE_OPTIMISTIC) {
+        const { [payload.id]: removed, ...newState } = previousState;
+
+        Object.defineProperty(newState, 'fetchedAt', {
+            value: previousState.fetchedAt,
+        });
+
+        return newState;
+    }
+    if (type === CRUD_DELETE_MANY_OPTIMISTIC) {
+        const newState = Object.entries(previousState)
+            .filter(([key]) => !payload.ids.includes(key))
+            .reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {});
+
+        Object.defineProperty(newState, 'fetchedAt', {
+            value: previousState.fetchedAt,
+        });
+
+        return newState;
+    }
+    if (!meta || !meta.fetchResponse || meta.fetchStatus !== FETCH_END) {
         return previousState;
     }
     switch (meta.fetchResponse) {

@@ -9,120 +9,111 @@ install: package.json ## install dependencies
 run: run-simple
 
 run-simple: ## run the simple example
-	@cd examples/simple && yarn start
+	@yarn -s run-simple
 
-run-tutorial: build ## run the tutorial example
-	@cd examples/tutorial && yarn start
+run-tutorial: ## run the tutorial example
+	@yarn -s run-tutorial
 
-run-demo: build ## run the demo example
-	@cd examples/demo && REACT_APP_DATA_PROVIDER=rest yarn start
+run-demo: ## run the demo example
+	@yarn -s run-demo
 
 build-demo: ## compile the demo example to static js
-	@cd examples/demo && REACT_APP_DATA_PROVIDER=rest yarn build
+	@yarn -s build-demo
 
-run-graphql-demo: build ## run the demo example
-	@cd examples/demo && REACT_APP_DATA_PROVIDER=graphql yarn start
+run-graphql-demo: ## run the demo example
+	@yarn -s run-graphql-demo
 
-run-graphcool-demo: build ## run the demo example
-	@cd examples/graphcool-demo && yarn start
+run-graphcool-demo: ## run the demo example
+	@yarn -s run-graphcool-demo
 
 build-ra-core:
 	@echo "Transpiling ra-core files...";
-	@rm -rf ./packages/ra-core/lib
-	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-core/src -d ./packages/ra-core/lib --ignore spec.js,test.js
+	@cd ./packages/ra-core && yarn -s build
 
 build-ra-ui-materialui:
 	@echo "Transpiling ra-ui-materialui files...";
-	@rm -rf ./packages/ra-ui-materialui/lib
-	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-ui-materialui/src -d ./packages/ra-ui-materialui/lib --ignore spec.js,test.js
+	@cd ./packages/ra-ui-materialui && yarn -s build
 
 build-react-admin:
 	@echo "Transpiling react-admin files...";
-	@rm -rf ./packages/react-admin/lib
 	@rm -rf ./packages/react-admin/docs
-	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/react-admin/src -d ./packages/react-admin/lib --ignore spec.js,test.js
+	@cd ./packages/react-admin && yarn -s build
 	@mkdir packages/react-admin/docs
 	@cp docs/*.md packages/react-admin/docs
 
+build-ra-data-fakerest:
+	@echo "Transpiling ra-data-fakerest files...";
+	@cd ./packages/ra-data-fakerest && yarn -s build
+
 build-ra-data-json-server:
 	@echo "Transpiling ra-data-json-server files...";
-	@rm -rf ./packages/ra-data-json-server/lib
-	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-data-json-server/src -d ./packages/ra-data-json-server/lib --ignore spec.js,test.js
+	@cd ./packages/ra-data-json-server && yarn -s build
 
 build-ra-data-simple-rest:
 	@echo "Transpiling ra-data-simple-rest files...";
-	@rm -rf ./packages/ra-data-simple-rest/lib
-	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-data-simple-rest/src -d ./packages/ra-data-simple-rest/lib --ignore spec.js,test.js
+	@cd ./packages/ra-data-simple-rest && yarn -s build
 
 build-ra-data-graphql:
 	@echo "Transpiling ra-data-graphql files...";
-	@rm -rf ./packages/ra-data-graphql/lib
-	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-data-graphql/src -d ./packages/ra-data-graphql/lib --ignore spec.js,test.js
+	@cd ./packages/ra-data-graphql && yarn -s build
 
 build-ra-data-graphcool:
 	@echo "Transpiling ra-data-graphcool files...";
-	@rm -rf ./packages/ra-data-graphcool/lib
-	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-data-graphcool/src -d ./packages/ra-data-graphcool/lib --ignore spec.js,test.js
+	@cd ./packages/ra-data-graphcool && yarn -s build
 
 build-ra-data-graphql-simple:
 	@echo "Transpiling ra-data-graphql-simple files...";
-	@rm -rf ./packages/ra-data-graphql-simple/lib
-	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-data-graphql-simple/src -d ./packages/ra-data-graphql-simple/lib --ignore spec.js,test.js
+	@cd ./packages/ra-data-graphql-simple && yarn -s build
 
 build-ra-input-rich-text:
 	@echo "Transpiling ra-input-rich-text files...";
-	@rm -rf ./packages/ra-input-rich-text/lib
-	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-input-rich-text/src -d ./packages/ra-input-rich-text/lib --ignore spec.js,test.js
+	@cd ./packages/ra-input-rich-text && yarn -s build
 
 build-ra-realtime:
 	@echo "Transpiling ra-realtime files...";
-	@rm -rf ./packages/ra-realtime/lib
-	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./packages/ra-realtime/src -d ./packages/ra-realtime/lib --ignore spec.js,test.js
+	@cd ./packages/ra-realtime && yarn -s build
 
 build-data-generator:
 	@echo "Transpiling data-generator files...";
-	@rm -rf ./examples/data-generator/lib
-	@NODE_ENV=production ./node_modules/.bin/babel --quiet ./examples/data-generator/src -d ./examples/data-generator/lib
+	@cd ./examples/data-generator && yarn -s build
 
-build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-input-rich-text build-ra-realtime build-data-generator ## compile ES6 files to JS
-
-watch: ## continuously compile ES6 files to JS
-	@NODE_ENV=production ./node_modules/.bin/babel ./src -d lib --ignore spec.js,test.js --watch
+build: build-ra-core build-ra-ui-materialui build-react-admin build-ra-data-fakerest build-ra-data-json-server build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphcool build-ra-data-graphql-simple build-ra-input-rich-text build-ra-realtime build-data-generator ## compile ES6 files to JS
 
 doc: ## compile doc as html and launch doc web server
-	@cd docs && jekyll server . --watch
+	@yarn -s doc
 
 lint: ## lint the code and check coding conventions
 	@echo "Running linter..."
-	@"./node_modules/.bin/eslint" ./packages/**/src
+	@yarn -s lint
 
 prettier: ## prettify the source code using prettier
-	@./node_modules/.bin/prettier-eslint --write --list-different "packages/*/src/**/*.js" "examples/*/src/**/*.js"
+	@echo "Running prettier..."
+	@yarn -s prettier
 
 test: build test-unit lint test-e2e ## launch all tests
 
 test-unit: ## launch unit tests
 	@if [ "$(CI)" != "true" ]; then \
 		echo "Running unit tests..."; \
-		NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/jest; \
+		yarn -s test-unit; \
 	fi
 	@if [ "$(CI)" = "true" ]; then \
 		echo "Running unit tests in CI..."; \
-		NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/jest --runInBand; \
+		yarn -s test-unit-ci; \
 	fi
 
 test-unit-watch: ## launch unit tests and watch for changes
-	@NODE_ENV=test NODE_ICU_DATA=node_modules/full-icu ./node_modules/.bin/jest --watch
+	yarn -s test-unit --watch
 
 test-e2e: ## launch end-to-end tests
 	@if [ "$(build)" != "false" ]; then \
 		echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
-		cd examples/simple && yarn build; \
+		cd examples/simple && yarn -s build; \
 	fi
 
-	@NODE_ENV=test cd cypress && yarn test
+	@NODE_ENV=test cd cypress && yarn -s test
 
 
 test-e2e-local: ## launch end-to-end tests for development
 	echo 'Starting e2e tests environment. Ensure you started the simple example first (make run-simple)'
-	cd cypress && yarn start
+	cd cypress && yarn -s start

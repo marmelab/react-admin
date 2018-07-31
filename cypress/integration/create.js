@@ -8,7 +8,11 @@ describe('Create Page', () => {
     const ShowPage = showPageFactory('/#/posts/14/show');
     const LoginPage = loginPageFactory('/#/login');
 
-    beforeEach(() => CreatePage.navigate());
+    beforeEach(() => {
+        LoginPage.navigate();
+        LoginPage.login('admin', 'password');
+        CreatePage.navigate();
+    });
 
     it('should put the current date in the field by default', () => {
         const currentDate = new Date();
@@ -26,6 +30,16 @@ describe('Create Page', () => {
         );
         cy.get(CreatePage.elements.input('backlinks[0].url')).should(el =>
             expect(el).to.have.value('http://google.com')
+        );
+    });
+
+  it('should have a working array input with references', () => {
+        cy.get(CreatePage.elements.addAuthor).click();
+        cy.get(CreatePage.elements.input('authors[0].user_id')).should(
+            el => expect(el).to.exist
+        );
+        cy.get(CreatePage.elements.input('authors[0].role')).should(
+            el => expect(el).to.exist
         );
     });
 

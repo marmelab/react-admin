@@ -157,6 +157,9 @@ You can run those example applications by calling:
 # At the react-admin project root
 make install
 
+# or
+yarn install
+
 # Run the simple application
 make run-simple
 # Run the tutorial application
@@ -177,7 +180,13 @@ You can run the tests (linting, unit and functional tests) by calling
 make test
 ```
 
-When working on the end to end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple`) and starting cypress in another terminal (`make tests-e2e-local`).
+or
+
+```sh
+yarn test
+```
+
+When working on the end to end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple`) and starting cypress in another terminal (`make test-e2e-local` or `yarn test-e2e-local`).
 
 If you have coding standards problems, you can fix them automatically using `prettier` by calling
 
@@ -185,10 +194,22 @@ If you have coding standards problems, you can fix them automatically using `pre
 make prettier
 ```
 
-If you want to contribute to the documentation, install jekyll, then call
+or
+
+```sh
+yarn prettier
+```
+
+If you want to contribute to the documentation, install [jekyll](https://jekyllrb.com/docs/home/), then call
 
 ```sh
 make doc
+```
+
+or
+
+```sh
+yarn doc
 ```
 
 And then browse to [http://localhost:4000/](http://localhost:4000/)

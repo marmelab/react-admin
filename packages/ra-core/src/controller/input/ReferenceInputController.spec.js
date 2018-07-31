@@ -10,7 +10,6 @@ describe('<ReferenceInputController />', () => {
         crudGetMatching: jest.fn(),
         meta: {},
         input: {},
-        record: {},
         reference: 'posts',
         resource: 'comments',
         source: 'post_id',
@@ -398,6 +397,34 @@ describe('<ReferenceInputController />', () => {
 
         wrapper.instance().setFilter('bar');
         expect(crudGetMatching.mock.calls.length).toBe(2);
+        expect(crudGetOne).toHaveBeenCalledTimes(1);
+    });
+
+    it('should only call crudGetMatching when props are changed from outside', () => {
+        const crudGetMatching = jest.fn();
+        const crudGetOne = jest.fn();
+        const wrapper = shallow(
+            <ReferenceInputController
+                {...defaultProps}
+                allowEmpty
+                input={{ value: 5 }}
+                crudGetOne={crudGetOne}
+                crudGetMatching={crudGetMatching}
+            />
+        );
+        expect(crudGetMatching).toHaveBeenCalledTimes(1);
+        expect(crudGetOne).toHaveBeenCalledTimes(1);
+
+        wrapper.setProps({ filter: { foo: 'bar' } });
+        expect(crudGetMatching.mock.calls.length).toBe(2);
+        expect(crudGetOne).toHaveBeenCalledTimes(1);
+
+        wrapper.setProps({ sort: { field: 'foo', order: 'ASC' } });
+        expect(crudGetMatching.mock.calls.length).toBe(3);
+        expect(crudGetOne).toHaveBeenCalledTimes(1);
+
+        wrapper.setProps({ perPage: 42 });
+        expect(crudGetMatching.mock.calls.length).toBe(4);
         expect(crudGetOne).toHaveBeenCalledTimes(1);
     });
 

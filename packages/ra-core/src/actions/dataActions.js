@@ -58,7 +58,7 @@ export const CRUD_GET_ONE_LOADING = 'RA/CRUD_GET_ONE_LOADING';
 export const CRUD_GET_ONE_FAILURE = 'RA/CRUD_GET_ONE_FAILURE';
 export const CRUD_GET_ONE_SUCCESS = 'RA/CRUD_GET_ONE_SUCCESS';
 
-export const crudGetOne = (resource, id, basePath) => ({
+export const crudGetOne = (resource, id, basePath, refresh = true) => ({
     type: CRUD_GET_ONE,
     payload: { id },
     meta: {
@@ -71,7 +71,7 @@ export const crudGetOne = (resource, id, basePath) => ({
                 level: 'warning',
             },
             redirectTo: 'list',
-            refresh: true,
+            refresh,
         },
     },
 });

@@ -16,6 +16,11 @@ import {
     SimpleFormIterator,
     TextInput,
     Toolbar,
+    ArrayInput,
+    SimpleFormIterator,
+    ReferenceInput,
+    AutocompleteInput,
+    SelectInput,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const saveWithNote = (values, basePath, redirectTo) =>
@@ -71,7 +76,7 @@ const PostCreateToolbar = props => (
 
 const getDefaultDate = () => new Date();
 
-const PostCreate = props => (
+const PostCreate = ({ permissions, ...props }) => (
     <Create {...props}>
         <SimpleForm
             toolbar={<PostCreateToolbar />}
@@ -121,6 +126,27 @@ const PostCreate = props => (
                     <TextInput source="url" />
                 </SimpleFormIterator>
             </ArrayInput>
+            {permissions === 'admin' && (
+                <ArrayInput source="authors">
+                    <SimpleFormIterator>
+                        <ReferenceInput
+                            label="User"
+                            source="user_id"
+                            reference="users"
+                        >
+                            <AutocompleteInput />
+                        </ReferenceInput>
+                        <SelectInput
+                            source="role"
+                            choices={[
+                                { id: 'headwriter', name: 'Head Writer' },
+                                { id: 'proofreader', name: 'Proof reader' },
+                                { id: 'cowriter', name: 'Co-Writer' },
+                            ]}
+                        />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            )}
         </SimpleForm>
     </Create>
 );

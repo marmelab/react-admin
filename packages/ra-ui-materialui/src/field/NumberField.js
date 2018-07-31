@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
 import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import classnames from 'classnames';
 import compose from 'recompose/compose';
 import sanitizeRestProps from './sanitizeRestProps';
@@ -57,24 +58,28 @@ export const NumberField = ({
     if (!record) return null;
     const value = get(record, source);
     if (value == null) return null;
-
-    if (!hasNumberFormat)
+    if (!hasNumberFormat) {
         return (
-            <span
+            <Typography
+                component="span"
+                body1="body1"
                 className={classnames(classes.input, className)}
                 {...sanitizeRestProps(rest)}
             >
                 {value}
-            </span>
+            </Typography>
         );
+    }
 
     return (
-        <span
+        <Typography
+            component="span"
+            body1="body1"
             className={classnames(classes.input, className)}
             {...sanitizeRestProps(rest)}
         >
             {value.toLocaleString(locales, options)}
-        </span>
+        </Typography>
     );
 };
 

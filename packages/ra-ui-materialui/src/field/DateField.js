@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
+import Typography from '@material-ui/core/Typography';
+
 import sanitizeRestProps from './sanitizeRestProps';
 
 const toLocaleStringSupportsLocales = (() => {
@@ -61,9 +63,14 @@ export const DateField = ({
             : date.toLocaleDateString();
 
     return (
-        <span className={className} {...sanitizeRestProps(rest)}>
+        <Typography
+            component="span"
+            body1="body1"
+            className={className}
+            {...sanitizeRestProps(rest)}
+        >
             {dateString}
-        </span>
+        </Typography>
     );
 };
 

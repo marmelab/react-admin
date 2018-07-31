@@ -8,13 +8,7 @@ const defaultState = {
     filter: {},
 };
 
-export default resource => (
-    previousState = defaultState,
-    { type, payload, meta }
-) => {
-    if (!meta || meta.resource !== resource) {
-        return previousState;
-    }
+export default (previousState = defaultState, { type, payload }) => {
     switch (type) {
         case CRUD_CHANGE_LIST_PARAMS:
             return payload;
