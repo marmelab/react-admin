@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
@@ -17,27 +17,32 @@ const styles = theme => ({
         paddingRight: theme.spacing.unit * 4,
     },
 });
-const DragPreview = ({
-    children,
-    className,
-    classes,
-    node,
-    style,
-    translate,
-}) => (
-    <div className={className || classes.item} style={style}>
-        {children
-            ? typeof children === 'function'
-                ? children({ node, translate })
-                : children
-            : translate('ra.tree.dragpreview', {
-                  _:
-                      'Node #%{id} |||| Node #%{id} with %{smart_count} children',
-                  id: node.id,
-                  smart_count: node.children.length,
-              })}
-    </div>
-);
+class DragPreview extends PureComponent {
+    render() {
+        const {
+            children,
+            className,
+            classes,
+            node,
+            style,
+            translate,
+        } = this.props;
+        return (
+            <div className={className || classes.item} style={style}>
+                {children
+                    ? typeof children === 'function'
+                        ? children({ node, translate })
+                        : children
+                    : translate('ra.tree.dragpreview', {
+                          _:
+                              'Node #%{id} |||| Node #%{id} with %{smart_count} children',
+                          id: node.id,
+                          smart_count: node.children.length,
+                      })}
+            </div>
+        );
+    }
+}
 
 DragPreview.propTypes = {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),

@@ -152,7 +152,7 @@ const dropTargetSpecs = {
         return undefined;
     },
     canDrop(props, monitor) {
-        return isDraggingAParent(props, monitor);
+        return !props.isDragging || isDraggingAParent(props, monitor);
     },
 };
 
@@ -196,7 +196,7 @@ export default compose(
         undefined,
         { crudUpdate: crudUpdateAction }
     ),
-    DropTarget(DROP_TARGET_TYPE, dropTargetSpecs, dropTargetConnect),
     DragSource(DROP_TARGET_TYPE, dragSourceSpecs, dragSourceConnect),
+    DropTarget(DROP_TARGET_TYPE, dropTargetSpecs, dropTargetConnect),
     withStyles(styles)
 )(EditableTreeNode);
