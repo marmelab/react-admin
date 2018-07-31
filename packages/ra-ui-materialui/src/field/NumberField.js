@@ -2,10 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import pure from 'recompose/pure';
-import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import classnames from 'classnames';
-import compose from 'recompose/compose';
 import sanitizeRestProps from './sanitizeRestProps';
 
 const hasNumberFormat = !!(
@@ -13,10 +10,6 @@ const hasNumberFormat = !!(
     Intl &&
     typeof Intl.NumberFormat === 'function'
 );
-
-const styles = {
-    input: { textAlign: 'right' },
-};
 
 /**
  * Display a numeric value as a locale string.
@@ -47,12 +40,12 @@ const styles = {
  * <span>25,99 $US</span>
  */
 export const NumberField = ({
-    classes = {},
     className,
     record,
     source,
     locales,
     options,
+    textAlign,
     ...rest
 }) => {
     if (!record) return null;
@@ -63,7 +56,7 @@ export const NumberField = ({
             <Typography
                 component="span"
                 body1="body1"
-                className={classnames(classes.input, className)}
+                className={className}
                 {...sanitizeRestProps(rest)}
             >
                 {value}
@@ -75,7 +68,7 @@ export const NumberField = ({
         <Typography
             component="span"
             body1="body1"
-            className={classnames(classes.input, className)}
+            className={className}
             {...sanitizeRestProps(rest)}
         >
             {value.toLocaleString(locales, options)}
@@ -102,10 +95,8 @@ NumberField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-const ComposedNumberField = compose(
-    pure,
-    withStyles(styles)
-)(NumberField);
+const ComposedNumberField = pure(NumberField);
+
 ComposedNumberField.defaultProps = {
     addLabel: true,
     textAlign: 'right',
