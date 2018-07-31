@@ -1,6 +1,5 @@
 import assert from 'assert';
-import { INITIALIZE_FORM } from '../../actions/formActions';
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { INITIALIZE_FORM, RESET_FORM } from '../../actions/formActions';
 import reducer from './record';
 
 describe('record reducer', () => {
@@ -8,11 +7,8 @@ describe('record reducer', () => {
         assert.deepEqual({}, reducer(undefined, {}));
     });
 
-    it('should return an empty record upon LOCATION_CHANGE', () => {
-        assert.deepEqual(
-            {},
-            reducer({ foo: 'bar' }, { type: LOCATION_CHANGE })
-        );
+    it('should return an empty record upon RESET_FORM', () => {
+        assert.deepEqual({}, reducer({ foo: 'bar' }, { type: RESET_FORM }));
     });
 
     it('should return the current record with new fields upon INITIALIZE_FORM', () => {

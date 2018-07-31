@@ -12,18 +12,22 @@ const sanitizeRestProps = ({ label, icon, value, translate, ...rest }) => rest;
 const hiddenStyle = { display: 'none' };
 
 class FormTab extends Component {
-    renderHeader = ({ className, label, icon, value, translate, ...rest }) => (
-        <MuiTab
-            key={label}
-            label={translate(label, { _: label })}
-            value={value}
-            icon={icon}
-            className={classnames('form-tab', className)}
-            component={Link}
-            to={value}
-            {...sanitizeRestProps(rest)}
-        />
-    );
+    renderHeader = ({ className, label, icon, value, translate, ...rest }) => {
+        const to = { pathname: value, state: { skipFormReset: true } };
+
+        return (
+            <MuiTab
+                key={label}
+                label={translate(label, { _: label })}
+                value={value}
+                icon={icon}
+                className={classnames('form-tab', className)}
+                component={Link}
+                to={to}
+                {...sanitizeRestProps(rest)}
+            />
+        );
+    };
 
     renderContent = ({ children, hidden, ...rest }) => (
         <span style={hidden ? hiddenStyle : null}>
@@ -52,6 +56,7 @@ FormTab.propTypes = {
     hidden: PropTypes.bool,
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
+    path: PropTypes.string,
     translate: PropTypes.func.isRequired,
     value: PropTypes.string,
 };

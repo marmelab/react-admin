@@ -1,11 +1,10 @@
-import { INITIALIZE_FORM } from '../../actions/formActions';
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { INITIALIZE_FORM, RESET_FORM } from '../../actions/formActions';
 import set from 'lodash/set';
 
 const initialState = {};
 
 export default (previousState = initialState, { type, payload }) => {
-    if (type === LOCATION_CHANGE) {
+    if (type === RESET_FORM) {
         return initialState;
     }
 

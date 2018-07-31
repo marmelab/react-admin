@@ -1,9 +1,12 @@
 import createPageFactory from '../support/CreatePage';
 import showPageFactory from '../support/ShowPage';
+import loginPageFactory from '../support/LoginPage';
 
 describe('Create Page', () => {
     const CreatePage = createPageFactory('/#/posts/create');
+    const UserCreatePage = createPageFactory('/#/users/create');
     const ShowPage = showPageFactory('/#/posts/14/show');
+    const LoginPage = loginPageFactory('/#/login');
 
     beforeEach(() => CreatePage.navigate());
 
@@ -108,5 +111,41 @@ describe('Create Page', () => {
         CreatePage.setValues(values);
         CreatePage.submit();
         cy.contains('Required field');
+    });
+
+    it('should not reset form values when an input with defaultValue is dynamically added', () => {
+        const values = [
+            {
+                type: 'input',
+                name: 'title',
+                value: 'Test title',
+            },
+        ];
+        CreatePage.setValues(values);
+        cy.get(CreatePage.elements.input('average_note')).should(el =>
+            expect(el).to.have.value('5')
+        );
+        cy.get(CreatePage.elements.input('title')).should(el =>
+            expect(el).to.have.value('Test title')
+        );
+    });
+
+    it('should not reset the form value when switching tabs', () => {
+        LoginPage.navigate();
+        LoginPage.login('admin', 'password');
+        UserCreatePage.navigate();
+
+        CreatePage.setValues([
+            {
+                type: 'input',
+                name: 'name',
+                value: 'The real Slim Shady!',
+            },
+        ]);
+        CreatePage.gotoTab(2);
+        CreatePage.gotoTab(1);
+        cy.get(CreatePage.elements.input('name')).should(el =>
+            expect(el).to.have.value('The real Slim Shady!')
+        );
     });
 });
